@@ -1,113 +1,146 @@
-Return-Path: <stable+bounces-195233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D14EC72F64
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 09:51:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9D1C730BA
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 10:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 5F4EC2B5AB
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 08:51:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 874172BAF6
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 09:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28BB310630;
-	Thu, 20 Nov 2025 08:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8485302158;
+	Thu, 20 Nov 2025 09:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SYFq8EBP"
 X-Original-To: stable@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F23307AF3;
-	Thu, 20 Nov 2025 08:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D294311971
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 09:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763628638; cv=none; b=rxA+qRmDdIUVtgJdILf17QFBeOB5yB4O6Jv4RiTdzjDhjuJi+5fsm3c0mKUU85FXt8CFSqZhn+0BFU/poqQ/xtw6ULlSrsBnPIsYBgneQpWnoRiGZSloj0qa3+B9DFvX/FTTBhYob24AzhiKAmucC72uzeNgMMfpUGrfmSWw7lA=
+	t=1763629935; cv=none; b=MYCXYjNfqqUG3COx2iT2lFQz5hqdoPALZ5t0UnXD3ejEc1B4b80HZ9jMr0jlef79XXX2xJoJfKfcbegcZhsE0Cz4akYXqTuNtWPAjRTzBPWslptP6OKdy/zMZFoqkEmubkud5kqCF8eCsmbMHabCHnvD33VOBjLvbwdd2V1uNjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763628638; c=relaxed/simple;
-	bh=YXEuwywmxBkYpZosxSHNtG4VzTQR0mXrJmAC1VDFhBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlhB/gR6rR/4arEF9jlxGTSvsrrwhJXsJ9OQmGLTm6B0QLj9K2Zr9OFPP0fk6g3ZqxwLawjZ1vjowW7wY3df1WNFy1+hhMdLtb9z/s0zLzEi2mwGeNW8iRbS2SMbU4Ta76rkmhQlAQhEFlqMJHmMehvb3IwW072Mf/nrs8nKAlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4dBs9T5DX2z9sTD;
-	Thu, 20 Nov 2025 09:35:09 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Fd5cKkgsgj89; Thu, 20 Nov 2025 09:35:09 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4dBs9S4C2Sz9sSn;
-	Thu, 20 Nov 2025 09:35:08 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C5D78B76D;
-	Thu, 20 Nov 2025 09:35:08 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 92U5nWTLlA_P; Thu, 20 Nov 2025 09:35:08 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B0608B763;
-	Thu, 20 Nov 2025 09:35:07 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Mark Brown <broonie@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"florent . trinh-thai @ cs-soprasteria . com" <florent.trinh-thai@cs-soprasteria.com>,
-	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] spi: fsl-cpm: Check length parity before switching to 16 bit mode
-Date: Thu, 20 Nov 2025 09:34:49 +0100
-Message-ID: <3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1763629935; c=relaxed/simple;
+	bh=CVl5hfHmm+btB3Wjc6ttnNrRk4deutzmxd5URUscRCA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rdsajVBw8IWr0vAkuNU1mJI9LXX9lziEVWL3JNj0CQweW+AspcCSmnm86Y0IHvUsmelaXlZI2Lt++sANaxwcj6jW1QxfW1q2JiIYgI/0ColLW092LyYneXO66y8HBxsK530bvcLLmfq8COXLJ0X36z1E7r0dVtRLK4hIBC7yTig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SYFq8EBP; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 629801A1C1B;
+	Thu, 20 Nov 2025 09:12:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3731B6068C;
+	Thu, 20 Nov 2025 09:12:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5975510371C08;
+	Thu, 20 Nov 2025 10:12:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763629929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=s5kQlOxmcfPkYVGoAeCB+9DTT9baZsDkjUnBb6JjBt4=;
+	b=SYFq8EBPeJVbn1cpMJtAJ0Aeg11Zkx2UKjs2SQprNp2jU7+9wh+g1SmZ1jgBwlrEUHLGNd
+	m9R1suUQ9bQ8esbFemZr3z1vYMraDeV0NY2oCcewDSPp+920b6SkyYea3SgYb85T7HtJL2
+	s8ksz49AAeCoyG2ObWNcjkcnzpj2t530B3MRCw/b4ntaVQJzXiqLmlwvrQKsWCaAktw4Oe
+	ms5kbX4Jk0aLCwSSwoyPQD0sioIgSr2BY4fw+iFu63mVrkvEPehtHnCpqaSljwJ2bKLtLV
+	N9T8pEekq/NDSK/XPe0tz2DJxkpIgCzhHn/LTK1MOlU7KTIhzrQHGtVmPmFRZg==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net v6 0/5] net: dsa: microchip: Fix resource releases in
+ error path
+Date: Thu, 20 Nov 2025 10:11:59 +0100
+Message-Id: <20251120-ksz-fix-v6-0-891f80ae7f8f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1709; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=YXEuwywmxBkYpZosxSHNtG4VzTQR0mXrJmAC1VDFhBk=; b=kA0DAAoW3ZBwJryrz1MByyZiAGke0qvIJOmxgNNVp6vnvYsjQMByo+HWoNXcOHxXDQgIUSs8K 4h1BAAWCgAdFiEEx/8LupiK9GVvlbov3ZBwJryrz1MFAmke0qsACgkQ3ZBwJryrz1NqIgD/cwoQ IJ2HjrFPjCBPxTbdKq7vfJUfc4yYNWwb8JS6bnoBAKGs2xwM+npjfnQMdUmzEzIkW2D4FHwMWpH QB+ORDBkP
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF/bHmkC/2XMTW7DIBAF4KtErEvE8E9XvUeVhYEhQW1NZSwrb
+ eS7B3mDIy/fm/neg1ScMlbyfnqQCZdccxlb0G8nEm7DeEWaY8uEM66ACaBf9Z+mfKfRC6liMlq
+ oRNr374St3pY+yYgzubTylutcpr9tfYHtdBhagDJqUOqIzjmM8OFLmb/zeA7lZ1tZeJfAdJe8S
+ WbA2qSZtUYcpdhJkF2KJofgvfAuBMHTUcq9NF3KJkEgxEHZQTp+lGovbZeqSYsumKS0Bhtf5bq
+ uT0j+yHWNAQAA
+X-Change-ID: 20251031-ksz-fix-db345df7635f
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Arun Ramadoss <arun.ramadoss@microchip.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
-with even size") failed to make sure that the size is really even
-before switching to 16 bit mode. Until recently the problem went
-unnoticed because kernfs uses a pre-allocated bounce buffer of size
-PAGE_SIZE for reading EEPROM.
+Hi all,
 
-But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
-introduced an additional dynamically allocated bounce buffer whose size
-is exactly the size of the transfer, leading to a buffer overrun in
-the fsl-cpm driver when that size is odd.
+I worked on adding PTP support for the KSZ8463. While doing so, I ran
+into a few bugs in the resource release process that occur when things go
+wrong arount IRQ initialization.
 
-Add the missing length parity verification and remain in 8 bit mode
-when the length is not even.
+This small series fixes those bugs.
 
-Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
+The next series, which will add the PTP support, depend on this one.
+
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
-v2: Updated with comments from Alexander
----
- drivers/spi/spi-fsl-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v6:
+- PATCH 4: Jump in the middle of the release loop instead of partially
+  freeing resource before jumping at the beginning of the release loop.
+- PATCH 5: Add Andrew's Reviewed-By.
+- Link to v5: https://lore.kernel.org/r/20251118-ksz-fix-v5-0-8e9c7f56618d@bootlin.com
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 2f2082652a1a..481a7b28aacd 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -335,7 +335,7 @@ static int fsl_spi_prepare_message(struct spi_controller *ctlr,
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
- 			if (t->bits_per_word == 8 && t->len >= 256 &&
--			    (mpc8xxx_spi->flags & SPI_CPM1))
-+			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
- 				t->bits_per_word = 16;
- 		}
- 	}
+Changes in v5:
+- All: Add Cc Tag.
+- PATCH 3: Use dsa_switch_for_each_user_port_continue_reverse() to only
+  iterate over initialized ports.
+- PATCH 4: Also clean PTP IRQs on port initialization failures
+- Link to v4: https://lore.kernel.org/r/20251117-ksz-fix-v4-0-13e1da58a492@bootlin.com
+
+Changes in v4:
+- PATCH 1 & 2: Add Andrew's Reviewed-By.
+- PATCH 3: Ensure ksz_irq is initialized outside of ksz_irq_free()
+- Add PATCH 4
+- PATCH 5: Fix symetry issues in ksz_ptp_msg_irq_{setup/free}()
+- Link to v3: https://lore.kernel.org/r/20251114-ksz-fix-v3-0-acbb3b9cc32f@bootlin.com
+
+Changes in v3:
+- PATCH 1 and 3: Fix Fixes tags
+- PATCH 3: Move the irq_dispose_mapping() behind the check that verifies that
+  the domain is initialized
+- Link to v2: https://lore.kernel.org/r/20251106-ksz-fix-v2-0-07188f608873@bootlin.com
+
+Changes in v2:
+- Add Fixes tag.
+- Split PATCH 1 in two patches as it needed two different Fixes tags
+- Add details in commit logs
+- Link to v1: https://lore.kernel.org/r/20251031-ksz-fix-v1-0-7e46de999ed1@bootlin.com
+
+---
+Bastien Curutchet (Schneider Electric) (5):
+      net: dsa: microchip: common: Fix checks on irq_find_mapping()
+      net: dsa: microchip: ptp: Fix checks on irq_find_mapping()
+      net: dsa: microchip: Don't free uninitialized ksz_irq
+      net: dsa: microchip: Free previously initialized ports on init failures
+      net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()
+
+ drivers/net/dsa/microchip/ksz_common.c | 31 +++++++++++++++----------------
+ drivers/net/dsa/microchip/ksz_ptp.c    | 22 +++++++++-------------
+ 2 files changed, 24 insertions(+), 29 deletions(-)
+---
+base-commit: 09652e543e809c2369dca142fee5d9b05be9bdc7
+change-id: 20251031-ksz-fix-db345df7635f
+
+Best regards,
 -- 
-2.49.0
+Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
 
