@@ -1,130 +1,158 @@
-Return-Path: <stable+bounces-195372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC33C75B69
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 18:36:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF1FC75C71
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 18:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id E5A4E30235
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:33:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id B108C34469
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC403242BA;
-	Thu, 20 Nov 2025 17:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C358920299B;
+	Thu, 20 Nov 2025 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FmEp7vrT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAlWKP02"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0148211A14
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 17:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424736D51A
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 17:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763659744; cv=none; b=o+njybgxofr/CFwD5dkQoLfJ91rw5lnZb4s4DFroKddOdS4w0mRUL3Jxz09qQ92xQ3TsjpFaoNW+UsTnOnuIXnuLLzN2jRqymWwIjqnSnBitkYiYpiY8PYh/6EiAl7L8Pjrq7fWxxhR9QBdeBSnSSoRDEcH5BFGN3ZSnVFUCKqc=
+	t=1763660194; cv=none; b=cf/3pT87ccvdVQWf+EGUgIIYc9bLPn8F6D4ttasVFmUkQyXU7rteEbJtDA7eoyRiZJB+JVjzVeqN8nk7FF5k8yBqUi3ZyHH73XJrQsxYE9CmklS/0CrkBbOCSDYA2Y0fzZfh1jWXmiLQTKsZt+NIeHl18qRX40NHYsYxIxfArwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763659744; c=relaxed/simple;
-	bh=Q3YbkW4pm3fe9lci28iim7y72WYJiOBG2mhv4u/6RMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L781E7xhFFJWS1KOCoejYENnrfWF0Mplvi9aEHVGtw/1LNqtuGUtrHgcOWw4XyUHj148vpe7YXCuLrhpRWw57zvskLX5Tqec8IO28ZPGms/YJwKMiImnhDnuvq9kbR+qdc5lFuY0ZT1ZAq/P/CA5VOyUBzpNTHJTmljoMZW4C+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FmEp7vrT; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29852dafa7dso214955ad.1
-        for <stable@vger.kernel.org>; Thu, 20 Nov 2025 09:29:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763659741; x=1764264541; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ky44eDmWt52pUOOxiqPKy3Mts+JZA6YHrJAlYxbKBlQ=;
-        b=FmEp7vrT1SJWLB9uT9LZ9H99A9bmDHR/sfk0JErwXdhjY+VRDaeXWCYXIJFNaShiN3
-         873YwFyhNIOnhdhhdDHThT5uXhu6YlqPtWKVUqGyLI++t2VEVyXePNzzLagtGKA62v5D
-         KRmj6/7ZkTlncK3nmJFh4i+VuBAtYAGC/gRfeQYjA/9MdPMApMF4LRrh3WELMT1WScYu
-         rIPAvbjI9mGAzKUjiAGfbwAj28AFq7gOHbB1fhvtcTYHkBpzgmcpkmijO5mV6xBseRYr
-         bUtFe2gqc+a3lLcho2obNHqJ/pTzNd+h0QMzNdSGzg0nOajzkryt1yiyMNyauKXZLmIo
-         UA8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763659741; x=1764264541;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ky44eDmWt52pUOOxiqPKy3Mts+JZA6YHrJAlYxbKBlQ=;
-        b=w34V0KeZ20IkSqErZtftl76mTL8taU2DqCFNSns5BJYles65OZxx1wOJ2R3yA6lF9U
-         qg0u+WKZJqkbIuQ5Apo0wtz398TEYdUYSv2zhVO+uers7/009f0rXpwbDBHW1FGAt1x0
-         S1gx7apiUhqSio8k4HI1HAAOGXlSJA1Dez6Qqx1nhagFFBs8FHxuT0awcu3+sN9tHToc
-         KIJO7chLPbpUJSQy2YXfrXhRTf2e4PQWY5uaR0sZZySj6yFvgHZapLgSCFbu/rZ1AEPC
-         nktOyQGv5LsYsyIcF7arsY9t+TKIe5mReBNtmlcJRRd5sHmw6pRPCKEvnHlUwgmXjqFX
-         9OAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWucqbAnDbujXB5V/a+QcNvc4aorlROo/H/jHJ5oEUaRf17u4ElTfhMMlBC/8PAZnx1x5gjdHk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMqs5nykGRUnUWqYVxYlG+way3YDDTvxIygMN6vVSx0GoOLK23
-	wAaMrtLl2+kIFJHIQsZU+6yRdOS50RYjr5or500revbqsvXA05esgwHdBaC1IRm/6fwPecuZWGa
-	O1gtWiA==
-X-Gm-Gg: ASbGncsGwxOJ63DqWvWocMf6Qn1Hk39VZbiNJ6r/4uNPgvAzNVD98QMnaalKXX63ND0
-	8KTuKXeyMhnK/Afy54WBhy/PN9bDgoeVeGOalvUT2W7PnDGqCfwesbmx33nM56LG0NmvcRO21vW
-	WXobYG4r2/Q6WagPXHsGi0pndz3Q3dWCc5T0cFlQ1VVCbVqIkQdmoEOsEmyI2mhuNil7uffcpdN
-	9Et6LTlMbKGDkT2LL6avtJyiG66biM3RP8Y1YXqZ0/TF/NlNS+G1WzT7B908eBO7DpTS456KF6V
-	0hUcneaCkXopeEh/yvxSNJQh0GEDxm/SyJG9+VfUlfzwlmvJXc7mwXFncJd7AXESfSjqCL2TutE
-	0kTb2r/2q9X2+ZNUn96eayZ2hVjwRP+a2Tlcnnb5+89dOWK29zXfBY0Ze83Rp2/2EOMPxUifgrP
-	zmM/ue3jEnyioU2gg2ws+ivU/W1j0BwqwPgetxR4JSteOEbBiab8k9SlcwtS0pfu5AvUJKA2Ib2
-	8Jx4+3IE2DmhSQbyuBH75HdtvTzYhZhbf1I
-X-Google-Smtp-Source: AGHT+IHQS7r9GmJbj+JcdLmuvcj/jStI1KW4O7/kVj6DkiGvxhcMNPJ5UC/nBeAze6+QYwLUmQ29PQ==
-X-Received: by 2002:a17:902:e806:b0:265:e66:6c10 with SMTP id d9443c01a7336-29b5c4abf7bmr4626455ad.4.1763659740782;
-        Thu, 20 Nov 2025 09:29:00 -0800 (PST)
-Received: from google.com (116.241.118.34.bc.googleusercontent.com. [34.118.241.116])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f174c9dasm3372756b3a.65.2025.11.20.09.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 09:29:00 -0800 (PST)
-Date: Thu, 20 Nov 2025 17:28:55 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org, broonie@kernel.org, catalin.marinas@arm.com,
-	leitao@debian.org, luca.ceresoli@bootlin.com, mark.rutland@arm.com,
-	matttbe@kernel.org, mbenes@suse.cz, puranjay@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] scripts/decode_stacktrace.sh: fix build
- ID and PC source" failed to apply to 6.17-stable tree
-Message-ID: <aR9P13YfvZ6AMSfC@google.com>
-References: <2025112031-catalyze-sleep-ba6e@gregkh>
+	s=arc-20240116; t=1763660194; c=relaxed/simple;
+	bh=O45l2dIqP2/DX090Bg36qploXTF0tscZcUwPbKG+Trw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZkYWmHCQ02mOJdFAv3aKtYiAZ5CkIbcXgQ6I5ZylKZV7KQcLvSyDsVtp2tTzFbDHtT1YrjCt7OEJxTVX8qKPyZGVjeBo/6GecTiPL32u0c35di4UH5uO7xU+ctmJ54/n92sqwhsxrFtyjLbXKQAauLSyY4DO3tzrPXGwG3pCwdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAlWKP02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93594C116C6;
+	Thu, 20 Nov 2025 17:36:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763660194;
+	bh=O45l2dIqP2/DX090Bg36qploXTF0tscZcUwPbKG+Trw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vAlWKP021PQKPFnE05LFDGcwMhhfVc9bpBvSUuG6IZXdcitgKCr9JS4uH6bcKF6Lu
+	 LGQRBdDo1y1glH5etSDzaZxruDrgD1W4JgTq1M7PkKcB6JVmoxlacFUfB3PjaVUgW/
+	 oSh6zpM9c877OUWsdbL9daLeAcPU+gBzUS9/b8ZV0yNDwE8P82vOVuOgHRn1Du/w33
+	 nhV4qPIje1xEEqZZ9z5x/tIoblGxBQRl2+/3AXuHFx74DT0ch3Bzxa2H8i7w/+XJPB
+	 CiSdLlEzTFMGoV3hymrS4OQRVglZUoqqPP5ekfBnbVn8f3KJQt2AqXReqreDdj8wAA
+	 4v5eyTh4Ojllw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] KVM: guest_memfd: Pass index, not gfn, to __kvm_gmem_get_pfn()
+Date: Thu, 20 Nov 2025 12:36:29 -0500
+Message-ID: <20251120173631.1905381-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112009-getaway-overplay-a36a@gregkh>
+References: <2025112009-getaway-overplay-a36a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025112031-catalyze-sleep-ba6e@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 20, 2025 at 04:56:31PM +0100, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.17-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 7d9f7d390f6af3a29614e81e802e2b9c238eb7b2
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112031-catalyze-sleep-ba6e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
-> 
-> Possible dependencies:
+From: Sean Christopherson <seanjc@google.com>
 
-The dependencies I missed to specify are the following 2 fixes:
-  d322f6a24ee5 ("scripts/decode_stacktrace.sh: symbol: avoid trailing whitespaces")
-  4a2fc4897b5e ("scripts/decode_stacktrace.sh: symbol: preserve alignment")
+[ Upstream commit 4af18dc6a9204464db76d9771d1f40e2b46bf6ae ]
 
-They apply cleanly on top of linux-6.17.y:
-  git cherry-pick -xs d322f6a24ee5 4a2fc4897b5e 7d9f7d390f6a
+Refactor guest_memfd usage of __kvm_gmem_get_pfn() to pass the index into
+the guest_memfd file instead of the gfn, i.e. resolve the index based on
+the slot+gfn in the caller instead of in __kvm_gmem_get_pfn().  This will
+allow kvm_gmem_get_pfn() to retrieve and return the specific "struct page",
+which requires the index into the folio, without a redoing the index
+calculation multiple times (which isn't costly, just hard to follow).
 
-I've also verified the expected fixes work for all 3 patches.
+Opportunistically add a kvm_gmem_get_index() helper to make the copy+pasted
+code easier to understand.
 
-Greg, do you need me to send these?
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241010182427.1434605-46-seanjc@google.com>
+Stable-dep-of: ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when gmem is dying")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ virt/kvm/guest_memfd.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---
-Carlos Llamas
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index bb062d3d24572..73e5db8ef1611 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -304,6 +304,11 @@ static inline struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
+ 	return get_file_active(&slot->gmem.file);
+ }
+ 
++static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn - slot->base_gfn + slot->gmem.pgoff;
++}
++
+ static struct file_operations kvm_gmem_fops = {
+ 	.open		= generic_file_open,
+ 	.release	= kvm_gmem_release,
+@@ -553,12 +558,11 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ }
+ 
+ /* Returns a locked folio on success.  */
+-static struct folio *
+-__kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+-		   gfn_t gfn, kvm_pfn_t *pfn, bool *is_prepared,
+-		   int *max_order)
++static struct folio *__kvm_gmem_get_pfn(struct file *file,
++					struct kvm_memory_slot *slot,
++					pgoff_t index, kvm_pfn_t *pfn,
++					bool *is_prepared, int *max_order)
+ {
+-	pgoff_t index = gfn - slot->base_gfn + slot->gmem.pgoff;
+ 	struct kvm_gmem *gmem = file->private_data;
+ 	struct folio *folio;
+ 
+@@ -594,6 +598,7 @@ __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+ {
++	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 	struct file *file = kvm_gmem_get_file(slot);
+ 	struct folio *folio;
+ 	bool is_prepared = false;
+@@ -602,7 +607,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (!file)
+ 		return -EFAULT;
+ 
+-	folio = __kvm_gmem_get_pfn(file, slot, gfn, pfn, &is_prepared, max_order);
++	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
+ 	if (IS_ERR(folio)) {
+ 		r = PTR_ERR(folio);
+ 		goto out;
+@@ -650,6 +655,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+ 	for (i = 0; i < npages; i += (1 << max_order)) {
+ 		struct folio *folio;
+ 		gfn_t gfn = start_gfn + i;
++		pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 		bool is_prepared = false;
+ 		kvm_pfn_t pfn;
+ 
+@@ -658,7 +664,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+ 			break;
+ 		}
+ 
+-		folio = __kvm_gmem_get_pfn(file, slot, gfn, &pfn, &is_prepared, &max_order);
++		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &is_prepared, &max_order);
+ 		if (IS_ERR(folio)) {
+ 			ret = PTR_ERR(folio);
+ 			break;
+-- 
+2.51.0
+
 
