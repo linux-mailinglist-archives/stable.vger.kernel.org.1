@@ -1,187 +1,160 @@
-Return-Path: <stable+bounces-195341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD23AC7553D
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:23:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46FBC73B78
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 12:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AE1FE3561DC
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:17:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id C4CE52C44F
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 11:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A325362144;
-	Thu, 20 Nov 2025 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F01328243;
+	Thu, 20 Nov 2025 11:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vttxdUEl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CSH33hcd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E7F19ADBA
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EA12D73A9;
+	Thu, 20 Nov 2025 11:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655440; cv=none; b=BjsWEhSk6IBT1MzCIgBqfVPsVl6EBqCK1uv8JeXYLKZi2VhW6uU8mQszXKJkimeNVCmQf6ja8kd15yo6kr7vZG61LHjw24+OSa3kYbwq0I2+QvzFd1r0PrtEAi3wdJ2PQKIzrih3lYAijME2dLRZLzd/wuHxiIw725kj1ujRD40=
+	t=1763637951; cv=none; b=ko+pldT9xL3/523kx1I/c+Mm9TZ22Ay/s9M9RIx2HM1PTfKt5tftoRcyhLC6P5vLbKn81IunHG65+IsmdDUnp+fnBkNt1Jbzl34UohRPWgd4P3bWjzEKZLV9IJCjqUZOE/xvSQxDlnEZURHCmrMZVysFAaFpZCX/xuPSJ1rGLCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655440; c=relaxed/simple;
-	bh=FQbRW6cR7ioZUW+FBv7GKR2j3G8AtPhqRj7xvshWjPY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oiFqA5uD8xmTo3CB7Rx0TS2vLlAjWwSjPbq+DAlKgdCrmFV1kXrUunGD82yezEGtwFucWIUTzNh1sYNK6Ha9HhloPfqn/f43YKQtVNX53wciR00FZf+BdBDn/Cw7Fzu5ZqHXp7Gi5aM74snreodH4Se9bm31eW4U7Zo3+/lgq94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vttxdUEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DECC4CEF1;
-	Thu, 20 Nov 2025 16:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763655439;
-	bh=FQbRW6cR7ioZUW+FBv7GKR2j3G8AtPhqRj7xvshWjPY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=vttxdUEl8k2pW/T8kIyYTiTU5C6EwCV7dk6b9K2BCjKhYyxXBlR1Q8ZKiUeyjePga
-	 nqQPJVIFWyxagtV/rnRsNR2VtxQQL/pA96pndkmbhunMtebR65BeGWs4u74r/xPZi3
-	 vKa4RG2fJBivfFv6tiaar5Jgue0BH+Q6bQ/pieoo=
-Subject: FAILED: patch "[PATCH] ftrace: Fix BPF fexit with livepatch" failed to apply to 6.6-stable tree
-To: song@kernel.org,andrey.grodzovsky@crowdstrike.com,ast@kernel.org,jolsa@kernel.org,mhiramat@kernel.org,rostedt@goodmis.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:17:16 +0100
-Message-ID: <2025112016-arrogance-recast-439f@gregkh>
+	s=arc-20240116; t=1763637951; c=relaxed/simple;
+	bh=6lhy61yEQdoxLIAUxppc8VupcYfNM/lvDshSkiHU7sA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ipeu1NUFvhcoCFC7ml9hIwaUbwjtWBNn+xiBCU3MaK3hFTHEAmd6g7RNwOuuzXkbVKWR5ktaVBdVT9lljvr4SVfjvOUGnQKpdyxl9w0VvCQKwGv+NwXQuDOtEQ/s/TSNemn+fuTKSo16NeMpKlG9hHKHQsbWmaS7qh+DweK+TpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CSH33hcd; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763637950; x=1795173950;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6lhy61yEQdoxLIAUxppc8VupcYfNM/lvDshSkiHU7sA=;
+  b=CSH33hcd2qcPfQCRIhktak/zNR7z+1jhQeitNtaTO9IZfUMBXlE5qHFm
+   VfDgCKfe73c1xkxYfccR1y8NUDYdBaq8zyzQMRz3zFDM/vN9BoHs292Lq
+   QGh66/VmDAWGaEScyDbguvj8F5s0bxVFtAQw5nK/3iPtteVbZ0DxBvC14
+   E2yw/ETRtkiqsCpzefq1wxjcf1QWfz6o4N+yjQyFSA+3eruVUjL3qA5LE
+   vOA00IkjvCsIhEppw9EExfIqi2rUAl3BYZXT5QWl1lbvKxP58IdLi7i9U
+   aMJR57vA5ggOfnelf5eyCZdU0y9GIvdwZeTBrbJVXlQj6bF/ta/aChWUv
+   w==;
+X-CSE-ConnectionGUID: ETszqCGOSg2oAOwIMMnuUw==
+X-CSE-MsgGUID: A29kfv95SQ6VLEt+8upjhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65865814"
+X-IronPort-AV: E=Sophos;i="6.20,317,1758610800"; 
+   d="scan'208";a="65865814"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 03:25:49 -0800
+X-CSE-ConnectionGUID: 0/fgOdezRqOVJWGbmFGDbA==
+X-CSE-MsgGUID: CvOkr+8uQIijz5Vmrcq/8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,317,1758610800"; 
+   d="scan'208";a="191145130"
+Received: from silpixa00401971.ir.intel.com ([10.20.226.106])
+  by fmviesa006.fm.intel.com with ESMTP; 20 Nov 2025 03:25:47 -0800
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: herbert@gondor.apana.org.au
+Cc: linux-crypto@vger.kernel.org,
+	qat-linux@intel.com,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	stable@vger.kernel.org,
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Subject: [PATCH] crypto: zstd - fix double-free in per-CPU stream cleanup
+Date: Thu, 20 Nov 2025 16:26:09 +0000
+Message-ID: <20251120162619.28686-2-giovanni.cabiddu@intel.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
 Content-Transfer-Encoding: 8bit
 
+The crypto/zstd module has a double-free bug that occurs when multiple
+tfms are allocated and freed.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The issue happens because zstd_streams (per-CPU contexts) are freed in
+zstd_exit() during every tfm destruction, rather than being managed at
+the module level.  When multiple tfms exist, each tfm exit attempts to
+free the same shared per-CPU streams, resulting in a double-free.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This leads to a stack trace similar to:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 56b3c85e153b84f27e6cff39623ba40a1ad299d3
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112016-arrogance-recast-439f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+  BUG: Bad page state in process kworker/u16:1  pfn:106fd93
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106fd93
+  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+  page_type: 0xffffffff()
+  raw: 0017ffffc0000000 dead000000000100 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+  page dumped because: nonzero entire_mapcount
+  Modules linked in: ...
+  CPU: 3 UID: 0 PID: 2506 Comm: kworker/u16:1 Kdump: loaded Tainted: G    B
+  Hardware name: ...
+  Workqueue: btrfs-delalloc btrfs_work_helper
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   bad_page+0x71/0xd0
+   free_unref_page_prepare+0x24e/0x490
+   free_unref_page+0x60/0x170
+   crypto_acomp_free_streams+0x5d/0xc0
+   crypto_acomp_exit_tfm+0x23/0x50
+   crypto_destroy_tfm+0x60/0xc0
+   ...
 
-Possible dependencies:
+Change the lifecycle management of zstd_streams to free the streams only
+once during module cleanup.
 
+Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+---
+ crypto/zstd.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 56b3c85e153b84f27e6cff39623ba40a1ad299d3 Mon Sep 17 00:00:00 2001
-From: Song Liu <song@kernel.org>
-Date: Mon, 27 Oct 2025 10:50:21 -0700
-Subject: [PATCH] ftrace: Fix BPF fexit with livepatch
-
-When livepatch is attached to the same function as bpf trampoline with
-a fexit program, bpf trampoline code calls register_ftrace_direct()
-twice. The first time will fail with -EAGAIN, and the second time it
-will succeed. This requires register_ftrace_direct() to unregister
-the address on the first attempt. Otherwise, the bpf trampoline cannot
-attach. Here is an easy way to reproduce this issue:
-
-  insmod samples/livepatch/livepatch-sample.ko
-  bpftrace -e 'fexit:cmdline_proc_show {}'
-  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
-
-Fix this by cleaning up the hash when register_ftrace_function_nolock hits
-errors.
-
-Also, move the code that resets ops->func and ops->trampoline to the error
-path of register_ftrace_direct(); and add a helper function reset_direct()
-in register_ftrace_direct() and unregister_ftrace_direct().
-
-Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251027175023.1521602-2-song@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 5949095e51c3..f2cb0b097093 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -479,11 +479,6 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
- 		 * trampoline again, and retry register.
- 		 */
--		/* reset fops->func and fops->trampoline for re-register */
--		tr->fops->func = NULL;
--		tr->fops->trampoline = 0;
--
--		/* free im memory and reallocate later */
- 		bpf_tramp_image_free(im);
- 		goto again;
- 	}
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 42bd2ba68a82..cbeb7e833131 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5953,6 +5953,17 @@ static void register_ftrace_direct_cb(struct rcu_head *rhp)
- 	free_ftrace_hash(fhp);
+diff --git a/crypto/zstd.c b/crypto/zstd.c
+index dc5b36141ff8..cbbd0413751a 100644
+--- a/crypto/zstd.c
++++ b/crypto/zstd.c
+@@ -75,11 +75,6 @@ static int zstd_init(struct crypto_acomp *acomp_tfm)
+ 	return ret;
  }
  
-+static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
-+{
-+	struct ftrace_hash *hash = ops->func_hash->filter_hash;
-+
-+	remove_direct_functions_hash(hash, addr);
-+
-+	/* cleanup for possible another register call */
-+	ops->func = NULL;
-+	ops->trampoline = 0;
-+}
-+
- /**
-  * register_ftrace_direct - Call a custom trampoline directly
-  * for multiple functions registered in @ops
-@@ -6048,6 +6059,8 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 	ops->direct_call = addr;
- 
- 	err = register_ftrace_function_nolock(ops);
-+	if (err)
-+		reset_direct(ops, addr);
- 
-  out_unlock:
- 	mutex_unlock(&direct_mutex);
-@@ -6080,7 +6093,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct);
- int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 			     bool free_filters)
- {
--	struct ftrace_hash *hash = ops->func_hash->filter_hash;
- 	int err;
- 
- 	if (check_direct_multi(ops))
-@@ -6090,13 +6102,9 @@ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 
- 	mutex_lock(&direct_mutex);
- 	err = unregister_ftrace_function(ops);
--	remove_direct_functions_hash(hash, addr);
-+	reset_direct(ops, addr);
- 	mutex_unlock(&direct_mutex);
- 
--	/* cleanup for possible another register call */
--	ops->func = NULL;
--	ops->trampoline = 0;
+-static void zstd_exit(struct crypto_acomp *acomp_tfm)
+-{
+-	crypto_acomp_free_streams(&zstd_streams);
+-}
 -
- 	if (free_filters)
- 		ftrace_free_filter(ops);
- 	return err;
+ static int zstd_compress_one(struct acomp_req *req, struct zstd_ctx *ctx,
+ 			     const void *src, void *dst, unsigned int *dlen)
+ {
+@@ -297,7 +292,6 @@ static struct acomp_alg zstd_acomp = {
+ 		.cra_module = THIS_MODULE,
+ 	},
+ 	.init = zstd_init,
+-	.exit = zstd_exit,
+ 	.compress = zstd_compress,
+ 	.decompress = zstd_decompress,
+ };
+@@ -310,6 +304,7 @@ static int __init zstd_mod_init(void)
+ static void __exit zstd_mod_fini(void)
+ {
+ 	crypto_unregister_acomp(&zstd_acomp);
++	crypto_acomp_free_streams(&zstd_streams);
+ }
+ 
+ module_init(zstd_mod_init);
+
+base-commit: 8faa5c4b47998c5930314a3bb8ee53534cfdc1ce
+-- 
+2.51.1
 
 
