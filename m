@@ -1,102 +1,128 @@
-Return-Path: <stable+bounces-195427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11A1C766DA
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 22:53:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D821BC7692B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 00:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id A9DC229733
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 21:53:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id C8FA528D2D
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 23:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D42EFD86;
-	Thu, 20 Nov 2025 21:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4162D8779;
+	Thu, 20 Nov 2025 23:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Fdfr0gvu"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EbVdCBFR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEA922D7B9;
-	Thu, 20 Nov 2025 21:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AF62E62A9
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 23:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763675613; cv=none; b=l4L2ENEB/0ot04KnS04aR7aQOdtlufchsPeyc1f7yvWOWIV1cXRg93hz1teE2KSs1oU0PPDYjieYPLc0QD5XjRor0Y0uIzOBrddF3QiQP9G3MfX5EsDkAdHvuRkvH6JMBj12JDqb6syqkPMGrEja+579MeePdzJiSzXrQhmU3d4=
+	t=1763680062; cv=none; b=b9chxdzC69ihg+xkZOVvIT1p/oDbQOAAz0Sn47NopkPADRmLXhpTrcrw+oOQ3zpsUKRF4l/ECJeHKmIrfydjtefh57tgParsI5t8LYqbhwakheveJj47S1gj9tsJcV+N1XflctxARYCnoul34foBAJ+DO73jgKxP1oJJt2Yu6EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763675613; c=relaxed/simple;
-	bh=sfd31VPbGOq5GA7GO/KXZQ8oyIaeU5LzT0IS8oem+Sc=;
+	s=arc-20240116; t=1763680062; c=relaxed/simple;
+	bh=JPgc7fxC461ZQVkZ+wKNwBc/Fc46K40bnVfB2rRr5BU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3scG29ROJvlGblUWZ+T6+lZL03V6MIAZP0e8PmVAJFh8ApFyywlmRN9iEo8BOJM7d6b9Ir1FazsJS3Ypa5nvE3v+F9O1EIwW/LVsDfdaOekVY+BLGm1lRMhqFS5D+rWKPcfF44+FilT3Y0pY/9cBf2vDY2DXf06n2HtFJzUK/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Fdfr0gvu; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D2E0B40E01A5;
-	Thu, 20 Nov 2025 21:53:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ABRntIgvARNf; Thu, 20 Nov 2025 21:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1763675601; bh=URtkXv82hBd9mwL3T0kChVmfaEUgedpfb7xzorGXT0Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fdfr0gvunyUsnBiPVjq3qVOrQhXUVksfNe6G0Ef/GGauTy0zJYjhSu+E0YeNCkHv6
-	 f7MsRG1SaCCOCGrrIVUDAm85RkgW6cZhcUlfEj5CgETPcLhMeq4dJ16FhslOz61PIl
-	 nQuEVf8fZ706MtOvpM0DWsOlhNjUpUxftOW/irPhSLTqHtms4N3LyI2WqPJrgVmW0c
-	 fPHRX5HcqanfXYKBgXMfRMrlZLKihpA1n7P9CGj8bgaNQEjKVz8jJJA0hjPRKLc6EH
-	 Yq1tc0g+qm5DM7dgEE94apyb4h9evHa12mFHSW3SlJ/PYDa1XFNUdOpvQrcnI1Ohny
-	 nndM8g8blU7kD75eVTR8DPyAsGTxBptbK3scdbKeYtmTK2NmEftea9p+x2GSRbVzEG
-	 V9LmH7n4lo9n5l57WjU81kz/EeSe7dFWuzEFdt+C8bnCGxK9HPQMsS3w1k5lY0Whvn
-	 zg4keDCOKDO+s84k5EhzlnEpuBv38RaBHryjLQMGfblQ2R4nMVO7D2HiVIXTJMu1fT
-	 XBNvaP/9SBr1tT43ON2uaZhwF8VG5iNjlELKmnftGWJhSTIS3XdORQfWCRAjxQ5Xgb
-	 Tzhnx0doq/e1Fru2LGXkVdgy0JmDsOwJ02D6dMjSbZrl7Dd0P9pG8JLrdWbkVW75lJ
-	 wW+G8iaTjk2rASJauEgSTCi0=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 75B4140E022E;
-	Thu, 20 Nov 2025 21:53:12 +0000 (UTC)
-Date: Thu, 20 Nov 2025 22:53:05 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Avadhut Naik <avadhut.naik@amd.com>
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, sashal@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Subject: Re: [PATCH] x86/mce: Handle AMD threshold interrupt storms
-Message-ID: <20251120215305.GDaR-NwYmw4XkOd57L@fat_crate.local>
-References: <20251120214139.1721338-1-avadhut.naik@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jjf+pMcR2weXLntYef7UF80Zz404PNhwlwgPkZ/GQW/40qSNvczz6OwcSBThnKkT5rJzG6iehoAMlPAI93X4VAL/EiBGad5643h7QgE60tzTAl1YBU7jzV3D3QGTlOBaLKGY/aHbzlIo0w3cq080Y6AYQXFPBKLfpQXv6fV/tL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EbVdCBFR; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 20 Nov 2025 23:07:29 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763680055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NFV1jBslup2HibKrj+0IdK/PXVX5WPeuK6i5VCMIRVQ=;
+	b=EbVdCBFR1hMr4msMn63XfXURwb/Yotp/Todw2lTL4KH29LiFpdEaiWgU7spQaSFBlTZ1g+
+	qO0Am7tctvwbw3pNLPJD4FX0FteS5J0WDVTa5MVlXnYnOnxxfgt/g1IpawsGBJTdAJXV6g
+	+4g+uJjiQOLVm5DSz1bxE3Z4fkCh6OE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Matteo Rizzo <matteorizzo@google.com>, 
+	evn@google.com, Jim Mattson <jmattson@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 6.1.y] KVM: SVM: Mark VMCB_LBR dirty when
+ MSR_IA32_DEBUGCTLMSR is updated
+Message-ID: <zt2n54fpetzwtnokaarbx75zvybop5sdbhjy7xbjyblhf3q5pj@k3kzyyv7csac>
+References: <2025112036-abdominal-envelope-7ca0@gregkh>
+ <20251120180655.1918545-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120214139.1721338-1-avadhut.naik@amd.com>
+In-Reply-To: <20251120180655.1918545-1-sashal@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Nov 20, 2025 at 09:41:24PM +0000, Avadhut Naik wrote:
-> From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+On Thu, Nov 20, 2025 at 01:06:55PM -0500, Sasha Levin wrote:
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> 
+> [ Upstream commit dc55b3c3f61246e483e50c85d8d5366f9567e188 ]
+> 
+> The APM lists the DbgCtlMsr field as being tracked by the VMCB_LBR clean
+> bit.  Always clear the bit when MSR_IA32_DEBUGCTLMSR is updated.
+> 
+> The history is complicated, it was correctly cleared for L1 before
+> commit 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when
+> L2 is running").  At that point svm_set_msr() started to rely on
+> svm_update_lbrv() to clear the bit, but when nested virtualization
+> is enabled the latter does not always clear it even if MSR_IA32_DEBUGCTLMSR
+> changed. Go back to clearing it directly in svm_set_msr().
+> 
+> Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
+> Reported-by: Matteo Rizzo <matteorizzo@google.com>
+> Reported-by: evn@google.com
+> Co-developed-by: Jim Mattson <jmattson@google.com>
+> Signed-off-by: Jim Mattson <jmattson@google.com>
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Link: https://patch.msgid.link/20251108004524.1600006-2-yosry.ahmed@linux.dev
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> [ Open coded svm_get_lbr_vmcb() call ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/x86/kvm/svm/svm.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index f56dcbbbf7341..00fb1c18e23a8 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3053,11 +3053,17 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+>  		if (data & DEBUGCTL_RESERVED_BITS)
+>  			return 1;
+>  
+> -		if (svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK)
+> +		if (svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK) {
+> +			if (svm->vmcb->save.dbgctl == data)
+> +				break;
+>  			svm->vmcb->save.dbgctl = data;
+> -		else
+> +		} else {
+> +			if (svm->vmcb01.ptr->save.dbgctl == data)
+> +				break;
+>  			svm->vmcb01.ptr->save.dbgctl = data;
+> +		}
+>  
+> +		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
 
-You need to put here
+The patch LGTM, thanks. FWIW, the call to vmcb_mark_dirty() is the real
+fix, the above changes are just a microoptimization, so we can just drop
+it if we want to keep it simple.
 
-"Commit <sha1> upstream."
-
-> Extend the logic of handling CMCI storms to AMD threshold interrupts.
-
-...
-
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>  		svm_update_lbrv(vcpu);
+>  
+>  		break;
+> -- 
+> 2.51.0
+> 
 
