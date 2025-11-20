@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-195330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E4EC75501
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:21:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE8FC755B2
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 17:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CD43334F9EC
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:13:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B7DB44EE856
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 16:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B23361DCF;
-	Thu, 20 Nov 2025 16:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB73F3612FF;
+	Thu, 20 Nov 2025 16:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snSTSbom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Trr9j9Ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40CE35C188
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6F529B76F
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 16:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655220; cv=none; b=AF+RUOD54UlnuLBjk5c6Yu4qjggDCXALemXONPeAvHzrKoMj3C7KDpf51zrEFNVpH26FGP92ztPJCeUncs76wDZ0of+/tliKgFPswd1R9I9hLavoXxFNBtO3Secn38qabkQOEggRUGtNqRTrTEfwXd0lkt7fGhPV3bZguG5yTvg=
+	t=1763655226; cv=none; b=o0OO8NqJyagCw2bBKn2D5keDI614D0KDiVt4Ty8x0uf4xcdIIJ3sD/NWA9s0dwVH/9YhDpMf1rNLXANPBgPF2zD/aU5gYkgbijE5pMHMjV8ZHf4p5MuASHcfMsBRiciiYQTQanXmeVbcH1EnFqeurj+WMjN1WBn1vN08f9L0fPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655220; c=relaxed/simple;
-	bh=5qdHcUMiBjjV0slgqhCaoorQ1hve79ZIW6ZU1uUfGxA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oHPO99y5uvaQpkx4PVfCnTTGmPV4cmzxZNuZ4yqTdtx9hoxZR3tnKoIx5snsC0fCA7WdwPnhs2DJ5OwjWle5Vv6dZsOHyv/QtH1OUv2Yg/gR+hQ6i7X4NFvNdaA8rQdnSlpLUn0DrakQCg0rka3VfeNprlo4PXbItUvs/fK03mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snSTSbom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A2EC4CEF1;
-	Thu, 20 Nov 2025 16:13:39 +0000 (UTC)
+	s=arc-20240116; t=1763655226; c=relaxed/simple;
+	bh=lGAKOcy4iwzFdv/UxG/z8BKybEpOgtVFUCjliEDLUMI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LrNfHqmc4hoREY96pJJK8b6+OLaweuyxBJRwjWYg0tWIwS4cb3h6JQOKscmEmoJDDb5Fr0aYjm6COOCi738h7blAHusDuyiD5351YS/3Xf+qdhDFST6wq0yzoKomJlTrLYdGuD2REE9hjgI+ERGF+lEaCiInsS0g7GqersdiQLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Trr9j9Ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1626C4CEF1;
+	Thu, 20 Nov 2025 16:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763655219;
-	bh=5qdHcUMiBjjV0slgqhCaoorQ1hve79ZIW6ZU1uUfGxA=;
+	s=korg; t=1763655226;
+	bh=lGAKOcy4iwzFdv/UxG/z8BKybEpOgtVFUCjliEDLUMI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=snSTSbomXDHMxSJSIMFP9qaGg7SmcePla3QtWOMfkHXhQdwooaEXJYEa687R4O9KO
-	 a7q9ZcoDcvgekit6SND9exCTKSP/cNDsQ1/77nVu9hP3Cy3UlW0MwtIzO6UMAGDFdS
-	 S7j429Ju8N+p+rWoOTKxzUwk68ilhrFxfhO6mdUE=
-Subject: FAILED: patch "[PATCH] mm/truncate: unmap large folio on split failure" failed to apply to 6.17-stable tree
+	b=Trr9j9AgOUbjkJ+JCxI/XQ48irWjYG8otpWBR13CbHWYXTEP1bBIbIk7mr8Y4A2qI
+	 fRhEHdr3mWv1TTlVxPQHP7Lqz2Fol0GFuszYrcYTw3ttl8IzpP5rlOshSnJVV9HKit
+	 WbwtqsisPgKEoPx9UtuAjLChx5LV/vTGtLs2ItQ4=
+Subject: FAILED: patch "[PATCH] mm/truncate: unmap large folio on split failure" failed to apply to 6.12-stable tree
 To: kas@kernel.org,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,brauner@kernel.org,david@fromorbit.com,david@redhat.com,djwong@kernel.org,hannes@cmpxchg.org,hughd@google.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,mhocko@suse.com,riel@surriel.com,rppt@kernel.org,shakeel.butt@linux.dev,stable@vger.kernel.org,surenb@google.com,vbabka@suse.cz,viro@zeniv.linux.org.uk,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 20 Nov 2025 17:13:37 +0100
-Message-ID: <2025112037-resurface-backlight-da75@gregkh>
+Date: Thu, 20 Nov 2025 17:13:38 +0100
+Message-ID: <2025112038-skipping-reemerge-8dc9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.17-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa04f5b60fda62c98a53a60de3a1e763f11feb41
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112037-resurface-backlight-da75@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112038-skipping-reemerge-8dc9@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
