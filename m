@@ -1,106 +1,81 @@
-Return-Path: <stable+bounces-195243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC02C733DE
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 10:41:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5676DC736E5
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 11:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id C2AD42FE6E
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 09:41:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2D506341C2A
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 10:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D490731AF37;
-	Thu, 20 Nov 2025 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r2M7sCq0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4D92EF64F;
+	Thu, 20 Nov 2025 10:15:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737523126B0;
-	Thu, 20 Nov 2025 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962D6309EED;
+	Thu, 20 Nov 2025 10:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763631620; cv=none; b=jJKt9a2oJVkzIV+yTrCJKKFZ9mvo1mhcysGgeGnhxisiy9H7gZ1h1UGBw9hdkfmbiyPSuF4mE2FfHY7KN/DapUeNb9MLQ52vIlC/sNbffvb8X/YQGfmiNIvID0JzjvDShO1tjvhLUvckiQ720y9WgPf9uNoAdqibY1y5LoIQOZA=
+	t=1763633718; cv=none; b=bmgD4zHM9Tj6nvDU2/AZzzR5Dwo/67CpffqaZC0xD4jnVrt7mUaYi/3zUzkKpBuZxhtO0oCZlHJiaXKtOiqTwxeqtJo+XZqeHA+AWGI9YSJLwBoi+oV69zZFjIKNLx3HliIQirGz6DyS3wGlLwF4A6qdAAn+Ty6Z8tlB2F3FXjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763631620; c=relaxed/simple;
-	bh=XfQswiTVWSyi5w2NUxFcWVIZ/qG15qo2KsoHEKzFk1w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=FUAt12fO1XCL1FKETPqAM0lnzRoaY9FRkJvhrGiuRSewFC7OgkJWdBNhXbaB1ou3r3Gh2i7BJvrEG4OLK5txEisX0MVgCQt6lt4spUqhAsLk/k2GgpdFbNAw20/9nWSstJEnOuN5VqXl29Ff1fMjP1njyaqyQ8oAbO8gGmC4KRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r2M7sCq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05EAC4CEF1;
-	Thu, 20 Nov 2025 09:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763631620;
-	bh=XfQswiTVWSyi5w2NUxFcWVIZ/qG15qo2KsoHEKzFk1w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=r2M7sCq0lqBNGZb8iBGuRTW6I66mR7pviiLGKiL2YmMndmxGx0Inx0bjR+ciYIJ8g
-	 dszLNFcSEWZOteHCc83Ou5W4o60ZKAlh5Nybl42ycB6o7JLxV9E0nzETNULbIAzLh4
-	 rC/ZhYSuKMJGj9G9eVRfHKfwpprbTd+i7ojGpQ4uRZ97fTuOoiVAGdlI/ooLHlee0G
-	 EDKvmEKC/9CwvVwc+RDQQ5TN2erPHXs6U9Hkb83MtV5TDW+cVLk/8rsd+3f4eHGQks
-	 xfIRBQZdlX152dz0pP0sj+CK0BAkcMmfaZ1i5TXEdgjkiPkT+58U/L7MjRCFcHBPdz
-	 Mvnuqp3ZPMUyA==
-From: Mark Brown <broonie@kernel.org>
-To: srini@kernel.org, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alexey.klimov@linaro.org, Ma Ke <make24@iscas.ac.cn>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
- stable@vger.kernel.org
-In-Reply-To: <20251116033716.29369-1-make24@iscas.ac.cn>
-References: <20251116033716.29369-1-make24@iscas.ac.cn>
-Subject: Re: [PATCH] ASoC: codecs: Fix error handling in pm4125 audio codec
- driver
-Message-Id: <176363161689.559933.14528225856640173736.b4-ty@kernel.org>
-Date: Thu, 20 Nov 2025 09:40:16 +0000
+	s=arc-20240116; t=1763633718; c=relaxed/simple;
+	bh=loXVUfGAR8yZeg6xGd/+FmzKfQ1bBsRPt2WRS8k3xvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RmxAN1yp+aBxts0+pWXg3eIkGdQ1L9Nc4SWu4hsNUbAlPC7De0c1Gswc8UQsvFjR1sA+w4qXmiZTBAc3bEH/NDujsCN5zHq2DUIyzIUzNp8F6Zb8IBjBJZ5Rc2fPoz4f5C37s7JrWzoQwSxuE+FryZuuz62Qqgbrxwhn8myfRVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8EB57339;
+	Thu, 20 Nov 2025 02:15:08 -0800 (PST)
+Received: from [10.57.69.158] (unknown [10.57.69.158])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C70F3F740;
+	Thu, 20 Nov 2025 02:15:13 -0800 (PST)
+Message-ID: <86d759a5-9a96-49ff-9f75-8b56e2626d65@arm.com>
+Date: Thu, 20 Nov 2025 10:15:11 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
+ performance estimation' causes a regression
+To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yu-Che Cheng <giver@google.com>, Tomasz Figa <tfiga@chromium.org>,
+ stable@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lukasz Luba <lukasz.luba@arm.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>
+References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a6db3
 
-On Sun, 16 Nov 2025 11:37:16 +0800, Ma Ke wrote:
-> pm4125_bind() acquires references through pm4125_sdw_device_get() but
-> fails to release them in error paths and during normal unbind
-> operations. This could result in reference count leaks, preventing
-> proper cleanup and potentially causing resource exhaustion over
-> multiple bind/unbind cycles.
+On 11/20/25 04:45, Sergey Senozhatsky wrote:
+> Hi,
 > 
-> Calling path: pm4125_sdw_device_get() -> bus_find_device_by_of_node()
-> -> bus_find_device() -> get_device.
+> We are observing a performance regression on one of our arm64 boards.
+> We tracked it down to the linux-6.6.y commit ada8d7fa0ad4 ("sched/cpufreq:
+> Rework schedutil governor performance estimation").
 > 
-> [...]
+> UI speedometer benchmark:
+> w/commit:	395  +/-38
+> w/o commit:	439  +/-14
+> 
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: codecs: Fix error handling in pm4125 audio codec driver
-      commit: 2196e8172bee2002e9baaa0d02b2f9f2dd213949
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Hi Sergey,
+Would be nice to get some details. What board? What do the OPPs look like?
+Does this system use uclamp during the benchmark? How?
+Given how large the stddev given by speedometer (version 3?) itself is, can we get the
+stats of a few runs?
+Maybe traces of cpu_frequency for both w/ and w/o?
 
