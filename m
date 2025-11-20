@@ -1,117 +1,125 @@
-Return-Path: <stable+bounces-195222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D204C72249
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 05:11:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC12BC72271
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 05:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5EE5334DD77
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 04:11:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 258EE2A127
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 04:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5192E8B76;
-	Thu, 20 Nov 2025 04:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E780E2D24BF;
+	Thu, 20 Nov 2025 04:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2Imk8F6"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="R/llkZ8i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388BE2264A9;
-	Thu, 20 Nov 2025 04:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188D62C0F73;
+	Thu, 20 Nov 2025 04:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763611855; cv=none; b=QdPvDor/KSN+y/qvucwHLLLbDh4vPy5+mw1kFhLUAlv0UM8kmYuNhxvpWgaWpcYbmAjHA/MyKPJQd+6zJZwxpTtqKKlIrgNRudeBxjj7hVrV4+yUDijiHVppVjz0C+xZd3hpr6K7XTKleCPA7rVpftkep9DS7SAGeGJXkArElB0=
+	t=1763612204; cv=none; b=iSXbjbfET2gazysACW7tf4zG0gbEZm/quJRRmCLPvDRg7IRQP0Ff0jK31JqZQpY65WpGhTrI/ExGw5XVw7EIuSDuiRB2/d37A5kR4vRJLuGy2sYEXXOvaCP5dt5ul+eZzmfpPtmG+roo97cmBir5qEz5bO4u8wRhDgbj6N1pMj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763611855; c=relaxed/simple;
-	bh=nNkw/HHMttissex3RT39Yy/FGFO9F7e8C5EUg9Ax/Uo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UGYSkAux4H+6jWplV59kmC2YAH8cvvoHFbjvrgpqb+nZcAvlPHJRUVQWrQpYHYM6XRXidNcyzKox0HK1z/i8S9WIiu4Q1n7p4Qpf3dgKqEp9vqDDrIesZQ/LR8a97KF1WbkeVXgmHMMw8WklEjI6wGM4ApaZyPfJ1o9m3/unE+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2Imk8F6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C5AC4CEF1;
-	Thu, 20 Nov 2025 04:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763611854;
-	bh=nNkw/HHMttissex3RT39Yy/FGFO9F7e8C5EUg9Ax/Uo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=F2Imk8F6z3CsyoKSW+n4YscqlO9KPxGSFxWk/ATxEXCOzepoCp2P3nhDdJZLG7hRh
-	 kX8JFXweXwbmiweAJL6YC6HJBezQt5V6A+U6bS4JRLzSO38sUHnuDkZUyqPkm1Vbxc
-	 IxDZ6/gZSXdovY8mUITzvVEz7stNDZLuauXFPhRmfL6GYMEUyE2x2SvACYTFvA/lik
-	 BMl9IXqNtSuMcWZL6fjMwpntSTU0bfIArxoVhJefwlfMf2o4Fw98xR7Iz7cv5z7vB9
-	 uN9hg7mAlWPNcek1zzGhsbcNzOUMf8BiCRdEeZsPP4SbEsS9zAiblh7Lzur0OoKB72
-	 c0p/djP4gL/Ww==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7145439EF974;
-	Thu, 20 Nov 2025 04:10:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1763612204; c=relaxed/simple;
+	bh=2+R7WWApY8TWGd2c9bP1RaQKspmfGyy6mhjQCc3vCzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fdhM8Rukqsy5Mi2wUvLGsUFcp3hd4k4Kbs5imf3FiHasYCCG1/IVShMBz0j5WMuV31a1ZAtmkdRlfatxoXN4Oqge5WDtlR70nzLdf/USx8PYW+HAtCJQswZ1sMbBT4GIeZoh0Th1/C61UHo9N9zHaFxzPy3Dp0uvo0lIYKIx2nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=R/llkZ8i; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK1NVSG013261;
+	Thu, 20 Nov 2025 04:16:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=uKJDSIG1l3qAAwUwQnYUyhPgHI+AfOXiCycqQ8h9e7Q=; b=
+	R/llkZ8irJLEGQlcnD63IC/un3n2XfOPnXXRgd+AEXIOU7rGf1ylkjLEffo31tPw
+	988T2FqvV0AjjpQaw6rRi9HQReG1IXWRyQRyvEravj2ayQNTBUWKKobZKw5wej1D
+	WCahd2+Q5oL/v3iD7kxaM2IhXLuXAUxdQcarDDpjzXl71hCpT028MYbmvohy1X94
+	PSdK10EvVy9++b7dGxmzNu/AmrLEL0fCBOoYhsvlvyD5hfMsm6Nf69K20chyq4tg
+	t0wF+3nZuT+CwlmxyqtRF4SlBYCzymJG8PsW/1bxSL9xXcG/hrXwE3n8PM/VqpQ0
+	GlkSO8+5Xuo60U6lziJtqA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aejbur8wx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 04:16:37 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK2RGMq007200;
+	Thu, 20 Nov 2025 04:16:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefybh4dk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 04:16:36 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AK4GKPr012546;
+	Thu, 20 Nov 2025 04:16:35 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4aefybh471-14;
+	Thu, 20 Nov 2025 04:16:35 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        moonafterrain@outlook.com
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>
+Subject: Re: [PATCH] scsi: aic94xx: fix use-after-free in device removal path
+Date: Wed, 19 Nov 2025 23:16:03 -0500
+Message-ID: <176357169020.3229299.14175005699966083724.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
+References: <ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 00/11] mptcp: misc fixes for v6.18-rc7
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176361182026.1072863.12495916598448618920.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Nov 2025 04:10:20 +0000
-References: 
- <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-0-806d3781c95f@kernel.org>
-In-Reply-To: 
- <20251118-net-mptcp-misc-fixes-6-18-rc6-v1-0-806d3781c95f@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, yangang@kylinos.cn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-20_01,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=487 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511200020
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfXwy6xlBWwn3VL
+ ixw5f4RTVVF9sRRFthxugKIfxTN541zqhizi0sG9zhlfzeoLbx8KWDTKRpgiHCkdS0dL0+CQbC6
+ 2624GR3D65cLDM8BHa6iK6zynPRSg9tG/qV2RD0UFe33ai2ysL2zUJOHNr9jzwqWudtiXRpEXrM
+ y3zl6lbxi7vsT5hggoiQfZtHEIIwrvtj9DIm7C0eQyN7oM2SNvaenGTGvv11rffCYZ/K4VS1t/R
+ n7sIxkx5A5azblSO8jdtIn035zhq8wSJqlsJb6ohMBWi+EhiMXbS7fuIqZ4mvDcCkx8sg7vBhSj
+ 5brvu1TEo+kKlzWdUeur/U1bOamsKqMd79IgiRYR9Di8cjUMQF7RxP/CZMy88oos7OwWbflhHbD
+ 4aCv6BUb9Je/ft+BU9Q+l1BgV+9oUg==
+X-Proofpoint-GUID: Yse-u4KPXFgJEaPX_tg-VI0OeH2lR45M
+X-Proofpoint-ORIG-GUID: Yse-u4KPXFgJEaPX_tg-VI0OeH2lR45M
+X-Authority-Analysis: v=2.4 cv=Rdydyltv c=1 sm=1 tr=0 ts=691e9625 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=-IL5odScx_SrRfHQifgA:9 a=QEXdDO2ut3YA:10
 
-Hello:
+On Wed, 29 Oct 2025 00:29:04 +0800, moonafterrain@outlook.com wrote:
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 18 Nov 2025 08:20:18 +0100 you wrote:
-> Here are various unrelated fixes:
+> The asd_pci_remove() function fails to synchronize with pending tasklets
+> before freeing the asd_ha structure, leading to a potential use-after-free
+> vulnerability.
 > 
-> - Patch 1: Fix window space computation for fallback connections which
->   can affect ACK generation. A fix for v5.11.
+> When a device removal is triggered (via hot-unplug or module unload), race condition can occur.
 > 
-> - Patch 2: Avoid unneeded subflow-level drops due to unsynced received
->   window. A fix for v5.11.
+> The fix adds tasklet_kill() before freeing the asd_ha structure, ensuring
+> all scheduled tasklets complete before cleanup proceeds.
 > 
 > [...]
 
-Here is the summary with links:
-  - [net,01/11] mptcp: fix ack generation for fallback msk
-    https://git.kernel.org/netdev/net/c/5e15395f6d9e
-  - [net,02/11] mptcp: avoid unneeded subflow-level drops
-    https://git.kernel.org/netdev/net/c/4f102d747cad
-  - [net,03/11] mptcp: fix premature close in case of fallback
-    https://git.kernel.org/netdev/net/c/17393fa7b708
-  - [net,04/11] mptcp: do not fallback when OoO is present
-    https://git.kernel.org/netdev/net/c/1bba3f219c5e
-  - [net,05/11] mptcp: decouple mptcp fastclose from tcp close
-    https://git.kernel.org/netdev/net/c/fff0c8799667
-  - [net,06/11] mptcp: fix duplicate reset on fastclose
-    https://git.kernel.org/netdev/net/c/ae155060247b
-  - [net,07/11] selftests: mptcp: join: fastclose: remove flaky marks
-    https://git.kernel.org/netdev/net/c/efff6cd53ac5
-  - [net,08/11] selftests: mptcp: join: endpoints: longer timeout
-    https://git.kernel.org/netdev/net/c/fb13c6bb810c
-  - [net,09/11] selftests: mptcp: join: userspace: longer timeout
-    https://git.kernel.org/netdev/net/c/0e4ec14dc1ee
-  - [net,10/11] mptcp: fix address removal logic in mptcp_pm_nl_rm_addr
-    https://git.kernel.org/netdev/net/c/92e239e36d60
-  - [net,11/11] selftests: mptcp: add a check for 'add_addr_accepted'
-    https://git.kernel.org/netdev/net/c/0eee0fdf9b7b
+Applied to 6.19/scsi-queue, thanks!
 
-You are awesome, thank you!
+[1/1] scsi: aic94xx: fix use-after-free in device removal path
+      https://git.kernel.org/mkp/scsi/c/f6ab594672d4
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Martin K. Petersen
 
