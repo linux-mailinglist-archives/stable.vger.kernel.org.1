@@ -1,187 +1,197 @@
-Return-Path: <stable+bounces-195207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F44C717DB
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 01:03:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4716C717DE
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 01:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 0BB992967F
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 00:03:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 36B5D4E2A48
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 00:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F97D3597B;
-	Thu, 20 Nov 2025 00:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C414A3C;
+	Thu, 20 Nov 2025 00:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cb9hoHzh"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rvV3iF7X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010060.outbound.protection.outlook.com [40.93.198.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70395433AD
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 00:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763596996; cv=none; b=qdgv5rJkZxR1nEcwulCtvu5PJm3XK31ZVhxZTS0QPiUk7zypACjJf9dI9BOzIovQty2sdQYvL7TI5/JMWV0K0pOILbJQp+stkXEBOu/alXMRpnkpJLsnskVGeUqbpjQwKUS+l+feIvAu6bPe9uJyFFjrT4bmrmhg95PXO6MLS3o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763596996; c=relaxed/simple;
-	bh=d/oLv0C3UdluSdiB49o+78hCRD1kOlM34qb1o0Gpch8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MosvZ2ZVirwWpmaDoLwKJQE7fpfknckQlLOX5+GTNLlFs9zuucJpmHobou3RZdUBfmwlGbfxYqaSS7RCjwNKLxbTekbmIyh8ZywMvoRlocKtE1ewTeME7gJQtbsIiaV5JmcVxHHhL00SZKdo9eUMP9/0bvmLRnnNuS/+8oYzqdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cb9hoHzh; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b7277324054so49734966b.0
-        for <stable@vger.kernel.org>; Wed, 19 Nov 2025 16:03:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763596993; x=1764201793; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9t+tZGe9uPMEL6NC2FsGJb7IY/g6VnOK/izDWaDIkV8=;
-        b=cb9hoHzh0HLWGBLuWMUlIty+PrbKjx+7QQK63zMuKc5TOzsqh6vMtuZMHKe0w5bt65
-         so84bI7i4bIBnAQhbBqm2RoXVfLNlt9syADNFOROpii7C/2A1G5A7H+atGXC6ZmYzIyg
-         TaPOx7gbXQlJddLGAkszZUEijfdWBAbGJK7hoKjyECouQKZb0bFHIDs1pff+eo5zKn7v
-         lqk1/qiPFp8i7EjnB+SWtiHyX/vfkevTqYj6qX8uXHn8P8SXudlauT+vkiO8zJ2aHUyO
-         kIgcl/FLVjCKVh6aDNYhRyxcZt5b4u4rppv31+2pfyLNFuYOHHXJruXVAWlUKrP2W+tW
-         ENjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763596993; x=1764201793;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9t+tZGe9uPMEL6NC2FsGJb7IY/g6VnOK/izDWaDIkV8=;
-        b=HvvXseFX3Qk4bd+blHS8tFaPJB12BXggTxBq/dDpMdhQTggP1Dgtp7kh1tT+zVIVrt
-         nNOAUL37jxEaFn4tfXCM4+cXihawF7BECf2Bc7umcXf/cEqpsFDqQfNSBVPDI/TuPQvY
-         KrIbHreDmkTvxJ5rig/UeTyDmxjhmvo+VWPtER56HGSIA8dzdh+xOnFg1N60aPRpXB+m
-         WOfAH3NC/OvxZFJ5OmxFE++mFDLF9MMIGgm03rbD/0OsNjVUFEcc8dUkiaITcMFzEA7R
-         QwhVH3q4XyL+sowMas+ZQiDNpIWkks0oep4e1+hNf++y0mLGuYHDY8z0uo86FcRTBRrM
-         9WVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVnf0r50lfWDmpvIqWZddz4eRAKsH9B4cpQII/UoUFJoTHvT/00VAuWgtg714+iiQP9nJu8QlA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYM0OCvZ3DyOXiLTspjcN9oufKJv7K8E7y5fvwfhZq+vG7bhuL
-	xfHRwuhRF6+7SGu6dFblpz7jk1VVNpMJD3o5iTC/i1Bcqq6/kQBwVcrh
-X-Gm-Gg: ASbGnctzW0RAGwIqvzGPYSxYgaGHtfj+TVFKlvyzqq16qdHrgxNL2gTowvaNRPh17Vm
-	zj8D9Q1Jo4cpEVAJY5NVs7kpJYKkCT4if7MkDVV0pwTngnOJxtwa/zlldEeEM06cYdFxm/N4PrH
-	z1LRSdJJ+RsG1fCBLTa6f38OWDJUbMb49/jomuvlwE9JR1mu0+3kEi+ITwd1PUDND3AQcwbvVJV
-	POFuo44wsz9txME4nr2uF3d57ZmWmR9YPHzAmi/3n1NSySLUXIIJqpwph4v8OoyVcEgcmioX3i8
-	UmZADSfehQBIYTShrYDpPZIc98mWyxJAOQMQCom7MPL+cp70BNF1l7teZLWZ8EZcJlqKQxd6/GM
-	pYH7ObVGSb2u8CAQIzLo61LLO4UQA/r+IqJNiaXy3bNC9F8dyDKThuSIfZ7UZGxNpH35TQTZR0t
-	LN7d9nbwwx/NLrDHQyGubosUvG
-X-Google-Smtp-Source: AGHT+IHT2hZSu74IUohA1zPTQeoQ1iTPEo0hunoIYzaiahhr9utAe+nh50zUj9sCroMbMDw+uYE68g==
-X-Received: by 2002:a17:906:ee8d:b0:b73:398c:c5a7 with SMTP id a640c23a62f3a-b7655457881mr99890766b.41.1763596992696;
-        Wed, 19 Nov 2025 16:03:12 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7655050d05sm60811066b.70.2025.11.19.16.03.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 19 Nov 2025 16:03:12 -0800 (PST)
-Date: Thu, 20 Nov 2025 00:03:12 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277E2173
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 00:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763597015; cv=fail; b=qKjDtcazECQIHNF+OX0BWjQIBQK2Ss0oDBnHkhGeyjH4FnD5jBer7Ik3/mE5XGRQPBsOrPKMBWBorc+KfZheWgxU5KUrcENVSUi6RmasduVkAsD4jgxBggIwCO2v+WmDJAXIEA0tm4jxsyi4OP/PNmWFDmGm0cGVRqjaRRxgdZw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763597015; c=relaxed/simple;
+	bh=7TufU24aQulVjvlgNNb5PCeX/7nPz2q2xM4NTtFncXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aJeFQvetOkrljeqoTupW0/i+8RBXhp0CZ9CnqYPhoqAq277DlZu7CB0v48HlRqEESjcyJGWu9MvIT7p4+sk0FIpD2HYPCMV5jMyz+qPUZU0N8dm1EUbHgaOAtfRRsvPsc+CUIZxa14Z2iiCFxoUf9s9f/Q+0krP82WczDkIVlew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rvV3iF7X; arc=fail smtp.client-ip=40.93.198.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GtSbu0i/N/9Z5Au3n3WKLmZJyG21TspoEXuTmpdn/B+hIHnfH2PAfX6JS4n/rh96ejnFRmOgURffcFJGaYfuqve2JeyVSrZyzGTpQzGSJ54lwRoO1P7h51Tq7ldVxfOBh3qJSPjWl/uU2u/tq/t+TFt8/iCUcf0280kTfsyNVL6AmF9evJqzRGF/JTiWskJd30mflXZ090KcpuaY/Qkjkon73G8RuVmg4GMuxApv9Kpx5O+8mC6ukBwyneaBvepUs6c36fxos9zzMzabcdpwyY3z2bSCbqJzEv/lWLVbrm73lVGz8WjXXCrFfleXVohG0Q6eUIyu+rJqV5kQ6KJbVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SxL6wgBQi95hsi9NwyQ5dm3ZStjH3ctN395ACBiAeAQ=;
+ b=umjMPUKlxEk489dspDVHB/r0aR4YHP39d2rHo8biwBp/ZYtfnXsYXZYbL8dQ4eIllvZSgJc4iIPibHU6lA2nPclHHSosj/3KJ+pZgDqaXq6Pyo3d9g9+RpRToxVuVtNW29Sk2jLijpxeG+2f7fzcJPYPTbytjFJhOQkXNjvWczYZ9+CcowSA4XQT457r+6m0faJQygAPMGfv4+IiwbpSoJfa+pGE5j7O+9UYtgmrodr7EaH/UkoJqC6Y0oYEdKUJg8cKzLF7monupESd+FP4QRWHcpHRvGJEr4DGMJHcvLA9T5iy5IzwZellrcX1UyA3xZjVDwKB1zmBYgpHIaQrsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SxL6wgBQi95hsi9NwyQ5dm3ZStjH3ctN395ACBiAeAQ=;
+ b=rvV3iF7XFmBk5bsqN7OMmytqdB5M7b1ugZAJAbFoaSoHG7kHjbe8+RjZ3bN+R2JZKvfTqz+AZ+/HV4ssoOXXrlNiNoSb3p5QmJci9eO/GGZze7w33RhByt1uAJ+gqOl8yllABKzZr4M8T77K2+EH6DLeX7/qXZ1eoqBA06n4znvs7JXIkyyvXWR5COlvWArDhflvJN9THdqrc50jnlwwqeUO+GrVJxxcFiHFZzuOuS4rgovuusvWSsf7AOwwNexB8mlSWLYINMiV41FkCKeBk4o/C4M3fpYlglTRqrhZqAvWU1B/nQMGBJSYm87UJ1HK7474Npw5eCgLfz+aRV9O0A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ BL1PR12MB5828.namprd12.prod.outlook.com (2603:10b6:208:397::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
+ 2025 00:03:30 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
+ 00:03:30 +0000
+From: Zi Yan <ziy@nvidia.com>
 To: Wei Yang <richard.weiyang@gmail.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, linux-mm@kvack.org, stable@vger.kernel.org
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, linux-mm@kvack.org,
+ stable@vger.kernel.org
 Subject: Re: [Patch v2] mm/huge_memory: fix NULL pointer deference when
  splitting folio
-Message-ID: <20251120000312.xasxdzmmztvp4spa@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
+Date: Wed, 19 Nov 2025 19:03:26 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <F60955F7-CD03-4989-B570-061281DECCD2@nvidia.com>
+In-Reply-To: <20251119235302.24773-1-richard.weiyang@gmail.com>
 References: <20251119235302.24773-1-richard.weiyang@gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: BLAPR03CA0161.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::8) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251119235302.24773-1-richard.weiyang@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|BL1PR12MB5828:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02d857c9-f987-4f2f-08a4-08de27c83d16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?TSvpBa1mXNBICbCkDnmiyD40xWbxPq9Cl7+iNwigxzf0EsRISkS+Hpj8sbmT?=
+ =?us-ascii?Q?x9ZpxxZbpbBgd8q3JbaodixM6aOpMwYoLL+eyjxNjGo5e+VK9k86QOq3kSwx?=
+ =?us-ascii?Q?IKPRYtQx1YbG0D9MymTBp4RVEJyFfCgaBtrUNLCGUYIkZV2WIK/vtc1Qj9r4?=
+ =?us-ascii?Q?txdUjf4XmMQ1zG1tRbugocKF1Vnv6+mhWqJ5Ku5UyhsF0mwsjTsYjcTVx8+b?=
+ =?us-ascii?Q?soQtaHqHtJkBGGAkncGotvd5cptSFSWMPI17kQKdKPIUCds7Hjl2Ge84aWWR?=
+ =?us-ascii?Q?CgAwwDR+3/6TPUokTVcHM0IGmlSqe2Bf+KyKu6ELSIIrMqDSYHBW+02FhE9p?=
+ =?us-ascii?Q?MjSgCNQmh3vFG/CfuLV74DJRTJx+voL1uCFqjj42gZgSEys2fZJByNddMKt4?=
+ =?us-ascii?Q?rjP/LNrxgRUnTxwLmiAF4bgPO+yz8NmTy7fzru1cr8ymTUUV6dMT6LXu+uoO?=
+ =?us-ascii?Q?qYAkXoQeI2IIM8XrHxGRW6Qliwcl1VjkjwfbNZIf7F2oS4GLXd8dFr6RTRWo?=
+ =?us-ascii?Q?Z3Onngb/7CfvzSJzv43aUKDR3nymumgbYaUpaV1AQO/MR1T4CPFvMXnkKddp?=
+ =?us-ascii?Q?JG9oltCXZffRUecxwP31HhVor6yZmyrw5Gwp0tAhPK0Q1hNgcvmy1prmsmuk?=
+ =?us-ascii?Q?PiilWOLkNcsWqOfNiyaBjQN+jqvX+FKvg7R6IESilbpoErvcYMaYfopwYsvV?=
+ =?us-ascii?Q?Lnai4ua2MMnQ5z+tPl3xHfBVIPhnp+Ersw5aNkHvaC4/O1xw7QKXoA9peG2o?=
+ =?us-ascii?Q?UbjNvFisPOpUJTsVg+MuKicW/BhzzeDE/IExFYMR+MUwBrO+5wNyDXaxzRio?=
+ =?us-ascii?Q?AbRrjqdGPY/CLgvRnrFOvLsRLex/N/p2CvYoX1M29WJB/fVNkSL7rx8cL03y?=
+ =?us-ascii?Q?1cBmPzWItWAPxWcHl5QVDUGhmWL4utKXAOqfzXKlOGD9+YcA0UFnj44rCP6f?=
+ =?us-ascii?Q?JxSt+tIuUxrBhwqdqye0+d3t6v3f621H0Zn2lA/4fjzZcMBFMlikLeK1DLuD?=
+ =?us-ascii?Q?r1dXsWVRNkOVzC/pKK8DPfvWZmwnrcj1/ysyYdLtH7nxd9VoHUY3zPAh7c50?=
+ =?us-ascii?Q?Q4BTajZWXj1ly3pLqnwo0+fqVDU62Zj9FdOHSJo9d7aMmeNemFjhG30TVVEe?=
+ =?us-ascii?Q?6/oxQK8OPRkhpLPegOt7IQQQAkZ5EKciOH+p8ACwNMbABwuTSBGl+NUON4eT?=
+ =?us-ascii?Q?zKPyIPruCy48WcCPnAQ58yduw/IEZ/zYhmV3O339FZS3PHatOfR3XWasmVRO?=
+ =?us-ascii?Q?reycE3kJnP9yS3eJJsbZQzRvLJMDRWIK5lJQfd3LHJt7RvfDeYp47Qn+SF3K?=
+ =?us-ascii?Q?RSARLJNZUzFHW8V/UvbJxyjGXihZN62UysKgHV0Ww4M/QFgS1OypVpT+N+H5?=
+ =?us-ascii?Q?S29yzHp075uv331lI+AGRiMME4AgveiXyVnyHbOvWmLMMy6SKl2dneW6SYM2?=
+ =?us-ascii?Q?uEN4ARgb0/XsMyjKRSxw5g0lNgKPSO/j?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?x5gRQjjtbLUQYeN+kcB4HMPJMJhsB87SRgSF9DG5YKkKxeb/XJuR7KND/sII?=
+ =?us-ascii?Q?7Kiw9nlaUa+FFyNmTQac90qn6hbWjvuON0UQbhSVE3OqYS7XtKbniBNUS6AW?=
+ =?us-ascii?Q?sXt6xPjQXh95stNuFKHtdQ5YFKuKJP7MUhIJJTLBSm7OqiDTMpAjKz0fYH9Y?=
+ =?us-ascii?Q?8njDoBV/8iSYIoFAoStP1g/oyAd2UFVunmh1fGjGZshxv2h5GgKApWYkQX48?=
+ =?us-ascii?Q?LorZE50RllCJiFZyA9CRc/xXwxyfytK+3kQZsuQflMrz1u0k63Jl9DyqqTHQ?=
+ =?us-ascii?Q?ubprRn0FezB09WSQeVCdAd8wMwZ+wS4vsiR0gOPsbCeX3v2OrI/WTbVdk3aM?=
+ =?us-ascii?Q?zzPjrt+8dJqHaMGkv3mhFoKD/I722LttPpbzMzXcz4SV0pqBYVY6fdBkLY+/?=
+ =?us-ascii?Q?0mEsJRuGl6giuQh2HFld4KcIutsX5Pw796mIWsx6+TCjMZx7nSSYUqs2ntK1?=
+ =?us-ascii?Q?W6IqFzCTOvoi/bKEr0VOEJm8WspIB1berJxNF7dz6gXFNZyJhyorneTLCsXY?=
+ =?us-ascii?Q?/EseZK9mWABLu0+cQrrYKQVlGQUYCzYcTG+ZceP0fOSy0qexVIV+o5j3xkxl?=
+ =?us-ascii?Q?FsjgS0zLfnlrPktlhJLTzRrhQjkMqcAzSYiQr/hhU5DZLtA99KGWCHL+yfOj?=
+ =?us-ascii?Q?WvC5sSd8fUO0JbYChNoYQ81oYmiIEWVlz+npo4mqPnIc/V7cpwZ8+wzuJT0X?=
+ =?us-ascii?Q?pl2IYMx3RxsVVPzghEYNRCTGkDIWKNn0E8BxPdOxZZZ0WSRuItb90BNPqc9T?=
+ =?us-ascii?Q?51LzVDRZITfwVvViZkhsorTcKwK8SBK/fkZuLoh5kJogMN2fOAC+f+3jOT1t?=
+ =?us-ascii?Q?BzP8aZsHsgk+ZOsJSyFTlpeD/INrhTOGv7fP5PSWXDL8cqxN6An2SNfczDuB?=
+ =?us-ascii?Q?2tzOX+/H+EOhcfsUD61JD5PqoBk9wa00sTEDyPPorhwaQjH/GCXKtx9X5AXZ?=
+ =?us-ascii?Q?C3zq+IZPo08l+D2VPkwvbfe/omd8rVVxeRuZwhqH9ypoBJMa/yYN6SuBAKeF?=
+ =?us-ascii?Q?gdgifDdrpVTRkQQy9F4tzhsioNovzcKVfO/GD6M4yGLDQ7BFc0NxXdd3KbpR?=
+ =?us-ascii?Q?t53FDjOIutd64d8qUQjGjj3g19FHra/i9Jcl2RKXr3oK8e50i9HPLD+tZEea?=
+ =?us-ascii?Q?Iek2pserPwY4pBEP8uMrPLS2LPyLGdBdwKOeTxHEZL/iJJ///YYamvqwMtRH?=
+ =?us-ascii?Q?GdON4XvIBSfepS15vVKHudAn2Jpy82GHa1Cz5SIDrhgxhx9pj6RveTekY7HC?=
+ =?us-ascii?Q?tD/bvCp9wqhnO7TLnzekXlxeWt0tRDdUiqKJtTk5vMUfu1pyi1Hig9LuYpmH?=
+ =?us-ascii?Q?DzCwZuSm6dEi7CHCkVLSL2YMMUbJUFPnQ83rbOIfGyiRHEUykLVIuembMzfs?=
+ =?us-ascii?Q?de2j88UWI+82zl3Y3LsgMw0HodlRNqb36GdiOj0XCqCjAS+rGKxvarew4IdI?=
+ =?us-ascii?Q?Xm9oLvZnfjhD7dnSxc8cSAZgw+x/b06SK1Hzr2ErZVaAmnxP1NzpheNa6uH7?=
+ =?us-ascii?Q?LBI9fD2a9/I4Q+xGWZCafmykfgjCCPypD9NdTgln62UWX4dejWCrF7g+4Vfw?=
+ =?us-ascii?Q?OydzvsXnzaDD3zhFnD94OMh1SuzieiKhnYgzXLiR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02d857c9-f987-4f2f-08a4-08de27c83d16
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 00:03:30.6153
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cq9HzQ5KYEZhqTqTd4Kl2LOvYUOgfL+k+Tt4zHIP+bv3lYFKPE1C406g6FGRLZEf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5828
 
-On Wed, Nov 19, 2025 at 11:53:02PM +0000, Wei Yang wrote:
->Commit c010d47f107f ("mm: thp: split huge page to any lower order
->pages") introduced an early check on the folio's order via
->mapping->flags before proceeding with the split work.
->
->This check introduced a bug: for shmem folios in the swap cache and
->truncated folios, the mapping pointer can be NULL. Accessing
->mapping->flags in this state leads directly to a NULL pointer
->dereference.
->
->This commit fixes the issue by moving the check for mapping != NULL
->before any attempt to access mapping->flags.
->
->Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
->Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->Cc: Zi Yan <ziy@nvidia.com>
->Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->Cc: <stable@vger.kernel.org>
->
->---
->This patch is based on current mm-new, latest commit:
->
->    febb34c02328 dt-bindings: riscv: Add Svrsw60t59b extension description
->
->v2:
->  * just move folio->mapping ahead
->---
-> mm/huge_memory.c | 22 ++++++++++------------
-> 1 file changed, 10 insertions(+), 12 deletions(-)
->
->diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->index efea42d68157..4e9e920f306d 100644
->--- a/mm/huge_memory.c
->+++ b/mm/huge_memory.c
->@@ -3929,6 +3929,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> 	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
-> 		return -EINVAL;
-> 
->+	/*
->+	 * Folios that just got truncated cannot get split. Signal to the
->+	 * caller that there was a race.
->+	 *
->+	 * TODO: this will also currently refuse shmem folios that are in the
->+	 * swapcache.
->+	 */
->+	if (!is_anon && !folio->mapping)
->+		return -EBUSY;
->+
+On 19 Nov 2025, at 18:53, Wei Yang wrote:
 
-This one would have a conflict on direct cherry-pick to current master and
-mm-stable.
+> Commit c010d47f107f ("mm: thp: split huge page to any lower order
+> pages") introduced an early check on the folio's order via
+> mapping->flags before proceeding with the split work.
+>
+> This check introduced a bug: for shmem folios in the swap cache and
+> truncated folios, the mapping pointer can be NULL. Accessing
+> mapping->flags in this state leads directly to a NULL pointer
+> dereference.
+>
+> This commit fixes the issue by moving the check for mapping != NULL
+> before any attempt to access mapping->flags.
+>
+> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: <stable@vger.kernel.org>
+>
+> ---
+> This patch is based on current mm-new, latest commit:
+>
+>     febb34c02328 dt-bindings: riscv: Add Svrsw60t59b extension description
+>
+> v2:
+>   * just move folio->mapping ahead
+> ---
+>  mm/huge_memory.c | 22 ++++++++++------------
+>  1 file changed, 10 insertions(+), 12 deletions(-)
+>
 
-But if I move this code before (folio != page_folio(split_at) ...), it could
-be apply to mm-new and master/mm-stable smoothly.
+Thanks. Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Not sure whether this could make Andrew's life easier.
-
-> 	if (new_order >= old_order)
-> 		return -EINVAL;
-> 
->@@ -3965,18 +3975,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> 		gfp_t gfp;
-> 
-> 		mapping = folio->mapping;
->-
->-		/* Truncated ? */
->-		/*
->-		 * TODO: add support for large shmem folio in swap cache.
->-		 * When shmem is in swap cache, mapping is NULL and
->-		 * folio_test_swapcache() is true.
->-		 */
->-		if (!mapping) {
->-			ret = -EBUSY;
->-			goto out;
->-		}
->-
-> 		min_order = mapping_min_folio_order(folio->mapping);
-> 		if (new_order < min_order) {
-> 			ret = -EINVAL;
->-- 
->2.34.1
-
--- 
-Wei Yang
-Help you, Help me
+Best Regards,
+Yan, Zi
 
