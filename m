@@ -1,100 +1,105 @@
-Return-Path: <stable+bounces-195393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE01EC75F63
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:46:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF70C75F9C
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 91C2A35AAA4
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 18:45:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 59A8534C9C5
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 18:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471631DC1AB;
-	Thu, 20 Nov 2025 18:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AED23F40C;
+	Thu, 20 Nov 2025 18:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S9KYRaH5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLpIh82A"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DCC1A0BF3
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 18:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6A41DA62E;
+	Thu, 20 Nov 2025 18:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763664328; cv=none; b=eodNTbEmKdi2moLCGSDbXDhgNDT56mAkwvOvce2C0tAh0jikncSAbFx/cpZWoTg5AfdTNBoJEztmtlTPF/ujwKOH5h/YywT4YFf9qPBOB2Jk4/B4AwX8hs29/tdeDbK5ejg5C8oNZzYYjQtpsAljuIwdl/0Oh0LUjrWhdbfM2oY=
+	t=1763664642; cv=none; b=mYWtEB0gyHOH3ADKjfniiNspMgSXF9R14Icr3gRyD/bemLvD5z3SlMJGBWNX+zlEKNaKoqKU/akDHnmeH0pbKhDPoku9yYcQVoYZM5Dnncn9lMfi18JrcgozjaAvQBYhEs4aaw9UbmUPLMDCbMiGE2VJEITiXCMxpnFaJMCduA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763664328; c=relaxed/simple;
-	bh=GpPHegU4ODiufIEOiuRo82W/PMuQuwZ//BKOmjfQDPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DUAffqbSUHEIWVIePWQFOhd+620tImdkfizmAqrul3TiB2YPahZTo1Ow7Q+5cLyCh8LPuaGrWXY1QeHiAQN7CAzGYIK2+pQxNUq7C94WswLAeA5LIUkPHUTd+qBW5jVesODpUx8yzizfciyEdSxQC3vLXf4/3DTN21HNB9Ffo04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S9KYRaH5; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763664325; x=1795200325;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=GpPHegU4ODiufIEOiuRo82W/PMuQuwZ//BKOmjfQDPo=;
-  b=S9KYRaH5XUuOSIlu4ouw1+ekiBlOk9oKcuptGih7a9HymZ5TmUKCMEBa
-   yIM/wsMsAiGpMt1OtWHKFAfmDO1HOG1FdJKmxNOL0qnQY5mDKZ4uHtv3a
-   6Fhf1yj5ZNSREZF6Fek5Y2t5RgCn47lLrYcYiSYpqTFY9NZuZX3QdLqlc
-   ygappAZP+QX9u8jS9gU9jF4M9SiMFJqux1WW95odvg3aNrVVhaGEUEomQ
-   3+8jVjn3vhN080NKbzRmr2dNtvMJt9AZCFKwjwiP0bmBrnfz1XvN19e9F
-   WFuvR8NVTOicnaRaxAEhwBoklqe1FeObOMghvwFMtAqQZxByC5uEvBPJz
-   Q==;
-X-CSE-ConnectionGUID: GuIP+Z1TQwCxv9uOIwKNMA==
-X-CSE-MsgGUID: eRzSnePARVypKEtoTCv4QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="88400683"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="88400683"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 10:44:57 -0800
-X-CSE-ConnectionGUID: vfKjZCW2TNOUc70+gVqjQA==
-X-CSE-MsgGUID: r/6xQDW6QYanTrnqPDrqKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="191477294"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 20 Nov 2025 10:44:55 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vM9eH-0004Od-0g;
-	Thu, 20 Nov 2025 18:44:53 +0000
-Date: Fri, 21 Nov 2025 02:44:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential
- writeback hang in wait_sb_inodes()
-Message-ID: <aR9hiE7WB5ex9ED6@041890d37db4>
+	s=arc-20240116; t=1763664642; c=relaxed/simple;
+	bh=YWC2QaLQIZnbvvKPn+rk+SMxZpvA1t+FyR0kuqU02KA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LJQC4WpwSBPOe3gnaeg79/AhGnbKMRRN/Z8nrHzhc8gx9XMn+fGRd0GoI4eUgs8KB5oj8Ck4jolxkwVFfs24f4VgQ4Z94IpAg65712DcH0YDRHuVplr8JGptpfHNxnV8Z+x3wmEPW/VQNQjFeiRyGq1KzBErd8dOSiNQHVuja2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLpIh82A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF406C116C6;
+	Thu, 20 Nov 2025 18:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763664641;
+	bh=YWC2QaLQIZnbvvKPn+rk+SMxZpvA1t+FyR0kuqU02KA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lLpIh82ApTKkcPa5DAFGjUR3FHxD+gzl/2/tjY9sFKwRGaXOhouiGSEOwvENQ6ddO
+	 BC6shW7HOkL81jFMqBcTkEfUEmi36F0Lwmd1kYc8hpvbPI49PtqhIkZkVTRjtL40jR
+	 VsR8eYHqfWeWZb6B5Lzhq+BtrM+gY6Z7nn+1tt2RjsKm0p6KDOK5U6mVH1wfz8J6qv
+	 69Lva35wffUJrAcoQJEkFRdKyDnJnepkJlYhYjsK4lX33lFHbK/EY3gr3KNals1s6J
+	 2f2GK06S56j108BVMotqoybEYjmoXradFsnthBCeiBWjEN0oj7uwfY7wXMT6D8IJ6V
+	 kiT3dQrEiPi3A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F663A40FE6;
+	Thu, 20 Nov 2025 18:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251120184211.2379439-3-joannelkoong@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] Bluetooth: btusb: mediatek: Avoid
+ btusb_mtk_claim_iso_intf() NULL deref
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <176366460701.1748676.511972373877694762.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Nov 2025 18:50:07 +0000
+References: 
+ <20251120081227.v3.1.I1ae7aebc967e52c7c4be7aa65fbd81736649568a@changeid>
+In-Reply-To: 
+ <20251120081227.v3.1.I1ae7aebc967e52c7c4be7aa65fbd81736649568a@changeid>
+To: Doug Anderson <dianders@chromium.org>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, regressions@leemhuis.info,
+ regressions@lists.linux.dev, incogcyberpunk@proton.me,
+ johan.hedberg@gmail.com, sean.wang@mediatek.com, stable@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
 
-Hi,
+Hello:
 
-Thanks for your patch.
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Thu, 20 Nov 2025 08:12:28 -0800 you wrote:
+> In btusb_mtk_setup(), we set `btmtk_data->isopkt_intf` to:
+>   usb_ifnum_to_if(data->udev, MTK_ISO_IFNUM)
+> 
+> That function can return NULL in some cases. Even when it returns
+> NULL, though, we still go on to call btusb_mtk_claim_iso_intf().
+> 
+> As of commit e9087e828827 ("Bluetooth: btusb: mediatek: Add locks for
+> usb_driver_claim_interface()"), calling btusb_mtk_claim_iso_intf()
+> when `btmtk_data->isopkt_intf` is NULL will cause a crash because
+> we'll end up passing a bad pointer to device_lock(). Prior to that
+> commit we'd pass the NULL pointer directly to
+> usb_driver_claim_interface() which would detect it and return an
+> error, which was handled.
+> 
+> [...]
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Here is the summary with links:
+  - [v3] Bluetooth: btusb: mediatek: Avoid btusb_mtk_claim_iso_intf() NULL deref
+    https://git.kernel.org/bluetooth/bluetooth-next/c/dd6dda907d09
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback hang in wait_sb_inodes()
-Link: https://lore.kernel.org/stable/20251120184211.2379439-3-joannelkoong%40gmail.com
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
