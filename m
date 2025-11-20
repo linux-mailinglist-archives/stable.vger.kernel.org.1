@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-195399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE4DC760BE
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80898C760D5
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6C91D35D4C0
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:16:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C580B35671E
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73E22F99B0;
-	Thu, 20 Nov 2025 19:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910DD27FD5D;
+	Thu, 20 Nov 2025 19:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQPXZKKF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDih0JaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876702E8B96
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F09422128D
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763666153; cv=none; b=UrwC8pNA8bmBBYAFUZ/p7kWlyZO2k0GPyc1WwIYBTpQTLKLVL/l2CNy1icSxfpuZagza+zXkkuF8Y726Q4mLiXj+rodqP1VTSoLzN5Ry64v4lh9h6SnmZeSODNFGeYM6If0tY5NfDORZ8BrbKHnCE5XECSfu+5+7nZ1Y2ODFpYY=
+	t=1763666369; cv=none; b=T90x3sJhXIzcefW8FrIKqh45kE7Y6np9Z4UGX69SmhIRPOoIdTL7cLv3GbGjvXdsDi06hbcUXbhM1lW/vUlp3tavUAtTSt76QgcCNIgcXYYez+bwtUinR9g2rJZUezF1/wNfR94UHGRstUpl+1NOJNAlIm6QSWMGMO0dNAa3D0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763666153; c=relaxed/simple;
-	bh=fBLTANODSfkqSh8+8qVVdC4+k64zS+gYxxbuXJMJzJw=;
+	s=arc-20240116; t=1763666369; c=relaxed/simple;
+	bh=TjYAFmW3q29VpXynbpM0JpI87h5XvaKCGZIYc/RrZuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aq0YasuxHpFmat8TYInw/LDLie6VRtwwZowdatkM2quzQDrrgjsQb4og8ufl+FEwKPoYtLZGC4KmK9CsKOfiR0FJCWFSTDr+mRCP23TFRblBRyzFVeP8JfQLeCcJKTd9GysP1r4hGId9BT9DROGzav7+1SU7lkjmV4qNpbWVCgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQPXZKKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5621C4CEF1;
-	Thu, 20 Nov 2025 19:15:50 +0000 (UTC)
+	 MIME-Version; b=E0iLmvilBP6Yp11KbRSEshE+zuRLduHDPSrsgMfL/ECUB9r2WGWLqpURmVfFaYipEP3qBBzj5xhpgyA4BDXd6cK2PVEIOT1Osr6pk8ABnu4zTXOxUxDpYtwRaDnofv92O1dNVwd5ZBPm04CylphucUpOml4FcxSPzTVlo+Nuvp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDih0JaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F1AC4CEF1;
+	Thu, 20 Nov 2025 19:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763666153;
-	bh=fBLTANODSfkqSh8+8qVVdC4+k64zS+gYxxbuXJMJzJw=;
+	s=k20201202; t=1763666368;
+	bh=TjYAFmW3q29VpXynbpM0JpI87h5XvaKCGZIYc/RrZuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQPXZKKFkH8ik0HBgj/nncueALahwSwDFU1jF2560Pvg4joIOYdsyuswvTCHGWZHW
-	 OV0mg12Duhl7PNcgng2+kl2RWCpVhImH+/EG04u5BBPmaWUaqFc8NnE6nY8xPfp7Hy
-	 zA8INz4cKAf0WFu2kVfbNYwS+8/9tbDYlH9WY6vkcP7rUshSYD2FQCQRauhuYe8YH+
-	 0hMPY4cEo0X7r9TNyZ89hsAo7YVU0jy6wNe/7PHBUZZ6ZGxtlwGDutNFguvypujVlx
-	 eABgC8f+KWfoGcAnkLRvZaGFla4GhPGX/i82nKcDL/b0SDxAEgPJtVG0TO9FlLYiH8
-	 O7w4wj+6Kx2fw==
+	b=sDih0JaRFAnOau1DFuMQtUMzdfgSdOhf62NIX3jaSd/BJZX0Uq0v5WoDLA2RYmcPL
+	 6CeOuds74MM6oq5fn4smhjqpzioeODXxSPUKMmoBYaNko7WVUITnEg4BFtC3NDig10
+	 WXi6hOzZZKp4IXlo7iRkweJaV77gOH02TMkX6mYu4LfVfwNt93zu/qAJ4UqK3HGWcE
+	 PuqvJGucWgmIjgOrxhlD5ThnlIFEdfnUnlKQ5dJ9vuX+CrOzAuOSPJC1ZC7LO1HhB+
+	 LDSTS7s1LAh7+Z1zPIBhHxit2llhy5cPRa6IpSYpmiddYK4TSxcGsGLipub9+Y8soO
+	 bS9BKc45DKBoQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mike Rapoport <rppt@kernel.org>,
@@ -51,11 +51,11 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
 Subject: [PATCH 6.1.y] mm/secretmem: fix use-after-free race in fault handler
-Date: Thu, 20 Nov 2025 21:15:47 +0200
-Message-ID: <20251120191547.2344004-1-rppt@kernel.org>
+Date: Thu, 20 Nov 2025 21:19:22 +0200
+Message-ID: <20251120191922.2344793-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025112032-parted-progeny-cd9e@gregkh>
-References: <2025112032-parted-progeny-cd9e@gregkh>
+In-Reply-To: <2025112022-curtly-unexpired-adae@gregkh>
+References: <2025112022-curtly-unexpired-adae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,7 +104,7 @@ Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 624663a94808..0c86133ad33f 100644
+index 18954eae995f..b570a6e25b6b 100644
 --- a/mm/secretmem.c
 +++ b/mm/secretmem.c
 @@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
