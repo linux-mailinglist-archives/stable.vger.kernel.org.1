@@ -1,139 +1,156 @@
-Return-Path: <stable+bounces-195248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E0CC739E7
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 12:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA96C73BD2
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 12:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 539A54E9E1F
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 11:03:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B43F4EA3C8
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 11:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E3B32FA35;
-	Thu, 20 Nov 2025 11:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEE332E735;
+	Thu, 20 Nov 2025 11:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HumTQRhZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dq1Mj92c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QzMtpowC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aUTtYlrS"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F432F762;
-	Thu, 20 Nov 2025 11:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281132DEA8F
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 11:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763636629; cv=none; b=OO7+aHJS2HW7A2KVhcLErYfKxdnLDUoscBMc2eq55U28RRujCU+8nFOqkxE746uPUfV4d7NJrb15HXYauyoFrM3VJhchkAqyQ4IId4g8LShdc4AFPD/7rLhsvqNxOOL5Gx3qKt9qQxpHHi04TTPXU7NoheDC3RMf9zwVowEod5E=
+	t=1763638016; cv=none; b=SMVEe6X2NS1Cq9EbC4lhaF56u5rDHgN0P50xXQ1glegKah1V9NrbsgUlS1a+j6wOefR01/M6EILIcoRQ+QtKCCG4z2TZXEkCjsFIzYhSRpX8aO3SGLoI8o4LtjZffCh3bw7ZXLDVluJzSWDZRCjZpI5IVQvRywVHCtjFzLQStKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763636629; c=relaxed/simple;
-	bh=YSYsjoXyWUxmPoo0UU9JDTEoLIdAnCpfmKeLRK40gFs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gu9dMAN611NS9qBIHzqYZV2FJ/ymcYCCcMfFCClbe3Qs536iedZpk9U3ovnF9YCFkN5Lm8LTrR3bzBNvHD4v4eZgiGxO3BddERU49a7pjTEJFuVsaQw5AxdLCNsW3OMlp/i5yOFQ/OOGBJnRoSDZA7tlPH0UE+dul4qkl7hjjfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HumTQRhZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dq1Mj92c; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763636623;
+	s=arc-20240116; t=1763638016; c=relaxed/simple;
+	bh=YJqucc6y3evWF4wSv56D5Hg6FOQn5YFJUMPL4VlHK4c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kv2Z9pO+NuyB4uftI94cXpsu2W7vwPmKF14NR2aIaWuMvxgxvx42IzpVh2sVuobvD+JbnTl/LbI9KlPQutaH+2QThpsQ1aX0OCkuekJ0uYikQBfr7axjH6bzH/IM3m7Rw7JOfcjhBSjZyfttYtNbTgbr6b/W7v+WixiAkirTFZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QzMtpowC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aUTtYlrS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763638014;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SQJMu/RAsqHcyYZfbxlN68drpTjqqslDnStHbG6KYCM=;
-	b=HumTQRhZz2s4x654qwRe6byrAJw6T9KqmikQ8CKp+dzffebDAIVw2pDh8J7cZGAHT6zR1s
-	LPAAzZQ0Gy022XSNGd6w3gczMifKn+gQ8246F12hD5TM65Baz7WpOZl6DowL1+lgEjU3En
-	1zbMixhcDffejLlZew9tvdN6rFJBCq7ubAAqhBfuPczwtDRzWMSsKlc+c65oU5iDINohjj
-	gJbUVPhaD3mjaW4S0y2sxF94f+RPyWc0KDAroN0zu3f3SbxBuP+arR18XOwY/9Vkf0Av67
-	jvSAK5Sb/87/aAVaf0G+Vy4ykBh8jmk9ylbetTCim40JICgPXlVIzItD3gAotA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763636623;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SQJMu/RAsqHcyYZfbxlN68drpTjqqslDnStHbG6KYCM=;
-	b=Dq1Mj92cjVnUk+FFC7NtpdB1IeY72/Dx3hwCicVqHOfM8fw4ugQt0c1xLduVBG98oYC4x0
-	n/kDJOh8tmkQUgDQ==
-To: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Steven Rostedt
- <rostedt@goodmis.org>, Sherry Sun <sherry.sun@nxp.com>, Jacky Bai
- <ping.bai@nxp.com>, Jon Hunter <jonathanh@nvidia.com>, Thierry Reding
- <thierry.reding@gmail.com>, Derek Barbosa <debarbos@redhat.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH printk v2 0/2] Fix reported suspend failures
-In-Reply-To: <aR3imvWPagv1pwcK@pathway.suse.cz>
-References: <20251113160351.113031-1-john.ogness@linutronix.de>
- <aR3imvWPagv1pwcK@pathway.suse.cz>
-Date: Thu, 20 Nov 2025 12:09:43 +0106
-Message-ID: <87fra90xv4.fsf@jogness.linutronix.de>
+	bh=sqS+S451NRmIYeRi6IUton5nKAKTYp9P1BRktE8Qx5E=;
+	b=QzMtpowC2WDUvJF0CYyHepezKPapYWfVcKk1JHa/Rg/a6AhpJ8Z/QXrFNHGOmw0gl+Cfak
+	939IWwzJMh27O5mUA7XrzN9/d5yMgrI9RdPb73TPY6EFCsyZrE1E+Alt5Fdwxls95xl4BK
+	ZQLYFv5Go/o8nJGgb7YDOijuJdO6xAE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-7z_coBqKOH2lmxjhm3WJSA-1; Thu, 20 Nov 2025 06:26:53 -0500
+X-MC-Unique: 7z_coBqKOH2lmxjhm3WJSA-1
+X-Mimecast-MFC-AGG-ID: 7z_coBqKOH2lmxjhm3WJSA_1763638012
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47788165c97so5031425e9.0
+        for <stable@vger.kernel.org>; Thu, 20 Nov 2025 03:26:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1763638011; x=1764242811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sqS+S451NRmIYeRi6IUton5nKAKTYp9P1BRktE8Qx5E=;
+        b=aUTtYlrSM+SSWKPDdL8phWLZ8WsAnPeIaSSnIOvATgS1R+Q2is1K+lIvdk+CaCk8Mn
+         xAwWsTXk9qZI1fP/qrXvmGybknlPpQZVNvCO6j7NRHJL4OFkm1/L0ct1f/9oBn81WpXC
+         2s7NZ1i2mjI4CU4UDJwQJWzjvwQ9PhyP4h4pNWAd7OowLtFnEw/qWJphl61jmxR6B1Vd
+         ubxPgcigmHuZjzLrPYifONHXDMzvoftwwML5tj1eCzgPE9ruwJFK3aN8sO/K4lgsa4dY
+         ZystGxk16GSOOhLIDAQtqthlODDNXavifUMBYiQduO5N0y+G4rkWOVvP7EHFzmlEa47T
+         0e8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763638011; x=1764242811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sqS+S451NRmIYeRi6IUton5nKAKTYp9P1BRktE8Qx5E=;
+        b=pgAlS63RojO6qrHTnd3ZsZ2AJdaIiL6+1EdBg0r7KsrlQHiEQ/rT7ik6j1pw4FwQfY
+         RkeCMubbAly1kU42mQTiDio8LXA+AdL+jnb8aRJMzo6yZlP2r1CZqi6B4TKVO4gs6kOF
+         kI3ZfVbJ06TU0a8V+7VjjJish/p4OiYEGAp4lZFfzVINa1n94mNV3kOPV8bAaePEQoDL
+         6iWi3ku7UgmF1w89vWp22LUq8V6YXog2q4aKykyXcR7qIRB+2vYfZqKuw3eL8KPncVSq
+         a/Hj6sNp4TJVXUKW4HXw2EeFZUQBEFW2/Z3GFEjCjwaPx06uXyhsG8w/eOjuZ6APcBd1
+         6Ajg==
+X-Forwarded-Encrypted: i=1; AJvYcCWdRRIc6/RwLbJh1qWbL663P45oqVjd+eMAv86FY35fNGz3xb69oz0Q2UnRUKuyXE+aUDimU+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLgmd2bbbTTE7gIJOuruSxg8gFt7SURpodiccWHxEbs4RD8ziw
+	8ok8j60Pdik28E6kdLas4w6eorOCzSOOL4xgLRrIp6vLFGpc8xZEYXWhKz2542ffAiLaeQygYtI
+	WNbAD9qRwC+/iCLn7zH4tMxAwQ862T75AqAnR29luMN3nl6NsExw97I5dPd19biq4KQ==
+X-Gm-Gg: ASbGncsViizvuYZCnGONEsQmYyOaOaJgAVBlClB3dxlSyv6CgGNPOUIp0zTZK8xvt02
+	7VGkU8LDfBwzp1+ie2QrWZnSk0BlF4hGgRK3BgxtTw9VU1tTVE1hTY0M1UPm4ITaPn0CmgLuBmn
+	DWz+cqcRkdvY2rzeRGWA+NH7+qoGdlDI6hkiijBEJRqsQ6xe8AXmVFTkDYtthftXJYNGQbIxXK3
+	HiwqDo3MWR79h5Bs9o60qm/lPvCn3CME3VQ976+qq7Cuwjcv3asnomUrayFZgDAPR/KfANKO6M3
+	sodBIaj0p/gVqauN3MDZIQpP5yvdpOZlwlJ6jgqBO0TPkZuTVPgpJYAsk4PtXYZkXpl4Nzdl6rs
+	nRe2gjFH9jzpV
+X-Received: by 2002:a05:600c:4f51:b0:471:9da:524c with SMTP id 5b1f17b1804b1-477babcf75emr19620945e9.12.1763638011517;
+        Thu, 20 Nov 2025 03:26:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFeKEOaazfM9KhQXI1DdCaf+McPmoAWzMH7ECavD7fZB8Di1CGCkdsdqX4WGC/qULZnN/Krbw==
+X-Received: by 2002:a05:600c:4f51:b0:471:9da:524c with SMTP id 5b1f17b1804b1-477babcf75emr19620605e9.12.1763638011115;
+        Thu, 20 Nov 2025 03:26:51 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9dea7fcsm62835665e9.8.2025.11.20.03.26.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Nov 2025 03:26:50 -0800 (PST)
+Message-ID: <038697aa-a11c-45ce-a270-258403cc1457@redhat.com>
+Date: Thu, 20 Nov 2025 12:26:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH REPOST net v2] atm/fore200e: Fix possible data race in
+ fore200e_open()
+To: Gui-Dong Han <hanguidong02@gmail.com>, 3chas3@gmail.com,
+ horms@kernel.org, kuba@kernel.org
+Cc: linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, stable@vger.kernel.org
+References: <20251118033330.1844136-1-hanguidong02@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251118033330.1844136-1-hanguidong02@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Petr,
+On 11/18/25 4:33 AM, Gui-Dong Han wrote:
+> Protect access to fore200e->available_cell_rate with rate_mtx lock to
+> prevent potential data race.
+> 
+> In this case, since the update depends on a prior read, a data race
+> could lead to a wrong fore200e.available_cell_rate value.
+> 
+> The field fore200e.available_cell_rate is generally protected by the lock
+> fore200e.rate_mtx when accessed. In all other read and write cases, this
+> field is consistently protected by the lock, except for this case and
+> during initialization.
+> 
+> This potential bug was detected by our experimental static analysis tool,
+> which analyzes locking APIs and paired functions to identify data races
+> and atomicity violations.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> ---
+> v2:
+> * Added a description of the data race hazard in fore200e_open(), as
+> suggested by Jakub Kicinski and Simon Horman.
 
-On 2025-11-19, Petr Mladek <pmladek@suse.com> wrote:
-> JFYI, the patchset has been committed into printk/linux.git,
-> branch rework/suspend-fixes.
+It looks like you missed Jakub's reply on v2:
 
-While doing more testing I hit the new WARN_ON_ONCE() in
-__wake_up_klogd():
+https://lore.kernel.org/netdev/20250123071201.3d38d8f6@kernel.org/
 
-[  125.306075][   T92] Timekeeping suspended for 9.749 seconds
-[  125.306093][   T92] ------------[ cut here ]------------
-[  125.306108][   T92] WARNING: CPU: 0 PID: 92 at kernel/printk/printk.c:4539 vprintk_emit+0x134/0x2e8
-[  125.306151][   T92] Modules linked in: pm33xx ti_emif_sram wkup_m3_ipc wkup_m3_rproc omap_mailbox rtc_omap
-[  125.306249][   T92] CPU: 0 UID: 0 PID: 92 Comm: rtcwake Not tainted 6.18.0-rc5-00005-g3d7d27fc1b14 #162 PREEMPT
-[  125.306276][   T92] Hardware name: Generic AM33XX (Flattened Device Tree)
-[  125.306290][   T92] Call trace:
-[  125.306308][   T92]  unwind_backtrace from show_stack+0x18/0x1c
-[  125.306356][   T92]  show_stack from dump_stack_lvl+0x50/0x64
-[  125.306398][   T92]  dump_stack_lvl from __warn+0x7c/0x160
-[  125.306433][   T92]  __warn from warn_slowpath_fmt+0x158/0x1f0
-[  125.306459][   T92]  warn_slowpath_fmt from vprintk_emit+0x134/0x2e8
-[  125.306487][   T92]  vprintk_emit from _printk_deferred+0x44/0x84
-[  125.306520][   T92]  _printk_deferred from tk_debug_account_sleep_time+0x78/0x88
-[  125.306574][   T92]  tk_debug_account_sleep_time from timekeeping_inject_sleeptime64+0x3c/0x6c
-[  125.306624][   T92]  timekeeping_inject_sleeptime64 from rtc_resume.part.0+0x158/0x178
-[  125.306666][   T92]  rtc_resume.part.0 from rtc_resume+0x54/0x64
-[  125.306705][   T92]  rtc_resume from dpm_run_callback+0x68/0x1d4
-[  125.306747][   T92]  dpm_run_callback from device_resume+0xc8/0x200
-[  125.306779][   T92]  device_resume from dpm_resume+0x208/0x304
-[  125.306813][   T92]  dpm_resume from dpm_resume_end+0x14/0x24
-[  125.306846][   T92]  dpm_resume_end from suspend_devices_and_enter+0x1e8/0x8a4
-[  125.306892][   T92]  suspend_devices_and_enter from pm_suspend+0x328/0x3c0
-[  125.306924][   T92]  pm_suspend from state_store+0x70/0xd0
-[  125.306955][   T92]  state_store from kernfs_fop_write_iter+0x124/0x1e4
-[  125.307001][   T92]  kernfs_fop_write_iter from vfs_write+0x1f0/0x2bc
-[  125.307049][   T92]  vfs_write from ksys_write+0x68/0xe8
-[  125.307085][   T92]  ksys_write from ret_fast_syscall+0x0/0x58
-[  125.307113][   T92] Exception stack(0xd025dfa8 to 0xd025dff0)
-[  125.307137][   T92] dfa0:                   00000004 bed09f71 00000004 bed09f71 00000003 00000001
-[  125.307157][   T92] dfc0: 00000004 bed09f71 00000003 00000004 00510bd4 00000000 00000000 0050e634
-[  125.307172][   T92] dfe0: 00000004 bed09bd8 b6ebc20b b6e35616
-[  125.307185][   T92] ---[ end trace 0000000000000000 ]---
+The above comment is still not sufficient: you should describe
+accurately how 2 (or more) CPUs could actually race causing the
+corruption, reporting the relevant call paths leading to the race.
 
-It is due to a use of printk_deferred(). This goes through the special
-case of "level == LOGLEVEL_SCHED" in vprintk_emit(). Originally I had
-patched this code as well, but then later removed it thinking that it
-was not needed. But it is needed. :-/ Something like:
+Thanks,
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index b1c0d35cf3ca..c27fc7fc64eb 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2393,7 +2393,7 @@ asmlinkage int vprintk_emit(int facility, int level,
- 	/* If called from the scheduler, we can not call up(). */
- 	if (level == LOGLEVEL_SCHED) {
- 		level = LOGLEVEL_DEFAULT;
--		ft.legacy_offload |= ft.legacy_direct;
-+		ft.legacy_offload |= ft.legacy_direct && !console_irqwork_blocked;
- 		ft.legacy_direct = false;
- 	}
- 
-Is this solution ok for you? Do you prefer a follow-up patch or a v3?
+Paolo
 
-John
 
