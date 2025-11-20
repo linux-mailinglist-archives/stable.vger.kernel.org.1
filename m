@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F82FC76177
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:34:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0397CC76192
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 9601B28B97
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:34:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A1FF0346FCE
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BEF2E6CC2;
-	Thu, 20 Nov 2025 19:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4B52F49E3;
+	Thu, 20 Nov 2025 19:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKd9tRz+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+3n7PPV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6583F221F2F
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091502D7DC5
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763667268; cv=none; b=sIDcnP4GmCf+uDjNGqkeShygfnu9f0s3EFM7j/CdRYgWnTFMAnei+7PcMgtN7EmgnQX32jBX+mIrpex+9uSL2jd9xbhorg8WAeCzdHjK8B1iB/hEA5iRwiezimxjkJUR9FgxhzpsWTUrNL3E7vadHXG78FbJVY4CihCQMTMI4Go=
+	t=1763667391; cv=none; b=Gh5b0NyIUmILibstGGANNO/sIGWM12O2fzEkWr7hll6SzmnPttXLxc+pHjd+odLWHS09Wa5OJJDj2MtkqB+RAElPN2n6lvTVOK3CJNsSaaivYaoUhHEOtAOGcxTniHFCTTvT4BIceclgzcU62Wz4oW1dikqvEagLTie+vVWEk4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763667268; c=relaxed/simple;
-	bh=fV4Ju2vnCd24p0jzufHRllAirFNUm+0d/VPKghKHj/g=;
+	s=arc-20240116; t=1763667391; c=relaxed/simple;
+	bh=aK+gfUOlx2+gwabAm9LFJEr8k4kTrxSQIMx7e+CwsLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLrhVLLMM5uCxYOb7oMiPvnN3Pcs8J+rm6j+77bAwXgxWRHnXvyw8p9Hug9XXd2HS5ou0NOoEWa86DU2Saq2bDj8ZHz4ghyyBDbDPAHlIGjOWxq7wwMN0sNCx+qlLAgD6GBnBk+SBTDjbYUN7RVkUv3aMIATeEtkuJ2UC3NzoOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKd9tRz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9B5C4CEF1;
-	Thu, 20 Nov 2025 19:34:26 +0000 (UTC)
+	 MIME-Version; b=ACFYOSIlMtfYbaww83KTFaCs/2AnVXxbhLoHYw6f8b0m0R78GTvlkiAmNyEJ8vn52l+F+URK+MeBMX3jq72QlsbRimP2vXSRS47roUBDKPq8xxm8o/FEmFI1JGnjqFXRW6Z9HngxQXCR808u6KSwruECn3vDM16ddc42zOLtaxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+3n7PPV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED64C116C6;
+	Thu, 20 Nov 2025 19:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763667268;
-	bh=fV4Ju2vnCd24p0jzufHRllAirFNUm+0d/VPKghKHj/g=;
+	s=k20201202; t=1763667390;
+	bh=aK+gfUOlx2+gwabAm9LFJEr8k4kTrxSQIMx7e+CwsLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKd9tRz+WvipibgGmPJU47Glg1Aw+BjFCo/na3hmFzV9bkInuJ5q4E9GzP6RUwlo/
-	 Ulg9Ub1/YFx/uIn6IyhWowMF7p5hSyFGR3Xncr7AVkY35Kmnf32Ond/X+OfySVCSQY
-	 SHrQQTkA1c0xQ0SAeI7CTX2Exl0nQGD7Mb+cygJOw11qcXHUG2N1b09wWSYaAg3EFf
-	 b3wds/maN8ngKd9jR4xQHYJwSWRSkqpEL/eAN2i/slU/au9V27ryLZ9wR8n/Jkazuy
-	 N0QCp9t6Pcz0PAAOMa5bEY/6mqL1nOvPG5PSXZ+nGjHxQ93k5sgP4drmNZaPqEkJdb
-	 eAYME4k2KSyeg==
+	b=n+3n7PPV4jHqvF9ahMCAWDxdXA1gon9lzF43m2YfEiPjqhXwhqEHfmdz5E42b4FNc
+	 5FybhigSQh1oLlJuflk3xw5e8iZYpPlz1tte5RwgqOSiKnXmsOXeYZjHVyLTYrhl4v
+	 6TGHzk3qEmxaSxR+HIEbj8eocVtQv5EmCooGYuMmWA6dz62VuZZAhswX3FoGzP0Xaa
+	 ZCg1Hm6LeQQPxR9f8vkYAdnPNLzu2xTPrF8Vzvq3/hQKVBdQcLJys0khN5FtGo9QGr
+	 yOK29yWXrgYkgQGbjVhFkxrNaaj/9dGZGmkjtHUHCWcgxOjJ+vl6sEqNI6TW/slpf/
+	 Py3DyBdawZegA==
 From: Mike Rapoport <rppt@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4.y] mm/page_alloc: fix hash table order logging in alloc_large_system_hash()
-Date: Thu, 20 Nov 2025 21:34:22 +0200
-Message-ID: <20251120193422.2347150-1-rppt@kernel.org>
+Subject: [PATCH 5.15.y] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
+Date: Thu, 20 Nov 2025 21:36:25 +0200
+Message-ID: <20251120193625.2353017-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025112034-decrease-sardine-8989@gregkh>
-References: <2025112034-decrease-sardine-8989@gregkh>
+In-Reply-To: <2025112033-overstep-denim-0e6a@gregkh>
+References: <2025112033-overstep-denim-0e6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,16 +93,16 @@ Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 66e4b78786a9..111f50054fc1 100644
+index 63e131dc2b43..0a5e9a4b923c 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -8275,7 +8275,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+@@ -8921,7 +8921,7 @@ void *__init alloc_large_system_hash(const char *tablename,
  		panic("Failed to allocate %s hash table\n", tablename);
  
  	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
 -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
 +		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? "vmalloc" : "linear");
+ 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
  
  	if (_hash_shift)
 -- 
