@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-195401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFA9C76117
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:24:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D301C76141
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 20:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id D1FD72A695
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:24:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ACF01341BFF
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 19:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299C32F6907;
-	Thu, 20 Nov 2025 19:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FE72F60A4;
+	Thu, 20 Nov 2025 19:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jw6QLL+2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWBQ3uw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6C32D877E
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56E22D877E
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763666662; cv=none; b=rcrJxuuehmDl2lxToCHmYWEPK4Ob+RQuPTR1rkay2+Ebb/b/c07TOR+W5LEwItyOLfCy6Mtxn8/8Egttz8I9tDt5IuDfUiIla3S045xMV3EohiE4b6uBnvyxhvURLkYoQPbAjai6k0qidylUKxPc7CuwT5dB5nCuYK2jb5Yp9mc=
+	t=1763666818; cv=none; b=ggVfJh9vRXt4y3S44ZIjWg62IfOQLFwb+qKKWgz5HXWb2mmNTIAtTeN+LCa7JttsYDgFk6hAIJPjgp1FH8Vnwj/5WLtVgUXG2cE/YkyS/oglr+CFh2R4eGHQuqntm+hp4YoygLLdPuE6/qUBtm2uCbAUBcWNpVYj7DTm1Ufswv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763666662; c=relaxed/simple;
-	bh=J5voABVOFUZMyXtGl3qGXlREOkEQU/wpwaWkFywlg5I=;
+	s=arc-20240116; t=1763666818; c=relaxed/simple;
+	bh=S7ZcNDWKVU5QgJsDywWCTgoUisVhkPC7mbpUfOLQYus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQCZvYSjyigLUhw6Cbz2NBctHb8shtG/heXdP4Br4xpnxir32oGJrpDZZa5yLue0MHyDaqOVs6v1pRdVzIHSMxrEErZGUI8w4QeF6uZ0kPSKP8Lm8KYgr9BebH05D0zDi8GBknesyp2B2J5yjUZwEfTcwu2gjAe6MITNGHxYjNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jw6QLL+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316FDC4CEF1;
-	Thu, 20 Nov 2025 19:24:18 +0000 (UTC)
+	 MIME-Version; b=BQ47+k60ariC4rRO44aAWWEWwSK9Va64tp7hTTu1oGPeyJxMF8ftXyasznvquyQf+gl5Y6vCPcQB9HePMtcYW/rZroDZUURaWhMG7GZ5mk+BNAfsVLphyH2O+f59hBEeo93iyqd68UYvGrE3Srg83wx6jgz31fKhJyt0PM1VpzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWBQ3uw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D03EC116C6;
+	Thu, 20 Nov 2025 19:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763666661;
-	bh=J5voABVOFUZMyXtGl3qGXlREOkEQU/wpwaWkFywlg5I=;
+	s=k20201202; t=1763666817;
+	bh=S7ZcNDWKVU5QgJsDywWCTgoUisVhkPC7mbpUfOLQYus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jw6QLL+2VphYdQOeb89usYH2GuSUMxW0rY7+JlE+90hEJde550hziHuR6rOLZFGQk
-	 cSM/PhZFIBC0nT3iZNhavj1sz4cqId12iG+A+qCYmXOJQms2jN12PT41SO0CWHfxdn
-	 iAjYp1sG8swkjohdeZhP9Bgj+vkfDqCYFg60HMIYIXUBkUwN9tmIguQxmwg7QbrLwz
-	 Qw6J3vkaQdsfXFxzGRpOC+6EvxIgPgsXbDY+fl7fBUy+AB7/v0LqhncGLWe8kf5tFB
-	 yXya649VK1i8JKtUGszlRHFxnAKZRXUFsI90mMd1qnHD8wPn0SyJTL46PiAdyRpD1N
-	 AFR84u9c3UbuQ==
+	b=gWBQ3uw1Q52ONnhHCLK2s2BeoFf5LYv7ynK4067by6fFWthES1Ni6gNpzRn6DFAmv
+	 5HfXSj327F0FeVHRmKdHyUvblXJY5IlElShSrrBkjESJRv692BjAaIjGC4gbaaYuJl
+	 aYxGiZ9KtUfJgSWV4RKYt4o6r5Gw8z1n3m6RNoDCzEcvV5fSyFAuV46M/A+D9L/zmy
+	 pQngN2LJz/Hvgew8UzzJDJaYGIDwz08CI86S3pgMb5kloMCkG2GG1BKh+EE/SC9SLU
+	 pj4+tQBET4a9nMM3XlZWLYvLcyAWSRhRj2qKqs2415gyxGs/+fFFrD0Jm/qv1/m/wc
+	 WhPxXMMG09pEA==
 From: Mike Rapoport <rppt@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mike Rapoport <rppt@kernel.org>,
@@ -50,12 +50,12 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/secretmem: fix use-after-free race in fault handler
-Date: Thu, 20 Nov 2025 21:24:15 +0200
-Message-ID: <20251120192415.2345459-1-rppt@kernel.org>
+Subject: [PATCH 6.12.y] mm/secretmem: fix use-after-free race in fault handler
+Date: Thu, 20 Nov 2025 21:26:41 +0200
+Message-ID: <20251120192641.2346018-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025112021-swept-idealness-9ecb@gregkh>
-References: <2025112021-swept-idealness-9ecb@gregkh>
+In-Reply-To: <2025112020-buddy-bobbed-3c5d@gregkh>
+References: <2025112020-buddy-bobbed-3c5d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,7 +103,7 @@ Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 4bedf491a8a7..f64ea1cde2f9 100644
+index 4662f2510ae5..aec96e4896f0 100644
 --- a/mm/secretmem.c
 +++ b/mm/secretmem.c
 @@ -84,13 +84,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
