@@ -1,58 +1,76 @@
-Return-Path: <stable+bounces-195435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A98C76A2B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 00:40:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2539C76A58
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 00:45:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA5024E4A1F
-	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 23:40:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 4AC0228E0F
+	for <lists+stable@lfdr.de>; Thu, 20 Nov 2025 23:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F69305948;
-	Thu, 20 Nov 2025 23:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEBC30DEDD;
+	Thu, 20 Nov 2025 23:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="So3DQ29R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BSAEDPwc"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02692FE594
-	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 23:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFD530DD16
+	for <stable@vger.kernel.org>; Thu, 20 Nov 2025 23:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763682003; cv=none; b=LZCKt8BzImrJ+pTt8ntjMEYmqJAyeWfdzYTcjyBwviqES6nWUtd4aJPEFnpiWgz0wMnpYOoGkj75KElzegxCOuMjirWiJKfwvveQGjQu2Ta84MhEKVrTchrPy72geeN/T2zdHjIFa+CA0r1DxwuW7S9dnpAsP9IT1gfVv1Fg3ZQ=
+	t=1763682329; cv=none; b=imhFa9FPOtAes3mZkS9n8CY+iSMlMW1/b+KWlgWqlL4WtAkRwylGml5fuIXZlFFnHWyLZALJp+sbnBIhzeU2Q9FRtOKMSuaWVloDoFofNawxxQHoBi8jfhwa8Ev1AkPDRm1NBgHueDiSHhfgc4VciXpOXFZPEcnQIoL5Xra4YRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763682003; c=relaxed/simple;
-	bh=vpNnZseYt4mBBLaYV5na0xExWU/ow41stHj7NmPydVI=;
+	s=arc-20240116; t=1763682329; c=relaxed/simple;
+	bh=9lIHYCSTcRSR/s8JLmeMZzpnXSlwApdKoObVN6CQO8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6uz/krxJ1xZcqCr0CiCDmgSa47X0B7013thpndjCUsfNm73kFTlr/RRprdLgGg4AsT88Oyc39gukS/XHMPxGWgqb7EAbyDsv2xFVYKirqajDhZksoSqe2vsU0e2Ox775uW6BjwFC0fxnXmbbmIK2wMEBuiwLpJqi/CGpk9HjRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=So3DQ29R; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763681999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W2g4Bv5LC58+u+Gf0+NSKCLlR5IdJ5TloLwbqL67vEQ=;
-	b=So3DQ29RkjeT/EMwziSF6i0Lo52dPoAwKnd17XqGAdwHXU7pRlAshYm9g+OqOgnp/jyOiX
-	SgBzEghiMWF4WhlnfvCJh9sNMSRnbjMZarpkv6gRv8K8PpMSmT1pRMaIIDFu6L8mR/XZDd
-	BO1Q/pI7EPuPgV71uEUjnih2kIvVNQs=
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: stable@vger.kernel.org
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12.y 5/5] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-Date: Thu, 20 Nov 2025 23:39:36 +0000
-Message-ID: <20251120233936.2407119-6-yosry.ahmed@linux.dev>
-In-Reply-To: <20251120233936.2407119-1-yosry.ahmed@linux.dev>
-References: <2025112046-confider-smelting-6296@gregkh>
- <20251120233936.2407119-1-yosry.ahmed@linux.dev>
+	 MIME-Version; b=LeZNb8sPa4WcrrQaVTraL5Nkxbg8kKrhoqI5fbjF++bh7+elOdlZg1ZKCuaWhU/aFcS5bJ5txbzQ/rr7L8lrSdIl6JKGCq9Lu72M8vTlUkrr6mGl44silveFksN9vL1HBDLhy8rGO8dUmtmgYCrIu0Fp+5ZNXfjQXS8H0SVrevc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BSAEDPwc; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763682327; x=1795218327;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9lIHYCSTcRSR/s8JLmeMZzpnXSlwApdKoObVN6CQO8g=;
+  b=BSAEDPwcmv/OZV+ZP3YDLW5VeZNK+LI32SgkmdXe16EgbzGm8SFir1bd
+   bo3+3L5RQq3lUXdT/Wn1JRdXyanXLN8Tcu63tzRN9JMpPzWdgf1CMxs3k
+   qQ0CI2C6B16ufGliGhMarxFNxDTIpuE//33Y29pk3NyDSlov61YQX2s/s
+   vRoT/xh7uYRqu0n4DCDdwjFWzxtQ+C+NVuSZMbEVYFqsmLwj2eywJ4NxN
+   uwKlRJz4NI4hZfxjgS1C2/15DqqqohVD9yHYo1dEEzcuEs2UnBpn8kaPh
+   sXCk7WPZuPoOTaMd7P73wUmfLEMBbnalZdcKaOtzajJefFs/R1G4MCTqY
+   g==;
+X-CSE-ConnectionGUID: K+Lea6NJTDOuSBEBhFmkbw==
+X-CSE-MsgGUID: 6fT4sb23R/yL8Otyfoq+mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65807605"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="65807605"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 15:45:26 -0800
+X-CSE-ConnectionGUID: Gkdc8KvBRWGwAjAKTsqJzQ==
+X-CSE-MsgGUID: I1IUKRo5TwauwdkgmFtCRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="214877069"
+Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
+  by fmviesa002.fm.intel.com with ESMTP; 20 Nov 2025 15:45:24 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	Koen Koning <koen.koning@intel.com>,
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	stable@vger.kernel.org,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH 1/2] drm/xe: Silence allocation warnings for sync arrays
+Date: Thu, 20 Nov 2025 23:42:55 +0000
+Message-ID: <20251120234254.427452-5-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251120234254.427452-4-shuicheng.lin@intel.com>
+References: <20251120234254.427452-4-shuicheng.lin@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,100 +78,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Don't update the LBR MSR intercept bitmaps if they're already up-to-date,
-as unconditionally updating the intercepts forces KVM to recalculate the
-MSR bitmaps for vmcb02 on every nested VMRUN.  The redundant updates are
-functionally okay; however, they neuter an optimization in Hyper-V
-nested virtualization enlightenments and this manifests as a self-test
-failure.
+args->num_syncs comes from userspace and may be large or fuzzed.
+When kcalloc() attempts a large allocation, the allocator may emit
+warning like below, even though the driver already returns -ENOMEM
+safely.
 
-In particular, Hyper-V lets L1 mark "nested enlightenments" as clean, i.e.
-tell KVM that no changes were made to the MSR bitmap since the last VMRUN.
-The hyperv_svm_test KVM selftest intentionally changes the MSR bitmap
-"without telling KVM about it" to verify that KVM honors the clean hint,
-correctly fails because KVM notices the changed bitmap anyway:
+Suppress it by using __GFP_NOWARN when allocating the sync array.
 
-  ==== Test Assertion Failure ====
-  x86/hyperv_svm_test.c:120: vmcb->control.exit_code == 0x081
-  pid=193558 tid=193558 errno=4 - Interrupted system call
-     1	0x0000000000411361: assert_on_unhandled_exception at processor.c:659
-     2	0x0000000000406186: _vcpu_run at kvm_util.c:1699
-     3	 (inlined by) vcpu_run at kvm_util.c:1710
-     4	0x0000000000401f2a: main at hyperv_svm_test.c:175
-     5	0x000000000041d0d3: __libc_start_call_main at libc-start.o:?
-     6	0x000000000041f27c: __libc_start_main_impl at ??:?
-     7	0x00000000004021a0: _start at ??:?
-  vmcb->control.exit_code == SVM_EXIT_VMMCALL
+"
+WARNING: CPU: 0 PID: 1217 at mm/page_alloc.c:5124 __alloc_frozen_pages_noprof+0x2f8/0x2180 mm/page_alloc.c:5124
+...
+Call Trace:
+ <TASK>
+ alloc_pages_mpol+0xe4/0x330 mm/mempolicy.c:2416
+ ___kmalloc_large_node+0xd8/0x110 mm/slub.c:4317
+ __kmalloc_large_node_noprof+0x18/0xe0 mm/slub.c:4348
+ __do_kmalloc_node mm/slub.c:4364 [inline]
+ __kmalloc_noprof+0x3d4/0x4b0 mm/slub.c:4388
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ kmalloc_array_noprof include/linux/slab.h:948 [inline]
+ xe_exec_ioctl+0xa47/0x1e70 drivers/gpu/drm/xe/xe_exec.c:158
+ drm_ioctl_kernel+0x1f1/0x3e0 drivers/gpu/drm/drm_ioctl.c:797
+ drm_ioctl+0x5e7/0xc50 drivers/gpu/drm/drm_ioctl.c:894
+ xe_drm_ioctl+0x10b/0x170 drivers/gpu/drm/xe/xe_device.c:224
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:598 [inline]
+ __se_sys_ioctl fs/ioctl.c:584 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:584
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xbb/0x380 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+"
 
-Do *not* fix this by skipping svm_hv_vmcb_dirty_nested_enlightenments()
-when svm_set_intercept_for_msr() performs a no-op change.  changes to
-the L0 MSR interception bitmap are only triggered by full CPUID updates
-and MSR filter updates, both of which should be rare.  Changing
-svm_set_intercept_for_msr() risks hiding unintended pessimizations
-like this one, and is actually more complex than this change.
-
-Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251112013017.1836863-1-yosry.ahmed@linux.dev
-[Rewritten commit message based on mailing list discussion. - Paolo]
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 3fa05f96fc08dff5e846c2cc283a249c1bf029a1)
-
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Reported-by: Koen Koning <koen.koning@intel.com>
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6450
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: <stable@vger.kernel.org> # v6.12+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- arch/x86/kvm/svm/svm.c | 6 ++++++
- arch/x86/kvm/svm/svm.h | 1 +
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/xe/xe_exec.c | 3 ++-
+ drivers/gpu/drm/xe/xe_vm.c   | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index a5e3dc482845..71b32e64e801 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1000,6 +1000,9 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
- 
-+	if (intercept == svm->lbr_msrs_intercepted)
-+		return;
-+
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
- 			     !intercept, !intercept);
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
-@@ -1012,6 +1015,8 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
- 	if (sev_es_guest(vcpu->kvm))
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
- 				     !intercept, !intercept);
-+
-+	svm->lbr_msrs_intercepted = intercept;
- }
- 
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
-@@ -1450,6 +1455,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
+index 4d81210e41f5..7ef78a94e168 100644
+--- a/drivers/gpu/drm/xe/xe_exec.c
++++ b/drivers/gpu/drm/xe/xe_exec.c
+@@ -162,7 +162,8 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
  	}
  
- 	svm->x2avic_msrs_intercepted = true;
-+	svm->lbr_msrs_intercepted = true;
+ 	if (args->num_syncs) {
+-		syncs = kcalloc(args->num_syncs, sizeof(*syncs), GFP_KERNEL);
++		syncs = kcalloc(args->num_syncs, sizeof(*syncs),
++				GFP_KERNEL | __GFP_NOWARN);
+ 		if (!syncs) {
+ 			err = -ENOMEM;
+ 			goto err_exec_queue;
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index f9989a7a710c..8cebf7285640 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -3640,7 +3640,8 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 	}
  
- 	svm->vmcb01.ptr = page_address(vmcb01_page);
- 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 1aa9b1e468cb..cada5db654b8 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -324,6 +324,7 @@ struct vcpu_svm {
- 	bool guest_state_loaded;
- 
- 	bool x2avic_msrs_intercepted;
-+	bool lbr_msrs_intercepted;
- 
- 	/* Guest GIF value, used when vGIF is not enabled */
- 	bool guest_gif;
+ 	if (args->num_syncs) {
+-		syncs = kcalloc(args->num_syncs, sizeof(*syncs), GFP_KERNEL);
++		syncs = kcalloc(args->num_syncs, sizeof(*syncs),
++				GFP_KERNEL | __GFP_NOWARN);
+ 		if (!syncs) {
+ 			err = -ENOMEM;
+ 			goto put_obj;
 -- 
-2.52.0.rc2.455.g230fcf2819-goog
+2.49.0
 
 
