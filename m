@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A73C79F18
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3234DC7952D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21ED934123F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1621B34AA90
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC557350D7E;
-	Fri, 21 Nov 2025 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63912F6577;
+	Fri, 21 Nov 2025 13:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXUPFW1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofg/B8pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B584E2D73A4;
-	Fri, 21 Nov 2025 13:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E63226E6F4;
+	Fri, 21 Nov 2025 13:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733316; cv=none; b=j5mlPTVBLQtm6z4wBMx9TIfVI3cu1fe6IxJjY7tp05NZINOKrUUXg0+QH2LywiSHshCGWbbS94/q57L8nRoICGCpUoDeuob8otPQOdxA7asHFaL05Q21JPS4faCkqXnMlDJEWunRQkMETpBuuRx/kRM+vdaIUYNJ2JeNCzzAMgE=
+	t=1763731233; cv=none; b=NtxvxFkJbIOUnepANumSq2XhbiDa5IlKNxSZgBhEICXzAT6I7HCeo2P+VEMzMtBM1P8LJw1oRHppCP3j8NhIzh3vwSWFUkXaG9KyUUSHrBYVsH1E2ZSQX9SdMGB5ZETMpvL9OlKthnku8p5n9wSw+jYbs1jsmW2yz3g7RUZXta8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733316; c=relaxed/simple;
-	bh=3WAwhyajiCS8DtcCLzWunZLow1Fg/4HGUL9G2CNR6Mc=;
+	s=arc-20240116; t=1763731233; c=relaxed/simple;
+	bh=Fm+UVIC0ATupjHxyjatWzJqSI7mIY2KW8/5vYP/Xx1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/S4wDafUdyKydj8RoqFue2RMHhaOr49rPJtBdjRidUrI/RS0kqgR6m8nA7DpqoMGDWJ6lqI3pnJOqvQT4qzTsnUY3WcjBQJQTpwMbLwUxvnxl7AMC6kPYrLMCXrgOpBUeAZ2/27p4GkkC7NLvuZaMxXRUN79uPxvoEFqPKNiCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXUPFW1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFFFC4CEF1;
-	Fri, 21 Nov 2025 13:55:15 +0000 (UTC)
+	 MIME-Version; b=Sf0JQoVHHQIKc3TkHl359oxFO++XG3vLClG9vNrqrrFjaO/WwhOfVseZ0d1PAlqGwSYL0MKOxoh3Yp++vbHT+FKGFmk65qMZ+s0nBIG0amJSDS3QE6lPqGyQ4+rUzTQweMTg29J+Js5F0F25TWTMxVgraMFOezfUa/2at5nREVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofg/B8pd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8398CC4CEF1;
+	Fri, 21 Nov 2025 13:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733315;
-	bh=3WAwhyajiCS8DtcCLzWunZLow1Fg/4HGUL9G2CNR6Mc=;
+	s=korg; t=1763731232;
+	bh=Fm+UVIC0ATupjHxyjatWzJqSI7mIY2KW8/5vYP/Xx1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXUPFW1MvQ1HOOZlxwslDc05BVr0F+GZgKhudn1QmS2W0WW6NEzTtSFtIADlcNAFD
-	 2E45Ocv3UeWrQ4ywfF93gLCosmC2GYMwMA7gcVqcxhuOpUcp0eVoSb8l+dhO5yaVIP
-	 fPmLADA1BndMZhfm1U0lhMLrPf8CI2mxmRjN0UYY=
+	b=ofg/B8pdMCpwBTpdCMVz28xBU2CWLVSeJbBU5VkxGOtuchDuZjej4sfsWC4N900Xt
+	 xd+8Bf6QdZ6gHvXnsuTLTK9DTno0V7W7H0/pF515QJdNzbEHs3JIeX+YPBjfC7r3jy
+	 MluADXL2aZVwAHXmzx/g8IGeEZLu6cCT/uVF3xQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Andrey Leonchikov <andreil499@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 383/529] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
-Date: Fri, 21 Nov 2025 14:11:22 +0100
-Message-ID: <20251121130244.651722017@linuxfoundation.org>
+Subject: [PATCH 6.17 136/247] arm64: dts: rockchip: Fix PCIe power enable pin for BigTreeTech CB2 and Pi2
+Date: Fri, 21 Nov 2025 14:11:23 +0100
+Message-ID: <20251121130159.609481957@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+From: Andrey Leonchikov <andreil499@gmail.com>
 
-[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
+[ Upstream commit e179de737d13ad99bd19ea0fafab759d4074a425 ]
 
-openSBI v1.7 adds harts checks for ipi operations. Especially it
-adds comparison between hmask passed as an argument from linux
-and mask of online harts (from openSBI side). If they don't
-fit each other the error occurs.
+Fix typo into regulator GPIO definition. With current definition, PCIe
+doesn't start up. Valid definition is already used in  "pinctrl" section,
+"pcie_drv" (gpio4, RK_PB1).
 
-When cpu is offline, cpu_online_mask is explicitly cleared in
-__cpu_disable. However, there is no explicit clearing of
-mm_cpumask. mm_cpumask is used for rfence operations that
-call openSBI RFENCE extension which uses ipi to remote harts.
-If hart is offline there may be error if mask of linux is not
-as mask of online harts in openSBI.
-
-this patch adds explicit clearing of mm_cpumask for offline hart.
-
-Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
-[pjw@kernel.org: rewrote subject line for clarity]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: bfbc663d2733a ("arm64: dts: rockchip: Add BigTreeTech CB2 and Pi2")
+Signed-off-by: Andrey Leonchikov <andreil499@gmail.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 6b710ef9d9aef..2114903ee3ad4 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -61,6 +61,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
- 
- 	pr_notice("CPU%u: off\n", cpu);
- 
-+	clear_tasks_mm_cpumask(cpu);
- 	/* Verify from the firmware if the cpu is really stopped*/
- 	if (cpu_ops[cpu]->cpu_is_stopped)
- 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
+index 7f578c50b4ad1..f74590af7e33f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
+@@ -120,7 +120,7 @@
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc3v3_pcie";
+ 		enable-active-high;
+-		gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
++		gpios = <&gpio4 RK_PB1 GPIO_ACTIVE_HIGH>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pcie_drv>;
+ 		regulator-always-on;
 -- 
 2.51.0
 
