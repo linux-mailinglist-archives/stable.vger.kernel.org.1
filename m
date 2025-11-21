@@ -1,180 +1,161 @@
-Return-Path: <stable+bounces-196569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03E1C7BE83
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 23:52:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7444CC7BF30
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 00:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CBBFC36189D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 22:52:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5BFD04E21DD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 23:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BCD30CDA1;
-	Fri, 21 Nov 2025 22:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4E82D8776;
+	Fri, 21 Nov 2025 23:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jzJZS4fX";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TXbhOGke"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="F0faFFG8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EE7306B02
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB2C28689F;
+	Fri, 21 Nov 2025 23:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763765573; cv=none; b=hirDi/qX5vxpGiiATAEWuIJsvnT4ekSELCtTrFaG8+K6x5P5gBHw9o/DFP4jVTF03h6aAmmyrll/36U71vLwJ45hFs7ZmyhjO7k4UoiA+LNE6m8PmjerAzIXaqeYfEGD4VOx1hWqy6hJS2Amseocg1nP2qbUBpNQyx+maEgo5pA=
+	t=1763768242; cv=none; b=nGiNZwdUc737Cxkl2y+JbRWo5/EsYwP6yUljU9+G6ZDtQe3HSg8rAMWitfrw+35ZFxTXLsTCl5Sh2JC5BNwVX5XewnfxeINyXTL/YLwiUEXv6UyP+0VWMuRGq62k7U10M6CSs6P4LiCubtIsB/SCt7DsQnrLnfosdKLX2J/wRe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763765573; c=relaxed/simple;
-	bh=lE2Y4rxoGGpJUBovNGt4Zb4GKu+3YtYgDckjy0zhE+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e5GyCwW9zRrLxkOrt5uoq0xQRq+GLstr58F+OQTAA3Fub4AQOaFM8CZVCV1IdYFaRvOcPy8aiyk1N2EimCcQPuW3BwZHyxgPwNrit9e9JA6Xm2/6/qFZEos4CwMVemmkSBbKhyfzEMXPrRAF9dfqIMAVwcIIYf9lB8yUWyaX36E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jzJZS4fX; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TXbhOGke; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ALJkmPX394738
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=2etO1CJNtpNIPe+HOa0WpqfB
-	qr/+g9F6UdlSM1ZdxJQ=; b=jzJZS4fX5y7pYNvKK11iZHHL5+4nqDZXgr3QEVUz
-	o3tFCpcTvUaJuQPdrNDiE8C78eBWcOkpXPWmdseLoMti2LxlaMRMJzw9bEkfMnB3
-	+23FBecTiSkJYQfloTP/UO9WoGtu30UJbYJdiN/ejDgri+wkRzvwExQbfE3vigEm
-	BqKxWkjLAxKQGwAYv6iiXxlg92cH6JyWknTCUs2LZH18Ktp454vkhTz4EGe49Imw
-	jDt+f8xe3cSARZUhYpxN9Fustx65F3fDoy2lDV0yIPFYQcz8sC8cQva3zxMtTs39
-	wfxjjwnBcm9U30HZqOgWN5HefauN2cFIZ76ZyugEwtgJ/g==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ajxhqgcqt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:50 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b1d8f56e24so739086685a.2
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 14:52:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763765569; x=1764370369; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2etO1CJNtpNIPe+HOa0WpqfBqr/+g9F6UdlSM1ZdxJQ=;
-        b=TXbhOGkeLrkfFyi7fHa4zUDnNADyiBRwE4XzxAXGEy+/n9OQuM+DDdhPPrnAMf0Zbf
-         CRpyCcJCc199490EVqdsUo9gmOKl2EfHqSwY2R229y3JnwLz6XupnD1jZr2zO1Mr8uqu
-         5Qf4lG/87gACxkYUYhHp4ewxDtrl6hk5CQoH8mYzpsfh/ZIn81qlJSdDUZNk42RBFRvn
-         EAm7pMxDZ6Nvprah0VrAGbg5qmOXuGH0jntkPf8eok0HcsrNJiQ861u0yBhX8LlqiU8x
-         71sdZYxNnuNnpfOTi1BietI4FF/TOwnT3D1QZI+ZkFz/jNnFi2QouDZ5dC5SeK6FI1ur
-         2jSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763765569; x=1764370369;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2etO1CJNtpNIPe+HOa0WpqfBqr/+g9F6UdlSM1ZdxJQ=;
-        b=Qre9IoyIsa9UektSAwLltSGKKUTFMqfFscWhpsrN3bM8qNXhS1ZhOYnb1npp4fAnlo
-         fRrAOSRCaN9B40bIPs50PbW7DZoF02uiw/DRN9JTcdKL1cAxo9xpdjRNEHx2aOAjPvBk
-         jxbfUM2E3VpoL2kf65IHGgjDfWajCSsgIlcynNHPMh5BcFFTyeS3eZOHVv7nmtaP3UpN
-         0A/73RZUgtPnBjPAFSqEZXIsEp7XLRdZww2sf8jVNXI++m2qjH6uhEasd5yfeFrCK1fU
-         dVSHENit67Qd4+sMB02XluzZeSJ3vXuRJJyoMhd4jDMyFXr/tT3hgAFOpoE1amsIMrgg
-         Zdgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaOu2FSkiTpwr1+Etxvad6/wJ9KaJbHz4Lnp1j3kn65WnY4kj3Z7myXK7nIei5n3gg87K0034=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk6jxoB9aFwkiYuOPhBLe4ro6sWY1MQgLtrbHYKqG54doeq2fS
-	5poS6Ldioa2O8/44frx6d0i0C/TpfOYckph8060H1V542m2dzyNE2ZUfyG+mWejvDCJl5JcRYqn
-	NpQ9FyrdleF8fNTTBNsXGxhfvlo6Y1AWihvnJW8nUGxYj/H5l7Foj+gWrHT8=
-X-Gm-Gg: ASbGncsna1+cRgU0QV/QUq6oTyHgUkBPYGp3gjaDVxYhDrvE395ewnR02wxNb1PFRTU
-	cd3rbQsg/eQLUqgFkWV2e7I1I9oPqCg2hsm6kZrqKJu3tg3Q+Ep2TP4rTpXUYb7KSWh311NXh+1
-	KcyGlw27tHx8CX9W76uXd87GDvvCVEx8uWV1acV25hVRf87bDgXECH5JIIN64s4DL58SCLbJYWO
-	NBUsok2GeUgsdkH+t01kSkitUKzTCSKhoK96KqB2vzCFme+BDS2FgTvNZVy8oFOJPb6myfyK5it
-	4Sh+NnxtovYH8fIAQUKbaXO6YQm29vKNX9mdi1iCd6YHAURUDHP88NJ/QgqEuEuRycrTwm8Tsuv
-	sKvMuPulbvvnC28KuWWae9qFwGfP50zmLuZTgidvAtQWTxleKmegVsTLbxW8q1dhHC2PwAWrcf2
-	NIVzGRhheUcm1ZrimqIp4ErCY=
-X-Received: by 2002:a05:620a:4404:b0:8b2:ed71:ded3 with SMTP id af79cd13be357-8b33d4a01a3mr524688585a.67.1763765569313;
-        Fri, 21 Nov 2025 14:52:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEb23lCKZ23glBp74IiVfz/K6muOGBwS6W382uq1fVOh0KAzZTTZ0BY7nggZa+sLLASNUkjfg==
-X-Received: by 2002:a05:620a:4404:b0:8b2:ed71:ded3 with SMTP id af79cd13be357-8b33d4a01a3mr524686285a.67.1763765568941;
-        Fri, 21 Nov 2025 14:52:48 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbcc90asm1975272e87.90.2025.11.21.14.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 14:52:48 -0800 (PST)
-Date: Sat, 22 Nov 2025 00:52:46 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Ludovic Desroches <ludovic.desroches@microchip.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Anusha Srivatsa <asrivats@redhat.com>,
-        Luca Ceresoli <luca.ceresoli@bootlin.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH REGRESSION] drm/panel: simple: restore connector_type
- fallback
-Message-ID: <4am5nvb4ldzvvaavkdu2o36viltoxxyxwybrmj3h35wtdhfcpa@53t4zahc3y6c>
-References: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
+	s=arc-20240116; t=1763768242; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ujPJ9Km682ki/LbUCWh3M2QMrijlLf58eq+3zARN4i9l33FvsfPhEFGC+oeVqYsW+IIBAEFjUG+ntO64rrvB0itT0fNpEdEIOFNakEoSi45vy0RTjUUhcmx8RACjjLt7NU1yzMd5FGUagYA0ivRJmuF5PJBkTd8V+vfFonhtpZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=F0faFFG8; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1763768205; x=1764373005; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=F0faFFG8K+C8qq7tz4NQTuU8aI9v7S8VjLtyHIiQBwFMgYx3IAzHzHrAM9xXfzBF
+	 rndgiec3lpeYo90zIrpc8uR1DhdFQqg9y3oscx0KRT/fXBoiWhNg6swUL5wA0lw/V
+	 /O0nYHmCDnn1YWK/8Q2GXjApE/YpiPXJmY0xiHJyI4TJ3+siz2MbYYh6w6XIv+vkc
+	 nJ4QwGwe1aPNR6mrZc5nta6aZFDfIpiBvAgZF+srMQxDpm7EGc4z3gp4l7EAwYHmV
+	 5RO/R143icSdTOqyAOM0g7qgEogzWWAifWUCYNfPyibildeAipsQpH+DnEv8pMjcj
+	 7rSvReuvA9lnidaoHQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.160]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N17YY-1w76T03Juc-016Xdp; Sat, 22
+ Nov 2025 00:36:44 +0100
+Message-ID: <71afbdd2-65ac-41dc-a875-7702d89dc600@gmx.de>
+Date: Sat, 22 Nov 2025 00:36:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIxMDE3NiBTYWx0ZWRfX2l0+UqlrhFak
- oVBZoHds492KIX85tIclCXAWDnjQ0GW+S++GJyR0Y1TwzFqyJSbr3oVNBPagH6G/XNet+rme8xM
- TAphf1GPawed9J1bNzK3xVypjktfuXaWatsAwQqgcYGCrRD3wgc8CuljAjaJgHUdXfSHM2jSJb5
- og5foBmoJmFiAcVrCyWorJn/BZl+XGnjOwwvka/sAyDtQxvdjwe9YALP4dOBnWUcpu2p4by9xTL
- bkwnw8qzl4aP6yCBm1/IKWhwSlTClwgWCiknujPoNlYZOPIRejFFaFQWTBfZ4ZRI4B2FsmgRfuB
- f1rIG16pBfzjh1V1JBrdvtMrOZ9Lae/yDy8PfLEdk8BEQZSchu/t9h7kzHfjd6xiE7wPpIIJzzc
- vqtBB3N0zRy64eyHRlIk2iPuSxZ2iA==
-X-Proofpoint-GUID: QHrjYmQXdbsvJ2uO7KSK5dJ5w1gfTrUT
-X-Proofpoint-ORIG-GUID: QHrjYmQXdbsvJ2uO7KSK5dJ5w1gfTrUT
-X-Authority-Analysis: v=2.4 cv=I+Fohdgg c=1 sm=1 tr=0 ts=6920ed42 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=XYAwZIGsAAAA:8 a=255BHluu6XS_bZfolTkA:9 a=CjuIK1q_8ugA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=E8ToXWR_bxluHZ7gmE-Z:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-21_07,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 clxscore=1015 suspectscore=0 impostorscore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511210176
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251121160640.254872094@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:To3bkroBWi1ENSfLDpITcBxa89vYidtPDb+6BIW9hwy0ON4xKSn
+ 8GnTPgSSoviccmUqcwoT8fKMEpnHUbsBXNiVqqCR1fYYgsNUc+rwZT+74AeQnn0AFknXkG2
+ Bh4D4DvXdljizE+h4fR7cx0zQW0VqPq/ev4T2shYZOypbbMR9tigrRAPdlLxaJcQ2VaBwTZ
+ C79ESEP/Mv3MmQM6sQe4A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4aZPheLWxmA=;nNoAGO3i3fwFf6EZ9TOZsWwqRpe
+ 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
+ 5KEbA==
 
-On Fri, Nov 21, 2025 at 02:20:48PM +0100, Ludovic Desroches wrote:
-> The switch from devm_kzalloc() + drm_panel_init() to
-> devm_drm_panel_alloc() introduced a regression.
-> 
-> Several panel descriptors do not set connector_type. For those panels,
-> panel_simple_probe() used to compute a connector type (currently DPI as a
-> fallback) and pass that value to drm_panel_init(). After the conversion
-> to devm_drm_panel_alloc(), the call unconditionally used
-> desc->connector_type instead, ignoring the computed fallback and
-> potentially passing DRM_MODE_CONNECTOR_Unknown, which
-> drm_panel_bridge_add() does not allow.
-> 
-> Move the connector_type validation / fallback logic before the
-> devm_drm_panel_alloc() call and pass the computed connector_type to
-> devm_drm_panel_alloc(), so panels without an explicit connector_type
-> once again get the DPI default.
-> 
-> Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-> Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
-> ---
-> Hi,
-> 
-> I am not sure whether this regression has already been reported or
-> addressed. If it has, please feel free to drop this patch.
+Hi
 
-Would it be better to fix those panels instead? In the end, the panel
-usually has only one bus.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> ---
->  drivers/gpu/drm/panel/panel-simple.c | 86 ++++++++++++++++++------------------
->  1 file changed, 43 insertions(+), 43 deletions(-)
+Thanks
 
--- 
-With best wishes
-Dmitry
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
