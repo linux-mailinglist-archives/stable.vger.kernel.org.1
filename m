@@ -1,185 +1,244 @@
-Return-Path: <stable+bounces-195626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DFAC794FC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAB0C7940D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 001A4364C0C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id AFED92A03E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B90D26E6F4;
-	Fri, 21 Nov 2025 13:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAFC1F09B3;
+	Fri, 21 Nov 2025 13:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RnvEJpKT"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PZVmXixl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AA1F09AC
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 13:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C71F09AC;
+	Fri, 21 Nov 2025 13:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731210; cv=none; b=mgneOAggIZaITXesnKaThv64nVA9QWy+4NaEQma5nXFJo8kSmF8jq3SKVQQZHXfBZ7mK90aNR2s4FY3WCybAvUmlRNEe7sK253CpwbesRfBn7H9718we4zJt1tTNQKO3wuXcERAL7iJOzYziZv81aMl/fqZ2wIojjK5U9Kw1HKA=
+	t=1763731312; cv=none; b=Seog89FKpV+BiiMfHpIJmlH/Gn/Pl1YMHZwv4dcmZi2Fw3C+5hMA+jNUSufrX6AL0AJt3/IH/JupQQFTjcteYC4L08VDEsLeBxVIvezZrTX5vnO/yP/zmLcLdJnvgE0DezRu30vCRfIOzNuFv7LgFk/354BRODK6Xsaop5SDhYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731210; c=relaxed/simple;
-	bh=cVTX0pS1+/2gdB6UfK+cy83GrQRiWSCQUkL+jm52ZPk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gks80yTIGRcbJbrzkPMIjraM45wAnZh/igPt4CCW+l1+XauGhdX8u7Fakmw3VSbKim4a4SKlQ6A4mp9KvnvtBq/xsueTZusEFd0VxZDQkLPEpzEvlAL3myIMMlpkAMtMtn6EYl5Snz2DwGE1mmnpFDEK/8HDUm1Sl1PHwRsczrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RnvEJpKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A67CC4CEF1;
-	Fri, 21 Nov 2025 13:20:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763731209;
-	bh=cVTX0pS1+/2gdB6UfK+cy83GrQRiWSCQUkL+jm52ZPk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RnvEJpKTDrQ8Ge8q0wBBbUZls6l0OixMTYz8RMu5JLww4j7LCi+oQatbdqFc2HtKz
-	 +IIj/pBORvPLvxXPLBKs1dKJ6yF6Ow5hN0Z8oXCRag1PF3VjuQFv+h38DuoucU7xHw
-	 GP69F5UTjRK2DHk38V4qHMJkAcG0DcPFDFOg6Gs9gbzFbTDZwVt8MGfeRsLeVM6QiG
-	 0zG2+Y2iMe9frSHKj7moY1+IDdzCpRCWGkYSH9XTJDCmgwnAidIkhyU98Xr+5UYA7i
-	 HYx4bByJjpgi5nLXLpxl25X70J8elCG7+az68OkGeWmHJPdkjcHuAp/DdAxX1xh03D
-	 iJ3JIh6HjWJjQ==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 616B4F40079;
-	Fri, 21 Nov 2025 08:20:08 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 21 Nov 2025 08:20:08 -0500
-X-ME-Sender: <xms:CGcgaYy3hNw_S9JIrhXpIvwX_c2KjdHKMmpyrZi7Revg5RC38FnkTA>
-    <xme:CGcgaSbSBLxgsIKY4D4Q5vns-WgA5Z7RVUHTaKJlvKFcsLY66r0_MCArNglnJjpLH
-    S0VtYtIZPXs0Bly8Fpu614bRQCr1HCFM0P6Q0_2uxwyI24BqQH5NgY>
-X-ME-Received: <xmr:CGcgaQ1QFdxTlYkVueUH6TYu4b34F2xI1YrRjIUhBkojOw9Z39_SEYj5VP0UeQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedttdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkefstddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpefggfektdeileehffdtgeejteffgfdtjeefffdvleduheelkeehgefgfedtudev
-    ffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppe
-    hkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohep
-    gedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugi
-    hfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidroh
-    hrghdruhhkpdhrtghpthhtohepsggrohhlihhnrdifrghngheslhhinhhugidrrghlihgs
-    rggsrgdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegujhifohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhi
-    ugesfhhrohhmohhrsghithdrtghomhdprhgtphhtthhopegurghvihgusehrvgguhhgrth
-    drtghomhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:CGcgaQhZk707XZirGKo13fVqyQlPtE3nktDRP7e2j_xx-dg4Chvqkg>
-    <xmx:CGcgado3IfAJx5Lv3oDaTzZi0zRTN9M6eqwhyQcYy6l0iADCySc8Ig>
-    <xmx:CGcgaawMvuPxd4lJvtCIqTUP8MnNi-VbqAiNGLv8jR9XiiHKH4UQtw>
-    <xmx:CGcgaQmUiyBf_XUHgYHBABFWstlP-QZf_WaangxzpxmPBm8wjmILQw>
-    <xmx:CGcgaT0OTcsXhwade5AGFA87fLwV4vDcrjJYKphIqCnVCUODb0XXiuT3>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Nov 2025 08:20:07 -0500 (EST)
-Date: Fri, 21 Nov 2025 13:20:06 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Christian Brauner <brauner@kernel.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Liam Howlett <liam.howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.17.y] mm/truncate: unmap large folio on split failure
-Message-ID: <jqmjjsedulkfhgisw4zrzbkuya34bdh6bvzzpdvo2v6jzbfxsy@qsonu7ijsmva>
-References: <2025112037-resurface-backlight-da75@gregkh>
- <20251120165221.892852-1-kas@kernel.org>
- <2025112149-antirust-saggy-93e1@gregkh>
+	s=arc-20240116; t=1763731312; c=relaxed/simple;
+	bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=iBaweLjmE7mS/1PtxtB4GB8yPN+qzQUJ8qfUaSw2MFzK8UZMEBOwkFZ8BEVWbcT/ApCcAJHLo6L9dVTubtbxKWT/MfttJFalu3V1udviPN8OwWn0EOns5Q++VCH/9678wrKkzYDpP00h+qDmCmEJo4MB1AiDDYI2uwZQcmOqDN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PZVmXixl; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1763731310; x=1795267310;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
+  b=PZVmXixlcpXFg/nL8kGdtsNRFkG297uPdNylhCasbrcpedzi3gmRfWFC
+   agytdoB4s7EMaxCUL3FHWeEDpJ6e028qttBAMgLVEbOwhweJdC/BH1uW9
+   6x2e2Fu6j4IHAs0UOnKOtbe4lFmvAZYXhuwfzDhnCeQPj9oAvumO5ffNI
+   ++P7iMyHO9FbmAF0N6LPEWHlFQ+yV4kUDi48pRGQGIyPReZsxdL0uIbeE
+   SvMiGHA3FdezBkqLbukztJhKS/fy7Gkh+vLzhjwMyUUjZHshXNa8Ir5v7
+   +lzuj5GqKvHLubK13pEb4gpvxQTZOqVlUKRDfGYnAinSX+I2WCZKcPa11
+   Q==;
+X-CSE-ConnectionGUID: xDvkwLU6SPqBbOQ2+GbYfA==
+X-CSE-MsgGUID: C5bIzEmsQq2TfDZ+nPLjow==
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="49983260"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Nov 2025 06:21:43 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 21 Nov 2025 06:21:08 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 21 Nov 2025 06:21:05 -0700
+From: Ludovic Desroches <ludovic.desroches@microchip.com>
+Date: Fri, 21 Nov 2025 14:20:48 +0100
+Subject: [PATCH REGRESSION] drm/panel: simple: restore connector_type
+ fallback
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025112149-antirust-saggy-93e1@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAC9nIGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQyND3ZzklPiCxLzUnPjk/Ly81OSS/KL4ksqC1Pi0zArdNAODtFRjczO
+ zRBMjJaARBUWpQGGw8dFKQa7uQa7BwZ7+fkqxtbUAF6tkj3oAAAA=
+X-Change-ID: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
+To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
+	<jesszhan0024@gmail.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Anusha Srivatsa <asrivats@redhat.com>, "Luca
+ Ceresoli" <luca.ceresoli@bootlin.com>
+CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4871;
+ i=ludovic.desroches@microchip.com; h=from:subject:message-id;
+ bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
+ b=owEBbQKS/ZANAwAKAT455hP3e2QtAcsmYgBpIGdACQGqsia9V4GlQ+9DQpHU+3XyP5o1dJcz0
+ R/IGuWGV/iJAjMEAAEKAB0WIQQAMEvJiWmsW41tNU0+OeYT93tkLQUCaSBnQAAKCRA+OeYT93tk
+ LYtZD/4rbEzqLIjZBDiSKelrsPFqQDDwEgM4F6WrwBuTLRDlDl4M7TpWLe8LhJGls+8oOPYGG+X
+ 4CcD43GlnojuDwTHJQ3HK17Asar2ayX35bNX40mcuk2H60biMHKZMoeZDqtUxWIvxcL5P06q8X2
+ aq0FzAB1I6++x64SbDgnOycFosx0kvhH9gLHhLZR6uILa8LyuJrCjCvw0ojTS5vaYKvGEU6Kaui
+ TBo/XuTvKJ5U5MQJIMGVPK1qkHtrQE0zJsGEyLtwVIO+IPI7hTBZKPDi/z0YFoCvCTZNsFh1ico
+ VqhpCaoZIoZsAx6TmrLrUdy9nrpib0OfgL94DKL/VqzEJJNctHZds8uC/t0DtpifU5bRd7+0bbk
+ kjQrEbPmtLOavW179zIzLZgPJJpshmKE8uzZYIxawT/gq1HNglBjjojHPJ2DiF3eoHQJN+29RAG
+ 1sHG/DArriJFdy8th/c9c0W8GORsS3h5uZNbVvrk0Il1/C6bfHa6AlcN88Bgryp+K0wyP2FF5+3
+ P0SFu+gV8JDzBHT2t9BRcqr1urCLXsDaiW+8esDvmM8CDoG5a5y9tfFGzWnC6m/AMgJDxehB598
+ 9eMnYtbYT+hDPR68oVDNtD1RwCsGoEYji9DA20pBf+ejxkvamzDxjw0m+T6bACsyF4+XqTi/Ikn
+ gpYrNNI7FTeETzw==
+X-Developer-Key: i=ludovic.desroches@microchip.com; a=openpgp;
+ fpr=665BAA7297BE089A28B77696E332995F09DCC11A
 
-On Fri, Nov 21, 2025 at 10:46:11AM +0100, Greg KH wrote:
-> On Thu, Nov 20, 2025 at 04:52:21PM +0000, Kiryl Shutsemau wrote:
-> > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> > supposed to generate SIGBUS.
-> > 
-> > This behavior might not be respected on truncation.
-> > 
-> > During truncation, the kernel splits a large folio in order to reclaim
-> > memory.  As a side effect, it unmaps the folio and destroys PMD mappings
-> > of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
-> > are preserved.
-> > 
-> > However, if the split fails, PMD mappings are preserved and the user will
-> > not receive SIGBUS on any accesses within the PMD.
-> > 
-> > Unmap the folio on split failure.  It will lead to refault as PTEs and
-> > preserve SIGBUS semantics.
-> > 
-> > Make an exception for shmem/tmpfs that for long time intentionally mapped
-> > with PMDs across i_size.
-> > 
-> > Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
-> > Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Cc: Christian Brauner <brauner@kernel.org>
-> > Cc: "Darrick J. Wong" <djwong@kernel.org>
-> > Cc: Dave Chinner <david@fromorbit.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Hugh Dickins <hughd@google.com>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: Liam Howlett <liam.howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Cc: Michal Hocko <mhocko@suse.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Rik van Riel <riel@surriel.com>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > (cherry picked from commit fa04f5b60fda62c98a53a60de3a1e763f11feb41)
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > ---
-> 
-> Does not apply to 6.17.y at all :(
-> 
-> Did you forget to apply this on top of other commits?
+The switch from devm_kzalloc() + drm_panel_init() to
+devm_drm_panel_alloc() introduced a regression.
 
-Hm. It applies cleanly on v6.17.8:
+Several panel descriptors do not set connector_type. For those panels,
+panel_simple_probe() used to compute a connector type (currently DPI as a
+fallback) and pass that value to drm_panel_init(). After the conversion
+to devm_drm_panel_alloc(), the call unconditionally used
+desc->connector_type instead, ignoring the computed fallback and
+potentially passing DRM_MODE_CONNECTOR_Unknown, which
+drm_panel_bridge_add() does not allow.
 
-❯ git log -1 --oneline @
-8ac42a63c561 (HEAD) Linux 6.17.8
-❯ b4 shazam 20251120165221.892852-1-kas@kernel.org
-Grabbing thread from lore.kernel.org/all/20251120165221.892852-1-kas@kernel.org/t.mbox.gz
-Breaking thread to remove parents of 20251120165221.892852-1-kas@kernel.org
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 2 messages in the thread
-Analyzing 1 code-review messages
-Checking attestation on all messages, may take a moment...
+Move the connector_type validation / fallback logic before the
+devm_drm_panel_alloc() call and pass the computed connector_type to
+devm_drm_panel_alloc(), so panels without an explicit connector_type
+once again get the DPI default.
+
+Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
 ---
-  ✓ [PATCH] mm/truncate: unmap large folio on split failure
-  ---
-  ✓ Signed: DKIM/kernel.org
+Hi,
+
+I am not sure whether this regression has already been reported or
+addressed. If it has, please feel free to drop this patch.
 ---
-Total patches: 1
+ drivers/gpu/drm/panel/panel-simple.c | 86 ++++++++++++++++++------------------
+ 1 file changed, 43 insertions(+), 43 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index da6b71b70a463400fcc45006788f87e97b0c148c..dc41789f6a53c78b928ff39291ab7219a2d835dd 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -623,49 +623,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 	if (IS_ERR(desc))
+ 		return ERR_CAST(desc);
+ 
+-	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
+-				     &panel_simple_funcs, desc->connector_type);
+-	if (IS_ERR(panel))
+-		return ERR_CAST(panel);
+-
+-	panel->desc = desc;
+-
+-	panel->supply = devm_regulator_get(dev, "power");
+-	if (IS_ERR(panel->supply))
+-		return ERR_CAST(panel->supply);
+-
+-	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+-						     GPIOD_OUT_LOW);
+-	if (IS_ERR(panel->enable_gpio))
+-		return dev_err_cast_probe(dev, panel->enable_gpio,
+-					  "failed to request GPIO\n");
+-
+-	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
+-	if (err) {
+-		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
+-		return ERR_PTR(err);
+-	}
+-
+-	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
+-	if (ddc) {
+-		panel->ddc = of_find_i2c_adapter_by_node(ddc);
+-		of_node_put(ddc);
+-
+-		if (!panel->ddc)
+-			return ERR_PTR(-EPROBE_DEFER);
+-	}
+-
+-	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
+-	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
+-		panel_simple_parse_panel_timing_node(dev, panel, &dt);
+-
+-	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
+-		/* Optional data-mapping property for overriding bus format */
+-		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
+-		if (err)
+-			goto free_ddc;
+-	}
+-
+ 	connector_type = desc->connector_type;
+ 	/* Catch common mistakes for panels. */
+ 	switch (connector_type) {
+@@ -720,6 +677,49 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 		break;
+ 	}
+ 
++	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
++				     &panel_simple_funcs, connector_type);
++	if (IS_ERR(panel))
++		return ERR_CAST(panel);
++
++	panel->desc = desc;
++
++	panel->supply = devm_regulator_get(dev, "power");
++	if (IS_ERR(panel->supply))
++		return ERR_CAST(panel->supply);
++
++	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
++						     GPIOD_OUT_LOW);
++	if (IS_ERR(panel->enable_gpio))
++		return dev_err_cast_probe(dev, panel->enable_gpio,
++					  "failed to request GPIO\n");
++
++	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
++	if (err) {
++		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
++		return ERR_PTR(err);
++	}
++
++	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
++	if (ddc) {
++		panel->ddc = of_find_i2c_adapter_by_node(ddc);
++		of_node_put(ddc);
++
++		if (!panel->ddc)
++			return ERR_PTR(-EPROBE_DEFER);
++	}
++
++	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
++	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
++		panel_simple_parse_panel_timing_node(dev, panel, &dt);
++
++	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
++		/* Optional data-mapping property for overriding bus format */
++		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
++		if (err)
++			goto free_ddc;
++	}
++
+ 	dev_set_drvdata(dev, panel);
+ 
+ 	/*
+
 ---
-Applying: mm/truncate: unmap large folio on split failure
+base-commit: 88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
+change-id: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
 
-Do you have anything on top of v6.17.8 in your 6.17.y queue?
-
-My other backport to 6.17.y doesn't interfere with the patch either.
-
+Best regards,
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Ludovic Desroches <ludovic.desroches@microchip.com>
+
 
