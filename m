@@ -1,133 +1,121 @@
-Return-Path: <stable+bounces-196567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0217C7BB57
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 22:05:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3E2C7BBA8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 22:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21EA435AC8E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 21:05:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92CC34E1661
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 21:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D480B305957;
-	Fri, 21 Nov 2025 21:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B93305070;
+	Fri, 21 Nov 2025 21:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vP7B5gzk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BR3FDrTS"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="fmv+wuWj"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061ED22E3F0;
-	Fri, 21 Nov 2025 21:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC12DFA31
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 21:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763759107; cv=none; b=bbE966WT52HmLsgt2dyGsxAPZAK7o6Ro7caeRnW1mvFnxsnRQLpt9mkbd4xaQJMAZ5HVt7K2r2nWqi7JV/JB0oafduOaKXvJ7f2hYEa+mA4yx4RjCiQi1J+evQPzw4yH29kMWbLKY9qzA6191pNWV2ziwWgk1nNAn/y2QxH7EFk=
+	t=1763759651; cv=none; b=Z35sGCIDKGm5Je0Uil6We5IXVwGK82bKDfWujoVNWF2YpW4qcwt+PMzbrIukrFxlHHxdau+ThAzYvK6GZWMFX3CLKEcIKCHghCF7nA5SO/o0kjfniGenRm88RVFU2vWZc41w3PJBlGYuEo4j3uoXDl4gcu6L9v4i0H0UL5RB7hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763759107; c=relaxed/simple;
-	bh=qHq02nPMWRFZ4qAZ1c71cBk710r3nPoMdhTVgW1tTbw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=M34K5w4bQqW/tvr7y0miD71258rQPZf0PZShutvU7sBa27+1+IMrT/ECY0aUu2AVfE8GcdZuH7g9T8nppHK2YFVkWWEcOEBmb7VFXgLU6A/x/9Kx1fHtxYBaHX8iFSVwZQX97wNoqZhGSSl0ErAZZZFmttOy3WQexC0+lmWWq9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vP7B5gzk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BR3FDrTS; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 21 Nov 2025 21:05:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763759103;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rm8iUuffrYglEuUAboi3pgCuhaZOVNYV12kyvo71NS4=;
-	b=vP7B5gzkLFE5KF/5P7Qk5cGBEDdZm9HMkR4yrtZY5eb34+cU3nsx3vhCPoeGu1Jbqul0JK
-	N2qplEiWwk5hUOzbVM2XXf1rU5O1dHDO4oLIZqIIUoTaqVYNcguYtm+nCz8361XVf4Gidu
-	gUGfWlAoaLmphrdYYI7J8cYSAz3/Ysf/5i31comDgRnfS8hRDzfPq5fCGMLGZoXB5XjK7X
-	voTsN4bZD9z/vqUZRNl8zZFImnI8LU4eIwabalqxEH9cx8OBZtYT7GICxWiu5++RR9TjLS
-	uOxLqBLmCKOJRIVDGDVe+qanU7oGhulfAHVaijV9EBme4afjCaKz9j0B6UJCOg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763759103;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rm8iUuffrYglEuUAboi3pgCuhaZOVNYV12kyvo71NS4=;
-	b=BR3FDrTSnjrfudXGgtRhN/kkc2rVhK/Be70WAIeeTQFVQdVT3V3ks5w7GzeIWH2vr9iAEI
-	DDRODE0oVBkiiaAw==
-From: "tip-bot2 for Avadhut Naik" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Do not clear bank's poll bit in
- mce_poll_banks on AMD SMCA systems
-Cc: Avadhut Naik <avadhut.naik@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251121190542.2447913-2-avadhut.naik@amd.com>
-References: <20251121190542.2447913-2-avadhut.naik@amd.com>
+	s=arc-20240116; t=1763759651; c=relaxed/simple;
+	bh=pEFooFR78YrhIvGWQXoeWCNC2kSSj2NyKh3ms4wsbIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nTYhvOcAR+FmA4BxHdNQ+wVTJuDGEtBgK/Sos14Hb16krwGroC1t2kzH+n6q583WPpS2UzUEky3i85NNxmxGFPRYXtyyVCjXddjWg+1cWSdN5ocWeiDVrLkzuIN/aix9oE29gq/anzljYDRzKUjQqZpFshWCAUgnyKBi5DocNVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=fmv+wuWj; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29558061c68so32941275ad.0
+        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 13:14:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1763759647; x=1764364447; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DefMfvVzY19z1+5A+UQbLAdG6uc9MBGDJLgUd7SbSRA=;
+        b=fmv+wuWjKi2uEMilGjxHLN54e54K2K8/d2v97RM/sH/ysjIblA73WXriRlABt4ALUz
+         egGQPlWPtFDWUeJuDMJw3eOIhNLBN6GWB5Ja7mvbRWOF+dOCkB3DQEMsfDgSDpYy7xvb
+         RpGHuSLlG4U/0F4EhU4KgQhZjmZYh2M1INfN4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763759647; x=1764364447;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DefMfvVzY19z1+5A+UQbLAdG6uc9MBGDJLgUd7SbSRA=;
+        b=GK7J3Y8hEcHNXLknXgonnXCof5xshomp6vuNnkJNpvz2veBu6P8CPT3W4rZlLEk940
+         DiBDD14/E3/JNR+FFLnctT2ocbMZFE7GEQ8hFOoidrWzYYeH2zhb+Q5Gr4gJKy7dm7AM
+         +4AUeUpCnS0sdESNm11RwMpr1iJkxfvqKYL2vsQ4tiBgm9fMcq4TDzQwOoF6d6MUH5GU
+         5JNN5e37Z/BixON39ftFLhPT1iPwyfJDeo3hek58gaIzIPxwc+IYLszb61lYQyXypucn
+         PKbGEZ1b/oA6qbKJ+Pzat4r0zbpMa0UlXK2+DYSj83H/cqXxxSgIWkb5NFH7R/Iwzfvt
+         70Nw==
+X-Gm-Message-State: AOJu0YwwxhD+NZhRzAA4Xj3m2ToL3DBWIFOaj/rwkpv4KZS5crkfdm5s
+	AQgGfn01KjvF4bpwk3uEmCa6l3NF9pmFaHx+dQjOmxLu3LuzlPqhG9uWg1UojAoAVA==
+X-Gm-Gg: ASbGnctK8r509D+ANW2IOBq8HUjTx4LWVGyFD2727+nEBFcBULrRDT4foULFoOFnTvS
+	gvJnjk+8TpK5w7AxyyQIDqbKuqE3k8tx9GPdDLtZSO7yGUSTnKvsuc9wca4S/dlpIxxdag0tkw6
+	cuHyC9aEtK6LfBY/ApEZ/9yj0Xgpg/1yNy8pcgoQJOrB9J9Ah2A6frbVscyw7n2dVbPauqxD4CZ
+	RD7CTLd4+6skgRc0AXdLTbnkRvocM0Ydf197L2N75G9PUiyxs/KKgHBCFz51PlD7PdQb4rq7nVL
+	wO3kikZ+LQ0U2qcWevqB1KMKduv6UdKFvd8ZUc9bs8C07gwLIw1Rk6ms9hIsszQSmqNnuDLMsQi
+	g4clqw7y5S158Zg/UDM7yvHVORbAqFcxlxrP+zEZcRMJ/bB9qmq+SndiNNhIKkJ5ASJL23oYXeO
+	zWPlPii7L+w4m8q5+RT+jzux/K3/wiEkqt
+X-Google-Smtp-Source: AGHT+IGoICO5vKGUzbvGQPv8FA6NHPI2AeaS2RMHkJJXNl2UM/lBqDzjcLi9woXD/2w5OzxK19kA7g==
+X-Received: by 2002:a17:902:d587:b0:295:592e:7633 with SMTP id d9443c01a7336-29b6bf3b62bmr46414455ad.29.1763759647409;
+        Fri, 21 Nov 2025 13:14:07 -0800 (PST)
+Received: from fedora64.linuxtx.org ([216.147.123.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b105f79sm64411075ad.20.2025.11.21.13.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 13:14:06 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Fri, 21 Nov 2025 14:14:03 -0700
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
+Message-ID: <aSDWG9xH4l9QJYQK@fedora64.linuxtx.org>
+References: <20251121160640.254872094@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176375910192.498.7060304431995266255.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
 
-The following commit has been merged into the ras/core branch of tip:
+On Fri, Nov 21, 2025 at 05:07:19PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.9 release.
+> There are 244 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 23 Nov 2025 16:05:54 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.9-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Commit-ID:     d7ac083f095d894a0b8ac0573516bfd035e6b25a
-Gitweb:        https://git.kernel.org/tip/d7ac083f095d894a0b8ac0573516bfd035e=
-6b25a
-Author:        Avadhut Naik <avadhut.naik@amd.com>
-AuthorDate:    Fri, 21 Nov 2025 19:04:04=20
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 21 Nov 2025 20:33:12 +01:00
+Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-x86/mce: Do not clear bank's poll bit in mce_poll_banks on AMD SMCA systems
-
-Currently, when a CMCI storm detected on a Machine Check bank, subsides, the
-bank's corresponding bit in the mce_poll_banks per-CPU variable is cleared
-unconditionally by cmci_storm_end().
-
-On AMD SMCA systems, this essentially disables polling on that particular bank
-on that CPU. Consequently, any subsequent correctable errors or storms will n=
-ot
-be logged.
-
-Since AMD SMCA systems allow banks to be managed by both polling and
-interrupts, the polling banks bitmap for a CPU, i.e., mce_poll_banks, should
-not be modified when a storm subsides.
-
-Fixes: 7eae17c4add5 ("x86/mce: Add per-bank CMCI storm mitigation")
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251121190542.2447913-2-avadhut.naik@amd.com
----
- arch/x86/kernel/cpu/mce/threshold.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/th=
-reshold.c
-index eebaa63..f19dd5b 100644
---- a/arch/x86/kernel/cpu/mce/threshold.c
-+++ b/arch/x86/kernel/cpu/mce/threshold.c
-@@ -98,7 +98,8 @@ void cmci_storm_end(unsigned int bank)
- {
- 	struct mca_storm_desc *storm =3D this_cpu_ptr(&storm_desc);
-=20
--	__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
-+	if (!mce_flags.amd_threshold)
-+		__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
- 	storm->banks[bank].history =3D 0;
- 	storm->banks[bank].in_storm_mode =3D false;
-=20
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
