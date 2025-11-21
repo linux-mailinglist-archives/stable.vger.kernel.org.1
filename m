@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-196393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815B8C79F45
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C63C79478
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4678D341526
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 16AEC2A1DB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42FE34C155;
-	Fri, 21 Nov 2025 13:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BCD2FF64E;
+	Fri, 21 Nov 2025 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VxNTfMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="groP2DA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060E345750;
-	Fri, 21 Nov 2025 13:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2316A26CE33;
+	Fri, 21 Nov 2025 13:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733378; cv=none; b=m5GNAw0UpwqdjlEsPv3xxakPdCvk0Ut+iSD5x8K9C41s6gM03ebzOu79XWNRXLvInwfDqtYmiINHiyNY+DMewL5384nZnrHrFvUnQrBwTJk576PrSqxRWy9QpgciOeoO2sNf8Sqve0qbuCuAFt2MSxYMPDW0OtW4xhFag7ibJdk=
+	t=1763731416; cv=none; b=GoqOGBZa01uODpve2IcUoLcKfovaMN8igse118NPJ/8DNTSfcnaJlNbbhQ14kmLHTWv8PDWIqUDTTPdGNPYFFQeUtd+l/FeNftxg8VipribnIETUesp8RroN7qWXrkFZQBQNxWWYfUa1MAcOWK0oPx5TiOlcVWOCxDUOpEY9qbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733378; c=relaxed/simple;
-	bh=zk1lcMnradzRA2sC+9vz1TpWnzRGEjt4EEG9Q4kiWWA=;
+	s=arc-20240116; t=1763731416; c=relaxed/simple;
+	bh=tjm3DaLjYUbKpmgMhaV3kXhl/13gLiuVpsxze0mvTb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ww2Uj6kGJ0nK11L6XPLxNmMcdQ9T/NguzXn7JDVN1lYPu5pZiONyEW8nj4UrKimd9ZsZNwGk6q6+IS39trJMuQzH7KR7L97N+z/a/GzeXwB/qc+5k0qS46J6qXxmu2WZpTOQonT3viBxnOfov/fXYd4rzNr9Ltt5f62BwQKM4g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VxNTfMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF272C116D0;
-	Fri, 21 Nov 2025 13:56:17 +0000 (UTC)
+	 MIME-Version; b=RqiL08RROUvfEtCtg2/F/EAugjDpnkUBIbfIXBNJhecd8pKQxZCv/1A2EPuBgoibqx+VQz6iBun8p9DwI4lAG4WKidXvz2y7HdcSleAta+A3NXkMuYkYKDVd+ze0vo4ujAgdqtH/XMcKTFSjxIGaE1Pw1VYAOOYCR0Tm5VDfgng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=groP2DA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E35CC4CEFB;
+	Fri, 21 Nov 2025 13:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733378;
-	bh=zk1lcMnradzRA2sC+9vz1TpWnzRGEjt4EEG9Q4kiWWA=;
+	s=korg; t=1763731416;
+	bh=tjm3DaLjYUbKpmgMhaV3kXhl/13gLiuVpsxze0mvTb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VxNTfMKDx8HUwR6gJ7QuTW99nz3GmhARNUWHJaMk4FPyWMAmLp0roKL/abKfH6lA
-	 hgcezinaqDw57ke0p12pWVYptCCgP0Lqk0Re8HLs5kDeIhIx2J7peAH1t9djN2csDg
-	 OyqZa7VsAEKmb3CtjIhCj31blQHbm2L2fW2zfK7o=
+	b=groP2DA8juXctpjAnct+Ni11oWX1fwJACRLNlA2jlDmiie9DivnGUhqVakwIOzMgN
+	 tQP4bFMBaoo/b6ivEhupAoEhP5pPhDCw8lBOY4Fh/fnxFqOcpU/p3/WrBuOAK0cT6m
+	 e+3Fc5waWOyiKzJ3a3YTwrZMBaibRV/s2wlbCwwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Hu <nick.hu@sifive.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 448/529] irqchip/riscv-intc: Add missing free() callback in riscv_intc_domain_ops
-Date: Fri, 21 Nov 2025 14:12:27 +0100
-Message-ID: <20251121130246.951901153@linuxfoundation.org>
+	Hans de Goede <hansg@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.17 201/247] spi: Try to get ACPI GPIO IRQ earlier
+Date: Fri, 21 Nov 2025 14:12:28 +0100
+Message-ID: <20251121130201.938806416@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Hu <nick.hu@sifive.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 14473a1f88596fd729e892782efc267c0097dd1d ]
+commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
 
-The irq_domain_free_irqs() helper requires that the irq_domain_ops->free
-callback is implemented. Otherwise, the kernel reports the warning message
-"NULL pointer, cannot free irq" when irq_dispose_mapping() is invoked to
-release the per-HART local interrupts.
+Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+on the SPI device.
 
-Set irq_domain_ops->free to irq_domain_free_irqs_top() to cure that.
+If there is no driver for the SPI device then the move to spi_probe()
+results in acpi_dev_gpio_irq_get() never getting called. This may
+cause problems by leaving the GPIO pin floating because this call is
+responsible for setting up the GPIO pin direction and/or bias according
+to the values from the ACPI tables.
 
-Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
-Signed-off-by: Nick Hu <nick.hu@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251114-rv-intc-fix-v1-1-a3edd1c1a868@sifive.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+to ensure the GPIO pin is always correctly setup, while keeping the
+acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+-EPROBE_DEFER returns caused by the GPIO controller not having a driver
+yet.
+
+Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 627beae9649a2..84cb9cda365ad 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -149,7 +149,8 @@ static int riscv_intc_domain_alloc(struct irq_domain *domain,
- static const struct irq_domain_ops riscv_intc_domain_ops = {
- 	.map	= riscv_intc_domain_map,
- 	.xlate	= irq_domain_xlate_onecell,
--	.alloc	= riscv_intc_domain_alloc
-+	.alloc	= riscv_intc_domain_alloc,
-+	.free	= irq_domain_free_irqs_top,
- };
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2866,6 +2866,16 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
- static struct fwnode_handle *riscv_intc_hwnode(void)
--- 
-2.51.0
-
++	/*
++	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
++	 * the GPIO controller does not have a driver yet. This needs to be done
++	 * here too, because this call sets the GPIO direction and/or bias.
++	 * Setting these needs to be done even if there is no driver, in which
++	 * case spi_probe() will never get called.
++	 */
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++
+ 	acpi_device_set_enumerated(adev);
+ 
+ 	adev->power.flags.ignore_parent = true;
 
 
 
