@@ -1,75 +1,59 @@
-Return-Path: <stable+bounces-195631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC67C794B7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55750C7979C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31B874E6D5A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D571347984
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE9D3176E1;
-	Fri, 21 Nov 2025 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F1D345750;
+	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeslH6w6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKtPyg+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD830F93B;
-	Fri, 21 Nov 2025 13:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23BD3451A3;
+	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731222; cv=none; b=sFBMBnffww0uIqFwF4wcL9iuyr9f9utAtc4hWnHhZWOJxwkHGj+dWHQbqN8VSb5YWNEGP1jhD0H3Nx8oVZCAoQskQk8VwaO7N3Vn6bfhm+9cnbJwsnZihBQs/GhwPQiQEsAp2+ZDxuEFeDSoV01HxQhUQqOOy0RFGZ1XCs6JHyM=
+	t=1763731809; cv=none; b=jHUrywriIYML35GCPrYuK94qUr2EZ3t9LNh/jl3uEwghuGMRA34mFiZT753XmZtsht9X7Hl5FjcFdaVPx23+pP7U1lrdgF8Hv89p+tr+gnUxCZxxY6im9icYLvqD3BHC2nNhQB+iYRTUMvr7zyht1nyrDmLzE8iBc70Aak/yfpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731222; c=relaxed/simple;
-	bh=gOKwVzia8hzpc+R3OVhT3xtddWXOvdJmUk7rm1K9F9k=;
+	s=arc-20240116; t=1763731809; c=relaxed/simple;
+	bh=gAj7nqV32vVMZdq2Q4Uz568DMApcqFU+G9di+/1nzVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WH6fmCehXCV89vzkRxCK+KQO4ySoZwpDuo2qg8fuqBOrUX9gfdkU8YYOFmsxNxbrvN6PVOiMqRRAJRY6cB8SCd7hdeHta7q6ILWUMav+r9rUmC6y7gR//zsoJlm2p/YZZp0qfb//KyGhc7xC6KhoOCn6J94P3PtqmUVYEd900os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeslH6w6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312BEC4CEF1;
-	Fri, 21 Nov 2025 13:20:21 +0000 (UTC)
+	 MIME-Version; b=fFYyhMT3xVkoTqaMfeRO7ezLZvDorWlD5iL1gwX6teGF1CiBoXAwkfPfY8TnFxI2tEN2w7lk9HGQZBP2l49zHyMSGKKxWetLScig0yDx0DI9C5dSEzOBdYpj6e0dafyG6cMuS7Mz4y1VHpF/I1zPJZZ7U9D9C+mef3jnzjlq/Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKtPyg+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBA1C4CEFB;
+	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731221;
-	bh=gOKwVzia8hzpc+R3OVhT3xtddWXOvdJmUk7rm1K9F9k=;
+	s=korg; t=1763731809;
+	bh=gAj7nqV32vVMZdq2Q4Uz568DMApcqFU+G9di+/1nzVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeslH6w6Dg1gnYYF2He0FNCmGMgUqo71mIHtLAs4tR4VqSzoUgUnKhK1qU5GouiI5
-	 hW3/v2auHYU0mLg1zb99kol7wWXdnINzPitMb3X3pf/2pTX9o+xs2f/05o5pC4oKtF
-	 JGsRclpaAT74NyPH+TSCu5rr/KZDvj34K/51Wnas=
+	b=dKtPyg+si6GmmXUBMFSGNuq4gZMmRyJbRDFcBIvhGaBIlITsN+OWEQ67aLLBGjLt4
+	 sKKGfyJ0NB5xW17pQhoeHBQ5gbxAvFVXv/yW+CHEStiJGtHFB1lmslIzDD2pysz6Mp
+	 rrY1yAqkWEI/XH+Yc4y4VTvEQmu3123yauubSDCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Blake Jones <blakejones@google.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Collin Funk <collin.funk1@gmail.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Polensky <japo@linux.ibm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/247] perf test shell lock_contention: Extra debug diagnostics
-Date: Fri, 21 Nov 2025 14:11:20 +0100
-Message-ID: <20251121130159.500690665@linuxfoundation.org>
+Subject: [PATCH 6.12 054/185] net: sched: act_connmark: initialize struct tc_ife to fix kernel leak
+Date: Fri, 21 Nov 2025 14:11:21 +0100
+Message-ID: <20251121130145.826972345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,85 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 8b93f8933d37591d17c59fd71b18fc61966d9515 ]
+[ Upstream commit 62b656e43eaeae445a39cd8021a4f47065af4389 ]
 
-In test_record_concurrent, as stderr is sent to /dev/null, error
-messages are hidden. Change this to gather the error messages and dump
-them on failure.
+In tcf_connmark_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-Some minor sh->bash changes to add some more diagnostics in
-trap_cleanup.
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Blake Jones <blakejones@google.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Collin Funk <collin.funk1@gmail.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jan Polensky <japo@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Li Huafei <lihuafei1@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Nam Cao <namcao@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250821163820.1132977-5-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 3c723f449723 ("perf test: Fix lock contention test")
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: 22a5dc0e5e3e ("net: sched: Introduce connmark action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-2-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/lock_contention.sh | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/act_connmark.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/tests/shell/lock_contention.sh b/tools/perf/tests/shell/lock_contention.sh
-index d33d9e4392b06..7248a74ca2a32 100755
---- a/tools/perf/tests/shell/lock_contention.sh
-+++ b/tools/perf/tests/shell/lock_contention.sh
-@@ -7,14 +7,17 @@ set -e
- err=0
- perfdata=$(mktemp /tmp/__perf_test.perf.data.XXXXX)
- result=$(mktemp /tmp/__perf_test.result.XXXXX)
-+errout=$(mktemp /tmp/__perf_test.errout.XXXXX)
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 3e89927d71164..26ba8c2d20abf 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -195,13 +195,15 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	const struct tcf_connmark_parms *parms;
+-	struct tc_connmark opt = {
+-		.index   = ci->tcf_index,
+-		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+-	};
++	struct tc_connmark opt;
+ 	struct tcf_t t;
  
- cleanup() {
- 	rm -f ${perfdata}
- 	rm -f ${result}
-+	rm -f ${errout}
- 	trap - EXIT TERM INT
- }
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index   = ci->tcf_index;
++	opt.refcnt  = refcount_read(&ci->tcf_refcnt) - ref;
++	opt.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind;
++
+ 	rcu_read_lock();
+ 	parms = rcu_dereference(ci->parms);
  
- trap_cleanup() {
-+	echo "Unexpected signal in ${FUNCNAME[1]}"
- 	cleanup
- 	exit ${err}
- }
-@@ -75,10 +78,12 @@ test_bpf()
- test_record_concurrent()
- {
- 	echo "Testing perf lock record and perf lock contention at the same time"
--	perf lock record -o- -- perf bench sched messaging -p 2> /dev/null | \
-+	perf lock record -o- -- perf bench sched messaging -p 2> ${errout} | \
- 	perf lock contention -i- -E 1 -q 2> ${result}
- 	if [ "$(cat "${result}" | wc -l)" != "1" ]; then
- 		echo "[Fail] Recorded result count is not 1:" "$(cat "${result}" | wc -l)"
-+		cat ${errout}
-+		cat ${result}
- 		err=1
- 		exit
- 	fi
 -- 
 2.51.0
 
