@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-196474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E411AC7A07E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B15AC79862
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 33AFA35FCD3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D0D2F348AF7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D531A34C80A;
-	Fri, 21 Nov 2025 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D23337B90;
+	Fri, 21 Nov 2025 13:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm0ipm0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkKmIeIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098C248898;
-	Fri, 21 Nov 2025 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E1C30E0DC;
+	Fri, 21 Nov 2025 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733613; cv=none; b=jKnasXw7AVzze0SeefRHWAglXhdFyQAYlxZgm3Gk32/FqLuYA32LKaX3N0bGxoxxLpXSL6YaJ5SG538x8c8BNlnlz4uZXdyyxf8+g2kx52oq05NHMPgUnzmtn7dpIR1Y6AjmoJbDOhlKG9SwRl7LCtjuCym2C0njwYmv1bnFJxE=
+	t=1763732037; cv=none; b=Bzzo4KxgB1jbsKD7/8j6zPIEYItk/gnTopAADtLSPYRnHtkeQp1G5E8s7ltWaWyoQRoLpm2J/b3i9/0eYtDzVbKncZnN+KJ7Rblvv1NRR5PUON4zifgjHqhQo8BJ1aUt3nH9nZn2tXNmui6a7KyMfKxztC/U7oWxinpnzn85ArI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733613; c=relaxed/simple;
-	bh=9+iJjhvISmASTLTyIuyhbKye6WsG6UDXgS04NfroS1E=;
+	s=arc-20240116; t=1763732037; c=relaxed/simple;
+	bh=j2NQzai8TY1kyIDFvf8v0VvUJq0ea/b7LuAGFKC5ogU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKLxAgzjWnaayXubW4/fyTUcttt9+hIt8lMR+yqXPHyG54krcIlmRQdUuNxfaWmxJqQbhTbB3geMqoeeQoPAfwwQUYq5rZWJVcZGiNbFUc3co+vGQyGNoPGGmmwFWbBA8PVUbIi4K70PFCDMje2nzahV2bSCe8zv8TC+qwkIcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm0ipm0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB87C4CEF1;
-	Fri, 21 Nov 2025 14:00:12 +0000 (UTC)
+	 MIME-Version; b=kYTxDJQg0XtGhCGiTuYBXblHRop5AbBuFafCokorc4uii6v3ncMJvATZ4IKcR/yZxI/Ju9HVu6dbEn7sTpcOux1hGtASKQZnn35CKvuhOM2T+NtHznry2m3fVvCeqOanrxrfluuTAi6QHHfaHGL2BLY1pNl6xA1vYwAk5msptDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkKmIeIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F77FC4CEF1;
+	Fri, 21 Nov 2025 13:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733613;
-	bh=9+iJjhvISmASTLTyIuyhbKye6WsG6UDXgS04NfroS1E=;
+	s=korg; t=1763732036;
+	bh=j2NQzai8TY1kyIDFvf8v0VvUJq0ea/b7LuAGFKC5ogU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gm0ipm0u3PjjavxKImnaxIuizT7+NM8nWduFXUs07za02H2TXWZ8BPIhgRfNXl4Z2
-	 Wkj7csGbW48flsdXe+K8ij7W8yfypkFCGGTTpwakVGYDHmK402NMeFgYwQyHHwow20
-	 /K95bBk1bQV/qZriO61teOUS77d7nFdAaNMIuxTU=
+	b=mkKmIeIRf7XKuLDFHe5JZbemyzqrQdUQewVxL3UynQydQwhaMIGV+HWIj6LDKqs7Z
+	 tGtHJDoqxGmwwAQaBQPwAF843awrgOhh6yPHq4lENzjSU6D9ZOqQfWrbFxxjj1iKWe
+	 /GDJ1IGoR9UJbgKy/gW6hJMwcHDMMNyjjacG2qls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hocko <mhocko@suse.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dennis Zhou <dennis@kernel.org>,
-	Filipe David Manana <fdmanana@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH 6.6 496/529] mm, percpu: do not consider sleepable allocations atomic
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 168/185] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
 Date: Fri, 21 Nov 2025 14:13:15 +0100
-Message-ID: <20251121130248.660027691@linuxfoundation.org>
+Message-ID: <20251121130149.943860664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hocko <mhocko@suse.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
+[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
 
-28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
-that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
-the worker context with full GFP_KERNEL allocation/reclaim power and which
-is using the same lock cannot block the NOFS pcpu_alloc caller.
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-On the other hand this is a very conservative approach that could lead to
-failures because pcpu_alloc lockless implementation is quite limited.
+Scenario causing lack of proper cleanup:
 
-We have a bug report about premature failures when scsi array of 193
-devices is scanned.  Sometimes (not consistently) the scanning aborts
-because the iscsid daemon fails to create the queue for a random scsi
-device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
-set so all allocations from this process context are GFP_NOIO.  This in
-turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
-to pre-mature failures.
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
 
-It has turned out that iscsid has worked around this by dropping
-PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
-scanning host.  But we can do better in this case on the kernel side and
-use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
-too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
-that by enforcing scoped GFP_NOIO for the whole execution of
-pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
-remove the dependency chain and preserve the full allocation power of the
-pcpu_alloc call.
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
 
-While at it make is_atomic really test for blockable allocations.
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
 
-Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
-Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Filipe David Manana <fdmanana@suse.com>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
+
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
+
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/percpu.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/core/netpoll.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1734,7 +1734,7 @@ static void __percpu *pcpu_alloc(size_t
- 	gfp = current_gfp_context(gfp);
- 	/* whitelisted flags that can be passed to the backing allocators */
- 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
--	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
-+	is_atomic = !gfpflags_allow_blocking(gfp);
- 	do_warn = !(gfp & __GFP_NOWARN);
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -841,6 +841,10 @@ void __netpoll_cleanup(struct netpoll *n
+ 	if (!npinfo)
+ 		return;
  
- 	/*
-@@ -2231,7 +2231,12 @@ static void pcpu_balance_workfn(struct w
- 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
- 	 * to move fully free chunks to the active list to be freed if
- 	 * appropriate.
-+	 *
-+	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
-+	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
-+	 * dependency through pcpu_alloc_mutex
- 	 */
-+	unsigned int flags = memalloc_noio_save();
- 	mutex_lock(&pcpu_alloc_mutex);
- 	spin_lock_irq(&pcpu_lock);
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
  
-@@ -2242,6 +2247,7 @@ static void pcpu_balance_workfn(struct w
+@@ -850,8 +854,7 @@ void __netpoll_cleanup(struct netpoll *n
  
- 	spin_unlock_irq(&pcpu_lock);
- 	mutex_unlock(&pcpu_alloc_mutex);
-+	memalloc_noio_restore(flags);
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
++	}
+ 
+ 	skb_pool_flush(np);
  }
- 
- /**
 
 
 
