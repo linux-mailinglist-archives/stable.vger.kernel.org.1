@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD88C79E35
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A187DC796D8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 968814F011A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 32F3B3463F9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C13351FB5;
-	Fri, 21 Nov 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D6C2DEA7E;
+	Fri, 21 Nov 2025 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt3Dkgv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzMNQegf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457E535294E;
-	Fri, 21 Nov 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECCD1F09B3;
+	Fri, 21 Nov 2025 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733084; cv=none; b=GtaERC+xEc2W0ZPMtZy3LCmAureBmz1VF6J3ecizIj/QDxRfL47pPGBrLyw/OOdgTt5LaIT/KThKPmYu3kxiGMPbKXjGUc2OV0OR1JyxSRUb09I+zF/Uh8EzTwOS9LUBUlJrtz6T0WwI8GqAx0lrJJLVSlA6uKkZFcvhZl/Lqvo=
+	t=1763731698; cv=none; b=Xn56VxPO9/ECs4aNqyePXUvlmqZhnWi9wFKRiV4wilu9rY/cIy5Ejma5Oieus1dD2Ofpgg6Qe2nLxIOIA2j0RWj9Rg0vE0lr8g6YvojPwyEKj0kuqwfUw360bi+7R9aNhHlvvLZ2SbdMrgp7s7JOy5VQxvz/t7QtXTa42pTXKZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733084; c=relaxed/simple;
-	bh=t74yt6+Q8LMQtwmmO4elpmPtCk7J3egbhhWAusUnBj8=;
+	s=arc-20240116; t=1763731698; c=relaxed/simple;
+	bh=zfW6Koo3q0nOkSprw4Xpkey024Eq9FdN5HD/z3lKpZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nd/rMoa2cV1oQwoMhWVYCmOQOsM/KIOj8a0d5nzeRVNBhSSrP+OOzhleyNhmTMMDVnSi/qPLH9FHO6p+hM9bHHwhP5fRpoB/12Ug18td7WZaZp6cKn/+q4i61VptoA9gumdjGRThqnaBvXmD+rzI1XqHq3lCHSrARx+yrXLdLgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt3Dkgv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32FBC4CEF1;
-	Fri, 21 Nov 2025 13:51:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S08T2GBPJdyOGq5YZ8XZh6EJO4cx3Q+6g6lv5Kjj240THfHBFPwB+gUFUQcjap1EaP0z/43IKksvqGXfIG7/T+AZDeUWma3GqmDeARycJqiULWjat8IDsLZp6Ua1FeIF55hBQoUODT1L/R23TFVkWK4wu7gzp8mN+OR3kLRM76o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzMNQegf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A83C4CEF1;
+	Fri, 21 Nov 2025 13:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733084;
-	bh=t74yt6+Q8LMQtwmmO4elpmPtCk7J3egbhhWAusUnBj8=;
+	s=korg; t=1763731698;
+	bh=zfW6Koo3q0nOkSprw4Xpkey024Eq9FdN5HD/z3lKpZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zt3Dkgv31Ts0EkMXUqyw4WI+hsVgI7RPtn6NXwvcrWN1tdwAYwf4BiPSNeNGzL3aU
-	 gPYXkKqhMxwPwnhteVzzHoO4VUZBKcz2/Y0GDqrhlTFVUQbUAYumHYHojNbTdCWI+P
-	 5sdSi8hZjKMhhJM82p0WjkZgdRzCqH3o6hVTOpwc=
+	b=fzMNQegfAKoWzS8Gi9zFc4LDno1maugh+QiK/MLuThKzcAWc3D6F8ymx1hnKtgNNS
+	 9raCZe4qY7DO53vfIcWxSTfpeSytbHdT+o0dBbA3HMUnKfsMP2OVYDWHPd+OFkZuQn
+	 cbnvs8PyqWTHV7wierJF2QuXHd09uoPIyRAVj5E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 344/529] net: vlan: sync VLAN features with lower device
+Subject: [PATCH 6.12 016/185] drm/amd/pm: Disable MCLK switching on SI at high pixel clocks
 Date: Fri, 21 Nov 2025 14:10:43 +0100
-Message-ID: <20251121130243.271113193@linuxfoundation.org>
+Message-ID: <20251121130144.462178571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
+[ Upstream commit 5c05bcf6ae7732da1bd4dc1958d527b5f07f216a ]
 
-After registering a VLAN device and setting its feature flags, we need to
-synchronize the VLAN features with the lower device. For example, the VLAN
-device does not have the NETIF_F_LRO flag, it should be synchronized with
-the lower device based on the NETIF_F_UPPER_DISABLES definition.
+On various SI GPUs, a flickering can be observed near the bottom
+edge of the screen when using a single 4K 60Hz monitor over DP.
+Disabling MCLK switching works around this problem.
 
-As the dev->vlan_features has changed, we need to call
-netdev_update_features(). The caller must run after netdev_upper_dev_link()
-links the lower devices, so this patch adds the netdev_update_features()
-call in register_vlan_dev().
-
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 422f726346ea5..7c77482f31594 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
- 
-+	netdev_update_features(dev);
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 82167eca26683..f6ba54cf701e7 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -3485,6 +3485,11 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 	 * for these GPUs to calculate bandwidth requirements.
+ 	 */
+ 	if (high_pixelclock_count) {
++		/* Work around flickering lines at the bottom edge
++		 * of the screen when using a single 4K 60Hz monitor.
++		 */
++		disable_mclk_switching = true;
 +
- 	return 0;
- 
- out_unregister_netdev:
+ 		/* On Oland, we observe some flickering when two 4K 60Hz
+ 		 * displays are connected, possibly because voltage is too low.
+ 		 * Raise the voltage by requiring a higher SCLK.
 -- 
 2.51.0
 
