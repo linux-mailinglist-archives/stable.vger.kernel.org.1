@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4BDC79413
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05353C79BD6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 122B24ED19A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 4A64D2E006
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B46C27147D;
-	Fri, 21 Nov 2025 13:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A25D332EA3;
+	Fri, 21 Nov 2025 13:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkJ1OBEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3m8Z5Sp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D731230CD88;
-	Fri, 21 Nov 2025 13:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A3E34DB72;
+	Fri, 21 Nov 2025 13:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731089; cv=none; b=g+WyA09zVNGFbqugYw+8E/DYjtvipsD7Qug344bWgpHnSqK3mcmAVttPCj/ZaYRtjnm0pv0R6zHecLssTprGnOgX+JuBfHo1KnCr7rFDDWGjj834ffa+e+j79xgQI0D92XH0MVpCFLNFJTZDm9+MjRYWF1G3V0H/uSlVJP0qq8s=
+	t=1763732926; cv=none; b=QVfhhUvN63RdYcIlv5e2DupknqMQD0wjEE8dcnkxiOKb3ocv1tCcvwil41Y12owrmdk2PNFRkZTg2GgzaGDwitcHF9mEOB0eGhWWKn7lq6Udnwbsb6USuKatTjvcgvKU2Bzi0KVnFgAKTCQguBGJpuFCiQhmQFtgDZ9N+UNKQss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731089; c=relaxed/simple;
-	bh=NDXIxDdqm64Df4Q9j4hWa1uJ6zyiOO/39cCx0W7/shU=;
+	s=arc-20240116; t=1763732926; c=relaxed/simple;
+	bh=N5+qyJ2glgVN6wFodkL9MDRldVl+vFhc2i58jGVHxrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ar6hY/cuchGTHKzio/6B+qwej0RE5RztY9c5g5A4LujiX1FSOSIUXQO8PbX7bQOG22er0d60Pi0hBsr3vkT56Vu3mi0MbgSesVdGVbFt9DJfi0JomFgXeZ+k9Li75StZti0b8vvweee3fdjc8USmzMB8pVs+len2hdYj1KyBFOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkJ1OBEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F5C4CEF1;
-	Fri, 21 Nov 2025 13:18:09 +0000 (UTC)
+	 MIME-Version; b=K9oy1u5WeiMiRzfyVvHkfzXrjtrjCiDJg5kJj3RvYk3uwSZfm3nCLnxFf/7zy3nw7UDDdO8tDOfGOFrDZVeMxzsKeAR1U7PnNqHkjxnnK/F17v6M0WsP13GF3kgL00B159MuiTK+Pf9lAGfwOROnBN89OisQ+C4TsA89BO/xAOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3m8Z5Sp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296A0C4CEF1;
+	Fri, 21 Nov 2025 13:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731089;
-	bh=NDXIxDdqm64Df4Q9j4hWa1uJ6zyiOO/39cCx0W7/shU=;
+	s=korg; t=1763732926;
+	bh=N5+qyJ2glgVN6wFodkL9MDRldVl+vFhc2i58jGVHxrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkJ1OBEqU5eviQ1NBpbiU1fXEwVjKHoKxfGHYALXBH6bKJ36HVjoJwh+E2KJYAtKe
-	 nuEJoyR1ieGqwlPnUKlZcKEtIEYp49uXbD/Kg7sBgTNGqHjZI16onowuF9uBTN/LXz
-	 04bqBzn0t3isbq25I8vLIJ3vvV52Yj+TLkv0x9a8=
+	b=y3m8Z5SphiTiIue7DQpMRVQNv17egLlBHG7i8VGFY6Jq6LW1RaCP8eCUYudgrU1ey
+	 CTJJ9fp6LB6/YstIPsrE/2dM2/E0BpS3/lYV20AccQNuchOgaq/TfiLWCfFTGstFcL
+	 Wc5P3vLxO5oWsGfDMrpjqHurYTc52KCLBFITgVHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawn Gardner <dawn.auroali@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 044/247] ALSA: hda/realtek: Fix mute led for HP Omen 17-cb0xxx
+Subject: [PATCH 6.6 292/529] page_pool: Clamp pool size to max 16K pages
 Date: Fri, 21 Nov 2025 14:09:51 +0100
-Message-ID: <20251121130156.184589542@linuxfoundation.org>
+Message-ID: <20251121130241.416689538@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawn Gardner <dawn.auroali@gmail.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 2a786348004b34c5f61235d51c40c1c718b1f8f9 ]
+[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
 
-This laptop uses the ALC285 codec, fixed by enabling
-the ALC285_FIXUP_HP_MUTE_LED quirk
+page_pool_init() returns E2BIG when the page_pool size goes above 32K
+pages. As some drivers are configuring the page_pool size according to
+the MTU and ring size, there are cases where this limit is exceeded and
+the queue creation fails.
 
-Signed-off-by: Dawn Gardner <dawn.auroali@gmail.com>
-Link: https://patch.msgid.link/20251016184218.31508-3-dawn.auroali@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The page_pool size doesn't have to cover a full queue, especially for
+larger ring size. So clamp the size instead of returning an error. Do
+this in the core to avoid having each driver do the clamping.
+
+The current limit was deemed to high [1] so it was reduced to 16K to avoid
+page waste.
+
+[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/page_pool.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 28297e936a96f..19604352317dd 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6399,6 +6399,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
-+	SND_PCI_QUIRK(0x103c, 0x8603, "HP Omen 17-cb0xxx", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x860c, "HP ZBook 17 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index b78c742052947..0188d7f007857 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -180,11 +180,7 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -EINVAL;
+ 
+ 	if (pool->p.pool_size)
+-		ring_qsize = pool->p.pool_size;
+-
+-	/* Sanity limit mem that can be pinned down */
+-	if (ring_qsize > 32768)
+-		return -E2BIG;
++		ring_qsize = min(pool->p.pool_size, 16384);
+ 
+ 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
+ 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
 2.51.0
 
