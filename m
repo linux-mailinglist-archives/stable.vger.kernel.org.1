@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C139C79317
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF357C79F6A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 396E44ED171
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id DA9F62DD8E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7572D45948;
-	Fri, 21 Nov 2025 13:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCEA34E762;
+	Fri, 21 Nov 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idtiaAVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFC7+bFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FF8275B18;
-	Fri, 21 Nov 2025 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EAC34DCD7;
+	Fri, 21 Nov 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730949; cv=none; b=Bitg6LcyUDKdDFr8e3/6CUQF3D1+cXP3K7G8MmRLajHSJ3/FCLMM5rmdHvaq4ENmHYABXYl3sFA47BFMukoos4fG7DtNuBmwqyAX40rT1NQWGHYrcJcukDtVzrdvF3MJP0CmnvJPCWavaVNloEhfrrQWqs/N7ZNDVrxQB1eKeIc=
+	t=1763732906; cv=none; b=N3fgzTMejlZ4GygJDCfl9eFcci4Rx3q40J8icvUarMyiCno2F4OJiJKIAQBi+wvNeYzD02rDiEjdOEMOVF84fHO0KmeamGAC1HGfO8g4xSS2mIWIqge85r6HDMsznyRxP0iI922TfseJ0xOOAhYUYAbNlDQD1MaaaCB3lFd1aVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730949; c=relaxed/simple;
-	bh=s/DNfGB/gGh9UmMy/EbAcAbeMeWtdzjMu2QQjLn3/tE=;
+	s=arc-20240116; t=1763732906; c=relaxed/simple;
+	bh=9/G6k6PS8xyKafmz6XjsSXeO/IR+86CObfBx+CAgZGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPFKIaFypLXyM8i/oC/KxLQ02bow4lChdd4/NxJmIuuMaw1MqXEpE0FPSNfgj0DgQke9iPViyo+6IObZSZRkgTEenCDi/bpTv1VmU2YAR6okrg6GODJ0FIDXjBIP7T1I3HszjOPIZFdY7GyHFJIm/F40uuznhgeceQzy0Rvp/64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idtiaAVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9D9C4CEF1;
-	Fri, 21 Nov 2025 13:15:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N8++e9HIsngVs/zZjoOJr5LKkfNLISH8h90yYyu2lX6r0GxBSoH8DWib5KBLz7R35LRQXK9EkS5fyf13w4XoNIE5YA7VS1tkGs+RtkdAN78SWUIK6J7xDs2PzP4i9udltzlIag035lU8n6cR65t4YCBgFGwKIxPnzjAjvUP8amo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFC7+bFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9A4C4CEF1;
+	Fri, 21 Nov 2025 13:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730947;
-	bh=s/DNfGB/gGh9UmMy/EbAcAbeMeWtdzjMu2QQjLn3/tE=;
+	s=korg; t=1763732906;
+	bh=9/G6k6PS8xyKafmz6XjsSXeO/IR+86CObfBx+CAgZGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idtiaAVED8m8w3gKsxzdzhPLHnDpoTSdPbs5wSsZoOv0sdDJjsTVhM9qxzMsfE8RQ
-	 B3zLLKRHsMUWM/JAn30UZCsiniBG2OOy5XH7hR00cNoVeQCeJAZg5if6whLW6NSTmI
-	 1V/CaOn4F4sa+yQfXwTmUflfy0JKW1QCw3EN6+48=
+	b=VFC7+bFVQl1dsdmQtiT05fGIoXo6tZSSzO0O5gs79g4HFAGf7SLwYHlXO1khrld1e
+	 RhWNA+INYYo0yrLqUUUmpVIgPmK1fChpHhyELrdiqUEcGHHFoXfpjQacO+OrdQlRi0
+	 ySVV4Ni9DZp9/vYr65nUWk9u1RGydgEtkpl/AX5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Makarenko <oleg@makarenk.ooo>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 037/247] HID: quirks: Add ALWAYS_POLL quirk for VRS R295 steering wheel
+Subject: [PATCH 6.6 285/529] net: macb: avoid dealing with endianness in macb_set_hwaddr()
 Date: Fri, 21 Nov 2025 14:09:44 +0100
-Message-ID: <20251121130155.935684919@linuxfoundation.org>
+Message-ID: <20251121130241.169733638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Makarenko <oleg@makarenk.ooo>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 1141ed52348d3df82d3fd2316128b3fc6203a68c ]
+[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
 
-This patch adds ALWAYS_POLL quirk for the VRS R295 steering wheel joystick.
-This device reboots itself every 8-10 seconds if it is not polled.
+bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
+pointer and dereferencing implies dealing manually with endianness,
+which is error-prone.
 
-Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Replace by calls to get_unaligned_le32|le16() helpers.
+
+This was found using sparse:
+   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
+   warning: incorrect type in assignment (different base types)
+      expected unsigned int [usertype] bottom
+      got restricted __le32 [usertype]
+   warning: incorrect type in assignment (different base types)
+      expected unsigned short [usertype] top
+      got restricted __le16 [usertype]
+   ...
+
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index d05a62bbafffb..0723b4b1c9eca 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1435,6 +1435,7 @@
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index b836ab2a649a2..7593255e6e53d 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -281,9 +281,9 @@ static void macb_set_hwaddr(struct macb *bp)
+ 	u32 bottom;
+ 	u16 top;
  
- #define USB_VENDOR_ID_VRS	0x0483
- #define USB_DEVICE_ID_VRS_DFP	0xa355
-+#define USB_DEVICE_ID_VRS_R295	0xa44c
+-	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
++	bottom = get_unaligned_le32(bp->dev->dev_addr);
+ 	macb_or_gem_writel(bp, SA1B, bottom);
+-	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
++	top = get_unaligned_le16(bp->dev->dev_addr + 4);
+ 	macb_or_gem_writel(bp, SA1T, top);
  
- #define USB_VENDOR_ID_VTL		0x0306
- #define USB_DEVICE_ID_VTL_MULTITOUCH_FF3F	0xff3f
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index d7105a8395982..bcd4bccf1a7ce 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -207,6 +207,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_UCLOGIC, USB_DEVICE_ID_UCLOGIC_TABLET_KNA5), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_UCLOGIC, USB_DEVICE_ID_UCLOGIC_TABLET_TWA60), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_UGTIZER, USB_DEVICE_ID_UGTIZER_TABLET_WP5540), HID_QUIRK_MULTI_INPUT },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_VRS, USB_DEVICE_ID_VRS_R295), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_MEDIA_TABLET_10_6_INCH), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_MEDIA_TABLET_14_1_INCH), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_SIRIUS_BATTERY_FREE_TABLET), HID_QUIRK_MULTI_INPUT },
+ 	if (gem_has_ptp(bp)) {
 -- 
 2.51.0
 
