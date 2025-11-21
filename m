@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-196184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC168C79BEE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97399C79B16
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 77D4E4EB8F4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1CCAF4EE89A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1D8350288;
-	Fri, 21 Nov 2025 13:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1794634EF00;
+	Fri, 21 Nov 2025 13:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsWt/ehN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUMVuVt8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F343491D0;
-	Fri, 21 Nov 2025 13:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831834EEE7;
+	Fri, 21 Nov 2025 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732796; cv=none; b=i+lfauz52JUU5nXq3HgburrzYhAArDPU4TC2MI0d6cqgMji+EVn1bO3l5d8JrvfjZrmfOSvXLG3kvJ23+f+0S1IuBPlUgrmGFzOvNZdDXuUekEKrUYiotSYOIw/fGjvCMvA+nd1JJpOXQkS9pbiRpeLPqdCUoDgRDpULfXQnRKY=
+	t=1763732695; cv=none; b=fF8buAv3iWNqk1emzsoykIykmGBMdOtQOEAJiED1bd9Mdhb7ARMx1Gz7x4YQGtpLpKjkHmiXxqqryOUPWa4hBIcUcW4HIAQGXZlFD35CqAM593DzlYUioM8FrXrMm+V/b+1kGtjhuaDZLJDsFdXQgZHgz1pWboPTn4SoK5sirVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732796; c=relaxed/simple;
-	bh=u5MAQ5VJ4syonu1MWhj9NZYYvmoM/LvqV/sDwVcnzJY=;
+	s=arc-20240116; t=1763732695; c=relaxed/simple;
+	bh=0Stl4b1HPFelTDuSELirBinZL3a4d9bOmN0qoEyyE+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKKcKrmB3lO2eyz8VlAYd5bbpZPSqTi83eGMp8toViiLMxUP31JV0AIEleLuuwiRe+gD00VyuWukH1R3WsyKRhVtq6F6+SSmLhRr7ko4LYiJ88lxBcAGHu5ev3wtEsbby+iBjt0G9vLdHAkrB7bf8v23Sw3r4t3LoRAgN8cuPlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsWt/ehN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F5C4CEF1;
-	Fri, 21 Nov 2025 13:46:35 +0000 (UTC)
+	 MIME-Version; b=VJ3tscZiw3Dtmqx0GWi25nMJS0x5gJFDE7KkYrmGN1Q/GVAy4VQrPcoFNKSbz4pC3GMfZZELibh/B7TFKYtdxeXUX6VZAP/KErJP9Ab1NwIYlnlu/H0CVbwnGN49F5QPfyL2RSCP8gkBt+qYa/+U0ek8++GC6alTzUCoY1xfdWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUMVuVt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2D3C116C6;
+	Fri, 21 Nov 2025 13:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732796;
-	bh=u5MAQ5VJ4syonu1MWhj9NZYYvmoM/LvqV/sDwVcnzJY=;
+	s=korg; t=1763732695;
+	bh=0Stl4b1HPFelTDuSELirBinZL3a4d9bOmN0qoEyyE+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsWt/ehNqmiIB2FCc5VeLzkQnO7eD2OVItPI4+n3lNkGzLy1OzUqYN0BkSUk+IMdj
-	 HjcatkZ5IdzwbgqYD9JKWt3pU6I8U+llV/FePgcFDOfLito+/9PrMfUSypgYmd2dcV
-	 AR6YQwpuDFZRMf+tquJ8FUBy+PK2fBdJKSDSDh3Q=
+	b=wUMVuVt8kV2kzSIdc+TkaxKtVe9NcmyXf5/r2K8LUrD3f6Gtr6oYQ0yKgBDIIsx0N
+	 G3ffNvGtEdlavinmAYrp8teGsEChGlTGn0zSuUtJtOMTFCjyIURJFpLfNQIMNhBmSn
+	 DISmK4bsoPPE9UlYeOeo0lnLCKH+DZGrblKP/Y54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/529] media: ov08x40: Fix the horizontal flip control
-Date: Fri, 21 Nov 2025 14:08:22 +0100
-Message-ID: <20251121130238.239873094@linuxfoundation.org>
+Subject: [PATCH 6.6 204/529] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
+Date: Fri, 21 Nov 2025 14:08:23 +0100
+Message-ID: <20251121130238.276814458@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -69,37 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hao Yao <hao.yao@intel.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit c7df6f339af94689fdc433887f9fbb480bf8a4ed ]
+[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
 
-The datasheet of ov08x40 doesn't match the hardware behavior.
-0x3821[2] == 1 is the original state and 0 the horizontal flip enabled.
+The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
+8-bit and 10-bit RAW output formats only.
 
-Signed-off-by: Hao Yao <hao.yao@intel.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Tested-by: Hans de Goede <hansg@kernel.org> # ThinkPad X1 Carbon Gen 12 & Gen 13
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+That said the planar greyscale Y8/Y10 media formats are more appropriate
+for the sensor instead of the originally and arbitrary selected SGRBG one,
+since there is no red, green or blue color components.
+
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov08x40.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/og01a1b.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
-index 637da4df69011..4d15fa6ac311e 100644
---- a/drivers/media/i2c/ov08x40.c
-+++ b/drivers/media/i2c/ov08x40.c
-@@ -2643,7 +2643,7 @@ static int ov08x40_set_ctrl_hflip(struct ov08x40 *ov08x, u32 ctrl_val)
- 
- 	return ov08x40_write_reg(ov08x, OV08X40_REG_MIRROR,
- 				 OV08X40_REG_VALUE_08BIT,
--				 ctrl_val ? val | BIT(2) : val & ~BIT(2));
-+				 ctrl_val ? val & ~BIT(2) : val | BIT(2));
+diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
+index 365ce56845836..9bd204911651e 100644
+--- a/drivers/media/i2c/og01a1b.c
++++ b/drivers/media/i2c/og01a1b.c
+@@ -676,7 +676,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
+ {
+ 	fmt->width = mode->width;
+ 	fmt->height = mode->height;
+-	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
+ 	fmt->field = V4L2_FIELD_NONE;
  }
  
- static int ov08x40_set_ctrl_vflip(struct ov08x40 *ov08x, u32 ctrl_val)
+@@ -867,7 +867,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (code->index > 0)
+ 		return -EINVAL;
+ 
+-	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	code->code = MEDIA_BUS_FMT_Y10_1X10;
+ 
+ 	return 0;
+ }
+@@ -879,7 +879,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
+ 	if (fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
+ 
+-	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
++	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
+ 		return -EINVAL;
+ 
+ 	fse->min_width = supported_modes[fse->index].width;
 -- 
 2.51.0
 
