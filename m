@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-196310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4700C79CBA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6306C796EC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id BB46C2921C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id CC1AC33DDD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1BD34CFD1;
-	Fri, 21 Nov 2025 13:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B5834029C;
+	Fri, 21 Nov 2025 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXRgx4Sd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bymttkc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEDE34CFC3;
-	Fri, 21 Nov 2025 13:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C503630AADC;
+	Fri, 21 Nov 2025 13:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733143; cv=none; b=H71oksDy1goZR38z/PchfI9QOvNODH3sNrFDp0MlGh85k0SgibAYzVss2egoMqEILFMn3DWb4mdk2z0SSuYNcInVe2fmUUIocgAj99+0mCI3dIhVAOOQU0V8Ds93DMZ+Yg0wsT1rqDOxEoy4FdKtrb6wioJo7eaZpwDKw6drtdU=
+	t=1763731612; cv=none; b=i9zVKlqfZSpWpu2GG1aGDrGaKpfGkDOJxyzZcsOFKg6wbS2otjUnquHiig1mwj9wqRG6W4OHqGm9Xbep5/FrCzrhAuszyhZl9bhuztM65/WE7vBZHDO+pzOWj+Zfjlap9Z6jXHOm1jUoqT7Nho12tBtDk/oQovDMItWQxOax474=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733143; c=relaxed/simple;
-	bh=aMtYupM/pn3CmTsBlxUe8Q/tZQ3OoE5nbbDobLEFzhg=;
+	s=arc-20240116; t=1763731612; c=relaxed/simple;
+	bh=aVtrzOLtCHMb+ufzCUdvZh/MLj1inUPNPSC+92DgQ24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upyF5kSJBfZFvYZ3wke/U2v/LuxDQIwpgz57kl+TAglzLTdVBn8mAdoYhf9gmQ33NeT2D57KoiF0z0ZaIZMXxAwwam646ichb0x4MlOFL/IvvMPrCTQCMlj+PvUojki/KsnebfXjyhx/KhUum05As/lOJbFXMZPmViPxFhvzYmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXRgx4Sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A39C4CEF1;
-	Fri, 21 Nov 2025 13:52:23 +0000 (UTC)
+	 MIME-Version; b=ZUYTGNZK6F9hf3fvS86fjgBDj9anm5eRL5TiZ7O+lO/2L2FB/A/h0T2twM39bjrGMgSbKq5X0jkkK3D9xrfAMIV9n6IPBRzsoW4W6/PivczgUVw/HEFRY4GD7Bfrm2yQqPix3cz6+4cfuszOACe0VMV11+9YPu24pS5Rm3zCsLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bymttkc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CD0C4CEF1;
+	Fri, 21 Nov 2025 13:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733143;
-	bh=aMtYupM/pn3CmTsBlxUe8Q/tZQ3OoE5nbbDobLEFzhg=;
+	s=korg; t=1763731612;
+	bh=aVtrzOLtCHMb+ufzCUdvZh/MLj1inUPNPSC+92DgQ24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXRgx4SdNNWCDfGvRiTfP3fFXPbxygrEMsn6dIQ0V95ka+hadMXjpfitHYNbVu00t
-	 bGndGW0EQPdKhc53zqfGXMpcTPclXewLu2Qc+JTYSoTPSGup5oFCffIzsJYD6Ev5MF
-	 DCT30CQJB/UNbfqOXYoWoCV+NRfKqTM1Us9STF/Q=
+	b=Bymttkc9U+YWdY18W28zVSE8qPArccqCK4QFT8LC5SkLuIrmmbhwI/pJCpSFcwceM
+	 WPJTNM/1lvnymeXuMy8KVGYAJPy7Z2TUn4KOe7btNyRnyvETZ8Dj3mcdVFNtu8oBu9
+	 tV0IdFnVWlTR7Mg4FOhs5gbBoOVj2zDpOvU7Ds1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tristan Lobb <tristan.lobb@it-lobb.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 349/529] sctp: Prevent TOCTOU out-of-bounds write
+Subject: [PATCH 6.12 021/185] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
 Date: Fri, 21 Nov 2025 14:10:48 +0100
-Message-ID: <20251121130243.448352882@linuxfoundation.org>
+Message-ID: <20251121130144.640542757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Tristan Lobb <tristan.lobb@it-lobb.de>
 
-[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
+[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
 
-For the following path not holding the sock lock,
+The Cooler Master Mice Dongle includes a vendor defined HID interface
+alongside its mouse interface. Not polling it will cause the mouse to
+stop responding to polls on any interface once woken up again after
+going into power saving mode.
 
-  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
+Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
+the Dongle's PID.
 
-make sure not to exceed bounds in case the address list has grown
-between buffer allocation (time-of-check) and write (time-of-use).
-
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index d92b210c70f8e..7799e5abdbd05 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
-+
-+		if (!--addrcnt)
-+			break;
- 	}
- 	rcu_read_unlock();
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d41a65362835d..63eb60effcaaf 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -338,6 +338,9 @@
+ #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
+ #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
  
++#define USB_VENDOR_ID_COOLER_MASTER	0x2516
++#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
++
+ #define USB_VENDOR_ID_CORSAIR		0x1b1c
+ #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
+ #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 64f9728018b88..468a47de96b10 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
 -- 
 2.51.0
 
