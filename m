@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B73C79419
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 108A0C79DB3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 75C034ED0C0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20BAF4ED2A7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BC1342526;
-	Fri, 21 Nov 2025 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953773502A2;
+	Fri, 21 Nov 2025 13:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIWEe7gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pE+dwoA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FC3272801;
-	Fri, 21 Nov 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D81434FF7A;
+	Fri, 21 Nov 2025 13:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731092; cv=none; b=W1HfMaSnMMEh7xJJCIFnSeBLKhXPjuQylvTEMmBxrb6kZjaUSH5UUBZlx6EcKkMNd1ZaIe7FJuzORD3oRJqWwXqZ62qrPizTFFL2BsogTCyidxCuU5PoNIhBXZcCd8nIs6QP7nTp+SIH4QKxZqVv68ZKKzqdIEGX6x1dpnqck9A=
+	t=1763733033; cv=none; b=OE6HAoICJjZ1IGUF4d5K+gvMjwjtVlctiGp+s4RNn5iX/T9R+An8XaTTdbn8N7sENquJv9mSsfsgQujGaE4fqa1GhDd6Kh8HvDvtatjcvg+55nmwvuHlFpR0T8MGD3kLxQkn9/XSqYpFYdv+nsIJUyycmmkDm2gU6Ux2ZYNHSFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731092; c=relaxed/simple;
-	bh=GRCrrreeSoiBCiLLAbkEye9KrZINitIcOhA0O/kmhcE=;
+	s=arc-20240116; t=1763733033; c=relaxed/simple;
+	bh=ABf7/qULSZpV4b5wWgNg9+dURdTrQQnYIgXjHYzFdR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JF5upyb+iYciyRa8GznUsKRFL9N+kN9Ki1g6Cc3IcSw4+TX2Y7THpNlJZEHdbRr0sQv9CzQIiesCPziDWPWZVEHez83AsbkXfFohLHQq9bkiIvaZnW9xRNCq42GagJnKu8w4T3oSVxyykMBEUuphOfhkIFwJbhmgYF85Iz3zk1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIWEe7gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC71C4CEF1;
-	Fri, 21 Nov 2025 13:18:12 +0000 (UTC)
+	 MIME-Version; b=KlSlWgK2fHMh+ONQ0xf+kqZI6iHp6I/JFCGWgeART7OIyKXK//IZzPh+1ig873Aol0GTk/CEAtea7IHiFxWZ+Xxl4ZUij1O0nvFAkUEQdOnsopjwsG8bmUmWD8dj7chhVtVqJujrmEwQy7HfKeU/llcYLsMUn8tvM/EaFg1sfnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pE+dwoA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5874C4CEF1;
+	Fri, 21 Nov 2025 13:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731092;
-	bh=GRCrrreeSoiBCiLLAbkEye9KrZINitIcOhA0O/kmhcE=;
+	s=korg; t=1763733033;
+	bh=ABf7/qULSZpV4b5wWgNg9+dURdTrQQnYIgXjHYzFdR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIWEe7gkzrshB8c3g6ylbvByYP7KRm+jXFtlF1tJ0N4CnRFgi1u277kEg8N6cNNu0
-	 RHnavlvhBBMPoSvui+kYem8/IhClVxN1LeR4g0Q8ixoDK+OI/NerUDfZDu66SfhfIG
-	 C5WuxsGp3MoYnbCGk80a8zlIbnXwSxNcUzoN4vYE=
+	b=pE+dwoA7VEDle0N9dO543G8KybpHNtVMi7QZH/w0QvKDSltH8t3Lxtm4kIC9Ei/7P
+	 cWF03MByG9VQMAFslOHmaCeE5fA7+cI4hBzcdpsZar69aH8F6HlYHmn4ksCXYpmar7
+	 lA0/HGKHnfI1JSXtEmZJPW0AzO4uKCjydFh0/2us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 080/247] net/mlx5e: Prepare for using different CQ doorbells
+Subject: [PATCH 6.6 328/529] ceph: refactor wake_up_bit() pattern of calling
 Date: Fri, 21 Nov 2025 14:10:27 +0100
-Message-ID: <20251121130157.466813715@linuxfoundation.org>
+Message-ID: <20251121130242.698638094@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,175 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit a315b723e87ba4e4573e1e5c759d512f38bdc0b3 ]
+[ Upstream commit 53db6f25ee47cb1265141d31562604e56146919a ]
 
-Completion queues (CQs) in mlx5 use the same global doorbell, which may
-become contended when accessed concurrently from many cores.
+The wake_up_bit() is called in ceph_async_unlink_cb(),
+wake_async_create_waiters(), and ceph_finish_async_create().
+It makes sense to switch on clear_bit() function, because
+it makes the code much cleaner and easier to understand.
+More important rework is the adding of smp_mb__after_atomic()
+memory barrier after the bit modification and before
+wake_up_bit() call. It can prevent potential race condition
+of accessing the modified bit in other threads. Luckily,
+clear_and_wake_up_bit() already implements the required
+functionality pattern:
 
-This patch prepares the CQ management code for supporting different
-doorbells per CQ. This will be used in downstream patches to allow
-separate doorbells to be used by channels CQs.
+static inline void clear_and_wake_up_bit(int bit, unsigned long *word)
+{
+	clear_bit_unlock(bit, word);
+	/* See wake_up_bit() for which memory barrier you need to use. */
+	smp_mb__after_atomic();
+	wake_up_bit(word, bit);
+}
 
-The main change is moving the 'uar' pointer from struct mlx5_core_cq to
-struct mlx5e_cq, as the uar page to be used is better off stored
-directly there. Other users of mlx5_core_cq also store the UAR to be
-used separately and therefore the pointer being removed is dead weight
-for them. As evidence, in this patch there are two users which set the
-mcq.uar pointer but didn't use it, Software Steering and old Innova CQ
-creation code. Instead, they rang the doorbell directly from another
-pointer.
-
-The 'uar' pointer added to struct mlx5e_cq remains in a hot cacheline
-(as before), because it may get accessed for each packet.
-
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e5eba42f0134 ("mlx5: Fix default values in create CQ")
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cq.c           |  1 -
- drivers/net/ethernet/mellanox/mlx5/core/en.h           |  1 +
- drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h      |  5 +----
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c      | 10 +++++++---
- drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c    |  1 -
- .../ethernet/mellanox/mlx5/core/steering/sws/dr_send.c |  1 -
- include/linux/mlx5/cq.h                                |  1 -
- 7 files changed, 9 insertions(+), 11 deletions(-)
+ fs/ceph/dir.c  | 3 +--
+ fs/ceph/file.c | 6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cq.c b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-index 35039a95dcfd4..e9f319a9bdd6b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-@@ -145,7 +145,6 @@ int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
- 		mlx5_core_dbg(dev, "failed adding CP 0x%x to debug file system\n",
- 			      cq->cqn);
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index 1395b71df5ccc..529dd07fa459f 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1213,8 +1213,7 @@ static void ceph_async_unlink_cb(struct ceph_mds_client *mdsc,
+ 	spin_unlock(&fsc->async_unlink_conflict_lock);
  
--	cq->uar = dev->priv.bfreg.up;
- 	cq->irqn = eq->core.irqn;
+ 	spin_lock(&dentry->d_lock);
+-	di->flags &= ~CEPH_DENTRY_ASYNC_UNLINK;
+-	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_UNLINK_BIT);
++	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_UNLINK_BIT, &di->flags);
+ 	spin_unlock(&dentry->d_lock);
  
- 	return 0;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index ff4a68648e604..4fc102d18354f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -344,6 +344,7 @@ struct mlx5e_cq {
- 	/* data path - accessed per napi poll */
- 	u16                        event_ctr;
- 	struct napi_struct        *napi;
-+	struct mlx5_uars_page     *uar;
- 	struct mlx5_core_cq        mcq;
- 	struct mlx5e_ch_stats     *ch_stats;
+ 	synchronize_rcu();
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index e12657b4c3e04..0ec78d87519ba 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -539,8 +539,7 @@ static void wake_async_create_waiters(struct inode *inode,
  
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-index 5dc04bbfc71bb..6760bb0336df9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-@@ -309,10 +309,7 @@ mlx5e_notify_hw(struct mlx5_wq_cyc *wq, u16 pc, void __iomem *uar_map,
+ 	spin_lock(&ci->i_ceph_lock);
+ 	if (ci->i_ceph_flags & CEPH_I_ASYNC_CREATE) {
+-		ci->i_ceph_flags &= ~CEPH_I_ASYNC_CREATE;
+-		wake_up_bit(&ci->i_ceph_flags, CEPH_ASYNC_CREATE_BIT);
++		clear_and_wake_up_bit(CEPH_ASYNC_CREATE_BIT, &ci->i_ceph_flags);
  
- static inline void mlx5e_cq_arm(struct mlx5e_cq *cq)
- {
--	struct mlx5_core_cq *mcq;
--
--	mcq = &cq->mcq;
--	mlx5_cq_arm(mcq, MLX5_CQ_DB_REQ_NOT, mcq->uar->map, cq->wq.cc);
-+	mlx5_cq_arm(&cq->mcq, MLX5_CQ_DB_REQ_NOT, cq->uar->map, cq->wq.cc);
- }
+ 		if (ci->i_ceph_flags & CEPH_I_ASYNC_CHECK_CAPS) {
+ 			ci->i_ceph_flags &= ~CEPH_I_ASYNC_CHECK_CAPS;
+@@ -716,8 +715,7 @@ static int ceph_finish_async_create(struct inode *dir, struct inode *inode,
+ 	}
  
- static inline struct mlx5e_sq_dma *
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 1a90fd1d44edb..110d654796de9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -2201,6 +2201,7 @@ static void mlx5e_close_xdpredirect_sq(struct mlx5e_xdpsq *xdpsq)
- static int mlx5e_alloc_cq_common(struct mlx5_core_dev *mdev,
- 				 struct net_device *netdev,
- 				 struct workqueue_struct *workqueue,
-+				 struct mlx5_uars_page *uar,
- 				 struct mlx5e_cq_param *param,
- 				 struct mlx5e_cq *cq)
- {
-@@ -2232,6 +2233,7 @@ static int mlx5e_alloc_cq_common(struct mlx5_core_dev *mdev,
- 	cq->mdev = mdev;
- 	cq->netdev = netdev;
- 	cq->workqueue = workqueue;
-+	cq->uar = uar;
+ 	spin_lock(&dentry->d_lock);
+-	di->flags &= ~CEPH_DENTRY_ASYNC_CREATE;
+-	wake_up_bit(&di->flags, CEPH_DENTRY_ASYNC_CREATE_BIT);
++	clear_and_wake_up_bit(CEPH_DENTRY_ASYNC_CREATE_BIT, &di->flags);
+ 	spin_unlock(&dentry->d_lock);
  
- 	return 0;
- }
-@@ -2247,7 +2249,8 @@ static int mlx5e_alloc_cq(struct mlx5_core_dev *mdev,
- 	param->wq.db_numa_node  = ccp->node;
- 	param->eq_ix            = ccp->ix;
- 
--	err = mlx5e_alloc_cq_common(mdev, ccp->netdev, ccp->wq, param, cq);
-+	err = mlx5e_alloc_cq_common(mdev, ccp->netdev, ccp->wq,
-+				    mdev->priv.bfreg.up, param, cq);
- 
- 	cq->napi     = ccp->napi;
- 	cq->ch_stats = ccp->ch_stats;
-@@ -2292,7 +2295,7 @@ static int mlx5e_create_cq(struct mlx5e_cq *cq, struct mlx5e_cq_param *param)
- 	MLX5_SET(cqc, cqc, cq_period_mode, mlx5e_cq_period_mode(param->cq_period_mode));
- 
- 	MLX5_SET(cqc,   cqc, c_eqn_or_apu_element, eqn);
--	MLX5_SET(cqc,   cqc, uar_page,      mdev->priv.bfreg.up->index);
-+	MLX5_SET(cqc,   cqc, uar_page,      cq->uar->index);
- 	MLX5_SET(cqc,   cqc, log_page_size, cq->wq_ctrl.buf.page_shift -
- 					    MLX5_ADAPTER_PAGE_SHIFT);
- 	MLX5_SET64(cqc, cqc, dbr_addr,      cq->wq_ctrl.db.dma);
-@@ -3584,7 +3587,8 @@ static int mlx5e_alloc_drop_cq(struct mlx5e_priv *priv,
- 	param->wq.buf_numa_node = dev_to_node(mlx5_core_dma_dev(mdev));
- 	param->wq.db_numa_node  = dev_to_node(mlx5_core_dma_dev(mdev));
- 
--	return mlx5e_alloc_cq_common(priv->mdev, priv->netdev, priv->wq, param, cq);
-+	return mlx5e_alloc_cq_common(priv->mdev, priv->netdev, priv->wq,
-+				     mdev->priv.bfreg.up, param, cq);
- }
- 
- int mlx5e_open_drop_rq(struct mlx5e_priv *priv,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-index c4de6bf8d1b65..cb1319974f83f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-@@ -475,7 +475,6 @@ static int mlx5_fpga_conn_create_cq(struct mlx5_fpga_conn *conn, int cq_size)
- 	*conn->cq.mcq.arm_db    = 0;
- 	conn->cq.mcq.vector     = 0;
- 	conn->cq.mcq.comp       = mlx5_fpga_conn_cq_complete;
--	conn->cq.mcq.uar        = fdev->conn_res.uar;
- 	tasklet_setup(&conn->cq.tasklet, mlx5_fpga_conn_cq_tasklet);
- 
- 	mlx5_fpga_dbg(fdev, "Created CQ #0x%x\n", conn->cq.mcq.cqn);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-index 4fd4e8483382c..077a77fde670e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-@@ -1131,7 +1131,6 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	*cq->mcq.arm_db = cpu_to_be32(2 << 28);
- 
- 	cq->mcq.vector = 0;
--	cq->mcq.uar = uar;
- 	cq->mdev = mdev;
- 
- 	return cq;
-diff --git a/include/linux/mlx5/cq.h b/include/linux/mlx5/cq.h
-index 991526039ccbd..7ef2c7c7d803d 100644
---- a/include/linux/mlx5/cq.h
-+++ b/include/linux/mlx5/cq.h
-@@ -41,7 +41,6 @@ struct mlx5_core_cq {
- 	int			cqe_sz;
- 	__be32		       *set_ci_db;
- 	__be32		       *arm_db;
--	struct mlx5_uars_page  *uar;
- 	refcount_t		refcount;
- 	struct completion	free;
- 	unsigned		vector;
+ 	return ret;
 -- 
 2.51.0
 
