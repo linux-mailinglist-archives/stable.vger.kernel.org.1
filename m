@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-196333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B09C79D20
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EC1C79571
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 54BB92D7F2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 662D2289C7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67846309EE8;
-	Fri, 21 Nov 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CA726CE33;
+	Fri, 21 Nov 2025 13:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkvC/ZFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjjLRZfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342E20CCE4;
-	Fri, 21 Nov 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B4531578E;
+	Fri, 21 Nov 2025 13:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733207; cv=none; b=l0lPkNRZdWreV0YFlSin7Ntn7K7PXbMD+5B5aVCDO7eVsCgie0cjlw8/oBNl14IsS2Dzf+yRBpNktAKQJlaNuNLvr5ARoGEkL+JHZr3xpfys3YIC6Awg9mK9fSt7OR3WEm9Mgzo4AcidEneObHCixYBp0RD02GVjv0ZKCiMTgzE=
+	t=1763731633; cv=none; b=tUY7p4A/ay9nbXcdJXKBU9eskMyKfRjFChi1h7Co8onsQ1RFgD574GtGWxUAEOYjlttoY0e6l4g5hudbqeIjMrZ4o40xaj4PYVRN8y367BcaAm9Tfjw0ijkWFl6sZ0l2+KSd8f8NiOc+oEidFynXqBtpkc79vW8iijXNi/zcM2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733207; c=relaxed/simple;
-	bh=XLY5pvtNjLPWknlfg4WUjz+7niV9qsjuGMw761vqmjg=;
+	s=arc-20240116; t=1763731633; c=relaxed/simple;
+	bh=oRvo6NSSSjmQQIk3+lbSfLkcWBtLjk2eeVftgXgrJzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8QM4PWSyC0Q1jqRXQ+G6lAAfwGCrpziF5Phlk079ftttiVd3+PfWDLsKHLCFnV2SoxWFu5aNdViy+O0oW7PFQdlw7uGDszWq4b9Z3cDOcTp8A4xlG7u+eWY3/m+uXwec2Z/+T+spuT4cV0pnS+F1TJEA7B5rFeFNTqKWBdlI2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkvC/ZFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08C4C116C6;
-	Fri, 21 Nov 2025 13:53:26 +0000 (UTC)
+	 MIME-Version; b=FaaN8tmaNX0kCdKaqrzPH6epugVPZWDE1ZpUE7+DJdnVqw3vG1GEluiByMt7cVw2TtUkZ791xyAc5+VfdynOuEkBfDtOj06/pMoZ7uKSDZniO7VxsFDksouBdZNlNbpSl74OSR0SF1llWaICI/T2ar3Vu0sDgc3AwnILyEZnS9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjjLRZfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6877C4CEF1;
+	Fri, 21 Nov 2025 13:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733207;
-	bh=XLY5pvtNjLPWknlfg4WUjz+7niV9qsjuGMw761vqmjg=;
+	s=korg; t=1763731633;
+	bh=oRvo6NSSSjmQQIk3+lbSfLkcWBtLjk2eeVftgXgrJzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkvC/ZFB1G8Bz4h52aVZKX0tNKqZA5yW2HIaZxbmqGMh6H3brtsAFagpGiKZHldpf
-	 vXhkj6QodyJ+rLpZqqz4ZFGqTcHK8Zt66JvtbQVbQddUqkLVebb8KlRuk4oTjoXts1
-	 EEbTQVEKt0/rRKEtB2nDc2WhGcq+CXa3KJKftdQc=
+	b=xjjLRZfXM8fYqhqmA3BXGgeyUfWylZW73CZhOI9v6AvJ7x15JDzCbDpNRJffcrXmP
+	 TXGQkA/onlCU3OVcfBSAOKGzwoOxc3pWE2HPFfvEGIQb/7Co3FK7Ix+KDMcGm0tJJj
+	 jbyA3jEXsRHFa6kWZFMWtDDsUZ3PfKP0W8/+wY9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 355/529] net/mlx5e: Fix return value in case of module EEPROM read error
-Date: Fri, 21 Nov 2025 14:10:54 +0100
-Message-ID: <20251121130243.660742285@linuxfoundation.org>
+Subject: [PATCH 6.12 028/185] HID: logitech-hidpp: Add HIDPP_QUIRK_RESET_HI_RES_SCROLL
+Date: Fri, 21 Nov 2025 14:10:55 +0100
+Message-ID: <20251121130144.890754884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
 
-[ Upstream commit d1c94bc5b90c21b65469d30d4a6bc8ed715c1bfe ]
+[ Upstream commit ed80cc4667ac997b84546e6d35f0a0ae525d239c ]
 
-mlx5e_get_module_eeprom_by_page() has weird error handling.
+The Logitech G502 Hero Wireless's high resolution scrolling resets after
+being unplugged without notifying the driver, causing extremely slow
+scrolling.
 
-First, it is treating -EINVAL as a special case, but it is unclear why.
+The only indication of this is a battery update packet, so add a quirk to
+detect when the device is unplugged and re-enable the scrolling.
 
-Second, it tries to fail "gracefully" by returning the number of bytes
-read even in case of an error. This results in wrongly returning
-success (0 return value) if the error occurs before any bytes were
-read.
-
-Simplify the error handling by returning an error when such occurs. This
-also aligns with the error handling we have in mlx5e_get_module_eeprom()
-for the old API.
-
-This fixes the following case where the query fails, but userspace
-ethtool wrongly treats it as success and dumps an output:
-
-  # ethtool -m eth2
-  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
-  netlink warning: mlx5_core: Query module eeprom by page failed, read 0 bytes, err -5
-  Offset		Values
-  ------		------
-  0x0000:		00 00 00 00 05 00 04 00 00 00 00 00 05 00 05 00
-  0x0010:		00 00 00 00 05 00 06 00 50 00 00 00 67 65 20 66
-  0x0020:		61 69 6c 65 64 2c 20 72 65 61 64 20 30 20 62 79
-  0x0030:		74 65 73 2c 20 65 72 72 20 2d 35 00 14 00 03 00
-  0x0040:		08 00 01 00 03 00 00 00 08 00 02 00 1a 00 00 00
-  0x0050:		14 00 04 00 08 00 01 00 04 00 00 00 08 00 02 00
-  0x0060:		0e 00 00 00 14 00 05 00 08 00 01 00 05 00 00 00
-  0x0070:		08 00 02 00 1a 00 00 00 14 00 06 00 08 00 01 00
-
-Fixes: e109d2b204da ("net/mlx5: Implement get_module_eeprom_by_page()")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1762265736-1028868-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218037
+Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index b189220f8a877..ccd2ebfd26737 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1839,14 +1839,12 @@ static int mlx5e_get_module_eeprom_by_page(struct net_device *netdev,
- 		if (!size_read)
- 			return i;
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index 59f630962338d..2e72e8967e685 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -75,6 +75,7 @@ MODULE_PARM_DESC(disable_tap_to_click,
+ #define HIDPP_QUIRK_HIDPP_CONSUMER_VENDOR_KEYS	BIT(27)
+ #define HIDPP_QUIRK_HI_RES_SCROLL_1P0		BIT(28)
+ #define HIDPP_QUIRK_WIRELESS_STATUS		BIT(29)
++#define HIDPP_QUIRK_RESET_HI_RES_SCROLL		BIT(30)
  
--		if (size_read == -EINVAL)
--			return -EINVAL;
- 		if (size_read < 0) {
- 			NL_SET_ERR_MSG_FMT_MOD(
- 				extack,
- 				"Query module eeprom by page failed, read %u bytes, err %d\n",
- 				i, size_read);
--			return i;
-+			return size_read;
- 		}
+ /* These are just aliases for now */
+ #define HIDPP_QUIRK_KBD_SCROLL_WHEEL HIDPP_QUIRK_HIDPP_WHEELS
+@@ -193,6 +194,7 @@ struct hidpp_device {
+ 	void *private_data;
  
- 		i += size_read;
+ 	struct work_struct work;
++	struct work_struct reset_hi_res_work;
+ 	struct kfifo delayed_work_fifo;
+ 	struct input_dev *delayed_input;
+ 
+@@ -3864,6 +3866,7 @@ static int hidpp_raw_hidpp_event(struct hidpp_device *hidpp, u8 *data,
+ 	struct hidpp_report *answer = hidpp->send_receive_buf;
+ 	struct hidpp_report *report = (struct hidpp_report *)data;
+ 	int ret;
++	int last_online;
+ 
+ 	/*
+ 	 * If the mutex is locked then we have a pending answer from a
+@@ -3905,6 +3908,7 @@ static int hidpp_raw_hidpp_event(struct hidpp_device *hidpp, u8 *data,
+ 			"See: https://gitlab.freedesktop.org/jwrdegoede/logitech-27mhz-keyboard-encryption-setup/\n");
+ 	}
+ 
++	last_online = hidpp->battery.online;
+ 	if (hidpp->capabilities & HIDPP_CAPABILITY_HIDPP20_BATTERY) {
+ 		ret = hidpp20_battery_event_1000(hidpp, data, size);
+ 		if (ret != 0)
+@@ -3929,6 +3933,11 @@ static int hidpp_raw_hidpp_event(struct hidpp_device *hidpp, u8 *data,
+ 			return ret;
+ 	}
+ 
++	if (hidpp->quirks & HIDPP_QUIRK_RESET_HI_RES_SCROLL) {
++		if (last_online == 0 && hidpp->battery.online == 1)
++			schedule_work(&hidpp->reset_hi_res_work);
++	}
++
+ 	if (hidpp->quirks & HIDPP_QUIRK_HIDPP_WHEELS) {
+ 		ret = hidpp10_wheel_raw_event(hidpp, data, size);
+ 		if (ret != 0)
+@@ -4302,6 +4311,13 @@ static void hidpp_connect_event(struct work_struct *work)
+ 	hidpp->delayed_input = input;
+ }
+ 
++static void hidpp_reset_hi_res_handler(struct work_struct *work)
++{
++	struct hidpp_device *hidpp = container_of(work, struct hidpp_device, reset_hi_res_work);
++
++	hi_res_scroll_enable(hidpp);
++}
++
+ static DEVICE_ATTR(builtin_power_supply, 0000, NULL, NULL);
+ 
+ static struct attribute *sysfs_attrs[] = {
+@@ -4432,6 +4448,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	}
+ 
+ 	INIT_WORK(&hidpp->work, hidpp_connect_event);
++	INIT_WORK(&hidpp->reset_hi_res_work, hidpp_reset_hi_res_handler);
+ 	mutex_init(&hidpp->send_mutex);
+ 	init_waitqueue_head(&hidpp->wait);
+ 
+@@ -4527,6 +4544,7 @@ static void hidpp_remove(struct hid_device *hdev)
+ 
+ 	hid_hw_stop(hdev);
+ 	cancel_work_sync(&hidpp->work);
++	cancel_work_sync(&hidpp->reset_hi_res_work);
+ 	mutex_destroy(&hidpp->send_mutex);
+ }
+ 
+@@ -4574,6 +4592,9 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	{ /* Keyboard MX5500 (Bluetooth-receiver in HID proxy mode) */
+ 	  LDJ_DEVICE(0xb30b),
+ 	  .driver_data = HIDPP_QUIRK_HIDPP_CONSUMER_VENDOR_KEYS },
++	{ /* Logitech G502 Lightspeed Wireless Gaming Mouse */
++	  LDJ_DEVICE(0x407f),
++	  .driver_data = HIDPP_QUIRK_RESET_HI_RES_SCROLL },
+ 
+ 	{ LDJ_DEVICE(HID_ANY_ID) },
+ 
 -- 
 2.51.0
 
