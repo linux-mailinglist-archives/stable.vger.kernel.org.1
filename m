@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA5FC794E4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E7AC79DE3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B023335FB50
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C5334EB928
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164142DEA7E;
-	Fri, 21 Nov 2025 13:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EEC346A0E;
+	Fri, 21 Nov 2025 13:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COLTj78G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK5BX5Po"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CB727147D;
-	Fri, 21 Nov 2025 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69648350A27;
+	Fri, 21 Nov 2025 13:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731178; cv=none; b=iAqXroO1s5Ko13sQwjvmKsC5LAiQNbu6SUPLEHy8EkDjIt+s/XVP7+TmpFsm/YIunODhg6wCehtpFnfD9xKBs/Kb30eU8avDi3b6eZ69ErMuNU6fEmFa9buLBh32QqMLJP8ZXoOtMNx13o84+5oP2RWrTy3bSYpur6BdALAmzPY=
+	t=1763733044; cv=none; b=moXttZ3ORh18d3bRWiCTXbm/+okFE3cZI0KJjduKmESw4F1qJtH0TEiMl2uwASDslfXc5uaMB/4FbrfKH7hq5+m2xw68zAYiSgsC+5sDmtvwXj5uBDOPZi3LX3fwhrX12nGDQdBqZbV13tKaVKsFuosAGF4G6NjSw7HenwJXzNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731178; c=relaxed/simple;
-	bh=1eS2uH0dXZ2L2rji6Nz0AoCEIMHSCPmkqSE/NPFUwek=;
+	s=arc-20240116; t=1763733044; c=relaxed/simple;
+	bh=KMTzLC8oDBNHsTxbBum5+VeWQAOBtz7a8xkXqvHypqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbIxvGvfYK3kzYKLVhWbI1J0EAPsFw6q6SaBWMuKt5xQk1kzli0cqu2alKLyiYRiqZDAlMvgVDrmWYGFncLWEXNhD7HEhhluF1gNWwbRwNz6Ypz2PUUnN6kI4C5hfTd3xG3BL9b0O7MeMittjA5wxqhQyGfCa1yF4qT8wvc+4dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COLTj78G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5487BC4CEF1;
-	Fri, 21 Nov 2025 13:19:38 +0000 (UTC)
+	 MIME-Version; b=KRP6y2Tvu0D/DbIjkDojNoRocu3PBbPwG60z53nOIxIoIJwgRA2hM8ZuWDvCg8/jwuUI/PmXm/01ZO8oQnq30AM8A7zBRoUzUaBN/gGqVmzo/3HGm41mVjeZMxtPyx7sf2H2OEgHHp+UmeLMkDM19r6SNUS57JmOWAAol2IvCZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK5BX5Po; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FFBC4CEFB;
+	Fri, 21 Nov 2025 13:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731178;
-	bh=1eS2uH0dXZ2L2rji6Nz0AoCEIMHSCPmkqSE/NPFUwek=;
+	s=korg; t=1763733044;
+	bh=KMTzLC8oDBNHsTxbBum5+VeWQAOBtz7a8xkXqvHypqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COLTj78G1qcmmKTlfdHf4TyYHkUdS7trQNw+G2Hnlb4SkbrywftJJf8Duvu+fOybn
-	 zUdVw4dwLXUIstjwAGXPEjbLt/5BA5oF/UxkalqTrJQbhDgT6/54tleU9USCUtVtBx
-	 EvI5/FgO12Bs2kec2loiPCu/oJxps2949lBbVJWY=
+	b=gK5BX5Poi9R3oR/cyF9plp0kTvlO0F4bBuIPfLhw8cLigm4k5tooQxvsVOut/B+bF
+	 DlHZvxIzsttgRJxjwtghERdvVkovs1ZSfCf2br8yunUZj4Rmy1PfEr8vbXPVlpPd7S
+	 E40NflgJia3HaAVA10U2WwsySsWoY+J5ondb2fkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 083/247] wifi: iwlwifi: mvm: fix beacon template/fixed rate
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.6 331/529] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
 Date: Fri, 21 Nov 2025 14:10:30 +0100
-Message-ID: <20251121130157.576260433@linuxfoundation.org>
+Message-ID: <20251121130242.803968405@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit 3592c0083fb29cca13cd9978b8844d58b4eff548 ]
+commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
 
-During the development of the rate changes, I evidently made
-some changes that shouldn't have been there; beacon templates
-with rate_n_flags are only in old versions, so no changes to
-them should have been necessary, and evidently broke on some
-devices. This also would have broken fixed (injection) rates,
-it would seem. Restore the old handling of this.
+This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
 
-Fixes: dabc88cb3b78 ("wifi: iwlwifi: handle v3 rates")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220558
-Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20251008112044.3bb8ea849d8d.I90f4d2b2c1f62eaedaf304a61d2ab9e50c491c2d@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Although this commit benefits QCA6174, it breaks QCA988x and
+QCA9984 [1][2]. Since it is not likely to root cause/fix this
+issue in a short time, revert it to get those chips back.
+
+Compile tested only.
+
+Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
+Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 13 +++----------
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c    | 12 +++++++++---
- 2 files changed, 12 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 8805ab344895a..0065c2ead56b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -938,19 +938,12 @@ u8 iwl_mvm_mac_ctxt_get_lowest_rate(struct iwl_mvm *mvm,
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1763,32 +1763,33 @@ void ath10k_wmi_put_wmi_channel(struct a
  
- u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
  {
-+	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
- 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
--	u16 flags, cck_flag;
--
--	if (is_new_rate) {
--		flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
--		cck_flag = IWL_MAC_BEACON_CCK;
--	} else {
--		cck_flag = IWL_MAC_BEACON_CCK_V1;
--		flags = iwl_fw_rate_idx_to_plcp(rate_idx);
--	}
+-	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
  
- 	if (rate_idx <= IWL_LAST_CCK_RATE)
--		flags |= cck_flag;
-+		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
-+			  : IWL_MAC_BEACON_CCK_V1;
- 
- 	return flags;
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-index 62da0132f3838..a62f5288dfd06 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-@@ -169,9 +169,15 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
- 
- u8 iwl_mvm_mac80211_idx_to_hwrate(const struct iwl_fw *fw, int rate_idx)
- {
--	return (rate_idx >= IWL_FIRST_OFDM_RATE ?
--		rate_idx - IWL_FIRST_OFDM_RATE :
--		rate_idx);
-+	if (iwl_fw_lookup_cmd_ver(fw, TX_CMD, 0) > 8)
-+		/* In the new rate legacy rates are indexed:
-+		 * 0 - 3 for CCK and 0 - 7 for OFDM.
+-	/* Sometimes the PCI HIF doesn't receive interrupt
+-	 * for the service ready message even if the buffer
+-	 * was completed. PCIe sniffer shows that it's
+-	 * because the corresponding CE ring doesn't fires
+-	 * it. Workaround here by polling CE rings. Since
+-	 * the message could arrive at any time, continue
+-	 * polling until timeout.
+-	 */
+-	do {
++	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++						WMI_SERVICE_READY_TIMEOUT_HZ);
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
 +		 */
-+		return (rate_idx >= IWL_FIRST_OFDM_RATE ?
-+			rate_idx - IWL_FIRST_OFDM_RATE :
-+			rate_idx);
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
 +
-+	return iwl_fw_rate_idx_to_plcp(rate_idx);
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
+ 
+-		/* The 100 ms granularity is a tradeoff considering scheduler
+-		 * overhead and response latency
+-		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							msecs_to_jiffies(100));
+-		if (time_left)
+-			return 0;
+-	} while (time_before(jiffies, timeout));
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
+ 
+-	ath10k_warn(ar, "failed to receive service ready completion\n");
+-	return -ETIMEDOUT;
++	return 0;
  }
  
- u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac)
--- 
-2.51.0
-
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 
 
 
