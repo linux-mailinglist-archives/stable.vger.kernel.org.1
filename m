@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AFBC79817
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E525C7959B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A66936307D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E869F4EBC21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C512E332904;
-	Fri, 21 Nov 2025 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5760B54763;
+	Fri, 21 Nov 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWWVvDWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDjM0Ecl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C732745E;
-	Fri, 21 Nov 2025 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C0E3176E1;
+	Fri, 21 Nov 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731973; cv=none; b=R6MPPSZStMIFIIKwC9sNB7V8NYiDfR39FMG93haXyU3BCfEwYP5b+a3jIa8GjcIHPXuxif4Q8m87Eusk3C/YbiwTvC42zPLkouwRhEO82D85JDEjWsC0I/9cNSQv8Wh/SL6iiHPSttclXCLBGIa2HsZ/Ume3IH8pMW9g3QK1JC0=
+	t=1763731509; cv=none; b=htJgRmn2bFcloQx4iF4esW/M4Y+9KbNO0cE1/cZRfsy/3U2CNR0qyC0JetvaddxFQxB722uS4G9jeuw5IsDCRBZFG8lQZlbu+hhg0ykj7nhcNnC3pGgG/fCXhdBPvxdQ3HLNzYFiGZxAgwOhVuRY3rs1xubWcGtjjD0UW4IzeQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731973; c=relaxed/simple;
-	bh=e9R9ITJ1jSMUxI5pkmYchmOWOlCRwUYROSu0GoibZx4=;
+	s=arc-20240116; t=1763731509; c=relaxed/simple;
+	bh=tQfWbu+KEifAFYvGnSDCp1ePYFXoL9OFuHsOOSpJyHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpPuJonnY3yxi0kfyRIrB4KDqxvWhUqyP02MZkgUHk3Y0uQln6rIrqPA2kYsKxb1BzgtKPnfx+s9OtC/EoeJe4DdeimoUcxPDHRZg67qVtM6W4V7dE9j1kvqdCpBfU/UvvnUbigZrHKy8E8w7gJi97ymuAJny8uV+27p1mtWtQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWWVvDWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032F7C4CEF1;
-	Fri, 21 Nov 2025 13:32:52 +0000 (UTC)
+	 MIME-Version; b=oz4h5igXRsJ2rSWDO71tOCL9RjohE6v2brqtKAPlw8S8P0Jh3XC05sZ8BeGz+yXLjb6tCxDlvqlBSKg5c+mj+cG4mQHMfwd9LqIfRHYY9dF600Hmhpl64Q1H6fktC2lW52Zu4H2bVo+xrgxteIFq/yp/hVF86Sg7Q9WkuIpaOt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDjM0Ecl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81133C4CEF1;
+	Fri, 21 Nov 2025 13:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731973;
-	bh=e9R9ITJ1jSMUxI5pkmYchmOWOlCRwUYROSu0GoibZx4=;
+	s=korg; t=1763731508;
+	bh=tQfWbu+KEifAFYvGnSDCp1ePYFXoL9OFuHsOOSpJyHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWWVvDWWPDovolFVGflLjA8Vnu/ZwhcTDlrVaoPpVhVnqdFCPorVNBdJQzHQrLBxM
-	 x/uOzjGlfjU1+ArdsfV/ZUbSq5x3npyNP5s54/VWiii7Tc/GZKJrCHE36jEhqa3Kp1
-	 OKW4hwomARcpU7KYvTfvODi5f9RqKt95MHeuUfuI=
+	b=YDjM0Ecl96TUupzQjOqsDGg9wVkAhw0bOSBlr+a3mnkGc0H6/LaInStf9QLcWHD42
+	 yj4gxoRb1iFlSWIRydy+54mD5FvyCr1lpBsVZvzTn1zP6M4D02dcx2C3say5sZ5R9c
+	 Ot7VsjPswM6i+FJRNbA0JUlRPUXxIxjJ54+dKxn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 145/185] btrfs: scrub: put bio after errors in scrub_raid56_parity_stripe()
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.17 225/247] drm/xe/xe3: Add WA_14024681466 for Xe3_LPG
 Date: Fri, 21 Nov 2025 14:12:52 +0100
-Message-ID: <20251121130149.110130783@linuxfoundation.org>
+Message-ID: <20251121130202.810246392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-commit 5fea61aa1ca70c4b3738eebad9ce2d7e7938ebbd upstream.
+commit 0b2f7be548006b0651e1e8320790f49723265cbc upstream.
 
-scrub_raid56_parity_stripe() allocates a bio with bio_alloc(), but
-fails to release it on some error paths, leading to a potential
-memory leak.
+Apply WA_14024681466 to Xe3_LPG graphics IP versions from 30.00 to 30.05.
 
-Add the missing bio_put() calls to properly drop the bio reference
-in those error cases.
+v2: (Matthew Roper)
+   - Remove stepping filter as workaround applies to all steppings.
+   - Add an engine class filter so it only applies to the RENDER engine.
 
-Fixes: 1009254bf22a3 ("btrfs: scrub: use scrub_stripe to implement RAID56 P/Q scrub")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Link: https://patch.msgid.link/20251027092643.335904-1-nitin.r.gote@intel.com
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 071089a69e199bd810ff31c4c933bd528e502743)
+Cc: stable@vger.kernel.org # v6.16+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    1 +
+ drivers/gpu/drm/xe/xe_wa.c           |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2091,6 +2091,7 @@ static int scrub_raid56_parity_stripe(st
- 	ret = btrfs_map_block(fs_info, BTRFS_MAP_WRITE, full_stripe_start,
- 			      &length, &bioc, NULL, NULL);
- 	if (ret < 0) {
-+		bio_put(bio);
- 		btrfs_put_bioc(bioc);
- 		btrfs_bio_counter_dec(fs_info);
- 		goto out;
-@@ -2100,6 +2101,7 @@ static int scrub_raid56_parity_stripe(st
- 	btrfs_put_bioc(bioc);
- 	if (!rbio) {
- 		ret = -ENOMEM;
-+		bio_put(bio);
- 		btrfs_bio_counter_dec(fs_info);
- 		goto out;
- 	}
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -168,6 +168,7 @@
+ 
+ #define XEHP_SLICE_COMMON_ECO_CHICKEN1		XE_REG_MCR(0x731c, XE_REG_OPTION_MASKED)
+ #define   MSC_MSAA_REODER_BUF_BYPASS_DISABLE	REG_BIT(14)
++#define   FAST_CLEAR_VALIGN_FIX			REG_BIT(13)
+ 
+ #define XE2LPM_CCCHKNREG1			XE_REG(0x82a8)
+ 
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -890,6 +890,10 @@ static const struct xe_rtp_entry_sr lrc_
+ 		       ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
+ 	},
++	{ XE_RTP_NAME("14024681466"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3005), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(XEHP_SLICE_COMMON_ECO_CHICKEN1, FAST_CLEAR_VALIGN_FIX))
++	},
+ };
+ 
+ static __maybe_unused const struct xe_rtp_entry oob_was[] = {
 
 
 
