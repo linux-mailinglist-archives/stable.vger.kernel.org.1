@@ -1,322 +1,109 @@
-Return-Path: <stable+bounces-196546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D18C7B2C2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:02:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9DDC7B2F5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 682704EC51F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:59:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 558623418F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C56F352927;
-	Fri, 21 Nov 2025 17:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1320434C123;
+	Fri, 21 Nov 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H0nYCLPb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aERrClO1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BD234B42C
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 17:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD078332909;
+	Fri, 21 Nov 2025 18:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763747928; cv=none; b=WiJbOxvFb/X8Gg8SgUuMHAUAYcPkYVAoujR8xcqSXb/hP/0tvwiVQ5g5rh//oj1GNWbaZvPyqXfYigFqYRoIsVtNCXd95zg4D+FjQ8YpvpjD72B63BHeuJFwjE/fP8S2S9+9cpGdewTw3naKQcMVlKnUOaSd9JuYU8AwNNxl8Wg=
+	t=1763748054; cv=none; b=E91BAbA50MziDePBcteuQyS9oWk9c8+1ODAkpH+8IOf9pMPpbOsAe8q9q1gCuIaJlbhOkK6ep4vW87JRCXRnOa4shupkg2+/sX+V5lZ0gGz87mzZmRunUJl+a8WaqkqFvjXqEWSMkGsAgxGvCQne7Vue4JTpgZRo6LyOFgd1ask=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763747928; c=relaxed/simple;
-	bh=l/emk33IJaQCRnpjtlYSMRe3l46rJi3OHWQwgkyXmuU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Few8GUIpU1t+/EfOMTvnBsKCPAkSLFhYoJ0GupkqggNHndQJOpOxm8SGzCD0xPydsra83OOdy3ckMtGJ6bsxIqnkNpXbilamoKppf7rrGBHIsfPYbH5rDd81m/aLnKvnuDqsSGXA3tVlQOjktfZ0WVrUSbIhHmyu1UmYzAjJ9jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H0nYCLPb; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so3288509a12.0
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 09:58:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763747924; x=1764352724; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yauXV5Vo3Xp9GxqEkp8nUzj236IDpantD/jBpBsr8Nc=;
-        b=H0nYCLPb+2fDyt3Ri6QSi+v4r7hquxj+2Dsc81K8/6Gysl8Q4S8YNf5i+LkkMWY5dJ
-         zJyBb7kmjUBaH/VMT3FYTBK3aY+3FrU0+ttNR3iOBLmhlcCiTTLUpjjxPJyoGM6MgSUI
-         TauMJ0kMR3uGXcxK4KIPhxfIOfiWMiClH7tOH/uhlvi0gFNIoGjTHGE5HskFyWYsEh2G
-         4p1bNryQ4vwqmrgdYVFWxfVpRhn/u9kMDJm+bWkTklxajYbl20eDwpX9CHe5Mk/cThce
-         HPLpEn17/hjCjwUvqkq8a/l3Zn9Adb/DOYtvkyeMLhrKb7QZv5lqkrrS6qr2F+LfHGU7
-         DzMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763747924; x=1764352724;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yauXV5Vo3Xp9GxqEkp8nUzj236IDpantD/jBpBsr8Nc=;
-        b=nHUaKAtFfMIEc5dMjMs+v0eLW2PBFTJvUZrBi7vGT6gYRllZKZUyDiaLbgCKe/p34k
-         vPBgeQidICB3b6luDTZg5RLTVDl+xp9d8+pwf/ZmUVfHpNP1uTt6jFitt9hJEACM7t9r
-         W/qF+4AorMG3W4Mga13WTv79hxWtO9CWHLzd6Q0tqTpcbXSA6ke/H5e9zmNpi/oPm03p
-         mHfvnuMnwlfIgbzB25XGA5L59lQia15ZuORPPoyEPxeZWAVVZholJVOUx/T0dsvBjiNT
-         W3hgMhk3vCAQbq+JiZquvJxxMiqKmMhXzegNdIPTQPLwA42wVSYuA81fKA61aWjUkOpY
-         GOfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDpT5uqGdpVtJ53IzedGMCfjcmwQBqTJuIqctmyL/bGoyjYKi9wJL118Gm4F7PtScmGS3B8AM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzkytrhv6N9vPdUrl1br3MXb5bx4U//exea8WcDUbqJYLHvLPJc
-	m8IvirCGegRfP45362ZeF7aa1l81YffEnxxLDQS9Ew2hrb1AZ/HfX34vaZzm2Yd29s6GKuDklVR
-	q4KsIV6ci5Qp7boiLURO9Qfo5IDmFos/aIoxSoXcB8A==
-X-Gm-Gg: ASbGncvM0t64/nF/efWjNXLNLN3gLS1ESzTNAkvvctk2PTRwmYV6IoONUtmIwSTYdoB
-	iFIgaFnbJffRkhIugAFRAzeAEmktgBMSMk6ZumU2YxcuWVbuUFXOocXF6mynSYG0MhbWIKYvt8D
-	+qz8XwS2IfS1ewWwwCvfOryFpH3qBml2+deCDR3tWqxrK7rj/aNOf/poMJb8ImK990HbHGc25Q9
-	fJkzkBBpsfhB6V7d/IUqVmqJ692yBzX+UvUzHlOr9RGsu02UF0Gt/iz7vbEdYCOXZplLCMUmqjD
-	EEdD6cKSyVwykfKJVhBTpGAA
-X-Google-Smtp-Source: AGHT+IH5VUXeKXDFaWzqSMjOTFrzQR4663IwnMB1GfJiRrUq6R9h6K2CpqHIPq/0RtRk0jyCDkkVGH5zykoQu+QEC+I=
-X-Received: by 2002:a05:6402:350c:b0:641:27d8:ec3f with SMTP id
- 4fb4d7f45d1cf-645546a328amr2824474a12.29.1763747924057; Fri, 21 Nov 2025
- 09:58:44 -0800 (PST)
+	s=arc-20240116; t=1763748054; c=relaxed/simple;
+	bh=CZHQnN3iOCJ6aN0E5u5hK1R02monCvhynklOLawB+FQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MCZ9cVXSCjG6RxgjOpOJXz80Z6ty0GQQbcH1HokIwz5B1FRLA1l9xVex4cPGobMy9f+6CJqFnqrHKWaIE1SQIlD51P4dVG6IL9ySDy1y5Rl33EXNLTjM/H2fYw2+Xw1U6wOFEIbTkdtz7TcDP+9tiYK63/y+3YGGCHFGm9nE8Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aERrClO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBCAC16AAE;
+	Fri, 21 Nov 2025 18:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763748054;
+	bh=CZHQnN3iOCJ6aN0E5u5hK1R02monCvhynklOLawB+FQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aERrClO1nZEVOGDNM/yjtuedLrKj0ht6vKFy4SL08A+VU6hRFYCXisY6O9OCKFS3X
+	 yivuNVF4+31DClBs72OZ/2lXc+vWiCyu0FyQzPoVNW8CAcDXLrD6aETyy95B2RT/7+
+	 Wdb08ip1N1eB/ZL2PVOOGyzDlWE7TYZ3LY2K/nDvNl8tz2dDJ/8O74uA/Fz2lb6xW+
+	 NyQ/C8+SfHBs0rt2p/4A+H8sLB976pGv58enbOwk3tPEb9sHkhv7gvt6+Ps4Y2lRos
+	 W6WHnwdnTh27h7l51afVwft+9ma/J6xNDiklN2Lg0aS1r4Txhg39CDqisP2SpmGo53
+	 vc7hMKLLA4/rQ==
+Date: Fri, 21 Nov 2025 10:00:53 -0800
+From: Kees Cook <kees@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Russell King - ARM Linux <linux@armlinux.org.uk>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
+Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
+Message-ID: <202511210951.39AA2F97@keescook>
+References: <20250623130632.993849527@linuxfoundation.org>
+ <CA+G9fYuU5uSG1MKdYPoaC6O=-w5z6BtLtwd=+QBzrtZ1uQ8VXg@mail.gmail.com>
+ <2025062439-tamer-diner-68e9@gregkh>
+ <CA+G9fYvUG9=yGCp1W9-9+dhA6xLRo7mrL=7x9kBNJmzg7TCn7w@mail.gmail.com>
+ <2025062517-lucrative-justness-83fe@gregkh>
+ <202511061127.52ECA4AB40@keescook>
+ <2025112157-renewable-batboy-7b5c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
- <86d759a5-9a96-49ff-9f75-8b56e2626d65@arm.com> <2ktr5znjidilpxm2ycixunqlmhu253xwov4tpnb2qablrsqmbv@ysacm5nbcjw7>
- <CAKfTPtBBtMysuYgBYZR2EH=WPR7X5F_RRzGmf94UhyDiGmmqCg@mail.gmail.com>
- <CAKchOA03GKXMUbfVvEXtyp3=-t0mWOzQVHNkB6F9QsMfTzCofA@mail.gmail.com> <6e50830f-a1b8-452a-86a7-1621cd3968ce@arm.com>
-In-Reply-To: <6e50830f-a1b8-452a-86a7-1621cd3968ce@arm.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Fri, 21 Nov 2025 18:58:32 +0100
-X-Gm-Features: AWmQ_bm0LV7v7253_x3q6L4l6YJCTgvF1RffJ2LVMbmE1Sm1KAZlgXeDxmfr_kI
-Message-ID: <CAKfTPtB-+DeZQyLNRQjvCyM2KjDK2cLpM29UmW++oe=Tcu5AoA@mail.gmail.com>
-Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
- performance estimation' causes a regression
-To: Christian Loehle <christian.loehle@arm.com>
-Cc: Yu-Che Cheng <giver@chromium.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lukasz Luba <lukasz.luba@arm.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025112157-renewable-batboy-7b5c@gregkh>
 
-On Fri, 21 Nov 2025 at 17:35, Christian Loehle <christian.loehle@arm.com> w=
-rote:
->
-> On 11/21/25 15:37, Yu-Che Cheng wrote:
-> > Hi Vincent,
-> >
-> > On Fri, Nov 21, 2025 at 10:00=E2=80=AFPM Vincent Guittot <vincent.guitt=
-ot@linaro.org>
-> > wrote:
-> >>
-> >> On Fri, 21 Nov 2025 at 04:55, Sergey Senozhatsky
-> >> <senozhatsky@chromium.org> wrote:
-> >>>
-> >>> Hi Christian,
-> >>>
-> >>> On (25/11/20 10:15), Christian Loehle wrote:
-> >>>> On 11/20/25 04:45, Sergey Senozhatsky wrote:
-> >>>>> Hi,
-> >>>>>
-> >>>>> We are observing a performance regression on one of our arm64
-> > boards.
-> >>>>> We tracked it down to the linux-6.6.y commit ada8d7fa0ad4
-> > ("sched/cpufreq:
-> >>
-> >> You mentioned that you tracked down to linux-6.6.y but which kernel
-> >> are you using ?
-> >>
-> >
-> > We're using ChromeOS 6.6 kernel, which is currently on top of linux-v6.=
-6.99.
-> > But we've tested that the performance regression still happens on exact=
-ly
-> > the same scheduler codes (`kernel/sched`) as upstream v6.6.99, compared=
- to
-> > those on v6.6.88.
-> >
-> >>>>> Rework schedutil governor performance estimation").
-> >>>>>
-> >>>>> UI speedometer benchmark:
-> >>>>> w/commit:   395  +/-38
-> >>>>> w/o commit: 439  +/-14
-> >>>>>
-> >>>>
-> >>>> Hi Sergey,
-> >>>> Would be nice to get some details. What board?
-> >>>
-> >>> It's an MT8196 chromebook.
-> >>>
-> >>>> What do the OPPs look like?
-> >>>
-> >>> How do I find that out?
-> >>
-> >> In /sys/kernel/debug/opp/cpu*/
-> >> or
-> >> /sys/devices/system/cpu/cpufreq/policy*/scaling_available_frequencies
-> >> with related_cpus
-> >>
-> >
-> > The energy model on the device is:
-> >
-> > CPU0-3:
-> > +------------+------------+
-> > | freq (khz) | power (uw) |
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D+
-> > |     339000 |      34362 |
-> > |     400000 |      42099 |
-> > |     500000 |      52907 |
-> > |     600000 |      63795 |
-> > |     700000 |      74747 |
-> > |     800000 |      88445 |
-> > |     900000 |     101444 |
-> > |    1000000 |     120377 |
-> > |    1100000 |     136859 |
-> > |    1200000 |     154162 |
-> > |    1300000 |     174843 |
-> > |    1400000 |     196833 |
-> > |    1500000 |     217052 |
-> > |    1600000 |     247844 |
-> > |    1700000 |     281464 |
-> > |    1800000 |     321764 |
-> > |    1900000 |     352114 |
-> > |    2000000 |     383791 |
-> > |    2100000 |     421809 |
-> > |    2200000 |     461767 |
-> > |    2300000 |     503648 |
-> > |    2400000 |     540731 |
-> > +------------+------------+
-> >
-> > CPU4-6:
-> > +------------+------------+
-> > | freq (khz) | power (uw) |
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D+
-> > |     622000 |     131738 |
-> > |     700000 |     147102 |
-> > |     800000 |     172219 |
-> > |     900000 |     205455 |
-> > |    1000000 |     233632 |
-> > |    1100000 |     254313 |
-> > |    1200000 |     288843 |
-> > |    1300000 |     330863 |
-> > |    1400000 |     358947 |
-> > |    1500000 |     400589 |
-> > |    1600000 |     444247 |
-> > |    1700000 |     497941 |
-> > |    1800000 |     539959 |
-> > |    1900000 |     584011 |
-> > |    2000000 |     657172 |
-> > |    2100000 |     746489 |
-> > |    2200000 |     822854 |
-> > |    2300000 |     904913 |
-> > |    2400000 |    1006581 |
-> > |    2500000 |    1115458 |
-> > |    2600000 |    1205167 |
-> > |    2700000 |    1330751 |
-> > |    2800000 |    1450661 |
-> > |    2900000 |    1596740 |
-> > |    3000000 |    1736568 |
-> > |    3100000 |    1887001 |
-> > |    3200000 |    2048877 |
-> > |    3300000 |    2201141 |
-> > +------------+------------+
-> >
-> > CPU7:
-> >
-> > +------------+------------+
-> > | freq (khz) | power (uw) |
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D+
-> > |     798000 |     320028 |
-> > |     900000 |     330714 |
-> > |    1000000 |     358108 |
-> > |    1100000 |     384730 |
-> > |    1200000 |     410669 |
-> > |    1300000 |     438355 |
-> > |    1400000 |     469865 |
-> > |    1500000 |     502740 |
-> > |    1600000 |     531645 |
-> > |    1700000 |     560380 |
-> > |    1800000 |     588902 |
-> > |    1900000 |     617278 |
-> > |    2000000 |     645584 |
-> > |    2100000 |     698653 |
-> > |    2200000 |     744179 |
-> > |    2300000 |     810471 |
-> > |    2400000 |     895816 |
-> > |    2500000 |     985234 |
-> > |    2600000 |    1097802 |
-> > |    2700000 |    1201162 |
-> > |    2800000 |    1332076 |
-> > |    2900000 |    1439847 |
-> > |    3000000 |    1575917 |
-> > |    3100000 |    1741987 |
-> > |    3200000 |    1877346 |
-> > |    3300000 |    2161512 |
-> > |    3400000 |    2437879 |
-> > |    3500000 |    2933742 |
-> > |    3600000 |    3322959 |
-> > |    3626000 |    3486345 |
-> > +------------+------------+
-> >
-> >>>
-> >>>> Does this system use uclamp during the benchmark? How?
-> >>>
-> >>> How do I find that out?
-> >>
-> >> it can be set per cgroup
-> >> /sys/fs/cgroup/system.slice/<name>/cpu.uclam.min|max
-> >> or per task with sched_setattr()
-> >>
-> >> You most probably use it because it's the main reason for ada8d7fa0ad4
-> >> to remove wrong overestimate of OPP
-> >>
-> >
-> > For the speedometer case, yes, we set the uclamp.min to 20 for the whol=
-e
-> > browser and UI (chrome).
-> > There's no system-wide uclamp settings though.
->
-> (From Sergey's traces)
-> Per-cluster time=E2=80=91weighted average frequency base =3D> revert:
-> little (cpu0=E2=80=933, max 2.4=E2=80=AFGHz): 0.746=E2=80=AFGHz =3D> 1.13=
-2=E2=80=AFGHz (+51.6%)
-> mid (cpu4=E2=80=936, max 3.3=E2=80=AFGHz): 1.043=E2=80=AFGHz =3D> 1.303=
-=E2=80=AFGHz (+24.9%)
-> big (cpu7, max 3.626=E2=80=AFGHz): 2.563=E2=80=AFGHz =3D> 3.116=E2=80=AFG=
-Hz (+21.6%)
->
-> And in particular time spent at OPPs (base =3D> revert):
-> Big core at upper 10%: 29.6% =3D> 61.5%
-> little cluster at 339=E2=80=AFMHz: 50.1% =3D> 1.0%
->
-> Interesting that a uclamp.min of 20 (which shouldn't really have
-> much affect on big CPU at all, with or without headroom AFAICS?)
-> makes such a big difference here?
+On Fri, Nov 21, 2025 at 10:36:22AM +0100, Greg Kroah-Hartman wrote:
+> On Thu, Nov 06, 2025 at 11:32:18AM -0800, Kees Cook wrote:
+> > This thread got pointed out to me. You can put this back in if you want;
+> > you just need the other associated fix (which had a bit of an obscure
+> > Fixes tag):
+> 
+> What exactly is "this" commit?
+> 
+> > d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
+> 
+> Can you give a list of git ids asked for here?  This thread is confusing
+> :)
 
-Yu-che, could you give us the capacity-dmips-mhz of each cpu (it's in the D=
-T) ?
+Sorry! For stable, you want these, if they're not already present:
 
-it could be that :
-the diff for big 21%
-the diff for mid (24% * mid capacity ratio) ~ 20%
-and probably for Little too (51% * little capacity ratio) ~ 20%
+960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
+d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
+e136a4062174 ("randstruct: gcc-plugin: Remove bogus void member")
+f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
 
-The patch fixes a problem that sometime the min clamping was wrongly
-added to the utilization
 
->
-> >
-> > But we also found other performance regressions in an Android guest VM,
-> > where there's no uclamp for the VM and vCPU processes from the host sid=
-e.
-> > Particularly, the RAR extraction throughput reduces about 20% in the RA=
-R
-> > app (from RARLAB).
-> > Although it's hard to tell if this is some sort of a side-effect of the=
- UI
-> > regression as the UI is also running at the same time.
-> >
-> I'd be inclined to say that is because of the vastly different DVFS from =
-the
-> UI workload, yes.
+An additional bit of confusion is that the fix in 960013ec5b5e landed
+twice via 2 trees:
+6b3ab7f2cbfa ("net: qede: Initialize qede_ll_ops with designated initializer")
+960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
+
+Obviously either is fine.
+
+
+-- 
+Kees Cook
 
