@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836C5C7A0BF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0A6C7986B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7D3E6367404
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 72D8F349C2A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1F9352F87;
-	Fri, 21 Nov 2025 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2217034403C;
+	Fri, 21 Nov 2025 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvJipmTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ai8jA6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EA1351FA0;
-	Fri, 21 Nov 2025 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A4B335541;
+	Fri, 21 Nov 2025 13:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733619; cv=none; b=HvN6Ko56UZi7n6jc5hCYGTApykbIQ5ZkJlutfXD0sHmBxt57VOGuM65TCmcvLE/K2LUGKPztEHcQ4ja2+LgQ7fKh0xOY82YUBYA4Gk6vIoWfOSnFgVtzxokuO5h13YcxdgZukCTkhv6OUSotz5LV2uepREBIU8mgzSStEK88YnA=
+	t=1763732042; cv=none; b=Q2/KJm7M5v8UIprfnQamUnLl9e2aj7muqHC+1gqZ6s/f3/IN25Vjm/Av1FEA2nxQ1CkLlq34hMd5nJxBJesYMs+SCDZs+U0PI93iVm9ZP+AY5ANw7yxP2tVBG2BipCi7oyXBkzNS4pyUo04RlqXh+bm2pFILcsZPNvxBTkaAuUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733619; c=relaxed/simple;
-	bh=0+MJba5vYpI5AEkydkyB1aLoRs+OebNXfzaCqaLT3kI=;
+	s=arc-20240116; t=1763732042; c=relaxed/simple;
+	bh=//AE5JizHkORpV/3gvu5MrikDwo+wsJkAQoQQHP6ShU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8uGVpZrr82rW18E75x4sg7fM0hpysMU92cS9Jw6iNtTSiCP+zzxzIhhO4BhtCiiM73LEf7SXpZVfsWPvnFri8rBkmoJTXwh6MeGjEkpu9E+bBnzQMhQyE52tI3naLqhdd49rPYOZ7YZYnd+3Dhb2jX9rfnNDa+PAyxUNbaOKWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvJipmTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E118EC4CEF1;
-	Fri, 21 Nov 2025 14:00:18 +0000 (UTC)
+	 MIME-Version; b=Ep/ROFPOTTXvOeuklXg4enGiTHrlmyL/0fpZLRL+24no2leTCndNPKzGB1mpy0+wsHsY0UtUKDDYOfkFh9ETseAmaywejf80yKqzsTsJV7yca4WEWNlRw1fYPFR0T8YptHxZqUY27WzzJ2Gw5c1UMSXZ/nSGXOPf8acaOd4lz0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ai8jA6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526EFC4CEF1;
+	Fri, 21 Nov 2025 13:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733619;
-	bh=0+MJba5vYpI5AEkydkyB1aLoRs+OebNXfzaCqaLT3kI=;
+	s=korg; t=1763732042;
+	bh=//AE5JizHkORpV/3gvu5MrikDwo+wsJkAQoQQHP6ShU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvJipmTLUihls4T8Uxhnl+lZ6XyrCtTymXkxJCZfJOtinkD42T+1OVDk1Yony2V/m
-	 ew1/5ZSJR077dKD+w2asRPhS96aEuqGxP/nJD0aCLs01N/Rrjn5SN1wtjhb2jiIQZs
-	 4lG1kPf2wmrLgb/pAKwL+9mEakgaqnHMaRXGxfOI=
+	b=1Ai8jA6ROPJ2cgukNO5jQdfQ2wNF+C+jMkb9sD3VhCusODKIEybmZXeaUV0WO+2mD
+	 OCC4QNHr5x8Dn0EONMFf+8dJL6mrODAjExLFG5EDf5h95u2Gt3MsBKuvKlOV4gEJ1r
+	 v2KZvHl+pfhCeNOQhGmbypMVzNoNZ5FoLOyGXAJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 498/529] net: netpoll: Individualize the skb pool
+Subject: [PATCH 6.12 170/185] KVM: VMX: Fix check for valid GVA on an EPT violation
 Date: Fri, 21 Nov 2025 14:13:17 +0100
-Message-ID: <20251121130248.732980903@linuxfoundation.org>
+Message-ID: <20251121130150.019304053@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
 
-[ Upstream commit 221a9c1df790fa711d65daf5ba05d0addc279153 ]
+[ Upstream commit d0164c161923ac303bd843e04ebe95cfd03c6e19 ]
 
-The current implementation of the netpoll system uses a global skb
-pool, which can lead to inefficient memory usage and
-waste when targets are disabled or no longer in use.
+On an EPT violation, bit 7 of the exit qualification is set if the
+guest linear-address is valid. The derived page fault error code
+should not be checked for this bit.
 
-This can result in a significant amount of memory being unnecessarily
-allocated and retained, potentially causing performance issues and
-limiting the availability of resources for other system components.
-
-Modify the netpoll system to assign a skb pool to each target instead of
-using a global one.
-
-This approach allows for more fine-grained control over memory
-allocation and deallocation, ensuring that resources are only allocated
-and retained as needed.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241114-skb_buffers_v2-v3-1-9be9f52a8b69@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 49c8d2c1f94c ("net: netpoll: fix incorrect refcount handling causing incorrect cleanup")
+Fixes: f3009482512e ("KVM: VMX: Set PFERR_GUEST_{FINAL,PAGE}_MASK if and only if the GVA is valid")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://patch.msgid.link/20251106052853.3071088-1-Sukrit.Bhatnagar@sony.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netpoll.h |    1 +
- net/core/netpoll.c      |   31 +++++++++++++------------------
- 2 files changed, 14 insertions(+), 18 deletions(-)
+ arch/x86/kvm/vmx/common.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -32,6 +32,7 @@ struct netpoll {
- 	bool ipv6;
- 	u16 local_port, remote_port;
- 	u8 remote_mac[ETH_ALEN];
-+	struct sk_buff_head skb_pool;
- };
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -24,7 +24,7 @@ static inline int __vmx_handle_ept_viola
+ 	error_code |= (exit_qualification & EPT_VIOLATION_RWX_MASK)
+ 		      ? PFERR_PRESENT_MASK : 0;
  
- struct netpoll_info {
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -45,9 +45,6 @@
+-	if (error_code & EPT_VIOLATION_GVA_IS_VALID)
++	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
+ 		error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) ?
+ 			      PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
  
- #define MAX_UDP_CHUNK 1460
- #define MAX_SKBS 32
--
--static struct sk_buff_head skb_pool;
--
- #define USEC_PER_POLL	50
- 
- #define MAX_SKB_SIZE							\
-@@ -236,20 +233,23 @@ void netpoll_poll_enable(struct net_devi
- }
- EXPORT_SYMBOL(netpoll_poll_enable);
- 
--static void refill_skbs(void)
-+static void refill_skbs(struct netpoll *np)
- {
-+	struct sk_buff_head *skb_pool;
- 	struct sk_buff *skb;
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&skb_pool.lock, flags);
--	while (skb_pool.qlen < MAX_SKBS) {
-+	skb_pool = &np->skb_pool;
-+
-+	spin_lock_irqsave(&skb_pool->lock, flags);
-+	while (skb_pool->qlen < MAX_SKBS) {
- 		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC);
- 		if (!skb)
- 			break;
- 
--		__skb_queue_tail(&skb_pool, skb);
-+		__skb_queue_tail(skb_pool, skb);
- 	}
--	spin_unlock_irqrestore(&skb_pool.lock, flags);
-+	spin_unlock_irqrestore(&skb_pool->lock, flags);
- }
- 
- static void zap_completion_queue(void)
-@@ -286,12 +286,12 @@ static struct sk_buff *find_skb(struct n
- 	struct sk_buff *skb;
- 
- 	zap_completion_queue();
--	refill_skbs();
-+	refill_skbs(np);
- repeat:
- 
- 	skb = alloc_skb(len, GFP_ATOMIC);
- 	if (!skb)
--		skb = skb_dequeue(&skb_pool);
-+		skb = skb_dequeue(&np->skb_pool);
- 
- 	if (!skb) {
- 		if (++count < 10) {
-@@ -680,6 +680,8 @@ int netpoll_setup(struct netpoll *np)
- 	struct in_device *in_dev;
- 	int err;
- 
-+	skb_queue_head_init(&np->skb_pool);
-+
- 	rtnl_lock();
- 	if (np->dev_name[0]) {
- 		struct net *net = current->nsproxy->net_ns;
-@@ -780,7 +782,7 @@ put_noaddr:
- 	}
- 
- 	/* fill up the skb queue */
--	refill_skbs();
-+	refill_skbs(np);
- 
- 	err = __netpoll_setup(np, ndev);
- 	if (err)
-@@ -806,13 +808,6 @@ unlock:
- }
- EXPORT_SYMBOL(netpoll_setup);
- 
--static int __init netpoll_init(void)
--{
--	skb_queue_head_init(&skb_pool);
--	return 0;
--}
--core_initcall(netpoll_init);
--
- static void rcu_cleanup_netpoll_info(struct rcu_head *rcu_head)
- {
- 	struct netpoll_info *npinfo =
 
 
 
