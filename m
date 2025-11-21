@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86AAC79EDF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE60C79655
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 230FD380467
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 6C66B24203
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF70F34DB4A;
-	Fri, 21 Nov 2025 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B925F7BF;
+	Fri, 21 Nov 2025 13:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5QBQyll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tev3bfLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4034C127;
-	Fri, 21 Nov 2025 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59A03F9D2;
+	Fri, 21 Nov 2025 13:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733284; cv=none; b=R7hepQuQCM6C3xOO1g//dCzE+k4oFolHg1dSBfDlMjOxA8l4LpbxDkj1qnvI4JkJYW/r4sjne+NP9B5lhq+vjfpWetSXnMb+WASMa1HVeUaITOjZNohknqGIBWCJDuNBkHDIPwCX3I0c4vUo2wAhrFrsqzMm+8cN+6mUF1oe/b8=
+	t=1763731883; cv=none; b=bYpMldCtRNfAAqtBK3w89+PnxjyKloYYae918EcgF8u8Ms3dY33F2moh1HRo1XpW9fMYoAyCAsSFcxb8a3Q5LFDy/FlT3NLVoUkPtKiEcmVbOJ5CDs50G4grPhu7DLZaIjcSW4O3Bbg9WPa62J6xl53/ENknqks9eqvlvyZRhek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733284; c=relaxed/simple;
-	bh=D1lzFaPDw/ASlqWA+jxCK6a8GUZUJV1ymbNK3rzelOk=;
+	s=arc-20240116; t=1763731883; c=relaxed/simple;
+	bh=kcmlUI3Jrjgg81yWUvq5mlq7apnswml0HMLXP6mYPqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSohdqksxMDrnMGYh4c1zNK1w2ITSwMrklzBjlfp1NiV71TLD2Yf0iNMIrAgzQHiCoD87x7mKqoc6r77hbRP3/ePbG7wg2Tibr2cQkJwtYDGJbrffzE1It+0446qTL5eAeXXvtqJez3KvZX7Zt1J71FQXWd7WUlC9lag0SSUULM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5QBQyll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F67CC4CEF1;
-	Fri, 21 Nov 2025 13:54:43 +0000 (UTC)
+	 MIME-Version; b=TgInp+CPPqDMPBODoke9TtfRNyvDAUnOg8nhz4LDZ7KuyiyGBQaV9Ins4kpGDSbPR4kRv3MVXEOERuDzDQNHyPUFufpDnhYbkOU09vuCZqHW445e/hRCcNNfG3rS1T1Rq5wjKSW5vWiFnmG6+J3ZiDYRh4qaKapMoUhEGVJbYGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tev3bfLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221E1C4CEF1;
+	Fri, 21 Nov 2025 13:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733283;
-	bh=D1lzFaPDw/ASlqWA+jxCK6a8GUZUJV1ymbNK3rzelOk=;
+	s=korg; t=1763731883;
+	bh=kcmlUI3Jrjgg81yWUvq5mlq7apnswml0HMLXP6mYPqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5QBQyllK+qlmi4VLDpBEXXVq/yNOszBGcav+pz6ykGrcdPhLkJ1hZFrcfP44nNRW
-	 eASKkpHvJM1iSctJZ+h1QuKJ99IXRSJbKh7Mbn/r3TZMeTBaPNj9EflJKN7TIKlA71
-	 kI0li9dFnTLYtHV4+dP2TPSsLj0KtIzq8RFSR8K0=
+	b=Tev3bfLAnzWS78tdZGyoEFZ5v74DO2pZDx1+6nRO42rrsGIbRGO0Zc5xZI3R67Wgn
+	 tuNJpaGaWkTI8Er0MkFHQpu+6qYeqYYoeDO3Pbce4uCQ48JAvy50DwSrhVwKoPw/lo
+	 t9pFACmBhVyPjCZcr66qE4OpJon+XutTX7IC23HY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Rajani Kantha <681739313@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 414/529] net/mlx5e: Fix potentially misleading debug message
-Date: Fri, 21 Nov 2025 14:11:53 +0100
-Message-ID: <20251121130245.749798980@linuxfoundation.org>
+Subject: [PATCH 6.12 087/185] ext4: introduce ITAIL helper
+Date: Fri, 21 Nov 2025 14:11:54 +0100
+Message-ID: <20251121130147.007377018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
+[ Upstream commit 69f3a3039b0d0003de008659cafd5a1eaaa0a7a4 ]
 
-Change the debug message to print the correct units instead of always
-assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
+Introduce ITAIL helper to get the bound of xattr in inode.
 
-Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250208063141.1539283-2-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ fs/ext4/xattr.c | 10 +++++-----
+ fs/ext4/xattr.h |  3 +++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index ca096d8bcca60..29e633e6dd3f0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -590,6 +590,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	__u64 upper_limit_mbps;
- 	__u64 upper_limit_gbps;
- 	int i;
-+	struct {
-+		int scale;
-+		const char *units_str;
-+	} units[] = {
-+		[MLX5_100_MBPS_UNIT] = {
-+			.scale = 100,
-+			.units_str = "Mbps",
-+		},
-+		[MLX5_GBPS_UNIT] = {
-+			.scale = 1,
-+			.units_str = "Gbps",
-+		},
-+	};
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index ce986312bf685..6946c1fc790ab 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -653,7 +653,7 @@ ext4_xattr_ibody_get(struct inode *inode, int name_index, const char *name,
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -797,7 +797,7 @@ ext4_xattr_ibody_list(struct dentry *dentry, char *buffer, size_t buffer_size)
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -883,7 +883,7 @@ int ext4_get_inode_usage(struct inode *inode, qsize_t *usage)
+ 			goto out;
+ 		raw_inode = ext4_raw_inode(&iloc);
+ 		header = IHDR(inode, raw_inode);
+-		end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++		end = ITAIL(inode, raw_inode);
+ 		ret = xattr_check_inode(inode, header, end);
+ 		if (ret)
+ 			goto out;
+@@ -2249,7 +2249,7 @@ int ext4_xattr_ibody_find(struct inode *inode, struct ext4_xattr_info *i,
+ 	header = IHDR(inode, raw_inode);
+ 	is->s.base = is->s.first = IFIRST(header);
+ 	is->s.here = is->s.first;
+-	is->s.end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	is->s.end = ITAIL(inode, raw_inode);
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
+ 		error = xattr_check_inode(inode, header, is->s.end);
+ 		if (error)
+@@ -2800,7 +2800,7 @@ int ext4_expand_extra_isize_ea(struct inode *inode, int new_extra_isize,
+ 	 */
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
-@@ -620,8 +633,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	}
+ 	base = IFIRST(header);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	min_offs = end - base;
+ 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
  
- 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
--		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
--			   __func__, i, max_bw_value[i]);
-+		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
-+			   max_bw_value[i] * units[max_bw_unit[i]].scale,
-+			   units[max_bw_unit[i]].units_str);
- 	}
+diff --git a/fs/ext4/xattr.h b/fs/ext4/xattr.h
+index b25c2d7b5f991..5197f17ffd9a2 100644
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -67,6 +67,9 @@ struct ext4_xattr_entry {
+ 		((void *)raw_inode + \
+ 		EXT4_GOOD_OLD_INODE_SIZE + \
+ 		EXT4_I(inode)->i_extra_isize))
++#define ITAIL(inode, raw_inode) \
++	((void *)(raw_inode) + \
++	 EXT4_SB((inode)->i_sb)->s_inode_size)
+ #define IFIRST(hdr) ((struct ext4_xattr_entry *)((hdr)+1))
  
- 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
+ /*
 -- 
 2.51.0
 
