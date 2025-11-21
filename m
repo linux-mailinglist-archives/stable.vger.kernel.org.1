@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F3CC79C7B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAFFC792B4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 483714F00B5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB876349A99
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A199434A3D6;
-	Fri, 21 Nov 2025 13:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AE4346FA6;
+	Fri, 21 Nov 2025 13:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f99DIzIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm3iUhFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D32F343D6C;
-	Fri, 21 Nov 2025 13:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6D933CE84;
+	Fri, 21 Nov 2025 13:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732854; cv=none; b=m17174rRiLQwkIJUeu6PhXslAral6P15t7EiulYNGAQIWNSmYZsph1K85M6tLhmNEM8thhbbFigBgwlhjQHbRo9md4s23DLY7Csv2Znjry0RrL84q38r3QE2tvCFfuaDVUiej0jhhT9CDBj8UYemEzuQoFZy5LjQ4B2z/4G+vDk=
+	t=1763730890; cv=none; b=cspry4EPZ4Rq1DAS9cIIH6ILDeeKCT+smEHhoruh8jUoaNxOx4/TqEKcr/nND5tBMplIigMoY6UCVkiz+qOQl0FhNEpQWk7XhdoaVwVBgcSx+cqbjFx/i+vjlSxSgtkOkESbeuEHNwfWEfQcN4x+/VTcdlKD69512vmeh2OAVX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732854; c=relaxed/simple;
-	bh=uR+IzB2iGKqlr27hELKkktKA0iav1jtDjznEHS+7B7k=;
+	s=arc-20240116; t=1763730890; c=relaxed/simple;
+	bh=6rSpLJ5HEaNMTFLa5YcUvuLwpDLKsjUGeFqkxAxX4CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTORK2IabOSWpsadrH5/qFyy1GNOSN47IVrMyxyjapNjWxNFF3CqtWE8LwVauCxfaDWHBwCI4MAA7cHtz4LEy91DnC9Kopcvw2mpjTQSST7yapMUgsTwmaSAmUBD4pBvj3AFwnKdghfwRqFYf3uadoY54Rem66KV/kTWlbNRfmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f99DIzIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5344C4CEF1;
-	Fri, 21 Nov 2025 13:47:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RQSt2RMqZjiy5DruAXnRd5mAUGmMPYC6mLjhtJqpA2m5C9zsIqUjy4/LDq/bVEFnFg+1HzEQqRMSr1TzKPPehtNvHij6sest7htUIKFL1UwtAXCGARswipVrvo2FkSK2F88hoiGkjeoQ3wWfPHoTCTabfd8BzF4j/bTv9mseE48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm3iUhFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87ADEC4CEF1;
+	Fri, 21 Nov 2025 13:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732854;
-	bh=uR+IzB2iGKqlr27hELKkktKA0iav1jtDjznEHS+7B7k=;
+	s=korg; t=1763730889;
+	bh=6rSpLJ5HEaNMTFLa5YcUvuLwpDLKsjUGeFqkxAxX4CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f99DIzIcIiL1m9fCwFwfX+deUzXYfC0TWZCk0TptfuCr55kc8DrbTBs3NjF3jvupv
-	 3Cq4Y7PK1N21PtlhEvKsKqhqeAcS/fgaScIu0OtpFNbi7SqBEvTrc/9yYu4fmRqOHC
-	 b9Ax4A/TeqBmcMCFTIlknXBksw6GID1Pn3DQc+XU=
+	b=Dm3iUhFUYpqAVtDN6wQbyEOX95onD0c0/AIlACKihVYQ5ieqzhufjL8QEOYj3OdNL
+	 21ZfAy9pPzE/Q0deLezmI0eljjYbtVMk3a49GIu7HSyIqU94IiZGguBlXWv5FfuYLs
+	 GfHILBSJqKeHwr/OSrBH1dcwIUDARqGAHPx/T1X0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/529] remoteproc: qcom: q6v5: Avoid handling handover twice
+Subject: [PATCH 6.17 018/247] drm/amd: Disable ASPM on SI
 Date: Fri, 21 Nov 2025 14:09:25 +0100
-Message-ID: <20251121130240.488355157@linuxfoundation.org>
+Message-ID: <20251121130155.255146464@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
+[ Upstream commit 7bdd91abf0cb3ea78160e2e78fb58b12f6a38d55 ]
 
-A remoteproc could theoretically signal handover twice. This is unexpected
-and would break the reference counting for the handover resources (power
-domains, clocks, regulators, etc), so add a check to prevent that from
-happening.
+Enabling ASPM causes randoms hangs on Tahiti and Oland on Zen4.
+It's unclear if this is a platform-specific or GPU-specific issue.
+Disable ASPM on SI for the time being.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
-index 769c6d6d6a731..58d5b85e58cda 100644
---- a/drivers/remoteproc/qcom_q6v5.c
-+++ b/drivers/remoteproc/qcom_q6v5.c
-@@ -164,6 +164,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
- {
- 	struct qcom_q6v5 *q6v5 = data;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index ddd0e7ab82be7..fdaf482c0c8a7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1880,6 +1880,13 @@ static bool amdgpu_device_pcie_dynamic_switching_supported(struct amdgpu_device
  
-+	if (q6v5->handover_issued) {
-+		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
-+		return IRQ_HANDLED;
-+	}
+ static bool amdgpu_device_aspm_support_quirk(struct amdgpu_device *adev)
+ {
++	/* Enabling ASPM causes randoms hangs on Tahiti and Oland on Zen4.
++	 * It's unclear if this is a platform-specific or GPU-specific issue.
++	 * Disable ASPM on SI for the time being.
++	 */
++	if (adev->family == AMDGPU_FAMILY_SI)
++		return true;
 +
- 	if (q6v5->handover)
- 		q6v5->handover(q6v5);
+ #if IS_ENABLED(CONFIG_X86)
+ 	struct cpuinfo_x86 *c = &cpu_data(0);
  
 -- 
 2.51.0
