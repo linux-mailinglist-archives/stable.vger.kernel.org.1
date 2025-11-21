@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-196431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885DEC7A00B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02860C79658
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 52D0938452E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A792F34A1E3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707E8350286;
-	Fri, 21 Nov 2025 13:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B427433506C;
+	Fri, 21 Nov 2025 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJQJ0JGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjXeQVgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD19A351FDD;
-	Fri, 21 Nov 2025 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F675246762;
+	Fri, 21 Nov 2025 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733492; cv=none; b=jBh2f1Z+StWS8MoGXhQwCJLv60zugw1gUtJCcLa/+mGe6hEyeYr+v95gHXAJaX1lLQoL3QxLH/gAmBqmI30ZpXq0WcWFgb16ZAOz//9s+d1SmufhX45ymHqpdbuAAzkdovHcrKDt7Ns6P5yIazJmbwC3saAVV0MSHCMyl0Gc+mk=
+	t=1763731520; cv=none; b=AwjSW8JCrQiYcw3tEJajqFEsGNkdBkvjpyalIjp+mSc0MYCsvCgCxpDRicPmRMHWxpUkO667Sv5q/hUmoKBpTtkxIFkPODOiIFzPPIlld8QXMqmJl20Rxbo1rnzqS+9w+2X6Q+3pBvM63DfwpLpN6CiMcbrqyCbFBLLvl4lNrWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733492; c=relaxed/simple;
-	bh=/RzdJITi7Y0NGuGOclJ3zJ32KARFycjx1512NhLW81A=;
+	s=arc-20240116; t=1763731520; c=relaxed/simple;
+	bh=DrtL3EdWyCP4C5PP4TDfOjEsTat25ECh2Y5t3hL88wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJuqHBeeiDNWkr2cGDyUq9JyJsb+cUhNl5HGfWaRpJg4WgZAIzd+RT4g2gMZ7QcpdA1BK5QKD5jmI5tkrBryrtqRWjb3PomSp+8/DSmu32+KBHI4YJNsihJ4M2KC5wUquvuOZRFm6qpkHji+Nta8piRJj5nI0Jj8A4pS+NeDYsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJQJ0JGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED34C4CEF1;
-	Fri, 21 Nov 2025 13:58:11 +0000 (UTC)
+	 MIME-Version; b=VqAm2WPAsHS1DcjqwHYNL5OuHVjCndPfpzhT8VtUvtpGXVGTu59J09IMIylwrw9nZSUaC/0JOu5rgOaoz8nn35zYDZlxna05VBkuYlroUvCJSHacoMmA1mztZNfjsUadhwvn6QlqcCCI2VgKI8SX6pTkBa6zAjuK9eRO+uWTXLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjXeQVgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AD1C4CEF1;
+	Fri, 21 Nov 2025 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733492;
-	bh=/RzdJITi7Y0NGuGOclJ3zJ32KARFycjx1512NhLW81A=;
+	s=korg; t=1763731520;
+	bh=DrtL3EdWyCP4C5PP4TDfOjEsTat25ECh2Y5t3hL88wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJQJ0JGTix/jfihyfyDjL+S7TpkE4VFdZZHpafz8p0vpQcRiMpa+IKpCd8DAtiIVU
-	 TreF6Ze+pOl0Mklkeu4Z1uLOulY22pBSDUI7HQjv60NDefEjGsahGJFJJZmeG3Dxsa
-	 Z6xPC0qmDPYN64UKX/R8jDEIVid2VapcgSEqHnTo=
+	b=IjXeQVgrGHPQJU2dUdrG1vQdcx/UTf0mLaNFJpeEzPTvG1lsyVNTL8cPZZA5+k38J
+	 GbSF7DQMsrGxRBgAwC2cuGYttE8ihegg7M5Fo3BeYw0luDmLJUjjkmFMwlYiMA7Vt9
+	 xHf5vJVbLoWc3D5e/iL4U8GyB+aTPmP5LBGLAHw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.6 485/529] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 237/247] mm/memory: do not populate page table entries beyond i_size
 Date: Fri, 21 Nov 2025 14:13:04 +0100
-Message-ID: <20251121130248.264388845@linuxfoundation.org>
+Message-ID: <20251121130203.242057573@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +78,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Kiryl Shutsemau <kas@kernel.org>
 
-commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
+commit 74207de2ba10c2973334906822dc94d2e859ffc5 upstream.
 
-The current single-bit error injection mechanism flips bits directly in ECC RAM
-by performing write and read operations. When the ECC RAM is actively used by
-the Ethernet or USB controller, this approach sometimes trigger a false
-double-bit error.
+Patch series "Fix SIGBUS semantics with large folios", v3.
 
-Switch both Ethernet and USB EDAC devices to use the INTTEST register
-(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
-the existing double-bit error injection method.
+Accessing memory within a VMA, but beyond i_size rounded up to the next
+page size, is supposed to generate SIGBUS.
 
-Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
+Darrick reported[1] an xfstests regression in v6.18-rc1.  generic/749
+failed due to missing SIGBUS.  This was caused by my recent changes that
+try to fault in the whole folio where possible:
+
+        19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+        357b92761d94 ("mm/filemap: map entire large folio faultaround")
+
+These changes did not consider i_size when setting up PTEs, leading to
+xfstest breakage.
+
+However, the problem has been present in the kernel for a long time -
+since huge tmpfs was introduced in 2016.  The kernel happily maps
+PMD-sized folios as PMD without checking i_size.  And huge=always tmpfs
+allocates PMD-size folios on any writes.
+
+I considered this corner case when I implemented a large tmpfs, and my
+conclusion was that no one in their right mind should rely on receiving a
+SIGBUS signal when accessing beyond i_size.  I cannot imagine how it could
+be useful for the workload.
+
+But apparently filesystem folks care a lot about preserving strict SIGBUS
+semantics.
+
+Generic/749 was introduced last year with reference to POSIX, but no real
+workloads were mentioned.  It also acknowledged the tmpfs deviation from
+the test case.
+
+POSIX indeed says[3]:
+
+        References within the address range starting at pa and
+        continuing for len bytes to whole pages following the end of an
+        object shall result in delivery of a SIGBUS signal.
+
+The patchset fixes the regression introduced by recent changes as well as
+more subtle SIGBUS breakage due to split failure on truncation.
+
+
+This patch (of 2):
+
+Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+supposed to generate SIGBUS.
+
+Recent changes attempted to fault in full folio where possible.  They did
+not respect i_size, which led to populating PTEs beyond i_size and
+breaking SIGBUS semantics.
+
+Darrick reported generic/749 breakage because of this.
+
+However, the problem existed before the recent changes.  With huge=always
+tmpfs, any write to a file leads to PMD-size allocation.  Following the
+fault-in of the folio will install PMD mapping regardless of i_size.
+
+Fix filemap_map_pages() and finish_fault() to not install:
+  - PTEs beyond i_size;
+  - PMD mappings across i_size;
+
+Make an exception for shmem/tmpfs that for long time intentionally
+mapped with PMDs across i_size.
+
+Link: https://lkml.kernel.org/r/20251027115636.82382-1-kirill@shutemov.name
+Link: https://lkml.kernel.org/r/20251027115636.82382-2-kirill@shutemov.name
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Fixes: 6795801366da ("xfs: Support large folios")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/filemap.c |   20 +++++++++++++++-----
+ mm/memory.c  |   20 +++++++++++++++++++-
+ 2 files changed, 34 insertions(+), 6 deletions(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1379,7 +1379,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3743,13 +3743,27 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned long rss = 0;
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
++	bool can_map_large;
  
- #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
-@@ -1469,7 +1469,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
  
- #endif	/* CONFIG_EDAC_ALTERA_USB */
+-	if (filemap_map_pmd(vmf, folio, start_pgoff)) {
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
++	/*
++	 * Do not allow to map with PTEs beyond i_size and with PMD
++	 * across i_size to preserve SIGBUS semantics.
++	 *
++	 * Make an exception for shmem/tmpfs that for long time
++	 * intentionally mapped with PMDs across i_size.
++	 */
++	can_map_large = shmem_mapping(mapping) ||
++		file_end >= folio_next_index(folio);
++
++	if (can_map_large && filemap_map_pmd(vmf, folio, start_pgoff)) {
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto out;
+ 	}
+@@ -3762,10 +3776,6 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 		goto out;
+ 	}
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	if (end_pgoff > file_end)
+-		end_pgoff = file_end;
+-
+ 	folio_type = mm_counter_file(folio);
+ 	do {
+ 		unsigned long end;
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -65,6 +65,7 @@
+ #include <linux/gfp.h>
+ #include <linux/migrate.h>
+ #include <linux/string.h>
++#include <linux/shmem_fs.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/debugfs.h>
+ #include <linux/userfaultfd_k.h>
+@@ -5371,8 +5372,25 @@ fallback:
+ 			return ret;
+ 	}
+ 
++	if (!needs_fallback && vma->vm_file) {
++		struct address_space *mapping = vma->vm_file->f_mapping;
++		pgoff_t file_end;
++
++		file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
++
++		/*
++		 * Do not allow to map with PTEs beyond i_size and with PMD
++		 * across i_size to preserve SIGBUS semantics.
++		 *
++		 * Make an exception for shmem/tmpfs that for long time
++		 * intentionally mapped with PMDs across i_size.
++		 */
++		needs_fallback = !shmem_mapping(mapping) &&
++			file_end < folio_next_index(folio);
++	}
++
+ 	if (pmd_none(*vmf->pmd)) {
+-		if (folio_test_pmd_mappable(folio)) {
++		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
+ 			ret = do_set_pmd(vmf, folio, page);
+ 			if (ret != VM_FAULT_FALLBACK)
+ 				return ret;
 
 
 
