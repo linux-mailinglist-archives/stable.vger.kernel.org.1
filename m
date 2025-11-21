@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A44C79D59
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB0FC7928A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 31AF93804A6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 1542E2D3B7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BDD34C983;
-	Fri, 21 Nov 2025 13:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF84B33C527;
+	Fri, 21 Nov 2025 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ss16fnPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1t6aE4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C954E34C81E;
-	Fri, 21 Nov 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026113469EC;
+	Fri, 21 Nov 2025 13:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732874; cv=none; b=NzkEHPlP/NZA0fkAmnZY+CmU66Ppg9yWGyIgFL1/eO2k5umShm7djAFZL9546JcutRXRX7E1LDQbjsc0ssXmVD+Ikve8S4/2u3SFEZB5kIcXVt47YcYC0Q3mIn9Z5moU5ZoRRxAUyPM9kYiNOu095jktpnZFatipC7/CKuI9A3E=
+	t=1763730908; cv=none; b=neIy+O7jZQDNoBEVE740ObjOAXCXEhuzLDoiY9+PZ5aLiHeH0qA/CCrD01wi57dMcgBL644CKs16EgkbS9C5C2+AuRppbQu/iFX7NFoAiocPbM5VE8GlPdOGJM01nCc51Utyq7IvqSYLi3rBv4oiYabpxVKiwSh86uwnO0nvv/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732874; c=relaxed/simple;
-	bh=h6ZAR3zjvosUL3ktOxv28excRQ4H2M/4zTKzbZGYOdg=;
+	s=arc-20240116; t=1763730908; c=relaxed/simple;
+	bh=uGbbMbhEpukgFKIOPRcj0VOOTlKoZ7787yD0E1+IAvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyYhkwkZN4yEGRq582bx7LY5J/1ymvGJ5CQbuC/DdsUrM04D0b/32orO3O1DY86v8CR34QndtOcU5xSGvr074IEMa8zCg4Vp2jw2vYp2RzW3TLUPkC3F+j/WRYvdQ6zmbE/1gd9AYswFn35fPx28FowreEmaAtzGTQ+DugZrFrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ss16fnPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A65C4CEFB;
-	Fri, 21 Nov 2025 13:47:54 +0000 (UTC)
+	 MIME-Version; b=G9g3jHuZ4djo/InsF3mICOl6UBK/0S8JTgOKkKmbdeY+tPfCWcw28qdUpCrSDEJusP5wAJg9PRoirjg7TJAGSPJ0TUiQHimLaYr4X+Up3kH9J555oZLfqLr+OqKA/oNzGRP+dUL3/yfU1uQxBsJVO4fXwkKlbZE7nuClwNwSyZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1t6aE4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D71C4CEFB;
+	Fri, 21 Nov 2025 13:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732874;
-	bh=h6ZAR3zjvosUL3ktOxv28excRQ4H2M/4zTKzbZGYOdg=;
+	s=korg; t=1763730907;
+	bh=uGbbMbhEpukgFKIOPRcj0VOOTlKoZ7787yD0E1+IAvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ss16fnPwdrCzAJPaU7nmQ008ZlrXuPYHvZOS1VNIc5ciNWHWmipRgSPVsztJaKvXt
-	 9NuVQivOSxIIleUDTKeuRCvGRS9qMO0G+yKY3MXqrTo64l5LhufpFEEfI9BlXuajcL
-	 jc5TMOctW8OIEZaPBSaCHkgU7ORPFvSRLOi3THPI=
+	b=X1t6aE4NdWnA8isRGaTO1ZiFMsVK4RfSSWV0tLVyRzlpihQ01fpVsS1j3qJa9SG9a
+	 Ai21vk7SgL9CGp0yrbdqZ1CC3EU54HZ2rm8HuXNq/Y6QHWVyrYTdMwaDMqS5e+0WJC
+	 Bj6XZFoP6oXMDR7LaSFaJbUVzKPJVoGqo81xHbf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrey Albershteyn <aalbersh@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 272/529] net: bridge: Install FDB for bridge MAC on VLAN 0
+Subject: [PATCH 6.17 024/247] fs: return EOPNOTSUPP from file_setattr/file_getattr syscalls
 Date: Fri, 21 Nov 2025 14:09:31 +0100
-Message-ID: <20251121130240.699278139@linuxfoundation.org>
+Message-ID: <20251121130155.471328969@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Andrey Albershteyn <aalbersh@redhat.com>
 
-[ Upstream commit cd9a9562b2559973aa1b68c3af63021a2c5fd022 ]
+[ Upstream commit d90ad28e8aa482e397150e22f3762173d918a724 ]
 
-Currently, after the bridge is created, the FDB does not hold an FDB entry
-for the bridge MAC on VLAN 0:
+These syscalls call to vfs_fileattr_get/set functions which return
+ENOIOCTLCMD if filesystem doesn't support setting file attribute on an
+inode. For syscalls EOPNOTSUPP would be more appropriate return error.
 
- # ip link add name br up type bridge
- # ip -br link show dev br
- br               UNKNOWN        92:19:8c:4e:01:ed <BROADCAST,MULTICAST,UP,LOWER_UP>
- # bridge fdb show | grep 92:19:8c:4e:01:ed
- 92:19:8c:4e:01:ed dev br vlan 1 master br permanent
-
-Later when the bridge MAC is changed, or in fact when the address is given
-during netdevice creation, the entry appears:
-
- # ip link add name br up address 00:11:22:33:44:55 type bridge
- # bridge fdb show | grep 00:11:22:33:44:55
- 00:11:22:33:44:55 dev br vlan 1 master br permanent
- 00:11:22:33:44:55 dev br master br permanent
-
-However when the bridge address is set by the user to the current bridge
-address before the first port is enslaved, none of the address handlers
-gets invoked, because the address is not actually changed. The address is
-however marked as NET_ADDR_SET. Then when a port is enslaved, the address
-is not changed, because it is NET_ADDR_SET. Thus the VLAN 0 entry is not
-added, and it has not been added previously either:
-
- # ip link add name br up type bridge
- # ip -br link show dev br
- br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
- # ip link set dev br addr 7e:f0:a8:1a:be:c2
- # ip link add name v up type veth
- # ip link set dev v master br
- # ip -br link show dev br
- br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
- # bridge fdb | grep 7e:f0:a8:1a:be:c2
- 7e:f0:a8:1a:be:c2 dev br vlan 1 master br permanent
-
-Then when the bridge MAC is used as DMAC, and br_handle_frame_finish()
-looks up an FDB entry with VLAN=0, it doesn't find any, and floods the
-traffic instead of passing it up.
-
-Fix this by simply adding the VLAN 0 FDB entry for the bridge itself always
-on netdevice creation. This also makes the behavior consistent with how
-ports are treated: ports always have an FDB entry for each member VLAN as
-well as VLAN 0.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/415202b2d1b9b0899479a502bbe2ba188678f192.1758550408.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/file_attr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index a45db67197226..d466febcf9abe 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -37,6 +37,11 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
- 	int err;
+diff --git a/fs/file_attr.c b/fs/file_attr.c
+index 460b2dd21a852..1dcec88c06805 100644
+--- a/fs/file_attr.c
++++ b/fs/file_attr.c
+@@ -416,6 +416,8 @@ SYSCALL_DEFINE5(file_getattr, int, dfd, const char __user *, filename,
+ 	}
  
- 	if (netif_is_bridge_master(dev)) {
-+		struct net_bridge *br = netdev_priv(dev);
-+
-+		if (event == NETDEV_REGISTER)
-+			br_fdb_change_mac_address(br, dev->dev_addr);
-+
- 		err = br_vlan_bridge_event(dev, event, ptr);
- 		if (err)
- 			return notifier_from_errno(err);
+ 	error = vfs_fileattr_get(filepath.dentry, &fa);
++	if (error == -ENOIOCTLCMD || error == -ENOTTY)
++		error = -EOPNOTSUPP;
+ 	if (error)
+ 		return error;
+ 
+@@ -483,6 +485,8 @@ SYSCALL_DEFINE5(file_setattr, int, dfd, const char __user *, filename,
+ 	if (!error) {
+ 		error = vfs_fileattr_set(mnt_idmap(filepath.mnt),
+ 					 filepath.dentry, &fa);
++		if (error == -ENOIOCTLCMD || error == -ENOTTY)
++			error = -EOPNOTSUPP;
+ 		mnt_drop_write(filepath.mnt);
+ 	}
+ 
 -- 
 2.51.0
 
