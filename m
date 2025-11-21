@@ -1,150 +1,96 @@
-Return-Path: <stable+bounces-196510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6078EC7A9A2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:46:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3832AC7A99C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CFE24E4CCB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:40:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5D0C6343364
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FE02FE05F;
-	Fri, 21 Nov 2025 15:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471E92FD7D3;
+	Fri, 21 Nov 2025 15:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFIyWsYk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5rC1xE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E02EB856
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAB62ECE8F
 	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763739645; cv=none; b=WYoLFawdSEK8L0DJg+Bf3NLS0gOa48rL0XyGNCATpf/n83XhPiKHv0lBxNKl2QcT2i7d+0y/ArA9C2bWqXCB+3C4cykYJxGJJdbuEjyfXrDmoYUYSyCUKYIxBpY69uwRh5sK0K9IwGZnH+8nNOCIyHHczoZsQf1y05NmFP6gboY=
+	t=1763739644; cv=none; b=D9E9UQZZ22e250xesHphA2SF97p7hzcV0/t1bw3yfshzcaeuhEGhGEnwhxyzIkTfBX7uBr8jV0b0x1wC1Dlj2y5EAwUI1iKq+pFvXVlh/DksWtUxLYnt6rZFhp80zz+wiG75XZ551kmJy8rYxhWrl2M6fEHNxoXMyt5lkFd9cNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763739645; c=relaxed/simple;
-	bh=uUAbXRowBgK5JjFCR+mIlEd/zukY/cC49YnlYPo/ijE=;
+	s=arc-20240116; t=1763739644; c=relaxed/simple;
+	bh=ogVV9WPN6ucVAfsGqZXuLzP50TtlMVeGKbOmoNxyMA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=soY9WIqZRB7Vzh59Y3n+ntX19oVzMU4g5Y0L6MYOvv+oheqyb6R3L8UoxBL9lGudsW6W9DnEp4Aah2gKxwZjm7paoedGn7mrwXd2Cv0U8XTINxEinl2TEbDtxOlC98JGEqcCFbbVtdFjE/lkcRizC6z7kxiuwbJG9KMakjD8nA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFIyWsYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C04C4CEF1;
-	Fri, 21 Nov 2025 15:40:42 +0000 (UTC)
+	 MIME-Version; b=EzSKwgVW75j6nOMoqZE6PlQaAN+C1mrdniVy9i4Aq9CRdeJ27XI1DXgsJprJWxHAck0t1DQWSDrwgwvXuWzKoNAJS+z+7j0t6OxEky29C49IKf9XACTa02nETjB7D2B/0z+eUuOxuD4Net+OCiitZDrLIga26Ob2lFr8aOgy/nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5rC1xE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EA7C116C6;
+	Fri, 21 Nov 2025 15:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763739643;
-	bh=uUAbXRowBgK5JjFCR+mIlEd/zukY/cC49YnlYPo/ijE=;
+	s=k20201202; t=1763739644;
+	bh=ogVV9WPN6ucVAfsGqZXuLzP50TtlMVeGKbOmoNxyMA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFIyWsYkwz+GC6FD2tgwsnM62QIyZrGII5cjkSkJCNd6lm5VtA7vkgHqpAsT11LaK
-	 JZAYfwutTJAgF9imvh72I5drEEScVy5XWXXPG4jedsR4VPscKpf8tTHOr3ZOL+/iQX
-	 AXiPNc6ispOtgoKYrIZLBks62E/7O3BufK1cSnbjaIMdw/2cx59o1/VePXpPoWfy24
-	 KohvB9GrtgGs1qG0sOvDybntXGZ80fDj93TY6GopJJ+KrwwHolxIZiRVP3Fbh6Nx62
-	 yZuvOk7nI8YuBMkjjjwTEvG9B7s3ODxsWwMxvAKoKtndHr5f5BwCdll8ScARsYPqmD
-	 3I4jTjxWUF6xA==
+	b=l5rC1xE6AiSnz50SizXRW9Qv8nGffT+T6a8KqI9t42ijtDVR1vDYFlXiVUgFUeMce
+	 JMK35ApR4ZOZilPxuKsgqooDn10Z0qRBhsOBmcuETNBNHU++TBMiCyy6PD3b1PCrMd
+	 bqIA1THM+JGIHwLD83Ko6AB4+oXcJdLGKrqY6QuaFcespVDjzWaGI/M5xTlsdeuy73
+	 PI+Eh/dCkOoBKwagh5drZWAQ4Einn0kiPP5WUhevuScplBh/TtFtt44PtBtE5ZZq/q
+	 nCmgWh3OrH9bZHPHb9FWrG6APiOLtwsIqJgO9JYKO8iJStis/wLy9DR4oixLFT1Ubk
+	 KBfbOBsElTpgw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+Cc: Miaoqian Lin <linmq006@gmail.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] pmdomain: imx-gpc: Convert to platform remove callback returning void
-Date: Fri, 21 Nov 2025 10:40:40 -0500
-Message-ID: <20251121154041.2577393-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] pmdomain: imx: Fix reference count leak in imx_gpc_remove
+Date: Fri, 21 Nov 2025 10:40:41 -0500
+Message-ID: <20251121154041.2577393-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112009-appliance-symptom-7a59@gregkh>
+In-Reply-To: <20251121154041.2577393-1-sashal@kernel.org>
 References: <2025112009-appliance-symptom-7a59@gregkh>
+ <20251121154041.2577393-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit da07c5871d18157608a0d0702cb093168d79080a ]
+[ Upstream commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+of_get_child_by_name() returns a node pointer with refcount incremented, we
+should use of_node_put() on it when not needed anymore. Add the missing
+of_node_put() to avoid refcount leak.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
-
-In the error path emit an error message replacing the (less useful)
-message by the core. Apart from the improved error message there is no
-change in behaviour.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231124080623.564924-3-u.kleine-koenig@pengutronix.de
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: bbde14682eba ("pmdomain: imx: Fix reference count leak in imx_gpc_remove")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/gpc.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/pmdomain/imx/gpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index 419ed15cc10c4..66703395b1795 100644
+index 66703395b1795..d7c0301a7121b 100644
 --- a/drivers/pmdomain/imx/gpc.c
 +++ b/drivers/pmdomain/imx/gpc.c
-@@ -512,7 +512,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static int imx_gpc_remove(struct platform_device *pdev)
-+static void imx_gpc_remove(struct platform_device *pdev)
- {
- 	struct device_node *pgc_node;
- 	int ret;
-@@ -522,7 +522,7 @@ static int imx_gpc_remove(struct platform_device *pdev)
- 	/* bail out if DT too old and doesn't provide the necessary info */
- 	if (!of_property_read_bool(pdev->dev.of_node, "#power-domain-cells") &&
- 	    !pgc_node)
--		return 0;
-+		return;
- 
- 	/*
- 	 * If the old DT binding is used the toplevel driver needs to
-@@ -532,16 +532,20 @@ static int imx_gpc_remove(struct platform_device *pdev)
- 		of_genpd_del_provider(pdev->dev.of_node);
- 
- 		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_PU].base);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to remove PU power domain (%pe)\n",
-+				ERR_PTR(ret));
-+			return;
-+		}
- 		imx_pgc_put_clocks(&imx_gpc_domains[GPC_PGC_DOMAIN_PU]);
- 
- 		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_ARM].base);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to remove ARM power domain (%pe)\n",
-+				ERR_PTR(ret));
-+			return;
-+		}
+@@ -546,6 +546,8 @@ static void imx_gpc_remove(struct platform_device *pdev)
+ 			return;
+ 		}
  	}
--
--	return 0;
++
++	of_node_put(pgc_node);
  }
  
  static struct platform_driver imx_gpc_driver = {
-@@ -550,6 +554,6 @@ static struct platform_driver imx_gpc_driver = {
- 		.of_match_table = imx_gpc_dt_ids,
- 	},
- 	.probe = imx_gpc_probe,
--	.remove = imx_gpc_remove,
-+	.remove_new = imx_gpc_remove,
- };
- builtin_platform_driver(imx_gpc_driver)
 -- 
 2.51.0
 
