@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D636C796B2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07825C79472
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 054F436426E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4773E4EE443
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1797B3396E5;
-	Fri, 21 Nov 2025 13:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531AE3246FD;
+	Fri, 21 Nov 2025 13:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdmIdmQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su2HXTcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76E1334367;
-	Fri, 21 Nov 2025 13:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AB1274FE3;
+	Fri, 21 Nov 2025 13:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731629; cv=none; b=V7Y0jKj4vzG5ivf2M2rxEVMMr9mD1lIOSliWA7Kp07ARBvftwqNfD3naBBvtVTU87fJW4vF7vfxcjiAkR46pHDst+27MtDb9lmfsJNXwhEWk0vUb+X47As7wwu/HHEmMkCsnQU3vgVeCyLpExcO8ETHJ3x7P44ik+AJ7Kpc9EKg=
+	t=1763731150; cv=none; b=MbpPUOO0ZFkixHi7Sp5ZbRNFrYfDmU/lX1atsdxiyUIe+Z4o9O7Fw9hlGo7o8jo9RSAV26+wR5AHcdvAwzA70bluJnHXn/8aGkGE3hGfIfYddWbsPAqsHVmnqDJwY+JwO97UHcsw+GVsmQYqWcl0tBdE2YW2pbNR6hXKrlu1gnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731629; c=relaxed/simple;
-	bh=HYrUEAVXZqgCx8jMSR2Ifk2lGrFkl5+1qyfhMtMgrYg=;
+	s=arc-20240116; t=1763731150; c=relaxed/simple;
+	bh=o5d5O7Q1K1A6W1tcSX98hXurm9rJZvayEs5MTDg+w9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qslb59IGjk7lbRmMV2KbWBlwDYEMYlmSXu64DwiDyQ8bz/i5touyBAXbNfsm7xk+NWvjgaiH/jt9lIQCygymV0RTLUaVY2/fu13rom83cX2zUWq2poGOpJnfL83pPXhlGVfU3y5ijAh0henZD2deW2hdb/V4odhAOmW2/qzriIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdmIdmQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9ADC4CEF1;
-	Fri, 21 Nov 2025 13:27:09 +0000 (UTC)
+	 MIME-Version; b=eR47FRlOj6X4rtsqy0tgy8RE1J81oW5UNWSKNqDCGpwHlvqIje1nsq0rG4VCW/i2ZjXj0sTuZ1Oc7IJy6K6MFDYTetoJyRiJ2NiQqHAnm0DoPY/X2pa8eMQkd12O4wO6OFxnji5ze3pGhydGq9gii4cgJtulgYuTQD3B7txdjds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su2HXTcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7757AC4CEF1;
+	Fri, 21 Nov 2025 13:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731629;
-	bh=HYrUEAVXZqgCx8jMSR2Ifk2lGrFkl5+1qyfhMtMgrYg=;
+	s=korg; t=1763731149;
+	bh=o5d5O7Q1K1A6W1tcSX98hXurm9rJZvayEs5MTDg+w9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdmIdmQXEKbKEmHRIBmdbSVR6w+1sx0y5dW1qWzdaq8xRjr8W/IpTiPKlghY+1WiR
-	 oB07MnjMb8hTHZrlOAPwwCXZaAvFtATL6Pw4ro3J9Rld0fOGFkkFXZunWBSIsWgme4
-	 RqIWehqUf4fMf3hp4SwULC2mxSTqoOPv4Vtxnx0k=
+	b=Su2HXTcTMuMQkr4dbItsU3EDu/UprBTeVJM9hgPisOyetCLtHcFYGIKKhQPEtOjfd
+	 8yBBvx7+z8m64+hNjSw7NNzRMbbGEH/0LJ47RK+BqQb2EeQGdH4kZlDukv57wdSRv8
+	 vWRwNKPwZJfisOXeZgeTD9l6MorqobJpbWusyoaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/185] smb/server: fix possible refcount leak in smb2_sess_setup()
+Subject: [PATCH 6.17 107/247] NFS: Check the TLS certificate fields in nfs_match_client()
 Date: Fri, 21 Nov 2025 14:10:54 +0100
-Message-ID: <20251121130144.854410706@linuxfoundation.org>
+Message-ID: <20251121130158.427552459@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 379510a815cb2e64eb0a379cb62295d6ade65df0 ]
+[ Upstream commit fb2cba0854a7f315c8100a807a6959b99d72479e ]
 
-Reference count of ksmbd_session will leak when session need reconnect.
-Fix this by adding the missing ksmbd_user_session_put().
+If the TLS security policy is of type RPC_XPRTSEC_TLS_X509, then the
+cert_serial and privkey_serial fields need to match as well since they
+define the client's identity, as presented to the server.
 
-Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 90c9550a8d65 ("NFS: support the kernel keyring for TLS")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/client.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 67021dc6dfd81..cd42d25812661 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1798,6 +1798,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 4e3dcc157a83c..54699299d5b16 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -338,6 +338,14 @@ static struct nfs_client *nfs_match_client(const struct nfs_client_initdata *dat
+ 		/* Match the xprt security policy */
+ 		if (clp->cl_xprtsec.policy != data->xprtsec.policy)
+ 			continue;
++		if (clp->cl_xprtsec.policy == RPC_XPRTSEC_TLS_X509) {
++			if (clp->cl_xprtsec.cert_serial !=
++			    data->xprtsec.cert_serial)
++				continue;
++			if (clp->cl_xprtsec.privkey_serial !=
++			    data->xprtsec.privkey_serial)
++				continue;
++		}
  
- 		if (ksmbd_conn_need_reconnect(conn)) {
- 			rc = -EFAULT;
-+			ksmbd_user_session_put(sess);
- 			sess = NULL;
- 			goto out_err;
- 		}
+ 		refcount_inc(&clp->cl_count);
+ 		return clp;
 -- 
 2.51.0
 
