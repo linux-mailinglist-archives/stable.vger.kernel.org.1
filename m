@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA4DC7A089
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE3FC79686
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 50A704F11F4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id C79DE333A4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B3134F245;
-	Fri, 21 Nov 2025 13:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2799A313267;
+	Fri, 21 Nov 2025 13:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCBWn46H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w+DvOTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9EA34EF19;
-	Fri, 21 Nov 2025 13:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E742773F7;
+	Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733463; cv=none; b=rEDUG/2ezvyp+Qx4Nbne0MJlaVzIOALjYt+Q0tYbT3ejeBFsKz1hbR6shuS0Do0npueybf/MX1gQxIM1sQPgTBaZ67eIuwinxD7zb90Hg6tdYemgv3yfUdfqtS2JQqfE7nc9z0+fStKss5RQcXnGgJk4wIMgsUKX9VuD3Yy/wys=
+	t=1763731557; cv=none; b=ZrINc3ym5G6U7c1hT+de0yAEpi5R89jNZjXPmBMobBdirEcSxKl8xZ5KmtpNuAYXYFx8fQJcNU5hlsjQRHQoQFE+I/LC/30NPVeHSJ34OqthVg8yGtXy12Vh8hom45IRD9cP1pr6zK/0vVPEQhzUGFtlK87Ip1PjCvIdMdOVVT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733463; c=relaxed/simple;
-	bh=2Tyvk57FoFnW/rUwimrV7xx+b9aVshDelF0vU1DMcS0=;
+	s=arc-20240116; t=1763731557; c=relaxed/simple;
+	bh=drLnahT/i4d6C81bOIwv90iTw4egWBVCMmXgq2Vu2ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHUtaPpSKj7789NLflSoekd2Qdl0pxoExPCBaafzZZrBlapY9zvnCa4Iwcl0+KVntXPnhr1AcDS57D0LJin6+Juprd/Az8ODMk1KK8KNic2I7Zf1CkJHVELeQHfM7gK+NDeNvIdnK4j5lNyVHFPWr1+RSsuGk5ak3X5yUXBJfRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCBWn46H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2EBC4CEF1;
-	Fri, 21 Nov 2025 13:57:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ugRt2KFrgIK6yQVhqlfxHkzERJqODHEPhE3H35D9Fe4KCMmqptPfQFEHVc6+1GW/fFpO5aBsTWWhD0d3ElCV9uhgqaITBYsfzTZN8ufb4MGf7GfZguua3YHG3y01dZHuWVMn+NMrfUq57PGO3741F0cNyL+LBeSKYzxyn9Ewa7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w+DvOTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53963C4CEF1;
+	Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733463;
-	bh=2Tyvk57FoFnW/rUwimrV7xx+b9aVshDelF0vU1DMcS0=;
+	s=korg; t=1763731557;
+	bh=drLnahT/i4d6C81bOIwv90iTw4egWBVCMmXgq2Vu2ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCBWn46HB6+GbFGYzou3UMK8mvU+ZvrHCqBVwCiemuoDD85pi8GFBgX5NjIFth9Il
-	 N3pohvqdZRMX3N7nLfI/hMTT0E3Yn/vU3/ThCluvnzJ2L0HycPopksBO9fCMGseKVR
-	 uFCkI1w+g1EmuRqdgrwLe65caXKpCwt6Z8ihQOlE=
+	b=0w+DvOTUatU82rfgL+oBl0J5N2QQS6++B71GZHx5dV+qAbjPVS5mRskAnxPZkkw6Y
+	 XEiRAfwb8dwSEIPB39C4HI9X3g8O6s8iydD7SoQtY9ttm6TYOShtU4Wf6xVWlV4l7G
+	 2H2axnz74Ovsq2RE9y9k126rchz2EZ6M6+oxRomE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 476/529] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.17 228/247] pmdomain: samsung: plug potential memleak during probe
 Date: Fri, 21 Nov 2025 14:12:55 +0100
-Message-ID: <20251121130247.946338133@linuxfoundation.org>
+Message-ID: <20251121130202.918558928@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf upstream.
+commit 90c82941adf1986364e0f82c35cf59f2bf5f6a1d upstream.
 
-The PCM stream data in USB-audio driver is transferred over USB URB
-packet buffers, and each packet size is determined dynamically.  The
-packet sizes are limited by some factors such as wMaxPacketSize USB
-descriptor.  OTOH, in the current code, the actually used packet sizes
-are determined only by the rate and the PPS, which may be bigger than
-the size limit above.  This results in a buffer overflow, as reported
-by syzbot.
+of_genpd_add_provider_simple() could fail, in which case this code
+leaks the domain name, pd->pd.name.
 
-Basically when the limit is smaller than the calculated packet size,
-it implies that something is wrong, most likely a weird USB
-descriptor.  So the best option would be just to return an error at
-the parameter setup time before doing any further operations.
+Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
+simplify existing error handling.
 
-This patch introduces such a sanity check, and returns -EINVAL when
-the packet size is greater than maxpacksize.  The comparison with
-ep->packsize[1] alone should suffice since it's always equal or
-greater than ep->packsize[0].
-
-Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
-Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/endpoint.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pmdomain/samsung/exynos-pm-domains.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1383,6 +1383,11 @@ int snd_usb_endpoint_set_params(struct s
- 	ep->sample_rem = ep->cur_rate % ep->pps;
- 	ep->packsize[0] = ep->cur_rate / ep->pps;
- 	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
-+	if (ep->packsize[1] > ep->maxpacksize) {
-+		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
-+			      ep->maxpacksize, ep->cur_rate, ep->pps);
-+		return -EINVAL;
-+	}
+--- a/drivers/pmdomain/samsung/exynos-pm-domains.c
++++ b/drivers/pmdomain/samsung/exynos-pm-domains.c
+@@ -92,13 +92,14 @@ static const struct of_device_id exynos_
+ 	{ },
+ };
  
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
+-static const char *exynos_get_domain_name(struct device_node *node)
++static const char *exynos_get_domain_name(struct device *dev,
++					  struct device_node *node)
+ {
+ 	const char *name;
+ 
+ 	if (of_property_read_string(node, "label", &name) < 0)
+ 		name = kbasename(node->full_name);
+-	return kstrdup_const(name, GFP_KERNEL);
++	return devm_kstrdup_const(dev, name, GFP_KERNEL);
+ }
+ 
+ static int exynos_pd_probe(struct platform_device *pdev)
+@@ -115,15 +116,13 @@ static int exynos_pd_probe(struct platfo
+ 	if (!pd)
+ 		return -ENOMEM;
+ 
+-	pd->pd.name = exynos_get_domain_name(np);
++	pd->pd.name = exynos_get_domain_name(dev, np);
+ 	if (!pd->pd.name)
+ 		return -ENOMEM;
+ 
+ 	pd->base = of_iomap(np, 0);
+-	if (!pd->base) {
+-		kfree_const(pd->pd.name);
++	if (!pd->base)
+ 		return -ENODEV;
+-	}
+ 
+ 	pd->pd.power_off = exynos_pd_power_off;
+ 	pd->pd.power_on = exynos_pd_power_on;
 
 
 
