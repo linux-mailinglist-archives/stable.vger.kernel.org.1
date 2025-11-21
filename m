@@ -1,145 +1,151 @@
-Return-Path: <stable+bounces-196508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC8DC7A996
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:44:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6078EC7A9A2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 03C01353F0C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:39:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CFE24E4CCB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D122E718F;
-	Fri, 21 Nov 2025 15:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FE02FE05F;
+	Fri, 21 Nov 2025 15:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cr1Rrwy+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFIyWsYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734D71494A8;
-	Fri, 21 Nov 2025 15:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E02EB856
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763739571; cv=none; b=j+gslcTvSO5RFi5OxVFKSMag3Z7cM8LJSQ+oyCs08MjxDvQOr9zvARajqzeeG2lM6HANsYIAaA5etuapvAc+F3hISU6zm3PJwPhUjVKHjKwg1LJJzDnoBS2qHW/5CC9gbqlK2IPmguVJPF2ZHUCRqCq2IzkyqwC44qzkRroNVVY=
+	t=1763739645; cv=none; b=WYoLFawdSEK8L0DJg+Bf3NLS0gOa48rL0XyGNCATpf/n83XhPiKHv0lBxNKl2QcT2i7d+0y/ArA9C2bWqXCB+3C4cykYJxGJJdbuEjyfXrDmoYUYSyCUKYIxBpY69uwRh5sK0K9IwGZnH+8nNOCIyHHczoZsQf1y05NmFP6gboY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763739571; c=relaxed/simple;
-	bh=GOX6fYKVRys4eYFJ3leUryDR2X27AauSEop1ZhuDlko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=msrwzv9B9XHM7XYw3T7mR6QzTQdqAhTFa5B2A0/VLT9sZf4yQGB4xTZdq1Zmvw//IjMZM/S39v5CTv6OxJ94iRnln1GsjqslBCev+aJuNivyXX693E5BnFPSnghSM5EoqJeOk8hTcLYeBtnCe7Wbi2MRvV3hISZRhCTyXSOBeGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cr1Rrwy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61CFC4CEF1;
-	Fri, 21 Nov 2025 15:39:27 +0000 (UTC)
+	s=arc-20240116; t=1763739645; c=relaxed/simple;
+	bh=uUAbXRowBgK5JjFCR+mIlEd/zukY/cC49YnlYPo/ijE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=soY9WIqZRB7Vzh59Y3n+ntX19oVzMU4g5Y0L6MYOvv+oheqyb6R3L8UoxBL9lGudsW6W9DnEp4Aah2gKxwZjm7paoedGn7mrwXd2Cv0U8XTINxEinl2TEbDtxOlC98JGEqcCFbbVtdFjE/lkcRizC6z7kxiuwbJG9KMakjD8nA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFIyWsYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C04C4CEF1;
+	Fri, 21 Nov 2025 15:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763739570;
-	bh=GOX6fYKVRys4eYFJ3leUryDR2X27AauSEop1ZhuDlko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Cr1Rrwy+8sHcbDB56REETEjiaellGCk4p3n9cLcz3uZFS7GUGRjNrx5xSq/nXRtOq
-	 TrLYuZcLSgzMGBfxQPWGPj/wqFDbiVG/ey9hbG4qFlw94OJ6GMQi0rdyB4uesR9dc/
-	 omkUbsYZlOasBaUN1oFmMsseCCfNV2aIjwLSXmidBgUa73u18glZi3Yw/uh9OPZL71
-	 yVyngyb2VplPZKeAgdBjxuPSvDYlip6QpNcqaE2mbRGhYZT23lWQEyLICSM0G9U+VM
-	 8BEvQiqVnMTqVVLUwwwPB7V95CWoBea2Ic4IT5ATCyReZTSo+bYTpLFzsL1nUfohLA
-	 LyD1b+NYHcYnA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  stable@vger.kernel.org,
-  patches@lists.linux.dev,  Mike Rapoport <rppt@kernel.org>,  Pratyush
- Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Christian
- Brauner <brauner@kernel.org>,  David Matlack <dmatlack@google.com>,  Jason
- Gunthorpe <jgg@ziepe.ca>,  Jonathan Corbet <corbet@lwn.net>,  Masahiro
- Yamada <masahiroy@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Randy
- Dunlap <rdunlap@infradead.org>,  Samiullah Khawaja <skhawaja@google.com>,
-  Tejun Heo <tj@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.17 164/247] kho: warn and fail on metadata or
- preserved memory in scratch area
-In-Reply-To: <489a925f-ba57-432d-ac50-dcd78229c2ff@leemhuis.info> (Thorsten
-	Leemhuis's message of "Fri, 21 Nov 2025 15:45:35 +0100")
-References: <20251121130154.587656062@linuxfoundation.org>
-	<20251121130200.607393324@linuxfoundation.org>
-	<489a925f-ba57-432d-ac50-dcd78229c2ff@leemhuis.info>
-Date: Fri, 21 Nov 2025 16:39:26 +0100
-Message-ID: <mafs0ldjz1jkh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1763739643;
+	bh=uUAbXRowBgK5JjFCR+mIlEd/zukY/cC49YnlYPo/ijE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fFIyWsYkwz+GC6FD2tgwsnM62QIyZrGII5cjkSkJCNd6lm5VtA7vkgHqpAsT11LaK
+	 JZAYfwutTJAgF9imvh72I5drEEScVy5XWXXPG4jedsR4VPscKpf8tTHOr3ZOL+/iQX
+	 AXiPNc6ispOtgoKYrIZLBks62E/7O3BufK1cSnbjaIMdw/2cx59o1/VePXpPoWfy24
+	 KohvB9GrtgGs1qG0sOvDybntXGZ80fDj93TY6GopJJ+KrwwHolxIZiRVP3Fbh6Nx62
+	 yZuvOk7nI8YuBMkjjjwTEvG9B7s3ODxsWwMxvAKoKtndHr5f5BwCdll8ScARsYPqmD
+	 3I4jTjxWUF6xA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] pmdomain: imx-gpc: Convert to platform remove callback returning void
+Date: Fri, 21 Nov 2025 10:40:40 -0500
+Message-ID: <20251121154041.2577393-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112009-appliance-symptom-7a59@gregkh>
+References: <2025112009-appliance-symptom-7a59@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 21 2025, Thorsten Leemhuis wrote:
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-> On 11/21/25 14:11, Greg Kroah-Hartman wrote:
->> 6.17-stable review patch.  If anyone has any objections, please let me k=
-now.
->>=20
->> ------------------
->>=20
->> From: Pasha Tatashin <pasha.tatashin@soleen.com>
->>=20
->> commit e38f65d317df1fd2dcafe614d9c537475ecf9992 upstream.
->>=20
->> Patch series "KHO: kfence + KHO memory corruption fix", v3.
->>=20
->> This series fixes a memory corruption bug in KHO that occurs when KFENCE
->> is enabled.
->
-> I ran into a build problem that afaics is caused by this change:
->
-> """
-> In file included from ./arch/x86/include/asm/bug.h:103,
->                  from ./arch/x86/include/asm/alternative.h:9,
->                  from ./arch/x86/include/asm/barrier.h:5,
->                  from ./include/asm-generic/bitops/generic-non-atomic.h:7,
->                  from ./include/linux/bitops.h:28,
->                  from ./include/linux/bitmap.h:8,
->                  from ./include/linux/nodemask.h:91,
->                  from ./include/linux/numa.h:6,
->                  from ./include/linux/cma.h:7,
->                  from kernel/kexec_handover.c:12:
-> kernel/kexec_handover.c: In function =E2=80=98kho_preserve_phys=E2=80=99:
-> kernel/kexec_handover.c:732:41: error: =E2=80=98nr_pages=E2=80=99 undecla=
-red (first use in this function); did you mean =E2=80=98dir_pages=E2=80=99?
->   732 |                                         nr_pages << PAGE_SHIFT)))=
+[ Upstream commit da07c5871d18157608a0d0702cb093168d79080a ]
+
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
+
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
+
+In the error path emit an error message replacing the (less useful)
+message by the core. Apart from the improved error message there is no
+change in behaviour.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231124080623.564924-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: bbde14682eba ("pmdomain: imx: Fix reference count leak in imx_gpc_remove")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pmdomain/imx/gpc.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index 419ed15cc10c4..66703395b1795 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -512,7 +512,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int imx_gpc_remove(struct platform_device *pdev)
++static void imx_gpc_remove(struct platform_device *pdev)
  {
->       |                                         ^~~~~~~~
+ 	struct device_node *pgc_node;
+ 	int ret;
+@@ -522,7 +522,7 @@ static int imx_gpc_remove(struct platform_device *pdev)
+ 	/* bail out if DT too old and doesn't provide the necessary info */
+ 	if (!of_property_read_bool(pdev->dev.of_node, "#power-domain-cells") &&
+ 	    !pgc_node)
+-		return 0;
++		return;
+ 
+ 	/*
+ 	 * If the old DT binding is used the toplevel driver needs to
+@@ -532,16 +532,20 @@ static int imx_gpc_remove(struct platform_device *pdev)
+ 		of_genpd_del_provider(pdev->dev.of_node);
+ 
+ 		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_PU].base);
+-		if (ret)
+-			return ret;
++		if (ret) {
++			dev_err(&pdev->dev, "Failed to remove PU power domain (%pe)\n",
++				ERR_PTR(ret));
++			return;
++		}
+ 		imx_pgc_put_clocks(&imx_gpc_domains[GPC_PGC_DOMAIN_PU]);
+ 
+ 		ret = pm_genpd_remove(&imx_gpc_domains[GPC_PGC_DOMAIN_ARM].base);
+-		if (ret)
+-			return ret;
++		if (ret) {
++			dev_err(&pdev->dev, "Failed to remove ARM power domain (%pe)\n",
++				ERR_PTR(ret));
++			return;
++		}
+ 	}
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver imx_gpc_driver = {
+@@ -550,6 +554,6 @@ static struct platform_driver imx_gpc_driver = {
+ 		.of_match_table = imx_gpc_dt_ids,
+ 	},
+ 	.probe = imx_gpc_probe,
+-	.remove = imx_gpc_remove,
++	.remove_new = imx_gpc_remove,
+ };
+ builtin_platform_driver(imx_gpc_driver)
+-- 
+2.51.0
 
-8375b76517cb5 ("kho: replace kho_preserve_phys() with
-kho_preserve_pages()") refactored this function to work on page
-granularity (nr_pages) instead of bytes (size). Since that commit wasn't
-backported, nr_pages does not exist.
-
-Simple fix should be to replace "nr_pages << PAGE_SHIFT" with "size".
-
-> ./include/asm-generic/bug.h:123:32: note: in definition of macro =E2=80=
-=98WARN_ON=E2=80=99
->   123 |         int __ret_warn_on =3D !!(condition);                     =
-         \
->       |                                ^~~~~~~~~
-> kernel/kexec_handover.c:732:41: note: each undeclared identifier is repor=
-ted only once for each function it appears in
->   732 |                                         nr_pages << PAGE_SHIFT)))=
- {
->       |                                         ^~~~~~~~
-> ./include/asm-generic/bug.h:123:32: note: in definition of macro =E2=80=
-=98WARN_ON=E2=80=99
->   123 |         int __ret_warn_on =3D !!(condition);                     =
-         \
->       |                                ^~~~~~~~~
-> make[3]: *** [scripts/Makefile.build:287: kernel/kexec_handover.o] Error 1
-> make[3]: *** Waiting for unfinished jobs....
-> make[2]: *** [scripts/Makefile.build:556: kernel] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/builddir/build/BUILD/kernel-6.17.9-build/kernel-6.17.9-rc1=
-/linux-6.17.9-0.rc1.300.vanilla.fc43.x86_64/Makefile:2019: .] Error 2
-> make: *** [Makefile:256: __sub-make] Error 2
-[...]
-
---=20
-Regards,
-Pratyush Yadav
 
