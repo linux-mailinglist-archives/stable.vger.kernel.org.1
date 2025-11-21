@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CC4C795B6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD9EC79D65
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A233038084C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 21E652DB78
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73CE26CE33;
-	Fri, 21 Nov 2025 13:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131C134F265;
+	Fri, 21 Nov 2025 13:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcb3z1zF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDe++wUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640A8275B18;
-	Fri, 21 Nov 2025 13:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ACF2EA143;
+	Fri, 21 Nov 2025 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731387; cv=none; b=SnVkPY2lBaLK9OM1+rANUdNOzJMCLnyGNKOkcz/7TrNHRqaavsDp5B3beCYPPtcH2hnj+xb2Jx5EwpLUcPepCTt1CANLI9O9yC48MWVFr4YmR2bzUllVScaxIF9KZx9pqsa7Lid4F+jtimyyL8PUm32pNdCJELlaaZ9DiSyG5yE=
+	t=1763733258; cv=none; b=e0z3fg+ZfgOlUBPlxjsXmLQCmjVgGoQgIAfJHG8B9Dg5IkhYESN85ag5vSQR3mAhCgiR9angAle9Y9hkD1G3Gd3UE713qPb7z+TAas7JUiVF96xx2rvexlaCtrojubG4cRxq53kqVfbYrhgAtejhYD8E1uNU0qWnAukU4ZzARIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731387; c=relaxed/simple;
-	bh=ppFpRN69lDXCKu+LtDjvR5IZU8/H8qhEUb7Iypt7h8I=;
+	s=arc-20240116; t=1763733258; c=relaxed/simple;
+	bh=FMZvM6hnUmp3CZ4aaclyNW4JcktklVUKWytd1oHDhUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOVQulW6wlS++fzPm8iVNuhBKYHZU/m/pKcg6cCual2c81Rc+xXjUKKGzqRgfPUkroNq05kQoH7Gp2pFMbJc3klUp9FuKsdty2yScpVy3/mdvWVg+49LT/VDtP+VaIUQPzxrK2rJF/MSKNiKYwgMjn+/2Y9jqGxMSMvCIaQcA/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcb3z1zF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D476AC4CEF1;
-	Fri, 21 Nov 2025 13:23:06 +0000 (UTC)
+	 MIME-Version; b=OllT0r8Zxyiqi0cbZVMCcu4dsLwLGGoOKtDmKWSzRh4Tg9rBxYVLXFUQoKoywmD7TQD+cmGzhmE8n5cqcWxHfEHUWwi85yBfT33o5hh9L75zfsboFj/eMCASHUDcOBHgwNLTjeqwjsJjHxevSo3NtA4/4/yKRtbiCW9llgC2o28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDe++wUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BCFC4CEF1;
+	Fri, 21 Nov 2025 13:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731387;
-	bh=ppFpRN69lDXCKu+LtDjvR5IZU8/H8qhEUb7Iypt7h8I=;
+	s=korg; t=1763733258;
+	bh=FMZvM6hnUmp3CZ4aaclyNW4JcktklVUKWytd1oHDhUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcb3z1zFccpxtUit1A+O70a+2m0w2Hi+8INBzlea5iD1lSW3HfoGL53FneNpCiDD3
-	 4FQrX/n5ET1gGlmj7It7dCRjfbPTVxIcKciDkvCdVAUIZQa+XMsTqnnkqkgdqOQyg4
-	 gyGDMgsrub4cH2ItiV8rpVS41wZzEjA+A9RJIHQA=
+	b=oDe++wUAuUKtPecG1u2hKsUHoO3xXVGNK9YiWYUCmiz0gClXANUcB4IlXbYGSa8bP
+	 ghJ2McyMCl04LtZOBr21Z/k5mDEM+KS1Y9Hxwp9iUVk0v66xThmVtMFbcsXs/8Ae1U
+	 8hEO2vZGuUlKBQLf5h67KyP7R32MxeO2kknswm+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	tianshuo han <hantianshuo233@gmail.com>
-Subject: [PATCH 6.17 158/247] nfsd: fix refcount leak in nfsd_set_fh_dentry()
+	Buday Csaba <buday.csaba@prolan.hu>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 406/529] net: mdio: fix resource leak in mdiobus_register_device()
 Date: Fri, 21 Nov 2025 14:11:45 +0100
-Message-ID: <20251121130200.393218648@linuxfoundation.org>
+Message-ID: <20251121130245.465695458@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-commit 8a7348a9ed70bda1c1f51d3f1815bcbdf9f3b38c upstream.
+[ Upstream commit e6ca8f533ed41129fcf052297718f417f021cc7d ]
 
-nfsd exports a "pseudo root filesystem" which is used by NFSv4 to find
-the various exported filesystems using LOOKUP requests from a known root
-filehandle.  NFSv3 uses the MOUNT protocol to find those exported
-filesystems and so is not given access to the pseudo root filesystem.
+Fix a possible leak in mdiobus_register_device() when both a
+reset-gpio and a reset-controller are present.
+Clean up the already claimed reset-gpio, when the registration of
+the reset-controller fails, so when an error code is returned, the
+device retains its state before the registration attempt.
 
-If a v3 (or v2) client uses a filehandle from that filesystem,
-nfsd_set_fh_dentry() will report an error, but still stores the export
-in "struct svc_fh" even though it also drops the reference (exp_put()).
-This means that when fh_put() is called an extra reference will be dropped
-which can lead to use-after-free and possible denial of service.
-
-Normal NFS usage will not provide a pseudo-root filehandle to a v3
-client.  This bug can only be triggered by the client synthesising an
-incorrect filehandle.
-
-To fix this we move the assignments to the svc_fh later, after all
-possible error cases have been detected.
-
-Reported-and-tested-by: tianshuo han <hantianshuo233@gmail.com>
-Fixes: ef7f6c4904d0 ("nfsd: move V4ROOT version check to nfsd_set_fh_dentry()")
-Signed-off-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/20251106144603.39053c81@kernel.org/
+Fixes: 71dd6c0dff51 ("net: phy: add support for reset-controller")
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Link: https://patch.msgid.link/4b419377f8dd7d2f63f919d0f74a336c734f8fff.1762584481.git.buday.csaba@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsfh.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/mdio_bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -269,9 +269,6 @@ static __be32 nfsd_set_fh_dentry(struct
- 				dentry);
- 	}
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index f1fac89721ed9..7da30a6752bee 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -81,8 +81,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
+ 			return err;
  
--	fhp->fh_dentry = dentry;
--	fhp->fh_export = exp;
--
- 	switch (fhp->fh_maxsize) {
- 	case NFS4_FHSIZE:
- 		if (dentry->d_sb->s_export_op->flags & EXPORT_OP_NOATOMIC_ATTR)
-@@ -293,6 +290,9 @@ static __be32 nfsd_set_fh_dentry(struct
- 			goto out;
- 	}
+ 		err = mdiobus_register_reset(mdiodev);
+-		if (err)
++		if (err) {
++			gpiod_put(mdiodev->reset_gpio);
++			mdiodev->reset_gpio = NULL;
+ 			return err;
++		}
  
-+	fhp->fh_dentry = dentry;
-+	fhp->fh_export = exp;
-+
- 	return 0;
- out:
- 	exp_put(exp);
+ 		/* Assert the reset signal */
+ 		mdio_device_reset(mdiodev, 1);
+-- 
+2.51.0
+
 
 
 
