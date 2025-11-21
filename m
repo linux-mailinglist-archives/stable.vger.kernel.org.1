@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-196418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAA3C7A023
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F63C79682
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C76AE384066
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5811A2D509
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB65346E6D;
-	Fri, 21 Nov 2025 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543DD2765FF;
+	Fri, 21 Nov 2025 13:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW5/BsRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNfYRa5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9788231355B;
-	Fri, 21 Nov 2025 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48A190477;
+	Fri, 21 Nov 2025 13:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733454; cv=none; b=QA/8Tek2YacGeeSCiC32TSVLrwinG1qOJp7isquphIYz8t9vsPzGZNeg8PVgrBXyf/Romp81+j2m5YTuNpEqciYvUBHBDUGuzwWer+5ZhrBuflpT9IoPQvi5Q1Q3bb1ezBOve7NnA4xnSfCsvNUus+6Zrr/M1E51jIWt2jPgv3c=
+	t=1763731555; cv=none; b=ZkgOkdmzZgpI9ayiCwQPzeGxqL6o0b7UvhWlozP4aBQ0wuhRMBb7stlqmUNj65jakEFDiKzQwzc8tyh8wb4oJ3Rrzae0SAAnIUqcawQ51grVSZngnS5lX5Xusf/y/obWcYVePmTm91BNXR9tVP6N26YyFOFNGgCU0E1VBM0errs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733454; c=relaxed/simple;
-	bh=npjYhgMGeUBwxXaTOmxarh4ymBKvqYZ9f6Hd61no5d4=;
+	s=arc-20240116; t=1763731555; c=relaxed/simple;
+	bh=n7k00I3nzAs1usam1SzcjExMLn9nPHDCsdVZHg/klEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpbz4/XNSctDQ7Ggh3B0GEZOuKlfrQUYJeuDqx+hUrU2SpJXjwFlkATGIpQk1sVw3gNz62Kng0LVNnXa3GHD3Y3eUrCeRM7gk73pC1zQexIUlHmLQmoNTyT2Xwws2spKMag2fxjWSBf9n/q1md5yx+TNRZCKy2yQkVQgp4UgXqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wW5/BsRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207A0C4CEF1;
-	Fri, 21 Nov 2025 13:57:33 +0000 (UTC)
+	 MIME-Version; b=VaT92aKQQ7OlGzqvvbgJlZGGNEcebXsJbwYniIECG9i3ACIB40xFuIeSMVw2z2dQ8tZsZ2UF+pe/1GtdWmhvYzy1VZry5TPUif69dzIyZi3eOoScCtoW1bMFAI5QrHxEI6Ew1rWPdpLRD9qAlZgn6xHUGC16w2hXoDwrWZu4OSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNfYRa5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF9DC4CEF1;
+	Fri, 21 Nov 2025 13:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733454;
-	bh=npjYhgMGeUBwxXaTOmxarh4ymBKvqYZ9f6Hd61no5d4=;
+	s=korg; t=1763731554;
+	bh=n7k00I3nzAs1usam1SzcjExMLn9nPHDCsdVZHg/klEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wW5/BsRRQLfsVrXUsvdWNmny+xdtBWoDg+RtWY5hh0/x9o32UygmmCOEo7GT6ZMbb
-	 qtOwMpkpcy0Zv66OsW1jutpYlzPl7kvLGEk6maOQ1s4Q8HZY3+gnN75lQvFgSIKwbf
-	 lN9jL3+m1KgufQJZmmQ1SHkcx2/mUK16pQ9PXIJE=
+	b=pNfYRa5qut9m86U9yBk6epO0+utYNZcNRiPJ69C/DiM/FxxhGUWZTomc2dyc0IArB
+	 BIoXD1wrFJ1hr01h6Io46bszWWtqVngaD9RcyKXezQQuOAfgE3KBCIsxoGaxTZiPWy
+	 h6gu1rfXa1vmDa0bTcbUM/UopR0s6BwiE6jUC64I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 474/529] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
-Date: Fri, 21 Nov 2025 14:12:53 +0100
-Message-ID: <20251121130247.876257094@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.17 227/247] pmdomain: imx: Fix reference count leak in imx_gpc_remove
+Date: Fri, 21 Nov 2025 14:12:54 +0100
+Message-ID: <20251121130202.882101241@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 0d6c356dd6547adac2b06b461528e3573f52d953 upstream.
+commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 upstream.
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+of_get_child_by_name() returns a node pointer with refcount incremented, we
+should use of_node_put() on it when not needed anymore. Add the missing
+of_node_put() to avoid refcount leak.
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
-
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mm_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/imx/gpc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2546,7 +2546,7 @@ void *__init alloc_large_system_hash(con
- 		panic("Failed to allocate %s hash table\n", tablename);
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -537,6 +537,8 @@ static void imx_gpc_remove(struct platfo
+ 			return;
+ 		}
+ 	}
++
++	of_node_put(pgc_node);
+ }
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
- 
- 	if (_hash_shift)
+ static struct platform_driver imx_gpc_driver = {
 
 
 
