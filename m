@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BB0C79D23
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE87C793A1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 475884F094C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 54E9F3446CA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB7534F254;
-	Fri, 21 Nov 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DE234C81E;
+	Fri, 21 Nov 2025 13:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsKtybmi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU+pgEp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BA734D93C;
-	Fri, 21 Nov 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CAD34C80A;
+	Fri, 21 Nov 2025 13:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732975; cv=none; b=lZsTsvppq12C6KVQrpHGxnQOlL0kwzsEys7cG23wkyP21hLUt5ubwOrBOr+2fFXytZgJ2Wq2hAlUup8BXVpn8LByqYWfpmPM7k5jczXSIvvR96hDCJAw8dlAzZMLp1dLMvMKKawiVZR6xADljrqRBzVWC1sI7t0unkc11V+WdDI=
+	t=1763731005; cv=none; b=kjxnfK5ZQW7KuTbY7zmhZN1zwFbYcYNSZMI6v8iKtobtD1mhkR0ThzS/Mte7tMe3M2C80BwpRbSQt4/s7XDBb+F5KxPFa94TyjemyASuLeNmEFmdevvlxhJDxpf+xNDx67UKcARiZjngwD4TYp+pd8BwFXNykXqA1kpwsJKgkQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732975; c=relaxed/simple;
-	bh=D0/kkjOnYnsMiDTbhR5fYY1ri0Xd9Tyvbpn8pZfQzTg=;
+	s=arc-20240116; t=1763731005; c=relaxed/simple;
+	bh=/zTeYHzE0bTPwaYlROxYkCMV03Lmh4lZa86b2PcVV5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHOWnfizFuylimw8pq0umLIlJi3tf1br8aoj8lMEa3axiPGkVzYFdWzWp1fouAeLjW0kbP4mVCfh2hRjeKR3ThITKjCzXEJpacyO9g5hX/EJVN+rJubOsIqmJjvX4ODU0CUqKjiVgBhQj9M6S7BBEokYO/tGoF3jFm2OAf8dafE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsKtybmi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF08C4CEFB;
-	Fri, 21 Nov 2025 13:49:34 +0000 (UTC)
+	 MIME-Version; b=AcbbOT/Y575jvV9PdbiU19xFC/T0sT3XaUcD1bdExeA3ZZJ9eV0k0n4O7Py+gPyfSkRQCzSAq8Pemw7oFBjEl1UJxMUBNxI6f0QOvqTxM7ol36spuHvwWZ+wM1icbnpkAEE3kcWxZfB64myEoH5rBcJlEzdSzGD7E6THdJpSmRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU+pgEp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDEEC116C6;
+	Fri, 21 Nov 2025 13:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732975;
-	bh=D0/kkjOnYnsMiDTbhR5fYY1ri0Xd9Tyvbpn8pZfQzTg=;
+	s=korg; t=1763731005;
+	bh=/zTeYHzE0bTPwaYlROxYkCMV03Lmh4lZa86b2PcVV5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsKtybmi4W/soVrl/PyfTd26sgGnZh9YSXBPqVZ6AqFbaikpm1lCdSSh0KZY2lrnJ
-	 I777/DIHG392AkV3IuzWP83Ka3/ajbSOjJVZbV23cosqAni+QfP0KDPLVUIoI/QjhX
-	 Wxb8cxrxd7j2iqGyCSBjtkzAC7m8iPQgLZhHelkk=
+	b=JU+pgEp5USARTG9NO+AfZaJg/LkGMV+e9Hlfn6V4CQYpsCyclUmAIBUzNt0CcX1yr
+	 JIu9G190Nsz0tJCzFIZx9/UnET9S9Wxm6w2kOAt8GrvUxIXjujVdpGe8LcvfU9z5rz
+	 JUhOs3oGcdEqsbvphs5y70h1QziPh1BXkg2IQD24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yikang Yue <yikangy2@illinois.edu>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/529] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
+Subject: [PATCH 6.17 058/247] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
 Date: Fri, 21 Nov 2025 14:10:05 +0100
-Message-ID: <20251121130241.911727143@linuxfoundation.org>
+Message-ID: <20251121130156.686887561@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yikang Yue <yikangy2@illinois.edu>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
+[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
 
-The function call new_inode() is a primitive for allocating an inode in memory,
-rather than planning disk space for it. Therefore, -ENOMEM should be returned
-as the error code rather than -ENOSPC.
+Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
+e.g. debugfs "connect" command takes the former, and "disconnect" and
+"connect" to already connected device take the latter.  This is due to
+using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
+which take different dst_type values.
 
-To be specific, new_inode()'s call path looks like this:
-new_inode
-  new_inode_pseudo
-    alloc_inode
-      ops->alloc_inode (hpfs_alloc_inode)
-        alloc_inode_sb
-          kmem_cache_alloc_lru
+Fix address type passed to hci_conn_hash_lookup_le().
 
-Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
-not a lack of disk space. However, the current implementation of
-hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
-This patch fix this by set err to -ENOMEM before the goto statement.
+Retain the debugfs API difference between "connect" and "disconnect"
+commands since it's been like this since 2015 and nobody apparently
+complained.
 
-BTW, we also noticed that other nested calls within these four functions,
-like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
-But similarly, only -ENOSPC is returned. Addressing these will involve code
-modifications in other functions, and we plan to submit dedicated patches for these
-issues in the future. For this patch, we focus on new_inode().
-
-Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hpfs/namei.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
-index f4eb8d6f59894..6cf17fe239c9a 100644
---- a/fs/hpfs/namei.c
-+++ b/fs/hpfs/namei.c
-@@ -52,8 +52,10 @@ static int hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.fnode = cpu_to_le32(fno);
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail2;
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -153,9 +155,10 @@ static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index f1d29fa4b4119..0d8c2e2e9a6cf 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -957,10 +957,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
+ }
  
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--	
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	result->i_mode |= S_IFREG;
-@@ -239,9 +242,10 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+-			  struct l2cap_conn **conn)
++			  struct l2cap_conn **conn, bool disconnect)
+ {
+ 	struct hci_conn *hcon;
+ 	struct hci_dev *hdev;
++	int le_addr_type;
+ 	int n;
  
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -314,8 +318,10 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
+@@ -971,13 +972,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+ 	if (n < 7)
+ 		return -EINVAL;
  
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
++	if (disconnect) {
++		/* The "disconnect" debugfs command has used different address
++		 * type constants than "connect" since 2015. Let's retain that
++		 * for now even though it's obviously buggy...
++		 */
++		*addr_type += 1;
 +	}
- 	result->i_ino = fno;
- 	hpfs_init_inode(result);
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
++
++	switch (*addr_type) {
++	case BDADDR_LE_PUBLIC:
++		le_addr_type = ADDR_LE_DEV_PUBLIC;
++		break;
++	case BDADDR_LE_RANDOM:
++		le_addr_type = ADDR_LE_DEV_RANDOM;
++		break;
++	default:
++		return -EINVAL;
++	}
++
+ 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
+ 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
+ 	if (!hdev)
+ 		return -ENOENT;
+ 
+ 	hci_dev_lock(hdev);
+-	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
++	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
+ 	hci_dev_unlock(hdev);
+ 	hci_dev_put(hdev);
+ 
+@@ -1104,7 +1124,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	buf[buf_size] = '\0';
+ 
+ 	if (memcmp(buf, "connect ", 8) == 0) {
+-		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
+ 		if (ret == -EINVAL)
+ 			return ret;
+ 
+@@ -1141,7 +1161,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	}
+ 
+ 	if (memcmp(buf, "disconnect ", 11) == 0) {
+-		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.51.0
 
