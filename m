@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B80C79392
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCECC79C21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CD1034A4D2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 5E6232E83B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA46346A06;
-	Fri, 21 Nov 2025 13:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10C934F241;
+	Fri, 21 Nov 2025 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peGhV59k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWACJpVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17957346A0E;
-	Fri, 21 Nov 2025 13:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B2E34EEED;
+	Fri, 21 Nov 2025 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730994; cv=none; b=AzPACk26Yg1axheMg4rLIT0vbyMgedus7c5Znrmivroep3uUTWS6Poo1S8vuy0Y/YZt3ICyEHcSmGgAdN/KSWplh6/2Zih//87PaX7a91hdXFd6KoOphIgk7W/eXY19wJZ4gNCIUUdG6DqNXVjIfn3gd9rND7pOUQ4tS5bc+nPg=
+	t=1763732961; cv=none; b=ZObT6z/mvn0vc6Z9/pJp3+uJ2pRu5YguH1UxJX+k5PrvDP/UGuUQuL5Kv/T9dH+hyu08+1ekCHvwBaM1FrnyzcwRDcnOK/OfyNCZjP+sVUn2WNiKd/qbo6EdgFn2Tdkre//UK+XhjdyWVWmrCJxGGBlaSwR7/+U5FUuNZd6hT7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730994; c=relaxed/simple;
-	bh=9noAOYfhf9vCiN0DrZVtNm8Hcd3FKMUWazeZtYHde0c=;
+	s=arc-20240116; t=1763732961; c=relaxed/simple;
+	bh=jU2RKbhet7f8VeMN/3D26b/fVP09mR3wBh81zcipOkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpJqYtNBI0mIkcGAo4fSHJPvi5SnBeYsAoqorXrU3ft+b/9Y82Q27mY/N12fqwZPwbnmShUsbdZTItqAq6Dz9S+WTgD9A/y9090IAYzUPSTrr7XXiIk37Qk/f4gTPTPuu6Q3i/ScW4ZdQZSKJvYREu9hXJNGT+By59KK3bdwAs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peGhV59k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D60EC4CEF1;
-	Fri, 21 Nov 2025 13:16:33 +0000 (UTC)
+	 MIME-Version; b=iWGuyQfSuNozVi9wtQGXc5e4Hops6qZxgL5BxwrmnGwCReoIYW5wGHw6HeiipgxuQx3gaE7ghaIR8tHVn+LpvXRmjaAUvNVVLUAZXK4XSi/xyC5ReDWtalaiwpiHz8xQbDFnkRyIvcfU0PqBD3/AbKkSwf/NRHRhTz4weZvFSmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWACJpVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D403DC4CEF1;
+	Fri, 21 Nov 2025 13:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730994;
-	bh=9noAOYfhf9vCiN0DrZVtNm8Hcd3FKMUWazeZtYHde0c=;
+	s=korg; t=1763732961;
+	bh=jU2RKbhet7f8VeMN/3D26b/fVP09mR3wBh81zcipOkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peGhV59kpluKZF+VpTQ6/QO+V6FsEAIW6jYJajIFGH+Kl5v04pppwk1v25OiO07pu
-	 i+6CuBBepO749kFhli9YhxOWr7hc9UUrsYr1y7S1JBrC3s22afwgr5uuAsl36eo/mh
-	 j0XDBUWfiLyeka90+eGf5jHvCVqySbHxm9HQB054=
+	b=hWACJpVw5ZLSZv4m33I8lQga8TXi1obJKkGV5lNDuK4NnNs0RJzDQx7ugwBKCD0J4
+	 /EYpCzWNY7omrXFBGJmPuNtVT8wn0Jahm9g2oVfdJZ4yej5Ji/5Zm+9pm8tWcwsW0W
+	 gt+k9m0gE5elDwZGwSjYoycyvoTG/LSjLosoltdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rtm@csail.mit.edu,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 054/247] NFSD: Skip close replay processing if XDR encoding fails
-Date: Fri, 21 Nov 2025 14:10:01 +0100
-Message-ID: <20251121130156.545041972@linuxfoundation.org>
+Subject: [PATCH 6.6 303/529] RDMA/hns: Fix the modification of max_send_sge
+Date: Fri, 21 Nov 2025 14:10:02 +0100
+Message-ID: <20251121130241.805867353@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit ff8141e49cf70d2d093a5228f5299ce188de6142 ]
+[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
 
-The replay logic added by commit 9411b1d4c7df ("nfsd4: cleanup
-handling of nfsv4.0 closed stateid's") cannot be done if encoding
-failed due to a short send buffer; there's no guarantee that the
-operation encoder has actually encoded the data that is being copied
-to the replay cache.
+The actual sge number may exceed the value specified in init_attr->cap
+when HW needs extra sge to enable inline feature. Since these extra
+sges are not expected by ULP, return the user-specified value to ULP
+instead of the expanded sge number.
 
-Reported-by: rtm@csail.mit.edu
-Closes: https://lore.kernel.org/linux-nfs/c3628d57-94ae-48cf-8c9e-49087a28cec9@oracle.com/T/#t
-Fixes: 9411b1d4c7df ("nfsd4: cleanup handling of nfsv4.0 closed stateid's")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 1f6c3db3bc6e5..37541ea408fc0 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5928,8 +5928,7 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
- 		 */
- 		warn_on_nonidempotent_op(op);
- 		xdr_truncate_encode(xdr, op_status_offset + XDR_UNIT);
--	}
--	if (so) {
-+	} else if (so) {
- 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 0cad6fc7bf32c..26784b296ffa6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -654,7 +654,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
  
- 		so->so_replay.rp_status = op->status;
+ 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
+ 	hr_qp->sq.wqe_cnt = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
+ 
+ 	return 0;
+ }
+@@ -736,7 +735,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
+ 
+ 	/* sync the parameters of kernel QP to user's configuration */
+ 	cap->max_send_wr = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
