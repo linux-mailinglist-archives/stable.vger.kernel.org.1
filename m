@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04C7C7931C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798ABC79D77
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D9D853460B9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:16:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 480D8380921
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F82334367;
-	Fri, 21 Nov 2025 13:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56412459C6;
+	Fri, 21 Nov 2025 13:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0flM0XE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND2nek+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B0431158A;
-	Fri, 21 Nov 2025 13:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735BF33BBA0;
+	Fri, 21 Nov 2025 13:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730959; cv=none; b=naRQ1rSLuO1P3IEqtZJxaKVZi95FnZF+6dCAj4CcZXyteu8Jyvwax0wZXnjMjLICYhVsqjjVRk+LIUqV7Jsqnhrgua3fTioAlNefSwpplcgPHM8NLfwI7kGHnYLBZGivsKhu+9KmpFdzNM1xmu3dMm3x6tC4bsg8RenqlQGMlA4=
+	t=1763732915; cv=none; b=OfSjFuzPj0HKr1ShRIa2gKeDe4rpiYWP1B/ELBLpfQjgoOnujJSBNP/NZZ+cFaA7M8tsuLNcYvYL+SIAllT8RDoH8x4bdnibsh+bhvKPBwz1+jRPyjt5ruBuEFVoNdsAtvYTeWahsjqQ+VVm2xazJb0dwdv2c/5yn4cHhYaxm5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730959; c=relaxed/simple;
-	bh=e5+rlLO5w7v9DczBgtEKXHN+Uy/VKAayNH/IdAuEG3Q=;
+	s=arc-20240116; t=1763732915; c=relaxed/simple;
+	bh=uW4T0D3cW6NMkJLLDUhoSZYD2I+hHsEjaB+RMJQE4VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKof0GKzK+trX8jW2Ux0c/CaMQHUhQSEpX7zZJ9U2rzFeFP9Zyyk3Lzx1N6b4S+6y1MEm8IZsHdD2f1I/PJVEfDc4fAuPsesASrYxatizim8I+9zhTEZaiJkZikmKpSCQvh6tgb5i1bhXoQY3et2c8X7zRygwlOF6Qwy4FMwAA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0flM0XE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB38C4CEF1;
-	Fri, 21 Nov 2025 13:15:58 +0000 (UTC)
+	 MIME-Version; b=Lp/kc2DlGW91HTv/F657vLR3noijckGYa62wkZr7bIrxSP4nmbVLWqLUrCs6HVLnHjDSrxveZYswy2J1HHdvUzAGPUQpvaAwWFxrKkiJRB1qWN+xKHjc/g8N6yCcNkT9vsmwLEOrYf6ZHyW1V/ZN9FPi86K/Tyv3f0+rq+Ik3qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND2nek+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30ABC4CEF1;
+	Fri, 21 Nov 2025 13:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730959;
-	bh=e5+rlLO5w7v9DczBgtEKXHN+Uy/VKAayNH/IdAuEG3Q=;
+	s=korg; t=1763732915;
+	bh=uW4T0D3cW6NMkJLLDUhoSZYD2I+hHsEjaB+RMJQE4VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0flM0XEsXO2uk0Vx+Cj87DIq9jpU7DnADV7szfNSIMRPTReVIxXNDVWrC9z4Gk6C
-	 jqaomMpasj5uppGncnTlASw9u8Aae3J3Aph+oaq/FQ0RQElRqO1uWM1Sc1k6+MvGOS
-	 z5+r6gO3Nq0XVSyEpxoEtnZ/FuJ56K4aiSEYuP/o=
+	b=ND2nek+L9wFGKgqOJ8LSXZB1f0ZTD6TYkthZ/s4ckhSGlyVPluNKFRcNPQGUaHzhG
+	 wRib7ZRk79pZ/bDqD9VCb93+5MHq9sCVOZoBstkzUsxA0MTCBJANrDyTIC+1GRWP46
+	 bYp176V3BE+K7/JvAxT+5h/4pBixmPRb2KuDrtqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 040/247] smb/server: fix possible memory leak in smb2_read()
+Subject: [PATCH 6.6 288/529] Bluetooth: bcsp: receive data only if registered
 Date: Fri, 21 Nov 2025 14:09:47 +0100
-Message-ID: <20251121130156.042281655@linuxfoundation.org>
+Message-ID: <20251121130241.276825460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 6fced056d2cc8d01b326e6fcfabaacb9850b71a4 ]
+[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
 
-Memory leak occurs when ksmbd_vfs_read() fails.
-Fix this by adding the missing kvfree().
+Currently, bcsp_recv() can be called even when the BCSP protocol has not
+been registered. This leads to a NULL pointer dereference, as shown in
+the following stack trace:
 
-Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
+    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
+    Call Trace:
+     <TASK>
+     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
+     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
+     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:907 [inline]
+     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
+processing received data. If the protocol is not registered, return
+-EUNATCH.
+
+Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
+Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/hci_bcsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 287200d7c0764..409b85af82e1c 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6826,6 +6826,7 @@ int smb2_read(struct ksmbd_work *work)
+diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
+index 2a5a27d713f8a..e991d9e624869 100644
+--- a/drivers/bluetooth/hci_bcsp.c
++++ b/drivers/bluetooth/hci_bcsp.c
+@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
+ 	struct bcsp_struct *bcsp = hu->priv;
+ 	const unsigned char *ptr;
  
- 	nbytes = ksmbd_vfs_read(work, fp, length, &offset, aux_payload_buf);
- 	if (nbytes < 0) {
-+		kvfree(aux_payload_buf);
- 		err = nbytes;
- 		goto out;
- 	}
++	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
++		return -EUNATCH;
++
+ 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
+ 	       hu, count, bcsp->rx_state, bcsp->rx_count);
+ 
 -- 
 2.51.0
 
