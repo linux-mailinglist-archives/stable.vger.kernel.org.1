@@ -1,146 +1,123 @@
-Return-Path: <stable+bounces-195440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45781C76E54
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 02:52:26 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7E5C76E57
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 02:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 3FCD92976F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 01:52:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 584A234EBC0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 01:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD24C22541B;
-	Fri, 21 Nov 2025 01:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDE222541B;
+	Fri, 21 Nov 2025 01:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qZs6DFQm"
+	dkim=pass (2048-bit key) header.d=manadoceu-com.20230601.gappssmtp.com header.i=@manadoceu-com.20230601.gappssmtp.com header.b="2P56bLBl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB652248AE
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 01:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2A13774D
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 01:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763689939; cv=none; b=HxJlxNfAi6LUcEnYAB4H4o9EXGmn8Ik5sYfBvn1wmRheXEbAXekPMMRTRYLnXvPmiZ0M1oQvpztTKj1nH6iDO/L1ZSujvSBEzes/gDZ6y1PNnOzSJVPt8BnYl+V8J9oTU0BgyOVwDzUOta9Gl8YtKOFANJbP5hZdDqh/grEsh5w=
+	t=1763689978; cv=none; b=nhiFJBkD3B2MwKCkIthNwaBqAv3oUQVAD0xMDLwGWAARX4Pz9bZFfobyAYgi9sjlkjVNslIqOAHfoL9udRxwk6fcE4k3unTm6QojR5O9GdUHUmrTn9Nuw8jPxi7aaOrIRD9rnnevGgZGbeBc0WNDLQTPYsda3iKHlJ6li4QigI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763689939; c=relaxed/simple;
-	bh=IUYbTwdVpgjHgSAxfEGpghaq+a187bmJFeUPEuaZs8A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+kkp+AelKEcUC2cQJkJyDub4FMbybOfIs5oySebxYvFmjPMIucXlt7UiSWjBIPRNie+ALWzoHlNscGTcNkdkc8Of2HgTImtJVUU6f+lSh5075NaZS6zKXMIUyki6Fl3iwqWSKi4/bLhBmwPr5GSPNIstNS4xyWLUpcajB/0dUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qZs6DFQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F609C4CEF1;
-	Fri, 21 Nov 2025 01:52:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763689938;
-	bh=IUYbTwdVpgjHgSAxfEGpghaq+a187bmJFeUPEuaZs8A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZs6DFQmDfvHKECUt1mjbu75rUexHhjY/whx9GS+gL5QyFTRiwnpEKECUdtCLgN/s
-	 OUxiKY3MTPzkdwgLJ2u6ziopFEezLfDdp2ngVlauTtZOEVIXVJCaOVsVMC2YpXiytm
-	 AyWkng7A3JIDA1wuu+DqrpcWB9i+mqCkRxHOLtkbT8EhsmXgh1x3H+1KMlIjXz5bFH
-	 D3w5mtuhLs74j6IDNF+f4YXtvbYXwcTbxr6oisHjPkII5xqS1ercJZqe/bcdz/eSRS
-	 ZojKDibjW8fjGfKsEDSI+6Mk2Mp4WnQJ/oaMekyRGFOghtABj/ReGAK3RVDx3f5iYI
-	 l/ca+BK497XSw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
-Date: Thu, 20 Nov 2025 20:52:15 -0500
-Message-ID: <20251121015215.2335584-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112008-harddisk-preseason-c83e@gregkh>
-References: <2025112008-harddisk-preseason-c83e@gregkh>
+	s=arc-20240116; t=1763689978; c=relaxed/simple;
+	bh=ackV/WY9uSzn1gxVj4gIblq2Puou2cOPjxzCx5hJNIc=;
+	h=From:MIME-Version:Date:Message-ID:Subject:To:Content-Type; b=XjLghek4s0hs+QXy+q9ZWFJswzYLMsO0XiQoMB8IWEpqZ+D6f4LepCJr8aBo+wENNyPwkysCFOA1/+B70k4MjT8PiZ6snvvOxCX4nX/h3QdTpuptAS5Mjv+y8AeIPctsbqWzuKZUT51IIUYac1zYXKXgZD7PLGquiD2c/Mtm6pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manadoceu.com; spf=pass smtp.mailfrom=manadoceu.com; dkim=pass (2048-bit key) header.d=manadoceu-com.20230601.gappssmtp.com header.i=@manadoceu-com.20230601.gappssmtp.com header.b=2P56bLBl; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manadoceu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manadoceu.com
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-93917ebde8aso1653880241.1
+        for <stable@vger.kernel.org>; Thu, 20 Nov 2025 17:52:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=manadoceu-com.20230601.gappssmtp.com; s=20230601; t=1763689975; x=1764294775; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:mime-version
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ackV/WY9uSzn1gxVj4gIblq2Puou2cOPjxzCx5hJNIc=;
+        b=2P56bLBlxob/Kn3xw7SAjUb18x+46nZADHM0DsX1fgV3ltUSa/IpZhj9aYtm8oKvnN
+         2rlkPP46VkD6bmXstt/vIfzlMDkvvl9Y1JLhxBzWSYRv1ApBBpYNWswRE3MHbzZtHT7f
+         tu/wtUMBA7pjpCEYIl01yVWDqHQ8Pmm/d0Kg0MWmLkIfoMH7mpfan+OzdCTV630dcvKV
+         TKdDIpVaxBOf3RU9fZuByVNoAs+Sr7ws7mKOzNExSm9IKRCtJ/R7YLFieGOviDkdaDmo
+         U/MD2ThRd+D+CYOEpc2pVnYE0GSI/1/OmAiqeCTwqFANW6cRP6fiQ7Kl2NkEGOnKrObw
+         e7Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763689975; x=1764294775;
+        h=content-transfer-encoding:to:subject:message-id:date:mime-version
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ackV/WY9uSzn1gxVj4gIblq2Puou2cOPjxzCx5hJNIc=;
+        b=MWnUAfaR43Os+o91XQMyQH7G5DILBb3vkSns3Haf1t6QqrPeXQVMDu7bCoQM7Qzjzd
+         aHyB5zTiTCjqVAzYYjXdpyLwD5vNjx1v+DssmD0tsfJGXZSI9JL6C1ti/G7RIYI45iP8
+         6PCK/028mWkfcU3WzdYLklp2M2Jks0fY915MaKr0ghzKeCuO8RA/JilQX91axj5NxuMk
+         M+sYD5OIS6aKwxiSCBn+znOWdzV1fgtP9pBzJaYUqbZp3H3JTrPZKo8a1cG+ZtIuD7z5
+         CV6jqK5lSXhRgY9ihpXqECcIQGxb+tRRjwMShDXrv96LdPRvv+/GMaksfqMPDObssihW
+         Rq7g==
+X-Gm-Message-State: AOJu0Yyn7edK2pLYRyXB5TWOnaFwkINS06rzEmJD0RiQfNtATmNqdaif
+	VYwia/PDN7I7J9wliGSU93HvYcPRzAc4CB9zMmycWqigdeNP57jUiBfWIKXLRlykRZYsAkgIPeE
+	b+CU1YF6+OSRnd2MdEISf1+BZRZn7UjoW1fipUmxU9bYH9IuNJewA0RkN
+X-Gm-Gg: ASbGncvbTur82+tHSL6oYeqauw1fe90uZxiSlSvENaybVjqgJ6RZls7Vq6iIt8WbKma
+	CvEg+Br6SWHwmJp47SEn8xR6Ewk2NYmQw6j0dIyxYglCNNYSdyxCQjSBI4paeo/Th3O0BcLVv53
+	QF1ZRtbiPrY77wXRJPtev25jQu9lk5YwBMBDBnzbiPojjrx/0tloyu5E0q1glnZZtl1ROG9yI2F
+	d4/UBqadM/hWyORGbL9rrBf+etzRVL+ONNe5tukx9trovGgx1lP0g8MAA8jvo1KcpVPfqF4b+Y6
+	tuVdnptn26ALHPtMoK3k9zh6f10nKT3W3IV6Be8x4lE=
+X-Google-Smtp-Source: AGHT+IG9Be+YJUClMq7tbfk9p00lXMkXZ35tBG3+zkktqfELw1dPSaEScaM9jdGuOIQrAIg9XpXKRYEOTI99+yHA55A=
+X-Received: by 2002:a05:6102:41ab:b0:5a5:57f0:f426 with SMTP id
+ ada2fe7eead31-5e1c3bba431mr1997004137.5.1763689974654; Thu, 20 Nov 2025
+ 17:52:54 -0800 (PST)
+Received: from 1046093822762 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 21 Nov 2025 02:52:54 +0100
+Received: from 1046093822762 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 21 Nov 2025 02:52:54 +0100
+From: =?UTF-8?B?44K144Od44O844OI44K744Oz44K/44O8?= <junfan178@manadoceu.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 21 Nov 2025 02:52:54 +0100
+X-Gm-Features: AWmQ_bn9H_VRtziOeNHlvUYknLItS3I0SOveS0sbfCIdUlb2q9s0CO4IjY52mGg
+Message-ID: <CAGcpx2xyg=ZsTBodWhj=GaFgjDCVyjOPjtAMFmTn0MFG5GPeAg@mail.gmail.com>
+Subject: =?UTF-8?B?44CQ6KaB56K66KqN44CR5pys5Lq656K66KqN44GM5b+F6KaB44Gq54q25rOB44GM55m6?=
+	=?UTF-8?B?55Sf44GX44Gm44GE44G+44GZ?=
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-From: Breno Leitao <leitao@debian.org>
-
-[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
-
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
-
-Scenario causing lack of proper cleanup:
-
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
-
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
-
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/core/netpoll.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index c900badd5325d..8752a61f0455a 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -851,6 +851,10 @@ void __netpoll_cleanup(struct netpoll *np)
- 
- 	synchronize_srcu(&netpoll_srcu);
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -860,8 +864,7 @@ void __netpoll_cleanup(struct netpoll *np)
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
- }
- EXPORT_SYMBOL_GPL(__netpoll_cleanup);
- 
--- 
-2.51.0
-
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQpBbWF6b24uY28uanAg44Kr44K544K/44Oe44O8
+44K144O844OT44K5DQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIENCg0K44CQ6YeN6KaB44CR
+44Ki44Kr44Km44Oz44OI5Yip55So44Gr6Zai44GZ44KL56K66KqN44Gu44GK6aGY44GEDQoNCuW5
+s+e0oOOCiOOCiiBBbWF6b24uY28uanAg44K144O844OT44K544KS44GU5Yip55So44GE44Gf44Gg
+44GN44CB6Kqg44Gr44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQrjgYrlrqLmp5jj
+ga7jgqLjgqvjgqbjg7Pjg4jjgavjgYrjgYTjgabjgIHpgJrluLjjgajjga/nlbDjgarjgovmk43k
+vZzjgYzmpJzlh7rjgZXjgozjgb7jgZfjgZ/jgIINCuWuieWFqOOBruOBn+OCgeOAgeacrOS6uuei
+uuiqjeOBjOW/heimgeOBqueKtuazgeOBqOOBquOBo+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrnorro
+qo3jgYzlrozkuobjgZnjgovjgb7jgafjgIHkuIDpg6jjga7jgrXjg7zjg5PjgrnjgYzliLbpmZDj
+gZXjgozjgovloLTlkIjjgYzjgYLjgorjgb7jgZnjgIINCg0K4peGIOeiuuiqjeOBjOW/heimgeOB
+qOOBquOBo+OBn+eQhueUsQ0KDQrigLvmnIDov5Hjga7jgqLjgqvjgqbjg7Pjg4jjgqLjgq/jgrvj
+grnjgavkuI3lr6njgarmk43kvZzjgYzmpJzlh7rjgZXjgozjgb7jgZfjgZ/jgIINCuKAu+S4jeat
+o+WIqeeUqOmYsuatouOBiuOCiOOBs+WPluW8leS/neitt+OBruOBn+OCgeOAgeacrOS6uueiuuiq
+jeOBjOW/heimgeOBp+OBmeOAgg0KDQril4Yg5omL57aa44GN44Gu5rWB44KMDQoNCuS4i+iomOOD
+quODs+OCr+OCiOOCiuacrOS6uueiuuiqjeODmuODvOOCuOOCkumWi+OBhOOBpuOBj+OBoOOBleOB
+hOOAgg0KDQrmjIfnpLrjgavlvpPjgYTjgIHlv4XopoHkuovpoIXjgpLjgZTlhaXlipvjgY/jgaDj
+gZXjgYTjgIINCg0K5a6M5LqG5b6M44CB5Yi26ZmQ44GV44KM44Gm44GE44Gf5qmf6IO944GM6YCa
+5bi46YCa44KK44GU5Yip55So44GE44Gf44Gg44GR44G+44GZ44CCDQoNCuKWvCDmnKzkurrnorro
+qo3jga/jgZPjgaHjgokNCmh0dHBzOi8vem9tYmllLXBjLmNvbS93cGlhcWhrZjgNCg0K4peGIOOB
+lOazqOaEj+S6i+mghQ0KDQrigLvnorroqo3jgYzooYzjgo/jgozjgarjgYTloLTlkIjjgIHjgqLj
+gqvjgqbjg7Pjg4jjga7kuIDmmYLliLbpmZDjgYzntpnntprjgZXjgozjgb7jgZnjgIINCuKAu+OC
+u+OCreODpeODquODhuOCo+WQkeS4iuOBruOBn+OCgeOAgeODkeOCueODr+ODvOODieWkieabtOOC
+hOS6jOautemajuiqjeiovOOBruioreWumuOCkuaOqOWlqOOBl+OBvuOBmeOAgg0K4oC76Lqr44Gr
+6Kaa44GI44Gu44Gq44GE5Y+W5byV44KE5LiN5a+p44Gq5pON5L2c44GM44GC44KL5aC05ZCI44Gv
+44CB6YCf44KE44GL44Gr44Kr44K544K/44Oe44O844K144O844OT44K544G444GU6YCj57Wh44GP
+44Gg44GV44GE44CCDQoNCuOBk+OBruODoeODvOODq+OBr+OCouOCq+OCpuODs+ODiOS/neitt+OC
+kuebrueahOOBqOOBl+OBpuiHquWLlemAgeS/oeOBleOCjOOBpuOBhOOBvuOBmeOAgg0K44GU6L+U
+5L+h44GE44Gf44Gg44GE44Gm44KC44GK562U44GI44Gn44GN44G+44Gb44KT44Gu44Gn44GU5LqG
+5om/44GP44Gg44GV44GE44CCDQoNCuKAuyAyMDI1IEFtYXpvbiBKYXBhbiBHLksuIC8gQW1hem9u
+LmNvLmpwDQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIENCg==
 
