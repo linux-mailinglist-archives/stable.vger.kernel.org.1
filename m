@@ -1,459 +1,188 @@
-Return-Path: <stable+bounces-195475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA334C77D34
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E7FC77D3D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11ACF4EB066
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 08:13:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F9334E8683
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 08:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D870A2EA485;
-	Fri, 21 Nov 2025 08:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69EE339B4E;
+	Fri, 21 Nov 2025 08:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="M0kFq5By"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ktba0Loo"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013027.outbound.protection.outlook.com [40.107.201.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F56A31A07F
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 08:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763712786; cv=none; b=q76eBZJ/ryZ8aEmNohbC6gbMztR7jWGUq2SFKrlCxBNUhrCF0O1oll/krup30VU6WGGwy2X3Q8tHuUjg9ISqMEUWmwN6hYocd7F8rjLyoMACpZap93nf85BMWSmghUSsX2xVaWc4Vjc2/ZcXgQeuoVlFzZSgw9g0FxAWZzZhAHg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763712786; c=relaxed/simple;
-	bh=5xTNgNoOjM1gl41wk7NETztkLn/xogpRcd35RroWW6w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZZNBkLxiyMpWazNloF8WNvVMiTmxP856Fa3kmWfmnItNag5GbLYod1rEN/P0Sovy31ytmdHRBVlhj/8HM7iDuiFf2CSLKJ+JxRvUL/mGWMLxyQauee5DJfQjG/7DlHSP7oqLa1qB0dBzj9z7byFLPCL7qSPsUjj/EXH2p+Rclfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=M0kFq5By; arc=none smtp.client-ip=185.136.64.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 2025112108125379044d27bb00020777
-        for <stable@vger.kernel.org>;
-        Fri, 21 Nov 2025 09:12:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=florian.bezdeka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=O4c2FcOwP8tmQzdjrD2T43+/NkaOAS3Rw+hDzMPTUgg=;
- b=M0kFq5BydkN1Y07YgeuM3pmKsjXLTmxY4VOJkSs7hHc2WmMdCQ1PRVGy8KrKf3hUu/LbTR
- Z45fEVi9Msp1o7FRbWnGaT1+WqPcXOOERtcKGAP4wQ7XvrAHORQQzjuhyGvSQdQnzloY6gaj
- UvO9d1htk6jFbM3bGdW8nhvRtWLNTFrxmfAATjXvScbKZ3R14zG3FZ/CyF9k8XBLDvcyDyqH
- Zx+aHBpp9ErP5N3yJ8d1cnmAQ2MY7edmXhE6X/jNoUYU9pLJaqJKrkUQhc4sF2apf+Aw0ZNO
- rhzJXDRPagY+JPC0jImxDz1ijHgjYRu2mkGHP2F02gt9mczGZgKwM5OA==;
-From: Florian Bezdeka <florian.bezdeka@siemens.com>
-To: stable@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Florian Bezdeka <florian.bezdeka@siemens.com>
-Subject: [PATCH 6.1.y] eventpoll: Replace rwlock with spinlock
-Date: Fri, 21 Nov 2025 09:12:42 +0100
-Message-Id: <20251121081242.3296022-1-florian.bezdeka@siemens.com>
-In-Reply-To: <2025101616-causal-numerator-0c1e@gregkh>
-References: <2025101616-causal-numerator-0c1e@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749792F8BCD;
+	Fri, 21 Nov 2025 08:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763712806; cv=fail; b=n9tedZoxEUxjZiLzS3yB+xdMu9jJzL9d3XBsZBNy0Xc5Cs4ZWzyY1JWgnD01eVUP6oVuv8NdAsnQ4FWLAijnXSKy35EJqCKih69eyiAL3Vocai3k2sJWxp8dcr0qVacl2cqE6PQs/92TjtM1Nyb6FHyWvx0Iu9uopO6ysGEeWmE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763712806; c=relaxed/simple;
+	bh=Q8tEyErh493lGsiohYX4tuS0861qRme07Cy6A2JgzOg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=alczHrJEysU7Jmvb5grjPilzFr5WSv+eE787e3dkTHkGykKylck8tSfpjUSkT5vaKZjWZ/+wsOEyA0j4nF/PJTSk+JHqtaUP6ZF019jGioEIDuB7by4BchsFpD6UlsA9+X5TZPPJFrgYQ0gwZij+TixiA/Rw4HMcGEdIZH1yGKA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ktba0Loo; arc=fail smtp.client-ip=40.107.201.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AcXhdqkW6g3tTdXHhVg1vR7cK1FmFiHW4p5fIi4aMp4Z+3psREC3ZNO6QyoNwqTMO2Zsw0VDa1unnyWndYlmCLPgGUlETr0mu7rjnbupw+rAH3dF58cSq+ZKbCM3DiLheWB2FhCkVzX/CP9iXes+GYxSvH89LfJgssHFWz1V1WBU7XYpzefnAqs/8kIkZvKo0PQayddgTx9/lZRNbm3xfTRDBhwYyWlOno5cct6IfjN4V/RE3FSXfPACRgUmOBF3haSR4kBqcO3NTHfH4Q0os7oly1K/wPhnRlLmoQ4W0guMv04zWysQLwpwLcokwd2wy2+LF1Rtal0XszPAVljyPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AaD+uAahzp1VMIzCBnn4nEA3bB7AAyLw9TUuM9YZxO8=;
+ b=cUIUpA+NoYuElgXOAXuvIvdhxDfF/U0bxwLYOna+kxUj1OMxNeMHsV9ekAWLtx49d252SmYr6S6EOEibpeG/zd4LoTtz611CWEG1IlB7vA/T2yN93mxdGRvdittDGi44ltdamT/8MQ8mAI9MBRjqJjCUX0tS9hdMTYCdwHIF4OkfJjlMElMl5q4W9gdnsvdDUzWHhl4coMGWIEIDEiOUHqZWIiv4eyok22DDd2wGdhej14QE/DqMUDpIQIp+/MEzOYhTbjuh3Rv8PaNzhcr2hMqfd+tV4nZfnDGF9MZ+cbL/KUqy/rbv9Da2NlMRl+9+BAeY+gB4xAa8ExmkgkH/iA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AaD+uAahzp1VMIzCBnn4nEA3bB7AAyLw9TUuM9YZxO8=;
+ b=ktba0LooaI/Xn1aqeRp00wy+ZmPJQavmNK3NyC7wGOPRjkP9+7CNUsd4DUECGOpwI000kIXFGCQa6x/FpmNuylgkJDgKngeKtB2T5+vyvM9ZrA9mGS1ROzQ83PAgcFKw4tnWrQo9XXvTZF+GSJDRi53RslK7t0VLy94pvnBv59g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ CH2PR12MB4310.namprd12.prod.outlook.com (2603:10b6:610:a9::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.12; Fri, 21 Nov 2025 08:13:18 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::a5e0:9d7e:d941:c74d]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::a5e0:9d7e:d941:c74d%7]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 08:13:18 +0000
+Message-ID: <f9d5b6d5-4850-4c61-b691-3a9ce9b4eb22@amd.com>
+Date: Fri, 21 Nov 2025 13:43:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iommu/amd: Propagate the error code returned by
+ __modify_irte_ga() in modify_irte_ga()
+To: Jinhui Guo <guojinhui.liam@bytedance.com>, joro@8bytes.org,
+ suravee.suthikulpanit@amd.com
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251120154725.435-1-guojinhui.liam@bytedance.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <20251120154725.435-1-guojinhui.liam@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0029.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:97::18) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-68982:519-21489:flowmailer
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|CH2PR12MB4310:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16991581-74c0-4139-e8f2-08de28d5d388
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S0dtK1pGYTQ5OWpMUG1RUVFHb3E2ZGJNNzdoRUdLUks4d3ZYaXFTczUrSWhu?=
+ =?utf-8?B?SkR4bmIreWtjZUMxSDM5cGk5bXFWMDlUbkRxWDZKMnVHcG1ubEJ3am40MlV2?=
+ =?utf-8?B?SDUyVHFlSjVmM096dk1yMUM2WGtScGJPWjlyQ1pnSUFrdm9wU0JORGhVQTBq?=
+ =?utf-8?B?UGV2Q3FRbXFjd3dINWcrcWtzb3dWdVdkS1pWQ0x3MEhBandFQ2hIdWtsNVZ5?=
+ =?utf-8?B?aGV1c1F3V0dMakZMNjIxNUY0ZUJRQ1FJUldNdkVFKzhyYkV2dzJSQzJoZ1h0?=
+ =?utf-8?B?MTBmb3lSMi94Nk5tYVF3eWI1NDA0UkRYcDBaNHhSdElybTVycGhFcUhPQWc5?=
+ =?utf-8?B?TVNScnFGY0RCdmRXUGlvTkdMZjlqNmZDUlBGNUp1SXpHeWpaWFp4V0tQSHYz?=
+ =?utf-8?B?Rm9kTkkxcThwdmwxOGtBRHJ4MUE0NkI3dk53UjlNWXhFaXk1WXJ5SDdSNjlW?=
+ =?utf-8?B?QiszY2ZDdldKWVc4MW5VZVlkYUpGRnlHQS95K0NiejUwWVpIY091MEI1eG5t?=
+ =?utf-8?B?cytQZkRqdEpJcHJVK2ZPbWVPMHpDalRyZ0I5emR0eUIycVFhODVTTCs1c3Fx?=
+ =?utf-8?B?Z1FqbWZvU2xNd1duWmhRTFJmWGJRR2tDRS96WCs4cU5EdDFaeUNNS1ZyVVJi?=
+ =?utf-8?B?aUlUVzFlZWJUUWoxbXBlZVNrSmFrTU9obldMcWxuV1B5YUdMM3J1dmVRZGVB?=
+ =?utf-8?B?dGpJMGk3MjFSdTNZaGhua1FQRzBiNVNXYXYwS0srbW1EQjZyNXNBditZWk9W?=
+ =?utf-8?B?UXM2VCtabnpHNkxSVi91SENDZ3Y1WWgwU3NxMVc0clpPbVFWL1BZZTFXNEJD?=
+ =?utf-8?B?Nk5hR2R0RVBqVGFaUXdXRGhoRHVOa2htUDBNRzZtRnE3V0s0SE9zMSt6QUdx?=
+ =?utf-8?B?YTVIRW42YVhzbzJPTy8yMlZuRkdaSU1iSVBWQWJuQWNPMG9hV0tuV3lWTHJF?=
+ =?utf-8?B?RWZ6NVNvTGlTZUs4ODBPbkNZbUp0bCsraXNtNVk1S1VVTXZzNlA1TXpRcGlu?=
+ =?utf-8?B?TFhIak9NQkM5MHg1RE5OeUp0RmlCRTdJZjdNK3d5dDN5cTREV091bGtudm92?=
+ =?utf-8?B?Smc0YWl5YjlJaXR2VjdLYldhYTNRbjAycDllUHVTY3BIL1cxdHpWSWtxM2NJ?=
+ =?utf-8?B?UDd5WXVhM0NRajIzWjFGaEpqNy96c3EzMUZIRmRGNWhMaitXMkpvS2NwOSsw?=
+ =?utf-8?B?NElJRTh4SmtXeUFaeUpNTG16UjhNVDFFZ2tBcUFLUGVKT2ZTMXNreVBGMlBs?=
+ =?utf-8?B?OGpqMDJmZzVBRlJlMzN2OTFvdmhSWTh6VVBhSEhYNUZQQU5zdDF3ei9IREdK?=
+ =?utf-8?B?OFZhaUVhZ3J4VW1GTE5pVW10Z0VFTjR0eHJ1TzlZbnJrWThiQlR0M2t3b3M3?=
+ =?utf-8?B?QkdpNTlmN2ZLWGR2WVk4dDd1aXFGVTZkUHM5SU0vZVNEY3NhSGtYeWYrMC9H?=
+ =?utf-8?B?WVU4Wmh6aDhnb2FBK3BTdFVQczhtclpCdGtKZGt6R1hSRHRubnVmU2NDNlRM?=
+ =?utf-8?B?V21lUTJWQzFjZVZ2dGxaKzZRUnlTaFFzMlFVaUJDOHZ3QjI3YS81VTJTbW53?=
+ =?utf-8?B?WHNsTTdpbVZTeXY5NkZ3aFpHRVkvQUVYejRJWmtuWjJWQ081dzRac2ozNy82?=
+ =?utf-8?B?NzM3Zk9tU2xJR1VxT0xWMTBTeWgyN3E3VDJsNHhVS0Zza2ozUTBNT1RJOGpK?=
+ =?utf-8?B?MXBuNkJpNndURmh2dlR2eTRkVzg3dWMxbTRYNUVEVDM4MmcrQ05EOVB0TTVs?=
+ =?utf-8?B?UUxqQ21JbnZPUzVTaG4yWnJGK0tRajhsbHpGQWRvMjNBWU0yM0ZSS2gra2Mw?=
+ =?utf-8?B?U3NkK0dNQndEcFMvZTZZY244L3VaRzhHZ0F5MWFzVUp0cGlVSEdhTW8xZmJj?=
+ =?utf-8?B?NGliUHpDQzJLZzZvam1NeWtIVnUyMVl5cDM5aWVZenRKdjZwWnhZVU45TVo2?=
+ =?utf-8?Q?kIPIkjRsJ8YwJTLNPrPf9PmDyTZFX0F3?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bjI0K3lIaWZ3Y1F5aXFselU2NWF4eTlwTWZobEFPRFVaWGRNenYxZnFoTzlm?=
+ =?utf-8?B?bE5BUVRSc0x0b3hMTE10d0hnQTBPcmszOUVWdmZta3Z0bDgwTmJ1WmV0cjhP?=
+ =?utf-8?B?UWowNWRiTnZ2cURkMWJrVXp5R1NJYWhXVCtmeG95emNMUnZNc21PQmxXNWdE?=
+ =?utf-8?B?NDNXdkJweHRhcWl5S0lzWWtnWjFNajFaeWcyQ1owRkVnUFhJOEdPdm1DZk02?=
+ =?utf-8?B?SDhQbWM0eVpYUHl5TG5iODRDa21LU0NrS2dPcUFhZXVZTnJHV0NoaXVRZVJh?=
+ =?utf-8?B?RVBJVFV4M0grRUNtbngvRVh1WWNKN2V6Q1J6R0FkOVZUdlZ0QVFnN3pCSmpP?=
+ =?utf-8?B?cVl5NEhkZnllVUhvMUZpQURaTHJ5VWJsWHNRUmdqMVBCNHdZeGZJRGtnWDI3?=
+ =?utf-8?B?Nnp0cEpwazlST2ZCSk5UZnBzdVhYb083Z1ZjVkdKNGxWU1k1aGpNZUVMNysx?=
+ =?utf-8?B?TEJITjY1Ni9qOTJOVm4wQldncG01RWhpZFpBdkprTW9IRWdoMDFSbFFLbTFO?=
+ =?utf-8?B?UDF5ckl5R281aUNUazk2QWwxaGV6dWZkU3RlYThhTDM2eU44L0hFMTZsbXZ6?=
+ =?utf-8?B?R0licHJHQ3d2K0cxMkZES1FaV1JkM3VhYXVHbEVXamY3QmhNNW1qcEFqTWcr?=
+ =?utf-8?B?ZzBqZlV5NENTZXExNW0rcU92SHByOTdGeE5Kd0FOWTdTUm1lM2Q1RXExbTJO?=
+ =?utf-8?B?RDlmQnpXbEkyYVF3UWFlTUpiNE9rSkZ6TXVXelVxTC9VSC9MeGhCczdnSER3?=
+ =?utf-8?B?bkgxVGxFQndZM2FRM3kzSGxFYUp4bUdyOXdQU0hoQWtLd2ExNmFqMDZ3aXkz?=
+ =?utf-8?B?NmJIbGtFanRMbTAyUzBSU081QlE1K2pyYXBSd2FlOWUwM285SkxHY0Z2RWZy?=
+ =?utf-8?B?TXd2OFVvUi9sUGdIaVFKU3J6RWZ4bGZsaGh4ZTJkSjhhNC9PVVdrU0VBTkR1?=
+ =?utf-8?B?YjRJb2tRQWFaRWNYUSttdi9DS3hmaGw1TWxWcDVEOFhvSzdwa1QyaGg0cWQ0?=
+ =?utf-8?B?NGVhNFFteFVpUTI2RlQ1L0VydVpmRmJiQmp3TmpaYzRIMUEvek5TQUJGcHJa?=
+ =?utf-8?B?d09mTmM4Ynh3dm1yZUtubVU5MnYrOFdXa2tOdHhaeFZQRFl4enJSL0lnNXl3?=
+ =?utf-8?B?WU5mZUYwaDY4cmFrU1NmL0JtSTdISlZYQVpaYzFZaklEZVFXUjJCS0RYQm54?=
+ =?utf-8?B?dlFVc2hxNkJhbllua1hQWlEydlBiZ1llSU5hTlVTSUF4RXNpTUphaElpbXdz?=
+ =?utf-8?B?bFcwVEpiT2dhS0tzV0YwVE5qVEorUjIwclo0ZEJDM1A4VCtVaC9EMjB4YW5B?=
+ =?utf-8?B?T0hDQUdhWDQzNVEwSmR2cjI5ZGIycWFLTHM3U1luN29RQ3ZIY3VONzZXTW9F?=
+ =?utf-8?B?ZGVSYlpxam1BVnBTenFoa2tFa2hEdU1yWWx4b0VkY0VvdG90R0FObWNBNm1L?=
+ =?utf-8?B?UitUV0NXZm9wLzdBNFltekUzbmhaNC8rY1ZNcmxMU0JkNHc2RFlkSVZxMXhJ?=
+ =?utf-8?B?SHVIUC90N0NkelRFSGpQbFh3RjZBQlJKUjNzVVE2Y21VeVlUWXBjSjg4Z3M0?=
+ =?utf-8?B?ckxPR3M5OEVNcHNCVHBTMlo0UjNxRXY2QkN2MjZIOFBna2tDYmRJcnZkWmVP?=
+ =?utf-8?B?emNSZDFMeU5TaUFuWXpqZmt3M2xvTjFROGIvTXpzV3doYklSdm5mZFdHdS8w?=
+ =?utf-8?B?L0JldEZxQ2xXRS9GdXN4M011QnFHZjBQUmZ1ZUVGSzRhR3dXSDJLcHNTMElW?=
+ =?utf-8?B?VW1FMmY1NHpEYWxkdm02ektyUlBsOHVrZERYR1lPczcwZ0dHWkpZR09ZYk8x?=
+ =?utf-8?B?MzQzeVBNb2N6dkxsU1BSQnVSUzZiREgwSFJGUS9OUUkyOFFnL2NaUklVV2VR?=
+ =?utf-8?B?Mlg5UTJXM1NlaXFaVkNUY3hiS3BwZGVCaS9YQ0pwWGNNK2dHOXVKZVg4dlJQ?=
+ =?utf-8?B?RTRGTkxwb0ViOS9pcXYxT0g1UnlNOVlDSDl1WXRqT2VpQURud1RFRVIzcVoy?=
+ =?utf-8?B?aGFrQzE4aks5WmJsQnB2NjhtV2Z6T2w4bkV3QjV2RWlIQTY2cWR6M0E3b0xk?=
+ =?utf-8?B?RkRMMnFudlIwOUlYRDdjTTI5bjNydDNDYnpPNU5vS3lrK3hzeHNEams5cndk?=
+ =?utf-8?Q?mYymk8oGWDfLXnd7pryzupbjz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16991581-74c0-4139-e8f2-08de28d5d388
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:13:17.9384
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pya8FL78r9UCGJYdouw4TCrkAjQ5P+HE8ZpOwBZXTkNbrDwmDI8gKC2D3HTR79xMjQsA6wwgMFY597B9u9lL1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4310
 
-From: Nam Cao <namcao@linutronix.de>
+On 11/20/2025 9:17 PM, Jinhui Guo wrote:
+> The return type of __modify_irte_ga() is int, but modify_irte_ga()
+> treats it as a bool. Casting the int to bool discards the error code.
+> 
+> To fix the issue, change the type of ret to int in modify_irte_ga().
+> 
+> Fixes: 57cdb720eaa5 ("iommu/amd: Do not flush IRTE when only updating isRun and destination fields")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit 0c43094f8cc9d3d99d835c0ac9c4fe1ccc62babd ]
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 
-The ready event list of an epoll object is protected by read-write
-semaphore:
-
-  - The consumer (waiter) acquires the write lock and takes items.
-  - the producer (waker) takes the read lock and adds items.
-
-The point of this design is enabling epoll to scale well with large number
-of producers, as multiple producers can hold the read lock at the same
-time.
-
-Unfortunately, this implementation may cause scheduling priority inversion
-problem. Suppose the consumer has higher scheduling priority than the
-producer. The consumer needs to acquire the write lock, but may be blocked
-by the producer holding the read lock. Since read-write semaphore does not
-support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
-we have a case of priority inversion: a higher priority consumer is blocked
-by a lower priority producer. This problem was reported in [1].
-
-Furthermore, this could also cause stall problem, as described in [2].
-
-Fix this problem by replacing rwlock with spinlock.
-
-This reduces the event bandwidth, as the producers now have to contend with
-each other for the spinlock. According to the benchmark from
-https://github.com/rouming/test-tools/blob/master/stress-epoll.c:
-
-    On 12 x86 CPUs:
-                  Before     After        Diff
-        threads  events/ms  events/ms
-              8       7162       4956     -31%
-             16       8733       5383     -38%
-             32       7968       5572     -30%
-             64      10652       5739     -46%
-            128      11236       5931     -47%
-
-    On 4 riscv CPUs:
-                  Before     After        Diff
-        threads  events/ms  events/ms
-              8       2958       2833      -4%
-             16       3323       3097      -7%
-             32       3451       3240      -6%
-             64       3554       3178     -11%
-            128       3601       3235     -10%
-
-Although the numbers look bad, it should be noted that this benchmark
-creates multiple threads who do nothing except constantly generating new
-epoll events, thus contention on the spinlock is high. For real workload,
-the event rate is likely much lower, and the performance drop is not as
-bad.
-
-Using another benchmark (perf bench epoll wait) where spinlock contention
-is lower, improvement is even observed on x86:
-
-    On 12 x86 CPUs:
-        Before: Averaged 110279 operations/sec (+- 1.09%), total secs = 8
-        After:  Averaged 114577 operations/sec (+- 2.25%), total secs = 8
-
-    On 4 riscv CPUs:
-        Before: Averaged 175767 operations/sec (+- 0.62%), total secs = 8
-        After:  Averaged 167396 operations/sec (+- 0.23%), total secs = 8
-
-In conclusion, no one is likely to be upset over this change. After all,
-spinlock was used originally for years, and the commit which converted to
-rwlock didn't mention a real workload, just that the benchmark numbers are
-nice.
-
-This patch is not exactly the revert of commit a218cc491420 ("epoll: use
-rwlock in order to reduce ep_poll_callback() contention"), because git
-revert conflicts in some places which are not obvious on the resolution.
-This patch is intended to be backported, therefore go with the obvious
-approach:
-
-  - Replace rwlock_t with spinlock_t one to one
-
-  - Delete list_add_tail_lockless() and chain_epi_lockless(). These were
-    introduced to allow producers to concurrently add items to the list.
-    But now that spinlock no longer allows producers to touch the event
-    list concurrently, these two functions are not necessary anymore.
-
-Fixes: a218cc491420 ("epoll: use rwlock in order to reduce ep_poll_callback() contention")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: stable@vger.kernel.org
-Reported-by: Frederic Weisbecker <frederic@kernel.org>
-Closes: https://lore.kernel.org/linux-rt-users/20210825132754.GA895675@lothringen/ [1]
-Reported-by: Valentin Schneider <vschneid@redhat.com>
-Closes: https://lore.kernel.org/linux-rt-users/xhsmhttqvnall.mognet@vschneid.remote.csb/ [2]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
----
- fs/eventpoll.c | 139 +++++++++----------------------------------------
- 1 file changed, 26 insertions(+), 113 deletions(-)
-
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 295046df71e93..b765f20a0690e 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -45,10 +45,10 @@
-  *
-  * 1) epmutex (mutex)
-  * 2) ep->mtx (mutex)
-- * 3) ep->lock (rwlock)
-+ * 3) ep->lock (spinlock)
-  *
-  * The acquire order is the one listed above, from 1 to 3.
-- * We need a rwlock (ep->lock) because we manipulate objects
-+ * We need a spinlock (ep->lock) because we manipulate objects
-  * from inside the poll callback, that might be triggered from
-  * a wake_up() that in turn might be called from IRQ context.
-  * So we can't sleep inside the poll callback and hence we need
-@@ -193,7 +193,7 @@ struct eventpoll {
- 	struct list_head rdllist;
- 
- 	/* Lock which protects rdllist and ovflist */
--	rwlock_t lock;
-+	spinlock_t lock;
- 
- 	/* RB tree root used to store monitored fd structs */
- 	struct rb_root_cached rbr;
-@@ -621,10 +621,10 @@ static void ep_start_scan(struct eventpoll *ep, struct list_head *txlist)
- 	 * in a lockless way.
- 	 */
- 	lockdep_assert_irqs_enabled();
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	list_splice_init(&ep->rdllist, txlist);
- 	WRITE_ONCE(ep->ovflist, NULL);
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- }
- 
- static void ep_done_scan(struct eventpoll *ep,
-@@ -632,7 +632,7 @@ static void ep_done_scan(struct eventpoll *ep,
- {
- 	struct epitem *epi, *nepi;
- 
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	/*
- 	 * During the time we spent inside the "sproc" callback, some
- 	 * other events might have been queued by the poll callback.
-@@ -673,7 +673,7 @@ static void ep_done_scan(struct eventpoll *ep,
- 			wake_up(&ep->wq);
- 	}
- 
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- }
- 
- static void epi_rcu_free(struct rcu_head *head)
-@@ -719,10 +719,10 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
- 
- 	rb_erase_cached(&epi->rbn, &ep->rbr);
- 
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	if (ep_is_linked(epi))
- 		list_del_init(&epi->rdllink);
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- 
- 	wakeup_source_unregister(ep_wakeup_source(epi));
- 	/*
-@@ -986,7 +986,7 @@ static int ep_alloc(struct eventpoll **pep)
- 		goto free_uid;
- 
- 	mutex_init(&ep->mtx);
--	rwlock_init(&ep->lock);
-+	spin_lock_init(&ep->lock);
- 	init_waitqueue_head(&ep->wq);
- 	init_waitqueue_head(&ep->poll_wait);
- 	INIT_LIST_HEAD(&ep->rdllist);
-@@ -1076,100 +1076,10 @@ struct file *get_epoll_tfile_raw_ptr(struct file *file, int tfd,
- }
- #endif /* CONFIG_KCMP */
- 
--/*
-- * Adds a new entry to the tail of the list in a lockless way, i.e.
-- * multiple CPUs are allowed to call this function concurrently.
-- *
-- * Beware: it is necessary to prevent any other modifications of the
-- *         existing list until all changes are completed, in other words
-- *         concurrent list_add_tail_lockless() calls should be protected
-- *         with a read lock, where write lock acts as a barrier which
-- *         makes sure all list_add_tail_lockless() calls are fully
-- *         completed.
-- *
-- *        Also an element can be locklessly added to the list only in one
-- *        direction i.e. either to the tail or to the head, otherwise
-- *        concurrent access will corrupt the list.
-- *
-- * Return: %false if element has been already added to the list, %true
-- * otherwise.
-- */
--static inline bool list_add_tail_lockless(struct list_head *new,
--					  struct list_head *head)
--{
--	struct list_head *prev;
--
--	/*
--	 * This is simple 'new->next = head' operation, but cmpxchg()
--	 * is used in order to detect that same element has been just
--	 * added to the list from another CPU: the winner observes
--	 * new->next == new.
--	 */
--	if (!try_cmpxchg(&new->next, &new, head))
--		return false;
--
--	/*
--	 * Initially ->next of a new element must be updated with the head
--	 * (we are inserting to the tail) and only then pointers are atomically
--	 * exchanged.  XCHG guarantees memory ordering, thus ->next should be
--	 * updated before pointers are actually swapped and pointers are
--	 * swapped before prev->next is updated.
--	 */
--
--	prev = xchg(&head->prev, new);
--
--	/*
--	 * It is safe to modify prev->next and new->prev, because a new element
--	 * is added only to the tail and new->next is updated before XCHG.
--	 */
--
--	prev->next = new;
--	new->prev = prev;
--
--	return true;
--}
--
--/*
-- * Chains a new epi entry to the tail of the ep->ovflist in a lockless way,
-- * i.e. multiple CPUs are allowed to call this function concurrently.
-- *
-- * Return: %false if epi element has been already chained, %true otherwise.
-- */
--static inline bool chain_epi_lockless(struct epitem *epi)
--{
--	struct eventpoll *ep = epi->ep;
--
--	/* Fast preliminary check */
--	if (epi->next != EP_UNACTIVE_PTR)
--		return false;
--
--	/* Check that the same epi has not been just chained from another CPU */
--	if (cmpxchg(&epi->next, EP_UNACTIVE_PTR, NULL) != EP_UNACTIVE_PTR)
--		return false;
--
--	/* Atomically exchange tail */
--	epi->next = xchg(&ep->ovflist, epi);
--
--	return true;
--}
--
- /*
-  * This is the callback that is passed to the wait queue wakeup
-  * mechanism. It is called by the stored file descriptors when they
-  * have events to report.
-- *
-- * This callback takes a read lock in order not to contend with concurrent
-- * events from another file descriptor, thus all modifications to ->rdllist
-- * or ->ovflist are lockless.  Read lock is paired with the write lock from
-- * ep_scan_ready_list(), which stops all list modifications and guarantees
-- * that lists state is seen correctly.
-- *
-- * Another thing worth to mention is that ep_poll_callback() can be called
-- * concurrently for the same @epi from different CPUs if poll table was inited
-- * with several wait queues entries.  Plural wakeup from different CPUs of a
-- * single wait queue is serialized by wq.lock, but the case when multiple wait
-- * queues are used should be detected accordingly.  This is detected using
-- * cmpxchg() operation.
-  */
- static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, void *key)
- {
-@@ -1180,7 +1090,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	unsigned long flags;
- 	int ewake = 0;
- 
--	read_lock_irqsave(&ep->lock, flags);
-+	spin_lock_irqsave(&ep->lock, flags);
- 
- 	ep_set_busy_poll_napi_id(epi);
- 
-@@ -1209,12 +1119,15 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	 * chained in ep->ovflist and requeued later on.
- 	 */
- 	if (READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR) {
--		if (chain_epi_lockless(epi))
-+		if (epi->next == EP_UNACTIVE_PTR) {
-+			epi->next = READ_ONCE(ep->ovflist);
-+			WRITE_ONCE(ep->ovflist, epi);
- 			ep_pm_stay_awake_rcu(epi);
-+		}
- 	} else if (!ep_is_linked(epi)) {
- 		/* In the usual case, add event to ready list. */
--		if (list_add_tail_lockless(&epi->rdllink, &ep->rdllist))
--			ep_pm_stay_awake_rcu(epi);
-+		list_add_tail(&epi->rdllink, &ep->rdllist);
-+		ep_pm_stay_awake_rcu(epi);
- 	}
- 
- 	/*
-@@ -1247,7 +1160,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 		pwake++;
- 
- out_unlock:
--	read_unlock_irqrestore(&ep->lock, flags);
-+	spin_unlock_irqrestore(&ep->lock, flags);
- 
- 	/* We have to call this outside the lock */
- 	if (pwake)
-@@ -1576,7 +1489,7 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 	}
- 
- 	/* We have to drop the new item inside our item list to keep track of it */
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 
- 	/* record NAPI ID of new item if present */
- 	ep_set_busy_poll_napi_id(epi);
-@@ -1593,7 +1506,7 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 			pwake++;
- 	}
- 
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- 
- 	/* We have to call this outside the lock */
- 	if (pwake)
-@@ -1657,7 +1570,7 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi,
- 	 * list, push it inside.
- 	 */
- 	if (ep_item_poll(epi, &pt, 1)) {
--		write_lock_irq(&ep->lock);
-+		spin_lock_irq(&ep->lock);
- 		if (!ep_is_linked(epi)) {
- 			list_add_tail(&epi->rdllink, &ep->rdllist);
- 			ep_pm_stay_awake(epi);
-@@ -1668,7 +1581,7 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi,
- 			if (waitqueue_active(&ep->poll_wait))
- 				pwake++;
- 		}
--		write_unlock_irq(&ep->lock);
-+		spin_unlock_irq(&ep->lock);
- 	}
- 
- 	/* We have to call this outside the lock */
-@@ -1901,7 +1814,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		init_wait(&wait);
- 		wait.func = ep_autoremove_wake_function;
- 
--		write_lock_irq(&ep->lock);
-+		spin_lock_irq(&ep->lock);
- 		/*
- 		 * Barrierless variant, waitqueue_active() is called under
- 		 * the same lock on wakeup ep_poll_callback() side, so it
-@@ -1920,7 +1833,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		if (!eavail)
- 			__add_wait_queue_exclusive(&ep->wq, &wait);
- 
--		write_unlock_irq(&ep->lock);
-+		spin_unlock_irq(&ep->lock);
- 
- 		if (!eavail)
- 			timed_out = !schedule_hrtimeout_range(to, slack,
-@@ -1935,7 +1848,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		eavail = 1;
- 
- 		if (!list_empty_careful(&wait.entry)) {
--			write_lock_irq(&ep->lock);
-+			spin_lock_irq(&ep->lock);
- 			/*
- 			 * If the thread timed out and is not on the wait queue,
- 			 * it means that the thread was woken up after its
-@@ -1946,7 +1859,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 			if (timed_out)
- 				eavail = list_empty(&wait.entry);
- 			__remove_wait_queue(&ep->wq, &wait);
--			write_unlock_irq(&ep->lock);
-+			spin_unlock_irq(&ep->lock);
- 		}
- 	}
- }
--- 
-2.39.5
+-Vasant
 
 
