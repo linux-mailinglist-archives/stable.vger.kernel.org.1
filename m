@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-196261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0010C79C36
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10168C792F9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5A4122E6A9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 8B96A2B5D6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FBF34FF50;
-	Fri, 21 Nov 2025 13:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42894346FCA;
+	Fri, 21 Nov 2025 13:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d53ue0tZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCXapFJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0266334DB41;
-	Fri, 21 Nov 2025 13:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86299346E51;
+	Fri, 21 Nov 2025 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733013; cv=none; b=EzZw3boq3ASwX8G4wWkROqV11mHW748vRxsk74bm4U0cKFPn99KssQGQfF3YHHSTL8N3iU6o2QcVdKEgAO1t1cK453jRTz2dzJweEVfI/OG6c8jP77JjNPJJWO/vrswV9XVwrcBVib+ZF2M3ucvVig9Gz5ApYskalZ4bmTBifY8=
+	t=1763731052; cv=none; b=U2EziaPGrPZXw8D1WJ3A2jnBt5mizq/JMJwAFIaXkEK2WgLexrlttVBOWJZNAoqyWOvEJKlCgwyHeY8CfHBGsUbAss0RzXYztIMIwM/cn6Upgq/R3odLar07/D0uuJFdXNgGfcg6qeCmersf6pOpMIRiSuqmi4nJ5D8f4me8cTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733013; c=relaxed/simple;
-	bh=UtMynFHEn7at+o5F/31uXgdcCguRSgikXYEO3wqo7FA=;
+	s=arc-20240116; t=1763731052; c=relaxed/simple;
+	bh=lC1vMU7fxTnwGdRr1HerRWEMozFRNnqgwzW1A4iKshY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ann7X5y1QAxoUk9On8ZOptYx+DjnQ+C7sOYGfJBDLQRbOUEHr7Si2wHNujr0E8l+skdLT6U5F7wrDXqM5WurNTARWw+t9ZQZddwWutSKOEvnZsJ7Wuuw2B/sfERi4mHF3U94y9XAL04SD9PQpftzVXqzs2lEzE6bNeYCEVCW4n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d53ue0tZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693C8C4CEF1;
-	Fri, 21 Nov 2025 13:50:12 +0000 (UTC)
+	 MIME-Version; b=mgfUJVWuFYu70Lg/h4ASFhy0AELLAXh+0DSGCQIrTRAiFqY4cl90meodTGWbcWwltmu7iTDvuJeG4BUFjlSXgTi2ySfkkYSlGd6njsOM27oau1em2FvZ7a0zmPwf49vYwci3S3MZkE+OfinjtPtx4PrbQJbfFSy5C1xAI2+luMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCXapFJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1D3C4CEF1;
+	Fri, 21 Nov 2025 13:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733012;
-	bh=UtMynFHEn7at+o5F/31uXgdcCguRSgikXYEO3wqo7FA=;
+	s=korg; t=1763731052;
+	bh=lC1vMU7fxTnwGdRr1HerRWEMozFRNnqgwzW1A4iKshY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d53ue0tZh6sMtGZhCYL+oDca8VtordVHj4w7pXacb6jcJmiTkc7bU9JNhFOGRgvJs
-	 y0I+PK2DMV88Tldrvem6VX2Ys9C0wY+2mYrSQwZS98r42wVbps108kPeDAYL0gFuvj
-	 3J+U+JRt+nog0zsHjO7T1mbb5homI1YaDBiUZQPs=
+	b=gCXapFJI9PquoK0w9a5AY3cG/gtA1IR+8AbKseO8iINjyzlpPXgVH6bdTfzDS6fKq
+	 ggAATh850x/y0ugIHU4RUz7d5of/zfziDdfy0+03vxD9LbpHLoNWYJL08u2m9lhBSy
+	 DBJ6+n/OA1hKLjSVU/JJApwtESgUhEa4gC7FOsO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Dahl Juhl <juhl.emildahl@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/529] tools: lib: thermal: dont preserve owner in install
+Subject: [PATCH 6.17 073/247] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
 Date: Fri, 21 Nov 2025 14:10:20 +0100
-Message-ID: <20251121130242.448543192@linuxfoundation.org>
+Message-ID: <20251121130157.218742497@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Dahl Juhl <juhl.emildahl@gmail.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 1375152bb02ab2a8435e87ea27034482dbc95f57 ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-Instead of preserving mode, timestamp, and owner, for the object files
-during installation, just preserve the mode and timestamp.
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-When installing as root, the installed files should be owned by root.
-When installing as user, --preserve=ownership doesn't work anyway. This
-makes --preserve=ownership rather pointless.
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-Signed-off-by: Emil Dahl Juhl <juhl.emildahl@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
+
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
+
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
+
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
+
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index 8890fd57b110c..1694889847caf 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -147,7 +147,7 @@ endef
- install_lib: libs
- 	$(call QUIET_INSTALL, $(LIBTHERMAL_ALL)) \
- 		$(call do_install_mkdir,$(libdir_SQ)); \
--		cp -fpR $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
-+		cp -fR --preserve=mode,timestamp $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 107c6d83dc5c4..7c6975632fc2e 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -644,13 +644,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
- install_headers:
- 	$(call QUIET_INSTALL, headers) \
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
++
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
