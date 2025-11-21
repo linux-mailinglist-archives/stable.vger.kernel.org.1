@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF512C79E0D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85255C79442
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0CB8A3484AF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1844E3484F3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF4B35294D;
-	Fri, 21 Nov 2025 13:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CF82F3632;
+	Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IArZqCTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEElPdyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65275351FDB;
-	Fri, 21 Nov 2025 13:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4001F09B3;
+	Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733081; cv=none; b=fDeV8TPcQ7HQmcg55JNde2Oiu2nbY9TIV3RLOigfC2BJl+rLV3SkFQePjGWI5clZwR/iwqEbX3UQFyyeYYbhM8opxBSglqqS8IbrQ4mgpd+HOfZq9QVoMzc5pwjLTD4/S0lOiSJfVC2ZGl1dRkJvUuWJQdIHVLaGSa/jwyUU3PU=
+	t=1763731116; cv=none; b=MimJHvJi7pEkjRJyHdROFu26K1h5HFO6GeBsQ78FPAQXILa08iD2K2JVDx6RCws+7ofryuN6mA9rggP+h4x8NaUJ13uhrH6liXUOVdzNfrl7q7dkeiXYxcS7bZBettuzTNNKQXGfoonn/kY1lhb7nW249eNMcVRCJ81eQcBDAzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733081; c=relaxed/simple;
-	bh=wSL9WYsMpS4SS8PpSty/Je8MdEto/qicmIquwrCLTao=;
+	s=arc-20240116; t=1763731116; c=relaxed/simple;
+	bh=3F39PmUWWmOnB0PHfssgC+OEDbZlUP5mo+UbQ/ktbjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MkSK1Egx7l4MwIyxxOMGf180Jbo+SkPmL2jh6mTODNUKqVTt/bKXpq4r2oUHbuLvRBysozAxOm/7o8eChXqoREBMTZGu8G8JyC3wbf5Kwre63bqXRvTbPeOLMgXiHKRel4zlw2NbdZaQ+wqMcAIHob4AVA515AJmmJH4+u2R3Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IArZqCTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A2BC4CEF1;
-	Fri, 21 Nov 2025 13:51:20 +0000 (UTC)
+	 MIME-Version; b=qX8l1Dy0hfRFgnrq0daPTMMnTCUPCzEOqZEh+BeVGJ4VmMR8LmYeb2csB9yFZJe4HkBAbQ0uPDbOZKp/wHEaAI2Iwwh4UQGJj7vqen7DJiNCGiHhsUknw+UHm82EvJey1++CU5049O09RPuKtOkrTVBTJ82mFww6+0SHM0SVBJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEElPdyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7261CC4CEF1;
+	Fri, 21 Nov 2025 13:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733081;
-	bh=wSL9WYsMpS4SS8PpSty/Je8MdEto/qicmIquwrCLTao=;
+	s=korg; t=1763731115;
+	bh=3F39PmUWWmOnB0PHfssgC+OEDbZlUP5mo+UbQ/ktbjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IArZqCTyLUX+DGhSn5ch30OQ1LwLPnA9el+9PPkXk7Uq0UoCuiS8GxF89ER/Ktn40
-	 3nEfgVzAO9EXmFDdVNtnewh7BD9EyTiSbmr6Vv/nolTsJI0/gsBDXHK7qo8oyvLiok
-	 b9nrQTv0lIrfbrflH890B7waa/g81gD47oJPTrao=
+	b=aEElPdyIQf6cDDheIJT6aVKv9kQhTryeCIqMEnVMcWGJujKPGq61HinYAHxg3ct7i
+	 6ApcnTkYR8Xh1/ZQtGS9EnWP7hsPtcyGIhVygDYU3z4mF2B0ezv9vjd9+TNxOPMbfr
+	 CBkUE2/8WGkY7dKO621ZRzg5yDgPP1rpqeK+Qaas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wu Zongyong <wuzongyong@linux.alibaba.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/529] selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh
-Date: Fri, 21 Nov 2025 14:10:42 +0100
-Message-ID: <20251121130243.236052979@linuxfoundation.org>
+Subject: [PATCH 6.17 096/247] acpi,srat: Fix incorrect device handle check for Generic Initiator
+Date: Fri, 21 Nov 2025 14:10:43 +0100
+Message-ID: <20251121130158.037013816@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit d01f8136d46b925798abcf86b35a4021e4cfb8bb ]
+[ Upstream commit 7c3643f204edf1c5edb12b36b34838683ee5f8dc ]
 
-The script "ethtool-common.sh" is not installed in INSTALL_PATH, and
-triggers some errors when I try to run the test
-'drivers/net/netdevsim/ethtool-coalesce.sh':
+The Generic Initiator Affinity Structure in SRAT table uses device
+handle type field to indicate the device type. According to ACPI
+specification, the device handle type value of 1 represents PCI device,
+not 0.
 
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # ./ethtool-coalesce.sh: line 4: ethtool-common.sh: No such file or directory
-  # ./ethtool-coalesce.sh: line 25: make_netdev: command not found
-  # ethtool: bad command line argument(s)
-  # ./ethtool-coalesce.sh: line 124: check: command not found
-  # ./ethtool-coalesce.sh: line 126: [: -eq: unary operator expected
-  # FAILED /0 checks
-  not ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh # exit=1
-
-Install this file to avoid this error. After this patch:
-
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # PASSED all 22 checks
-  ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-
-Fixes: fbb8531e58bd ("selftests: extract common functions in ethtool-common.sh")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251030040340.3258110-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
+Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20250913023224.39281-1-xueshuai@linux.alibaba.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/netdevsim/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/numa/srat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-index 7a29a05bea8bc..50932e13cb5a8 100644
---- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -14,4 +14,8 @@ TEST_PROGS = devlink.sh \
- 	tc-mq-visibility.sh \
- 	udp_tunnel_nic.sh \
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 53816dfab6452..aa87ee1583a4e 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -237,7 +237,7 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
+ 		struct acpi_srat_generic_affinity *p =
+ 			(struct acpi_srat_generic_affinity *)header;
  
-+TEST_FILES := \
-+	ethtool-common.sh
-+# end of TEST_FILES
-+
- include ../../../lib.mk
+-		if (p->device_handle_type == 0) {
++		if (p->device_handle_type == 1) {
+ 			/*
+ 			 * For pci devices this may be the only place they
+ 			 * are assigned a proximity domain
 -- 
 2.51.0
 
