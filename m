@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4DDC79805
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F042C794DB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0024B344D4C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 60A992DD80
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1834403C;
-	Fri, 21 Nov 2025 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B9C2773F7;
+	Fri, 21 Nov 2025 13:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEYsN+RJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Aw34EcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFE62745E;
-	Fri, 21 Nov 2025 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B36264612;
+	Fri, 21 Nov 2025 13:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731962; cv=none; b=I1IJ0rtf/Vtt6gAl3DXCqVZk6wX+Cnm1j14sENR47/DCxpgclR2JZ0GCB8C6aoQrwC7OZKHOtxgi0uCv4IyYq4FQRVlVRsIddRFsg6u5T4i7gV93/Qx4AvLVghdEgpApCse2qg8vhWUa70CtXHbiOZBKA6UsEawJj4K00626Bl0=
+	t=1763731483; cv=none; b=mY1RfaB0QGnJ4jqKvrrA2fyImTy5Iz4cEP3yTtQBeK3u/OTciHWrVDuYFxL4vrNKPcs17MMRquNYwPC1JJa/3H5kge8uy+m3Qq2mReKsaHa8ZjplTIw1ccWUsj5+3dncAfvqncPnZeRuS027jhGbTdx6/2S9hnNAdM0lGCXaKTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731962; c=relaxed/simple;
-	bh=dxZmRo/tlji1VDCp1WKmIa6FBkiZIGzYumrPSAyUJeQ=;
+	s=arc-20240116; t=1763731483; c=relaxed/simple;
+	bh=SXzkxeukIDlvhkGINGX4Go52n+TL4VLV9gTcw319DkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEupa+hREeMxhNqM53cX7H5c7f+tgqkGR36D2vvrVZHdOeRtukiCpBM1az0L/W95cvp+MweFtZvsqmYFllBA9+lXhP8mjCPIZMdrf/D0H7/yVCjUW/HmU/wjddLasAc5NNy2Im0OTjBP9k50ZI2OYsLPqAFo01DE1vtTXxhS080=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEYsN+RJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4FFC4CEF1;
-	Fri, 21 Nov 2025 13:32:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MXggpHQQuMHIjPBoEsTYf357isoPmGz8gNUiuwY45vAdHBoS0/uOHjRW1j60L0t/Y58vEgTinc+MFlJK0i/6JyS7kmC3E3ZQv9laFIYfsksoI7BgE/KS1BDnxJWXXC051t4GKy/K7O7fBrmiDKzSTT8DFBEpYYSW6EDOmQQkCe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Aw34EcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69BDC4CEFB;
+	Fri, 21 Nov 2025 13:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731961;
-	bh=dxZmRo/tlji1VDCp1WKmIa6FBkiZIGzYumrPSAyUJeQ=;
+	s=korg; t=1763731483;
+	bh=SXzkxeukIDlvhkGINGX4Go52n+TL4VLV9gTcw319DkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eEYsN+RJtVjbT1kQELS+mQKl2/aGDNNGVI6t9XP+wwp7KGVnDx87ro+7EluI1OMXZ
-	 0U+A+fPuMUIqdPX0+wjNiZhTceURC5hzXh7lP0Ltkkz7YeS7dZA0U5d0qj3v+uEJJh
-	 orbORxGj1w8maM0Su22MByJAQxonBSw8gO8rcsAA=
+	b=2Aw34EcYog/cp7Z+7rDnAW2YinsRt0dYs9cGvxI4YwYeuQuj/knp8tiEzJtWlupRU
+	 4wEy+ylok+I8cb4wlISJ8Mxg0COYCpnXf7Pk4mOfBQFvV6pwKd8AfQx99xs8dPOc5w
+	 apzVg97bZWA6Jn+1vTbaCXLtIRIUv75E1A/1fA/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.12 141/185] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
-Date: Fri, 21 Nov 2025 14:12:48 +0100
-Message-ID: <20251121130148.963151273@linuxfoundation.org>
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.17 222/247] drm/i915/psr: fix pipe to vblank conversion
+Date: Fri, 21 Nov 2025 14:12:49 +0100
+Message-ID: <20251121130202.701192451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
+commit 994dec10991b53beac3e16109d876ae363e8a329 upstream.
 
-The current single-bit error injection mechanism flips bits directly in ECC RAM
-by performing write and read operations. When the ECC RAM is actively used by
-the Ethernet or USB controller, this approach sometimes trigger a false
-double-bit error.
+First, we can't assume pipe == crtc index. If a pipe is fused off in
+between, it no longer holds. intel_crtc_for_pipe() is the only proper
+way to get from a pipe to the corresponding crtc.
 
-Switch both Ethernet and USB EDAC devices to use the INTTEST register
-(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
-the existing double-bit error injection method.
+Second, drivers aren't supposed to access or index drm->vblank[]
+directly. There's drm_crtc_vblank_crtc() for this.
 
-Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
+Use both functions to fix the pipe to vblank conversion.
+
+Fixes: f02658c46cf7 ("drm/i915/psr: Add mechanism to notify PSR of pipe enable/disable")
+Cc: Jouni Högander <jouni.hogander@intel.com>
+Cc: stable@vger.kernel.org # v6.16+
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+Link: https://patch.msgid.link/20251106200000.1455164-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 2750f6765d6974f7e163c5d540a96c8703f6d8dd)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1369,7 +1369,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -896,7 +896,8 @@ static bool is_dc5_dc6_blocked(struct in
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	u32 current_dc_state = intel_display_power_get_current_dc_state(display);
+-	struct drm_vblank_crtc *vblank = &display->drm->vblank[intel_dp->psr.pipe];
++	struct intel_crtc *crtc = intel_crtc_for_pipe(display, intel_dp->psr.pipe);
++	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(&crtc->base);
  
- #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
-@@ -1459,7 +1459,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
- 
- #endif	/* CONFIG_EDAC_ALTERA_USB */
+ 	return (current_dc_state != DC_STATE_EN_UPTO_DC5 &&
+ 		current_dc_state != DC_STATE_EN_UPTO_DC6) ||
 
 
 
