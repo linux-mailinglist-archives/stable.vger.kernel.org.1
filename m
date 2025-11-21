@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-195994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3552C79B03
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93532C7991A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:44:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6C7F5346A75
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 28F6A2DE5C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5876034DB59;
-	Fri, 21 Nov 2025 13:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D7834CFA6;
+	Fri, 21 Nov 2025 13:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxJNJImh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s10daJmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1266834D937;
-	Fri, 21 Nov 2025 13:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C728B342526;
+	Fri, 21 Nov 2025 13:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732259; cv=none; b=ViK4agfpy5pxrv5AhwKYtuAPM37lWfKfLpqMVCVuDSlUzuNuoZfnY3cgsY2aGhyzG7PB2fTTh15aWwfA343QrxQAZy1YX9xWale94F4zLdxru2V1Jii4AJnBVvHwzzkALWX0/yhqzx+vWuaBL0rzKbBi2+kIsPXtwqkYsoW4tm8=
+	t=1763732381; cv=none; b=Ygx/i7c87/hC3h9lgYNdrCvecsrYc+KLn7+rPmrf7SOiWbFKZEnGHNf4K51y+PX+3MzKVoRrAQ7jIq4RELKHA8XiHLY2V6sxRwfzZ6xyQCWkKAOpCRO3Jpp4zWRD9wMvrP/cQY6+IUE2hrL30f8cU8tVJ+zNXHG+so+mBoL5Hac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732259; c=relaxed/simple;
-	bh=DaiYBVEGH7XYJxpcxQODYL1yCLc8/UlcpkH5cYrPgVI=;
+	s=arc-20240116; t=1763732381; c=relaxed/simple;
+	bh=u9RPXrGwafFzLpV+fFy4UiSBaXeza1THOgKQEbG4sQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+9k9TwJ04F0u4/f42POP6S2tyh/RzbH6E+EaxBPckAOvChhcyRdOsKJ002qyCrV84UTa/eJR53TP540nQ85hdEQXH6jibtBevOhZgknjTikg+wlxEWkAyxlM0Oadp/aAlLo32/9ANvf8hAX8dT8AcztTLyEuGWtYsgt3u94mbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxJNJImh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DA7C4CEFB;
-	Fri, 21 Nov 2025 13:37:38 +0000 (UTC)
+	 MIME-Version; b=mEFBy6UGgBmb2J2j4kHF0pXbQw+dR1Z996ld4cwzE/nKfqlG3X5597uOTP8UCsjUuAESIpYhT1QBSH2xU2MmLZJ0gmiUGsX2YpCXCKGgnIm3L3EG+veZXKvoqnzdom7vB3gdEBrXFeeiqOHOIcIMvceWkC9Q3uQJQxMrNEE5Yhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s10daJmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB2EC4CEF1;
+	Fri, 21 Nov 2025 13:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732258;
-	bh=DaiYBVEGH7XYJxpcxQODYL1yCLc8/UlcpkH5cYrPgVI=;
+	s=korg; t=1763732381;
+	bh=u9RPXrGwafFzLpV+fFy4UiSBaXeza1THOgKQEbG4sQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YxJNJImhI3541CbyJpF0YE/IBliOmR51nV3Sp3ZbZxj2NADzw4Uw3mU7AmcHxmGLl
-	 iUzIGvtQTtUhUUd8Q8VUejeOCxHf1vWhHDNrTvXpl9mQTqw8FeGd+7Zd2N7sDD+O4g
-	 MomvYHFXpEyPGVHVQUeVrhksgHVkGKxX61ysGRno=
+	b=s10daJmQtM6X+hhqVPatzA3VvMrvarQXXNn4s/oIxrmY/NL2NVwfAEV7xlnK8SaUx
+	 4iLSulaeU8jDhR8S8g7IrD9W42/R715sUk90Rt5S7AA8XgyRGXhM7GzDzkys5wt6lu
+	 buMT9rJCI8smapGWQ8QVk8x6aiBPzUdQtYYnKwHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Owen Gu <guhuinan@xiaomi.com>
-Subject: [PATCH 6.6 057/529] usb: gadget: f_fs: Fix epfile null pointer access after ep enable.
-Date: Fri, 21 Nov 2025 14:05:56 +0100
-Message-ID: <20251121130233.047409994@linuxfoundation.org>
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 058/529] soc: aspeed: socinfo: Add AST27xx silicon IDs
+Date: Fri, 21 Nov 2025 14:05:57 +0100
+Message-ID: <20251121130233.084179669@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -64,55 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Ryan Chen <ryan_chen@aspeedtech.com>
 
-commit cfd6f1a7b42f62523c96d9703ef32b0dbc495ba4 upstream.
+[ Upstream commit c30dcfd4b5a0f0e3fe7138bf287f6de6b1b00278 ]
 
-A race condition occurs when ffs_func_eps_enable() runs concurrently
-with ffs_data_reset(). The ffs_data_clear() called in ffs_data_reset()
-sets ffs->epfiles to NULL before resetting ffs->eps_count to 0, leading
-to a NULL pointer dereference when accessing epfile->ep in
-ffs_func_eps_enable() after successful usb_ep_enable().
+Extend the ASPEED SoC info driver to support AST27XX silicon IDs.
 
-The ffs->epfiles pointer is set to NULL in both ffs_data_clear() and
-ffs_data_close() functions, and its modification is protected by the
-spinlock ffs->eps_lock. And the whole ffs_func_eps_enable() function
-is also protected by ffs->eps_lock.
-
-Thus, add NULL pointer handling for ffs->epfiles in the
-ffs_func_eps_enable() function to fix issues
-
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Link: https://lore.kernel.org/r/20250915092907.17802-1-guhuinan@xiaomi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ryan Chen <ryan_chen@aspeedtech.com>
+Link: https://patch.msgid.link/20250807005208.3517283-1-ryan_chen@aspeedtech.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -1941,7 +1941,12 @@ static int ffs_func_eps_enable(struct ff
- 	ep = func->eps;
- 	epfile = ffs->epfiles;
- 	count = ffs->eps_count;
--	while(count--) {
-+	if (!epfile) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	while (count--) {
- 		ep->ep->driver_data = ep;
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 3f759121dc00a..67e9ac3d08ecc 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -27,6 +27,10 @@ static struct {
+ 	{ "AST2620", 0x05010203 },
+ 	{ "AST2605", 0x05030103 },
+ 	{ "AST2625", 0x05030403 },
++	/* AST2700 */
++	{ "AST2750", 0x06000003 },
++	{ "AST2700", 0x06000103 },
++	{ "AST2720", 0x06000203 },
+ };
  
- 		ret = config_ep_by_speed(func->gadget, &func->function, ep->ep);
-@@ -1965,6 +1970,7 @@ static int ffs_func_eps_enable(struct ff
- 	}
- 
- 	wake_up_interruptible(&ffs->wait);
-+done:
- 	spin_unlock_irqrestore(&func->ffs->eps_lock, flags);
- 
- 	return ret;
+ static const char *siliconid_to_name(u32 siliconid)
+-- 
+2.51.0
+
 
 
 
