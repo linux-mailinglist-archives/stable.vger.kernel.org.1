@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56793C79631
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29845C7980B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B008F34FFC6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF877345F6C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C861341043;
-	Fri, 21 Nov 2025 13:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A379341ADF;
+	Fri, 21 Nov 2025 13:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9VRvEhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A46DPM5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080B2331237;
-	Fri, 21 Nov 2025 13:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EFD283CA3;
+	Fri, 21 Nov 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731486; cv=none; b=Ib/tN8J521JL4KksBEo2fpIep7oB1BBFe1Sx20CXe2DgsagqkMWngm/y1PQBgY+Z5wTYms39D2vVLTrLlhLgsDB8tOqMggYIbioAAzJ2LYsymeGvVyW5I9PSxXESI63VBF8Fd6s3MxxiE7RJLwbzqRuTlXG6ZqoBGGb+bTXZYk4=
+	t=1763731968; cv=none; b=cZUlYs/5BCE3MyimgM9vaydBm0ySfT1Tma2YHlxcc5jh6D0g2+gtQ5ONFbHQR42ZUYmLFrd+s/J7OBBsx/OD5hlE3DWPzdK876fWgiBEjFxNKQHrTVCu/fQIiW3BxqjwHk0K9Gk7fv8JhldpG7jzBWRxdrUVxtDc7XUXuyEn3RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731486; c=relaxed/simple;
-	bh=isgJrila3uJIFWrzNT1pk2v0CbuDyQZCpMk77CPLYaA=;
+	s=arc-20240116; t=1763731968; c=relaxed/simple;
+	bh=b6rtrOXfPlJuwTmIQFmB8lo02o1ZCFXjxFyUXUWo5f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZORYQ+J9/TFoIfcB/SX6eUb0F6vdQxNdKmnwrPy9kQg9bpPd/w4Bi4riWLU90e7c2bc58/mSfC+y/S8I6ygKUp5+IL4WxqxWHREDIg6WWMISTihPX4w4GTdtF8LAegKpvXTzEP8Y2b+4qQyBkkFKx0AR2weGaXnEEI1ObAe+R2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9VRvEhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B08C4CEF1;
-	Fri, 21 Nov 2025 13:24:45 +0000 (UTC)
+	 MIME-Version; b=gcrUNkqJQPDxqGTff5RIWccQ31au44uI4pE7RkfiYYvulb/7sXJ8XkDT9aad6SawkqvkrhkzDajd97Zwdd2PrX5Y1/IRQiY98ZUr3QZDOL8i8sBAUOgfiBrjzwIzMmBs3cLuBM4YT3boojRluMMwkScluhtIhbGr2GZIMpzxa8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A46DPM5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42200C4CEF1;
+	Fri, 21 Nov 2025 13:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731485;
-	bh=isgJrila3uJIFWrzNT1pk2v0CbuDyQZCpMk77CPLYaA=;
+	s=korg; t=1763731967;
+	bh=b6rtrOXfPlJuwTmIQFmB8lo02o1ZCFXjxFyUXUWo5f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9VRvEhdz10Zwtenyz22e2bG337QDNfL/rALXr9Kk+eabw+dTOLQnFaaWghhf4rZZ
-	 mXGe8TXucj5sh2K6+Fw4Y/ibdgznRJFkZ8T0kKvbX3rG2jmtXcYRPy461DY+ZmR1uV
-	 PjYS2T4bLfxtAudy8TQuK5eXR3L+bADha/6pTGiw=
+	b=A46DPM5Ser5U4Mpi1565AUvCiBfsIvCAYL1XmHEszb78LnaJK9wXNEClUD7EFGyzY
+	 HQ8zQLLzRXpyoRr6NTqIChC6YV6KcMzIaehMe+smFFlll+CPW02zaxwkyMdmWGfQa8
+	 DKRFapUydNxGsxBcjQfcmdF9Hee0lA1mIhRRPjwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.17 223/247] drm/xe/xe3lpg: Extend Wa_15016589081 for xe3lpg
+	Askar Safin <safinaskar@gmail.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 143/185] PM: hibernate: Use atomic64_t for compressed_size variable
 Date: Fri, 21 Nov 2025 14:12:50 +0100
-Message-ID: <20251121130202.737419108@linuxfoundation.org>
+Message-ID: <20251121130149.036184276@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Gote <nitin.r.gote@intel.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 240372edaf854c9136f5ead45f2d8cd9496a9cb3 upstream.
+commit 66ededc694f1d06a71ca35a3c8e3689e9b85b3ce upstream.
 
-Wa_15016589081 applies to Xe3_LPG renderCS
+`compressed_size` can overflow, showing nonsensical values.
 
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-Link: https://patch.msgid.link/20251106100516.318863-2-nitin.r.gote@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 715974499a2199bd199fb4630501f55545342ea4)
-Cc: stable@vger.kernel.org # v6.16+
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Change from `atomic_t` to `atomic64_t` to prevent overflow.
+
+Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
+Reported-by: Askar Safin <safinaskar@gmail.com>
+Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Tested-by: Askar Safin <safinaskar@gmail.com>
+Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
+Link: https://patch.msgid.link/20251106045158.3198061-3-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/power/swap.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -883,6 +883,11 @@ static const struct xe_rtp_entry_sr lrc_
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3003), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
- 	},
-+	{ XE_RTP_NAME("15016589081"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0),
-+		       ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
-+	},
+--- a/kernel/power/swap.c
++++ b/kernel/power/swap.c
+@@ -648,7 +648,7 @@ struct cmp_data {
  };
  
- static __maybe_unused const struct xe_rtp_entry oob_was[] = {
+ /* Indicates the image size after compression */
+-static atomic_t compressed_size = ATOMIC_INIT(0);
++static atomic64_t compressed_size = ATOMIC_INIT(0);
+ 
+ /*
+  * Compression function that runs in its own thread.
+@@ -676,7 +676,7 @@ static int compress_threadfn(void *data)
+ 					      &cmp_len);
+ 		d->cmp_len = cmp_len;
+ 
+-		atomic_set(&compressed_size, atomic_read(&compressed_size) + d->cmp_len);
++		atomic64_add(d->cmp_len, &compressed_size);
+ 		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+@@ -708,7 +708,7 @@ static int save_compressed_image(struct
+ 
+ 	hib_init_batch(&hb);
+ 
+-	atomic_set(&compressed_size, 0);
++	atomic64_set(&compressed_size, 0);
+ 
+ 	/*
+ 	 * We'll limit the number of threads for compression to limit memory
+@@ -884,8 +884,8 @@ out_finish:
+ 		ret = err2;
+ 	if (!ret) {
+ 		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
+-		pr_info("Image size after compression: %d kbytes\n",
+-			(atomic_read(&compressed_size) / 1024));
++		pr_info("Image size after compression: %lld kbytes\n",
++			(atomic64_read(&compressed_size) / 1024));
+ 		pr_info("Image saving done\n");
+ 	} else {
+ 		pr_err("Image saving failed: %d\n", ret);
 
 
 
