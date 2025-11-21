@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-196197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB35C79D4D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F3CC792CE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1141135D116
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5EF2A345AAB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6E4345CDE;
-	Fri, 21 Nov 2025 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23432F656A;
+	Fri, 21 Nov 2025 13:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeBcd7/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK8gsL3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EE13538B3;
-	Fri, 21 Nov 2025 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB74631158A;
+	Fri, 21 Nov 2025 13:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732828; cv=none; b=WKFeYWoxJtc4BKEzlk6rcYiLykWUjJ5wvKUPrjg9KK8MqW64ledEakBoEhijxd1mJ7R2gButy56D0mIEjDGtzAqSq2j9PqGuFIEh6bW0cxIvXqFY1mvUhXSAP7X1+j2yRTaXYBYOCh+tslrvBZ+yIDG+CQV/giBHW5qWcrjkIFc=
+	t=1763730919; cv=none; b=KG8DPv26xHpRIzpY791bc6UYPpIf5AB3zjgdToHjrhf5iCMXA2hvml6rk/NLcQCc8Ps7d03UmBtpLS/HKxnaQqnrXsPGD6ip9RKCAtQNsO1zYlas0Ynf+MhZAF62W4FPzJCuI8yEnWj9itwTjXO5TQu9zAWLuQNsngKJZDNzGiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732828; c=relaxed/simple;
-	bh=ZXf5q6CzCsO+WtN8zXtEQALJj9RnTlJkwtuf2IcRw7E=;
+	s=arc-20240116; t=1763730919; c=relaxed/simple;
+	bh=n2UfriHF4xWSd2JVdlPxR2om4MQ+D0GIbhsBEBhK2eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4/E7dK4vc/7EPgwN+rHxFmlDMxlG2g+l3aq94mSwZ3MyXAutVsw1nrZoGZUqJAT+mMhN7CUBRolU4fc+TH9+vtkAYlKijsjuUiTlL9ey+GcH+FENVj3CgK40+jhFBbswoc1HvzJ64Fo9wUm41GEad8NqckJ1hjv3cyBdCs5niQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeBcd7/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8152C16AAE;
-	Fri, 21 Nov 2025 13:47:07 +0000 (UTC)
+	 MIME-Version; b=R6hgIfRYTxMsj6Qkim2NKej6x58jxk9FBdCaYExiWf60INaB5lURvY2riznlOl7M+E13Y1X56Cz2Ty8eUSJAdpUldcdKHpq6md19PIpaNfLNScftSuIXGF6158z3rnUyArsuQrprSiC8kvppdJzZ1pWFIMNefkm9RmbhLSKlgV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK8gsL3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB05C4CEF1;
+	Fri, 21 Nov 2025 13:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732828;
-	bh=ZXf5q6CzCsO+WtN8zXtEQALJj9RnTlJkwtuf2IcRw7E=;
+	s=korg; t=1763730919;
+	bh=n2UfriHF4xWSd2JVdlPxR2om4MQ+D0GIbhsBEBhK2eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZeBcd7/goCK9mr5ly3rlHakznnZ3Frw9MXpn90ADCLnEMEWNY2mT7V0/BpuZgTkjN
-	 thbZqMzh+GLy5KH+SHRwGrrU+a9lQVH4f9MTzcWryY4FPK1YwWQDwPaPB2SUn0njTC
-	 jlkhJL7fNJDtDWpFcW6lsvslLOs2sOrMHgtwfxS0=
+	b=zK8gsL3fhr1fESFl3iNHF9dn4q+xeE+pkHcL2CdS4RbVATFzhGIBwAaa8G0S3VGK8
+	 UomkwORFcv17HHcesfo0RBJ5nwvjntU4duHfTJSTlBrTnzjMbJbgI48hyiwKfCsocm
+	 cjAN6LNtghbkqcaF9PJZ8djh9EVqtvcYF+E9C4qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/529] wifi: ath10k: Fix connection after GTK rekeying
+Subject: [PATCH 6.17 010/247] drm/amd: Fix suspend failure with secure display TA
 Date: Fri, 21 Nov 2025 14:09:17 +0100
-Message-ID: <20251121130240.200689935@linuxfoundation.org>
+Message-ID: <20251121130154.969248668@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
+[ Upstream commit b09cb2996cdf50cd1ab4020e002c95d742c81313 ]
 
-It appears that not all hardware/firmware implementations support
-group key deletion correctly, which can lead to connection hangs
-and deauthentication following GTK rekeying (delete and install).
+commit c760bcda83571 ("drm/amd: Check whether secure display TA loaded
+successfully") attempted to fix extra messages, but failed to port the
+cleanup that was in commit 5c6d52ff4b61e ("drm/amd: Don't try to enable
+secure display TA multiple times") to prevent multiple tries.
 
-To avoid this issue, instead of attempting to delete the key using
-the special WMI_CIPHER_NONE value, we now replace the key with an
-invalid (random) value.
+Add that to the failure handling path even on a quick failure.
 
-This behavior has been observed with WCN39xx chipsets.
-
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4679
+Fixes: c760bcda8357 ("drm/amd: Check whether secure display TA loaded successfully")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4104c0a454f6a4d1e0d14895d03c0e7bdd0c8240)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 655fb5cdf01f8..233e5c619fa4e 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -14,6 +14,7 @@
- #include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/bitfield.h>
-+#include <linux/random.h>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index d9d7fc4c33cba..2c2d264cf8f68 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -2353,8 +2353,11 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
+ 	if (!ret && !psp->securedisplay_context.context.resp_status) {
+ 		psp->securedisplay_context.context.initialized = true;
+ 		mutex_init(&psp->securedisplay_context.mutex);
+-	} else
++	} else {
++		/* don't try again */
++		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
+ 		return ret;
++	}
  
- #include "hif.h"
- #include "core.h"
-@@ -287,8 +288,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ 	mutex_lock(&psp->securedisplay_context.mutex);
  
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
--		arg.key_data = NULL;
-+		if (flags & WMI_KEY_GROUP) {
-+			/* Not all hardware handles group-key deletion operation
-+			 * correctly. Replace the key with a junk value to invalidate it.
-+			 */
-+			get_random_bytes(key->key, key->keylen);
-+		} else {
-+			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
-+			arg.key_data = NULL;
-+		}
- 	}
- 
- 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
 -- 
 2.51.0
 
