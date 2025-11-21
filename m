@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-195865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE366C79877
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B40C79646
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 547D02DBD2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25F56357C5C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2BA33438C;
-	Fri, 21 Nov 2025 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9353C2F656A;
+	Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLZKNxAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4/wOuIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A620F2745E;
-	Fri, 21 Nov 2025 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503071B4F0A;
+	Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731886; cv=none; b=bLa2xJk5f6/ZQXxPe9byBvShkCqfLPwuzCEvcMu5QRV5bGUHGlRf4EA5sl6CyBLIOrlpiar4Zsn8h4nr5fKpSDHmaB8p8zsUFr3ayr7gMHfz2WeEMuPe/jNkEGsNrsKl7qRxB4afUYcpqKdDd5bJGBWoxY5OQJ6eys+y1dH4MSI=
+	t=1763731500; cv=none; b=P+p3R2ALO8RkJJ4gaQE7ffGMaNS9UxcglKzu/TueeOyjVJVemEx8amS0EQKb6L1VLjkrOtpZMgnMk5otpRHhoF6NQYWxqt44qnelJAXnmrRV+kfDg9/B84f4ziZ7b0ydyRJ6ETiynym5aE06YHt6Z25aPIU4s8C0W+cLZYEPSIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731886; c=relaxed/simple;
-	bh=EhcHgjU6NjS2c2SgXSWjVWU5nDZzafdPVaSoSmOXHQE=;
+	s=arc-20240116; t=1763731500; c=relaxed/simple;
+	bh=1UuT8BOc6z+EJUBmYje4x+f5IgaKElvpPyfJMwveWYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+V4oQdjOg3yA+AFpGooMMA/OMqOKo/RPWzx6DA6txpA8KKk0jGjJNdhAQY7ZE7TSCHSybku0PSwBdfXN5rDrU7+qJPlCOPeyZyjkYYoKk5+x5yI2y9+/FuyYZFOMpDMvLRvoWTJhwJAarskYvSC91KBRvuwtSKuMCA5mnFQPkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLZKNxAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29267C4CEF1;
-	Fri, 21 Nov 2025 13:31:25 +0000 (UTC)
+	 MIME-Version; b=Ww7As9QX2KAuAJo9bMZxOykfgB708et8amGk+nVUkYtt2Jyuo1Rtwo6XG8pK0ay8rTs5RlxUiJoYPPfCJeXidEZEdfgBL0arq33qO/MFTYaevkaMAORL+rBvbssUeSoywkio/CJPCKBSjpKMgWfKsUCwSQLMeDDRoPI+OPHYRss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4/wOuIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C625CC4CEF1;
+	Fri, 21 Nov 2025 13:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731886;
-	bh=EhcHgjU6NjS2c2SgXSWjVWU5nDZzafdPVaSoSmOXHQE=;
+	s=korg; t=1763731500;
+	bh=1UuT8BOc6z+EJUBmYje4x+f5IgaKElvpPyfJMwveWYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLZKNxAfmbc4hMCCjkKdeJnpKs4coDzrXNCXkV4LaW7rC1oITTui27Viw/tMy0u2I
-	 L2qqT48I3a+h3k0wddEg59df1kDoSHTKLfsH3ogqqBfYntAwEHSzBU4PfhHQ4k+jdz
-	 SgeSuFBFeSWaxbTHQg84np+uou/TveoxAb8UPV2g=
+	b=c4/wOuIQ+W+qrO/KSdhP+MnWgcaFsfqyViLIxEz1ZY5FbgilO2lDAUkScp1quiRO2
+	 FYdqcBCGJNGCwFpKCHPkzUuIijO1vir6a2HEeYxQe2eXCTf3VDiZnJAg3HX6MFc7nf
+	 uh2Bo/9cbChRRngDCkXul7Cq1cLooxWfozFksHUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 114/185] ksmbd: close accepted socket when per-IP limit rejects connection
-Date: Fri, 21 Nov 2025 14:12:21 +0100
-Message-ID: <20251121130147.988504157@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.17 195/247] ASoC: sdw_utils: fix device reference leak in is_sdca_endpoint_present()
+Date: Fri, 21 Nov 2025 14:12:22 +0100
+Message-ID: <20251121130201.722426143@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 98a5fd31cbf72d46bf18e50b3ab0ce86d5f319a9 upstream.
+commit 1a58d865f423f4339edf59053e496089075fa950 upstream.
 
-When the per-IP connection limit is exceeded in ksmbd_kthread_fn(),
-the code sets ret = -EAGAIN and continues the accept loop without
-closing the just-accepted socket. That leaks one socket per rejected
-attempt from a single IP and enables a trivial remote DoS.
+The bus_find_device_by_name() function returns a device pointer with an
+incremented reference count, but the original code was missing put_device()
+calls in some return paths, leading to reference count leaks.
 
-Release client_sk before continuing.
+Fix this by ensuring put_device() is called before function exit after
+  bus_find_device_by_name() succeeds
 
-This bug was found with ZeroPath.
+This follows the same pattern used elsewhere in the kernel where
+bus_find_device_by_name() is properly paired with put_device().
 
+Found via static analysis and code review.
+
+Fixes: 4f8ef33dd44a ("ASoC: soc_sdw_utils: skip the endpoint that doesn't present")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://patch.msgid.link/20251029071804.8425-1-linmq006@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/sdw_utils/soc_sdw_utils.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -286,8 +286,11 @@ static int ksmbd_kthread_fn(void *p)
- 			}
- 		}
- 		up_read(&conn_list_lock);
--		if (ret == -EAGAIN)
-+		if (ret == -EAGAIN) {
-+			/* Per-IP limit hit: release the just-accepted socket. */
-+			sock_release(client_sk);
- 			continue;
-+		}
+--- a/sound/soc/sdw_utils/soc_sdw_utils.c
++++ b/sound/soc/sdw_utils/soc_sdw_utils.c
+@@ -1239,7 +1239,7 @@ static int is_sdca_endpoint_present(stru
+ 	struct sdw_slave *slave;
+ 	struct device *sdw_dev;
+ 	const char *sdw_codec_name;
+-	int i;
++	int ret, i;
  
- skip_max_ip_conns_limit:
- 		if (server_conf.max_connections &&
+ 	dlc = kzalloc(sizeof(*dlc), GFP_KERNEL);
+ 	if (!dlc)
+@@ -1269,13 +1269,16 @@ static int is_sdca_endpoint_present(stru
+ 	}
+ 
+ 	slave = dev_to_sdw_dev(sdw_dev);
+-	if (!slave)
+-		return -EINVAL;
++	if (!slave) {
++		ret = -EINVAL;
++		goto put_device;
++	}
+ 
+ 	/* Make sure BIOS provides SDCA properties */
+ 	if (!slave->sdca_data.interface_revision) {
+ 		dev_warn(&slave->dev, "SDCA properties not found in the BIOS\n");
+-		return 1;
++		ret = 1;
++		goto put_device;
+ 	}
+ 
+ 	for (i = 0; i < slave->sdca_data.num_functions; i++) {
+@@ -1284,7 +1287,8 @@ static int is_sdca_endpoint_present(stru
+ 		if (dai_type == dai_info->dai_type) {
+ 			dev_dbg(&slave->dev, "DAI type %d sdca function %s found\n",
+ 				dai_type, slave->sdca_data.function[i].name);
+-			return 1;
++			ret = 1;
++			goto put_device;
+ 		}
+ 	}
+ 
+@@ -1292,7 +1296,11 @@ static int is_sdca_endpoint_present(stru
+ 		"SDCA device function for DAI type %d not supported, skip endpoint\n",
+ 		dai_info->dai_type);
+ 
+-	return 0;
++	ret = 0;
++
++put_device:
++	put_device(sdw_dev);
++	return ret;
+ }
+ 
+ int asoc_sdw_parse_sdw_endpoints(struct snd_soc_card *card,
 
 
 
