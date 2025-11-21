@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-195884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B810CC79886
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7B4C7A092
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 6E9FD2F411
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4DD54F1578
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB35341ADF;
-	Fri, 21 Nov 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B9F351FBD;
+	Fri, 21 Nov 2025 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YES6Xu4L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgFFdzP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96852332904;
-	Fri, 21 Nov 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBA3350D43;
+	Fri, 21 Nov 2025 13:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731941; cv=none; b=PiBPBDp/DFTwnMXCZMSixYLRSzCPbl758tItFNuYZRKXCPKACQVyTZxjmP67hjJCXQOMP+zQMlR1PactkooSKRlM157khH3hHtgmfLS6jBWTlxbNZJ+2bseOqDjn2OsAoIgqbH+xCunzU3j9RjgDEe/V85wpk63deJC8JL6ZPuY=
+	t=1763733523; cv=none; b=VbUyGuhvF+nyVPq5wKvAS8lwZnW4TPp9rBoujUu9PE2gMpYViO/uu4rFkeymR7EV7mrCdd2ac4pGKkYycj9CgN6yonvTBWvjgu+sovol3w1BP85mwIOKm2Wjab1Bd8hEDS9J974CUqUSw2A7RdGvyWWhsir/tZI36J4aNqEvTus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731941; c=relaxed/simple;
-	bh=BT0f1X799ahFFW4+Gz+VY1gqUWtSrAOCYV7kqaRsj2I=;
+	s=arc-20240116; t=1763733523; c=relaxed/simple;
+	bh=bqte0bTzV6tCIlhsJa46upJRbhIYKPeQRen6UeXKq0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYpkVa71P/TCzjoGKPk4Bd2v8GISHwxNCGqlYkj2GQ9koYWQCkXoXfNdSCpAGeVGu2aWh8KkKnsQt6B2/IZNrPA9oPXnxcHIq606vk7o3WNS0h/9FxRS18Kwo579cBxycznEVJ68fEU23STXp+ZGvohopGAprDMTSqaOv/zM0Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YES6Xu4L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6788C4CEF1;
-	Fri, 21 Nov 2025 13:32:20 +0000 (UTC)
+	 MIME-Version; b=SA5Q4h5RxQL3XX7UJfLWHsriXwKjI166XUijgeNZyWha52aQQpo3IMH2lz7KJEe/6iXAdbi7uiWRZnPjl/7z+tEidlvUhY6KMrMHpYbvHas3ZNiLpr/o8oqUE1IcOEmZD/LgzJeOQwINGHWO8C4/cySSXfRDJIH6LZoz2nhjkuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgFFdzP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C12BC4CEF1;
+	Fri, 21 Nov 2025 13:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731941;
-	bh=BT0f1X799ahFFW4+Gz+VY1gqUWtSrAOCYV7kqaRsj2I=;
+	s=korg; t=1763733523;
+	bh=bqte0bTzV6tCIlhsJa46upJRbhIYKPeQRen6UeXKq0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YES6Xu4LCiDql4EAAWejnnftSQImU1YTXgEtxJBdaAi5w1emWbpweJyUUsIN12wI4
-	 5/KEg3bMnYsKjkPTwcmpGO3BcWD79JWSOmh9KJykUowTq3SpR0UM+KY8Fj5iy7bmmg
-	 QX0j/EzZxb9/o0152lSl/NccM9PwF39FAx0GfS8E=
+	b=WgFFdzP9zuFS+HgvPBgpy2p2e9cwZXwMXSKxcIODR2TkoAE69qUWgSjgfuBVgiDC6
+	 85RU/umXv1GjD1D+8e3awKcpmAYh4pWa/6VnGliXpZkDjRpT+XsIWRTcD8K24dp9QU
+	 flIbNCU9eXObAueJla2k4cZVPLvPuxy5DyYnH9hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 135/185] spi: Try to get ACPI GPIO IRQ earlier
-Date: Fri, 21 Nov 2025 14:12:42 +0100
-Message-ID: <20251121130148.746433702@linuxfoundation.org>
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 464/529] gcov: add support for GCC 15
+Date: Fri, 21 Nov 2025 14:12:43 +0100
+Message-ID: <20251121130247.520160385@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 15.
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Tested with GCC 14.3.0 and GCC 15.2.0.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://github.com/linux-test-project/lcov/issues/445
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2879,6 +2879,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -18,7 +18,9 @@
+ #include <linux/mm.h>
+ #include "gcov.h"
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
+-#if (__GNUC__ >= 14)
++#if (__GNUC__ >= 15)
++#define GCOV_COUNTERS			10
++#elif (__GNUC__ >= 14)
+ #define GCOV_COUNTERS			9
+ #elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
 
 
 
