@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7DDC79D56
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EB0C792EA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7EBDB349CE6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E077F4EC6D7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F3834C838;
-	Fri, 21 Nov 2025 13:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DCB2459E5;
+	Fri, 21 Nov 2025 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwsvGYlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEaV2QMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8318C34C819;
-	Fri, 21 Nov 2025 13:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562A6330B19;
+	Fri, 21 Nov 2025 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732877; cv=none; b=LTwXzIpfRT0DDTyerAtPfqM4Gm+r8BG7WFvU9aoB2+vA9xa1QsakB8ijvLANvE3jeDTBdoiUUaLjskpeXtd6WB92ATpUOTKVtEIBo3L+7yrAN7LGU4x+Gf2UTTRtYX8X5c3Ywug6518aw2bmLPb4LIy35kZwOiHXoi09PtGjrfc=
+	t=1763730911; cv=none; b=YyQX7HN8XCqjS5hRUAsqEKJPcYqwW/dN2pb8oE1b2zCM56w2UcmFRN2Pku1Xk1NP6iINRiKM7oGkI+4SWMpyL5P49xVr2ol7r8yB4CUMxem34mY8ZIm91Gg3+KZrCmhc3OzsOZrUYFPTLBfhvElIFLtyt8nRziF3HmVOkphfMpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732877; c=relaxed/simple;
-	bh=MDwrwmuc928ASMQ3gF22IMj8pXhfESiGY/J7xRVJiQc=;
+	s=arc-20240116; t=1763730911; c=relaxed/simple;
+	bh=MAvEmfUS9AoWyIGyJu4FavwaZAWNlZlP63B0sV+kaYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWNc39uQf0/ZCjIWc0GzOFNufaEnSunG8yh03S0rCoGpxvKrVOR8USuXP/f2Vz6xlk0Kggze37/E/c2DyHbAO27/I0hHBuNBXts5bqm3ER+2D18R+W4Uo3CRkoYoobsuySWVs5uUYhcEgvLAz/QSVxgGSciLHqeTVXFtt8Y4VUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwsvGYlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36B2C4CEF1;
-	Fri, 21 Nov 2025 13:47:56 +0000 (UTC)
+	 MIME-Version; b=dTTrD8WCftbtlkroG68Lgk7/ZJ83b+/grMyWpEHSUb7I+3QCh3MnlF6V4bYVTqSCivuP4IOHvwv7PBUsgJh7GfPoZKqbIpmo/b6PXtzPpp8SJJn7SlW7qHF247ibOJU42kmtn0Y4LkXLh8qPOj5bppFpqXGemf4P/qLskT+aKnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEaV2QMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAE4C4CEF1;
+	Fri, 21 Nov 2025 13:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732877;
-	bh=MDwrwmuc928ASMQ3gF22IMj8pXhfESiGY/J7xRVJiQc=;
+	s=korg; t=1763730910;
+	bh=MAvEmfUS9AoWyIGyJu4FavwaZAWNlZlP63B0sV+kaYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwsvGYlbRqrQaXXpxGJtLXAPt4m5L1pkkDPOzgWa633BuKL3ZFA974z0O0WNVxnIG
-	 E6ARq9Nboi8MAkHepk2pdT/fBxkYHaE52X2U+YmQuRdpjq57cOqEIqyRUgNFClrHgF
-	 qyAjNci6GJtYXRHFbI8Il6n0zqov2KBdHAZxR7RE=
+	b=jEaV2QMC/tLM2SmaBx0iRkPceTAlKzBmM4Ys2Boqj83kkrZuwMz08cGqyTi7UHPEf
+	 PN/x8rpBTTd73k7BwMSR99RKK7LhdUBSldwI70AXcy9AAE/lfAkdhScvV2YvOVAAJ/
+	 fIXA0lwR5n4MB6Ke9kDhBKxIHVfaDIky9rBGsSC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/529] scsi: libfc: Fix potential buffer overflow in fc_ct_ms_fill()
+Subject: [PATCH 6.17 025/247] ASoC: nau8821: Avoid unnecessary blocking in IRQ handler
 Date: Fri, 21 Nov 2025 14:09:32 +0100
-Message-ID: <20251121130240.734748311@linuxfoundation.org>
+Message-ID: <20251121130155.507234688@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 072fdd4b0be9b9051bdf75f36d0227aa705074ba ]
+[ Upstream commit ee70bacef1c6050e4836409927294d744dbcfa72 ]
 
-The fc_ct_ms_fill() helper currently formats the OS name and version
-into entry->value using "%s v%s". Since init_utsname()->sysname and
-->release are unbounded strings, snprintf() may attempt to write more
-than FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN bytes, triggering a
--Wformat-truncation warning with W=1.
+The interrupt handler offloads the microphone detection logic to
+nau8821_jdet_work(), which implies a sleep operation.  However, before
+being able to process any subsequent hotplug event, the interrupt
+handler needs to wait for any prior scheduled work to complete.
 
-In file included from drivers/scsi/libfc/fc_elsct.c:18:
-drivers/scsi/libfc/fc_encode.h: In function ‘fc_ct_ms_fill.constprop’:
-drivers/scsi/libfc/fc_encode.h:359:30: error: ‘%s’ directive output may
-be truncated writing up to 64 bytes into a region of size between 62
-and 126 [-Werror=format-truncation=]
-  359 |                         "%s v%s",
-      |                              ^~
-  360 |                         init_utsname()->sysname,
-  361 |                         init_utsname()->release);
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~
-drivers/scsi/libfc/fc_encode.h:357:17: note: ‘snprintf’ output between
-3 and 131 bytes into a destination of size 128
-  357 |                 snprintf((char *)&entry->value,
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  358 |                         FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  359 |                         "%s v%s",
-      |                         ~~~~~~~~~
-  360 |                         init_utsname()->sysname,
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
-  361 |                         init_utsname()->release);
-      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
+Move the sleep out of jdet_work by converting it to a delayed work.
+This eliminates the undesired blocking in the interrupt handler when
+attempting to cancel a recently scheduled work item and should help
+reducing transient input reports that might confuse user-space.
 
-Fix this by using "%.62s v%.62s", which ensures sysname and release are
-truncated to fit within the 128-byte field defined by
-FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN.
-
-[mkp: clarified commit description]
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-5-f7b0e2543f09@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_encode.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/nau8821.c | 22 ++++++++++++----------
+ sound/soc/codecs/nau8821.h |  2 +-
+ 2 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_encode.h b/drivers/scsi/libfc/fc_encode.h
-index 7dcac3b6baa7e..992250ca8b9fd 100644
---- a/drivers/scsi/libfc/fc_encode.h
-+++ b/drivers/scsi/libfc/fc_encode.h
-@@ -354,7 +354,7 @@ static inline int fc_ct_ms_fill(struct fc_lport *lport,
- 		put_unaligned_be16(len, &entry->len);
- 		snprintf((char *)&entry->value,
- 			FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
--			"%s v%s",
-+			"%.62s v%.62s",
- 			init_utsname()->sysname,
- 			init_utsname()->release);
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index a8ff2ce70be9a..4fa9a785513e5 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -1104,16 +1104,12 @@ static void nau8821_eject_jack(struct nau8821 *nau8821)
+ static void nau8821_jdet_work(struct work_struct *work)
+ {
+ 	struct nau8821 *nau8821 =
+-		container_of(work, struct nau8821, jdet_work);
++		container_of(work, struct nau8821, jdet_work.work);
+ 	struct snd_soc_dapm_context *dapm = nau8821->dapm;
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(dapm);
+ 	struct regmap *regmap = nau8821->regmap;
+ 	int jack_status_reg, mic_detected, event = 0, event_mask = 0;
  
+-	snd_soc_component_force_enable_pin(component, "MICBIAS");
+-	snd_soc_dapm_sync(dapm);
+-	msleep(20);
+-
+ 	regmap_read(regmap, NAU8821_R58_I2C_DEVICE_ID, &jack_status_reg);
+ 	mic_detected = !(jack_status_reg & NAU8821_KEYDET);
+ 	if (mic_detected) {
+@@ -1146,6 +1142,7 @@ static void nau8821_jdet_work(struct work_struct *work)
+ 		snd_soc_component_disable_pin(component, "MICBIAS");
+ 		snd_soc_dapm_sync(dapm);
+ 	}
++
+ 	event_mask |= SND_JACK_HEADSET;
+ 	snd_soc_jack_report(nau8821->jack, event, event_mask);
+ }
+@@ -1194,6 +1191,7 @@ static irqreturn_t nau8821_interrupt(int irq, void *data)
+ {
+ 	struct nau8821 *nau8821 = (struct nau8821 *)data;
+ 	struct regmap *regmap = nau8821->regmap;
++	struct snd_soc_component *component;
+ 	int active_irq, event = 0, event_mask = 0;
+ 
+ 	if (regmap_read(regmap, NAU8821_R10_IRQ_STATUS, &active_irq)) {
+@@ -1205,7 +1203,7 @@ static irqreturn_t nau8821_interrupt(int irq, void *data)
+ 
+ 	if ((active_irq & NAU8821_JACK_EJECT_IRQ_MASK) ==
+ 		NAU8821_JACK_EJECT_DETECTED) {
+-		cancel_work_sync(&nau8821->jdet_work);
++		cancel_delayed_work_sync(&nau8821->jdet_work);
+ 		regmap_update_bits(regmap, NAU8821_R71_ANALOG_ADC_1,
+ 			NAU8821_MICDET_MASK, NAU8821_MICDET_DIS);
+ 		nau8821_eject_jack(nau8821);
+@@ -1219,12 +1217,15 @@ static irqreturn_t nau8821_interrupt(int irq, void *data)
+ 		nau8821_irq_status_clear(regmap, NAU8821_KEY_RELEASE_IRQ);
+ 	} else if ((active_irq & NAU8821_JACK_INSERT_IRQ_MASK) ==
+ 		NAU8821_JACK_INSERT_DETECTED) {
+-		cancel_work_sync(&nau8821->jdet_work);
++		cancel_delayed_work_sync(&nau8821->jdet_work);
+ 		regmap_update_bits(regmap, NAU8821_R71_ANALOG_ADC_1,
+ 			NAU8821_MICDET_MASK, NAU8821_MICDET_EN);
+ 		if (nau8821_is_jack_inserted(regmap)) {
+-			/* detect microphone and jack type */
+-			schedule_work(&nau8821->jdet_work);
++			/* Detect microphone and jack type */
++			component = snd_soc_dapm_to_component(nau8821->dapm);
++			snd_soc_component_force_enable_pin(component, "MICBIAS");
++			snd_soc_dapm_sync(nau8821->dapm);
++			schedule_delayed_work(&nau8821->jdet_work, msecs_to_jiffies(20));
+ 			/* Turn off insertion interruption at manual mode */
+ 			nau8821_setup_inserted_irq(nau8821);
+ 		} else {
+@@ -1661,7 +1662,8 @@ int nau8821_enable_jack_detect(struct snd_soc_component *component,
+ 
+ 	nau8821->jack = jack;
+ 	/* Initiate jack detection work queue */
+-	INIT_WORK(&nau8821->jdet_work, nau8821_jdet_work);
++	INIT_DELAYED_WORK(&nau8821->jdet_work, nau8821_jdet_work);
++
+ 	ret = devm_request_threaded_irq(nau8821->dev, nau8821->irq, NULL,
+ 		nau8821_interrupt, IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+ 		"nau8821", nau8821);
+diff --git a/sound/soc/codecs/nau8821.h b/sound/soc/codecs/nau8821.h
+index f0935ffafcbec..88602923780d8 100644
+--- a/sound/soc/codecs/nau8821.h
++++ b/sound/soc/codecs/nau8821.h
+@@ -561,7 +561,7 @@ struct nau8821 {
+ 	struct regmap *regmap;
+ 	struct snd_soc_dapm_context *dapm;
+ 	struct snd_soc_jack *jack;
+-	struct work_struct jdet_work;
++	struct delayed_work jdet_work;
+ 	int irq;
+ 	int clk_id;
+ 	int micbias_voltage;
 -- 
 2.51.0
 
