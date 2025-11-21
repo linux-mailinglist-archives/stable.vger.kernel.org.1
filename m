@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-196389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBE2C79F94
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC09C79595
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 35F5C4F22E3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5EEC4EBB0B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F63F342526;
-	Fri, 21 Nov 2025 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539730E823;
+	Fri, 21 Nov 2025 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rtexo16W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmnAmxA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9712745E;
-	Fri, 21 Nov 2025 13:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B3F2F5466;
+	Fri, 21 Nov 2025 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733367; cv=none; b=g3YzkYAtEk0sMN35jkkjc4PPmiz8ozlXVb3dvjfGIz135TBVpYbpw3/zmjajn5kn633IF6tCpci7NCx/8+E+gvDFR8mEr3BLIw71w+ZkUUencIxz27Lf7txiR6ZwdxqmwLwDHWbVIWGq4aZXBxB5zKZeh8GvsnpwGg0OmSkqqBc=
+	t=1763731503; cv=none; b=i49CyIZ1DiykuORwvcNa0gtEH8pUR4VceRaI7yyw0ueqhebWw+5W9oeCDQUuV37m6sDmsr9/8tWS+QbdIUfo6BVQzdpVCehfk8Elm+vhyDTJtawAUJTyzz9jrbx9XtuaJsoP8XqUHs/j2JHrrSxFKAtB8JH4vPvDnNSGQP9UOtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733367; c=relaxed/simple;
-	bh=XxzYmgQzSk+TzTv2h8iaRuxASDHk0+Fmsrp8YK1Q/6o=;
+	s=arc-20240116; t=1763731503; c=relaxed/simple;
+	bh=rKt0pgZAIxzYLTGEtAmV9a5YMTeDuuUw5A4KUjjX+hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7xRo6jf6aqHiqoN5yl4dt2zc26NBExXE1/YeqS1uTYewMzTG2gv84r8srkeLyGwfw91czK45nuerBkmGkdsdF1dWZ7UdiNNOLgbaeJ8suWpCRtu+Yvq/m6f2VR92P1iYgHqgT2IAYCCdUz7fm5ElVfs1lU86yk0MIuYkvHX6gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rtexo16W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E654C4CEF1;
-	Fri, 21 Nov 2025 13:56:06 +0000 (UTC)
+	 MIME-Version; b=njq6VLPgHo69AmhgKAQdlvJEGPcnKQnIfQDB2Pl39kX80EAnr4SGBwH9spjdbjLEfZYcWQHuFPhiRn2Ts/ZPxG/0HPCV3XxJ0tr+KQ4jM54w2iAsqx3RJiZGJm0pYFkqwBqVN3dFbKZ7mHbzvebBRhIpdlmnQMSv4fMVRGIBRx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmnAmxA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B02C4CEF1;
+	Fri, 21 Nov 2025 13:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733366;
-	bh=XxzYmgQzSk+TzTv2h8iaRuxASDHk0+Fmsrp8YK1Q/6o=;
+	s=korg; t=1763731503;
+	bh=rKt0pgZAIxzYLTGEtAmV9a5YMTeDuuUw5A4KUjjX+hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rtexo16WChdeRVa53ohySbmAj25HW96MuLa16Ky5GSNGpibX6Tdo0T/VjDcGhIsbg
-	 SHDiOHrFkM559CghsrPmO6AnUZg0gurOHANzLcmd4Z9m7ytytzoQUINkIMUPLnwpR0
-	 xG/EpTFZh+o4NLdxWWqNSDxNKXWj72s1OY8IQe/I=
+	b=WmnAmxA8g60YczX+7wmaj5ldQN4iqh3catt1xWAUx7vemozmtcS8lefnPEY1ZkkGf
+	 hsA3tlA1l9RHZnSkrOR/a8nl/3jah9PhrOqNTUnSTwZuVxu/TpUQq07iSoK3qfS9F4
+	 8qSbkCd5nFLBWDzLOaolP8Ra0L1x0Updx9co4bK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 444/529] base/node / ACPI: Enumerate node access class for struct access_coordinate
+	syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.17 196/247] cifs: client: fix memory leak in smb3_fs_context_parse_param
 Date: Fri, 21 Nov 2025 14:12:23 +0100
-Message-ID: <20251121130246.808885622@linuxfoundation.org>
+Message-ID: <20251121130201.758178694@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,210 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 11270e526276ffad4c4237acb393da82a3287487 ]
+commit e8c73eb7db0a498cd4b22d2819e6ab1a6f506bd6 upstream.
 
-Both generic node and HMAT handling code have been using magic numbers to
-indicate access classes for 'struct access_coordinate'. Introduce enums to
-enumerate the access0 and access1 classes shared by the two subsystems.
-Update the function parameters and callers as appropriate to utilize the
-new enum.
+The user calls fsconfig twice, but when the program exits, free() only
+frees ctx->source for the second fsconfig, not the first.
+Regarding fc->source, there is no code in the fs context related to its
+memory reclamation.
 
-Access0 is named to ACCESS_COORDINATE_LOCAL in order to indicate that the
-access class is for 'struct access_coordinate' between a target node and
-the nearest initiator node.
+To fix this memory leak, release the source memory corresponding to ctx
+or fc before each parsing.
 
-Access1 is named to ACCESS_COORDINATE_CPU in order to indicate that the
-access class is for 'struct access_coordinate' between a target node and
-the nearest CPU node.
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888128afa360 (size 96):
+  backtrace (crc 79c9c7ba):
+    kstrdup+0x3c/0x80 mm/util.c:84
+    smb3_fs_context_parse_param+0x229b/0x36c0 fs/smb/client/fs_context.c:1444
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240308220055.2172956-3-dave.jiang@intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 214291cbaace ("acpi/hmat: Fix lockdep warning for hmem_register_resource()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: memory leak
+unreferenced object 0xffff888112c7d900 (size 96):
+  backtrace (crc 79c9c7ba):
+    smb3_fs_context_fullpath+0x70/0x1b0 fs/smb/client/fs_context.c:629
+    smb3_fs_context_parse_param+0x2266/0x36c0 fs/smb/client/fs_context.c:1438
+
+Reported-by: syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=72afd4c236e6bc3f4bac
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/numa/hmat.c | 26 ++++++++++++++------------
- drivers/base/node.c      |  6 +++---
- include/linux/node.h     | 18 +++++++++++++++---
- 3 files changed, 32 insertions(+), 18 deletions(-)
+ fs/smb/client/fs_context.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 8a1802e078f3c..570be52c8d90a 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -59,9 +59,7 @@ struct target_cache {
- };
- 
- enum {
--	NODE_ACCESS_CLASS_0 = 0,
--	NODE_ACCESS_CLASS_1,
--	NODE_ACCESS_CLASS_GENPORT_SINK,
-+	NODE_ACCESS_CLASS_GENPORT_SINK = ACCESS_COORDINATE_MAX,
- 	NODE_ACCESS_CLASS_MAX,
- };
- 
-@@ -333,11 +331,11 @@ static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_px
- 
- 	if (target && target->processor_pxm == init_pxm) {
- 		hmat_update_target_access(target, type, value,
--					  NODE_ACCESS_CLASS_0);
-+					  ACCESS_COORDINATE_LOCAL);
- 		/* If the node has a CPU, update access 1 */
- 		if (node_state(pxm_to_node(init_pxm), N_CPU))
- 			hmat_update_target_access(target, type, value,
--						  NODE_ACCESS_CLASS_1);
-+						  ACCESS_COORDINATE_CPU);
- 	}
- }
- 
-@@ -668,7 +666,8 @@ static void hmat_update_target_attrs(struct memory_target *target,
- 	 */
- 	if (target->processor_pxm != PXM_INVAL) {
- 		cpu_nid = pxm_to_node(target->processor_pxm);
--		if (access == 0 || node_state(cpu_nid, N_CPU)) {
-+		if (access == ACCESS_COORDINATE_LOCAL ||
-+		    node_state(cpu_nid, N_CPU)) {
- 			set_bit(target->processor_pxm, p_nodes);
- 			return;
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1437,12 +1437,14 @@ static int smb3_fs_context_parse_param(s
+ 			cifs_errorf(fc, "Unknown error parsing devname\n");
+ 			goto cifs_parse_mount_err;
  		}
-@@ -696,7 +695,8 @@ static void hmat_update_target_attrs(struct memory_target *target,
- 		list_for_each_entry(initiator, &initiators, node) {
- 			u32 value;
- 
--			if (access == 1 && !initiator->has_cpu) {
-+			if (access == ACCESS_COORDINATE_CPU &&
-+			    !initiator->has_cpu) {
- 				clear_bit(initiator->processor_pxm, p_nodes);
- 				continue;
- 			}
-@@ -741,8 +741,10 @@ static void hmat_register_target_initiators(struct memory_target *target)
- {
- 	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
- 
--	__hmat_register_target_initiators(target, p_nodes, 0);
--	__hmat_register_target_initiators(target, p_nodes, 1);
-+	__hmat_register_target_initiators(target, p_nodes,
-+					  ACCESS_COORDINATE_LOCAL);
-+	__hmat_register_target_initiators(target, p_nodes,
-+					  ACCESS_COORDINATE_CPU);
- }
- 
- static void hmat_register_target_cache(struct memory_target *target)
-@@ -813,8 +815,8 @@ static void hmat_register_target(struct memory_target *target)
- 	if (!target->registered) {
- 		hmat_register_target_initiators(target);
- 		hmat_register_target_cache(target);
--		hmat_register_target_perf(target, NODE_ACCESS_CLASS_0);
--		hmat_register_target_perf(target, NODE_ACCESS_CLASS_1);
-+		hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
-+		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
- 		target->registered = true;
- 	}
- 	mutex_unlock(&target_lock);
-@@ -886,7 +888,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
- 		return NOTIFY_OK;
- 
- 	mutex_lock(&target_lock);
--	hmat_update_target_attrs(target, p_nodes, 1);
-+	hmat_update_target_attrs(target, p_nodes, ACCESS_COORDINATE_CPU);
- 	mutex_unlock(&target_lock);
- 
- 	perf = &target->coord[1];
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 9a312650bd57e..2b398c8a0f06c 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -126,7 +126,7 @@ static void node_access_release(struct device *dev)
- }
- 
- static struct node_access_nodes *node_init_node_access(struct node *node,
--						       unsigned int access)
-+						       enum access_coordinate_class access)
- {
- 	struct node_access_nodes *access_node;
- 	struct device *dev;
-@@ -191,7 +191,7 @@ static struct attribute *access_attrs[] = {
-  * @access: The access class the for the given attributes
-  */
- void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
--			 unsigned int access)
-+			 enum access_coordinate_class access)
- {
- 	struct node_access_nodes *c;
- 	struct node *node;
-@@ -689,7 +689,7 @@ int register_cpu_under_node(unsigned int cpu, unsigned int nid)
-  */
- int register_memory_node_under_compute_node(unsigned int mem_nid,
- 					    unsigned int cpu_nid,
--					    unsigned int access)
-+					    enum access_coordinate_class access)
- {
- 	struct node *init_node, *targ_node;
- 	struct node_access_nodes *initiator, *target;
-diff --git a/include/linux/node.h b/include/linux/node.h
-index 25b66d705ee2e..dfc004e4bee74 100644
---- a/include/linux/node.h
-+++ b/include/linux/node.h
-@@ -34,6 +34,18 @@ struct access_coordinate {
- 	unsigned int write_latency;
- };
- 
-+/*
-+ * ACCESS_COORDINATE_LOCAL correlates to ACCESS CLASS 0
-+ *	- access_coordinate between target node and nearest initiator node
-+ * ACCESS_COORDINATE_CPU correlates to ACCESS CLASS 1
-+ *	- access_coordinate between target node and nearest CPU node
-+ */
-+enum access_coordinate_class {
-+	ACCESS_COORDINATE_LOCAL,
-+	ACCESS_COORDINATE_CPU,
-+	ACCESS_COORDINATE_MAX
-+};
-+
- enum cache_indexing {
- 	NODE_CACHE_DIRECT_MAP,
- 	NODE_CACHE_INDEXED,
-@@ -66,7 +78,7 @@ struct node_cache_attrs {
- #ifdef CONFIG_HMEM_REPORTING
- void node_add_cache(unsigned int nid, struct node_cache_attrs *cache_attrs);
- void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
--			 unsigned access);
-+			 enum access_coordinate_class access);
- #else
- static inline void node_add_cache(unsigned int nid,
- 				  struct node_cache_attrs *cache_attrs)
-@@ -75,7 +87,7 @@ static inline void node_add_cache(unsigned int nid,
- 
- static inline void node_set_perf_attrs(unsigned int nid,
- 				       struct access_coordinate *coord,
--				       unsigned access)
-+				       enum access_coordinate_class access)
- {
- }
- #endif
-@@ -137,7 +149,7 @@ extern void unregister_memory_block_under_nodes(struct memory_block *mem_blk);
- 
- extern int register_memory_node_under_compute_node(unsigned int mem_nid,
- 						   unsigned int cpu_nid,
--						   unsigned access);
-+						   enum access_coordinate_class access);
- #else
- static inline void node_dev_init(void)
- {
--- 
-2.51.0
-
++		kfree(ctx->source);
+ 		ctx->source = smb3_fs_context_fullpath(ctx, '/');
+ 		if (IS_ERR(ctx->source)) {
+ 			ctx->source = NULL;
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		kfree(fc->source);
+ 		fc->source = kstrdup(ctx->source, GFP_KERNEL);
+ 		if (fc->source == NULL) {
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
 
 
 
