@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FBFC79E2E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BA1C793ED
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5CE6934F289
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 87AE22DD33
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4040234B68F;
-	Fri, 21 Nov 2025 13:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4572737FC;
+	Fri, 21 Nov 2025 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQRl7K9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSCgkZlv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E4266584;
-	Fri, 21 Nov 2025 13:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79491F09AC;
+	Fri, 21 Nov 2025 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733132; cv=none; b=u+MNPmvj2qndCQIo/YDQohUeT5ZhLEWvUGIMkCm8/hReg2M3d1DLgjtYS6PHDd5AuVSYZYieRETBFDtQpOWjbEmdFizRdGH2XX7WLL6lGnVcQQO14gyPY2SwPzC5fKXFW2PXVS/Wuj9uJvUAlFRpfNi97Koxc2pCrRGoeTUWK9o=
+	t=1763731298; cv=none; b=nOmlED3x2qNPcu+WmveYwvvWQjj0n1tYwMJD8ew/eNTJ8yr72ABwwz6LOg8pgfcZe8Pxg4kavsYgMHXe3tn4sffVwO81CSVTDcZClBKf2g4veNBO23+5DEBupnJblXWaNgcRnEFKYlAOpTnoeb+rtmyIPap05X0c2Z1/1qwTdGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733132; c=relaxed/simple;
-	bh=7YyrhZ84gSn10tqHNYDMBcg1Eb1+KdsEj0ZknwEAfPM=;
+	s=arc-20240116; t=1763731298; c=relaxed/simple;
+	bh=1t09YMIO68gnVhxoCS32s3/YRl61a7O526Xswl8tHfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=krelN+MeVfe/ClvezA3NpEShQx6BPZ2GkEi0Bu4jjAtykFOQjnOKWVhJUxeKoRmlg0hmHSBf/bBB5mW3XvzCEelbzvnxiZQdke+ZREWAkkMPMQjcTF9AYRbBbJ++ZfckZqa6TG8AMAAztkgePKKYzAmAZBTDAJM0+aGIvTFuC7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQRl7K9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72075C4CEF1;
-	Fri, 21 Nov 2025 13:52:11 +0000 (UTC)
+	 MIME-Version; b=BP/zJR1Z4JEpTFtxAAOTojqzSqgVJAyi8a0gLd2zhJNpS8TesD8Vk2ZLD/c9qC2dOLQaaTWr1JlDmztlvIXiOXEGhS24o0KNh6y0DFT9NPSOowFmrCzsg+0kkyAbKLP1cCYQil4kHZKsYXWSC1gy9tN06flubDDsCoGuBF1mCXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSCgkZlv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329CBC4CEF1;
+	Fri, 21 Nov 2025 13:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733131;
-	bh=7YyrhZ84gSn10tqHNYDMBcg1Eb1+KdsEj0ZknwEAfPM=;
+	s=korg; t=1763731298;
+	bh=1t09YMIO68gnVhxoCS32s3/YRl61a7O526Xswl8tHfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQRl7K9RFF5wOSa6YDXJ8FUIYmeNGhStgdCc89MOuWYJQvw6Iv8cfbOe9vRoKQBjH
-	 EOS6S7xSGQ6PPbjPZ4UbsPAyQystjKbZ8WR0lyUCvKcyEcgmopQcQV7ClHtjnKzebn
-	 IP16Npfx9waYKY9ivW6ARKUi8652e+MN2jMERAeg=
+	b=xSCgkZlvCVeI2h8/voK+GOwX/bCzZkydWeA5e59GM++wkdkuxjXKNw/YupnbkCIn6
+	 cCqUJOwuLicx4otGsykHypx1ZJvYgXSVpYt+pK1XrS36adIQum3emOu72Mx/qEsetP
+	 vPxoA8hgYPnLAlahynOMvOOPi+HL96TYn2DEvBcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.6 363/529] drm/sched: Fix deadlock in drm_sched_entity_kill_jobs_cb
-Date: Fri, 21 Nov 2025 14:11:02 +0100
-Message-ID: <20251121130243.943767343@linuxfoundation.org>
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 116/247] ASoC: rsnd: fix OF node reference leak in rsnd_ssiu_probe()
+Date: Fri, 21 Nov 2025 14:11:03 +0100
+Message-ID: <20251121130158.745914205@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,124 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 487df8b698345dd5a91346335f05170ed5f29d4e upstream.
+[ Upstream commit 360b3730f8eab6c4467c6cca4cb0e30902174a63 ]
 
-The Mesa issue referenced below pointed out a possible deadlock:
+rsnd_ssiu_probe() leaks an OF node reference obtained by
+rsnd_ssiu_of_node(). The node reference is acquired but
+never released across all return paths.
 
-[ 1231.611031]  Possible interrupt unsafe locking scenario:
+Fix it by declaring the device node with the __free(device_node)
+cleanup construct to ensure automatic release when the variable goes
+out of scope.
 
-[ 1231.611033]        CPU0                    CPU1
-[ 1231.611034]        ----                    ----
-[ 1231.611035]   lock(&xa->xa_lock#17);
-[ 1231.611038]                                local_irq_disable();
-[ 1231.611039]                                lock(&fence->lock);
-[ 1231.611041]                                lock(&xa->xa_lock#17);
-[ 1231.611044]   <Interrupt>
-[ 1231.611045]     lock(&fence->lock);
-[ 1231.611047]
-                *** DEADLOCK ***
-
-In this example, CPU0 would be any function accessing job->dependencies
-through the xa_* functions that don't disable interrupts (eg:
-drm_sched_job_add_dependency(), drm_sched_entity_kill_jobs_cb()).
-
-CPU1 is executing drm_sched_entity_kill_jobs_cb() as a fence signalling
-callback so in an interrupt context. It will deadlock when trying to
-grab the xa_lock which is already held by CPU0.
-
-Replacing all xa_* usage by their xa_*_irq counterparts would fix
-this issue, but Christian pointed out another issue: dma_fence_signal
-takes fence.lock and so does dma_fence_add_callback.
-
-  dma_fence_signal() // locks f1.lock
-  -> drm_sched_entity_kill_jobs_cb()
-  -> foreach dependencies
-     -> dma_fence_add_callback() // locks f2.lock
-
-This will deadlock if f1 and f2 share the same spinlock.
-
-To fix both issues, the code iterating on dependencies and re-arming them
-is moved out to drm_sched_entity_kill_jobs_work().
-
-Cc: stable@vger.kernel.org # v6.2+
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13908
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-[phasta: commit message nits]
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251104095358.15092-1-pierre-eric.pelloux-prayer@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e7788fb8018 ("ASoC: rsnd: add SSIU BUSIF support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20251112065709.1522-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   34 +++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ sound/soc/renesas/rcar/ssiu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -163,26 +163,15 @@ int drm_sched_entity_error(struct drm_sc
- }
- EXPORT_SYMBOL(drm_sched_entity_error);
- 
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb);
-+
- static void drm_sched_entity_kill_jobs_work(struct work_struct *wrk)
+diff --git a/sound/soc/renesas/rcar/ssiu.c b/sound/soc/renesas/rcar/ssiu.c
+index faf351126d574..244fb833292a7 100644
+--- a/sound/soc/renesas/rcar/ssiu.c
++++ b/sound/soc/renesas/rcar/ssiu.c
+@@ -509,7 +509,7 @@ void rsnd_parse_connect_ssiu(struct rsnd_dai *rdai,
+ int rsnd_ssiu_probe(struct rsnd_priv *priv)
  {
- 	struct drm_sched_job *job = container_of(wrk, typeof(*job), work);
--
--	drm_sched_fence_scheduled(job->s_fence, NULL);
--	drm_sched_fence_finished(job->s_fence, -ESRCH);
--	WARN_ON(job->s_fence->parent);
--	job->sched->ops->free_job(job);
--}
--
--/* Signal the scheduler finished fence when the entity in question is killed. */
--static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
--					  struct dma_fence_cb *cb)
--{
--	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
--						 finish_cb);
-+	struct dma_fence *f;
- 	unsigned long index;
- 
--	dma_fence_put(f);
--
- 	/* Wait for all dependencies to avoid data corruptions */
- 	xa_for_each(&job->dependencies, index, f) {
- 		struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
-@@ -210,6 +199,21 @@ static void drm_sched_entity_kill_jobs_c
- 		dma_fence_put(f);
- 	}
- 
-+	drm_sched_fence_scheduled(job->s_fence, NULL);
-+	drm_sched_fence_finished(job->s_fence, -ESRCH);
-+	WARN_ON(job->s_fence->parent);
-+	job->sched->ops->free_job(job);
-+}
-+
-+/* Signal the scheduler finished fence when the entity in question is killed. */
-+static void drm_sched_entity_kill_jobs_cb(struct dma_fence *f,
-+					  struct dma_fence_cb *cb)
-+{
-+	struct drm_sched_job *job = container_of(cb, struct drm_sched_job,
-+						 finish_cb);
-+
-+	dma_fence_put(f);
-+
- 	INIT_WORK(&job->work, drm_sched_entity_kill_jobs_work);
- 	schedule_work(&job->work);
- }
+ 	struct device *dev = rsnd_priv_to_dev(priv);
+-	struct device_node *node;
++	struct device_node *node __free(device_node) = rsnd_ssiu_of_node(priv);
+ 	struct rsnd_ssiu *ssiu;
+ 	struct rsnd_mod_ops *ops;
+ 	const int *list = NULL;
+@@ -522,7 +522,6 @@ int rsnd_ssiu_probe(struct rsnd_priv *priv)
+ 	 * see
+ 	 *	rsnd_ssiu_bufsif_to_id()
+ 	 */
+-	node = rsnd_ssiu_of_node(priv);
+ 	if (node)
+ 		nr = rsnd_node_count(priv, node, SSIU_NAME);
+ 	else
+-- 
+2.51.0
+
 
 
 
