@@ -1,142 +1,122 @@
-Return-Path: <stable+bounces-196511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAE2C7A98D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:43:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E633C7AAC2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86093A1104
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:43:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 94DCF3681C9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB5834A766;
-	Fri, 21 Nov 2025 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A790534CFAA;
+	Fri, 21 Nov 2025 15:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc3AWAyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeVHyPvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C52E6CD3
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BD32F759;
+	Fri, 21 Nov 2025 15:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763739784; cv=none; b=lptqD4ZOG5OELgr/J1s/yEHyao2eIOjfVEtHMecEHiKkCAfKFmtj+FxAzv6bTr45lFms01vBZ3qqcWf1s8aSdU1/O3QwfJVDiwybj/X+Z4qFNOZVP7Z+kO5MyWytXxgohCiSsXYtsynkRSuy1jzMV/pkKQ+dUmXNY4WJ29BMnT8=
+	t=1763740370; cv=none; b=MC4KxpqQNXcc4vWxnhuv5jQewalhr88E+qV7s4Xdp8BQuqzW0w94veK10Yv6zAA1C3/51pwt5V8jPMsze5tPXa7SZ/dbUWO8Ftsi2006W7PyLF5D1puqGoau5Zk0nTRZzyoUA9tg7GOqkSq4hb+PoT/unGmDRGFc7p65TmcpiAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763739784; c=relaxed/simple;
-	bh=C9N9r060PujhlvGtHWUgKktJZ0Dykf25kePWPYfKRs0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VP1g7GzcVBwyNXFFkjKYGn/IXFEvV+1NSUjZhm3iQc9/QiDU5apF1uMMnEFcVkmyTr627qSIFT5wlApRhilTeZmUyyxcES7jaNZ6xKUyeP3tlctx1HBagP98x3QsGD3JbsNNAmUxQdvcxyy2/6LzunNYXgOTbadTQG4icR3Sgtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc3AWAyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33208C4CEF1;
-	Fri, 21 Nov 2025 15:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763739783;
-	bh=C9N9r060PujhlvGtHWUgKktJZ0Dykf25kePWPYfKRs0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc3AWAyZD2rq9Km6NEzYCVvy662TW+Igge2lg6ckQCf/hjlcXH5X0H8pEf0e3/r1l
-	 2FafxFMnECiMSb59Xk1phDT3Xvh9AyjN2cAcSOVCeVFo0OEo8d8y9yrolXODx7AXdu
-	 HS3pxK3uYxpgo7qq5U14dCSVvB+NGxRB9/9qfLYMjLe7ljuNoTu+MmYRHcVCKG4B9g
-	 FslbU35iZ5+z6We+ZUn+FaxCciCMLp1xNCmZkQw59DorHqk3EWTnrhZdTcbOG6jvVd
-	 wl54MOCMNZ5t4RWrMpOmFxWA7S3mDhMbTzbBZwZJpq7v/ElEWTxOyc+XleOOEVaMxM
-	 esQMum7SXv/Ww==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
-Date: Fri, 21 Nov 2025 10:43:01 -0500
-Message-ID: <20251121154301.2580293-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112052-bulldozer-hatbox-e9df@gregkh>
-References: <2025112052-bulldozer-hatbox-e9df@gregkh>
+	s=arc-20240116; t=1763740370; c=relaxed/simple;
+	bh=GoZm8lNdtiFSosELTsEndzB4/4WVmjswdcJL6FDpoDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ev9wgnlA8365vart/1XOie+HonE6ORPDP9IbbVvCu1gkbii9Oxpb5PrBgSTfo1XkHtySZNUd/peJ9+jzEje4ayRlJ+RAA8uLnxjWUtgfxb4cS3BraWUVRtzzXroIU0fu0SDHHSiQdOBoU8iGBBkWlhc0DP26FTrGJIHSvpJlLdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeVHyPvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE49C4CEF1;
+	Fri, 21 Nov 2025 15:52:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763740370;
+	bh=GoZm8lNdtiFSosELTsEndzB4/4WVmjswdcJL6FDpoDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GeVHyPvEQLpj6FqztBVH9f/lp+9FZc+zMsZO9qaExHsKcab2onWzCPHw/evZ4diMQ
+	 t7K1zxCZnBfjcWygr7aYjg13ywNRd8JcCR9f8od+9W80qPEYR8evnlyTfXVlgL3+CX
+	 qUhmvssxKzUnBiwn0mRa5XmFria5H8t1lErLzwrE=
+Date: Fri, 21 Nov 2025 16:52:46 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Mike Rapoport <rppt@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Matlack <dmatlack@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Samiullah Khawaja <skhawaja@google.com>, Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.17 164/247] kho: warn and fail on metadata or preserved
+ memory in scratch area
+Message-ID: <2025112122-class-letdown-7be7@gregkh>
+References: <20251121130154.587656062@linuxfoundation.org>
+ <20251121130200.607393324@linuxfoundation.org>
+ <489a925f-ba57-432d-ac50-dcd78229c2ff@leemhuis.info>
+ <mafs0ldjz1jkh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <mafs0ldjz1jkh.fsf@kernel.org>
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+On Fri, Nov 21, 2025 at 04:39:26PM +0100, Pratyush Yadav wrote:
+> On Fri, Nov 21 2025, Thorsten Leemhuis wrote:
+> 
+> > On 11/21/25 14:11, Greg Kroah-Hartman wrote:
+> >> 6.17-stable review patch.  If anyone has any objections, please let me know.
+> >> 
+> >> ------------------
+> >> 
+> >> From: Pasha Tatashin <pasha.tatashin@soleen.com>
+> >> 
+> >> commit e38f65d317df1fd2dcafe614d9c537475ecf9992 upstream.
+> >> 
+> >> Patch series "KHO: kfence + KHO memory corruption fix", v3.
+> >> 
+> >> This series fixes a memory corruption bug in KHO that occurs when KFENCE
+> >> is enabled.
+> >
+> > I ran into a build problem that afaics is caused by this change:
+> >
+> > """
+> > In file included from ./arch/x86/include/asm/bug.h:103,
+> >                  from ./arch/x86/include/asm/alternative.h:9,
+> >                  from ./arch/x86/include/asm/barrier.h:5,
+> >                  from ./include/asm-generic/bitops/generic-non-atomic.h:7,
+> >                  from ./include/linux/bitops.h:28,
+> >                  from ./include/linux/bitmap.h:8,
+> >                  from ./include/linux/nodemask.h:91,
+> >                  from ./include/linux/numa.h:6,
+> >                  from ./include/linux/cma.h:7,
+> >                  from kernel/kexec_handover.c:12:
+> > kernel/kexec_handover.c: In function ‘kho_preserve_phys’:
+> > kernel/kexec_handover.c:732:41: error: ‘nr_pages’ undeclared (first use in this function); did you mean ‘dir_pages’?
+> >   732 |                                         nr_pages << PAGE_SHIFT))) {
+> >       |                                         ^~~~~~~~
+> 
+> 8375b76517cb5 ("kho: replace kho_preserve_phys() with
+> kho_preserve_pages()") refactored this function to work on page
+> granularity (nr_pages) instead of bytes (size). Since that commit wasn't
+> backported, nr_pages does not exist.
+> 
+> Simple fix should be to replace "nr_pages << PAGE_SHIFT" with "size".
 
-[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
+Great, can you provide a working version?  I'll go drop this patch from
+the queue for now and push out a -rc2
 
-If of_genpd_add_provider_onecell() fails during probe, the previously
-created generic power domains are not removed, leading to a memory leak
-and potential kernel crash later in genpd_debug_add().
+thanks,
 
-Add proper error handling to unwind the initialized domains before
-returning from probe to ensure all resources are correctly released on
-failure.
-
-Example crash trace observed without this fix:
-
-  | Unable to handle kernel paging request at virtual address fffffffffffffc70
-  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
-  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
-  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  | pc : genpd_debug_add+0x2c/0x160
-  | lr : genpd_debug_init+0x74/0x98
-  | Call trace:
-  |  genpd_debug_add+0x2c/0x160 (P)
-  |  genpd_debug_init+0x74/0x98
-  |  do_one_initcall+0xd0/0x2d8
-  |  do_initcall_level+0xa0/0x140
-  |  do_initcalls+0x60/0xa8
-  |  do_basic_setup+0x28/0x40
-  |  kernel_init_freeable+0xe8/0x170
-  |  kernel_init+0x2c/0x140
-  |  ret_from_fork+0x10/0x20
-
-Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/arm_scmi/scmi_pm_domain.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/arm_scmi/scmi_pm_domain.c b/drivers/firmware/arm_scmi/scmi_pm_domain.c
-index 0e05a79de82d8..82d923a9d75d7 100644
---- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
-+++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
-@@ -54,7 +54,7 @@ static int scmi_pd_power_off(struct generic_pm_domain *domain)
- 
- static int scmi_pm_domain_probe(struct scmi_device *sdev)
- {
--	int num_domains, i;
-+	int num_domains, i, ret;
- 	struct device *dev = &sdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct scmi_pm_domain *scmi_pd;
-@@ -112,9 +112,18 @@ static int scmi_pm_domain_probe(struct scmi_device *sdev)
- 	scmi_pd_data->domains = domains;
- 	scmi_pd_data->num_domains = num_domains;
- 
-+	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	if (ret)
-+		goto err_rm_genpds;
-+
- 	dev_set_drvdata(dev, scmi_pd_data);
- 
--	return of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	return 0;
-+err_rm_genpds:
-+	for (i = num_domains - 1; i >= 0; i--)
-+		pm_genpd_remove(domains[i]);
-+
-+	return ret;
- }
- 
- static void scmi_pm_domain_remove(struct scmi_device *sdev)
--- 
-2.51.0
-
+greg k-h
 
