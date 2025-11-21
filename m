@@ -1,230 +1,163 @@
-Return-Path: <stable+bounces-196549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E097FC7B37F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:07:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691E7C7B3A3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A7F63A129B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:06:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4073A3CDE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F9228AAEE;
-	Fri, 21 Nov 2025 18:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CE92472A8;
+	Fri, 21 Nov 2025 18:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lOmNthQo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SOvQU55g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A571E5B95
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 18:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEEE22D7B6;
+	Fri, 21 Nov 2025 18:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763748416; cv=none; b=HT/ezdF4mZMCtRtOofNNqIwZRRLQRIz6aB2H8WHdepv4+Zl39DB9ol8q6AU0ul3k08upV0Zgehhro53/yEJLFKj3d5g/szyEEsesqtUojeQhUTzQkkmql7152yR7DykjFmb+S+ND0DhPVJWuzuTzszREV9MZgtOtHYjtG4kIlTg=
+	t=1763748505; cv=none; b=qpoYV5jjjJsPBlWUFdYpNjDBxnydB0Te7dZfjmC6il0vAsCFxs26eZ4p7pXRZ/uVvoHc4+aJe5G3GjKFotbySV5WHiisLDlWnX4mt7385pM75a3KLImvXuX3v3DXcoWpOOQr8JjqBLUn169FStW1alp2Nyo6EvVPa/WenJJpYYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763748416; c=relaxed/simple;
-	bh=xpDk1MA+RgwtaJTs7OEv5Gjfzcu4RHFwdTcOrVQE9Fs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XD+8Nnx8DaHiSQEE9TDrU761z/sDCI+wR9+zUzL2EBHh19KZ75brbtdGpyD7luZLCHgU/oMkDjKOOnpGEq6ECr2sqQZH9/9X+HiXt8cuOaecc6CFgVfP7C33UkTPgUgmVgf4hi7JiXDT6m1gPcG4poIERQ5KYGkc69XW2Ez32ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lOmNthQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD55C116C6;
-	Fri, 21 Nov 2025 18:06:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763748416;
-	bh=xpDk1MA+RgwtaJTs7OEv5Gjfzcu4RHFwdTcOrVQE9Fs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOmNthQofiiwP/7tge8NH36kU4jUir1ogbIGBRTdjiEpjuiayH6GntKupYSBPy8Aw
-	 F8jsXC0yyhF3vrUY7T6vrFyhdRJMmVLt0iUY+POU1INelSXCQpQd4RkGwmGIX0KDBx
-	 +P48DdT7dxjDn4n+Sr8gkRC1ot12ap9lwLC8XW6RG+vzo/4CzE4+WwnaqEgFQKn5T3
-	 swsuMKLein2Ef2laiQyYgpxeLFqaej3urtHU+LxqfBAG80eztoROKFityNfzaEXC8t
-	 Iwsz3d112AhCuRfujilYHTq6mYjXXRi9d+l7xpjgZDCkqKo7q8FZY2pLX2wpy7qHH6
-	 iPm9Lwq2BMIjQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] selftests: mptcp: join: rm: set backup flag
-Date: Fri, 21 Nov 2025 13:06:53 -0500
-Message-ID: <20251121180653.2636754-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112012-gliding-propose-87a0@gregkh>
-References: <2025112012-gliding-propose-87a0@gregkh>
+	s=arc-20240116; t=1763748505; c=relaxed/simple;
+	bh=Rqzf1u36v+Fn3pFvdEKJ3si42YdU9CY2oTNiKex1Z1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqbLWEroO7JUNcN21KDeZZfgMLvNR9S1BiMjKrdHEhe35nQAyg4wiEW6SFFg05dfcGMWWjZn3R+t6eFzGqg5+U9C5JMeshTb6YzzG2V5hhdhjFP1dFnVCwN3nMgPViozJSwYZ53b21rl6rllJgLnQeV4Y0gz0MuHYB+YRs1kP+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SOvQU55g; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763748503; x=1795284503;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Rqzf1u36v+Fn3pFvdEKJ3si42YdU9CY2oTNiKex1Z1E=;
+  b=SOvQU55gXQWJ1s8UBywf9rd/Rq/WBH5+xqJFSFnPc87lLHByIr0h5kBX
+   BvSC+JrlHx2N24LmIGYGPwhumB90ibXlNxqfHywxzgMYf1XPVAHo+V13r
+   NrpTfEWJXKFh5eiuszS1B1i1zACONS7PuLU1V2Wl3avBs/t3m8y0vQeA5
+   /n/Rv6YUCMs5xAOu2CI0AnJ+eigG9cmAEK535MQ4Ok4pdpJ9xRllpJfxH
+   V37OpfSRca0TzhdpPVqPAVaEDyHxWH8oMisxT3B5wyrDe0R0M/CjwbPMk
+   HeIMzr4rTZIjjV3laM04No0FtuvE2I9tDAlDTsupK5IQXQW1UWAHqdjTv
+   Q==;
+X-CSE-ConnectionGUID: fUPU4+q5QXK6YmZt/uid3Q==
+X-CSE-MsgGUID: vhCSjF7zQ0i+p533AxDe8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="77210408"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="77210408"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 10:08:22 -0800
+X-CSE-ConnectionGUID: OGPKsRdfSqeat4kp4O8W4A==
+X-CSE-MsgGUID: znsec5FOQVinlKu5tecIbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="190941786"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 21 Nov 2025 10:08:17 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMVYN-0006gN-1o;
+	Fri, 21 Nov 2025 18:08:15 +0000
+Date: Sat, 22 Nov 2025 02:07:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>, andrew@lunn.ch, olteanv@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, florian.fainelli@broadcom.com,
+	stephen@networkplumber.org, robh@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: Fix error handling in dsa_port_parse_of
+Message-ID: <202511220109.1PvI00Sr-lkp@intel.com>
+References: <20251121035130.16020-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121035130.16020-1-make24@iscas.ac.cn>
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Hi Ma,
 
-[ Upstream commit aea73bae662a0e184393d6d7d0feb18d2577b9b9 ]
+kernel test robot noticed the following build errors:
 
-Some of these 'remove' tests rarely fail because a subflow has been
-reset instead of cleanly removed. This can happen when one extra subflow
-which has never carried data is being closed (FIN) on one side, while
-the other is sending data for the first time.
+[auto build test ERROR on net-next/main]
+[also build test ERROR on net/main linus/master v6.18-rc6 next-20251121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-To avoid such subflows to be used right at the end, the backup flag has
-been added. With that, data will be only carried on the initial subflow.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/net-dsa-Fix-error-handling-in-dsa_port_parse_of/20251121-115449
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20251121035130.16020-1-make24%40iscas.ac.cn
+patch subject: [PATCH] net: dsa: Fix error handling in dsa_port_parse_of
+config: i386-randconfig-004-20251121 (https://download.01.org/0day-ci/archive/20251122/202511220109.1PvI00Sr-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511220109.1PvI00Sr-lkp@intel.com/reproduce)
 
-Fixes: d2c4333a801c ("selftests: mptcp: add testcases for removing addrs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-2-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../testing/selftests/net/mptcp/mptcp_join.sh | 54 +++++++++----------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511220109.1PvI00Sr-lkp@intel.com/
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index d7dbbaa1f64ad..ecfd15be77e22 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2332,7 +2332,7 @@ remove_tests()
- 	if reset "remove single subflow"; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 0 1
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -1 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-@@ -2343,8 +2343,8 @@ remove_tests()
- 	if reset "remove multiple subflows"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 0 2
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -2 slow
- 		chk_join_nr 2 2 2
- 		chk_rm_nr 2 2
-@@ -2354,7 +2354,7 @@ remove_tests()
- 	# single address, remove
- 	if reset "remove single address"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
- 		chk_join_nr 1 1 1
-@@ -2366,9 +2366,9 @@ remove_tests()
- 	# subflow and signal, remove
- 	if reset "remove subflow and signal"; then
- 		pm_nl_set_limits $ns1 0 2
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 2
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 -1 slow
- 		chk_join_nr 2 2 2
- 		chk_add_nr 1 1
-@@ -2379,10 +2379,10 @@ remove_tests()
- 	# subflows and signal, remove
- 	if reset "remove subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 -2 speed_10
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
-@@ -2393,9 +2393,9 @@ remove_tests()
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
- 		chk_join_nr 3 3 3
-@@ -2407,10 +2407,10 @@ remove_tests()
- 	# invalid addresses remove
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
- 		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
- 		pm_nl_set_limits $ns2 2 2
- 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
- 		chk_join_nr 1 1 1
-@@ -2422,10 +2422,10 @@ remove_tests()
- 	# subflows and signal, flush
- 	if reset "flush subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
-@@ -2437,9 +2437,9 @@ remove_tests()
- 	if reset "flush subflows"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_set_limits $ns2 3 3
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow id 150
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup id 150
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
- 
-@@ -2454,9 +2454,9 @@ remove_tests()
- 	# addresses flush
- 	if reset "flush addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
-@@ -2468,9 +2468,9 @@ remove_tests()
- 	# invalid addresses flush
- 	if reset "flush invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 0 slow
- 		chk_join_nr 1 1 1
+All errors (new ones prefixed by >>):
+
+>> net/dsa/dsa.c:1265:15: error: incompatible pointer types passing 'struct net_device *' to parameter of type 'struct device *' [-Werror,-Wincompatible-pointer-types]
+    1265 |                         put_device(conduit);
+         |                                    ^~~~~~~
+   include/linux/device.h:1181:32: note: passing argument to parameter 'dev' here
+    1181 | void put_device(struct device *dev);
+         |                                ^
+   1 error generated.
+
+
+vim +1265 net/dsa/dsa.c
+
+  1243	
+  1244	static int dsa_port_parse_of(struct dsa_port *dp, struct device_node *dn)
+  1245	{
+  1246		struct device_node *ethernet = of_parse_phandle(dn, "ethernet", 0);
+  1247		const char *name = of_get_property(dn, "label", NULL);
+  1248		bool link = of_property_read_bool(dn, "link");
+  1249		int err;
+  1250	
+  1251		dp->dn = dn;
+  1252	
+  1253		if (ethernet) {
+  1254			struct net_device *conduit;
+  1255			const char *user_protocol;
+  1256	
+  1257			conduit = of_find_net_device_by_node(ethernet);
+  1258			of_node_put(ethernet);
+  1259			if (!conduit)
+  1260				return -EPROBE_DEFER;
+  1261	
+  1262			user_protocol = of_get_property(dn, "dsa-tag-protocol", NULL);
+  1263			err = dsa_port_parse_cpu(dp, conduit, user_protocol);
+  1264			if (err) {
+> 1265				put_device(conduit);
+  1266				return err;
+  1267			}
+  1268	
+  1269			return 0;
+  1270		}
+  1271	
+  1272		if (link)
+  1273			return dsa_port_parse_dsa(dp);
+  1274	
+  1275		return dsa_port_parse_user(dp, name);
+  1276	}
+  1277	
+
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
