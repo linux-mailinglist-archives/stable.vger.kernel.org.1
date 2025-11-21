@@ -1,154 +1,128 @@
-Return-Path: <stable+bounces-196555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2D0C7B485
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:19:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0A2C7B4FA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25B3835BB53
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E41C3A19EE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0FF2F658A;
-	Fri, 21 Nov 2025 18:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4951E8320;
+	Fri, 21 Nov 2025 18:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="giRd/W/X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcgU2sRc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FDE285CA3;
-	Fri, 21 Nov 2025 18:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FB821579F
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 18:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763749010; cv=none; b=f0XDApYE41+t+KxaBTIQqfH8kW2hS/Lnij7cshUZIsVyKqvHMvyN5hfDnsKbH902HApLbDpB0PAFO48Wp3LymcFYdY4Wd6kbE77VrTF3Yn8jy01eYQv1N367uHr7Z10De2L9mHfK6gpU0ArrFGXqBl47sGth/MPmsHf8+t8tm9I=
+	t=1763749330; cv=none; b=eoZQssDk2z8GMpoIJhSH49RvXbh/+8zjfmZJgJ+iDOPe/VrZpPR+kTQMgH9EXDP231axfY7CMTL6LK1/ixWutOkXH/RSetQR9BsEm8ICE5QPp8n0AMTlE0UWc1Lw8YDfrPTdX/XVHZLcXb3PI/kjWCSBpkQ36Nag6ha5zkXQicI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763749010; c=relaxed/simple;
-	bh=FKFhoeOq4jsAOmHfzzNktnqeRvgyJi3lqxDZKCaXEtQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s6ZMiBjAClXWWbhBWhVb9yBUIOPw5zuCegPlT2nF+F9ZYVP40ql6SFnOoIq2GXDus4L1kmu4cF55MaEEKyc3kQoJK62/QA0aJ69fdLfwhPEOM9BVO65cEfn5s+cTa+2KE8msNeuwgW2qvGo6yYuxzKgW6bZmsQm+75i/DXL8AsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=giRd/W/X; arc=none smtp.client-ip=193.136.128.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id 587E6600024E;
-	Fri, 21 Nov 2025 18:16:44 +0000 (WET)
-X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
-Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
- by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
- with LMTP id SpYkz7SZHBfh; Fri, 21 Nov 2025 18:16:41 +0000 (WET)
-Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [IPv6:2001:690:2100:1::b3dd:b9ac])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 8F313600300D;
-	Fri, 21 Nov 2025 18:16:41 +0000 (WET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
-	s=mail2; t=1763749001;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IFjrkGmKM4swDN+X/CnAGkhhu1lJqouwzP7tt4P6POo=;
-	b=giRd/W/XEUXmpOBYEWBVkZkp1SXAUCdw3meXQSbWUXZVVk8PAfYGqzLN+xRaKrMFi1kmjM
-	onogdxY4/Eq6NZUQN1DR6U5PVMgpAJMDcmNP2dCusi8IWsnwm+4qLORGSGoTBpKRrR11LK
-	QLWyp7UhI82tlXXCn8nMaw0FfYiHIQ4ZTvc3UcpRYY2qJbYFBWARJtCZrXsoa5WhP0ukKO
-	mB5RcUOp2pmm9/a9kLQV5mweZ60PkhpA5Hv2Q6FPECJnLht+6qmgnjeywNcp7ZIrRz+Rzy
-	NKs6npWrGzl1HN/JnPlYLQgsf4HPXtCzo9IRcPrNkM8EKGfcRv9rAYqjDHt7zw==
-Received: from [192.168.1.151] (unknown [IPv6:2001:8a0:57db:f00:3ee2:38aa:e2c9:7dde])
-	(Authenticated sender: ist187313)
-	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id 95E2F360107;
-	Fri, 21 Nov 2025 18:16:40 +0000 (WET)
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Date: Fri, 21 Nov 2025 18:16:36 +0000
-Subject: [PATCH v2] usb: phy: Initialize struct usb_phy list_head
+	s=arc-20240116; t=1763749330; c=relaxed/simple;
+	bh=fKLWeU+mvv+lELFB7zRAfgFbuyBdL30rpqdulQlpDpE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nC0ms+D/T0i2gBPh7wyQH7giQmMrq4LGlF2Ul71ulRta50jriGUT0ITpfKFvM4BVeDLB324WCxYGvUccQbXjIyD8IyD1TYN8f+IfZCWKxS7oSJId+jpgfHgfb747YOidDoXRDCFhgWVL9tdoDlDrpHx1k6pwW9f/zu/1oKqKCvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcgU2sRc; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297e264528aso27152835ad.2
+        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 10:22:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763749328; x=1764354128; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ilgbmsIJ1j0KJltWHFpHfevy610h2K+d7d+0zN3F/9M=;
+        b=AcgU2sRcQDjzCuX2ESFWauZiXtX1bMZQWiskdjIi6fTJQcFmckOyD22zH+2u5RVijx
+         F9/zlCKFiQ0Mk53tbY6L3f2Fv/OZIJ9pbNVoIKop4VIdtGjHwxmbLwGFXdS6XHVwFrTR
+         BeArORKHtNihYIBh/z8MfPAOisETeqCUpZP6t+pHdkBvBm9cDyDeH3pUO2gFsMABlWit
+         Xmwup2T9jgZcv6pLR1oMIPpSy+7tsmYyYBx0Si6G82cIAN8pFzPjuOEbz9t01s5GkuGc
+         aSQUpkMWvVaohFOR0MexblzvDFI+6ff95eAhZlTFvkLeSLFGFIzqitUqnPf+sdpHRAR4
+         6COw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763749328; x=1764354128;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ilgbmsIJ1j0KJltWHFpHfevy610h2K+d7d+0zN3F/9M=;
+        b=kNQX7w2uAPol9bpcW/VFDb+AaqfNeLBWuIDaJqkpeprW9a6X9bl9T7Ev3d0Br7sQu0
+         pcNruVnI82Dl/mID7t5bBl1jQ4qdK+gUmfG/7XhUjSNieCwjSpCs2vau5yupfyxp+LV3
+         +zMpHB7FYOCWKnQHVLApBn7bZ8DElsbVLsFX2Wow1vKrvJP36hKWo030Agn7BxPP0ZZT
+         +1pRmUbjPVv5eFmOeHzPSwWBJZ89GI+iJnoO1EK2Rklctz38FEVha+yFmQL1d3jLbyPv
+         SXEKI7HzAGLlJu8+6k5OpEVlcqljC91KVGmPV4bMa1LdLDO++aXXENTQ7WEGkUkeVJEn
+         SYVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMpuuay1J4bbbLT19f1JKSAzUmSiEAvx0E8Wk4Q17xj2v5RyEykkTCZqUe9JLJfAVZKZhfZvU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCTBLnBUuD56NuEZS551mq8JqfVKJpvO6PygCzBvwOmuMHwfOw
+	DM8u2Xr225isgtONjyTjDO8h4SWOFDaJWjo1AJSu3CcbU7dJkOYlQbYk
+X-Gm-Gg: ASbGnctAZFzs3+qWHgEygSRE2jmtUEgB8EDuejk55hvRKlkoCUgdQeSfAcLsz3Qv/di
+	95PkkhSeAiFTovj13sGwqj06kqWuwMTBG7BQAKlS2pHfX4soUMhTNjJ5lzYDvEY3TZ6i2bIgwYb
+	f4NpMB/WTvirXAZvKvG9CcknbWgHCLZBGOKPNGMHxFt7Wb9CH7dzXdVd0SNU+kH8TshIDEeEp5x
+	diWqlfIg2Fd1NHbpkShPNATl8oIjckqVc84+jTk/8lyynpTw0OnG+yKA6eetoJ7N75su9oN4oVT
+	MFeCbiAZQIS5qpXr4ESWT/CgckQQ9kyZkYOmio2LiE+Qe7zWuTXeU6Ig+kR0jgTvJqLI4gUwWzi
+	6rNAheSM8o+RA6Tk/txaWSD07bSAwR/8GuwxzW6pEcomq6j5MC1EV6ijLQ6b+yihU/WGPb8V8xY
+	g0PrRC431qZRcendphPqJvHNksGk3O4oL1Xc+dXw==
+X-Google-Smtp-Source: AGHT+IH8hbBlzvqYRFzIPKqJyiL2DbZcQ1P0RcoVriGzy64BNuTiJSmpQhVZ+EIjGJFvqS32RaZ2zQ==
+X-Received: by 2002:a17:902:d583:b0:295:4d24:31bd with SMTP id d9443c01a7336-29b6bebe2eamr42752635ad.17.1763749328420;
+        Fri, 21 Nov 2025 10:22:08 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b107ee9sm62524545ad.1.2025.11.21.10.22.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Nov 2025 10:22:07 -0800 (PST)
+Message-ID: <4a3f450f-cf7a-4c5f-861c-10d15b9e6733@gmail.com>
+Date: Fri, 21 Nov 2025 10:22:06 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/185] 6.12.59-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251121130143.857798067@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt>
-X-B4-Tracking: v=1; b=H4sIAIOsIGkC/32NQQqDMBBFryKzbsSJVbSr3qNISeKoA60JSZSKe
- PemHqDL9+C/v0MgzxTglu3gaeXAdk4gLxmYSc0jCe4TgyxkhYil6NmOVoS3WsZn3BwZUdVaFlW
- rm1ZqSDvnaeDP2Xx0iScO0frtvFjxZ//VVhQoBlSq1NemlkV/j2RmNjZfXhy0VbmL0B3H8QWSL
- l0duwAAAA==
-X-Change-ID: 20251113-diogo-smaug_typec-56b2059b892b
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Felipe Balbi <felipe.balbi@linux.intel.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763749000; l=2292;
- i=diogo.ivo@tecnico.ulisboa.pt; s=20240529; h=from:subject:message-id;
- bh=FKFhoeOq4jsAOmHfzzNktnqeRvgyJi3lqxDZKCaXEtQ=;
- b=yyPlNwdYWcGi5hgivtw3AoH1PRJ51ftuo50jVIqI58b5oBUA2UWYpuOWvo1bhPb/wzJ1fg9uK
- VHo02FXXWMEB4leO99qDsllMhWk5WDSgfpgXCbCD8IpYV35Pl+p8Zmi
-X-Developer-Key: i=diogo.ivo@tecnico.ulisboa.pt; a=ed25519;
- pk=BRGXhMh1q5KDlZ9y2B8SodFFY8FGupal+NMtJPwRpUQ=
 
-As part of the registration of a new 'struct usb_phy' with the USB PHY core
-via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
-usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
-order for the new instance x to be stored in phy_list, a static list
-kept internally by the core.
+On 11/21/25 05:10, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.59 release.
+> There are 185 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.59-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-when executing either of the registration functions above it is possible
-that usb_add_extcon() fails, leading to either function returning before
-the call to list_add_tail(), leaving x->head uninitialized.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Then, when a driver tries to undo the failed registration by calling
-usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
-list_del(&x->head) acting on an uninitialized variable, and thus a
-possible NULL pointer dereference.
-
-Fix this by initializing x->head before usb_add_extcon() has a
-chance to fail. Note that this was not needed before 7d21114dc6a2 since
-list_add_phy() was executed unconditionally and it guaranteed that x->head
-was initialized.
-
-Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
----
-Changes in v2:
-- Adjust Fixes: sha1 to 12 digits
-- Reword commit message to clarify the need to introduce
-  INIT_LIST_HEAD()
-- Link to v1: https://lore.kernel.org/r/20251113-diogo-smaug_typec-v1-1-f1aa3b48620d@tecnico.ulisboa.pt
----
- drivers/usb/phy/phy.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
-index e1435bc59662..5a9b9353f343 100644
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum usb_phy_type type)
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-@@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-
----
-base-commit: b612b9a01026a268af6a191180e846ad121d1eab
-change-id: 20251113-diogo-smaug_typec-56b2059b892b
-
-Best regards,
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-
+Florian
 
