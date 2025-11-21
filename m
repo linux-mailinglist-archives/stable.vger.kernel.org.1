@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D54C79BBB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0070C792CC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id AA6252D2E1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 56FC82DA7E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C124034A77E;
-	Fri, 21 Nov 2025 13:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305B52F6577;
+	Fri, 21 Nov 2025 13:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVJGt53a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrf7OWgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE6630EF7F;
-	Fri, 21 Nov 2025 13:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCD734679A;
+	Fri, 21 Nov 2025 13:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732932; cv=none; b=GksRA1Po0jNcisCUIFNV+paK6pOo2Jg8rSvNMobOb5Qljh8pOg+Cj6R3wPM6vtO+PEG0sIqPvU+xvwIzwKkDI79Y+8ceIxHL98u7a03kmAPW43mBVXu3Py/HgWEismENtjYCKqerzfpiSTNNPuuy27i8csgKNhMJHJqJJV6ytAA=
+	t=1763731023; cv=none; b=ThK/N3ALKCA9sacy5J4UdcHqynmApfLOltTjkqKQHtqeun4F7YAVwpofrHtyAc0s4KhJWJ8YH+mHLlmabRN/U5t/2oIWdCGF+31ScS6EmQdAJ+5LNZ6g1T4peB7ebygRQbYwwfLz3Oxw00noeM6Tx3q9Ovx3Rmy6qc3IbbueAPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732932; c=relaxed/simple;
-	bh=vGktwZ4KHByPOjJQEVlpoQXas4arj/JEstQX61EhSpo=;
+	s=arc-20240116; t=1763731023; c=relaxed/simple;
+	bh=72EaicwGIfSIp2ztO1z5/BM5HuqY7B8Aac5J4kxhUgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hI1FxeWNvDpoyYanJ0aViOzvx4/rUlDHYoPFgzWck96i8k2gN5ID+vYDvllDALKT+FuKsszX32TEhbAvd8WyAu0I4R7A+A9CdlCsg7a/GltQsJcyMJ4UcKMS3fKR8CQPxvosHz/jJcWlumgJIyn0LVIHRaMhbkzgPI6wVSd+Xxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVJGt53a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED990C4CEF1;
-	Fri, 21 Nov 2025 13:48:51 +0000 (UTC)
+	 MIME-Version; b=MtlI6wAldGjo4XzJ3F53uZSJhrdPZcO7d2RT9IVlSF/IumCUSaU2UPlHqLBH76CKYA9fK2svh1+i0JFGe3zPxCF5f4k4b5QcRx7wjqDASEWwtmdccnvRbvSUqAgfo+mulN4PAnh+BQU75xckq8o03PHU5UdUdFUsuJQUfxixNX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrf7OWgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADFDC4CEF1;
+	Fri, 21 Nov 2025 13:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732932;
-	bh=vGktwZ4KHByPOjJQEVlpoQXas4arj/JEstQX61EhSpo=;
+	s=korg; t=1763731022;
+	bh=72EaicwGIfSIp2ztO1z5/BM5HuqY7B8Aac5J4kxhUgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVJGt53aGa82HgesWBIy2ARWTFO5ezgHdu/iRryciIVbJfa/k4jWhmQ9BQSlrWJLM
-	 NjCCneab+4DZ1aPW1QsP7Fh/fBYz/2+LBFR+aZ5HXX2I0bcks3J2/SyIEC2FLi1lk5
-	 cjiT0KDrBPhta65zn47+zMjdrE53iP6apnCE5sCA=
+	b=xrf7OWgF90I35WCQApn6/AXxAcD+d/y7f6mU8NdsY6p0cXLEkbVuM2/czQJoz2FB6
+	 IW18Dlw6Zukt36fyIuuzPOMpVFje6PdvKXsjzSmoYksMCM5Jj2rA129cMGlk/PazG7
+	 HkLgK2/OqteOxSYn/MArBRtY7GfhcpIQt50/nnfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/529] ftrace: Fix softlockup in ftrace_module_enable
+Subject: [PATCH 6.17 046/247] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
 Date: Fri, 21 Nov 2025 14:09:53 +0100
-Message-ID: <20251121130241.488982044@linuxfoundation.org>
+Message-ID: <20251121130156.255498477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
+[ Upstream commit 9065b968752334f972e0d48e50c4463a172fc2a7 ]
 
-A soft lockup was observed when loading amdgpu module.
-If a module has a lot of tracable functions, multiple calls
-to kallsyms_lookup can spend too much time in RCU critical
-section and with disabled preemption, causing kernel panic.
-This is the same issue that was fixed in
-commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
-kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
-ftrace_graph_set_hash()").
+When reporting tx completion using ieee80211_tx_status_xxx() family of
+functions, the status part of the struct ieee80211_tx_info nested in the
+skb is used to report things like transmit rates & retry count to mac80211
 
-Fix it the same way by adding cond_resched() in ftrace_module_enable.
+On the TX data path, this is correctly memset to 0 before calling
+ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
 
-Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+This leads to mac80211 treating garbage values as valid transmit counters
+(like tx retries for example) and accounting them as real statistics that
+makes their way to userland via station dump.
+
+The same issue was resolved in ath12k by commit 9903c0986f78 ("wifi:
+ath12k: Add memset and update default rate value in wmi tx completion")
+
+Tested-on: QCN9074 PCI WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251104083957.717825-1-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 15785a729a0cd..398992597685b 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6873,6 +6873,8 @@ void ftrace_module_enable(struct module *mod)
- 		if (!within_module(rec->ip, mod))
- 			break;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 0491e3fd6b5e1..e3b444333deed 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5961,6 +5961,9 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
-+		cond_resched();
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
++	info->status.rates[0].idx = -1;
 +
- 		/* Weak functions should still be ignored */
- 		if (!test_for_valid_rec(rec)) {
- 			/* Clear all other flags. Should not be enabled anyway */
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) &&
+ 	    !tx_compl_param->status) {
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
 -- 
 2.51.0
 
