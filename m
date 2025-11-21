@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-195936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4334C7978D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2CAC79511
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 7A67228D81
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id CDCFF2DA89
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E458434CFC3;
-	Fri, 21 Nov 2025 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BCC30AADC;
+	Fri, 21 Nov 2025 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stF24waL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5jQikxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BE3346E57;
-	Fri, 21 Nov 2025 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A20275B18;
+	Fri, 21 Nov 2025 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732091; cv=none; b=CG+gWWLEVzEunc2GsDUYa1/CtSUdctkh4EUqXh8/uh7wc78jp5RMuEfOt/CdtWWHuoKU3D+Fbymc3WWsfV8TZj3g5wNMY6w/RTyalQYBzV6IQgavd1rAz2vaZBsdzLZXMpbEqlVhrtyw42VLe6nhwYn0OhlDo6zyq02oVupN/DE=
+	t=1763731529; cv=none; b=HJxU5cYMFhrqOuCe/Z+7O+YT/vGp4fywDmsXJHzuxtIogOcPi3ncjdKJU6PVqHNBhfTkIdn6ifbdHUQsa5e5XFKqvgNBRVrhAeXSWKDsAXFfyCr6aVJhaQakV0OW6lTZLrUITLpw1T5lXpZVXf5ARY29BT/kSbn2bemelAEdsnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732091; c=relaxed/simple;
-	bh=29KXPScK/1V5VgP/QNZdSsXC/ZMh1NkpsptJseTsU9U=;
+	s=arc-20240116; t=1763731529; c=relaxed/simple;
+	bh=Y1NpoIfHDBHXTiMZ7HaeQk8GchA6wkqk0nC5djxAgzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPJgaZ4i7IQI+/laZF7LvBH1VcJw4G03X/l+JYQlSjTt1L8InY9+icItpl99w89XTcNKrBNm8aZhvQn5RCTh7DpRKx9v/ehNCtO+13SEGYcZ5/CsUcGmwnBBa1m1pwIz9TFwLvSBJ3uYF8tPgm3MTwFNyluHM5Roaj9ECsBnGM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stF24waL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C630DC116C6;
-	Fri, 21 Nov 2025 13:34:50 +0000 (UTC)
+	 MIME-Version; b=pnotexdlbqiD4sEzPUsV+qpqU72BxRHwRLFTP8PzfLq/L0V4PRh9nxdCGKjUVmfO/Ez4H1N0RnyTy8jlxrQLdCXwwwZIJgmHP8VI7UGXcAfBzJPT+WvXq5Dx/XACq5wCGa0NT9WuCP0OpweTze9zZN+igyEqppzBgVlcJUw8VWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5jQikxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A74C4CEF1;
+	Fri, 21 Nov 2025 13:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732091;
-	bh=29KXPScK/1V5VgP/QNZdSsXC/ZMh1NkpsptJseTsU9U=;
+	s=korg; t=1763731529;
+	bh=Y1NpoIfHDBHXTiMZ7HaeQk8GchA6wkqk0nC5djxAgzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stF24waLr/sD8qGQRooyE9gpbR4EoPStFH/jfaOGOhIXakHnfus4kEpBOf7csIxto
-	 YPb938bMYsTF+34U6PuWQGmo5c4qMkXsEcaStu1AyCqm5Vr/MaCKiwgpXaTet2uv4F
-	 vCHq70p0hZeRYl3znlxMm6t0p/rsSsXjT1kWx1CA=
+	b=d5jQikxdhtLO82LPWMpaje1UgJHK1Dsbw/b8EEGbKtna5+Y8eClz+o/6o6GYlXx4b
+	 D8sKyFcoL9gzgiVjAiAn1R+tGC3OgevfT9V8xlM2jeI6EF5xO8DDjpoS/ZzP5VCJ7m
+	 FqorW6QJsT6tnJmtKoCZOCkoxsXSTQ4Lp4KKV8Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/185] mptcp: fix MSG_PEEK stream corruption
-Date: Fri, 21 Nov 2025 14:13:06 +0100
-Message-ID: <20251121130149.612279185@linuxfoundation.org>
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Breno Leitao <leitao@debian.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 240/247] scripts/decode_stacktrace.sh: fix build ID and PC source parsing
+Date: Fri, 21 Nov 2025 14:13:07 +0100
+Message-ID: <20251121130203.350974026@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +69,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 8e04ce45a8db7a080220e86e249198fa676b83dc ]
+commit 7d9f7d390f6af3a29614e81e802e2b9c238eb7b2 upstream.
 
-If a MSG_PEEK | MSG_WAITALL read operation consumes all the bytes in the
-receive queue and recvmsg() need to waits for more data - i.e. it's a
-blocking one - upon arrival of the next packet the MPTCP protocol will
-start again copying the oldest data present in the receive queue,
-corrupting the data stream.
+Support for parsing PC source info in stacktraces (e.g.  '(P)') was added
+in commit 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of
+lines with an additional info").  However, this logic was placed after the
+build ID processing.  This incorrect order fails to parse lines containing
+both elements, e.g.:
 
-Address the issue explicitly tracking the peeked sequence number,
-restarting from the last peeked byte.
+  drm_gem_mmap_obj+0x114/0x200 [drm 03d0564e0529947d67bb2008c3548be77279fd27] (P)
 
-Fixes: ca4fb892579f ("mptcp: add MSG_PEEK support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-2-38ffff5a9ec8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+This patch fixes the problem by extracting the PC source info first and
+then processing the module build ID.  With this change, the line above is
+now properly parsed as such:
+
+  drm_gem_mmap_obj (./include/linux/mmap_lock.h:212 ./include/linux/mm.h:811 drivers/gpu/drm/drm_gem.c:1177) drm (P)
+
+While here, also add a brief explanation the build ID section.
+
+Link: https://lkml.kernel.org/r/20251030010347.2731925-1-cmllamas@google.com
+Fixes: 2bff77c665ed ("scripts/decode_stacktrace.sh: fix decoding of lines with an additional info")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Puranjay Mohan <puranjay@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Note: this is the patch Sasha sent for the v6.6 which applies on v6.12
-without conflicts. On v6.12, Sasha sent another version with dependences
-that caused some issues, see:
- https://lore.kernel.org/bbe84711-95b2-4257-9f01-560b4473a3da@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/mptcp/protocol.c |   36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ scripts/decode_stacktrace.sh |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1977,19 +1977,35 @@ static void mptcp_rcv_space_adjust(struc
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -275,12 +275,6 @@ handle_line() {
+ 		fi
+ 	done
  
- static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 				struct msghdr *msg,
--				size_t len, int flags,
-+				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
- 				int *cmsg_flags)
- {
- 	struct sk_buff *skb, *tmp;
-+	int total_data_len = 0;
- 	int copied = 0;
- 
- 	skb_queue_walk_safe(&msk->receive_queue, skb, tmp) {
--		u32 offset = MPTCP_SKB_CB(skb)->offset;
-+		u32 delta, offset = MPTCP_SKB_CB(skb)->offset;
- 		u32 data_len = skb->len - offset;
--		u32 count = min_t(size_t, len - copied, data_len);
-+		u32 count;
- 		int err;
- 
-+		if (flags & MSG_PEEK) {
-+			/* skip already peeked skbs */
-+			if (total_data_len + data_len <= copied_total) {
-+				total_data_len += data_len;
-+				continue;
-+			}
+-	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
+-		words[$last-1]="${words[$last-1]} ${words[$last]}"
+-		unset words[$last] spaces[$last]
+-		last=$(( $last - 1 ))
+-	fi
+-
+ 	# Extract info after the symbol if present. E.g.:
+ 	# func_name+0x54/0x80 (P)
+ 	#                     ^^^
+@@ -292,6 +286,14 @@ handle_line() {
+ 		unset words[$last] spaces[$last]
+ 		last=$(( $last - 1 ))
+ 	fi
 +
-+			/* skip the already peeked data in the current skb */
-+			delta = copied_total - total_data_len;
-+			offset += delta;
-+			data_len -= delta;
-+		}
-+
-+		count = min_t(size_t, len - copied, data_len);
-+
- 		if (!(flags & MSG_TRUNC)) {
- 			err = skb_copy_datagram_msg(skb, offset, msg, count);
- 			if (unlikely(err < 0)) {
-@@ -2006,22 +2022,19 @@ static int __mptcp_recvmsg_mskq(struct m
++	# Join module name with its build id if present, as these were
++	# split during tokenization (e.g. "[module" and "modbuildid]").
++	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
++		words[$last-1]="${words[$last-1]} ${words[$last]}"
++		unset words[$last] spaces[$last]
++		last=$(( $last - 1 ))
++	fi
  
- 		copied += count;
- 
--		if (count < data_len) {
--			if (!(flags & MSG_PEEK)) {
-+		if (!(flags & MSG_PEEK)) {
-+			msk->bytes_consumed += count;
-+			if (count < data_len) {
- 				MPTCP_SKB_CB(skb)->offset += count;
- 				MPTCP_SKB_CB(skb)->map_seq += count;
--				msk->bytes_consumed += count;
-+				break;
- 			}
--			break;
--		}
- 
--		if (!(flags & MSG_PEEK)) {
- 			/* we will bulk release the skb memory later */
- 			skb->destructor = NULL;
- 			WRITE_ONCE(msk->rmem_released, msk->rmem_released + skb->truesize);
- 			__skb_unlink(skb, &msk->receive_queue);
- 			__kfree_skb(skb);
--			msk->bytes_consumed += count;
- 		}
- 
- 		if (copied >= len)
-@@ -2245,7 +2258,8 @@ static int mptcp_recvmsg(struct sock *sk
- 	while (copied < len) {
- 		int err, bytes_read;
- 
--		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags, &tss, &cmsg_flags);
-+		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags,
-+						  copied, &tss, &cmsg_flags);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
+ 	if [[ ${words[$last]} =~ \[([^]]+)\] ]]; then
+ 		module=${words[$last]}
 
 
 
