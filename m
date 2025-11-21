@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A392AC797AB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97127C79386
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC834348155
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id A7B7C2C41E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4E6332904;
-	Fri, 21 Nov 2025 13:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE79A27147D;
+	Fri, 21 Nov 2025 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tm08y7n5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFBs6KG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292CF1F03D7;
-	Fri, 21 Nov 2025 13:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBBC1F09B3;
+	Fri, 21 Nov 2025 13:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731818; cv=none; b=iuO6FpYOv1wnolLSBcBlPgGJkSmYzmukfU87Zui3NlXueRNu610itfL7CrR5cuLDH+pak87gsEPwfvaItBuUJi4DFRcNT+tG/MIA245kjOjQCJG19R7do83m149EIf7V+m2hFe1XMFgiLlSXMNLiDToTcE/UqkCRwVeal3MUbXo=
+	t=1763731204; cv=none; b=dKNpz6ylmUge8yJkXSqjA89MhBVWQ/xG7om4uo3CyvDe+5jJUPdWpTXUW1VHAbYgKlT0qK3XN99ZZ16vn4LR10V3ayFeM4nEiimZFZkEdHSb5d6l/DN3Opv+Wf6Oqn/J/E5IK75THnefZADTaOLpuPy2rQJ7GaXVYwH3Glw40GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731818; c=relaxed/simple;
-	bh=phW7KzWlMnnCSJTfQVxF4+wdXt1kmDux9krINajj6ZU=;
+	s=arc-20240116; t=1763731204; c=relaxed/simple;
+	bh=uNat1hXm1fbC458sWEA5woG7wSVRNS6bkJKh3YrXjbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+QGDEXk0D3WmTw3Bj/trPL6noPsY/eQl5Dc+/Y+1ULloT8s8UrK1A+JzEmUr5YvtGOzElyzeh6hVn6eWzCsgPR67m+froD8HS8PnJgwGRyNlmyfA9SQVZJILUSnLLppYr/KLDFo5sQ2MeatVLnW6y9nY1zXiF9fV3ZHbVvTO0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tm08y7n5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD83C4CEF1;
-	Fri, 21 Nov 2025 13:30:17 +0000 (UTC)
+	 MIME-Version; b=JnJur/raR3VR1GgkxAhwGT5H0NtqWOasUpLdWPpQKwjU+OR0PME4kNbIP2TT1OaQpBqxg4WPgaWt6hE/YtiEOL6kK3LCrT5vTCZ/szstlEA79ZtKBtJEtwP6UDX10bnfZH6Wi/8wT4xAbi9umOEkJiAkcuHWhqcMFcabmHChmq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFBs6KG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9088C4CEF1;
+	Fri, 21 Nov 2025 13:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731818;
-	bh=phW7KzWlMnnCSJTfQVxF4+wdXt1kmDux9krINajj6ZU=;
+	s=korg; t=1763731204;
+	bh=uNat1hXm1fbC458sWEA5woG7wSVRNS6bkJKh3YrXjbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tm08y7n51K3Cxz5/ffWDAaCmRu211NE11bTSiP0hvWQA9xhCIgzV44oe/zFD1a7ez
-	 Cs9WYJJR7PSBy2skaYTCNQ67v81nHUq2zZvwpTSmDTIGqS+np7zFtr9Ka/uBoiHFVV
-	 SK7Po24ThaPF4kV/VomC5mbeSQq56UD9Cx8P9uLE=
+	b=sFBs6KG334Zovbh8xCxJ3KhHYliIyNO9A0MQfnvRLHgJbBPFZ4N4PoVFF/nNNEE0t
+	 FaRyFdDTfV1IakROqGEKOchuL5+L0EPXJDbN3Cg8pZdm13263S0y7IMBb1KN0Vtyrl
+	 xUxL4coo/P/CTvraviUelwwLldgWJBhBhK6Pv90Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/185] net: ethernet: ti: am65-cpsw-qos: fix IET verify/response timeout
+Subject: [PATCH 6.17 127/247] binfmt_misc: restore write access before closing files opened by open_exec()
 Date: Fri, 21 Nov 2025 14:11:14 +0100
-Message-ID: <20251121130145.576897029@linuxfoundation.org>
+Message-ID: <20251121130159.285769323@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 49b3916465176a5abcb29a0e464825f553d55d58 ]
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
 
-The CPSW module uses the MAC_VERIFY_CNT bit field in the
-CPSW_PN_IET_VERIFY_REG_k register to set the verify/response timeout
-count. This register specifies the number of clock cycles to wait before
-resending a verify packet if the verification fails.
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
 
-The verify/response timeout count, as being set by the function
-am65_cpsw_iet_set_verify_timeout_count() is hardcoded for 125MHz
-clock frequency, which varies based on PHY mode and link speed.
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
 
-The respective clock frequencies are as follows:
-- RGMII mode:
-  * 1000 Mbps: 125 MHz
-  * 100 Mbps: 25 MHz
-  * 10 Mbps: 2.5 MHz
-- QSGMII/SGMII mode: 125 MHz (all speeds)
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
 
-Fix this by adding logic to calculate the correct timeout counts
-based on the actual PHY interface mode and link speed.
-
-Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Link: https://patch.msgid.link/20251106092305.1437347-2-a-garg7@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-qos.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ fs/binfmt_misc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-index fa96db7c1a130..ad06942ce461a 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-@@ -276,9 +276,31 @@ static int am65_cpsw_iet_set_verify_timeout_count(struct am65_cpsw_port *port)
- 	/* The number of wireside clocks contained in the verify
- 	 * timeout counter. The default is 0x1312d0
- 	 * (10ms at 125Mhz in 1G mode).
-+	 * The frequency of the clock depends on the link speed
-+	 * and the PHY interface.
- 	 */
--	val = 125 * HZ_PER_MHZ;	/* assuming 125MHz wireside clock */
-+	switch (port->slave.phy_if) {
-+	case PHY_INTERFACE_MODE_RGMII:
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+		if (port->qos.link_speed == SPEED_1000)
-+			val = 125 * HZ_PER_MHZ;	/* 125 MHz at 1000Mbps*/
-+		else if (port->qos.link_speed == SPEED_100)
-+			val = 25 * HZ_PER_MHZ;	/* 25 MHz at 100Mbps*/
-+		else
-+			val = (25 * HZ_PER_MHZ) / 10;	/* 2.5 MHz at 10Mbps*/
-+		break;
-+
-+	case PHY_INTERFACE_MODE_QSGMII:
-+	case PHY_INTERFACE_MODE_SGMII:
-+		val = 125 * HZ_PER_MHZ;	/* 125 MHz */
-+		break;
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index a839f960cd4a0..a8b1d79e4af07 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -837,8 +837,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	inode_unlock(d_inode(root));
  
-+	default:
-+		netdev_err(port->ndev, "selected mode does not supported IET\n");
-+		return -EOPNOTSUPP;
-+	}
- 	val /= MILLIHZ_PER_HZ;		/* count per ms timeout */
- 	val *= verify_time_ms;		/* count for timeout ms */
- 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			exe_file_allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
 -- 
 2.51.0
 
