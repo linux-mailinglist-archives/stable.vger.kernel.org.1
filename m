@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDEFC7A026
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DE1C79914
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A05E368BCE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 2A5CE2F9FC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3B0350A28;
-	Fri, 21 Nov 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7086034BA5B;
+	Fri, 21 Nov 2025 13:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oppp0mia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEZmKsVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209DE3F9D2;
-	Fri, 21 Nov 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECCB26CE33;
+	Fri, 21 Nov 2025 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733535; cv=none; b=cUQCwD35j+ZPsOYUXGQSNGRqIO5PAduo6FmEpNBS/jJndZ7LRw/9cUEmERCUWqD0Vo9PzDJ2r5qrAViYgmGC0NofvRrAlGaLNAWnjv4DF/HJjEvV268BYBQvpofQQzeZHyAqp/rEI4nKLuffwgNOx4gcTHhpeW69Ngo9oEcpjf4=
+	t=1763732057; cv=none; b=ANXqjJE4EGNiau53686NRnnVXX4s6sRpE3Xk5Z5xMBar8oEs8Rr5pB6qvpjpCXYzCcyx89uu5sg1DViVFp2FHj+/EeKkzu0BOpDe9unWeIt86ceE41bLOvZreeQkztTDy9tkrCrHap9jUZv0E3ICMMdK59nEWuTPhk4yhpSxcQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733535; c=relaxed/simple;
-	bh=dgkvbYU5EHaD2RYk9b9vxkniTpsskDVpI6+ZLsnGNuw=;
+	s=arc-20240116; t=1763732057; c=relaxed/simple;
+	bh=tJg74wQt86hP6tqdaJQhoSLS8znsLaYF9W/4Pq9MDW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z16hxVR9zRHlFFmBOttq8iA3PMsZYDg5XUyIacQIZC1caWwHC8H2Zq3FQIuZq1wDO5pp6NI99fT0/9VbuIj4Mns0HXbvhMRdwSi1Q3ewjUTK3618ZFGlPBO28fx7gO5S8BGpYc5mf0tBPK/8a2IRoEV9LB0HzeFVdQATrEHHMZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oppp0mia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99107C4CEF1;
-	Fri, 21 Nov 2025 13:58:54 +0000 (UTC)
+	 MIME-Version; b=XZ3gAogdxHrjr8n7uwVEKO8mkLRElH+5ZKIuprz4nWRHhgSig9Iwg/pFVoUUO3qydhWEDiTrIGko4Dm7FvKHHjXhqncOyCCFL0QmhRGn1TTHKIYz6Z5/Qxzs2QJxqaaOldgPDqT/algiRlxKYNWdgYK7h4wY9zDCRJZ9MxHKVt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEZmKsVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712D4C4CEF1;
+	Fri, 21 Nov 2025 13:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733535;
-	bh=dgkvbYU5EHaD2RYk9b9vxkniTpsskDVpI6+ZLsnGNuw=;
+	s=korg; t=1763732056;
+	bh=tJg74wQt86hP6tqdaJQhoSLS8znsLaYF9W/4Pq9MDW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oppp0mia85nEZaI14fxdhSyE9wiytx+m3gxbmClHsO4EPmkwjmUSVMnZZym0aNWbA
-	 GD9/Atz1eBYrcfX7egBGlwWJoMiZorrWx1Wpi+tkoUh5oAXHkHiDWljQ9fFgS0KBly
-	 5Fg8sa7QQbnlSFV+YfJCeeHzCY23jxO4p2O9GGYs=
+	b=wEZmKsVnHx/JAPe7Icdq69bzaRY87C7ij5JXeCD/s2X6hNNtVWQx45lmrgvAZXYEj
+	 8pHMWXYewt47h1hlVAwxtrRmmWo3crizHhWI5OUK3aRgj6Bt6H42nNeaVqyHetugzH
+	 WhaaT3Nnax0YrUWL2AV9IZAthMzmWgwgWS9BWIKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.6 502/529] net: stmmac: Fix accessing freed irq affinity_hint
-Date: Fri, 21 Nov 2025 14:13:21 +0100
-Message-ID: <20251121130248.878141531@linuxfoundation.org>
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH 6.12 175/185] uio_hv_generic: Set event for all channels on the device
+Date: Fri, 21 Nov 2025 14:13:22 +0100
+Message-ID: <20251121130150.204542638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
+commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
 
-The cpumask should not be a local variable, since its pointer is saved
-to irq_desc and may be accessed from procfs.
-To fix it, use the persistent mask cpumask_of(cpu#).
+Hyper-V may offer a non latency sensitive device with subchannels without
+monitor bit enabled. The decision is entirely on the Hyper-V host not
+configurable within guest.
 
-Cc: stable@vger.kernel.org
-Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
+When a device has subchannels, also signal events for the subchannel
+if its monitor bit is disabled.
+
+This patch also removes the memory barrier when monitor bit is enabled
+as it is not necessary. The memory barrier is only needed between
+setting up interrupt mask and calling vmbus_set_event() when monitor
+bit is disabled.
+
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
+Fixes: 37bd91f22794 ("uio_hv_generic: Let userspace take care of interrupt mask")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/uio/uio_hv_generic.c |   32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3516,7 +3516,6 @@ static int stmmac_request_irq_multi_msi(
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	enum request_irq_err irq_err;
--	cpumask_t cpu_mask;
- 	int irq_idx = 0;
- 	char *int_name;
- 	int ret;
-@@ -3628,9 +3627,8 @@ static int stmmac_request_irq_multi_msi(
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->rx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
- 	}
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -65,6 +65,16 @@ struct hv_uio_private_data {
+ 	char	send_name[32];
+ };
  
- 	/* Request Tx MSI irq */
-@@ -3653,9 +3651,8 @@ static int stmmac_request_irq_multi_msi(
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->tx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
- 	}
++static void set_event(struct vmbus_channel *channel, s32 irq_state)
++{
++	channel->inbound.ring_buffer->interrupt_mask = !irq_state;
++	if (!channel->offermsg.monitor_allocated && irq_state) {
++		/* MB is needed for host to see the interrupt mask first */
++		virt_mb();
++		vmbus_set_event(channel);
++	}
++}
++
+ /*
+  * This is the irqcontrol callback to be registered to uio_info.
+  * It can be used to disable/enable interrupt from user space processes.
+@@ -79,12 +89,15 @@ hv_uio_irqcontrol(struct uio_info *info,
+ {
+ 	struct hv_uio_private_data *pdata = info->priv;
+ 	struct hv_device *dev = pdata->device;
++	struct vmbus_channel *primary, *sc;
+ 
+-	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
+-	virt_mb();
++	primary = dev->channel;
++	set_event(primary, irq_state);
+ 
+-	if (!dev->channel->offermsg.monitor_allocated && irq_state)
+-		vmbus_setevent(dev->channel);
++	mutex_lock(&vmbus_connection.channel_mutex);
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		set_event(sc, irq_state);
++	mutex_unlock(&vmbus_connection.channel_mutex);
  
  	return 0;
+ }
+@@ -95,11 +108,18 @@ hv_uio_irqcontrol(struct uio_info *info,
+ static void hv_uio_channel_cb(void *context)
+ {
+ 	struct vmbus_channel *chan = context;
+-	struct hv_device *hv_dev = chan->device_obj;
+-	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
++	struct hv_device *hv_dev;
++	struct hv_uio_private_data *pdata;
+ 
+ 	virt_mb();
+ 
++	/*
++	 * The callback may come from a subchannel, in which case look
++	 * for the hv device in the primary channel
++	 */
++	hv_dev = chan->primary_channel ?
++		 chan->primary_channel->device_obj : chan->device_obj;
++	pdata = hv_get_drvdata(hv_dev);
+ 	uio_event_notify(&pdata->info);
+ }
+ 
 
 
 
