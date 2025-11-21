@@ -1,73 +1,58 @@
-Return-Path: <stable+bounces-195929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE4DC79763
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70356C7A0F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E04D4E15D2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B7214F3B0A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6B734C98F;
-	Fri, 21 Nov 2025 13:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A448834DB6B;
+	Fri, 21 Nov 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se5b8uDW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJWmeORj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CB334B1B7;
-	Fri, 21 Nov 2025 13:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375952874F6;
+	Fri, 21 Nov 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732072; cv=none; b=sLmsROTu4THlAKR8qO2VUP9WEhKJMCMfaSRKjyH++GgsX4Q9y0xeqAW5isPoN350RK9AT0vScmcpeklwBddv49ZsVp92eZoRDWrQFTdM7yYDBLxdlrKELUqnbtua3o0i7xjWICkkRx48aCn4YdQ/hSNGl/DTrtGBf+fANWxUYBE=
+	t=1763733552; cv=none; b=baqFzBp+w6A+42sTQLIYLxL8eLWS9UCY/KZnNnGOVqW+5hrC0tEZiZf/QSsUFJVP1fC7low2I/xuIurTctjx6h81/U0yiPkA97ReZ4kMU5f0mPbnY0SvcfBblZ6VFHtpsqnr47GaEDDr3YfNM7fkEdT5xA5IVNc4JAde4tnHYmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732072; c=relaxed/simple;
-	bh=rgnsdCYTIACZt9+mf80x7C+qd7mn0CgZxmOUxFIi5nc=;
+	s=arc-20240116; t=1763733552; c=relaxed/simple;
+	bh=hZU1c/q5QoszjcXQTblYbCPtEAwRPnAh1LPRhIJVqDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pm6Gq7VEQ5VbFb5NjOwGwnmfdXrquVqlDyMQcyVIzR6QrEBgxtSs3H0ZRlxbbOdhbvUdwzxfTc9J7YPEXCcD7M1kgBpFlGMLQmxcWKKy9XxLIOsoB3J7Pshy+QaMMYZmt1zZW7LChUUGpHwcZcJdsfkjwAtv1u7/KEBz+oqHQZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se5b8uDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904BEC4CEF1;
-	Fri, 21 Nov 2025 13:34:30 +0000 (UTC)
+	 MIME-Version; b=OInnCvm7Ua1PhIH//EQHFQny7fPVQX9cwDHcDccyNxUDxqgXfgG4KWR4idrq8HTVC8fw0+2fXM5EUvgfR4U8Bd5WpGfRoPaWiS5mzDEDcs/5KtZlZPDHBIjUZJQQ7vIruTVBkmHOPzoBIGCdE5/QHbBWhdQXtugSpjRYKCaEIZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJWmeORj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67E1C4CEF1;
+	Fri, 21 Nov 2025 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732071;
-	bh=rgnsdCYTIACZt9+mf80x7C+qd7mn0CgZxmOUxFIi5nc=;
+	s=korg; t=1763733552;
+	bh=hZU1c/q5QoszjcXQTblYbCPtEAwRPnAh1LPRhIJVqDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Se5b8uDWg6G34h2Vpa1Fsbu1LfEkqVO0pDUE//yeZP4rZT2IURxxZveSq68DXg9OH
-	 i1xqJT5E3akM5DbzjZfzm75yWl1cKcGY+gnLcqY/ffv6HY+1b/OqKqoS1RO4PxPVgy
-	 z4KNRes9c5QebR6kNHtlqqtYcsYqlxePaHPQjmAA=
+	b=BJWmeORj33EGmTJ6tS0fA/JapXLT/na+S1axSSLrFFEQTCWrp3jg+YjaJiDW93wzq
+	 /g+bDhEByjOeqO9PuK/KK/2v8ZjyMYcT3VorP1pfQbtCQaAe8w6EVMb3zpWS10i3jT
+	 CCgxZD7goKUgBE7KL4t0cRZCMZZN/LdZKFfTBEK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Mariano Pache <npache@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 179/185] mm/huge_memory: do not change split_huge_page*() target order silently
-Date: Fri, 21 Nov 2025 14:13:26 +0100
-Message-ID: <20251121130150.350977461@linuxfoundation.org>
+	Amit Pundir <amit.pundir@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 508/529] scsi: ufs: core: Add a quirk for handling broken LSDBS field in controller capabilities register
+Date: Fri, 21 Nov 2025 14:13:27 +0100
+Message-ID: <20251121130249.108860036@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,117 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 77008e1b2ef73249bceb078a321a3ff6bc087afb upstream.
+[ Upstream commit cd06b713a6880997ca5aecac8e33d5f9c541749e ]
 
-Page cache folios from a file system that support large block size (LBS)
-can have minimal folio order greater than 0, thus a high order folio might
-not be able to be split down to order-0.  Commit e220917fa507 ("mm: split
-a folio in minimum folio order chunks") bumps the target order of
-split_huge_page*() to the minimum allowed order when splitting a LBS
-folio.  This causes confusion for some split_huge_page*() callers like
-memory failure handling code, since they expect after-split folios all
-have order-0 when split succeeds but in reality get min_order_for_split()
-order folios and give warnings.
+'Legacy Queue & Single Doorbell Support (LSDBS)' field in the controller
+capabilities register is supposed to report whether the legacy single
+doorbell mode is supported in the controller or not. But some controllers
+report '1' in this field which corresponds to 'LSDB not supported', but
+they indeed support LSDB. So let's add a quirk to handle those controllers.
 
-Fix it by failing a split if the folio cannot be split to the target
-order.  Rename try_folio_split() to try_folio_split_to_order() to reflect
-the added new_order parameter.  Remove its unused list parameter.
+If the quirk is enabled by the controller driver, then LSDBS register field
+will be ignored and legacy single doorbell mode is assumed to be enabled
+always.
 
-[The test poisons LBS folios, which cannot be split to order-0 folios, and
-also tries to poison all memory.  The non split LBS folios take more
-memory than the test anticipated, leading to OOM.  The patch fixed the
-kernel warning and the test needs some change to avoid OOM.]
-
-Link: https://lkml.kernel.org/r/20251017013630.139907-1-ziy@nvidia.com
-Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240816-ufs-bug-fix-v3-1-e6fe0e18e2a3@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/huge_mm.h |   21 +++++++--------------
- mm/huge_memory.c        |    7 +------
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ drivers/ufs/core/ufshcd.c |    6 +++++-
+ include/ufs/ufshcd.h      |    8 ++++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -353,20 +353,7 @@ int min_order_for_split(struct folio *fo
- int split_folio_to_list(struct folio *folio, struct list_head *list);
- static inline int split_huge_page(struct page *page)
- {
--	struct folio *folio = page_folio(page);
--	int ret = min_order_for_split(folio);
--
--	if (ret < 0)
--		return ret;
--
--	/*
--	 * split_huge_page() locks the page before splitting and
--	 * expects the same page that has been split to be locked when
--	 * returned. split_folio(page_folio(page)) cannot be used here
--	 * because it converts the page to folio and passes the head
--	 * page to be split.
--	 */
--	return split_huge_page_to_list_to_order(page, NULL, ret);
-+	return split_huge_page_to_list_to_order(page, NULL, 0);
- }
- void deferred_split_folio(struct folio *folio, bool partially_mapped);
- 
-@@ -538,6 +525,12 @@ static inline int split_huge_page(struct
- 	return 0;
- }
- 
-+static inline int min_order_for_split(struct folio *folio)
-+{
-+	VM_WARN_ON_ONCE_FOLIO(1, folio);
-+	return -EINVAL;
-+}
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2368,7 +2368,11 @@ static inline int ufshcd_hba_capabilitie
+ 	 * 0h: legacy single doorbell support is available
+ 	 * 1h: indicate that legacy single doorbell support has been removed
+ 	 */
+-	hba->lsdb_sup = !FIELD_GET(MASK_LSDB_SUPPORT, hba->capabilities);
++	if (!(hba->quirks & UFSHCD_QUIRK_BROKEN_LSDBS_CAP))
++		hba->lsdb_sup = !FIELD_GET(MASK_LSDB_SUPPORT, hba->capabilities);
++	else
++		hba->lsdb_sup = true;
 +
- static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
- {
- 	return 0;
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3597,12 +3597,7 @@ int min_order_for_split(struct folio *fo
+ 	if (!hba->mcq_sup)
+ 		return 0;
  
- int split_folio_to_list(struct folio *folio, struct list_head *list)
- {
--	int ret = min_order_for_split(folio);
--
--	if (ret < 0)
--		return ret;
--
--	return split_huge_page_to_list_to_order(&folio->page, list, ret);
-+	return split_huge_page_to_list_to_order(&folio->page, list, 0);
- }
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -670,6 +670,14 @@ enum ufshcd_quirks {
+ 	 * the standard best practice for managing keys).
+ 	 */
+ 	UFSHCD_QUIRK_KEYS_IN_PRDT			= 1 << 24,
++
++	/*
++	 * This quirk indicates that the controller reports the value 1 (not
++	 * supported) in the Legacy Single DoorBell Support (LSDBS) bit of the
++	 * Controller Capabilities register although it supports the legacy
++	 * single doorbell mode.
++	 */
++	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
+ };
  
- /*
+ enum ufshcd_caps {
 
 
 
