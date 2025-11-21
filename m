@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-196416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB19AC7A051
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AFBC79817
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE97B4F3078
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A66936307D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1371D2F8BCB;
-	Fri, 21 Nov 2025 13:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C512E332904;
+	Fri, 21 Nov 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOLB4aE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWWVvDWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FDC34C990;
-	Fri, 21 Nov 2025 13:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C732745E;
+	Fri, 21 Nov 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733448; cv=none; b=gDM8U5e5HVKpWptAmLMAtn2ViqY1y7/yMvlQ2LpFTBuDxGNnXzfEFbYQV/VhkyxoFIw/BrUr33gf5kwPOBcJKGjuaxy+yR4j7kQXIUyB1WVtFXLJuPd8MlCr89SQUxbbaJ7ITsXc4AChkH6/LgVVMzv0WCah4NpCoI+7bYBKnuM=
+	t=1763731973; cv=none; b=R6MPPSZStMIFIIKwC9sNB7V8NYiDfR39FMG93haXyU3BCfEwYP5b+a3jIa8GjcIHPXuxif4Q8m87Eusk3C/YbiwTvC42zPLkouwRhEO82D85JDEjWsC0I/9cNSQv8Wh/SL6iiHPSttclXCLBGIa2HsZ/Ume3IH8pMW9g3QK1JC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733448; c=relaxed/simple;
-	bh=owuH5cCtc3BAZqr/WgrjjBFHimvXiarydKV6No0ZI2c=;
+	s=arc-20240116; t=1763731973; c=relaxed/simple;
+	bh=e9R9ITJ1jSMUxI5pkmYchmOWOlCRwUYROSu0GoibZx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tk588n66INvRzAD9nxz9AmPmHfPljfLrWn9+1qHBgoKzIiEic7Zt0mGSNfqlnekFgezXGA2en8GMpoScJSRL75jvBrcybECWyrIJUonYS4UHTxcBQkaEG6Wh3GMaHiMwV+rWPUc16eXbYAJ13jn27M1s8GGJCw7A24ZVE8Vri88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOLB4aE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBDCC116C6;
-	Fri, 21 Nov 2025 13:57:27 +0000 (UTC)
+	 MIME-Version; b=UpPuJonnY3yxi0kfyRIrB4KDqxvWhUqyP02MZkgUHk3Y0uQln6rIrqPA2kYsKxb1BzgtKPnfx+s9OtC/EoeJe4DdeimoUcxPDHRZg67qVtM6W4V7dE9j1kvqdCpBfU/UvvnUbigZrHKy8E8w7gJi97ymuAJny8uV+27p1mtWtQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWWVvDWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032F7C4CEF1;
+	Fri, 21 Nov 2025 13:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733448;
-	bh=owuH5cCtc3BAZqr/WgrjjBFHimvXiarydKV6No0ZI2c=;
+	s=korg; t=1763731973;
+	bh=e9R9ITJ1jSMUxI5pkmYchmOWOlCRwUYROSu0GoibZx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOLB4aE6YLYZ+POr7PCbWvOishE+tcraI2O5MTLaYbQ+BKgXlP63XWcOpcUPo3JBQ
-	 iLDvawshJC6vs6n460ZphMfwleBacKlXsamGV9XWPjyjHPnFhudKIXq9Dj/KX5Ggar
-	 bBC+RRVIahMcWf9x9IKUfMGfEcjXD9jnevhdt6wQ=
+	b=lWWVvDWWPDovolFVGflLjA8Vnu/ZwhcTDlrVaoPpVhVnqdFCPorVNBdJQzHQrLBxM
+	 x/uOzjGlfjU1+ArdsfV/ZUbSq5x3npyNP5s54/VWiii7Tc/GZKJrCHE36jEhqa3Kp1
+	 OKW4hwomARcpU7KYvTfvODi5f9RqKt95MHeuUfuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 472/529] wifi: mac80211: reject address change while connecting
-Date: Fri, 21 Nov 2025 14:12:51 +0100
-Message-ID: <20251121130247.803849140@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 145/185] btrfs: scrub: put bio after errors in scrub_raid56_parity_stripe()
+Date: Fri, 21 Nov 2025 14:12:52 +0100
+Message-ID: <20251121130149.110130783@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit a9da90e618cd0669a22bcc06a96209db5dd96e9b upstream.
+commit 5fea61aa1ca70c4b3738eebad9ce2d7e7938ebbd upstream.
 
-While connecting, the MAC address can already no longer be
-changed. The change is already rejected if netif_carrier_ok(),
-but of course that's not true yet while connecting. Check for
-auth_data or assoc_data, so the MAC address cannot be changed.
+scrub_raid56_parity_stripe() allocates a bio with bio_alloc(), but
+fails to release it on some error paths, leading to a potential
+memory leak.
 
-Also more comprehensively check that there are no stations on
-the interface being changed - if any peer station is added it
-will know about our address already, so we cannot change it.
+Add the missing bio_put() calls to properly drop the bio reference
+in those error cases.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c06e91b40db ("wifi: mac80211: Support POWERED_ADDR_CHANGE feature")
-Link: https://patch.msgid.link/20251105154119.f9f6c1df81bb.I9bb3760ede650fb96588be0d09a5a7bdec21b217@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1009254bf22a3 ("btrfs: scrub: use scrub_stripe to implement RAID56 P/Q scrub")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/iface.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/btrfs/scrub.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -216,6 +216,10 @@ static int ieee80211_can_powered_addr_ch
- 
- 	mutex_lock(&local->mtx);
- 
-+	/* if any stations are set known (so they know this vif too), reject */
-+	if (sta_info_get_by_idx(sdata, 0))
-+		return -EBUSY;
-+
- 	/* First check no ROC work is happening on this iface */
- 	list_for_each_entry(roc, &local->roc_list, list) {
- 		if (roc->sdata != sdata)
-@@ -235,12 +239,16 @@ static int ieee80211_can_powered_addr_ch
- 			ret = -EBUSY;
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2091,6 +2091,7 @@ static int scrub_raid56_parity_stripe(st
+ 	ret = btrfs_map_block(fs_info, BTRFS_MAP_WRITE, full_stripe_start,
+ 			      &length, &bioc, NULL, NULL);
+ 	if (ret < 0) {
++		bio_put(bio);
+ 		btrfs_put_bioc(bioc);
+ 		btrfs_bio_counter_dec(fs_info);
+ 		goto out;
+@@ -2100,6 +2101,7 @@ static int scrub_raid56_parity_stripe(st
+ 	btrfs_put_bioc(bioc);
+ 	if (!rbio) {
+ 		ret = -ENOMEM;
++		bio_put(bio);
+ 		btrfs_bio_counter_dec(fs_info);
+ 		goto out;
  	}
- 
-+	/*
-+	 * More interface types could be added here but changing the
-+	 * address while powered makes the most sense in client modes.
-+	 */
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_P2P_CLIENT:
--		/* More interface types could be added here but changing the
--		 * address while powered makes the most sense in client modes.
--		 */
-+		/* refuse while connecting */
-+		if (sdata->u.mgd.auth_data || sdata->u.mgd.assoc_data)
-+			return -EBUSY;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
 
 
 
