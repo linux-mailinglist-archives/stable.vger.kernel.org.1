@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B513C79551
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39F1C79E3A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0D7C334CBDD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDA84342AE9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE92F2765FF;
-	Fri, 21 Nov 2025 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771B634CFDB;
+	Fri, 21 Nov 2025 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEhUF0/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKGL4tPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69636264612;
-	Fri, 21 Nov 2025 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5722459C6;
+	Fri, 21 Nov 2025 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731284; cv=none; b=nHqX/R8CuUHie9uJP32YTpdvsqGE21v7b7dtYO9Mx0LjfGOhoRGM68dOvkIobRLF0ZIjJ40+UY71Pyo1tD97YJMSDLDlxo69htHDDD+snoSLzfjuOCG9te+wWUWope3u7ERbwkGtYVBPpscRgjmW+jMiLeCgLs3A+vqANUyhhWM=
+	t=1763733152; cv=none; b=MrFnpAOGIhaDL96Ro5P2W/4E56tEU72bhsoJAbG5PA3yWDIeyACV9de1Yy7YYO7Zg968Yhkbsp+8zbQDwltnFrbtJnvmLWlkHiggLmbNWIlIcwdTQuLK0eew5tNNDGCgLBCp+qzALbWW0YdHfTSF9BVIOCu835dTqZrvqqPGvg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731284; c=relaxed/simple;
-	bh=FYLN6Xl3Evm9od3e874g4J82eZZI5seGOtA6DisBIZg=;
+	s=arc-20240116; t=1763733152; c=relaxed/simple;
+	bh=PHIeXSsNI1wRJlVpV5iMlGMSqVIXSm2SGQharL9oPjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYkz5K0iUI1EgoWUBKeEiJkibxWOnlUdl5kBxxa5KBJnSDaV6zV4iErwZ/22Dv45AcZ3v5U27ptUi30iXV+g4jScW/Sim+b5lAfnW2qlZZYo2VNE+rLK03Ukb+oAWYebua/kABvIAVdA6UOBhcj8Jr4zBuJtmZhs1DFFIL8r6l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEhUF0/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA9C4CEF1;
-	Fri, 21 Nov 2025 13:21:23 +0000 (UTC)
+	 MIME-Version; b=dK4nACTYndYJbhl4cMU7BJakGRl02uwImWwpvrEm+mncflje6CS+wq2xPnRPuK4bjnk0b6FMRcTeEgAM/TZnzfWyxgQnXN3+wmPqCSnQoKe32vybkoByq9fCDaeprywBsl1FUiUnLRQKeRQC/Lhg4ZFulS8eLkO7JcNvy9xIj4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKGL4tPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EC3C4CEF1;
+	Fri, 21 Nov 2025 13:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731284;
-	bh=FYLN6Xl3Evm9od3e874g4J82eZZI5seGOtA6DisBIZg=;
+	s=korg; t=1763733152;
+	bh=PHIeXSsNI1wRJlVpV5iMlGMSqVIXSm2SGQharL9oPjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEhUF0/aW3QIuGJp72yqYyjeH5QeweSlLxscNzKG1E/WuSFsoTIC7SQhSabG/IjHp
-	 na8XV2lWslSwET4EIzW1ntueqUANUqB3szTM26q7mGXaGxaffxch58MmivXRK/wUT8
-	 R7EKJo5R/OisnxwZJBcgOGksawr9fCWOmADWkIyo=
+	b=UKGL4tPlwocXLRGV9nGiwV4f6Y/OX9nA9wFUDIr4dAhjv++oydPmjgoet8jeSHn08
+	 3BvaGXOn+GySvpWQ6BzEZQ5RyMyDWAtQUG320UOgjjcoUBK72j2aNTLQyqDRIVHntG
+	 ELy21ITAPv/kKfePzncdTUfKfPAh1lsSxDzoi9sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c47ad18f978d4394986@syzkaller.appspotmail.com,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Eslam Khafagy <eslam.medhat1993@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 121/247] posix-timers: Plug potential memory leak in do_timer_create()
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 369/529] virtio-net: fix received length check in big packets
 Date: Fri, 21 Nov 2025 14:11:08 +0100
-Message-ID: <20251121130158.927339722@linuxfoundation.org>
+Message-ID: <20251121130244.157099501@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eslam Khafagy <eslam.medhat1993@gmail.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit e0fd4d42e27f761e9cc82801b3f183e658dc749d ]
+commit 0c716703965ffc5ef4311b65cb5d84a703784717 upstream.
 
-When posix timer creation is set to allocate a given timer ID and the
-access to the user space value faults, the function terminates without
-freeing the already allocated posix timer structure.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-Move the allocation after the user space access to cure that.
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-[ tglx: Massaged change log ]
+This commit fixes the received length check corresponding to the new
+change.
 
-Fixes: ec2d0c04624b3 ("posix-timers: Provide a mechanism to allocate a given timer ID")
-Reported-by: syzbot+9c47ad18f978d4394986@syzkaller.appspotmail.com
-Suggested-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Signed-off-by: Eslam Khafagy <eslam.medhat1993@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://patch.msgid.link/20251114122739.994326-1-eslam.medhat1993@gmail.com
-Closes: https://lore.kernel.org/all/69155df4.a70a0220.3124cb.0017.GAE@google.com/T/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-timers.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/virtio_net.c |   25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 8b582174b1f94..42db8396f1999 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -476,12 +476,6 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
- 	if (!kc->timer_create)
- 		return -EOPNOTSUPP;
- 
--	new_timer = alloc_posix_timer();
--	if (unlikely(!new_timer))
--		return -EAGAIN;
--
--	spin_lock_init(&new_timer->it_lock);
--
- 	/* Special case for CRIU to restore timers with a given timer ID. */
- 	if (unlikely(current->signal->timer_create_restore_ids)) {
- 		if (copy_from_user(&req_id, created_timer_id, sizeof(req_id)))
-@@ -491,6 +485,12 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
- 			return -EINVAL;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -591,17 +591,6 @@ static struct sk_buff *page_to_skb(struc
+ 		goto ok;
  	}
  
-+	new_timer = alloc_posix_timer();
-+	if (unlikely(!new_timer))
-+		return -EAGAIN;
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -1344,9 +1333,19 @@ static struct sk_buff *receive_big(struc
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
++	struct sk_buff *skb;
 +
-+	spin_lock_init(&new_timer->it_lock);
-+
- 	/*
- 	 * Add the timer to the hash table. The timer is not yet valid
- 	 * after insertion, but has a unique ID allocated.
--- 
-2.51.0
-
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
+ 
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 	if (unlikely(!skb))
+ 		goto err;
 
 
 
