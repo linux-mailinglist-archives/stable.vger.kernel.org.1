@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F30C794C6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:54 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20C7C79742
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A33394EBA1D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E846A346A81
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995A927147D;
-	Fri, 21 Nov 2025 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A07433E366;
+	Fri, 21 Nov 2025 13:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjEw0nzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FPKAuOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB28275B18;
-	Fri, 21 Nov 2025 13:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2322737FC;
+	Fri, 21 Nov 2025 13:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731236; cv=none; b=rOMBs+yxHzRZHPgO21ArxlLl05sXm7SK7l7vfBzPXFwJDIfQHQt/znqlSIQVwffxVwJ+vs+UuqEXHFWRN/pkGtfi4UJGT0y8xFjV/1F0zb+ts2V9kyruATQzn982QNIz1PEwjOXpEGthqSN2TMXTCFSCvyexlnj64oYgN18Tljk=
+	t=1763731720; cv=none; b=WQi6Aq/OED0rftLa6dTzaytmaLpqvlvZKQWOZuTSbQBpyd/W3L2kfYZz5w3yCLuGjyshc8ZR2Rj28LMOU/mbIWF4rWut8RPVGId+hR5WTyeA2DxBJqSA0b1ik89imy+q8SyK5tSN2jOmen7Fok4bJn+EZLSolCCppIVYsNLBj7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731236; c=relaxed/simple;
-	bh=e/RIjUqqWiZAr+1WfhQfOmp8fjDOEv/tG7BkSHCcx0E=;
+	s=arc-20240116; t=1763731720; c=relaxed/simple;
+	bh=1+IdtvDJld87XeJnFdLsFEES6lF1nyYudIfPO8LGZO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMIhaVY84g8LHLPp7OON27L37i63ijrCo5hiUtBi0l/3jM/CCHnD6bSr9e2DXXCFHaFbUVX9TtBUV5bN/F9D6zxt5n3X1+G5drD/LpObckDRLRS2S9rmxdKeJPzfI0DknS5jSSYRb0e06jSPFjPy++Ae0mXfaqIJ0LlXyyjcq1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjEw0nzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB60C4CEF1;
-	Fri, 21 Nov 2025 13:20:35 +0000 (UTC)
+	 MIME-Version; b=nbkgeEv1fAsH77jb7ZKxRDPs5AK5WloiNpKT14FHqI1PI0qyC7ZZpBu9Y+7rTbOgVWmy5ynVkAYOCg2TSAf6zwVj3FjEdAp1DU3tiZ1zelvDo/K/HLUKKaDWkhZ0UMViPzvuR6OLEpy8XEdXZfEQUH6UgRWrhN0z5aVNjqXCFIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FPKAuOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62496C4CEF1;
+	Fri, 21 Nov 2025 13:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731235;
-	bh=e/RIjUqqWiZAr+1WfhQfOmp8fjDOEv/tG7BkSHCcx0E=;
+	s=korg; t=1763731720;
+	bh=1+IdtvDJld87XeJnFdLsFEES6lF1nyYudIfPO8LGZO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjEw0nzQv7Ry4m+bBUjrsf+br4z9dlxRMSlSk2ry18shOiqnhjCWRJ/UicgvByy9H
-	 X1hPU0jRTtj0FGrD2QErUeXCMi4HzDLCVKuiRt21xtWZNuEE/4OI2VHpKveKVrkv6x
-	 4lX2dAztBKug+Bwr9luCPyTVUg9e4sNwfaDPpYEQ=
+	b=0FPKAuOrSS6wOKqVwfKZiXMGp9ym8Y/21moxerT1/riTA99/VgUlI850u2F/PpBRM
+	 GPNOqLPGsaeabHp7ZlBXvcYu6vMqWMIKowjqABt/olFV/acNj5wH+nWXg1eD91mmiL
+	 8EUByvVGkS1I755vn3wo4IkNBiSMjiEusFuefYa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 137/247] arm64: dts: rockchip: Make RK3588 GPU OPP table naming less generic
-Date: Fri, 21 Nov 2025 14:11:24 +0100
-Message-ID: <20251121130159.645149229@linuxfoundation.org>
+Subject: [PATCH 6.12 058/185] net/mlx5e: Fix potentially misleading debug message
+Date: Fri, 21 Nov 2025 14:11:25 +0100
+Message-ID: <20251121130145.971356361@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit b3fd04e23f6e4496f5a2279466a33fbdc83500f0 ]
+[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
 
-Unify the naming of the existing GPU OPP table nodes found in the RK3588
-and RK3588J SoC dtsi files with the other SoC's GPU OPP nodes, following
-the more "modern" node naming scheme.
+Change the debug message to print the correct units instead of always
+assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
 
-Fixes: a7b2070505a2 ("arm64: dts: rockchip: Split GPU OPPs of RK3588 and RK3588j")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-[opp-table also is way too generic on systems with like 4-5 opp-tables]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi | 2 +-
- arch/arm64/boot/dts/rockchip/rk3588j.dtsi    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-index 0f1a776973516..b5d630d2c879f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-@@ -115,7 +115,7 @@
- 		};
- 	};
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 154f8d9eec02a..2ca32fb1961e1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -598,6 +598,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	__u64 upper_limit_mbps;
+ 	__u64 upper_limit_gbps;
+ 	int i;
++	struct {
++		int scale;
++		const char *units_str;
++	} units[] = {
++		[MLX5_100_MBPS_UNIT] = {
++			.scale = 100,
++			.units_str = "Mbps",
++		},
++		[MLX5_GBPS_UNIT] = {
++			.scale = 1,
++			.units_str = "Gbps",
++		},
++	};
  
--	gpu_opp_table: opp-table {
-+	gpu_opp_table: opp-table-gpu {
- 		compatible = "operating-points-v2";
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+@@ -628,8 +641,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	}
  
- 		opp-300000000 {
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-index 9884a5df47dfe..e1e0e3fc0ca70 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-@@ -66,7 +66,7 @@
- 		};
- 	};
+ 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
+-		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
+-			   __func__, i, max_bw_value[i]);
++		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
++			   max_bw_value[i] * units[max_bw_unit[i]].scale,
++			   units[max_bw_unit[i]].units_str);
+ 	}
  
--	gpu_opp_table: opp-table {
-+	gpu_opp_table: opp-table-gpu {
- 		compatible = "operating-points-v2";
- 
- 		opp-300000000 {
+ 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
 -- 
 2.51.0
 
