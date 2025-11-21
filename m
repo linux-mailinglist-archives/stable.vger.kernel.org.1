@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90D0C793A2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE60EC795D1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id B85972DDAE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 7D13428BA0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5849275B18;
-	Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E7346E51;
+	Fri, 21 Nov 2025 13:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh5mWXCB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlKcsjOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B91F09B3;
-	Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D3A34029C;
+	Fri, 21 Nov 2025 13:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731250; cv=none; b=rUc/ywWDKbSBiUrI8BQdYZuMG4u+nWOcnmc7e+TD6+yH4oga6/EEFRfGbBr6UFN9KzY6SAW89OcPXvmMtOL0M1hnP2zl262TfZ7asjVJIdwrVdbdneE3SZV+8al18XcVpyBs7R0K2gSmdAgNZ9JtZK1FgDjZZKPOU760W/TmFb8=
+	t=1763731732; cv=none; b=S0HSZGyTekUdDo5O9MoErsO5rN0K+KnSvFgdX8hdYgI4n8a70rnoGN/lw4X3mLgHxY2JCeuynRBEPrNSZydgMpNu4LIjXwmAfI7F9tXfMqtY/rfjYBdU1QnJmdJXY7tPZ+i8HxCDxHJKm6uVftzzb+TC2XfTTzJd/sZrrLCYCLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731250; c=relaxed/simple;
-	bh=mpFht4rcPK9jmQlP9cqzbfBzaD+1+NTjHjfEfgIDZWw=;
+	s=arc-20240116; t=1763731732; c=relaxed/simple;
+	bh=1MdoCz82txPO1LK2NxEEh8wzd/BeUhtqZowCYRsMrhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwZxUgHwan0VA0F8yBjbwrgJ2xdpXStiqh8iJOu+TVka2hDptTWkYj8tcGwYBehJeWfeil5v9Fmwlc8d/inuCDKiBQS1aPO7e+V1GmGDcXWJ5dOC6cGIsSIB3XpFOpPSiKLRKkrPsdUchdVmJH5G6yLGrPjzpxuwVojwYzygWEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh5mWXCB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAE9C4CEF1;
-	Fri, 21 Nov 2025 13:20:49 +0000 (UTC)
+	 MIME-Version; b=uqWoE5a5tEr/DKNiUI/c4l4gclZHRrWOp6O+klTUVitU8MnTa6g1rXZXmCPrWCBw74BwrOL1c8fNYDD2JATJYyd1GheBFiI8RPYhw4aR+Y/1o5OG00plJfZh6G7JjZX97GaQyCnvJxYnSNe3nV/Dc16x4HmAv1hZ/OFPzK07FBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlKcsjOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0470C4CEF1;
+	Fri, 21 Nov 2025 13:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731250;
-	bh=mpFht4rcPK9jmQlP9cqzbfBzaD+1+NTjHjfEfgIDZWw=;
+	s=korg; t=1763731732;
+	bh=1MdoCz82txPO1LK2NxEEh8wzd/BeUhtqZowCYRsMrhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fh5mWXCBV7o8bfjZdhj0yoYkMjksMDnFKiIyDG7f9UqU5g6omOSVf1oL6dTQGg4F5
-	 k9g2sN3AZYcRiVk6qZ3hphQ47ko5zUzw0gdg6yneCAX4sZqBmXfTl5Cy2iA5sZHFoA
-	 DM/s44fJPoiA8i4rjc1OONSNXXVxMTMUX1EVh+xw=
+	b=RlKcsjOn3z1PJdarkqbGJHvtNb7Ci8CUTHkDVvndKMI8KrbwVUlgYjwCeHHMuqTjA
+	 6C2YOl+SN5nHP3fy3/MF517VQjnpLBf64uxww97CXXbhUSDd3dwGVAU4K0BjhJqRZG
+	 39cqTv4yS2ejsd0S80KEPlJmV14HulpZ2B/J4juc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Christopher Harris <chris.harris79@gmail.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 142/247] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+Subject: [PATCH 6.12 062/185] ACPI: CPPC: Detect preferred core availability on online CPUs
 Date: Fri, 21 Nov 2025 14:11:29 +0100
-Message-ID: <20251121130159.821518976@linuxfoundation.org>
+Message-ID: <20251121130146.114462193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Ichikawa <masami256@gmail.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
+[ Upstream commit 4fe5934db4a7187d358f1af1b3ef9b6dd59bce58 ]
 
-Use a scope-based cleanup helper for the buffer allocated with kmalloc()
-in ntrig_report_version() to simplify the cleanup logic and prevent
-memory leaks (specifically the !hid_is_usb()-case one).
+Commit 279f838a61f9 ("x86/amd: Detect preferred cores in
+amd_get_boost_ratio_numerator()") introduced the ability to detect the
+preferred core on AMD platforms by checking if there at least two
+distinct highest_perf values.
 
-[jkosina@suse.com: elaborate on the actual existing leak]
-Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
-Signed-off-by: Masami Ichikawa <masami256@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+However, it uses for_each_present_cpu() to iterate through all the
+CPUs in the platform, which is problematic when the kernel is booted
+with "nosmt=force" commandline option.
+
+Hence limit the search to only the online CPUs.
+
+Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()")
+Reported-by: Christopher Harris <chris.harris79@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-2-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ntrig.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/x86/kernel/acpi/cppc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
-index 0f76e241e0afb..a7f10c45f62bd 100644
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
- 	int ret;
- 	char buf[20];
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
--	unsigned char *data = kmalloc(8, GFP_KERNEL);
-+	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
- 
- 	if (!hid_is_usb(hdev))
- 		return;
- 
- 	if (!data)
--		goto err_free;
-+		return;
- 
- 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
- 			      USB_REQ_CLEAR_FEATURE,
-@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
- 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
- 			 buf, data[2], data[3], data[4], data[5]);
+diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
+index aab9d0570841a..147f0d8d54d86 100644
+--- a/arch/x86/kernel/acpi/cppc.c
++++ b/arch/x86/kernel/acpi/cppc.c
+@@ -194,7 +194,7 @@ int amd_detect_prefcore(bool *detected)
+ 		break;
  	}
--
--err_free:
--	kfree(data);
- }
  
- static ssize_t show_phys_width(struct device *dev,
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		u32 tmp;
+ 		int ret;
+ 
 -- 
 2.51.0
 
