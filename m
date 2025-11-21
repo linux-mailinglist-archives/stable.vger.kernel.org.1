@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F714C7973F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12425C7A0B9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47CB64E262D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0594A4F159A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2085F346E55;
-	Fri, 21 Nov 2025 13:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8759350D4C;
+	Fri, 21 Nov 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff20ExAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="um08BDH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705C43F9D2;
-	Fri, 21 Nov 2025 13:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5453502BD;
+	Fri, 21 Nov 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732051; cv=none; b=J52IL3NCD5Z7I/7/yaQRBnPjtX3iaj7z6iC53ufb/a8MV4RobwTYBFMArfMfJuWGkQUqoAJjr7V9anH0zE53hx1CvTDSY2GS/Qr9l2SHPnQDg4hhi7cGv62VfSmr+spDr9jdMAqQDxBg7jnHzTe00TETMiw2Nc9Q3YlJjvyl5Ew=
+	t=1763733532; cv=none; b=GRDdezcSs5xOw1X0xqteY4tmW9rNlSfvLyxFI4goTPNX4WdLMqItVJiwT+CKnDAGsQK7N/JzXF864iEvnDdIMv9kxM1ulpwDnPuZS8JxMF63FbX/ZcVwIxNqxoyfWKGYrUm/hojxnNU4vVK2VwdIJLEJ1rCmQkqglnf9L/CMMtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732051; c=relaxed/simple;
-	bh=7yGlqQPkJk5eZZnUa8nT1STlQMVmBajZj7JCZewua0U=;
+	s=arc-20240116; t=1763733532; c=relaxed/simple;
+	bh=mSw7QtI3fJm7wZH/9fsEAdYECq6/WMOe7Nx9OXDwF5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckU5HgJNBNZoDKNyCJmEWNyyfxNjhxrkdIngxGk89PFPCq/2fni0/9xLtROqO04TSLLyE1LyXbrNx2T+dCdv9mG1XKT9xE55lTaflUMCvFRid0B36GyQxj4DgNOxJrwxWRTQQCJeOhInmF+TdUMA4z9RpHcz7EqEowq3UUc8Wfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff20ExAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18A0C4CEFB;
-	Fri, 21 Nov 2025 13:34:10 +0000 (UTC)
+	 MIME-Version; b=K6Nnh6mWpVvYkMRevPygYcv54aGgkBtJcLW4aH6YzyVfOxtd0rJ/UMpU/4p2Gy2HXkp3XWODaA1up/1JEE7L9GfVRE6v1aJ+6JyJypJyUecmcBnJFI0ZY/xxt+n0+Fy4BY/opuXA16/gqoWokJvrwAyFxLfCND3aYrjPE4zzRLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=um08BDH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83C0C4CEF1;
+	Fri, 21 Nov 2025 13:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732051;
-	bh=7yGlqQPkJk5eZZnUa8nT1STlQMVmBajZj7JCZewua0U=;
+	s=korg; t=1763733532;
+	bh=mSw7QtI3fJm7wZH/9fsEAdYECq6/WMOe7Nx9OXDwF5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff20ExAmdPYJhIlFido2QGY5cZK9jYqHYvIFPiMw4+ogYmXPWB6VYijVzUrjMYqNa
-	 dGfKVN+/3Bt+eX4xwg+wisVs4Vy+mX9PMCYhlrGCbitIuTUGBaA4eUoLEIr3NiN5bp
-	 FfJjDICmJ9xN475xtLDiWEnvJfvBFqS1p589s5g8=
+	b=um08BDH0qJ5xga8mCDG8qrG8rZnuZt5eR02wmGjTgcjZJa62b66xuRGEgZRa0hbRM
+	 mFHMh65NxWvk0OZaJsmgjPxR9x63Zanj9caynBx+DyWSl1OZK04OdpUvE+gZqcYhDb
+	 y+PEVXVLxJpGGE8bH1eIuerZEAzGtEIJVffgw1aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/185] rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 501/529] f2fs: fix to avoid overflow while left shift operation
 Date: Fri, 21 Nov 2025 14:13:20 +0100
-Message-ID: <20251121130150.130827779@linuxfoundation.org>
+Message-ID: <20251121130248.841654695@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 16c43a56b79e2c3220b043236369a129d508c65a ]
+[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
 
-Even if normally `build_error` isn't a kernel object, it should still
-be treated as such so that we pass the same flags. Similarly, `rustdoc`
-targets are never kernel objects, but we need to treat them as such.
+Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
+while left shift operation.
 
-Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
-will complain about missing sanitizer flags since `-Zsanitizer` is a
-target modifier too [1]:
-
-    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
-     --> rust/build_error.rs:3:1
-      |
-    3 | //! Build-time error.
-      | ^
-      |
-      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
-      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
-      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
-
-Thus explicitly mark them as kernel objects.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/138736 [1]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Link: https://patch.msgid.link/20251102212853.1505384-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Modification: Using rpages[i]->index instead of folio->index due to
+it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
+f2fs_truncate_partial_cluster()") on 6.14 ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/f2fs/compress.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -107,12 +107,18 @@ rustdoc-core: private rustc_target_flags
- rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
- 	+$(call if_changed,rustdoc)
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1209,7 +1209,7 @@ int f2fs_truncate_partial_cluster(struct
+ 		int i;
  
-+# Even if `rustdoc` targets are not kernel objects, they should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustdoc` will complain about missing sanitizer flags causing an ABI mismatch.
-+rustdoc-compiler_builtins: private is-kernel-object := y
- rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
+ 		for (i = cluster_size - 1; i >= 0; i--) {
+-			loff_t start = rpages[i]->index << PAGE_SHIFT;
++			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
  
-+rustdoc-ffi: private is-kernel-object := y
- rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
-+rustdoc-kernel: private is-kernel-object := y
- rustdoc-kernel: private rustc_target_flags = --extern ffi \
-     --extern build_error --extern macros=$(objtree)/$(obj)/libmacros.so \
-     --extern bindings --extern uapi
-@@ -433,6 +439,10 @@ $(obj)/compiler_builtins.o: private rust
- $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+# Even if normally `build_error` is not a kernel object, it should still be
-+# treated as such so that we pass the same flags. Otherwise, for instance,
-+# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
-+$(obj)/build_error.o: private is-kernel-object := y
- $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
+ 			if (from <= start) {
+ 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
 
 
 
