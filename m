@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-196410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A6EC79E76
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74F9C796C7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 9ACEF2DD53
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 80E9028996
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039862E8B9D;
-	Fri, 21 Nov 2025 13:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D6521E098;
+	Fri, 21 Nov 2025 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zIYNbuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fi8PO4yN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D7234DB7E;
-	Fri, 21 Nov 2025 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1CE1F09B3;
+	Fri, 21 Nov 2025 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733430; cv=none; b=fIeUzmH6BhJ5fKb9gPGL+PvVtKhT31+tt2nVUz8pjZE1qqJOuo6vAcu4SffVf/JWMv+POh6RstvRuTGQRP8Loa0ySDqB1U7eNGdl42WnSgiT4LqXqMdSlhz/6zEbyQNpVBaEtjzuFkXXblq89FaXYdHDVWBa9yQAfA2dNC3aDc4=
+	t=1763731953; cv=none; b=G+cshJXJOa7wjtyFpM6CCHvrgpX46vqm9Ts9pXOgNp1bCw7Rn4SYo16tn1aFiZyOkOI7Pk5ZslSUdt+AUM5mgOOyx1riGAIZaGv9rdsbrJv5702QJ0Sr5vtgjjqxh7mnEhq0A+YOXC4sFrCJpCQzQhPSqWyXYFG3rar8cGPyCHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733430; c=relaxed/simple;
-	bh=3YcOL0CHmiVzBRhEStjx385ulnMTCN0nVLLXO+E55bg=;
+	s=arc-20240116; t=1763731953; c=relaxed/simple;
+	bh=k4RLjh2J8JbMGmhA80DHfQZ06AqT+BIkhcy2LJbB6I0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXixc3mNj+Xxdp8+8ltFbCZIVy+e8jcLykbCI5KZS4CcY88Dn11ExwuZiVhv2N0YEcSxhcjmy3wfJo+IEw1RfbcpQIYEO1vwUOpQ0LFI1Y71EL+ZpDEBQ7ztJ6ka0J/MdLXXWByw5nlSLFloQpSNLZf3qaNee4qvxTOzpQw58xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zIYNbuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3788EC16AAE;
-	Fri, 21 Nov 2025 13:57:10 +0000 (UTC)
+	 MIME-Version; b=MHRLOdci+FsqSWV7ss3gaVKfqbtpX2yiKAcwNnmb7FdEfv08ngR1KypQclD5dKVv9GNa1gowpELfRYZ/L908mocV/cIj5M3Gxg4o3HAcnR+F2S3B7MRt0MaaUSk0fQ+RyYYe5FnGqIUH1kfP9kyInMtL+Ox51oBwAmGZyukZBVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fi8PO4yN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E72C4CEF1;
+	Fri, 21 Nov 2025 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733430;
-	bh=3YcOL0CHmiVzBRhEStjx385ulnMTCN0nVLLXO+E55bg=;
+	s=korg; t=1763731953;
+	bh=k4RLjh2J8JbMGmhA80DHfQZ06AqT+BIkhcy2LJbB6I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1zIYNbuYPf5ef9z8hRfY7YZU9LXFu24x3LKWCxIfguVamoF61OxjullK117yixego
-	 ZL6jVte7mjWjLjyeX1UG9psGiVK2VJOZKBQZk8ezJdOu+OOKsnO2GkSY+DyqvvXykB
-	 Vs6xJvDZWYzINShsCbqUf1gSzZ6iqi8t2geqV6oo=
+	b=Fi8PO4yNhEvDmi9zkKOMLgykEzfkDvM1ajCjhuex4PqWezUyHXXZIBcvRMlI5uFXS
+	 2AZRm1x2Kskv92j3wc4YYpENc5/KXyrsjv4Mvk8d5+eHwUvfMU1eppJEoo1jk/aA51
+	 DOk0B6Vii6YcXNTUFQvslxOMc5RJJ1UZF5h/RMFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nate Karstens <nate.karstens@garmin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 466/529] strparser: Fix signed/unsigned mismatch bug
-Date: Fri, 21 Nov 2025 14:12:45 +0100
-Message-ID: <20251121130247.592847878@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 139/185] LoongArch: Use physical addresses for CSR_MERRENTRY/CSR_TLBRENTRY
+Date: Fri, 21 Nov 2025 14:12:46 +0100
+Message-ID: <20251121130148.891221755@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nate Karstens <nate.karstens@garmin.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 4da4e4bde1c453ac5cc2dce5def81d504ae257ee upstream.
+commit 4e67526840fc55917581b90f6a4b65849a616dd8 upstream.
 
-The `len` member of the sk_buff is an unsigned int. This is cast to
-`ssize_t` (a signed type) for the first sk_buff in the comparison,
-but not the second sk_buff. On 32-bit systems, this can result in
-an integer underflow for certain values because unsigned arithmetic
-is being used.
+Now we use virtual addresses to fill CSR_MERRENTRY/CSR_TLBRENTRY, but
+hardware hope physical addresses. Now it works well because the high
+bits are ignored above PA_BITS (48 bits), but explicitly use physical
+addresses can avoid potential bugs. So fix it.
 
-This appears to be an oversight: if the intention was to use unsigned
-arithmetic, then the first cast would have been omitted. The change
-ensures both len values are cast to `ssize_t`.
-
-The underflow causes an issue with ktls when multiple TLS PDUs are
-included in a single TCP segment. The mainline kernel does not use
-strparser for ktls anymore, but this is still useful for other
-features that still use strparser, and for backporting.
-
-Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
 Cc: stable@vger.kernel.org
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251106222835.1871628-1-nate.karstens@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/strparser/strparser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kernel/traps.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t
- 				strp_parser_err(strp, -EMSGSIZE, desc);
- 				break;
- 			} else if (len <= (ssize_t)head->len -
--					  skb->len - stm->strp.offset) {
-+					  (ssize_t)skb->len - stm->strp.offset) {
- 				/* Length must be into new skb (and also
- 				 * greater than zero)
- 				 */
+--- a/arch/loongarch/kernel/traps.c
++++ b/arch/loongarch/kernel/traps.c
+@@ -1123,8 +1123,8 @@ static void configure_exception_vector(v
+ 	tlbrentry = (unsigned long)exception_handlers + 80*VECSIZE;
+ 
+ 	csr_write64(eentry, LOONGARCH_CSR_EENTRY);
+-	csr_write64(eentry, LOONGARCH_CSR_MERRENTRY);
+-	csr_write64(tlbrentry, LOONGARCH_CSR_TLBRENTRY);
++	csr_write64(__pa(eentry), LOONGARCH_CSR_MERRENTRY);
++	csr_write64(__pa(tlbrentry), LOONGARCH_CSR_TLBRENTRY);
+ }
+ 
+ void per_cpu_trap_init(int cpu)
 
 
 
