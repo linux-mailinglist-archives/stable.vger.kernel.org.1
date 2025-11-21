@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD0DC79784
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19158C79556
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 581EC3431F7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4C39A4EDB97
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C58246762;
-	Fri, 21 Nov 2025 13:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC8054763;
+	Fri, 21 Nov 2025 13:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7Nu/Ycx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WX6/kSUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3EC31B124;
-	Fri, 21 Nov 2025 13:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28D12737FC;
+	Fri, 21 Nov 2025 13:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731763; cv=none; b=syAN3dhxKQiN4++18OzGy+ZYPJGvQsY+0SouPaTdYXz4jSb7amoGmiauCCzfQNIMiVuatUkbxsHVLFvGrLB61XakZsAZk6HsOUxUhCLZFSnpVQ/PnR8zu9aL85Rem6Xit735QAvVOwq40lEtvqsfyKL9BgdJjscVwLnoNAZtBLM=
+	t=1763731398; cv=none; b=DKGAd98kZNXZ4Ja65LoSvI3DuzQCWyBmBVvKPfGk+NIs3iovgorUVL/mg3ERVFpqZ/fPTc4+++6B6gIv4IaO4TeqDCJYF62j6dUkjdA5zmXAfOwMhoz0quoYN/RolrDvE5jtadD2/ri9FnVGiZnM1/croaM+x8THKbKOWQZBZP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731763; c=relaxed/simple;
-	bh=ZFJIdO9F1X9B/dTItCbEja77G9VOyRb9GM1mH8fdzD8=;
+	s=arc-20240116; t=1763731398; c=relaxed/simple;
+	bh=aXiI+rZBa68lCRw2OfS+ilueOp6Ue96wqH2X3Kcjk2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSd4jKRUc5VpvOx6eQK6nX7ObGnN8RgkWYDaaTnCG3f0rrqQwCsKKEqkTSxBswOzOsv+W+r/5U0ji8ytXaSvlPaHeijWRquVP1RNDt3+Aa5L6lX3gVcTKP34sKAlrOCX/M6c3OT8HzvjhCwHGS80L3sCgag/WluBTh8A+E/JZak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7Nu/Ycx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25801C4CEF1;
-	Fri, 21 Nov 2025 13:29:22 +0000 (UTC)
+	 MIME-Version; b=T4ie5mSdLNDiITfctVs2Y0KxIhwAHk03wntdnRKAKFF1s9SUwdBBcqpszo/H61y7SZZW6FgQRRHwNlE+tDJq7ZuN8HGCkTBG6XkgHGJ0BIWQ0Axat7zW2xpjI4LM81AMJa2tdpfSoh3No9VM0dgoVoqLtWR1Lc1mh7GxBcKJ47Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WX6/kSUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5727FC4CEF1;
+	Fri, 21 Nov 2025 13:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731763;
-	bh=ZFJIdO9F1X9B/dTItCbEja77G9VOyRb9GM1mH8fdzD8=;
+	s=korg; t=1763731398;
+	bh=aXiI+rZBa68lCRw2OfS+ilueOp6Ue96wqH2X3Kcjk2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7Nu/YcxORQlmK+V2r7lsJ5Pn0OMRkIGIEW10h0aaEdOcFdg1/k6hKjAWgPOGx+8U
-	 3fBRK2HHWFFRt6y+6wgqYinBnWOgWxvV7yV+yg7v6b0aBCHBMunNEb1szZ7DRT3SMZ
-	 zrPMCpJcMRPmZQ09pFM/QlH5EvNkpuzdZDsIi6bg=
+	b=WX6/kSUdVjiSp0vYzn2KButfHmGaaM4R0+Xmrnfpa4GQpDB69LXlsOjbncfufxXCc
+	 Hu6/qOuhqgHmB9aW2cNLaUI/Ehr1KxHkI276/woqI391Lp3tWwRiFYNwktfTdugHG5
+	 8S77we81yujyF4r5hwnMlGzvcIflbKkYlSti1z/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/185] ASoC: tas2781: fix getting the wrong device number
+	syzbot+2479e53d0db9b32ae2aa@syzkaller.appspotmail.com,
+	Hillf Danton <hdanton@sina.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.17 152/247] KVM: guest_memfd: Remove bindings on memslot deletion when gmem is dying
 Date: Fri, 21 Nov 2025 14:11:39 +0100
-Message-ID: <20251121130146.471316756@linuxfoundation.org>
+Message-ID: <20251121130200.179916067@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 29528c8e643bb0c54da01237a35010c6438423d2 ]
+commit ae431059e75d36170a5ae6b44cc4d06d43613215 upstream.
 
-The return value of device_property_read_u32_array used for getting the
-property is the status instead of the number of the property.
+When unbinding a memslot from a guest_memfd instance, remove the bindings
+even if the guest_memfd file is dying, i.e. even if its file refcount has
+gone to zero.  If the memslot is freed before the file is fully released,
+nullifying the memslot side of the binding in kvm_gmem_release() will
+write to freed memory, as detected by syzbot+KASAN:
 
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20251107054959.950-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in kvm_gmem_release+0x176/0x440 virt/kvm/guest_memfd.c:353
+  Write of size 8 at addr ffff88807befa508 by task syz.0.17/6022
+
+  CPU: 0 UID: 0 PID: 6022 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+   print_address_description mm/kasan/report.c:378 [inline]
+   print_report+0xca/0x240 mm/kasan/report.c:482
+   kasan_report+0x118/0x150 mm/kasan/report.c:595
+   kvm_gmem_release+0x176/0x440 virt/kvm/guest_memfd.c:353
+   __fput+0x44c/0xa70 fs/file_table.c:468
+   task_work_run+0x1d4/0x260 kernel/task_work.c:227
+   resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+   exit_to_user_mode_loop+0xe9/0x130 kernel/entry/common.c:43
+   exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+   syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+   syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+   do_syscall_64+0x2bd/0xfa0 arch/x86/entry/syscall_64.c:100
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7fbeeff8efc9
+   </TASK>
+
+  Allocated by task 6023:
+   kasan_save_stack mm/kasan/common.c:56 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+   poison_kmalloc_redzone mm/kasan/common.c:397 [inline]
+   __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:414
+   kasan_kmalloc include/linux/kasan.h:262 [inline]
+   __kmalloc_cache_noprof+0x3e2/0x700 mm/slub.c:5758
+   kmalloc_noprof include/linux/slab.h:957 [inline]
+   kzalloc_noprof include/linux/slab.h:1094 [inline]
+   kvm_set_memory_region+0x747/0xb90 virt/kvm/kvm_main.c:2104
+   kvm_vm_ioctl_set_memory_region+0x6f/0xd0 virt/kvm/kvm_main.c:2154
+   kvm_vm_ioctl+0x957/0xc60 virt/kvm/kvm_main.c:5201
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Freed by task 6023:
+   kasan_save_stack mm/kasan/common.c:56 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+   kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+   poison_slab_object mm/kasan/common.c:252 [inline]
+   __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+   kasan_slab_free include/linux/kasan.h:234 [inline]
+   slab_free_hook mm/slub.c:2533 [inline]
+   slab_free mm/slub.c:6622 [inline]
+   kfree+0x19a/0x6d0 mm/slub.c:6829
+   kvm_set_memory_region+0x9c4/0xb90 virt/kvm/kvm_main.c:2130
+   kvm_vm_ioctl_set_memory_region+0x6f/0xd0 virt/kvm/kvm_main.c:2154
+   kvm_vm_ioctl+0x957/0xc60 virt/kvm/kvm_main.c:5201
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Deliberately don't acquire filemap invalid lock when the file is dying as
+the lifecycle of f_mapping is outside the purview of KVM.  Dereferencing
+the mapping is *probably* fine, but there's no need to invalidate anything
+as memslot deletion is responsible for zapping SPTEs, and the only code
+that can access the dying file is kvm_gmem_release(), whose core code is
+mutually exclusive with unbinding.
+
+Note, the mutual exclusivity is also what makes it safe to access the
+bindings on a dying gmem instance.  Unbinding either runs with slots_lock
+held, or after the last reference to the owning "struct kvm" is put, and
+kvm_gmem_release() nullifies the slot pointer under slots_lock, and puts
+its reference to the VM after that is done.
+
+Reported-by: syzbot+2479e53d0db9b32ae2aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fa7a22.a70a0220.3bf6c6.008b.GAE@google.com
+Tested-by: syzbot+2479e53d0db9b32ae2aa@syzkaller.appspotmail.com
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+Cc: stable@vger.kernel.org
+Cc: Hillf Danton <hdanton@sina.com>
+Reviewed-By: Vishal Annapurve <vannapurve@google.com>
+Link: https://patch.msgid.link/20251104011205.3853541-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2781-i2c.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ virt/kvm/guest_memfd.c |   45 ++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 32 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 1b2f55030c396..2f100cbfdc41f 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -1635,7 +1635,8 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -523,31 +523,50 @@ err:
+ 	return r;
+ }
+ 
+-void kvm_gmem_unbind(struct kvm_memory_slot *slot)
++static void __kvm_gmem_unbind(struct kvm_memory_slot *slot, struct kvm_gmem *gmem)
  {
- 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
- 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
--	int i, ndev = 0;
-+	int ndev = 0;
-+	int i, rc;
+ 	unsigned long start = slot->gmem.pgoff;
+ 	unsigned long end = start + slot->npages;
+-	struct kvm_gmem *gmem;
++
++	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
++
++	/*
++	 * synchronize_srcu(&kvm->srcu) ensured that kvm_gmem_get_pfn()
++	 * cannot see this memslot.
++	 */
++	WRITE_ONCE(slot->gmem.file, NULL);
++}
++
++void kvm_gmem_unbind(struct kvm_memory_slot *slot)
++{
+ 	struct file *file;
  
- 	if (tas_priv->isacpi) {
- 		ndev = device_property_read_u32_array(&client->dev,
-@@ -1646,8 +1647,12 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 		} else {
- 			ndev = (ndev < ARRAY_SIZE(dev_addrs))
- 				? ndev : ARRAY_SIZE(dev_addrs);
--			ndev = device_property_read_u32_array(&client->dev,
-+			rc = device_property_read_u32_array(&client->dev,
- 				"ti,audio-slots", dev_addrs, ndev);
-+			if (rc != 0) {
-+				ndev = 1;
-+				dev_addrs[0] = client->addr;
-+			}
- 		}
+ 	/*
+-	 * Nothing to do if the underlying file was already closed (or is being
+-	 * closed right now), kvm_gmem_release() invalidates all bindings.
++	 * Nothing to do if the underlying file was _already_ closed, as
++	 * kvm_gmem_release() invalidates and nullifies all bindings.
+ 	 */
+-	file = kvm_gmem_get_file(slot);
+-	if (!file)
++	if (!slot->gmem.file)
+ 		return;
  
- 		tas_priv->irq =
--- 
-2.51.0
-
+-	gmem = file->private_data;
+-
+-	filemap_invalidate_lock(file->f_mapping);
+-	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
++	file = kvm_gmem_get_file(slot);
+ 
+ 	/*
+-	 * synchronize_srcu(&kvm->srcu) ensured that kvm_gmem_get_pfn()
+-	 * cannot see this memslot.
++	 * However, if the file is _being_ closed, then the bindings need to be
++	 * removed as kvm_gmem_release() might not run until after the memslot
++	 * is freed.  Note, modifying the bindings is safe even though the file
++	 * is dying as kvm_gmem_release() nullifies slot->gmem.file under
++	 * slots_lock, and only puts its reference to KVM after destroying all
++	 * bindings.  I.e. reaching this point means kvm_gmem_release() hasn't
++	 * yet destroyed the bindings or freed the gmem_file, and can't do so
++	 * until the caller drops slots_lock.
+ 	 */
+-	WRITE_ONCE(slot->gmem.file, NULL);
++	if (!file) {
++		__kvm_gmem_unbind(slot, slot->gmem.file->private_data);
++		return;
++	}
++
++	filemap_invalidate_lock(file->f_mapping);
++	__kvm_gmem_unbind(slot, file->private_data);
+ 	filemap_invalidate_unlock(file->f_mapping);
+ 
+ 	fput(file);
 
 
 
