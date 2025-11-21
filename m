@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C366C79DC3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B41A9C795BF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 980E44EE53C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2EDF4EC9B0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9C1350A1E;
-	Fri, 21 Nov 2025 13:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D7F3176E1;
+	Fri, 21 Nov 2025 13:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLuAG7a6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISx08xlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737130AD04;
-	Fri, 21 Nov 2025 13:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA621F09B3;
+	Fri, 21 Nov 2025 13:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733036; cv=none; b=Jl7SQBOB/klQo760HzqeWYDWpMHshKpXtJtpsZx+CtEDu9W3k9qeqIFcRxaUwIQh3erOd90j8c5UG4RdvNyMJtcCPFkgfKMx+ECmKU1B/ut6lTJY4jmytcqPG31vVwwN8ORUxOBm32lLqdIm0JNOvKx3e4h0i/WPhenZ6EnDV40=
+	t=1763731578; cv=none; b=jROKV+OtFWNS93Fi1DG16k8LlrcQQCNVd2KSai2psbD7ovJKkkwtn8odQkfWmE0L4EkUFRinCEvaim3HE6MUFH3A4kcsSiUpcM1BEa1Yli55UVy4RuPG0j1neRDHonOj8hnW0twq9cdYT5vgHH7WMe648xw06r1nHGJjdB0Ykis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733036; c=relaxed/simple;
-	bh=+HbrgTrr3yfTjlznnSw3OK/r+V/ZxTg8AxHl22obq44=;
+	s=arc-20240116; t=1763731578; c=relaxed/simple;
+	bh=HOgVGsVeckMvPSKWSh9i0Abkj/X7bchOA8lajCCYHkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNATWB7k0Zxuo7Yk/kHeIX64GQ107WfUSRn669+ZWjpi/Cp7YNU7LjgSIKsSii028+jYhICIff8sQcS/UsYmX64lQpHhtd/flCk7IzW/kzvuN7kXzeiIo/KS24p19Os0JvbxoOLCZXM/kdmpIGE5qSoCBq2nhLTkStJpn2wNhNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLuAG7a6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E01C4CEF1;
-	Fri, 21 Nov 2025 13:50:35 +0000 (UTC)
+	 MIME-Version; b=iFsNrBq+A2fzHblCnRDeVsiJYn/0FbIMD05u6dQ8iRhUcb2R0pDvjmuYdVBviQWx8dhOSXCxhyoXqRfOp9BaIAPCpPVXNFdUadF+rkcUDPdqU40mSv6HX8xHYwO/dhYjtYAZsdOmcqvCKHCsczJS4ygjJG0lfVz9KUfv/TBjCUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISx08xlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A1BC4CEF1;
+	Fri, 21 Nov 2025 13:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733036;
-	bh=+HbrgTrr3yfTjlznnSw3OK/r+V/ZxTg8AxHl22obq44=;
+	s=korg; t=1763731578;
+	bh=HOgVGsVeckMvPSKWSh9i0Abkj/X7bchOA8lajCCYHkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLuAG7a6M/U3CwSAD834GbpuyauR7pTwV9QqcXYJVCyZsNHY6I51tSyBVTGEG+CXl
-	 HJrEA2MM1PPwwhqGtemP1jzmp4hwR1GB5L45z9fUK+2WfonVfHEeObXCHItQZPguZH
-	 uVRCi7Rqit7twNfbidZIKE5bgMs3AXR/sNQ9Yd3s=
+	b=ISx08xlJXYkUzy8OyJ4KcXhRVxzNEDNk+c4YR1OXy6XkOP8UOtkD23I4u0LyUu0y2
+	 4fPyN9+flCQt4bnCya2TU+b54n4cKejMAirTQ4V/n12bOZGcE3WQaRhuRgT8gc7dqy
+	 oTA/Z0dOrMSTJaemPieGt06zHlFFc6kNXv+mIvmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 329/529] ALSA: hda/realtek: Audio disappears on HP 15-fc000 after warm boot again
+Subject: [PATCH 6.12 001/185] drm/mediatek: Add pm_runtime support for GCE power control
 Date: Fri, 21 Nov 2025 14:10:28 +0100
-Message-ID: <20251121130242.734073705@linuxfoundation.org>
+Message-ID: <20251121130143.917026781@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit f4b3cef55f5f96fdb4e7f9ca90b7d6213689faeb ]
+[ Upstream commit afcfb6c8474d9e750880aaa77952cc588f859613 ]
 
-There was a similar bug in the past (Bug 217440), which was fixed for
-this laptop.
-The same issue is occurring again as of kernel v.6.12.2. The symptoms
-are very similar - initially audio works but after a warm reboot, the
-audio completely disappears until the computer is powered off (there
-is no audio output at all).
+Call pm_runtime_resume_and_get() before accessing GCE hardware in
+mbox_send_message(), and invoke pm_runtime_put_autosuspend() in the
+cmdq callback to release the PM reference and start autosuspend for
+GCE. This ensures correct power management for the GCE device.
 
-The issue is also related by caused by a different change now. By
-bisecting different kernel versions, I found that reverting
-cc3d0b5dd989 in patch_realtek.c[*] restores the sound and it works
-fine after the reboot.
-
-[*] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/sound/pci/hda/patch_realtek.c?h=v6.12.2&id=4ed7f16070a8475c088ff423b2eb11ba15eb89b6
-
-[ patch description reformatted by tiwai ]
-
-Fixes: cc3d0b5dd989 ("ALSA: hda/realtek: Update ALC256 depop procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220109
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/5317ca723c82447a938414fcca85cbf5@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8afe816b0c99 ("mailbox: mtk-cmdq-mailbox: Implement Runtime PM with autosuspend")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250829091727.3745415-3-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_crtc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5fe6b71d90f4f..65c9d47f03af5 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3644,6 +3644,15 @@ static void alc256_shutup(struct hda_codec *codec)
- 		hp_pin = 0x21;
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+index bc7527542fdc6..c4c6d0249df56 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -283,6 +283,10 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
+ 	unsigned int i;
+ 	unsigned long flags;
  
- 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
++	/* release GCE HW usage and start autosuspend */
++	pm_runtime_mark_last_busy(cmdq_cl->chan->mbox->dev);
++	pm_runtime_put_autosuspend(cmdq_cl->chan->mbox->dev);
 +
-+	/* 3k pull low control for Headset jack. */
-+	/* NOTE: call this before clearing the pin, otherwise codec stalls */
-+	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
-+	 * when booting with headset plugged. So skip setting it for the codec alc257
-+	 */
-+	if (spec->en_3kpull_low)
-+		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
+ 	if (data->sta < 0)
+ 		return;
+ 
+@@ -618,6 +622,9 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
+ 		mtk_crtc->config_updating = false;
+ 		spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+ 
++		if (pm_runtime_resume_and_get(mtk_crtc->cmdq_client.chan->mbox->dev) < 0)
++			goto update_config_out;
 +
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
- 	if (hp_pin_sense) {
-@@ -3654,14 +3663,6 @@ static void alc256_shutup(struct hda_codec *codec)
- 
- 		msleep(75);
- 
--	/* 3k pull low control for Headset jack. */
--	/* NOTE: call this before clearing the pin, otherwise codec stalls */
--	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
--	 * when booting with headset plugged. So skip setting it for the codec alc257
--	 */
--		if (spec->en_3kpull_low)
--			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
--
- 		if (!spec->no_shutup_pins)
- 			snd_hda_codec_write(codec, hp_pin, 0,
- 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+ 		mbox_send_message(mtk_crtc->cmdq_client.chan, cmdq_handle);
+ 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
+ 		goto update_config_out;
 -- 
 2.51.0
 
