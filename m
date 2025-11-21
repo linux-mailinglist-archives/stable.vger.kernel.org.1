@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-196258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CB1C79D89
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCD6C79311
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 65F434ED1FA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 51EFD4ED0A2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAC734FF74;
-	Fri, 21 Nov 2025 13:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C2923183B;
+	Fri, 21 Nov 2025 13:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acSMd4AF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exQcdUP0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A111A34DB4A;
-	Fri, 21 Nov 2025 13:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711F125DAEA;
+	Fri, 21 Nov 2025 13:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733004; cv=none; b=KmZwhXamTKbJhrQ1Z02HObmd1aCGqsSArLSJ+qfNTkhEfh7EE6d/hdE/lWx7HaOiC5uvgvVd0b24mkm67BPNSrmwVGgFRHd8NEovHvTUG31aZZxD4QgqRLkva1kojxcZhNDnVds08XOy8oC+FQ+VJvEzTOdArypYIoI4GArp9fI=
+	t=1763730945; cv=none; b=oApIhNvAPfth8M6ft1cHB6/PqucJRoGZzT3V+ycWmZIJanbUa9fwgHI8CnLP8kTyW+8oZ9qtYYKWDrHgkNnfuXmnfwfNVzLIez3NBmllOJGedZFm92sOXMlaS2ximDebVMwUQZV1Z3+KlDkPhGM0Qw/I0CzBYNvEZcni9Rc106U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733004; c=relaxed/simple;
-	bh=0pml3A/P7t+lMlNAT4jMezfvsVbnAToJcDXw2dF3sXc=;
+	s=arc-20240116; t=1763730945; c=relaxed/simple;
+	bh=RYJCali2wYr36JGR9Wvv9a0jhjG6tjlWn+RcWOUgiGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZMarbsEZ3OjWI480hoeLcQwRsGZjweB6ONOSVtL57lthcHNYz5nTlI3bwUX9bibOmBnCfem9a/RnumNu6RDs84eLStMh8fCWB5sHcvtC8gbgSqcQUE2MjwhusjXV5VLBx4MMQuAyBhb26bRhY8zqo+O+VdqIRz3o4/vEXwKhT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acSMd4AF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06C1C4CEF1;
-	Fri, 21 Nov 2025 13:50:03 +0000 (UTC)
+	 MIME-Version; b=CH9CR8rNGTxdjUbpVSpjv8ow0TZqBex5j8zYqm7jDTwXN+5vlYU2xprSFp6UffuXB9+RTq6mJ+nXjoWfdSCy/zsZBWBcx2nMNSYgr2exWX1CV7Ac0CSI2JgEVdWr+k8GNog22zt6/ecSBa09OVYEJkQGVLnJu8wRkDo8zm7Bdds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exQcdUP0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3F6C4CEF1;
+	Fri, 21 Nov 2025 13:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733004;
-	bh=0pml3A/P7t+lMlNAT4jMezfvsVbnAToJcDXw2dF3sXc=;
+	s=korg; t=1763730944;
+	bh=RYJCali2wYr36JGR9Wvv9a0jhjG6tjlWn+RcWOUgiGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acSMd4AFhM3a5xN5sG2NiHTCUdwgI3kcyMem9NGwANhGC7j+vbL3Gxq1JEp8Bbpd5
-	 bDJZoTPH+xwW9Wmasj8M1+WGKJSFNtieV2y3BD6rrI2wT3eGtBSN5mDOnmCgzJfkDo
-	 +5EKiMNcQ5sAmgZM5ErhBE7On4d7Gwl1zgVbb1/g=
+	b=exQcdUP0/y7stBwhX9umJ7etzo6KEY1ub0HXrL+Dfjjke+P/BGvQaRCFIE08lq0CP
+	 UyywqEcjqCXH5+oKc387GM2t7CnJmlg/C+pwflIkTy0J/WiHe8NWdZbusFW3vbj3Xn
+	 SAqQ87V2D54T8UJo68gjhQZuA3qNP1vLl9XlkDk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/529] net/mlx5e: Dont query FEC statistics when FEC is disabled
+Subject: [PATCH 6.17 036/247] NFS: check if suid/sgid was cleared after a write as needed
 Date: Fri, 21 Nov 2025 14:09:43 +0100
-Message-ID: <20251121130241.134528535@linuxfoundation.org>
+Message-ID: <20251121130155.900301047@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 6b81b8a0b1978284e007566d7a1607b47f92209f ]
+[ Upstream commit 9ff022f3820a31507cb93be6661bf5f3ca0609a4 ]
 
-Update mlx5e_stats_fec_get() to check the active FEC mode and skip
-statistics collection when FEC is disabled.
+I noticed xfstests generic/193 and generic/355 started failing against
+knfsd after commit e7a8ebc305f2 ("NFSD: Offer write delegation for OPEN
+with OPEN4_SHARE_ACCESS_WRITE").
 
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://patch.msgid.link/20250924124037.1508846-3-vadim.fedorenko@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+I ran those same tests against ONTAP (which has had write delegation
+support for a lot longer than knfsd) and they fail there too... so
+while it's a new failure against knfsd, it isn't an entirely new
+failure.
+
+Add the NFS_INO_REVAL_FORCED flag so that the presence of a delegation
+doesn't keep the inode from being revalidated to fetch the updated mode.
+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/nfs/write.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index 4b96ad657145b..1c69244e00d75 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -1339,16 +1339,13 @@ static void fec_set_rs_stats(struct ethtool_fec_stats *fec_stats, u32 *ppcnt)
- }
- 
- static void fec_set_block_stats(struct mlx5e_priv *priv,
-+				int mode,
- 				struct ethtool_fec_stats *fec_stats)
- {
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
- 	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
- 	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
--	int mode = fec_active_mode(mdev);
--
--	if (mode == MLX5E_FEC_NOFEC)
--		return;
- 
- 	MLX5_SET(ppcnt_reg, in, local_port, 1);
- 	MLX5_SET(ppcnt_reg, in, grp, MLX5_PHYSICAL_LAYER_COUNTERS_GROUP);
-@@ -1389,11 +1386,14 @@ static void fec_set_corrected_bits_total(struct mlx5e_priv *priv,
- void mlx5e_stats_fec_get(struct mlx5e_priv *priv,
- 			 struct ethtool_fec_stats *fec_stats)
- {
--	if (!MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
-+	int mode = fec_active_mode(priv->mdev);
-+
-+	if (mode == MLX5E_FEC_NOFEC ||
-+	    !MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
- 		return;
- 
- 	fec_set_corrected_bits_total(priv, fec_stats);
--	fec_set_block_stats(priv, fec_stats);
-+	fec_set_block_stats(priv, mode, fec_stats);
- }
- 
- #define PPORT_ETH_EXT_OFF(c) \
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 647c53d1418ae..d9edcc36b0b44 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1521,7 +1521,8 @@ static int nfs_writeback_done(struct rpc_task *task,
+ 	/* Deal with the suid/sgid bit corner case */
+ 	if (nfs_should_remove_suid(inode)) {
+ 		spin_lock(&inode->i_lock);
+-		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE);
++		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE
++				| NFS_INO_REVAL_FORCED);
+ 		spin_unlock(&inode->i_lock);
+ 	}
+ 	return 0;
 -- 
 2.51.0
 
