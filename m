@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-195855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4658C7963A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44BCC79529
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 803EC289FD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4997D4EF29A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F3326560A;
-	Fri, 21 Nov 2025 13:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9BC3246FD;
+	Fri, 21 Nov 2025 13:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn4/EyyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE44k2GF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E93F9D2;
-	Fri, 21 Nov 2025 13:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE6A30E823;
+	Fri, 21 Nov 2025 13:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731858; cv=none; b=DJhqBraSteUuexJr/zseYpu3d8DpIBX9US22uoQ8yj4+c/+P0xauCipy7d0cXppNiNz2AGPcXV+Qf94wkCW+2qnjJStBFFxfMq4Kk2DC88JVZ10qR5E5vUp+O7lv/yXmY/n6cec8dVzBfkbjMYGYxuwTAQyaWgBMjlQsp+OpLWY=
+	t=1763731375; cv=none; b=bQ2a1eMdq90ZOulqLEaFhUHzrx5tz/o6Pn97ZBXK5/qc2Oqap/vdZXKXScjzFhptcNX4tu4DvbhGtZC6s9UrZThSktIY57YyHyeEkjXe+SnZaKHA+jN8UpbRm2wibS/okRr1kAjsqfTFPTkYLhsuxSFjJyPM/xpMSL7MXkqsUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731858; c=relaxed/simple;
-	bh=qmKRMspvxxmjAZi1q6yzMrYQRluPFc3oSzIr4+L3gCI=;
+	s=arc-20240116; t=1763731375; c=relaxed/simple;
+	bh=uw377SzjpAau2EnrRhJeBeBktdFyFRPhZ6PCefvFvXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuhlDclHdoE3rg/6f4vSritm/dNGG5EOv2ZUhW3y1eS7Cjhm65N7/WPE1I2RW9Kk425FKuAExKSkdrT40AwrbTCWhD2GTXnTIna3Cb8ogBj5VV/2aqbCut2MlatX7IvebAzMdYtRZKHYdfetuRVAnoK7Jpa9ysZj18Cwrt1KrOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn4/EyyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EDDC4CEF1;
-	Fri, 21 Nov 2025 13:30:57 +0000 (UTC)
+	 MIME-Version; b=s+LfTqVBHoDSJybSOzHdqWZD0WwFCKZfJ2ePRQhurJYiqO2+1KXZe7Vv35PaxW6T5NKoUwcpuDV8KJ02ySAgZ9Ptb6ZQoomWAuP5Pjnz02+Z+3TRUVbBbi2XFhpmK37Us6uFH2y/z9p7yAHhi+ZQhfq6jkD1OqJyJxgBt2UN13M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE44k2GF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5F1C4CEF1;
+	Fri, 21 Nov 2025 13:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731857;
-	bh=qmKRMspvxxmjAZi1q6yzMrYQRluPFc3oSzIr4+L3gCI=;
+	s=korg; t=1763731375;
+	bh=uw377SzjpAau2EnrRhJeBeBktdFyFRPhZ6PCefvFvXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fn4/EyyUlRaQIcJfh1ifI3g5tpf0o3H+9RaakqUeBfe8QOlOcH37vdQg0GmVgtP7K
-	 SgoYj5jOEK76uvLJM1Y71fXVVc2R+sJTZNnQ6j2KJJhD4HeqioptD39oCX6Oyk/9w6
-	 C7vq7bNAs9ZEGpPv+ORLkL8PwWBED50m0egDULjU=
+	b=eE44k2GF8kDP7znRtZGlO07k9RsIANAbAIrk5LefuwcruLHnFrLTDkb9/6caN+Vjp
+	 7xqs18oOlYaSRp9YiNt6SWcGBKY+5BQnaBNJfvNF5ZANdYwj05zgMxxWW+ce+M6fGn
+	 619dYNAyMrEXBKr04c1zKD7pOBlvWggddd761VzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/185] HID: uclogic: Fix potential memory leak in error path
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 185/247] mm/kmsan: fix kmsan kmalloc hook when no stack depots are allocated yet
 Date: Fri, 21 Nov 2025 14:12:12 +0100
-Message-ID: <20251121130147.662512985@linuxfoundation.org>
+Message-ID: <20251121130201.363251917@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +67,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
 
-[ Upstream commit a78eb69d60ce893de48dd75f725ba21309131fc2 ]
+commit 7e76b75e5ab3339bebab3a4738226cd9b27d8c42 upstream.
 
-In uclogic_params_ugee_v2_init_event_hooks(), the memory allocated for
-event_hook is not freed in the next error path. Fix that by freeing it.
+If no stack depot is allocated yet, due to masking out __GFP_RECLAIM flags
+kmsan called from kmalloc cannot allocate stack depot.  kmsan fails to
+record origin and report issues.  This may result in KMSAN failing to
+report issues.
 
-Fixes: a251d6576d2a ("HID: uclogic: Handle wireless device reconnection")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reusing flags from kmalloc without modifying them should be safe for kmsan.
+For example, such chain of calls is possible:
+test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
+slab_alloc_node -> slab_post_alloc_hook ->
+kmsan_slab_alloc -> kmsan_internal_poison_memory.
+
+Only when it is called in a context without flags present should
+__GFP_RECLAIM flags be masked.
+
+With this change all kmsan tests start working reliably.
+
+Eric reported:
+
+: Yes, KMSAN seems to be at least partially broken currently.  Besides the
+: fact that the kmsan KUnit test is currently failing (which I reported at
+: https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed that
+: the poly1305 KUnit test causes a KMSAN warning with Aleksei's patch
+: applied but does not cause a warning without it.  The warning did get
+: reached via syzbot somehow
+: (https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.1761026343.git.xiaopei01@kylinos.cn/),
+: so KMSAN must still work in some cases.  But it didn't work for me.
+
+Link: https://lkml.kernel.org/r/20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com
+Link: https://lkml.kernel.org/r/20251022030213.GA35717@sol
+Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunistic page allocation")
+Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-uclogic-params.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/kmsan/core.c   |    3 ---
+ mm/kmsan/hooks.c  |    6 ++++--
+ mm/kmsan/shadow.c |    2 +-
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
-index ef26c7defcf61..89fa2610f02ba 100644
---- a/drivers/hid/hid-uclogic-params.c
-+++ b/drivers/hid/hid-uclogic-params.c
-@@ -1367,8 +1367,10 @@ static int uclogic_params_ugee_v2_init_event_hooks(struct hid_device *hdev,
- 	event_hook->hdev = hdev;
- 	event_hook->size = ARRAY_SIZE(reconnect_event);
- 	event_hook->event = kmemdup(reconnect_event, event_hook->size, GFP_KERNEL);
--	if (!event_hook->event)
-+	if (!event_hook->event) {
-+		kfree(event_hook);
- 		return -ENOMEM;
-+	}
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -72,9 +72,6 @@ depot_stack_handle_t kmsan_save_stack_wi
  
- 	list_add_tail(&event_hook->list, &p->event_hooks->list);
+ 	nr_entries = stack_trace_save(entries, KMSAN_STACK_DEPTH, 0);
  
--- 
-2.51.0
-
+-	/* Don't sleep. */
+-	flags &= ~(__GFP_DIRECT_RECLAIM | __GFP_KSWAPD_RECLAIM);
+-
+ 	handle = stack_depot_save(entries, nr_entries, flags);
+ 	return stack_depot_set_extra_bits(handle, extra);
+ }
+--- a/mm/kmsan/hooks.c
++++ b/mm/kmsan/hooks.c
+@@ -84,7 +84,8 @@ void kmsan_slab_free(struct kmem_cache *
+ 	if (s->ctor)
+ 		return;
+ 	kmsan_enter_runtime();
+-	kmsan_internal_poison_memory(object, s->object_size, GFP_KERNEL,
++	kmsan_internal_poison_memory(object, s->object_size,
++				     GFP_KERNEL & ~(__GFP_RECLAIM),
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
+ }
+@@ -114,7 +115,8 @@ void kmsan_kfree_large(const void *ptr)
+ 	kmsan_enter_runtime();
+ 	page = virt_to_head_page((void *)ptr);
+ 	KMSAN_WARN_ON(ptr != page_address(page));
+-	kmsan_internal_poison_memory((void *)ptr, page_size(page), GFP_KERNEL,
++	kmsan_internal_poison_memory((void *)ptr, page_size(page),
++				     GFP_KERNEL & ~(__GFP_RECLAIM),
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
+ }
+--- a/mm/kmsan/shadow.c
++++ b/mm/kmsan/shadow.c
+@@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page,
+ 		return;
+ 	kmsan_enter_runtime();
+ 	kmsan_internal_poison_memory(page_address(page), page_size(page),
+-				     GFP_KERNEL,
++				     GFP_KERNEL & ~(__GFP_RECLAIM),
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
+ }
 
 
 
