@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC98DC7939F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E04FC79C90
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6133C4EC171
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id C8EE62D108
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C97C349B0F;
-	Fri, 21 Nov 2025 13:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B882345CDE;
+	Fri, 21 Nov 2025 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmwpK4hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gujHAkUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F2031578E;
-	Fri, 21 Nov 2025 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0C2F28F0;
+	Fri, 21 Nov 2025 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731038; cv=none; b=IcYnQx+X49zQHnu3FCsyoOH8kkoAzvGEpL086W/fSkmihhax9SNsfhYOj86AqTQIZg9PFui30jl/Jit59HRNdILbTj3PMQR1rWgi4RCKf9v3K/xOyHvejtjtCsI3uNxEVn/UKbcWDCZn8WjeSxCs5xXtRG8jWTbVvGLkVIkk3QQ=
+	t=1763733098; cv=none; b=qwXsR0REpzaYxuCBiF9jjCnxRjzZ+gtvSzGxJHYc04eBjMJwhVkJe6P0mHpNMueNkqqhLcqthX6Pqgqvi9tLyWVNkOHh3m1OWvSnnMjNO+uIsV3UO5NnFL4JTz/vnhuVDecSnnIRqxxfxQaio11Qn6iuciiLl+ilNPMkcLrm0gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731038; c=relaxed/simple;
-	bh=idiyVHOyysQM/pqpsd7edGxETlaJyKbktDYuHk89+8I=;
+	s=arc-20240116; t=1763733098; c=relaxed/simple;
+	bh=I/CShgXAnpg+uSSPG3/GmzDHyl7fcRhhQEHnlSz2X/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAyy7WzXOWi2yKUe3RZ5Sxj4eoRX88NO1I6q3OmHEZLJaxxBc7Z4EYbbSnPzsnDdqhmZjAJb7400VNfN2YnNsanpbEuL4oSHBa+CjLngIeuisS6z0XT6Q/W0dfVe2eaDTlJqy2mY3t9sAQdd2RHlJDT62fANQ2dcQhleix0SSIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmwpK4hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29415C4CEF1;
-	Fri, 21 Nov 2025 13:17:16 +0000 (UTC)
+	 MIME-Version; b=opRoIIr0FIqERQ6bSjXLK3mrvqu91GLXvTK94P8mYhegpQ5+zGbJI3/4StIb62vQe07tfiuKUNzN90EHH7mHyFxoiktNnkdEPOr8ul2TzxWo34x+i3xQYmDZJGCCgTUV/LpaCbQMNsPLpc64IGNSwUOGLKiPPs6XvyPVeO7CcpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gujHAkUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8757C4CEF1;
+	Fri, 21 Nov 2025 13:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731037;
-	bh=idiyVHOyysQM/pqpsd7edGxETlaJyKbktDYuHk89+8I=;
+	s=korg; t=1763733098;
+	bh=I/CShgXAnpg+uSSPG3/GmzDHyl7fcRhhQEHnlSz2X/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmwpK4hdXG79wLhLzMw7wvqtWY1qAlT8AKiSHDg2QZCajQz0LH2qwrkbguo4ayuhJ
-	 7TtMIIvLYs2LWkcqs3cVtQ09zoVuGlQ7+adLmjUb002feRN+cMKjV8/ngBTZiWFI18
-	 hMrGPTmCcEXZwWy0BZwPsXFiDDzKQt2ifsECAdTA=
+	b=gujHAkUcESNFBPyAMiAh2L/QNpGg2LlRdS+MSSvV5fjSn8xjmYmnhher0ZZM3vmsH
+	 769qFyHj0mgvzc8aFe06G/3DNeUmqnfDmhPOoLux5wr2+/4gVBEKi6WOnlcQPDOsrb
+	 i+r2z5mBDqaWF1KKAKl13TYEl21cFRir6hU9GJOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 068/247] net: mdio: fix resource leak in mdiobus_register_device()
-Date: Fri, 21 Nov 2025 14:10:15 +0100
-Message-ID: <20251121130157.042206201@linuxfoundation.org>
+Subject: [PATCH 6.6 317/529] 9p: sysfs_init: dont hardcode error to ENOMEM
+Date: Fri, 21 Nov 2025 14:10:16 +0100
+Message-ID: <20251121130242.304556687@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit e6ca8f533ed41129fcf052297718f417f021cc7d ]
+[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
 
-Fix a possible leak in mdiobus_register_device() when both a
-reset-gpio and a reset-controller are present.
-Clean up the already claimed reset-gpio, when the registration of
-the reset-controller fails, so when an error code is returned, the
-device retains its state before the registration attempt.
+v9fs_sysfs_init() always returned -ENOMEM on failure;
+return the actual sysfs_create_group() error instead.
 
-Link: https://lore.kernel.org/all/20251106144603.39053c81@kernel.org/
-Fixes: 71dd6c0dff51 ("net: phy: add support for reset-controller")
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Link: https://patch.msgid.link/4b419377f8dd7d2f63f919d0f74a336c734f8fff.1762584481.git.buday.csaba@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/9p/v9fs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index cad6ed3aa10b6..4354241137d50 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -73,8 +73,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
- 			return err;
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index af1921454ce87..be61810cb7798 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -597,13 +597,16 @@ static const struct attribute_group v9fs_attr_group = {
  
- 		err = mdiobus_register_reset(mdiodev);
--		if (err)
-+		if (err) {
-+			gpiod_put(mdiodev->reset_gpio);
-+			mdiodev->reset_gpio = NULL;
- 			return err;
-+		}
+ static int __init v9fs_sysfs_init(void)
+ {
++	int ret;
++
+ 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
+ 	if (!v9fs_kobj)
+ 		return -ENOMEM;
  
- 		/* Assert the reset signal */
- 		mdio_device_reset(mdiodev, 1);
+-	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
++	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
++	if (ret) {
+ 		kobject_put(v9fs_kobj);
+-		return -ENOMEM;
++		return ret;
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
