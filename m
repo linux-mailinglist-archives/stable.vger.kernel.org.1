@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A188C7984D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F96AC79FBA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id B547D32A96
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A39484F2CCE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B0421ABB9;
-	Fri, 21 Nov 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2D4352951;
+	Fri, 21 Nov 2025 13:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCwTc6gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJMSPKhF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BDD2745E;
-	Fri, 21 Nov 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4767C35388B;
+	Fri, 21 Nov 2025 13:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731824; cv=none; b=pibRb2WlKyXzdQDSDnxjgk4ZbSzvTRXuDLmDRMiwHCACTOdGUHSDViUxPjQXQgn37vZnReRJVmPaLy95dwoi45h+FwYhgEotblQzvHo2628TjxZ4nIj/Mcz0oplCkRwyT6Uq8q9OQZdwL0hB7ASD0nKtF0nEmOS+9+u8XSwbU48=
+	t=1763733404; cv=none; b=VMLaaRvY5fYQFhtP/4bCozR1DIz5dUaFEdcI7NVk7HTS9To7xWfL0dTa7DeMOaCXO/xU4Y4vArlnRA0cghmiGUo4MHTEf2DySAJKhMjXY7tWmPowhknMXPAbxxD8TiL34AfGRrDrA4bZdmg2VkxnTv/h7A19Y0AHBE77C5O+5Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731824; c=relaxed/simple;
-	bh=1gjVNsrj3cRqCVOfrdqqsG337gz2cIC7FikyULHnqZM=;
+	s=arc-20240116; t=1763733404; c=relaxed/simple;
+	bh=5T1I+WHE6W26R6pi8KePN/EFVLxTDINXoQZeS51tc98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fM4x0oJvwVBvCWnAf1c39qj5qqRtSbI5rLnTMxyAEp7gj4Ws6Xbr3JvzxycHIXZ6pl+ewLBYdmCN/o0QHG8cJ2DJd/MiEu/7Hos+rr72d996u+fhSGu+hCoApw2/qy9JSm413mdooZwdt32in69tPgt/OjXyHUt4NoYTpp3b5v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCwTc6gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4605AC4CEF1;
-	Fri, 21 Nov 2025 13:30:23 +0000 (UTC)
+	 MIME-Version; b=m6uUmGm8QrhiN7RRH8yn8NPrrlywWSG3jmUJc8m2FilaZ1P8XUrHVsl8EvLwOx1TMCjzBSSZ5b3PKBX37wUgxsgT4WJRNBzr4XRucbc0mn3wtf/MhU6wgCLJc75odmXNCnRtlAWJs+m2d4QHS8PXXLdwCCkHo8Pf3IMtN5DnsCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJMSPKhF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917BCC116C6;
+	Fri, 21 Nov 2025 13:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731823;
-	bh=1gjVNsrj3cRqCVOfrdqqsG337gz2cIC7FikyULHnqZM=;
+	s=korg; t=1763733403;
+	bh=5T1I+WHE6W26R6pi8KePN/EFVLxTDINXoQZeS51tc98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCwTc6gr9dD0OqIg8MGv88PxDLykX0iU1jj1gsQkplIqoLU54nCDGicMgb6dBN4Z6
-	 xgPpiG+D+oFHXNs42kuBpNBut36/mzC0av80xKbTvErIzpCf+i79fUgBdMGncoWtJh
-	 pX4fXyl9zzvHXHR8/9WKfDaSbfU3uO+72mi0dY48=
+	b=VJMSPKhFs3BIitYg1srm7mLJVjK/ZBH0sQ4Ybv7IoePyG9aUwsYoG1i1W5ZaGDF9H
+	 pgDRUu+wFbuxHVqJKhpIhDJHsJNL5iHrg/UrezfswykNu2LhiikSMZRc/OHZPinehe
+	 Bz8f7qVRUOGLmjiMSID41/lVG5YwtwITWW3RvtWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/185] virtio-fs: fix incorrect check for fsvq->kobj
-Date: Fri, 21 Nov 2025 14:12:01 +0100
-Message-ID: <20251121130147.260172910@linuxfoundation.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 423/529] cifs: Fix uncached read into ITER_KVEC iterator
+Date: Fri, 21 Nov 2025 14:12:02 +0100
+Message-ID: <20251121130246.065763635@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c014021253d77cd89b2d8788ce522283d83fbd40 ]
+If a cifs share is mounted cache=none, internal reads (such as by exec)
+will pass a KVEC iterator down from __cifs_readv() to
+cifs_send_async_read() which will then call cifs_limit_bvec_subset() upon
+it to limit the number of contiguous elements for RDMA purposes.  This
+doesn't work on non-BVEC iterators, however.
 
-In virtio_fs_add_queues_sysfs(), the code incorrectly checks fs->mqs_kobj
-after calling kobject_create_and_add(). Change the check to fsvq->kobj
-(fs->mqs_kobj -> fsvq->kobj) to ensure the per-queue kobject is
-successfully created.
+Fix this by extracting a KVEC iterator into a BVEC iterator in
+__cifs_readv()  (it would be dup'd anyway it async).
 
-Fixes: 87cbdc396a31 ("virtio_fs: add sysfs entries for queue information")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251027104658.1668537-1-alok.a.tiwari@oracle.com
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This caused the following warning:
+
+  WARNING: CPU: 0 PID: 6290 at fs/smb/client/file.c:3549 cifs_limit_bvec_subset+0xe/0xc0
+  ...
+  Call Trace:
+   <TASK>
+   cifs_send_async_read+0x146/0x2e0
+   __cifs_readv+0x207/0x2d0
+   __kernel_read+0xf6/0x160
+   search_binary_handler+0x49/0x210
+   exec_binprm+0x4a/0x140
+   bprm_execve.part.0+0xe4/0x170
+   do_execveat_common.isra.0+0x196/0x1c0
+   do_execve+0x1f/0x30
+
+Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
+Acked-by: Bharath SM <bharathsm@microsoft.com>
+Tested-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: stable@kernel.org # v6.6~v6.9
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/virtio_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/file.c | 97 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 94 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index 749c9f66d74c6..c81f7b888c385 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -372,7 +372,7 @@ static int virtio_fs_add_queues_sysfs(struct virtio_fs *fs)
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 1f0a53738426e..92e43589fd83f 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -37,6 +37,81 @@
+ #include "cifs_ioctl.h"
+ #include "cached_dir.h"
  
- 		sprintf(buff, "%d", i);
- 		fsvq->kobj = kobject_create_and_add(buff, fs->mqs_kobj);
--		if (!fs->mqs_kobj) {
-+		if (!fsvq->kobj) {
- 			ret = -ENOMEM;
- 			goto out_del;
- 		}
++/*
++ * Allocate a bio_vec array and extract up to sg_max pages from a KVEC-type
++ * iterator and add them to the array.  This can deal with vmalloc'd buffers as
++ * well as kmalloc'd or static buffers.  The pages are not pinned.
++ */
++static ssize_t extract_kvec_to_bvec(struct iov_iter *iter, ssize_t maxsize,
++					unsigned int bc_max,
++					struct bio_vec **_bv, unsigned int *_bc)
++{
++	const struct kvec *kv = iter->kvec;
++	struct bio_vec *bv;
++	unsigned long start = iter->iov_offset;
++	unsigned int i, bc = 0;
++	ssize_t ret = 0;
++
++	bc_max = iov_iter_npages(iter, bc_max);
++	if (bc_max == 0) {
++		*_bv = NULL;
++		*_bc = 0;
++		return 0;
++	}
++
++	bv = kvmalloc(array_size(bc_max, sizeof(*bv)), GFP_NOFS);
++	if (!bv) {
++		*_bv = NULL;
++		*_bc = 0;
++		return -ENOMEM;
++	}
++	*_bv = bv;
++
++	for (i = 0; i < iter->nr_segs; i++) {
++		struct page *page;
++		unsigned long kaddr;
++		size_t off, len, seg;
++
++		len = kv[i].iov_len;
++		if (start >= len) {
++			start -= len;
++			continue;
++		}
++
++		kaddr = (unsigned long)kv[i].iov_base + start;
++		off = kaddr & ~PAGE_MASK;
++		len = min_t(size_t, maxsize, len - start);
++		kaddr &= PAGE_MASK;
++
++		maxsize -= len;
++		ret += len;
++		do {
++			seg = umin(len, PAGE_SIZE - off);
++			if (is_vmalloc_or_module_addr((void *)kaddr))
++				page = vmalloc_to_page((void *)kaddr);
++			else
++				page = virt_to_page((void *)kaddr);
++
++			bvec_set_page(bv, page, len, off);
++			bv++;
++			bc++;
++
++			len -= seg;
++			kaddr += PAGE_SIZE;
++			off = 0;
++		} while (len > 0 && bc < bc_max);
++
++		if (maxsize <= 0 || bc >= bc_max)
++			break;
++		start = 0;
++	}
++
++	if (ret > 0)
++		iov_iter_advance(iter, ret);
++	*_bc = bc;
++	return ret;
++}
++
+ /*
+  * Remove the dirty flags from a span of pages.
+  */
+@@ -4330,11 +4405,27 @@ static ssize_t __cifs_readv(
+ 		ctx->bv = (void *)ctx->iter.bvec;
+ 		ctx->bv_need_unpin = iov_iter_extract_will_pin(to);
+ 		ctx->should_dirty = true;
+-	} else if ((iov_iter_is_bvec(to) || iov_iter_is_kvec(to)) &&
+-		   !is_sync_kiocb(iocb)) {
++	} else if (iov_iter_is_kvec(to)) {
++		/*
++		 * Extract a KVEC-type iterator into a BVEC-type iterator.  We
++		 * assume that the storage will be retained by the caller; in
++		 * any case, we may or may not be able to pin the pages, so we
++		 * don't try.
++		 */
++		unsigned int bc;
++
++		rc = extract_kvec_to_bvec(to, iov_iter_count(to), INT_MAX,
++					&ctx->bv, &bc);
++		if (rc < 0) {
++			kref_put(&ctx->refcount, cifs_aio_ctx_release);
++			return rc;
++		}
++
++		iov_iter_bvec(&ctx->iter, ITER_DEST, ctx->bv, bc, rc);
++	} else if (iov_iter_is_bvec(to) && !is_sync_kiocb(iocb)) {
+ 		/*
+ 		 * If the op is asynchronous, we need to copy the list attached
+-		 * to a BVEC/KVEC-type iterator, but we assume that the storage
++		 * to a BVEC-type iterator, but we assume that the storage
+ 		 * will be retained by the caller; in any case, we may or may
+ 		 * not be able to pin the pages, so we don't try.
+ 		 */
 -- 
 2.51.0
 
