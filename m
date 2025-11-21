@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49F3C797A5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438E7C7939D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 04169347ABF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 114202AE8C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF5433438C;
-	Fri, 21 Nov 2025 13:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D39334367;
+	Fri, 21 Nov 2025 13:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mN0KIMwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CC0faldD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571282874F6;
-	Fri, 21 Nov 2025 13:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3BA27147D;
+	Fri, 21 Nov 2025 13:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731812; cv=none; b=eFqDhIALZ6JSVp8eUU9Ngdzd1BMkyWqNUdolOX9hSu5qublgpKlnHPvqwwg2DnZ1hlK2nNulLiaXD+RKzBWs6xrzfCCTfdWXniC9EzQ8PfmrrcHJg1zxTNFNQhAC4z2YP1hq9bOYwwdl9cgMaufkDWaWAi5KtTv8aE9n643y9nc=
+	t=1763731227; cv=none; b=A871A2vLqUszU9DIzZ0t+Lc0XoYP908inZ+vWZyIOwwnXhl07YEqvuJ6X+G+HvXr6wmtVLBAafVq6CmCxsLe3siySUC4Ix/RfyiMykNF2BJwkm++HmFTiUDaBirUjqcTG29ebxWOSTNTCDrMKzyu8181psW8upb5qmEr7bkRFFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731812; c=relaxed/simple;
-	bh=tJ9jpUMukQsLtF5I7Rins7vnGYl/BCQPphLQgUA13u8=;
+	s=arc-20240116; t=1763731227; c=relaxed/simple;
+	bh=cT2O+8rDiGla8msjSy9kmYAeYTxf5w5VJ2BkXe8BOs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyHrmjw3OiEWw+mMkF+ZW7TfHEHgafknV+LebTBdhd13FD0P68U/dny+/8F1tkienco2D2xAk2BqwMca0aZsbdfQsC0WsOwqc+S1zCTpy5v+6ws2Ku4gnr7aDU8/sy/QbVbJYAKo63ttWf7yqFrTtcpIjragjfC9bggV0pHfV4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mN0KIMwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EDAC4CEF1;
-	Fri, 21 Nov 2025 13:30:11 +0000 (UTC)
+	 MIME-Version; b=cJCeIMhJxXZOCx3ha4YBkhrRbp5BnykL6bmxEF5TGE2pZN/V5IF7AcoQtEQxVoUe3/3F+69Y6eP1/x89c+bK1kjNJebvfYyB4OyVhuFCjFemvV4kQsUnpSJ6Zq+gC7JNg7iMTY20wyXfscyrgQ++L1MZTIQHyc5gJv+MWLq3KQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CC0faldD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEFCC116C6;
+	Fri, 21 Nov 2025 13:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731812;
-	bh=tJ9jpUMukQsLtF5I7Rins7vnGYl/BCQPphLQgUA13u8=;
+	s=korg; t=1763731227;
+	bh=cT2O+8rDiGla8msjSy9kmYAeYTxf5w5VJ2BkXe8BOs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mN0KIMwjRhJL8jWxQiiCr3pWwUIRCcblY2RRredsz+CdDl774h7Wj/xahzTsjyK3X
-	 WRn7SBwXqd0iPOuUvizbrQgai8paBrLJTOoKLzmuDJyZB710dvIEzJqdAZvG1hPipP
-	 DeEyWHVpD/z0L9jHYeYcIccq8OJHRX3x34a9Gfp4=
+	b=CC0faldDltDf0OdKT3/RHsbV9lORX2GnrU9qcZEglHqlKCzJLOqFPbqOfCDTjYdxN
+	 DW3XIGuz4vWOtguvKe9sMekHvVzkZiuQYkFdw56Xmpr7zsz4XIt948Obi43+LDzMW4
+	 Et0mG5zm276OvEV5bSujsZ6QJGIrhhYQwKqkEI5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Anand Moon <linux.amoon@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/185] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
+Subject: [PATCH 6.17 135/247] arm64: dts: rockchip: Set correct pinctrl for I2S1 8ch TX on odroid-m1
 Date: Fri, 21 Nov 2025 14:11:22 +0100
-Message-ID: <20251121130145.863059744@linuxfoundation.org>
+Message-ID: <20251121130159.573320520@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranganath V N <vnranganath.20@gmail.com>
+From: Anand Moon <linux.amoon@gmail.com>
 
-[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
+[ Upstream commit d425aef66e62221fa6bb0ccb94296df29e4cc107 ]
 
-Fix a KMSAN kernel-infoleak detected  by the syzbot .
+Enable proper pin multiplexing for the I2S1 8-channel transmit interface by
+adding the default pinctrl configuration which esures correct signal routing
+and avoids pinmux conflicts during audio playback.
 
-[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
+Changes fix the error
+[  116.856643] [    T782] rockchip-pinctrl pinctrl: pin gpio1-10 already requested by affinity_hint; cannot claim for fe410000.i2s
+[  116.857567] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: pin-42 (fe410000.i2s)
+[  116.857618] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: could not request pin 42 (gpio1-10) from group i2s1m0-sdi1 on device rockchip-pinctrl
+[  116.857659] [    T782] rockchip-i2s-tdm fe410000.i2s: Error applying setting, reverse things back
 
-In tcf_ife_dump(), the variable 'opt' was partially initialized using a
-designatied initializer. While the padding bytes are reamined
-uninitialized. nla_put() copies the entire structure into a
-netlink message, these uninitialized bytes leaked to userspace.
+I2S1 on the M1 to the codec in the RK809 only uses the SCLK, LRCK, SDI0
+and SDO0 signals, so limit the claimed pins to those.
 
-Initialize the structure with memset before assigning its fields
-to ensure all members and padding are cleared prior to beign copied.
+With this change audio output works as expected:
 
-This change silences the KMSAN report and prevents potential information
-leaks from the kernel memory.
+$ aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: HDMI [HDMI], device 0: fe400000.i2s-i2s-hifi i2s-hifi-0 [fe400000.i2s-i2s-hifi i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: RK817 [Analog RK817], device 0: fe410000.i2s-rk817-hifi rk817-hifi-0 [fe410000.i2s-rk817-hifi rk817-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
 
-This fix has been tested and validated by syzbot. This patch closes the
-bug reported at the following syzkaller link and ensures no infoleak.
-
-Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
-Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Fixes: ef6980b6becb ("introduce IFE action")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 78f858447cb7 ("arm64: dts: rockchip: Add analog audio on ODROID-M1")
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Anand Moon <linux.amoon@gmail.com>
+[adapted the commit message a bit]
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ife.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 107c6d83dc5c4..7c6975632fc2e 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -644,13 +644,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
- 	unsigned char *b = skb_tail_pointer(skb);
- 	struct tcf_ife_info *ife = to_ife(a);
- 	struct tcf_ife_params *p;
--	struct tc_ife opt = {
--		.index = ife->tcf_index,
--		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
--	};
-+	struct tc_ife opt;
- 	struct tcf_t t;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
+index 0f844806ec542..442a2bc43ba8e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
+@@ -482,6 +482,8 @@
+ };
  
-+	memset(&opt, 0, sizeof(opt));
-+
-+	opt.index = ife->tcf_index,
-+	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
-+	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
-+
- 	spin_lock_bh(&ife->tcf_lock);
- 	opt.action = ife->tcf_action;
- 	p = rcu_dereference_protected(ife->params,
+ &i2s1_8ch {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2s1m0_sclktx &i2s1m0_lrcktx &i2s1m0_sdi0 &i2s1m0_sdo0>;
+ 	rockchip,trcm-sync-tx-only;
+ 	status = "okay";
+ };
 -- 
 2.51.0
 
