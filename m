@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A691FC798BE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEE5C7A041
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EE229380A0A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2E611384B30
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C74346FC8;
-	Fri, 21 Nov 2025 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC5352925;
+	Fri, 21 Nov 2025 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLye1wEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0g63yRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A1E34C98C;
-	Fri, 21 Nov 2025 13:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF65346A0E;
+	Fri, 21 Nov 2025 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732077; cv=none; b=RS8VGNwYR8Sk9HzBt6bFqr4Y5gPcYhVZtFQi8/+yT/SL31UBD2JZ/rd+dD1yPdUIjF3CaDgIWoCOQlWhc1YX5WBtj5B8yzT+fEhme8Mxr1+ROgLkMRxAsZWZsXvFbyJiGKSJKbg5jJn/g4/9xo97dOtM9vFQHfs93EeetJVvh1s=
+	t=1763733555; cv=none; b=a1R2EhO6OZQfp1rHbvvbymHShvezHvBrHuMVcDX9mCF2QK/thnlPA/zLOm9451MDvp2WjdYd6I9xxIuga40Pbcc2sZcI5vNdYZ2TdTMY5n0upQ61FdoNMnzr1sKTA3PbhIQHmlhXw58XRlqpCKTVVaCCuQLpVNJGYkxWBj45NAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732077; c=relaxed/simple;
-	bh=h3vtcxWqc1O+u//cI/hlA24XyrvlYyWih3dW1vgNljg=;
+	s=arc-20240116; t=1763733555; c=relaxed/simple;
+	bh=MNP4yk98yjVTQYQJchRGAAYdSVioThDDDWQzWTT4h5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpEF5UUMAAX5a/tmLrQFNtNW9Iwsxr82lEFYSThfQBYiqg/XjsZY38zIUA5cMuWEFgQ8o5vrk8YtXsS86Cxs3gLA3K/j/ccsHQgng//axcG/Nf+H8z0ll3nLgIhqFvEBwwJqlTCntN5+AOcmlPgyxa+DI5xc3U4b/3OwOV+tIhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLye1wEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16A7C4CEF1;
-	Fri, 21 Nov 2025 13:34:36 +0000 (UTC)
+	 MIME-Version; b=FH6m53NdXRtRRMF9QPyHy7odo0doc2/U5GFXgGpwVVRLXjApD/VHz8rNIQGgHvugmu2nJ8pBmEXZbcdTaaH8jk8p5QdMeZ0/YsFvTV7cTODCNy/rfNE/qVkzZE4rhmZEGjmaCJAqdL/MI4xIN+6pU8J/kTbHZ4KdaLnG/v8dzG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0g63yRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0D3C116C6;
+	Fri, 21 Nov 2025 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732077;
-	bh=h3vtcxWqc1O+u//cI/hlA24XyrvlYyWih3dW1vgNljg=;
+	s=korg; t=1763733554;
+	bh=MNP4yk98yjVTQYQJchRGAAYdSVioThDDDWQzWTT4h5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLye1wEl92lZv9yoT6XsnNY880RepVFz9eY/qdOLrsAS3ookrmyFPwIrTY8TovIP0
-	 iLomNS/9oFIP+Um0adm26OqYD2TQPhbB/X+KHvu2B9RhULY7j3N1N/3X2ciPbPNak/
-	 qEX9P1tndw0eAX9NRLVC9TFmUy3p/S5ZeME6B4kU=
+	b=l0g63yRw+6cmM9CNc5EsiaVH/OBMwkXVFq/1ZIlR8L4jmlEiDT4LMQ1e4vYQWP5xm
+	 5XdMsyUVnc19cLIv0zeuH+BNqvxy6wY7m1tf02OUdNc4IbGJnoyoK80C9kiQwL+mWj
+	 uERG0Vem9mLCNW5+fXI5iXit/wYQNwKKjh4qXNJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 181/185] isdn: mISDN: hfcsusb: fix memory leak in hfcsusb_probe()
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 509/529] scsi: ufs: core: Add a quirk to suppress link_startup_again
 Date: Fri, 21 Nov 2025 14:13:28 +0100
-Message-ID: <20251121130150.424678590@linuxfoundation.org>
+Message-ID: <20251121130249.145928949@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 3f978e3f1570155a1327ffa25f60968bc7b9398f upstream.
+[ Upstream commit d34caa89a132cd69efc48361d4772251546fdb88 ]
 
-In hfcsusb_probe(), the memory allocated for ctrl_urb gets leaked when
-setup_instance() fails with an error code. Fix that by freeing the urb
-before freeing the hw structure. Also change the error paths to use the
-goto ladder style.
+ufshcd_link_startup() has a facility (link_startup_again) to issue
+DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
 
-Compile tested only. Issue found using a prototype static analysis tool.
+Some older hardware benefits from that, however the behaviour is
+non-standard, and has been found to cause link startup to be unreliable
+for some Intel Alder Lake based host controllers.
 
-Fixes: 69f52adb2d53 ("mISDN: Add HFC USB driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20251030042524.194812-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
+link_startup_again, in preparation for setting the quirk for affected
+controllers.
+
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/isdn/hardware/mISDN/hfcsusb.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/ufs/core/ufshcd.c |    3 ++-
+ include/ufs/ufshcd.h      |    7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/isdn/hardware/mISDN/hfcsusb.c
-+++ b/drivers/isdn/hardware/mISDN/hfcsusb.c
-@@ -1904,13 +1904,13 @@ out:
- 	mISDN_freebchannel(&hw->bch[1]);
- 	mISDN_freebchannel(&hw->bch[0]);
- 	mISDN_freedchannel(&hw->dch);
--	kfree(hw);
- 	return err;
- }
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4980,7 +4980,8 @@ static int ufshcd_link_startup(struct uf
+ 	 * If UFS device isn't active then we will have to issue link startup
+ 	 * 2 times to make sure the device state move to active.
+ 	 */
+-	if (!ufshcd_is_ufs_dev_active(hba))
++	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
++	    !ufshcd_is_ufs_dev_active(hba))
+ 		link_startup_again = true;
  
- static int
- hfcsusb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
-+	int err;
- 	struct hfcsusb			*hw;
- 	struct usb_device		*dev = interface_to_usbdev(intf);
- 	struct usb_host_interface	*iface = intf->cur_altsetting;
-@@ -2101,20 +2101,28 @@ hfcsusb_probe(struct usb_interface *intf
- 	if (!hw->ctrl_urb) {
- 		pr_warn("%s: No memory for control urb\n",
- 			driver_info->vend_name);
--		kfree(hw);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_free_hw;
- 	}
- 
- 	pr_info("%s: %s: detected \"%s\" (%s, if=%d alt=%d)\n",
- 		hw->name, __func__, driver_info->vend_name,
- 		conf_str[small_match], ifnum, alt_used);
- 
--	if (setup_instance(hw, dev->dev.parent))
--		return -EIO;
-+	if (setup_instance(hw, dev->dev.parent)) {
-+		err = -EIO;
-+		goto err_free_urb;
-+	}
- 
- 	hw->intf = intf;
- 	usb_set_intfdata(hw->intf, hw);
- 	return 0;
+ link_startup:
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -678,6 +678,13 @@ enum ufshcd_quirks {
+ 	 * single doorbell mode.
+ 	 */
+ 	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
 +
-+err_free_urb:
-+	usb_free_urb(hw->ctrl_urb);
-+err_free_hw:
-+	kfree(hw);
-+	return err;
- }
++	/*
++	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
++	 * time (refer link_startup_again) after the 1st time was successful,
++	 * because it causes link startup to become unreliable.
++	 */
++	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 26,
+ };
  
- /* function called when an active device is removed */
+ enum ufshcd_caps {
 
 
 
