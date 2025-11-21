@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C95C79E4A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F5C79625
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 39C3F2DD66
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:02:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 119A22ADA2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EB4283C82;
-	Fri, 21 Nov 2025 13:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE62531B124;
+	Fri, 21 Nov 2025 13:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfOx6Etg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2MDst2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CB354AFA;
-	Fri, 21 Nov 2025 13:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A232874F6;
+	Fri, 21 Nov 2025 13:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733413; cv=none; b=uX0Uvl6PnDsFw6kOggCLStt/sXNvWGs2sVC6JSxjPGaPmt3BoAo7unglVR6nJ6zkKE9KBvlSTp0S3zGwJn/jEHQNRZWnEdY+GBmapM0+3/D9/r0c4uYXxzr00y/LSa88COVx/Q9vSPfLTWBk0A+8sgKRaBGdZ5HvBgP9OnORUVQ=
+	t=1763731835; cv=none; b=f+fojR8T95zgoxCvO+0AZ5skhZvHOV+vHvVkq7iYd1mOiR0bgSUbGV8j2cRC8qN0XfkWwmLgVr/gm90JrVmpkLdC/unMALn39qn3DNA7VvYfUBca82jvxAkmosu6okOfkmLkr2Zp0raZxe3RVWBJKqluGkYpW3Mb74IGrSgGRqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733413; c=relaxed/simple;
-	bh=0An9qXOFRjTNZSqw6Bb6Ntcok3LbhOW/k1rUIb0H67s=;
+	s=arc-20240116; t=1763731835; c=relaxed/simple;
+	bh=fcVY611J2w+qIu86AGzFMzUKWQ9pRpWWNAkNOuV5UBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1B2weMDf44v7yhjmM7rqo0Aj6JccMxyM0Tr4LrDHUTz0eSXWg3G+oNe9hitlTsjeTXjsKt8TVlUo0tuv69SBgPnJno9dDkV3yaZLGp/51ujfSf8KXBJE0OcLnidcWFWtAHvdEq7oShaDB/33EkWIbMH2zjkeWgI04myRs2yq7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfOx6Etg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FCBC4CEF1;
-	Fri, 21 Nov 2025 13:56:52 +0000 (UTC)
+	 MIME-Version; b=oENk8DagtsPNfHhVhwiMZ3AIGAVEidiMfiVdoIBtd+KQ9bQ+kpo7lDZERkaIfTlXgAbsrIC0Y1h8uNqDJdosOoVsOls1rCZV1/DDIa81ZOgbHKwCGgWIjfy+7DS8JAypFbtAqUjhGtf07SiaxEpCRHK+IQDeV/6V/rvS6bc6aew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2MDst2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BB5C4CEF1;
+	Fri, 21 Nov 2025 13:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733413;
-	bh=0An9qXOFRjTNZSqw6Bb6Ntcok3LbhOW/k1rUIb0H67s=;
+	s=korg; t=1763731835;
+	bh=fcVY611J2w+qIu86AGzFMzUKWQ9pRpWWNAkNOuV5UBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VfOx6EtgGW1v/FIjAmKByicNcmuDsI6GJLw8evslWjfuWcxbaWdZmq6qPspVM4gPB
-	 L/YPs4DyR/vDHWz5RHkMX5EP3muWRVcT8caOgpZrjxPdivUJKYCrjTG2KqkbiM1h8C
-	 tKxB8XsgpfxNOmOBzeXRFKbKKBFNLTg/7Zk9dv/A=
+	b=J2MDst2k4hAr+aK22EyWQrxp43O7fF+uCmyH1tR7m3wsYI6gON909N+0BceNW72C2
+	 ud+U8lEU/67j0iUk8tXmiaIMT/zwREQ/RX4zW2G+sezzy6/Xv8BHI09Y5ZfxPCKLmD
+	 aWgWp3PuX+RjntQUh/CZrIEG+gPj8Kzt3vE0yiLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 426/529] ASoC: cs4271: Fix regulator leak on probe failure
+Subject: [PATCH 6.12 098/185] netfilter: nf_tables: reject duplicate device on updates
 Date: Fri, 21 Nov 2025 14:12:05 +0100
-Message-ID: <20251121130246.172936145@linuxfoundation.org>
+Message-ID: <20251121130147.409867053@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
+commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
 
-The probe function enables regulators at the beginning
-but fails to disable them in its error handling path.
-If any operation after enabling the regulators fails,
-the probe will exit with an error, leaving the regulators
-permanently enabled, which could lead to a resource leak.
+A chain/flowtable update with duplicated devices in the same batch is
+possible. Unfortunately, netdev event path only removes the first
+device that is found, leaving unregistered the hook of the duplicated
+device.
 
-Add a proper error handling path to call regulator_bulk_disable()
-before returning an error.
+Check if a duplicated device exists in the transaction batch, bail out
+with EEXIST in such case.
 
-Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+WARNING is hit when unregistering the hook:
+
+ [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
+ [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
+ [...]
+ [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
+
+Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs4271.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 188b8b43c524f..b7529e2900572 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -594,17 +594,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
- 
- 	ret = regcache_sync(cs4271->regmap);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	/* Power-up sequence requires 85 uS */
- 	udelay(85);
- 
-@@ -614,6 +614,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
- 				   CS4271_MODE2_MUTECAEQUB);
- 
- 	return 0;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 2f3684dcbef8c..e1c617b488889 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2642,6 +2642,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 	struct nft_chain *chain = ctx->chain;
+ 	struct nft_chain_hook hook = {};
+ 	struct nft_stats *stats = NULL;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *h, *next;
+ 	struct nf_hook_ops *ops;
+ 	struct nft_trans *trans;
+@@ -2682,6 +2683,20 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 				if (nft_hook_list_find(&basechain->hook_list, h)) {
+ 					list_del(&h->list);
+ 					kfree(h);
++					continue;
++				}
 +
-+err_disable_regulator:
-+	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
-+	return ret;
- }
++				nft_net = nft_pernet(ctx->net);
++				list_for_each_entry(trans, &nft_net->commit_list, list) {
++					if (trans->msg_type != NFT_MSG_NEWCHAIN ||
++					    trans->table != ctx->table ||
++					    !nft_trans_chain_update(trans))
++						continue;
++
++					if (nft_hook_list_find(&nft_trans_chain_hooks(trans), h)) {
++						nft_chain_release_hook(&hook);
++						return -EEXIST;
++					}
+ 				}
+ 			}
+ 		} else {
+@@ -8686,6 +8701,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ {
+ 	const struct nlattr * const *nla = ctx->nla;
+ 	struct nft_flowtable_hook flowtable_hook;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *hook, *next;
+ 	struct nft_trans *trans;
+ 	bool unregister = false;
+@@ -8701,6 +8717,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
+ 			list_del(&hook->list);
+ 			kfree(hook);
++			continue;
++		}
++
++		nft_net = nft_pernet(ctx->net);
++		list_for_each_entry(trans, &nft_net->commit_list, list) {
++			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
++			    trans->table != ctx->table ||
++			    !nft_trans_flowtable_update(trans))
++				continue;
++
++			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
++				err = -EEXIST;
++				goto err_flowtable_update_hook;
++			}
+ 		}
+ 	}
  
- static void cs4271_component_remove(struct snd_soc_component *component)
 -- 
 2.51.0
 
