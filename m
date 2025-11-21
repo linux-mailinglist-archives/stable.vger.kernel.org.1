@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-196098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0CCC79D7D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D20C79C2A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id EC74635827
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:46:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D05E7381741
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE152350D4C;
-	Fri, 21 Nov 2025 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E686351FA6;
+	Fri, 21 Nov 2025 13:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaULRCsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg7LkIqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728BA34DB4B;
-	Fri, 21 Nov 2025 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5D8350D79;
+	Fri, 21 Nov 2025 13:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732550; cv=none; b=FrV3AOfJtBi9OnAjGYJYs/XoTOfSngEN2T4wCJMGv6w2Tj4gPnO8fkiR1XJAf9IjFu8ctHn9v0VTPYkg2VSt34Ao4mzgAs3yehezIkE+57aGoK3karz5Q9icgd675IWTRnwWLXgQKmxG05xoccy+tMrwRBSQyn5rJWUNHsFRgeA=
+	t=1763732570; cv=none; b=qiBwW6QvjyJRrWYuJ37/smcM1h78u9wzaO/fZ1aCqnCYOXBIJ5Sd+FhY50qVXBZf+K964a2Y13ocf0O9fTF8RJRObjqXi3KzRu7LjYdzhNeRV9+xyTbLclkV4Grhhcjl6zkUkaop/hJbqXhLKIQFQ/1zhkxtqS8X8iziPfVkkfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732550; c=relaxed/simple;
-	bh=xZgN8RbGaxsS1GcvStDNyWaPNJuHjDIMuV0+V0ZhM0Y=;
+	s=arc-20240116; t=1763732570; c=relaxed/simple;
+	bh=p9sZMVuv2Z6ec8Nr5+dkhJDFwiCkByN0OCsLWm+c6pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ax5fKLDQg83FDMX1oPP+Pv3kORvL4Z03h/66jSLc4QpQQNqI0vWFew9pU5oIM+sJwPmJyX2BAnLPUmsaC66ld59pvJkgNTIw46A+3TmPNcub8DRvUSrADWS7NJbmYN5ifpUT9IuOyuqWI78doUaU4oF4ZAQ7d/SshHLcl0+yHtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaULRCsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0351C4CEF1;
-	Fri, 21 Nov 2025 13:42:29 +0000 (UTC)
+	 MIME-Version; b=IA497WKvKKGs3Rb7xjGfyarwQRU0VLG142ZMFI+Xy51IsiWDm5Oh0Ff+XdlCzC769z7b9n9/x25PZIcqds/WXnJS2sZTNm3yJdt7f0p6J+jPtTrBajKIo7XxZPvfD2/hgiATbt5g2E9XmN/N3S0nR8paStml7ht3kZHLeXAkudo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg7LkIqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E6BC4CEF1;
+	Fri, 21 Nov 2025 13:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732550;
-	bh=xZgN8RbGaxsS1GcvStDNyWaPNJuHjDIMuV0+V0ZhM0Y=;
+	s=korg; t=1763732570;
+	bh=p9sZMVuv2Z6ec8Nr5+dkhJDFwiCkByN0OCsLWm+c6pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaULRCsFc03K5dxUQC6fDcD86zC8Woo3A2C+rgdoQW95nl2RG2bSSEKVerTD4uDKL
-	 U7tdHSCQI+/OgokgYwPHOdrlN+lYbxh//+TLA3+NEmElWceATlitZp4KUlEQM4cZKE
-	 WHH8sXLPpYGypr6CsotW0n06ZWjzpehr3JfvmQ0o=
+	b=hg7LkIqNUtws1poxc5M7vbzpd5cD/DWgzidwX+weG7pT44uqTElW8mPM4zjFfAvBQ
+	 /EqLXayVPzxUm//EObsvo+HHMIK1eoQmf8ejl8owpn/GuKjWHOd2Hoh/6VFuI9bcFY
+	 VJDsnfgITCnQLiiJkyCOPXzajYOodTxB3DPq2PX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/529] drm/tidss: Set crtc modesetting parameters with adjusted mode
-Date: Fri, 21 Nov 2025 14:07:12 +0100
-Message-ID: <20251121130235.751252550@linuxfoundation.org>
+Subject: [PATCH 6.6 134/529] media: i2c: Kconfig: Ensure a dependency on HAVE_CLK for VIDEO_CAMERA_SENSOR
+Date: Fri, 21 Nov 2025 14:07:13 +0100
+Message-ID: <20251121130235.786915830@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,46 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jayesh Choudhary <j-choudhary@ti.com>
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-[ Upstream commit cfb29225db20c56432a8525366321c0c09edfb2e ]
+[ Upstream commit 2d240b124cc9df62ccccee6054bc3d1d19018758 ]
 
-TIDSS uses crtc_* fields to propagate its registers and set the
-clock rates. So set the CRTC modesetting timing parameters with
-the adjusted mode when needed, to set correct values.
+Both ACPI and DT-based systems are required to obtain the external
+camera sensor clock using the new devm_v4l2_sensor_clk_get() helper
+function.
 
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-Link: https://lore.kernel.org/r/20250624080402.302526-1-j-choudhary@ti.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Ensure a dependency on HAVE_CLK when config VIDEO_CAMERA_SENSOR is
+enabled.
+
+Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/i2c/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index df177881b9d32..356b7566013b1 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -91,7 +91,7 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 	struct dispc_device *dispc = tidss->dispc;
- 	struct tidss_crtc *tcrtc = to_tidss_crtc(crtc);
- 	u32 hw_videoport = tcrtc->hw_videoport;
--	const struct drm_display_mode *mode;
-+	struct drm_display_mode *mode;
- 	enum drm_mode_status ok;
+diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+index 53b443be5a59e..d4082a86fcedb 100644
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -27,7 +27,7 @@ config VIDEO_IR_I2C
  
- 	dev_dbg(ddev->dev, "%s\n", __func__);
-@@ -108,6 +108,9 @@ static int tidss_crtc_atomic_check(struct drm_crtc *crtc,
- 		return -EINVAL;
- 	}
- 
-+	if (drm_atomic_crtc_needs_modeset(crtc_state))
-+		drm_mode_set_crtcinfo(mode, 0);
-+
- 	return dispc_vp_bus_check(dispc, hw_videoport, crtc_state);
- }
- 
+ menuconfig VIDEO_CAMERA_SENSOR
+ 	bool "Camera sensor devices"
+-	depends on MEDIA_CAMERA_SUPPORT && I2C
++	depends on MEDIA_CAMERA_SUPPORT && I2C && HAVE_CLK
+ 	select MEDIA_CONTROLLER
+ 	select V4L2_FWNODE
+ 	select VIDEO_V4L2_SUBDEV_API
 -- 
 2.51.0
 
