@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39A2C79C93
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A3EC79341
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 0BDED2E3BD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id ACD752DBCB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0D334DB7C;
-	Fri, 21 Nov 2025 13:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E479D346A06;
+	Fri, 21 Nov 2025 13:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJUIpax2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPi4szUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D59734CFAD;
-	Fri, 21 Nov 2025 13:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBB7330B19;
+	Fri, 21 Nov 2025 13:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733070; cv=none; b=e/JrVqNZWfevJT34SZzG/QNi9OnrGXJ2bi/+BdS6/iNXXz8TnkJLxD3QfHY9/eBU358IgUzB63LAiPKys109o5ZEvuK/00c6auXFi096Fc3GpsmLAzz2xLNY4I52LYQHBu2pTYVaeeC3qhSykk3ojPTBwm+/1c01BO06fz2WGmc=
+	t=1763731104; cv=none; b=K06p/yFSEVqF3Di+szK1QmssjfivqYtPqHhlerkp2fiuyaQIj0UUVmpJax1e1PkfSwTWOmYoxpGyu+9f832MG7JiykuD8NjkY2qk8p71yufFDQO5sqJVgB200AJtNuTp9ooUq0K4hfi36i2BQ1V8xys590pyBlZzoupdNQfuw6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733070; c=relaxed/simple;
-	bh=mxSdOTvXrwuF23cJ9ECG7lzhPbd5ObRMGhAPT4v+HMo=;
+	s=arc-20240116; t=1763731104; c=relaxed/simple;
+	bh=mt3eQw/L6jd2lZN44emRD1FA/RhwHQdG6C1X1p3zizg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcRjkzs7VwVDcLa9/9kXhqGVe9t1f+/pC0ItUGgiWV/4049RP29SOcLg7WNSzEFSPLBR/wmc+JE4aP5KXmyCyT8kcAOHfoMPEVKl4W3pBH3hYFTidgKX11AE+KKR8peCRmIyo0aGdrnZYEaX3+enAyoM4DjOXGih9+SWcJK2bFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJUIpax2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD0EC4CEF1;
-	Fri, 21 Nov 2025 13:51:09 +0000 (UTC)
+	 MIME-Version; b=Wk3z+mE1Mi/jLqTJanGh8U7seYLx1Xid3UywLICy4eQRh00vxhTrLY3GRJQX9Wkk6egynCOkiNc36ZLqXjdE3bhhGJxWtNDWSeXcdrIDi6Kpd/+88/2PTS24NuApxGxtjW+jgjVkRuUQLrUjKQSg0sjBYh1+bxx1lnDnEu7yVYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPi4szUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A04C4CEF1;
+	Fri, 21 Nov 2025 13:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733070;
-	bh=mxSdOTvXrwuF23cJ9ECG7lzhPbd5ObRMGhAPT4v+HMo=;
+	s=korg; t=1763731104;
+	bh=mt3eQw/L6jd2lZN44emRD1FA/RhwHQdG6C1X1p3zizg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJUIpax2Z13zSgNcpnoX0n3ZxJyKki0px5SOuUGD5hR/YoA/5rex76kl3h4vis2L9
-	 vof9FYj5ZzXQw5vDpo3VNwiqDR1YfQMD4wzAoRkQDoKJx6wsNYhTQJnV6PTtZEyqEI
-	 Zr5aH995kLCKbDFkI4pKIiRc5NucyAZQu+bVD9ic=
+	b=QPi4szUbobEP7/L2if2+wB/wW5FLE3pBOaO42l00U7yPjOSS6sabnmn899TC73PgH
+	 RYOMcbV1qurLJjJ8OYh5lXvUBtBVYARc0kyUVpC6GI5FsHQQvl0wkD/kX52IGiWEWn
+	 7JweXcD0IhCod8neR7fzatf/vZ0se8VwBgw1EaGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aaron Rainbolt <arainbolt@kfocus.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/529] selftests/net: fix GRO coalesce test and add ext header coalesce tests
+Subject: [PATCH 6.17 092/247] cpufreq: intel_pstate: Check IDA only before MSR_IA32_PERF_CTL writes
 Date: Fri, 21 Nov 2025 14:10:39 +0100
-Message-ID: <20251121130243.129023706@linuxfoundation.org>
+Message-ID: <20251121130157.894918678@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,201 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Gobert <richardbgobert@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 4e321d590cec6053cb3c566413794706035ee638 ]
+[ Upstream commit 4b747cc628d8f500d56cf1338280eacc66362ff3 ]
 
-Currently there is no test which checks that IPv6 extension header packets
-successfully coalesce. This commit adds a test, which verifies two IPv6
-packets with HBH extension headers do coalesce, and another test which
-checks that packets with different extension header data do not coalesce
-in GRO.
+Commit ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in
+legacy mode") introduced a check for feature X86_FEATURE_IDA to verify
+turbo mode support. Although this is the correct way to check for turbo
+mode support, it causes issues on some platforms that disable turbo
+during OS boot, but enable it later [1]. Before adding this feature
+check, users were able to get turbo mode frequencies by writing 0 to
+/sys/devices/system/cpu/intel_pstate/no_turbo post-boot.
 
-I changed the receive socket filter to accept a packet with one extension
-header. This change exposed a bug in the fragment test -- the old BPF did
-not accept the fragment packet. I updated correct_num_packets in the
-fragment test accordingly.
+To restore the old behavior on the affected systems while still
+addressing the unchecked MSR issue on some Skylake-X systems, check
+X86_FEATURE_IDA only immediately before updates of MSR_IA32_PERF_CTL
+that may involve setting the Turbo Engage Bit (bit 32).
 
-Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/69282fed-2415-47e8-b3d3-34939ec3eb56@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: f8e8486702ab ("selftests/net: use destination options instead of hop-by-hop")
+Fixes: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
+Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2122531 [1]
+Tested-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+[ rjw: Subject adjustment, changelog edits ]
+Link: https://patch.msgid.link/20251111010840.141490-1-srinivas.pandruvada@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 93 +++++++++++++++++++++++++++++--
- 1 file changed, 87 insertions(+), 6 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index ad7b07084ca24..9c6f5b4033c37 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -71,6 +71,12 @@
- #define MAX_PAYLOAD (IP_MAXPACKET - sizeof(struct tcphdr) - sizeof(struct ipv6hdr))
- #define NUM_LARGE_PKT (MAX_PAYLOAD / MSS)
- #define MAX_HDR_LEN (ETH_HLEN + sizeof(struct ipv6hdr) + sizeof(struct tcphdr))
-+#define MIN_EXTHDR_SIZE 8
-+#define EXT_PAYLOAD_1 "\x00\x00\x00\x00\x00\x00"
-+#define EXT_PAYLOAD_2 "\x11\x11\x11\x11\x11\x11"
-+
-+#define ipv6_optlen(p)  (((p)->hdrlen+1) << 3) /* calculate IPv6 extension header len */
-+#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
- 
- static const char *addr6_src = "fdaa::2";
- static const char *addr6_dst = "fdaa::1";
-@@ -104,7 +110,7 @@ static void setup_sock_filter(int fd)
- 	const int dport_off = tcp_offset + offsetof(struct tcphdr, dest);
- 	const int ethproto_off = offsetof(struct ethhdr, h_proto);
- 	int optlen = 0;
--	int ipproto_off;
-+	int ipproto_off, opt_ipproto_off;
- 	int next_off;
- 
- 	if (proto == PF_INET)
-@@ -116,14 +122,30 @@ static void setup_sock_filter(int fd)
- 	if (strcmp(testname, "ip") == 0) {
- 		if (proto == PF_INET)
- 			optlen = sizeof(struct ip_timestamp);
--		else
--			optlen = sizeof(struct ip6_frag);
-+		else {
-+			BUILD_BUG_ON(sizeof(struct ip6_hbh) > MIN_EXTHDR_SIZE);
-+			BUILD_BUG_ON(sizeof(struct ip6_dest) > MIN_EXTHDR_SIZE);
-+			BUILD_BUG_ON(sizeof(struct ip6_frag) > MIN_EXTHDR_SIZE);
-+
-+			/* same size for HBH and Fragment extension header types */
-+			optlen = MIN_EXTHDR_SIZE;
-+			opt_ipproto_off = ETH_HLEN + sizeof(struct ipv6hdr)
-+				+ offsetof(struct ip6_ext, ip6e_nxt);
-+		}
- 	}
- 
-+	/* this filter validates the following:
-+	 *	- packet is IPv4/IPv6 according to the running test.
-+	 *	- packet is TCP. Also handles the case of one extension header and then TCP.
-+	 *	- checks the packet tcp dport equals to DPORT. Also handles the case of one
-+	 *	  extension header and then TCP.
-+	 */
- 	struct sock_filter filter[] = {
- 			BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, ethproto_off),
--			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, ntohs(ethhdr_proto), 0, 7),
-+			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, ntohs(ethhdr_proto), 0, 9),
- 			BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, ipproto_off),
-+			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_TCP, 2, 0),
-+			BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, opt_ipproto_off),
- 			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_TCP, 0, 5),
- 			BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, dport_off),
- 			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, DPORT, 2, 0),
-@@ -576,6 +598,39 @@ static void add_ipv4_ts_option(void *buf, void *optpkt)
- 	iph->check = checksum_fold(iph, sizeof(struct iphdr) + optlen, 0);
- }
- 
-+static void add_ipv6_exthdr(void *buf, void *optpkt, __u8 exthdr_type, char *ext_payload)
-+{
-+	struct ipv6_opt_hdr *exthdr = (struct ipv6_opt_hdr *)(optpkt + tcp_offset);
-+	struct ipv6hdr *iph = (struct ipv6hdr *)(optpkt + ETH_HLEN);
-+	char *exthdr_payload_start = (char *)(exthdr + 1);
-+
-+	exthdr->hdrlen = 0;
-+	exthdr->nexthdr = IPPROTO_TCP;
-+
-+	memcpy(exthdr_payload_start, ext_payload, MIN_EXTHDR_SIZE - sizeof(*exthdr));
-+
-+	memcpy(optpkt, buf, tcp_offset);
-+	memcpy(optpkt + tcp_offset + MIN_EXTHDR_SIZE, buf + tcp_offset,
-+		sizeof(struct tcphdr) + PAYLOAD_LEN);
-+
-+	iph->nexthdr = exthdr_type;
-+	iph->payload_len = htons(ntohs(iph->payload_len) + MIN_EXTHDR_SIZE);
-+}
-+
-+static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1, char *ext_data2)
-+{
-+	static char buf[MAX_HDR_LEN + PAYLOAD_LEN];
-+	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
-+
-+	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
-+	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
-+
-+	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
-+	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
-+}
-+
- /* IPv4 options shouldn't coalesce */
- static void send_ip_options(int fd, struct sockaddr_ll *daddr)
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index fc02a3542f656..99c80249fde88 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -603,9 +603,6 @@ static bool turbo_is_disabled(void)
  {
-@@ -697,7 +752,7 @@ static void send_fragment6(int fd, struct sockaddr_ll *daddr)
- 		create_packet(buf, PAYLOAD_LEN * i, 0, PAYLOAD_LEN, 0);
- 		write_packet(fd, buf, bufpkt_len, daddr);
- 	}
+ 	u64 misc_en;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_IDA))
+-		return true;
 -
-+	sleep(1);
- 	create_packet(buf, PAYLOAD_LEN * 2, 0, PAYLOAD_LEN, 0);
- 	memset(extpkt, 0, extpkt_len);
+ 	rdmsrq(MSR_IA32_MISC_ENABLE, misc_en);
  
-@@ -760,6 +815,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
- 	vlog("}, Total %d packets\nReceived {", correct_num_pkts);
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+@@ -2141,7 +2138,8 @@ static u64 atom_get_val(struct cpudata *cpudata, int pstate)
+ 	u32 vid;
  
- 	while (1) {
-+		ip_ext_len = 0;
- 		pkt_size = recv(fd, buffer, IP_MAXPACKET + ETH_HLEN + 1, 0);
- 		if (pkt_size < 0)
- 			error(1, errno, "could not receive");
-@@ -767,7 +823,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
- 		if (iph->version == 4)
- 			ip_ext_len = (iph->ihl - 5) * 4;
- 		else if (ip6h->version == 6 && ip6h->nexthdr != IPPROTO_TCP)
--			ip_ext_len = sizeof(struct ip6_frag);
-+			ip_ext_len = MIN_EXTHDR_SIZE;
+ 	val = (u64)pstate << 8;
+-	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
++	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled) &&
++	    cpu_feature_enabled(X86_FEATURE_IDA))
+ 		val |= (u64)1 << 32;
  
- 		tcph = (struct tcphdr *)(buffer + tcp_offset + ip_ext_len);
+ 	vid_fp = cpudata->vid.min + mul_fp(
+@@ -2306,7 +2304,8 @@ static u64 core_get_val(struct cpudata *cpudata, int pstate)
+ 	u64 val;
  
-@@ -888,7 +944,21 @@ static void gro_sender(void)
- 			sleep(1);
- 			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 		} else if (proto == PF_INET6) {
-+			sleep(1);
- 			send_fragment6(txfd, &daddr);
-+			sleep(1);
-+			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+
-+			sleep(1);
-+			/* send IPv6 packets with ext header with same payload */
-+			send_ipv6_exthdr(txfd, &daddr, EXT_PAYLOAD_1, EXT_PAYLOAD_1);
-+			sleep(1);
-+			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+
-+			sleep(1);
-+			/* send IPv6 packets with ext header with different payload */
-+			send_ipv6_exthdr(txfd, &daddr, EXT_PAYLOAD_1, EXT_PAYLOAD_2);
-+			sleep(1);
- 			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 		}
- 	} else if (strcmp(testname, "large") == 0) {
-@@ -1005,6 +1075,17 @@ static void gro_receiver(void)
- 			 */
- 			printf("fragmented ip6 doesn't coalesce: ");
- 			correct_payload[0] = PAYLOAD_LEN * 2;
-+			correct_payload[1] = PAYLOAD_LEN;
-+			correct_payload[2] = PAYLOAD_LEN;
-+			check_recv_pkts(rxfd, correct_payload, 3);
-+
-+			printf("ipv6 with ext header does coalesce: ");
-+			correct_payload[0] = PAYLOAD_LEN * 2;
-+			check_recv_pkts(rxfd, correct_payload, 1);
-+
-+			printf("ipv6 with ext header with different payloads doesn't coalesce: ");
-+			correct_payload[0] = PAYLOAD_LEN;
-+			correct_payload[1] = PAYLOAD_LEN;
- 			check_recv_pkts(rxfd, correct_payload, 2);
- 		}
- 	} else if (strcmp(testname, "large") == 0) {
+ 	val = (u64)pstate << 8;
+-	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
++	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled) &&
++	    cpu_feature_enabled(X86_FEATURE_IDA))
+ 		val |= (u64)1 << 32;
+ 
+ 	return val;
 -- 
 2.51.0
 
