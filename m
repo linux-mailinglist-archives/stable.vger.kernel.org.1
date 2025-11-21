@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-195819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D679C79814
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:47 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3E2C7954D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id CD4483509A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BD4BC34B225
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2F6346A1D;
-	Fri, 21 Nov 2025 13:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBA327147D;
+	Fri, 21 Nov 2025 13:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfcExzeH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2b0/Ym8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A6F341043;
-	Fri, 21 Nov 2025 13:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0142F3632;
+	Fri, 21 Nov 2025 13:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731755; cv=none; b=RLC2au7DSTQ1DhRrOfAFEztECo5mM5/dTSJHBUw/dfxi9qyRt1vhtk4MiykYdGh7X31qrSHeya1afO5z3j7iIbBbi417C74EgbwXSY3YV826XMY5PiMBbSfRBhuVrRjZgn+VN7AtTDR0jeXTjhb6Omdf4RCjJ3WIU/BeuCkwRO4=
+	t=1763731276; cv=none; b=D41wze82y00ovMXSQPAtUzFqSaYrSrzhXdSkNg8elxndHOJV1MgkkmD5DhNK6+3PR22gQlfUJe7NLK19E10565tscbQX1scB+h0S+zv6I/HF3roFynELB6N9OSrnjUBnvHAWOCeuJxzvqInu4JSsVBVAQExsFrmSoOb2EGAG6VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731755; c=relaxed/simple;
-	bh=rAbsr2BJD4DzhpiIJsfgAT+a5k+ic7cZxMRYTP7a2o0=;
+	s=arc-20240116; t=1763731276; c=relaxed/simple;
+	bh=1UdYgKCQlVUj35rJVQb/OvPhOUZ7fgpC6InL4HcWakI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct1pu2U2uDZxq1ASdiwZZoZbsVEmWSZEvt+DuxlP6A6+b6JTc7isPDj/64I9eg6EiQPqKjHF7hSZjF1FeRiuMQl9C9JeKmC7/q7Bp1GZCvFBBSh8L7Le7dGUwl6R+EMZc3eEt/YlTWKLhLomucXqUm60dzVZiyxxTW5+r3cNRJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfcExzeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFA6C4CEF1;
-	Fri, 21 Nov 2025 13:29:14 +0000 (UTC)
+	 MIME-Version; b=XkxY2F1s9k/6w0It8Ki75pWfhavhGArIYNmaRhxRln2BkWRMBJOO82dEX5Lf/09xlJDzB2U2Uzk7uDVo1y+Wgi0691LfTimzm/2FaLNEWfdCxe49uWiMfL+GletPPvudRD5gyY6+TW8ATZ3XXLwf1AasALDKyNDV32jcz9Z5ZjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2b0/Ym8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5945FC4CEF1;
+	Fri, 21 Nov 2025 13:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731755;
-	bh=rAbsr2BJD4DzhpiIJsfgAT+a5k+ic7cZxMRYTP7a2o0=;
+	s=korg; t=1763731275;
+	bh=1UdYgKCQlVUj35rJVQb/OvPhOUZ7fgpC6InL4HcWakI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfcExzeHG7PvWm4YQSiXHzM9HI9Fg2SGlJXLC1sD902xalz6xyv8X3WwbE5ORuNr3
-	 JdMGPRNTUT0YZ1o6T4s6as98VJDtOjIlKYUQi4CEUc1tHB72X26/Wx4tOVNwYjI22Y
-	 QlSdt2ckrP8/BeGfTGOjDnsXq1T9aPH0kk0JAK6Q=
+	b=L2b0/Ym8Kd7M4KYEnFXkPGx5PVDqB1iyDtot8rwEWytGNXefgcvWI3ibSD1qAfrq/
+	 bwed/5RzTLT/+cRvlkIMbyVHjIWagP5nQBan1FdUPqrMc/ZboGtRVY8IJzWG80ptmI
+	 zf60Exs+XqDpf5xG6eGLWO+hr8nQ/7ndnBsyoChc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/185] ASoC: cs4271: Fix regulator leak on probe failure
-Date: Fri, 21 Nov 2025 14:11:36 +0100
-Message-ID: <20251121130146.364398911@linuxfoundation.org>
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 150/247] LoongArch: KVM: Add delay until timer interrupt injected
+Date: Fri, 21 Nov 2025 14:11:37 +0100
+Message-ID: <20251121130200.109913318@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
+commit d3c9515e4f9d10ccb113adb4809db5cc31e7ef65 upstream.
 
-The probe function enables regulators at the beginning
-but fails to disable them in its error handling path.
-If any operation after enabling the regulators fails,
-the probe will exit with an error, leaving the regulators
-permanently enabled, which could lead to a resource leak.
+When timer is fired in oneshot mode, CSR.TVAL will stop with value -1
+rather than 0. However when the register CSR.TVAL is restored, it will
+continue to count down rather than stop there.
 
-Add a proper error handling path to call regulator_bulk_disable()
-before returning an error.
+Now the method is to write 0 to CSR.TVAL, wait to count down for 1 cycle
+at least, which is 10ns with a timer freq 100MHz, and then retore timer
+interrupt status. Here add 2 cycles delay to assure that timer interrupt
+is injected.
 
-Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this patch, timer selftest case passes to run always.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs4271.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/loongarch/kvm/timer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index e864188ae5eb9..1d3261d0f1fd0 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -581,17 +581,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+--- a/arch/loongarch/kvm/timer.c
++++ b/arch/loongarch/kvm/timer.c
+@@ -4,6 +4,7 @@
+  */
  
- 	ret = regcache_sync(cs4271->regmap);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
+ #include <linux/kvm_host.h>
++#include <asm/delay.h>
+ #include <asm/kvm_csr.h>
+ #include <asm/kvm_vcpu.h>
  
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	/* Power-up sequence requires 85 uS */
- 	udelay(85);
+@@ -95,6 +96,7 @@ void kvm_restore_timer(struct kvm_vcpu *
+ 		 * and set CSR TVAL with -1
+ 		 */
+ 		write_gcsr_timertick(0);
++		__delay(2); /* Wait cycles until timer interrupt injected */
  
-@@ -601,6 +601,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
- 				   CS4271_MODE2_MUTECAEQUB);
- 
- 	return 0;
-+
-+err_disable_regulator:
-+	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
-+	return ret;
- }
- 
- static void cs4271_component_remove(struct snd_soc_component *component)
--- 
-2.51.0
-
+ 		/*
+ 		 * Writing CSR_TINTCLR_TI to LOONGARCH_CSR_TINTCLR will clear
 
 
 
