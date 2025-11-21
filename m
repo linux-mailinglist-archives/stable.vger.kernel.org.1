@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2D2C795CB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB61C79E55
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id CA8D72DD30
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88AE54ED906
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089AF346A1D;
-	Fri, 21 Nov 2025 13:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA9134676C;
+	Fri, 21 Nov 2025 13:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2WpPfnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Gc9wBfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5AB345CC4;
-	Fri, 21 Nov 2025 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7B819E97F;
+	Fri, 21 Nov 2025 13:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731709; cv=none; b=QdULLY84ziXxokyVjb5B7N02krQm4RaR1JVgnr998xH4HOeoWhj69b5+rmBg+nMP8IZc8lvmh9OtocQVYT/B02Od0hBOTiV/irfkRIS3lX2zjb06Tr1QM9fq59my1JJjuRcS/TJj/BOgvpiH6xlCsmB5iBTFdhGgvJZUc5LTyKQ=
+	t=1763733112; cv=none; b=FB5TsAkpMiNOS6h4OXLRo41D49OuVyz9i2mPJCBfSSWPW4BzUHzGnHN6gnlxgYWh05hF1wqf1XtSZ/ezshLXI9w+LPcSs0+h6DyzZ4kbU/n6q8c6mm3pIFFhZ44BSRvtG4RY1DdUueZcRlqwtAUx4v1PQOyCHeokDZB6pRkjK38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731709; c=relaxed/simple;
-	bh=PIGL0sp0Z2c81DidEmikLhrJntei1VUc7WR88Hu/XVE=;
+	s=arc-20240116; t=1763733112; c=relaxed/simple;
+	bh=dRbiWtrFxe29HS4+QjC/XTnKWumiSdaME4gGUuQKrTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhU+GnG0vwepp9hnjpaxKTLH7ypcOy7gXb5fGs80x5DphLfHhZmZ67eDNuCuAHd26CLDe0YjcG7G4PgFv2RdZXLy+/wEhj5ooJeOAvcoqSdHPsqO2qBtECzlTVfkWUWYfFf7R9SDNfjpErC6St45Ue7vAmls/LtI5xlZARdnEQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2WpPfnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32870C4CEF1;
-	Fri, 21 Nov 2025 13:28:29 +0000 (UTC)
+	 MIME-Version; b=Sm9mO4+87gh/LnegTPA6Gji1hUOptic1AbV/r3olYukaa39b77ADeLKdi4cqPJGerLELUls19PNhFOG5C1mY7gm/E6k12KOzJ/jCNqjDEkpVgIBvCZnzz3nuGKtIzDDjHz0eJsOSvN6vvGgb5W5Xelfen/3lgNgl88Ez4p2h3Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Gc9wBfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6001C4CEFB;
+	Fri, 21 Nov 2025 13:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731709;
-	bh=PIGL0sp0Z2c81DidEmikLhrJntei1VUc7WR88Hu/XVE=;
+	s=korg; t=1763733112;
+	bh=dRbiWtrFxe29HS4+QjC/XTnKWumiSdaME4gGUuQKrTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2WpPfnbHEIlB9hSIyVubt4eEL34eR/6pt4jqMwZCNTNnQJWHlawZBNkR9h7bz8ZG
-	 iIPnq5ueO0jPcmJ7VB19sK9qMjzuUBB2Lihh1C6WTfrb5fCXnKcnE7R7N10yUepYxe
-	 d6xg4eHmR916KT1zogNQukZJ8H1zEiBsfVgxxpz8=
+	b=2Gc9wBfuyhPva8I9uAthRpWBFOPaVuZjidqX08jQMsSpMkdwuLXW3NebvS63vhwe/
+	 M6i1BATa0V86RwJGlZrvvkTONXzWf/KMUBlngIE6EdFlujohFZrAQswxl9nF0qPW/X
+	 tx3NY/uHXafGxU9OO5KdbSlXP4LM136k5xJZsAJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/185] NFS4: Apply delay_retrans to async operations
+Subject: [PATCH 6.6 348/529] sctp: Hold RCU read lock while iterating over address list
 Date: Fri, 21 Nov 2025 14:10:47 +0100
-Message-ID: <20251121130144.605204523@linuxfoundation.org>
+Message-ID: <20251121130243.413477907@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 7a84394f02ab1985ebbe0a8d6f6d69bd040de4b3 ]
+[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
 
-The setting of delay_retrans is applied to synchronous RPC operations
-because the retransmit count is stored in same struct nfs4_exception
-that is passed each time an error is checked. However, for asynchronous
-operations (READ, WRITE, LOCKU, CLOSE, DELEGRETURN), a new struct
-nfs4_exception is made on the stack each time the task callback is
-invoked. This means that the retransmit count is always zero and thus
-delay_retrans never takes effect.
+With CONFIG_PROVE_RCU_LIST=y and by executing
 
-Apply delay_retrans to these operations by tracking and updating their
-retransmit count.
+  $ netcat -l --sctp &
+  $ netcat --sctp localhost &
+  $ ss --sctp
 
-Change-Id: Ieb33e046c2b277cb979caa3faca7f52faf0568c9
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+one can trigger the following Lockdep-RCU splat(s):
+
+  WARNING: suspicious RCU usage
+  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
+  -----------------------------
+  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  2 locks held by ss/215:
+   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
+   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x90
+   lockdep_rcu_suspicious.cold+0x4e/0xa3
+   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
+   sctp_sock_dump+0x131/0x200
+   sctp_transport_traverse_process+0x170/0x1b0
+   ? __pfx_sctp_sock_filter+0x10/0x10
+   ? __pfx_sctp_sock_dump+0x10/0x10
+   sctp_diag_dump+0x103/0x140
+   __inet_diag_dump+0x70/0xb0
+   netlink_dump+0x148/0x490
+   __netlink_dump_start+0x1f3/0x2b0
+   inet_diag_handler_cmd+0xcd/0x100
+   ? __pfx_inet_diag_dump_start+0x10/0x10
+   ? __pfx_inet_diag_dump+0x10/0x10
+   ? __pfx_inet_diag_dump_done+0x10/0x10
+   sock_diag_rcv_msg+0x18e/0x320
+   ? __pfx_sock_diag_rcv_msg+0x10/0x10
+   netlink_rcv_skb+0x4d/0x100
+   netlink_unicast+0x1d7/0x2b0
+   netlink_sendmsg+0x203/0x450
+   ____sys_sendmsg+0x30c/0x340
+   ___sys_sendmsg+0x94/0xf0
+   __sys_sendmsg+0x83/0xf0
+   do_syscall_64+0xbb/0x390
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   ...
+   </TASK>
+
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c       | 13 +++++++++++++
- include/linux/nfs_xdr.h |  1 +
- 2 files changed, 14 insertions(+)
+ net/sctp/diag.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index b0ba9f2bef56b..a4531386c6485 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3612,6 +3612,7 @@ struct nfs4_closedata {
- 	} lr;
- 	struct nfs_fattr fattr;
- 	unsigned long timestamp;
-+	unsigned short retrans;
- };
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index c3d6b92dd3862..d92b210c70f8e 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
+ 	struct nlattr *attr;
+ 	void *info = NULL;
  
- static void nfs4_free_closedata(void *data)
-@@ -3640,6 +3641,7 @@ static void nfs4_close_done(struct rpc_task *task, void *data)
- 		.state = state,
- 		.inode = calldata->inode,
- 		.stateid = &calldata->arg.stateid,
-+		.retrans = calldata->retrans,
- 	};
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list)
+ 		addrcnt++;
++	rcu_read_unlock();
  
- 	if (!nfs4_sequence_done(task, &calldata->res.seq_res))
-@@ -3687,6 +3689,7 @@ static void nfs4_close_done(struct rpc_task *task, void *data)
- 		default:
- 			task->tk_status = nfs4_async_handle_exception(task,
- 					server, task->tk_status, &exception);
-+			calldata->retrans = exception.retrans;
- 			if (exception.retry)
- 				goto out_restart;
+ 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
+ 	if (!attr)
+ 		return -EMSGSIZE;
+ 
+ 	info = nla_data(attr);
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list) {
+ 		memcpy(info, &laddr->a, sizeof(laddr->a));
+ 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
+ 		info += addrlen;
  	}
-@@ -5546,9 +5549,11 @@ static int nfs4_read_done_cb(struct rpc_task *task, struct nfs_pgio_header *hdr)
- 			.inode = hdr->inode,
- 			.state = hdr->args.context->state,
- 			.stateid = &hdr->args.stateid,
-+			.retrans = hdr->retrans,
- 		};
- 		task->tk_status = nfs4_async_handle_exception(task,
- 				server, task->tk_status, &exception);
-+		hdr->retrans = exception.retrans;
- 		if (exception.retry) {
- 			rpc_restart_call_prepare(task);
- 			return -EAGAIN;
-@@ -5662,10 +5667,12 @@ static int nfs4_write_done_cb(struct rpc_task *task,
- 			.inode = hdr->inode,
- 			.state = hdr->args.context->state,
- 			.stateid = &hdr->args.stateid,
-+			.retrans = hdr->retrans,
- 		};
- 		task->tk_status = nfs4_async_handle_exception(task,
- 				NFS_SERVER(inode), task->tk_status,
- 				&exception);
-+		hdr->retrans = exception.retrans;
- 		if (exception.retry) {
- 			rpc_restart_call_prepare(task);
- 			return -EAGAIN;
-@@ -6677,6 +6684,7 @@ struct nfs4_delegreturndata {
- 	struct nfs_fh fh;
- 	nfs4_stateid stateid;
- 	unsigned long timestamp;
-+	unsigned short retrans;
- 	struct {
- 		struct nfs4_layoutreturn_args arg;
- 		struct nfs4_layoutreturn_res res;
-@@ -6697,6 +6705,7 @@ static void nfs4_delegreturn_done(struct rpc_task *task, void *calldata)
- 		.inode = data->inode,
- 		.stateid = &data->stateid,
- 		.task_is_privileged = data->args.seq_args.sa_privileged,
-+		.retrans = data->retrans,
- 	};
++	rcu_read_unlock();
  
- 	if (!nfs4_sequence_done(task, &data->res.seq_res))
-@@ -6768,6 +6777,7 @@ static void nfs4_delegreturn_done(struct rpc_task *task, void *calldata)
- 		task->tk_status = nfs4_async_handle_exception(task,
- 				data->res.server, task->tk_status,
- 				&exception);
-+		data->retrans = exception.retrans;
- 		if (exception.retry)
- 			goto out_restart;
- 	}
-@@ -7044,6 +7054,7 @@ struct nfs4_unlockdata {
- 	struct file_lock fl;
- 	struct nfs_server *server;
- 	unsigned long timestamp;
-+	unsigned short retrans;
- };
- 
- static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
-@@ -7098,6 +7109,7 @@ static void nfs4_locku_done(struct rpc_task *task, void *data)
- 	struct nfs4_exception exception = {
- 		.inode = calldata->lsp->ls_state->inode,
- 		.stateid = &calldata->arg.stateid,
-+		.retrans = calldata->retrans,
- 	};
- 
- 	if (!nfs4_sequence_done(task, &calldata->res.seq_res))
-@@ -7131,6 +7143,7 @@ static void nfs4_locku_done(struct rpc_task *task, void *data)
- 			task->tk_status = nfs4_async_handle_exception(task,
- 					calldata->server, task->tk_status,
- 					&exception);
-+			calldata->retrans = exception.retrans;
- 			if (exception.retry)
- 				rpc_restart_call_prepare(task);
- 	}
-diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
-index b48d94f099657..b7a08c875514f 100644
---- a/include/linux/nfs_xdr.h
-+++ b/include/linux/nfs_xdr.h
-@@ -1660,6 +1660,7 @@ struct nfs_pgio_header {
- 	void			*netfs;
- #endif
- 
-+	unsigned short		retrans;
- 	int			pnfs_error;
- 	int			error;		/* merge with pnfs_error */
- 	unsigned int		good_bytes;	/* boundary of good data */
+ 	return 0;
+ }
 -- 
 2.51.0
 
