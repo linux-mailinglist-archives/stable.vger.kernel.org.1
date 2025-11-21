@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D728FC7A18E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD0DC79784
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 2440538978
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 581EC3431F7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B234F259;
-	Fri, 21 Nov 2025 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C58246762;
+	Fri, 21 Nov 2025 13:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VCgbm5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7Nu/Ycx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897D525F96D;
-	Fri, 21 Nov 2025 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3EC31B124;
+	Fri, 21 Nov 2025 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733235; cv=none; b=ZzTpuA2eA/P3wAhP8WY6pDK/AM194kZ/S8KeWISckjtFpYTeiF2Ff56n6SmupcFC7PxDW4U2VXGyhEapMUj89crgkhXvGUhfyVOwNEBn9vvzM2JBGc/6wC95G56C4sqBA9hRVDESMBOR3ixkmUg5hpG+pckX7ERKK+RY30O6ON4=
+	t=1763731763; cv=none; b=syAN3dhxKQiN4++18OzGy+ZYPJGvQsY+0SouPaTdYXz4jSb7amoGmiauCCzfQNIMiVuatUkbxsHVLFvGrLB61XakZsAZk6HsOUxUhCLZFSnpVQ/PnR8zu9aL85Rem6Xit735QAvVOwq40lEtvqsfyKL9BgdJjscVwLnoNAZtBLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733235; c=relaxed/simple;
-	bh=yZoWK4ox1QCg8IYW0cnv16sBlc4583mnRtHQNghvG/o=;
+	s=arc-20240116; t=1763731763; c=relaxed/simple;
+	bh=ZFJIdO9F1X9B/dTItCbEja77G9VOyRb9GM1mH8fdzD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/E1iOObbmLrCr1d0I4ZSeCocgkqy2MoiKFoyz+Ixrijh6BarK79Xulsj+Y/DPHvmr6+7EScf0XldOlt6Bv1ZiV98wHAVyul09pOIVhvC/DOpgbmWhUek3RgNhvC88B6DQrGaBLgJEDmv2NevwyS9pbmSjLNX+TAGMo6P9r6MoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VCgbm5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BC8C116D0;
-	Fri, 21 Nov 2025 13:53:54 +0000 (UTC)
+	 MIME-Version; b=VSd4jKRUc5VpvOx6eQK6nX7ObGnN8RgkWYDaaTnCG3f0rrqQwCsKKEqkTSxBswOzOsv+W+r/5U0ji8ytXaSvlPaHeijWRquVP1RNDt3+Aa5L6lX3gVcTKP34sKAlrOCX/M6c3OT8HzvjhCwHGS80L3sCgag/WluBTh8A+E/JZak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7Nu/Ycx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25801C4CEF1;
+	Fri, 21 Nov 2025 13:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733235;
-	bh=yZoWK4ox1QCg8IYW0cnv16sBlc4583mnRtHQNghvG/o=;
+	s=korg; t=1763731763;
+	bh=ZFJIdO9F1X9B/dTItCbEja77G9VOyRb9GM1mH8fdzD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VCgbm5h5/WFr4AzKEdAKXKN4r59v/9qK8BrqrfWoA4yomtZeJEXoBjNTtSruKxIN
-	 8uj5BcgrC7IohjQfKUaerjSzl5T4SjWxEL3+nQtyqrTGmciB6sAe/G40ohO0TYJlzA
-	 kMFE8s0s3mHlbHtccGZtOQ+Lz8niFIkiqeSp+66I=
+	b=d7Nu/YcxORQlmK+V2r7lsJ5Pn0OMRkIGIEW10h0aaEdOcFdg1/k6hKjAWgPOGx+8U
+	 3fBRK2HHWFFRt6y+6wgqYinBnWOgWxvV7yV+yg7v6b0aBCHBMunNEb1szZ7DRT3SMZ
+	 zrPMCpJcMRPmZQ09pFM/QlH5EvNkpuzdZDsIi6bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 399/529] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
-Date: Fri, 21 Nov 2025 14:11:38 +0100
-Message-ID: <20251121130245.219320945@linuxfoundation.org>
+Subject: [PATCH 6.12 072/185] ASoC: tas2781: fix getting the wrong device number
+Date: Fri, 21 Nov 2025 14:11:39 +0100
+Message-ID: <20251121130146.471316756@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
+[ Upstream commit 29528c8e643bb0c54da01237a35010c6438423d2 ]
 
-Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
-header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
+The return value of device_property_read_u32_array used for getting the
+property is the status instead of the number of the property.
 
-Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
-
-For the compressed one, it is done in lowpan_header_decompress().
-
-Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
-------
-kernel BUG at net/core/skbuff.c:212!
-Call Trace:
-<IRQ>
-...
-packet_rcv (net/packet/af_packet.c:2152)
-...
-<TASK>
-__local_bh_enable_ip (kernel/softirq.c:407)
-netif_rx (net/core/dev.c:5648)
-chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
-------
-
-Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20251107054959.950-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/tas2781-i2c.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 13b752c169bed..50ed3a6b0b0c4 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -288,6 +288,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
- 		local_skb->pkt_type = PACKET_HOST;
- 		local_skb->dev = dev;
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 1b2f55030c396..2f100cbfdc41f 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -1635,7 +1635,8 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ {
+ 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
+ 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
+-	int i, ndev = 0;
++	int ndev = 0;
++	int i, rc;
  
-+		skb_reset_mac_header(local_skb);
- 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
+ 	if (tas_priv->isacpi) {
+ 		ndev = device_property_read_u32_array(&client->dev,
+@@ -1646,8 +1647,12 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ 		} else {
+ 			ndev = (ndev < ARRAY_SIZE(dev_addrs))
+ 				? ndev : ARRAY_SIZE(dev_addrs);
+-			ndev = device_property_read_u32_array(&client->dev,
++			rc = device_property_read_u32_array(&client->dev,
+ 				"ti,audio-slots", dev_addrs, ndev);
++			if (rc != 0) {
++				ndev = 1;
++				dev_addrs[0] = client->addr;
++			}
+ 		}
  
- 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
+ 		tas_priv->irq =
 -- 
 2.51.0
 
