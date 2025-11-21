@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-195905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A743C796FA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1505FC79EC1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 5C6192403D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 5285E2F6B5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8882E29ACCD;
-	Fri, 21 Nov 2025 13:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC183559D3;
+	Fri, 21 Nov 2025 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef0Dl+gU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOPU4LSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451E22745E;
-	Fri, 21 Nov 2025 13:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53653348477;
+	Fri, 21 Nov 2025 13:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732003; cv=none; b=lYWU99QspFxb6Ludnk38CrodFRKPIe4x2pkCcdwcoflfOn+lkXi71QVdHxgGENZPp0XDYGmW8TUwtsbkxhQpxwJaXeYjVe3zRnC0FcmgMpMjYiT4w9q3yeRC79fXMmVg8loAHYqj+PqjgXW3Z6Z9c6x9gT+Z3HDq16fZuh/2lt4=
+	t=1763733481; cv=none; b=ZeVzXAL6ht5buzp+jYj6rZ10NnscisrG9Z/SVLSdMYrtWTZZ/EhY1nv+0sp6W0YHxJvvFovzZrV4EvTdoSE1QrarCRep/ldPg6FUd49nHgzdwZr0kHNtFOzkx6cSVHiYZBXuJlwwtW/hlF3AJnRtKtiYgDVG5vsnjZyxytqWVwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732003; c=relaxed/simple;
-	bh=rlPQrB5idocRlkvBLavxItwdmojREGUwbKMxSyrL2vk=;
+	s=arc-20240116; t=1763733481; c=relaxed/simple;
+	bh=tDfFMaN8YzZtGGkm99bcCdUtnyi6OlIJnkUK0Lpr4fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boczwUk7XQXRqluoRy4r3aFruOhnbkqu2IzRUBZRXkVrcHSn/Vc2Wov5BWzjLOX4ffKsL6IY//DmaZ9witVELvshlYqpCavG9v7QcHO0tph2oKc7FU5CEZvPtLoI8Ncag7KQJlGWLXRABaYQxvqJsB5LQ56ZEcXNuy91oQS4AfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef0Dl+gU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2E9C4CEF1;
-	Fri, 21 Nov 2025 13:33:21 +0000 (UTC)
+	 MIME-Version; b=V4VWXUjJyOPPePckMArFVVppLfBeCueDDx3XmTwNFI3hPYHDwZbTCqvcWite0MvxBRlgS0omDrznIdbgiPdCfXZo6Ls4Xvu86wXC4OR22yX+brJGps2S0HfC/w3mU6bInrQj50cDcjUgyhLTyeGYCMBCZhbyEEZvmir/7twcuKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOPU4LSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5042C4CEF1;
+	Fri, 21 Nov 2025 13:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732001;
-	bh=rlPQrB5idocRlkvBLavxItwdmojREGUwbKMxSyrL2vk=;
+	s=korg; t=1763733480;
+	bh=tDfFMaN8YzZtGGkm99bcCdUtnyi6OlIJnkUK0Lpr4fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ef0Dl+gUGV+2dbXFRBnebvf2Ci5tH+Fc9DyKf4jizifLu15gIOQYvYakEAAKStCgg
-	 gYmDhViRiCghKpvR5hMEXhznCAluAFpK0JiHqYqpzsYuQzSw2uq4POxHr4dVQSjQPE
-	 93jdWt/tkPqYKh8wyv2np4mzKYWEhao6NgQVw4Zg=
+	b=wOPU4LSdDAIsBdc/ccKkiqWNY5uWrqM8XNL5oupMmE4rZWyRLXlys0mARzRcUIiHW
+	 bvHJHIQVfaKanOfGCA8F+jPracNwNs6elBLkkA4Bug+hvANjeQaEv4bzPGYY7q6LDq
+	 mad/O0Gkl7U1qLKXV1heCymCV6trYTLjSa3fRHAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 154/185] selftests: mptcp: join: rm: set backup flag
+	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	sunliming <sunliming@kylinos.cn>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 482/529] selftests/user_events: fix type cast for write_index packed member in perf_test
 Date: Fri, 21 Nov 2025 14:13:01 +0100
-Message-ID: <20251121130149.434263226@linuxfoundation.org>
+Message-ID: <20251121130248.158508128@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
 
-commit aea73bae662a0e184393d6d7d0feb18d2577b9b9 upstream.
+commit 216158f063fe24fb003bd7da0cd92cd6e2c4d48b upstream.
 
-Some of these 'remove' tests rarely fail because a subflow has been
-reset instead of cleanly removed. This can happen when one extra subflow
-which has never carried data is being closed (FIN) on one side, while
-the other is sending data for the first time.
+Accessing 'reg.write_index' directly triggers a -Waddress-of-packed-member
+warning due to potential unaligned pointer access:
 
-To avoid such subflows to be used right at the end, the backup flag has
-been added. With that, data will be only carried on the initial subflow.
+perf_test.c:239:38: warning: taking address of packed member 'write_index'
+of class or structure 'user_reg' may result in an unaligned pointer value
+[-Waddress-of-packed-member]
+  239 |         ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
+      |                                             ^~~~~~~~~~~~~~~
 
-Fixes: d2c4333a801c ("selftests: mptcp: add testcases for removing addrs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-2-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since write(2) works with any alignment. Casting '&reg.write_index'
+explicitly to 'void *' to suppress this warning.
+
+Link: https://lkml.kernel.org/r/20251106095532.15185-1-ankitkhushwaha.linux@gmail.com
+Fixes: 42187bdc3ca4 ("selftests/user_events: Add perf self-test for empty arguments events")
+Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: sunliming <sunliming@kylinos.cn>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   54 ++++++++++++------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ tools/testing/selftests/user_events/perf_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2321,7 +2321,7 @@ remove_tests()
- 	if reset "remove single subflow"; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 0 1
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns2=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
-@@ -2334,8 +2334,8 @@ remove_tests()
- 	if reset "remove multiple subflows"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 0 2
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns2=-2 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
-@@ -2346,7 +2346,7 @@ remove_tests()
- 	# single address, remove
- 	if reset "remove single address"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 1
- 		addr_nr_ns1=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2359,9 +2359,9 @@ remove_tests()
- 	# subflow and signal, remove
- 	if reset "remove subflow and signal"; then
- 		pm_nl_set_limits $ns1 0 2
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 2
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns1=-1 addr_nr_ns2=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
-@@ -2373,10 +2373,10 @@ remove_tests()
- 	# subflows and signal, remove
- 	if reset "remove subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-1 addr_nr_ns2=-2 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2388,9 +2388,9 @@ remove_tests()
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2403,10 +2403,10 @@ remove_tests()
- 	# invalid addresses remove
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
- 		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
- 		pm_nl_set_limits $ns2 2 2
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2420,10 +2420,10 @@ remove_tests()
- 	# subflows and signal, flush
- 	if reset "flush subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2436,9 +2436,9 @@ remove_tests()
- 	if reset "flush subflows"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_set_limits $ns2 3 3
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow id 150
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup id 150
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2455,9 +2455,9 @@ remove_tests()
- 	# addresses flush
- 	if reset "flush addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2470,9 +2470,9 @@ remove_tests()
- 	# invalid addresses flush
- 	if reset "flush invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
+diff --git a/tools/testing/selftests/user_events/perf_test.c b/tools/testing/selftests/user_events/perf_test.c
+index 5288e768b207..68625362add2 100644
+--- a/tools/testing/selftests/user_events/perf_test.c
++++ b/tools/testing/selftests/user_events/perf_test.c
+@@ -236,7 +236,7 @@ TEST_F(user, perf_empty_events) {
+ 	ASSERT_EQ(1 << reg.enable_bit, self->check);
+ 
+ 	/* Ensure write shows up at correct offset */
+-	ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
++	ASSERT_NE(-1, write(self->data_fd, (void *)&reg.write_index,
+ 					sizeof(reg.write_index)));
+ 	val = (void *)(((char *)perf_page) + perf_page->data_offset);
+ 	ASSERT_EQ(PERF_RECORD_SAMPLE, *val);
+-- 
+2.52.0
+
 
 
 
