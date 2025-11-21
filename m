@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-195708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716E7C795BC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:48 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199A7C7A008
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id A8EE52DE61
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C301342CEB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C1B1B4F0A;
-	Fri, 21 Nov 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10967355819;
+	Fri, 21 Nov 2025 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oz6Hdw9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaIk9+Cy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571262773F7;
-	Fri, 21 Nov 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75C434EF00;
+	Fri, 21 Nov 2025 13:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731439; cv=none; b=KC5ZItEnQazoe7Gb+cQnQHStB+k4n9jhsu4d6lpSxU2SSR8lxcVw7Pv1Fun8KOIuvz/iwkmi0kpuqb/45WqKWWFpjAsssMXiFjzQsUDz0jeBOLTLnA1wXSB24Ti9r11wOSUx0BejPcvxt29/VDlahy899OnpVMr2iZDZyRwp8b4=
+	t=1763733424; cv=none; b=l72+vHCpP88iPmvRj0VfC5P/xo35xhOSa9xF82q2huc/FZ4JvAiqYChnT7P/GpDoSbriD06iDw3xSmfz9jc9cRaD4uuE2hUjgA6rBaAU4G5IbiNKYOymjtozeSonCMaIo8cSYn177fH3H/5tCGbKuwEtvnLBIrmjKI6yl4TLKJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731439; c=relaxed/simple;
-	bh=O43wpPtvF15b0mgdR8fRScPhVkai7gY9WbHwWCaUzko=;
+	s=arc-20240116; t=1763733424; c=relaxed/simple;
+	bh=cP+EtvAqhxgKt/cVfJoqdUmay9BA8b7epDabSZIbk8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFzh2LzbL/QABoMJ8aAGj2A0Tdt5LakXUnnM0KTgdHsPvY6Bl+6j1UQEW/0cLGhS67RJqBdCIre54s1tmf1lddM1IjUBQltqbiDUV/xDn8z+JPpz/mmeXua8NF63f2rgvQg6bu+DdU5RB/vnHCMhIIOVygr9+6ntEu9Mo9+TxWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oz6Hdw9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF72C4CEF1;
-	Fri, 21 Nov 2025 13:23:58 +0000 (UTC)
+	 MIME-Version; b=gshE5D0TuGcZrpjcsgf0OoVLv3ZKKvbyuLRWKC3yU+AUBB5TQFnQAdElQxZClwg+KWwH2u6pvEg6cEzk/LEwy1Tt82c5mveCVfx+f/pi8v3/P3Ua0Vl4UaUJnSXbCpS+axcYf++V0AD9jNuEloaU3hpOXjp924vmIEnQk6P+0+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaIk9+Cy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2AAC116D0;
+	Fri, 21 Nov 2025 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731439;
-	bh=O43wpPtvF15b0mgdR8fRScPhVkai7gY9WbHwWCaUzko=;
+	s=korg; t=1763733424;
+	bh=cP+EtvAqhxgKt/cVfJoqdUmay9BA8b7epDabSZIbk8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oz6Hdw9VBp0NUReeujiSY7qsS4E8WkkfmF0DhudTMabOX9TLaT3a5BuqyiSvlYcFw
-	 icf9hkyPnX8aRCuN6J9e7yyI9UmAtNTDVz75dSLGajCAwLc93A8DFJGwgv8aSCr9XE
-	 st387BHMt0177uQD6E1ESC66gU8Wjb3LL1VYNXg0=
+	b=TaIk9+CyAa3XbWZjgB9FpzfSaj6ClKjtFtxwLUSUq22+3PCXPMtB2SrW/JI2onA43
+	 bDrQtgV0+aGOMEOkhyM1WIpwAkyRWLmGfxGWpXkzXvj6/GqlohYZmS4CVMF69OLEiB
+	 zHzkyJMyXamU6xNuOUlnXJ3yTp1pB4eF6q0yLQdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 208/247] LoongArch: Consolidate max_pfn & max_low_pfn calculation
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 456/529] netfilter: nf_tables: reject duplicate device on updates
 Date: Fri, 21 Nov 2025 14:12:35 +0100
-Message-ID: <20251121130202.192735749@linuxfoundation.org>
+Message-ID: <20251121130247.235309028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,161 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit ce5ad03e459ecb3b4993a8f311fd4f2fb3e6ef81 upstream.
+commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
 
-Now there 5 places which calculate max_pfn & max_low_pfn:
-1. in fdt_setup() for FDT systems;
-2. in memblock_init() for ACPI systems;
-3. in init_numa_memory() for NUMA systems;
-4. in arch_mem_init() to recalculate for "mem=" cmdline;
-5. in paging_init() to recalculate for NUMA systems.
+A chain/flowtable update with duplicated devices in the same batch is
+possible. Unfortunately, netdev event path only removes the first
+device that is found, leaving unregistered the hook of the duplicated
+device.
 
-Since memblock_init() is called both for ACPI and FDT systems, move the
-calculation out of the for_each_efi_memory_desc() loop can eliminate the
-first case. The last case is very questionable (may be derived from the
-MIPS/Loongson code) and breaks the "mem=" cmdline, so should be removed.
-And then the NUMA version of paging_init() can be also eliminated.
+Check if a duplicated device exists in the transaction batch, bail out
+with EEXIST in such case.
 
-After consolidation there are 3 places of calculation:
-1. in memblock_init() for both ACPI and FDT systems;
-2. in init_numa_memory() to recalculate for NUMA systems;
-3. in arch_mem_init() to recalculate for the "mem=" cmdline.
+WARNING is hit when unregistering the hook:
 
-For all cases the calculation is:
-max_pfn = PFN_DOWN(memblock_end_of_DRAM());
-max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
+ [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
+ [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
+ [...]
+ [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/mem.c   |    7 +++----
- arch/loongarch/kernel/numa.c  |   23 ++---------------------
- arch/loongarch/kernel/setup.c |    5 ++---
- arch/loongarch/mm/init.c      |    2 --
- 4 files changed, 7 insertions(+), 30 deletions(-)
+ net/netfilter/nf_tables_api.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/arch/loongarch/kernel/mem.c
-+++ b/arch/loongarch/kernel/mem.c
-@@ -13,7 +13,7 @@
- void __init memblock_init(void)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 5ca1d775e976d..80443b4eaeff0 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2576,6 +2576,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 	struct nft_chain *chain = ctx->chain;
+ 	struct nft_chain_hook hook = {};
+ 	struct nft_stats *stats = NULL;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *h, *next;
+ 	struct nf_hook_ops *ops;
+ 	struct nft_trans *trans;
+@@ -2616,6 +2617,20 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 				if (nft_hook_list_find(&basechain->hook_list, h)) {
+ 					list_del(&h->list);
+ 					kfree(h);
++					continue;
++				}
++
++				nft_net = nft_pernet(ctx->net);
++				list_for_each_entry(trans, &nft_net->commit_list, list) {
++					if (trans->msg_type != NFT_MSG_NEWCHAIN ||
++					    trans->ctx.table != ctx->table ||
++					    !nft_trans_chain_update(trans))
++						continue;
++
++					if (nft_hook_list_find(&nft_trans_chain_hooks(trans), h)) {
++						nft_chain_release_hook(&hook);
++						return -EEXIST;
++					}
+ 				}
+ 			}
+ 		} else {
+@@ -8493,6 +8508,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
  {
- 	u32 mem_type;
--	u64 mem_start, mem_end, mem_size;
-+	u64 mem_start, mem_size;
- 	efi_memory_desc_t *md;
- 
- 	/* Parse memory information */
-@@ -21,7 +21,6 @@ void __init memblock_init(void)
- 		mem_type = md->type;
- 		mem_start = md->phys_addr;
- 		mem_size = md->num_pages << EFI_PAGE_SHIFT;
--		mem_end = mem_start + mem_size;
- 
- 		switch (mem_type) {
- 		case EFI_LOADER_CODE:
-@@ -31,8 +30,6 @@ void __init memblock_init(void)
- 		case EFI_PERSISTENT_MEMORY:
- 		case EFI_CONVENTIONAL_MEMORY:
- 			memblock_add(mem_start, mem_size);
--			if (max_low_pfn < (mem_end >> PAGE_SHIFT))
--				max_low_pfn = mem_end >> PAGE_SHIFT;
- 			break;
- 		case EFI_PAL_CODE:
- 		case EFI_UNUSABLE_MEMORY:
-@@ -49,6 +46,8 @@ void __init memblock_init(void)
+ 	const struct nlattr * const *nla = ctx->nla;
+ 	struct nft_flowtable_hook flowtable_hook;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *hook, *next;
+ 	struct nft_trans *trans;
+ 	bool unregister = false;
+@@ -8508,6 +8524,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
+ 			list_del(&hook->list);
+ 			kfree(hook);
++			continue;
++		}
++
++		nft_net = nft_pernet(ctx->net);
++		list_for_each_entry(trans, &nft_net->commit_list, list) {
++			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
++			    trans->ctx.table != ctx->table ||
++			    !nft_trans_flowtable_update(trans))
++				continue;
++
++			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
++				err = -EEXIST;
++				goto err_flowtable_update_hook;
++			}
  		}
  	}
  
-+	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
-+	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
- 	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
- 
- 	/* Reserve the first 2MB */
---- a/arch/loongarch/kernel/numa.c
-+++ b/arch/loongarch/kernel/numa.c
-@@ -272,7 +272,8 @@ int __init init_numa_memory(void)
- 		node_mem_init(node);
- 		node_set_online(node);
- 	}
--	max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
-+	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
-+	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
- 
- 	setup_nr_node_ids();
- 	loongson_sysconf.nr_nodes = nr_node_ids;
-@@ -283,26 +284,6 @@ int __init init_numa_memory(void)
- 
- #endif
- 
--void __init paging_init(void)
--{
--	unsigned int node;
--	unsigned long zones_size[MAX_NR_ZONES] = {0, };
--
--	for_each_online_node(node) {
--		unsigned long start_pfn, end_pfn;
--
--		get_pfn_range_for_nid(node, &start_pfn, &end_pfn);
--
--		if (end_pfn > max_low_pfn)
--			max_low_pfn = end_pfn;
--	}
--#ifdef CONFIG_ZONE_DMA32
--	zones_size[ZONE_DMA32] = MAX_DMA32_PFN;
--#endif
--	zones_size[ZONE_NORMAL] = max_low_pfn;
--	free_area_init(zones_size);
--}
--
- int pcibus_to_node(struct pci_bus *bus)
- {
- 	return dev_to_node(&bus->dev);
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -294,8 +294,6 @@ static void __init fdt_setup(void)
- 
- 	early_init_dt_scan(fdt_pointer, __pa(fdt_pointer));
- 	early_init_fdt_reserve_self();
--
--	max_low_pfn = PFN_PHYS(memblock_end_of_DRAM());
- #endif
- }
- 
-@@ -390,7 +388,8 @@ static void __init check_kernel_sections
- static void __init arch_mem_init(char **cmdline_p)
- {
- 	/* Recalculate max_low_pfn for "mem=xxx" */
--	max_pfn = max_low_pfn = PHYS_PFN(memblock_end_of_DRAM());
-+	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
-+	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
- 
- 	if (usermem)
- 		pr_info("User-defined physical RAM map overwrite\n");
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -60,7 +60,6 @@ int __ref page_is_ram(unsigned long pfn)
- 	return memblock_is_memory(addr) && !memblock_is_reserved(addr);
- }
- 
--#ifndef CONFIG_NUMA
- void __init paging_init(void)
- {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES];
-@@ -72,7 +71,6 @@ void __init paging_init(void)
- 
- 	free_area_init(max_zone_pfns);
- }
--#endif /* !CONFIG_NUMA */
- 
- void __ref free_initmem(void)
- {
+-- 
+2.51.0
+
 
 
 
