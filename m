@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-195900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E8DC7981D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D36EC79F48
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D0B3366C0C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 84CB23810F3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304F6340DA1;
-	Fri, 21 Nov 2025 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB20C345750;
+	Fri, 21 Nov 2025 13:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwZlCLfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubi3ZBVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F94C346E55;
-	Fri, 21 Nov 2025 13:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D991C5D77;
+	Fri, 21 Nov 2025 13:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731988; cv=none; b=CwYDwJi5HPOARu2Y49fl+jgf5OMzWh1edXteEX3zE/N7RielafX24K5UwqpD22jwKe7ceRmAJR2TDNkfMC0fgTBx7ui9azNG89qWfPM5UJiJf8tGEfa3za/+1IMxhZRO+EpMsdnk6dgQJDt3Jdkoqb8B+ixHsT3Y2ppj1qaXFLY=
+	t=1763733390; cv=none; b=t08QS/7KFw7sd4p5BFLRIMozPMMVST9r34l0HY/DcULS/iBB3XT3X+G/BePxTFHeFlwDJZIskHhvEkTxkl6joUWuRInohg2t7qm/8Fb2qgEI4G2OBEI7YpD+EtaznkimxOKQmvpYcghHD+/R8nFFxf6bvTmPGzp1it7zpkJJVpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731988; c=relaxed/simple;
-	bh=2nv1ddhawb3mAU+JgEjOh2yLSf/nhwVlCGB0eqfYV1U=;
+	s=arc-20240116; t=1763733390; c=relaxed/simple;
+	bh=Ik/z6Dr640/e7wVwIm9zt5zCQhtJqIixwxyLVVvpUpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQAOAUr2uasoKPMH4slIakOzqSrRWNrYjuVfqUVaGd5qNM/lpty42pm5168NyQLh3lVtwhzlS1wZ0PQiZ9pzbnz8pzURGr6mTYcIpKfn+QRa31QrGPz/jnS3nPYtuy1ZdLVwBAbT6QgV5lUs5Q76jmjyk3Dut87a++fcq1No25U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwZlCLfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ECEC4CEF1;
-	Fri, 21 Nov 2025 13:33:07 +0000 (UTC)
+	 MIME-Version; b=rxxTCaTYZxmWTGPfnSPKtFTF3RsivM0ovqWCt2AXX1gcJAd4cGxK8q8G5au0ojSKTAx/V+5X+DF8ft66wDJGl9m0zmchxUvjV/RFCmDZleX5jp3fYLBQptghYxWZXKBuz6tRnMGv0En1RG5mebpdoCsU2XRdEJrMTOJw4U1vzjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubi3ZBVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD11C4CEF1;
+	Fri, 21 Nov 2025 13:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731987;
-	bh=2nv1ddhawb3mAU+JgEjOh2yLSf/nhwVlCGB0eqfYV1U=;
+	s=korg; t=1763733390;
+	bh=Ik/z6Dr640/e7wVwIm9zt5zCQhtJqIixwxyLVVvpUpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwZlCLfYrlu7msbevIxypDc0H+aZMcbh5vfW3tr4nRfKKKIwnRH9HPKFMWZDkEpZe
-	 E7EuNuggiBqIm7YT6zBY0LuaO9lGjIauYnZygXXlbQpMWAxV7dPFIGTkNrdhvqEUvX
-	 f/4gk53n/2by4qW8RVSvzuWYybL1aYl4j8Kxhv2E=
+	b=ubi3ZBVhjdsyKhSDBZWyUQaM5tgPN0Z+ei7hq9eoyh3y4syagGL6qX53elzG4BGiY
+	 Is3sk5OGFFp6j1JiMuO5PcfrotoO1t9sI4ZkhhIxTeU/ojC/YIfSfhjbt3qx8bxVng
+	 bAycp7QMTXPXisk1IiGodYvhy6+SkllcY3cH1I1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 123/185] wifi: mac80211: reject address change while connecting
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rajani Kantha <681739313@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 451/529] net: dsa: improve shutdown sequence
 Date: Fri, 21 Nov 2025 14:12:30 +0100
-Message-ID: <20251121130148.314348500@linuxfoundation.org>
+Message-ID: <20251121130247.056744917@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit a9da90e618cd0669a22bcc06a96209db5dd96e9b upstream.
+[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
 
-While connecting, the MAC address can already no longer be
-changed. The change is already rejected if netif_carrier_ok(),
-but of course that's not true yet while connecting. Check for
-auth_data or assoc_data, so the MAC address cannot be changed.
+Alexander Sverdlin presents 2 problems during shutdown with the
+lan9303 driver. One is specific to lan9303 and the other just happens
+to reproduce there.
 
-Also more comprehensively check that there are no stations on
-the interface being changed - if any peer station is added it
-will know about our address already, so we cannot change it.
+The first problem is that lan9303 is unique among DSA drivers in that it
+calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
+not remove):
 
-Cc: stable@vger.kernel.org
-Fixes: 3c06e91b40db ("wifi: mac80211: Support POWERED_ADDR_CHANGE feature")
-Link: https://patch.msgid.link/20251105154119.f9f6c1df81bb.I9bb3760ede650fb96588be0d09a5a7bdec21b217@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+phy_state_machine()
+-> ...
+   -> dsa_user_phy_read()
+      -> ds->ops->phy_read()
+         -> lan9303_phy_read()
+            -> chip->ops->phy_read()
+               -> lan9303_mdio_phy_read()
+                  -> dev_get_drvdata()
+
+But we never stop the phy_state_machine(), so it may continue to run
+after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
+to set drvdata to NULL to suppress the remove() method that may come
+afterwards. But in this case it will result in an NPD.
+
+The second problem is that the way in which we set
+dp->master->dsa_ptr = NULL; is concurrent with receive packet
+processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
+but afterwards, rather than continuing to use that non-NULL value,
+dev->dsa_ptr is dereferenced again and again without NULL checks:
+dsa_master_find_slave() and many other places. In between dereferences,
+there is no locking to ensure that what was valid once continues to be
+valid.
+
+Both problems have the common aspect that closing the master interface
+solves them.
+
+In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
+event in dsa_slave_netdevice_event() which closes slave ports as well.
+dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
+the phylink state machine, and ds->ops->phy_read() will thus no longer
+call into the driver after this point.
+
+In the second case, dev_close(master) should do this, as per
+Documentation/networking/driver.rst:
+
+| Quiescence
+| ----------
+|
+| After the ndo_stop routine has been called, the hardware must
+| not receive or transmit any data.  All in flight packets must
+| be aborted. If necessary, poll or wait for completion of
+| any reset commands.
+
+So it should be sufficient to ensure that later, when we zeroize
+master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
+on this master.
+
+The addition of the netif_device_detach() function is to ensure that
+ioctls, rtnetlinks and ethtool requests on the slave ports no longer
+propagate down to the driver - we're no longer prepared to handle them.
+
+The race condition actually did not exist when commit 0650bf52b31f
+("net: dsa: be compatible with masters which unregister on shutdown")
+first introduced dsa_switch_shutdown(). It was created later, when we
+stopped unregistering the slave interfaces from a bad spot, and we just
+replaced that sequence with a racy zeroization of master->dsa_ptr
+(one which doesn't ensure that the interfaces aren't up).
+
+Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
+Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
+Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Modification: Using dp->master and dp->slave instead of dp->conduit and dp->user ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ net/dsa/dsa.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -224,6 +224,10 @@ static int ieee80211_can_powered_addr_ch
- 	if (netif_carrier_ok(sdata->dev))
- 		return -EBUSY;
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 07736edc8b6a5..c9bf1a9a6c99b 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1613,6 +1613,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
+ void dsa_switch_shutdown(struct dsa_switch *ds)
+ {
+ 	struct net_device *master, *slave_dev;
++	LIST_HEAD(close_list);
+ 	struct dsa_port *dp;
  
-+	/* if any stations are set known (so they know this vif too), reject */
-+	if (sta_info_get_by_idx(sdata, 0))
-+		return -EBUSY;
+ 	mutex_lock(&dsa2_mutex);
+@@ -1622,10 +1623,16 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+ 
+ 	rtnl_lock();
+ 
++	dsa_switch_for_each_cpu_port(dp, ds)
++		list_add(&dp->master->close_list, &close_list);
 +
- 	/* First check no ROC work is happening on this iface */
- 	list_for_each_entry(roc, &local->roc_list, list) {
- 		if (roc->sdata != sdata)
-@@ -243,12 +247,16 @@ static int ieee80211_can_powered_addr_ch
- 			ret = -EBUSY;
++	dev_close_many(&close_list, true);
++
+ 	dsa_switch_for_each_user_port(dp, ds) {
+ 		master = dsa_port_to_master(dp);
+ 		slave_dev = dp->slave;
+ 
++		netif_device_detach(slave_dev);
+ 		netdev_upper_dev_unlink(master, slave_dev);
  	}
  
-+	/*
-+	 * More interface types could be added here but changing the
-+	 * address while powered makes the most sense in client modes.
-+	 */
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_P2P_CLIENT:
--		/* More interface types could be added here but changing the
--		 * address while powered makes the most sense in client modes.
--		 */
-+		/* refuse while connecting */
-+		if (sdata->u.mgd.auth_data || sdata->u.mgd.assoc_data)
-+			return -EBUSY;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+-- 
+2.51.0
+
 
 
 
