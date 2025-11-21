@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-196086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41B2C79A28
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB70C79A2B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 267774EE192
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:45:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E217D4ECACC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9967434FF75;
-	Fri, 21 Nov 2025 13:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D923502AB;
+	Fri, 21 Nov 2025 13:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lx3vecEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYVJTdfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AAF350297;
-	Fri, 21 Nov 2025 13:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFF434FF7B;
+	Fri, 21 Nov 2025 13:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732516; cv=none; b=f7DXAMmTzBYQilhlnZcvVAmo4vicRL2SGi4LwBifC7vL4qD2Pc/9Oj935j4PuvW+0WpqqwOnArfijtSP1jzgEpVaLg3+wqPbdQJ9I8gtW9LjmPyt+Rgn3hc91mdiJECVCMowVzITZHPjy5tEov7+FdBUP2MI15WbjYTgiip3lMM=
+	t=1763732522; cv=none; b=i7SvXR1rGrYZM4LjzzNRONdKuEzjBnU0scLFa6Q2q9VCJwqa6xRtOYNmAKHug2CMBIJVabDxdwI67r9eVJUPUlaExsv+NMrjS/0mTi7ASrVJPRG/pJFzsr4QFfgNkRvGO/QfXpXYMSjmU1s6r1QGEppWV2qDPDQN+ALRYj/a4Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732516; c=relaxed/simple;
-	bh=701+A1XGZsTlL2lIKV1gVsG3TpHe4UgpUr0rJP6+FJk=;
+	s=arc-20240116; t=1763732522; c=relaxed/simple;
+	bh=jf5GRE085B6Acpnj2cuHI8JLzNBmWu3XuFZocEK2VBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVX6cvn+MhhB5pn0/sW4OReoQK35nraJm5SZQZsQzx76AYP1ui/5ROfi0pRJySgmelcRICR6BZjJHwD7Wlc5/+7Vt+VD+jCX+uATxUAIr1fBkX9F0D0E9GmjJpxbJWLt2Nw4ZnnLUwqzEm0qzzUVzdKsx9Cv6cVUKE8rpr204O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lx3vecEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2B4C116C6;
-	Fri, 21 Nov 2025 13:41:55 +0000 (UTC)
+	 MIME-Version; b=Atg+o6CvWTbthKvK0gFRAbhreXYLOGgcRZM0ozNq5MLEME/L/3lpYPxeye8hhgyf2j9A2ZJgcexMvBsQkyiv0I60mYSmaoYSmIgnD3L7xM+BgwLb2OAUilD3k2zqcQLt9/j+hf++ydu/cVXe4iieVjoic7JqGchiDRGtyFb0T8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYVJTdfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60982C4CEF1;
+	Fri, 21 Nov 2025 13:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732516;
-	bh=701+A1XGZsTlL2lIKV1gVsG3TpHe4UgpUr0rJP6+FJk=;
+	s=korg; t=1763732521;
+	bh=jf5GRE085B6Acpnj2cuHI8JLzNBmWu3XuFZocEK2VBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lx3vecEtTFypGawDrCyCBYGRVMTLFtgi0diEKngxDqEVgf2ifamQLeNmypgU5iwwb
-	 qdejgraM51myvQX48oKrDjfYzlos6qcI8Ut1RRA+2hGmqWYZLNlOX74TDq+pwT1SNc
-	 S40i6seTYwsF/6ezb4Nnhvl6d/ER7AOr9l1tP01o=
+	b=bYVJTdfwrbkKUtlmQzx7VZzA3LUIVT6aOlpip0/7+REC+4Xuyb0hrvZRw9HDYQBxi
+	 8fDdVFiRAu8dGHuM/mKVPm15laybwBeB6NgfWgsRQZ2NYkvywbp/E25zCMhLJdCWEM
+	 awAD9xpp+erzL1abLuBWK7x8x3wXnApkmZiTSjmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Russell <kent.russell@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/529] drm/amdkfd: Handle lack of READ permissions in SVM mapping
-Date: Fri, 21 Nov 2025 14:07:28 +0100
-Message-ID: <20251121130236.322481588@linuxfoundation.org>
+Subject: [PATCH 6.6 150/529] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
+Date: Fri, 21 Nov 2025 14:07:29 +0100
+Message-ID: <20251121130236.357517941@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,65 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kent Russell <kent.russell@amd.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit 0ed704d058cec7643a716a21888d58c7d03f2c3e ]
+[ Upstream commit d75c7021c08e8ae3f311ef2464dca0eaf75fab9f ]
 
-HMM assumes that pages have READ permissions by default. Inside
-svm_range_validate_and_map, we add READ permissions then add WRITE
-permissions if the VMA isn't read-only. This will conflict with regions
-that only have PROT_WRITE or have PROT_NONE. When that happens,
-svm_range_restore_work will continue to retry, silently, giving the
-impression of a hang if pr_debug isn't enabled to show the retries..
+avg sample info is a bit field coded inside the following
+bits: 5,6,7 and 8 of a device status register.
 
-If pages don't have READ permissions, simply unmap them and continue. If
-they weren't mapped in the first place, this would be a no-op. Since x86
-doesn't support write-only, and PROT_NONE doesn't allow reads or writes
-anyways, this will allow the svm range validation to continue without
-getting stuck in a loop forever on mappings we can't use with HMM.
+Channel num info the same, but over bits: 1, 2 and 3.
 
-Signed-off-by: Kent Russell <kent.russell@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Mask both values in order to avoid touching other register bits,
+since the first info (avg sample), came from DT.
+
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250717221559.158872-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/iio/adc/spear_adc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 3168d6fb11e76..9ba9732f0172a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1709,6 +1709,29 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index ad54ef7981090..602ed05552bfd 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/completion.h>
+@@ -29,9 +30,9 @@
  
- 			next = min(vma->vm_end, end);
- 			npages = (next - addr) >> PAGE_SHIFT;
-+			/* HMM requires at least READ permissions. If provided with PROT_NONE,
-+			 * unmap the memory. If it's not already mapped, this is a no-op
-+			 * If PROT_WRITE is provided without READ, warn first then unmap
-+			 */
-+			if (!(vma->vm_flags & VM_READ)) {
-+				unsigned long e, s;
-+
-+				svm_range_lock(prange);
-+				if (vma->vm_flags & VM_WRITE)
-+					pr_debug("VM_WRITE without VM_READ is not supported");
-+				s = max(start, prange->start);
-+				e = min(end, prange->last);
-+				if (e >= s)
-+					r = svm_range_unmap_from_gpus(prange, s, e,
-+						       KFD_SVM_UNMAP_TRIGGER_UNMAP_FROM_CPU);
-+				svm_range_unlock(prange);
-+				/* If unmap returns non-zero, we'll bail on the next for loop
-+				 * iteration, so just leave r and continue
-+				 */
-+				addr = next;
-+				continue;
-+			}
-+
- 			WRITE_ONCE(p->svms.faulting_task, current);
- 			r = amdgpu_hmm_range_get_pages(&prange->notifier, addr, npages,
- 						       readonly, owner, NULL,
+ /* Bit definitions for SPEAR_ADC_STATUS */
+ #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
+-#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
++#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
+ #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
+-#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
++#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
+ #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
+ 
+ #define SPEAR_ADC_DATA_MASK		0x03ff
+@@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&st->lock);
+ 
+-		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
+-			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
++		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
++			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
+ 			SPEAR_ADC_STATUS_START_CONVERSION |
+ 			SPEAR_ADC_STATUS_ADC_ENABLE;
+ 		if (st->vref_external == 0)
 -- 
 2.51.0
 
