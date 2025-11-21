@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D57C7961C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170D2C7A0ED
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ADD82347F19
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E4C44F3643
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07742765FF;
-	Fri, 21 Nov 2025 13:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54F334B1AF;
+	Fri, 21 Nov 2025 13:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soWXSm79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFzYdKka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7E22737FC;
-	Fri, 21 Nov 2025 13:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9523502AE;
+	Fri, 21 Nov 2025 13:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731451; cv=none; b=h2Jnmyd37u/oo6frMeU1ssvIhYEtBqRdLwoDgTuJOfP1rc8LOlQi0ZZQCAdAS0o/6nEGkduNC5G1BS88eAqY00c9pPFVZwoJ2YM2/CPy98UYMz1IsSaUzU/xLi9MgHc18Wl9nUEkG9wY2NKRWbOjjR6PW6qfRI7GB+Vz6cF3llc=
+	t=1763733512; cv=none; b=B2PEWHXij7a/DwevPJH2mMMKMAAlgeaKnVprK2WV2lMxX1Ho/Z3BHRNg1AGP8cyz7p0HZUIbUMkAq8ZJxXB153G4ZntLzbQLsJAaUEpcI39gBpagWRII/iO4AdkgYN9s9TaBZF7qT5Tj7AF8zHLBcJXT/qxKfs7FpaNSTx+A1Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731451; c=relaxed/simple;
-	bh=rCK+Lw07UmlPT/CvhrBz0EKCORuh1S7495vxA67gS8M=;
+	s=arc-20240116; t=1763733512; c=relaxed/simple;
+	bh=VzfaIz6hOuZ+XS6TsbQFWW18l8Nq5aS0anrXwW61iFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6exBISDbmCBHJfI3/n2ijTJQxkxLEBY3ekrzr8cFVlEErhkQfGB5PgmwNbu1XPmg2Qt9oCVsWko0oodpwvrGwsCQE/mlbE+z7LRd9/uBxK78rJFHPGnRh4uC3bb6NNnp5y0KrqR2B3n64iETG6eObSPW/ooioetARdgN5y6jEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soWXSm79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806D3C4CEF1;
-	Fri, 21 Nov 2025 13:24:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ky/nASBHOJU8dH7v5xVR07vbDwapjcIHydKlypounNTH7DRf7gjfi+EfjBCQa4Q6c67FfjX/wPhk27ZKn2XEAhlVH7cQXcET0bB7qIyQIPmo9Sm4vUUgnyTLhSmlOvPeVmLExiho8pPpkigKUIgWKQJCHP6p2o9WozFqsdGYKDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFzYdKka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A2BC4CEF1;
+	Fri, 21 Nov 2025 13:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731450;
-	bh=rCK+Lw07UmlPT/CvhrBz0EKCORuh1S7495vxA67gS8M=;
+	s=korg; t=1763733512;
+	bh=VzfaIz6hOuZ+XS6TsbQFWW18l8Nq5aS0anrXwW61iFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soWXSm794pEdvL+WykYsaE+jWaCufDgLa/+KJbUTXtT6vv7cR5XWhtwuZ1HWBPV+w
-	 tD3H1K36qnvxow20L0ExIOtH2TcxrIC0rrRwKQ02GOC3URs0eu6wHXQRPLGdOKTh5m
-	 2p1/BMEI+9F+iieUV19bzTyP0gMm8w0kcno3+GNU=
+	b=mFzYdKkaTDXnZ1JH4uZHM+1Tvg2QB34rd4aQcrNhNABGakY0umMzxVM7ukwRnSk6b
+	 zIAZmVlSFCjAw0odTKTMVpNEBY+7JLg7PqF0lDDUCSrSJqp0gCzMjI3pntsL4e5U7J
+	 3zsb/8RNsvaRXS4mi87mc6euHbXtdHnkvusi0zKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Askar Safin <safinaskar@gmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.17 212/247] PM: hibernate: Emit an error when image writing fails
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 460/529] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
 Date: Fri, 21 Nov 2025 14:12:39 +0100
-Message-ID: <20251121130202.336509718@linuxfoundation.org>
+Message-ID: <20251121130247.377855912@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 62b9ca1706e1bbb60d945a58de7c7b5826f6b2a2 upstream.
+[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
 
-If image writing fails, a return code is passed up to the caller, but
-none of the callers log anything to the log and so the only record
-of it is the return code that userspace gets.
+Luxul XAP-1440 has BCM54210E PHY at address 25.
 
-Adjust the logging so that the image size and speed of writing is
-only emitted on success and if there is an error, it's saved to the
-logs.
-
-Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
-Reported-by: Askar Safin <safinaskar@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Askar Safin <safinaskar@gmail.com>
-Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
-[ rjw: Added missing braces after "else", changelog edits ]
-Link: https://patch.msgid.link/20251106045158.3198061-2-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/swap.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -877,11 +877,14 @@ out_finish:
- 	stop = ktime_get();
- 	if (!ret)
- 		ret = err2;
--	if (!ret)
-+	if (!ret) {
-+		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
-+		pr_info("Image size after compression: %d kbytes\n",
-+			(atomic_read(&compressed_size) / 1024));
- 		pr_info("Image saving done\n");
--	swsusp_show_speed(start, stop, nr_to_write, "Wrote");
--	pr_info("Image size after compression: %d kbytes\n",
--		(atomic_read(&compressed_size) / 1024));
-+	} else {
-+		pr_err("Image saving failed: %d\n", ret);
-+	}
+diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+index ac44c745bdf8e..a39a021a39107 100644
+--- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
++++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+@@ -55,8 +55,8 @@
+ 	mdio {
+ 		/delete-node/ switch@1e;
  
- out_clean:
- 	hib_finish_batch(&hb);
+-		bcm54210e: ethernet-phy@0 {
+-			reg = <0>;
++		bcm54210e: ethernet-phy@25 {
++			reg = <25>;
+ 		};
+ 	};
+ };
+-- 
+2.51.0
+
 
 
 
