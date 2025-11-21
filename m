@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D24C795CE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE33CC7A08C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 3ECBA31623
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F11EA34DFC5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DC230AADC;
-	Fri, 21 Nov 2025 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBF1350A0E;
+	Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Dwdjai9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sFK7O88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244872DEA7E;
-	Fri, 21 Nov 2025 13:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51836D4F0;
+	Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731454; cv=none; b=GmNdoYyDV5S8cCAkvrU+Qs4NvqD4xXk7w8YEJHi5qbUpQjS0Uzzh6w/eFXS7a54qvaoN4Am4zyJk6SzLmqyBD285+RMw+XgQNfb68pO5LrSLCuIcAs+gDLpWRD1wMGJkb+h8qnsrJj5SxMgVPk3rS81D0YmzFjxlqM6swX40k5w=
+	t=1763733515; cv=none; b=OemNkBtXsk4HGVAZ/UtPJb5djAcvSYthUdUjhH/Dm98OH7tXKEUW2sN4zGcBuQRvwp2IIqt33sX/Gyy44ws1dzDPSvFWUH9L+Fid+rExltZydlCPjsEpcD5pO5NRd4P3MX5V7Zb7ymgS2YWC5antsbqRMlOvNZrrw9fLhHBQuCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731454; c=relaxed/simple;
-	bh=7rJp4aogbdKe+q2ROCvQwVQTRANguRyS9kHIkiRVn+E=;
+	s=arc-20240116; t=1763733515; c=relaxed/simple;
+	bh=nN/QeJhsYJLcBvnSVUiUnsyDKCLTtCghGeBwdXD8xjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6nLC4kMGgJa9Ks8E7Qg+BTt2QYMsx7DtBjmeXOHrxDvAe4negPWfWusZ+Bdlt/GNAkhUuCwr+nnQHYNo2gJRBNge9syc2/OqqbnXtdYE+IQMkl8fCeJyNa7ri++/8g+GJHDcPo3IkisaYWUsEYJAzTx4P2VS9H9Zmb8Pb95Hd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Dwdjai9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42725C4CEF1;
-	Fri, 21 Nov 2025 13:24:13 +0000 (UTC)
+	 MIME-Version; b=WHlNWkl1tHjT02XF7wAR2XIBtjqziNA8nCeDZmU49eJAf+kklR90ked6HgS7SdlTNbdvlGVxFRJjDDNClsl/Sbqlv8LyhcYlFPB0sHjjTcmDmdD5jIoZ+AiBNviB7uejLsn3yq64PTuplAynjLRMWz8HiZ7tOrsuO+Ttjy02+b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sFK7O88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF038C4CEF1;
+	Fri, 21 Nov 2025 13:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731453;
-	bh=7rJp4aogbdKe+q2ROCvQwVQTRANguRyS9kHIkiRVn+E=;
+	s=korg; t=1763733515;
+	bh=nN/QeJhsYJLcBvnSVUiUnsyDKCLTtCghGeBwdXD8xjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Dwdjai92WKKBwsIeBq9bO8tUDrUHw1wKSgozhzKnAnrCFPh1XtPkJnJQQQmfsRKj
-	 EM+l+hVNk44L9E+6g9ktElW5SVAROqgctzlJjmqyrc7PgJFKfTourpbrHTDsh3Zdfn
-	 DJsG5jhAcnzwl6oZ+8AQen0U0NsPkokyAc3ONXcg=
+	b=1sFK7O88fxXdQHhmBIOtqIx4LsAWG340KMBXVfkErqT+YulrgMbIRR2yD4EtV/wA8
+	 3mT1QSxil3hKrMBug2pXz3e66ORQXwwoMgJFnOHCPWmy0P7I3bOIhkYOd4QaNtblun
+	 NoymFhsElIWlXVFg+GQ3NaMLbSpFnG8+UgMav9Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Askar Safin <safinaskar@gmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.17 213/247] PM: hibernate: Use atomic64_t for compressed_size variable
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 461/529] HID: uclogic: Fix potential memory leak in error path
 Date: Fri, 21 Nov 2025 14:12:40 +0100
-Message-ID: <20251121130202.373982527@linuxfoundation.org>
+Message-ID: <20251121130247.414028628@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-commit 66ededc694f1d06a71ca35a3c8e3689e9b85b3ce upstream.
+[ Upstream commit a78eb69d60ce893de48dd75f725ba21309131fc2 ]
 
-`compressed_size` can overflow, showing nonsensical values.
+In uclogic_params_ugee_v2_init_event_hooks(), the memory allocated for
+event_hook is not freed in the next error path. Fix that by freeing it.
 
-Change from `atomic_t` to `atomic64_t` to prevent overflow.
-
-Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
-Reported-by: Askar Safin <safinaskar@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Askar Safin <safinaskar@gmail.com>
-Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
-Link: https://patch.msgid.link/20251106045158.3198061-3-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a251d6576d2a ("HID: uclogic: Handle wireless device reconnection")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/swap.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/hid/hid-uclogic-params.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -635,7 +635,7 @@ struct cmp_data {
- };
+diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
+index 9859dad36495a..eee05d668e361 100644
+--- a/drivers/hid/hid-uclogic-params.c
++++ b/drivers/hid/hid-uclogic-params.c
+@@ -1364,8 +1364,10 @@ static int uclogic_params_ugee_v2_init_event_hooks(struct hid_device *hdev,
+ 	event_hook->hdev = hdev;
+ 	event_hook->size = ARRAY_SIZE(reconnect_event);
+ 	event_hook->event = kmemdup(reconnect_event, event_hook->size, GFP_KERNEL);
+-	if (!event_hook->event)
++	if (!event_hook->event) {
++		kfree(event_hook);
+ 		return -ENOMEM;
++	}
  
- /* Indicates the image size after compression */
--static atomic_t compressed_size = ATOMIC_INIT(0);
-+static atomic64_t compressed_size = ATOMIC_INIT(0);
+ 	list_add_tail(&event_hook->list, &p->event_hooks->list);
  
- /*
-  * Compression function that runs in its own thread.
-@@ -664,7 +664,7 @@ static int compress_threadfn(void *data)
- 		d->ret = crypto_acomp_compress(d->cr);
- 		d->cmp_len = d->cr->dlen;
- 
--		atomic_set(&compressed_size, atomic_read(&compressed_size) + d->cmp_len);
-+		atomic64_add(d->cmp_len, &compressed_size);
- 		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
-@@ -696,7 +696,7 @@ static int save_compressed_image(struct
- 
- 	hib_init_batch(&hb);
- 
--	atomic_set(&compressed_size, 0);
-+	atomic64_set(&compressed_size, 0);
- 
- 	/*
- 	 * We'll limit the number of threads for compression to limit memory
-@@ -879,8 +879,8 @@ out_finish:
- 		ret = err2;
- 	if (!ret) {
- 		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
--		pr_info("Image size after compression: %d kbytes\n",
--			(atomic_read(&compressed_size) / 1024));
-+		pr_info("Image size after compression: %lld kbytes\n",
-+			(atomic64_read(&compressed_size) / 1024));
- 		pr_info("Image saving done\n");
- 	} else {
- 		pr_err("Image saving failed: %d\n", ret);
+-- 
+2.51.0
+
 
 
 
