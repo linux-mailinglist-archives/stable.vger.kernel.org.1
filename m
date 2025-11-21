@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87436C7941C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 259F5C797CC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 995CC2DE13
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1D67C344BB3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4D12DEA7E;
-	Fri, 21 Nov 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9BE332904;
+	Fri, 21 Nov 2025 13:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5pM14iI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKz63Hmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2721F09AC;
-	Fri, 21 Nov 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACBC2749C5;
+	Fri, 21 Nov 2025 13:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731330; cv=none; b=Et8pQCsZ9QE+N9g68uk7b2MxUmLd/CPEtrGO46+K4IAeoc2Vda/bZuWaejc40li19Oy9/EErDfKNENC01aLilSRqE96xUGyn/zGlHMN7MSOv48F2c0hPCNFkusZTlojkw27RxqpQ/FoW3mQkRds182pj5fLE3r9QZbz3mG9ac9U=
+	t=1763731912; cv=none; b=ZHoOzsW8sorZhhsUPT/4YUE5UNv0nCIpw2tTac5jlPUvSKCyyhvocLytIbQLCX2IctEU0wSyFPHgzecTtEfgaKsdlzipX43dMUfRx8tJhnMptWDDcWrYNf4rZPr9WT2G7DM/YuO7RqpyaZ/IQJgyur5eWcVQtFFt9tHMjuwn6Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731330; c=relaxed/simple;
-	bh=ZyiAtsLoPKPOxJYyNemO/acLajjBdHvGs8bIwxZAdyI=;
+	s=arc-20240116; t=1763731912; c=relaxed/simple;
+	bh=fApCtWAHpwousLSOn00exviB02BpAwm2aCALXOe2af8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFkgja/JNMkEksB6JJMswMjc+kik+k/HmozgGljJmO6/qtuyHDcWPxNSbij1UWDmwRB0g/DiSBQQTXxscPGWj8ASCXsBbljCuzE5BfmEOfiAxaxWXcuYKoniZzz2+SJBZcsX3Y8GjO+ihevXds2+d49DaB/VvpN+Wo3nMdQZx6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5pM14iI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3773C4CEFB;
-	Fri, 21 Nov 2025 13:22:09 +0000 (UTC)
+	 MIME-Version; b=QogEowR4w8exV9/7dt0Lx9FdyQWqlpzSBNa9aoJduBNNVO6ktRGpzkzgewdzDp3rdfuhK30YQb9gFEJFil20Jnh1SvkAVBCDhZd3fBrPjSqgruoqbgpvDu53EIDAnWI0WKMAdveyaaapZgaZN8cGudiOkC0gbeQkdgUx5b7HNyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKz63Hmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26FFC4CEF1;
+	Fri, 21 Nov 2025 13:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731330;
-	bh=ZyiAtsLoPKPOxJYyNemO/acLajjBdHvGs8bIwxZAdyI=;
+	s=korg; t=1763731912;
+	bh=fApCtWAHpwousLSOn00exviB02BpAwm2aCALXOe2af8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5pM14iIcb1ThwRi8JwjNcvpz+NMwYgsVlk8Uxy1bUUHqwz8CTu9F3xpfGyKDCyQc
-	 D/SfPVBEvKeF/22pB7fvMpqPpAopyh4cudL48OUSByespKzaGV+/gtUhHFBhI75A+d
-	 k0yl2alaYZ33dvT0ukz/s6RgvA5oEZBPUBRv4hzo=
+	b=AKz63Hmxc9hi9GfftCsW5My9Nw2D3j8efmgmDYjnxnoOWpWqjL9x7LVq/s/JRQPJF
+	 23OKZdE3q1Pd4MO7MFAI/5+wSOJbrS7sfEf2WgjchCEEabEt+W6GnVwQL8CDOCNVLv
+	 wFenf2PLTNAWkb/ul5k6W5UpfNlOdOOn/alwPsE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 171/247] LoongArch: Consolidate early_ioremap()/ioremap_prot()
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rajani Kantha <681739313@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 091/185] f2fs: fix to avoid overflow while left shift operation
 Date: Fri, 21 Nov 2025 14:11:58 +0100
-Message-ID: <20251121130200.858167615@linuxfoundation.org>
+Message-ID: <20251121130147.152214791@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Chao Yu <chao@kernel.org>
 
-commit 43a9e6a10bdde32445ad2725f568e08a94e51dc9 upstream.
+[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
 
-1. Use phys_addr_t instead of u64, which can work for both 32/64 bits.
-2. Check whether the input physical address is above TO_PHYS_MASK (and
-   return NULL if yes) for the DMW version.
+Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
+while left shift operation.
 
-Note: In theory early_ioremap() also need the TO_PHYS_MASK checking, but
-the UEFI BIOS pass some DMW virtual addresses.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Modification: Using rpages[i]->index instead of folio->index due to
+it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
+f2fs_truncate_partial_cluster()") on 6.14 ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/io.h |    5 ++++-
- arch/loongarch/mm/ioremap.c     |    2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ fs/f2fs/compress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -14,7 +14,7 @@
- #include <asm/pgtable-bits.h>
- #include <asm/string.h>
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index b05bb7bfa14c5..fcd21bb060cd4 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1236,7 +1236,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
+ 		int i;
  
--extern void __init __iomem *early_ioremap(u64 phys_addr, unsigned long size);
-+extern void __init __iomem *early_ioremap(phys_addr_t phys_addr, unsigned long size);
- extern void __init early_iounmap(void __iomem *addr, unsigned long size);
+ 		for (i = cluster_size - 1; i >= 0; i--) {
+-			loff_t start = rpages[i]->index << PAGE_SHIFT;
++			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
  
- #define early_memremap early_ioremap
-@@ -25,6 +25,9 @@ extern void __init early_iounmap(void __
- static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
- 					 pgprot_t prot)
- {
-+	if (offset > TO_PHYS_MASK)
-+		return NULL;
-+
- 	switch (pgprot_val(prot) & _CACHE_MASK) {
- 	case _CACHE_CC:
- 		return (void __iomem *)(unsigned long)(CACHE_BASE + offset);
---- a/arch/loongarch/mm/ioremap.c
-+++ b/arch/loongarch/mm/ioremap.c
-@@ -6,7 +6,7 @@
- #include <asm/io.h>
- #include <asm-generic/early_ioremap.h>
- 
--void __init __iomem *early_ioremap(u64 phys_addr, unsigned long size)
-+void __init __iomem *early_ioremap(phys_addr_t phys_addr, unsigned long size)
- {
- 	return ((void __iomem *)TO_CACHE(phys_addr));
- }
+ 			if (from <= start) {
+ 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
+-- 
+2.51.0
+
 
 
 
