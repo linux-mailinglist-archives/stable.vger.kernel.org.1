@@ -1,187 +1,133 @@
-Return-Path: <stable+bounces-195502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF36BC790AE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FED9C79195
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80BFD4E36DB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 12:43:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 7E6562DBCB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BFA3126B1;
-	Fri, 21 Nov 2025 12:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A73340DA3;
+	Fri, 21 Nov 2025 13:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dia9WHg7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUChcwrL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029422343C0
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 12:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E9330321;
+	Fri, 21 Nov 2025 13:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763728988; cv=none; b=TxuEIKb1sr2SmiY527RMr6UiLF0vqfXVuXROB6BSNMfWMsvquHKwshGLIQYZYbDGuOt/P7iMbt8c97FJLYIbBOay8mBwBUROrP1OWvzfH66bGVNP5biLIdb0MBjtMNV9U+O6qqzv3ehNp+79fklHYzUfE62RO8OK8937vlkOzYU=
+	t=1763730004; cv=none; b=rdF7UypBt5EuWabOPDUth5MPG2qdYRTZi/R0LCobC+zhm/xqKDchcqxZz4sERSgIqnXUXeTnMG2S8hcospaTxs6mwVYSLX38agU4TL+jrpgADe+p0y33gSk+Y/cEL/O5ZhLoce7N9jSqJwIeyS7EWnC+qQJq/+Lv4jW6IcuF+3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763728988; c=relaxed/simple;
-	bh=5+mUUCMR3SZoijvRg46BOPKnSb+b0dNPblN10Nfx8kM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ElgzBaZ/erJ0pXs0ZsS4DnA07khijySz80LzsVB41NsQGGNxHS+hyFVrKCFdRN/WsPesNMvKvsG3jpeU9a7xG+1MxzQEA+U0OgX3PLvj0c2fyzLBoGRjGrCStjncq1FC5VKLBuWGXuA54Rx59xbOK66LT4ENN1JSqVdGBzn6D00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dia9WHg7; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42b2dc17965so1898054f8f.3
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 04:43:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763728985; x=1764333785; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p2zCvNqGgtbT+DYiS8F37VDn4ftbMHGNVSrKqGSwmzU=;
-        b=Dia9WHg7lxDgb1w2BasYx27dgy1rV+82Oh+GAss90th+dxbZXVYTRKmCODrtRbvkFo
-         /oeUl9fPwRUAene68NdY3+FtURo5aJPOtkyALTkBjKjuFBq0iduNZuDkkyN0xpwzTLtK
-         X9rbnjZHbDwOSgE8RyhLyVkQD/Q3lYhV6fNdHjwJykvA6Ir55ZYc8eJDwwAQmAEz5s7J
-         Pb9Vkrj/RRUgUBO1fF7bCMjrO5P6Z3XJCxuw6cevI7SvSGsrV1OZGwREiumnzHBwlxJA
-         HGdw/FfwpD+OzQTxOwZBUPLsl0GojkuBdct774REg3WMpq4r1GG6enWlacro05Xkb60Z
-         XQCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763728985; x=1764333785;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=p2zCvNqGgtbT+DYiS8F37VDn4ftbMHGNVSrKqGSwmzU=;
-        b=DtRrcFZG5qcuN+hUuvhiqorXu+LDjNW35ZoP/xk9pYs3iicy8KQVzUH7YQI7U8+0fN
-         Fdt8LT8o/m4sGneev9jtGaSqm0uBGNniZTwxRMPVPXO8cLb2ATplKrqlts1a5HgcJGwB
-         KBRzkN/H4SvRN0ePX6+r1DKD7DddbYmPCRdTXt+quj8IoKYzXG/lggeascXd2+UxZJFp
-         TU1nUzrHnt4J1tYb6YoYDTwBLjToAdghexmTvIqfqORBz+U0i+RdWfS8NmMZM9xhcYr2
-         NOp6R+ofY/ZLj22agPOoQrfeO691SCz8yaSxFsB1IY916OhFnpG5cJc3/fuxsMaoKEVX
-         eqRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuL/VSgj5A4eXG2DMDpFjE1Th0+StsbqcTobzlvIu2LZBk/oFiLzw7gIJZaJmRUOtKYPxYzzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTWHjoUK29HdiW5Ez+wxtnVlIXgMSzyMZopHXqpl/FD0BTWi5o
-	129ZKAneWBdMi7zhcT5nrTxds0mvXzB9QvoLVvT0FxNT7GHMm/0OS43v
-X-Gm-Gg: ASbGncv+0AcufeG30lkMR6zdVStRHV9+0+pfffA0f3Qlfm5Z1+AlLVfQSG4/S7EzKxf
-	h40ysTLuAc/FzgICPMyw/teanTtCvBhvYeh9tKTa2QJL9Y2jmZxHQIOCj2WPK6/6GcH062rV8BJ
-	8QlOTTWlYFGSYKwyfDZQhNvvcwBra1bl29izohDzKF4fvevp9XEpRCw+7j9zOfkG1y9DFoRyNbg
-	Lrau7wFWcqvFYkFxeeEgJ37dRXz0Vh6DOCtvjkS6K4uZecii1BIVP4RfcOFGqHllqXmAtl1IY8Y
-	XjCrfnkwrumldN6ahp5bJ3UbVAbGB1keg/NywUpPXMe85Kje8PRKtwKQQ+rUzQjQAgKEEJl0uyi
-	56+BMb3rlNNkGLZEACzQ46taqHYVNC5RTAvkLQWLYlnr73RhTbuwlobhzhMdB3bFx8YxZ6jkTzj
-	rGtGGdox+DigfIAJ4mTauRLz1XfXG3hJwApMEruQfulT02
-X-Google-Smtp-Source: AGHT+IEYyrnMjnQzt45RXJSTndXYbiIKdxOV3PNbGbGzl7In1RJUbl41mOUpIYSKX5evZrviAlviFw==
-X-Received: by 2002:a05:6000:230f:b0:42b:4223:e62a with SMTP id ffacd0b85a97d-42cc1cbe219mr2220762f8f.23.1763728984741;
-        Fri, 21 Nov 2025 04:43:04 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f2e556sm10734719f8f.5.2025.11.21.04.43.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 04:43:04 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 673ADBE2EE7; Fri, 21 Nov 2025 13:43:03 +0100 (CET)
-Date: Fri, 21 Nov 2025 13:43:03 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naman Jain <namjain@linux.microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Tianyu Lan <tiala@microsoft.com>, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Peter Morrow <pdmorrow@gmail.com>
-Subject: Re: [PATCH 6.6 and older] uio_hv_generic: Enable user space to
- manage interrupt_mask for subchannels
-Message-ID: <aSBeVyYD2HQ5zNbC@eldamar.lan>
-References: <20251115085937.2237-1-namjain@linux.microsoft.com>
- <2025112109-legroom-resend-643f@gregkh>
+	s=arc-20240116; t=1763730004; c=relaxed/simple;
+	bh=SdcftGZaogohxGtRzQBZunYIvvjKiTIhQ7KsQuEauxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KYl63J18RoxqmrkrcleS8ZSQL2LWgHAsui6a29voEDS5oEdAvh1lk2K0OfxNGKfUDnOVd1MHEFen0vDdALbtjWxVDHEq4SUsUAHOAVeSYPJb/HPRNMnwi9UynnZ/x6SRhOIB6WP0QEB54GbfUBHPmtRXG03LkYEasE8K+kDHt3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUChcwrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A136C4CEF1;
+	Fri, 21 Nov 2025 13:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763730003;
+	bh=SdcftGZaogohxGtRzQBZunYIvvjKiTIhQ7KsQuEauxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TUChcwrLS5YCQF6MvHmkaRp2yp96+p73ZQfCVj51j2FcauKWnsRkT8g+KJXWToht7
+	 00bgAjHUTgZNJzmPUFanLw3DGivnOGEZvxGohslYYjfL4ktoMtEv59iBm/lku8s7MS
+	 mHovPe/w0qvCX0ULTqbrky0jD1VrVPgTlYxuk/0xKuM3w6VKmgaHuKF65cW0NOOSSO
+	 FX084agFXxhXMbquwJplLz72c5K1j8iJwK52mWeJkhAUR4S2tYxQmLxUxEe5y9YJqA
+	 bziSfisNSHIK+SFSsy50s4T/B9Y3fD+IGX3J570SdpIBEuympnkJUb7M5icHAukb4Q
+	 06iOqt5t/gzDg==
+Message-ID: <fb573584-4027-4988-a703-7f619fa830fc@kernel.org>
+Date: Fri, 21 Nov 2025 13:59:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025112109-legroom-resend-643f@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: samsung: exynos-pmu: fix device leak on regmap
+ lookup
+To: Johan Hovold <johan@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>,
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251121121852.16825-1-johan@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251121121852.16825-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On Fri, Nov 21, 2025 at 11:10:43AM +0100, Greg Kroah-Hartman wrote:
-> On Sat, Nov 15, 2025 at 02:29:37PM +0530, Naman Jain wrote:
-> > From: Long Li <longli@microsoft.com>
-> > 
-> > Enable the user space to manage interrupt_mask for subchannels through
-> > irqcontrol interface for uio device. Also remove the memory barrier
-> > when monitor bit is enabled as it is not necessary.
-> > 
-> > This is a backport of the upstream commit
-> > d062463edf17 ("uio_hv_generic: Set event for all channels on the device")
-> > with some modifications to resolve merge conflicts and take care of
-> > missing support for slow devices on older kernels.
-> > Original change was not a fix, but it needs to be backported to fix a
-> > NULL pointer crash resulting from missing interrupt mask setting.
-> > 
-> > Commit 37bd91f22794 ("uio_hv_generic: Let userspace take care of interrupt mask")
-> > removed the default setting of interrupt_mask for channels (including
-> > subchannels) in the uio_hv_generic driver, as it relies on the user space
-> > to take care of managing it. This approach works fine when user space
-> > can control this setting using the irqcontrol interface provided for uio
-> > devices. Support for setting the interrupt mask through this interface for
-> > subchannels came only after commit d062463edf17 ("uio_hv_generic: Set event
-> > for all channels on the device"). On older kernels, this change is not
-> > present. With uio_hv_generic no longer setting the interrupt_mask, and
-> > userspace not having the capability to set it, it remains unset,
-> > and interrupts can come for the subchannels, which can result in a crash
-> > in hv_uio_channel_cb. Backport the change to older kernels, where this
-> > change was not present, to allow userspace to set the interrupt mask
-> > properly for subchannels. Additionally, this patch also adds certain
-> > checks for primary vs subchannels in the hv_uio_channel_cb, which can
-> > gracefully handle these two cases and prevent the NULL pointer crashes.
-> > 
-> > Signed-off-by: Long Li <longli@microsoft.com>
-> > Fixes: 37bd91f22794 ("uio_hv_generic: Let userspace take care of interrupt mask")
+On 21/11/2025 13:18, Johan Hovold wrote:
+> Make sure to drop the reference taken when looking up the PMU device and
+> its regmap.
 > 
-> This is a 6.12.y commit id, so a fix for 6.6.y does not make sense :(
+> Note that holding a reference to a device does not prevent its regmap
+> from going away so there is no point in keeping the reference.
 
-Should maybe be updated to reflect the original upstream commit. In
-fact b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of
-interrupt mask") was backported to various stable series:
+Thanks for the patch, it's 3rd or fourth try from LKML on that, but you
+were the only one actually really reading the code instead of sprinking
+puts all around.
 
-v5.4.301: 540aac117eaea5723cef5e4cbf3035c4ac654d92 uio_hv_generic: Let userspace take care of interrupt mask
-v5.10.246: 65d40acd911c7011745cbbd2aaac34eb5266d11e uio_hv_generic: Let userspace take care of interrupt mask
-v5.15.195: a44f61f878f32071d6378e8dd7c2d47f9490c8f7 uio_hv_generic: Let userspace take care of interrupt mask
-v6.1.156: 01ce972e6f9974a7c76943bcb7e93746917db83a uio_hv_generic: Let userspace take care of interrupt mask
-v6.6.112: 2af39ab5e6dc46b835a52e80a22d0cad430985e3 uio_hv_generic: Let userspace take care of interrupt mask
-v6.12.53: 37bd91f22794dc05436130d6983302cb90ecfe7e uio_hv_generic: Let userspace take care of interrupt mask
-v6.17.3: e29587c07537929684faa365027f4b0d87521e1b uio_hv_generic: Let userspace take care of interrupt mask
-
-And Peter just confirmed in
-https://lore.kernel.org/stable/CAFcZKTyOcDqDJRB4sgN7Q-dabBU0eg7KKs=yBJhB=CNDyy7scQ@mail.gmail.com/
-that he is seeing the problem now as well after updating from
-6.1.153-1 to 6.1.158-1 in Debian.
-
-> > Closes: https://bugs.debian.org/1120602
-> > Cc: <stable@vger.kernel.org> # 6.6.x and older
 > 
-> How "old" do you want this?  Can you fix the Fixes: line up and resend
-> with this info?
+> Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
+> Cc: stable@vger.kernel.org	# 6.9
 
-It is at least relevant for back in 6.1.y now, but I'm not sure about
-the older series. I will let Naman speak up.
+Fix is fine, but unfortunately the code in v6.9 was different and I
+believe keeping dev reference made sense there - driver was relying on
+drvdata. While the leak was there as well, it was intentional. I think
+the leak can be fixed only since commit
+35d6b98c625867209bc47df99cf03edf4280799f .
 
-I guess the proper fixes tracking is a bit "tricky" because it only
-affected some of the stable series, namely those which had a backport
-of b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt
-mask") done before the including a backport of d062463edf17
-("uio_hv_generic: Set event for all channels on the device"). So this
-is the reason why we seeing it first in 6.12.y stable series (but now
-as well on olders), but not a problem on 6.17.y.
 
-Hope this explanation helps, please keep in mind that I'm no expert
-here by no means, just helping to report it from downstream Debian up
-here.
-
-Regards,
-Salvatore
+Best regards,
+Krzysztof
 
