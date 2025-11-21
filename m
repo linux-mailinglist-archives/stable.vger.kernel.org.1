@@ -1,241 +1,114 @@
-Return-Path: <stable+bounces-195468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7914FC779CB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 07:53:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1690CC779E9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 07:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CFC6635C143
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 06:53:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 973CC4E7A41
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 06:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAA333372C;
-	Fri, 21 Nov 2025 06:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CBC1C84C0;
+	Fri, 21 Nov 2025 06:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VcUQEatU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4Ehqa6w"
 X-Original-To: stable@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A770E1B4F2C;
-	Fri, 21 Nov 2025 06:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763708005; cv=fail; b=GxZ82Kk7ZILeSALhB4KAQ2E6IInOi2s+yU5D4N8BOVz8QgSkrjSX4V0FFAfuMJEdp5dMEWV3HsV0fuIzOHa88EqvJtcKiVDEMMq9ahV+/LPTiKqI4VGlLqgJ9nR88wSvudCa5sPxhX3uxBtrIM2HV6EmODeK3UfQXyWmQ4CyjF0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763708005; c=relaxed/simple;
-	bh=WACuUDpUZyUcFf0LM2ad2E9Npfc5kYXSdmPhP5+czm0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DB+GMaLRfJfxviWw9PDIjE78oJBszsEW9YM5b9jI5a4Lk3L0OfUkDRiAE9N8lpZCHiYn2rfoyg31nWqtHPXm36woFLGAVoPb9oCFqRGNxju1s3raNXnp9AdtgA72Nqo7MOtexf8hHdEDBu2o7su6PuJ/ovVoJgokwzdLWw53BPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VcUQEatU; arc=fail smtp.client-ip=52.101.52.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PJi+pVk6EMLl0tCL1ZeA9SBu3mR1MksBZ7XfSHmxNEmO0/LMIr3A5d6tnzduyVWD6tsA3u10tLChfvFaKjTn6Tm0zoZJhb/38bk+IUHse45+12/ytEER3Vqt0rq1QUfBkJnQlTlJYKL4ER3Kv74vFpdyu68ZGamDOhOerCVpaJ2yURj8Thx/y3ilbFZwpY12cocIt5g161hwMuk0/S4kyN9W9ZqArORc4duwpGB2MIWwIQYmT8h8ZjCZzMgvNic4E4busNh5F9CHQAAol+ECX/7usGoaFR5DjYrZtsNIrCLNdnql5Rc2T8+P9XTu2UpMSrZ4vESCK9cqLK3u+5+qig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sp+2b6gLfF+iAiOl1tncvT0sm79F8rvvwf3S9b8dP10=;
- b=aUll7QdZFsd3z9LwyxWYM98jVIlTzGNTstDI2ch+l7S8PX6C5NkpUp4g1Vc7DiDjxXBp+e3BviLy7IuxenmeYKfgmSVxjP8ouavvoarIpYN+3musR85BTOhrLxs6CFPvO+6uMSxwafl/SGZbACp7gsBjCGKVTFG1WR2BInZhQM5klvA1HLsD/5WbiIM684rf6X+oIhIoKah03iFLFC7NC8YWwa2s2yvRN/i9vMtdPQfUqqAvlxRBicM30iSuVyyblhqpQhQ9B/BdPErj92leOg3UTk02oHjT71VHAtptiOxEjkJhKZ1v/Ze5O1eQTRazrcC2f4hSMCvp21hmrPtarA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sp+2b6gLfF+iAiOl1tncvT0sm79F8rvvwf3S9b8dP10=;
- b=VcUQEatUHbMHcuevEaKRISSYLCkxnNPiRE1W5Dmcc605P+UwREkAIvqTcA4oI74kZ3/fQBcybnb+jSG13KNVvxiocpbPlvcPQ5PnNglhrgdCtR6byGxyxkYeiRrRrrBRgWOGSZLjKe4Vf0Sg47g3B8VPRLV/iYvF+FDnrz29WdA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB7091.namprd12.prod.outlook.com (2603:10b6:806:2d5::17)
- by IA1PR12MB8309.namprd12.prod.outlook.com (2603:10b6:208:3fe::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 06:53:21 +0000
-Received: from SA0PR12MB7091.namprd12.prod.outlook.com
- ([fe80::d759:a62b:f8ba:461d]) by SA0PR12MB7091.namprd12.prod.outlook.com
- ([fe80::d759:a62b:f8ba:461d%4]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
- 06:53:20 +0000
-Message-ID: <5f614997-41a5-432f-ab3c-ea1011c16dc4@amd.com>
-Date: Fri, 21 Nov 2025 12:23:12 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu: Fix error handling in amdgpu_atpx_detect
-To: Ma Ke <make24@iscas.ac.cn>, alexander.deucher@amd.com,
- christian.koenig@amd.com, airlied@gmail.com, simona@ffwll.ch,
- evan.quan@amd.com
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- stable@vger.kernel.org
-References: <20251121014415.37964-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: "Lazar, Lijo" <lijo.lazar@amd.com>
-In-Reply-To: <20251121014415.37964-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0110.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:27::25) To SA0PR12MB7091.namprd12.prod.outlook.com
- (2603:10b6:806:2d5::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3008727A469;
+	Fri, 21 Nov 2025 06:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763708047; cv=none; b=NbVOlVZpkEP367MoreYesBsOE+2okpY+cOfPVwXKUHGqxBMxl2qVMvZEpeZ7+R0Bq4L1a2/BtQc3HyxQUqqYpiRB2E7D1dy8BBROzeA8xfSdW2Oq5Hfg1bJzXbbwkPkDQL20ajoAvRUwHgxObQdbOXXFyQYanfW0ZErwBiRrJ44=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763708047; c=relaxed/simple;
+	bh=7J1qHLg9MNKehT8t5EyZLfHtGqN8q3NhKWYNKDJrwrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X2/t00F69OlcxsUpjUfPyi6SFJpwHRItBQX13gvJ4D438Z0P3NhSlTqmFcuw/IOLcodwwg+zr+fBNFSAXT3Q57MQKKAl+BTL4sG8nPJTTQfEZa4/er238S0nbfC4dP/9/vuPVwOKqQsYvtEO6ydv0zpojXv3w+EKHTy+m02giHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4Ehqa6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB7FC4CEF1;
+	Fri, 21 Nov 2025 06:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763708046;
+	bh=7J1qHLg9MNKehT8t5EyZLfHtGqN8q3NhKWYNKDJrwrg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=w4Ehqa6wIsO0LCVfeg4bAd7N3aOs4QjiPRsgVDDbaVbGfjFAtpXyDGMVcbLB3Zt1s
+	 Ela1kW++F2dXuYHOXZVcNVeCy2Zc/9O9YPoYqfh6vxnhVBMD6ZQ8czLPesfH0oGCz+
+	 xypyK0/heBt/mzA/JndeC6gWOFexErID6DRl2/TU=
+Date: Fri, 21 Nov 2025 07:53:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Avadhut Naik <avadhut.naik@amd.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, linux-kernel@vger.kernel.org,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Subject: Re: [PATCH] x86/mce: Handle AMD threshold interrupt storms
+Message-ID: <2025112144-wizard-upcountry-292d@gregkh>
+References: <20251120214139.1721338-1-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB7091:EE_|IA1PR12MB8309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 220551fc-ab23-4e7a-ccf6-08de28caa830
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OUJPdW9waU5NVlBLWWRQSmdWT1lVZFRrR0dVV1NIK3g4VnpFQ1puTk9KTzI1?=
- =?utf-8?B?bEY0WUEvVGwyamR0OW5YclFtWE53bk9nQzFHSGloWnVrVUx0RTd1MlpaaFJQ?=
- =?utf-8?B?ZFdZc255ekt3RHNjTGZTYnBFaFJoVnpDbjhCbEd3QlNTd3pueFhnY2hVRnM5?=
- =?utf-8?B?WmxwMkxtZVE5Qmp4M2FWejVvK0YvQm5HMDZsamxqQStxZFRKaFlETTdDSlJx?=
- =?utf-8?B?bVF6QmFMeFhvNlMvL3dGL0o1UUlsRHl3Z01MbUs2MVMyazlRb0k0M0xVbWpp?=
- =?utf-8?B?aHdTaXVNd3duWk1GYjdPdUIwbWpIektyajcyVHRGWWx4NW9XcFMyQXpSdUVO?=
- =?utf-8?B?UEdIR0c2NGlpMHlVdUMveXFVN2FNdmlnUFpnMkFiYVFuY0F0cUg0UmRKUjFM?=
- =?utf-8?B?eDNRRWthcXZkdCt4YU9BYnV3N0o5WVFsVURFWE4zWTVpRXBPZ05xV1ZJd3Vw?=
- =?utf-8?B?amlqZGx0MzI1ZjZiVTFlZWlBRko2SC9udVFYZ2pFRWtTd0kraStId0JZMVU4?=
- =?utf-8?B?S2gxZElsVUVuSDFhQVFrTjMxSExWK2JXOGFLczBWL1pMNnBQMXhUNVJzS0xI?=
- =?utf-8?B?V1F0a052SFR3VDdrK2VEdFM4dXZ5d1p1REpFNUl4ZWlyWWsxbHhNSUZrVUdZ?=
- =?utf-8?B?eERlVytscDJLSnFWR2NuT2hIV0tobUNYUHB5VXZRblZvVERTQ2J4V0tVbUQ3?=
- =?utf-8?B?VUx2T2FpMFpIK0xqVDZkeFdaNHJyYW9PY0ZOVTdkOUM3YUNRejA3NU4rbmty?=
- =?utf-8?B?ZjdZN0dseXRhdEFwTHV3WnJ6Tk52cEdpa1l5Z2ZDbktiWkdSNVl0NUxVVXJt?=
- =?utf-8?B?T0JJalp4b1FXYlR3UWh6ZXloblBSUlNQYm1qa1AvMEJqWXZsWXp2aEhvZ001?=
- =?utf-8?B?TmFjeUU1UmVhdTkrUXFmOVpxWjV0aFFyRWtHZHpOQUVFT2JWQ0JGVjc5dHFm?=
- =?utf-8?B?aGVVVkM2TUNUUCtFMkZ2TlcyVzd6WHVzaUJLbUk0WStrMTBscVJJUXhYVFI0?=
- =?utf-8?B?aWRNaWNONGdQTy9CT0pMZ1MxeWRrU21JVDBuZmttUlZ6OHg5YlBMWUgzL0Iw?=
- =?utf-8?B?RDZseFh6VlVOUDRraGlMRzQ1dzRmR1YwZXpTbE1PRWtpRVduT0Zlb3ZZcWEy?=
- =?utf-8?B?ejIrVmFNU3V2VFZTbUM4a0ZwMHI3YmRuYlpoQ2ZCSDJacGdJbWNYOFNlVDlp?=
- =?utf-8?B?VlJvZDl6Nm5rdkhUbEVRYlMwcVl6Q0tseEdqYlRLYVd2UEFaR2xUK2g3ZldB?=
- =?utf-8?B?dHBZMWI2Y29taXNPaENnRHJRelhCNnhSVWlaK1dwV3ZXUnBzblcrSXQzOEcr?=
- =?utf-8?B?RzFBM2IzNUxzM2ZvR3F5b2s4REIyY1JHdzk4YXljMVlJRUNOcDhxQkgrV3Uz?=
- =?utf-8?B?ZHQ1RzY5b1JHakEwaWtsVi82STdocUtWa0Q2YUhRb1NSMFMwcFp1dXVRR3RW?=
- =?utf-8?B?TnhtOXJRTFlXWVBlTzFsdno2WkE1TEVscXNFVGdQUDViVDhCRFduUHFKQTZR?=
- =?utf-8?B?TmVqNERZMjRrdkkrUS8rdWdQVnlVd25jN094NFNhVmhHemhHMVY0bng4VmJT?=
- =?utf-8?B?T2htNGx6VGd6UTQyc2JRaG9zbldXUjd6TE1YVDh2Z0RiUHQxTzljZ1dqcWE2?=
- =?utf-8?B?S3l1Q0VLWkhzVkdScXczY0pNN1NxeU0xVU1ZRUNYMmZKZGVoY09kQmxhV2Jo?=
- =?utf-8?B?WEZlcDQ5Y3hCcko0V0N0R3BHbW8wOTB4bnBuSmszMCtkbkdYZjdJeks0VGNa?=
- =?utf-8?B?bE16TWJQZnFCU0JIQnlScHVJVUdmNkhZQThOSWhacE51YlgyTTMwNnZhQjk1?=
- =?utf-8?B?ZjZtU2RKSVZRbVJ5b1paemVGb3FpcGJnZytSVWtjMC9DTUxaNlJBUVZSdm1E?=
- =?utf-8?B?SVh5cG03N2x0MTZRdGJQWVN0WitsYkdPZjZJQWRqVEhPQmRENzMwVGFPbWEv?=
- =?utf-8?Q?0HxZcnLipteT2l2ou+GzKCw+gI/T6um8?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7091.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TTlXaGJvdnUvYUVtcENZR0JPT1hOOGlyT1c0V0ZaZWM4UU5QMVdmOXBHcWhR?=
- =?utf-8?B?R0FFcDNFNUMzb1hHOTVNSjBCYThLUkpTdXV2emo4dXV6akdsT3F3TklzTUhC?=
- =?utf-8?B?VmlrUE9mcVJnRkZxVzVpYzBpblZqSVFFY3dZR3RQNmFuUTloOWpFVUN2WEZ5?=
- =?utf-8?B?VVlhdlNGdy9acDRiaVFxT3dCMm9vWndBY0RyajFrSDcwNnFFN1Y1MFBSaHV1?=
- =?utf-8?B?REVGUlpFNlZ4aDN2SXUrcDhtbDFOcTE2VXpaRHczZjBveUl1WXBqUWN1QWlU?=
- =?utf-8?B?NTQ3V1ZITEQzUmppNW05amZZbnhRdk9EV01pV0drTnk2TW8xazZaVnhBMzVi?=
- =?utf-8?B?Y2hZc2t2a3dna0h0d2ErU1NaZEVIa3ZDNnpmTmFta0lGRVAxWTE4YjZuMjZG?=
- =?utf-8?B?NzU1MUNaU3JrZms4ZjZEVk5LUEFyUDN0YkVKM3JWaUNlM2Q3bFFJMzRubDRH?=
- =?utf-8?B?Sk94N21DVlZYOE9rcDlrUVptcDBhOENUdHlDWTFNR0lGVXFEcjVVUVdIalN3?=
- =?utf-8?B?Z1lhMWt3M3NKTWkzUTg5VHVORi9EMWhZTU9lUHVwUE0wenladjA0bmlEZFpw?=
- =?utf-8?B?RGVsSGl3K2VlQlB0enY3amk4cG1IY1hJUUZiSmZHQlc3Q1pXOUZNKzBpNkR6?=
- =?utf-8?B?Um9HYzkvTnpxQTQ0ZisreUZ6TDFYaGhjdTVicVJmQ3JoTlRSM3g0VGNVVENN?=
- =?utf-8?B?QW5EUlp0VGxqR0x5L0szR1RCaWNlZjZRdElGTklHWmQ0MWFBenRtNjZKSXcz?=
- =?utf-8?B?RDZ6VkNTVWpKUFR6MjJKVDlUUlp5dDJqR3RGUTcxNFpSUHlEVlVJWTM3WlhH?=
- =?utf-8?B?L201dFFRSFRBZzZlTFpjVCtRbHBQc3RBRVJHSjlLSkd4NjZybzhLdGNva2Rr?=
- =?utf-8?B?eG96c0VqaHZpQ2h2RWV4N1dGV3ZUR3JEdldsREpSUkhMcWt4N09yM3MrTGJZ?=
- =?utf-8?B?U1dPNlJUNmdnSVZVbkV2eEdpa0J4NzR1SEc0dlJ2cm1pY0RTOFMrQmRvMjJO?=
- =?utf-8?B?L2JTRXdIYzF3Zlc3d1FzY3BhZ05qNEpSOXBvamJlZTJVejB6dlVFd3dHbldh?=
- =?utf-8?B?MW9wbGdGSWx0QUFXbHRhakJmZVA1Um82Ri94M0k3b2tmQXc0dUpEZWtiakRL?=
- =?utf-8?B?MU9adHRxQzJQMmtPTGozNFFFV01qTWxFTzNDb2lsNU14d1RuN1JzcTlSMmMw?=
- =?utf-8?B?TmFQemlsdCtpNEQ5MGdKL0s2djFHSFNpZ3JzeDdSUkdyMzVDVTlDWjUyTE1B?=
- =?utf-8?B?UmNiT2ZPWDNrcjNqZ0NwdGFhUlNOdVdPS0RSSDJTcjdwN1VwUVcxQ0ViUnJm?=
- =?utf-8?B?LzhqOHU4OTBzU2tzbHhtdzJ3Zi9CRVJ0NWxWWmRucXdQNm0xUmRDU0NQWnY4?=
- =?utf-8?B?djc5YWxxcFZIay9iRStOZHVCMDh4dmdpa1JJTDNTeFMzblBPRHdQcFJTNFQw?=
- =?utf-8?B?VUpkblRZSkMvVWUwb3llV0NlZGxoT29WMk0zcmRvbE52azhQQ2hUcGZmTFVE?=
- =?utf-8?B?dWNNZDlMMUljdXlSRXNtRmJHRi9LajIvZmZoelhzUTgxM1V2MGUrUlQ0eTFG?=
- =?utf-8?B?N1Y1ZlZxdjBjQmh0K0dWZkkrN0IzT2VMQnYwN3dvcjRpamxJRjdkR2U1dkNS?=
- =?utf-8?B?M0JZOHV4eTFjUnBwbk03UU1OUmNRQnQ3ZG5mN3dEdXlkejFFR3RzQnhSYm5T?=
- =?utf-8?B?eUt5OHRCVS8yWVlka01OSDhJUXFDTEdBZE9mUm90MDE3ZklRZU40bkdzNTJn?=
- =?utf-8?B?djdvR2FJWTQ1cXpuMzdxdFB5RWoyY3AvelhaMjY4UTNMb3d5aXk3WGZXU0N4?=
- =?utf-8?B?YndBSW16OWE4eTQyVmVCN3M5T3B2K2g4REhzRFlzY05FNHFtbjh4VzI1cmRp?=
- =?utf-8?B?cXZpWXBnSDZGcjR3TSt2VzZoQ0NNWGpaSUE0VGFOS2I5a1hLUkV3eE1YaHYr?=
- =?utf-8?B?NkRZRk1neW1uWGNXdzlMWUpvaHZTSmZyWU1odlk0R2k4eldDV2JxZ3lTSCta?=
- =?utf-8?B?WnBJVDlvcHhIVTBqUnUxSTRsZXVoc0hXSFp6Umh4SFdRRmZSTEFTK1lBd0Nx?=
- =?utf-8?B?dkhHaFAyRDhNWVNHSGxib2I1R09uVnpXOWt6cit0QnM4T3VSYWdPaktoZTVl?=
- =?utf-8?Q?VHiFDLx+eLgnScqAziib8yyrI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 220551fc-ab23-4e7a-ccf6-08de28caa830
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7091.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 06:53:20.8214
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tF4JrEmSuXwWv/WjjbXGyW4Aii4VGfsez0NB+Gf2w6Q/NPp/Ba6aC3gJTOqIoDey
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8309
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251120214139.1721338-1-avadhut.naik@amd.com>
 
-
-
-On 11/21/2025 7:14 AM, Ma Ke wrote:
-> amdgpu_atpx_detect() uses pci_get_class() in two while loops to
-> iterate through VGA and OTHER display class PCI devices. Each call to
-> pci_get_class() increments the reference count of the returned PCI
-> device. However, after the loops complete, there are no corresponding
-> pci_dev_put() to decrement these reference counts.
+On Thu, Nov 20, 2025 at 09:41:24PM +0000, Avadhut Naik wrote:
+> From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 > 
-> Add pci_dev_put() after each while loop to release reference counts
-> held by the last devices found in each class.
+> Extend the logic of handling CMCI storms to AMD threshold interrupts.
 > 
-> Found by code review.
-
-This doesn't look correct. Below is the documented API behaviour.
-
-"Iterates through the list of known PCI devices. If a PCI device is 
-found with a matching class, the reference count to the device is 
-incremented and a pointer to its device structure is returned. 
-Otherwise, NULL is returned. A new search is initiated by passing NULL 
-as the from argument. Otherwise if from is not NULL, searches continue 
-from next device on the global list. The reference count for from is 
-always decremented if it is not NULL."
-
-
-After a device is found, it goes in as the "from" device for the next 
-iteration. Then reference count of the from device is decremented. Both 
-the loops continue till pdev gets to NULL. So there is nothing to put() 
-after the loops are completed.
-
-Thanks,
-Lijo
-
+> Rely on the similar approach as of Intel's CMCI to mitigate storms per CPU and
+> per bank. But, unlike CMCI, do not set thresholds and reduce interrupt rate on
+> a storm. Rather, disable the interrupt on the corresponding CPU and bank.
+> Re-enable back the interrupts if enough consecutive polls of the bank show no
+> corrected errors (30, as programmed by Intel).
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 5d30ed3c2c74 ("Revert "drm/amdgpu: simplify ATPX detection"")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Turning off the threshold interrupts would be a better solution on AMD systems
+> as other error severities will still be handled even if the threshold
+> interrupts are disabled.
+> 
+> Also, AMD systems currently allow banks to be managed by both polling and
+> interrupts. So don't modify the polling banks set after a storm ends.
+> 
+>   [Tony: Small tweak because mce_handle_storm() isn't a pointer now]
+>   [Yazen: Rebase and simplify]
+> 
+> Stable backport notes:
+> 1. Currently, when a Machine check interrupt storm is detected, the bank's
+> corresponding bit in mce_poll_banks per-CPU variable is cleared by
+> cmci_storm_end(). As a result, on AMD's SMCA systems, errors injected or
+> encountered after the storm subsides are not logged since polling on that
+> bank has been disabled. Polling banks set on AMD systems should not be
+> modified when a storm subsides.
+> 
+> 2. This patch is a snippet from the CMCI storm handling patch (link below)
+> that has been accepted into tip for v6.19. While backporting the patch
+> would have been the preferred way, the same cannot be undertaken since
+> its part of a larger set. As such, this fix will be temporary. When the
+> original patch and its set is integrated into stable, this patch should be
+> reverted.
+> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> Signed-off-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Link: https://lore.kernel.org/20251104-wip-mca-updates-v8-0-66c8eacf67b9@amd.com
+> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
 > ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_atpx_handler.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atpx_handler.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atpx_handler.c
-> index 3893e6fc2f03..9eb776a2e8bb 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atpx_handler.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atpx_handler.c
-> @@ -617,6 +617,9 @@ static bool amdgpu_atpx_detect(void)
->   		amdgpu_atpx_get_quirks(pdev);
->   	}
->   
-> +	pci_dev_put(pdev);
-> +	pdev = NULL;
-> +
->   	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_OTHER << 8, pdev)) != NULL) {
->   		vga_count++;
->   
-> @@ -627,6 +630,8 @@ static bool amdgpu_atpx_detect(void)
->   		amdgpu_atpx_get_quirks(pdev);
->   	}
->   
-> +	pci_dev_put(pdev);
-> +
->   	if (has_atpx && vga_count == 2) {
->   		acpi_get_name(amdgpu_atpx_priv.atpx.handle, ACPI_FULL_PATHNAME, &buffer);
->   		pr_info("vga_switcheroo: detected switching method %s handle\n",
+> This is somewhat of a new scenario for me. Not really sure about the
+> procedure. Hence, haven't modified the commit message and removed the
+> tags. If required, will rework both.
+> Also, while this issue can be encountered on AMD systems using v6.8 and
+> later stable kernels, we would specifically prefer for this fix to be
+> backported to v6.12 since its LTS.
 
+What is the git commit id of this change in Linus's tree?
 
