@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6771C79BCA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315FAC79CC3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0900E4EC8EA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:49:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B6E33368833
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E898D33DEC5;
-	Fri, 21 Nov 2025 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBB034D93E;
+	Fri, 21 Nov 2025 13:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWG+BMKn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ibb9Mmzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C79A2FF173;
-	Fri, 21 Nov 2025 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A5341AC5;
+	Fri, 21 Nov 2025 13:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732756; cv=none; b=PAlHmDd2jqIjyCr4QD0PK41PmytDDvQLAWOR05CsjkcxEALhYLbtKjlv15ji5WTaNQDKsQXZZEtr5xBSBQfCHZPtr0LIcs4X9af5J8j3P1mVvRc4Gwui4tkco8ZK6w6UMzNbfXLxevuadpziD8/OZ86LgEZswOXNp9wGP7GegsE=
+	t=1763732762; cv=none; b=LqRcBfLv+VY67fP8YIH7fZKTq3YigKoXqaHntWMcCYmkmSUER1KqErFrZY5dyMPTnP+Ymq+TXPs6sfrzBXL/Cwk/uwSf1FWXrcr6Ggbc0TFnlxLskrnCvdcxJFZgmPQPr1YbrePkm+iqq5QUIq0zHBfWZlkfMvOOc560q1iS0rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732756; c=relaxed/simple;
-	bh=hJmWwqH2VeefJu2I4Ffti8KG3fE1vcFiVB5ruDNEZLk=;
+	s=arc-20240116; t=1763732762; c=relaxed/simple;
+	bh=ka/3wg+t3rnXbC+mQf0+XG9nRfaedVneH9nrT+YgsCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deGaSc8mFJUILEyJ1rgIG+KGVF2uSLRImJwixXD1NUjzjoLJ78X01j4WYJIv70J2tW1Vpue1o7xuUAux+iiI9GlbSJCePHPlAvem+Ecu1t/pFJXDX/RcNrl5acV3TupsRixSiWnKVyFBMYMoQ9jgKBPK29R4BgF/CyrTUviNY2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWG+BMKn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DBFC4CEF1;
-	Fri, 21 Nov 2025 13:45:55 +0000 (UTC)
+	 MIME-Version; b=spo7mqQ+ikjzfCCHzEF3HYGxkVA0xb6Nwt3vjo3EdQsRW8E+fNcOJZmVbI0SixOZlFDB6jNJqWlnQHoJ1V36husCkyvlTQfwzV2vlBf5virPM2KiaOuPVIBWZQ5rR9SBoNakWqPmLjoRN4I9hKKqX69ptUXubUXNV2cAGWcHruk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ibb9Mmzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC174C4CEF1;
+	Fri, 21 Nov 2025 13:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732756;
-	bh=hJmWwqH2VeefJu2I4Ffti8KG3fE1vcFiVB5ruDNEZLk=;
+	s=korg; t=1763732762;
+	bh=ka/3wg+t3rnXbC+mQf0+XG9nRfaedVneH9nrT+YgsCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWG+BMKny6bUSocjCx9rINHLsINYoCRnNeqhqiEw6tJTwOlliPWH8q+IOMTLM+D//
-	 2V1ZaiQwQRd+ztHTE36QDtypzpbiiG7W2v75zbGSJlCxMRvohxac3mQh6ACez3GjBY
-	 75Bx4sz+YUjkUNwd/yGhO+G/J35bi2CWJ57G2XoM=
+	b=Ibb9Mmzvky/l2GcK8XjmrJ0LMIIrQT+LfF5godcxKdVKCPKxTo+4/nP5Kr/y4QpBq
+	 YxIVJK9heBiioRWwb4brFaPMOVAKmRfR95+qXZWcJ9VjB2/sG0dRIAGI3Li0rIs89l
+	 8UATTccKzPWl/JXGOiZ0VHrWpD4PAxzG4x6icTzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/529] ALSA: serial-generic: remove shared static buffer
-Date: Fri, 21 Nov 2025 14:08:51 +0100
-Message-ID: <20251121130239.273600647@linuxfoundation.org>
+Subject: [PATCH 6.6 233/529] drm/amdgpu: Use memdup_array_user in amdgpu_cs_wait_fences_ioctl
+Date: Fri, 21 Nov 2025 14:08:52 +0100
+Message-ID: <20251121130239.309983075@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,69 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 84973249011fda3ff292f83439a062fec81ef982 ]
+[ Upstream commit dea75df7afe14d6217576dbc28cc3ec1d1f712fb ]
 
-If multiple instances of this driver are instantiated and try to send
-concurrently then the single static buffer snd_serial_generic_tx_work()
-will cause corruption in the data output.
+Replace kmalloc_array() + copy_from_user() with memdup_array_user().
 
-Move the buffer into the per-instance driver data to avoid this.
+This shrinks the source code and improves separation between the kernel
+and userspace slabs.
 
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/drivers/serial-generic.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/sound/drivers/serial-generic.c b/sound/drivers/serial-generic.c
-index c8db6c75d133d..8b8e9e871ed37 100644
---- a/sound/drivers/serial-generic.c
-+++ b/sound/drivers/serial-generic.c
-@@ -37,6 +37,8 @@ MODULE_LICENSE("GPL");
- #define SERIAL_TX_STATE_ACTIVE	1
- #define SERIAL_TX_STATE_WAKEUP	2
- 
-+#define INTERNAL_BUF_SIZE 256
-+
- struct snd_serial_generic {
- 	struct serdev_device *serdev;
- 
-@@ -51,6 +53,7 @@ struct snd_serial_generic {
- 	struct work_struct tx_work;
- 	unsigned long tx_state;
- 
-+	char tx_buf[INTERNAL_BUF_SIZE];
- };
- 
- static void snd_serial_generic_tx_wakeup(struct snd_serial_generic *drvdata)
-@@ -61,11 +64,8 @@ static void snd_serial_generic_tx_wakeup(struct snd_serial_generic *drvdata)
- 	schedule_work(&drvdata->tx_work);
- }
- 
--#define INTERNAL_BUF_SIZE 256
--
- static void snd_serial_generic_tx_work(struct work_struct *work)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 13c97ba7a820b..958034bc3b6d5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1732,30 +1732,21 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
  {
--	static char buf[INTERNAL_BUF_SIZE];
- 	int num_bytes;
- 	struct snd_serial_generic *drvdata = container_of(work, struct snd_serial_generic,
- 						   tx_work);
-@@ -78,8 +78,10 @@ static void snd_serial_generic_tx_work(struct work_struct *work)
- 		if (!test_bit(SERIAL_MODE_OUTPUT_OPEN, &drvdata->filemode))
- 			break;
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	union drm_amdgpu_wait_fences *wait = data;
+-	uint32_t fence_count = wait->in.fence_count;
+-	struct drm_amdgpu_fence *fences_user;
+ 	struct drm_amdgpu_fence *fences;
+ 	int r;
  
--		num_bytes = snd_rawmidi_transmit_peek(substream, buf, INTERNAL_BUF_SIZE);
--		num_bytes = serdev_device_write_buf(drvdata->serdev, buf, num_bytes);
-+		num_bytes = snd_rawmidi_transmit_peek(substream, drvdata->tx_buf,
-+						      INTERNAL_BUF_SIZE);
-+		num_bytes = serdev_device_write_buf(drvdata->serdev, drvdata->tx_buf,
-+						    num_bytes);
+ 	/* Get the fences from userspace */
+-	fences = kmalloc_array(fence_count, sizeof(struct drm_amdgpu_fence),
+-			GFP_KERNEL);
+-	if (fences == NULL)
+-		return -ENOMEM;
+-
+-	fences_user = u64_to_user_ptr(wait->in.fences);
+-	if (copy_from_user(fences, fences_user,
+-		sizeof(struct drm_amdgpu_fence) * fence_count)) {
+-		r = -EFAULT;
+-		goto err_free_fences;
+-	}
++	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
++				   wait->in.fence_count,
++				   sizeof(struct drm_amdgpu_fence));
++	if (IS_ERR(fences))
++		return PTR_ERR(fences);
  
- 		if (!num_bytes)
- 			break;
+ 	if (wait->in.wait_all)
+ 		r = amdgpu_cs_wait_all_fences(adev, filp, wait, fences);
+ 	else
+ 		r = amdgpu_cs_wait_any_fence(adev, filp, wait, fences);
+ 
+-err_free_fences:
+ 	kfree(fences);
+ 
+ 	return r;
 -- 
 2.51.0
 
