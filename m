@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5286BC79537
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0E6C79F69
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B1D6E365E54
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 546D94EF9F4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6B527147D;
-	Fri, 21 Nov 2025 13:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A21347FEE;
+	Fri, 21 Nov 2025 13:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjM/l0mA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="My+Vbd+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B451A1F09B3;
-	Fri, 21 Nov 2025 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E22344058;
+	Fri, 21 Nov 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731244; cv=none; b=XGOKdq5O7u3GgRZ82GqACbqYghBs1AugI1K0V1aLU/lqh/sADW4nIM5WZfpaH2T7wtG9rCnfS161qdpFFTxpponeRodCrbTJrDEREWHKTh23CUljrTX1jkg7lIxUor1PqAYWg7esXWMO6VGmiKnzJsempVwmL94CpW+4kda/AkI=
+	t=1763733301; cv=none; b=rydgQ8FzJm2mikUZSWkZh4XMeE/xkYnA4T7fp7nlRk5Rob+ECbvKHMtrSnnMPZ+bNCVU1p56ikFgDbJbXdMS3KUxCeGC2ifsIUxXL48EzLo0W25qwNdw8v7d6mvebbGwRBJ1o/AOGviRCRWfYbP0WM1zSMXhSfE4LOK48mVGAk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731244; c=relaxed/simple;
-	bh=fTIN3qyeRNeHEXB7Lgn+kGx+Ik/t1iYfdibrj2yCKLI=;
+	s=arc-20240116; t=1763733301; c=relaxed/simple;
+	bh=Xm8gX2SQkagqvYlsoLE7Uv5f7dLgdd1iQM0cqAXJe8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fpKGateoYOryqPok8oh9S056ySpcOCoSQsvmHSr3GPHT7DgwVaqAScRs4SwmuT1b+uPaFfqDANpS2ntbDKt6KXqE0YIelio39rGhvi9DrvwBfKvkGIqphl4ho8JE8EX91DvPF262il5a3dlmJVQZKDqioJW3jLh9OuI0cMrh7L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjM/l0mA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD07C4CEF1;
-	Fri, 21 Nov 2025 13:20:44 +0000 (UTC)
+	 MIME-Version; b=NmB5a+3fGpooO2nfqW+AqYI7JNasw4t350MDJfvFNyB68kcwlDONZnqHvuEtFrtJAZ9zon6xiTgzapesQABMbMtmeQjT1vS8urRI4r7YjTYIgtU6TxWlIi+xTF7nK3BEyq7YYUWqfpfpg/CxTigse3RQGiGI0ahVzxw/qKv8wtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=My+Vbd+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E81C4CEF1;
+	Fri, 21 Nov 2025 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731244;
-	bh=fTIN3qyeRNeHEXB7Lgn+kGx+Ik/t1iYfdibrj2yCKLI=;
+	s=korg; t=1763733301;
+	bh=Xm8gX2SQkagqvYlsoLE7Uv5f7dLgdd1iQM0cqAXJe8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjM/l0mAwXNbyQ6DeDc1xdIREVsNcKM7DuKybhKL9FLn6kMeoXecxy208HFvLpMdb
-	 pdRpZpGfa9MjsTtHkJXyCgHXHF0LY2fcBK/IReNLeQ34wYAg7LdEfWiU42iokRpWzH
-	 jToLL4+Iqq1WiQjeDFAd7C82NW8oavCFEaXNAO98=
+	b=My+Vbd+JXHMp+jkkIhPSst5sQUfitPyBMab5IeXt3U3CmPmGf9FK6KX4ueu1npye6
+	 m4TH9AIDUswuxLsfUF8mxpVYKD4ZSJTAR85Pjhckrh25M/WDk/GhCWaq8gDbvtasnk
+	 DXrttu0J2Vo9vD7fwAQdcK97lJY2rOvYXZDRdqWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Tristan Lobb <tristan.lobb@it-lobb.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 140/247] arm64: dts: imx8-ss-img: Avoid gpio0_mipi_csi GPIOs being deferred
+Subject: [PATCH 6.6 388/529] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
 Date: Fri, 21 Nov 2025 14:11:27 +0100
-Message-ID: <20251121130159.751265668@linuxfoundation.org>
+Message-ID: <20251121130244.827737884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+From: Tristan Lobb <tristan.lobb@it-lobb.de>
 
-[ Upstream commit ec4daace64a44b53df76f0629e82684ef09ce869 ]
+[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
 
-The gpio0_mipi_csi DT nodes are enabled by default, but they are
-dependent on the irqsteer_csi nodes, which are not enabled. This causes
-the gpio0_mipi_csi GPIOs to be probe deferred. Since these GPIOs can be
-used independently of the CSI controller, enable irqsteer_csi by default
-too to prevent them from being deferred and to ensure they work out of
-the box.
+The Cooler Master Mice Dongle includes a vendor defined HID interface
+alongside its mouse interface. Not polling it will cause the mouse to
+stop responding to polls on any interface once woken up again after
+going into power saving mode.
 
-Fixes: 2217f8243714 ("arm64: dts: imx8: add capture controller for i.MX8's img subsystem")
-Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
+the Dongle's PID.
+
+Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-index 2cf0f7208350a..a72b2f1c4a1b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
-@@ -67,7 +67,6 @@ img_subsys: bus@58000000 {
- 		power-domains = <&pd IMX_SC_R_CSI_0>;
- 		fsl,channel = <0>;
- 		fsl,num-irqs = <32>;
--		status = "disabled";
- 	};
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 8de59d8a54580..be24029782b10 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -332,6 +332,9 @@
+ #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
+ #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
  
- 	gpio0_mipi_csi0: gpio@58222000 {
-@@ -144,7 +143,6 @@ img_subsys: bus@58000000 {
- 		power-domains = <&pd IMX_SC_R_CSI_1>;
- 		fsl,channel = <0>;
- 		fsl,num-irqs = <32>;
--		status = "disabled";
- 	};
- 
- 	gpio0_mipi_csi1: gpio@58242000 {
++#define USB_VENDOR_ID_COOLER_MASTER	0x2516
++#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
++
+ #define USB_VENDOR_ID_CORSAIR		0x1b1c
+ #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
+ #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 64f9728018b88..468a47de96b10 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
 -- 
 2.51.0
 
