@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE60EC795D1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D340DC79DAD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 7D13428BA0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id E4E712ADD2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E7346E51;
-	Fri, 21 Nov 2025 13:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA06A352FBD;
+	Fri, 21 Nov 2025 13:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlKcsjOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWQ3zW13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D3A34029C;
-	Fri, 21 Nov 2025 13:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856E346E72;
+	Fri, 21 Nov 2025 13:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731732; cv=none; b=S0HSZGyTekUdDo5O9MoErsO5rN0K+KnSvFgdX8hdYgI4n8a70rnoGN/lw4X3mLgHxY2JCeuynRBEPrNSZydgMpNu4LIjXwmAfI7F9tXfMqtY/rfjYBdU1QnJmdJXY7tPZ+i8HxCDxHJKm6uVftzzb+TC2XfTTzJd/sZrrLCYCLg=
+	t=1763733307; cv=none; b=YAcBadWx9Xj6zmtTwRZQZcaswM33pnIus5ZqFGH8PFPAxFhZVAxd8bNGiFDI6/5YEtVKJiK/7LjdKvgQXiImWAXJ426ZZfDOsnbOF/gJejAkCX0IXodnpI/1mtWnv3SorpP/YmSGHoMPdhT0zKMVGLpXWxsyzAAzIRskn0MZQ6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731732; c=relaxed/simple;
-	bh=1MdoCz82txPO1LK2NxEEh8wzd/BeUhtqZowCYRsMrhY=;
+	s=arc-20240116; t=1763733307; c=relaxed/simple;
+	bh=2DAzQZM5BhV1DDS5A8hY3Kv9CVqYz/YJKocrnVat6rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqWoE5a5tEr/DKNiUI/c4l4gclZHRrWOp6O+klTUVitU8MnTa6g1rXZXmCPrWCBw74BwrOL1c8fNYDD2JATJYyd1GheBFiI8RPYhw4aR+Y/1o5OG00plJfZh6G7JjZX97GaQyCnvJxYnSNe3nV/Dc16x4HmAv1hZ/OFPzK07FBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlKcsjOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0470C4CEF1;
-	Fri, 21 Nov 2025 13:28:51 +0000 (UTC)
+	 MIME-Version; b=qGDs0reoby7q8HK0MD0nX/KQpRxZRA/FwZ/HwyXI097pda1A9CQJoyK7YdZAprglfP2XbHK6yYzpk+d5wUVuRjo94v9ebmUxSguqKJXXKMi0edukvZrt31efQyVFlr1IgJdzXPI+HS71+TpmVqwJbC1iwOFC02UlHjMXCB9nXv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWQ3zW13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A778C116C6;
+	Fri, 21 Nov 2025 13:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731732;
-	bh=1MdoCz82txPO1LK2NxEEh8wzd/BeUhtqZowCYRsMrhY=;
+	s=korg; t=1763733307;
+	bh=2DAzQZM5BhV1DDS5A8hY3Kv9CVqYz/YJKocrnVat6rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlKcsjOn3z1PJdarkqbGJHvtNb7Ci8CUTHkDVvndKMI8KrbwVUlgYjwCeHHMuqTjA
-	 6C2YOl+SN5nHP3fy3/MF517VQjnpLBf64uxww97CXXbhUSDd3dwGVAU4K0BjhJqRZG
-	 39cqTv4yS2ejsd0S80KEPlJmV14HulpZ2B/J4juc=
+	b=VWQ3zW137O1j6Op/79HEUKVfeJcmBgzXeUCDMLYJ9q/BBTQOx4Li4lRjG/5RYj4NX
+	 rh/o4YmTAlEQXmMwB7FKkS6OVYTIu343wPKmJ27bQ+WeNsLK45HH2cyMK2Pa8ZtWjp
+	 t0FL7abMWPGZ8zBvfAxtbupRtp7q01Y6ZsLbJZ8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Oleg Makarenko <oleg@makarenk.ooo>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/185] ACPI: CPPC: Detect preferred core availability on online CPUs
+Subject: [PATCH 6.6 390/529] HID: quirks: Add ALWAYS_POLL quirk for VRS R295 steering wheel
 Date: Fri, 21 Nov 2025 14:11:29 +0100
-Message-ID: <20251121130146.114462193@linuxfoundation.org>
+Message-ID: <20251121130244.898889626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Oleg Makarenko <oleg@makarenk.ooo>
 
-[ Upstream commit 4fe5934db4a7187d358f1af1b3ef9b6dd59bce58 ]
+[ Upstream commit 1141ed52348d3df82d3fd2316128b3fc6203a68c ]
 
-Commit 279f838a61f9 ("x86/amd: Detect preferred cores in
-amd_get_boost_ratio_numerator()") introduced the ability to detect the
-preferred core on AMD platforms by checking if there at least two
-distinct highest_perf values.
+This patch adds ALWAYS_POLL quirk for the VRS R295 steering wheel joystick.
+This device reboots itself every 8-10 seconds if it is not polled.
 
-However, it uses for_each_present_cpu() to iterate through all the
-CPUs in the platform, which is problematic when the kernel is booted
-with "nosmt=force" commandline option.
-
-Hence limit the search to only the online CPUs.
-
-Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-2-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/acpi/cppc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index aab9d0570841a..147f0d8d54d86 100644
---- a/arch/x86/kernel/acpi/cppc.c
-+++ b/arch/x86/kernel/acpi/cppc.c
-@@ -194,7 +194,7 @@ int amd_detect_prefcore(bool *detected)
- 		break;
- 	}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index be24029782b10..fbbab353f040a 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1403,6 +1403,7 @@
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		u32 tmp;
- 		int ret;
+ #define USB_VENDOR_ID_VRS	0x0483
+ #define USB_DEVICE_ID_VRS_DFP	0xa355
++#define USB_DEVICE_ID_VRS_R295	0xa44c
  
+ #define USB_VENDOR_ID_VTL		0x0306
+ #define USB_DEVICE_ID_VTL_MULTITOUCH_FF3F	0xff3f
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 468a47de96b10..75480ec3c15a2 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -207,6 +207,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_UCLOGIC, USB_DEVICE_ID_UCLOGIC_TABLET_KNA5), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_UCLOGIC, USB_DEVICE_ID_UCLOGIC_TABLET_TWA60), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_UGTIZER, USB_DEVICE_ID_UGTIZER_TABLET_WP5540), HID_QUIRK_MULTI_INPUT },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_VRS, USB_DEVICE_ID_VRS_R295), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_MEDIA_TABLET_10_6_INCH), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_MEDIA_TABLET_14_1_INCH), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_WALTOP, USB_DEVICE_ID_WALTOP_SIRIUS_BATTERY_FREE_TABLET), HID_QUIRK_MULTI_INPUT },
 -- 
 2.51.0
 
