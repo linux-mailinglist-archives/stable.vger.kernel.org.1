@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-195748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A82C7951D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E411AC7A07E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 312D22DDA4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 33AFA35FCD3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6BC2EA46B;
-	Fri, 21 Nov 2025 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D531A34C80A;
+	Fri, 21 Nov 2025 14:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K12rBYRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm0ipm0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28576190477;
-	Fri, 21 Nov 2025 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098C248898;
+	Fri, 21 Nov 2025 14:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731552; cv=none; b=ac63UcUe3AnGt4ndNE3cGZUZB2A45OcMBvJ1t7gKRqN/P+lWjwfJcEDVImLJqndyqyxZF6HQ+niOqVZN0QJSTg4GgiIvagImEndRBfNJ4SlGTwzX6mUAFjoK1Vxb81ob211SNW9LqyY25X8usfXWSfqmgoCpJqPC3PHMW/2jjcg=
+	t=1763733613; cv=none; b=jKnasXw7AVzze0SeefRHWAglXhdFyQAYlxZgm3Gk32/FqLuYA32LKaX3N0bGxoxxLpXSL6YaJ5SG538x8c8BNlnlz4uZXdyyxf8+g2kx52oq05NHMPgUnzmtn7dpIR1Y6AjmoJbDOhlKG9SwRl7LCtjuCym2C0njwYmv1bnFJxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731552; c=relaxed/simple;
-	bh=8qOCg76eZ186Ylt2kxaish4AdX+BvuyyAMcgZyvE5Ao=;
+	s=arc-20240116; t=1763733613; c=relaxed/simple;
+	bh=9+iJjhvISmASTLTyIuyhbKye6WsG6UDXgS04NfroS1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3XuoDUkcZCzmcn/XD8Itc2EKt/dawsr3xlWTz29+3gjd2fTn2J3Rb9ucJftT7r02DAuZdetqgOwOThI0kewS0E+tcDJMw2Rddi9bAEfi2j2U5sUeNdOT5djdbtCOKXWikRY82C0SD6KfRHcy/fMj4pN0WwU+M104VRzDFT6dhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K12rBYRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A819AC4CEF1;
-	Fri, 21 Nov 2025 13:25:51 +0000 (UTC)
+	 MIME-Version; b=BKLxAgzjWnaayXubW4/fyTUcttt9+hIt8lMR+yqXPHyG54krcIlmRQdUuNxfaWmxJqQbhTbB3geMqoeeQoPAfwwQUYq5rZWJVcZGiNbFUc3co+vGQyGNoPGGmmwFWbBA8PVUbIi4K70PFCDMje2nzahV2bSCe8zv8TC+qwkIcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm0ipm0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB87C4CEF1;
+	Fri, 21 Nov 2025 14:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731552;
-	bh=8qOCg76eZ186Ylt2kxaish4AdX+BvuyyAMcgZyvE5Ao=;
+	s=korg; t=1763733613;
+	bh=9+iJjhvISmASTLTyIuyhbKye6WsG6UDXgS04NfroS1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K12rBYRugLjd132gulq7Ln5s4WU7cD8YRDG84MB2zH9GN85jOcYMrCJIx25kfUqbx
-	 nN4rIPQvgsGRjegTwsBVDvrJ3oUassGW+6p1uX5tz/4MIme2uLD6uMr87WB/2v5uD+
-	 L1/oeRb5mq+bLCgyS8pLtp6wIQ+wHSXtiF3F9UN8=
+	b=gm0ipm0u3PjjavxKImnaxIuizT7+NM8nWduFXUs07za02H2TXWZ8BPIhgRfNXl4Z2
+	 Wkj7csGbW48flsdXe+K8ij7W8yfypkFCGGTTpwakVGYDHmK402NMeFgYwQyHHwow20
+	 /K95bBk1bQV/qZriO61teOUS77d7nFdAaNMIuxTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 247/247] net: phy: micrel: Fix lan8814_config_init
-Date: Fri, 21 Nov 2025 14:13:14 +0100
-Message-ID: <20251121130203.607530142@linuxfoundation.org>
+	Michal Hocko <mhocko@suse.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dennis Zhou <dennis@kernel.org>,
+	Filipe David Manana <fdmanana@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	chenxin <chenxinxin@xiaomi.com>
+Subject: [PATCH 6.6 496/529] mm, percpu: do not consider sleepable allocations atomic
+Date: Fri, 21 Nov 2025 14:13:15 +0100
+Message-ID: <20251121130248.660027691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Michal Hocko <mhocko@suse.com>
 
-commit bf91f4bc9c1dfba75e457e6a5f11e3cda658729a upstream.
+[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
 
-The blamed commit introduced the function lanphy_modify_page_reg which
-as name suggests it, it modifies the registers. In the same commit we
-have started to use this function inside the drivers. The problem is
-that in the function lan8814_config_init we passed the wrong page number
-when disabling the aneg towards host side. We passed extended page number
-4(LAN8814_PAGE_COMMON_REGS) instead of extended page
-5(LAN8814_PAGE_PORT_REGS)
+28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
+has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
+that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
+the worker context with full GFP_KERNEL allocation/reclaim power and which
+is using the same lock cannot block the NOFS pcpu_alloc caller.
 
-Fixes: a0de636ed7a264 ("net: phy: micrel: Introduce lanphy_modify_page_reg")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250925064702.3906950-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On the other hand this is a very conservative approach that could lead to
+failures because pcpu_alloc lockless implementation is quite limited.
+
+We have a bug report about premature failures when scsi array of 193
+devices is scanned.  Sometimes (not consistently) the scanning aborts
+because the iscsid daemon fails to create the queue for a random scsi
+device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
+set so all allocations from this process context are GFP_NOIO.  This in
+turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
+to pre-mature failures.
+
+It has turned out that iscsid has worked around this by dropping
+PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
+scanning host.  But we can do better in this case on the kernel side and
+use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
+too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
+that by enforcing scoped GFP_NOIO for the whole execution of
+pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
+remove the dependency chain and preserve the full allocation power of the
+pcpu_alloc call.
+
+While at it make is_atomic really test for blockable allocations.
+
+Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
+Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Filipe David Manana <fdmanana@suse.com>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: chenxin <chenxinxin@xiaomi.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/percpu.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4328,7 +4328,7 @@ static int lan8814_config_init(struct ph
- 	struct kszphy_priv *lan8814 = phydev->priv;
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1734,7 +1734,7 @@ static void __percpu *pcpu_alloc(size_t
+ 	gfp = current_gfp_context(gfp);
+ 	/* whitelisted flags that can be passed to the backing allocators */
+ 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
+-	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
++	is_atomic = !gfpflags_allow_blocking(gfp);
+ 	do_warn = !(gfp & __GFP_NOWARN);
  
- 	/* Disable ANEG with QSGMII PCS Host side */
--	lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA,
- 			       0);
+ 	/*
+@@ -2231,7 +2231,12 @@ static void pcpu_balance_workfn(struct w
+ 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
+ 	 * to move fully free chunks to the active list to be freed if
+ 	 * appropriate.
++	 *
++	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
++	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
++	 * dependency through pcpu_alloc_mutex
+ 	 */
++	unsigned int flags = memalloc_noio_save();
+ 	mutex_lock(&pcpu_alloc_mutex);
+ 	spin_lock_irq(&pcpu_lock);
+ 
+@@ -2242,6 +2247,7 @@ static void pcpu_balance_workfn(struct w
+ 
+ 	spin_unlock_irq(&pcpu_lock);
+ 	mutex_unlock(&pcpu_alloc_mutex);
++	memalloc_noio_restore(flags);
+ }
+ 
+ /**
 
 
 
