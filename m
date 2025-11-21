@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12425C7A0B9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C411FC79748
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0594A4F159A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 66CC82908B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8759350D4C;
-	Fri, 21 Nov 2025 13:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075E534B68F;
+	Fri, 21 Nov 2025 13:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="um08BDH0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnrliel8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5453502BD;
-	Fri, 21 Nov 2025 13:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7298534B191;
+	Fri, 21 Nov 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733532; cv=none; b=GRDdezcSs5xOw1X0xqteY4tmW9rNlSfvLyxFI4goTPNX4WdLMqItVJiwT+CKnDAGsQK7N/JzXF864iEvnDdIMv9kxM1ulpwDnPuZS8JxMF63FbX/ZcVwIxNqxoyfWKGYrUm/hojxnNU4vVK2VwdIJLEJ1rCmQkqglnf9L/CMMtI=
+	t=1763732054; cv=none; b=ZDUlyzEclPl0O+w04PJ38FCB0LmZVi/VnOCz5C+k74IBBXmlAjJOcHraLwgjvBcSGwQ8DWjobl6nwdLeKADsxb9BjPHo8NwGjs5iii/09wCdhTObq7y7EArnd7KSDEemALl7DSEaHsBbqwAz0KBXdCS3FEEydP5nLWFLIgP6Q8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733532; c=relaxed/simple;
-	bh=mSw7QtI3fJm7wZH/9fsEAdYECq6/WMOe7Nx9OXDwF5A=;
+	s=arc-20240116; t=1763732054; c=relaxed/simple;
+	bh=v+s9Kokfer8ec8eX/sMC7/9CAHaiJu4avqds1Kzd68c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6Nnh6mWpVvYkMRevPygYcv54aGgkBtJcLW4aH6YzyVfOxtd0rJ/UMpU/4p2Gy2HXkp3XWODaA1up/1JEE7L9GfVRE6v1aJ+6JyJypJyUecmcBnJFI0ZY/xxt+n0+Fy4BY/opuXA16/gqoWokJvrwAyFxLfCND3aYrjPE4zzRLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=um08BDH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83C0C4CEF1;
-	Fri, 21 Nov 2025 13:58:51 +0000 (UTC)
+	 MIME-Version; b=OyMXPBaD28tnqggp2GHuktUc1k3pTgQifS81RtrL95HE2Qn+fJDNEejlDao8f5EuUftf1AyX4cTvCmGyn182G9U9G4V055/pCMoFZrEFsaO9iJ5rp1O6RJq7Z9N4QEm5jNacDHJDuOQRGcLxxzN5NEnVndqnb+AJLsqyFxYdaac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnrliel8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8550C4CEF1;
+	Fri, 21 Nov 2025 13:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733532;
-	bh=mSw7QtI3fJm7wZH/9fsEAdYECq6/WMOe7Nx9OXDwF5A=;
+	s=korg; t=1763732054;
+	bh=v+s9Kokfer8ec8eX/sMC7/9CAHaiJu4avqds1Kzd68c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=um08BDH0qJ5xga8mCDG8qrG8rZnuZt5eR02wmGjTgcjZJa62b66xuRGEgZRa0hbRM
-	 mFHMh65NxWvk0OZaJsmgjPxR9x63Zanj9caynBx+DyWSl1OZK04OdpUvE+gZqcYhDb
-	 y+PEVXVLxJpGGE8bH1eIuerZEAzGtEIJVffgw1aI=
+	b=Jnrliel8DLCu0b5pey+73fOm729cnOB5TFT5z1GhuVXY5VAgbFRu0O8Fg9CGXsPAG
+	 LsodXrR4W0Sa2igH9oRwcSopSBPTBWyqJj3Kb6+XrIkkXyRQ1SVVaFu0dnMuEnn8NM
+	 NlEnKZhu4EV/iL2pXc4Yv/6eDak1gTYRturVkJUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.6 501/529] f2fs: fix to avoid overflow while left shift operation
-Date: Fri, 21 Nov 2025 14:13:20 +0100
-Message-ID: <20251121130248.841654695@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 174/185] rust: kbuild: workaround `rustdoc` doctests modifier bug
+Date: Fri, 21 Nov 2025 14:13:21 +0100
+Message-ID: <20251121130150.167755093@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
+[ Upstream commit fad472efab0a805dd939f017c5b8669a786a4bcf ]
 
-Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
-while left shift operation.
+The `rustdoc` modifiers bug [1] was fixed in Rust 1.90.0 [2], for which
+we added a workaround in commit abbf9a449441 ("rust: workaround `rustdoc`
+target modifiers bug").
 
-Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Modification: Using rpages[i]->index instead of folio->index due to
-it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
-f2fs_truncate_partial_cluster()") on 6.14 ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+However, `rustdoc`'s doctest generation still has a similar issue [3],
+being fixed at [4], which does not affect us because we apply the
+workaround to both, and now, starting with Rust 1.91.0 (released
+2025-10-30), `-Zsanitizer` is a target modifier too [5], which means we
+fail with:
+
+      RUSTDOC TK rust/kernel/lib.rs
+    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `kernel`
+     --> rust/kernel/lib.rs:3:1
+      |
+    3 | //! The `kernel` crate.
+      | ^
+      |
+      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
+      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
+      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
+      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
+
+A simple way around is to add the sanitizer to the list in the existing
+workaround (especially if we had not started to pass the sanitizer
+flags in the previous commit, since in that case that would not be
+necessary). However, that still applies the workaround in more cases
+than necessary.
+
+Instead, only modify the doctests flags to ignore the check for
+sanitizers, so that it is more local (and thus the compiler keeps checking
+it for us in the normal `rustdoc` calls). Since the previous commit
+already treated the `rustdoc` calls as kernel objects, this should allow
+us in the future to easily remove this workaround when the time comes.
+
+By the way, the `-Cunsafe-allow-abi-mismatch` flag overwrites previous
+ones rather than appending, so it needs to be all done in the same flag.
+Moreover, unknown modifiers are rejected, and thus we have to gate based
+on the version too.
+
+Finally, `-Zsanitizer-cfi-normalize-integers` is not affected (in Rust
+1.91.0), so it is not needed in the workaround for the moment.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/issues/144521 [1]
+Link: https://github.com/rust-lang/rust/pull/144523 [2]
+Link: https://github.com/rust-lang/rust/issues/146465 [3]
+Link: https://github.com/rust-lang/rust/pull/148068 [4]
+Link: https://github.com/rust-lang/rust/pull/138736 [5]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Link: https://patch.msgid.link/20251102212853.1505384-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ added --remap-path-prefix comments missing in stable branch ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1209,7 +1209,7 @@ int f2fs_truncate_partial_cluster(struct
- 		int i;
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -59,6 +59,8 @@ core-edition := $(if $(call rustc-min-ve
+ # the time being (https://github.com/rust-lang/rust/issues/144521).
+ rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
  
- 		for (i = cluster_size - 1; i >= 0; i--) {
--			loff_t start = rpages[i]->index << PAGE_SHIFT;
-+			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
- 
- 			if (from <= start) {
- 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
++# Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
++doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
+ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+       cmd_rustdoc = \
+ 	OBJTREE=$(abspath $(objtree)) \
+@@ -189,7 +191,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
+ 		--extern bindings --extern uapi \
+ 		--no-run --crate-name kernel -Zunstable-options \
+ 		--sysroot=/dev/null \
+-		$(rustdoc_modifiers_workaround) \
++		$(doctests_modifiers_workaround) \
+ 		--test-builder $(objtree)/scripts/rustdoc_test_builder \
+ 		$< $(rustdoc_test_kernel_quiet); \
+ 	$(objtree)/scripts/rustdoc_test_gen
 
 
 
