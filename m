@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82943C79565
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815B8C79F45
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82B314EE011
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4678D341526
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7874234029C;
-	Fri, 21 Nov 2025 13:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42FE34C155;
+	Fri, 21 Nov 2025 13:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWxJ6lnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VxNTfMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345CF2FF64E;
-	Fri, 21 Nov 2025 13:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060E345750;
+	Fri, 21 Nov 2025 13:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731413; cv=none; b=fn/RKq+OOcd4cJWBr1LAnO3VbWCGaCx1IDI/pQWEov6dB0q5uh0dlbGb3SGb3c8Y1i4DyDEEo+ZcFX4etYfimxuzZE2rWNPQbDKo82HBVk+NjlnFgU1Ayjcf92bbfVaXK3Tvw2r+sQh9XoGfe63kNjrItjsbrdwpojiHdFr9Dag=
+	t=1763733378; cv=none; b=m5GNAw0UpwqdjlEsPv3xxakPdCvk0Ut+iSD5x8K9C41s6gM03ebzOu79XWNRXLvInwfDqtYmiINHiyNY+DMewL5384nZnrHrFvUnQrBwTJk576PrSqxRWy9QpgciOeoO2sNf8Sqve0qbuCuAFt2MSxYMPDW0OtW4xhFag7ibJdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731413; c=relaxed/simple;
-	bh=wQuwa6nkFSis8CN0HyLYrZpDb0ZQx5aEgKlBXGmdAy4=;
+	s=arc-20240116; t=1763733378; c=relaxed/simple;
+	bh=zk1lcMnradzRA2sC+9vz1TpWnzRGEjt4EEG9Q4kiWWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrpq/10oA8SUpmWZNbDDTegiA3bBMuyPZmWCu1DBqWB5zJEve/12iYNi6yOO8GM6G8qZdTzrpkqnVmJtecaAe7YZrUNM5nIU9Y5dSt8HKTYUXQqDrYOHiEtEELOAoZddQ6lGVspwDxivrp5OtDqv2sllEukrUK99/PeoszxmxWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWxJ6lnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B6CC4CEF1;
-	Fri, 21 Nov 2025 13:23:32 +0000 (UTC)
+	 MIME-Version; b=Ww2Uj6kGJ0nK11L6XPLxNmMcdQ9T/NguzXn7JDVN1lYPu5pZiONyEW8nj4UrKimd9ZsZNwGk6q6+IS39trJMuQzH7KR7L97N+z/a/GzeXwB/qc+5k0qS46J6qXxmu2WZpTOQonT3viBxnOfov/fXYd4rzNr9Ltt5f62BwQKM4g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VxNTfMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF272C116D0;
+	Fri, 21 Nov 2025 13:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731413;
-	bh=wQuwa6nkFSis8CN0HyLYrZpDb0ZQx5aEgKlBXGmdAy4=;
+	s=korg; t=1763733378;
+	bh=zk1lcMnradzRA2sC+9vz1TpWnzRGEjt4EEG9Q4kiWWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWxJ6lntaGkrAec+QBHg431ir/cN4LhAR1THGEh9eUQB0rLlWwSDmxNxa1OV6YIFl
-	 1mHU/XGkxTGWzCZR9Q1ytBgxvW61VPjDyZbvVj02/1rUfPg+BCDIscmH1JWfKw9Y1s
-	 VZd73e+QIiR+WyLJzJ1PtVvD4agVjT8Dmzcl57zc=
+	b=1VxNTfMKDx8HUwR6gJ7QuTW99nz3GmhARNUWHJaMk4FPyWMAmLp0roKL/abKfH6lA
+	 hgcezinaqDw57ke0p12pWVYptCCgP0Lqk0Re8HLs5kDeIhIx2J7peAH1t9djN2csDg
+	 OyqZa7VsAEKmb3CtjIhCj31blQHbm2L2fW2zfK7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.17 200/247] smb: client: fix cifs_pick_channel when channel needs reconnect
+	Nick Hu <nick.hu@sifive.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 448/529] irqchip/riscv-intc: Add missing free() callback in riscv_intc_domain_ops
 Date: Fri, 21 Nov 2025 14:12:27 +0100
-Message-ID: <20251121130201.902942066@linuxfoundation.org>
+Message-ID: <20251121130246.951901153@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Nick Hu <nick.hu@sifive.com>
 
-commit 79280191c2fd7f24899bbd640003b5389d3c109c upstream.
+[ Upstream commit 14473a1f88596fd729e892782efc267c0097dd1d ]
 
-cifs_pick_channel iterates candidate channels using cur. The
-reconnect-state test mistakenly used a different variable.
+The irq_domain_free_irqs() helper requires that the irq_domain_ops->free
+callback is implemented. Otherwise, the kernel reports the warning message
+"NULL pointer, cannot free irq" when irq_dispose_mapping() is invoked to
+release the per-HART local interrupts.
 
-This checked the wrong slot and would cause us to skip a healthy channel
-and to dispatch on one that needs reconnect, occasionally failing
-operations when a channel was down.
+Set irq_domain_ops->free to irq_domain_free_irqs_top() to cure that.
 
-Fix by replacing for the correct variable.
-
-Fixes: fc43a8ac396d ("cifs: cifs_pick_channel should try selecting active channels")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
+Signed-off-by: Nick Hu <nick.hu@sifive.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251114-rv-intc-fix-v1-1-a3edd1c1a868@sifive.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-riscv-intc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -831,7 +831,7 @@ struct TCP_Server_Info *cifs_pick_channe
- 		if (!server || server->terminate)
- 			continue;
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 627beae9649a2..84cb9cda365ad 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -149,7 +149,8 @@ static int riscv_intc_domain_alloc(struct irq_domain *domain,
+ static const struct irq_domain_ops riscv_intc_domain_ops = {
+ 	.map	= riscv_intc_domain_map,
+ 	.xlate	= irq_domain_xlate_onecell,
+-	.alloc	= riscv_intc_domain_alloc
++	.alloc	= riscv_intc_domain_alloc,
++	.free	= irq_domain_free_irqs_top,
+ };
  
--		if (CIFS_CHAN_NEEDS_RECONNECT(ses, i))
-+		if (CIFS_CHAN_NEEDS_RECONNECT(ses, cur))
- 			continue;
- 
- 		/*
+ static struct fwnode_handle *riscv_intc_hwnode(void)
+-- 
+2.51.0
+
 
 
 
