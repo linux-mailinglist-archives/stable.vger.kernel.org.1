@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B734CC79D8F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940DFC7930E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E5734F0D11
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 6949D2DDAF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A3934DB64;
-	Fri, 21 Nov 2025 13:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE29346A1D;
+	Fri, 21 Nov 2025 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DASbj46O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qxta484/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC134DB44;
-	Fri, 21 Nov 2025 13:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EB9345750;
+	Fri, 21 Nov 2025 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733018; cv=none; b=t4m/CbBFqju2STyq8vAl08dtP5wSdJewttLKVB575qo6o1HhehRbN519HDpsORv/lFCFHoW3W96BfVQl9Nc8nzhHyDWOhgQ+wZW0QEGS+9/vxwp3vgdiUjk2EKCcgnzjY6KEjV80NcUJcSbgZ9axhR6LctqeUAdRxlJz83T2A/4=
+	t=1763731063; cv=none; b=MwsTBqxZBzGq6cUWzPW648S/G8uMqOLPsYJPvGfBQVW8fIKzLrJuNm4Tvf/+2Xdru1NMdChXweOz4lEs4PaqA5nXykhXf+82FzvIjDherwA5gWvqfHkePgrQu6fjz4pQUjh7LP7mEyFvjT0DYRpWqUMnczQ02mde01Yp2bYXioM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733018; c=relaxed/simple;
-	bh=J0EUDyWh0Lf+2zM8HlCcBT73P+N0e330zGscyzG+aUo=;
+	s=arc-20240116; t=1763731063; c=relaxed/simple;
+	bh=H3oeyQWWKzUT/zAeSDaWO0AXwjSYXHNXV/H9RatCilM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q04f95lvnZB7FyDIc9TLe6N6AbDgI7RrhSHoIDB+4fcaomfI0vaV3FJcozvLIHjcuwrt7zEhMtT3NtzeEjLhfj90WGFWacxY9utIyJ9P0mvhYD2t4oalXsbpYkY59Gm4HCSxZjkCWLasK8YvECUb3AzX9xczRTcKFXXBAvPhyDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DASbj46O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411ABC4CEFB;
-	Fri, 21 Nov 2025 13:50:18 +0000 (UTC)
+	 MIME-Version; b=fgmYVr6fsKJ455gpIfmgnPv884LaFluD//GTnPQpupe0mzueinYFOKToBQ9Jdin2yfILPX0SF6WDhNmEz+C4BZoAGR9dQM/Ne0UhATgx/EPZcf2Ngs0SA2GuqzCO6MrPDAuhgrli9WmYVr6JyTU5h2hyr4WSuOz9sMfIlrWJ77o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qxta484/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA3FC4CEF1;
+	Fri, 21 Nov 2025 13:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733018;
-	bh=J0EUDyWh0Lf+2zM8HlCcBT73P+N0e330zGscyzG+aUo=;
+	s=korg; t=1763731063;
+	bh=H3oeyQWWKzUT/zAeSDaWO0AXwjSYXHNXV/H9RatCilM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DASbj46OQLyuOYhzA7jd45oSL2wYfl3EjJnUCb7eiJ34LGy5A+WV1zPBi/4jhXR7P
-	 lSM9A0HkWSe3LGV3C0LLntBP6ggCQkHeTdJIn48vyuQtZYEO1mVS1hq4b0/U/hUc38
-	 srrwrSzI8UKRhAxwNn2eI6Jkabm8O/NijIgBTAGE=
+	b=Qxta484/4TPFi4YpsIXRHLsfpb3yrWMlvOIAjc8fv7tH/6epxFD9qqfzt+BRS4via
+	 CeR0Zil2qAIoOOzNJsIZ9I1fUM5TfoDVEpo0Ax2WIrM8GQw3KK+rmrW96hkUGH+gK/
+	 z1yFsKMGsbI34axkc3xTZ8uyf162IkYu4ng9cXoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
-	Helge Deller <deller@gmx.de>,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 323/529] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
-Date: Fri, 21 Nov 2025 14:10:22 +0100
-Message-ID: <20251121130242.518382971@linuxfoundation.org>
+Subject: [PATCH 6.17 076/247] net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps
+Date: Fri, 21 Nov 2025 14:10:23 +0100
+Message-ID: <20251121130157.324825467@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
+[ Upstream commit 43b27d1bd88a4bce34ec2437d103acfae9655f9e ]
 
-Add bounds checking to prevent writes past framebuffer boundaries when
-rendering text near screen edges. Return early if the Y position is off-screen
-and clip image height to screen boundary. Break from the rendering loop if the
-X position is off-screen. When clipping image width to fit the screen, update
-the character count to match the clipped width to prevent buffer size
-mismatches.
+Add validation to reject rates exceeding 255 Gbps that would overflow
+the 8 bits max bandwidth field.
 
-Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
-receive mismatched parameters where the buffer is allocated for the clipped
-width but cnt reflects the original larger count, causing out-of-bounds writes.
-
-Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
-Suggested-by: Helge Deller <deller@gmx.de>
-Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
-index a4b4e1ec702e5..8563264d11fac 100644
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 	image.height = vc->vc_font.height;
- 	image.depth = 1;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 3456144710528..d88a48210fdcb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -596,11 +596,13 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+ 	__u64 upper_limit_mbps;
++	__u64 upper_limit_gbps;
+ 	int i;
  
-+	if (image.dy >= info->var.yres)
-+		return;
-+
-+	image.height = min(image.height, info->var.yres - image.dy);
-+
- 	if (attribute) {
- 		buf = kmalloc(cellsize, GFP_ATOMIC);
- 		if (!buf)
-@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 			cnt = count;
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+ 	upper_limit_mbps = 255 * MLX5E_100MB;
++	upper_limit_gbps = 255 * MLX5E_1GB;
  
- 		image.width = vc->vc_font.width * cnt;
-+
-+		if (image.dx >= info->var.xres)
-+			break;
-+
-+		if (image.dx + image.width > info->var.xres) {
-+			image.width = info->var.xres - image.dx;
-+			cnt = image.width / vc->vc_font.width;
-+			if (cnt == 0)
-+				break;
-+			image.width = cnt * vc->vc_font.width;
-+		}
-+
- 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
- 		pitch &= ~scan_align;
- 		size = pitch * image.height + buf_align;
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+@@ -612,10 +614,16 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
+ 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
+-		} else {
++		} else if (max_bw_value[i] <= upper_limit_gbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_1GB);
+ 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
++		} else {
++			netdev_err(netdev,
++				   "tc_%d maxrate %llu Kbps exceeds limit %llu\n",
++				   i, maxrate->tc_maxrate[i],
++				   upper_limit_gbps);
++			return -EINVAL;
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
