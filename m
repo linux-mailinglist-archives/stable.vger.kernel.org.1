@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-195698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ABDC79562
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36DDC7987A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B3ADF4E59A6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id B4C642DC46
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C50343D67;
-	Fri, 21 Nov 2025 13:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2224925F7BF;
+	Fri, 21 Nov 2025 13:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSCFUv3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u66ZjnMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E75D34029C;
-	Fri, 21 Nov 2025 13:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D431F03D7;
+	Fri, 21 Nov 2025 13:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731410; cv=none; b=KxhohYKITXWzj7noGc0DkD7fEmpOTPAakBnktFV7Q6CDft+sZ+ZYwsJlW2vcbyJSl/UWBG8c/ZVqZRV3oL7wOLXEJgJSvMycHNkZD4fWktqudJ7jurkeDRE1qp3bXB4b1LgYO9M5WBYHNJBEmG2zXDsDEVQaYw49yqa61tq6G+I=
+	t=1763731900; cv=none; b=KFZZoxXa9gCOLw7NQwffR6ulO8d+Y4SBm0FmVM3X6qqxLVdJI2IXcytXq1wkaDgza1INYZOgcSZs9ZNf/DjDMMDKCcSFuVpZroaHcJiGpgjqlMQ2N9RNavimGbmkcGyHc9cPARvGnuCxS2QtWg+GQ2oWiEd0o8OYiRgq0ljagyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731410; c=relaxed/simple;
-	bh=uME8xnOkd0b6wZfY9zX2MiyGrZ30eaRuTryxn4RphIg=;
+	s=arc-20240116; t=1763731900; c=relaxed/simple;
+	bh=/RcQhcYVJl+BAEKfoRI5mSOTL+SdnqCASzXGqtOJgwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcRNO6cCAgg/sE+eKmtfeqs9hImwgnjR1diAzyqnEu6JIZ36opcEUkd9VHjzFUZ7wz0/k2d1EPSBhCloZG9CoMbjLe5m8tRVztbiq06dLPNdbfrhpfj3hHXd4gXSqFmEy/Y/FzjekebMgHi5nyZ/SX6pif6mTcyaDTyO1R4w5gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSCFUv3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC94C4CEF1;
-	Fri, 21 Nov 2025 13:23:29 +0000 (UTC)
+	 MIME-Version; b=YR6/WU2kSxqoHOVTkUsbe8dU28MGJKu6a2tsMa4HHjXNaxM/IbIWpsYY3O/DUpA9edicbD7mZEd1e6b9wIMA5ucex6Z7J11qFyOvFW0lRY40T1Z3SuP1w2kRQYA4XYkn9BCs43q/XaXk/ucE+l3htYcYpZe7hatPRvfpa7eDYok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u66ZjnMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59223C4CEF1;
+	Fri, 21 Nov 2025 13:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731410;
-	bh=uME8xnOkd0b6wZfY9zX2MiyGrZ30eaRuTryxn4RphIg=;
+	s=korg; t=1763731900;
+	bh=/RcQhcYVJl+BAEKfoRI5mSOTL+SdnqCASzXGqtOJgwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSCFUv3Km2N1vewnk52QfopHqe/sipePD14b/SCziBz+67Yxy0e9o1J9gD+jL63OI
-	 A1plqhe3NEbXs0nZahunBVHUTs2mKUQ8mnHh0XnOHmZqepj/DF8H6N2Yb6lNwQM5c4
-	 FRJTWXz52oP2hXnORIs+hwaL4Uxy+cbJGDV+Z7ws=
+	b=u66ZjnMhMXlTIEi5SVqyP866WiwSqPo5DOMX5qNV0qPi8uyoWQr5C7HPSwz2JGkQ3
+	 zVldpM8S1+1BYf2dNdZSQpbDPDeJAXiY/V0EfOIViL2ckOVzL7J5vgfQ+WiQXzttj3
+	 fu364BEQOT1fVwYlbriC8AoXhrajP12gQXUs1HrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 199/247] crypto: hisilicon/qm - Fix device reference leak in qm_get_qos_value
+	Liupu Wang <wangliupu@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>
+Subject: [PATCH 6.12 119/185] LoongArch: Let {pte,pmd}_modify() record the status of _PAGE_DIRTY
 Date: Fri, 21 Nov 2025 14:12:26 +0100
-Message-ID: <20251121130201.866891497@linuxfoundation.org>
+Message-ID: <20251121130148.169305670@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-commit 59b0afd01b2ce353ab422ea9c8375b03db313a21 upstream.
+commit a073d637c8cfbfbab39b7272226a3fbf3b887580 upstream.
 
-The qm_get_qos_value() function calls bus_find_device_by_name() which
-increases the device reference count, but fails to call put_device()
-to balance the reference count and lead to a device reference leak.
+Now if the PTE/PMD is dirty with _PAGE_DIRTY but without _PAGE_MODIFIED,
+after {pte,pmd}_modify() we lose _PAGE_DIRTY, then {pte,pmd}_dirty()
+return false and lead to data loss. This can happen in certain scenarios
+such as HW PTW doesn't set _PAGE_MODIFIED automatically, so here we need
+_PAGE_MODIFIED to record the dirty status (_PAGE_DIRTY).
 
-Add put_device() calls in both the error path and success path to
-properly balance the reference count.
+The new modification involves checking whether the original PTE/PMD has
+the _PAGE_DIRTY flag. If it exists, the _PAGE_MODIFIED bit is also set,
+ensuring that the {pte,pmd}_dirty() interface can always return accurate
+information.
 
-Found via static analysis.
-
-Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Longfang Liu <liulongfang@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Co-developed-by: Liupu Wang <wangliupu@loongson.cn>
+Signed-off-by: Liupu Wang <wangliupu@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/hisilicon/qm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/pgtable.h |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -3857,10 +3857,12 @@ static ssize_t qm_get_qos_value(struct h
- 	pdev = container_of(dev, struct pci_dev, dev);
- 	if (pci_physfn(pdev) != qm->pdev) {
- 		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
-+		put_device(dev);
- 		return -EINVAL;
- 	}
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -431,6 +431,9 @@ static inline unsigned long pte_accessib
  
- 	*fun_index = pdev->devfn;
-+	put_device(dev);
- 
- 	return 0;
+ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
+ {
++	if (pte_val(pte) & _PAGE_DIRTY)
++		pte_val(pte) |= _PAGE_MODIFIED;
++
+ 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) |
+ 		     (pgprot_val(newprot) & ~_PAGE_CHG_MASK));
  }
+@@ -565,9 +568,11 @@ static inline struct page *pmd_page(pmd_
+ 
+ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ {
+-	pmd_val(pmd) = (pmd_val(pmd) & _HPAGE_CHG_MASK) |
+-				(pgprot_val(newprot) & ~_HPAGE_CHG_MASK);
+-	return pmd;
++	if (pmd_val(pmd) & _PAGE_DIRTY)
++		pmd_val(pmd) |= _PAGE_MODIFIED;
++
++	return __pmd((pmd_val(pmd) & _HPAGE_CHG_MASK) |
++		     (pgprot_val(newprot) & ~_HPAGE_CHG_MASK));
+ }
+ 
+ static inline pmd_t pmd_mkinvalid(pmd_t pmd)
 
 
 
