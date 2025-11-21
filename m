@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DBEC7964D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0FCC7944E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCB154E3C14
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 1B6582CADB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C46133FE03;
-	Fri, 21 Nov 2025 13:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301C22F3632;
+	Fri, 21 Nov 2025 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeAxD4++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NM8tChEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43C2874F6;
-	Fri, 21 Nov 2025 13:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CFD2F6577;
+	Fri, 21 Nov 2025 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731826; cv=none; b=lTuuugscRIbFL/0IMXFs6qAPH09pEHhgHvVp6td54pG/9R+lhORYSrpX2a6d901t60rYWJjDi3gvcX0cyM2Asum5uDKihjfU4mQAjHr3fRI/hYMJFtAzd0V69Pl7I3tf+48BQajPXSK2yBCqVKuxviR9oRNwSUUwsWsmQ4CFNJY=
+	t=1763731345; cv=none; b=sh4qvBC2Va6o6Q6v5b+Av6zIEJPiX1K2JYrR+xeW8oymv4kBEpeIvm8Es9zS0oSVKQ1usk+S8IYyhLvJzQCjrBEyYjkU8rfFmpsYcV/mvamF3QO0MoRAmMVDi9pbCNHR38iC6floUtHPSHbh0muMbuG6IRt+WlWHG2NsQZYApCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731826; c=relaxed/simple;
-	bh=TcNsIkRPxbLAm/Nq2hOx1XE0L6pvCA686l0bYLOlmjw=;
+	s=arc-20240116; t=1763731345; c=relaxed/simple;
+	bh=R9feXb1OKTfIUoa1QSzyLTBOVc7eEZAd8wiAh60BKMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/x6Re8G3zodaA/Su/KLuaWzdgv9O1LUvaSs7XL2Nu3hgBFkNIp+zxywY+h3uFKCtVRHS4Zt2SFgHlghxfb+WDwowc5B088dicZwo3zWHBHpgBrEx2gxRQxpbBtCKS0bsSe0zMID4x+YoOaZnmYXyglt2aNjkMGTr6dCeY50cL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeAxD4++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA18C4CEF1;
-	Fri, 21 Nov 2025 13:30:26 +0000 (UTC)
+	 MIME-Version; b=DUzqTYYEfp6WF+yG6nSyBh44LYvzNWyfwzwrN5bONJt+ziwSpZm1MKXJn2M0xPORz8tPXlQzfkDYIDahSn6saUgpkjKl+5UGXP18dJSiqRXWDVBldUONzSkrseIu6tZCsQpJRVAplIWghIErVExv/PJDB3aYEXMAfM3wUPXyJRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NM8tChEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5985BC4CEF1;
+	Fri, 21 Nov 2025 13:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731826;
-	bh=TcNsIkRPxbLAm/Nq2hOx1XE0L6pvCA686l0bYLOlmjw=;
+	s=korg; t=1763731344;
+	bh=R9feXb1OKTfIUoa1QSzyLTBOVc7eEZAd8wiAh60BKMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeAxD4++vuTJR5EV/FFCKHhwvxrze64ZbyVy+Yd9w83+MVZizQNJomvRoBQaS9ZMs
-	 h+ppGpin4HzmVnrdGls1m37EPSY9gjYASOqt66pIqbe0xLpTQ5AVcaqK4BFJ32/z7q
-	 T5GI3BTBGjIIeq4foNzpmZY4m+JFRNxxMZ23B6KU=
+	b=NM8tChElNlqg8MQRtoLi/IavXVz5t9BQ7TrVI5HqlAbTPdu1hWfgdkDG273VAmnxz
+	 2kLpN0X+TYJDkbP2YSj5PjwBoPWIiyDYUqXYtc8YeCspabKdlVzypj1RodTAPUHLCF
+	 ltMqa8wHVLti5c8bstSqF0YvUimy1+l6+2Zu1Rwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Andrei Vagin <avagin@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/185] fs/namespace: correctly handle errors returned by grab_requested_mnt_ns
+	SeongJae Park <sj@kernel.org>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 175/247] mm/damon/sysfs: change next_update_jiffies to a global variable
 Date: Fri, 21 Nov 2025 14:12:02 +0100
-Message-ID: <20251121130147.295930289@linuxfoundation.org>
+Message-ID: <20251121130201.000614541@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Vagin <avagin@google.com>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-[ Upstream commit 78f0e33cd6c939a555aa80dbed2fec6b333a7660 ]
+commit 9fd7bb5083d1e1027b8ac1e365c29921ab88b177 upstream.
 
-grab_requested_mnt_ns was changed to return error codes on failure, but
-its callers were not updated to check for error pointers, still checking
-only for a NULL return value.
+In DAMON's damon_sysfs_repeat_call_fn(), time_before() is used to compare
+the current jiffies with next_update_jiffies to determine whether to
+update the sysfs files at this moment.
 
-This commit updates the callers to use IS_ERR() or IS_ERR_OR_NULL() and
-PTR_ERR() to correctly check for and propagate errors.
+On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
+jiffies wrap bugs appear earlier. However, this causes time_before() in
+damon_sysfs_repeat_call_fn() to unexpectedly return true during the first
+5 minutes after boot on 32-bit systems (see [1] for more explanation,
+which fixes another jiffies-related issue before). As a result, DAMON
+does not update sysfs files during that period.
 
-This also makes sure that the logic actually works and mount namespace
-file descriptors can be used to refere to mounts.
+There is also an issue unrelated to the system's word size[2]: if the
+user stops DAMON just after next_update_jiffies is updated and restarts
+it after 'refresh_ms' or a longer delay, next_update_jiffies will retain
+an older value, causing time_before() to return false and the update to
+happen earlier than expected.
 
-Christian Brauner <brauner@kernel.org> says:
+Fix these issues by making next_update_jiffies a global variable and
+initializing it each time DAMON is started.
 
-Rework the patch to be more ergonomic and in line with our overall error
-handling patterns.
-
-Fixes: 7b9d14af8777 ("fs: allow mount namespace fd")
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Link: https://patch.msgid.link/20251111062815.2546189-1-avagin@google.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251030020746.967174-3-yanquanmin1@huawei.com
+Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com [1]
+Link: https://lore.kernel.org/all/20251029013038.66625-1-sj@kernel.org/ [2]
+Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
+Suggested-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c             | 32 ++++++++++++++++----------------
- include/uapi/linux/mount.h |  2 +-
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ mm/damon/sysfs.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index cc4926d53e7de..035d6f1f0b6ef 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -158,7 +158,8 @@ static void mnt_ns_release(struct mnt_namespace *ns)
- 		kfree(ns);
- 	}
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1514,16 +1514,17 @@ static struct damon_ctx *damon_sysfs_bui
+ 	return ctx;
  }
--DEFINE_FREE(mnt_ns_release, struct mnt_namespace *, if (_T) mnt_ns_release(_T))
-+DEFINE_FREE(mnt_ns_release, struct mnt_namespace *,
-+	    if (!IS_ERR(_T)) mnt_ns_release(_T))
  
- static void mnt_ns_tree_remove(struct mnt_namespace *ns)
++static unsigned long damon_sysfs_next_update_jiffies;
++
+ static int damon_sysfs_repeat_call_fn(void *data)
  {
-@@ -5325,7 +5326,7 @@ static int copy_mnt_id_req(const struct mnt_id_req __user *req,
- 	ret = copy_struct_from_user(kreq, sizeof(*kreq), req, usize);
- 	if (ret)
- 		return ret;
--	if (kreq->spare != 0)
-+	if (kreq->mnt_ns_fd != 0 && kreq->mnt_ns_id)
- 		return -EINVAL;
- 	/* The first valid unique mount id is MNT_UNIQUE_ID_OFFSET + 1. */
- 	if (kreq->mnt_id <= MNT_UNIQUE_ID_OFFSET)
-@@ -5342,16 +5343,12 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
- {
- 	struct mnt_namespace *mnt_ns;
+ 	struct damon_sysfs_kdamond *sysfs_kdamond = data;
+-	static unsigned long next_update_jiffies;
  
--	if (kreq->mnt_ns_id && kreq->spare)
--		return ERR_PTR(-EINVAL);
--
--	if (kreq->mnt_ns_id)
--		return lookup_mnt_ns(kreq->mnt_ns_id);
--
--	if (kreq->spare) {
-+	if (kreq->mnt_ns_id) {
-+		mnt_ns = lookup_mnt_ns(kreq->mnt_ns_id);
-+	} else if (kreq->mnt_ns_fd) {
- 		struct ns_common *ns;
+ 	if (!sysfs_kdamond->refresh_ms)
+ 		return 0;
+-	if (time_before(jiffies, next_update_jiffies))
++	if (time_before(jiffies, damon_sysfs_next_update_jiffies))
+ 		return 0;
+-	next_update_jiffies = jiffies +
++	damon_sysfs_next_update_jiffies = jiffies +
+ 		msecs_to_jiffies(sysfs_kdamond->refresh_ms);
  
--		CLASS(fd, f)(kreq->spare);
-+		CLASS(fd, f)(kreq->mnt_ns_fd);
- 		if (fd_empty(f))
- 			return ERR_PTR(-EBADF);
- 
-@@ -5366,6 +5363,8 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
- 	} else {
- 		mnt_ns = current->nsproxy->mnt_ns;
+ 	if (!mutex_trylock(&damon_sysfs_lock))
+@@ -1569,6 +1570,9 @@ static int damon_sysfs_turn_damon_on(str
  	}
-+	if (!mnt_ns)
-+		return ERR_PTR(-ENOENT);
+ 	kdamond->damon_ctx = ctx;
  
- 	refcount_inc(&mnt_ns->passive);
- 	return mnt_ns;
-@@ -5390,8 +5389,8 @@ SYSCALL_DEFINE4(statmount, const struct mnt_id_req __user *, req,
- 		return ret;
- 
- 	ns = grab_requested_mnt_ns(&kreq);
--	if (!ns)
--		return -ENOENT;
-+	if (IS_ERR(ns))
-+		return PTR_ERR(ns);
- 
- 	if (kreq.mnt_ns_id && (ns != current->nsproxy->mnt_ns) &&
- 	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
-@@ -5500,8 +5499,8 @@ static void __free_klistmount_free(const struct klistmount *kls)
- static inline int prepare_klistmount(struct klistmount *kls, struct mnt_id_req *kreq,
- 				     size_t nr_mnt_ids)
- {
--
- 	u64 last_mnt_id = kreq->param;
-+	struct mnt_namespace *ns;
- 
- 	/* The first valid unique mount id is MNT_UNIQUE_ID_OFFSET + 1. */
- 	if (last_mnt_id != 0 && last_mnt_id <= MNT_UNIQUE_ID_OFFSET)
-@@ -5515,9 +5514,10 @@ static inline int prepare_klistmount(struct klistmount *kls, struct mnt_id_req *
- 	if (!kls->kmnt_ids)
- 		return -ENOMEM;
- 
--	kls->ns = grab_requested_mnt_ns(kreq);
--	if (!kls->ns)
--		return -ENOENT;
-+	ns = grab_requested_mnt_ns(kreq);
-+	if (IS_ERR(ns))
-+		return PTR_ERR(ns);
-+	kls->ns = ns;
- 
- 	kls->mnt_parent_id = kreq->mnt_id;
- 	return 0;
-diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
-index 225bc366ffcbf..dbf65f2ffcf33 100644
---- a/include/uapi/linux/mount.h
-+++ b/include/uapi/linux/mount.h
-@@ -186,7 +186,7 @@ struct statmount {
-  */
- struct mnt_id_req {
- 	__u32 size;
--	__u32 spare;
-+	__u32 mnt_ns_fd;
- 	__u64 mnt_id;
- 	__u64 param;
- 	__u64 mnt_ns_id;
--- 
-2.51.0
-
++	damon_sysfs_next_update_jiffies =
++		jiffies + msecs_to_jiffies(kdamond->refresh_ms);
++
+ 	repeat_call_control->fn = damon_sysfs_repeat_call_fn;
+ 	repeat_call_control->data = kdamond;
+ 	repeat_call_control->repeat = true;
 
 
 
