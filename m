@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-196379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E68C7A125
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1EDC79598
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 912A32E06C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 570D94EBBC2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56409338932;
-	Fri, 21 Nov 2025 13:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A38190477;
+	Fri, 21 Nov 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AHLj21B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylHZXJC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99DE2F1FEF;
-	Fri, 21 Nov 2025 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D5C267F57;
+	Fri, 21 Nov 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733338; cv=none; b=ZbHi8+jmsPrXSl1GSfrqF5qvk+GWyuUwQoMJhYdisgc1jSDRzAv9aqrhEx5VuKsgWVkIxz80NzfWzzCWP86PAcwlmbCHLmMxbN7fKFpXXKBSoex8vM5Ppu7Efb4KFQ+MvcRVhOqQaf9M4dW0AUz6mZC0vxipZTMPa7f8yDNmrOM=
+	t=1763731506; cv=none; b=oOoGM8hjazTkc2j9hy8dhjIN9rzXhhsKayRwu7ExmkHN0JUZjO/xQ47XxR0QReDCNOOOqQfntkhPVy8TWvnG98a0++hdxahoYlFScoYHuvssXeGiVQQVLWKnv3O+2VYMf5IQ/XGPWAa90E8Tnq8TT/1c45Og4j9K9bF+tqLPey0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733338; c=relaxed/simple;
-	bh=WSG7OhIDVYCoL2sr0+evi6NL0RFP3J5wJHE1OIQA5v0=;
+	s=arc-20240116; t=1763731506; c=relaxed/simple;
+	bh=8uPidkjyXiV3086O5t2cIdQhqkJCR91KTnD6z8r6Pzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnnjPOZFPhleMqgdcK49x9US15F64+Z9Olhh5PfzLea9yehqi/cIkN6uP7Vmxj5EitkDWmM1ZdR87Wr8O7KrpKAAXOnRBZ3P/0fuRuJhORFwuD0fwNrE9hHYDjEFC3Y1rGFXFClTWCc+8Xz4OCzq06KHER29HBqKT18cr7nHDA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AHLj21B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4E2C16AAE;
-	Fri, 21 Nov 2025 13:55:37 +0000 (UTC)
+	 MIME-Version; b=ucMR+H+J/9osN/f9SzBKVJMmZ8wnkPXq2ocX2KfwBaLLrEEYPNWWw0kp00Qraqz1x7ZWddqLkzuXP60YbQTHdu8GhvPg19UvAhJV3bHVrVJ9gAgvhWGtqwVbGQU9f+/0ode9hLg5BH5ulVvwyPPMeRVMTitw+AdduI0gj9AfG94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylHZXJC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91973C4CEF1;
+	Fri, 21 Nov 2025 13:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733338;
-	bh=WSG7OhIDVYCoL2sr0+evi6NL0RFP3J5wJHE1OIQA5v0=;
+	s=korg; t=1763731506;
+	bh=8uPidkjyXiV3086O5t2cIdQhqkJCR91KTnD6z8r6Pzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AHLj21BaN3Ax4l3Bzl6cRqoUKopY7LJHDZa0Mueu0mMUicNs7Cui60v8q6vnRddV
-	 CvcVo9c+LEp/Nabbmt+2zVzXlJxJOLh7lBOqe4MmdhSSYh5AJz4dStmMtt9sNpTDFh
-	 9WIrb34NKL7BP9rv+zCHVJFEAHLCfTH0afnMNdWs=
+	b=ylHZXJC8GwinRLkhw3p/74VqOiZA3GwFqxkVKSbBvBFaFYnbUvPhv1DO2TsimCndr
+	 s4IEI3+cG2ViY12XeP0qamQZNIgS55FhS5yQpaRqLBl9c3AZHxrHyrqjWowX53uumD
+	 S/wBUC3JR6QtmBpOQynLhk70Ao6fUTahb4Sm0YYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haein Lee <lhi0729@kaist.ac.kr>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 435/529] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
+	Dev Jain <dev.jain@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Barry Song <baohua@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 187/247] mm/mremap: honour writable bit in mremap pte batching
 Date: Fri, 21 Nov 2025 14:12:14 +0100
-Message-ID: <20251121130246.491887143@linuxfoundation.org>
+Message-ID: <20251121130201.434661089@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +68,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haein Lee <lhi0729@kaist.ac.kr>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
+commit 04d1c9d60c6ec4c0003d433572eaa45f8b217788 upstream.
 
-In snd_usb_create_streams(), for UAC version 3 devices, the Interface
-Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
-call fails, a fallback routine attempts to obtain the IAD from the next
-interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
-assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
-without performing a NULL check. This can lead to a NULL pointer
-dereference when usb_ifnum_to_if() fails to find the interface descriptor.
+Currently mremap folio pte batch ignores the writable bit during figuring
+out a set of similar ptes mapping the same folio.  Suppose that the first
+pte of the batch is writable while the others are not - set_ptes will end
+up setting the writable bit on the other ptes, which is a violation of
+mremap semantics.  Therefore, use FPB_RESPECT_WRITE to check the writable
+bit while determining the pte batch.
 
-This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
-snd_usb_mixer_controls_badd() to prevent the dereference.
-
-This issue was discovered by syzkaller, which triggered the bug by sending
-a crafted USB device descriptor.
-
-Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
-Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
-Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251028063952.90313-1-dev.jain@arm.com
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
+Reported-by: David Hildenbrand <david@redhat.com>
+Debugged-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/mremap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index cc051756a4220..787cdeddbdf44 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -3079,6 +3079,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
- 	int i;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index bd7314898ec5..419a0ea0a870 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -187,7 +187,7 @@ static int mremap_folio_pte_batch(struct vm_area_struct *vma, unsigned long addr
+ 	if (!folio || !folio_test_large(folio))
+ 		return 1;
  
- 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
-+	if (!assoc)
-+		return -EINVAL;
+-	return folio_pte_batch(folio, ptep, pte, max_nr);
++	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr, FPB_RESPECT_WRITE);
+ }
  
- 	/* Detect BADD capture/playback channels from AS EP descriptors */
- 	for (i = 0; i < assoc->bInterfaceCount; i++) {
+ static int move_ptes(struct pagetable_move_control *pmc,
 -- 
-2.51.0
+2.52.0
 
 
 
