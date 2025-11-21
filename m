@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429B2C79679
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E075AC7A08F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 99B8B34A9EC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2CDC4EAF91
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA9126CE33;
-	Fri, 21 Nov 2025 13:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3546F34FF4F;
+	Fri, 21 Nov 2025 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQStGtPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbUPss6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C68274FE3;
-	Fri, 21 Nov 2025 13:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B7234EF19;
+	Fri, 21 Nov 2025 13:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731564; cv=none; b=hd4QKfwq+PYGPR9cNKU3UsK6MFn4REy+ljwmRk6PA9qNKJuv7CDsm4RREDgiJSQbWEWm+wTqnB0Q5MJDPlutkuaYSv/2ez0iTavSxPgDj6jWEClKzBi25LeJSBLgcpTbR9LPdxNgdcuLuCaUd6q1F3T6r8HDiPCdQZRXG7vEGf0=
+	t=1763733473; cv=none; b=unnSnB7WxehaeeftjTEuYeUcRkK/hugl/AhBuR22oLmBMCpiWEEHefThuGT1LTo315z4Yepa2W1dsO5HLwzYdpAhsC7RxeuGUx6ewZn0m3Bri0CsYyfTImStDb1mQrtzcSX1M9pOGkIF3hEJV9t8maxKIxEbfth11IR0d3aMcOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731564; c=relaxed/simple;
-	bh=tJrhTZcLj39nLvgSDpemiszWzI4diyURUJNk60wN6Aw=;
+	s=arc-20240116; t=1763733473; c=relaxed/simple;
+	bh=P4B8AHmC+0ohoEz++pwk7P3pkeDat9f1GZso9QI2yiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLkE5VmDmjgfdmGl7TZjDN+tMrKkXss/x16RnJqtuglDrLyy7bNmpdOEahznvqotJQHkLo9TE/L4lPDbK9uNiI2M5R7UrlWIN7fstxumog/P3OMkErx3ivHtTMskeCH7lJMgeGEjqa/u+bmv7SLph7RbqaaZAORI/GN/yLCpd2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQStGtPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA6FC4CEF1;
-	Fri, 21 Nov 2025 13:26:02 +0000 (UTC)
+	 MIME-Version; b=XdmaX1A47c8eJq7ve2pPVUL95i92IMfT3ZeRBjfgnkgxpmLlDk4o2wOeeinT4sARsnny9nCrg6Qc2ayE1SRlra/kK8JdsYGGClhUvcbf+Hlb14KVQN7w7fpHOFJd2M9x4m4K6pYdyjz5YTrjVmEk7/cdHGwJ3+NTXXrkHJ/M6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbUPss6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FC8C4CEF1;
+	Fri, 21 Nov 2025 13:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731563;
-	bh=tJrhTZcLj39nLvgSDpemiszWzI4diyURUJNk60wN6Aw=;
+	s=korg; t=1763733471;
+	bh=P4B8AHmC+0ohoEz++pwk7P3pkeDat9f1GZso9QI2yiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQStGtPRPL9VW07/8eM1t9y2QFUU7NfWKlm4caBgwBwNLYOMBJU/qOGMl8Z36HFYr
-	 26TnJ0TeRgEn9dxGUkuQ+7w3SvtDHiTNlb857VWu7qerSFBmsQSChWcpbnbfPl/Da9
-	 VP6Ea7DrEXsNWKjXLZ9gZBfqZSLkF1mecv2xSJmQ=
+	b=MbUPss6roqvUIznliRWlE699Ckn+pVOEN/mYzkZYygJZ0zvb/7m0wYVSZ1yjrB4/Y
+	 q6NM2u+8vuakKGne6ylmQzJ2h7C0J5oN7BXSOYorbAgjQUXtEE6ucUB4jfBUKbsdBJ
+	 QAE3Gq1yIbII+BLd0xR6zri366bBwVmWI7Fa9VSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 230/247] selftests: mptcp: connect: fix fallback note due to OoO
-Date: Fri, 21 Nov 2025 14:12:57 +0100
-Message-ID: <20251121130202.989974740@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 479/529] smb: client: fix cifs_pick_channel when channel needs reconnect
+Date: Fri, 21 Nov 2025 14:12:58 +0100
+Message-ID: <20251121130248.052492389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit 63c643aa7b7287fdbb0167063785f89ece3f000f upstream.
+commit 79280191c2fd7f24899bbd640003b5389d3c109c upstream.
 
-The "fallback due to TCP OoO" was never printed because the stat_ooo_now
-variable was checked twice: once in the parent if-statement, and one in
-the child one. The second condition was then always true then, and the
-'else' branch was never taken.
+cifs_pick_channel iterates candidate channels using cur. The
+reconnect-state test mistakenly used a different variable.
 
-The idea is that when there are more ACK + MP_CAPABLE than expected, the
-test either fails if there was no out of order packets, or a notice is
-printed.
+This checked the wrong slot and would cause us to skip a healthy channel
+and to dispatch on one that needs reconnect, occasionally failing
+operations when a channel was down.
 
-Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
+Fix by replacing for the correct variable.
+
+Fixes: fc43a8ac396d ("cifs: cifs_pick_channel should try selecting active channels")
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    2 +-
+ fs/smb/client/transport.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -492,7 +492,7 @@ do_transfer()
- 				  "than expected (${expect_synrx})"
- 		retc=1
- 	fi
--	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ] && [ ${stat_ooo_now} -eq 0 ]; then
-+	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
- 		if [ ${stat_ooo_now} -eq 0 ]; then
- 			mptcp_lib_pr_fail "lower MPC ACK rx (${stat_ackrx_now_l})" \
- 					  "than expected (${expect_ackrx})"
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1046,7 +1046,7 @@ struct TCP_Server_Info *cifs_pick_channe
+ 		if (!server || server->terminate)
+ 			continue;
+ 
+-		if (CIFS_CHAN_NEEDS_RECONNECT(ses, i))
++		if (CIFS_CHAN_NEEDS_RECONNECT(ses, cur))
+ 			continue;
+ 
+ 		/*
 
 
 
