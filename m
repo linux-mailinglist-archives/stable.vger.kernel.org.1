@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259F5C797CC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C939C7A04A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1D67C344BB3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 737984E4D3B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9BE332904;
-	Fri, 21 Nov 2025 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3809134E779;
+	Fri, 21 Nov 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKz63Hmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d46jZyUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACBC2749C5;
-	Fri, 21 Nov 2025 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BFB3557E2;
+	Fri, 21 Nov 2025 13:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731912; cv=none; b=ZHoOzsW8sorZhhsUPT/4YUE5UNv0nCIpw2tTac5jlPUvSKCyyhvocLytIbQLCX2IctEU0wSyFPHgzecTtEfgaKsdlzipX43dMUfRx8tJhnMptWDDcWrYNf4rZPr9WT2G7DM/YuO7RqpyaZ/IQJgyur5eWcVQtFFt9tHMjuwn6Mc=
+	t=1763733421; cv=none; b=oiPg3i0Z2xCrA3zj/FmXvYTZAMQcAzSGvFl0Ikzhxq0E0ZsaR3xxUFCCh2elWf3QsYjFtsW9/q8yprxKcS0qGdhKnTQa1DAiG8vE2x5ZmZWOIY0VMmr++S8MnH+MU569jI0AEKKTjNWT1qdX1peLnNDoVpNr2qW4A5Moq2kC5LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731912; c=relaxed/simple;
-	bh=fApCtWAHpwousLSOn00exviB02BpAwm2aCALXOe2af8=;
+	s=arc-20240116; t=1763733421; c=relaxed/simple;
+	bh=D3BmuUqnLGKsPZU8mfK31uFiXHxnRPxaFrHJj8TTgc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QogEowR4w8exV9/7dt0Lx9FdyQWqlpzSBNa9aoJduBNNVO6ktRGpzkzgewdzDp3rdfuhK30YQb9gFEJFil20Jnh1SvkAVBCDhZd3fBrPjSqgruoqbgpvDu53EIDAnWI0WKMAdveyaaapZgaZN8cGudiOkC0gbeQkdgUx5b7HNyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKz63Hmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26FFC4CEF1;
-	Fri, 21 Nov 2025 13:31:51 +0000 (UTC)
+	 MIME-Version; b=YymR5dy8ae+jjqNueLo8Ml4njCPTJFZd2uoLVrpZYDHWu5PCom2y7vj80Ye5ORkxZQqDHr8pLQMoxhFclD/KLntnPCILG3ROvlQvGvwtk2zERu2Du78dyjzrWRiJmc1wTId0se8egQGA9WRBWrtEplKwUg1U/4gjWQjzTyzbA2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d46jZyUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A191C4CEF1;
+	Fri, 21 Nov 2025 13:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731912;
-	bh=fApCtWAHpwousLSOn00exviB02BpAwm2aCALXOe2af8=;
+	s=korg; t=1763733421;
+	bh=D3BmuUqnLGKsPZU8mfK31uFiXHxnRPxaFrHJj8TTgc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKz63Hmxc9hi9GfftCsW5My9Nw2D3j8efmgmDYjnxnoOWpWqjL9x7LVq/s/JRQPJF
-	 23OKZdE3q1Pd4MO7MFAI/5+wSOJbrS7sfEf2WgjchCEEabEt+W6GnVwQL8CDOCNVLv
-	 wFenf2PLTNAWkb/ul5k6W5UpfNlOdOOn/alwPsE4=
+	b=d46jZyUG/VmoBjKfttL0Aa5yvrnG+Ssu802pnqLtx6mDTbu801H29mkEhfZuWL6/1
+	 8/M7M1pSoXbCbU9jrlX1TBNQUsbgfN0rLVBJWzhRh+FJZSOgVX7hU62mMxGtMOCBpT
+	 nb9vVqJGNTEN9k1eW5/tdL9au5nElQewv1AlRTYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Rajani Kantha <681739313@139.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/185] f2fs: fix to avoid overflow while left shift operation
+Subject: [PATCH 6.6 419/529] ACPI: CPPC: Perform fast check switch only for online CPUs
 Date: Fri, 21 Nov 2025 14:11:58 +0100
-Message-ID: <20251121130147.152214791@linuxfoundation.org>
+Message-ID: <20251121130245.924995831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
+[ Upstream commit 8821c8e80a65bc4eb73daf63b34aac6b8ad69461 ]
 
-Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
-while left shift operation.
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Modification: Using rpages[i]->index instead of folio->index due to
-it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
-f2fs_truncate_partial_cluster()") on 6.14 ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+However the function cppc_allow_fast_switch() checks for the validity
+of the _CPC object for all the present CPUs. This breaks when the
+kernel is booted with "nosmt=force".
+
+Check fast_switch capability only on online CPUs
+
+Fixes: 15eece6c5b05 ("ACPI: CPPC: Fix NULL pointer dereference when nosmp is used")
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-4-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 2 +-
+ drivers/acpi/cppc_acpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index b05bb7bfa14c5..fcd21bb060cd4 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1236,7 +1236,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
- 		int i;
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 39f248be9611f..6e579be36a1eb 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -461,7 +461,7 @@ bool cppc_allow_fast_switch(void)
+ 	struct cpc_desc *cpc_ptr;
+ 	int cpu;
  
- 		for (i = cluster_size - 1; i >= 0; i--) {
--			loff_t start = rpages[i]->index << PAGE_SHIFT;
-+			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
- 
- 			if (from <= start) {
- 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
+ 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
 -- 
 2.51.0
 
