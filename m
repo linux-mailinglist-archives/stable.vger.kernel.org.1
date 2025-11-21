@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05303C79D68
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBA0C79EB5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48B8435DFC3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id CA09434256
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6491834E77A;
-	Fri, 21 Nov 2025 13:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CE6350286;
+	Fri, 21 Nov 2025 13:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAkWIW0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNcuZS5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8243451AF;
-	Fri, 21 Nov 2025 13:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4AC36D4F0;
+	Fri, 21 Nov 2025 13:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732901; cv=none; b=mooU0tFcgtvQarwGtkFKfG0UtjQw9sK1HlY7OVX73aMafrTUI6GiT2qJmUMrxx3y3H4gm6g7kJ8FI1lEbPKquN77CRsuC4GlFduEJzXlHb6ZpXtz8GilCf5EWQ0Gu5PStwDWc7L9ljdCRzLojNp5clIZcZsJkpXiU/IE2EVOM30=
+	t=1763732800; cv=none; b=pfYpFg5BAMBiKsew9QODw2u5sXi2FBjgsNKRGONKCItDXQ+UkR03riK8NYJc8TjLDGs+A2ZbeYuh0LHYu5p2FWUbiMIL4zaTfcL0XveCdwdM8xNnSBKh9RiDI1g82aUq907buhwxKB5dastEjiSfcvw+3kMNvCqHwgtX/y+BKIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732901; c=relaxed/simple;
-	bh=ENojRCHsYBNRuGrak3pSIwYGwOXzHbU9xDhd/ncYtRc=;
+	s=arc-20240116; t=1763732800; c=relaxed/simple;
+	bh=kIFIb/KoDKY02vAZxwN4EEkVuigQzn+wMl/Bv12AIpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlTXJg+3Iq0NXR2mxyr9pBpM+qQiz68mBkaiWrU617BjSeV97sWNubEpC34uJj4HP6jkRHirpSzuAN4S1IuK7NNtdA2ExnKCFPc12rBQFKzAh1pptpGnxkPbd5r8N4Bup8uGhiVTfFfbQHkqdhiVDD6MNBIYCi940p18B5nDTNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAkWIW0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD3C4CEF1;
-	Fri, 21 Nov 2025 13:48:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m3FnI4hmSKE+dC5Mh0KgBYxEVO+i+C41mATBydLS0WJyGIE3cb4GoVZH372uxA4bwFteT0E2cNRtnQ8ZKY0MPvBkEnaJH6LvaD8e5ypUNbiOLOdbMOtt5t8l7r+CqF5yta9uqxCAfg5U5Di0hBfvoy1u47gVuR/Gb8qRTaDNz+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNcuZS5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FC8C116D0;
+	Fri, 21 Nov 2025 13:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732900;
-	bh=ENojRCHsYBNRuGrak3pSIwYGwOXzHbU9xDhd/ncYtRc=;
+	s=korg; t=1763732799;
+	bh=kIFIb/KoDKY02vAZxwN4EEkVuigQzn+wMl/Bv12AIpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAkWIW0/JgCvB5jBJKqdc9i+tHlzDsCzdX2XXemQC3cbcdKvqj1mxUa42Ut7N107K
-	 KZbAJgta3W21wCUKnY2Gbje8UpltEA0ljYGt56p4BoV51qLhnnSJDarDvgAz1ywVF5
-	 nJdGj6W5RTadJDIHiFq49IzmWFhAhpIsIDMDno5g=
+	b=LNcuZS5dUr54maA+o+vtRShABCOKAqMkvCLh7XzR35FOZDo6fMnvWp05A0RJmgLHB
+	 90SsU3a9JBHLYpQw7NcYFU4srXKa0ynBikvlFPfF5XrRkslbTMI9OKrXHW1jW2fxox
+	 mfevD1+Ij6rafyL7+iXyqxi2O/3G3tFDaikVzemc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/529] HID: i2c-hid: Resolve touchpad issues on Dell systems during S4
-Date: Fri, 21 Nov 2025 14:08:58 +0100
-Message-ID: <20251121130239.522193928@linuxfoundation.org>
+Subject: [PATCH 6.6 240/529] drm/amdgpu: reject gang submissions under SRIOV
+Date: Fri, 21 Nov 2025 14:08:59 +0100
+Message-ID: <20251121130239.557558411@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -60,134 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 7d62beb102d6fa9a4e5e874be7fbf47a62fcc4f6 ]
+[ Upstream commit d7ddcf921e7d0d8ebe82e89635bc9dc26ba9540d ]
 
-Dell systems utilize an EC-based touchpad emulation when the ACPI
-touchpad _DSM is not invoked. This emulation acts as a secondary
-master on the I2C bus, designed for scenarios where the I2C touchpad
-driver is absent, such as in BIOS menus. Typically, loading the
-i2c-hid module triggers the _DSM at initialization, disabling the
-EC-based emulation.
+Gang submission means that the kernel driver guarantees that multiple
+submissions are executed on the HW at the same time on different engines.
 
-However, if the i2c-hid module is missing from the boot kernel
-used for hibernation snapshot restoration, the _DSM remains
-uncalled, resulting in dual masters on the I2C bus and
-subsequent arbitration errors. This issue arises when i2c-hid
-resides in the rootfs instead of the kernel or initramfs.
+Background is that those submissions then depend on each other and each
+can't finish stand alone.
 
-To address this, switch from using the SYSTEM_SLEEP_PM_OPS()
-macro to dedicated callbacks, introducing a specific
-callback for restoring the S4 image. This callback ensures
-the _DSM is invoked.
+SRIOV now uses world switch to preempt submissions on the engines to allow
+sharing the HW resources between multiple VFs.
 
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+The problem is now that the SRIOV world switch can't know about such inter
+dependencies and will cause a timeout if it waits for a partially running
+gang submission.
+
+To conclude SRIOV and gang submissions are fundamentally incompatible at
+the moment. For now just disable them.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-acpi.c |  8 ++++++++
- drivers/hid/i2c-hid/i2c-hid-core.c | 28 +++++++++++++++++++++++++++-
- drivers/hid/i2c-hid/i2c-hid.h      |  2 ++
- 3 files changed, 37 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index 1b49243adb16a..abd700a101f46 100644
---- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-@@ -76,6 +76,13 @@ static int i2c_hid_acpi_get_descriptor(struct i2c_hid_acpi *ihid_acpi)
- 	return hid_descriptor_address;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 958034bc3b6d5..5b4d7fe148586 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -286,7 +286,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
+ 		}
+ 	}
  
-+static void i2c_hid_acpi_restore_sequence(struct i2chid_ops *ops)
-+{
-+	struct i2c_hid_acpi *ihid_acpi = container_of(ops, struct i2c_hid_acpi, ops);
-+
-+	i2c_hid_acpi_get_descriptor(ihid_acpi);
-+}
-+
- static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
- {
- 	struct i2c_hid_acpi *ihid_acpi = container_of(ops, struct i2c_hid_acpi, ops);
-@@ -96,6 +103,7 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
- 
- 	ihid_acpi->adev = ACPI_COMPANION(dev);
- 	ihid_acpi->ops.shutdown_tail = i2c_hid_acpi_shutdown_tail;
-+	ihid_acpi->ops.restore_sequence = i2c_hid_acpi_restore_sequence;
- 
- 	ret = i2c_hid_acpi_get_descriptor(ihid_acpi);
- 	if (ret < 0)
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 3dcdd3368b463..172b783274201 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -937,6 +937,14 @@ static void i2c_hid_core_shutdown_tail(struct i2c_hid *ihid)
- 	ihid->ops->shutdown_tail(ihid->ops);
- }
- 
-+static void i2c_hid_core_restore_sequence(struct i2c_hid *ihid)
-+{
-+	if (!ihid->ops->restore_sequence)
-+		return;
-+
-+	ihid->ops->restore_sequence(ihid->ops);
-+}
-+
- static int i2c_hid_core_suspend(struct i2c_hid *ihid, bool force_poweroff)
- {
- 	struct i2c_client *client = ihid->client;
-@@ -1320,8 +1328,26 @@ static int i2c_hid_core_pm_resume(struct device *dev)
- 	return i2c_hid_core_resume(ihid);
- }
- 
-+static int i2c_hid_core_pm_restore(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	struct i2c_hid *ihid = i2c_get_clientdata(client);
-+
-+	if (ihid->is_panel_follower)
-+		return 0;
-+
-+	i2c_hid_core_restore_sequence(ihid);
-+
-+	return i2c_hid_core_resume(ihid);
-+}
-+
- const struct dev_pm_ops i2c_hid_core_pm = {
--	SYSTEM_SLEEP_PM_OPS(i2c_hid_core_pm_suspend, i2c_hid_core_pm_resume)
-+	.suspend = pm_sleep_ptr(i2c_hid_core_pm_suspend),
-+	.resume = pm_sleep_ptr(i2c_hid_core_pm_resume),
-+	.freeze = pm_sleep_ptr(i2c_hid_core_pm_suspend),
-+	.thaw = pm_sleep_ptr(i2c_hid_core_pm_resume),
-+	.poweroff = pm_sleep_ptr(i2c_hid_core_pm_suspend),
-+	.restore = pm_sleep_ptr(i2c_hid_core_pm_restore),
- };
- EXPORT_SYMBOL_GPL(i2c_hid_core_pm);
- 
-diff --git a/drivers/hid/i2c-hid/i2c-hid.h b/drivers/hid/i2c-hid/i2c-hid.h
-index 2c7b66d5caa0f..1724a435c783a 100644
---- a/drivers/hid/i2c-hid/i2c-hid.h
-+++ b/drivers/hid/i2c-hid/i2c-hid.h
-@@ -27,11 +27,13 @@ static inline u32 i2c_hid_get_dmi_quirks(const u16 vendor, const u16 product)
-  * @power_up: do sequencing to power up the device.
-  * @power_down: do sequencing to power down the device.
-  * @shutdown_tail: called at the end of shutdown.
-+ * @restore_sequence: hibernation restore sequence.
-  */
- struct i2chid_ops {
- 	int (*power_up)(struct i2chid_ops *ops);
- 	void (*power_down)(struct i2chid_ops *ops);
- 	void (*shutdown_tail)(struct i2chid_ops *ops);
-+	void (*restore_sequence)(struct i2chid_ops *ops);
- };
- 
- int i2c_hid_core_probe(struct i2c_client *client, struct i2chid_ops *ops,
+-	if (!p->gang_size) {
++	if (!p->gang_size || (amdgpu_sriov_vf(p->adev) && p->gang_size > 1)) {
+ 		ret = -EINVAL;
+ 		goto free_all_kdata;
+ 	}
 -- 
 2.51.0
 
