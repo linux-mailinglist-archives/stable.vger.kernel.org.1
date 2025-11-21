@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA32C79469
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7696CC797AE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 5BE4C2C6E2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 43BE234CC35
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ED82FF64E;
-	Fri, 21 Nov 2025 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7222745E;
+	Fri, 21 Nov 2025 13:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHhzB5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuPpVNef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4F7258EFC;
-	Fri, 21 Nov 2025 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B883F9D2;
+	Fri, 21 Nov 2025 13:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731370; cv=none; b=DOlL4twIgZCp7FbOsRcc4RvrE6AzPZw3zGw6WuyuAZMgKLuSnG5wHa8KWM+fmn/26a25+kes9jbYbsDAOVfOGyJ8nFUmxP/Qa4OxZXNQygkhSwCVBEF7gzOy9PfE1/3DP3om6DkE8CENJlC8hegreAIi+Z/iEnHZ3ED3Xa2dqWQ=
+	t=1763731849; cv=none; b=QbHVh36BbsXwyxZyMv3HStPIxk8DKSedBu91BKAr6Fbp7V+y0CQTpJONoc2m3lpUI6DjkU6+4Fy2omFSWRc8IegzMsEYjCIogdMg1fKPpeTtc3XuLCBxmghSyobaya2rcrdO4pZAqNfcjrBkQUZ8xcg3quLsmUWrpOMfxliOZk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731370; c=relaxed/simple;
-	bh=MiLNc611i9nss9mPLSFKtlUcfl44M6oWvzMbcraR0EQ=;
+	s=arc-20240116; t=1763731849; c=relaxed/simple;
+	bh=HAlyxdha6aJKVxzK5vRA4lyjtJGoCOorGKj2gnoH1xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVdU7QLUyj/zFZuPiY23U1VkTWEsmw00PmkWLA/uuTYeilipe9chKT59k3N5tzFhps/k3s2+um5XhnJR3bhDxYZEf6gYj/ebMj/cT6YJbHC4GWR12GavqiiGQarWHIpuCVVTeRhCac+fiZfb+hspPxRe/yVz3vBLDd1srErazKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHhzB5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A86C116C6;
-	Fri, 21 Nov 2025 13:22:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jfqc/o0mnNFy+J20xSlJqYYWFVMvcFCu//AlobE3XLoeyD1g5XYqIsnXg5/6g/JUsRX0GWPbH6fdNIriDAQJy/ZMctliNuWdUaFvQFaTQACDF+NCzUcVyEsZc9q7BVVtxKZMjW9ibpNOqBYz64rfVQ3MkULjT6tWF8t37tFxQuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuPpVNef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21823C116C6;
+	Fri, 21 Nov 2025 13:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731370;
-	bh=MiLNc611i9nss9mPLSFKtlUcfl44M6oWvzMbcraR0EQ=;
+	s=korg; t=1763731849;
+	bh=HAlyxdha6aJKVxzK5vRA4lyjtJGoCOorGKj2gnoH1xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdHhzB5gEpH/hFgPJBnJcxslrAif9Y63XflKVTiGxP7QDProxrUcyr9VlEoz6KK7E
-	 oI0JxoKHcBs3vEMkkjxP9/L1MgV1hBpbqdy4sHmsie+FnsrwYWLFnqU33qGGIzJuqR
-	 jiDiFo9tUV0Dpa+HZRBQz4L8lNmV6ep1NJpgFi9k=
+	b=LuPpVNefSM17NpsUWh0b4C3Q0HyinZ242XPxqzoAU/vHcjnUQH68ysmTAg101SL7m
+	 y6dDL0Y3uN/8EwtRG9oDXzUEtYTcxyQneatAGz8m83DZrcKwzn554Q2sMlycyiO4jo
+	 YfEcm7ewxIbWvGkScKN9ax1Pxa40D1ztF5wMJCCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 183/247] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 103/185] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
 Date: Fri, 21 Nov 2025 14:12:10 +0100
-Message-ID: <20251121130201.291160370@linuxfoundation.org>
+Message-ID: <20251121130147.590711155@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 0d6c356dd6547adac2b06b461528e3573f52d953 upstream.
+[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+Luxul XAP-1440 has BCM54210E PHY at address 25.
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
-
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mm_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2537,7 +2537,7 @@ void *__init alloc_large_system_hash(con
- 		panic("Failed to allocate %s hash table\n", tablename);
+diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+index ac44c745bdf8e..a39a021a39107 100644
+--- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
++++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+@@ -55,8 +55,8 @@
+ 	mdio {
+ 		/delete-node/ switch@1e;
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
- 
- 	if (_hash_shift)
+-		bcm54210e: ethernet-phy@0 {
+-			reg = <0>;
++		bcm54210e: ethernet-phy@25 {
++			reg = <25>;
+ 		};
+ 	};
+ };
+-- 
+2.51.0
+
 
 
 
