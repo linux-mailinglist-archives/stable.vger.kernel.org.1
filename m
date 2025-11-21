@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63C0C79604
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80880C79C72
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A23FA4EB423
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 1DEEF28C21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7813469EE;
-	Fri, 21 Nov 2025 13:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A14130AD19;
+	Fri, 21 Nov 2025 13:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEUX1Adi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddekT+wH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D6C246762;
-	Fri, 21 Nov 2025 13:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2620034DB7C;
+	Fri, 21 Nov 2025 13:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731712; cv=none; b=ELBlj/nuBlUV9EGMpYoHB2qKLQ+Z/FHhxfusP9yqk2fTXWsXRo7ZC4rSfoRSlHjY54WKd8YSpgXJneEb2LRUowpofDNRw7i936kpNQ02oFmStIAJv43/m80iyyFIUsc9EjAbKqQdVs1zR7z6uoMZG8Lxh4gEYoEPq22g+RdL8yA=
+	t=1763733067; cv=none; b=HaKTJsj7XoyUHPA1B9jJwy7YsPmr3e5pbh8kdOcrznhNAvHqOuwiVz+Uznm9DKOsYz8H2N+PmQ8ri0bdIzwFGjzsINLYEUk8H0KmNwZB3mG02H8Hul0zTgVt4XQ+WWzicrS5iO4UNCp/CbagI5XJJT+4xVc2QyJfb1jSFhyblwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731712; c=relaxed/simple;
-	bh=jNdaTD/V796o4U57/FmLTSe7hlCT3ErVQxGIh3p3LJU=;
+	s=arc-20240116; t=1763733067; c=relaxed/simple;
+	bh=Rs+l+lBp3B6VG3t3I8wygA5Urhm+AIkVmDcdc2835H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9J6Ilo4Py8gLixg+SwC6Yeh46+5FBVRg4xY8DdTbdVJBzeocRiqiTfTkcwtKWIIuJHgCQWM6dIOrT2Q5HsQJZ6/FImuzOw6WZqyOQYFNBpbi5+MnRx+bfb0HL+Ex1qfbH9C3MkASShDQ4gwfcsod+tEY2OdID5Zjj02zkgSJ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEUX1Adi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0549AC4CEF1;
-	Fri, 21 Nov 2025 13:28:31 +0000 (UTC)
+	 MIME-Version; b=Z7N5WpBUP6rYlhFaSdoRYD7qAv03raFc2K9ZtO377+vf4eEYpk8nBViRNCLmU/n0yeg5kQXM5Hlrv3sd0uJyfYJ+N9uQDaOeTT0lF7lAZmpGMvdWxHZ64a5mgzWu0auk8MsBINn117efnT9PIVpr8+DwXwl7nyvCmVs8/WGrP3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddekT+wH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22FC4CEF1;
+	Fri, 21 Nov 2025 13:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731712;
-	bh=jNdaTD/V796o4U57/FmLTSe7hlCT3ErVQxGIh3p3LJU=;
+	s=korg; t=1763733067;
+	bh=Rs+l+lBp3B6VG3t3I8wygA5Urhm+AIkVmDcdc2835H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEUX1AdiUpjKHaGxrdbx0u511kbWKweKMdnCK0EN7DFA2Sqw+wlnpiyveMQPliVn2
-	 k/T7utHUhf9K5AjvruNQUnzNcmQAOXF0M7Vxgs30K/t73Wy1ZrxZj9MS2wsS88oI3p
-	 VHTjfgcLzuBZvTboVLcuQGo35taeIodYQTBbgDP4=
+	b=ddekT+wHoJKVCcGkKEPQ65WgSIrktpvzsjbKt5P7qb23jNAyMTGCXgXj8xBg8hiaA
+	 Bou3Uff5EogtrG6dSL35K7XAhcFVYzza4ZOSI80TH8UIKLD3rYW0ACAD0niP4ZOQCJ
+	 DlA4xcXXMOl6m2LJP8AYOQMFQsozXhDAeRB4Lri8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/185] compiler_types: Move unused static inline functions warning to W=2
+Subject: [PATCH 6.6 339/529] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
 Date: Fri, 21 Nov 2025 14:10:38 +0100
-Message-ID: <20251121130144.283282117@linuxfoundation.org>
+Message-ID: <20251121130243.093623455@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
+[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
 
-Per Nathan, clang catches unused "static inline" functions in C files
-since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+Due to the gro_sender sending data packets and FIN packets
+in very quick succession, these are received almost simultaneously
+by the gro_receiver. FIN packets are sometimes processed before the
+data packets leading to intermittent (~1/100) test failures.
 
-Linus said:
+This change adds a delay of 100ms before sending FIN packets
+in gro:tcp test to avoid the out-of-order delivery. The same
+mitigation already exists for the gro:ip test.
 
-> So I entirely ignore W=1 issues, because I think so many of the extra
-> warnings are bogus.
->
-> But if this one in particular is causing more problems than most -
-> some teams do seem to use W=1 as part of their test builds - it's fine
-> to send me a patch that just moves bad warnings to W=2.
->
-> And if anybody uses W=2 for their test builds, that's THEIR problem..
-
-Here is the change to bump the warning from W=1 to W=2.
-
-Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
-[nathan: Adjust comment as well]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler_types.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/gro.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 639be0f30b455..beb2a1e1bac53 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -250,10 +250,9 @@ struct ftrace_likely_data {
- /*
-  * GCC does not warn about unused static inline functions for -Wunused-function.
-  * Suppress the warning in clang as well by using __maybe_unused, but enable it
-- * for W=1 build. This will allow clang to find unused functions. Remove the
-- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
-+ * for W=2 build. This will allow clang to find unused functions.
-  */
--#ifdef KBUILD_EXTRA_WARN1
-+#ifdef KBUILD_EXTRA_WARN2
- #define __inline_maybe_unused
- #else
- #define __inline_maybe_unused __maybe_unused
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 30024d0ed3739..ad7b07084ca24 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -802,6 +802,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+ 
+ static void gro_sender(void)
+ {
++	const int fin_delay_us = 100 * 1000;
+ 	static char fin_pkt[MAX_HDR_LEN];
+ 	struct sockaddr_ll daddr = {};
+ 	int txfd = -1;
+@@ -845,15 +846,22 @@ static void gro_sender(void)
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "tcp") == 0) {
+ 		send_changed_checksum(txfd, &daddr);
++		/* Adding sleep before sending FIN so that it is not
++		 * received prior to other packets.
++		 */
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_changed_seq(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_changed_ts(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_diff_opt(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "ip") == 0) {
+ 		send_changed_ECN(txfd, &daddr);
 -- 
 2.51.0
 
