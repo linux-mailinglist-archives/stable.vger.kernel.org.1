@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-195856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E971BC79670
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8E4C79536
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 161B04E9830
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFF2A4ED8C7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FC03F9D2;
-	Fri, 21 Nov 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED916334367;
+	Fri, 21 Nov 2025 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHGB1fNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbTlLc/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D37831B124;
-	Fri, 21 Nov 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD61F09B3;
+	Fri, 21 Nov 2025 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731861; cv=none; b=sU8XZqvdOTlEIMX57yQ4ky7mgjEDc5DkL6CPI7sI3CMcMzbxDK/lmDbEekZHW2fKdwnYfK3FB5pXQAs5oZFdneE2N13WW558bn+ENLsolJ6ENcWo1twew3BL9aD4nnm1fkcLBacxvOGeWs8eS3e1ejk6h5gCg/w9gwiEHFfLPt0=
+	t=1763731378; cv=none; b=hvxA6DKDLZLmcHx0L9omWWJCdWEj8X/8936lLloObMcNfO0qwWgQIzSwcvshLiAS/fdpEDSu02rckDXJB/vg7NQJWOihCBv6peLZcGSXAjCcHZy6cv3U2fZZKApYYpso5SK5KKiJg1Cn5TbZkS69Nf9lCug6nX+iAqOX8aaev/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731861; c=relaxed/simple;
-	bh=RzqIhO8No9nhu/rk0Fm4bpbHk3FuI928L89JYg+PNBE=;
+	s=arc-20240116; t=1763731378; c=relaxed/simple;
+	bh=NeU+gv/RKV2M4SxXzQxnZhl3e7Y46iwVSD0ettK9neg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMaK0Ae47XR47kwrmpLLnaNaXzFrTSrtYR4fFB++ptLPNO4PAfmanI3l4vTx7VWhwpDomObtRXSyHrI12eHhHxJseeuKDutYfVdNkQcEEwPmAmHHk5PwGI3mDCyqkYWSujrAS3vlfniTyF6nmvzG3WGl2yYtpeUB9owdmWLra6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHGB1fNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7464C4CEF1;
-	Fri, 21 Nov 2025 13:31:00 +0000 (UTC)
+	 MIME-Version; b=U/CpEH0of1foTpwWrgu+7GxoQ0xsHxZDRi0d25OIPbDGbGxj/f4I0HEmrXeVbtP3uex++BUP7s4DNnP0OqKEaEjQVNPKB3nXwXL6cPtL3pfu1raoRaiz7xLswarDDFo+a/94PsYy1YDyRNKqYNzB1UyXaw77VF4eleq9pbwV5QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbTlLc/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF97C4CEF1;
+	Fri, 21 Nov 2025 13:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731861;
-	bh=RzqIhO8No9nhu/rk0Fm4bpbHk3FuI928L89JYg+PNBE=;
+	s=korg; t=1763731378;
+	bh=NeU+gv/RKV2M4SxXzQxnZhl3e7Y46iwVSD0ettK9neg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHGB1fNI3n4gO4/DcRQdgZGRaq/2PnJCHfK8sp9mXA4cC/Es3a+ggMPnSkVi3SYvC
-	 Zi6s9G6bmoqVAfDgvl8ClOVpXKIHcbjDPbtVxm4bdL0xb2SnFOf+nLzZ7q7a9fmF3s
-	 UUCaG8Y4xhzxmzemK83WHioeypl2SGaA2ir+IkJM=
+	b=NbTlLc/R3JQ9caq1lrHb+PPpYylVfhwm76G+CcTiKNVI/LwBhqEsn1abMCbeO7dfL
+	 L9Jxid17hy0WF3vs5LBg6zKHoswkgu2nOVnkHIEARkqC0RfPCvTZRGf5HEJCvEUNLA
+	 3IvhUZ+hunafGBWvS3f0LL65/DuSfiMViU2QXpIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Chen Yu <xnguchen@sina.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/185] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+	Kairui Song <kasong@tencent.com>,
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 186/247] mm/shmem: fix THP allocation and fallback loop
 Date: Fri, 21 Nov 2025 14:12:13 +0100
-Message-ID: <20251121130147.698852173@linuxfoundation.org>
+Message-ID: <20251121130201.399038407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +72,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
+commit fc745ff317566ec299e16346ebb9eacc8fe5b9d2 upstream.
 
-There are actually 2 problems:
-- deleting the last element doesn't require the memmove of elements
-  [i + 1, end) over it. Actually, element i+1 is out of bounds.
-- The memmove itself should move size - i - 1 elements, because the last
-  element is out of bounds.
+The order check and fallback loop is updating the index value on every
+loop.  This will cause the index to be wrongly aligned by a larger value
+while the loop shrinks the order.
 
-The out-of-bounds element still remains out of bounds after being
-accessed, so the problem is only that we touch it, not that it becomes
-in active use. But I suppose it can lead to issues if the out-of-bounds
-element is part of an unmapped page.
+This may result in inserting and returning a folio of the wrong index and
+cause data corruption with some userspace workloads [1].
 
-Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[kasong@tencent.com: introduce a temporary variable to improve code]
+  Link: https://lkml.kernel.org/r/20251023065913.36925-1-ryncsn@gmail.com
+  Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Link: https://lkml.kernel.org/r/20251022105719.18321-1-ryncsn@gmail.com
+Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Fixes: e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
+Closes: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_static_config.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/shmem.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_static_config.c b/drivers/net/dsa/sja1105/sja1105_static_config.c
-index baba204ad62f6..2ac91fe2a79bc 100644
---- a/drivers/net/dsa/sja1105/sja1105_static_config.c
-+++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
-@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sja1105_table *table, int i)
- 	if (i > table->entry_count)
- 		return -ERANGE;
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1919,6 +1919,7 @@ static struct folio *shmem_alloc_and_add
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	unsigned long suitable_orders = 0;
+ 	struct folio *folio = NULL;
++	pgoff_t aligned_index;
+ 	long pages;
+ 	int error, order;
  
--	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
--		(table->entry_count - i) * entry_size);
-+	if (i + 1 < table->entry_count) {
-+		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
-+			(table->entry_count - i - 1) * entry_size);
-+	}
+@@ -1932,10 +1933,12 @@ static struct folio *shmem_alloc_and_add
+ 		order = highest_order(suitable_orders);
+ 		while (suitable_orders) {
+ 			pages = 1UL << order;
+-			index = round_down(index, pages);
+-			folio = shmem_alloc_folio(gfp, order, info, index);
+-			if (folio)
++			aligned_index = round_down(index, pages);
++			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
++			if (folio) {
++				index = aligned_index;
+ 				goto allocated;
++			}
  
- 	table->entry_count--;
- 
--- 
-2.51.0
-
+ 			if (pages == HPAGE_PMD_NR)
+ 				count_vm_event(THP_FILE_FALLBACK);
 
 
 
