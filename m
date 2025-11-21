@@ -1,118 +1,145 @@
-Return-Path: <stable+bounces-195448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E45C7700F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:28:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B82DC77120
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 0C5372FABC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 02:28:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDE993550A7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 02:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B77E25785E;
-	Fri, 21 Nov 2025 02:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B9254B18;
+	Fri, 21 Nov 2025 02:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vAbv4k9w"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0C9157A5A;
-	Fri, 21 Nov 2025 02:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3111F2DC350
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 02:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763692098; cv=none; b=KxCHjXqyN+LwxbN6sm/pQ7jqFIM9w3eoK8SAzKra9ubiejX5Wn07qQBi8jHlEDXTkPxNZA4JPK3Bi3YA43p+lTGTuFnlQBVTnUMGkObX8Z+eSGVRyCJCcI3KqWKrfCn25hmrkAnLFi5ESExWokZGpMP/Z27X/FgE2cNOmlhjbBc=
+	t=1763693542; cv=none; b=sFVP9U6IlvlsySteMzTaj6qQiyEcoKOSRN+bJUfJ4RF3/GPullAkCCaR8nSbPldpFb6XGxrKZm8ioajdIClf8dNQX0P3v3F/iPp+/sibrEbJy21hV05JurfityvCdEF8Yv2TUh4/+Am257QhW4tfz5BbY+IwEbFZIrx8FAWPhok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763692098; c=relaxed/simple;
-	bh=0KSS2/XqoFDX2oUCbBuixk7EDSB0XCO0zpCJSm55RAE=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=FTUmHdty2LT7Scn7i2KWJJpViQ+bwv8phqh774wcy/zgR4y7Go6QYoS4ZrUHaQRDc35eg0hd1JKuxAZQpJxk/WGltXf1/DlWNaRkXOdqOUR7we0Bh2ZxFX8rRXQYf0CmXpBH50wpKVrXBfFNgGeo07h7vL2VnyFQDAy6ywbpKww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowACHD9IRzh9pG958AQ--.11258S2;
-	Fri, 21 Nov 2025 10:27:35 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: krzk@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linville@tuxdriver.com,
-	aloisio.almeida@openbossa.org,
-	johannes@sipsolutions.net,
-	lauro.venancio@openbossa.org,
-	sameo@linux.intel.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] NFC: Fix error handling in nfc_genl_dump_targets
-Date: Fri, 21 Nov 2025 10:27:28 +0800
-Message-Id: <20251121022728.3661-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowACHD9IRzh9pG958AQ--.11258S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gr4fuF4fWF4UXFWxZFyxKrg_yoWDKFX_Cw
-	10vry8u3yYqan8KrW7tw47ZF1SyanrtrWxWrn7trZ2y3y5ZFZrWrs5XwsxAr17uws8CF1U
-	A3Z5urWxu34UujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
-	AFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmLvtU
-	UUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1763693542; c=relaxed/simple;
+	bh=22kvScepeUgzy9u+iV1TUCoKsrEkefE67Zj+ksREK4I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MZRqRPZLVdzgiZY4vK2fsbALjOlFjlPCFo0I0zMC1Zjw+bAl/2wNosqUj+Ht9lICQTfF86RnS1EjADS7xyVVR9dUUCP7GNeMAgTJdXRLiWlQuAsq4aLzzxoYk+cEdF6fgwwfa2/stMc+ykXiCkkq9gQgqC9afbAFLvsQCXvLRTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vAbv4k9w; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <e9cab398-5d55-45fb-b155-50919546300c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763693538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M0RxOUEnJhI6YS05bfTKGDCbdsZIWZGOMrBhCkCIu1s=;
+	b=vAbv4k9w0csPoygKpVNy7oXlMQLlU8N7fNv0rm7sqb71qjM8dbwqv4GcSoZH7xLZTawj2B
+	C8adv7WhxQvzceifh0wHI2Q75vxXaMxxgniAgg5xHWha4NdIfZx52UBNKbMODpaxunadFh
+	BQQQhrUv9JsP0s5MN95OAylivfkOMeI=
+Date: Fri, 21 Nov 2025 10:52:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH 6.1.y] mm/secretmem: fix use-after-free race in fault
+ handler
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Google Big Sleep <big-sleep-vuln-reports@google.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+References: <2025112032-parted-progeny-cd9e@gregkh>
+ <20251120191547.2344004-1-rppt@kernel.org> <aR9vzeI5Tso6g7PO@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aR9vzeI5Tso6g7PO@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-nfc_genl_dump_targets() increments the device reference count via
-nfc_get_device() but fails to decrement it properly. nfc_get_device()
-calls class_find_device() which internally calls get_device() to
-increment the reference count. No corresponding put_device() is made
-to decrement the reference count.
+Hi Mike,
 
-Add proper reference count decrementing using nfc_put_device() when
-the dump operation completes or encounters an error, ensuring balanced
-reference counting.
+Thanks for taking care of the backport conflicts, much appreciated! That
+saved me a lot of work/time!
 
-Found by code review.
+Cheers,
+Lance
 
-Cc: stable@vger.kernel.org
-Fixes: 4d12b8b129f1 ("NFC: add nfc generic netlink interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- net/nfc/netlink.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
-index a18e2c503da6..9ae138ee91dd 100644
---- a/net/nfc/netlink.c
-+++ b/net/nfc/netlink.c
-@@ -159,6 +159,11 @@ static int nfc_genl_dump_targets(struct sk_buff *skb,
- 
- 	cb->args[0] = i;
- 
-+	if (rc < 0 || i >= dev->n_targets) {
-+		nfc_put_device(dev);
-+		cb->args[1] = 0;
-+	}
-+
- 	return skb->len;
- }
- 
--- 
-2.17.1
+On 2025/11/21 03:45, Mike Rapoport wrote:
+> Oops, copied the wrong git send-email command, sorry for the noise
+> 
+> On Thu, Nov 20, 2025 at 09:15:47PM +0200, Mike Rapoport wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When a page fault occurs in a secret memory file created with
+>> `memfd_secret(2)`, the kernel will allocate a new page for it, mark the
+>> underlying page as not-present in the direct map, and add it to the file
+>> mapping.
+>>
+>> If two tasks cause a fault in the same page concurrently, both could end
+>> up allocating a page and removing the page from the direct map, but only
+>> one would succeed in adding the page to the file mapping.  The task that
+>> failed undoes the effects of its attempt by (a) freeing the page again
+>> and (b) putting the page back into the direct map.  However, by doing
+>> these two operations in this order, the page becomes available to the
+>> allocator again before it is placed back in the direct mapping.
+>>
+>> If another task attempts to allocate the page between (a) and (b), and the
+>> kernel tries to access it via the direct map, it would result in a
+>> supervisor not-present page fault.
+>>
+>> Fix the ordering to restore the direct map before the page is freed.
+>>
+>> Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
+>> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+>> Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> (cherry picked from commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d)
+>> [rppt: replaced folio with page in the patch and in the changelog]
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>>   mm/secretmem.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/secretmem.c b/mm/secretmem.c
+>> index 624663a94808..0c86133ad33f 100644
+>> --- a/mm/secretmem.c
+>> +++ b/mm/secretmem.c
+>> @@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>>   		__SetPageUptodate(page);
+>>   		err = add_to_page_cache_lru(page, mapping, offset, gfp);
+>>   		if (unlikely(err)) {
+>> -			put_page(page);
+>>   			/*
+>>   			 * If a split of large page was required, it
+>>   			 * already happened when we marked the page invalid
+>>   			 * which guarantees that this call won't fail
+>>   			 */
+>>   			set_direct_map_default_noflush(page);
+>> +			put_page(page);
+>>   			if (err == -EEXIST)
+>>   				goto retry;
+>>   
+>> -- 
+>> 2.50.1
+>>
+> 
 
 
