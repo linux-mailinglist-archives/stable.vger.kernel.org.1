@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80880C79C72
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1066C79329
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 1DEEF28C21
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5A71A2BCE3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A14130AD19;
-	Fri, 21 Nov 2025 13:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE43B26CE33;
+	Fri, 21 Nov 2025 13:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddekT+wH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfJTpUhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2620034DB7C;
-	Fri, 21 Nov 2025 13:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688219E97F;
+	Fri, 21 Nov 2025 13:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733067; cv=none; b=HaKTJsj7XoyUHPA1B9jJwy7YsPmr3e5pbh8kdOcrznhNAvHqOuwiVz+Uznm9DKOsYz8H2N+PmQ8ri0bdIzwFGjzsINLYEUk8H0KmNwZB3mG02H8Hul0zTgVt4XQ+WWzicrS5iO4UNCp/CbagI5XJJT+4xVc2QyJfb1jSFhyblwo=
+	t=1763731101; cv=none; b=Pc5L9zlSUI10hh+JLaL/UqeqIYSkrVP97IRoQv5I/6LLIVOrP7bIzkTc+8knmy0/wMBB6yyMVi0B3hxMFQ1uk/A8xWRNgZ5TMVFWCq4Bx/GCSkBjUwyCK9cogP7597n7eH/1zINTCiupGoT44wt44lI6vFbJfvSQR/b5ttX8V6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733067; c=relaxed/simple;
-	bh=Rs+l+lBp3B6VG3t3I8wygA5Urhm+AIkVmDcdc2835H4=;
+	s=arc-20240116; t=1763731101; c=relaxed/simple;
+	bh=uKO7YmR95XeEiXV5sIDiItB8jSMja/ug0YX5nG+YpGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7N5WpBUP6rYlhFaSdoRYD7qAv03raFc2K9ZtO377+vf4eEYpk8nBViRNCLmU/n0yeg5kQXM5Hlrv3sd0uJyfYJ+N9uQDaOeTT0lF7lAZmpGMvdWxHZ64a5mgzWu0auk8MsBINn117efnT9PIVpr8+DwXwl7nyvCmVs8/WGrP3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddekT+wH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22FC4CEF1;
-	Fri, 21 Nov 2025 13:51:06 +0000 (UTC)
+	 MIME-Version; b=QMXKHF/f5ngjbIFD/Qdz2+7kQAtiX47yxSV3PaDyk4bjLLkmDfcV2d7MapetzjByt5D/5hW2eMPJrG6zss15hm2yCiAk5IqF3dTb5HQeew/dBF7EwEkTp0TW9aZLTK3GoROafij4J7vQQ3jd6vXA7hn3BIt/hyiWsaI1n5W9tHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfJTpUhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE518C4CEF1;
+	Fri, 21 Nov 2025 13:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733067;
-	bh=Rs+l+lBp3B6VG3t3I8wygA5Urhm+AIkVmDcdc2835H4=;
+	s=korg; t=1763731101;
+	bh=uKO7YmR95XeEiXV5sIDiItB8jSMja/ug0YX5nG+YpGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddekT+wHoJKVCcGkKEPQ65WgSIrktpvzsjbKt5P7qb23jNAyMTGCXgXj8xBg8hiaA
-	 Bou3Uff5EogtrG6dSL35K7XAhcFVYzza4ZOSI80TH8UIKLD3rYW0ACAD0niP4ZOQCJ
-	 DlA4xcXXMOl6m2LJP8AYOQMFQsozXhDAeRB4Lri8=
+	b=JfJTpUhkLO12fTLIqoKwxybOWSYKBaRXaaY2fqa2EKj8SpJ6rnJ6OY5yB8W6ZnuS8
+	 elOx/E/uNea0WWCFWkRV42vN+S/S6pUsr7ae87fAHfFxFeI6qX4ZgxoXtkEbHotuaU
+	 MzPI7ZwivvcZCyASr0y/fmGWaIIA3xDrXpkw5Gmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 339/529] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
+Subject: [PATCH 6.17 091/247] ACPI: CPPC: Limit perf ctrs in PCC check only to online CPUs
 Date: Fri, 21 Nov 2025 14:10:38 +0100
-Message-ID: <20251121130243.093623455@linuxfoundation.org>
+Message-ID: <20251121130157.859266817@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
+[ Upstream commit 0fce75870666b46b700cfbd3216380b422f975da ]
 
-Due to the gro_sender sending data packets and FIN packets
-in very quick succession, these are received almost simultaneously
-by the gro_receiver. FIN packets are sometimes processed before the
-data packets leading to intermittent (~1/100) test failures.
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPU via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-This change adds a delay of 100ms before sending FIN packets
-in gro:tcp test to avoid the out-of-order delivery. The same
-mitigation already exists for the gro:ip test.
+However the function cppc_perf_ctrs_in_pcc() checks if the CPPC
+perf-ctrs are in a PCC region for all the present CPUs, which breaks
+when the kernel is booted with "nosmt=force".
 
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hence, limit the check only to the online CPUs.
+
+Fixes: ae2df912d1a5 ("ACPI: CPPC: Disable FIE if registers in PCC regions")
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-5-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index 30024d0ed3739..ad7b07084ca24 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -802,6 +802,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
- 
- static void gro_sender(void)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 51e925f289bf3..002c3dde283ff 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1435,7 +1435,7 @@ bool cppc_perf_ctrs_in_pcc(void)
  {
-+	const int fin_delay_us = 100 * 1000;
- 	static char fin_pkt[MAX_HDR_LEN];
- 	struct sockaddr_ll daddr = {};
- 	int txfd = -1;
-@@ -845,15 +846,22 @@ static void gro_sender(void)
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "tcp") == 0) {
- 		send_changed_checksum(txfd, &daddr);
-+		/* Adding sleep before sending FIN so that it is not
-+		 * received prior to other packets.
-+		 */
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	int cpu;
  
- 		send_changed_seq(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		struct cpc_register_resource *ref_perf_reg;
+ 		struct cpc_desc *cpc_desc;
  
- 		send_changed_ts(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_diff_opt(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "ip") == 0) {
- 		send_changed_ECN(txfd, &daddr);
 -- 
 2.51.0
 
