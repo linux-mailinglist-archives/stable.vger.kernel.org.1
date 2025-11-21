@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-195966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4A9C799B4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF56DC79A7C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id BAF412E2B0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:38:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 86E5134DA4E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E07334E753;
-	Fri, 21 Nov 2025 13:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C1834FF4B;
+	Fri, 21 Nov 2025 13:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11AAHelY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ndjz/LNK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEB034EEE3;
-	Fri, 21 Nov 2025 13:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C3734FF45;
+	Fri, 21 Nov 2025 13:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732178; cv=none; b=GT1hTBWcuSgQdbIG09yxi2GuuFRlzpu2daHI9nYh4DBQYO+bEcNgYlh8qvLQbIKoftwDivGBh7UICwwLBejIVX+t3Da5dDvcLSwAbrdcGdO3DE/9P2B53UZN3jh3tovhjmC6Oj+Op0I+PiIC+p92i0dtP2PBVwCegWbJWWx04FM=
+	t=1763732210; cv=none; b=ZJz+NJjN+VvL0sG/tFkUVXzWR+Hdg/mjisY5EeMLXfeLHWl1tDu8vhDuLq9Pq8Vuxt08A6QAQd3Ls4pHAaySqpNWXet6BV46diOCVclNqyHpwinMjwkSBxd3gdLSCIyqy+KL61EhqZEuCP6iGv79sGouc/CACcdQJwWxhkDL3E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732178; c=relaxed/simple;
-	bh=QOURxnPE2UN2dpHtr5VqWERprB82JQxe6R9urJl+QhM=;
+	s=arc-20240116; t=1763732210; c=relaxed/simple;
+	bh=lVFSbB2PT/bS79NfSmGtZCHmW2UDyr8Ot7HVe507/po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4QOA/+j7QgbdSAUNLdbGrHmZIKQvhFAzcSUexrlDky2FJXjTQYSc86B7xo6D/rscWjfJAx5Fd7iZ+Rm1ZcE7lEh0KcHcq2AefBlwTcxSRPrHbs564M6M4QwVUWBLmW3mx7LPVW6Uy2qXlXKrNzi+ikR6v5+XpusMfykWL0KBYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11AAHelY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311A6C4CEF1;
-	Fri, 21 Nov 2025 13:36:18 +0000 (UTC)
+	 MIME-Version; b=WHBPRb5aUyZW0wZX21Qk+DPjFwE6GDK0xK7M5gMhPWOFOwCyjxqL7I7+LXAqeT+Nr5yHdTLAoRXu3geBIaXJ14wLsO377Pb4mlaym/ktGUtt2u7Jml+zzreGZrxJErjwGN3D/FBeEYN2THWfuQVqxMYXOSzMp59piQmy4M37arQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ndjz/LNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A722C4CEF1;
+	Fri, 21 Nov 2025 13:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732178;
-	bh=QOURxnPE2UN2dpHtr5VqWERprB82JQxe6R9urJl+QhM=;
+	s=korg; t=1763732209;
+	bh=lVFSbB2PT/bS79NfSmGtZCHmW2UDyr8Ot7HVe507/po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11AAHelYpUIwHlPIKjFAWWIHSOwjWh+tgKPmJILXe0rVHd47ztJr/VzJvMUJR54s7
-	 aAw5tKjr4trUfnhXOaM221McZNVM48gfMXoYBfYNTMQ3n9AYy/RambM5MktQ8Cl6LN
-	 WdMoYNpzEs1a3lKlw4MMCAn4pgo7S86jMq3oj49U=
+	b=Ndjz/LNKZoS9p+Jw2xo1RQyf9rKYV70Geynw2sUl+gwZ+dt4BljOw2lAiMyjOZ3Zz
+	 LAq6RML1MAzflt/TMtDXKxcrmQttiWA0vp51s/CjiShlsuHwVKvTNbJNatbLJ8Ts5R
+	 xc0qsqtYPxpW/hAUVmNswKqA+m1Oqecna5xw2NA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wonkon Kim <wkon.kim@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/529] scsi: ufs: core: Initialize value of an attribute returned by uic cmd
-Date: Fri, 21 Nov 2025 14:05:22 +0100
-Message-ID: <20251121130231.826084680@linuxfoundation.org>
+Subject: [PATCH 6.6 024/529] bpf: Do not audit capability check in do_jit()
+Date: Fri, 21 Nov 2025 14:05:23 +0100
+Message-ID: <20251121130231.860692317@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,40 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wonkon Kim <wkon.kim@samsung.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 6fe4c679dde3075cb481beb3945269bb2ef8b19a ]
+[ Upstream commit 881a9c9cb7856b24e390fad9f59acfd73b98b3b2 ]
 
-If ufshcd_send_cmd() fails, *mib_val may have a garbage value. It can
-get an unintended value of an attribute.
+The failure of this check only results in a security mitigation being
+applied, slightly affecting performance of the compiled BPF program. It
+doesn't result in a failed syscall, an thus auditing a failed LSM
+permission check for it is unwanted. For example with SELinux, it causes
+a denial to be reported for confined processes running as root, which
+tends to be flagged as a problem to be fixed in the policy. Yet
+dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
+desirable, as it would allow/silence also other checks - either going
+against the principle of least privilege or making debugging potentially
+harder.
 
-Make ufshcd_dme_get_attr() always initialize *mib_val.
+Fix it by changing it from capable() to ns_capable_noaudit(), which
+instructs the LSMs to not audit the resulting denials.
 
-Fixes: 12b4fdb4f6bc ("[SCSI] ufs: add dme configuration primitives")
-Signed-off-by: Wonkon Kim <wkon.kim@samsung.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251020061539.28661-2-wkon.kim@samsung.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2369326
+Fixes: d4e89d212d40 ("x86/bpf: Call branch history clearing sequence on exit")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20251021122758.2659513-1-omosnace@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 7dcdaac31546b..2080b251580c8 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4176,8 +4176,8 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
- 			get, UIC_GET_ATTR_ID(attr_sel),
- 			UFS_UIC_COMMAND_RETRIES - retries);
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index 07592eef253c2..0be138fbd0a05 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -1995,7 +1995,7 @@ st:			if (is_imm8(insn->off))
+ 			ctx->cleanup_addr = proglen;
  
--	if (mib_val && !ret)
--		*mib_val = uic_cmd.argument3;
-+	if (mib_val)
-+		*mib_val = ret == 0 ? uic_cmd.argument3 : 0;
+ 			if (bpf_prog_was_classic(bpf_prog) &&
+-			    !capable(CAP_SYS_ADMIN)) {
++			    !ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
+ 				u8 *ip = image + addrs[i - 1];
  
- 	if (peer && (hba->quirks & UFSHCD_QUIRK_DME_PEER_ACCESS_AUTO_MODE)
- 	    && pwr_mode_change)
+ 				if (emit_spectre_bhb_barrier(&prog, ip, bpf_prog))
 -- 
 2.51.0
 
