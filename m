@@ -1,194 +1,256 @@
-Return-Path: <stable+bounces-196484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80A7C7A237
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:27:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AB7C7A2C1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA4584F5201
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 962CB35847
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4711230EF7F;
-	Fri, 21 Nov 2025 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73AA33CEAF;
+	Fri, 21 Nov 2025 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DeuwoutZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jGOnGR7M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0192C19DF6A
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 14:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B4230CDB4;
+	Fri, 21 Nov 2025 14:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763734630; cv=none; b=W2uHF6dLT7A3Y/WqLUWDZHBCTz7jbbSZuZ6/m3SHtOC1Gsne1UR8h0ygEu0qkhOuEtxR2aqFso3Dg6TZNrfSpU1ywRPHk5MY2TSofhFGLwzlkSlSNEuuCTfhp/Cz2xKHaVlO6cn/D948pnSSU8mC0CRG47T+F34gKGJ0yrYAz8E=
+	t=1763734703; cv=none; b=WcD74i3R+erWOLeSb6ewlshYkjzdq45zncHDu/Hg5mTcjHIJZv8ffaf6z4pmZiEJvRHt+AkPOq4+hHEaqc6K2ZbhCXhaiKdPRVNHq3Gwp2V5191cY3316m8w9Iv6Uu0aNtKtON19rsPbWMTkPEnC1Q4ucLyhqn6CcOJF5LsNwOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763734630; c=relaxed/simple;
-	bh=ytbbWReDTIKyeeb0o9yP5ClBu4PIxO+e4Wl+WiWLdk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VW40mBRDPAkBq49BMZ1E7LF7jZdFZo33xWQHx1RpBosP88p2VGSxAM5dTh6/NHjPvz65/AHtGA8dRXS3ljwYZ2RgVliDOKgKBO9BG3Um2Y3st+C4sFoTgWJ9xiMF4Hr0Bza0OthmI8pM1J15Kg4vz7bnOfmah/8LY/8OUXILhF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DeuwoutZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FEDC4CEFB;
-	Fri, 21 Nov 2025 14:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763734628;
-	bh=ytbbWReDTIKyeeb0o9yP5ClBu4PIxO+e4Wl+WiWLdk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DeuwoutZu3OI80bQVIjok59/iPnKkwNe08sQm54DmoEB2AtJ/0FIf1JZur1Ci7HWI
-	 07nawA6EA+w0Hk6R7G+uXX0JWvGzSpYk+6/+yxAQLns8DbxKwuJgRKFhx6ecWbPSvP
-	 /W/N2gT6g943gbICTC3k85yYv/VjsbYKM3Nt6mDMP46sqIh0mI2CXIoXW4fSht35bX
-	 j1nFIXeoQGEO3eWTW3ahwch3c1hXzU2wgxcqPwoqEbwJkHAQn+mAHGIV8aof4qlDO3
-	 kcJxXeTfA96O2I8a1/Lah68RdWy3+Qwn+o1t5JRS6yd856cAndngtBokrqFUUlQ5jl
-	 SaE7Xn3ebcyEA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0E43BF40076;
-	Fri, 21 Nov 2025 09:17:07 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 21 Nov 2025 09:17:07 -0500
-X-ME-Sender: <xms:YnQgaaDWUzYceAhrQMAluGAT-CZ13619vNQM8Fbn_8L0uXNGplrp5Q>
-    <xme:YnQgaaoFkQ0dllmQ0rLrodxYtSD_GvMqLV1lYILHfvFw5xEIAzpewwteuekx-VSw_
-    0yKJ9iZi31meB6twQfwRLUj1kSHFI_f57sCcQRcAsHhSIBSMF1jOW0>
-X-ME-Received: <xmr:YnQgaUHXv4DOOvVimUYfywUCaib8oebZuSDce7wLrH1XpV2vWS3BhYBCfs-QZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedtudekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkefstddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpefggfektdeileehffdtgeejteffgfdtjeefffdvleduheelkeehgefgfedtudev
-    ffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppe
-    hkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohep
-    gedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugi
-    hfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidroh
-    hrghdruhhkpdhrtghpthhtohepsggrohhlihhnrdifrghngheslhhinhhugidrrghlihgs
-    rggsrgdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegujhifohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhi
-    ugesfhhrohhmohhrsghithdrtghomhdprhgtphhtthhopegurghvihgusehrvgguhhgrth
-    drtghomhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:YnQgaSyil8sAOKh9Jxv7Y5fkkgTu06XKHJC5Y4erivpUufwuTgrbgw>
-    <xmx:YnQgaS602ma-RrffvINPqmOoKyrbkxIV7XCYf2BB141RK1u-IrJlkg>
-    <xmx:YnQgaXB024v0BYU2k23tEYgyU2M7MsJJ_uVhOzm8CXWFIwfHowgM5g>
-    <xmx:YnQgaX3a-sAQTvDiBNLAAze8fx1Duivu4NxhaWV3Ylt6HplFtK0mJA>
-    <xmx:Y3QgaaFF6p6HAzjptj49GuvFby2tliSavIrDBrDQYrfUNGlkDZdnjWUY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Nov 2025 09:17:06 -0500 (EST)
-Date: Fri, 21 Nov 2025 14:17:05 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Christian Brauner <brauner@kernel.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Liam Howlett <liam.howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.17.y] mm/truncate: unmap large folio on split failure
-Message-ID: <47zyadovna3yarouvvqrrqlvx7vxb5uul5muwjr4h25mqoyhl4@rdtannv4llvv>
-References: <2025112037-resurface-backlight-da75@gregkh>
- <20251120165221.892852-1-kas@kernel.org>
- <2025112149-antirust-saggy-93e1@gregkh>
- <jqmjjsedulkfhgisw4zrzbkuya34bdh6bvzzpdvo2v6jzbfxsy@qsonu7ijsmva>
+	s=arc-20240116; t=1763734703; c=relaxed/simple;
+	bh=kxBmWcmhJtaDG0WBcO4wUAVDVRgE5RVxv2S8mslpLnA=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=siiwyOFiMw3DzKtuiW9Q3TZa2jn25IRmGP6rv2AnQYh7HD/+lf9be0gP7y7ZgFYEMhQt8DeCjumdgEPKEb7uyiX8f95CTzY4cG74FOCuP+ShTDFfxj46y15vA6UHQ4ClnfvsWwWsJW7x4RuC8Dpe1EQO1xtEvtfTLZpQRy3fKIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jGOnGR7M; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763734701; x=1795270701;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=kxBmWcmhJtaDG0WBcO4wUAVDVRgE5RVxv2S8mslpLnA=;
+  b=jGOnGR7Mm0B8kxhetizzx+PjfNYwfCr2QQ1o3XfeDwxetQ/Ajk0eXpmr
+   Fl15+q2HQjYztYdOvGbvmcn/9RXpNX9LOZOUgDoLnwq9rJtK3hHH3kZf6
+   6QpjufsMg1Tz7a5HtVyUXRpSIaVvOE2LyW2/A3HbJ2SeCtm5Bs4oQHbcD
+   bdJjZxlgcXDibZtdT3mCIB4Pxd7EL58t2z7aTzFfYH48qcnLd+6G5u9QT
+   Ci8AUio+afFinDRy1IshiCWSfLHz5HUT00StsvMoy+GSoSLa8jcz0E+XK
+   V1D22mpqlLGvFN/KjnQQe5F0mcSfraFEkfNrtcrbkfz/oSjYHBREYDpi5
+   A==;
+X-CSE-ConnectionGUID: g/orokb4RGqcrTcBAVz2Lw==
+X-CSE-MsgGUID: v9QYoZCjQYqXVoDqVeBe3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="65867440"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="65867440"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 06:18:20 -0800
+X-CSE-ConnectionGUID: m7YFLqdZRhKNOadJO2RYqg==
+X-CSE-MsgGUID: 20IuvnKGRsqruBQSFnwyLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="191951351"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.50])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 06:18:14 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 21 Nov 2025 16:18:11 +0200 (EET)
+To: Hans de Goede <hansg@kernel.org>
+cc: Bartosz Golaszewski <brgl@bgdev.pl>, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    Sakari Ailus <sakari.ailus@linux.intel.com>, 
+    Philipp Zabel <p.zabel@pengutronix.de>, 
+    Linus Walleij <linus.walleij@linaro.org>, 
+    Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+    "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+    Charles Keepax <ckeepax@opensource.cirrus.com>, 
+    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+    stable@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] platform/x86: intel: chtwc_int33fe: don't dereference
+ swnode args
+In-Reply-To: <58fdb603-6d42-443d-8ae6-57aced9eb104@kernel.org>
+Message-ID: <c116bb9d-1c56-abf3-a9b7-c87dbcc63523@linux.intel.com>
+References: <20251121-int33fe-swnode-fix-v1-1-713e7b7c6046@linaro.org> <58fdb603-6d42-443d-8ae6-57aced9eb104@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <jqmjjsedulkfhgisw4zrzbkuya34bdh6bvzzpdvo2v6jzbfxsy@qsonu7ijsmva>
+Content-Type: multipart/mixed; boundary="8323328-2040322464-1763734691=:965"
 
-On Fri, Nov 21, 2025 at 01:20:08PM +0000, Kiryl Shutsemau wrote:
-> On Fri, Nov 21, 2025 at 10:46:11AM +0100, Greg KH wrote:
-> > On Thu, Nov 20, 2025 at 04:52:21PM +0000, Kiryl Shutsemau wrote:
-> > > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> > > supposed to generate SIGBUS.
-> > > 
-> > > This behavior might not be respected on truncation.
-> > > 
-> > > During truncation, the kernel splits a large folio in order to reclaim
-> > > memory.  As a side effect, it unmaps the folio and destroys PMD mappings
-> > > of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
-> > > are preserved.
-> > > 
-> > > However, if the split fails, PMD mappings are preserved and the user will
-> > > not receive SIGBUS on any accesses within the PMD.
-> > > 
-> > > Unmap the folio on split failure.  It will lead to refault as PTEs and
-> > > preserve SIGBUS semantics.
-> > > 
-> > > Make an exception for shmem/tmpfs that for long time intentionally mapped
-> > > with PMDs across i_size.
-> > > 
-> > > Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
-> > > Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-> > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> > > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > > Cc: Christian Brauner <brauner@kernel.org>
-> > > Cc: "Darrick J. Wong" <djwong@kernel.org>
-> > > Cc: Dave Chinner <david@fromorbit.com>
-> > > Cc: David Hildenbrand <david@redhat.com>
-> > > Cc: Hugh Dickins <hughd@google.com>
-> > > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > > Cc: Liam Howlett <liam.howlett@oracle.com>
-> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > > Cc: Michal Hocko <mhocko@suse.com>
-> > > Cc: Mike Rapoport <rppt@kernel.org>
-> > > Cc: Rik van Riel <riel@surriel.com>
-> > > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > > (cherry picked from commit fa04f5b60fda62c98a53a60de3a1e763f11feb41)
-> > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > > ---
-> > 
-> > Does not apply to 6.17.y at all :(
-> > 
-> > Did you forget to apply this on top of other commits?
-> 
-> Hm. It applies cleanly on v6.17.8:
-> 
-> ❯ git log -1 --oneline @
-> 8ac42a63c561 (HEAD) Linux 6.17.8
-> ❯ b4 shazam 20251120165221.892852-1-kas@kernel.org
-> Grabbing thread from lore.kernel.org/all/20251120165221.892852-1-kas@kernel.org/t.mbox.gz
-> Breaking thread to remove parents of 20251120165221.892852-1-kas@kernel.org
-> Checking for newer revisions
-> Grabbing search results from lore.kernel.org
-> Analyzing 2 messages in the thread
-> Analyzing 1 code-review messages
-> Checking attestation on all messages, may take a moment...
-> ---
->   ✓ [PATCH] mm/truncate: unmap large folio on split failure
->   ---
->   ✓ Signed: DKIM/kernel.org
-> ---
-> Total patches: 1
-> ---
-> Applying: mm/truncate: unmap large folio on split failure
-> 
-> Do you have anything on top of v6.17.8 in your 6.17.y queue?
-> 
-> My other backport to 6.17.y doesn't interfere with the patch either.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I see 6.17.9-rc1 includes
+--8323328-2040322464-1763734691=:965
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-	53241caf24c7 ("mm/huge_memory: do not change split_huge_page*() target order silently")
+On Fri, 21 Nov 2025, Hans de Goede wrote:
 
-With the patch applied, fa04f5b60fda ("mm/truncate: unmap large folio on
-split failure") can be cherry-picked cleanly.
+> Hi,
+>=20
+> On 21-Nov-25 11:04 AM, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >=20
+> > Members of struct software_node_ref_args should not be dereferenced
+> > directly but set using the provided macros. Commit d7cdbbc93c56
+> > ("software node: allow referencing firmware nodes") changed the name of
+> > the software node member and caused a build failure. Remove all direct
+> > dereferences of the ref struct as a fix.
+> >=20
+> > However, this driver also seems to abuse the software node interface by
+> > waiting for a node with an arbitrary name "intel-xhci-usb-sw" to appear
+> > in the system before setting up the reference for the I2C device, while
+> > the actual software node already exists in the intel-xhci-usb-role-swit=
+ch
+> > module and should be used to set up a static reference. Add a FIXME for
+> > a future improvement.
+> >=20
+> > Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
+> > Fixes: 53c24c2932e5 ("platform/x86: intel_cht_int33fe: use inline refer=
+ence properties")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Closes: https://lore.kernel.org/all/20251121111534.7cdbfe5c@canb.auug.o=
+rg.au/
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
+> > This should go into the reset tree as a fix to the regression introduce=
+d
+> > by the reset-gpio driver rework.
+>=20
+> Thanks, patch looks good to me:
+>=20
+> Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+>=20
+> Also ack for merging this through the reset tree.
+>=20
+> Ilpo please do *not* pick this one up as it will be merged
+> through the reset tree.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Fine,
+
+Acked-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+
+--=20
+ i.
+
+>=20
+> Regards,
+>=20
+> Hans
+>=20
+>=20
+>=20
+>=20
+> > ---
+> >  drivers/platform/x86/intel/chtwc_int33fe.c | 29 ++++++++++++++++++++--=
+-------
+> >  1 file changed, 20 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/drivers/platform/x86/intel/chtwc_int33fe.c b/drivers/platf=
+orm/x86/intel/chtwc_int33fe.c
+> > index 29e8b5432f4c9eea7dc45b83d94c0e00373f901b..d183aa53c318ba8d57c7124=
+c38506e6956b3ee36 100644
+> > --- a/drivers/platform/x86/intel/chtwc_int33fe.c
+> > +++ b/drivers/platform/x86/intel/chtwc_int33fe.c
+> > @@ -77,7 +77,7 @@ static const struct software_node max17047_node =3D {
+> >   * software node.
+> >   */
+> >  static struct software_node_ref_args fusb302_mux_refs[] =3D {
+> > -=09{ .node =3D NULL },
+> > +=09SOFTWARE_NODE_REFERENCE(NULL),
+> >  };
+> > =20
+> >  static const struct property_entry fusb302_properties[] =3D {
+> > @@ -190,11 +190,6 @@ static void cht_int33fe_remove_nodes(struct cht_in=
+t33fe_data *data)
+> >  {
+> >  =09software_node_unregister_node_group(node_group);
+> > =20
+> > -=09if (fusb302_mux_refs[0].node) {
+> > -=09=09fwnode_handle_put(software_node_fwnode(fusb302_mux_refs[0].node)=
+);
+> > -=09=09fusb302_mux_refs[0].node =3D NULL;
+> > -=09}
+> > -
+> >  =09if (data->dp) {
+> >  =09=09data->dp->secondary =3D NULL;
+> >  =09=09fwnode_handle_put(data->dp);
+> > @@ -202,7 +197,15 @@ static void cht_int33fe_remove_nodes(struct cht_in=
+t33fe_data *data)
+> >  =09}
+> >  }
+> > =20
+> > -static int cht_int33fe_add_nodes(struct cht_int33fe_data *data)
+> > +static void cht_int33fe_put_swnode(void *data)
+> > +{
+> > +=09struct fwnode_handle *fwnode =3D data;
+> > +
+> > +=09fwnode_handle_put(fwnode);
+> > +=09fusb302_mux_refs[0] =3D SOFTWARE_NODE_REFERENCE(NULL);
+> > +}
+> > +
+> > +static int cht_int33fe_add_nodes(struct device *dev, struct cht_int33f=
+e_data *data)
+> >  {
+> >  =09const struct software_node *mux_ref_node;
+> >  =09int ret;
+> > @@ -212,17 +215,25 @@ static int cht_int33fe_add_nodes(struct cht_int33=
+fe_data *data)
+> >  =09 * until the mux driver has created software node for the mux devic=
+e.
+> >  =09 * It means we depend on the mux driver. This function will return
+> >  =09 * -EPROBE_DEFER until the mux device is registered.
+> > +=09 *
+> > +=09 * FIXME: the relevant software node exists in intel-xhci-usb-role-=
+switch
+> > +=09 * and - if exported - could be used to set up a static reference.
+> >  =09 */
+> >  =09mux_ref_node =3D software_node_find_by_name(NULL, "intel-xhci-usb-s=
+w");
+> >  =09if (!mux_ref_node)
+> >  =09=09return -EPROBE_DEFER;
+> > =20
+> > +=09ret =3D devm_add_action_or_reset(dev, cht_int33fe_put_swnode,
+> > +=09=09=09=09       software_node_fwnode(mux_ref_node));
+> > +=09if (ret)
+> > +=09=09return ret;
+> > +
+> >  =09/*
+> >  =09 * Update node used in "usb-role-switch" property. Note that we
+> >  =09 * rely on software_node_register_node_group() to use the original
+> >  =09 * instance of properties instead of copying them.
+> >  =09 */
+> > -=09fusb302_mux_refs[0].node =3D mux_ref_node;
+> > +=09fusb302_mux_refs[0] =3D SOFTWARE_NODE_REFERENCE(mux_ref_node);
+> > =20
+> >  =09ret =3D software_node_register_node_group(node_group);
+> >  =09if (ret)
+> > @@ -345,7 +356,7 @@ static int cht_int33fe_typec_probe(struct platform_=
+device *pdev)
+> >  =09=09return fusb302_irq;
+> >  =09}
+> > =20
+> > -=09ret =3D cht_int33fe_add_nodes(data);
+> > +=09ret =3D cht_int33fe_add_nodes(dev, data);
+> >  =09if (ret)
+> >  =09=09return ret;
+> > =20
+> >=20
+> > ---
+> > base-commit: cba510406ba76569782ead6007a0e4eb5d34a7ab
+> > change-id: 20251121-int33fe-swnode-fix-e896da458560
+> >=20
+> > Best regards,
+>=20
+--8323328-2040322464-1763734691=:965--
 
