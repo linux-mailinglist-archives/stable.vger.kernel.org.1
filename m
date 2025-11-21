@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C749C792ED
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD5CC79DB9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 684813558F4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4E22A366E7A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E593321D9;
-	Fri, 21 Nov 2025 13:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B4831355B;
+	Fri, 21 Nov 2025 13:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFgEK+m/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JC1fPdy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA9E2D1932;
-	Fri, 21 Nov 2025 13:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920D9351FCB;
+	Fri, 21 Nov 2025 13:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730936; cv=none; b=iRywqZ/m+emQqCbj84BM5ZTz4qPOevUSe7EL+g6k/IBo3y5D/8XdgNqICwcQLnzwlbU3OHMJ3IqSCcNDf96qQhrFh8yK9in2/oayDdTwKSkEj+4iOdLwXx0FfdtVORBtp/15xBLc9s9KXawfv7wU/7DzA96kLqc006qsy5pAFqA=
+	t=1763732995; cv=none; b=oIMrGX07a8efd01Eib5e4CPdSBVzPt3tJywBCJS0a1DQTJKeeteaCfLBE3XI8v0AQ05Kt40owiUZZE3/TLLl2lTH0VT/OpFogP8xg4w3P+GmSVHcneI62WZeCM091X5OWsIjy/U7BiCKhol/SPt/VpVlAkEWes0APlFP7kPpYwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730936; c=relaxed/simple;
-	bh=OKO6tVQH+w68e2N9rDu3yNHz+oYDIn21avusAw4zA1M=;
+	s=arc-20240116; t=1763732995; c=relaxed/simple;
+	bh=eH3ASmc1dfg7Q4bP7vmQPqAcrBZpAxU1W9r+TYLt23Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmkPQb9lKPe6shliIMgB7kqlq1XFetEJmIbwuhw0PagBoMWq664OcU94vG5N0jn6xmdTHjWjSOPKYoWUuR56gpanLvuZmX0NjVIFHGdxTkAmYFzy+3/wXHlyo+7XJPHLYlGBeRD8ooDNUJ8AyFkftKwmGLt551mSggpyPGgBD9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFgEK+m/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BFFC4CEF1;
-	Fri, 21 Nov 2025 13:15:35 +0000 (UTC)
+	 MIME-Version; b=CRy5BxsGCgCPSgnIgBiPMBlwPNmkJuoI1LTiys2GIjOTljF0/ZvGEpQ7mTaluBAMbzqX5V98DZmHplWmtPJ7+60MywclJjl54r5CoJ/gwQYwH0Jf/iIVCQJ7vskYgayw7bZURcZSzyUVSyg84sFsNzl+tMThWw4WoZuz098irMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JC1fPdy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11175C4CEF1;
+	Fri, 21 Nov 2025 13:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730936;
-	bh=OKO6tVQH+w68e2N9rDu3yNHz+oYDIn21avusAw4zA1M=;
+	s=korg; t=1763732995;
+	bh=eH3ASmc1dfg7Q4bP7vmQPqAcrBZpAxU1W9r+TYLt23Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFgEK+m/kcjuuUAWwAt8yjtXkBdLXCgLb+14CSGPEiN5m9WfE83ljythQQGjWwgDM
-	 2ikTXfJAgZUzBYOXwgtGsar/JQkRfsrZVy/TMNRZBp3/vAFE8cXgNInMaJZuOEeZ5B
-	 /6q239ka1n2WibhIlMicqCKQVJvSy9Q2iDf7BxKQ=
+	b=JC1fPdy52kYdMo3Ug1FHM7er/TluPWjXba41rS8Hg4F35au4IPg2CiG7VJ8yzzdee
+	 EVKB+pi0hn9JOQw9EU1Y8iKji9XG2QXYqUlRkUecMqFU+yB4tDHDwzA6VX7z/OmILn
+	 JtDYq4wPX3Bi2nOwpGF/Kj7mh809PmNZgvwWNrK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Lobb <tristan.lobb@it-lobb.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 033/247] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
+Subject: [PATCH 6.6 281/529] amd/amdkfd: resolve a race in amdgpu_amdkfd_device_fini_sw
 Date: Fri, 21 Nov 2025 14:09:40 +0100
-Message-ID: <20251121130155.792466608@linuxfoundation.org>
+Message-ID: <20251121130241.027651422@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Lobb <tristan.lobb@it-lobb.de>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
+[ Upstream commit 99d7181bca34e96fbf61bdb6844918bdd4df2814 ]
 
-The Cooler Master Mice Dongle includes a vendor defined HID interface
-alongside its mouse interface. Not polling it will cause the mouse to
-stop responding to polls on any interface once woken up again after
-going into power saving mode.
+There is race in amdgpu_amdkfd_device_fini_sw and interrupt.
+if amdgpu_amdkfd_device_fini_sw run in b/w kfd_cleanup_nodes and
+  kfree(kfd), and KGD interrupt generated.
 
-Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
-the Dongle's PID.
+kernel panic log:
 
-Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+BUG: kernel NULL pointer dereference, address: 0000000000000098
+amdgpu 0000:c8:00.0: amdgpu: Requesting 4 partitions through PSP
+
+PGD d78c68067 P4D d78c68067
+
+kfd kfd: amdgpu: Allocated 3969056 bytes on gart
+
+PUD 1465b8067 PMD @
+
+Oops: @002 [#1] SMP NOPTI
+
+kfd kfd: amdgpu: Total number of KFD nodes to be created: 4
+CPU: 115 PID: @ Comm: swapper/115 Kdump: loaded Tainted: G S W OE K
+
+RIP: 0010:_raw_spin_lock_irqsave+0x12/0x40
+
+Code: 89 e@ 41 5c c3 cc cc cc cc 66 66 2e Of 1f 84 00 00 00 00 00 OF 1f 40 00 Of 1f 44% 00 00 41 54 9c 41 5c fa 31 cO ba 01 00 00 00 <fO> OF b1 17 75 Ba 4c 89 e@ 41 Sc
+
+89 c6 e8 07 38 5d
+
+RSP: 0018: ffffc90@1a6b0e28 EFLAGS: 00010046
+
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000018
+0000000000000001 RSI: ffff8883bb623e00 RDI: 0000000000000098
+ffff8883bb000000 RO8: ffff888100055020 ROO: ffff888100055020
+0000000000000000 R11: 0000000000000000 R12: 0900000000000002
+ffff888F2b97da0@ R14: @000000000000098 R15: ffff8883babdfo00
+
+CS: 010 DS: 0000 ES: 0000 CRO: 0000000080050033
+
+CR2: 0000000000000098 CR3: 0000000e7cae2006 CR4: 0000000002770ce0
+0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+0000000000000000 DR6: 00000000fffeO7FO DR7: 0000000000000400
+
+PKRU: 55555554
+
+Call Trace:
+
+<IRQ>
+
+kgd2kfd_interrupt+@x6b/0x1f@ [amdgpu]
+
+? amdgpu_fence_process+0xa4/0x150 [amdgpu]
+
+kfd kfd: amdgpu: Node: 0, interrupt_bitmap: 3 YcpxFl Rant tErace
+
+amdgpu_irq_dispatch+0x165/0x210 [amdgpu]
+
+amdgpu_ih_process+0x80/0x100 [amdgpu]
+
+amdgpu: Virtual CRAT table created for GPU
+
+amdgpu_irq_handler+0x1f/@x60 [amdgpu]
+
+__handle_irq_event_percpu+0x3d/0x170
+
+amdgpu: Topology: Add dGPU node [0x74a2:0x1002]
+
+handle_irq_event+0x5a/@xcO
+
+handle_edge_irq+0x93/0x240
+
+kfd kfd: amdgpu: KFD node 1 partition @ size 49148M
+
+asm_call_irq_on_stack+0xf/@x20
+
+</IRQ>
+
+common_interrupt+0xb3/0x130
+
+asm_common_interrupt+0x1le/0x40
+
+5.10.134-010.a1i5000.a18.x86_64 #1
+
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Philip Yang<Philip.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 5721b8414bbdf..d05a62bbafffb 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -342,6 +342,9 @@
- #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
- #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 2786d47961e07..6af65db4de947 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -1017,7 +1017,15 @@ void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
+ 	}
  
-+#define USB_VENDOR_ID_COOLER_MASTER	0x2516
-+#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
+ 	for (i = 0; i < kfd->num_nodes; i++) {
+-		node = kfd->nodes[i];
++		/* Race if another thread in b/w
++		 * kfd_cleanup_nodes and kfree(kfd),
++		 * when kfd->nodes[i] = NULL
++		 */
++		if (kfd->nodes[i])
++			node = kfd->nodes[i];
++		else
++			return;
 +
- #define USB_VENDOR_ID_CORSAIR		0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
- #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index ffd034566e2e1..d7105a8395982 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
+ 		spin_lock_irqsave(&node->interrupt_lock, flags);
+ 
+ 		if (node->interrupts_active
 -- 
 2.51.0
 
