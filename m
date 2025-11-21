@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-195672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EF7C79517
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B89C79F81
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30DF44ED322
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E70674F1FE1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF2313267;
-	Fri, 21 Nov 2025 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC4D350A2A;
+	Fri, 21 Nov 2025 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6ZD+iv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDX/mYt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A1A2773F7;
-	Fri, 21 Nov 2025 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494FE2D73A4;
+	Fri, 21 Nov 2025 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731336; cv=none; b=hzFMGRVowVl0Yn+6AU3Vr+bgw2IPrYcnm4mUcwaJKK/dmZdLMWmQ8wZrtuoaSCrGNg+i1k3UFm4Oc/nkciPhze5ykLlfhrgIu4gNqFk1K5HocwBkaJOfDWCIHpYbEdZdb4RH6sY7BD+hihQNM5Q5OD5qSPazk8WKFK6IH9Ct5+w=
+	t=1763733319; cv=none; b=M2TA474KJSEsh4RVK7dQcemUXbY7l7gpIZ5d6KxXPF7zZ+rchDexfC/xcGLwgIdudOQVIqjyv2lcGZFAIX81WuBOzjJZyjhp0dxDMDheY+dxfTuLMWg2tBN4QJwTaR8GaaZSOpTgHnBpM8Wr7WN7EMOlifQHHxdbGbettkBDO8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731336; c=relaxed/simple;
-	bh=2a0AZKiIU/BxINWWLr7MAdTE7lydimUHETsKeOGc6C4=;
+	s=arc-20240116; t=1763733319; c=relaxed/simple;
+	bh=FX8nSIQApwzZ/W+gEXvsvU80/BNjSeUT4dQvSYFV0oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGvW2fEZ4GBJbECbdZ+6u8q/yG+RVyiwTSEUQlqdRh5RwqAwSU/pkuPyY68A1NPNgLCncSZ7nz6iRUM7naPRRDybuDlXETeXb07sl6X9xlifQF6eUqHj5XkM5OZVE9Ml8ds57mREVmiybDRXotIcEg1iG977MZdTw0pzDyauYF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6ZD+iv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90987C4CEF1;
-	Fri, 21 Nov 2025 13:22:15 +0000 (UTC)
+	 MIME-Version; b=nM+HxSoMLDH8IBbNuRCp5w9K5Q9yDonMK7z72MDPLW3Zc2F/Wk0kgo7ibFXBNC36MsKR5ZgRyxWX4TAG8cZRcHQeVsoybzzv3R1/FO/bRqiKiIpAqppfRee98AXt3bkJW+t1srf6Ka/flZkUvflWR8mGRrbfHTDyW4szS85//9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDX/mYt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E178C4CEF1;
+	Fri, 21 Nov 2025 13:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731336;
-	bh=2a0AZKiIU/BxINWWLr7MAdTE7lydimUHETsKeOGc6C4=;
+	s=korg; t=1763733318;
+	bh=FX8nSIQApwzZ/W+gEXvsvU80/BNjSeUT4dQvSYFV0oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6ZD+iv19VrAo7F2XMweZYFhhg1kb8gAhS0C7p/hdduW15v9A/u+pckwIl2aOdX5d
-	 lfPRIHXnthsJjHPcuvpsARZLoJ5nQE/2/9baFw1yhJTiln6F183Qgnp04z1O2NljJ/
-	 ZBRyd5AnQnd4t18w9FRRhzkEklwmzJn6OYN97BnE=
+	b=oDX/mYt6su5XDlLdI88WMolwtIimYw6AbxWwl4Pkimd/tn+kBNJHMRpJ99FQ7FEPK
+	 nf01zqNXXLs5fL/JmVVHiOWhFPl7FO1/V5AmlzRjfvxAddn0MnB5SqnPs4hH2kPwd+
+	 r+spPYOC4rEVZp7O1Dqcat6ACqEKcNIWs+WTu6Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 172/247] LoongArch: Use correct accessor to read FWPC/MWPC
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 420/529] ACPI: CPPC: Limit perf ctrs in PCC check only to online CPUs
 Date: Fri, 21 Nov 2025 14:11:59 +0100
-Message-ID: <20251121130200.893976916@linuxfoundation.org>
+Message-ID: <20251121130245.959524769@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-commit eeeeaafa62ea0cd4b86390f657dc0aea73bff4f5 upstream.
+[ Upstream commit 0fce75870666b46b700cfbd3216380b422f975da ]
 
-CSR.FWPC and CSR.MWPC are 32bit registers, so use csr_read32() rather
-than csr_read64() to read the values of FWPC/MWPC.
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPU via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-Cc: stable@vger.kernel.org
-Fixes: edffa33c7bb5a73 ("LoongArch: Add hardware breakpoints/watchpoints support")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However the function cppc_perf_ctrs_in_pcc() checks if the CPPC
+perf-ctrs are in a PCC region for all the present CPUs, which breaks
+when the kernel is booted with "nosmt=force".
+
+Hence, limit the check only to the online CPUs.
+
+Fixes: ae2df912d1a5 ("ACPI: CPPC: Disable FIE if registers in PCC regions")
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-5-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/hw_breakpoint.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/hw_breakpoint.h
-+++ b/arch/loongarch/include/asm/hw_breakpoint.h
-@@ -134,13 +134,13 @@ static inline void hw_breakpoint_thread_
- /* Determine number of BRP registers available. */
- static inline int get_num_brps(void)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 6e579be36a1eb..888c7838579a8 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1368,7 +1368,7 @@ bool cppc_perf_ctrs_in_pcc(void)
  {
--	return csr_read64(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
-+	return csr_read32(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
- }
+ 	int cpu;
  
- /* Determine number of WRP registers available. */
- static inline int get_num_wrps(void)
- {
--	return csr_read64(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
-+	return csr_read32(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
- }
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		struct cpc_register_resource *ref_perf_reg;
+ 		struct cpc_desc *cpc_desc;
  
- #endif	/* __KERNEL__ */
+-- 
+2.51.0
+
 
 
 
