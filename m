@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438E7C7939D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A73C79F18
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 114202AE8C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21ED934123F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D39334367;
-	Fri, 21 Nov 2025 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC557350D7E;
+	Fri, 21 Nov 2025 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CC0faldD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXUPFW1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3BA27147D;
-	Fri, 21 Nov 2025 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B584E2D73A4;
+	Fri, 21 Nov 2025 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731227; cv=none; b=A871A2vLqUszU9DIzZ0t+Lc0XoYP908inZ+vWZyIOwwnXhl07YEqvuJ6X+G+HvXr6wmtVLBAafVq6CmCxsLe3siySUC4Ix/RfyiMykNF2BJwkm++HmFTiUDaBirUjqcTG29ebxWOSTNTCDrMKzyu8181psW8upb5qmEr7bkRFFg=
+	t=1763733316; cv=none; b=j5mlPTVBLQtm6z4wBMx9TIfVI3cu1fe6IxJjY7tp05NZINOKrUUXg0+QH2LywiSHshCGWbbS94/q57L8nRoICGCpUoDeuob8otPQOdxA7asHFaL05Q21JPS4faCkqXnMlDJEWunRQkMETpBuuRx/kRM+vdaIUYNJ2JeNCzzAMgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731227; c=relaxed/simple;
-	bh=cT2O+8rDiGla8msjSy9kmYAeYTxf5w5VJ2BkXe8BOs4=;
+	s=arc-20240116; t=1763733316; c=relaxed/simple;
+	bh=3WAwhyajiCS8DtcCLzWunZLow1Fg/4HGUL9G2CNR6Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJCeIMhJxXZOCx3ha4YBkhrRbp5BnykL6bmxEF5TGE2pZN/V5IF7AcoQtEQxVoUe3/3F+69Y6eP1/x89c+bK1kjNJebvfYyB4OyVhuFCjFemvV4kQsUnpSJ6Zq+gC7JNg7iMTY20wyXfscyrgQ++L1MZTIQHyc5gJv+MWLq3KQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CC0faldD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEFCC116C6;
-	Fri, 21 Nov 2025 13:20:26 +0000 (UTC)
+	 MIME-Version; b=E/S4wDafUdyKydj8RoqFue2RMHhaOr49rPJtBdjRidUrI/RS0kqgR6m8nA7DpqoMGDWJ6lqI3pnJOqvQT4qzTsnUY3WcjBQJQTpwMbLwUxvnxl7AMC6kPYrLMCXrgOpBUeAZ2/27p4GkkC7NLvuZaMxXRUN79uPxvoEFqPKNiCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXUPFW1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFFFC4CEF1;
+	Fri, 21 Nov 2025 13:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731227;
-	bh=cT2O+8rDiGla8msjSy9kmYAeYTxf5w5VJ2BkXe8BOs4=;
+	s=korg; t=1763733315;
+	bh=3WAwhyajiCS8DtcCLzWunZLow1Fg/4HGUL9G2CNR6Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CC0faldDltDf0OdKT3/RHsbV9lORX2GnrU9qcZEglHqlKCzJLOqFPbqOfCDTjYdxN
-	 DW3XIGuz4vWOtguvKe9sMekHvVzkZiuQYkFdw56Xmpr7zsz4XIt948Obi43+LDzMW4
-	 Et0mG5zm276OvEV5bSujsZ6QJGIrhhYQwKqkEI5w=
+	b=MXUPFW1MvQ1HOOZlxwslDc05BVr0F+GZgKhudn1QmS2W0WW6NEzTtSFtIADlcNAFD
+	 2E45Ocv3UeWrQ4ywfF93gLCosmC2GYMwMA7gcVqcxhuOpUcp0eVoSb8l+dhO5yaVIP
+	 fPmLADA1BndMZhfm1U0lhMLrPf8CI2mxmRjN0UYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 135/247] arm64: dts: rockchip: Set correct pinctrl for I2S1 8ch TX on odroid-m1
+Subject: [PATCH 6.6 383/529] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
 Date: Fri, 21 Nov 2025 14:11:22 +0100
-Message-ID: <20251121130159.573320520@linuxfoundation.org>
+Message-ID: <20251121130244.651722017@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Moon <linux.amoon@gmail.com>
+From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
 
-[ Upstream commit d425aef66e62221fa6bb0ccb94296df29e4cc107 ]
+[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
 
-Enable proper pin multiplexing for the I2S1 8-channel transmit interface by
-adding the default pinctrl configuration which esures correct signal routing
-and avoids pinmux conflicts during audio playback.
+openSBI v1.7 adds harts checks for ipi operations. Especially it
+adds comparison between hmask passed as an argument from linux
+and mask of online harts (from openSBI side). If they don't
+fit each other the error occurs.
 
-Changes fix the error
-[  116.856643] [    T782] rockchip-pinctrl pinctrl: pin gpio1-10 already requested by affinity_hint; cannot claim for fe410000.i2s
-[  116.857567] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: pin-42 (fe410000.i2s)
-[  116.857618] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: could not request pin 42 (gpio1-10) from group i2s1m0-sdi1 on device rockchip-pinctrl
-[  116.857659] [    T782] rockchip-i2s-tdm fe410000.i2s: Error applying setting, reverse things back
+When cpu is offline, cpu_online_mask is explicitly cleared in
+__cpu_disable. However, there is no explicit clearing of
+mm_cpumask. mm_cpumask is used for rfence operations that
+call openSBI RFENCE extension which uses ipi to remote harts.
+If hart is offline there may be error if mask of linux is not
+as mask of online harts in openSBI.
 
-I2S1 on the M1 to the codec in the RK809 only uses the SCLK, LRCK, SDI0
-and SDO0 signals, so limit the claimed pins to those.
+this patch adds explicit clearing of mm_cpumask for offline hart.
 
-With this change audio output works as expected:
-
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: fe400000.i2s-i2s-hifi i2s-hifi-0 [fe400000.i2s-i2s-hifi i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-card 1: RK817 [Analog RK817], device 0: fe410000.i2s-rk817-hifi rk817-hifi-0 [fe410000.i2s-rk817-hifi rk817-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-
-Fixes: 78f858447cb7 ("arm64: dts: rockchip: Add analog audio on ODROID-M1")
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Signed-off-by: Anand Moon <linux.amoon@gmail.com>
-[adapted the commit message a bit]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
+[pjw@kernel.org: rewrote subject line for clarity]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/kernel/cpu-hotplug.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-index 0f844806ec542..442a2bc43ba8e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-@@ -482,6 +482,8 @@
- };
+diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
+index 6b710ef9d9aef..2114903ee3ad4 100644
+--- a/arch/riscv/kernel/cpu-hotplug.c
++++ b/arch/riscv/kernel/cpu-hotplug.c
+@@ -61,6 +61,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
  
- &i2s1_8ch {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2s1m0_sclktx &i2s1m0_lrcktx &i2s1m0_sdi0 &i2s1m0_sdo0>;
- 	rockchip,trcm-sync-tx-only;
- 	status = "okay";
- };
+ 	pr_notice("CPU%u: off\n", cpu);
+ 
++	clear_tasks_mm_cpumask(cpu);
+ 	/* Verify from the firmware if the cpu is really stopped*/
+ 	if (cpu_ops[cpu]->cpu_is_stopped)
+ 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
 -- 
 2.51.0
 
