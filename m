@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E94C7961F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA1FC79454
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id A448823F37
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id C3F552CDFB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A3E33438C;
-	Fri, 21 Nov 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C8341043;
+	Fri, 21 Nov 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNq58utD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ditsrGtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9086B26560A;
-	Fri, 21 Nov 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C8127B358;
+	Fri, 21 Nov 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731832; cv=none; b=Qv5olX6kl7K+puwog31r+ds72+FLGK4wB+gVEIbJR3oe2atePQsR0w4mEB9oCjPVSAv7VS/FcVYhX7qtjh1ptV6wV6w5zhBbMKowFqpy/vFN+j1c1qkEBffskHiiuRRhpsT5YhS/qFqe8PmDxiHSAKkt4UgBV3D3j8zTJPv6qvE=
+	t=1763731350; cv=none; b=Oc8ZzGIupkWaoXwOZXeAkLQYfgk8Dl1PVO6Cr9kJFRa20mSkpmbVRX2WVyIQFBfp+JVYIZ6kMPGIdQ/t9xe12VzpWz+rph9nAO8LMWZdCuGtydUwS99nzX1wmWlnUI7yR+Zzaz7jqIwnHZ1nXUimuz0xo7pcsWoKsgXuzLOllE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731832; c=relaxed/simple;
-	bh=qd07o7yjCDKL2QP7SHGEyXSiSQdGnPBZVc9Q5IYtCp0=;
+	s=arc-20240116; t=1763731350; c=relaxed/simple;
+	bh=XFJqtiVXR3EeKRm5EjCCUZ4LqlctbV4A1niRNMVOE3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTJNyD4YPzx0ROAhJREjS1HSQrOJ9rQMWyqjtk2NFzy91Vz5vJSE5O0ghKWRBJne+ZYLfs+Zd2eM1oXQVqLsBhBdhPbpRuHAfIuPUUkzPWZICKmU7qNwGuTO9zf0UB55vlwycGGiqHXZxSlgI1K024YarBLe5+Nq/FcOE6q8KYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNq58utD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA2EC4CEF1;
-	Fri, 21 Nov 2025 13:30:31 +0000 (UTC)
+	 MIME-Version; b=NaqOLsImtuRu5H7mRaWqJjk4To4GfNj+n/h3Y6nyZGZxEHCcXk0pioWrW4Ss187Zlt9+1m0TEydyZzZ0FDwtUI2tQlDZWONLuwtuQSwDWpg/YqZpPaU3S4YfGP1LfjPBqEWG3CxumZ4FcBnwo2h+UQ6F3Teyr9bo4oYWehTbNGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ditsrGtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E278FC4CEF1;
+	Fri, 21 Nov 2025 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731832;
-	bh=qd07o7yjCDKL2QP7SHGEyXSiSQdGnPBZVc9Q5IYtCp0=;
+	s=korg; t=1763731350;
+	bh=XFJqtiVXR3EeKRm5EjCCUZ4LqlctbV4A1niRNMVOE3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNq58utD1nFKsLToi6chxqxn+avEt+W4ZI+xpzThfinTcM2l67f4NYE+vS5tqSMYH
-	 nkZkLoBJo2v3FkBCGnFT5QtW7Zfpo5OJw2cB8n+IaLlfwGJsUXPCAPWSe6sffHTMbs
-	 mVl/pploFnyir97h97Qv0ij6X3WGMCFH0qNHS1Uc=
+	b=ditsrGtX0YKK1uqJQ1B4+0hJ4MHvmslnYuCQ9kGkbFECJ9jJEEVPf0zqbLPkCYvos
+	 /xti4hpFHkY0YdsW5EWSYEQnlANIXEzyZgLUY3ZqmQ75lg+QWDJB1GDTSKgv0rAe3f
+	 yHdS4FpIHegSVF5AKJ0r2f2fOP59clNIQA2KmI9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/185] Revert "netfilter: nf_tables: Reintroduce shortened deletion notifications"
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 177/247] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
 Date: Fri, 21 Nov 2025 14:12:04 +0100
-Message-ID: <20251121130147.367182283@linuxfoundation.org>
+Message-ID: <20251121130201.073549574@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Breno Leitao <leitao@debian.org>
 
-This is a partial revert of commit dbe85d3115c7e6b5124c8b028f4f602856ea51dd.
+commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 upstream.
 
-This update breaks old nftables userspace because monitor parser cannot
-handle this shortened deletion, this patch was added as a Stable-dep:,
-let's revert it.
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Scenario causing lack of proper cleanup:
+
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
+
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
+
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
+
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
+
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
+
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 36 ++---------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ net/core/netpoll.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3028d388b2933..2f3684dcbef8c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1032,12 +1032,6 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_TABLE_PAD))
- 		goto nla_put_failure;
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -812,6 +812,10 @@ static void __netpoll_cleanup(struct net
+ 	if (!npinfo)
+ 		return;
  
--	if (event == NFT_MSG_DELTABLE ||
--	    event == NFT_MSG_DESTROYTABLE) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
- 			 htonl(table->flags & NFT_TABLE_F_MASK)))
- 		goto nla_put_failure;
-@@ -1893,13 +1887,6 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_CHAIN_PAD))
- 		goto nla_put_failure;
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
  
--	if (!hook_list &&
--	    (event == NFT_MSG_DELCHAIN ||
--	     event == NFT_MSG_DESTROYCHAIN)) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nft_is_base_chain(chain)) {
- 		const struct nft_base_chain *basechain = nft_base_chain(chain);
- 		struct nft_stats __percpu *stats;
-@@ -4685,12 +4672,6 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 			 NFTA_SET_PAD))
- 		goto nla_put_failure;
+@@ -821,8 +825,7 @@ static void __netpoll_cleanup(struct net
  
--	if (event == NFT_MSG_DELSET ||
--	    event == NFT_MSG_DESTROYSET) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (set->flags != 0)
- 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
- 			goto nla_put_failure;
-@@ -8021,18 +8002,12 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
++	}
  
- 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
- 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->key.name) ||
--	    nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
- 	    nla_put_be64(skb, NFTA_OBJ_HANDLE, cpu_to_be64(obj->handle),
- 			 NFTA_OBJ_PAD))
- 		goto nla_put_failure;
- 
--	if (event == NFT_MSG_DELOBJ ||
--	    event == NFT_MSG_DESTROYOBJ) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
--	if (nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
-+	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
-+	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
- 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
- 		goto nla_put_failure;
- 
-@@ -9048,13 +9023,6 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_FLOWTABLE_PAD))
- 		goto nla_put_failure;
- 
--	if (!hook_list &&
--	    (event == NFT_MSG_DELFLOWTABLE ||
--	     event == NFT_MSG_DESTROYFLOWTABLE)) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
- 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
- 		goto nla_put_failure;
--- 
-2.51.0
-
+ 	skb_pool_flush(np);
+ }
 
 
 
