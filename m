@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-195767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D43FC796D6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:42 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92010C7942A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id F22D333A39
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF7BB3461CF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677AE1F09B3;
-	Fri, 21 Nov 2025 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30D1332904;
+	Fri, 21 Nov 2025 13:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsM1+If7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgRq5nJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E60246762;
-	Fri, 21 Nov 2025 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779CF272801;
+	Fri, 21 Nov 2025 13:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731604; cv=none; b=e1aZeE6yy4tnrMlwfbVDkyDlM5GCRBIYjJxT+0ZMXp/sI9aVVBFkyHt08x4rBLqw8uQrVvVeYldI48ckA5LCwvWKmr8Mfu72VKzDeEB7qiCXHTG1hp3jH+1K/VvqgMKkhdok+zd9XnBo0HcilCK5Om8ExRsftTrwETXlRv0g4rQ=
+	t=1763731095; cv=none; b=UdUymm6dgcjtp/KLeZdM+9LezwnW6+B13ScXFPMOjLUN6NPTU4uK7vNREKLStZI8ItFuGDTUD5NN3JtnocLNkrx0U6G32rIC8IhRRdJ+/XgyBJqY16Jef0cjK9s4UD2VKaiks1WiAPFBO58yX1U9ywTn1mDxKeYpGWI+yhbp5VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731604; c=relaxed/simple;
-	bh=i+r8P9JL34cguQCpUkSiW7K4tHzdPo/sjOoQTIBxyTQ=;
+	s=arc-20240116; t=1763731095; c=relaxed/simple;
+	bh=/lFxh42tueAl6X+K2QEfZO0+SxMGKyhiWKu5z+NU26Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sl80GSNgAofkXYGd/s8n+H8q2q8mbkdJEgQw2g/2B4Um9rDyLqr5XsS26uynOrXIgCXZ1n1vr4EdGZQvS0wzuxPE24wkfnNVbIPa1MqFgMmHtZJa40X8j+ElWLQzTKc5qNBaHDJZo+Vw2JPOq1PnKlH15YW6Ouc3+/zoqJZajL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsM1+If7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B09BC4CEF1;
-	Fri, 21 Nov 2025 13:26:43 +0000 (UTC)
+	 MIME-Version; b=NT1w4xffC2kCLX/2dY1m71iQqtWFRAQVYabvBTjg8DBYFsDy++q1GHxVnfH8cEdPW7X7l7TelROUrvZqs7SItCbu8JRaKmFEjpOwubSk6eJv5VZqFKiRIHy/ogEtqm4IoKuKfGewFnQlKu4JB2MacnjAmTmJDMJGQXeSdKDQpx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgRq5nJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02282C4CEF1;
+	Fri, 21 Nov 2025 13:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731604;
-	bh=i+r8P9JL34cguQCpUkSiW7K4tHzdPo/sjOoQTIBxyTQ=;
+	s=korg; t=1763731095;
+	bh=/lFxh42tueAl6X+K2QEfZO0+SxMGKyhiWKu5z+NU26Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsM1+If7LrZqOB7p4aROnnZ8x83BsrkLix8UUVuFVvKTNJT1QvHCmD6sozKB0irXt
-	 TGaQzjPK6Gw2+WS5o7oMIXuXW7hbZchZemmdxtXmkQc5FdvEzP5DoPFk6EGSeXqlQ+
-	 f04I3GF47IKAIV5m3pgzgXo6iPBQf+RqubIwpPi0=
+	b=SgRq5nJ1My/HiY7nCAUzOiN6URSMOghEEKD1jMFxIjKUUyelq8K8CwS82TGakCF6/
+	 1gqMsoeR5ftDKqNdUjW4l8VlzU1/hEtZEqjFQayfHai5kzbbgSvzYWB1YYsAfBCNjn
+	 IY/6Ed8EFZz/ooFA8qDg9hgfrZi9FmM3TYm8x4wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Christopher Harris <chris.harris79@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/185] drm/xe: Do clean shutdown also when using flr
+Subject: [PATCH 6.17 089/247] ACPI: CPPC: Check _CPC validity for only the online CPUs
 Date: Fri, 21 Nov 2025 14:10:36 +0100
-Message-ID: <20251121130144.206232588@linuxfoundation.org>
+Message-ID: <20251121130157.788209922@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit b11a020d914c3b7628f56a9ea476a5b03679489b ]
+[ Upstream commit 6dd3b8a709a130a4d55c866af9804c81b8486d28 ]
 
-Currently Xe driver is triggering flr without any clean-up on
-shutdown. This is causing random warnings from pending related works as the
-underlying hardware is reset in the middle of their execution.
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-Fix this by performing clean shutdown also when using flr.
+However the function acpi_cpc_valid() checks for the validity of the
+_CPC object for all the present CPUs. This breaks when the kernel is
+booted with "nosmt=force".
 
-Fixes: 501d799a47e2 ("drm/xe: Wire up device shutdown handler")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Maarten Lankhorst <dev@lankhorst.se>
-Link: https://patch.msgid.link/20251031122312.1836534-1-jouni.hogander@intel.com
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-(cherry picked from commit a4ff26b7c8ef38e4dd34f77cbcd73576fdde6dd4)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Hence check the validity of the _CPC objects of only the online CPUs.
+
+Fixes: 2aeca6bd0277 ("ACPI: CPPC: Check present CPUs for determining _CPC is valid")
+Reported-by: Christopher Harris <chris.harris79@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-3-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 3fab4e67ef8c1..161c73e676640 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -809,21 +809,21 @@ void xe_device_remove(struct xe_device *xe)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 6b649031808f8..6694412a1e139 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -460,7 +460,7 @@ bool acpi_cpc_valid(void)
+ 	if (acpi_disabled)
+ 		return false;
  
- void xe_device_shutdown(struct xe_device *xe)
- {
-+	struct xe_gt *gt;
-+	u8 id;
-+
- 	drm_dbg(&xe->drm, "Shutting down device\n");
- 
--	if (xe_driver_flr_disabled(xe)) {
--		struct xe_gt *gt;
--		u8 id;
-+	xe_display_pm_shutdown(xe);
- 
--		xe_display_pm_shutdown(xe);
-+	xe_irq_suspend(xe);
- 
--		xe_irq_suspend(xe);
-+	for_each_gt(gt, xe, id)
-+		xe_gt_shutdown(gt);
- 
--		for_each_gt(gt, xe, id)
--			xe_gt_shutdown(gt);
-+	xe_display_pm_shutdown_late(xe);
- 
--		xe_display_pm_shutdown_late(xe);
--	} else {
-+	if (!xe_driver_flr_disabled(xe)) {
- 		/* BOOM! */
- 		__xe_driver_flr(xe);
- 	}
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		if (!cpc_ptr)
+ 			return false;
 -- 
 2.51.0
 
