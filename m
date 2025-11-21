@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0469DC79B1E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84EA7C799BF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CFCDB356490
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A7334EBC06
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24E434F24D;
-	Fri, 21 Nov 2025 13:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F44234D906;
+	Fri, 21 Nov 2025 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8zXWUCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT2vP0FO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A786529B78F;
-	Fri, 21 Nov 2025 13:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C334D4CE;
+	Fri, 21 Nov 2025 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732444; cv=none; b=OsSxRQ8SzwcsjdI2yLhKLm0wf0nAldH6kiFQQkONUAXpfhCRZjdr35G167jdG+S0jYEIbGgnvKT1oIyJhA9hYA5LXi6Lg7aJksVspq/UymOxr4efMS9DRpupXEEjpB+AWDkLeDnDi6VKqIY7o1Zgo6C6255eVf/gIugQjHQbj2c=
+	t=1763732450; cv=none; b=nFcFeiDJGlHGVfnv6fc8NQtcD2F1aKiwl6O6YB+0mqaNqFw6UoHjPCx6hEXW62kG07663bEgK4k3uJzoFiAHMdRqIXGLPYpzMb9RdzmGOJM6ctI3RFBufdH6g8vSWX6TCLipUrkJTEbHeoPYv53Yh2PbS02CljXY3nTyNfid6G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732444; c=relaxed/simple;
-	bh=OGOL9FWEjUVsZ2eigwHupcEUxCimnu42iTHGMXt+30E=;
+	s=arc-20240116; t=1763732450; c=relaxed/simple;
+	bh=Jaz782/8T5GUMoeOZbMnFVZt9Gv8giHiO8oRTJQqvwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ne1Ukf9LX7mQK2S8aEd11kNavkvm+zsYcxqMaq45eJvI47Ew+XKzuCztruyl98wJ1wfOiaqXlybHja+ZC9V0NpzNjv7fycgRjhZAz7LJ4D0UJVAhdo2P8ckkM45lWz9QOec8jY+e5OpVcNNkn4d0TKmnSF/bkyP9YuV4FWCF36s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8zXWUCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293F0C4CEF1;
-	Fri, 21 Nov 2025 13:40:43 +0000 (UTC)
+	 MIME-Version; b=f4OkckIS+4Wgl5k9ZScuRO32mz+tTiyF/AJ5nJOxLsVDY0A1KAYGAsFb+TXoZR9nw4vkujtkzabCYYIC74KIq9M963GXfGrn4zehLJCVSCyPK/yfiVQvAXZt9K0y/cWvUdvHBFevXuMwv2mgjOPFlvtkyOs8JrwG6du4XHJ0ywQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT2vP0FO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4064C4CEFB;
+	Fri, 21 Nov 2025 13:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732444;
-	bh=OGOL9FWEjUVsZ2eigwHupcEUxCimnu42iTHGMXt+30E=;
+	s=korg; t=1763732450;
+	bh=Jaz782/8T5GUMoeOZbMnFVZt9Gv8giHiO8oRTJQqvwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8zXWUCVNiXZlDiMZd9//92/xlCpMEZiTcvIpylu1UcGlJDZwEVMJAC4D1Q5lauwW
-	 +ymiY/nfxE9E7ScVvq92HjAPKsBKUfwzPXszmuphMn4K1mXApoaNE5n4GCqzHTqPse
-	 SEAFaDxACufnYDHOzHFui7LpCM9OANNGN7xhO0HU=
+	b=WT2vP0FOmschNFNB7MT9IjFByiUbW+GHTqwli5gJ6xDVOXZwZX6cYFKbNVc4UcbRT
+	 e1EGXvVuneEtZFch1W7CdyGlknTE59CreLDtAp0tNGohbMNVRZHuwdJ8aJXIQ27wtd
+	 7EgKXDh849BH+3UX3ZYSVpSu6RkBQTabpIjv+nK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcos Del Sol Vives <marcos@orca.pet>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Wake Liu <wakel@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/529] PCI: Disable MSI on RDC PCI to PCIe bridges
-Date: Fri, 21 Nov 2025 14:07:02 +0100
-Message-ID: <20251121130235.399520254@linuxfoundation.org>
+Subject: [PATCH 6.6 124/529] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
+Date: Fri, 21 Nov 2025 14:07:03 +0100
+Message-ID: <20251121130235.434135990@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,37 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marcos Del Sol Vives <marcos@orca.pet>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit ebc7086b39e5e4f3d3ca82caaea20538c9b62d42 ]
+[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
 
-RDC PCI to PCIe bridges, present on Vortex86DX3 and Vortex86EX2 SoCs, do
-not support MSIs. If enabled, interrupts generated by PCIe devices never
-reach the processor.
+The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
+header, is a GNU extension and not universally available with all
+toolchains, such as Clang when used with musl libc.
 
-I have contacted the manufacturer (DM&P) and they confirmed that PCI MSIs
-need to be disabled for them.
+This can lead to build failures in environments where this header is
+missing.
 
-Signed-off-by: Marcos Del Sol Vives <marcos@orca.pet>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250705233209.721507-1-marcos@orca.pet
+The intention of the code is to determine the bit width of a C `long`.
+Replace the non-portable `__WORDSIZE` with the standard and portable
+`sizeof(long) * 8` expression to achieve the same result.
+
+This change also removes the inclusion of the now-unused
+`<bits/wordsize.h>` header.
+
+Signed-off-by: Wake Liu <wakel@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/psock_tpacket.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d67ea16e69e6a..aae702063ba3d 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2712,6 +2712,7 @@ static void quirk_disable_msi(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_8131_BRIDGE, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_VIA, 0xa238, quirk_disable_msi);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x5a3f, quirk_disable_msi);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RDC, 0x1031, quirk_disable_msi);
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 404a2ce759ab6..93092d13b3c59 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -33,7 +33,6 @@
+ #include <ctype.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-#include <bits/wordsize.h>
+ #include <net/ethernet.h>
+ #include <netinet/ip.h>
+ #include <arpa/inet.h>
+@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
  
- /*
-  * The APC bridge device in AMD 780 family northbridges has some random
+ static int test_user_bit_width(void)
+ {
+-	return __WORDSIZE;
++	return sizeof(long) * 8;
+ }
+ 
+ static const char *tpacket_str[] = {
 -- 
 2.51.0
 
