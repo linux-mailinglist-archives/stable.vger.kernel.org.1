@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-195628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF73C79505
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69845C79CE4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C1D52365399
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 271482DBEC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7856F2F363E;
-	Fri, 21 Nov 2025 13:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263AB34D3AE;
+	Fri, 21 Nov 2025 13:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0BGWhDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDuyONAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2881F09B3;
-	Fri, 21 Nov 2025 13:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D627F34DB5C;
+	Fri, 21 Nov 2025 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731213; cv=none; b=ib6bl4xAfF2d7yovDyZB7+2nFhvze2xORWa+ly6iKWyUvKrWSaaOYtLJqY/SL5/73Qf+h/wSePapUCKCZTaRVvrqvqNO4QqQkyGvuMfiEhi1KW5DvGVaLEQuZZAvnQ/CpGL4yuWxo02nVmMg4e125y+4WcejkHMfpSI60+aUEb0=
+	t=1763733180; cv=none; b=gqg8nQOFvdryx9NQr9EsAAvkCUF82JYicz8dD9DcWR3OZo+/ObrlSOc8x3zzlOhpOUWSUThRNg9q2FRlVx12fTyoLEwucTiRCh61tRszM6V7ADwAxu/ce8StfiMpxLX+3v23bwDYQVrnbht8cAwMUF9Ox2XFGInXUdMhWuVkBdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731213; c=relaxed/simple;
-	bh=Nqu9GgO/QliyMDtuL9cek70DlYbVuTj2OD3dY1WLBRg=;
+	s=arc-20240116; t=1763733180; c=relaxed/simple;
+	bh=cKYh+hUhy4B1bqUQAX+4HJTh61FMTwTz7BOX8uvdMfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HI4QcavwboNrnOjz2kOj5TSD9Y6Dp7O9gl0oG+MKMypEa2R7QeiDS59w6L00ZaO3zHkH6m8apotAsG7aLF1CXWrmZ3Pfky0fKxMDysU01RKIxgv9HO89UQHudFFCRiPUVewu1GZrQih8txCVxbG6Sw5ERjfW0yfKhS0nEiY/hYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0BGWhDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F34C4CEF1;
-	Fri, 21 Nov 2025 13:20:12 +0000 (UTC)
+	 MIME-Version; b=LWiwc9Zz7ZYxsmR+PNm0/UNg1tXeUCz2O8Bo2lkzdukpfwmj9K8z7sF+nnC+jAuhYWMO/0TedGJxGOfGyoC4F/QVQ6jNrRexuS95wZRMp/xF5YsSOv5xP4nF/9UpZ+eLI8V4k+9iORDSo3aL4Q2+iUMPT/AQu9bhIwtDTPWBUg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDuyONAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC6EC4AF0C;
+	Fri, 21 Nov 2025 13:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731213;
-	bh=Nqu9GgO/QliyMDtuL9cek70DlYbVuTj2OD3dY1WLBRg=;
+	s=korg; t=1763733180;
+	bh=cKYh+hUhy4B1bqUQAX+4HJTh61FMTwTz7BOX8uvdMfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0BGWhDGYI/iJlLXoK/2/3BGAoTFgm88QRrbN1AZEV1sMpUXJZyZj2HOtHjcIOMni
-	 JmOWYWL+mEIVKIk4Lt0jdSpEPLALwXLkIkZUYF3q1C3LfI0C/0tgAEecefmkxxIRVu
-	 VJPbN//U/K6ET4qRq5lAsioh8rk7kqsNdLLTrU4s=
+	b=DDuyONAZUwjMvnKbj+5tMYa2mnu0q4xCF6L6UBTL7mVb+fYP/jvsfo1+1VG7p/98G
+	 bCZDk1chyOMB03yMbvh8oasVzW7vpapyT1rNK2pxZyXBHR5ezvcKWgQyboHeaPNTrL
+	 FpJj3VRbuEYyxkFlolPePxP4D2i5VygPblv9HkYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Thomas Falcon <thomas.falcon@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 130/247] perf header: Write bpf_prog (infos|btfs)_cnt to data file
+Subject: [PATCH 6.6 378/529] drm/i915: Fix conversion between clock ticks and nanoseconds
 Date: Fri, 21 Nov 2025 14:11:17 +0100
-Message-ID: <20251121130159.392849036@linuxfoundation.org>
+Message-ID: <20251121130244.475016465@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Falcon <thomas.falcon@intel.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit 85c894a80ac46aa177df04e0a33bcad409b7d64f ]
+[ Upstream commit 7d44ad6b43d0be43d080180413a1b6c24cfbd266 ]
 
-With commit f0d0f978f3f5830a ("perf header: Don't write empty BPF/BTF
-info"), the write_bpf_( prog_info() | btf() ) functions exit without
-writing anything if env->bpf_prog.(infos| btfs)_cnt is zero.
+When tick values are large, the multiplication by NSEC_PER_SEC is larger
+than 64 bits and results in bad conversions.
 
-process_bpf_( prog_info() | btf() ), however, still expect a "count"
-value to exist in the data file. If btf information is empty, for
-example, process_bpf_btf will read garbage or some other data as the
-number of btf nodes in the data file. As a result, the data file will
-not be processed correctly.
+The issue is seen in PMU busyness counters that look like they have
+wrapped around due to bad conversion. i915 PMU implementation returns
+monotonically increasing counters. If a count is lesser than previous
+one, it will only return the larger value until the smaller value
+catches up. The user will see this as zero delta between two
+measurements even though the engines are busy.
 
-Instead, write the count to the data file and exit if it is zero.
+Fix it by using mul_u64_u32_div()
 
-Fixes: f0d0f978f3f5830a ("perf header: Don't write empty BPF/BTF info")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Thomas Falcon <thomas.falcon@intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14955
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://lore.kernel.org/r/20251016000350.1152382-2-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 2ada9cb1df3f5405a01d013b708b1b0914efccfe)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[Rodrigo: Added the Fixes tag while cherry-picking to fixes]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/header.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index 4f2a6e10ed5cc..4e12be579140a 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -1022,12 +1022,9 @@ static int write_bpf_prog_info(struct feat_fd *ff,
+diff --git a/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c b/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
+index 7c9be4fd1c8c4..7a950c1502b6e 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
++++ b/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
+@@ -208,7 +208,7 @@ static u64 div_u64_roundup(u64 nom, u32 den)
  
- 	down_read(&env->bpf_progs.lock);
+ u64 intel_gt_clock_interval_to_ns(const struct intel_gt *gt, u64 count)
+ {
+-	return div_u64_roundup(count * NSEC_PER_SEC, gt->clock_frequency);
++	return mul_u64_u32_div(count, NSEC_PER_SEC, gt->clock_frequency);
+ }
  
--	if (env->bpf_progs.infos_cnt == 0)
--		goto out;
--
- 	ret = do_write(ff, &env->bpf_progs.infos_cnt,
- 		       sizeof(env->bpf_progs.infos_cnt));
--	if (ret < 0)
-+	if (ret < 0 || env->bpf_progs.infos_cnt == 0)
- 		goto out;
+ u64 intel_gt_pm_interval_to_ns(const struct intel_gt *gt, u64 count)
+@@ -218,7 +218,7 @@ u64 intel_gt_pm_interval_to_ns(const struct intel_gt *gt, u64 count)
  
- 	root = &env->bpf_progs.infos;
-@@ -1067,13 +1064,10 @@ static int write_bpf_btf(struct feat_fd *ff,
+ u64 intel_gt_ns_to_clock_interval(const struct intel_gt *gt, u64 ns)
+ {
+-	return div_u64_roundup(gt->clock_frequency * ns, NSEC_PER_SEC);
++	return mul_u64_u32_div(ns, gt->clock_frequency, NSEC_PER_SEC);
+ }
  
- 	down_read(&env->bpf_progs.lock);
- 
--	if (env->bpf_progs.btfs_cnt == 0)
--		goto out;
--
- 	ret = do_write(ff, &env->bpf_progs.btfs_cnt,
- 		       sizeof(env->bpf_progs.btfs_cnt));
- 
--	if (ret < 0)
-+	if (ret < 0 || env->bpf_progs.btfs_cnt == 0)
- 		goto out;
- 
- 	root = &env->bpf_progs.btfs;
+ u64 intel_gt_ns_to_pm_interval(const struct intel_gt *gt, u64 ns)
 -- 
 2.51.0
 
