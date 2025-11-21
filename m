@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAB8C792C6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAEBC79C06
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E72324EB174
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 124314EEF2C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CA32FDC3E;
-	Fri, 21 Nov 2025 13:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BE4350A3F;
+	Fri, 21 Nov 2025 13:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dM6rB7lC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdrlbLqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D7B33C527;
-	Fri, 21 Nov 2025 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60924350A2F;
+	Fri, 21 Nov 2025 13:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730866; cv=none; b=HXYmMRtPM+OZzc7lYjoQmAkuWaFzfjPRwW0tO6xFg4L2Z0IKGlO+qigrlUwuCaBeVpJdhQL1U94CjQ52/bM1VGwIgd8/0pEhb865g3G63bdqM/eMNeCs3vln0fBkiHdtl+2UB0Ea5qNCBnFS3kAAIHE+07euFwduXh82wABFHkY=
+	t=1763732808; cv=none; b=cefTX897rEDDteU04xqZSyMBlazNb3vU2FjAy8ODYMvL2Mn1HJ0KUwEjQV2P70Xlo/0eI6tREeb0exq//VWxk2We8EZnyQBhgkpGSNxBUHgnlhAbCL+DFDtKAMV9b5YaaC8YOrJxlZ9uUGHY6T3Gw/Xl22kmhu9lzCDOldJRQpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730866; c=relaxed/simple;
-	bh=GZrULeVZeQ5sk5N3sNtOvdzuIKd9zxGmJgZAT5wCJDs=;
+	s=arc-20240116; t=1763732808; c=relaxed/simple;
+	bh=2UIODLEmcZ9YgjrBqTlAeSIosYHVIP7yDnliJFvIGAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJHSdha9p05X65AZMOKcyZivf7i4A7dobyDx5D0SKaNHRCGMpnK2AymUhgBp1aPon/3Xc88GFnx8M70cxls+kSgjHlBTDX7tS9iOA4O7GdQ5XPoXCcM+e7rmSSAQP0tZ8KJEU+joB/z4CC4PPR7DCkrBAb1NTCGqwVYVl4lzBKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dM6rB7lC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4174C4CEF1;
-	Fri, 21 Nov 2025 13:14:25 +0000 (UTC)
+	 MIME-Version; b=i507MkQvffKaRSW93G30YBeVO0lMq/UXV29HBEQ3ctNgoDe74+dE8P2/LFB0plH3HvRaaOVmQcntBmQ+vkyHA74zXzSO+fwZvrgU4bdtyuns1Iuziy/UIWEr6GM5s6zHZZc+pJpc3PB7dmkq5BFagZHekF8XA4PIgc80l3gk+Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdrlbLqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915B4C4CEF1;
+	Fri, 21 Nov 2025 13:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730866;
-	bh=GZrULeVZeQ5sk5N3sNtOvdzuIKd9zxGmJgZAT5wCJDs=;
+	s=korg; t=1763732807;
+	bh=2UIODLEmcZ9YgjrBqTlAeSIosYHVIP7yDnliJFvIGAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dM6rB7lCkcrlcJQld1mnYxzNvsHwcKzcjT8679LdVBRLkQ/H6lgLhoxpTZZe7jicL
-	 SQksZxmLVawG35DQRiu6q1IFhyvoWxsvnbyrQ1cTXVSAYP0FAYj/lDO3k4BDqSfy3l
-	 0nO+VXK5XCARER5CSUeq5qUf8xSqJEzY7R/JqZ/I=
+	b=OdrlbLqyciDTD4ALHbcPPUaiWr04Y9dUQeFMveHJgpSz+qRtPi73+6sTN9hFP0bZo
+	 D7id/Vrmzv9KiCWGRQdaBmQACkKXBN392xZumbJli0EWYeL4telPtzjHWxmv/RoyX/
+	 o5pGpcKRojjBC/ZqT9+FH2qKldkEy656iYUSjP+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 002/247] drm/mediatek: Add pm_runtime support for GCE power control
-Date: Fri, 21 Nov 2025 14:09:09 +0100
-Message-ID: <20251121130154.682029879@linuxfoundation.org>
+Subject: [PATCH 6.6 251/529] RDMA/irdma: Update Kconfig
+Date: Fri, 21 Nov 2025 14:09:10 +0100
+Message-ID: <20251121130239.948035019@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 
-[ Upstream commit afcfb6c8474d9e750880aaa77952cc588f859613 ]
+[ Upstream commit 060842fed53f77a73824c9147f51dc6746c1267a ]
 
-Call pm_runtime_resume_and_get() before accessing GCE hardware in
-mbox_send_message(), and invoke pm_runtime_put_autosuspend() in the
-cmdq callback to release the PM reference and start autosuspend for
-GCE. This ensures correct power management for the GCE device.
+Update Kconfig to add dependency on idpf module and
+add IPU E2000 to the list of supported devices.
 
-Fixes: 8afe816b0c99 ("mailbox: mtk-cmdq-mailbox: Implement Runtime PM with autosuspend")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250829091727.3745415-3-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20250827152545.2056-17-tatyana.e.nikolova@intel.com
+Tested-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_crtc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/irdma/Kconfig | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
-index bc7527542fdc6..c4c6d0249df56 100644
---- a/drivers/gpu/drm/mediatek/mtk_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
-@@ -283,6 +283,10 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
- 	unsigned int i;
- 	unsigned long flags;
- 
-+	/* release GCE HW usage and start autosuspend */
-+	pm_runtime_mark_last_busy(cmdq_cl->chan->mbox->dev);
-+	pm_runtime_put_autosuspend(cmdq_cl->chan->mbox->dev);
-+
- 	if (data->sta < 0)
- 		return;
- 
-@@ -618,6 +622,9 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
- 		mtk_crtc->config_updating = false;
- 		spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
- 
-+		if (pm_runtime_resume_and_get(mtk_crtc->cmdq_client.chan->mbox->dev) < 0)
-+			goto update_config_out;
-+
- 		mbox_send_message(mtk_crtc->cmdq_client.chan, cmdq_handle);
- 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
- 		goto update_config_out;
+diff --git a/drivers/infiniband/hw/irdma/Kconfig b/drivers/infiniband/hw/irdma/Kconfig
+index b6f9c41bca51d..41660203e0049 100644
+--- a/drivers/infiniband/hw/irdma/Kconfig
++++ b/drivers/infiniband/hw/irdma/Kconfig
+@@ -4,9 +4,10 @@ config INFINIBAND_IRDMA
+ 	depends on INET
+ 	depends on IPV6 || !IPV6
+ 	depends on PCI
+-	depends on ICE && I40E
++	depends on IDPF && ICE && I40E
+ 	select GENERIC_ALLOCATOR
+ 	select AUXILIARY_BUS
+ 	help
+-	  This is an Intel(R) Ethernet Protocol Driver for RDMA driver
+-	  that support E810 (iWARP/RoCE) and X722 (iWARP) network devices.
++	  This is an Intel(R) Ethernet Protocol Driver for RDMA that
++	  supports IPU E2000 (RoCEv2), E810 (iWARP/RoCEv2) and X722 (iWARP)
++	  network devices.
 -- 
 2.51.0
 
