@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D95C79302
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2D7C79F3C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 43FC5363CE6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id CB9923690E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D4927147D;
-	Fri, 21 Nov 2025 13:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA11346E46;
+	Fri, 21 Nov 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8U4gMex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaOGKBjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65C623183B;
-	Fri, 21 Nov 2025 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD10E3328FE;
+	Fri, 21 Nov 2025 13:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730950; cv=none; b=FoW+/hno2vu9kpmHKfEzrWUDzWcEVWQ81mvw7P+R8hrHkHEO/lNzQEuAtDQKkgSEeELXU2juIBUInPgUqJQVbKtbDJR2QdwCuVrehkXoplMzoYQOd+GoiXFjylNUNAecsmE9mJJ/QT77uQlShBqOawYQfuwaZRK65/5Mvu0OncA=
+	t=1763732833; cv=none; b=OhYpD8wuXA/duB9t1tnrxrQu006aSi8n3N6C5pvX84FNL7lNeui9pTvytJBdKk17r8SSLtUqycXGuuQlWt+qvI9/8kOO324Bqo5pX/fejti6X9ANDy82bksEIP2ggR3Bdnl+C/8Yx9KqGCEQuZPPfwLzVB2M5sQ+q2cSsvINY0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730950; c=relaxed/simple;
-	bh=OMlJsB1KuZSdCNyqwb/oTTlCsArhBXQ/qm1DwS1pzpo=;
+	s=arc-20240116; t=1763732833; c=relaxed/simple;
+	bh=6K1Elt7x9/MQzZvnBfL7wMNDxzIrgd1tNKE8T9qifEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcOeKdPkov4MzZdfg9evQHMPYYLgBWF+gXSft7LbIJAHcrs8uxWLtkKusfrG4hJrUgApf0ihkQ2cdtBJulNFyXN+i8osuPaMaD4qPt6lKD4xCL1Q5mUSP1aLxE5mbJpnexWGzHbq96BboShQxF+q7qt5Pr1Zp2W8mMFNrEzg7aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8U4gMex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401E3C4CEF1;
-	Fri, 21 Nov 2025 13:15:50 +0000 (UTC)
+	 MIME-Version; b=AQfiMZJBKHyo8g3fP4rFaka7ptVXIfUmnJOu/cmiNGxLh2BIUt9fRicH2ehfdtBk11GY7yZ7eM9V5k+U5RmpP6esptvDRcojG3TGngwa2Jgx+mVuX/UW4yfG2EHaBQ//NjREh6BlKkXQdjRNPfTzYmt2QboZgKJ3Jjkl9+MCtvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaOGKBjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546B5C4CEF1;
+	Fri, 21 Nov 2025 13:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730950;
-	bh=OMlJsB1KuZSdCNyqwb/oTTlCsArhBXQ/qm1DwS1pzpo=;
+	s=korg; t=1763732833;
+	bh=6K1Elt7x9/MQzZvnBfL7wMNDxzIrgd1tNKE8T9qifEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8U4gMexFz5MrTDH5aDPzX/EsRTjo7q1g8Xmeg32/amIziEKRtmM+Bc1Bka6XXhu9
-	 n0N9AzNwyvuV/4yxtQIBDvJH8N2GgvIqwQAaahm9Md8NRTjZcZL0RTswQvP/UilXoD
-	 6uGqeg+GqoK0m/AXIduNX/cSKekCtN2ih09cT32c=
+	b=HaOGKBjm2EW1c2diI312ePKoQmEpU8sm0EP7qQekfYMpmjjSNeWk/9PWvafewKwUj
+	 wUC8DnFdINU/hxAm71bt7Br4Yltpw4dzxq8GWJnr9c00T/t8KjCxMvxvDQCRj3ja6I
+	 Llu9mJbrbNZ+shfcAYZeVlqVvLTCyGdotH4KvNKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Brahmajit Das <listout@listout.xyz>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 011/247] drm/xe/guc: Synchronize Dead CT worker with unbind
+Subject: [PATCH 6.6 259/529] net: intel: fm10k: Fix parameter idx set but not used
 Date: Fri, 21 Nov 2025 14:09:18 +0100
-Message-ID: <20251121130155.004442752@linuxfoundation.org>
+Message-ID: <20251121130240.237500130@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit 95af8f4fdce8349a5fe75264007f1af2aa1082ea ]
+[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
 
-Cancel and wait for any Dead CT worker to complete before continuing
-with device unbinding. Else the worker will end up using resources freed
-by the undind operation.
+Variable idx is set in the loop, but is never used resulting in dead
+code. Building with GCC 16, which enables
+-Werror=unused-but-set-parameter= by default results in build error.
+This patch removes the idx parameter, since all the callers of the
+fm10k_unbind_hw_stats_q as 0 as idx anyways.
 
-Cc: Zhanjun Dong <zhanjun.dong@intel.com>
-Fixes: d2c5a5a926f4 ("drm/xe/guc: Dead CT helper")
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://patch.msgid.link/20251103123144.3231829-6-balasubramani.vivekanandan@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 492671339114e376aaa38626d637a2751cdef263)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
+ drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 22eff8476ad48..75ac0c424476e 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -200,6 +200,9 @@ static void guc_ct_fini(struct drm_device *drm, void *arg)
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+index f51a63fca513e..1f919a50c7653 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ /**
+  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
+  *  @q: pointer to the ring of hardware statistics queue
+- *  @idx: index pointing to the start of the ring iteration
+  *  @count: number of queues to iterate over
+  *
+  *  Function invalidates the index values for the queues so any updates that
+  *  may have happened are ignored and the base for the queue stats is reset.
+  **/
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
  {
- 	struct xe_guc_ct *ct = arg;
+ 	u32 i;
  
-+#if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
-+	cancel_work_sync(&ct->dead.worker);
-+#endif
- 	ct_exit_safe_mode(ct);
- 	destroy_workqueue(ct->g2h_wq);
- 	xa_destroy(&ct->fence_lookup);
+-	for (i = 0; i < count; i++, idx++, q++) {
++	for (i = 0; i < count; i++, q++) {
+ 		q->rx_stats_idx = 0;
+ 		q->tx_stats_idx = 0;
+ 	}
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+index 4c48fb73b3e78..13fca6a91a01b 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
+ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ 			     u32 idx, u32 count);
+ #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
+ s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
+ #endif /* _FM10K_COMMON_H_ */
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+index aed5e0bf6313e..b51b6003ad032 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+@@ -1510,7 +1510,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
+ 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
+ 
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_pf(hw, stats);
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+index 7fb1961f29210..6861a0bdc14e1 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
+ 				     struct fm10k_hw_stats *stats)
+ {
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_vf(hw, stats);
 -- 
 2.51.0
 
