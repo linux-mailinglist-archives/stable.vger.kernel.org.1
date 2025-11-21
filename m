@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D369EC794D5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4DDC79805
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 8CE472DABC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0024B344D4C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79CB275B18;
-	Fri, 21 Nov 2025 13:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1834403C;
+	Fri, 21 Nov 2025 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXIi3KEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEYsN+RJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC682EA46B;
-	Fri, 21 Nov 2025 13:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFE62745E;
+	Fri, 21 Nov 2025 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731480; cv=none; b=jPvzDjCcw3YjUssu+YQN0NLvHxmSf4qfoIEqS7M/G0gL/DdeCFtWcPaQr8j3oclDop7j2eft/xyvIF4LVaNyq2hzacM3MoOoyTqX9m7tro+JXFZN3S06jfZfRmicPRJ8SN3IEqNa+xeCqbPRMU1v85sDCFBlzjrO8wydaYjlJHE=
+	t=1763731962; cv=none; b=I1IJ0rtf/Vtt6gAl3DXCqVZk6wX+Cnm1j14sENR47/DCxpgclR2JZ0GCB8C6aoQrwC7OZKHOtxgi0uCv4IyYq4FQRVlVRsIddRFsg6u5T4i7gV93/Qx4AvLVghdEgpApCse2qg8vhWUa70CtXHbiOZBKA6UsEawJj4K00626Bl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731480; c=relaxed/simple;
-	bh=qa11pUmcf+JmJ61QfNzXuzwv4Ed4pd3KvKRZQwXVvHA=;
+	s=arc-20240116; t=1763731962; c=relaxed/simple;
+	bh=dxZmRo/tlji1VDCp1WKmIa6FBkiZIGzYumrPSAyUJeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cPWxgZGxxx6R4MJk8DKIUHoLIwT778SvOLV5SrQ1VCRYtreMhCk79AaIEGSiO4XqXotBDQXNDOOnL1GE5j9U0cgRkdvxifS/FdYbEdo1nadFDHgzfq7ow5AuQW9NW5qXN3FSKIO85f/b/f3qVZbXzhNLSb3qab3ZM9wh4pumWdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXIi3KEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C4CEFB;
-	Fri, 21 Nov 2025 13:24:39 +0000 (UTC)
+	 MIME-Version; b=qEupa+hREeMxhNqM53cX7H5c7f+tgqkGR36D2vvrVZHdOeRtukiCpBM1az0L/W95cvp+MweFtZvsqmYFllBA9+lXhP8mjCPIZMdrf/D0H7/yVCjUW/HmU/wjddLasAc5NNy2Im0OTjBP9k50ZI2OYsLPqAFo01DE1vtTXxhS080=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEYsN+RJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4FFC4CEF1;
+	Fri, 21 Nov 2025 13:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731480;
-	bh=qa11pUmcf+JmJ61QfNzXuzwv4Ed4pd3KvKRZQwXVvHA=;
+	s=korg; t=1763731961;
+	bh=dxZmRo/tlji1VDCp1WKmIa6FBkiZIGzYumrPSAyUJeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXIi3KExHli46OTseQZwEEGQikF8MmBz0doG+88xrmQTIZSApob4iTJoMZ7dG7D7J
-	 Epdz39yiuztH6guPsTNeK1FP4BSgjgq8N71/RAATrwOWoB7zqHC8sk5qdmBDzXbKnL
-	 q76yYj9xk9suAePeiSXvmrAWINy4xkoKwwTJll9I=
+	b=eEYsN+RJtVjbT1kQELS+mQKl2/aGDNNGVI6t9XP+wwp7KGVnDx87ro+7EluI1OMXZ
+	 0U+A+fPuMUIqdPX0+wjNiZhTceURC5hzXh7lP0Ltkkz7YeS7dZA0U5d0qj3v+uEJJh
+	 orbORxGj1w8maM0Su22MByJAQxonBSw8gO8rcsAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 221/247] drm/amdgpu: disable peer-to-peer access for DCC-enabled GC12 VRAM surfaces
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.12 141/185] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
 Date: Fri, 21 Nov 2025 14:12:48 +0100
-Message-ID: <20251121130202.665711109@linuxfoundation.org>
+Message-ID: <20251121130148.963151273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit 22a36e660d014925114feb09a2680bb3c2d1e279 upstream.
+commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
 
-Certain multi-GPU configurations (especially GFX12) may hit
-data corruption when a DCC-compressed VRAM surface is shared across GPUs
-using peer-to-peer (P2P) DMA transfers.
+The current single-bit error injection mechanism flips bits directly in ECC RAM
+by performing write and read operations. When the ECC RAM is actively used by
+the Ethernet or USB controller, this approach sometimes trigger a false
+double-bit error.
 
-Such surfaces rely on device-local metadata and cannot be safely accessed
-through a remote GPU’s page tables. Attempting to import a DCC-enabled
-surface through P2P leads to incorrect rendering or GPU faults.
+Switch both Ethernet and USB EDAC devices to use the INTTEST register
+(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
+the existing double-bit error injection method.
 
-This change disables P2P for DCC-enabled VRAM buffers that are contiguous
-and allocated on GFX12+ hardware.  In these cases, the importer falls back
-to the standard system-memory path, avoiding invalid access to compressed
-surfaces.
-
-Future work could consider optional migration (VRAM→System→VRAM) if a
-performance regression is observed when `attach->peer2peer = false`.
-
-Tested on:
- - Dual RX 9700 XT (Navi4x) setup
- - GNOME and Wayland compositor scenarios
- - Confirmed no corruption after disabling P2P under these conditions
-v2: Remove check TTM_PL_VRAM & TTM_PL_FLAG_CONTIGUOUS.
-v3: simplify for upsteam and fix ip version check (Alex)
-
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9dff2bb709e6fbd97e263fd12bf12802d2b5a0cf)
+Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/edac/altera_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -82,6 +82,18 @@ static int amdgpu_dma_buf_attach(struct
- 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1369,7 +1369,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
-+	/*
-+	 * Disable peer-to-peer access for DCC-enabled VRAM surfaces on GFX12+.
-+	 * Such buffers cannot be safely accessed over P2P due to device-local
-+	 * compression metadata. Fallback to system-memory path instead.
-+	 * Device supports GFX12 (GC 12.x or newer)
-+	 * BO was created with the AMDGPU_GEM_CREATE_GFX12_DCC flag
-+	 *
-+	 */
-+	if (amdgpu_ip_version(adev, GC_HWIP, 0) >= IP_VERSION(12, 0, 0) &&
-+	    bo->flags & AMDGPU_GEM_CREATE_GFX12_DCC)
-+		attach->peer2peer = false;
-+
- 	if (!amdgpu_dmabuf_is_xgmi_accessible(attach_adev, bo) &&
- 	    pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
- 		attach->peer2peer = false;
+ #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
+@@ -1459,7 +1459,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
+ 
+ #endif	/* CONFIG_EDAC_ALTERA_USB */
 
 
 
