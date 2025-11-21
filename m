@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-196425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28852C7A086
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1259C796F7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A32714F12CF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 9052E28FCB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE19034FF74;
-	Fri, 21 Nov 2025 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F029ACCD;
+	Fri, 21 Nov 2025 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2E1YQxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbq4/ZLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899B634FF5A;
-	Fri, 21 Nov 2025 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FDB21E098;
+	Fri, 21 Nov 2025 13:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733474; cv=none; b=l9SfJhb9K8UblJuDsZlH3LHRiW9GjkZvMziO7sGtE5JZf33l8lpgHw60lYtL6c1MPGRBZSOSbtPy190PzbnW2GI2SyRIZPb+BQQhfZZ0BLS6zFIQ+Kneev66zstGXd6wT40GDv2Wq5VMnByefcyryoDQtCoLvt9j/XR0FY2zPdk=
+	t=1763731997; cv=none; b=lEMh5GcZ81Hn6xaOumV42z/zgxfoG4S5G00wYfPXvBGC2gkG1jeCBnG17slMdxZer3ZW9ZsR09jFu6cNG+Ap9KdXf+YWqGdTNmriOvgD9Vq/JEbzhMZwqnxPTM1NUvqlI3QhuJqSE8olsYeqZ871AekknjpBzMeqLgCC+oPRc5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733474; c=relaxed/simple;
-	bh=wam0PlQ2Af8B6DC/gtCV1a93/ELk8JlR2CAhcst/Dhk=;
+	s=arc-20240116; t=1763731997; c=relaxed/simple;
+	bh=WODrmMq3HhMKxT8d+zl8LqyFfeH/2WF3AZCN+PvrO8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V36wXX06Sk0iOpMEtcOexUcLN7jZagAsrmK49CUjJ9VPTZc0gxfvbpdjkQWdwLWYg6ECX3sWFKeGEzeuI5I0/vXpNYEL0IhKGrWDzrIk/68G+lR6oyuH1MclFBLqZsKLRKsl24cVwGTBsBxLHkd2wZycRB8y09Eg6riK03tBjcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2E1YQxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B622C4CEF1;
-	Fri, 21 Nov 2025 13:57:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pi+NAgenNkh3Bl6xDZinCG+xPsFzCHHAyYazoUgoIh9Rf+N9q4wPTYlYRTP6FV4JrmAtwBAM9mJOll6/TgOMKCu0FXNpVrjqP+I2+FG5UFDuJIYV/bY8N0J1fnmEv3lP5tQ/LW3BXkB8kyVUE6gPCn5tqZd5JEFx3BltUrKTwzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbq4/ZLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135BFC4CEF1;
+	Fri, 21 Nov 2025 13:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733474;
-	bh=wam0PlQ2Af8B6DC/gtCV1a93/ELk8JlR2CAhcst/Dhk=;
+	s=korg; t=1763731996;
+	bh=WODrmMq3HhMKxT8d+zl8LqyFfeH/2WF3AZCN+PvrO8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2E1YQxuSBkLfGkAwJCBd5CVPIjISBJzAU0tL4qQqVSf92F+zWrbhb4XB51V3hHAf
-	 8CfHMu3l2rqLxa4z9eQA5WQKpSYABE1IIo44//bnGUzrK2KEVTiNhWv3vIUmq6KB5F
-	 iKgVdmCuVpcc9KrBUR6AdgXYD7FlCg0tvl8JwhSQ=
+	b=vbq4/ZLl1QTWut+HGWhJ3BuHqnA+P+XjdbA5HgtaJFDHMgFu7E0MEidDIN6iMxcNR
+	 xm7UlVmOfRUvrv6R0NSpOlmnkgbcKpeUT5ez9CXBEqztPcZby+FiPRyLlvdnvXLbwX
+	 CU1Emk9anVgiZgpcpNX6s/KU6GTYZ3LEnX118bok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 480/529] spi: Try to get ACPI GPIO IRQ earlier
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 152/185] pmdomain: samsung: plug potential memleak during probe
 Date: Fri, 21 Nov 2025 14:12:59 +0100
-Message-ID: <20251121130248.088284730@linuxfoundation.org>
+Message-ID: <20251121130149.362695375@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+commit 90c82941adf1986364e0f82c35cf59f2bf5f6a1d upstream.
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+of_genpd_add_provider_simple() could fail, in which case this code
+leaks the domain name, pd->pd.name.
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
+simplify existing error handling.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/pmdomain/samsung/exynos-pm-domains.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2716,6 +2716,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+--- a/drivers/pmdomain/samsung/exynos-pm-domains.c
++++ b/drivers/pmdomain/samsung/exynos-pm-domains.c
+@@ -92,13 +92,14 @@ static const struct of_device_id exynos_
+ 	{ },
+ };
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+
- 	acpi_device_set_enumerated(adev);
+-static const char *exynos_get_domain_name(struct device_node *node)
++static const char *exynos_get_domain_name(struct device *dev,
++					  struct device_node *node)
+ {
+ 	const char *name;
  
- 	adev->power.flags.ignore_parent = true;
+ 	if (of_property_read_string(node, "label", &name) < 0)
+ 		name = kbasename(node->full_name);
+-	return kstrdup_const(name, GFP_KERNEL);
++	return devm_kstrdup_const(dev, name, GFP_KERNEL);
+ }
+ 
+ static int exynos_pd_probe(struct platform_device *pdev)
+@@ -115,15 +116,13 @@ static int exynos_pd_probe(struct platfo
+ 	if (!pd)
+ 		return -ENOMEM;
+ 
+-	pd->pd.name = exynos_get_domain_name(np);
++	pd->pd.name = exynos_get_domain_name(dev, np);
+ 	if (!pd->pd.name)
+ 		return -ENOMEM;
+ 
+ 	pd->base = of_iomap(np, 0);
+-	if (!pd->base) {
+-		kfree_const(pd->pd.name);
++	if (!pd->base)
+ 		return -ENODEV;
+-	}
+ 
+ 	pd->pd.power_off = exynos_pd_power_off;
+ 	pd->pd.power_on = exynos_pd_power_on;
 
 
 
