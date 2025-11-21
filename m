@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D597C796D3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D24C795CE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A66EA4EA67B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 3ECBA31623
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C033438C;
-	Fri, 21 Nov 2025 13:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DC230AADC;
+	Fri, 21 Nov 2025 13:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS9NAAJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Dwdjai9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE64B3F9D2;
-	Fri, 21 Nov 2025 13:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244872DEA7E;
+	Fri, 21 Nov 2025 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731935; cv=none; b=GqZSdY34TF+yhlsdkUhYHG3diNMB1uoPUA9Orokisuuz1Ev75k8BFkZYEylqYMrUJdxbDOAMNTfufSwpi+DRHsDfuYemowfBm0WO8wQMU0CHapcHyWq4mXrwQRjYODalVQuuXioq0uwLdzT/ywOvgqsaja1z+JLUx7kMryFhgUc=
+	t=1763731454; cv=none; b=GmNdoYyDV5S8cCAkvrU+Qs4NvqD4xXk7w8YEJHi5qbUpQjS0Uzzh6w/eFXS7a54qvaoN4Am4zyJk6SzLmqyBD285+RMw+XgQNfb68pO5LrSLCuIcAs+gDLpWRD1wMGJkb+h8qnsrJj5SxMgVPk3rS81D0YmzFjxlqM6swX40k5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731935; c=relaxed/simple;
-	bh=sJoJo+ULJAqVt05skj+fCbUnQdrGE7Ee+i/L1i99O5w=;
+	s=arc-20240116; t=1763731454; c=relaxed/simple;
+	bh=7rJp4aogbdKe+q2ROCvQwVQTRANguRyS9kHIkiRVn+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/KLCOEiP2RMk+NNevc9UFPR2h6lqTKIVujm3PG/52vkIqsVm6uPD3nN96gIED4JR62Qe3vPHu0UyzkzQqIaBhxdmHbu55NJazsxWEZgtboKlkdAQ8O0irqPiCX8st0g3T2JP5/zNjEeAPYNZCNzyJJ7N7hPCGm7SWRjvnv6jA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fS9NAAJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2374DC4CEF1;
-	Fri, 21 Nov 2025 13:32:14 +0000 (UTC)
+	 MIME-Version; b=a6nLC4kMGgJa9Ks8E7Qg+BTt2QYMsx7DtBjmeXOHrxDvAe4negPWfWusZ+Bdlt/GNAkhUuCwr+nnQHYNo2gJRBNge9syc2/OqqbnXtdYE+IQMkl8fCeJyNa7ri++/8g+GJHDcPo3IkisaYWUsEYJAzTx4P2VS9H9Zmb8Pb95Hd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Dwdjai9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42725C4CEF1;
+	Fri, 21 Nov 2025 13:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731935;
-	bh=sJoJo+ULJAqVt05skj+fCbUnQdrGE7Ee+i/L1i99O5w=;
+	s=korg; t=1763731453;
+	bh=7rJp4aogbdKe+q2ROCvQwVQTRANguRyS9kHIkiRVn+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fS9NAAJtDe72eSHFtALy5kWi5KVdqYrz3U0/6AV23aoSH3AU14y7PPI6ppoXkP4vc
-	 XR3GakFbB4/f2PN57R2ayMBxan1HPf2up4UVk4F5yc21VBeURNHskMioomBuJq966H
-	 O0UCKC2f9dHlCrfpMkyVtklSaGnYaZpS5o3K+o1g=
+	b=1Dwdjai92WKKBwsIeBq9bO8tUDrUHw1wKSgozhzKnAnrCFPh1XtPkJnJQQQmfsRKj
+	 EM+l+hVNk44L9E+6g9ktElW5SVAROqgctzlJjmqyrc7PgJFKfTourpbrHTDsh3Zdfn
+	 DJsG5jhAcnzwl6oZ+8AQen0U0NsPkokyAc3ONXcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 133/185] crypto: hisilicon/qm - Fix device reference leak in qm_get_qos_value
+	Askar Safin <safinaskar@gmail.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.17 213/247] PM: hibernate: Use atomic64_t for compressed_size variable
 Date: Fri, 21 Nov 2025 14:12:40 +0100
-Message-ID: <20251121130148.675126729@linuxfoundation.org>
+Message-ID: <20251121130202.373982527@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 59b0afd01b2ce353ab422ea9c8375b03db313a21 upstream.
+commit 66ededc694f1d06a71ca35a3c8e3689e9b85b3ce upstream.
 
-The qm_get_qos_value() function calls bus_find_device_by_name() which
-increases the device reference count, but fails to call put_device()
-to balance the reference count and lead to a device reference leak.
+`compressed_size` can overflow, showing nonsensical values.
 
-Add put_device() calls in both the error path and success path to
-properly balance the reference count.
+Change from `atomic_t` to `atomic64_t` to prevent overflow.
 
-Found via static analysis.
-
-Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Longfang Liu <liulongfang@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
+Reported-by: Askar Safin <safinaskar@gmail.com>
+Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Tested-by: Askar Safin <safinaskar@gmail.com>
+Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
+Link: https://patch.msgid.link/20251106045158.3198061-3-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/hisilicon/qm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/power/swap.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -3688,10 +3688,12 @@ static ssize_t qm_get_qos_value(struct h
- 	pdev = container_of(dev, struct pci_dev, dev);
- 	if (pci_physfn(pdev) != qm->pdev) {
- 		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
-+		put_device(dev);
- 		return -EINVAL;
+--- a/kernel/power/swap.c
++++ b/kernel/power/swap.c
+@@ -635,7 +635,7 @@ struct cmp_data {
+ };
+ 
+ /* Indicates the image size after compression */
+-static atomic_t compressed_size = ATOMIC_INIT(0);
++static atomic64_t compressed_size = ATOMIC_INIT(0);
+ 
+ /*
+  * Compression function that runs in its own thread.
+@@ -664,7 +664,7 @@ static int compress_threadfn(void *data)
+ 		d->ret = crypto_acomp_compress(d->cr);
+ 		d->cmp_len = d->cr->dlen;
+ 
+-		atomic_set(&compressed_size, atomic_read(&compressed_size) + d->cmp_len);
++		atomic64_add(d->cmp_len, &compressed_size);
+ 		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
  	}
+@@ -696,7 +696,7 @@ static int save_compressed_image(struct
  
- 	*fun_index = pdev->devfn;
-+	put_device(dev);
+ 	hib_init_batch(&hb);
  
- 	return 0;
- }
+-	atomic_set(&compressed_size, 0);
++	atomic64_set(&compressed_size, 0);
+ 
+ 	/*
+ 	 * We'll limit the number of threads for compression to limit memory
+@@ -879,8 +879,8 @@ out_finish:
+ 		ret = err2;
+ 	if (!ret) {
+ 		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
+-		pr_info("Image size after compression: %d kbytes\n",
+-			(atomic_read(&compressed_size) / 1024));
++		pr_info("Image size after compression: %lld kbytes\n",
++			(atomic64_read(&compressed_size) / 1024));
+ 		pr_info("Image saving done\n");
+ 	} else {
+ 		pr_err("Image saving failed: %d\n", ret);
 
 
 
