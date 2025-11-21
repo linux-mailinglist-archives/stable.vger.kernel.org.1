@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92010C7942A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3B7C7A0EA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF7BB3461CF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 9D9182F39D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30D1332904;
-	Fri, 21 Nov 2025 13:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9394034F470;
+	Fri, 21 Nov 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgRq5nJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNlTmhsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779CF272801;
-	Fri, 21 Nov 2025 13:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4510134DB5B;
+	Fri, 21 Nov 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731095; cv=none; b=UdUymm6dgcjtp/KLeZdM+9LezwnW6+B13ScXFPMOjLUN6NPTU4uK7vNREKLStZI8ItFuGDTUD5NN3JtnocLNkrx0U6G32rIC8IhRRdJ+/XgyBJqY16Jef0cjK9s4UD2VKaiks1WiAPFBO58yX1U9ywTn1mDxKeYpGWI+yhbp5VQ=
+	t=1763733064; cv=none; b=P7BH/m0+Eyv+qmbN711mBTVHjnOVgG5OA8pO+5rCICGHLhCLq7kBShnRszOnmzHMbMBRQ9U+DQCe1FAlvTWy4FNvg3xp7YWNzcgjYmK7DgEVQdOCw7Hn61fvZX9RX+d/EU1mcCow7VZt/w4ZAEnUVMaa9zJUtgtYZRojoi8OLo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731095; c=relaxed/simple;
-	bh=/lFxh42tueAl6X+K2QEfZO0+SxMGKyhiWKu5z+NU26Y=;
+	s=arc-20240116; t=1763733064; c=relaxed/simple;
+	bh=2zDJCYBrD2xViBwtEc5kxvByLh9cv5mmGkop0eZ4Oeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NT1w4xffC2kCLX/2dY1m71iQqtWFRAQVYabvBTjg8DBYFsDy++q1GHxVnfH8cEdPW7X7l7TelROUrvZqs7SItCbu8JRaKmFEjpOwubSk6eJv5VZqFKiRIHy/ogEtqm4IoKuKfGewFnQlKu4JB2MacnjAmTmJDMJGQXeSdKDQpx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgRq5nJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02282C4CEF1;
-	Fri, 21 Nov 2025 13:18:14 +0000 (UTC)
+	 MIME-Version; b=m2UPd4zeaVq8G4vV5ZRx+NQJhWOm3Xka0sk2C/pHxcZJ/Zk+TZ9h6P7+hOTo6xJ3INj7JOl85KsLzCwwSHHRZq4A83J4458C2qyip4PY5Zc89TzCqnVdtIgzIn0CmgoZw64vHx5cuA/rvyxQEv5K+k8JufsOHRmv6OAcSTQk+5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNlTmhsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C36C4CEF1;
+	Fri, 21 Nov 2025 13:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731095;
-	bh=/lFxh42tueAl6X+K2QEfZO0+SxMGKyhiWKu5z+NU26Y=;
+	s=korg; t=1763733064;
+	bh=2zDJCYBrD2xViBwtEc5kxvByLh9cv5mmGkop0eZ4Oeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgRq5nJ1My/HiY7nCAUzOiN6URSMOghEEKD1jMFxIjKUUyelq8K8CwS82TGakCF6/
-	 1gqMsoeR5ftDKqNdUjW4l8VlzU1/hEtZEqjFQayfHai5kzbbgSvzYWB1YYsAfBCNjn
-	 IY/6Ed8EFZz/ooFA8qDg9hgfrZi9FmM3TYm8x4wQ=
+	b=TNlTmhswltJQXZTfh/pZRIrn+qOt1RFb7jB9bkUs24EXt0C5mdpepTX2n/8W7HYsc
+	 ZQbjSS1WjdbQIqCx6C2JqRuh9vNtwyh4lyYt9zTJa1fvPjZ9wfu3RpBb2hi9DpQuyr
+	 1J/9pFuZS28MfQcCpDv0vdFBO1WRriNqkDWIHAQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 089/247] ACPI: CPPC: Check _CPC validity for only the online CPUs
-Date: Fri, 21 Nov 2025 14:10:36 +0100
-Message-ID: <20251121130157.788209922@linuxfoundation.org>
+Subject: [PATCH 6.6 338/529] net: dsa: tag_brcm: legacy: fix untagged rx on unbridged ports for bcm63xx
+Date: Fri, 21 Nov 2025 14:10:37 +0100
+Message-ID: <20251121130243.058122572@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 6dd3b8a709a130a4d55c866af9804c81b8486d28 ]
+[ Upstream commit 3d18a84eddde169d6dbf3c72cc5358b988c347d0 ]
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+The internal switch on BCM63XX SoCs will unconditionally add 802.1Q VLAN
+tags on egress to CPU when 802.1Q mode is enabled. We do this
+unconditionally since commit ed409f3bbaa5 ("net: dsa: b53: Configure
+VLANs while not filtering").
 
-However the function acpi_cpc_valid() checks for the validity of the
-_CPC object for all the present CPUs. This breaks when the kernel is
-booted with "nosmt=force".
+This is fine for VLAN aware bridges, but for standalone ports and vlan
+unaware bridges this means all packets are tagged with the default VID,
+which is 0.
 
-Hence check the validity of the _CPC objects of only the online CPUs.
+While the kernel will treat that like untagged, this can break userspace
+applications processing raw packets, expecting untagged traffic, like
+STP daemons.
 
-Fixes: 2aeca6bd0277 ("ACPI: CPPC: Check present CPUs for determining _CPC is valid")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-3-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This also breaks several bridge tests, where the tcpdump output then
+does not match the expected output anymore.
+
+Since 0 isn't a valid VID, just strip out the VLAN tag if we encounter
+it, unless the priority field is set, since that would be a valid tag
+again.
+
+Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20251027194621.133301-1-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/tag_brcm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 6b649031808f8..6694412a1e139 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -460,7 +460,7 @@ bool acpi_cpc_valid(void)
- 	if (acpi_disabled)
- 		return false;
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index 146c1dbd15a93..385581cf3b7ba 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -255,12 +255,14 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ {
+ 	int len = BRCM_LEG_TAG_LEN;
+ 	int source_port;
++	__be16 *proto;
+ 	u8 *brcm_tag;
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		if (!cpc_ptr)
- 			return false;
+ 	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+ 		return NULL;
+ 
+ 	brcm_tag = dsa_etype_header_pos_rx(skb);
++	proto = (__be16 *)(brcm_tag + BRCM_LEG_TAG_LEN);
+ 
+ 	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
+ 
+@@ -268,8 +270,12 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ 	if (!skb->dev)
+ 		return NULL;
+ 
+-	/* VLAN tag is added by BCM63xx internal switch */
+-	if (netdev_uses_dsa(skb->dev))
++	/* The internal switch in BCM63XX SoCs always tags on egress on the CPU
++	 * port. We use VID 0 internally for untagged traffic, so strip the tag
++	 * if the TCI field is all 0, and keep it otherwise to also retain
++	 * e.g. 802.1p tagged packets.
++	 */
++	if (proto[0] == htons(ETH_P_8021Q) && proto[1] == 0)
+ 		len += VLAN_HLEN;
+ 
+ 	/* Remove Broadcom tag and update checksum */
 -- 
 2.51.0
 
