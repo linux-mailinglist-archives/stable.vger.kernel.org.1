@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4511C7A0B0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC98DC7939F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id ED6A934F9A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6133C4EC171
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8340346A06;
-	Fri, 21 Nov 2025 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C97C349B0F;
+	Fri, 21 Nov 2025 13:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzuzBDLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmwpK4hd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7442034845D;
-	Fri, 21 Nov 2025 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F2031578E;
+	Fri, 21 Nov 2025 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733095; cv=none; b=AqvQObWCyLbxzzYMNonSrx+UAh9QYaM5GK6oSqPxopIR582Gq4g7NxnduxSsRgVslmJU9xqZJtYgSCxK3xu6fMmBp/xewjn3GxHS7ZzXPrwl4thDs/QVkvAaPKsEcqxAZT0oUNq/IUIJ99fxRHuBx365Npisn1ZngAjtVnBAjL8=
+	t=1763731038; cv=none; b=IcYnQx+X49zQHnu3FCsyoOH8kkoAzvGEpL086W/fSkmihhax9SNsfhYOj86AqTQIZg9PFui30jl/Jit59HRNdILbTj3PMQR1rWgi4RCKf9v3K/xOyHvejtjtCsI3uNxEVn/UKbcWDCZn8WjeSxCs5xXtRG8jWTbVvGLkVIkk3QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733095; c=relaxed/simple;
-	bh=KqZYY3Tc7EIXOsIdoCDQJPUL7ynKUr7fcO+Ma8mkqdM=;
+	s=arc-20240116; t=1763731038; c=relaxed/simple;
+	bh=idiyVHOyysQM/pqpsd7edGxETlaJyKbktDYuHk89+8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMts1QmXfd6dmn6TQk8UbWariy7Yzc1ri6Fc0y2PsluNLPeAP0eU9p2XBxawPtseGF2PXVnDKQLOLSxayYOfib5OFjaVcJpNL3JgInEoITHJMIDN394AzYd3oEStToALbylQ7lzFXyClbPZgGqpVso491qs16p2UFp5ICIa5acY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzuzBDLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB102C4CEF1;
-	Fri, 21 Nov 2025 13:51:34 +0000 (UTC)
+	 MIME-Version; b=BAyy7WzXOWi2yKUe3RZ5Sxj4eoRX88NO1I6q3OmHEZLJaxxBc7Z4EYbbSnPzsnDdqhmZjAJb7400VNfN2YnNsanpbEuL4oSHBa+CjLngIeuisS6z0XT6Q/W0dfVe2eaDTlJqy2mY3t9sAQdd2RHlJDT62fANQ2dcQhleix0SSIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmwpK4hd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29415C4CEF1;
+	Fri, 21 Nov 2025 13:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733095;
-	bh=KqZYY3Tc7EIXOsIdoCDQJPUL7ynKUr7fcO+Ma8mkqdM=;
+	s=korg; t=1763731037;
+	bh=idiyVHOyysQM/pqpsd7edGxETlaJyKbktDYuHk89+8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzuzBDLqqCYPkUj3JAnbgD8E8rfeA64P71iU9RkUS94tikon8ogEoN/cjRUGWYw5t
-	 1klX16OD7MF6YeHS9ynak192K7qdqtSfND1BohF1qvpQL3NuDBkzdwxNBXlZUknXg5
-	 a6JzwAN1EUIwsOLB0i5bBSL98qKX1QGWoij3jB6o=
+	b=pmwpK4hdXG79wLhLzMw7wvqtWY1qAlT8AKiSHDg2QZCajQz0LH2qwrkbguo4ayuhJ
+	 7TtMIIvLYs2LWkcqs3cVtQ09zoVuGlQ7+adLmjUb002feRN+cMKjV8/ngBTZiWFI18
+	 hMrGPTmCcEXZwWy0BZwPsXFiDDzKQt2ifsECAdTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Buday Csaba <buday.csaba@prolan.hu>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/529] cpufreq: tegra186: Initialize all cores to max frequencies
+Subject: [PATCH 6.17 068/247] net: mdio: fix resource leak in mdiobus_register_device()
 Date: Fri, 21 Nov 2025 14:10:15 +0100
-Message-ID: <20251121130242.269334263@linuxfoundation.org>
+Message-ID: <20251121130157.042206201@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
+[ Upstream commit e6ca8f533ed41129fcf052297718f417f021cc7d ]
 
-During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
-are still at reset values and not reflecting the actual frequency. This
-causes get calls to fail. Set all cores to their respective max
-frequency during probe to initialize the registers to working values.
+Fix a possible leak in mdiobus_register_device() when both a
+reset-gpio and a reset-controller are present.
+Clean up the already claimed reset-gpio, when the registration of
+the reset-controller fails, so when an error code is returned, the
+device retains its state before the registration attempt.
 
-Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/all/20251106144603.39053c81@kernel.org/
+Fixes: 71dd6c0dff51 ("net: phy: add support for reset-controller")
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Link: https://patch.msgid.link/4b419377f8dd7d2f63f919d0f74a336c734f8fff.1762584481.git.buday.csaba@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ drivers/net/phy/mdio_bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
-index 39186008afbfd..233c82a834086 100644
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -132,13 +132,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index cad6ed3aa10b6..4354241137d50 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -73,8 +73,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
+ 			return err;
  
- static struct cpufreq_frequency_table *init_vhint_table(
- 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
--	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
-+	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
-+	int *num_rates)
- {
- 	struct cpufreq_frequency_table *table;
- 	struct mrq_cpu_vhint_request req;
- 	struct tegra_bpmp_message msg;
- 	struct cpu_vhint_data *data;
--	int err, i, j, num_rates = 0;
-+	int err, i, j;
- 	dma_addr_t phys;
- 	void *virt;
- 
-@@ -168,6 +169,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		goto free;
- 	}
- 
-+	*num_rates = 0;
- 	for (i = data->vfloor; i <= data->vceil; i++) {
- 		u16 ndiv = data->ndiv[i];
- 
-@@ -178,10 +180,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		if (i > 0 && ndiv == data->ndiv[i - 1])
- 			continue;
- 
--		num_rates++;
-+		(*num_rates)++;
- 	}
- 
--	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
-+	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table) {
- 		table = ERR_PTR(-ENOMEM);
-@@ -223,7 +225,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- {
- 	struct tegra186_cpufreq_data *data;
- 	struct tegra_bpmp *bpmp;
--	unsigned int i = 0, err;
-+	unsigned int i = 0, err, edvd_offset;
-+	int num_rates = 0;
-+	u32 edvd_val, cpu;
- 
- 	data = devm_kzalloc(&pdev->dev,
- 			    struct_size(data, clusters, TEGRA186_NUM_CLUSTERS),
-@@ -246,10 +250,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
- 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
- 
--		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
-+		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
- 		if (IS_ERR(cluster->table)) {
- 			err = PTR_ERR(cluster->table);
- 			goto put_bpmp;
-+		} else if (!num_rates) {
-+			err = -EINVAL;
-+			goto put_bpmp;
+ 		err = mdiobus_register_reset(mdiodev);
+-		if (err)
++		if (err) {
++			gpiod_put(mdiodev->reset_gpio);
++			mdiodev->reset_gpio = NULL;
+ 			return err;
 +		}
-+
-+		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
-+			if (data->cpus[cpu].bpmp_cluster_id == i) {
-+				edvd_val = cluster->table[num_rates - 1].driver_data;
-+				edvd_offset = data->cpus[cpu].edvd_offset;
-+				writel(edvd_val, data->regs + edvd_offset);
-+			}
- 		}
- 	}
  
+ 		/* Assert the reset signal */
+ 		mdio_device_reset(mdiodev, 1);
 -- 
 2.51.0
 
