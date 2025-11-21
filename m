@@ -1,72 +1,59 @@
-Return-Path: <stable+bounces-195927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B01C7975D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA180C79EFA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 5A2E62B8D1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 902442E559
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D657349B1E;
-	Fri, 21 Nov 2025 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0102034C127;
+	Fri, 21 Nov 2025 13:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syjix5SP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qut1i4VW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BEA34A76F;
-	Fri, 21 Nov 2025 13:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7A727AC57;
+	Fri, 21 Nov 2025 13:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732066; cv=none; b=UYJq1mazE715sWzCOyVB/aTCFYhISt2wKONY2YpoC6ftpdVUaul03WfG/OHZRTOLAoyufM/VhlRN+PWL0RtCym8O1Lb74xjomfWCB0e1p9FO9HfoC/iomqHsiwQ1OLPq0qXmLQ4aD/PLOIaA1Okrl+9xNJnEyEQnoti6t9GMFnQ=
+	t=1763733543; cv=none; b=V7St1dK+tB+JxE/kvrKDZW4OJ2vTbWj2dh6Z1uCzuovS7IzLsBU5yS0jYjne2mamni6t8DkQClsVnEkN3bXlXoiwduU8DyPOsR1s2RKWopRT9neT8KLC+rw8zcLNW5IGArTN6aoT/TtupwvmXn9lgD9azgQmmkElzKp2sExoSug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732066; c=relaxed/simple;
-	bh=i9lADARF/bI61Hc/97gQgx+V6VYOColF/sagNBkPuhc=;
+	s=arc-20240116; t=1763733543; c=relaxed/simple;
+	bh=3+ndhFcJ9O9pIEP6l8jCXItITqK+2EWPt3BpntdS3tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCeXF+ZBvp5u8Drfi3/ccJKy7e0WWpFVZpuKkqQRYAoCRdgYna+DpXtzs/Rz/Rmghxwqf5xcv0qgfCY4bZADCxzvCv/mgKcZdAMOgVwODI3ff6bJE4JpW6H2sMdctr+pAK9b2ggBmZymn68G6wg2u+1+7y8mJY56ElmOsgkMODA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syjix5SP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FB9C116D0;
-	Fri, 21 Nov 2025 13:34:24 +0000 (UTC)
+	 MIME-Version; b=r0Ixcn46C1MNxSMpPhvBB2rRkQzHL+qlIKf6ICnX6Ecr/twPQqI8NLJs2hrsEmmjwvS6Qc6PTUL8fshGU+rxQnEBDx/zybN0cHBozdze9PjpzR4esaH0hwoTrdmnIlSLjuaSdw5R+a9PROJ2p6AxuvsADchkEcffA7B5OdJ6eaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qut1i4VW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D7EC4CEF1;
+	Fri, 21 Nov 2025 13:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732065;
-	bh=i9lADARF/bI61Hc/97gQgx+V6VYOColF/sagNBkPuhc=;
+	s=korg; t=1763733543;
+	bh=3+ndhFcJ9O9pIEP6l8jCXItITqK+2EWPt3BpntdS3tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=syjix5SPVy118FutxbEHMMpQ61AdiYyNLSQJqtpGOtK97UBhQbstdGbBmkRZl5rYB
-	 0oyGBZwBvgAGBrRqwORnICfpKoYON9Qrx0uBc/O8ntKogpmqDJbtpwupb5F7bBX0z8
-	 DJvMhOveX+It97/4lT/od4iLwq2wYjrY0crCkPLQ=
+	b=qut1i4VWsyeuM7DzjXoD/CiFlt4RP9aeyvrgqCdp5ldRaV/u2ukLkRg97kCs3iMRd
+	 yLbP6zJeaFYwT2rPlR+9J8nkojh0Vl3Ct8qreNkM8JPBgOjMExEvJTBOKZXR+oDB+k
+	 mbPgLfcn0zfZjGJvcRZ0a+wg1sXrYLWUZNCJv65A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 177/185] mm/truncate: unmap large folio on split failure
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 505/529] scsi: ufs: core: Add UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE
 Date: Fri, 21 Nov 2025 14:13:24 +0100
-Message-ID: <20251121130150.277872589@linuxfoundation.org>
+Message-ID: <20251121130248.987970216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,104 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiryl Shutsemau <kas@kernel.org>
+From: Eric Biggers <ebiggers@google.com>
 
-commit fa04f5b60fda62c98a53a60de3a1e763f11feb41 upstream.
+[ Upstream commit e95881e0081a30e132b5ca087f1e07fc08608a7e ]
 
-Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-supposed to generate SIGBUS.
+Add UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE which tells the UFS core to not use
+the crypto enable bit defined by the UFS specification.  This is needed to
+support inline encryption on the "Exynos" UFS controller.
 
-This behavior might not be respected on truncation.
-
-During truncation, the kernel splits a large folio in order to reclaim
-memory.  As a side effect, it unmaps the folio and destroys PMD mappings
-of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
-are preserved.
-
-However, if the split fails, PMD mappings are preserved and the user will
-not receive SIGBUS on any accesses within the PMD.
-
-Unmap the folio on split failure.  It will lead to refault as PTEs and
-preserve SIGBUS semantics.
-
-Make an exception for shmem/tmpfs that for long time intentionally mapped
-with PMDs across i_size.
-
-Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
-Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20240708235330.103590-4-ebiggers@kernel.org
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/truncate.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd-crypto.c |    8 ++++++++
+ include/ufs/ufshcd.h             |    7 +++++++
+ 2 files changed, 15 insertions(+)
 
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -179,6 +179,31 @@ int truncate_inode_folio(struct address_
- 	return 0;
+--- a/drivers/ufs/core/ufshcd-crypto.c
++++ b/drivers/ufs/core/ufshcd-crypto.c
+@@ -110,6 +110,10 @@ static int ufshcd_crypto_keyslot_evict(s
+ 	return ufshcd_program_key(hba, &cfg, slot);
  }
  
-+static int try_folio_split_or_unmap(struct folio *folio)
-+{
-+	enum ttu_flags ttu_flags =
-+		TTU_SYNC |
-+		TTU_SPLIT_HUGE_PMD |
-+		TTU_IGNORE_MLOCK;
-+	int ret;
++/*
++ * Reprogram the keyslots if needed, and return true if CRYPTO_GENERAL_ENABLE
++ * should be used in the host controller initialization sequence.
++ */
+ bool ufshcd_crypto_enable(struct ufs_hba *hba)
+ {
+ 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
+@@ -117,6 +121,10 @@ bool ufshcd_crypto_enable(struct ufs_hba
+ 
+ 	/* Reset might clear all keys, so reprogram all the keys. */
+ 	blk_crypto_reprogram_all_keys(&hba->crypto_profile);
 +
-+	ret = split_folio(folio);
++	if (hba->quirks & UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE)
++		return false;
++
+ 	return true;
+ }
+ 
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -651,6 +651,13 @@ enum ufshcd_quirks {
+ 	 * ufs_hba_variant_ops::init() must do it instead.
+ 	 */
+ 	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 22,
 +
 +	/*
-+	 * If the split fails, unmap the folio, so it will be refaulted
-+	 * with PTEs to respect SIGBUS semantics.
-+	 *
-+	 * Make an exception for shmem/tmpfs that for long time
-+	 * intentionally mapped with PMDs across i_size.
++	 * This quirk needs to be enabled if the host controller supports inline
++	 * encryption but does not support the CRYPTO_GENERAL_ENABLE bit, i.e.
++	 * host controller initialization fails if that bit is set.
 +	 */
-+	if (ret && !shmem_mapping(folio->mapping)) {
-+		try_to_unmap(folio, ttu_flags);
-+		WARN_ON(folio_mapped(folio));
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * Handle partial folios.  The folio may be entirely within the
-  * range if a split has raced with us.  If not, we zero the part of the
-@@ -223,7 +248,7 @@ bool truncate_inode_partial_folio(struct
- 		folio_invalidate(folio, offset, length);
- 	if (!folio_test_large(folio))
- 		return true;
--	if (split_folio(folio) == 0)
-+	if (try_folio_split_or_unmap(folio) == 0)
- 		return true;
- 	if (folio_test_dirty(folio))
- 		return false;
++	UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE		= 1 << 23,
+ };
+ 
+ enum ufshcd_caps {
 
 
 
