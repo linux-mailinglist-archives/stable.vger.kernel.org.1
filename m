@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-195678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7051BC7958C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C95C79E4A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25448380337
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 39C3F2DD66
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2839258EFC;
-	Fri, 21 Nov 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EB4283C82;
+	Fri, 21 Nov 2025 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEFxHf+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfOx6Etg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD652765FF;
-	Fri, 21 Nov 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CB354AFA;
+	Fri, 21 Nov 2025 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731353; cv=none; b=QGtFkr/N4uUKTQNPGh6WHdkddcx/m2uTgQ/D6NJ9v1wWSBE+SzhE5AYI4Y5pysafbdJqImuUtLoysjZKV52Tr6yafEdchHpZ24Xzg6KTOl9ywYXAuFKKisaawdSj6sydJY8pGdkDbsMMEhBBlw6H6DPOdq29mZwObKxnqtvyWAE=
+	t=1763733413; cv=none; b=uX0Uvl6PnDsFw6kOggCLStt/sXNvWGs2sVC6JSxjPGaPmt3BoAo7unglVR6nJ6zkKE9KBvlSTp0S3zGwJn/jEHQNRZWnEdY+GBmapM0+3/D9/r0c4uYXxzr00y/LSa88COVx/Q9vSPfLTWBk0A+8sgKRaBGdZ5HvBgP9OnORUVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731353; c=relaxed/simple;
-	bh=B99N49zoeNIFEzTRspKVhE9TEhYQLMWkIZmEndJundk=;
+	s=arc-20240116; t=1763733413; c=relaxed/simple;
+	bh=0An9qXOFRjTNZSqw6Bb6Ntcok3LbhOW/k1rUIb0H67s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frRk9E1r79sJ3P4tLYDYWyA4ijP6HBB2DibdP2vSIDbVKUNwpgraf5Rn695x3kgXlCBAEpSazZKTWxGbezFHrA+0UgtC8lKwizZ0hL8ELSQrBHrJtjxC3ktUiCVRjly1N66xQKVcMuvWYGedBzIye0IHzE+KWPDoQCQv72BHsjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEFxHf+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14B1C4CEF1;
-	Fri, 21 Nov 2025 13:22:32 +0000 (UTC)
+	 MIME-Version; b=d1B2weMDf44v7yhjmM7rqo0Aj6JccMxyM0Tr4LrDHUTz0eSXWg3G+oNe9hitlTsjeTXjsKt8TVlUo0tuv69SBgPnJno9dDkV3yaZLGp/51ujfSf8KXBJE0OcLnidcWFWtAHvdEq7oShaDB/33EkWIbMH2zjkeWgI04myRs2yq7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfOx6Etg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FCBC4CEF1;
+	Fri, 21 Nov 2025 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731353;
-	bh=B99N49zoeNIFEzTRspKVhE9TEhYQLMWkIZmEndJundk=;
+	s=korg; t=1763733413;
+	bh=0An9qXOFRjTNZSqw6Bb6Ntcok3LbhOW/k1rUIb0H67s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEFxHf+UFRp7IMNG6BwEJpTV1lA81cAkZ0lGUnaUfzoox1KThEspTimTpsy3m8Kmr
-	 vwMTrAyREsLpxcnZGUnneduDTNEzDARHa9xoZxNjwDM9pAUU27cgoqN6jmiw7PB3Db
-	 boHU518i++I3u40NgMuk3X87qnlMHRNgKTQEB/Fg=
+	b=VfOx6EtgGW1v/FIjAmKByicNcmuDsI6GJLw8evslWjfuWcxbaWdZmq6qPspVM4gPB
+	 L/YPs4DyR/vDHWz5RHkMX5EP3muWRVcT8caOgpZrjxPdivUJKYCrjTG2KqkbiM1h8C
+	 tKxB8XsgpfxNOmOBzeXRFKbKKBFNLTg/7Zk9dv/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	Google Big Sleep <big-sleep-vuln-reports@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 178/247] mm/secretmem: fix use-after-free race in fault handler
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 426/529] ASoC: cs4271: Fix regulator leak on probe failure
 Date: Fri, 21 Nov 2025 14:12:05 +0100
-Message-ID: <20251121130201.110991055@linuxfoundation.org>
+Message-ID: <20251121130246.172936145@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d upstream.
+[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
 
-When a page fault occurs in a secret memory file created with
-`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
-underlying page as not-present in the direct map, and add it to the file
-mapping.
+The probe function enables regulators at the beginning
+but fails to disable them in its error handling path.
+If any operation after enabling the regulators fails,
+the probe will exit with an error, leaving the regulators
+permanently enabled, which could lead to a resource leak.
 
-If two tasks cause a fault in the same page concurrently, both could end
-up allocating a folio and removing the page from the direct map, but only
-one would succeed in adding the folio to the file mapping.  The task that
-failed undoes the effects of its attempt by (a) freeing the folio again
-and (b) putting the page back into the direct map.  However, by doing
-these two operations in this order, the page becomes available to the
-allocator again before it is placed back in the direct mapping.
+Add a proper error handling path to call regulator_bulk_disable()
+before returning an error.
 
-If another task attempts to allocate the page between (a) and (b), and the
-kernel tries to access it via the direct map, it would result in a
-supervisor not-present page fault.
-
-Fix the ordering to restore the direct map before the folio is freed.
-
-Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/secretmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs4271.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -82,13 +82,13 @@ retry:
- 		__folio_mark_uptodate(folio);
- 		err = filemap_add_folio(mapping, folio, offset, gfp);
- 		if (unlikely(err)) {
--			folio_put(folio);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(folio_page(folio, 0));
-+			folio_put(folio);
- 			if (err == -EEXIST)
- 				goto retry;
+diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
+index 188b8b43c524f..b7529e2900572 100644
+--- a/sound/soc/codecs/cs4271.c
++++ b/sound/soc/codecs/cs4271.c
+@@ -594,17 +594,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
  
+ 	ret = regcache_sync(cs4271->regmap);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN, 0);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	/* Power-up sequence requires 85 uS */
+ 	udelay(85);
+ 
+@@ -614,6 +614,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+ 				   CS4271_MODE2_MUTECAEQUB);
+ 
+ 	return 0;
++
++err_disable_regulator:
++	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
++	return ret;
+ }
+ 
+ static void cs4271_component_remove(struct snd_soc_component *component)
+-- 
+2.51.0
+
 
 
 
