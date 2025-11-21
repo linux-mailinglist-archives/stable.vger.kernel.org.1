@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16ACCC7A1EC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:21:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03F3C79601
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id F057833D7F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 44DCD325E0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F19034EF16;
-	Fri, 21 Nov 2025 13:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31CF54763;
+	Fri, 21 Nov 2025 13:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bu7wTVEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA6NUNoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D0534EF04;
-	Fri, 21 Nov 2025 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653CF2F5466;
+	Fri, 21 Nov 2025 13:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733427; cv=none; b=sH9JswB6gf3xB9b7KBm6qD0juhNxwjK4fwnIUKu/EPjgBQhhmZDiChGKo/9YYLdxIBwbQZP5egn6GHCjm201wmqsX3La7pxUVDR2sRvH4hetw8TyowyKOOAuRDGvQ9O+qrWP0XDqA1wCqFflJl3ekkFQO6ptjr0Vy8/K4aieBoo=
+	t=1763731471; cv=none; b=oJBJdCz4I/iUbngmy2uPkbwKQLBlVSoMX+eO0LPzfXJKLBUJjellRWl0LxJ1gf3opFZ/HRbBFk6ivGyETVehOTp/ADqd0LRt9UIfKhKuLM1ZBnmF3ebXYxcR5BCss/RjmiA9jY1usvipywpIFaH4KKADzn0aeX/EGm9ajzdVGAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733427; c=relaxed/simple;
-	bh=HBBzTiuHRHCjr6N5jEBnYakwN0zleI7S5HV6SiXTo1c=;
+	s=arc-20240116; t=1763731471; c=relaxed/simple;
+	bh=pJBYNJHmo+seYjQIr8KOffy/piK+4zo7XDwrnD7meQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkpHG42uKUiVKXQb8Aopg7mMMKHU+Ii+5/kblidF02iFeNTQTZ4K7Y8LuCqNbDrX33YlSzEE4PH/z5Bld1GqZY/nSOc/qMigUD0QImYnDMt+46TFYSqM6n2j5DqSn6j7weAHPSv7v6e1tawBr5p1fau8xYx51hjT453DaXQbbpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bu7wTVEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E717C4CEF1;
-	Fri, 21 Nov 2025 13:57:07 +0000 (UTC)
+	 MIME-Version; b=f/WI7LT+5xR+pfrIiDMf64fGMvV01swXfPajtTeZlwhvlfoCRYmpSYVRdvcNyrjxMZjxcsnVeLl+35mXmwRPgn8Xlz/28kj3nHNGS/1OR424DFaSuiJdiwU2Kp5gt6wLn3BGaYHqoKfNOvZQfmdjalS/ZR4xeEhuOjBFMKfy+pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA6NUNoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8227C4CEF1;
+	Fri, 21 Nov 2025 13:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733427;
-	bh=HBBzTiuHRHCjr6N5jEBnYakwN0zleI7S5HV6SiXTo1c=;
+	s=korg; t=1763731471;
+	bh=pJBYNJHmo+seYjQIr8KOffy/piK+4zo7XDwrnD7meQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bu7wTVEOkuh4lEUsOP/rP59MXuzVajtqDHJC27geg7HykcnV5GX3WlqXjN8m24Rzm
-	 /LlaGpvNcgY85OCYJzTe7rQPOh9kiIqxSZzGlqTaVBMg7LODidqWHOFbWuHaM2qnIz
-	 jHi4tv6qcvBA+M8fivPBybfjvQ2P8FMt9rh+FHRA=
+	b=iA6NUNoK8QLlnDfXwvvIwFUldYzruz/4ZmbedyNfwN09smEDtw1AesiDy9pvIgjiV
+	 4RZoO9vFh3R+OlWXyKv46mxuyQ8URMrJbgZMMZm6Jv4jumZp22PBIXgM9GtNh12Ksi
+	 dUWtc/9dBxhpJlhsNVbib144so8ne3nWv2GkQmTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 465/529] ksmbd: close accepted socket when per-IP limit rejects connection
-Date: Fri, 21 Nov 2025 14:12:44 +0100
-Message-ID: <20251121130247.554835332@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.17 218/247] btrfs: release root after error in data_reloc_print_warning_inode()
+Date: Fri, 21 Nov 2025 14:12:45 +0100
+Message-ID: <20251121130202.557775620@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 98a5fd31cbf72d46bf18e50b3ab0ce86d5f319a9 upstream.
+commit c367af440e03eba7beb0c9f3fe540f9bcb69134a upstream.
 
-When the per-IP connection limit is exceeded in ksmbd_kthread_fn(),
-the code sets ret = -EAGAIN and continues the accept loop without
-closing the just-accepted socket. That leaks one socket per rejected
-attempt from a single IP and enables a trivial remote DoS.
+data_reloc_print_warning_inode() calls btrfs_get_fs_root() to obtain
+local_root, but fails to release its reference when paths_from_inode()
+returns an error. This causes a potential memory leak.
 
-Release client_sk before continuing.
+Add a missing btrfs_put_root() call in the error path to properly
+decrease the reference count of local_root.
 
-This bug was found with ZeroPath.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b9a9a85059cde ("btrfs: output affected files when relocation fails")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -286,8 +286,11 @@ static int ksmbd_kthread_fn(void *p)
- 			}
- 		}
- 		up_read(&conn_list_lock);
--		if (ret == -EAGAIN)
-+		if (ret == -EAGAIN) {
-+			/* Per-IP limit hit: release the just-accepted socket. */
-+			sock_release(client_sk);
- 			continue;
-+		}
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -174,8 +174,10 @@ static int data_reloc_print_warning_inod
+ 		return ret;
+ 	}
+ 	ret = paths_from_inode(inum, ipath);
+-	if (ret < 0)
++	if (ret < 0) {
++		btrfs_put_root(local_root);
+ 		goto err;
++	}
  
- skip_max_ip_conns_limit:
- 
+ 	/*
+ 	 * We deliberately ignore the bit ipath might have been too small to
 
 
 
