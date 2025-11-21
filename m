@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-195717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0069DC794C0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A94C795A1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 0F5E323FA1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12A194EAC52
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02295346FD2;
-	Fri, 21 Nov 2025 13:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7211B4F0A;
+	Fri, 21 Nov 2025 13:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J17QLr6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmY44ulj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF244346E51;
-	Fri, 21 Nov 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D9430E823;
+	Fri, 21 Nov 2025 13:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731462; cv=none; b=NxVwkhjJkdxQdFOUmo6P2psXYkbtOBuuMLSPjgyE2OImIB60v7JjI2qBCZljqAGfrB3URbaE90hE+CDpN3Nf3GqkNozYkJMXkecJzn4q41HV7sLxepZsNDtxWRvr9A6STftw7BdnfUj63Yy/RzDDVoCoIjxd+0JV0eR7v39rXKs=
+	t=1763731468; cv=none; b=rQVP+Dg/Qg+haBnzCUy2pAtmfMuMILun+8mBlKWDGWZEQUIxJ8GhEoNlSXLg1XYO5HAEp7/qDiLstxts95Xb/B/WLmkUzblv649UtAEFL/j5AuAcuS1+WSruIXzKfEsYNu/SkTF5RGIRIywRFhm9wSZeB1OskLyTfk3r8bOwUsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731462; c=relaxed/simple;
-	bh=xsNsYAHAxE8HPXcabsW+h1TKHgMLrgIctKwW0d2czd0=;
+	s=arc-20240116; t=1763731468; c=relaxed/simple;
+	bh=Pm/DMPdhQg9S9leWVYx7x6WxdVo5D4iobtDuIvVj7wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EGhv8R5xzkTkT4She3wamxSdcg5II9YOxZIHq4BEYGrL55DvZuz4Pdf3jCJt3p8RM3bCOo1VMHHHeQ5mpCBwVDjzTxtIXgYzw47zoOLg6PafwYfyUQ3rW+0qZtQL+qa83/Pf1gBe6SC8+XB+sRxaqXxk1Gc/WcWtL5+gWQVs/9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J17QLr6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF10C4CEFB;
-	Fri, 21 Nov 2025 13:24:21 +0000 (UTC)
+	 MIME-Version; b=l8sf8O+cSLwm/rvrPwSb+JOORW9UJkf/DZzMiDAekCkKwcrKe+ml2EMm9nOLOT/gya/yDGRX4w9hcRCLM8bDOlLjmuEIEQDbvucbhO3J0XMUNGrh1WrmDOV6Dl8UFF/L1tMOxB2iP0l5VgWF0aNrMuLlT/fZsRwP8r+mqkpNkIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmY44ulj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C88C4CEF1;
+	Fri, 21 Nov 2025 13:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731462;
-	bh=xsNsYAHAxE8HPXcabsW+h1TKHgMLrgIctKwW0d2czd0=;
+	s=korg; t=1763731468;
+	bh=Pm/DMPdhQg9S9leWVYx7x6WxdVo5D4iobtDuIvVj7wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J17QLr6H7lzrNQOAI1BGw09p6reVzm4aKh1J+5ntf7xou0kDCb68FVhua3dHgS6Po
-	 Vx7NaRayzWwhXA3SqQfQwWAn89925JtWoMXNLYU/rAvhZfS6ogzOcejgotfjWLJnKz
-	 T/f7eKA1vSFzPn9MiLLmlykWKIzL7d3v56hgljaw=
+	b=MmY44uljutedZGTHi7TnfokR4I+HzEyTcgHPKfv4q/2MeAu320bd/jj3JNrtRfrlP
+	 Xd0aAtmaBcGJAr8XYQPX4x+oXPybUMKkI8H/7slnr2SJcAybE+b7NuRBxqVFO7w29z
+	 BxSELd78rmXXColAhSiAImlTuLzbP1Fi3FwS+kdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
+	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.17 216/247] btrfs: scrub: put bio after errors in scrub_raid56_parity_stripe()
-Date: Fri, 21 Nov 2025 14:12:43 +0100
-Message-ID: <20251121130202.484252792@linuxfoundation.org>
+Subject: [PATCH 6.17 217/247] btrfs: do not update last_log_commit when logging inode due to a new name
+Date: Fri, 21 Nov 2025 14:12:44 +0100
+Message-ID: <20251121130202.521645803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
 References: <20251121130154.587656062@linuxfoundation.org>
@@ -66,46 +66,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 5fea61aa1ca70c4b3738eebad9ce2d7e7938ebbd upstream.
+commit bfe3d755ef7cec71aac6ecda34a107624735aac7 upstream.
 
-scrub_raid56_parity_stripe() allocates a bio with bio_alloc(), but
-fails to release it on some error paths, leading to a potential
-memory leak.
+When logging that a new name exists, we skip updating the inode's
+last_log_commit field to prevent a later explicit fsync against the inode
+from doing nothing (as updating last_log_commit makes btrfs_inode_in_log()
+return true). We are detecting, at btrfs_log_inode(), that logging a new
+name is happening by checking the logging mode is not LOG_INODE_EXISTS,
+but that is not enough because we may log parent directories when logging
+a new name of a file in LOG_INODE_ALL mode - we need to check that the
+logging_new_name field of the log context too.
 
-Add the missing bio_put() calls to properly drop the bio reference
-in those error cases.
+An example scenario where this results in an explicit fsync against a
+directory not persisting changes to the directory is the following:
 
-Fixes: 1009254bf22a3 ("btrfs: scrub: use scrub_stripe to implement RAID56 P/Q scrub")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
+  $ mkfs.btrfs -f /dev/sdc
+  $ mount /dev/sdc /mnt
+
+  $ touch /mnt/foo
+
+  $ sync
+
+  $ mkdir /mnt/dir
+
+  # Write some data to our file and fsync it.
+  $ xfs_io -c "pwrite -S 0xab 0 64K" -c "fsync" /mnt/foo
+
+  # Add a new link to our file. Since the file was logged before, we
+  # update it in the log tree by calling btrfs_log_new_name().
+  $ ln /mnt/foo /mnt/dir/bar
+
+  # fsync the root directory - we expect it to persist the dentry for
+  # the new directory "dir".
+  $ xfs_io -c "fsync" /mnt
+
+  <power fail>
+
+After mounting the fs the entry for directory "dir" does not exists,
+despite the explicit fsync on the root directory.
+
+Here's why this happens:
+
+1) When we fsync the file we log the inode, so that it's present in the
+   log tree;
+
+2) When adding the new link we enter btrfs_log_new_name(), and since the
+   inode is in the log tree we proceed to updating the inode in the log
+   tree;
+
+3) We first set the inode's last_unlink_trans to the current transaction
+   (early in btrfs_log_new_name());
+
+4) We then eventually enter btrfs_log_inode_parent(), and after logging
+   the file's inode, we call btrfs_log_all_parents() because the inode's
+   last_unlink_trans matches the current transaction's ID (updated in the
+   previous step);
+
+5) So btrfs_log_all_parents() logs the root directory by calling
+   btrfs_log_inode() for the root's inode with a log mode of LOG_INODE_ALL
+   so that new dentries are logged;
+
+6) At btrfs_log_inode(), because the log mode is LOG_INODE_ALL, we
+   update root inode's last_log_commit to the last transaction that
+   changed the inode (->last_sub_trans field of the inode), which
+   corresponds to the current transaction's ID;
+
+7) Then later when user space explicitly calls fsync against the root
+   directory, we enter btrfs_sync_file(), which calls skip_inode_logging()
+   and that returns true, since its call to btrfs_inode_in_log() returns
+   true and there are no ordered extents (it's a directory, never has
+   ordered extents). This results in btrfs_sync_file() returning without
+   syncing the log or committing the current transaction, so all the
+   updates we did when logging the new name, including logging the root
+   directory,  are not persisted.
+
+So fix this by but updating the inode's last_log_commit if we are sure
+we are not logging a new name (if ctx->logging_new_name is false).
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/03c5d7ec-5b3d-49d1-95bc-8970a7f82d87@gmail.com/
+Fixes: 130341be7ffa ("btrfs: always update the logged transaction when logging new names")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/tree-log.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2185,6 +2185,7 @@ static int scrub_raid56_parity_stripe(st
- 	ret = btrfs_map_block(fs_info, BTRFS_MAP_WRITE, full_stripe_start,
- 			      &length, &bioc, NULL, NULL);
- 	if (ret < 0) {
-+		bio_put(bio);
- 		btrfs_put_bioc(bioc);
- 		btrfs_bio_counter_dec(fs_info);
- 		goto out;
-@@ -2194,6 +2195,7 @@ static int scrub_raid56_parity_stripe(st
- 	btrfs_put_bioc(bioc);
- 	if (!rbio) {
- 		ret = -ENOMEM;
-+		bio_put(bio);
- 		btrfs_bio_counter_dec(fs_info);
- 		goto out;
- 	}
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6812,7 +6812,7 @@ log_extents:
+ 	 *    a power failure unless the log was synced as part of an fsync
+ 	 *    against any other unrelated inode.
+ 	 */
+-	if (inode_only != LOG_INODE_EXISTS)
++	if (!ctx->logging_new_name && inode_only != LOG_INODE_EXISTS)
+ 		inode->last_log_commit = inode->last_sub_trans;
+ 	spin_unlock(&inode->lock);
+ 
 
 
 
