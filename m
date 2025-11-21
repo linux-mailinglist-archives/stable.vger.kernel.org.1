@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C41C79C24
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2151C792BA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0855F4EFCB0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 551052A64F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657A6351FBD;
-	Fri, 21 Nov 2025 13:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72700349B04;
+	Fri, 21 Nov 2025 13:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShlFM+r4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWYqBbaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C153351FA6;
-	Fri, 21 Nov 2025 13:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C3F34B433;
+	Fri, 21 Nov 2025 13:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732820; cv=none; b=C7iMEw1znIp4uagQvgrJ7P36gBEy0gq96UftE0b0zAvY6u2bjzjQ/khHR+MhWA7FM/7VUYvPXtreUMabQpyfT1F3RKmBcYeNXJ1vOAM8wTQAxn3QzxzoNZWhs341s0Z8XkjJl4TrZtbvMK19zqb7KC02kyuPOv9DkTMKldsGc+g=
+	t=1763730988; cv=none; b=BMg+vuApMjNv2NV2vWHsp+YNHhwNvPBKux5ajjxCt99QTDM03se4amHF98OMUtjDmXUxhOoU7yx6Xwad3BLU4ybs2DKgzPG/R6qHMmMZVXYwPvuansmX/qBeSkrKQRnwpOm6xNu3o39tR2BzBFCV7tgPoe6YtlNFRkT2X/U6l1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732820; c=relaxed/simple;
-	bh=edq9AjZxs7i0hMHNJpGX7AszfcoBakMVhRm2GtKDrhg=;
+	s=arc-20240116; t=1763730988; c=relaxed/simple;
+	bh=al0RvQMqj/C+TNDcqjivEQhTxz8dp6b/RSvO6I4cETg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1a9K/tMbAu5UCMEYpl6JKunGfqLDFHYKziU7R1ChJZgfXubiM230mCw03eWtZpfGQg2ijW/gL09Ty6+k5COhmY3c699sIVU9f5BAIjAJ+rW/tbCfXL8B/eGiprE2YjbfgZuhYTqbJalumKKFIk3XSJkTQFcQCtOTkC/NULBQos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShlFM+r4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4927BC4CEF1;
-	Fri, 21 Nov 2025 13:46:59 +0000 (UTC)
+	 MIME-Version; b=Y9bnlLonlGfcbTaO/x+LXFdByxJA577ImU8XeXZZ5fjJBvoxDHf+zpdbZaPCpze2Bs/SIcFRT8bUEVjUsZCGY3uk8KyZvgustbrXey+WhoLjBPKhkYOuaHkfu6afT5g7TeooiOeQMjxv9BZKOfwByYdSwDbMxctCCCdJnRz8HsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWYqBbaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA7CC4CEFB;
+	Fri, 21 Nov 2025 13:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732819;
-	bh=edq9AjZxs7i0hMHNJpGX7AszfcoBakMVhRm2GtKDrhg=;
+	s=korg; t=1763730987;
+	bh=al0RvQMqj/C+TNDcqjivEQhTxz8dp6b/RSvO6I4cETg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShlFM+r4UozmGuGZOHVYS46Xj+9MApuLZWcPc6M0FeOB8uvzTiy4eK9iJ8i/kreBL
-	 Hxvv63i5wc++l3jG9V7ycuhUiwiGsrovoAhaFzIv+MqslrEn6q8Jc3e2SksMkwrN1H
-	 W36GqT585WkVieq4swbfSvRYIfK4aZaWG/kcj+N0=
+	b=KWYqBbaGtKbCR0uxw8CPv1UnelZXVVBe0ISBt9NpWRcPCvxHj88Xinj/5MeTPJ7P/
+	 TegZtwTj+sHf7GPVX7ziScDPeS9ZzF3B9IQq9X3+ldcCCp4xaILtKYZZvptNm6GfLR
+	 Ce3Jv7otAobzM8rl7rjAXrH0sCQYA3Ox/dyVYIDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Alex Mastro <amastro@fb.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/529] net: phy: clear link parameters on admin link down
-Date: Fri, 21 Nov 2025 14:09:14 +0100
-Message-ID: <20251121130240.094487729@linuxfoundation.org>
+Subject: [PATCH 6.17 008/247] iommufd: Make vfio_compats unmap succeed if the range is already empty
+Date: Fri, 21 Nov 2025 14:09:15 +0100
+Message-ID: <20251121130154.897321808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 60f887b1290b43a4f5a3497982a725687b193fa4 ]
+[ Upstream commit afb47765f9235181fddc61c8633b5a8cfae29fd2 ]
 
-When a PHY is halted (e.g. `ip link set dev lan2 down`), several
-fields in struct phy_device may still reflect the last active
-connection. This leads to ethtool showing stale values even though
-the link is down.
+iommufd returns ENOENT when attempting to unmap a range that is already
+empty, while vfio type1 returns success. Fix vfio_compat to match.
 
-Reset selected fields in _phy_state_machine() when transitioning
-to PHY_HALTED and the link was previously up:
-
-- speed/duplex -> UNKNOWN, but only in autoneg mode (in forced mode
-  these fields carry configuration, not status)
-- master_slave_state -> UNKNOWN if previously supported
-- mdix -> INVALID (state only, same meaning as "unknown")
-- lp_advertising -> always cleared
-
-The cleanup is skipped if the PHY is in PHY_ERROR state, so the
-last values remain available for diagnostics.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250917094751.2101285-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d624d6652a65 ("iommufd: vfio container FD ioctl compatibility")
+Link: https://patch.msgid.link/r/0-v1-76be45eff0be+5d-iommufd_unmap_compat_jgg@nvidia.com
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Alex Mastro <amastro@fb.com>
+Reported-by: Alex Mastro <amastro@fb.com>
+Closes: https://lore.kernel.org/r/aP0S5ZF9l3sWkJ1G@devgpu012.nha5.facebook.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/iommu/iommufd/io_pagetable.c    | 12 +++---------
+ drivers/iommu/iommufd/ioas.c            |  4 ++++
+ tools/testing/selftests/iommu/iommufd.c |  2 ++
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index df54c137c5f5f..cf171bdd667aa 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1482,6 +1482,19 @@ void phy_state_machine(struct work_struct *work)
- 		}
- 		break;
- 	case PHY_HALTED:
-+		if (phydev->link) {
-+			if (phydev->autoneg == AUTONEG_ENABLE) {
-+				phydev->speed = SPEED_UNKNOWN;
-+				phydev->duplex = DUPLEX_UNKNOWN;
-+			}
-+			if (phydev->master_slave_state !=
-+						MASTER_SLAVE_STATE_UNSUPPORTED)
-+				phydev->master_slave_state =
-+						MASTER_SLAVE_STATE_UNKNOWN;
-+			phydev->mdix = ETH_TP_MDI_INVALID;
-+			linkmode_zero(phydev->lp_advertising);
+diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
+index c0360c450880b..75d60f2ad9008 100644
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -707,7 +707,8 @@ static int iopt_unmap_iova_range(struct io_pagetable *iopt, unsigned long start,
+ 	struct iopt_area *area;
+ 	unsigned long unmapped_bytes = 0;
+ 	unsigned int tries = 0;
+-	int rc = -ENOENT;
++	/* If there are no mapped entries then success */
++	int rc = 0;
+ 
+ 	/*
+ 	 * The domains_rwsem must be held in read mode any time any area->pages
+@@ -777,8 +778,6 @@ static int iopt_unmap_iova_range(struct io_pagetable *iopt, unsigned long start,
+ 
+ 		down_write(&iopt->iova_rwsem);
+ 	}
+-	if (unmapped_bytes)
+-		rc = 0;
+ 
+ out_unlock_iova:
+ 	up_write(&iopt->iova_rwsem);
+@@ -815,13 +814,8 @@ int iopt_unmap_iova(struct io_pagetable *iopt, unsigned long iova,
+ 
+ int iopt_unmap_all(struct io_pagetable *iopt, unsigned long *unmapped)
+ {
+-	int rc;
+-
+-	rc = iopt_unmap_iova_range(iopt, 0, ULONG_MAX, unmapped);
+ 	/* If the IOVAs are empty then unmap all succeeds */
+-	if (rc == -ENOENT)
+-		return 0;
+-	return rc;
++	return iopt_unmap_iova_range(iopt, 0, ULONG_MAX, unmapped);
+ }
+ 
+ /* The caller must always free all the nodes in the allowed_iova rb_root. */
+diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
+index 1542c5fd10a85..459a7c5169154 100644
+--- a/drivers/iommu/iommufd/ioas.c
++++ b/drivers/iommu/iommufd/ioas.c
+@@ -367,6 +367,10 @@ int iommufd_ioas_unmap(struct iommufd_ucmd *ucmd)
+ 				     &unmapped);
+ 		if (rc)
+ 			goto out_put;
++		if (!unmapped) {
++			rc = -ENOENT;
++			goto out_put;
 +		}
-+		fallthrough;
- 	case PHY_ERROR:
- 		if (phydev->link) {
- 			phydev->link = 0;
+ 	}
+ 
+ 	cmd->length = unmapped;
+diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
+index 3eebf5e3b974f..bb4d33dde3c89 100644
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -2638,6 +2638,8 @@ TEST_F(vfio_compat_mock_domain, map)
+ 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_MAP_DMA, &map_cmd));
+ 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_UNMAP_DMA, &unmap_cmd));
+ 	ASSERT_EQ(BUFFER_SIZE, unmap_cmd.size);
++	/* Unmap of empty is success */
++	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_UNMAP_DMA, &unmap_cmd));
+ 
+ 	/* UNMAP_FLAG_ALL requires 0 iova/size */
+ 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_MAP_DMA, &map_cmd));
 -- 
 2.51.0
 
