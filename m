@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA38C79B83
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CE9C792E7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 2F4A22E159
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D29D24EC5BC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE54E34C80A;
-	Fri, 21 Nov 2025 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC693376A7;
+	Fri, 21 Nov 2025 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FqKbwJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KyyrR4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE0D3F9D2;
-	Fri, 21 Nov 2025 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823232737FC;
+	Fri, 21 Nov 2025 13:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732871; cv=none; b=W/N9PbFcU3erfbpTURygcaaVEM/PlSE9TQZmBXKUOAJdvaQuJAdCPtlFmZzJQJ8ggkdP8WTJ5oZbwdNsUzv6G0b/xQIsbKkduPJDrhOWVF46mIdhqtPb3lDQosYY/Q34+DRnbRjBq6NpgTstoXVl1zoAFvAiQS9L4Ged5mfO2eI=
+	t=1763730909; cv=none; b=Jiz42OSKzuJWAqLG8dq0O1TBeInBa5lo6LP5FgzvS+C+pYzAFVn1aLvLO4RPz2l1cV+Kg+hlwTEsTxvW0lRgjSwnyQmox1wGFTpf7MuTTcyGFu1KcsB9l0jpc+3sz67dTreET5INeGVGK8v5TI2hHWy31Hcsdy3pOvv8XeK3cx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732871; c=relaxed/simple;
-	bh=Z3rQjr/xz5gGxUertnAuoVbVjUzHn9QmvKLCDJEBU08=;
+	s=arc-20240116; t=1763730909; c=relaxed/simple;
+	bh=cO5oKSZMXKGYUwOIzq0FgXTQSzVbGeynsRzzKGqysn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckpMxj/REhr0jO8tnIQocL4a8fEvaqTrvMNuqRdZ7cBLxu4F3q/uCJ/6ndtAcdilxeRPDtRz4JNQ0I+zChJcEw2turefHUYskBn5AWsuUze5T2Gq8YO49vjUmYJ6FquWMJZk4Q83hOHfE00MuJRLdMsad5t+ErMRosIy3kJZrbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FqKbwJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26188C4CEF1;
-	Fri, 21 Nov 2025 13:47:50 +0000 (UTC)
+	 MIME-Version; b=oseN6N1ZkNgfLSqxJzSV11CJHcneklQ12XrS8F7cfBcBhrdnM/oF9cOI3UEirLcK3ru+89QyS+e+E95K8IAxThXUIVvm5X+bBFmWcbgmcFR8TJCkMIXCghawTCGDBPgQzYfWQLmS7XsR07aGmGBO94edKsTRHeynqDOm2pDzY1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KyyrR4U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C158C4CEF1;
+	Fri, 21 Nov 2025 13:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732871;
-	bh=Z3rQjr/xz5gGxUertnAuoVbVjUzHn9QmvKLCDJEBU08=;
+	s=korg; t=1763730904;
+	bh=cO5oKSZMXKGYUwOIzq0FgXTQSzVbGeynsRzzKGqysn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1FqKbwJqISsexGb/vsC8qt/91h0RZUvS5D3FF/XByo30tbAYjBmsCRaFWO2O1nSTO
-	 NZkn5yguGY2QO7zI5mXcVrVmwIQa7BTcT0VGWVeDzOxMv0YYrRaIFVL4m85bLBXH/K
-	 MZMteI1QYHiZb0ZAyDsC67BL4GULjNNasOsk8hME=
+	b=1KyyrR4UqLoOyBbs/RLgKjgaCO4OOFEjKTKm4boVy7dA76HQLdy2gclSgDERhZOkR
+	 3/ju7PIhjcDdhhQix1V0UNceOQUHwNMyebJYVG0w3rH0WQRGrQ2dLet4jtt+ob70dC
+	 P79ezcnY8oNHN/yFJ/hPnXWPnxlGPPv7khCcmfwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/529] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
+Subject: [PATCH 6.17 023/247] riscv: acpi: avoid errors caused by probing DT devices when ACPI is used
 Date: Fri, 21 Nov 2025 14:09:30 +0100
-Message-ID: <20251121130240.663234662@linuxfoundation.org>
+Message-ID: <20251121130155.435186050@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Han Gao <rabenda.cn@gmail.com>
 
-[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
+[ Upstream commit 69a8b62a7aa1e54ff7623064f6507fa29c1d0d4e ]
 
-Theoretically it's an oopsable race, but I don't believe one can manage
-to hit it on real hardware; might become doable on a KVM, but it still
-won't be easy to attack.
+Similar to the ARM64 commit 3505f30fb6a9s ("ARM64 / ACPI: If we chose
+to boot from acpi then disable FDT"), let's not do DT hardware probing
+if ACPI is enabled in early boot.  This avoids errors caused by
+repeated driver probing.
 
-Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
-put_unaligned_be64(), we can put that under ->d_lock and be done with that.
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Han Gao <rabenda.cn@gmail.com>
+Link: https://lore.kernel.org/r/20250910112401.552987-1-rabenda.cn@gmail.com
+[pjw@kernel.org: cleaned up patch description and subject]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/kernel/setup.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index cfeef23ac9412..92e40e41443cd 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -362,7 +362,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
- 	*p++ = htonl(attrs);                           /* bitmap */
- 	*p++ = htonl(12);             /* attribute buffer length */
- 	*p++ = htonl(NF4DIR);
-+	spin_lock(&dentry->d_lock);
- 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
-+	spin_unlock(&dentry->d_lock);
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index f90cce7a3acea..d7ee62837aa4f 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -330,11 +330,14 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Parse the ACPI tables for possible boot-time configuration */
+ 	acpi_boot_table_init();
  
- 	readdir->pgbase = (char *)p - (char *)start;
- 	readdir->count -= readdir->pgbase;
++	if (acpi_disabled) {
+ #if IS_ENABLED(CONFIG_BUILTIN_DTB)
+-	unflatten_and_copy_device_tree();
++		unflatten_and_copy_device_tree();
+ #else
+-	unflatten_device_tree();
++		unflatten_device_tree();
+ #endif
++	}
++
+ 	misc_mem_init();
+ 
+ 	init_resources();
 -- 
 2.51.0
 
