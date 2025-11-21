@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A908C79667
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1043CC798DE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 804F02DC30
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2ECAE34768E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9758A31B124;
-	Fri, 21 Nov 2025 13:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4382F28F0;
+	Fri, 21 Nov 2025 13:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAcNv3yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9W7vID6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536212765FF;
-	Fri, 21 Nov 2025 13:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839A3A291;
+	Fri, 21 Nov 2025 13:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731538; cv=none; b=s0+jD5qnPlZuiiAFbRLBhr/SwlnA6LfVV8uWKdR3oKOgA/lkqFwKjY1vgZ8H463uWEaBZDKQ/Fp9+t6s7rgbyVtidKhSJHV0UdzT+B9V4s1JfcyUYIuUrPGOhXxg1U8+RAw+PYGE5JyciffFjwfK9QiBgmioMIpQrAnpKBMrXmk=
+	t=1763732104; cv=none; b=J0vUfscEJvcPTIHaJjcqaS9/N2FdWqpU6BLPopzbiLgis/qfMn2bi6gXdBVyh6JOdCzLnENZTBpRMQwXGq1EafrhOtJ95mpE29WKrwond1p+yAKeviu/wc+7LmvkCeT5vxJWMxKG+NgBJS+1yUAIc/0IAlOm37gdKvfMEn8K9RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731538; c=relaxed/simple;
-	bh=R6ZXdNhwz/epibZwwSqxQdeddRt9I9jqVekoPzh6Kmc=;
+	s=arc-20240116; t=1763732104; c=relaxed/simple;
+	bh=8q7GOzJ7SFoCJ6yEudiumBf4YmSMChO9s/ufYW5xA8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTApocK3Fkk4P1Yj8VZbF8ZxeU7/r+3kEe6qr8fMitkvbJTX/9zJbU2j/cDFvbtneEdWibe+h8ZnY3GMsZC/VOG1V1O/NkjpNcOHZyxSyXhm9Vm126uq+iNP+wEjba6ST84vuTacysUFfMxRDsKjT44RVD5y/cjmKu4wje/vczA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAcNv3yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D13C4CEFB;
-	Fri, 21 Nov 2025 13:25:37 +0000 (UTC)
+	 MIME-Version; b=GAyTz2hT6wpjI/Rh7Jm6YIqolDb9UHi0F6QxI1mTF71m5YF5RtFwRQf4iU17O5qDmCwW2a+imZgn/ykxLJ9ezuGSknNqLr14kjAFmLnWiInDvxALlVwhQ+0VtoE7FFgy/7IWMAdzsWd9KrGbu0D1aB1u8MCX5XxnaVjQ3YrPk3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9W7vID6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BA3C4CEF1;
+	Fri, 21 Nov 2025 13:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731537;
-	bh=R6ZXdNhwz/epibZwwSqxQdeddRt9I9jqVekoPzh6Kmc=;
+	s=korg; t=1763732102;
+	bh=8q7GOzJ7SFoCJ6yEudiumBf4YmSMChO9s/ufYW5xA8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAcNv3ylzDeDsNhplqEYUFZ2UvEaPXJKJlRgqJ/QRLJeO6BdyestC577b8XSi3Spv
-	 iwao05LMbDnAnS1/63RKeHAhLQiFOj9X/PvHdYwh4eSMe3ApfAyL97QRghNFFZQMAA
-	 D9OXTGFv0toK5KcUp6E3ymUpdkosL68YCHxJE22Q=
+	b=l9W7vID6i+DFLwtQR/ru2wvZoITKsDdrekP1A7TujSr9KwbWhMICdGB939QViygZ5
+	 L6TwnwMBEBLe4f5zmHb+VevjkEvY9o0CzKpocOoBbNj0Jse3vPzm+2+fSbrMyXKtL8
+	 5LfPVjziiCrVjCwNCZzyF6ZIbs2d3vg8Y5fBCxak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sean Christopherson <seanjc@google.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 243/247] KVM: x86: Rename local "ecx" variables to "msr" and "pmc" as appropriate
+Subject: [PATCH 6.12 163/185] KVM: guest_memfd: Pass index, not gfn, to __kvm_gmem_get_pfn()
 Date: Fri, 21 Nov 2025 14:13:10 +0100
-Message-ID: <20251121130203.460176356@linuxfoundation.org>
+Message-ID: <20251121130149.759327833@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit ec400f6c2f2703cb6c698dd00b28cfdb8ee5cdcc ]
+[ Upstream commit 4af18dc6a9204464db76d9771d1f40e2b46bf6ae ]
 
-Rename "ecx" variables in {RD,WR}MSR and RDPMC helpers to "msr" and "pmc"
-respectively, in anticipation of adding support for the immediate variants
-of RDMSR and WRMSRNS, and to better document what the variables hold
-(versus where the data originated).
+Refactor guest_memfd usage of __kvm_gmem_get_pfn() to pass the index into
+the guest_memfd file instead of the gfn, i.e. resolve the index based on
+the slot+gfn in the caller instead of in __kvm_gmem_get_pfn().  This will
+allow kvm_gmem_get_pfn() to retrieve and return the specific "struct page",
+which requires the index into the folio, without a redoing the index
+calculation multiple times (which isn't costly, just hard to follow).
 
-No functional change intended.
+Opportunistically add a kvm_gmem_get_index() helper to make the copy+pasted
+code easier to understand.
 
-Link: https://lore.kernel.org/r/20250805202224.1475590-3-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute SEAMCALL or TDCALL")
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241010182427.1434605-46-seanjc@google.com>
+Stable-dep-of: ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when gmem is dying")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ virt/kvm/guest_memfd.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1579,10 +1579,10 @@ EXPORT_SYMBOL_GPL(kvm_get_dr);
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -304,6 +304,11 @@ static inline struct file *kvm_gmem_get_
+ 	return get_file_active(&slot->gmem.file);
+ }
  
- int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu)
++static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn - slot->base_gfn + slot->gmem.pgoff;
++}
++
+ static struct file_operations kvm_gmem_fops = {
+ 	.open		= generic_file_open,
+ 	.release	= kvm_gmem_release,
+@@ -553,12 +558,11 @@ void kvm_gmem_unbind(struct kvm_memory_s
+ }
+ 
+ /* Returns a locked folio on success.  */
+-static struct folio *
+-__kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
+-		   gfn_t gfn, kvm_pfn_t *pfn, bool *is_prepared,
+-		   int *max_order)
++static struct folio *__kvm_gmem_get_pfn(struct file *file,
++					struct kvm_memory_slot *slot,
++					pgoff_t index, kvm_pfn_t *pfn,
++					bool *is_prepared, int *max_order)
  {
--	u32 ecx = kvm_rcx_read(vcpu);
-+	u32 pmc = kvm_rcx_read(vcpu);
- 	u64 data;
+-	pgoff_t index = gfn - slot->base_gfn + slot->gmem.pgoff;
+ 	struct kvm_gmem *gmem = file->private_data;
+ 	struct folio *folio;
  
--	if (kvm_pmu_rdpmc(vcpu, ecx, &data)) {
-+	if (kvm_pmu_rdpmc(vcpu, pmc, &data)) {
- 		kvm_inject_gp(vcpu, 0);
- 		return 1;
- 	}
-@@ -2033,23 +2033,23 @@ static int kvm_msr_user_space(struct kvm
- 
- int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu)
+@@ -594,6 +598,7 @@ __kvm_gmem_get_pfn(struct file *file, st
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
  {
--	u32 ecx = kvm_rcx_read(vcpu);
-+	u32 msr = kvm_rcx_read(vcpu);
- 	u64 data;
- 	int r;
++	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 	struct file *file = kvm_gmem_get_file(slot);
+ 	struct folio *folio;
+ 	bool is_prepared = false;
+@@ -602,7 +607,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, st
+ 	if (!file)
+ 		return -EFAULT;
  
--	r = kvm_get_msr_with_filter(vcpu, ecx, &data);
-+	r = kvm_get_msr_with_filter(vcpu, msr, &data);
+-	folio = __kvm_gmem_get_pfn(file, slot, gfn, pfn, &is_prepared, max_order);
++	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
+ 	if (IS_ERR(folio)) {
+ 		r = PTR_ERR(folio);
+ 		goto out;
+@@ -650,6 +655,7 @@ long kvm_gmem_populate(struct kvm *kvm,
+ 	for (i = 0; i < npages; i += (1 << max_order)) {
+ 		struct folio *folio;
+ 		gfn_t gfn = start_gfn + i;
++		pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 		bool is_prepared = false;
+ 		kvm_pfn_t pfn;
  
- 	if (!r) {
--		trace_kvm_msr_read(ecx, data);
-+		trace_kvm_msr_read(msr, data);
+@@ -658,7 +664,7 @@ long kvm_gmem_populate(struct kvm *kvm,
+ 			break;
+ 		}
  
- 		kvm_rax_write(vcpu, data & -1u);
- 		kvm_rdx_write(vcpu, (data >> 32) & -1u);
- 	} else {
- 		/* MSR read failed? See if we should ask user space */
--		if (kvm_msr_user_space(vcpu, ecx, KVM_EXIT_X86_RDMSR, 0,
-+		if (kvm_msr_user_space(vcpu, msr, KVM_EXIT_X86_RDMSR, 0,
- 				       complete_fast_rdmsr, r))
- 			return 0;
--		trace_kvm_msr_read_ex(ecx);
-+		trace_kvm_msr_read_ex(msr);
- 	}
- 
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
-@@ -2058,23 +2058,23 @@ EXPORT_SYMBOL_GPL(kvm_emulate_rdmsr);
- 
- int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu)
- {
--	u32 ecx = kvm_rcx_read(vcpu);
-+	u32 msr = kvm_rcx_read(vcpu);
- 	u64 data = kvm_read_edx_eax(vcpu);
- 	int r;
- 
--	r = kvm_set_msr_with_filter(vcpu, ecx, data);
-+	r = kvm_set_msr_with_filter(vcpu, msr, data);
- 
- 	if (!r) {
--		trace_kvm_msr_write(ecx, data);
-+		trace_kvm_msr_write(msr, data);
- 	} else {
- 		/* MSR write failed? See if we should ask user space */
--		if (kvm_msr_user_space(vcpu, ecx, KVM_EXIT_X86_WRMSR, data,
-+		if (kvm_msr_user_space(vcpu, msr, KVM_EXIT_X86_WRMSR, data,
- 				       complete_fast_msr_access, r))
- 			return 0;
- 		/* Signal all other negative errors to userspace */
- 		if (r < 0)
- 			return r;
--		trace_kvm_msr_write_ex(ecx, data);
-+		trace_kvm_msr_write_ex(msr, data);
- 	}
- 
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
+-		folio = __kvm_gmem_get_pfn(file, slot, gfn, &pfn, &is_prepared, &max_order);
++		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &is_prepared, &max_order);
+ 		if (IS_ERR(folio)) {
+ 			ret = PTR_ERR(folio);
+ 			break;
 
 
 
