@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-195720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03F3C79601
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8153C796ED
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 44DCD325E0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 386574E9876
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31CF54763;
-	Fri, 21 Nov 2025 13:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F4F34403C;
+	Fri, 21 Nov 2025 13:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA6NUNoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5VSuycH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653CF2F5466;
-	Fri, 21 Nov 2025 13:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60799283CA3;
+	Fri, 21 Nov 2025 13:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731471; cv=none; b=oJBJdCz4I/iUbngmy2uPkbwKQLBlVSoMX+eO0LPzfXJKLBUJjellRWl0LxJ1gf3opFZ/HRbBFk6ivGyETVehOTp/ADqd0LRt9UIfKhKuLM1ZBnmF3ebXYxcR5BCss/RjmiA9jY1usvipywpIFaH4KKADzn0aeX/EGm9ajzdVGAw=
+	t=1763731950; cv=none; b=eddbwXGlE4pjK1m2olNsZN6voywkCtSbGrwdyLIsKsH+G2nSn7t78muTQ/Q4tfEA2R6AVEPSm0EvO1YV7Lc0FFkTjL88MLaJgNuqAsYHcBzCLHV9482uj8xvJ8GCL7P8siopHlxWSFCOjSF/VEubxG+taSfTEgo12U9tqZ6YJQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731471; c=relaxed/simple;
-	bh=pJBYNJHmo+seYjQIr8KOffy/piK+4zo7XDwrnD7meQo=;
+	s=arc-20240116; t=1763731950; c=relaxed/simple;
+	bh=KjCTYHxyH4UVEtRG+5YhGcjYNdmuea1QPNsnFqX8JjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/WI7LT+5xR+pfrIiDMf64fGMvV01swXfPajtTeZlwhvlfoCRYmpSYVRdvcNyrjxMZjxcsnVeLl+35mXmwRPgn8Xlz/28kj3nHNGS/1OR424DFaSuiJdiwU2Kp5gt6wLn3BGaYHqoKfNOvZQfmdjalS/ZR4xeEhuOjBFMKfy+pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA6NUNoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8227C4CEF1;
-	Fri, 21 Nov 2025 13:24:30 +0000 (UTC)
+	 MIME-Version; b=gTXObG0hKjZtTNPfW9ic+D/kzd491hpdM+dASdN0bOX+VL6nxyoQIO4DnYQ46p08Y+7l7GGP5EqVGbjUE9yVBR0iWC0erlLa85xJi5GHKtez0tmHe6PpAx2WzaJFjs7E+Mzu7bJ3LKdFwpGBGIRYjuRYrMfetUzYwMbLKdypytM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5VSuycH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD136C4CEF1;
+	Fri, 21 Nov 2025 13:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731471;
-	bh=pJBYNJHmo+seYjQIr8KOffy/piK+4zo7XDwrnD7meQo=;
+	s=korg; t=1763731950;
+	bh=KjCTYHxyH4UVEtRG+5YhGcjYNdmuea1QPNsnFqX8JjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA6NUNoK8QLlnDfXwvvIwFUldYzruz/4ZmbedyNfwN09smEDtw1AesiDy9pvIgjiV
-	 4RZoO9vFh3R+OlWXyKv46mxuyQ8URMrJbgZMMZm6Jv4jumZp22PBIXgM9GtNh12Ksi
-	 dUWtc/9dBxhpJlhsNVbib144so8ne3nWv2GkQmTo=
+	b=g5VSuycHaNb1bEGxeuU3AK7Xl8DJG69ivqCBW1r/8BtRVWJGDWGiTYVdSOKGc5PsR
+	 4yNG9DjDDZq+3k7rZ7ygW60ARX+UdzcZhFOJJG9pg6gQ0CQWXO7p7MmPBitLnc5SGU
+	 sDSrE33beFljnWaReHEv35FGS6pFbgpAxWwInaHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.17 218/247] btrfs: release root after error in data_reloc_print_warning_inode()
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 138/185] ftrace: Fix BPF fexit with livepatch
 Date: Fri, 21 Nov 2025 14:12:45 +0100
-Message-ID: <20251121130202.557775620@linuxfoundation.org>
+Message-ID: <20251121130148.853961523@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Song Liu <song@kernel.org>
 
-commit c367af440e03eba7beb0c9f3fe540f9bcb69134a upstream.
+commit 56b3c85e153b84f27e6cff39623ba40a1ad299d3 upstream.
 
-data_reloc_print_warning_inode() calls btrfs_get_fs_root() to obtain
-local_root, but fails to release its reference when paths_from_inode()
-returns an error. This causes a potential memory leak.
+When livepatch is attached to the same function as bpf trampoline with
+a fexit program, bpf trampoline code calls register_ftrace_direct()
+twice. The first time will fail with -EAGAIN, and the second time it
+will succeed. This requires register_ftrace_direct() to unregister
+the address on the first attempt. Otherwise, the bpf trampoline cannot
+attach. Here is an easy way to reproduce this issue:
 
-Add a missing btrfs_put_root() call in the error path to properly
-decrease the reference count of local_root.
+  insmod samples/livepatch/livepatch-sample.ko
+  bpftrace -e 'fexit:cmdline_proc_show {}'
+  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
 
-Fixes: b9a9a85059cde ("btrfs: output affected files when relocation fails")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fix this by cleaning up the hash when register_ftrace_function_nolock hits
+errors.
+
+Also, move the code that resets ops->func and ops->trampoline to the error
+path of register_ftrace_direct(); and add a helper function reset_direct()
+in register_ftrace_direct() and unregister_ftrace_direct().
+
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251027175023.1521602-2-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/bpf/trampoline.c |    5 -----
+ kernel/trace/ftrace.c   |   20 ++++++++++++++------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -174,8 +174,10 @@ static int data_reloc_print_warning_inod
- 		return ret;
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -479,11 +479,6 @@ again:
+ 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
+ 		 * trampoline again, and retry register.
+ 		 */
+-		/* reset fops->func and fops->trampoline for re-register */
+-		tr->fops->func = NULL;
+-		tr->fops->trampoline = 0;
+-
+-		/* free im memory and reallocate later */
+ 		bpf_tramp_image_free(im);
+ 		goto again;
  	}
- 	ret = paths_from_inode(inum, ipath);
--	if (ret < 0)
-+	if (ret < 0) {
-+		btrfs_put_root(local_root);
- 		goto err;
-+	}
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5894,6 +5894,17 @@ static void register_ftrace_direct_cb(st
+ 	free_ftrace_hash(fhp);
+ }
  
- 	/*
- 	 * We deliberately ignore the bit ipath might have been too small to
++static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
++{
++	struct ftrace_hash *hash = ops->func_hash->filter_hash;
++
++	remove_direct_functions_hash(hash, addr);
++
++	/* cleanup for possible another register call */
++	ops->func = NULL;
++	ops->trampoline = 0;
++}
++
+ /**
+  * register_ftrace_direct - Call a custom trampoline directly
+  * for multiple functions registered in @ops
+@@ -5989,6 +6000,8 @@ int register_ftrace_direct(struct ftrace
+ 	ops->direct_call = addr;
+ 
+ 	err = register_ftrace_function_nolock(ops);
++	if (err)
++		reset_direct(ops, addr);
+ 
+  out_unlock:
+ 	mutex_unlock(&direct_mutex);
+@@ -6021,7 +6034,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct
+ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
+ 			     bool free_filters)
+ {
+-	struct ftrace_hash *hash = ops->func_hash->filter_hash;
+ 	int err;
+ 
+ 	if (check_direct_multi(ops))
+@@ -6031,13 +6043,9 @@ int unregister_ftrace_direct(struct ftra
+ 
+ 	mutex_lock(&direct_mutex);
+ 	err = unregister_ftrace_function(ops);
+-	remove_direct_functions_hash(hash, addr);
++	reset_direct(ops, addr);
+ 	mutex_unlock(&direct_mutex);
+ 
+-	/* cleanup for possible another register call */
+-	ops->func = NULL;
+-	ops->trampoline = 0;
+-
+ 	if (free_filters)
+ 		ftrace_free_filter(ops);
+ 	return err;
 
 
 
