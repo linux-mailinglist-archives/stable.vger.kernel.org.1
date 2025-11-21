@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77186C79CCF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD35AC7959E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 2BE602DC05
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 832122ADA2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C953A291;
-	Fri, 21 Nov 2025 13:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D872F656A;
+	Fri, 21 Nov 2025 13:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anRcfG7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3+7/X6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A990430EF7F;
-	Fri, 21 Nov 2025 13:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033CB246762;
+	Fri, 21 Nov 2025 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733163; cv=none; b=kktwuamNwdPuCkslhxVZWeOGZw6ywZ61fPEzg3cz4RafhTXX5ftDj/9UXo4VNybGqIn6i8M/YGj6dxRJUhBtgftYvEaBMKYxWXdMMuQ6/hRlXEmqpz9aY61D6ASqYTX8gNuK1BWdzkW1fqzSCJ8+dtF/yIoWJomG1qosf6IIEfk=
+	t=1763731693; cv=none; b=XVJ9PQIikfn89FAsnkeCsEVpozHj/IE5l/45aYaBNe/gdAYODgVf9w5Z4Da8qxk/BJXA+PjrKDcdSlA+YyjxtK6H+I/YlCyUCaOXjjDuVTS9HiAce5BdURNXeo+Xpr3B9sNvHvYvFWx6egEng0hT1sxd8qtSeBxt9+lICvpkcGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733163; c=relaxed/simple;
-	bh=z7OH03k8PI9b1CSCzsf9ol9qIqSswfyBYEh5v1mBwOA=;
+	s=arc-20240116; t=1763731693; c=relaxed/simple;
+	bh=IBkD4e6EMaJ97t1sLnk4GIOBE1w4pu4hjXZFGL1ESgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hJ7a92uyJTC6fqkP82EVWwK2CZFFZfRMhKKFWZhXQ5zul20pQ7jOqMeU6lPFbcVk1wgq/WV/9UQ4Ticwrt0gqOFJ2Y5DN7GXn6DECGDuQGV72yb48MK5wBwtrJhkx4KiH0BoN9soS66FmwsQC1mmivYLQ+pQE+ooPipTaf9bNeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anRcfG7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E4AC4CEF1;
-	Fri, 21 Nov 2025 13:52:43 +0000 (UTC)
+	 MIME-Version; b=INzEWhMTunhN+8zVXOFISv3gTenxqAjht6riT3I1MUZ0xpMdAaU9MVplTd9mCGsdm/rzmkCPfu7LSDrX/MTLGzIDMLNc6hTdFe5in8QvAuU4DB1zhGI02DY3oDuibTaY00UFRC0Z7Zk1/nuOWDOSDEleqHVdBrS+cbYPdXwY5pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3+7/X6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E53C4CEF1;
+	Fri, 21 Nov 2025 13:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733163;
-	bh=z7OH03k8PI9b1CSCzsf9ol9qIqSswfyBYEh5v1mBwOA=;
+	s=korg; t=1763731690;
+	bh=IBkD4e6EMaJ97t1sLnk4GIOBE1w4pu4hjXZFGL1ESgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anRcfG7vdwCf1DAKV5HC3GyT/wtZzkIHlxBEDcoPdchHhlyUtApFch62wdfor1zw6
-	 Ur6nOk1urQ1O5cpft1kKTa9yBCiCKLNCp1Tt4WHh1YnG9k6uZDMKUprCPwxxnFDjRz
-	 LmyEWrZVLoM/4jSZ8MIxJB2K7jYBzsmPhT7ZFzbo=
+	b=l3+7/X6AGvKt8ZZxsnbcX/oZH1NqK/lh6i93oNYnrEL4mQLxAJ5Id8nbSvIya/um9
+	 9KnwImkpibhifwhAtZYUDHDRvaDLMl02cEX3V/8aEDFTrgvG/zrEnGvhPZPlTUOjBg
+	 fZjdBYqWnR9aJFAcrgvvptFNd3QqbHq/yqdGRHwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Subject: [PATCH 6.6 373/529] drm/amdgpu: Fix function header names in amdgpu_connectors.c
-Date: Fri, 21 Nov 2025 14:11:12 +0100
-Message-ID: <20251121130244.298463842@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 046/185] net/handshake: Fix memory leak in tls_handshake_accept()
+Date: Fri, 21 Nov 2025 14:11:13 +0100
+Message-ID: <20251121130145.541523526@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 38ab33dbea594700c8d6cc81eec0a54e95d3eb2f upstream.
+[ Upstream commit 3072f00bba764082fa41b3c3a2a7b013335353d2 ]
 
-Align the function headers for `amdgpu_max_hdmi_pixel_clock` and
-`amdgpu_connector_dvi_mode_valid` with the function implementations so
-they match the expected kdoc style.
+In tls_handshake_accept(), a netlink message is allocated using
+genlmsg_new(). In the error handling path, genlmsg_cancel() is called
+to cancel the message construction, but the message itself is not freed.
+This leads to a memory leak.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1199: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c:1212: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Validates the given display mode on DVI and HDMI connectors.
+Fix this by calling nlmsg_free() in the error path after genlmsg_cancel()
+to release the allocated memory.
 
-Fixes: 585b2f685c56 ("drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fd5532044a89 ("net/handshake: Add a kernel API for requesting a TLSv1.3 handshake")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20251106144511.3859535-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ net/handshake/tlshd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-@@ -1206,7 +1206,10 @@ static void amdgpu_connector_dvi_force(s
- }
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index d6f52839827ea..822507b87447c 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -253,6 +253,7 @@ static int tls_handshake_accept(struct handshake_req *req,
  
- /**
-- * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
-+ * amdgpu_max_hdmi_pixel_clock - Return max supported HDMI (TMDS) pixel clock
-+ * @adev: pointer to amdgpu_device
-+ *
-+ * Return: maximum supported HDMI (TMDS) pixel clock in KHz.
-  */
- static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
- {
-@@ -1219,8 +1222,14 @@ static int amdgpu_max_hdmi_pixel_clock(c
+ out_cancel:
+ 	genlmsg_cancel(msg, hdr);
++	nlmsg_free(msg);
+ out:
+ 	return ret;
  }
- 
- /**
-- * Validates the given display mode on DVI and HDMI connectors,
-- * including analog signals on DVI-I.
-+ * amdgpu_connector_dvi_mode_valid - Validate a mode on DVI/HDMI connectors
-+ * @connector: DRM connector to validate the mode on
-+ * @mode: display mode to validate
-+ *
-+ * Validate the given display mode on DVI and HDMI connectors, including
-+ * analog signals on DVI-I.
-+ *
-+ * Return: drm_mode_status indicating whether the mode is valid.
-  */
- static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
- 					    struct drm_display_mode *mode)
+-- 
+2.51.0
+
 
 
 
