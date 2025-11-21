@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F066EC79859
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D3DC79FD8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 59CB032C51
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 667BE3830DC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8AC31B124;
-	Fri, 21 Nov 2025 13:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65B4355802;
+	Fri, 21 Nov 2025 13:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRrxww/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOHzCKkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791F63F9D2;
-	Fri, 21 Nov 2025 13:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A713557E5;
+	Fri, 21 Nov 2025 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731841; cv=none; b=WGRfBDj30aVJfn+dcLYux759Q+dBntnCgMwS/smi0oTmGryXHAior9gzS/AAKkrLLbbyA08m0Xnu5qDt01d/2ZLiDtoHdYa1Pl1D19qHUGs9XOa9KvTkCs55frfXlERYnj5PmEwDxBGOZc57g7n+ZXUZLRgboxZqJdekeYemNV8=
+	t=1763733419; cv=none; b=P0KIBlnZMofnZ4QiMv6UPkdG5+dXjc5aLqGodLasEdFbneoLVLemofFsN1Uaq7Er2wVllST794iJbznhpJm8+Q12dAVQMYN4rQf99MWLNpha3fUBhdkdMJqGdAfA6+5AolqjPdAZQpwK896i4JjN/RUTSBswMqGztd9w3AwCq3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731841; c=relaxed/simple;
-	bh=v5JmMLjMXfTpDZxDlvoBJkLOgqb6xvMoj/1OyXjm3zo=;
+	s=arc-20240116; t=1763733419; c=relaxed/simple;
+	bh=o0YrOdvBn09LuJqqLIfZNsZGgl6OzOVsldm/7hUUC70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLbcbsU3oI6PPinGzogRmPm3R5Ih+HWQrja+n7oOf4lo3WFscB6X0h7sUV15VuWnN9JHKrO+shw6lh7aLKeJRSZzK2l5BHZ+l+Aox1cj/VsJOJepSWjPawIde7FgV3YIOxRvKZxri1Hl5Q6umv1L/DpnQigiKc9SHTM3QwquCSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRrxww/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C89C116C6;
-	Fri, 21 Nov 2025 13:30:40 +0000 (UTC)
+	 MIME-Version; b=PcKTtF/30YvVLcJS0PAvQSya0R9e+Yd0MTUofcH6V1vyNF4rZbxb0dEyeaXIppE6A2A0LGWJOyd29KXfE9JJzTjVjllWVaax24JcMOr/sYDI8H1i+ZwEY7988x4xmJesq/xyVDRl9OiVM9+/R39ZhF+f1nijkLCKu8Eg6YZ/GQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOHzCKkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53893C19423;
+	Fri, 21 Nov 2025 13:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731841;
-	bh=v5JmMLjMXfTpDZxDlvoBJkLOgqb6xvMoj/1OyXjm3zo=;
+	s=korg; t=1763733418;
+	bh=o0YrOdvBn09LuJqqLIfZNsZGgl6OzOVsldm/7hUUC70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRrxww/2b3N9ITahMVQYXzleNDFx8lSF44Waqqnc2HDlnGswq2464sOfgy9xvsBXm
-	 8lepaNOkrhkOWdEpxu6YDSJEM2jYadcNi8l11fLYxj8TI2KzWsjAZPn5MrIcKtkTdF
-	 3eCx2D8imlU4AjolDgs6DxuFJLBy2GxR911JzLD4=
+	b=yOHzCKkf/orugjZAAztNDAF2th7CVwDQD9pjFwtVz2ln8AIbGVqNlW0aaVHW5c+27
+	 WawTWL1EBpr9Zm/ybOn/SPJIH7DU917bqfWl7ZrieN+V1umv8gofB1wrVs5UI23vTG
+	 fq3UuxlgDn2rpu2sQ8KylNvXZBQJu86fobQN0xRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Rohit Keshri <rkeshri@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/185] arm64: dts: rockchip: Make RK3588 GPU OPP table naming less generic
+Subject: [PATCH 6.6 428/529] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
 Date: Fri, 21 Nov 2025 14:12:07 +0100
-Message-ID: <20251121130147.482150840@linuxfoundation.org>
+Message-ID: <20251121130246.244025398@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit b3fd04e23f6e4496f5a2279466a33fbdc83500f0 ]
+[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
 
-Unify the naming of the existing GPU OPP table nodes found in the RK3588
-and RK3588J SoC dtsi files with the other SoC's GPU OPP nodes, following
-the more "modern" node naming scheme.
+This data originates from userspace and is used in buffer offset
+calculations which could potentially overflow causing an out-of-bounds
+access.
 
-Fixes: a7b2070505a2 ("arm64: dts: rockchip: Split GPU OPPs of RK3588 and RK3588j")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-[opp-table also is way too generic on systems with like 4-5 opp-tables]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi | 2 +-
- arch/arm64/boot/dts/rockchip/rk3588j.dtsi    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-index 0f1a776973516..b5d630d2c879f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-opp.dtsi
-@@ -115,7 +115,7 @@
- 		};
- 	};
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index b235e7cc41f3f..92b3e44d022fe 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3683,6 +3683,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
  
--	gpu_opp_table: opp-table {
-+	gpu_opp_table: opp-table-gpu {
- 		compatible = "operating-points-v2";
  
- 		opp-300000000 {
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-index 3045cb3bd68c6..baa8b5b6bfe55 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
-@@ -66,7 +66,7 @@
- 		};
- 	};
+ 	cmd_id = header->id;
++	if (header->size > SVGA_CMD_MAX_DATASIZE) {
++		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
++			       cmd_id + SVGA_3D_CMD_BASE);
++		return -E2BIG;
++	}
+ 	*size = header->size + sizeof(SVGA3dCmdHeader);
  
--	gpu_opp_table: opp-table {
-+	gpu_opp_table: opp-table-gpu {
- 		compatible = "operating-points-v2";
- 
- 		opp-300000000 {
+ 	cmd_id -= SVGA_3D_CMD_BASE;
 -- 
 2.51.0
 
