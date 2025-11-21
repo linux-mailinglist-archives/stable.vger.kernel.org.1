@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-195824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974EBC7982C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C58BC7945D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 5D6673518F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 912FF2DBF8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7ED23176E1;
-	Fri, 21 Nov 2025 13:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F0354763;
+	Fri, 21 Nov 2025 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmxHS4BC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9lJ3GDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6349330AADC;
-	Fri, 21 Nov 2025 13:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C5C1F09AC;
+	Fri, 21 Nov 2025 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731769; cv=none; b=gvoOM0vOYZs7e/UCd57XTzoK7FRySfDM+Ux6I1ieddr/DOFsYy/8Kv1AXJy749QxwLeDcJBGlDm+eRnLHGmRB+B8K3OBctapm1XhSYLIPfvR8JgT2mS4I8iUoZKRM7aDjY7bk0QdRLnoSZcfaAjUcx2TONqJkpTU2pnzlQlM1qY=
+	t=1763731364; cv=none; b=LEHPz0R6rGvB/nUCkUfDKvj4EeIdaVND+ipbvUvMW6Ok1NDU9iYMhChziNLCfWETvlTx2uye96qx8fldwZ2kwyEr3tx9Al75LZG+7CVlwuMoK/zuhUgqqjULtBWTQ7i6W8bw0aMp1iEhDuRqpPKhdfiWucc7gTjDWrOYZCkMWbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731769; c=relaxed/simple;
-	bh=0nYemwQW234q/jHESQqvz17ZH633pxwEMcXhtbkpoX4=;
+	s=arc-20240116; t=1763731364; c=relaxed/simple;
+	bh=U7VvmRicGYgHQmBJeSC0AhtEypocmIWVgXnrazat+zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVWNS/ju5HvXyJNFay1C2FlHadwn3WswoUhYCwr1Py1ml5gTEaC4haqJHjsBZi+C+NuVjXxAye6FJ6E6xc0f4RwEkgpU0iYH2RRJoJLB9LZfVQHZJMNd95YJiZUlYvV1FVGP+u5xekISpha7J4UyDU47vMMCtg6xCYUGnCgXt7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmxHS4BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3897C4CEF1;
-	Fri, 21 Nov 2025 13:29:28 +0000 (UTC)
+	 MIME-Version; b=VsR4CUnzLZxVUWPeDKhN6jQccuwzYAX9MWsDElul57sN92yk4IBeFVrT1eJU6r20hZLO8bLSoguBoWGR+aYip4QGwUjkEhQDtRjtAHwhR9cIOvezHIiWma7FPR95IIM/mMdjy1mdInMODaaOB4YqO4NzdO4OuXwsL8FxChFqM0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9lJ3GDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E20DC4CEFB;
+	Fri, 21 Nov 2025 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731769;
-	bh=0nYemwQW234q/jHESQqvz17ZH633pxwEMcXhtbkpoX4=;
+	s=korg; t=1763731364;
+	bh=U7VvmRicGYgHQmBJeSC0AhtEypocmIWVgXnrazat+zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmxHS4BCymSOF71l0VLGdDgq8vsmbzFAwoK4SZIo87NgcJV2Y2NbS/C2cZaGYDxNS
-	 kNNVnSXoLJzoQnNu2MXrD8COmWm7sm56M+7Wv4lYGHub+7BgVxIofOmpFLOiO89oTS
-	 6QXGLdd3PFe5+UX0GQi28ZtKbDvrbV3RF9IX4R4o=
+	b=L9lJ3GDtC7kOD9W4D6A6dKHG+3Sw+H2OOn5jFy8iJDP71qEaVaZ0OFwatwlbUzFvA
+	 BnUvwFauqpOKM61LxPNIp6hTOVPESsZIT1SSeayWsP9Lqeo65rtKdZ90mY0KHeQCTl
+	 sWrTkcRqfKrfkMD0otFX6iuhv4ZCK+8GTDLe9mxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/185] pnfs: Set transport security policy to RPC_XPRTSEC_NONE unless using TLS
-Date: Fri, 21 Nov 2025 14:11:41 +0100
-Message-ID: <20251121130146.543020235@linuxfoundation.org>
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.17 155/247] KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()
+Date: Fri, 21 Nov 2025 14:11:42 +0100
+Message-ID: <20251121130200.286703242@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit 8ab523ce78d4ca13add6b4ecbacff0f84c274603 ]
+commit fbe5e5f030c22ae717ee422aaab0e00ea84fab5e upstream.
 
-The default setting for the transport security policy must be
-RPC_XPRTSEC_NONE, when using a TCP or RDMA connection without TLS.
-Conversely, when using TLS, the security policy needs to be set.
+svm_update_lbrv() is called when MSR_IA32_DEBUGCTLMSR is updated, and on
+nested transitions where LBRV is used. It checks whether LBRV enablement
+needs to be changed in the current VMCB, and if it does, it also
+recalculate intercepts to LBR MSRs.
 
-Fixes: 6c0a8c5fcf71 ("NFS: Have struct nfs_client carry a TLS policy field")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, there are cases where intercepts need to be updated even when
+LBRV enablement doesn't. Example scenario:
+- L1 has MSR_IA32_DEBUGCTLMSR cleared.
+- L1 runs L2 without LBR_CTL_ENABLE (no LBRV).
+- L2 sets DEBUGCTLMSR_LBR in MSR_IA32_DEBUGCTLMSR, svm_update_lbrv()
+  sets LBR_CTL_ENABLE in VMCB02 and disables intercepts to LBR MSRs.
+- L2 exits to L1, svm_update_lbrv() is not called on this transition.
+- L1 clears MSR_IA32_DEBUGCTLMSR, svm_update_lbrv() finds that
+  LBR_CTL_ENABLE is already cleared in VMCB01 and does nothing.
+- Intercepts remain disabled, L1 reads to LBR MSRs read the host MSRs.
+
+Fix it by always recalculating intercepts in svm_update_lbrv().
+
+Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251108004524.1600006-3-yosry.ahmed@linux.dev
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs3client.c | 14 ++++++++++++--
- fs/nfs/nfs4client.c | 14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/svm.c |   29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfs/nfs3client.c b/fs/nfs/nfs3client.c
-index b0c8a39c2bbde..1aa4c43c9b3b4 100644
---- a/fs/nfs/nfs3client.c
-+++ b/fs/nfs/nfs3client.c
-@@ -2,6 +2,7 @@
- #include <linux/nfs_fs.h>
- #include <linux/nfs_mount.h>
- #include <linux/sunrpc/addr.h>
-+#include <net/handshake.h>
- #include "internal.h"
- #include "nfs3_fs.h"
- #include "netns.h"
-@@ -98,7 +99,11 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 		.net = mds_clp->cl_net,
- 		.timeparms = &ds_timeout,
- 		.cred = mds_srv->cred,
--		.xprtsec = mds_clp->cl_xprtsec,
-+		.xprtsec = {
-+			.policy = RPC_XPRTSEC_NONE,
-+			.cert_serial = TLS_NO_CERT,
-+			.privkey_serial = TLS_NO_PRIVKEY,
-+		},
- 		.connect_timeout = connect_timeout,
- 		.reconnect_timeout = connect_timeout,
- 	};
-@@ -111,9 +116,14 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -852,25 +852,29 @@ void svm_copy_lbrs(struct vmcb *to_vmcb,
+ 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
+ }
  
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_TCP_TLS:
-+		if (mds_clp->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
-+			cl_init.xprtsec = mds_clp->cl_xprtsec;
-+		else
-+			ds_proto = XPRT_TRANSPORT_TCP;
-+		fallthrough;
- 	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
--	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1)
- 			cl_init.nconnect = mds_clp->cl_nconnect;
- 	}
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index aaf723471228b..b14688da814d6 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -11,6 +11,7 @@
- #include <linux/sunrpc/xprt.h>
- #include <linux/sunrpc/bc_xprt.h>
- #include <linux/sunrpc/rpc_pipe_fs.h>
-+#include <net/handshake.h>
- #include "internal.h"
- #include "callback.h"
- #include "delegation.h"
-@@ -992,7 +993,11 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 		.net = mds_clp->cl_net,
- 		.timeparms = &ds_timeout,
- 		.cred = mds_srv->cred,
--		.xprtsec = mds_srv->nfs_client->cl_xprtsec,
-+		.xprtsec = {
-+			.policy = RPC_XPRTSEC_NONE,
-+			.cert_serial = TLS_NO_CERT,
-+			.privkey_serial = TLS_NO_PRIVKEY,
-+		},
- 	};
- 	char buf[INET6_ADDRSTRLEN + 1];
+-void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
-@@ -1001,9 +1006,14 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
+ 	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+-	svm_recalc_lbr_msr_intercepts(vcpu);
  
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_TCP_TLS:
-+		if (mds_srv->nfs_client->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
-+			cl_init.xprtsec = mds_srv->nfs_client->cl_xprtsec;
-+		else
-+			ds_proto = XPRT_TRANSPORT_TCP;
-+		fallthrough;
- 	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
--	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1) {
- 			cl_init.nconnect = mds_clp->cl_nconnect;
- 			cl_init.max_connect = NFS_MAX_TRANSPORTS;
--- 
-2.51.0
-
+ 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
+ 	if (is_guest_mode(vcpu))
+ 		svm_copy_lbrs(svm->vmcb, svm->vmcb01.ptr);
+ }
+ 
+-static void svm_disable_lbrv(struct kvm_vcpu *vcpu)
++void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++{
++	__svm_enable_lbrv(vcpu);
++	svm_recalc_lbr_msr_intercepts(vcpu);
++}
++
++static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+ 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
+ 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+-	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/*
+ 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
+@@ -899,13 +903,18 @@ void svm_update_lbrv(struct kvm_vcpu *vc
+ 			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+ 			    (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
+ 
+-	if (enable_lbrv == current_enable_lbrv)
+-		return;
++	if (enable_lbrv && !current_enable_lbrv)
++		__svm_enable_lbrv(vcpu);
++	else if (!enable_lbrv && current_enable_lbrv)
++		__svm_disable_lbrv(vcpu);
+ 
+-	if (enable_lbrv)
+-		svm_enable_lbrv(vcpu);
+-	else
+-		svm_disable_lbrv(vcpu);
++	/*
++	 * During nested transitions, it is possible that the current VMCB has
++	 * LBR_CTL set, but the previous LBR_CTL had it cleared (or vice versa).
++	 * In this case, even though LBR_CTL does not need an update, intercepts
++	 * do, so always recalculate the intercepts here.
++	 */
++	svm_recalc_lbr_msr_intercepts(vcpu);
+ }
+ 
+ void disable_nmi_singlestep(struct vcpu_svm *svm)
 
 
 
