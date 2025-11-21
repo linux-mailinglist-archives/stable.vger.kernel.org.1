@@ -1,150 +1,356 @@
-Return-Path: <stable+bounces-196499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEA5C7A719
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:14:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0D7C7A819
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22EF63A1294
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE25E4F1578
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1492F28D82F;
-	Fri, 21 Nov 2025 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F251C349AF7;
+	Fri, 21 Nov 2025 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tRqYNPzG"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="vIXcFVqT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011050.outbound.protection.outlook.com [40.107.74.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C860E221F0A
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737903; cv=none; b=c7e4qlJ9XmKXrC2a5frRDST1dqiLfx6o0NK62PIU0jNME6LtBJrOUgFvHVfydWYL6wVt1w8hd5HfZtuKgjtSeD5zBjU7g5WTwOhxQDvQugOeqVbvBHAb8G6jVDRhcCXVDrDh6NR9kozUMhlPVNap7BAywvyhlmcC/3SwtN8EdQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737903; c=relaxed/simple;
-	bh=tLQk0k5vh+Mj6/nbDJE9tSmjNZwEVI2yygeNEEc394c=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421AA2F8BCB;
+	Fri, 21 Nov 2025 15:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763738004; cv=fail; b=U+yTxgr6IT5FmDUUz0BZmo3admuw9+2TCsFUWAoDPR8cg6/G4NjnRdyZJgwFtAKJMq1NG9bKpZQfAi53GxmrJU9a8Z7zTG64SnODe09SqM4EpbIHmLwkfsBMGdcFlNLrqnoCcfzRsT22GZW/nTGsTmP6h93BB+XWA3C8RHMUpws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763738004; c=relaxed/simple;
+	bh=bKQ9B3+lcAq8t2OghvOtVq7a+bz56a5n5msAN7gsrA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUorR7tGuCpX3HxzyChyT489DIWFdOChcZfUSDVh8qybtV5HXzjvKwSv2iXlaXlSOUMoBLS+rk9KbH0bv7av0RO4HACJXDZC4V+L3h7t7L02BF562h7XmLZtNyOCGelpTUeEpl5rB+k06KH3KEv01roGyTEdxe4x7tKhTnvvwKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tRqYNPzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919B8C4CEF1;
-	Fri, 21 Nov 2025 15:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763737903;
-	bh=tLQk0k5vh+Mj6/nbDJE9tSmjNZwEVI2yygeNEEc394c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRqYNPzG6H+1hD2zKkea3CpBATFUNEChCUUkkz/Jbj5squVBAyqoFXVqypgVyyQWA
-	 lymb8VSyo6xa+R3FSLO/fLMeSSpDa7/zsMFmN7ajYrkAgp6AtR/PQgLFpQqQwsbfGC
-	 AcNNx8yKahYJfEUk71YoEEaAn7Aqcmzqyv6swQJr2FoLL5diDxkob2wyeKkcy7dQRZ
-	 A/h6eGWTHAAOaYuukOUT/0c4tFRDkHZ7LpW2j67+prYACYRS1y5yGVLCQ3HeLZG8AG
-	 ZUs1YRc2oZ0RtInJmJr6DljBd1TyUf134h4g6aW1eYn9QI6jgnE2pd7zTa/+J+8WzN
-	 xa5JVwyQVdssw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Baoquan He <bhe@redhat.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] crash: fix crashkernel resource shrink
-Date: Fri, 21 Nov 2025 10:11:40 -0500
-Message-ID: <20251121151140.2560469-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112029-arrogance-bondless-6a5b@gregkh>
-References: <2025112029-arrogance-bondless-6a5b@gregkh>
+	 Content-Type:MIME-Version; b=kMglYTolte8i99YrTaWa3cwxs4Oub6288k30SUmBRayqKqrujF3WVahv7BUx5zNIZnFn4NYRzo9W1FLMtjZWczmoaZSStliID93pXhf0B3ufH3WTPaV/m8+JtynFC5PPAJEwPssR0irr17SJuHKKlw43iY1ijsNtoEJ3yEUwMKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=vIXcFVqT; arc=fail smtp.client-ip=40.107.74.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xUbcUpuieJ2Y28r+p1CeDBucPJXqzSjsbIiPW54/sR6lDP32/+oir/fyiRWKVkDOIYiJHOTuLx433NGOKM6YXyL6+s0Zen5o7hMGvgdkaoxFiQx5+O7L/Bh2u3hH7kwqBTxdnwhHZEGtOnfeZUK+gIec3XIjZNFdSc8ceSpi8o2W/9lWFAETVIivzn6NgDaHhJVul7wp3TI5x4AXKrrVB5E8TOXk6NyK6TQNMP5ysjS1RzOChSWpeAVsbYLG+UUypMnLNiAu7jWvpdjBMm9eWdmv/xpEwdEHHHNVDEOLI/J851qqDGhqdLDjsG6e199feWdPqTCHhBiPrz6CvIEXOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HgL7BjrFVT7B2vOEQVLLeKN20VeSkhthY9S3Lsu4erk=;
+ b=LBJAxMBtQX2EnRZTqtRRJDAizqhdYdWRiZZiX2vYXkwKlnZtzyvTCDVfnCwp/+WfGiCZRWFydix88FUjLoDBmDt+AssJjWKsXR01r2QvP7UIaNsKa3UjkjwYbsYbMK4RIFXU1L1NIqLKHLA5rR9I3jTqNR4cqije+kBC3eRqGgH6zKb/+n2yr7jq4iC2HmVpW8GUkuyiQdEXxtRfvnn5DPTr3Pv2tYEjaFwTHo/NtPGHo4rLpEI94QAnfrfWNxOmIUFouJXstS0Zh4wd1wOGu6H3qhiuLHmOOSaSZ1PBLPF518OP8v9PrzPR1agSu3QvPCpbQALv3EGd368Gvf0iQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HgL7BjrFVT7B2vOEQVLLeKN20VeSkhthY9S3Lsu4erk=;
+ b=vIXcFVqTp6+M7cZTLM/Yi452/QsAb2pmz1bWbZpNP5qXWf3Ww80wy7BhdijUMrZvg5mvc9Dizlgb4AMVmZf8PusMpaNanSVS9Va8d/wYGot/M9dDx2EPa3iwLMa4/VNpFx63L57dzzulJ2CxgTr6eYvw1vmjIIpRtQbkv5dHbbc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
+ by OS7PR01MB16954.jpnprd01.prod.outlook.com (2603:1096:604:41e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 15:13:19 +0000
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8]) by TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8%5]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 15:13:19 +0000
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+To: tomm.merciai@gmail.com
+Cc: linux-renesas-soc@vger.kernel.org,
+	biju.das.jz@bp.renesas.com,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Peter Rosin <peda@axentia.se>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4 04/22] reset: rzv2h-usb2phy: Keep PHY clock enabled for entire device lifetime
+Date: Fri, 21 Nov 2025 16:11:53 +0100
+Message-ID: <802e701277795faafecdb965b06a01ac09da9e49.1763737324.git.tommaso.merciai.xr@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1763737324.git.tommaso.merciai.xr@bp.renesas.com>
+References: <cover.1763737324.git.tommaso.merciai.xr@bp.renesas.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FRYP281CA0015.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::25)
+ To TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|OS7PR01MB16954:EE_
+X-MS-Office365-Filtering-Correlation-Id: 972d8108-5406-46d3-3eae-08de291080fa
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0KilWUInZiarZCD3+ioVSfTwAXkFA5gq9/LAnTKNwdd5w2aACVO2Hl8f0mQw?=
+ =?us-ascii?Q?nxutUUA9PgzncvzvDGARhjJSnHGgGTTVLg8wn8kzl4L7dsedOP9lrKuisStT?=
+ =?us-ascii?Q?4HyTcz2kjkfhIYx0kirzHFGLlrOW7xGDJYgs5K6MMEOyNh8rO+jJp8nCOckz?=
+ =?us-ascii?Q?W1vLleDLrTG+RyqWBxIQoYaI9OU4hQFEVzoL1FwcE3GYd98MEHjX9k+MzUD5?=
+ =?us-ascii?Q?Tx5IibMPk6ETQmiFKFsQ6gaqBthElMcWNggZuTJL3DDuRN8DK01fmalCnniO?=
+ =?us-ascii?Q?ta/PnL7DzjDykv4lKtSShdyXxDJSSBQEOH1sU1iraex5GhInwtdiMx9iwy1D?=
+ =?us-ascii?Q?2H/xd5KqNRInbkbHprPS1mpKKMdGQjZ5SEbNhrz6B2xWsavWMb+UhooITlAw?=
+ =?us-ascii?Q?Z7V37W69kPe9YsakH/ETF5NE7F0OfDHnC0BmgxO/sHnyqnV+YGtbDItQn03H?=
+ =?us-ascii?Q?JLzT2NNxOgGPlAoridL8FrVP7r2S5kCOgAFj5dc6q6VaqGAPpKisLOm4uMct?=
+ =?us-ascii?Q?yoz0oHiLf83Ub/vnwCOd/4LDDudM1OTMtBowrVDf5K8gQY59Z32feQCrrZZW?=
+ =?us-ascii?Q?JG5Yog37g/4qEfnGipDDpkkLulNMpWhWQES/WK+xBfzpFd9O/MHIkEubmwOH?=
+ =?us-ascii?Q?Qi4zwv6g4yawjkOEvGYD5aG0/9OrKLkTfYickGOEN2eIeFgKEo1eR2kv9QR8?=
+ =?us-ascii?Q?hHsc8qiLcPK77Tdq0RH3p3kMZst8+LDtP3t2suiLm35Ti+ESB27e7wbiPWMi?=
+ =?us-ascii?Q?LYEICVjIqGbugQvY5qyw/eX1Fbd+OHouG5GcoAUQRDoAu/UdFhbOonjzSdgW?=
+ =?us-ascii?Q?CKLVM1i68LEfSxyi+Zlwrg/txo2Qf/J/bzMQ+z/VwAonkHslYcZ0o0YH5VKC?=
+ =?us-ascii?Q?iQbuFKpkbI53HVKM0sYuqQebmb7PSa/7VkznJz/wm2zY0WJr45m0W5cE6q0S?=
+ =?us-ascii?Q?n747/JbR67Q4XK5YtLoyno5TG4X2vYHJj56oyDEnuiW6vV6fyNWdf0lWtJ7R?=
+ =?us-ascii?Q?rkWQwyHkuyv8HRhmYGOGk9JG1yJyO63YCo91it4f+mfAyKQakkM4Q9//tvwY?=
+ =?us-ascii?Q?RpuiC2uAsjKyzVfiEbyK8uALJDsw1oXm0p7X3cRBxoA7l1hgEkRMojvTa/fQ?=
+ =?us-ascii?Q?bo3OxM1khxYH4k5/YiDzf7PVfkI6CMyW+j2NGdZ4sQ1DRX1ImqE7Enq4QLF/?=
+ =?us-ascii?Q?jzRP8NFEXJCj/atzL+UJW5HqZN43nQ5aX8MPB+1c0KxqtMHg1zeA7PgvsyIW?=
+ =?us-ascii?Q?EN5N1uXdngEGZoxrYom4vmmaGOPdftqg8ldeDVAAL+vOtTLMEf9lnWDQ6ice?=
+ =?us-ascii?Q?DSTiFO6FxMaQpO+pQJF3oZx5Pf40mDhpusEBG5eBY9EP0XcJJ7vizOBUsNZS?=
+ =?us-ascii?Q?6S3gOEnOQMXYU2TOIm9lRS5j5YbLbkLj6BV+EVi/c0HMwDuPq57zvQ5Cq9qS?=
+ =?us-ascii?Q?IeLX9iCa2yOPa+FzPVTFiAWgY1IvcObDp+K3og7gSPt+rG7F5dw4QYKB1a5e?=
+ =?us-ascii?Q?zIPkcZy9IGU3fVVJENgVGwSBj11CQyZnFtqI?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?K7tQgwX5+9nv8F5NEowOcPQ85ocMCO+w1mdhBn61vxousMsMD4YXbHNa7W+1?=
+ =?us-ascii?Q?sLgNA2zk1viL1PHQKtfuALBxR/YuFEOCeVubjbUUbfmc3W7a/I67skxHqUsi?=
+ =?us-ascii?Q?EkvIv4r+0BDtMsD1P8A4jpEyZ1U4QKAJWLU5bIPn2C1Rwg1MB/+8uNy3oj7g?=
+ =?us-ascii?Q?S7cs/dxXSBGxc9582WU2fcqRRQZ4RpoTxoqeKa36T0wB8tbehRJIRm7oPURJ?=
+ =?us-ascii?Q?q381wKzpANBL49eyHco9R0aIcJz01+y3DTqug3AYy3I8d9R4Hd2f3ND3tjJb?=
+ =?us-ascii?Q?qWRPGdWkqGa+8vCExq0ffUItpUW5eONNl5InqB7LEDrA5DVnMtg9nbFFBMH3?=
+ =?us-ascii?Q?IASQjnJ5MSzQ9JWO6/zo8gjeHXE3S3Tqx/NveCRolj7MzAxNv6dUF28UhsPm?=
+ =?us-ascii?Q?R4a1w4FiJJu2w85a7IJorrhURioQiNFqqftboMmYtbjWoSlFjRkZnoXn/2+x?=
+ =?us-ascii?Q?32/55qmo8QGmHYUB4XO1mzNX+kRt4YCFADFpsZlm/3CZVIstEYmBzcdtg5J1?=
+ =?us-ascii?Q?6Srk7xexU5/zXAyDEOD2pmnxY7nld5oL7l5rRqFKpSvdt4Ky1wmZgCXihBSM?=
+ =?us-ascii?Q?NivnHzq4ROlrHJOWNJUrYOoCBEjuTQ1uZPqshc3Q5NEiTvZaAy7vCA/yNbQG?=
+ =?us-ascii?Q?j9n81sqxu7vCwCLLtj2zT9wHu1+fHA4/t6572SoEvMNTv6iZgLVELrl3cLpr?=
+ =?us-ascii?Q?+l6gVel4fQBFFZFT5wXcUccSOtwDSlbXwSM6uQWd+4HbeYP1MW5sK8KkvuEy?=
+ =?us-ascii?Q?kTUAkaFTTO/SPu6B3EBp9LClaruzGpWwTYcGxCI4M0+Oh86PK6/kl7dZjx9y?=
+ =?us-ascii?Q?y4O5w67f9XRzlYfz/u7XO7XslYEYNM5bIp9dLZjIKxGwkeskmPB37FHKx723?=
+ =?us-ascii?Q?80BoHgIhuUARziyxgjUMkEUV3rvQ9EHerZQU5XpdWuOXjGpIp8Vd28JU/GWn?=
+ =?us-ascii?Q?Kdtc4imT+abdhUGf1ZzB6zIJiZBCsDtOUMKD/WcCMea7X66oySm+gcYw3Yi4?=
+ =?us-ascii?Q?kzA8QCAKoWCfHotiYOIal+soRPR412RSzmEb2PhO2OU6aNyK2QaB8TMXWlsa?=
+ =?us-ascii?Q?5IOhEi7GSfHEpqLwgAh/QjZkr+A/KOIupakB0MuOT2i1mqJ3NicAECY7SFAS?=
+ =?us-ascii?Q?lwdZjZ/qsp0GBJ9J9XqJgApZxj7cbAfjqoPoEb775YzCULAnSxB3cNbxwsJ8?=
+ =?us-ascii?Q?PEMxtxJmnmCa0eiYn0lumFnC/rVHzEXNokklCl0/S2BR8LYkdsH+I0q+wQVk?=
+ =?us-ascii?Q?sU/tSY8eaYZaM+y/9dEYsU9x3nCUwKuD2uHQianoN7KzRexnNuLYyjK3wjdu?=
+ =?us-ascii?Q?Ol6gbp2hyrDobZoD4K+UtD5IOea5FX8FOicCFoMD/I+bPYj8I+WoPN30VKhL?=
+ =?us-ascii?Q?ZKILA4QShMw1z5ZW4zyTk9+MA4DeUIXB/euY1srDhtPp2gBX0hTggDaerWac?=
+ =?us-ascii?Q?6WkZQfAEMW7vYNfJrY0SMTHf6DSL5QYM9th0RGQyw8aH5IXHfYZp9dSM2jK/?=
+ =?us-ascii?Q?WBPYnT95sTmMCgJhDwhSaSpJCamq8ZDe6T7l69IR0rDNO5wXwFRuQi3rjmAf?=
+ =?us-ascii?Q?wRFa2JhM3XK3esMI6qHBG2seTTB3t+dLDME09Thbt95lC2/pOIVwz8YPOXQO?=
+ =?us-ascii?Q?du26pf2b5zxgupwV8VoxBMM=3D?=
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 972d8108-5406-46d3-3eae-08de291080fa
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 15:13:19.6714
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vdiBF+MMdAjaLbzB3XnC//flNNo6iUU3eEJXugH72NOIh+Xl80+CzywKboIgy91+Iyv5Xv6DEmHk20buwrdvZ1j6I2Xqw/kn1Fv8vo+AeWlVdr8SSRVtmqpnipcQs3uu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB16954
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+The driver was disabling the USB2 PHY clock immediately after register
+initialization in probe() and after each reset operation. This left the
+PHY unclocked even though it must remain active for USB functionality.
 
-[ Upstream commit 00fbff75c5acb4755f06f08bd1071879c63940c5 ]
+The behavior appeared to work only when another driver
+(e.g., USB controller) had already enabled the clock, making operation
+unreliable and hardware-dependent. In configurations where this driver
+is the sole clock user, USB functionality would fail.
 
-When crashkernel is configured with a high reservation, shrinking its
-value below the low crashkernel reservation causes two issues:
+Fix this by:
+- Enabling the clock once in probe() via pm_runtime_resume_and_get()
+- Removing all pm_runtime_put() calls from assert/deassert/status
+- Registering a devm cleanup action to release the clock at removal
+- Removed rzv2h_usbphy_assert_helper() and its call in
+  rzv2h_usb2phy_reset_probe()
 
-1. Invalid crashkernel resource objects
-2. Kernel crash if crashkernel shrinking is done twice
+This ensures the PHY clock remains enabled for the entire device lifetime,
+preventing instability and aligning with hardware requirements.
 
-For example, with crashkernel=200M,high, the kernel reserves 200MB of high
-memory and some default low memory (say 256MB).  The reservation appears
-as:
-
-cat /proc/iomem | grep -i crash
-af000000-beffffff : Crash kernel
-433000000-43f7fffff : Crash kernel
-
-If crashkernel is then shrunk to 50MB (echo 52428800 >
-/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
-af000000-beffffff : Crash kernel
-
-Instead, it should show 50MB:
-af000000-b21fffff : Crash kernel
-
-Further shrinking crashkernel to 40MB causes a kernel crash with the
-following trace (x86):
-
-BUG: kernel NULL pointer dereference, address: 0000000000000038
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-<snip...>
-Call Trace: <TASK>
-? __die_body.cold+0x19/0x27
-? page_fault_oops+0x15a/0x2f0
-? search_module_extables+0x19/0x60
-? search_bpf_extables+0x5f/0x80
-? exc_page_fault+0x7e/0x180
-? asm_exc_page_fault+0x26/0x30
-? __release_resource+0xd/0xb0
-release_resource+0x26/0x40
-__crash_shrink_memory+0xe5/0x110
-crash_shrink_memory+0x12a/0x190
-kexec_crash_size_store+0x41/0x80
-kernfs_fop_write_iter+0x141/0x1f0
-vfs_write+0x294/0x460
-ksys_write+0x6d/0xf0
-<snip...>
-
-This happens because __crash_shrink_memory()/kernel/crash_core.c
-incorrectly updates the crashk_res resource object even when
-crashk_low_res should be updated.
-
-Fix this by ensuring the correct crashkernel resource object is updated
-when shrinking crashkernel memory.
-
-Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
-Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Applied fix to `kernel/kexec_core.c` instead of `kernel/crash_core.c` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e3911d7f865b ("reset: Add USB2PHY port reset driver for Renesas RZ/V2H(P)")
+Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 ---
- kernel/kexec_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3->v4:
+ - No changes.
 
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index b7246b7171b73..88024cb22a9db 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -1132,7 +1132,7 @@ static int __crash_shrink_memory(struct resource *old_res,
- 		old_res->start = 0;
- 		old_res->end   = 0;
- 	} else {
--		crashk_res.end = ram_res->start - 1;
-+		old_res->end = ram_res->start - 1;
+v2->v3:
+ - Added missing Cc: stable@vger.kernel.org
+ - Improved commit body describing the removal of rzv2h_usbphy_assert_helper()
+   from rzv2h_usb2phy_reset_probe().
+
+v1->v2:
+ - Improve commit body and commit msg
+ - Added Fixes tag
+ - Dropped unnecessary rzv2h_usbphy_assert_helper() function
+
+ drivers/reset/reset-rzv2h-usb2phy.c | 64 ++++++++---------------------
+ 1 file changed, 18 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/reset/reset-rzv2h-usb2phy.c b/drivers/reset/reset-rzv2h-usb2phy.c
+index ae643575b067..5bdd39274612 100644
+--- a/drivers/reset/reset-rzv2h-usb2phy.c
++++ b/drivers/reset/reset-rzv2h-usb2phy.c
+@@ -49,9 +49,10 @@ static inline struct rzv2h_usb2phy_reset_priv
+ 	return container_of(rcdev, struct rzv2h_usb2phy_reset_priv, rcdev);
+ }
+ 
+-/* This function must be called only after pm_runtime_resume_and_get() has been called */
+-static void rzv2h_usbphy_assert_helper(struct rzv2h_usb2phy_reset_priv *priv)
++static int rzv2h_usbphy_reset_assert(struct reset_controller_dev *rcdev,
++				     unsigned long id)
+ {
++	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
+ 	const struct rzv2h_usb2phy_reset_of_data *data = priv->data;
+ 
+ 	scoped_guard(spinlock, &priv->lock) {
+@@ -60,24 +61,6 @@ static void rzv2h_usbphy_assert_helper(struct rzv2h_usb2phy_reset_priv *priv)
  	}
  
- 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
+ 	usleep_range(11, 20);
+-}
+-
+-static int rzv2h_usbphy_reset_assert(struct reset_controller_dev *rcdev,
+-				     unsigned long id)
+-{
+-	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
+-	struct device *dev = priv->dev;
+-	int ret;
+-
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret) {
+-		dev_err(dev, "pm_runtime_resume_and_get failed\n");
+-		return ret;
+-	}
+-
+-	rzv2h_usbphy_assert_helper(priv);
+-
+-	pm_runtime_put(dev);
+ 
+ 	return 0;
+ }
+@@ -87,14 +70,6 @@ static int rzv2h_usbphy_reset_deassert(struct reset_controller_dev *rcdev,
+ {
+ 	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
+ 	const struct rzv2h_usb2phy_reset_of_data *data = priv->data;
+-	struct device *dev = priv->dev;
+-	int ret;
+-
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret) {
+-		dev_err(dev, "pm_runtime_resume_and_get failed\n");
+-		return ret;
+-	}
+ 
+ 	scoped_guard(spinlock, &priv->lock) {
+ 		writel(data->reset_deassert_val, priv->base + data->reset_reg);
+@@ -102,8 +77,6 @@ static int rzv2h_usbphy_reset_deassert(struct reset_controller_dev *rcdev,
+ 		writel(data->reset_release_val, priv->base + data->reset_reg);
+ 	}
+ 
+-	pm_runtime_put(dev);
+-
+ 	return 0;
+ }
+ 
+@@ -111,20 +84,10 @@ static int rzv2h_usbphy_reset_status(struct reset_controller_dev *rcdev,
+ 				     unsigned long id)
+ {
+ 	struct rzv2h_usb2phy_reset_priv *priv = rzv2h_usbphy_rcdev_to_priv(rcdev);
+-	struct device *dev = priv->dev;
+-	int ret;
+ 	u32 reg;
+ 
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret) {
+-		dev_err(dev, "pm_runtime_resume_and_get failed\n");
+-		return ret;
+-	}
+-
+ 	reg = readl(priv->base + priv->data->reset_reg);
+ 
+-	pm_runtime_put(dev);
+-
+ 	return (reg & priv->data->reset_status_bits) == priv->data->reset_status_bits;
+ }
+ 
+@@ -141,6 +104,11 @@ static int rzv2h_usb2phy_reset_of_xlate(struct reset_controller_dev *rcdev,
+ 	return 0;
+ }
+ 
++static void rzv2h_usb2phy_reset_pm_runtime_put(void *data)
++{
++	pm_runtime_put(data);
++}
++
+ static int rzv2h_usb2phy_reset_probe(struct platform_device *pdev)
+ {
+ 	const struct rzv2h_usb2phy_reset_of_data *data;
+@@ -175,14 +143,14 @@ static int rzv2h_usb2phy_reset_probe(struct platform_device *pdev)
+ 	if (error)
+ 		return dev_err_probe(dev, error, "pm_runtime_resume_and_get failed\n");
+ 
++	error = devm_add_action_or_reset(dev, rzv2h_usb2phy_reset_pm_runtime_put,
++					 dev);
++	if (error)
++		return dev_err_probe(dev, error, "unable to register cleanup action\n");
++
+ 	for (unsigned int i = 0; i < data->init_val_count; i++)
+ 		writel(data->init_vals[i].val, priv->base + data->init_vals[i].reg);
+ 
+-	/* keep usb2phy in asserted state */
+-	rzv2h_usbphy_assert_helper(priv);
+-
+-	pm_runtime_put(dev);
+-
+ 	priv->rcdev.ops = &rzv2h_usbphy_reset_ops;
+ 	priv->rcdev.of_reset_n_cells = 0;
+ 	priv->rcdev.nr_resets = 1;
+@@ -190,7 +158,11 @@ static int rzv2h_usb2phy_reset_probe(struct platform_device *pdev)
+ 	priv->rcdev.of_node = dev->of_node;
+ 	priv->rcdev.dev = dev;
+ 
+-	return devm_reset_controller_register(dev, &priv->rcdev);
++	error = devm_reset_controller_register(dev, &priv->rcdev);
++	if (error)
++		return dev_err_probe(dev, error, "could not register reset controller\n");
++
++	return 0;
+ }
+ 
+ /*
 -- 
-2.51.0
+2.43.0
 
 
