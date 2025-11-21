@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-195909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B483C79841
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3942C795AD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B4435343D11
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 3E00F2CA04
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27155334690;
-	Fri, 21 Nov 2025 13:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAFB347FEB;
+	Fri, 21 Nov 2025 13:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9Xd9u8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIlI7HEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A0126CE33;
-	Fri, 21 Nov 2025 13:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE70346E51;
+	Fri, 21 Nov 2025 13:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732013; cv=none; b=lT7/oYS+XdDisHjovwYySFPvK16GZ+moOzxN6cYdnBV280ejY5Ka/EHEivYdpJ9JcQ2ztwbuzpjw1t09GQuGqCtGOpz/1+QEUjsuxMgjFQ1nDKGLMBPCFtXGo6J+mODViTYyHmFY6ILH3S3tYOXongPRx8kxjn7apYlfHziz1zo=
+	t=1763731430; cv=none; b=Tmz7lb7hovrfIycbufC52Wd9Jj1/VPxa3YdiL9NCaTdHzKpl3HpjbmSQm66dRu4/KRrc51mWDeIJs1HIVmxlFhqGtANYYSu7tm4XXr/ygF6pAL2pnB0JkgqP3KBgBAKCXZo02vG/MiJt1701ayGJZd8kg+gkwkiezVrtRa87Dzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732013; c=relaxed/simple;
-	bh=NQ4twKWoVLB6Jrq6Kw4iTCP4uP8HHZK+EjF8tA62n3I=;
+	s=arc-20240116; t=1763731430; c=relaxed/simple;
+	bh=zuchb/h/MnQkxEqdz+6ctUXhdRr9Nm4sHzimHriEAD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKIEIptbXrJolR5J8WZ+qdccCt6KMUHJ5tSeuw+MZIqU0nzRO8Z0WowHrHVVnKj2H1ZwIaSHi8w0QH3/5upUwQqOLxhwfAPbtDP0Hy+jm0MNpKAm3akLPt16fSUGYm/g8YDJG02V7pbmsn62IOLHRl1b8AHnVUWatKRJgC8KlFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9Xd9u8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA43C4CEF1;
-	Fri, 21 Nov 2025 13:33:32 +0000 (UTC)
+	 MIME-Version; b=AF5aLgWstk23/lrq+ZMS8xtLg0mvmQnzi19f9/x3zO3ht1xYjyrpv+AZMefgz5ipbaEckY+Zw+3LgmxDDYIFURrnvxxammJ5X+SDOfR3tir6XW8/22L2upQYBWrWELyk8e0S34Z5qcm5BhB2pG7K++PH8njqUdlQCNIyHPqn9tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIlI7HEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077DDC4CEF1;
+	Fri, 21 Nov 2025 13:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732013;
-	bh=NQ4twKWoVLB6Jrq6Kw4iTCP4uP8HHZK+EjF8tA62n3I=;
+	s=korg; t=1763731430;
+	bh=zuchb/h/MnQkxEqdz+6ctUXhdRr9Nm4sHzimHriEAD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9Xd9u8bmIRjQe0UbF2DJz9qhkbazc4bIrLI0feeSGZmtLZmkxtX6xQMJqHXABo5F
-	 gncLt7qXD8HVEVUlv90OMmTKRT/6zW/lkL5jpf9AFT4XEgH6Bbp9et2IP1jrBZ0lu9
-	 x0Gxan3hICPHdkShaBIMp9OjPinQV8uFBBEtbzT8=
+	b=yIlI7HEhQKKK16m6OJ84gP51iQDbWtO71aljeZVhryEp3FKSEUVA79Y4/qn13CD4K
+	 H8GJJiKv1D4Aor70IpJFrIxbMm8e7YcCwW8t2eq3haWzF4wqIQSJnr2Ri6t97JNFv3
+	 Q2wQ+mDmJ1HYRFmQHPXW7nj+VU7vvvXt17u8QfD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 126/185] mm/shmem: fix THP allocation and fallback loop
+	syzbot+3c93637d7648c24e1fd0@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.17 206/247] io_uring/rw: ensure allocated iovec gets cleared for early failure
 Date: Fri, 21 Nov 2025 14:12:33 +0100
-Message-ID: <20251121130148.422647467@linuxfoundation.org>
+Message-ID: <20251121130202.118914412@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,73 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit fc745ff317566ec299e16346ebb9eacc8fe5b9d2 upstream.
+commit d3c9c213c0b86ac5dd8fe2c53c24db20f1f510bc upstream.
 
-The order check and fallback loop is updating the index value on every
-loop.  This will cause the index to be wrongly aligned by a larger value
-while the loop shrinks the order.
+A previous commit reused the recyling infrastructure for early cleanup,
+but this is not enough for the case where our internal caches have
+overflowed. If this happens, then the allocated iovec can get leaked if
+the request is also aborted early.
 
-This may result in inserting and returning a folio of the wrong index and
-cause data corruption with some userspace workloads [1].
+Reinstate the previous forced free of the iovec for that situation.
 
-[kasong@tencent.com: introduce a temporary variable to improve code]
-  Link: https://lkml.kernel.org/r/20251023065913.36925-1-ryncsn@gmail.com
-  Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Link: https://lkml.kernel.org/r/20251022105719.18321-1-ryncsn@gmail.com
-Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Fixes: e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
-Closes: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+3c93637d7648c24e1fd0@syzkaller.appspotmail.com
+Tested-by: syzbot+3c93637d7648c24e1fd0@syzkaller.appspotmail.com
+Fixes: 9ac273ae3dc2 ("io_uring/rw: use io_rw_recycle() from cleanup path")
+Link: https://lore.kernel.org/io-uring/69122a59.a70a0220.22f260.00fd.GAE@google.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ io_uring/rw.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1785,6 +1785,7 @@ static struct folio *shmem_alloc_and_add
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	unsigned long suitable_orders = 0;
- 	struct folio *folio = NULL;
-+	pgoff_t aligned_index;
- 	long pages;
- 	int error, order;
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -461,7 +461,10 @@ int io_read_mshot_prep(struct io_kiocb *
  
-@@ -1798,10 +1799,12 @@ static struct folio *shmem_alloc_and_add
- 		order = highest_order(suitable_orders);
- 		while (suitable_orders) {
- 			pages = 1UL << order;
--			index = round_down(index, pages);
--			folio = shmem_alloc_folio(gfp, order, info, index);
--			if (folio)
-+			aligned_index = round_down(index, pages);
-+			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
-+			if (folio) {
-+				index = aligned_index;
- 				goto allocated;
-+			}
+ void io_readv_writev_cleanup(struct io_kiocb *req)
+ {
++	struct io_async_rw *rw = req->async_data;
++
+ 	lockdep_assert_held(&req->ctx->uring_lock);
++	io_vec_free(&rw->vec);
+ 	io_rw_recycle(req, 0);
+ }
  
- 			if (pages == HPAGE_PMD_NR)
- 				count_vm_event(THP_FILE_FALLBACK);
 
 
 
