@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-196067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55D7C7995F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:44:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC47EC79C33
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 4D3972B10B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3DEE13818DE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9948346FC8;
-	Fri, 21 Nov 2025 13:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B824C34DB75;
+	Fri, 21 Nov 2025 13:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwpM7xXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k88v7DHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945EB347BC9;
-	Fri, 21 Nov 2025 13:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9B034DB59;
+	Fri, 21 Nov 2025 13:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732464; cv=none; b=Qrg1m33JHmD5Bb8nV442g+qA3EKaIDMsmRXKhTyn+pEfwIiCfL/LcOZaO0vlCsfMoliRbD1Wca40KN7g3Qsy1+L+HDt9/SdVHiXumD4NIhopYsirV3HyjeQNz3+pow3Yf4Fuz4yB2tCyeODLI+iMaYqmroB2ZV4iV4lNq7OoAco=
+	t=1763732587; cv=none; b=tntwEVoU6Iih4+9Dw1TuP/kOpd1DX6ZxujzTJAIFLJlvEAFgfDzTp9NX0eNFjSjbTic8zYrgIhaW7dvIL3xTHazfvslGj0gEgGiLglX+QlJg5uos1nCz87C5agXGBcrDGe3cHhY7MJPaNca/SDjiHFOKxpmAMhK9A/HaEwIw/iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732464; c=relaxed/simple;
-	bh=PWemDepiS95sy3BLwaWmBZMYzG3BweKtnkPBQlIpYuc=;
+	s=arc-20240116; t=1763732587; c=relaxed/simple;
+	bh=yVCtdwY/ajIxA2jo4rveRPGSHuryKbRMaLB2Yt2Mw/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sssryhEP2vR/nd4xqWBqtNyDbPPc3h8M9We6wI2DU3h9YnDgaNnbZUWCfyiJi8pnCgP1F8T39RB8equH/U2HoYf6FFNR0hMfZk4XJ2FCMLk8AtFBlC4bqEFrAo69amF3bcD0BV86IM5WYAOY4hCsRZpy3c++akWLWG2kCCdxXO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwpM7xXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2048FC116C6;
-	Fri, 21 Nov 2025 13:41:03 +0000 (UTC)
+	 MIME-Version; b=RJphLNTwv+QhEOugG0arjI4uk9A29S5VrCGBXxIbB9LX7HoabiMRhU7bCsQeR3Sq2cy9GzhSMueXOvlh89InHqECdnK0PEeCrMnyhmn+xm1JVLz7RoFLNznv2PUjmm1bMPUobgEb0SSvx4xuPweWVbiY5LmAjzneUw8vLy4E3EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k88v7DHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C6FC4CEF1;
+	Fri, 21 Nov 2025 13:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732464;
-	bh=PWemDepiS95sy3BLwaWmBZMYzG3BweKtnkPBQlIpYuc=;
+	s=korg; t=1763732587;
+	bh=yVCtdwY/ajIxA2jo4rveRPGSHuryKbRMaLB2Yt2Mw/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwpM7xXDwulE/3GSUkv+9LT7Udtr7MpTUD4uZvTvRCvQIFZBDFP32e9Td68HYyDJc
-	 5xSLBWXQ9dkBPonsWrNi1cSnndz7ZvNG9HdPeRrmqRNA67nEpeJruhgJyO+FfJ+pxR
-	 iS1mmL9Vg5/LUE0jvbRpSP0Vpg2cESNLD1z0SbMg=
+	b=k88v7DHgog8xgN0hJGMkJwfcXi1BS6LQ1vDNdICHYpvLsdGei/+TfWRKgFL7aA2Aj
+	 hXYUkXv5GMIF2g0AyNwFekrcHeNPb/ahRbl9VPhFVVchcey7Y3UaN6uQwDeQWM2Wxh
+	 ZO0sjsvB/OD7ky6yxpqd2QM60HTzU9iXkJ6cDWNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/529] media: amphion: Delete v4l2_fh synchronously in .release()
-Date: Fri, 21 Nov 2025 14:07:08 +0100
-Message-ID: <20251121130235.611143992@linuxfoundation.org>
+Subject: [PATCH 6.6 130/529] drm/tidss: Use the crtc_* timings when programming the HW
+Date: Fri, 21 Nov 2025 14:07:09 +0100
+Message-ID: <20251121130235.646036046@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,89 +69,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 19fb9c5b815f70eb90d5b545f65b83bc9c490ecd ]
+[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
 
-The v4l2_fh initialized and added in vpu_v4l2_open() is delete and
-cleaned up when the last reference to the vpu_inst is released. This may
-happen later than at vpu_v4l2_close() time.
+Use the crtc_* fields from drm_display_mode, instead of the "logical"
+fields. This shouldn't change anything in practice, but afaiu the crtc_*
+fields are the correct ones to use here.
 
-Not deleting and cleaning up the v4l2_fh when closing the file handle to
-the video device is not ideal, as the v4l2_fh will still be present in
-the video device's fh_list, and will store a copy of events queued to
-the video device. There may also be other side effects of keeping alive
-an object that represents an open file handle after the file handle is
-closed.
-
-The v4l2_fh instance is embedded in the vpu_inst structure, and is
-accessed in two different ways:
-
-- in vpu_notify_eos() and vpu_notify_source_change(), to queue V4L2
-  events to the file handle ; and
-
-- through the driver to access the v4l2_fh.m2m_ctx pointer.
-
-The v4l2_fh.m2m_ctx pointer is not touched by v4l2_fh_del() and
-v4l2_fh_exit(). It is set to NULL by the driver when closing the file
-handle, in vpu_v4l2_close().
-
-The vpu_notify_eos() and vpu_notify_source_change() functions are called
-in vpu_set_last_buffer_dequeued() and vdec_handle_resolution_change()
-respectively, only if the v4l2_fh.m2m_ctx pointer is not NULL. There is
-therefore a guarantee that no new event will be queued to the v4l2_fh
-after vpu_v4l2_close() destroys the m2m_ctx.
-
-The vpu_notify_eos() function is also called from vpu_vb2_buf_finish(),
-which is guaranteed to be called for all queued buffers when
-vpu_v4l2_close() calls v4l2_m2m_ctx_release(), and will not be called
-later.
-
-It is therefore safe to assume that the driver will not touch the
-v4l2_fh, except to check the m2m_ctx pointer, after vpu_v4l2_close()
-destroys the m2m_ctx. We can safely delete and cleanup the v4l2_fh
-synchronously in vpu_v4l2_close().
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Ming Qian <ming.qian@oss.nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
+ drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-index 61d27b63b99d4..75084ba8f93b6 100644
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -693,8 +693,6 @@ static int vpu_v4l2_release(struct vpu_inst *inst)
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 1baa4ace12e15..df177881b9d32 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -229,7 +229,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	tidss_runtime_get(tidss);
  
- 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
- 	mutex_destroy(&inst->lock);
--	v4l2_fh_del(&inst->fh);
--	v4l2_fh_exit(&inst->fh);
+ 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
+-				  mode->clock * 1000);
++				  mode->crtc_clock * 1000);
+ 	if (r != 0)
+ 		return;
  
- 	call_void_vop(inst, cleanup);
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 355c64bafb82b..8a702f4059b95 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -1030,13 +1030,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
  
-@@ -763,6 +761,8 @@ int vpu_v4l2_open(struct file *file, struct vpu_inst *inst)
+ 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
  
- 	return 0;
- error:
-+	v4l2_fh_del(&inst->fh);
-+	v4l2_fh_exit(&inst->fh);
- 	vpu_inst_put(inst);
- 	return ret;
+-	hfp = mode->hsync_start - mode->hdisplay;
+-	hsw = mode->hsync_end - mode->hsync_start;
+-	hbp = mode->htotal - mode->hsync_end;
++	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
++	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
++	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
+ 
+-	vfp = mode->vsync_start - mode->vdisplay;
+-	vsw = mode->vsync_end - mode->vsync_start;
+-	vbp = mode->vtotal - mode->vsync_end;
++	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
++	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
++	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
+ 		       FLD_VAL(hsw - 1, 7, 0) |
+@@ -1078,8 +1078,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 		       FLD_VAL(ivs, 12, 12));
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
+-		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
+-		       FLD_VAL(mode->vdisplay - 1, 27, 16));
++		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
++		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
+ 
+ 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
  }
-@@ -782,6 +782,9 @@ int vpu_v4l2_close(struct file *file)
- 	call_void_vop(inst, release);
- 	vpu_inst_unlock(inst);
- 
-+	v4l2_fh_del(&inst->fh);
-+	v4l2_fh_exit(&inst->fh);
-+
- 	vpu_inst_unregister(inst);
- 	vpu_inst_put(inst);
- 
 -- 
 2.51.0
 
