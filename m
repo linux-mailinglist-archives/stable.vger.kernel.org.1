@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-195632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4709C79520
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49F3C797A5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F3D34365A2D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 04169347ABF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE2F3396E5;
-	Fri, 21 Nov 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF5433438C;
+	Fri, 21 Nov 2025 13:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDdRVGJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mN0KIMwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8483330B19;
-	Fri, 21 Nov 2025 13:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571282874F6;
+	Fri, 21 Nov 2025 13:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731225; cv=none; b=fU1Z0NLeNZ3wnI01XT37cuX7nZHDw4vOzdpEQ2xP2AYy+4FOwuGfA0CAoYgWm+iA4MFnKA5CgFY/u2ppo4qenRKUVl7CVHqxMzQn/Jn/jqL5BnYPgQ1dXg0Lx7IsDzXiWj1jNmFah9wkG82sAD2cLvmj5e9RPrv/cr5YU9VJfCU=
+	t=1763731812; cv=none; b=eFqDhIALZ6JSVp8eUU9Ngdzd1BMkyWqNUdolOX9hSu5qublgpKlnHPvqwwg2DnZ1hlK2nNulLiaXD+RKzBWs6xrzfCCTfdWXniC9EzQ8PfmrrcHJg1zxTNFNQhAC4z2YP1hq9bOYwwdl9cgMaufkDWaWAi5KtTv8aE9n643y9nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731225; c=relaxed/simple;
-	bh=VMC9EZvkeDlkFfKed2bTUQfH570ndegETyNtIzg5E0g=;
+	s=arc-20240116; t=1763731812; c=relaxed/simple;
+	bh=tJ9jpUMukQsLtF5I7Rins7vnGYl/BCQPphLQgUA13u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiTYVtifJ+uQ8y0XKktIDYdtgPrmwKOVZYMvY2AozmgCFXhN4jgT3gJq0ofCrG/0nP5lZpvesKlp4Rkjr1aIV2KhjqH9gcPPffyjo4941P5Mb3HTBCcuQwhi5O2tCdHeQ13iHuAnMOs/DP03++VKyNXW6zBySRj+rDNkEd6JsdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDdRVGJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF51DC4CEF1;
-	Fri, 21 Nov 2025 13:20:23 +0000 (UTC)
+	 MIME-Version; b=DyHrmjw3OiEWw+mMkF+ZW7TfHEHgafknV+LebTBdhd13FD0P68U/dny+/8F1tkienco2D2xAk2BqwMca0aZsbdfQsC0WsOwqc+S1zCTpy5v+6ws2Ku4gnr7aDU8/sy/QbVbJYAKo63ttWf7yqFrTtcpIjragjfC9bggV0pHfV4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mN0KIMwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EDAC4CEF1;
+	Fri, 21 Nov 2025 13:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731224;
-	bh=VMC9EZvkeDlkFfKed2bTUQfH570ndegETyNtIzg5E0g=;
+	s=korg; t=1763731812;
+	bh=tJ9jpUMukQsLtF5I7Rins7vnGYl/BCQPphLQgUA13u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDdRVGJGTROzQnWejwenO5VyjDydrNLCJjwgZFGcXiDMqcHFSpMZfVEPDWFu/pt5k
-	 PZiwkIQl7zcnmsmMgQIAtz+RWWZaB/PO0I/mCb3LC0AalPV4PLAP0UwX5RRH0YCfji
-	 1iH1EWjOO1na70kCOn1zQ3AC5p43RTHefA8HHbIU=
+	b=mN0KIMwjRhJL8jWxQiiCr3pWwUIRCcblY2RRredsz+CdDl774h7Wj/xahzTsjyK3X
+	 WRn7SBwXqd0iPOuUvizbrQgai8paBrLJTOoKLzmuDJyZB710dvIEzJqdAZvG1hPipP
+	 DeEyWHVpD/z0L9jHYeYcIccq8OJHRX3x34a9Gfp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ananth Narayan <ananth.narayan@amd.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Tycho Andersen <tycho@kernel.org>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 134/247] perf test: Fix lock contention test
-Date: Fri, 21 Nov 2025 14:11:21 +0100
-Message-ID: <20251121130159.537433750@linuxfoundation.org>
+Subject: [PATCH 6.12 055/185] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
+Date: Fri, 21 Nov 2025 14:11:22 +0100
+Message-ID: <20251121130145.863059744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,143 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 3c723f449723db2dc2b75b7efe03c2a76e4c09f0 ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-Couple of independent fixes:
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-1. Wire in SIGSEGV handler that terminates the test with a failure code.
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-2. Use "--lock-cgroup" instead of "-g"; "-g" was proposed but never
-   merged. See commit 4d1792d0a2564caf ("perf lock contention: Add
-   --lock-cgroup option")
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-3. Call cleanup() on every normal exit so trap_cleanup() doesn't mistake
-   it for an unexpected signal and emit a false-negative "Unexpected
-   signal in main" message.
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-Before patch:
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
 
-  # ./perf test -vv "lock contention"
-   85: kernel lock contention analysis test:
-  --- start ---
-  test child forked, pid 610711
-  Testing perf lock record and perf lock contention
-  Testing perf lock contention --use-bpf
-  Testing perf lock record and perf lock contention at the same time
-  Testing perf lock contention --threads
-  Testing perf lock contention --lock-addr
-  Testing perf lock contention --lock-cgroup
-  Unexpected signal in test_aggr_cgroup
-  ---- end(0) ----
-   85: kernel lock contention analysis test                            : Ok
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
 
-After patch:
-
-  # ./perf test -vv "lock contention"
-   85: kernel lock contention analysis test:
-  --- start ---
-  test child forked, pid 602637
-  Testing perf lock record and perf lock contention
-  Testing perf lock contention --use-bpf
-  Testing perf lock record and perf lock contention at the same time
-  Testing perf lock contention --threads
-  Testing perf lock contention --lock-addr
-  Testing perf lock contention --lock-cgroup
-  Testing perf lock contention --type-filter (w/ spinlock)
-  Testing perf lock contention --lock-filter (w/ tasklist_lock)
-  Testing perf lock contention --callstack-filter (w/ unix_stream)
-  [Skip] Could not find 'unix_stream'
-  Testing perf lock contention --callstack-filter with task aggregation
-  [Skip] Could not find 'unix_stream'
-  Testing perf lock contention --cgroup-filter
-  Testing perf lock contention CSV output
-  ---- end(0) ----
-   85: kernel lock contention analysis test                            : Ok
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ananth Narayan <ananth.narayan@amd.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Santosh Shukla <santosh.shukla@amd.com>
-Cc: Tycho Andersen <tycho@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/lock_contention.sh | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/tests/shell/lock_contention.sh b/tools/perf/tests/shell/lock_contention.sh
-index 7248a74ca2a32..6dd90519f45ce 100755
---- a/tools/perf/tests/shell/lock_contention.sh
-+++ b/tools/perf/tests/shell/lock_contention.sh
-@@ -13,15 +13,18 @@ cleanup() {
- 	rm -f ${perfdata}
- 	rm -f ${result}
- 	rm -f ${errout}
--	trap - EXIT TERM INT
-+	trap - EXIT TERM INT ERR
- }
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 107c6d83dc5c4..7c6975632fc2e 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -644,13 +644,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
- trap_cleanup() {
-+	if (( $? == 139 )); then #SIGSEGV
-+		err=1
-+	fi
- 	echo "Unexpected signal in ${FUNCNAME[1]}"
- 	cleanup
- 	exit ${err}
- }
--trap trap_cleanup EXIT TERM INT
-+trap trap_cleanup EXIT TERM INT ERR
- 
- check() {
- 	if [ "$(id -u)" != 0 ]; then
-@@ -145,7 +148,7 @@ test_aggr_cgroup()
- 	fi
- 
- 	# the perf lock contention output goes to the stderr
--	perf lock con -a -b -g -E 1 -q -- perf bench sched messaging -p > /dev/null 2> ${result}
-+	perf lock con -a -b --lock-cgroup -E 1 -q -- perf bench sched messaging -p > /dev/null 2> ${result}
- 	if [ "$(cat "${result}" | wc -l)" != "1" ]; then
- 		echo "[Fail] BPF result count is not 1:" "$(cat "${result}" | wc -l)"
- 		err=1
-@@ -271,7 +274,7 @@ test_cgroup_filter()
- 		return
- 	fi
- 
--	perf lock con -a -b -g -E 1 -F wait_total -q -- perf bench sched messaging -p > /dev/null 2> ${result}
-+	perf lock con -a -b --lock-cgroup -E 1 -F wait_total -q -- perf bench sched messaging -p > /dev/null 2> ${result}
- 	if [ "$(cat "${result}" | wc -l)" != "1" ]; then
- 		echo "[Fail] BPF result should have a cgroup result:" "$(cat "${result}")"
- 		err=1
-@@ -279,7 +282,7 @@ test_cgroup_filter()
- 	fi
- 
- 	cgroup=$(cat "${result}" | awk '{ print $3 }')
--	perf lock con -a -b -g -E 1 -G "${cgroup}" -q -- perf bench sched messaging -p > /dev/null 2> ${result}
-+	perf lock con -a -b --lock-cgroup -E 1 -G "${cgroup}" -q -- perf bench sched messaging -p > /dev/null 2> ${result}
- 	if [ "$(cat "${result}" | wc -l)" != "1" ]; then
- 		echo "[Fail] BPF result should have a result with cgroup filter:" "$(cat "${cgroup}")"
- 		err=1
-@@ -338,4 +341,5 @@ test_aggr_task_stack_filter
- test_cgroup_filter
- test_csv_output
- 
-+cleanup
- exit ${err}
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
++
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
