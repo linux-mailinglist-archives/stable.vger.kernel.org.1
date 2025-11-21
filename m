@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF35C794CC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2990BC7A005
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 984EA289C7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 35804383F30
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB25231B124;
-	Fri, 21 Nov 2025 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D581A3559C8;
+	Fri, 21 Nov 2025 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmYWsM7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDDYllzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833242EA46B;
-	Fri, 21 Nov 2025 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8993559C9;
+	Fri, 21 Nov 2025 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731474; cv=none; b=WFvJr/rfJpQf+zG0to8OMjGlWqWH18I4+veUZHC70vbCiJ0ue7QyLGt0vov0lpgD7WopAObktfiJEA9itHfXbjPNHUtHbe2A/VEI8qpBcNOmQ1GZDDd+VGjUgemh0aUjDN1m/Vjcorwwrw+ayq3sPBYkoylFz95npWgkveJs51I=
+	t=1763733433; cv=none; b=S+RfpJulnpOYONA0IfkIZFpv3fIVJ0xgQT8bNxuDKslPQCm4C0JJBQsriU395xOfEvnjfNRjl4idjjgE+k0SIjDaBIL5z+NiY31cDKi+RZmSedDRyTgUOsaGa2IfWhAfEBeV/Mvt/e1jWsu8rQ4FSloHPwzZCA/ORQ3qlHnN+2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731474; c=relaxed/simple;
-	bh=3O3TFnNK2GXFSaPrFR8voJdYwwRdpOg2c2EZFD5J5sI=;
+	s=arc-20240116; t=1763733433; c=relaxed/simple;
+	bh=B2RpMgmhgf8vqSwBSXm1THZt3nBpK3fnie48C9mmego=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZihbytyz2n15HR+VRZY1WWXrMDKwO+mc3ohoO1WVrriyD4xu9aekPhWjlN4Zp2KB3Z7DEPrD68StXY6ushIsTT5ef9eJWig6nUgDzi0mdnTh+nhyVkUNHCZP1Uf3iK++Bc7bT3ZKOFK9JelXFaRdIW8NVNI8jrVqCgsFKL4YRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmYWsM7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30C6C116C6;
-	Fri, 21 Nov 2025 13:24:33 +0000 (UTC)
+	 MIME-Version; b=B6LETe2WZ9YhnAkP8i5lefserTv64RLX566k1g9Va2TLeNM6gmxKFk+it+QVJQldWL4wEPfS5XpxklLAATB6YMlLVndFvBzMy38LUZZPeauuDbmyyD/Waf7AQM+A4G0PISOyOtvQlrDyyMUeGYQRvd1QP/+l9j82CTBS1GFsxt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDDYllzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F022C4CEF1;
+	Fri, 21 Nov 2025 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731474;
-	bh=3O3TFnNK2GXFSaPrFR8voJdYwwRdpOg2c2EZFD5J5sI=;
+	s=korg; t=1763733433;
+	bh=B2RpMgmhgf8vqSwBSXm1THZt3nBpK3fnie48C9mmego=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmYWsM7cL1pylHVwji1GVVyRTlP6u/WWPpV6zWtCacQg2n4We2KStVqflUXpGW2lG
-	 DVuLfg6mFMsF6Y8MsFn+V2hhJEeKYqmB4B3hCkeu6KDnvvM8lADLKd6H76HMh02rpo
-	 b6hkKXJTjsfbmvmy3S+LQB1mWezsmnMBwrTgPPA0=
+	b=bDDYllzvSigAdaukYFBqsUsWBy/7Wn5LgoQKYW+/VLHgp7Ria8S0i5XLOsaW/GRp+
+	 IFJV19DbXeXHGMfh6Xze6N0t8UQ0b+vTFwbrC8JBG/JpUwRON9yKQX2CcgBrqh5lTn
+	 9WYeZLkbER6ONc5bTl9ZC4E9zGYRXF9ntZZsOBiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Philip Yang <philip.yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 219/247] drm/amdkfd: relax checks for over allocation of save area
+	Barry Song <baohua@kernel.org>,
+	Qinxin Xia <xiaqinxin@huawei.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 6.6 467/529] dma-mapping: benchmark: Restore padding to ensure uABI remained consistent
 Date: Fri, 21 Nov 2025 14:12:46 +0100
-Message-ID: <20251121130202.594149928@linuxfoundation.org>
+Message-ID: <20251121130247.627632215@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Qinxin Xia <xiaqinxin@huawei.com>
 
-commit d15deafab5d722afb9e2f83c5edcdef9d9d98bd1 upstream.
+commit 23ee8a2563a0f24cf4964685ced23c32be444ab8 upstream.
 
-Over allocation of save area is not fatal, only under allocation is.
-ROCm has various components that independently claim authority over save
-area size.
+The padding field in the structure was previously reserved to
+maintain a stable interface for potential new fields, ensuring
+compatibility with user-space shared data structures.
+However,it was accidentally removed by tiantao in a prior commit,
+which may lead to incompatibility between user space and the kernel.
 
-Unless KFD decides to claim single authority, relax size checks.
+This patch reinstates the padding to restore the original structure
+layout and preserve compatibility.
 
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Reviewed-by: Philip Yang <philip.yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 15bd4958fe38e763bc17b607ba55155254a01f55)
+Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
 Cc: stable@vger.kernel.org
+Acked-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+Reported-by: Barry Song <baohua@kernel.org>
+Closes: https://lore.kernel.org/lkml/CAGsJ_4waiZ2+NBJG+SCnbNk+nQ_ZF13_Q5FHJqZyxyJTcEop2A@mail.gmail.com/
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20251028120900.2265511-2-xiaqinxin@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/map_benchmark.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -297,16 +297,16 @@ int kfd_queue_acquire_buffers(struct kfd
- 		goto out_err_unreserve;
- 	}
- 
--	if (properties->ctx_save_restore_area_size != topo_dev->node_props.cwsr_size) {
--		pr_debug("queue cwsr size 0x%x not equal to node cwsr size 0x%x\n",
-+	if (properties->ctx_save_restore_area_size < topo_dev->node_props.cwsr_size) {
-+		pr_debug("queue cwsr size 0x%x not sufficient for node cwsr size 0x%x\n",
- 			properties->ctx_save_restore_area_size,
- 			topo_dev->node_props.cwsr_size);
- 		err = -EINVAL;
- 		goto out_err_unreserve;
- 	}
- 
--	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
--			  * NUM_XCC(pdd->dev->xcc_mask);
-+	total_cwsr_size = (properties->ctx_save_restore_area_size +
-+			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
- 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
- 
- 	err = kfd_queue_buffer_get(vm, (void *)properties->ctx_save_restore_area_address,
-@@ -352,8 +352,8 @@ int kfd_queue_release_buffers(struct kfd
- 	topo_dev = kfd_topology_device_by_id(pdd->dev->id);
- 	if (!topo_dev)
- 		return -EINVAL;
--	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
--			  * NUM_XCC(pdd->dev->xcc_mask);
-+	total_cwsr_size = (properties->ctx_save_restore_area_size +
-+			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
- 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
- 
- 	kfd_queue_buffer_svm_put(pdd, properties->ctx_save_restore_area_address, total_cwsr_size);
+--- a/include/linux/map_benchmark.h
++++ b/include/linux/map_benchmark.h
+@@ -27,5 +27,6 @@ struct map_benchmark {
+ 	__u32 dma_dir; /* DMA data direction */
+ 	__u32 dma_trans_ns; /* time for DMA transmission in ns */
+ 	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
++	__u8 expansion[76]; /* For future use */
+ };
+ #endif /* _KERNEL_DMA_BENCHMARK_H */
 
 
 
