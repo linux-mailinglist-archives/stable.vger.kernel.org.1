@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-196330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4BCC79EB2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF164C794AF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CE054F1305
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5BD1934D6B5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C19F34D4C2;
-	Fri, 21 Nov 2025 13:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0B32EA46B;
+	Fri, 21 Nov 2025 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TE1XMrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GteZvwjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374D7309EE8;
-	Fri, 21 Nov 2025 13:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EFD26CE33;
+	Fri, 21 Nov 2025 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733198; cv=none; b=C2kfpTfGHNDfvMrXGC1xGh+UgR3Cm5tqtANVGqQwwrvhSMGbnt5vlWGLanmFE5M8pYqH8SMaygXcz5aJjhm1ylmy/Znm9u/VlpIsw9ZXAZgMRnjIcymP2h6T1dO9TyDpPVhRM45DBiv58IY0okTBbC0axMZ6xDKx+jpmiAYGGhw=
+	t=1763731144; cv=none; b=dxebYg4i3fFWsjkPKYBQG9V7LZc0Dxr4lQfYnaWJcEQqKpA/XCP4GEBp16MG55FIgg/Fab1070eX4DfM0ugNnVCjpbmE1VbLt6063hZy7Nm30qJ+pVRR/YOtdo98N1/oGO8d3c6WkCwxGsjOGBPce2QW3gdf7zTGgy5L8WkWZeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733198; c=relaxed/simple;
-	bh=6qYvPG/KXsk41au9sAwqp0xARvNYURVQYoBoQjKQTIw=;
+	s=arc-20240116; t=1763731144; c=relaxed/simple;
+	bh=CwQl0x1/VRZgs7jOfBWjlHzWgeqqq6aj+I0JERYEOBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HerN5w5LQC7auTsxOK//xbyzHo5zuYGpT8qR4geTcIK1cIpEL3CCGZl+ji10yslffmyO1hFakf+g8NMuA49AWR+c1NIqMTioaT2uk2gQ3LcTE5HKUVcU35x7MLVRXwge+XDbOWTfWwy5s+RQ3/gr3O4EXnnD8I31xDlrrBtlVKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TE1XMrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8551EC4CEF1;
-	Fri, 21 Nov 2025 13:53:17 +0000 (UTC)
+	 MIME-Version; b=lbnEshpElT/BXkR5rN6+ZTso8L6CQ0Z0+khhArSFUI7o3MNY7ian43AYHV/wEdfoUhujsH+nUCqtpgj5AK0buBVtPGJzast3t3CspDlsxAhiqWk0ngn3U05ePY24XlxJTUS75Zht5egM9LuB3qornbIlMtufVAPeA6sjVBe0WQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GteZvwjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8265C4CEF1;
+	Fri, 21 Nov 2025 13:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733198;
-	bh=6qYvPG/KXsk41au9sAwqp0xARvNYURVQYoBoQjKQTIw=;
+	s=korg; t=1763731144;
+	bh=CwQl0x1/VRZgs7jOfBWjlHzWgeqqq6aj+I0JERYEOBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TE1XMrIgarRTL8vyHv/Taey6/dKXXVjgeSiHSj8+qrGULKqDSCnMnD77OZAvN2c6
-	 pec1fuGl+amNbV/Bu+UKs7di7rJn41s0p8VbhEY9xHx2r8mKz7nV26piD7G84xj34Y
-	 UhvZKCvg8lzee4XPbfIddhNtz8aJtfO04fKLxi6Y=
+	b=GteZvwjpDPZ5ww33WyT6emuh4s2c+a2ygc7wvfUplo4aVG8+isy2eN+mR2lzTh9Cl
+	 WADFM0mzhDizzgEmsH1VI65zxiibhgxwMt+e4Lg4dYUAbfGzUmSl4IVnbh/XeXdCKV
+	 jkhWRJCuSh1oD/VyY5eN6+S9beMaEizQVo2SIdj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 352/529] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
-Date: Fri, 21 Nov 2025 14:10:51 +0100
-Message-ID: <20251121130243.554819536@linuxfoundation.org>
+Subject: [PATCH 6.17 105/247] pnfs: Fix TLS logic in _nfs4_pnfs_v4_ds_connect()
+Date: Fri, 21 Nov 2025 14:10:52 +0100
+Message-ID: <20251121130158.356664474@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit deb8eb39164382f1f67ef8e8af9176baf5e10f2d ]
+[ Upstream commit 28e19737e1570c7c71890547c2e43c3e0da79df9 ]
 
-In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
-not freeing the memory allocated for ptp_info->pin_config.  Fix it
-to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
+Don't try to add an RDMA transport to a client that is already marked as
+being a TCP/TLS transport.
 
-Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a35518cae4b3 ("NFSv4.1/pnfs: fix NFS with TLS in pnfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs_nfs.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index bbe8657f6545b..404b433f1bc08 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -917,9 +917,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
- 	if (ptp->ptp_clock) {
- 		ptp_clock_unregister(ptp->ptp_clock);
- 		ptp->ptp_clock = NULL;
--		kfree(ptp->ptp_info.pin_config);
--		ptp->ptp_info.pin_config = NULL;
- 	}
-+	kfree(ptp->ptp_info.pin_config);
-+	ptp->ptp_info.pin_config = NULL;
- }
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index ff48056bf750e..9976cc16b6890 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -884,7 +884,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				 u32 minor_version)
+ {
+ 	struct nfs_client *clp = ERR_PTR(-EIO);
++	struct nfs_client *mds_clp = mds_srv->nfs_client;
++	enum xprtsec_policies xprtsec_policy = mds_clp->cl_xprtsec.policy;
+ 	struct nfs4_pnfs_ds_addr *da;
++	int ds_proto;
+ 	int status = 0;
  
- int bnxt_ptp_init(struct bnxt *bp)
+ 	dprintk("--> %s DS %s\n", __func__, ds->ds_remotestr);
+@@ -912,12 +915,8 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				.data = &xprtdata,
+ 			};
+ 
+-			if (da->da_transport != clp->cl_proto &&
+-					clp->cl_proto != XPRT_TRANSPORT_TCP_TLS)
+-				continue;
+-			if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-				mds_srv->nfs_client->cl_proto ==
+-					XPRT_TRANSPORT_TCP_TLS) {
++			if (xprt_args.ident == XPRT_TRANSPORT_TCP &&
++			    clp->cl_proto == XPRT_TRANSPORT_TCP_TLS) {
+ 				struct sockaddr *addr =
+ 					(struct sockaddr *)&da->da_addr;
+ 				struct sockaddr_in *sin =
+@@ -948,7 +947,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				xprt_args.ident = XPRT_TRANSPORT_TCP_TLS;
+ 				xprt_args.servername = servername;
+ 			}
+-			if (da->da_addr.ss_family != clp->cl_addr.ss_family)
++			if (xprt_args.ident != clp->cl_proto)
++				continue;
++			if (xprt_args.dstaddr->sa_family !=
++			    clp->cl_addr.ss_family)
+ 				continue;
+ 
+ 			/**
+@@ -962,15 +964,14 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 			if (xprtdata.cred)
+ 				put_cred(xprtdata.cred);
+ 		} else {
+-			if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-				mds_srv->nfs_client->cl_proto ==
+-					XPRT_TRANSPORT_TCP_TLS)
+-				da->da_transport = XPRT_TRANSPORT_TCP_TLS;
+-			clp = nfs4_set_ds_client(mds_srv,
+-						&da->da_addr,
+-						da->da_addrlen,
+-						da->da_transport, timeo,
+-						retrans, minor_version);
++			ds_proto = da->da_transport;
++			if (ds_proto == XPRT_TRANSPORT_TCP &&
++			    xprtsec_policy != RPC_XPRTSEC_NONE)
++				ds_proto = XPRT_TRANSPORT_TCP_TLS;
++
++			clp = nfs4_set_ds_client(mds_srv, &da->da_addr,
++						 da->da_addrlen, ds_proto,
++						 timeo, retrans, minor_version);
+ 			if (IS_ERR(clp))
+ 				continue;
+ 
+@@ -981,7 +982,6 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				clp = ERR_PTR(-EIO);
+ 				continue;
+ 			}
+-
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
