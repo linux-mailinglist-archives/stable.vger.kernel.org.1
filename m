@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6312CC79350
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3858CC79C63
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CD5F5348903
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:16:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A59584EE7DA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5A934888D;
-	Fri, 21 Nov 2025 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B28B3491C2;
+	Fri, 21 Nov 2025 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xMMVXR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbmU8bke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C17F2765FF;
-	Fri, 21 Nov 2025 13:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8C4342538;
+	Fri, 21 Nov 2025 13:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730971; cv=none; b=oRAp/I1JRo+kMzIiSxb5+Tm4Lxoiksb3R18uooCwzkgXhHy/rYpBjuU0/6jq0n6KAJpBa9ckBKbUqQTkAJNUjv4Uf6R6IXQfzB7Mbr1HqC4LBBUgz5CgMMEFlg57OFCyesGoGLCeX2in4oBBm+X+Lnmz7fRzgR7hw+9l9qkOoWA=
+	t=1763732839; cv=none; b=sKtT1zaWZPlq2cLo+SH/CY8Z47r7nxny2hiCzLs4Lx4tJXYFuhja+baGpzdoLE56/WT2f8xxMSQ2oxYlSD+5Sdb0bHbGVRnHF85X6qO3BzuhN7N9QPcnId4zkz+AjVpgIrWkOkMzkHjbEnP8qu0YPDamRquggzBxnKHHO7OmuhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730971; c=relaxed/simple;
-	bh=PKfU3GdScT5pBZI0gJWbTa1wXOHvJB/6ZKzRNY873XY=;
+	s=arc-20240116; t=1763732839; c=relaxed/simple;
+	bh=iMitwfG3K6zlbx9DLSmy/+Vc6xwrEqwodWyH//5ytRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNzIGXZDvuPZcpdqt59+FGKvaxneY+VrdQhV6gm23iKRi3nY24oxPwvwXZWgdXMhuvW8UAtcAy+yKllT5D0YSMdimQbpu8792AZNVKcmHFjfTXWnvHVYA0L+YRxnAe4CJ12GusohXg0q07QNrlTiqCuregDqt6JgqfAgBdZ8CZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xMMVXR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4F8C4CEFB;
-	Fri, 21 Nov 2025 13:16:10 +0000 (UTC)
+	 MIME-Version; b=AfGrVhDghM1wnexQl5ma7dKZqGrsYkkN+pQ8hXztmQWz36f3rgJiG07yDlH5rYeJIpFEZ9l5MKSqTzwCDEsUGll3g9wvEe5IuaXRf/LmjF+WMn4ziax09LYVjxgYJK/qMnjyBahDc6T8uG+kVExVhoVYCQovupW3vwj4PRUCaDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbmU8bke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED3C4CEF1;
+	Fri, 21 Nov 2025 13:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730970;
-	bh=PKfU3GdScT5pBZI0gJWbTa1wXOHvJB/6ZKzRNY873XY=;
+	s=korg; t=1763732839;
+	bh=iMitwfG3K6zlbx9DLSmy/+Vc6xwrEqwodWyH//5ytRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xMMVXR16h5sfCgt5gi7zPzH4jHdQR2x+kxYgpbmfaJxyAINeiyn42JjZVLLGHwYP
-	 UrBqFRv2mmzHFW5rCVDCP8eD78ovEj16BGLxv3P6/d1czgkk22YmqLZuy8EgIox/yM
-	 lDib8MK2YjjmsKAMGIwM6do0gRyu4RcFULlsaAok=
+	b=GbmU8bkeL6ir3W3QcT2AnkfECkrgWZIrg3kOlDFuJjaEy7/5Sumavf6flGRd2Skc8
+	 GJ2/JstmRHXRO9oL6NxEEfw5s/PA5y40PglsatmsG9RCVf5EoptD3Ryz8eboCOrJB3
+	 V6n/SMSmYT4IG3Dhfpqyc6IbOu2kA0+7/UA1aHaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 012/247] drm/xe: Move declarations under conditional branch
-Date: Fri, 21 Nov 2025 14:09:19 +0100
-Message-ID: <20251121130155.041252327@linuxfoundation.org>
+Subject: [PATCH 6.6 261/529] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
+Date: Fri, 21 Nov 2025 14:09:20 +0100
+Message-ID: <20251121130240.309549977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Chen Wang <unicorn_wang@outlook.com>
 
-[ Upstream commit 9cd27eec872f0b95dcdd811edc39d2d32e4158c8 ]
+[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
 
-The xe_device_shutdown() function was needing a few declarations
-that were only required under a specific condition. This change
-moves those declarations to be within that conditional branch
-to avoid unnecessary declarations.
+cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
+is going to be true for the upcoming Sophgo platform which doesn't set the
+ops.
 
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20251007100208.1407021-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 15b3036045188f4da4ca62b2ed01b0f160252e9b)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Stable-dep-of: b11a020d914c ("drm/xe: Do clean shutdown also when using flr")
+Hence, add a check to prevent NULL pointer dereference.
+
+Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
+[mani: reworded subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
+ drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
+ drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index d399c2628fa33..528e818edbd7f 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -962,12 +962,12 @@ void xe_device_remove(struct xe_device *xe)
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 741e10a575ec7..675b7ea6ff784 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -452,7 +452,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
  
- void xe_device_shutdown(struct xe_device *xe)
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index 4251fac5e3106..a1b66dbfc10f8 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -90,7 +90,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
+ 
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
+@@ -120,7 +120,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
+ 	}
+ 
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 9efb71cbe6996..d2c310b7fc99b 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -494,7 +494,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
+ 
+ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
  {
--	struct xe_gt *gt;
--	u8 id;
--
- 	drm_dbg(&xe->drm, "Shutting down device\n");
+-	if (pcie->ops->start_link)
++	if (pcie->ops && pcie->ops->start_link)
+ 		return pcie->ops->start_link(pcie);
  
- 	if (xe_driver_flr_disabled(xe)) {
-+		struct xe_gt *gt;
-+		u8 id;
-+
- 		xe_display_pm_shutdown(xe);
+ 	return 0;
+@@ -502,13 +502,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
  
- 		xe_irq_suspend(xe);
+ static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->stop_link)
++	if (pcie->ops && pcie->ops->stop_link)
+ 		pcie->ops->stop_link(pcie);
+ }
+ 
+ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->link_up)
++	if (pcie->ops && pcie->ops->link_up)
+ 		return pcie->ops->link_up(pcie);
+ 
+ 	return true;
 -- 
 2.51.0
 
