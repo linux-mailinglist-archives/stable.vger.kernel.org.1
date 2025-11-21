@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-195833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08ADAC7983B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 138B4C7A193
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 7CEB73269C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 7165738C3E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2261246762;
-	Fri, 21 Nov 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B260825F96D;
+	Fri, 21 Nov 2025 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4pd7sI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9Q8kIQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D789190477;
-	Fri, 21 Nov 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E420334DB64;
+	Fri, 21 Nov 2025 13:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731794; cv=none; b=DBmr/y6gg+WrhPxBlrEiNRhufUXQIEeH5A3kg7WvMxU98bXt8banMzE12gqMyvpw9UttkktkxJ6EOa031sCExnXINlDuQjmtHb+LNK6n9EQy+s8VSR6xbU9my8WwynMyi9rLcyz7z3r6PJuAyqqHOEzkepba3yO+lUpMp91I2Ng=
+	t=1763733273; cv=none; b=mEDVYUls7MdZlirvZhvhYH4V3o+V66BK4GerG93xq19VeLCk7sCOt4175Av5RC7SlR+DOYIpmLlAJeiQAssT9X9zWn6sqYorYpe3VTIDBqxa7yqGsJvkzePhcpTXQkKdFzxd/nCh0HhiRi3TG8fB6QQTpmCV9u42QKCxeIJNtcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731794; c=relaxed/simple;
-	bh=T0kqHEFwwFpzFmkaaQ2zhFkNd4gZGWLoQs5SiHhlz20=;
+	s=arc-20240116; t=1763733273; c=relaxed/simple;
+	bh=e0HQfPRkCDc741I9UF+j9p9PycybgRukeeGTC7FCqcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjypCH3jNjhyJ7MNO8KWXB0hs8t/HaOPHxei6lgf1jnDZfpjlChLm2BSjWMKJBuaQj3al2Cvvz+CpOwtVRV+Z2Fr3zeR1v0mOYq42KSRX1WkXlzMOKA4H0RLvVOciKrygblHleEIkmwA9j4DS2wfwfvzejOTey8Nty1A3BRdzjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4pd7sI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26269C4CEF1;
-	Fri, 21 Nov 2025 13:29:53 +0000 (UTC)
+	 MIME-Version; b=EE3LX8giFLADPhzDVjQDd2M3bVVzCrINXxRu8hLBvhwgyd1xHcXdNN8uD2X+D4+lwmwySdYTUcsYR2HVgmlA6NPC6gXzBLkVdb54/ZLOq/jsPK14Gr01lnwE8uEO7HoV2V0YKRCBMLbV3aC4dJjHBjTHMcV9Y0JwanR7hrlQT4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9Q8kIQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C83C4CEF1;
+	Fri, 21 Nov 2025 13:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731794;
-	bh=T0kqHEFwwFpzFmkaaQ2zhFkNd4gZGWLoQs5SiHhlz20=;
+	s=korg; t=1763733272;
+	bh=e0HQfPRkCDc741I9UF+j9p9PycybgRukeeGTC7FCqcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4pd7sI06280xvfYs36hIGcxjxJQwTO+CyLhVGV6wooVka6RdMNEY4E1ZBNEbutKg
-	 CPwjRB0IamK5t1450cHKFcr3Y0RSiwqc02ru1lVFW8spKrlqGA6387FF7LHQOEIFO2
-	 fCk7bSj/fm66+sKjHHEBWeyeoOzprZf0CYm6ckdI=
+	b=V9Q8kIQ2eYQpPo1Sz4fKB2Q6w1aKhmbkaMPARJaN3flfXccO35e0hhxd2Pk/F1hnV
+	 3YY0domAruzMYge8zCtRiSyh/rSLSlCOvsiIw274TRvjAhnMmpiTwq+Gwno6p//5pq
+	 44PM6U59T0u0ED78QTYqTX25Fug8OGGU3BvJf5LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/185] bpf: Add bpf_prog_run_data_pointers()
-Date: Fri, 21 Nov 2025 14:11:49 +0100
-Message-ID: <20251121130146.829160792@linuxfoundation.org>
+Subject: [PATCH 6.6 411/529] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
+Date: Fri, 21 Nov 2025 14:11:50 +0100
+Message-ID: <20251121130245.643221166@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 4ef92743625818932b9c320152b58274c05e5053 ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-syzbot found that cls_bpf_classify() is able to change
-tc_skb_cb(skb)->drop_reason triggering a warning in sk_skb_reason_drop().
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 __sk_skb_reason_drop net/core/skbuff.c:1189 [inline]
-WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 sk_skb_reason_drop+0x76/0x170 net/core/skbuff.c:1214
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-struct tc_skb_cb has been added in commit ec624fe740b4 ("net/sched:
-Extend qdisc control block with tc control block"), which added a wrong
-interaction with db58ba459202 ("bpf: wire in data and data_end for
-cls_act_bpf").
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-drop_reason was added later.
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-Add bpf_prog_run_data_pointers() helper to save/restore the net_sched
-storage colliding with BPF data_meta/data_end.
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
 
-Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Closes: https://lore.kernel.org/netdev/6913437c.a70a0220.22f260.013b.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20251112125516.1563021-1-edumazet@google.com
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
+
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 20 ++++++++++++++++++++
- net/sched/act_bpf.c    |  6 ++----
- net/sched/cls_bpf.c    |  6 ++----
- 3 files changed, 24 insertions(+), 8 deletions(-)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index aef18f0e9450e..9b6908291de7c 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -881,6 +881,26 @@ static inline void bpf_compute_data_pointers(struct sk_buff *skb)
- 	cb->data_end  = skb->data + skb_headlen(skb);
- }
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index bc7611b0744c4..431921204f660 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -644,13 +644,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
-+static inline int bpf_prog_run_data_pointers(
-+	const struct bpf_prog *prog,
-+	struct sk_buff *skb)
-+{
-+	struct bpf_skb_data_end *cb = (struct bpf_skb_data_end *)skb->cb;
-+	void *save_data_meta, *save_data_end;
-+	int res;
++	memset(&opt, 0, sizeof(opt));
 +
-+	save_data_meta = cb->data_meta;
-+	save_data_end = cb->data_end;
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
 +
-+	bpf_compute_data_pointers(skb);
-+	res = bpf_prog_run(prog, skb);
-+
-+	cb->data_meta = save_data_meta;
-+	cb->data_end = save_data_end;
-+
-+	return res;
-+}
-+
- /* Similar to bpf_compute_data_pointers(), except that save orginal
-  * data in cb->data and cb->meta_data for restore.
-  */
-diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
-index 396b576390d00..c2b5bc19e0911 100644
---- a/net/sched/act_bpf.c
-+++ b/net/sched/act_bpf.c
-@@ -47,12 +47,10 @@ TC_INDIRECT_SCOPE int tcf_bpf_act(struct sk_buff *skb,
- 	filter = rcu_dereference(prog->filter);
- 	if (at_ingress) {
- 		__skb_push(skb, skb->mac_len);
--		bpf_compute_data_pointers(skb);
--		filter_res = bpf_prog_run(filter, skb);
-+		filter_res = bpf_prog_run_data_pointers(filter, skb);
- 		__skb_pull(skb, skb->mac_len);
- 	} else {
--		bpf_compute_data_pointers(skb);
--		filter_res = bpf_prog_run(filter, skb);
-+		filter_res = bpf_prog_run_data_pointers(filter, skb);
- 	}
- 	if (unlikely(!skb->tstamp && skb->tstamp_type))
- 		skb->tstamp_type = SKB_CLOCK_REALTIME;
-diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-index 7fbe42f0e5c2b..a32754a2658bb 100644
---- a/net/sched/cls_bpf.c
-+++ b/net/sched/cls_bpf.c
-@@ -97,12 +97,10 @@ TC_INDIRECT_SCOPE int cls_bpf_classify(struct sk_buff *skb,
- 		} else if (at_ingress) {
- 			/* It is safe to push/pull even if skb_shared() */
- 			__skb_push(skb, skb->mac_len);
--			bpf_compute_data_pointers(skb);
--			filter_res = bpf_prog_run(prog->filter, skb);
-+			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
- 			__skb_pull(skb, skb->mac_len);
- 		} else {
--			bpf_compute_data_pointers(skb);
--			filter_res = bpf_prog_run(prog->filter, skb);
-+			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
- 		}
- 		if (unlikely(!skb->tstamp && skb->tstamp_type))
- 			skb->tstamp_type = SKB_CLOCK_REALTIME;
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
