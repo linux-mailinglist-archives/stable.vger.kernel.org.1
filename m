@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-195976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91180C79A30
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16217C79A8B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9CAE5383D6E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:40:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2BA6434EF6A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA6334F497;
-	Fri, 21 Nov 2025 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B2D34FF48;
+	Fri, 21 Nov 2025 13:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5vSvDKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEf2O0fK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D4A347BC9;
-	Fri, 21 Nov 2025 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E308034F484;
+	Fri, 21 Nov 2025 13:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732207; cv=none; b=E2I2D7uO/4LbRKY/T2XM84Rlgjlcq47C6uu7fgVhcebT4vYrb/uLAeItIo9VSac1VaKjjFVIbRz/6N/zCVyu7icrNSv5RpQ5/YjIXFzLcZnTfw0lnDjplllgARs8GlURne65gmcfDnqa9cPwPFjx99TsbbUEzVeFSMlS8vfyTrI=
+	t=1763732213; cv=none; b=ferTVpUa0AXfyHJM+Qt1K6YjeVwCZW4bD+/Na6S8pHFEpSWOpCUnrEtocwxsCSC6yiBxWLgW+qg8a1I4HNLQH9qesxpgnPVASwikncFgN427XcdhyEWTibl2+RQCaFiY35EG3kzKDievwmZsHJwEiudcNiv/HDGAGJ4M2kBv1vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732207; c=relaxed/simple;
-	bh=hB5cGRb101JP9w/5/eUj6VxzTcmLYNIldjyqf/OM0Gw=;
+	s=arc-20240116; t=1763732213; c=relaxed/simple;
+	bh=C92UeLsZ2HoJ/WDhw9EmuO5Uef4xm7aGyUD1c5vpoMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7It49HaRJCKDmv4MFzuFfnJYomxcgSW1CpaxLDCtOdHpk4cWc0opuZxIYruvz+LY2+oj5wi4CBDcahoqc/5yuWR9SWjruFVPvTfeleH2UbUWaWKk+GEF2f96SqnQ/byTphGveLh8EctGAvnP6/4JIhqwprEWcEbZ7BZa/uUkhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5vSvDKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1D2C4CEF1;
-	Fri, 21 Nov 2025 13:36:46 +0000 (UTC)
+	 MIME-Version; b=RW1AWmJuM2gG4bvGvy+MlSzRYGAoYGid6GSUUUK1wNZV+fCrcslTMw/qosvDsMMOedIlsKPkLQWWLhpLVUlZstPAmlPoM/j2Z+saLTTVCvAFlqurs+iX9FLYykdmAQGYfXNeoGqRr/mbmAAHFO+dzwEe+dFPCLxdsGNvzcuBW7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEf2O0fK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CFDC4CEF1;
+	Fri, 21 Nov 2025 13:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732207;
-	bh=hB5cGRb101JP9w/5/eUj6VxzTcmLYNIldjyqf/OM0Gw=;
+	s=korg; t=1763732212;
+	bh=C92UeLsZ2HoJ/WDhw9EmuO5Uef4xm7aGyUD1c5vpoMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5vSvDKYGf6CyGpxYrNmn/qGeYu9bfulKyND6o8U99K6TdmPMrzETbc4kdrxGgMgs
-	 VjnjqbA7dH9S7KlHOWfJ2ailw96+o8GCPo4zeBVCsuSWn1N62TB9pFCJUrt6p2s+Fb
-	 r+3/1cIt1G6FD+0EFBaas916CkoDamVFbkCjfCIk=
+	b=HEf2O0fKhzz5AyRu1ns50oddbBHlswi+syi1grn5iDfdbQ5X7zoBmJkaWsEfvQt+0
+	 PTv0bcV0v/2d79QE8/HB7tHWVRoCtbRFq4n9WTwgZWyhoXpnInQUKKfACEPBAtyi9H
+	 CFXTiXWLdk/1ItbsZwjAe2yaLFhICmo7oYIa5W8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Smith <itistotalbotnet@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/529] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Iceland
-Date: Fri, 21 Nov 2025 14:05:40 +0100
-Message-ID: <20251121130232.463107583@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 042/529] block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL
+Date: Fri, 21 Nov 2025 14:05:41 +0100
+Message-ID: <20251121130232.498712733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,40 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Smith <itistotalbotnet@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 501672e3c1576aa9a8364144213c77b98a31a42c ]
+commit 12a1c9353c47c0fb3464eba2d78cdf649dee1cf7 upstream.
 
-Previously this was initialized with zero which represented PCIe Gen
-1.0 instead of using the
-maximum value from the speed table which is the behaviour of all other
-smumgr implementations.
+REQ_OP_ZONE_RESET_ALL is a zone management request. Fix
+op_is_zone_mgmt() to return true for that operation, like it already
+does for REQ_OP_ZONE_RESET.
 
-Fixes: 18aafc59b106 ("drm/amd/powerplay: implement fw related smu interface for iceland.")
-Signed-off-by: John Smith <itistotalbotnet@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 92b0a6ae6672857ddeabf892223943d2f0e06c97)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While no problems were reported without this fix, this change allows
+strengthening checks in various block device drivers (scsi sd,
+virtioblk, DM) where op_is_zone_mgmt() is used to verify that a zone
+management command is not being issued to a regular block device.
+
+Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/blk_types.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-index 97d9802fe6731..43458f1b0077d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
-@@ -2028,7 +2028,7 @@ static int iceland_init_smc_table(struct pp_hwmgr *hwmgr)
- 	table->VoltageResponseTime  = 0;
- 	table->PhaseResponseTime  = 0;
- 	table->MemoryThermThrottleEnable  = 1;
--	table->PCIeBootLinkLevel = 0;
-+	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
- 	table->PCIeGenInterval = 1;
- 
- 	result = iceland_populate_smc_svi2_config(hwmgr, table);
--- 
-2.51.0
-
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -517,6 +517,7 @@ static inline bool op_is_zone_mgmt(enum
+ {
+ 	switch (op & REQ_OP_MASK) {
+ 	case REQ_OP_ZONE_RESET:
++	case REQ_OP_ZONE_RESET_ALL:
+ 	case REQ_OP_ZONE_OPEN:
+ 	case REQ_OP_ZONE_CLOSE:
+ 	case REQ_OP_ZONE_FINISH:
 
 
 
