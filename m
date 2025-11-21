@@ -1,127 +1,97 @@
-Return-Path: <stable+bounces-196540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25530C7AFF8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:10:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8739DC7B09B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F043A4DAD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:08:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C9C8358373
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063CE342523;
-	Fri, 21 Nov 2025 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFB934573C;
+	Fri, 21 Nov 2025 17:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="A8J0UwJs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5Wbfu2o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286D734F248
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 17:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC2B343D9E
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 17:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763744770; cv=none; b=eIlhXJ9v7CwzriLYSL6S0cue2KqfT/RoM0nPZOg3jxepyEvPoZ5hD3qa3THA13YjZNS7gkreC1bqfvNrKNz/SDpIivOjks4xHY9X1qI/dn4cWaNbb4ZAeAL9xupRAat5SmbeGYykWTjnxbKhwQoMIuMf55Fh+o4+yL5qe1ZWJqY=
+	t=1763745356; cv=none; b=m/E72Ivw4nL0WlFRmyEs0UfHnBC5PhNAAnPXx3VMVyBa83hZuF2BkIGsBzJY+ugSuWZioqp/LDJ/m6036BajHlDZfcCkSad1F7x1xmxRq+RTfN7H7pfrBoY04LdXsWSuBh5Mfp38eri5W6QnWylEUqOha6kpIaoxcuQMdTmXdH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763744770; c=relaxed/simple;
-	bh=g0mfsY0BmjhW4/dF/KhvEKYszrj7C7YT3gH+KjbQ+8M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ri4akvi6puhtBdbsf/CxXLjNBJJNwpgx6xP6l1mWWpew5XeLExSMGab+tnSXw/qxARRxFoQaAhT7BgUer7uA00arL1pwcoQznZ1fqz08qKN6v2JXUFdbQxz6/TQSXnxXVOs8mu2kreHV2cROp6zFf/9+6h5rT3tX+DWp/gvE/HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=A8J0UwJs; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8b2148ca40eso301654085a.1
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 09:05:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1763744746; x=1764349546; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wij9Xntwahn42XWWuPVoXt9ccQi9c/pGIOq4xQ7R7ns=;
-        b=A8J0UwJsN9iYkyye1D56/XZNh7GcX2er7EhVd8kfaQmJ7McSzzQ2eEWaysEhhdz/RS
-         uHgFPOU1oM8Z0ZhOiGKS/j+rqDSPz/kSD7x0a4P7Ia5dJWluRvDFtLXEMAU33BketYQa
-         kzbEtoBSH9LeFOEP688wNTgYR78KpnqRJbfoFTLezDl8Gy19aYCMlB1EmoLxS64BG735
-         cuWf1YLapdgZhefYTXLW4n2ZECIvAbAYpnJv1n9hPz8jojY4mn2NY45kgS1W9ndXHPaR
-         JkXi+ZZiEW8uDMoI5jJ3X8ptElUSp1Oom5uOIvpxNH2hcL0XGGMjszIZYiJD2D56pyCk
-         LldA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763744746; x=1764349546;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wij9Xntwahn42XWWuPVoXt9ccQi9c/pGIOq4xQ7R7ns=;
-        b=VMIcNijoceYgSLHhrAo/VFDj65ISNir3GgQGgMvmbna8FbUQH15EiDgiLjbGdv31/N
-         5YV2wYaEZ1rHZTlBk+gsFsHgf/ZKAjyTv9avc6YRwWoewoYK3pQQmFFEQ4+b7/AwfgT1
-         zg5i7wNYtddYsbRLbSvQupUrHQnYwaToVHiWnWbVbXn2WpmMteiEo/fRRgGAP8L+nD9T
-         33m8WxpXGPQ4IdErL5CIcq4ekW7JndKyJvoS0L8ZsFlga6R1u6ru3U6HsN8Fbo7u21cU
-         cg2scE/3Qf8Kb31LwLtuyogxvR6NjuYB9KXxJPccq1ZpykpabUqBUl8lVD5fFip3Llfw
-         VlXw==
-X-Gm-Message-State: AOJu0YwA7bb3YadWgVdH2q5jo4b1zy0yd/GIzmVi4Jhc16p6AhjZVh1I
-	JX/DY/pI/bxmuPsGLaZMlWuIL46MH6sOaspU0vUIGKqhe+ZglR/Tmdidap83KeQ8EQCCGirs0Et
-	AaCKYbR7MFPGfUQBj2MV0PAkHeEeIZLhmpuF9Tj7+CQ==
-X-Gm-Gg: ASbGncvph8hEgsrUxINejy5bmw0XjeWqIEkk5OeNDjyU/E0Td6+qSbfl6nC3rL5aOrD
-	LtNYqzgrgHlGIPH3LHV0xPp5ymCv+z+M4w//BPtXMRlJ4tQ7U9hRScz+xFLvAgC97eIgOx1VE2d
-	S7GBpyIOTPbB8h5idk6gGtGUshy8ysaK9ae8DekktweYhmGxgKUbn4p9u5tLSt5E+ac+yN1BtcT
-	GKQwUrGViMofxqPSGQSW/Ab+ubmSnGpsB3bVTFC9VroPB93DCnNBOo50a/hloYqnbxXP5G2Bchd
-	JjfDRyjaYtBOZW1GVZ8tLUbGDeyxew==
-X-Google-Smtp-Source: AGHT+IFyBPJMF8miaqm3J9SeysyAeoBZfngbCeF1gqSOLxlti0idn6DI6f+6z9hfXCs7YYDitoNDIPf15wDpSdSL1ow=
-X-Received: by 2002:a05:620a:45a7:b0:89f:8bb8:c103 with SMTP id
- af79cd13be357-8b33d478a7amr355225385a.49.1763744745585; Fri, 21 Nov 2025
- 09:05:45 -0800 (PST)
+	s=arc-20240116; t=1763745356; c=relaxed/simple;
+	bh=jyCkngZT+TGN1Jbx7ybbLOzCLQJDqPgM/XFPmKi1hBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A1r5+6IanntUASd3fV1bz24cmVZ1jyRHxG8NiX5kpqOczDLyns7P2hTakaZ9R/57N2I4vU3FuSLz1sHiMWsQnkPIiGcp7Yd8fN3yHuctzi44ENcEB0+HuHPqfwaBAdnCP/7SwBPIf8rfiyLRW0mhv1VZ8cb/4BruujH3AXinaC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5Wbfu2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C5DC4CEF1;
+	Fri, 21 Nov 2025 17:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763745355;
+	bh=jyCkngZT+TGN1Jbx7ybbLOzCLQJDqPgM/XFPmKi1hBo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A5Wbfu2oVPd4qEMS1VEA+s0zVuUHnpN7bzdQTPQRvww93kTLDkk3SM1P3tlTYv1M7
+	 174oRTwu+UasQxvhAzyHd4DgdUVsQ6TX0W9TrVAWur8a6eiXVs1z3f0KCa51liQh8r
+	 JUeqInG5OPDzd7kn4nPL23B5fkZ94YZxTaFGq142snqekY+W5xPdIT9my8RLREJcvq
+	 QtDKbXxCf7Ft/levDVWt1Q76WpezMo43lPXhO53QZxwkeYqBTYtjQ8gOesJWC/QH0e
+	 Q2z4MtLHmadtJypMepPfPku6LaH1jUTpkYbcxvLqf+4MHWHN+ZmJMtXp8rBRsDQtW9
+	 CqFZ6UeoCODgA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] pmdomain: imx: Fix reference count leak in imx_gpc_remove
+Date: Fri, 21 Nov 2025 12:15:53 -0500
+Message-ID: <20251121171553.2611263-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112011-seltzer-flock-722f@gregkh>
+References: <2025112011-seltzer-flock-722f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251121130143.857798067@linuxfoundation.org>
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 21 Nov 2025 12:05:34 -0500
-X-Gm-Features: AWmQ_bn3hUma6F2fPIPPqFRfcMUsz1CIgpb4y0PU7vh2cBVNCFWZg4gJ3dFTi64
-Message-ID: <CAOBMUvj7h2K5n44e=pRZraE5gSw=Ndej4nCf5sPONqnaFStB6g@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/185] 6.12.59-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 21, 2025 at 8:32=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.59 release.
-> There are 185 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.59-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+From: Miaoqian Lin <linmq006@gmail.com>
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+[ Upstream commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 ]
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+of_get_child_by_name() returns a node pointer with refcount incremented, we
+should use of_node_put() on it when not needed anymore. Add the missing
+of_node_put() to avoid refcount leak.
 
-Thanks,
-Brett
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/imx/gpc.c -> drivers/soc/imx/gpc.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/imx/gpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/soc/imx/gpc.c b/drivers/soc/imx/gpc.c
+index 90a8b2c0676ff..8d0d05041be3f 100644
+--- a/drivers/soc/imx/gpc.c
++++ b/drivers/soc/imx/gpc.c
+@@ -540,6 +540,8 @@ static int imx_gpc_remove(struct platform_device *pdev)
+ 			return ret;
+ 	}
+ 
++	of_node_put(pgc_node);
++
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
