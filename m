@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC68C795D4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705E3C7936F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D6954E96D0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 759992C0B7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785D731B124;
-	Fri, 21 Nov 2025 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F48330B19;
+	Fri, 21 Nov 2025 13:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXPyltJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffwfoKae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A522DEA7E;
-	Fri, 21 Nov 2025 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EC926CE33;
+	Fri, 21 Nov 2025 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731636; cv=none; b=IR4czSmdVv+KqWPcGPeDQy0/XpYnG2rbqxyIOHQy59LhEeaPkxa14eLoFBDYrealw8BqWpbr1aAs+TyyMayewx+Pzr022D35bXSShMuAV5jO48GI2Y9OCrbayeZ8tK8RdKASYMtzJm7hptfwyyefpAWyueVwsD4eW9Dew1Am7qM=
+	t=1763731158; cv=none; b=ZfJ2yFt7hrjqNG2DHAzItzV1CLOmLuPkQXHKcUQCozEldOc3gu2tTQHooDRrLIkZZTagjhBTKqYG0W+J6vfTzk1PqwwEcgCgfJ8qN1qAvgRwIieBXocTi0nIFZdm3HvszzP8UAifLqVu22RVZNC1byUJUMk+Vm1uU1wd9j4ycK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731636; c=relaxed/simple;
-	bh=PyHAB49KbcVRMr72lAxR3TbRrTFabSc3cD0zlIZ52x8=;
+	s=arc-20240116; t=1763731158; c=relaxed/simple;
+	bh=mTcJA2zNXP/odVh1jbj/QZBFnZ0d2yqjEliOyeio1Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q206W4Fjp7MXSo8OENXQ1XML6zNZQgLFehtwEkziqhKrhPF+MIp+HHNh8pQEwDPSepB5/b+HeOVf0sxQtP6BHDer9fBrKUzkOpSwpIrrAmdGvZLJvGjHRsPNbyUlCfKWhzq39ux5Z2e32YoenKSESWTE2tRBFVHxzJ+ZREMzXsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXPyltJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3185C4CEF1;
-	Fri, 21 Nov 2025 13:27:15 +0000 (UTC)
+	 MIME-Version; b=MBxvdcc3pFCEGgrehTgsYh3dvLb7Sjg5abAPCEi1y5JgZ8F7ZyyeFsamlE94RIntj9/EjpMSDPX+J4YT2WLlmn42OhzZdW81HZ8yC1R21bg4BL3L+/XRp6d15k5JgDu0AXeH3C5Yqp8iYiZUcoN0yLOUuPMWhx/PQotsFYESzxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffwfoKae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5892AC4CEF1;
+	Fri, 21 Nov 2025 13:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731636;
-	bh=PyHAB49KbcVRMr72lAxR3TbRrTFabSc3cD0zlIZ52x8=;
+	s=korg; t=1763731158;
+	bh=mTcJA2zNXP/odVh1jbj/QZBFnZ0d2yqjEliOyeio1Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXPyltJJg+oqZIZokZKt/ggluQijwuZkt7uywRsb7Vf3OJO8BjtBEGeg9l7ImEHNZ
-	 D+HRuRmw4Jwv9Tpc6Ep+g9MTEBj576xTLjCBeHM2BHCq8sEIcafjuUA9IIW0kId2Pa
-	 mLQfjxfKnrEPG/bz5qosoE7l7qFdi2g1yynXivEo=
+	b=ffwfoKaeEoeKBU+NbarcrqSnwpS2YD/2VuNFnliUfbLV+cvGXUFA4BlwnF9xShEhy
+	 tOAKrpj25MJQzgaxhihan082pjM+YRrLvTcz6KKOfKcRQA+oRa6RfNqC0Ouwsq65UV
+	 KuggWB0Y/4hnXTFIXhf7735OVF2A7UbBSyhlF0y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharique Mohammad <sharq0406@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Stephen Abbene <sabbene87@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	NeilBrown <neil@brown.name>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/185] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
+Subject: [PATCH 6.17 109/247] NFSv2/v3: Fix error handling in nfs_atomic_open_v23()
 Date: Fri, 21 Nov 2025 14:10:56 +0100
-Message-ID: <20251121130144.926510824@linuxfoundation.org>
+Message-ID: <20251121130158.498181175@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharique Mohammad <sharq0406@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
+[ Upstream commit 85d2c2392ac6348e1171d627497034a341a250c1 ]
 
-The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
-suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
-are turned on or off, the required startup or shutdown sequences
-must be taken care by the max98090_shdn_event.
+When nfs_do_create() returns an EEXIST error, it means that a regular
+file could not be created. That could mean that a symlink needs to be
+resolved. If that's the case, a lookup needs to be kicked off.
 
-Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
-Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Stephen Abbene <sabbene87@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220710
+Fixes: 7c6c5249f061 ("NFS: add atomic_open for NFSv3 to handle O_TRUNC correctly.")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98090.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nfs/dir.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
-index 2adf744c65263..4023b88e7bc13 100644
---- a/sound/soc/codecs/max98090.c
-+++ b/sound/soc/codecs/max98090.c
-@@ -1234,9 +1234,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
- 	SND_SOC_DAPM_INPUT("DMIC4"),
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index c8dd1d0b8d850..82ef36cc9ceec 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2270,11 +2270,12 @@ int nfs_atomic_open_v23(struct inode *dir, struct dentry *dentry,
+ 		return -ENAMETOOLONG;
  
- 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
-+			SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
-+			 SND_SOC_DAPM_POST_PMU),
- };
- 
- static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
+ 	if (open_flags & O_CREAT) {
+-		file->f_mode |= FMODE_CREATED;
+ 		error = nfs_do_create(dir, dentry, mode, open_flags);
+-		if (error)
++		if (!error) {
++			file->f_mode |= FMODE_CREATED;
++			return finish_open(file, dentry, NULL);
++		} else if (error != -EEXIST || open_flags & O_EXCL)
+ 			return error;
+-		return finish_open(file, dentry, NULL);
+ 	}
+ 	if (d_in_lookup(dentry)) {
+ 		/* The only flags nfs_lookup considers are
 -- 
 2.51.0
 
