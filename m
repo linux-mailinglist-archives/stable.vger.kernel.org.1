@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AFFC79499
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B805C79CDB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8337834C1E2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id AC7742DBCD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6239345743;
-	Fri, 21 Nov 2025 13:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492DA34B1BE;
+	Fri, 21 Nov 2025 13:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkHAoVkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQFxbUoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8096833506C;
-	Fri, 21 Nov 2025 13:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E881C5D77;
+	Fri, 21 Nov 2025 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731133; cv=none; b=Yi6cFhESov/rBp1oSoThTwmFT6gZHaRyBoHgYNYwQButrtX+cKOPkJU1l2H3zS0t49ELMydheuXMFIGcjJlhjJeJ4YcXR2QrvoIT9Jgp5IqxjKE0jZeEpLUBVBjLfP1pdAR4+Ekbz6AKCuzSs3nMCkMwfKQYvY0j1vaxXPsW2l4=
+	t=1763733175; cv=none; b=uKms8FCdFHbECFcOZ6UL6yOS1yttKLgpSX95Dou0WYj4WsZCI89w5Gf4IbJ5Jpb+b78UWeChQeZIrl8dEUTZefwb6mHW7qMYe8lAJaMCZcDnOp71NiN0kqGBmLIkhCevEWhHBByV2DRWEpEmQn7pgGafEWgxJBQQRF1apCBPKNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731133; c=relaxed/simple;
-	bh=sJQReH/Drwb/YXb0J1EsaiBCsim5x/cmnhVLI6VBuNA=;
+	s=arc-20240116; t=1763733175; c=relaxed/simple;
+	bh=rqfZ8lVoOHbbZoPyTCp+VRrtVhwSWL+VbAC2IV3tQg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsAfwsNZcwpG46yBEq94Vgk8lfzgRfoS0NqyZ+fWjXl0DoKOBO9W9iPqEbivlCwlR5dXXbk6T9sfxhen2HkEtWIjmdtYnEA5nVB7edgrPDX+Jr8w0WUufwmkeBH0etYXTmFLBI7eGqpnf/Ttrc7t0Zp3mXJnBWh9rUmte4ZsXOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkHAoVkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2225C116C6;
-	Fri, 21 Nov 2025 13:18:52 +0000 (UTC)
+	 MIME-Version; b=b8Yx9lvcmCj2EpWAggh3CLqnZqvCcUVlF9S4uWMRUmTgn/tyIIlnN0oPTCXjQDh69lsPGxuB9usPCyNuSHh840M7Ik4v61wwmzQpipBaU1PmAPQFWUQYM8/R8qMR7TM2h5dcInIKQCwKjTvyBXWjP7OBoFMdSqL/R5K2gfh+AFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQFxbUoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E6EC4CEF1;
+	Fri, 21 Nov 2025 13:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731133;
-	bh=sJQReH/Drwb/YXb0J1EsaiBCsim5x/cmnhVLI6VBuNA=;
+	s=korg; t=1763733174;
+	bh=rqfZ8lVoOHbbZoPyTCp+VRrtVhwSWL+VbAC2IV3tQg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkHAoVkLSpR8csFLswmgUvyArf12YtMPz6xh5cTKsZjuzHRIkdiEgW5HL/R8HaL4h
-	 90Bk2kVGyi6RPOQLAOXrnwd/at8ODas8xvz9doLa6bIBEe8Oi5ozy0IyBOJL2vCa2z
-	 23lxs0jtabmK6smD9BUtkIELv/51RLMuAbg7mnJs=
+	b=PQFxbUoA+oZ5um62spm/oxvCFGPvIxt61FeTCKHdtW9gMnwAsgdiH7lktj+nKMP62
+	 TT8myTMRZ54WZVBOMXJI755rkYFCWbItGYMfcwIhRIth4g3vD/3Zy5Wl7WJoHm6xle
+	 pc90fBVnFw0WKSGqb6iCe+bRxgzYpXunAWMBteRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 101/247] drm/vmwgfx: Restore Guest-Backed only cursor plane support
-Date: Fri, 21 Nov 2025 14:10:48 +0100
-Message-ID: <20251121130158.214343498@linuxfoundation.org>
+Subject: [PATCH 6.6 350/529] sctp: Hold sock lock while iterating over address list
+Date: Fri, 21 Nov 2025 14:10:49 +0100
+Message-ID: <20251121130243.484613590@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit eef295a8508202e750e4f103a97447f3c9d5e3d0 ]
+[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
 
-The referenced fixes commit broke the cursor plane for configurations
-which have Guest-Backed surfaces but no cursor MOB support.
+Move address list traversal in inet_assoc_attr_size() under the sock
+lock to avoid holding the RCU read lock.
 
-Fixes: 965544150d1c ("drm/vmwgfx: Refactor cursor handling")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251103201920.381503-1-ian.forbes@broadcom.com
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.c | 16 +++++++++++++++-
- drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.h |  1 +
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ net/sctp/diag.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.c b/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.c
-index 718832b08d96e..c46f17ba7236d 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.c
-@@ -100,8 +100,10 @@ vmw_cursor_update_type(struct vmw_private *vmw, struct vmw_plane_state *vps)
- 	if (vmw->has_mob) {
- 		if ((vmw->capabilities2 & SVGA_CAP2_CURSOR_MOB) != 0)
- 			return VMW_CURSOR_UPDATE_MOB;
-+		else
-+			return VMW_CURSOR_UPDATE_GB_ONLY;
- 	}
--
-+	drm_warn_once(&vmw->drm, "Unknown Cursor Type!\n");
- 	return VMW_CURSOR_UPDATE_NONE;
- }
- 
-@@ -139,6 +141,7 @@ static u32 vmw_cursor_mob_size(enum vmw_cursor_update_type update_type,
- {
- 	switch (update_type) {
- 	case VMW_CURSOR_UPDATE_LEGACY:
-+	case VMW_CURSOR_UPDATE_GB_ONLY:
- 	case VMW_CURSOR_UPDATE_NONE:
- 		return 0;
- 	case VMW_CURSOR_UPDATE_MOB:
-@@ -623,6 +626,7 @@ int vmw_cursor_plane_prepare_fb(struct drm_plane *plane,
- 		if (!surface || vps->cursor.legacy.id == surface->snooper.id)
- 			vps->cursor.update_type = VMW_CURSOR_UPDATE_NONE;
- 		break;
-+	case VMW_CURSOR_UPDATE_GB_ONLY:
- 	case VMW_CURSOR_UPDATE_MOB: {
- 		bo = vmw_user_object_buffer(&vps->uo);
- 		if (bo) {
-@@ -737,6 +741,7 @@ void
- vmw_cursor_plane_atomic_update(struct drm_plane *plane,
- 			       struct drm_atomic_state *state)
- {
-+	struct vmw_bo *bo;
- 	struct drm_plane_state *new_state =
- 		drm_atomic_get_new_plane_state(state, plane);
- 	struct drm_plane_state *old_state =
-@@ -762,6 +767,15 @@ vmw_cursor_plane_atomic_update(struct drm_plane *plane,
- 	case VMW_CURSOR_UPDATE_MOB:
- 		vmw_cursor_update_mob(dev_priv, vps);
- 		break;
-+	case VMW_CURSOR_UPDATE_GB_ONLY:
-+		bo = vmw_user_object_buffer(&vps->uo);
-+		if (bo)
-+			vmw_send_define_cursor_cmd(dev_priv, bo->map.virtual,
-+						   vps->base.crtc_w,
-+						   vps->base.crtc_h,
-+						   vps->base.hotspot_x,
-+						   vps->base.hotspot_y);
-+		break;
- 	case VMW_CURSOR_UPDATE_NONE:
- 		/* do nothing */
- 		break;
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.h b/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.h
-index 40694925a70e6..0c2cc0699b0d9 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_cursor_plane.h
-@@ -33,6 +33,7 @@ static const u32 __maybe_unused vmw_cursor_plane_formats[] = {
- enum vmw_cursor_update_type {
- 	VMW_CURSOR_UPDATE_NONE = 0,
- 	VMW_CURSOR_UPDATE_LEGACY,
-+	VMW_CURSOR_UPDATE_GB_ONLY,
- 	VMW_CURSOR_UPDATE_MOB,
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 7799e5abdbd05..ad3e1462a896e 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -230,14 +230,15 @@ struct sctp_comm_param {
+ 	bool net_admin;
  };
  
+-static size_t inet_assoc_attr_size(struct sctp_association *asoc)
++static size_t inet_assoc_attr_size(struct sock *sk,
++				   struct sctp_association *asoc)
+ {
+ 	int addrlen = sizeof(struct sockaddr_storage);
+ 	int addrcnt = 0;
+ 	struct sctp_sockaddr_entry *laddr;
+ 
+ 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
+-				list)
++				list, lockdep_sock_is_held(sk))
+ 		addrcnt++;
+ 
+ 	return	  nla_total_size(sizeof(struct sctp_info))
+@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+ 	if (err)
+ 		return err;
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
+-	if (!rep)
++	lock_sock(sk);
++
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		release_sock(sk);
+ 		return -ENOMEM;
++	}
+ 
+-	lock_sock(sk);
+ 	if (ep != assoc->ep) {
+ 		err = -EAGAIN;
+ 		goto out;
 -- 
 2.51.0
 
