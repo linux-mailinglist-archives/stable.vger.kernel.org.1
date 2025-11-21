@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48E1C79E94
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361CDC7969A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 748813436D5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1BD103640F0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917FD310782;
-	Fri, 21 Nov 2025 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BAE313267;
+	Fri, 21 Nov 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzcbvYOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6sHRniM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2092FC88B;
-	Fri, 21 Nov 2025 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043302765FF;
+	Fri, 21 Nov 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733201; cv=none; b=t+r0Nxk/3uOqDkmtfR0zZem/QBxiw4p9MTWuo81CHkgSAEC+uPsDB+kyOp9wwA09mq75Jj6258lFfONi8RruhvEIBI06Ve8/1DXEVOCu3rnVQ2RWup/Qkiq2CLWiKpGPkEh+eH7NT1qxL8sd88PkCq80qJZ3uZLTqASruoGucXY=
+	t=1763731624; cv=none; b=hOAWkUpmAN1VYktD2iPrwFi2qQhy9Icgdhoq3MzdmtulGh6uRMxAxIwJJT6CYjSxp+wFxbv11eXZ0GAc0sQbxvRYy/dNqgqXCSdfoBkHS0mQv5/G9xrn2nuzTkQUY8ueBaB74YO6xY4eu/Lf6LBrC3GBlUINzwTzea+L01Ru1g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733201; c=relaxed/simple;
-	bh=WD1DQk1FVpkP7L1p+GRmko+ZdJba9X/CICgG/9p4TfA=;
+	s=arc-20240116; t=1763731624; c=relaxed/simple;
+	bh=IujCfdGpL4+kUIjAvmtL5Yhs6nh4KLMf9/V/+qgxURE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDurO6ARqTnIwtqEkfdqEA76Zv5l0VQJAGE8vjazyXoaTjXVb4u8Q83xAaWhIVchUekuKxlH+Reh9BqNKfODnCR/E97x/09b4Wwfa562u5N+7/tDco4TpEFgRXCFEKUBNONwXY4DzNOV1/SvQJvg2kpj6orDPntbUvus/u4qFQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzcbvYOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75A2C4CEF1;
-	Fri, 21 Nov 2025 13:53:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kdYvI7M1wnw0G0+BDhSyBw8xbl89VzttAh0lJBnWPgoQZ7+bO6MJCAQ3ZO8jj12C3jYnVdlLjIoqbWqdkRi9lToYBhkZBmJFORy4QTGNQ0+4vAEIwY+K7JR+qzjXV6T/KwCY3wUtPg6Ln36Fle8/TXOaer1gq/vA83G7XILGA1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6sHRniM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A94C4CEF1;
+	Fri, 21 Nov 2025 13:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733201;
-	bh=WD1DQk1FVpkP7L1p+GRmko+ZdJba9X/CICgG/9p4TfA=;
+	s=korg; t=1763731623;
+	bh=IujCfdGpL4+kUIjAvmtL5Yhs6nh4KLMf9/V/+qgxURE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HzcbvYOPtLUkOcDh3CcKyVCeDeroFkB6qOzP0QDrageCPepIs+EIeVnz7fU8Cy/DS
-	 HEQBt+AD5kSp6bkL9oWlAgo0+K7t0CH8D74v0idrE1VNK0lTn/3Lj7MygfYgQyoMg9
-	 EZNk1iPvXIAEuiH5WrHKTM7IcYLPWwrqG9d5TmWI=
+	b=e6sHRniMDKG3bwKJqDrb3uu6CmrzQvIFvdjd89MExAsW5AsRpdfGzbe3ARIYLcdcN
+	 IH5ODUoIjHMfBrPpQ6sIiXP2s6npdB8ID5fXGobQHnj9KAKIVzJ+boXOWzhGxjB/9L
+	 VweNlzgTOiEPj+mN7WjljnjYenC8WQTesqU+FbfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Willi <martin@strongswan.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Seunghun Han <kkamagui@gmail.com>,
+	Jihoon Kwon <jimmyxyz010315@gmail.com>,
+	Jaehun Gou <p22gone@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/529] wifi: mac80211_hwsim: Limit destroy_on_close radio removal to netgroup
+Subject: [PATCH 6.12 025/185] exfat: fix improper check of dentry.stream.valid_size
 Date: Fri, 21 Nov 2025 14:10:52 +0100
-Message-ID: <20251121130243.590536667@linuxfoundation.org>
+Message-ID: <20251121130144.782488607@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Jaehun Gou <p22gone@gmail.com>
 
-[ Upstream commit c74619e7602e88a0239cd4999571dd31081e9adf ]
+[ Upstream commit 82ebecdc74ff555daf70b811d854b1f32a296bea ]
 
-hwsim radios marked destroy_on_close are removed when the Netlink socket
-that created them is closed. As the portid is not unique across network
-namespaces, closing a socket in one namespace may remove radios in another
-if it has the destroy_on_close flag set.
+We found an infinite loop bug in the exFAT file system that can lead to a
+Denial-of-Service (DoS) condition. When a dentry in an exFAT filesystem is
+malformed, the following system calls — SYS_openat, SYS_ftruncate, and
+SYS_pwrite64 — can cause the kernel to hang.
 
-Instead of matching the network namespace, match the netgroup of the radio
-to limit radio removal to those that have been created by the closing
-Netlink socket. The netgroup of a radio identifies the network namespace
-it was created in, and matching on it removes a destroy_on_close radio
-even if it has been moved to another namespace.
+Root cause analysis shows that the size validation code in exfat_find()
+does not check whether dentry.stream.valid_size is negative. As a result,
+the system calls mentioned above can succeed and eventually trigger the DoS
+issue.
 
-Fixes: 100cb9ff40e0 ("mac80211_hwsim: Allow managing radios from non-initial namespaces")
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Link: https://patch.msgid.link/20251103082436.30483-1-martin@strongswan.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This patch adds a check for negative dentry.stream.valid_size to prevent
+this vulnerability.
+
+Co-developed-by: Seunghun Han <kkamagui@gmail.com>
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
+Co-developed-by: Jihoon Kwon <jimmyxyz010315@gmail.com>
+Signed-off-by: Jihoon Kwon <jimmyxyz010315@gmail.com>
+Signed-off-by: Jaehun Gou <p22gone@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/exfat/namei.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index f5f48f7e6d26e..1214e7dcc8124 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -6189,14 +6189,15 @@ static struct genl_family hwsim_genl_family __ro_after_init = {
- 	.n_mcgrps = ARRAY_SIZE(hwsim_mcgrps),
- };
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index e9624eb61cbc9..f0fda34694044 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -635,10 +635,14 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
  
--static void remove_user_radios(u32 portid)
-+static void remove_user_radios(u32 portid, int netgroup)
- {
- 	struct mac80211_hwsim_data *entry, *tmp;
- 	LIST_HEAD(list);
+ 	info->type = exfat_get_entry_type(ep);
+ 	info->attr = le16_to_cpu(ep->dentry.file.attr);
+-	info->size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->valid_size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.size);
  
- 	spin_lock_bh(&hwsim_radio_lock);
- 	list_for_each_entry_safe(entry, tmp, &hwsim_radios, list) {
--		if (entry->destroy_on_close && entry->portid == portid) {
-+		if (entry->destroy_on_close && entry->portid == portid &&
-+		    entry->netgroup == netgroup) {
- 			list_move(&entry->list, &list);
- 			rhashtable_remove_fast(&hwsim_radios_rht, &entry->rht,
- 					       hwsim_rht_params);
-@@ -6221,7 +6222,7 @@ static int mac80211_hwsim_netlink_notify(struct notifier_block *nb,
- 	if (state != NETLINK_URELEASE)
- 		return NOTIFY_DONE;
- 
--	remove_user_radios(notify->portid);
-+	remove_user_radios(notify->portid, hwsim_net_get_netgroup(notify->net));
- 
- 	if (notify->portid == hwsim_net_get_wmediumd(notify->net)) {
- 		printk(KERN_INFO "mac80211_hwsim: wmediumd released netlink"
++	if (info->valid_size < 0) {
++		exfat_fs_error(sb, "data valid size is invalid(%lld)", info->valid_size);
++		return -EIO;
++	}
++
+ 	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
+ 		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
+ 		return -EIO;
 -- 
 2.51.0
 
