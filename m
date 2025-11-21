@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-196308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E00C79CB7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F35AC7949C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id B35092DFAA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 753D74E42CD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC1E34C819;
-	Fri, 21 Nov 2025 13:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F552F363E;
+	Fri, 21 Nov 2025 13:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZl2HfXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxvxPAQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCC349B1E;
-	Fri, 21 Nov 2025 13:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F06F26E6F4;
+	Fri, 21 Nov 2025 13:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733138; cv=none; b=ZYhBoUssgvKmBP6me3FeT8KAIuTcl+CLDlBauzMt80Pl9HAmyfJEDJJyVHlMaaDhesc+XzdnVCN0oN+sGSfqHAOTvIFkgbrinYU1Y6G/mNobkX85MeeqyDi/OmcfyFqsB/iRCC9HGNuINWLQk+9m8n3szfi/sEOiFl9mQvhiaS0=
+	t=1763731198; cv=none; b=sEQDVWqkmgaZvCBoT9wGxK2ORg+FYA6U7QtftIKVVX8HtKFNVomjPV2AMhPwE/DAUQv5tWAoxYK9P9vqd/UUBXvvlXrG47iX8Oat6QsoqX9Sg033iFlOI4tf+AhF2BSAMhIR4hX3NKmYlnZ3Z5x4YNxtfz/gYbfp8akNk3kXBiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733138; c=relaxed/simple;
-	bh=v3OQCgnAS8f2ZCNQDgW/N3rWOpZ1mfQziZidChXt3is=;
+	s=arc-20240116; t=1763731198; c=relaxed/simple;
+	bh=m0NWgeqrSxErVqHoIvbc8iTKlv37Z6CmcGtC7d36oKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgKmm8ErlaGqtxigDV/xKN3iNrLkj4gsVp9UgH/DwPEh6oYK0nj4hDqZ/ifG6izruAKRwDGpVUZQUQvLdBWvsKMiU+a3RBdG0XmoZJDL07HxhVlktq+MmqZZD6nQo+e7wXlhgvnfMUD89Qh0dRS9wO1dXyU/TgFmQf9SvmB16h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZl2HfXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E171C4CEF1;
-	Fri, 21 Nov 2025 13:52:17 +0000 (UTC)
+	 MIME-Version; b=F2unvQjTIqOqOBqaqzfC3Uod9eTSwK/k4Q9mxF3/903rfrguuAoTdDxw6loBoBHunryZeVxPcjjTLc/ohALuxWhqvwVpv71UYOkOBMlU7aHeVSCEU6TQz4Okupb8bnpXo9iUapR8f7rFezB2pqBj4rRE3ya7q4ZpXfw4jUvJ89k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxvxPAQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF0CC4CEF1;
+	Fri, 21 Nov 2025 13:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733137;
-	bh=v3OQCgnAS8f2ZCNQDgW/N3rWOpZ1mfQziZidChXt3is=;
+	s=korg; t=1763731198;
+	bh=m0NWgeqrSxErVqHoIvbc8iTKlv37Z6CmcGtC7d36oKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZl2HfXgC1To9mmPRkidAcKpWI83qoPk84fvzD2imKdRAzgfE+wzgOKcU7lyXjroF
-	 IlOu6HoFzXQYWBTS8OxZF/KUQlkqgquTv7nQxx8cwbeKQzn0rR1qjJ1db6ql6DDePw
-	 8vdpmqnajijmsxNJpxLuNkSz6D2J0P0tQPZzj8is=
+	b=kxvxPAQJtUr005pFJuqpgSOZKSwYCh9JtBNAX4BhaSN1RVNdKrldkNI59e8o0OQ8l
+	 tP7XV/9uJL555BxkL9Mh6pSaeUaA0svYLARz7JcKUELhZwZnkrIVOuGiwnzqOLunys
+	 Gp40XuWeQpYAmtMmcG5BL35dvfFcEINgROenwyLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuta Hayama <hayama@lineo.co.jp>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 365/529] rtc: rx8025: fix incorrect register reference
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 117/247] drm/client: fix MODULE_PARM_DESC string for "active"
 Date: Fri, 21 Nov 2025 14:11:04 +0100
-Message-ID: <20251121130244.015970319@linuxfoundation.org>
+Message-ID: <20251121130158.782067033@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuta Hayama <hayama@lineo.co.jp>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
+[ Upstream commit 0a4a18e888ae8c8004582f665c5792c84a681668 ]
 
-This code is intended to operate on the CTRL1 register, but ctrl[1] is
-actually CTRL2. Correctly, ctrl[0] is CTRL1.
+The MODULE_PARM_DESC string for the "active" parameter is missing a
+space and has an extraneous trailing ']' character. Correct these.
 
-Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
-Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before patch:
+$ modinfo -p ./drm_client_lib.ko
+active:Choose which drm client to start, default isfbdev] (string)
+
+After patch:
+$ modinfo -p ./drm_client_lib.ko
+active:Choose which drm client to start, default is fbdev (string)
+
+Fixes: f7b42442c4ac ("drm/log: Introduce a new boot logger to draw the kmsg on the screen")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20251112010920.2355712-1-rdunlap@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-rx8025.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/clients/drm_client_setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/rtc/rtc-rx8025.c
-+++ b/drivers/rtc/rtc-rx8025.c
-@@ -316,7 +316,7 @@ static int rx8025_init_client(struct i2c
- 			return hour_reg;
- 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
- 	} else {
--		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
-+		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
- 	}
- out:
- 	return err;
+diff --git a/drivers/gpu/drm/clients/drm_client_setup.c b/drivers/gpu/drm/clients/drm_client_setup.c
+index 72480db1f00d0..515aceac22b18 100644
+--- a/drivers/gpu/drm/clients/drm_client_setup.c
++++ b/drivers/gpu/drm/clients/drm_client_setup.c
+@@ -13,8 +13,8 @@
+ static char drm_client_default[16] = CONFIG_DRM_CLIENT_DEFAULT;
+ module_param_string(active, drm_client_default, sizeof(drm_client_default), 0444);
+ MODULE_PARM_DESC(active,
+-		 "Choose which drm client to start, default is"
+-		 CONFIG_DRM_CLIENT_DEFAULT "]");
++		 "Choose which drm client to start, default is "
++		 CONFIG_DRM_CLIENT_DEFAULT);
+ 
+ /**
+  * drm_client_setup() - Setup in-kernel DRM clients
+-- 
+2.51.0
+
 
 
 
