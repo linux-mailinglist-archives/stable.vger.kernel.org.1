@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-195729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC47C79592
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32D9C7A1C5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B592B4EB9E4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id C880D2E5B0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8A8340279;
-	Fri, 21 Nov 2025 13:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262B234A3CD;
+	Fri, 21 Nov 2025 13:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pARI3j6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fyi1K7EF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEBB2F3632;
-	Fri, 21 Nov 2025 13:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E51347FF8;
+	Fri, 21 Nov 2025 13:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731497; cv=none; b=hYxsZZ3zOkdY679SjPXdSYHpqGQjx+NDNX5Qz15+Zor4bFlB8crBOQh6QcYQbW4v0Bksmj2cJbY0D/jRzSmNCztxtZVQMPzAX7QSdU0PAdXBSx7PqmoQdc79rsWisTM3Ro6o51NWhco4qbCET4fTxUNv0s0SvmnjRL3yKK+VkR0=
+	t=1763733361; cv=none; b=tXbRuhRTfMWT8Sob14Ss0XZoGiz9PqZKj0rUcWShFj3ev6QTg9ekfIBtehApIomBwBbrI9+ZI+eV5Rce5zJMa+0D8ZWDjZdJCCoO3brI8RJRX+M70JU9WW/8uQH/oL/Iy8Fg22gr9xLtViIIYuM1io09GhmuyKhlplWomUH0mKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731497; c=relaxed/simple;
-	bh=C3T6DwGyt6yTbiLtP52POH4N7ff3CYog7A3Gy2z+egU=;
+	s=arc-20240116; t=1763733361; c=relaxed/simple;
+	bh=wfAZVjRTAFSTEsa4t7QB9IWD5Q0vkVa1kdSwkv5t7gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qf0qbi9FfIUaxrdiMeOAxWlfb/GOB6cFl09kHCdF0zPsOoAEx5RxcdCLGeEbog/A4Xvm59vdWV4PKHtUdusxWB8CxKVM+zBbZROJVsC51ePvcK88X1ZnZEWpkkLUKhL/rookRBEIrnA0hhCBq94ZGwHFrjm1C6Pn4i7AAlnVakU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pARI3j6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBC3C4CEF1;
-	Fri, 21 Nov 2025 13:24:56 +0000 (UTC)
+	 MIME-Version; b=Iegj6BBgs/ZUHl6BlQYvNb7cIStgiJYPzzN5/ku+RKq4TYNrn1WO1LQY3+2s1RntA2OGhQ2yczljZyR/vKI3TQ26NTz9A9Q/xLXgp+RCWcfjn+wtaV9pfXl6HaAEW99QK1LLzV841Ri7mQ+hGFhjhN624rPdEfE7l4yYM7xWGko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fyi1K7EF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0B2C4CEF1;
+	Fri, 21 Nov 2025 13:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731497;
-	bh=C3T6DwGyt6yTbiLtP52POH4N7ff3CYog7A3Gy2z+egU=;
+	s=korg; t=1763733361;
+	bh=wfAZVjRTAFSTEsa4t7QB9IWD5Q0vkVa1kdSwkv5t7gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pARI3j6rSDpRi+fEQ3S6Uq6tJ1aq8PEB8ZrAOFRUsgmRZM9Qx/ndNPymWLUKSsw1G
-	 tdL3S1CFACYynu0KAEXL2BwKUxWi1S0uNL1uGdhT6tI+F6W2v4bptsNSj65uMi5YaR
-	 Y9+NRecY/7m2qzs5eAaW1XH7BfTBg5BZokgMDfuQ=
+	b=Fyi1K7EFnBFD2rJ/qTdnr+WeDIwPPXDZTyLWGSPks5onrOsi7rFR7NxXXhnzZgzAj
+	 eiiZQBeb3UDp4FwPigY/rkKyDybKQwVoO3QJvqn+HDVFztfAmWtvPYfjiNaSS+qYN2
+	 6mkhBB4sfFWTwEscaR1qu8t3U2aHkcFGO0svXngk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 194/247] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 442/529] acpi: Break out nesting for hmat_parse_locality()
 Date: Fri, 21 Nov 2025 14:12:21 +0100
-Message-ID: <20251121130201.686829291@linuxfoundation.org>
+Message-ID: <20251121130246.739361300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf upstream.
+[ Upstream commit 79205651120620c2683f90c25ef3d2ac8e454026 ]
 
-The PCM stream data in USB-audio driver is transferred over USB URB
-packet buffers, and each packet size is determined dynamically.  The
-packet sizes are limited by some factors such as wMaxPacketSize USB
-descriptor.  OTOH, in the current code, the actually used packet sizes
-are determined only by the rate and the PPS, which may be bigger than
-the size limit above.  This results in a buffer overflow, as reported
-by syzbot.
+Refactor hmat_parse_locality() to break up the deep nesting of the
+function.
 
-Basically when the limit is smaller than the calculated packet size,
-it implies that something is wrong, most likely a weird USB
-descriptor.  So the best option would be just to return an error at
-the parameter setup time before doing any further operations.
-
-This patch introduces such a sanity check, and returns -EINVAL when
-the packet size is greater than maxpacksize.  The comparison with
-ep->packsize[1] alone should suffice since it's always equal or
-greater than ep->packsize[0].
-
-Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
-Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/170319617537.2212653.10625501075519862509.stgit@djiang5-mobl3
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 214291cbaace ("acpi/hmat: Fix lockdep warning for hmem_register_resource()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/endpoint.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/numa/hmat.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1386,6 +1386,11 @@ int snd_usb_endpoint_set_params(struct s
- 	ep->sample_rem = ep->cur_rate % ep->pps;
- 	ep->packsize[0] = ep->cur_rate / ep->pps;
- 	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
-+	if (ep->packsize[1] > ep->maxpacksize) {
-+		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
-+			      ep->maxpacksize, ep->cur_rate, ep->pps);
-+		return -EINVAL;
-+	}
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 21722cbec324d..4cae2e84251a2 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -322,11 +322,28 @@ static __init void hmat_add_locality(struct acpi_hmat_locality *hmat_loc)
+ 	}
+ }
  
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
++static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_pxm,
++				      u8 mem_hier, u8 type, u32 value)
++{
++	struct memory_target *target = find_mem_target(tgt_pxm);
++
++	if (mem_hier != ACPI_HMAT_MEMORY)
++		return;
++
++	if (target && target->processor_pxm == init_pxm) {
++		hmat_update_target_access(target, type, value,
++					  NODE_ACCESS_CLASS_0);
++		/* If the node has a CPU, update access 1 */
++		if (node_state(pxm_to_node(init_pxm), N_CPU))
++			hmat_update_target_access(target, type, value,
++						  NODE_ACCESS_CLASS_1);
++	}
++}
++
+ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 				      const unsigned long end)
+ {
+ 	struct acpi_hmat_locality *hmat_loc = (void *)header;
+-	struct memory_target *target;
+ 	unsigned int init, targ, total_size, ipds, tpds;
+ 	u32 *inits, *targs, value;
+ 	u16 *entries;
+@@ -367,17 +384,8 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 				inits[init], targs[targ], value,
+ 				hmat_data_type_suffix(type));
+ 
+-			if (mem_hier == ACPI_HMAT_MEMORY) {
+-				target = find_mem_target(targs[targ]);
+-				if (target && target->processor_pxm == inits[init]) {
+-					hmat_update_target_access(target, type, value,
+-								  NODE_ACCESS_CLASS_0);
+-					/* If the node has a CPU, update access 1 */
+-					if (node_state(pxm_to_node(inits[init]), N_CPU))
+-						hmat_update_target_access(target, type, value,
+-									  NODE_ACCESS_CLASS_1);
+-				}
+-			}
++			hmat_update_target(targs[targ], inits[init],
++					   mem_hier, type, value);
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
