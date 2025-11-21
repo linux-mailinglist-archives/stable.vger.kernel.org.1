@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DC4C796BB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF41C79C99
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 81E9E342FCA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 4E33B2DF28
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF652DEA7E;
-	Fri, 21 Nov 2025 13:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0AC346E72;
+	Fri, 21 Nov 2025 13:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBOSBkW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0S4YG6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4C41F09B3;
-	Fri, 21 Nov 2025 13:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B20E275AFF;
+	Fri, 21 Nov 2025 13:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731641; cv=none; b=jz/RIKeHU5Xn5VM920SJ0jqmI7a72mO+8m58RxayZonl7A7CEz1au4qsLQUpKChP+s7cf/eCbGl0pGNyHtQfFYxq/KvKw7TY9AMJ8q7k9HPxECn2PSRrf4SYKhS7emSxp7cYSIsZ9gTaj6/5e3I3z2f2YQ3kMkryy49MNCORbaQ=
+	t=1763733075; cv=none; b=DcUANWeVvZjO0qBxNRMxkWXTKGqTp1ktNLW0ejTOZrRbiJlbo3S7R00OfH+/mrJDdUiHoqLmStTT2fJQzuWZMbB5c3uAAJlq8/eFvNihzslA73692nHort7vNNsMaPFnfCpIcKJpBDby85Ci4uHJKkywCnmk5CNZPFOlgH9T6+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731641; c=relaxed/simple;
-	bh=yAPKDFNtjSYgU0ido9Gmy8uuDokoinorhdPryg3Z9dA=;
+	s=arc-20240116; t=1763733075; c=relaxed/simple;
+	bh=N9+o8/sWCR5usArrgI9dIj5eMYrHxhl0YluIIMnRhFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usLPayqyn5FSKxQ7N4XtI9icEKScBKuCanCkPxF7aDO2BCYqJB8aAja+FdoERTdfUJsQtcunIKeZb65SbSS/nDJ9PR5J0LLx2n/iOIvPH7MJ1iwh9YLH1qRV9KBfrhI9DfvrXh04jX+MRWjkD4iieYXrKdhniiU1ErgrDmFCmLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBOSBkW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48403C4CEF1;
-	Fri, 21 Nov 2025 13:27:21 +0000 (UTC)
+	 MIME-Version; b=myU6DulGp4M6KRA0kqWBh41rJM6j2JyClV3z+AOf1FCNP/M2Ux6o9sYeoVjR+lxKdGuV6TYT6yZf/AdyPcTadprcGEujLqZjtxtDry5R06XHPIsLIAwDlkmK0FW+QHgIM/yBbsOJuX26kWNuLJvy2kGJAMbHAdz2iobdFMwWEAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0S4YG6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A95C116C6;
+	Fri, 21 Nov 2025 13:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731641;
-	bh=yAPKDFNtjSYgU0ido9Gmy8uuDokoinorhdPryg3Z9dA=;
+	s=korg; t=1763733075;
+	bh=N9+o8/sWCR5usArrgI9dIj5eMYrHxhl0YluIIMnRhFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBOSBkW/In+3Q42v/7Zw9+zEiRDQS2T/Ol6/yVU6uE7WwJkIVOHgdiT3hkkoBcyKd
-	 YNiYzHbNu76319YhrjrQ7/VKi9ayLg0EDyMKkKY5a8QP0EP7jl1WKfEXwYRp+TbWfb
-	 Es5G7ShbjXyuQpgyQPdbsjCV7kcALE0ESk4opNY4=
+	b=i0S4YG6tUy2TWwx4Ii7suDozcknaS+S3SbY55vr3G1QUjyCAtbwvgoq+wHiSvZOPQ
+	 kCOEMepNATh5nyX6sb6Lle0eSE+Fea26g7oZ0nGdlF8HTpXhB7ld5Drcnjm6frO8Qn
+	 hNQ3lN5WhH5cvzW6AY4ErAkSOZiEA9VnZ/ORbMFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/185] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
+Subject: [PATCH 6.6 341/529] selftests/net: use destination options instead of hop-by-hop
 Date: Fri, 21 Nov 2025 14:10:40 +0100
-Message-ID: <20251121130144.354395692@linuxfoundation.org>
+Message-ID: <20251121130243.164337460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
+[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
 
-openSBI v1.7 adds harts checks for ipi operations. Especially it
-adds comparison between hmask passed as an argument from linux
-and mask of online harts (from openSBI side). If they don't
-fit each other the error occurs.
+The GRO self-test, gro.c, currently constructs IPv6 packets containing a
+Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
+correctly handles IPv6 extension headers.
 
-When cpu is offline, cpu_online_mask is explicitly cleared in
-__cpu_disable. However, there is no explicit clearing of
-mm_cpumask. mm_cpumask is used for rfence operations that
-call openSBI RFENCE extension which uses ipi to remote harts.
-If hart is offline there may be error if mask of linux is not
-as mask of online harts in openSBI.
+However, network elements may be configured to drop packets with the
+Hop-by-Hop Options header (HBH). This causes the self-test to fail
+in environments where such network elements are present.
 
-this patch adds explicit clearing of mm_cpumask for offline hart.
+To improve the robustness and reliability of this test in diverse
+network environments, switch from using IPPROTO_HOPOPTS to
+IPPROTO_DSTOPTS (Destination Options).
 
-Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
-[pjw@kernel.org: rewrote subject line for clarity]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+The Destination Options header is less likely to be dropped by
+intermediate routers and still serves the core purpose of the test:
+validating GRO's handling of an IPv6 extension header. This change
+ensures the test can execute successfully without being incorrectly
+failed by network policies outside the kernel's control.
+
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/gro.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index a1e38ecfc8be2..3f50d3dd76c6f 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -54,6 +54,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 9c6f5b4033c37..8dd6857e52cb5 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -623,11 +623,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
+ 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
  
- 	pr_notice("CPU%u: off\n", cpu);
+ 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
  
-+	clear_tasks_mm_cpumask(cpu);
- 	/* Verify from the firmware if the cpu is really stopped*/
- 	if (cpu_ops->cpu_is_stopped)
- 		ret = cpu_ops->cpu_is_stopped(cpu);
+ 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
+ }
+ 
 -- 
 2.51.0
 
