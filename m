@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F51C79550
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72FBC79838
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E6DE54EDB01
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 6E55F325D8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD4A2F656A;
-	Fri, 21 Nov 2025 13:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5F72F656A;
+	Fri, 21 Nov 2025 13:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehhdBlsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcJ51kaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12CD2737FC;
-	Fri, 21 Nov 2025 13:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED16190477;
+	Fri, 21 Nov 2025 13:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731395; cv=none; b=AJa8Geihfl7uBRrDqIqqMAbKYIlO/mUIfMQyEHuKTmKImJJy6nQxbH3zum5EZ3SlDNdlf5Sev1wcyQ1sqMpPgzoVEIE+wHxfmYFvrj1yL8fatk7NF5VcEmRZ8W0JL/Ag3sCk0CbP6RXBRvomYoJNZBque5dkSCa+UVroEEJM5Zk=
+	t=1763731791; cv=none; b=YpCn83ZBD/Mv97gjp/eAzbnNLK0qYB1hi/T4YN9MV7NS3Cmjhu/2+7hf7T+8wti7rY3FHa4THwNqzewdth9XvFNvBVP98DP6xPaN6hMHXDDTQNDCrzxDm9Rh5PEKV1tWUL1N/exufui2OARXOQSAU0SnrSWsRK1xtPcTWyz0arM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731395; c=relaxed/simple;
-	bh=3u/89tq7o8cQpYqZxw6uiCJDN1eW30lxv6FQFrjXCN8=;
+	s=arc-20240116; t=1763731791; c=relaxed/simple;
+	bh=taUsVLz2r0UA/PyMnHSamccBwc7H0q+dSWEhdcF8T7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vi5SupUyki7vK32C5XnnoLtZ/cH2qFpCPb2JSSheY53VBfE8yieJoUvo62tB1laj44a2JXafqThMOl3iIjw8H12/6Ibccq9/+ZT56w5BM9xK9K9vxiJnb4xSBTYeSrSt+9aIFd+LCagKTP6HwZdgWiPRc+kLYCDtLqX55+oBUf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehhdBlsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561DDC4CEF1;
-	Fri, 21 Nov 2025 13:23:15 +0000 (UTC)
+	 MIME-Version; b=ol6m8VluuNLsgQ3K9vytHJgbgdDCotWCRvNNsJvsp/F59BXMB/qc1QM0ygeIiDTFjW1hgOfKSN1IpuHEoHi4k6M3eZdKSoqCPRqcMM76NAOtsf70ijm/iUrrD+C843vrjfCY40um5YQZONddJvwSOy6SnsO+1Azvfykbar0VRbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcJ51kaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D33C4CEF1;
+	Fri, 21 Nov 2025 13:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731395;
-	bh=3u/89tq7o8cQpYqZxw6uiCJDN1eW30lxv6FQFrjXCN8=;
+	s=korg; t=1763731791;
+	bh=taUsVLz2r0UA/PyMnHSamccBwc7H0q+dSWEhdcF8T7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehhdBlsppVDy4EyFH18kAR4RohTXANDlx98CWZ8t0zcz91rZhZxIKy6PnUlLFCkeG
-	 7eRzg8Wp9nruzQD4DRKfhvT46FZNf01Blz92z7TCJFPnDQGsEU7+8VBylUyq6/R93+
-	 YSaYwQKAp55b7Lb9cUkiVm2BOZdxDvEZETmi8EuA=
+	b=YcJ51kaAnqlMfpKggmFdTYB6gkqiyOKjOtRBQDCDLExUILLobxbOVmZOkoGG0kHOR
+	 yOFnZvd9nOiIVKOyDflNvRr9Zot/M5jZ1XZwRbJvMJHH67dfkPdpjZZa+ze7VTndF0
+	 2+D5s71FYXKfJoYZzi0Y9VYDIAe0ZxbweM9NM8UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 161/247] gcov: add support for GCC 15
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 081/185] acpi/hmat: Fix lockdep warning for hmem_register_resource()
 Date: Fri, 21 Nov 2025 14:11:48 +0100
-Message-ID: <20251121130200.500677678@linuxfoundation.org>
+Message-ID: <20251121130146.793554970@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
+[ Upstream commit 214291cbaaceeb28debd773336642b1fca393ae0 ]
 
-Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
-long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
-to match the value defined by GCC 15.
+The following lockdep splat was observed while kernel auto-online a CXL
+memory region:
 
-Tested with GCC 14.3.0 and GCC 15.2.0.
+======================================================
+WARNING: possible circular locking dependency detected
+6.17.0djtest+ #53 Tainted: G        W
+------------------------------------------------------
+systemd-udevd/3334 is trying to acquire lock:
+ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
 
-Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reported-by: Matthieu Baerts <matttbe@kernel.org>
-Closes: https://github.com/linux-test-project/lcov/issues/445
-Tested-by: Matthieu Baerts <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+but task is already holding lock:
+ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
+
+which lock already depends on the new lock.
+[..]
+Chain exists of:
+  hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock((node_chain).rwsem);
+                               lock(mem_hotplug_lock);
+                               lock((node_chain).rwsem);
+  lock(hmem_resource_lock);
+
+The lock ordering can cause potential deadlock. There are instances
+where hmem_resource_lock is taken after (node_chain).rwsem, and vice
+versa.
+
+Split out the target update section of hmat_register_target() so that
+hmat_callback() only envokes that section instead of attempt to register
+hmem devices that it does not need to.
+
+[ dj: Fix up comment to be closer to 80cols. (Jonathan) ]
+
+Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Tested-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20251105235115.85062-3-dave.jiang@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gcov/gcc_4_7.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/numa/hmat.c | 46 ++++++++++++++++++++++------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
---- a/kernel/gcov/gcc_4_7.c
-+++ b/kernel/gcov/gcc_4_7.c
-@@ -18,7 +18,9 @@
- #include <linux/mm.h>
- #include "gcov.h"
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 1a902a02390f6..c805d63df54ad 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -864,10 +864,32 @@ static void hmat_register_target_devices(struct memory_target *target)
+ 	}
+ }
  
--#if (__GNUC__ >= 14)
-+#if (__GNUC__ >= 15)
-+#define GCOV_COUNTERS			10
-+#elif (__GNUC__ >= 14)
- #define GCOV_COUNTERS			9
- #elif (__GNUC__ >= 10)
- #define GCOV_COUNTERS			8
+-static void hmat_register_target(struct memory_target *target)
++static void hmat_hotplug_target(struct memory_target *target)
+ {
+ 	int nid = pxm_to_node(target->memory_pxm);
+ 
++	/*
++	 * Skip offline nodes. This can happen when memory marked EFI_MEMORY_SP,
++	 * "specific purpose", is applied to all the memory in a proximity
++	 * domain leading to * the node being marked offline / unplugged, or if
++	 * memory-only "hotplug" node is offline.
++	 */
++	if (nid == NUMA_NO_NODE || !node_online(nid))
++		return;
++
++	guard(mutex)(&target_lock);
++	if (target->registered)
++		return;
++
++	hmat_register_target_initiators(target);
++	hmat_register_target_cache(target);
++	hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
++	hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
++	target->registered = true;
++}
++
++static void hmat_register_target(struct memory_target *target)
++{
+ 	/*
+ 	 * Devices may belong to either an offline or online
+ 	 * node, so unconditionally add them.
+@@ -885,25 +907,7 @@ static void hmat_register_target(struct memory_target *target)
+ 	}
+ 	mutex_unlock(&target_lock);
+ 
+-	/*
+-	 * Skip offline nodes. This can happen when memory
+-	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+-	 * to all the memory in a proximity domain leading to
+-	 * the node being marked offline / unplugged, or if
+-	 * memory-only "hotplug" node is offline.
+-	 */
+-	if (nid == NUMA_NO_NODE || !node_online(nid))
+-		return;
+-
+-	mutex_lock(&target_lock);
+-	if (!target->registered) {
+-		hmat_register_target_initiators(target);
+-		hmat_register_target_cache(target);
+-		hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
+-		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
+-		target->registered = true;
+-	}
+-	mutex_unlock(&target_lock);
++	hmat_hotplug_target(target);
+ }
+ 
+ static void hmat_register_targets(void)
+@@ -929,7 +933,7 @@ static int hmat_callback(struct notifier_block *self,
+ 	if (!target)
+ 		return NOTIFY_OK;
+ 
+-	hmat_register_target(target);
++	hmat_hotplug_target(target);
+ 	return NOTIFY_OK;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
