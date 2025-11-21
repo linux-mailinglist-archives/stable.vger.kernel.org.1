@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D853AC79EA3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4EFC793F5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B6FAB34AA6A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 963352DDAE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E1234B691;
-	Fri, 21 Nov 2025 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A172F656A;
+	Fri, 21 Nov 2025 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJkE/9Tf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjbaeuC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900262045AD;
-	Fri, 21 Nov 2025 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741311F09B3;
+	Fri, 21 Nov 2025 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733238; cv=none; b=TPyyHmYNC3tRfvMfFYMtX5R7RtAJPGGOTnWH/WEFgVeaKwY90fb6zy2oMuSlr3soGnqXe9ataFdR7FC+socqyWlOVoRYAw2C1uVnL8KtKW/tzBxWG8ckCIPqONIDZmW+9DGil3t0DaHK/VxDJpANB/DomD1Vuu8Fp/DhLm4yOB0=
+	t=1763731301; cv=none; b=eCF94wxDgQDTADTmo19h3Y+8iNb3U39EppSEjXXSVKDY8dIdgvQZ3P/e4yxr+W0oJlIsjrtPSkx2l1NRhC0NKhBK/hUsTkFVtnaSzcDv8OAuDtZqbWzj1Rc5av3Ku02T91UFDGSuXb/DoECErAP2z2UgfGFij1wTqHew0KKXckY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733238; c=relaxed/simple;
-	bh=/bPG29QZvaH3LzIM9evzvJHbV5RdHWQZ0dItz70Qf/0=;
+	s=arc-20240116; t=1763731301; c=relaxed/simple;
+	bh=Xh3rysbrFf6r8Mp9Tj9WOhssj7Rtdbrh59stRD4lT/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jupX3ZIBclnJ6wXHHiO1IQSPCEHwwnbR85fTlb0yQOb6XWJu4Iav85NyhNMU88kvmjixg1Inn9aST43s1H3VIIZYmpDogLm9IIQom+iiGZmoa4tHePiMXTLvCVG4OM/gJ/2mB4bahVx+yauKFaP0a0scgbKjCVbbHpdLZLavJMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJkE/9Tf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150E7C4CEF1;
-	Fri, 21 Nov 2025 13:53:57 +0000 (UTC)
+	 MIME-Version; b=D3MKngyioNoc76Af+UxS1FFeo1ug31kg6RfnMU0BB1CZsxV3MtHl4K1kLol7AMkhookHkEjmFeNMyXYz8kvyMlOsYUvZzwL8kOQwPCzQ1lpEe086JVZ+E/c27O3SIZwlkoEUTNtNNYKzwd5N5aZB4BYugRLsAA2QUYebegNqodo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjbaeuC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9424C4CEF1;
+	Fri, 21 Nov 2025 13:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733238;
-	bh=/bPG29QZvaH3LzIM9evzvJHbV5RdHWQZ0dItz70Qf/0=;
+	s=korg; t=1763731301;
+	bh=Xh3rysbrFf6r8Mp9Tj9WOhssj7Rtdbrh59stRD4lT/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJkE/9TfRzz1umiPc0eKL6Gfa58+fTfDGeBO30Dw/PbqLW/XtiGJYv/ATR0JVcEkt
-	 FKmo/J4iLCaYPww0Q8bDcrk18a+eLlkg6k1x6MvhQiHvwFdnOlgk38NGIQP+cURS7X
-	 AEcLSkYjX7y2p96DTeBPgnSqLzi1gqodokWNDM/E=
+	b=CjbaeuC/5DmLV5sLJwzP1kXe/bd4SR8DykJwCVx31X/SAhbZKwvlPQNdk2JJUmkmE
+	 9UkQGP2PWW+Pu3eiQOKZ88ZTVz856MyXtNghUn5B76+I+Er0fXXBALuy+gAe7oYpQx
+	 CjXYX+bSIOsNzpNr5O7QWUSf77uIdj/BQV2rb0z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 400/529] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
-Date: Fri, 21 Nov 2025 14:11:39 +0100
-Message-ID: <20251121130245.254420558@linuxfoundation.org>
+	Peter Maydell <peter.maydell@linaro.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.17 153/247] KVM: arm64: Make all 32bit ID registers fully writable
+Date: Fri, 21 Nov 2025 14:11:40 +0100
+Message-ID: <20251121130200.215352680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
+commit 3f9eacf4f0705876a5d6526d7d320ca91d7d7a16 upstream.
 
-Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
-e.g. debugfs "connect" command takes the former, and "disconnect" and
-"connect" to already connected device take the latter.  This is due to
-using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
-which take different dst_type values.
+32bit ID registers aren't getting much love these days, and are
+often missed in updates. One of these updates broke restoring
+a GICv2 guest on a GICv3 machine.
 
-Fix address type passed to hci_conn_hash_lookup_le().
+Instead of performing a piecemeal fix, just bite the bullet
+and make all 32bit ID regs fully writable. KVM itself never
+relies on them for anything, and if the VMM wants to mess up
+the guest, so be it.
 
-Retain the debugfs API difference between "connect" and "disconnect"
-commands since it's been like this since 2015 and nobody apparently
-complained.
-
-Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5cb57a1aff755 ("KVM: arm64: Zero ID_AA64PFR0_EL1.GIC when no GICv3 is presented to the guest")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Oliver Upton <oupton@kernel.org>
+Link: https://patch.msgid.link/20251030122707.2033690-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/sys_regs.c |   59 ++++++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 28 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 50ed3a6b0b0c4..820376eee8bc3 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -956,10 +956,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2515,19 +2515,23 @@ static bool bad_redir_trap(struct kvm_vc
+ 	.val = 0,				\
  }
  
- static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
--			  struct l2cap_conn **conn)
-+			  struct l2cap_conn **conn, bool disconnect)
- {
- 	struct hci_conn *hcon;
- 	struct hci_dev *hdev;
-+	int le_addr_type;
- 	int n;
+-/* sys_reg_desc initialiser for known cpufeature ID registers */
+-#define AA32_ID_SANITISED(name) {		\
+-	ID_DESC(name),				\
+-	.visibility = aa32_id_visibility,	\
+-	.val = 0,				\
+-}
+-
+ /* sys_reg_desc initialiser for writable ID registers */
+ #define ID_WRITABLE(name, mask) {		\
+ 	ID_DESC(name),				\
+ 	.val = mask,				\
+ }
  
- 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
-@@ -970,13 +971,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- 	if (n < 7)
- 		return -EINVAL;
- 
-+	if (disconnect) {
-+		/* The "disconnect" debugfs command has used different address
-+		 * type constants than "connect" since 2015. Let's retain that
-+		 * for now even though it's obviously buggy...
-+		 */
-+		*addr_type += 1;
-+	}
++/*
++ * 32bit ID regs are fully writable when the guest is 32bit
++ * capable. Nothing in the KVM code should rely on 32bit features
++ * anyway, only 64bit, so let the VMM do its worse.
++ */
++#define AA32_ID_WRITABLE(name) {		\
++	ID_DESC(name),				\
++	.visibility = aa32_id_visibility,	\
++	.val = GENMASK(31, 0),			\
++}
 +
-+	switch (*addr_type) {
-+	case BDADDR_LE_PUBLIC:
-+		le_addr_type = ADDR_LE_DEV_PUBLIC;
-+		break;
-+	case BDADDR_LE_RANDOM:
-+		le_addr_type = ADDR_LE_DEV_RANDOM;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
- 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
- 	if (!hdev)
- 		return -ENOENT;
+ /* sys_reg_desc initialiser for cpufeature ID registers that need filtering */
+ #define ID_FILTERED(sysreg, name, mask) {	\
+ 	ID_DESC(sysreg),				\
+@@ -3039,40 +3043,39 @@ static const struct sys_reg_desc sys_reg
  
- 	hci_dev_lock(hdev);
--	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
-+	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
+ 	/* AArch64 mappings of the AArch32 ID registers */
+ 	/* CRm=1 */
+-	AA32_ID_SANITISED(ID_PFR0_EL1),
+-	AA32_ID_SANITISED(ID_PFR1_EL1),
++	AA32_ID_WRITABLE(ID_PFR0_EL1),
++	AA32_ID_WRITABLE(ID_PFR1_EL1),
+ 	{ SYS_DESC(SYS_ID_DFR0_EL1),
+ 	  .access = access_id_reg,
+ 	  .get_user = get_id_reg,
+ 	  .set_user = set_id_dfr0_el1,
+ 	  .visibility = aa32_id_visibility,
+ 	  .reset = read_sanitised_id_dfr0_el1,
+-	  .val = ID_DFR0_EL1_PerfMon_MASK |
+-		 ID_DFR0_EL1_CopDbg_MASK, },
++	  .val = GENMASK(31, 0) },
+ 	ID_HIDDEN(ID_AFR0_EL1),
+-	AA32_ID_SANITISED(ID_MMFR0_EL1),
+-	AA32_ID_SANITISED(ID_MMFR1_EL1),
+-	AA32_ID_SANITISED(ID_MMFR2_EL1),
+-	AA32_ID_SANITISED(ID_MMFR3_EL1),
++	AA32_ID_WRITABLE(ID_MMFR0_EL1),
++	AA32_ID_WRITABLE(ID_MMFR1_EL1),
++	AA32_ID_WRITABLE(ID_MMFR2_EL1),
++	AA32_ID_WRITABLE(ID_MMFR3_EL1),
  
-@@ -1103,7 +1123,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	buf[buf_size] = '\0';
+ 	/* CRm=2 */
+-	AA32_ID_SANITISED(ID_ISAR0_EL1),
+-	AA32_ID_SANITISED(ID_ISAR1_EL1),
+-	AA32_ID_SANITISED(ID_ISAR2_EL1),
+-	AA32_ID_SANITISED(ID_ISAR3_EL1),
+-	AA32_ID_SANITISED(ID_ISAR4_EL1),
+-	AA32_ID_SANITISED(ID_ISAR5_EL1),
+-	AA32_ID_SANITISED(ID_MMFR4_EL1),
+-	AA32_ID_SANITISED(ID_ISAR6_EL1),
++	AA32_ID_WRITABLE(ID_ISAR0_EL1),
++	AA32_ID_WRITABLE(ID_ISAR1_EL1),
++	AA32_ID_WRITABLE(ID_ISAR2_EL1),
++	AA32_ID_WRITABLE(ID_ISAR3_EL1),
++	AA32_ID_WRITABLE(ID_ISAR4_EL1),
++	AA32_ID_WRITABLE(ID_ISAR5_EL1),
++	AA32_ID_WRITABLE(ID_MMFR4_EL1),
++	AA32_ID_WRITABLE(ID_ISAR6_EL1),
  
- 	if (memcmp(buf, "connect ", 8) == 0) {
--		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
- 		if (ret == -EINVAL)
- 			return ret;
+ 	/* CRm=3 */
+-	AA32_ID_SANITISED(MVFR0_EL1),
+-	AA32_ID_SANITISED(MVFR1_EL1),
+-	AA32_ID_SANITISED(MVFR2_EL1),
++	AA32_ID_WRITABLE(MVFR0_EL1),
++	AA32_ID_WRITABLE(MVFR1_EL1),
++	AA32_ID_WRITABLE(MVFR2_EL1),
+ 	ID_UNALLOCATED(3,3),
+-	AA32_ID_SANITISED(ID_PFR2_EL1),
++	AA32_ID_WRITABLE(ID_PFR2_EL1),
+ 	ID_HIDDEN(ID_DFR1_EL1),
+-	AA32_ID_SANITISED(ID_MMFR5_EL1),
++	AA32_ID_WRITABLE(ID_MMFR5_EL1),
+ 	ID_UNALLOCATED(3,7),
  
-@@ -1140,7 +1160,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	}
- 
- 	if (memcmp(buf, "disconnect ", 11) == 0) {
--		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
- 		if (ret < 0)
- 			return ret;
- 
--- 
-2.51.0
-
+ 	/* AArch64 ID registers */
 
 
 
