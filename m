@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E16C79380
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AE3C79B37
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 026C236610F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id B580A2E3E6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3830434AB17;
-	Fri, 21 Nov 2025 13:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3467349B18;
+	Fri, 21 Nov 2025 13:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UHv/7F2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRevj8In"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47F43446BD;
-	Fri, 21 Nov 2025 13:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF3129ACCD;
+	Fri, 21 Nov 2025 13:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730983; cv=none; b=gV38HdSzaUjhC9gEETQgmAhXvn3Xuf1DmV5edZtgFNOjiPcTAe6aJKSMijfwrJ4h6So+k4BySqYeyIf8jJb2Vuh4cFDowJtHZU+mzfSCX+IsDyIo0r0uzWIlr3k4UyDF+pSt8jqgvyRVJSNZ9Z5ZltXx13Nq1oWHTxCJXSEcQpg=
+	t=1763732848; cv=none; b=isYFmH/2xh79tfofT6g5wmor5vwcbw3sZdEr9yyhgw7y0I8QOnqUcugNgJZAWNZAGrdp6Sk6HiJxMgS4u395wMa+ovbSm56+8YLeH2zpj0O/mENzgCle6YGbWAZkT0DZfs0xbkMmAiV/niHZSVMQuvYWngUhonJQW6Uz85iJm6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730983; c=relaxed/simple;
-	bh=OvPbYJKpomv0yCV1UfI80UUlj7KvP9MxpeoNCJrzRM4=;
+	s=arc-20240116; t=1763732848; c=relaxed/simple;
+	bh=NstdPmovMAXSUcFuAXhA9wujvgxid+pkF7lrXw/qSa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QVr/TssvoYTLK0KmhbUi9YCQEJ2U2JvMA/Cwe59pQLXC+swv93SP6lY02Qcv3tCsC2UgbpaAj0EOWgcVxf0k/DRkxi47M6BWKCYc7Bnh/EK2tXudacak7y4hTL7rSzFgOBXDEwkBxMJdZnd+Jcv9Lnkq8YaP/ZzfdP+SAEwHSBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UHv/7F2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099AEC16AAE;
-	Fri, 21 Nov 2025 13:16:21 +0000 (UTC)
+	 MIME-Version; b=AMQnWRbxrGyg6kwTeqsUO/p+lAZcmEEQCgK1u0VK40R+/H8vYTW0AsL76p1goowwZJuwL1hzEqcgd7HrUkHg/oyR4fW2V4RAAqi8fsKOdLkEgOXphROLrQZxcHilqZzlQ8eouIvUSLbDCJ6d3ZVn3vo8p4zvRjABsulhGEK0P18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRevj8In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1435BC4CEF1;
+	Fri, 21 Nov 2025 13:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730982;
-	bh=OvPbYJKpomv0yCV1UfI80UUlj7KvP9MxpeoNCJrzRM4=;
+	s=korg; t=1763732848;
+	bh=NstdPmovMAXSUcFuAXhA9wujvgxid+pkF7lrXw/qSa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UHv/7F2Ir2k3Ayz6o6a1Y04o1VDlY1dYdYrjeOa+71062tM4a4pDx4D9JAQNzAlR
-	 5W6Xvx3iQCqbaoMlAZXzndxfsFyIkiJIyvAH3Nr9OuXkL9wGHcgGggWerKRJbLBUnN
-	 CWnyj1zvIvP5BLKuAKX8Y7k/UOEWYTFJB9gST/BA=
+	b=WRevj8InKk3Oc9lHwGQ/g3tYMsfyeDa1/LQ9Q4nQvqF/VAedMdJdIOCRN4CJQxaAO
+	 q1fWFCeX0JGjefrKyAaGvmp2iY9v4wJOAF6bnp9h1gFrnfW5vsq9aXoJsPuzeK2RO0
+	 ZiW2n3iOhXp7N8w/v3XBq088cZX/V0oQgi9Nq/2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Alex Mastro <amastro@fb.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 016/247] drm/amd/display: Disable fastboot on DCE 6 too
+Subject: [PATCH 6.6 264/529] vfio: return -ENOTTY for unsupported device feature
 Date: Fri, 21 Nov 2025 14:09:23 +0100
-Message-ID: <20251121130155.184142640@linuxfoundation.org>
+Message-ID: <20251121130240.417620692@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Alex Mastro <amastro@fb.com>
 
-[ Upstream commit 7495962cbceb967e095233a5673ea71f3bcdee7e ]
+[ Upstream commit 16df67f2189a71a8310bcebddb87ed569e8352be ]
 
-It already didn't work on DCE 8,
-so there is no reason to assume it would on DCE 6.
+The two implementers of vfio_device_ops.device_feature,
+vfio_cdx_ioctl_feature and vfio_pci_core_ioctl_feature, return
+-ENOTTY in the fallthrough case when the feature is unsupported. For
+consistency, the base case, vfio_ioctl_device_feature, should do the
+same when device_feature == NULL, indicating an implementation has no
+feature extensions.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Mastro <amastro@fb.com>
+Link: https://lore.kernel.org/r/20250908-vfio-enotty-v1-1-4428e1539e2e@fb.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/vfio/vfio_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 32fd6bdc18d73..537f538114607 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -1923,10 +1923,8 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 
- 	get_edp_streams(context, edp_streams, &edp_stream_num);
- 
--	// Check fastboot support, disable on DCE8 because of blank screens
--	if (edp_num && edp_stream_num && dc->ctx->dce_version != DCE_VERSION_8_0 &&
--		    dc->ctx->dce_version != DCE_VERSION_8_1 &&
--		    dc->ctx->dce_version != DCE_VERSION_8_3) {
-+	/* Check fastboot support, disable on DCE 6-8 because of blank screens */
-+	if (edp_num && edp_stream_num && dc->ctx->dce_version < DCE_VERSION_10_0) {
- 		for (i = 0; i < edp_num; i++) {
- 			edp_link = edp_links[i];
- 			if (edp_link != edp_streams[0]->link)
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index edb631e5e7ec9..6dfb290c339f9 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1195,7 +1195,7 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
+ 			feature.argsz - minsz);
+ 	default:
+ 		if (unlikely(!device->ops->device_feature))
+-			return -EINVAL;
++			return -ENOTTY;
+ 		return device->ops->device_feature(device, feature.flags,
+ 						   arg->data,
+ 						   feature.argsz - minsz);
 -- 
 2.51.0
 
