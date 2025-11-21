@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7B4C7A092
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C58EC79887
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4DD54F1578
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5088F32F1F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B9F351FBD;
-	Fri, 21 Nov 2025 13:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BB233FE03;
+	Fri, 21 Nov 2025 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgFFdzP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbiz7W1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBA3350D43;
-	Fri, 21 Nov 2025 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702D82745E;
+	Fri, 21 Nov 2025 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733523; cv=none; b=VbUyGuhvF+nyVPq5wKvAS8lwZnW4TPp9rBoujUu9PE2gMpYViO/uu4rFkeymR7EV7mrCdd2ac4pGKkYycj9CgN6yonvTBWvjgu+sovol3w1BP85mwIOKm2Wjab1Bd8hEDS9J974CUqUSw2A7RdGvyWWhsir/tZI36J4aNqEvTus=
+	t=1763731944; cv=none; b=j/9rssBFr9TahIey8q6HKUKWB/HFgG5FwSUvcd0F9j+wxHMW0UL2K8ovmSgxGS5HCtMhNecFhEqM61YfrikqnGzF9Gn5INyfWfDXfkrVJIVrCRoTHZD0+mY5fdX7+eTFdLc2EdmFkNBkBpdgHCFQLVuWV7yxHAjuTZCgjV9QU98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733523; c=relaxed/simple;
-	bh=bqte0bTzV6tCIlhsJa46upJRbhIYKPeQRen6UeXKq0s=;
+	s=arc-20240116; t=1763731944; c=relaxed/simple;
+	bh=5qJXHh8XxRN1SvNdaV/wnSHWAXlIVPGupsqUHe/KOeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SA5Q4h5RxQL3XX7UJfLWHsriXwKjI166XUijgeNZyWha52aQQpo3IMH2lz7KJEe/6iXAdbi7uiWRZnPjl/7z+tEidlvUhY6KMrMHpYbvHas3ZNiLpr/o8oqUE1IcOEmZD/LgzJeOQwINGHWO8C4/cySSXfRDJIH6LZoz2nhjkuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgFFdzP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C12BC4CEF1;
-	Fri, 21 Nov 2025 13:58:43 +0000 (UTC)
+	 MIME-Version; b=Ng32lApz281iuvHxocJWhd8SAZbv5eWPhaHNGHGaxASVHj9KwURKy+nPtpfkIMkfaS48cTxZ8EOQ+Ad1zYcWAVvgsG8OGC5pYe+KKASatIlhCN8sw92kaDiCgLt5ubnRHpZrE3Xwb81jDFBPltN5IE4MD2LkwBgwnb17cyjlPKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbiz7W1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB85BC4CEF1;
+	Fri, 21 Nov 2025 13:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733523;
-	bh=bqte0bTzV6tCIlhsJa46upJRbhIYKPeQRen6UeXKq0s=;
+	s=korg; t=1763731944;
+	bh=5qJXHh8XxRN1SvNdaV/wnSHWAXlIVPGupsqUHe/KOeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgFFdzP9zuFS+HgvPBgpy2p2e9cwZXwMXSKxcIODR2TkoAE69qUWgSjgfuBVgiDC6
-	 85RU/umXv1GjD1D+8e3awKcpmAYh4pWa/6VnGliXpZkDjRpT+XsIWRTcD8K24dp9QU
-	 flIbNCU9eXObAueJla2k4cZVPLvPuxy5DyYnH9hE=
+	b=qbiz7W1nFVv5bhoBuTwxuoxikgTfq1mmDPm1raasot5de8qJRzQuXmJORSsD2WrJP
+	 PFG4lSqLh2667vLYcP40T5SsAUKK75neP9YWqQL9+u825cLf3Spa51SFTsp2BF9wB7
+	 UxtfV7/yW+3yEwjqXjJNrF9+vpjkiGTk/VYQU5lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 464/529] gcov: add support for GCC 15
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 136/185] x86/microcode/AMD: Add Zen5 model 0x44, stepping 0x1 minrev
 Date: Fri, 21 Nov 2025 14:12:43 +0100
-Message-ID: <20251121130247.520160385@linuxfoundation.org>
+Message-ID: <20251121130148.781746625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
+commit dd14022a7ce96963aa923e35cf4bcc8c32f95840 upstream.
 
-Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
-long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
-to match the value defined by GCC 15.
+Add the minimum Entrysign revision for that model+stepping to the list
+of minimum revisions.
 
-Tested with GCC 14.3.0 and GCC 15.2.0.
-
-Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reported-by: Matthieu Baerts <matttbe@kernel.org>
-Closes: https://github.com/linux-test-project/lcov/issues/445
-Tested-by: Matthieu Baerts <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/e94dd76b-4911-482f-8500-5c848a3df026@citrix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/gcov/gcc_4_7.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/gcov/gcc_4_7.c
-+++ b/kernel/gcov/gcc_4_7.c
-@@ -18,7 +18,9 @@
- #include <linux/mm.h>
- #include "gcov.h"
- 
--#if (__GNUC__ >= 14)
-+#if (__GNUC__ >= 15)
-+#define GCOV_COUNTERS			10
-+#elif (__GNUC__ >= 14)
- #define GCOV_COUNTERS			9
- #elif (__GNUC__ >= 10)
- #define GCOV_COUNTERS			8
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -212,6 +212,7 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xb1010: return cur_rev <= 0xb101046; break;
+ 	case 0xb2040: return cur_rev <= 0xb204031; break;
+ 	case 0xb4040: return cur_rev <= 0xb404031; break;
++	case 0xb4041: return cur_rev <= 0xb404101; break;
+ 	case 0xb6000: return cur_rev <= 0xb600031; break;
+ 	case 0xb6080: return cur_rev <= 0xb608031; break;
+ 	case 0xb7000: return cur_rev <= 0xb700031; break;
 
 
 
