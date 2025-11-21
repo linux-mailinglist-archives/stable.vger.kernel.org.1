@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62ACC79F0F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB97C79443
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 483744F1B6D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 4CDE52DA7E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F103502BD;
-	Fri, 21 Nov 2025 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257912773F7;
+	Fri, 21 Nov 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BevEviVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6TBnepI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1642633B97F;
-	Fri, 21 Nov 2025 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D637D54763;
+	Fri, 21 Nov 2025 13:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733264; cv=none; b=mZtjxF+GBSRcs3C/PRxQlI39UP4aK5yS0r2L82ml09AEzIfY+ZaITqGOp9eO0PSL2bDZHyjI9vpzwb6vyTr1L9nWwT6xS1ElD1aQ9zIWvB3VR0THtT5ohxuvsWsi5YMvRNn5P6DtMPyuA6CmkXAUAtAq/IZ/Nsu7xj+X1NLf0sc=
+	t=1763731392; cv=none; b=nWATXPCMI/+ZtsB8bOvxyGHia1cngg6jEziklMCFr61RTVwas7XAMBFd4rQ6goE2f2PIRtveeLZUAgCJ+1wasTb7fE1bmL2AAgOTo0jfqFl38+UjQvPRZkaYYmJYUfRDULtVLzvc1TEPN8+albevsKDTpoIyp39HU50Q4ocs7x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733264; c=relaxed/simple;
-	bh=7vXtto8R61NDHH+Zo3gGx6XcKhiluga/qHvDipu84is=;
+	s=arc-20240116; t=1763731392; c=relaxed/simple;
+	bh=O1MQY8D7K/F/D3o+FI23iKrriGx9CBecWQHfnFMzZU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3Vxfa9IaZTbrLSfwWNTPCkb3ler7PcM0EANrsJ57dDv+Bwhs3iZcv8Yix7mbSdEOY+wBaqOFfDVyxuZ/astGJIMbyhGfqMDJeSfxU2hWi+K4eL4m38Vzs6GJXE19LLLvtZtoT+JNn1l1aD4DTRfL3febQlJJThvrjC4dmzhj/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BevEviVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0FBC4CEF1;
-	Fri, 21 Nov 2025 13:54:23 +0000 (UTC)
+	 MIME-Version; b=AxBDNhNb18GD0llLIOzVI4xreI7yAjs6z4Fwp8tPPLjD4fGQjDpvPCFp/zHW0fIlyUecGrrbeVP+GRfe00RjXtRcYM8hqpnI1j6AZ3dEda8z1tf/dVDSidW4laKJ4mB2j6oaC59pTCHswSP2wxcgTGsIPYy7KqI4VEmjT//VjXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6TBnepI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61105C4CEF1;
+	Fri, 21 Nov 2025 13:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733263;
-	bh=7vXtto8R61NDHH+Zo3gGx6XcKhiluga/qHvDipu84is=;
+	s=korg; t=1763731392;
+	bh=O1MQY8D7K/F/D3o+FI23iKrriGx9CBecWQHfnFMzZU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BevEviViQZYlIDayBOh7opwjUD5nSHCF6jnaZfZeY4nYtck3FKqdm7N8O6lOWeq+I
-	 8X6JKZkflywiF8b5YUYdxx3VQB5oPs8WUx56gH+WJsOiVekBy+3B/aaY1rLhd0kAns
-	 xscNOpiZangmZdoIKxhqW6Nj77Zu9rgFDxW45aRY=
+	b=g6TBnepIEhm43jhAXqhVieBNSAO1eyb8ylEvc/2GCc5YP/VUIx27xt7lrTZTJi3kV
+	 SFr0Q+esAUqbc+KrnNF/3izVEbm3U/MsN9R9vm2CbQZ0VowDIp0d7cD2aWjYw8kRZz
+	 MpR9GAg1Pat+sadRdOax9WgDLLFulYXPW0ZwLFOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quang Le <quanglex97@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 408/529] af_unix: Initialise scc_index in unix_add_edge().
+	rtm@csail.mit.edu,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.17 160/247] NFSD: free copynotify stateid in nfs4_free_ol_stateid()
 Date: Fri, 21 Nov 2025 14:11:47 +0100
-Message-ID: <20251121130245.536657772@linuxfoundation.org>
+Message-ID: <20251121130200.464524120@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 60e6489f8e3b086bd1130ad4450a2c112e863791 ]
+commit 4aa17144d5abc3c756883e3a010246f0dba8b468 upstream.
 
-Quang Le reported that the AF_UNIX GC could garbage-collect a
-receive queue of an alive in-flight socket, with a nice repro.
+Typically copynotify stateid is freed either when parent's stateid
+is being close/freed or in nfsd4_laundromat if the stateid hasn't
+been used in a lease period.
 
-The repro consists of three stages.
+However, in case when the server got an OPEN (which created
+a parent stateid), followed by a COPY_NOTIFY using that stateid,
+followed by a client reboot. New client instance while doing
+CREATE_SESSION would force expire previous state of this client.
+It leads to the open state being freed thru release_openowner->
+nfs4_free_ol_stateid() and it finds that it still has copynotify
+stateid associated with it. We currently print a warning and is
+triggerred
 
-  1)
-    1-a. Create a single cyclic reference with many sockets
-    1-b. close() all sockets
-    1-c. Trigger GC
+WARNING: CPU: 1 PID: 8858 at fs/nfsd/nfs4state.c:1550 nfs4_free_ol_stateid+0xb0/0x100 [nfsd]
 
-  2)
-    2-a. Pass sk-A to an embryo sk-B
-    2-b. Pass sk-X to sk-X
-    2-c. Trigger GC
+This patch, instead, frees the associated copynotify stateid here.
 
-  3)
-    3-a. accept() the embryo sk-B
-    3-b. Pass sk-B to sk-C
-    3-c. close() the in-flight sk-A
-    3-d. Trigger GC
+If the parent stateid is freed (without freeing the copynotify
+stateids associated with it), it leads to the list corruption
+when laundromat ends up freeing the copynotify state later.
 
-As of 2-c, sk-A and sk-X are linked to unix_unvisited_vertices,
-and unix_walk_scc() groups them into two different SCCs:
+[ 1626.839430] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[ 1626.842828] Modules linked in: nfnetlink_queue nfnetlink_log bluetooth cfg80211 rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd nfs_acl lockd grace nfs_localio ext4 crc16 mbcache jbd2 overlay uinput snd_seq_dummy snd_hrtimer qrtr rfkill vfat fat uvcvideo snd_hda_codec_generic videobuf2_vmalloc videobuf2_memops snd_hda_intel uvc snd_intel_dspcfg videobuf2_v4l2 videobuf2_common snd_hda_codec snd_hda_core videodev snd_hwdep snd_seq mc snd_seq_device snd_pcm snd_timer snd soundcore sg loop auth_rpcgss vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs 8021q garp stp llc mrp nvme ghash_ce e1000e nvme_core sr_mod nvme_keyring nvme_auth cdrom vmwgfx drm_ttm_helper ttm sunrpc dm_mirror dm_region_hash dm_log iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse dm_multipath dm_mod nfnetlink
+[ 1626.855594] CPU: 2 UID: 0 PID: 199 Comm: kworker/u24:33 Kdump: loaded Tainted: G    B   W           6.17.0-rc7+ #22 PREEMPT(voluntary)
+[ 1626.857075] Tainted: [B]=BAD_PAGE, [W]=WARN
+[ 1626.857573] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
+[ 1626.858724] Workqueue: nfsd4 laundromat_main [nfsd]
+[ 1626.859304] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[ 1626.860010] pc : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.860601] lr : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.861182] sp : ffff8000881d7a40
+[ 1626.861521] x29: ffff8000881d7a40 x28: 0000000000000018 x27: ffff0000c2a98200
+[ 1626.862260] x26: 0000000000000600 x25: 0000000000000000 x24: ffff8000881d7b20
+[ 1626.862986] x23: ffff0000c2a981e8 x22: 1fffe00012410e7d x21: ffff0000920873e8
+[ 1626.863701] x20: ffff0000920873e8 x19: ffff000086f22998 x18: 0000000000000000
+[ 1626.864421] x17: 20747562202c3839 x16: 3932326636383030 x15: 3030666666662065
+[ 1626.865092] x14: 6220646c756f6873 x13: 0000000000000001 x12: ffff60004fd9e4a3
+[ 1626.865713] x11: 1fffe0004fd9e4a2 x10: ffff60004fd9e4a2 x9 : dfff800000000000
+[ 1626.866320] x8 : 00009fffb0261b5e x7 : ffff00027ecf2513 x6 : 0000000000000001
+[ 1626.866938] x5 : ffff00027ecf2510 x4 : ffff60004fd9e4a3 x3 : 0000000000000000
+[ 1626.867553] x2 : 0000000000000000 x1 : ffff000096069640 x0 : 000000000000006d
+[ 1626.868167] Call trace:
+[ 1626.868382]  __list_del_entry_valid_or_report+0x148/0x200 (P)
+[ 1626.868876]  _free_cpntf_state_locked+0xd0/0x268 [nfsd]
+[ 1626.869368]  nfs4_laundromat+0x6f8/0x1058 [nfsd]
+[ 1626.869813]  laundromat_main+0x24/0x60 [nfsd]
+[ 1626.870231]  process_one_work+0x584/0x1050
+[ 1626.870595]  worker_thread+0x4c4/0xc60
+[ 1626.870893]  kthread+0x2f8/0x398
+[ 1626.871146]  ret_from_fork+0x10/0x20
+[ 1626.871422] Code: aa1303e1 aa1403e3 910e8000 97bc55d7 (d4210000)
+[ 1626.871892] SMP: stopping secondary CPUs
 
-  unix_sk(sk-A)->vertex->scc_index = 2 (UNIX_VERTEX_INDEX_START)
-  unix_sk(sk-X)->vertex->scc_index = 3
-
-Once GC completes, unix_graph_grouped is set to true.
-Also, unix_graph_maybe_cyclic is set to true due to sk-X's
-cyclic self-reference, which makes close() trigger GC.
-
-At 3-b, unix_add_edge() allocates unix_sk(sk-B)->vertex and
-links it to unix_unvisited_vertices.
-
-unix_update_graph() is called at 3-a. and 3-b., but neither
-unix_graph_grouped nor unix_graph_maybe_cyclic is changed
-because both sk-B's listener and sk-C are not in-flight.
-
-3-c decrements sk-A's file refcnt to 1.
-
-Since unix_graph_grouped is true at 3-d, unix_walk_scc_fast()
-is finally called and iterates 3 sockets sk-A, sk-B, and sk-X:
-
-  sk-A -> sk-B (-> sk-C)
-  sk-X -> sk-X
-
-This is totally fine.  All of them are not yet close()d and
-should be grouped into different SCCs.
-
-However, unix_vertex_dead() misjudges that sk-A and sk-B are
-in the same SCC and sk-A is dead.
-
-  unix_sk(sk-A)->scc_index == unix_sk(sk-B)->scc_index <-- Wrong!
-  &&
-  sk-A's file refcnt == unix_sk(sk-A)->vertex->out_degree
-                                       ^-- 1 in-flight count for sk-B
-  -> sk-A is dead !?
-
-The problem is that unix_add_edge() does not initialise scc_index.
-
-Stage 1) is used for heap spraying, making a newly allocated
-vertex have vertex->scc_index == 2 (UNIX_VERTEX_INDEX_START)
-set by unix_walk_scc() at 1-c.
-
-Let's track the max SCC index from the previous unix_walk_scc()
-call and assign the max + 1 to a new vertex's scc_index.
-
-This way, we can continue to avoid Tarjan's algorithm while
-preventing misjudgments.
-
-Fixes: ad081928a8b0 ("af_unix: Avoid Tarjan's algorithm if unnecessary.")
-Reported-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20251109025233.3659187-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: rtm@csail.mit.edu
+Closes: https://lore.kernel.org/linux-nfs/d8f064c1-a26f-4eed-b4f0-1f7f608f415f@oracle.com/T/#t
+Fixes: 624322f1adc5 ("NFSD add COPY_NOTIFY operation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4state.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 0068e758be4dd..66fd606c43f45 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -136,6 +136,7 @@ enum unix_vertex_index {
- };
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1505,7 +1505,8 @@ static void nfs4_free_ol_stateid(struct
+ 	release_all_access(stp);
+ 	if (stp->st_stateowner)
+ 		nfs4_put_stateowner(stp->st_stateowner);
+-	WARN_ON(!list_empty(&stid->sc_cp_list));
++	if (!list_empty(&stid->sc_cp_list))
++		nfs4_free_cpntf_statelist(stid->sc_client->net, stid);
+ 	kmem_cache_free(stateid_slab, stid);
+ }
  
- static unsigned long unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
-+static unsigned long unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
- 
- static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
-@@ -144,6 +145,7 @@ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- 	if (!vertex) {
- 		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
- 		vertex->index = unix_vertex_unvisited_index;
-+		vertex->scc_index = ++unix_vertex_max_scc_index;
- 		vertex->out_degree = 0;
- 		INIT_LIST_HEAD(&vertex->edges);
- 		INIT_LIST_HEAD(&vertex->scc_entry);
-@@ -480,10 +482,15 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 				scc_dead = unix_vertex_dead(v);
- 		}
- 
--		if (scc_dead)
-+		if (scc_dead) {
- 			unix_collect_skb(&scc, hitlist);
--		else if (!unix_graph_maybe_cyclic)
--			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+		} else {
-+			if (unix_vertex_max_scc_index < vertex->scc_index)
-+				unix_vertex_max_scc_index = vertex->scc_index;
-+
-+			if (!unix_graph_maybe_cyclic)
-+				unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+		}
- 
- 		list_del(&scc);
- 	}
-@@ -498,6 +505,7 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
- 	unsigned long last_index = UNIX_VERTEX_INDEX_START;
- 
- 	unix_graph_maybe_cyclic = false;
-+	unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
- 
- 	/* Visit every vertex exactly once.
- 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
--- 
-2.51.0
-
 
 
 
