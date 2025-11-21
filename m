@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97127C79386
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39623C79607
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id A7B7C2C41E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 395554E998B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE79A27147D;
-	Fri, 21 Nov 2025 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F7631B124;
+	Fri, 21 Nov 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFBs6KG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvF2z27U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBBC1F09B3;
-	Fri, 21 Nov 2025 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2EE2737FC;
+	Fri, 21 Nov 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731204; cv=none; b=dKNpz6ylmUge8yJkXSqjA89MhBVWQ/xG7om4uo3CyvDe+5jJUPdWpTXUW1VHAbYgKlT0qK3XN99ZZ16vn4LR10V3ayFeM4nEiimZFZkEdHSb5d6l/DN3Opv+Wf6Oqn/J/E5IK75THnefZADTaOLpuPy2rQJ7GaXVYwH3Glw40GQ=
+	t=1763731715; cv=none; b=mOWn2R+thpPY0Q7eeFYOhEgQ1j40sA4epQXNEqtRn+UqKV86TVBfO2eByvVrHQ0YRT1svqMvZJY3YG0hBXi0Upja8Hg3e0MPOSf3PzArW5u3y3XFUw9Eexqg28nib+cx5lIHRHXA7H3q9qefxKbbCsgS3tzS79ecKCF9o0INcTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731204; c=relaxed/simple;
-	bh=uNat1hXm1fbC458sWEA5woG7wSVRNS6bkJKh3YrXjbQ=;
+	s=arc-20240116; t=1763731715; c=relaxed/simple;
+	bh=rO+tCPNdNuA4qm5Wtz6AdNX4r4rDBfFSxdO7nnzR6oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnJur/raR3VR1GgkxAhwGT5H0NtqWOasUpLdWPpQKwjU+OR0PME4kNbIP2TT1OaQpBqxg4WPgaWt6hE/YtiEOL6kK3LCrT5vTCZ/szstlEA79ZtKBtJEtwP6UDX10bnfZH6Wi/8wT4xAbi9umOEkJiAkcuHWhqcMFcabmHChmq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFBs6KG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9088C4CEF1;
-	Fri, 21 Nov 2025 13:20:03 +0000 (UTC)
+	 MIME-Version; b=ehrvRa2xGM8lIJMZhFV8x3FLMIGxOJCoJgETDKYfwPFBs4NE3IE1vzbvcaAiMXbBAZ96lLeWN4370rHcGSVUBm3yhHHQ9/7ySZkrOSnPhum14PHlwkOJmr0pKyJb3x6I10yogHSl6nP2Blu39NRi7Mo+3w4MnlRkBhiPQlHt1Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvF2z27U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6ACC4CEF1;
+	Fri, 21 Nov 2025 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731204;
-	bh=uNat1hXm1fbC458sWEA5woG7wSVRNS6bkJKh3YrXjbQ=;
+	s=korg; t=1763731715;
+	bh=rO+tCPNdNuA4qm5Wtz6AdNX4r4rDBfFSxdO7nnzR6oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFBs6KG334Zovbh8xCxJ3KhHYliIyNO9A0MQfnvRLHgJbBPFZ4N4PoVFF/nNNEE0t
-	 FaRyFdDTfV1IakROqGEKOchuL5+L0EPXJDbN3Cg8pZdm13263S0y7IMBb1KN0Vtyrl
-	 xUxL4coo/P/CTvraviUelwwLldgWJBhBhK6Pv90Q=
+	b=TvF2z27U1YL558jcxXFQIeNCoOcXD3OQEB8en4tfDCzmeV4auCnsdfdJkz74JiVud
+	 Zv0Io55CK4ASKQsDFCW9Zk3MtY3O6SDYvp7AnZqRWPSyvPfJ+NLKaWE/LOWuNi0p51
+	 EpUnQI2oU1a9VubzeZjsuX1QcZVYm4+W0StIAoFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Christian Brauner <brauner@kernel.org>,
+	Aksh Garg <a-garg7@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 127/247] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Fri, 21 Nov 2025 14:11:14 +0100
-Message-ID: <20251121130159.285769323@linuxfoundation.org>
+Subject: [PATCH 6.12 048/185] net: ethernet: ti: am65-cpsw-qos: fix IET verify retry mechanism
+Date: Fri, 21 Nov 2025 14:11:15 +0100
+Message-ID: <20251121130145.612624829@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Aksh Garg <a-garg7@ti.com>
 
-[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
+[ Upstream commit d4b00d132d7cb70a74bc039c91c1d6120943c71b ]
 
-bm_register_write() opens an executable file using open_exec(), which
-internally calls do_open_execat() and denies write access on the file to
-avoid modification while it is being executed.
+The am65_cpsw_iet_verify_wait() function attempts verification 20 times,
+toggling the AM65_CPSW_PN_IET_MAC_LINKFAIL bit in each iteration. When
+the LINKFAIL bit transitions from 1 to 0, the MAC merge layer initiates
+the verification process and waits for the timeout configured in
+MAC_VERIFY_CNT before automatically retransmitting. The MAC_VERIFY_CNT
+register is configured according to the user-defined verify/response
+timeout in am65_cpsw_iet_set_verify_timeout_count(). As per IEEE 802.3
+Clause 99, the hardware performs this automatic retry up to 3 times.
 
-However, when an error occurs, bm_register_write() closes the file using
-filp_close() directly. This does not restore the write permission, which
-may cause subsequent write operations on the same file to fail.
+Current implementation toggles LINKFAIL after the user-configured
+verify/response timeout in each iteration, forcing the hardware to
+restart verification instead of respecting the MAC_VERIFY_CNT timeout.
+This bypasses the hardware's automatic retry mechanism.
 
-Fix this by calling exe_file_allow_write_access() before filp_close() to
-restore the write permission properly.
+Fix this by moving the LINKFAIL bit toggle outside the retry loop and
+reducing the retry count from 20 to 3. The software now only monitors
+the status register while the hardware autonomously handles the 3
+verification attempts at proper MAC_VERIFY_CNT intervals.
 
-Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+Link: https://patch.msgid.link/20251106092305.1437347-3-a-garg7@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_misc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-qos.c | 27 +++++++++++++------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index a839f960cd4a0..a8b1d79e4af07 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -837,8 +837,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
- 	inode_unlock(d_inode(root));
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+index ad06942ce461a..66e8b224827b6 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+@@ -317,20 +317,21 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
+ 	u32 ctrl, status;
+ 	int try;
  
- 	if (err) {
--		if (f)
-+		if (f) {
-+			exe_file_allow_write_access(f);
- 			filp_close(f, NULL);
-+		}
- 		kfree(e);
- 		return err;
- 	}
+-	try = 20;
+-	do {
+-		/* Reset the verify state machine by writing 1
+-		 * to LINKFAIL
+-		 */
+-		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+-		ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
+-		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	try = 3;
+ 
+-		/* Clear MAC_LINKFAIL bit to start Verify. */
+-		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+-		ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
+-		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	/* Reset the verify state machine by writing 1
++	 * to LINKFAIL
++	 */
++	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
++	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+ 
++	/* Clear MAC_LINKFAIL bit to start Verify. */
++	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
++	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++
++	do {
+ 		msleep(port->qos.iet.verify_time_ms);
+ 
+ 		status = readl(port->port_base + AM65_CPSW_PN_REG_IET_STATUS);
+@@ -352,7 +353,7 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
+ 			netdev_dbg(port->ndev, "MAC Merge verify error\n");
+ 			return -ENODEV;
+ 		}
+-	} while (try-- > 0);
++	} while (--try > 0);
+ 
+ 	netdev_dbg(port->ndev, "MAC Merge verify timeout\n");
+ 	return -ETIMEDOUT;
 -- 
 2.51.0
 
