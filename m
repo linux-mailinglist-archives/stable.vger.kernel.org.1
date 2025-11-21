@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E04FC79C90
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16DEC793A0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id C8EE62D108
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EEE424EC4ED
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B882345CDE;
-	Fri, 21 Nov 2025 13:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E496A34AB17;
+	Fri, 21 Nov 2025 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gujHAkUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6/s6wAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0C2F28F0;
-	Fri, 21 Nov 2025 13:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B2F3491D5;
+	Fri, 21 Nov 2025 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733098; cv=none; b=qwXsR0REpzaYxuCBiF9jjCnxRjzZ+gtvSzGxJHYc04eBjMJwhVkJe6P0mHpNMueNkqqhLcqthX6Pqgqvi9tLyWVNkOHh3m1OWvSnnMjNO+uIsV3UO5NnFL4JTz/vnhuVDecSnnIRqxxfxQaio11Qn6iuciiLl+ilNPMkcLrm0gc=
+	t=1763731040; cv=none; b=AAerWS62pmLff3KbUOCdbrnHHVdWm7ggZ/mCuvEiSN8n0DFWtM/tzFrYKkI4b21vrrnOPs4MagZn1ppJJiXRunVkqUHGIO8Oq0tBRu9G7QWZzV5Rbk733qnu9VXwmciCmuO7iuTkvOaCc8ZAN5T2seSq9hZ+E63BX473oxMDtMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733098; c=relaxed/simple;
-	bh=I/CShgXAnpg+uSSPG3/GmzDHyl7fcRhhQEHnlSz2X/M=;
+	s=arc-20240116; t=1763731040; c=relaxed/simple;
+	bh=k+R6S6pFPgQA7fldejKXK3geSc6RqDAhRVx1QQdtXlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opRoIIr0FIqERQ6bSjXLK3mrvqu91GLXvTK94P8mYhegpQ5+zGbJI3/4StIb62vQe07tfiuKUNzN90EHH7mHyFxoiktNnkdEPOr8ul2TzxWo34x+i3xQYmDZJGCCgTUV/LpaCbQMNsPLpc64IGNSwUOGLKiPPs6XvyPVeO7CcpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gujHAkUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8757C4CEF1;
-	Fri, 21 Nov 2025 13:51:37 +0000 (UTC)
+	 MIME-Version; b=aeyx17Mtko9cx4PHGFMdb1/8gtvxEUCkeU95hcBUymLJWYOy3q2zcdZe58RITNDNVM682/s7UtHvxjMWE1I6qHXfpRBbAFh0YJ3mieOfZW6Bp/3BgL21Q6H6mbRMkCu3UiLWuBRjGN2BqLsLIuCwji3lqAd5Mhe6j5P5Vdetafo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6/s6wAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10B7C4CEF1;
+	Fri, 21 Nov 2025 13:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733098;
-	bh=I/CShgXAnpg+uSSPG3/GmzDHyl7fcRhhQEHnlSz2X/M=;
+	s=korg; t=1763731040;
+	bh=k+R6S6pFPgQA7fldejKXK3geSc6RqDAhRVx1QQdtXlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gujHAkUcESNFBPyAMiAh2L/QNpGg2LlRdS+MSSvV5fjSn8xjmYmnhher0ZZM3vmsH
-	 769qFyHj0mgvzc8aFe06G/3DNeUmqnfDmhPOoLux5wr2+/4gVBEKi6WOnlcQPDOsrb
-	 i+r2z5mBDqaWF1KKAKl13TYEl21cFRir6hU9GJOM=
+	b=O6/s6wAPOdqHwD6NKF6wd6UKfgNvqo8rdJwO1JKttUr2808qIA0NEI0tr62kJ6aJi
+	 3B3Kx1feMAflqwL/+nVmR9+nq9K72uXKGY/MOl7h6WIdNFK8YQCFmep/h1htGp4VlZ
+	 GD+QtxoZSIrbptQhsgPLo7ajCaVyWn+tk/IYRvC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Randall P. Embry" <rpembry@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/529] 9p: sysfs_init: dont hardcode error to ENOMEM
+Subject: [PATCH 6.17 069/247] wifi: mac80211: skip rate verification for not captured PSDUs
 Date: Fri, 21 Nov 2025 14:10:16 +0100
-Message-ID: <20251121130242.304556687@linuxfoundation.org>
+Message-ID: <20251121130157.077275356@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randall P. Embry <rpembry@gmail.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
+[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
 
-v9fs_sysfs_init() always returned -ENOMEM on failure;
-return the actual sysfs_create_group() error instead.
+If for example the sniffer did not follow any AIDs in an MU frame, then
+some of the information may not be filled in or is even expected to be
+invalid. As an example, in that case it is expected that Nss is zero.
 
-Signed-off-by: Randall P. Embry <rpembry@gmail.com>
-Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/v9fs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index af1921454ce87..be61810cb7798 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -597,13 +597,16 @@ static const struct attribute_group v9fs_attr_group = {
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 59baca24aa6b9..dcf4b24cc39cf 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5352,10 +5352,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (WARN_ON(!local->started))
+ 		goto drop;
  
- static int __init v9fs_sysfs_init(void)
- {
-+	int ret;
-+
- 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
- 	if (!v9fs_kobj)
- 		return -ENOMEM;
+-	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
++	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
++		   !(status->flag & RX_FLAG_NO_PSDU &&
++		     status->zero_length_psdu_type ==
++		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
+ 		/*
+-		 * Validate the rate, unless a PLCP error means that
+-		 * we probably can't have a valid rate here anyway.
++		 * Validate the rate, unless there was a PLCP error which may
++		 * have an invalid rate or the PSDU was not capture and may be
++		 * missing rate information.
+ 		 */
  
--	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
-+	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
-+	if (ret) {
- 		kobject_put(v9fs_kobj);
--		return -ENOMEM;
-+		return ret;
- 	}
- 
- 	return 0;
+ 		switch (status->encoding) {
 -- 
 2.51.0
 
