@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7F1C79ED9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB64C794A2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 09C932DC34
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 1FC3628A33
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F081E34FF6B;
-	Fri, 21 Nov 2025 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A3B343D67;
+	Fri, 21 Nov 2025 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdsLqZVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/dqr4mU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30D834DCF4;
-	Fri, 21 Nov 2025 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E59334367;
+	Fri, 21 Nov 2025 13:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733509; cv=none; b=gZBM/p3DpdfZXfkM+cAC+6yPz07n3tJ1rKKHHaNCnW9VFiWZQORiCk5T8bTQnbL5scY4XoUAMdyc8mb51KU/JppgLbOQniXsI6qXDakX83qHmqq7S5TVXp/rIztP0coaTtN6lol+10XoE80b8IXgWAZQ/X7ofj3xrl6nM7+Tb5I=
+	t=1763731448; cv=none; b=q3ymj5tcaBnKtfWKaRprmZxttGxvwjRmnAjE3biEAk4uhjiPv6B7MVHQASHqjjywvnbogPJ5zH3ifmCrwm1aXXOuRHvX15h2oAK8okL1S1c89E1qoE6qWdBY1ge/8aEY5ArEftKGu2/0JoKnCWvxq+12nhqSeRu6Ph3L46RFyxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733509; c=relaxed/simple;
-	bh=sSMMjJznBHII2kC2W7ui6GxoGn5mXWe0JeNQcvngI5U=;
+	s=arc-20240116; t=1763731448; c=relaxed/simple;
+	bh=N5aJ57JNbeFTd8Xqg4HHpZ1yVQIzCXbwc2RWw7ZlhyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAzHUy+Xm/IuUWu2XUq08kkqkGFj8psnP39nVwordfU7rV0JVITWrRUgJ/odgyvzD6z5Rdt5SRquaaWJhE2I6w7IzTOKovHdSn6RoOGENdcfWLzKtAwUBSe5Z1oTpsf3bOqfcphQ6eOMpbc4CfiYwxTBesBB7CUXBuxDYQWrw1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdsLqZVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F782C16AAE;
-	Fri, 21 Nov 2025 13:58:29 +0000 (UTC)
+	 MIME-Version; b=I2x2pOrHVzwSUbKoJX2mXa9ilmQjpPJXMxE4wvwFN45iwJ1//BBYhXPiHqZaBwWjzWnvOyOJbcAeYvV/RQqvFKESr5gbjjflvC2VGpV/2A+NVR8h6A+sxSHnSSMWXA/n+dD1inEaReUfRk3MH/7nNVnr4pO1bscnpcQzaHIllqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/dqr4mU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDD5C4CEF1;
+	Fri, 21 Nov 2025 13:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733509;
-	bh=sSMMjJznBHII2kC2W7ui6GxoGn5mXWe0JeNQcvngI5U=;
+	s=korg; t=1763731448;
+	bh=N5aJ57JNbeFTd8Xqg4HHpZ1yVQIzCXbwc2RWw7ZlhyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdsLqZVLBIlQJvUC2ZGoYceFNZMUNS40fB51bSieByQ8vwKxbx7Ce5XqDO5mVeWGv
-	 h/+Rmx7Csc4/6iGoRo9kCuvHB60Gw3MXMWr1Dsft06YwBcJV3pEkFInhW1DKinR+SN
-	 6XeSO/CtDMXWBHgptLwmWpDBhJCTHM9Xwi0PJ3Lw=
+	b=Y/dqr4mUmRfCivFfDQzr7gS+1MS0ZRKzPLjQkVT5ByIgc43l4mYUGnQD5cMjd0Q75
+	 r7OgY9vYfG/Wz1vbwkGh5yDjCq7fhRzH1iWvpFhlUrk+cBm2ITcD2Kz3ZBz4ZB1yI8
+	 ANHSx0vEYr7nkJjhyA1HA4+kKTGgvAhQd/Gb9qQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 459/529] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.17 211/247] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
 Date: Fri, 21 Nov 2025 14:12:38 +0100
-Message-ID: <20251121130247.342454709@linuxfoundation.org>
+Message-ID: <20251121130202.300924326@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Ichikawa <masami256@gmail.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
+commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
 
-Use a scope-based cleanup helper for the buffer allocated with kmalloc()
-in ntrig_report_version() to simplify the cleanup logic and prevent
-memory leaks (specifically the !hid_is_usb()-case one).
+The current single-bit error injection mechanism flips bits directly in ECC RAM
+by performing write and read operations. When the ECC RAM is actively used by
+the Ethernet or USB controller, this approach sometimes trigger a false
+double-bit error.
 
-[jkosina@suse.com: elaborate on the actual existing leak]
-Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
-Signed-off-by: Masami Ichikawa <masami256@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch both Ethernet and USB EDAC devices to use the INTTEST register
+(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
+the existing double-bit error injection method.
+
+Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ntrig.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/edac/altera_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
-index a1128c5315fff..3c41f6841f775 100644
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
- 	int ret;
- 	char buf[20];
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
--	unsigned char *data = kmalloc(8, GFP_KERNEL);
-+	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1369,7 +1369,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
- 	if (!hid_is_usb(hdev))
- 		return;
+ #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
+@@ -1459,7 +1459,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
- 	if (!data)
--		goto err_free;
-+		return;
- 
- 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
- 			      USB_REQ_CLEAR_FEATURE,
-@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
- 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
- 			 buf, data[2], data[3], data[4], data[5]);
- 	}
--
--err_free:
--	kfree(data);
- }
- 
- static ssize_t show_phys_width(struct device *dev,
--- 
-2.51.0
-
+ #endif	/* CONFIG_EDAC_ALTERA_USB */
 
 
 
