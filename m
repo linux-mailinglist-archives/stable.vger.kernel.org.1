@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EABC79CE1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879EBC79320
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 277954EEB8E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 9DF132DF68
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB79F34D4F8;
-	Fri, 21 Nov 2025 13:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF99A2EA46B;
+	Fri, 21 Nov 2025 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3SUUEsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6rKmtGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C113533C526;
-	Fri, 21 Nov 2025 13:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D1927147D;
+	Fri, 21 Nov 2025 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732941; cv=none; b=M9N7O+LrpVm17bwsvcGn4a26rNQho9I4Ngg1lXpctYKCZg3M5KwG5YHZl0TBgJBDzas10JwIPEZhHhfqyQoPR62w/EQcdciM5Z+zFJMGPV+bFm31pUueGPD+Ie5aRaSFvHOJRyNuU6bgFPnQ4PPmAVIKV8qmhbw6ms6Ejwmow88=
+	t=1763731072; cv=none; b=dVPEDHeZRhSFDnuaz+niNZBB5pfGtEbHPZQYSfElV0qrtAHufBOmBiH28hm/J6aLCGnQ3sJGBhUxfCspfOhtczPFnRfqiD5UQUTD44lP+wwDQD/IyYm0C6tZDtHwJQPsbBBc9OuGwOh55PT/nw6n2UJux8oc8ru+dAmIXPGoqnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732941; c=relaxed/simple;
-	bh=06PR4VVm7aD+uAsVRGxG2RF2TfC68FDTxs6zuHXI8CA=;
+	s=arc-20240116; t=1763731072; c=relaxed/simple;
+	bh=UXfaQDcfuicS9/6dub/w2NJPtM1PtFYGCnIYMhSieJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOaxxLfItrtTvHGVZumK5QFVC3ZpkutyW7M4wmHbPQNRikha/GgRE5grqhG6S7aaJLGZ+sqVWaCDPCa2AaQTKCM1GfM+eFXKoUiXYitHysSjWfL+ssNwQrFtXI7SmJnoKfLFPxlvjZLHS4BpbAbdGKR7Ded35qSTDgCV7RbT0Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3SUUEsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA035C4CEF1;
-	Fri, 21 Nov 2025 13:49:00 +0000 (UTC)
+	 MIME-Version; b=gcplvoyJGvIh2193VAM6dRFVHYDIDDikaD2StVurNMg4okrzky+0g9dadsi6pcWv8wXHVf/avJjYLlXm2SEzFX5P1H8ZYg4po6UqQBWEdiKpFBHX3KaC020yjjKuiUs2yXuYhn7+ib5tDSh8SXwHjrYf0HcsjMuCJYyh0nFzYok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6rKmtGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6247C4CEF1;
+	Fri, 21 Nov 2025 13:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732941;
-	bh=06PR4VVm7aD+uAsVRGxG2RF2TfC68FDTxs6zuHXI8CA=;
+	s=korg; t=1763731072;
+	bh=UXfaQDcfuicS9/6dub/w2NJPtM1PtFYGCnIYMhSieJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3SUUEsEwrVAGlj3ma60eYdnv7BTXMRv4y61+5xmtWu9Q18sczewZY5Uj5/Whg7TD
-	 8VK+i0zZOUfh9m0B1nexrpuq/IcwEQy/JcB6Q2O4mj34DQxph2N2u75RznashdH5yS
-	 gTbjDB24AaN2J54t5PnAsBc2jbuTfYsOnRHubx8A=
+	b=M6rKmtGsXliZLjOzKEchlXPtYxk9jiKYA/bsVbYIsAJ33TQjvHFeyVc+R5jJJsNI3
+	 +n3j06XlSgO/F8TyubZ3VipxiYMKotj7DNQ4liUmqb+gdE894V9vaAnU/aRz1MZI9u
+	 klgZU8hPjLp/tNI8PceQ18FvtbcmhCEAG/tF2KyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Steve French <stfrench@microsoft.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/529] smb: client: transport: avoid reconnects triggered by pending task work
+Subject: [PATCH 6.17 048/247] selftests: net: local_termination: Wait for interfaces to come up
 Date: Fri, 21 Nov 2025 14:09:55 +0100
-Message-ID: <20251121130241.559000203@linuxfoundation.org>
+Message-ID: <20251121130156.325916855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 00be6f26a2a7c671f1402d74c4d3c30a5844660a ]
+[ Upstream commit 57531b3416448d1ced36a2a974a4085ec43d57b0 ]
 
-When io_uring is used in the same task as CIFS, there might be
-unnecessary reconnects, causing issues in user-space applications
-like QEMU with a log like:
+It seems that most of the tests prepare the interfaces once before the test
+run (setup_prepare()), rely on setup_wait() to wait for link and only then
+run the test(s).
 
-> CIFS: VFS: \\10.10.100.81 Error -512 sending data on socket to server
+local_termination brings the physical interfaces down and up during test
+run but never wait for them to come up. If the auto-negotiation takes
+some seconds, first test packets are being lost, which leads to
+false-negative test results.
 
-Certain io_uring completions might be added to task_work with
-notify_method being TWA_SIGNAL and thus TIF_NOTIFY_SIGNAL is set for
-the task.
+Use setup_wait() in run_test() to make sure auto-negotiation has been
+completed after all simple_if_init() calls on physical interfaces and test
+packets will not be lost because of the race against link establishment.
 
-In __smb_send_rqst(), signals are masked before calling
-smb_send_kvec(), but the masking does not apply to TIF_NOTIFY_SIGNAL.
-
-If sk_stream_wait_memory() is reached via sock_sendmsg() while
-TIF_NOTIFY_SIGNAL is set, signal_pending(current) will evaluate to
-true there, and -EINTR will be propagated all the way from
-sk_stream_wait_memory() to sock_sendmsg() in smb_send_kvec().
-Afterwards, __smb_send_rqst() will see that not everything was written
-and reconnect.
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 90b9566aa5cd3f ("selftests: forwarding: add a test for local_termination.sh")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20251106161213.459501-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/local_termination.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 7b2560612bd6a..719b04202ed1c 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -22,6 +22,7 @@
- #include <linux/mempool.h>
- #include <linux/sched/signal.h>
- #include <linux/task_io_accounting_ops.h>
-+#include <linux/task_work.h>
- #include "cifspdu.h"
- #include "cifsglob.h"
- #include "cifsproto.h"
-@@ -211,9 +212,16 @@ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
- 		 * send a packet.  In most cases if we fail to send
- 		 * after the retries we will kill the socket and
- 		 * reconnect which may clear the network problem.
-+		 *
-+		 * Even if regular signals are masked, EINTR might be
-+		 * propagated from sk_stream_wait_memory() to here when
-+		 * TIF_NOTIFY_SIGNAL is used for task work. For example,
-+		 * certain io_uring completions will use that. Treat
-+		 * having EINTR with pending task work the same as EAGAIN
-+		 * to avoid unnecessary reconnects.
- 		 */
- 		rc = sock_sendmsg(ssocket, smb_msg);
--		if (rc == -EAGAIN) {
-+		if (rc == -EAGAIN || unlikely(rc == -EINTR && task_work_pending(current))) {
- 			retries++;
- 			if (retries >= 14 ||
- 			    (!server->noblocksnd && (retries > 2))) {
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index ecd34f364125c..892895659c7e4 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -176,6 +176,8 @@ run_test()
+ 	local rcv_dmac=$(mac_get $rcv_if_name)
+ 	local should_receive
+ 
++	setup_wait
++
+ 	tcpdump_start $rcv_if_name
+ 
+ 	mc_route_prepare $send_if_name
 -- 
 2.51.0
 
