@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-196439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE33CC7A08C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85BFC794A8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F11EA34DFC5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 92449242A6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBF1350A0E;
-	Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10243331237;
+	Fri, 21 Nov 2025 13:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sFK7O88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXAzCJem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51836D4F0;
-	Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE32A2DEA7E;
+	Fri, 21 Nov 2025 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733515; cv=none; b=OemNkBtXsk4HGVAZ/UtPJb5djAcvSYthUdUjhH/Dm98OH7tXKEUW2sN4zGcBuQRvwp2IIqt33sX/Gyy44ws1dzDPSvFWUH9L+Fid+rExltZydlCPjsEpcD5pO5NRd4P3MX5V7Zb7ymgS2YWC5antsbqRMlOvNZrrw9fLhHBQuCo=
+	t=1763731456; cv=none; b=WB/AgMQ4TdU/mj+3lqKaRYEPsjKxKNoZl9U4b98lUXxl29GUTbQmdiwSCFND4WLPOkuMPcEYwxoXIrzCAe4keR3Rh6dSXCKQT4/3tR6wx4myjeXZMa6jmGpsZugLUk7vTlBC8vQpBcPvkewIBQM3KBKW+Gc7tWKbCBrKDO9tPw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733515; c=relaxed/simple;
-	bh=nN/QeJhsYJLcBvnSVUiUnsyDKCLTtCghGeBwdXD8xjQ=;
+	s=arc-20240116; t=1763731456; c=relaxed/simple;
+	bh=18T6dvugMzDgjzSjOP+cqvG6XD1eZUAT5HQVSsh2kXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHlNWkl1tHjT02XF7wAR2XIBtjqziNA8nCeDZmU49eJAf+kklR90ked6HgS7SdlTNbdvlGVxFRJjDDNClsl/Sbqlv8LyhcYlFPB0sHjjTcmDmdD5jIoZ+AiBNviB7uejLsn3yq64PTuplAynjLRMWz8HiZ7tOrsuO+Ttjy02+b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sFK7O88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF038C4CEF1;
-	Fri, 21 Nov 2025 13:58:34 +0000 (UTC)
+	 MIME-Version; b=NeGDmLfLK+DUZjvYIxbtzdmxAxhrRX5/+P3etc8fnrr0zhRIq2kQbEJZvMyAGIz2TlYK0aHgSFobojJljdOelmQXunN4SkmqrB8Eub27TGQRxWJTF1VZXcBYclWW6/e1kWykiPVcqK6PZGhi9myoyQMKlDbrnqkVv4a0TPJtnTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXAzCJem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E4C4CEFB;
+	Fri, 21 Nov 2025 13:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733515;
-	bh=nN/QeJhsYJLcBvnSVUiUnsyDKCLTtCghGeBwdXD8xjQ=;
+	s=korg; t=1763731456;
+	bh=18T6dvugMzDgjzSjOP+cqvG6XD1eZUAT5HQVSsh2kXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sFK7O88fxXdQHhmBIOtqIx4LsAWG340KMBXVfkErqT+YulrgMbIRR2yD4EtV/wA8
-	 3mT1QSxil3hKrMBug2pXz3e66ORQXwwoMgJFnOHCPWmy0P7I3bOIhkYOd4QaNtblun
-	 NoymFhsElIWlXVFg+GQ3NaMLbSpFnG8+UgMav9Lo=
+	b=dXAzCJemzBYiL7Cgtldok+Y92CmrD+ookGHgr8waIZYICTYBKHHEcGszLalm0q6cR
+	 fmE+HcALxKr26IMPDgyQrjxWuONBjFdUEpi7hklGTuzwGMR57eYPUvYg+MMhasZ8GC
+	 +wb0ben7SPtUU5SNxvNnDu968fdrtxtPCCWfldN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 461/529] HID: uclogic: Fix potential memory leak in error path
-Date: Fri, 21 Nov 2025 14:12:40 +0100
-Message-ID: <20251121130247.414028628@linuxfoundation.org>
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.17 214/247] btrfs: zoned: fix conventional zone capacity calculation
+Date: Fri, 21 Nov 2025 14:12:41 +0100
+Message-ID: <20251121130202.411094890@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit a78eb69d60ce893de48dd75f725ba21309131fc2 ]
+commit 94f54924b96d3565c6b559294b3401b5496c21ac upstream.
 
-In uclogic_params_ugee_v2_init_event_hooks(), the memory allocated for
-event_hook is not freed in the next error path. Fix that by freeing it.
+When a block group contains both conventional zone and sequential zone, the
+capacity of the block group is wrongly set to the block group's full
+length. The capacity should be calculated in btrfs_load_block_group_* using
+the last allocation offset.
 
-Fixes: a251d6576d2a ("HID: uclogic: Handle wireless device reconnection")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 568220fa9657 ("btrfs: zoned: support RAID0/1/10 on top of raid stripe tree")
+CC: stable@vger.kernel.org # v6.12+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-uclogic-params.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/zoned.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
-index 9859dad36495a..eee05d668e361 100644
---- a/drivers/hid/hid-uclogic-params.c
-+++ b/drivers/hid/hid-uclogic-params.c
-@@ -1364,8 +1364,10 @@ static int uclogic_params_ugee_v2_init_event_hooks(struct hid_device *hdev,
- 	event_hook->hdev = hdev;
- 	event_hook->size = ARRAY_SIZE(reconnect_event);
- 	event_hook->event = kmemdup(reconnect_event, event_hook->size, GFP_KERNEL);
--	if (!event_hook->event)
-+	if (!event_hook->event) {
-+		kfree(event_hook);
- 		return -ENOMEM;
-+	}
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1317,6 +1317,7 @@ static int btrfs_load_zone_info(struct b
+ 	if (!btrfs_dev_is_sequential(device, info->physical)) {
+ 		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_CONVENTIONAL;
++		info->capacity = device->zone_info->zone_size;
+ 		return 0;
+ 	}
  
- 	list_add_tail(&event_hook->list, &p->event_hooks->list);
+@@ -1683,8 +1684,6 @@ int btrfs_load_block_group_zone_info(str
+ 		set_bit(BLOCK_GROUP_FLAG_SEQUENTIAL_ZONE, &cache->runtime_flags);
  
--- 
-2.51.0
-
+ 	if (num_conventional > 0) {
+-		/* Zone capacity is always zone size in emulation */
+-		cache->zone_capacity = cache->length;
+ 		ret = calculate_alloc_pointer(cache, &last_alloc, new);
+ 		if (ret) {
+ 			btrfs_err(fs_info,
+@@ -1693,6 +1692,7 @@ int btrfs_load_block_group_zone_info(str
+ 			goto out;
+ 		} else if (map->num_stripes == num_conventional) {
+ 			cache->alloc_offset = last_alloc;
++			cache->zone_capacity = cache->length;
+ 			set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &cache->runtime_flags);
+ 			goto out;
+ 		}
 
 
 
