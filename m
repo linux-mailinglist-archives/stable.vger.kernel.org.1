@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-195651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052C7C793D7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A610BC7981A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 1484A2D226
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id DC6353218D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7590D2765FF;
-	Fri, 21 Nov 2025 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61347340DA1;
+	Fri, 21 Nov 2025 13:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttV3aHMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw1mu2AZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A794264612;
-	Fri, 21 Nov 2025 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBFC30AADC;
+	Fri, 21 Nov 2025 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731279; cv=none; b=i8OC375cQ9ng5zAdmKZXlu0aa03GOxwXcdAakMhAlIRCzD6sSEZOd/k+CTQ7QuI3oeDxSWQlZnw4+tymQyjeLMzaCrcrP0pHiMJ8zjpJTnVdhjWMApV1qXr2OyeEhLpadr8dhCdiOt/zw/XObK+s2qdzrDlN2h0RFwfgj3rOtwY=
+	t=1763731761; cv=none; b=Qa4Z63+S/LjN22hd5cGcHc8ytpF/pwzywbxoIIUF63BckAsgGZA5qkswLXUqWPrkBoy2hckxFbeFiPlvj/jof0L3DfnjdXRfiOy86p19vgiTzXGwkscR5JpOI9KwN2YieWqTeBZddlYfyN0u5uG9Yxe4g8kpe/EOJVStHFMaV0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731279; c=relaxed/simple;
-	bh=yR6SZE6LY1o5bc8UGa7NIaYNe4hpcUnPk1ahiQoRYLk=;
+	s=arc-20240116; t=1763731761; c=relaxed/simple;
+	bh=Lzt5bAchoVC9nok4uJzOfFznG2ilQs8w9OY45r2mZwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKY/QTO93+su/Hh36TgoUc1b8XUMUBUIZftViuSOwgVRYoY4xCBfclMjEhSOgtgv3mcZGdbYwi9GAdgSrpn0Ez4cHahLntgc0Tuk2y2y+oHvxLpIg8qIreNKntQqET1jt0LgVs20b/uaRvTgn9tMA+Y52LuETsgCnTjD0flL+1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttV3aHMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5369DC4CEF1;
-	Fri, 21 Nov 2025 13:21:18 +0000 (UTC)
+	 MIME-Version; b=OBb51EdqZzDkZA0nXhb2bPiP3GorAaUHkfQ7mIkyuoRil9Obud699bpuOzwgpobMd+HpoaqOzfC0LUrzU63zxj6+Vz3LF804WuuAOaXIOcfDT1qpBGIH+FLzC6JtrWZHpIbl0BNu0rd9EYyWl9esGuD5Lb0r78zZvxjV29OTHWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw1mu2AZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38623C4CEFB;
+	Fri, 21 Nov 2025 13:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731278;
-	bh=yR6SZE6LY1o5bc8UGa7NIaYNe4hpcUnPk1ahiQoRYLk=;
+	s=korg; t=1763731760;
+	bh=Lzt5bAchoVC9nok4uJzOfFznG2ilQs8w9OY45r2mZwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttV3aHMlx2bCdl8bogMqkLVTex10+6ytDhIWsDNwM5EuDv9p3+1DAAPxj8KR9tjI0
-	 VFufQQDQSj+7W6ZHCmmE/BTE/bSLYq7QU8fOTCb8A5GT9Vnrcrmfurlhe1E2R0mxzl
-	 Qu7f/CqpfcyWF4W+h49sIJLhu0BUSXbpHTZvftRc=
+	b=Zw1mu2AZI89n1NF0tPWJcijwj3FXJBY8489N+YEAiecLxlsyUyXwDVySSH8RpFh0O
+	 +KuDF0K/XwuGZqJqXnGiuZ7dAv81vp2Rr+LyBDx6jrb7W0MMknoRxhlLZS3SPK0cMe
+	 tiyfeCvYP9QJtuWklEjQ6R6ZKjHFTV/gHxHPnGYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 151/247] LoongArch: KVM: Fix max supported vCPUs set with EIOINTC
+	Rohit Keshri <rkeshri@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/185] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
 Date: Fri, 21 Nov 2025 14:11:38 +0100
-Message-ID: <20251121130200.144839852@linuxfoundation.org>
+Message-ID: <20251121130146.435642855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 237e74bfa261fb0cf75bd08c9be0c5094018ee20 upstream.
+[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
 
-VM fails to boot with 256 vCPUs, the detailed command is
+This data originates from userspace and is used in buffer offset
+calculations which could potentially overflow causing an out-of-bounds
+access.
 
-  qemu-system-loongarch64 -smp 256
-
-and there is an error reported as follows:
-
-  KVM_LOONGARCH_EXTIOI_INIT_NUM_CPU failed: Invalid argument
-
-There is typo issue in function kvm_eiointc_ctrl_access() when set
-max supported vCPUs.
-
-Cc: stable@vger.kernel.org
-Fixes: 47256c4c8b1b ("LoongArch: KVM: Avoid copy_*_user() with lock hold in kvm_eiointc_ctrl_access()")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/intc/eiointc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -439,7 +439,7 @@ static int kvm_eiointc_ctrl_access(struc
- 	spin_lock_irqsave(&s->lock, flags);
- 	switch (type) {
- 	case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
--		if (val >= EIOINTC_ROUTE_MAX_VCPUS)
-+		if (val > EIOINTC_ROUTE_MAX_VCPUS)
- 			ret = -EINVAL;
- 		else
- 			s->num_cpu = val;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 8b72848bb25cd..0c1bd3acf3598 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3686,6 +3686,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+ 
+ 
+ 	cmd_id = header->id;
++	if (header->size > SVGA_CMD_MAX_DATASIZE) {
++		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
++			       cmd_id + SVGA_3D_CMD_BASE);
++		return -E2BIG;
++	}
+ 	*size = header->size + sizeof(SVGA3dCmdHeader);
+ 
+ 	cmd_id -= SVGA_3D_CMD_BASE;
+-- 
+2.51.0
+
 
 
 
