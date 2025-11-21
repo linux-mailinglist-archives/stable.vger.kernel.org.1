@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B535AC7937D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EC4C79DE6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 402FA2C9B0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D2A44F0E2C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2232DEA7E;
-	Fri, 21 Nov 2025 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7302350D43;
+	Fri, 21 Nov 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVVcOdmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POwuYYWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990A41F09B3;
-	Fri, 21 Nov 2025 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2201125B69F;
+	Fri, 21 Nov 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731181; cv=none; b=sLCLFEOgKD7wbif7/nMlnQMVwnnYymQZiAB8ccEUoiu3dltAgO/bopWJAvtQYgdqmwax3R0r2qhedWO7b4x5KjX5oV2jLUPYX59FfK0TaUbdHHdK3FkcK5vkUc3UG3i+JS2EOS+1c9xt0Q/GD8Wi1pRf51tZovdB0ptaHhaFj4U=
+	t=1763733047; cv=none; b=gskp9iWoCiTEWMWV5YEKw4FurLxzo8JJkg0PMb/ZTKGERTOYuovAvpnrFKrGuxRUumOZh0erj/nivvm+ZvJZe3VTmbaV58KjZ4UT2F8FTjwFaD42M5cJqFiDhfBisDKsSIcpa+YjBFmrzmHCQ5D/BbAvNBLOtNF+zJlNSu7yf5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731181; c=relaxed/simple;
-	bh=qAD1+3hFDrnE6fypgSziLWSkhQXI/zZ9pfZVJ26bcrE=;
+	s=arc-20240116; t=1763733047; c=relaxed/simple;
+	bh=cSYOYADxWDGXAEz1QGZB8hpUJhzpnYOVjk2HVQbhx6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+QcmZhE2TqqD839e0lYxbWcj3nApABAHIsm6MObkYGmtcZrnvaTr8ma6agY7clUlLfq5Wu0KbaF58saoGTtYxXkUrOFuj5kpOePaxVClNfQk61pNkvGfCbZUEUpqTlfog2SQVrSK/dxZKZD/Yr1M0Qg7gm2Yvhig29tzB9gZxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVVcOdmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25374C4CEF1;
-	Fri, 21 Nov 2025 13:19:40 +0000 (UTC)
+	 MIME-Version; b=e4NKj63/ST2i2UhpvGfKEDHUWb7hk+i/S7EuO4wJt+ljsp40dpopcl91+irPiSVQeivKsdU2JjGMe3/Akd5sDk4ZLKWAhYlgxVgn/wFtH+7nNphdNhu6a2AERjubFhKvZDIpUcdMoAqRe4cz0QLu4iujbMHbOAvNCJdgd+dypu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POwuYYWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1CCC4CEF1;
+	Fri, 21 Nov 2025 13:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731181;
-	bh=qAD1+3hFDrnE6fypgSziLWSkhQXI/zZ9pfZVJ26bcrE=;
+	s=korg; t=1763733047;
+	bh=cSYOYADxWDGXAEz1QGZB8hpUJhzpnYOVjk2HVQbhx6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVVcOdmQk7ru9LR4tvMpOCtJgswIfnizA/aiIvvNqOF1eRMxjbehXolxDeoGSEEbt
-	 b0ljyw5Y0rJNQHYVoEBYksiE0naWV7jvACFRbhPn38u5WDugrq8jRdBGsDhpoFGel9
-	 h4peSJLqKjEkcibWiJMeekP/IdgblWJ2eZaa6TBE=
+	b=POwuYYWO1vxX7EygteKcXbRfqj+eBxtsyLOLm7dWagx2UMe1LFNLXYFwIOvCq3/sj
+	 /HColUe19ZJJiII/pAcSYxVmxBPAgfQQWxdcc5gn6y9+Q8dfWNbfsRzJMNuxC5xKl9
+	 6bjlkbx+IZF9wTkikd5eQzqIPku8k5khPyKRsFyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 084/247] wifi: iwlwifi: mld: always take beacon ies in link grading
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 332/529] net: libwx: fix device bus LAN ID
 Date: Fri, 21 Nov 2025 14:10:31 +0100
-Message-ID: <20251121130157.611375938@linuxfoundation.org>
+Message-ID: <20251121130242.839665476@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 1a222625b468effd13d1ebb662c36a41c28a835a ]
+commit a04ea57aae375bdda1cb57034d8bcbb351e1f973 upstream.
 
-One of the factors of a link's grade is the channel load, which is
-calculated from the AP's bss load element.
-The current code takes this element from the beacon for an active link,
-and from bss->ies for an inactive link.
+The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
+port is passthrough to a virtual machine, the function number may not
+match the actual port index on the device. This could cause the driver
+to perform operations such as LAN reset on the wrong port.
 
-bss->ies is set to either the beacon's ies or to the probe response
-ones, with preference to the probe response (meaning that if there was
-even one probe response, the ies of it will be stored in bss->ies and
-won't be overiden by the beacon ies).
+Fix this by reading the LAN ID from port status register.
 
-The probe response can be very old, i.e. from the connection time,
-where a beacon is updated before each link selection (which is
-triggered only after a passive scan).
-
-In such case, the bss load element in the probe response will not
-include the channel load caused by the STA, where the beacon will.
-
-This will cause the inactive link to always have a lower channel
-load, and therefore an higher grade than the active link's one.
-
-This causes repeated link switches, causing the throughput to drop.
-
-Fix this by always taking the ies from the beacon, as those are for
-sure new.
-
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251110145652.b493dbb1853a.I058ba7309c84159f640cc9682d1bda56dd56a536@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   |    3 ++-
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 131190977d4b0..5b10e1e443178 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -701,18 +701,13 @@ static int
- iwl_mld_get_chan_load_from_element(struct iwl_mld *mld,
- 				   struct ieee80211_bss_conf *link_conf)
- {
--	struct ieee80211_vif *vif = link_conf->vif;
- 	const struct cfg80211_bss_ies *ies;
- 	const struct element *bss_load_elem = NULL;
- 	const struct ieee80211_bss_load_elem *bss_load;
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1667,7 +1667,8 @@ int wx_sw_init(struct wx *wx)
+ 	wx->oem_svid = pdev->subsystem_vendor;
+ 	wx->oem_ssid = pdev->subsystem_device;
+ 	wx->bus.device = PCI_SLOT(pdev->devfn);
+-	wx->bus.func = PCI_FUNC(pdev->devfn);
++	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
++				 rd32(wx, WX_CFG_PORT_ST));
  
- 	guard(rcu)();
+ 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN) {
+ 		wx->subsystem_vendor_id = pdev->subsystem_vendor;
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -65,6 +65,8 @@
+ #define WX_CFG_PORT_CTL_DRV_LOAD     BIT(3)
+ #define WX_CFG_PORT_CTL_QINQ         BIT(2)
+ #define WX_CFG_PORT_CTL_D_VLAN       BIT(0) /* double vlan*/
++#define WX_CFG_PORT_ST               0x14404
++#define WX_CFG_PORT_ST_LANID         GENMASK(9, 8)
+ #define WX_CFG_TAG_TPID(_i)          (0x14430 + ((_i) * 4))
+ #define WX_CFG_PORT_CTL_NUM_VT_MASK  GENMASK(13, 12) /* number of TVs */
  
--	if (ieee80211_vif_link_active(vif, link_conf->link_id))
--		ies = rcu_dereference(link_conf->bss->beacon_ies);
--	else
--		ies = rcu_dereference(link_conf->bss->ies);
+@@ -363,8 +365,6 @@ enum WX_MSCA_CMD_value {
+ #define TXD_USE_COUNT(S)     DIV_ROUND_UP((S), WX_MAX_DATA_PER_TXD)
+ #define DESC_NEEDED          (MAX_SKB_FRAGS + 4)
+ 
+-#define WX_CFG_PORT_ST               0x14404
 -
-+	ies = rcu_dereference(link_conf->bss->beacon_ies);
- 	if (ies)
- 		bss_load_elem = cfg80211_find_elem(WLAN_EID_QBSS_LOAD,
- 						   ies->data, ies->len);
--- 
-2.51.0
-
+ /******************* Receive Descriptor bit definitions **********************/
+ #define WX_RXD_STAT_DD               BIT(0) /* Done */
+ #define WX_RXD_STAT_EOP              BIT(1) /* End of Packet */
 
 
 
