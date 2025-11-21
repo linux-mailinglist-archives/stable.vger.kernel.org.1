@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-196449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA180C79EFA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:16 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045FDC798B7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 902442E559
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A22C73806F2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0102034C127;
-	Fri, 21 Nov 2025 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014C349B18;
+	Fri, 21 Nov 2025 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qut1i4VW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bam1Ajt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7A727AC57;
-	Fri, 21 Nov 2025 13:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D4C34C150;
+	Fri, 21 Nov 2025 13:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733543; cv=none; b=V7St1dK+tB+JxE/kvrKDZW4OJ2vTbWj2dh6Z1uCzuovS7IzLsBU5yS0jYjne2mamni6t8DkQClsVnEkN3bXlXoiwduU8DyPOsR1s2RKWopRT9neT8KLC+rw8zcLNW5IGArTN6aoT/TtupwvmXn9lgD9azgQmmkElzKp2sExoSug=
+	t=1763732069; cv=none; b=gUWMnpToZ06o9rDk3+CEbMlJMdDPVxXJLt0Omrwhn6aq23KJFGeLliONfHt0qi1bH8W7DAiZeWSPbhvVfjF1lWzZUnwZ297MbHL2JrO/fQfDQjjhm8wdX4FpJEycyRZx7EFktXziIr3QARGXuzKNWUr9K8gbOhQtamTxLk8FZKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733543; c=relaxed/simple;
-	bh=3+ndhFcJ9O9pIEP6l8jCXItITqK+2EWPt3BpntdS3tg=;
+	s=arc-20240116; t=1763732069; c=relaxed/simple;
+	bh=0TSRZtJ/y/wPaLL5x+N6xsJc5Xi30TOGLKQ0vlNClyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0Ixcn46C1MNxSMpPhvBB2rRkQzHL+qlIKf6ICnX6Ecr/twPQqI8NLJs2hrsEmmjwvS6Qc6PTUL8fshGU+rxQnEBDx/zybN0cHBozdze9PjpzR4esaH0hwoTrdmnIlSLjuaSdw5R+a9PROJ2p6AxuvsADchkEcffA7B5OdJ6eaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qut1i4VW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D7EC4CEF1;
-	Fri, 21 Nov 2025 13:59:03 +0000 (UTC)
+	 MIME-Version; b=mNCFxRnB0GvA5jIGAiDl4m1S6QCTcbAd7iEL1QW4mrncY1b9Sn31agZnwUAuAR8djnR4/WVzaW7a/c5adO0CBubPX5jd7gXYuoIFiQUJqmOZ4Ue825a02Ycf3u2xPhFJX6cKVgmzfMOnS6EiaZKHnEy5m+IXEnNcJVC/ETBFNXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bam1Ajt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D70C116C6;
+	Fri, 21 Nov 2025 13:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733543;
-	bh=3+ndhFcJ9O9pIEP6l8jCXItITqK+2EWPt3BpntdS3tg=;
+	s=korg; t=1763732068;
+	bh=0TSRZtJ/y/wPaLL5x+N6xsJc5Xi30TOGLKQ0vlNClyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qut1i4VWsyeuM7DzjXoD/CiFlt4RP9aeyvrgqCdp5ldRaV/u2ukLkRg97kCs3iMRd
-	 yLbP6zJeaFYwT2rPlR+9J8nkojh0Vl3Ct8qreNkM8JPBgOjMExEvJTBOKZXR+oDB+k
-	 mbPgLfcn0zfZjGJvcRZ0a+wg1sXrYLWUZNCJv65A=
+	b=0bam1AjtntaWLciRPJFdljVz3gXe3arlONYQH8jArVIn30Ofd9ir1AxxvKgFxMkK5
+	 /4mapwJ5COGbBdTT07+tXKoYC0pC7EMFsQDM471eZqcx/B8fMMoeBFeMizhdy26hbg
+	 htp1XgkSm8eFlAxeuCUCCQOw+s3CKaTL5g7M6jMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 505/529] scsi: ufs: core: Add UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE
-Date: Fri, 21 Nov 2025 14:13:24 +0100
-Message-ID: <20251121130248.987970216@linuxfoundation.org>
+	Lance Yang <lance.yang@linux.dev>,
+	Google Big Sleep <big-sleep-vuln-reports@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 178/185] mm/secretmem: fix use-after-free race in fault handler
+Date: Fri, 21 Nov 2025 14:13:25 +0100
+Message-ID: <20251121130150.314228616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-[ Upstream commit e95881e0081a30e132b5ca087f1e07fc08608a7e ]
+commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d upstream.
 
-Add UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE which tells the UFS core to not use
-the crypto enable bit defined by the UFS specification.  This is needed to
-support inline encryption on the "Exynos" UFS controller.
+When a page fault occurs in a secret memory file created with
+`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
+underlying page as not-present in the direct map, and add it to the file
+mapping.
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20240708235330.103590-4-ebiggers@kernel.org
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If two tasks cause a fault in the same page concurrently, both could end
+up allocating a folio and removing the page from the direct map, but only
+one would succeed in adding the folio to the file mapping.  The task that
+failed undoes the effects of its attempt by (a) freeing the folio again
+and (b) putting the page back into the direct map.  However, by doing
+these two operations in this order, the page becomes available to the
+allocator again before it is placed back in the direct mapping.
+
+If another task attempts to allocate the page between (a) and (b), and the
+kernel tries to access it via the direct map, it would result in a
+supervisor not-present page fault.
+
+Fix the ordering to restore the direct map before the folio is freed.
+
+Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd-crypto.c |    8 ++++++++
- include/ufs/ufshcd.h             |    7 +++++++
- 2 files changed, 15 insertions(+)
+ mm/secretmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd-crypto.c
-+++ b/drivers/ufs/core/ufshcd-crypto.c
-@@ -110,6 +110,10 @@ static int ufshcd_crypto_keyslot_evict(s
- 	return ufshcd_program_key(hba, &cfg, slot);
- }
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -84,13 +84,13 @@ retry:
+ 		__folio_mark_uptodate(folio);
+ 		err = filemap_add_folio(mapping, folio, offset, gfp);
+ 		if (unlikely(err)) {
+-			folio_put(folio);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+ 			 * which guarantees that this call won't fail
+ 			 */
+ 			set_direct_map_default_noflush(page);
++			folio_put(folio);
+ 			if (err == -EEXIST)
+ 				goto retry;
  
-+/*
-+ * Reprogram the keyslots if needed, and return true if CRYPTO_GENERAL_ENABLE
-+ * should be used in the host controller initialization sequence.
-+ */
- bool ufshcd_crypto_enable(struct ufs_hba *hba)
- {
- 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
-@@ -117,6 +121,10 @@ bool ufshcd_crypto_enable(struct ufs_hba
- 
- 	/* Reset might clear all keys, so reprogram all the keys. */
- 	blk_crypto_reprogram_all_keys(&hba->crypto_profile);
-+
-+	if (hba->quirks & UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE)
-+		return false;
-+
- 	return true;
- }
- 
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -651,6 +651,13 @@ enum ufshcd_quirks {
- 	 * ufs_hba_variant_ops::init() must do it instead.
- 	 */
- 	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 22,
-+
-+	/*
-+	 * This quirk needs to be enabled if the host controller supports inline
-+	 * encryption but does not support the CRYPTO_GENERAL_ENABLE bit, i.e.
-+	 * host controller initialization fails if that bit is set.
-+	 */
-+	UFSHCD_QUIRK_BROKEN_CRYPTO_ENABLE		= 1 << 23,
- };
- 
- enum ufshcd_caps {
 
 
 
