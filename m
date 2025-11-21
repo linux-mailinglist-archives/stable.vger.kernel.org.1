@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E9DC79835
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62ACC79F0F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id D6B3A3252C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 483744F1B6D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DE031578E;
-	Fri, 21 Nov 2025 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F103502BD;
+	Fri, 21 Nov 2025 13:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBXs5UhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BevEviVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A151DE2A5;
-	Fri, 21 Nov 2025 13:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1642633B97F;
+	Fri, 21 Nov 2025 13:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731788; cv=none; b=JYEoLgv5zq8i9xiqBp9x7cDrkmP8Vnm8q3JRhw1U8NWvlOtvY487QNfHvtleqW09KT3zGSlcXwU70nsIi9Nh9+bJmOFYqMwj6naQZ6fFIc2VOI31sk6FYPj5C12sM5CnWjBtT8EufQqHB2i8WcAS/4Ki8zXuOAu6TGl0IX3Nhvs=
+	t=1763733264; cv=none; b=mZtjxF+GBSRcs3C/PRxQlI39UP4aK5yS0r2L82ml09AEzIfY+ZaITqGOp9eO0PSL2bDZHyjI9vpzwb6vyTr1L9nWwT6xS1ElD1aQ9zIWvB3VR0THtT5ohxuvsWsi5YMvRNn5P6DtMPyuA6CmkXAUAtAq/IZ/Nsu7xj+X1NLf0sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731788; c=relaxed/simple;
-	bh=I0WTAqX+HZANFtHqToLm1uFnQgkxb1hWGW+/TKjxtKU=;
+	s=arc-20240116; t=1763733264; c=relaxed/simple;
+	bh=7vXtto8R61NDHH+Zo3gGx6XcKhiluga/qHvDipu84is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=be5Lwq6MDOt4yqAgs26APyPnws0buEveNazdGaJPFGquEQkOh6P7YU84bPBdU7LS1gFMgDviwSeWnoXtrLQSBFFsKunN5xpPhFwK5KyYIYHe4If9aqKPK6mHrM+o2EylUtoHxvRtdmQRSFie5GukUWSoZNRy7mzewt886twNMF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBXs5UhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C814C4CEF1;
-	Fri, 21 Nov 2025 13:29:48 +0000 (UTC)
+	 MIME-Version; b=m3Vxfa9IaZTbrLSfwWNTPCkb3ler7PcM0EANrsJ57dDv+Bwhs3iZcv8Yix7mbSdEOY+wBaqOFfDVyxuZ/astGJIMbyhGfqMDJeSfxU2hWi+K4eL4m38Vzs6GJXE19LLLvtZtoT+JNn1l1aD4DTRfL3febQlJJThvrjC4dmzhj/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BevEviVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0FBC4CEF1;
+	Fri, 21 Nov 2025 13:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731788;
-	bh=I0WTAqX+HZANFtHqToLm1uFnQgkxb1hWGW+/TKjxtKU=;
+	s=korg; t=1763733263;
+	bh=7vXtto8R61NDHH+Zo3gGx6XcKhiluga/qHvDipu84is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBXs5UhU9jtgloXGwh75cuawdjzbVlfDJefLuOcQ9KI+49NGTn7EAHox+D+qeruDw
-	 Qy5SSnc6vL3afdxn07WUE4nOekHd7m/dbJHVdgl8Ikp6dqZj7NcOJluOjbx5x2EKZJ
-	 HCGkiiAQfB38g4mkPwXrijEsdUKCX3lXKAZNbCzw=
+	b=BevEviViQZYlIDayBOh7opwjUD5nSHCF6jnaZfZeY4nYtck3FKqdm7N8O6lOWeq+I
+	 8X6JKZkflywiF8b5YUYdxx3VQB5oPs8WUx56gH+WJsOiVekBy+3B/aaY1rLhd0kAns
+	 xscNOpiZangmZdoIKxhqW6Nj77Zu9rgFDxW45aRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haein Lee <lhi0729@kaist.ac.kr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Quang Le <quanglex97@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/185] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
+Subject: [PATCH 6.6 408/529] af_unix: Initialise scc_index in unix_add_edge().
 Date: Fri, 21 Nov 2025 14:11:47 +0100
-Message-ID: <20251121130146.757781339@linuxfoundation.org>
+Message-ID: <20251121130245.536657772@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haein Lee <lhi0729@kaist.ac.kr>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
+[ Upstream commit 60e6489f8e3b086bd1130ad4450a2c112e863791 ]
 
-In snd_usb_create_streams(), for UAC version 3 devices, the Interface
-Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
-call fails, a fallback routine attempts to obtain the IAD from the next
-interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
-assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
-without performing a NULL check. This can lead to a NULL pointer
-dereference when usb_ifnum_to_if() fails to find the interface descriptor.
+Quang Le reported that the AF_UNIX GC could garbage-collect a
+receive queue of an alive in-flight socket, with a nice repro.
 
-This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
-snd_usb_mixer_controls_badd() to prevent the dereference.
+The repro consists of three stages.
 
-This issue was discovered by syzkaller, which triggered the bug by sending
-a crafted USB device descriptor.
+  1)
+    1-a. Create a single cyclic reference with many sockets
+    1-b. close() all sockets
+    1-c. Trigger GC
 
-Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
-Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
-Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  2)
+    2-a. Pass sk-A to an embryo sk-B
+    2-b. Pass sk-X to sk-X
+    2-c. Trigger GC
+
+  3)
+    3-a. accept() the embryo sk-B
+    3-b. Pass sk-B to sk-C
+    3-c. close() the in-flight sk-A
+    3-d. Trigger GC
+
+As of 2-c, sk-A and sk-X are linked to unix_unvisited_vertices,
+and unix_walk_scc() groups them into two different SCCs:
+
+  unix_sk(sk-A)->vertex->scc_index = 2 (UNIX_VERTEX_INDEX_START)
+  unix_sk(sk-X)->vertex->scc_index = 3
+
+Once GC completes, unix_graph_grouped is set to true.
+Also, unix_graph_maybe_cyclic is set to true due to sk-X's
+cyclic self-reference, which makes close() trigger GC.
+
+At 3-b, unix_add_edge() allocates unix_sk(sk-B)->vertex and
+links it to unix_unvisited_vertices.
+
+unix_update_graph() is called at 3-a. and 3-b., but neither
+unix_graph_grouped nor unix_graph_maybe_cyclic is changed
+because both sk-B's listener and sk-C are not in-flight.
+
+3-c decrements sk-A's file refcnt to 1.
+
+Since unix_graph_grouped is true at 3-d, unix_walk_scc_fast()
+is finally called and iterates 3 sockets sk-A, sk-B, and sk-X:
+
+  sk-A -> sk-B (-> sk-C)
+  sk-X -> sk-X
+
+This is totally fine.  All of them are not yet close()d and
+should be grouped into different SCCs.
+
+However, unix_vertex_dead() misjudges that sk-A and sk-B are
+in the same SCC and sk-A is dead.
+
+  unix_sk(sk-A)->scc_index == unix_sk(sk-B)->scc_index <-- Wrong!
+  &&
+  sk-A's file refcnt == unix_sk(sk-A)->vertex->out_degree
+                                       ^-- 1 in-flight count for sk-B
+  -> sk-A is dead !?
+
+The problem is that unix_add_edge() does not initialise scc_index.
+
+Stage 1) is used for heap spraying, making a newly allocated
+vertex have vertex->scc_index == 2 (UNIX_VERTEX_INDEX_START)
+set by unix_walk_scc() at 1-c.
+
+Let's track the max SCC index from the previous unix_walk_scc()
+call and assign the max + 1 to a new vertex's scc_index.
+
+This way, we can continue to avoid Tarjan's algorithm while
+preventing misjudgments.
+
+Fixes: ad081928a8b0 ("af_unix: Avoid Tarjan's algorithm if unnecessary.")
+Reported-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20251109025233.3659187-1-kuniyu@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/unix/garbage.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index ba9c6874915a2..4853336f0e6b5 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -3079,6 +3079,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
- 	int i;
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 0068e758be4dd..66fd606c43f45 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -136,6 +136,7 @@ enum unix_vertex_index {
+ };
  
- 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
-+	if (!assoc)
-+		return -EINVAL;
+ static unsigned long unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
++static unsigned long unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
  
- 	/* Detect BADD capture/playback channels from AS EP descriptors */
- 	for (i = 0; i < assoc->bInterfaceCount; i++) {
+ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ {
+@@ -144,6 +145,7 @@ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ 	if (!vertex) {
+ 		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
+ 		vertex->index = unix_vertex_unvisited_index;
++		vertex->scc_index = ++unix_vertex_max_scc_index;
+ 		vertex->out_degree = 0;
+ 		INIT_LIST_HEAD(&vertex->edges);
+ 		INIT_LIST_HEAD(&vertex->scc_entry);
+@@ -480,10 +482,15 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
+ 				scc_dead = unix_vertex_dead(v);
+ 		}
+ 
+-		if (scc_dead)
++		if (scc_dead) {
+ 			unix_collect_skb(&scc, hitlist);
+-		else if (!unix_graph_maybe_cyclic)
+-			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
++		} else {
++			if (unix_vertex_max_scc_index < vertex->scc_index)
++				unix_vertex_max_scc_index = vertex->scc_index;
++
++			if (!unix_graph_maybe_cyclic)
++				unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
++		}
+ 
+ 		list_del(&scc);
+ 	}
+@@ -498,6 +505,7 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
+ 	unsigned long last_index = UNIX_VERTEX_INDEX_START;
+ 
+ 	unix_graph_maybe_cyclic = false;
++	unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
+ 
+ 	/* Visit every vertex exactly once.
+ 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
 -- 
 2.51.0
 
