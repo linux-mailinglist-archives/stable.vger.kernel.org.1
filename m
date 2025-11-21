@@ -1,244 +1,230 @@
-Return-Path: <stable+bounces-195663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAB0C7940D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D90C794BD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id AFED92A03E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 971C0242F7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAFC1F09B3;
-	Fri, 21 Nov 2025 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C50346FB7;
+	Fri, 21 Nov 2025 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PZVmXixl"
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="Pzz0o2No"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C71F09AC;
-	Fri, 21 Nov 2025 13:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD9341044;
+	Fri, 21 Nov 2025 13:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731312; cv=none; b=Seog89FKpV+BiiMfHpIJmlH/Gn/Pl1YMHZwv4dcmZi2Fw3C+5hMA+jNUSufrX6AL0AJt3/IH/JupQQFTjcteYC4L08VDEsLeBxVIvezZrTX5vnO/yP/zmLcLdJnvgE0DezRu30vCRfIOzNuFv7LgFk/354BRODK6Xsaop5SDhYc=
+	t=1763731462; cv=none; b=rZJeD0c3yZ/IoYAWeJWLQh5ZHA+GBqQdMpU4ZyWLkBqgdaO2Ka1eaGOzxBSjeES1DOQ2VSr79YEODiYOtY5kFVgxcRzh84B5WqEgD4F9OFfu9IrP09EGtxa4b4YRzLcWellI4X/iupiHltRp/+nKXGudVUeblfprVMjpzI8SIPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731312; c=relaxed/simple;
-	bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=iBaweLjmE7mS/1PtxtB4GB8yPN+qzQUJ8qfUaSw2MFzK8UZMEBOwkFZ8BEVWbcT/ApCcAJHLo6L9dVTubtbxKWT/MfttJFalu3V1udviPN8OwWn0EOns5Q++VCH/9678wrKkzYDpP00h+qDmCmEJo4MB1AiDDYI2uwZQcmOqDN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PZVmXixl; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1763731310; x=1795267310;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
-  b=PZVmXixlcpXFg/nL8kGdtsNRFkG297uPdNylhCasbrcpedzi3gmRfWFC
-   agytdoB4s7EMaxCUL3FHWeEDpJ6e028qttBAMgLVEbOwhweJdC/BH1uW9
-   6x2e2Fu6j4IHAs0UOnKOtbe4lFmvAZYXhuwfzDhnCeQPj9oAvumO5ffNI
-   ++P7iMyHO9FbmAF0N6LPEWHlFQ+yV4kUDi48pRGQGIyPReZsxdL0uIbeE
-   SvMiGHA3FdezBkqLbukztJhKS/fy7Gkh+vLzhjwMyUUjZHshXNa8Ir5v7
-   +lzuj5GqKvHLubK13pEb4gpvxQTZOqVlUKRDfGYnAinSX+I2WCZKcPa11
-   Q==;
-X-CSE-ConnectionGUID: xDvkwLU6SPqBbOQ2+GbYfA==
-X-CSE-MsgGUID: C5bIzEmsQq2TfDZ+nPLjow==
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="49983260"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Nov 2025 06:21:43 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 21 Nov 2025 06:21:08 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 21 Nov 2025 06:21:05 -0700
-From: Ludovic Desroches <ludovic.desroches@microchip.com>
-Date: Fri, 21 Nov 2025 14:20:48 +0100
-Subject: [PATCH REGRESSION] drm/panel: simple: restore connector_type
- fallback
+	s=arc-20240116; t=1763731462; c=relaxed/simple;
+	bh=gCSD/meQnl9tT4NSHRQITpayeAOwbenLsmTidzNUO1E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VysC/rMkSt3Zv/qBAFdN2b4LqzKMp3XHulmbqoi8i0EfaW2qH5XpQ7ySQLNnDE01bFr84bElH5fDl1U4FVnsCAfaZXQ/XKBXieIeBtZuBEm2YO5KqK0faX2vXEsarg9wQtG5OTlivJ8Gz7SFT6jOal4p2EGsHi3JwzPvsKlAIls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=Pzz0o2No; arc=none smtp.client-ip=91.103.66.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1763731451;
+	bh=DCj2AeYsx0k+Qfi2hM7PNGR5VzBYkbbO3sWKvMVCmL0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=Pzz0o2NonAWX4lnqG8t6IeRh1wMz7tVi1G2tBjtW22D1wGT8Ey8mnpjQvpwgH5myO
+	 PKr7uwcMAYKlkewj1MJKTEXWdi6Hiai/vkoDuNeN00DEvQPuwtH7XG7TfO6PmtjVeI
+	 eUxHj3ROmbPJiiEAKd1UOSU6tYakr+EO9imzPDdKBgXPwa93xlA/iwfghW32iJ3NJw
+	 rky5SABGhxe3rI1IgKDSipbom/hZ8vTTSL58bE2zho6VRQ/OaBFAYGd+LsJopOeQ/3
+	 O8AkiDTcWvGazzJVaZdcYwFs+YIfIyZN9gOGVBAV0JjWknXiVjduv8Kbffbrg0Cl09
+	 3VRhN2vgBqvWQ==
+Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay13.kaspersky-labs.com (Postfix) with ESMTP id CD5923E9B79;
+	Fri, 21 Nov 2025 16:24:11 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 67A373E4F07;
+	Fri, 21 Nov 2025 16:24:10 +0300 (MSK)
+Received: from Nalivayko.avp.ru (10.16.105.14) by HQMAILSRV3.avp.ru
+ (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 21 Nov
+ 2025 16:24:09 +0300
+From: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
+To: <linux-media@vger.kernel.org>
+CC: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Antoine Jacquet <royale@zerezo.com>, Christophe JAILLET
+	<christophe.jaillet@wanadoo.fr>, Alan Stern <stern@rowland.harvard.edu>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	<lvc-project@linuxtesting.org>,
+	<syzbot+0335df380edd9bd3ff70@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] dvb-usb: dtv5100: rewrite i2c message usb_control send/recv
+Date: Fri, 21 Nov 2025 16:23:31 +0300
+Message-ID: <20251121132332.3983185-1-Sergey.Nalivayko@kaspersky.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAC9nIGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDQyND3ZzklPiCxLzUnPjk/Ly81OSS/KL4ksqC1Pi0zArdNAODtFRjczO
- zRBMjJaARBUWpQGGw8dFKQa7uQa7BwZ7+fkqxtbUAF6tkj3oAAAA=
-X-Change-ID: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
-To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
-	<jesszhan0024@gmail.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Anusha Srivatsa <asrivats@redhat.com>, "Luca
- Ceresoli" <luca.ceresoli@bootlin.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4871;
- i=ludovic.desroches@microchip.com; h=from:subject:message-id;
- bh=6rzw3wR5dUfOYlSfhUkAsd44MLDxQ7vrhBiUg3Jq5nA=;
- b=owEBbQKS/ZANAwAKAT455hP3e2QtAcsmYgBpIGdACQGqsia9V4GlQ+9DQpHU+3XyP5o1dJcz0
- R/IGuWGV/iJAjMEAAEKAB0WIQQAMEvJiWmsW41tNU0+OeYT93tkLQUCaSBnQAAKCRA+OeYT93tk
- LYtZD/4rbEzqLIjZBDiSKelrsPFqQDDwEgM4F6WrwBuTLRDlDl4M7TpWLe8LhJGls+8oOPYGG+X
- 4CcD43GlnojuDwTHJQ3HK17Asar2ayX35bNX40mcuk2H60biMHKZMoeZDqtUxWIvxcL5P06q8X2
- aq0FzAB1I6++x64SbDgnOycFosx0kvhH9gLHhLZR6uILa8LyuJrCjCvw0ojTS5vaYKvGEU6Kaui
- TBo/XuTvKJ5U5MQJIMGVPK1qkHtrQE0zJsGEyLtwVIO+IPI7hTBZKPDi/z0YFoCvCTZNsFh1ico
- VqhpCaoZIoZsAx6TmrLrUdy9nrpib0OfgL94DKL/VqzEJJNctHZds8uC/t0DtpifU5bRd7+0bbk
- kjQrEbPmtLOavW179zIzLZgPJJpshmKE8uzZYIxawT/gq1HNglBjjojHPJ2DiF3eoHQJN+29RAG
- 1sHG/DArriJFdy8th/c9c0W8GORsS3h5uZNbVvrk0Il1/C6bfHa6AlcN88Bgryp+K0wyP2FF5+3
- P0SFu+gV8JDzBHT2t9BRcqr1urCLXsDaiW+8esDvmM8CDoG5a5y9tfFGzWnC6m/AMgJDxehB598
- 9eMnYtbYT+hDPR68oVDNtD1RwCsGoEYji9DA20pBf+ejxkvamzDxjw0m+T6bACsyF4+XqTi/Ikn
- gpYrNNI7FTeETzw==
-X-Developer-Key: i=ludovic.desroches@microchip.com; a=openpgp;
- fpr=665BAA7297BE089A28B77696E332995F09DCC11A
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV3.avp.ru (10.64.57.53) To HQMAILSRV3.avp.ru
+ (10.64.57.53)
+X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/21/2025 13:08:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 198293 [Nov 21 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.20
+X-KSE-AntiSpam-Info: Envelope from: Sergey.Nalivayko@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 78 0.3.78
+ 468114d1894f8bd8bd24fc93d92b1fa7ecfbc0f3
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_one_url}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/21/2025 13:11:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 11/21/2025 11:55:00 AM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/21 12:51:00
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/21 08:31:00 #27956385
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/11/21 12:51:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-The switch from devm_kzalloc() + drm_panel_init() to
-devm_drm_panel_alloc() introduced a regression.
+syzbot reports a WARNING issue as below:
 
-Several panel descriptors do not set connector_type. For those panels,
-panel_simple_probe() used to compute a connector type (currently DPI as a
-fallback) and pass that value to drm_panel_init(). After the conversion
-to devm_drm_panel_alloc(), the call unconditionally used
-desc->connector_type instead, ignoring the computed fallback and
-potentially passing DRM_MODE_CONNECTOR_Unknown, which
-drm_panel_bridge_add() does not allow.
+usb 1-1: BOGUS control dir, pipe 80000280 doesn't match bRequestType c0
+WARNING: CPU: 0 PID: 5833 at drivers/usb/core/urb.c:413 usb_submit_urb+0x1112/0x1870 drivers/usb/core/urb.c:411
+Modules linked in:
+CPU: 0 UID: 0 PID: 5833 Comm: syz-executor411 Not tainted 6.15.0-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x114/0x4c0 drivers/usb/core/message.c:59
+ usb_internal_control_msg drivers/usb/core/message.c:103 [inline]
+ usb_control_msg+0x232/0x3e0 drivers/usb/core/message.c:154
+ dtv5100_i2c_msg+0x250/0x330 drivers/media/usb/dvb-usb/dtv5100.c:60
+ dtv5100_i2c_xfer+0x1a4/0x3c0 drivers/media/usb/dvb-usb/dtv5100.c:86
+ __i2c_transfer+0x871/0x2170 drivers/i2c/i2c-core-base.c:-1
+ i2c_transfer+0x25b/0x3a0 drivers/i2c/i2c-core-base.c:2315
+ i2c_transfer_buffer_flags+0x105/0x190 drivers/i2c/i2c-core-base.c:2343
+ i2c_master_send include/linux/i2c.h:109 [inline]
+ i2cdev_write+0x112/0x1b0 drivers/i2c/i2c-dev.c:183
+ do_loop_readv_writev include/linux/uio.h:-1 [inline]
+ vfs_writev+0x4a5/0x9a0 fs/read_write.c:1057
+ do_writev+0x14d/0x2d0 fs/read_write.c:1101
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Move the connector_type validation / fallback logic before the
-devm_drm_panel_alloc() call and pass the computed connector_type to
-devm_drm_panel_alloc(), so panels without an explicit connector_type
-once again get the DPI default.
+The issue occurs due to insufficient validation of data passed to the USB API.
+In the current implementation, the dtv5100 driver expects two I2C non-zero 
+length messages for a combined write/read request. However, when 
+only a single message is provided, the driver incorrectly processes message
+of size 1, passing a read data size of zero to the dtv5100_i2c_msg function.
 
-Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
+When usb_control_msg() is called with a PIPEOUT type and a read length of
+zero, a mismatch error occurs between the operation type and the expected
+transfer direction in function usb_submit_urb. This is the trigger
+for warning.
+
+Replace usb_control_msg() with usb_control_msg_recv() and
+usb_control_msg_send() to rely on the USB API for proper validation and
+prevent inconsistencies in the future.
+
+Reported-by: syzbot+0335df380edd9bd3ff70@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0335df380edd9bd3ff70
+Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
 ---
-Hi,
+v2: Expand problem description.
 
-I am not sure whether this regression has already been reported or
-addressed. If it has, please feel free to drop this patch.
----
- drivers/gpu/drm/panel/panel-simple.c | 86 ++++++++++++++++++------------------
- 1 file changed, 43 insertions(+), 43 deletions(-)
+ drivers/media/usb/dvb-usb/dtv5100.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index da6b71b70a463400fcc45006788f87e97b0c148c..dc41789f6a53c78b928ff39291ab7219a2d835dd 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -623,49 +623,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
- 	if (IS_ERR(desc))
- 		return ERR_CAST(desc);
+diff --git a/drivers/media/usb/dvb-usb/dtv5100.c b/drivers/media/usb/dvb-usb/dtv5100.c
+index 3d85c6f7f6ec..05860f5d5053 100644
+--- a/drivers/media/usb/dvb-usb/dtv5100.c
++++ b/drivers/media/usb/dvb-usb/dtv5100.c
+@@ -26,40 +26,37 @@ static int dtv5100_i2c_msg(struct dvb_usb_device *d, u8 addr,
+ 			   u8 *wbuf, u16 wlen, u8 *rbuf, u16 rlen)
+ {
+ 	struct dtv5100_state *st = d->priv;
+-	unsigned int pipe;
+ 	u8 request;
+ 	u8 type;
+ 	u16 value;
+ 	u16 index;
  
--	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
--				     &panel_simple_funcs, desc->connector_type);
--	if (IS_ERR(panel))
--		return ERR_CAST(panel);
--
--	panel->desc = desc;
--
--	panel->supply = devm_regulator_get(dev, "power");
--	if (IS_ERR(panel->supply))
--		return ERR_CAST(panel->supply);
--
--	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
--						     GPIOD_OUT_LOW);
--	if (IS_ERR(panel->enable_gpio))
--		return dev_err_cast_probe(dev, panel->enable_gpio,
--					  "failed to request GPIO\n");
--
--	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
--	if (err) {
--		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
--		return ERR_PTR(err);
--	}
--
--	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
--	if (ddc) {
--		panel->ddc = of_find_i2c_adapter_by_node(ddc);
--		of_node_put(ddc);
--
--		if (!panel->ddc)
--			return ERR_PTR(-EPROBE_DEFER);
--	}
--
--	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
--	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
--		panel_simple_parse_panel_timing_node(dev, panel, &dt);
--
--	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
--		/* Optional data-mapping property for overriding bus format */
--		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
--		if (err)
--			goto free_ddc;
--	}
--
- 	connector_type = desc->connector_type;
- 	/* Catch common mistakes for panels. */
- 	switch (connector_type) {
-@@ -720,6 +677,49 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
- 		break;
++	index = (addr << 8) + wbuf[0];
++
++	memcpy(st->data, rbuf, rlen);
++	msleep(1); /* avoid I2C errors */
++
+ 	switch (wlen) {
+ 	case 1:
+ 		/* write { reg }, read { value } */
+-		pipe = usb_rcvctrlpipe(d->udev, 0);
+ 		request = (addr == DTV5100_DEMOD_ADDR ? DTV5100_DEMOD_READ :
+ 							DTV5100_TUNER_READ);
+ 		type = USB_TYPE_VENDOR | USB_DIR_IN;
+ 		value = 0;
+-		break;
++		return usb_control_msg_recv(d->udev, 0, request, type, value, index,
++			st->data, rlen, DTV5100_USB_TIMEOUT, GFP_KERNEL);
+ 	case 2:
+ 		/* write { reg, value } */
+-		pipe = usb_sndctrlpipe(d->udev, 0);
+ 		request = (addr == DTV5100_DEMOD_ADDR ? DTV5100_DEMOD_WRITE :
+ 							DTV5100_TUNER_WRITE);
+ 		type = USB_TYPE_VENDOR | USB_DIR_OUT;
+ 		value = wbuf[1];
+-		break;
++		return usb_control_msg_send(d->udev, 0, request, type, value, index,
++			st->data, rlen, DTV5100_USB_TIMEOUT, GFP_KERNEL);
+ 	default:
+ 		warn("wlen = %x, aborting.", wlen);
+ 		return -EINVAL;
  	}
+-	index = (addr << 8) + wbuf[0];
+-
+-	memcpy(st->data, rbuf, rlen);
+-	msleep(1); /* avoid I2C errors */
+-	return usb_control_msg(d->udev, pipe, request,
+-			       type, value, index, st->data, rlen,
+-			       DTV5100_USB_TIMEOUT);
+ }
  
-+	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
-+				     &panel_simple_funcs, connector_type);
-+	if (IS_ERR(panel))
-+		return ERR_CAST(panel);
-+
-+	panel->desc = desc;
-+
-+	panel->supply = devm_regulator_get(dev, "power");
-+	if (IS_ERR(panel->supply))
-+		return ERR_CAST(panel->supply);
-+
-+	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
-+						     GPIOD_OUT_LOW);
-+	if (IS_ERR(panel->enable_gpio))
-+		return dev_err_cast_probe(dev, panel->enable_gpio,
-+					  "failed to request GPIO\n");
-+
-+	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
-+	if (err) {
-+		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
-+		return ERR_PTR(err);
-+	}
-+
-+	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
-+	if (ddc) {
-+		panel->ddc = of_find_i2c_adapter_by_node(ddc);
-+		of_node_put(ddc);
-+
-+		if (!panel->ddc)
-+			return ERR_PTR(-EPROBE_DEFER);
-+	}
-+
-+	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
-+	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
-+		panel_simple_parse_panel_timing_node(dev, panel, &dt);
-+
-+	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
-+		/* Optional data-mapping property for overriding bus format */
-+		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
-+		if (err)
-+			goto free_ddc;
-+	}
-+
- 	dev_set_drvdata(dev, panel);
- 
- 	/*
-
----
-base-commit: 88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
-change-id: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
-
-Best regards,
+ /* I2C */
 -- 
-Ludovic Desroches <ludovic.desroches@microchip.com>
-
+2.39.5
 
