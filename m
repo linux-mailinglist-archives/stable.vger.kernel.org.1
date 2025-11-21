@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-195622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F35AC7949C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0361FC794C3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 753D74E42CD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DEC844EB82D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F552F363E;
-	Fri, 21 Nov 2025 13:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BC830CD88;
+	Fri, 21 Nov 2025 13:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxvxPAQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHrUktem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F06F26E6F4;
-	Fri, 21 Nov 2025 13:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAD72F656A;
+	Fri, 21 Nov 2025 13:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731198; cv=none; b=sEQDVWqkmgaZvCBoT9wGxK2ORg+FYA6U7QtftIKVVX8HtKFNVomjPV2AMhPwE/DAUQv5tWAoxYK9P9vqd/UUBXvvlXrG47iX8Oat6QsoqX9Sg033iFlOI4tf+AhF2BSAMhIR4hX3NKmYlnZ3Z5x4YNxtfz/gYbfp8akNk3kXBiM=
+	t=1763731230; cv=none; b=iVOH1zm3+HmqGh/Jjwc7qVrhCkM/HCKhYVYIDBy81UZsBE2iU4PP11b1WtdQSVf2uY26KzFonXwlcOeML43mfoVIIyFtkIwaqm8Z9rhwqNaFZJGdjb4EjWj+5dKAJ8u9DJNDKps0Wx0fd8LfW3Ky5yYb4krdEXcFSHbjM1ZZO3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731198; c=relaxed/simple;
-	bh=m0NWgeqrSxErVqHoIvbc8iTKlv37Z6CmcGtC7d36oKo=;
+	s=arc-20240116; t=1763731230; c=relaxed/simple;
+	bh=dHvqEBwe+3XnTSwAxQBATdpqTEMoXyrYMIypLuGrRls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2unvQjTIqOqOBqaqzfC3Uod9eTSwK/k4Q9mxF3/903rfrguuAoTdDxw6loBoBHunryZeVxPcjjTLc/ohALuxWhqvwVpv71UYOkOBMlU7aHeVSCEU6TQz4Okupb8bnpXo9iUapR8f7rFezB2pqBj4rRE3ya7q4ZpXfw4jUvJ89k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxvxPAQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF0CC4CEF1;
-	Fri, 21 Nov 2025 13:19:57 +0000 (UTC)
+	 MIME-Version; b=UM5RcH9NRRAz3M6x8LHP3cU09RP+NlWr84j/nT6w8gujIUXYlLV+1tZkq09zYjE7K3KzB8tqJPkG/fvGelRpBWM1gKOfb5foZuJaTlS4xywPYlzDhyGbkQP0rl7JAb4FAUxPHLJZHVpPspmd/jwBtp4sWH1OGfofDXv+sHj55g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHrUktem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB40DC4CEF1;
+	Fri, 21 Nov 2025 13:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731198;
-	bh=m0NWgeqrSxErVqHoIvbc8iTKlv37Z6CmcGtC7d36oKo=;
+	s=korg; t=1763731230;
+	bh=dHvqEBwe+3XnTSwAxQBATdpqTEMoXyrYMIypLuGrRls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxvxPAQJtUr005pFJuqpgSOZKSwYCh9JtBNAX4BhaSN1RVNdKrldkNI59e8o0OQ8l
-	 tP7XV/9uJL555BxkL9Mh6pSaeUaA0svYLARz7JcKUELhZwZnkrIVOuGiwnzqOLunys
-	 Gp40XuWeQpYAmtMmcG5BL35dvfFcEINgROenwyLE=
+	b=FHrUktemyEbpIG71GzyWGolVf1oGEPjygT8lQIoYJDIDYDOn89tsqCbHo1jGO2hl+
+	 ZaltvZBsufNLmZgqQxCQoX5BNBl7TSl6rzp5/0uoXcQID1TZO9QUJ/bSYNoPPMTv60
+	 W85FdEIqrbbCCDrsILKCmJI6pH0lYwZd8BR1VigM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 117/247] drm/client: fix MODULE_PARM_DESC string for "active"
-Date: Fri, 21 Nov 2025 14:11:04 +0100
-Message-ID: <20251121130158.782067033@linuxfoundation.org>
+Subject: [PATCH 6.17 118/247] bpf: Add bpf_prog_run_data_pointers()
+Date: Fri, 21 Nov 2025 14:11:05 +0100
+Message-ID: <20251121130158.817836984@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
 References: <20251121130154.587656062@linuxfoundation.org>
@@ -67,47 +69,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0a4a18e888ae8c8004582f665c5792c84a681668 ]
+[ Upstream commit 4ef92743625818932b9c320152b58274c05e5053 ]
 
-The MODULE_PARM_DESC string for the "active" parameter is missing a
-space and has an extraneous trailing ']' character. Correct these.
+syzbot found that cls_bpf_classify() is able to change
+tc_skb_cb(skb)->drop_reason triggering a warning in sk_skb_reason_drop().
 
-Before patch:
-$ modinfo -p ./drm_client_lib.ko
-active:Choose which drm client to start, default isfbdev] (string)
+WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 __sk_skb_reason_drop net/core/skbuff.c:1189 [inline]
+WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 sk_skb_reason_drop+0x76/0x170 net/core/skbuff.c:1214
 
-After patch:
-$ modinfo -p ./drm_client_lib.ko
-active:Choose which drm client to start, default is fbdev (string)
+struct tc_skb_cb has been added in commit ec624fe740b4 ("net/sched:
+Extend qdisc control block with tc control block"), which added a wrong
+interaction with db58ba459202 ("bpf: wire in data and data_end for
+cls_act_bpf").
 
-Fixes: f7b42442c4ac ("drm/log: Introduce a new boot logger to draw the kmsg on the screen")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20251112010920.2355712-1-rdunlap@infradead.org
+drop_reason was added later.
+
+Add bpf_prog_run_data_pointers() helper to save/restore the net_sched
+storage colliding with BPF data_meta/data_end.
+
+Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Closes: https://lore.kernel.org/netdev/6913437c.a70a0220.22f260.013b.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20251112125516.1563021-1-edumazet@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/clients/drm_client_setup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/filter.h | 20 ++++++++++++++++++++
+ net/sched/act_bpf.c    |  6 ++----
+ net/sched/cls_bpf.c    |  6 ++----
+ 3 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/clients/drm_client_setup.c b/drivers/gpu/drm/clients/drm_client_setup.c
-index 72480db1f00d0..515aceac22b18 100644
---- a/drivers/gpu/drm/clients/drm_client_setup.c
-+++ b/drivers/gpu/drm/clients/drm_client_setup.c
-@@ -13,8 +13,8 @@
- static char drm_client_default[16] = CONFIG_DRM_CLIENT_DEFAULT;
- module_param_string(active, drm_client_default, sizeof(drm_client_default), 0444);
- MODULE_PARM_DESC(active,
--		 "Choose which drm client to start, default is"
--		 CONFIG_DRM_CLIENT_DEFAULT "]");
-+		 "Choose which drm client to start, default is "
-+		 CONFIG_DRM_CLIENT_DEFAULT);
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 52fecb7a1fe36..152f2fc7b65a3 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -898,6 +898,26 @@ static inline void bpf_compute_data_pointers(struct sk_buff *skb)
+ 	cb->data_end  = skb->data + skb_headlen(skb);
+ }
  
- /**
-  * drm_client_setup() - Setup in-kernel DRM clients
++static inline int bpf_prog_run_data_pointers(
++	const struct bpf_prog *prog,
++	struct sk_buff *skb)
++{
++	struct bpf_skb_data_end *cb = (struct bpf_skb_data_end *)skb->cb;
++	void *save_data_meta, *save_data_end;
++	int res;
++
++	save_data_meta = cb->data_meta;
++	save_data_end = cb->data_end;
++
++	bpf_compute_data_pointers(skb);
++	res = bpf_prog_run(prog, skb);
++
++	cb->data_meta = save_data_meta;
++	cb->data_end = save_data_end;
++
++	return res;
++}
++
+ /* Similar to bpf_compute_data_pointers(), except that save orginal
+  * data in cb->data and cb->meta_data for restore.
+  */
+diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
+index 396b576390d00..c2b5bc19e0911 100644
+--- a/net/sched/act_bpf.c
++++ b/net/sched/act_bpf.c
+@@ -47,12 +47,10 @@ TC_INDIRECT_SCOPE int tcf_bpf_act(struct sk_buff *skb,
+ 	filter = rcu_dereference(prog->filter);
+ 	if (at_ingress) {
+ 		__skb_push(skb, skb->mac_len);
+-		bpf_compute_data_pointers(skb);
+-		filter_res = bpf_prog_run(filter, skb);
++		filter_res = bpf_prog_run_data_pointers(filter, skb);
+ 		__skb_pull(skb, skb->mac_len);
+ 	} else {
+-		bpf_compute_data_pointers(skb);
+-		filter_res = bpf_prog_run(filter, skb);
++		filter_res = bpf_prog_run_data_pointers(filter, skb);
+ 	}
+ 	if (unlikely(!skb->tstamp && skb->tstamp_type))
+ 		skb->tstamp_type = SKB_CLOCK_REALTIME;
+diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
+index 7fbe42f0e5c2b..a32754a2658bb 100644
+--- a/net/sched/cls_bpf.c
++++ b/net/sched/cls_bpf.c
+@@ -97,12 +97,10 @@ TC_INDIRECT_SCOPE int cls_bpf_classify(struct sk_buff *skb,
+ 		} else if (at_ingress) {
+ 			/* It is safe to push/pull even if skb_shared() */
+ 			__skb_push(skb, skb->mac_len);
+-			bpf_compute_data_pointers(skb);
+-			filter_res = bpf_prog_run(prog->filter, skb);
++			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
+ 			__skb_pull(skb, skb->mac_len);
+ 		} else {
+-			bpf_compute_data_pointers(skb);
+-			filter_res = bpf_prog_run(prog->filter, skb);
++			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
+ 		}
+ 		if (unlikely(!skb->tstamp && skb->tstamp_type))
+ 			skb->tstamp_type = SKB_CLOCK_REALTIME;
 -- 
 2.51.0
 
