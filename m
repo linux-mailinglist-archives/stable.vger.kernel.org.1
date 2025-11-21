@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170D2C7A0ED
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:14:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D597C796D3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E4C44F3643
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A66EA4EA67B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54F334B1AF;
-	Fri, 21 Nov 2025 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C033438C;
+	Fri, 21 Nov 2025 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFzYdKka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS9NAAJt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9523502AE;
-	Fri, 21 Nov 2025 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE64B3F9D2;
+	Fri, 21 Nov 2025 13:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733512; cv=none; b=B2PEWHXij7a/DwevPJH2mMMKMAAlgeaKnVprK2WV2lMxX1Ho/Z3BHRNg1AGP8cyz7p0HZUIbUMkAq8ZJxXB153G4ZntLzbQLsJAaUEpcI39gBpagWRII/iO4AdkgYN9s9TaBZF7qT5Tj7AF8zHLBcJXT/qxKfs7FpaNSTx+A1Lg=
+	t=1763731935; cv=none; b=GqZSdY34TF+yhlsdkUhYHG3diNMB1uoPUA9Orokisuuz1Ev75k8BFkZYEylqYMrUJdxbDOAMNTfufSwpi+DRHsDfuYemowfBm0WO8wQMU0CHapcHyWq4mXrwQRjYODalVQuuXioq0uwLdzT/ywOvgqsaja1z+JLUx7kMryFhgUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733512; c=relaxed/simple;
-	bh=VzfaIz6hOuZ+XS6TsbQFWW18l8Nq5aS0anrXwW61iFE=;
+	s=arc-20240116; t=1763731935; c=relaxed/simple;
+	bh=sJoJo+ULJAqVt05skj+fCbUnQdrGE7Ee+i/L1i99O5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ky/nASBHOJU8dH7v5xVR07vbDwapjcIHydKlypounNTH7DRf7gjfi+EfjBCQa4Q6c67FfjX/wPhk27ZKn2XEAhlVH7cQXcET0bB7qIyQIPmo9Sm4vUUgnyTLhSmlOvPeVmLExiho8pPpkigKUIgWKQJCHP6p2o9WozFqsdGYKDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFzYdKka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A2BC4CEF1;
-	Fri, 21 Nov 2025 13:58:31 +0000 (UTC)
+	 MIME-Version; b=Y/KLCOEiP2RMk+NNevc9UFPR2h6lqTKIVujm3PG/52vkIqsVm6uPD3nN96gIED4JR62Qe3vPHu0UyzkzQqIaBhxdmHbu55NJazsxWEZgtboKlkdAQ8O0irqPiCX8st0g3T2JP5/zNjEeAPYNZCNzyJJ7N7hPCGm7SWRjvnv6jA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fS9NAAJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2374DC4CEF1;
+	Fri, 21 Nov 2025 13:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733512;
-	bh=VzfaIz6hOuZ+XS6TsbQFWW18l8Nq5aS0anrXwW61iFE=;
+	s=korg; t=1763731935;
+	bh=sJoJo+ULJAqVt05skj+fCbUnQdrGE7Ee+i/L1i99O5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFzYdKkaTDXnZ1JH4uZHM+1Tvg2QB34rd4aQcrNhNABGakY0umMzxVM7ukwRnSk6b
-	 zIAZmVlSFCjAw0odTKTMVpNEBY+7JLg7PqF0lDDUCSrSJqp0gCzMjI3pntsL4e5U7J
-	 3zsb/8RNsvaRXS4mi87mc6euHbXtdHnkvusi0zKk=
+	b=fS9NAAJtDe72eSHFtALy5kWi5KVdqYrz3U0/6AV23aoSH3AU14y7PPI6ppoXkP4vc
+	 XR3GakFbB4/f2PN57R2ayMBxan1HPf2up4UVk4F5yc21VBeURNHskMioomBuJq966H
+	 O0UCKC2f9dHlCrfpMkyVtklSaGnYaZpS5o3K+o1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 460/529] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
-Date: Fri, 21 Nov 2025 14:12:39 +0100
-Message-ID: <20251121130247.377855912@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 133/185] crypto: hisilicon/qm - Fix device reference leak in qm_get_qos_value
+Date: Fri, 21 Nov 2025 14:12:40 +0100
+Message-ID: <20251121130148.675126729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
+commit 59b0afd01b2ce353ab422ea9c8375b03db313a21 upstream.
 
-Luxul XAP-1440 has BCM54210E PHY at address 25.
+The qm_get_qos_value() function calls bus_find_device_by_name() which
+increases the device reference count, but fails to call put_device()
+to balance the reference count and lead to a device reference leak.
 
-Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add put_device() calls in both the error path and success path to
+properly balance the reference count.
+
+Found via static analysis.
+
+Fixes: 22d7a6c39cab ("crypto: hisilicon/qm - add pci bdf number check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Longfang Liu <liulongfang@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/qm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-index ac44c745bdf8e..a39a021a39107 100644
---- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-@@ -55,8 +55,8 @@
- 	mdio {
- 		/delete-node/ switch@1e;
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3688,10 +3688,12 @@ static ssize_t qm_get_qos_value(struct h
+ 	pdev = container_of(dev, struct pci_dev, dev);
+ 	if (pci_physfn(pdev) != qm->pdev) {
+ 		pci_err(qm->pdev, "the pdev input does not match the pf!\n");
++		put_device(dev);
+ 		return -EINVAL;
+ 	}
  
--		bcm54210e: ethernet-phy@0 {
--			reg = <0>;
-+		bcm54210e: ethernet-phy@25 {
-+			reg = <25>;
- 		};
- 	};
- };
--- 
-2.51.0
-
+ 	*fun_index = pdev->devfn;
++	put_device(dev);
+ 
+ 	return 0;
+ }
 
 
 
