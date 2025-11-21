@@ -1,66 +1,53 @@
-Return-Path: <stable+bounces-195480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39836C782F7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:37:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39446C782FA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 375A04EA2BE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:36:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B15084EA9D7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEBC33D6F0;
-	Fri, 21 Nov 2025 09:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECA7339B53;
+	Fri, 21 Nov 2025 09:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waJJKVPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnTNaKOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF05280327;
-	Fri, 21 Nov 2025 09:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A60323EAAB;
+	Fri, 21 Nov 2025 09:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763717786; cv=none; b=WnQ5T2O2UVk9ss5ZqaYaGjGUEQpSmBBQuEloF+vd3i1cP9ohzTrNgp+FwWx6IfZvHiH0FBEgfwnF+ATdim9szKqnypJkxoOyVEUDTZiwJvjZiC1wCE5ruqsGL/3yINy09zhIVXiImG92eZxha40wIqGwvXWjYAP2sQFRRvvaQyQ=
+	t=1763717817; cv=none; b=a3rAlgisNe25yjTh/Xzz+ZQVKdF4JW77hO2+UOvLEoPv8lJxCAHMFHvrimx5ViUtyEbZS98aspKVArax4MiRZPzQVveiJnq9lRWZeakUJpS6mZjXyMDpFPa3zhnxcyBtaMA5Aeu4N0nT7lCpgJwvxoM8dZ07ankV5Vx5RCF45cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763717786; c=relaxed/simple;
-	bh=H0bzwOiblX/DWVg2SXKw6z+RxXhENn7wjYR4cHYaIZo=;
+	s=arc-20240116; t=1763717817; c=relaxed/simple;
+	bh=XxKwOaJI9JKbXq3me/g2d7eNwLAnQ4XZyW1Eo06ZvS4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULP5zUPUUtZRSpatzFUWy2RRh64mic92lHLkWy93gN+vVDw65+xG/HxFKTCOMIJDy/VnFQSzmre3iy4YrqZNyF1UyPr4gUfIDQm6zzE/o7u7iGYSBlCIMTda6kHss3EWv2/Lc06S39CGIik14+0TF//Ho0q9QBfV/uElb0u490Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waJJKVPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC417C4CEF1;
-	Fri, 21 Nov 2025 09:36:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=h6upqImd5wVDMeTriHPcnTbx/6AA2MF2U4TyMhCkD5o8llMuhSq7kpXYC3wBkXcU578cHSuU0JnVXYYEqWVw0+2VLTVTfPvZIUcuGwi1gccEYZwkmorEe9E5tJ0PO2xOyK1GX9i1P7OV4i/DLln3ub5xEpI9uJjSm/YmOswsEkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnTNaKOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE560C113D0;
+	Fri, 21 Nov 2025 09:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763717785;
-	bh=H0bzwOiblX/DWVg2SXKw6z+RxXhENn7wjYR4cHYaIZo=;
+	s=korg; t=1763717817;
+	bh=XxKwOaJI9JKbXq3me/g2d7eNwLAnQ4XZyW1Eo06ZvS4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=waJJKVPvWRO4PJRHTYdfaqHXmGoY5Q4T/XcSadFmlTAGPh8DEEE/ukk/FhkpdzpV6
-	 DmDdMaaag5TD8ZBXWNmeLPwRCB4EqaWqD0zWwnfLT+oVz0vNeYUZpwHAV1DY329Tu7
-	 LUEtfH9rk0cOu6epF/1VRWgVXUqVnPCXgO/0WGQQ=
-Date: Fri, 21 Nov 2025 10:36:22 +0100
+	b=hnTNaKOyP2p25wbigXj4uq+V3T7gt2HwrGThbH0mc8uR3n7oCtOu3LzLBSM6zZYqh
+	 5MbuM4TpEDnOvDUGWmZgtpl3EqnugTgnUBgfqsFkXc+WkGLb1i5c8mhi56JCwFFzQg
+	 aKeeGWUU8KTB2rVWrUkK7EFkJrJeRg07uu+kn+i0=
+Date: Fri, 21 Nov 2025 10:36:54 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
-Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
-Message-ID: <2025112157-renewable-batboy-7b5c@gregkh>
-References: <20250623130632.993849527@linuxfoundation.org>
- <CA+G9fYuU5uSG1MKdYPoaC6O=-w5z6BtLtwd=+QBzrtZ1uQ8VXg@mail.gmail.com>
- <2025062439-tamer-diner-68e9@gregkh>
- <CA+G9fYvUG9=yGCp1W9-9+dhA6xLRo7mrL=7x9kBNJmzg7TCn7w@mail.gmail.com>
- <2025062517-lucrative-justness-83fe@gregkh>
- <202511061127.52ECA4AB40@keescook>
+To: Jari Ruusu <jariruusu@protonmail.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Zizhi Wo <wozizhi@huaweicloud.com>
+Subject: Re: [PATCH 6.12 000/565] 6.12.58-rc1 review
+Message-ID: <2025112145-cobbler-reattach-8fb2@gregkh>
+References: <zuLBWV-yhJXc0iM4l5T-O63M-kKmI2FlUSVgZl6B3WubvFEHRbBYQyhKsRcK4YyKk_iePF4STJihe7hx5H3KCU2KblG32oXwsxn9tzpTm5w=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,91 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202511061127.52ECA4AB40@keescook>
+In-Reply-To: <zuLBWV-yhJXc0iM4l5T-O63M-kKmI2FlUSVgZl6B3WubvFEHRbBYQyhKsRcK4YyKk_iePF4STJihe7hx5H3KCU2KblG32oXwsxn9tzpTm5w=@protonmail.com>
 
-On Thu, Nov 06, 2025 at 11:32:18AM -0800, Kees Cook wrote:
-> On Wed, Jun 25, 2025 at 09:39:45AM +0100, Greg Kroah-Hartman wrote:
-> > On Wed, Jun 25, 2025 at 07:15:24AM +0530, Naresh Kamboju wrote:
-> > > On Tue, 24 Jun 2025 at 15:48, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Tue, Jun 24, 2025 at 02:12:05AM +0530, Naresh Kamboju wrote:
-> > > > > On Mon, 23 Jun 2025 at 18:39, Greg Kroah-Hartman
-> > > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > This is the start of the stable review cycle for the 5.15.186 release.
-> > > > > > There are 411 patches in this series, all will be posted as a response
-> > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > let me know.
-> > > > > >
-> > > > > > Responses should be made by Wed, 25 Jun 2025 13:05:51 +0000.
-> > > > > > Anything received after that time might be too late.
-> > > > > >
-> > > > > > The whole patch series can be found in one patch at:
-> > > > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.186-rc1.gz
-> > > > > > or in the git tree and branch at:
-> > > > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > > > and the diffstat can be found below.
-> > > > > >
-> > > > > > thanks,
-> > > > > >
-> > > > > > greg k-h
-> > > > >
-> > > > > Regressions on arm64 allyesconfig builds with gcc-12 and clang failed on
-> > > > > the Linux stable-rc 5.15.186-rc1.
-> > > > >
-> > > > > Regressions found on arm64
-> > > > > * arm64, build
-> > > > >   - gcc-12-allyesconfig
-> > > > >
-> > > > > Regression Analysis:
-> > > > >  - New regression? Yes
-> > > > >  - Reproducibility? Yes
-> > > > >
-> > > > > Build regression: stable-rc 5.15.186-rc1 arm64
-> > > > > drivers/scsi/qedf/qedf_main.c:702:9: error: positional initialization
-> > > > > of field in 'struct' declared with 'designated_init' attribute
-> > > > >
-> > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > > >
-> > > > > ## Build errors
-> > > > > drivers/scsi/qedf/qedf_main.c:702:9: error: positional initialization
-> > > > > of field in 'struct' declared with 'designated_init' attribute
-> > > > > [-Werror=designated-init]
-> > > > >   702 |         {
-> > > > >       |         ^
-> > > > > drivers/scsi/qedf/qedf_main.c:702:9: note: (near initialization for
-> > > > > 'qedf_cb_ops')
-> > > > > cc1: all warnings being treated as errors
-> > > >
-> > > > I saw this locally, at times, it's random, not always showing up.  Turn
-> > > > off the gcc randconfig build option and it goes away, which explains the
-> > > > randomness I guess.
-> > > >
-> > > > If you can bisect this to a real change that causes it, please let me
-> > > > know, I couldn't figure it out and so just gave up as I doubt anyone is
-> > > > really using that gcc plugin for that kernel version.
-> > > 
-> > > You are right !
-> > > The reported arm64 allyesconfig build failures are due to,
-> > > 
-> > >   randstruct: gcc-plugin: Remove bogus void member
-> > >   [ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
-> > 
-> > Thanks for the bisection, for some reason that wasn't working for me.
-> > I've dropped this, and the other randstruct change from 5.15.y and older
-> > kernels now.
+On Tue, Nov 11, 2025 at 06:38:21AM +0000, Jari Ruusu wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > This is the start of the stable review cycle for the 6.12.58 release.
+> > There are 565 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> [SNIP]
+> > Zizhi Wo <wozizhi@huaweicloud.com>
+> >     tty/vt: Add missing return value for VT_RESIZE in vt_ioctl()
+>  
+> Locking seems to be messed up in backport of above mentioned patch.
+>  
+> That patch is viewable here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=queue/6.12&id=884e9ac7361b2a3c3a7a90ffaf541ffc2ded6738
 > 
-> This thread got pointed out to me. You can put this back in if you want;
-> you just need the other associated fix (which had a bit of an obscure
-> Fixes tag):
+> Upstream uses guard() locking:
+> |    case VT_RESIZE:
+> |    {
+> |        ....
+> |        guard(console_lock)();
+> |        ^^^^^^^^^^^^^^^^^^^^^-------this generates auto-unlock code
+> |        ....
+> |        ret = __vc_resize(vc_cons[i].d, cc, ll, true);
+> |        if (ret)
+> |            return ret;
+> |            ^^^^^^^^^^----------this releases console lock
+> |        ....
+> |        break;    
+> |    }
+>  
+> Older stable branches use old-school locking:
+> |    case VT_RESIZE:
+> |    {
+> |        ....
+> |        console_lock();
+> |        ....
+> |        ret = __vc_resize(vc_cons[i].d, cc, ll, true);
+> |        if (ret)
+> |            return ret;
+> |            ^^^^^^^^^^----------this does not release console lock
+> |        ....
+> |        console_unlock();
+> |        break;
+> |    }
+>  
+> Backporting upstream fixes that use guard() locking to older stable
+> branches that use old-school locking need "extra sports".
+>  
+> Please consider dropping or fixing above mentioned patch.
 
-What exactly is "this" commit?
-
-> d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
-
-Can you give a list of git ids asked for here?  This thread is confusing
-:)
+Can you provide a fixed up patch?
 
 thanks,
 
