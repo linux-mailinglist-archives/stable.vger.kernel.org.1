@@ -1,142 +1,203 @@
-Return-Path: <stable+bounces-196522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22E8C7AD12
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:22:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCC7C7AD75
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D30E74E1CEA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 441B53A0FAC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F2C277CB8;
-	Fri, 21 Nov 2025 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49322ECE91;
+	Fri, 21 Nov 2025 16:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvXlRDe4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UzyVOiTd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011056.outbound.protection.outlook.com [52.101.52.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC695286889
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 16:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763742134; cv=none; b=n/GUJaisGQrZUA5MVfkbsCQq/bd++MOCj9rmZPM6yrR6kDbSLW1VDrGiddIRGr9j0/VuFJmWT6QG0onEqJiaN6wpmLa9IwwoUxkD9OQ1hcJlY0Aei5y9Ga68BJIOolY7IggLN7ScJHU9UJ4u2eMlCeGNqLY79R2nWYfSFPsOCdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763742134; c=relaxed/simple;
-	bh=C9N9r060PujhlvGtHWUgKktJZ0Dykf25kePWPYfKRs0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdG9cOkogariMrkSu+UZtJy30DvH9LahLZ47njc8fQVC5s303PVXCx0QOwXMgViwl+dFFRjJKU+yWvKAih/oithHRRIOKA1xpzB43raLC9n8wA9xowhXWfSPhw8fVqI+PnbZkGCMFsaP3+KAlh/E42RjqZgahC2sC9iXabD7mqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvXlRDe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8CDC4CEF1;
-	Fri, 21 Nov 2025 16:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763742131;
-	bh=C9N9r060PujhlvGtHWUgKktJZ0Dykf25kePWPYfKRs0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvXlRDe4RMfGp1JmNOF4R+XNGmc8LXVmQZDR0oYqMUTvw2wcxerRf6qg4x4/TqRQd
-	 P+2JgGkuExrQ8K24UYksEG7bw977hD6sJgeUibMd8wFT37eod4e9nAJbiLkdSyBMVu
-	 WvWCpc6zK9nLvDrpNpQNj7NlYky1QjHsQ0D2MgJvcfo+SlzqCXiurDVNoN+MYqS8X+
-	 3iSL3iI6lvhu8mFFMSnFH6GV14rnLOFxYf2k479150PhobG58SxpVIjUJKJkcLFrr1
-	 taLC+iyzrOokDEvGJj3gP4Ye4dAYApuh+po3jAQ9+oZR44AANzenXi8v21URmhxnwf
-	 2WhzR9lxe05pA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
-Date: Fri, 21 Nov 2025 11:22:09 -0500
-Message-ID: <20251121162209.2595547-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112054-mold-femur-4b46@gregkh>
-References: <2025112054-mold-femur-4b46@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67081ACEDF;
+	Fri, 21 Nov 2025 16:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763742522; cv=fail; b=Swy2vj89TN/knbr2/574gc33b43JYDhWQJb6N4iLdx3SWbiwEWWT6B85vZd6PplneaDRtrMATnlgl4SON2Gf/Qh5CJqTFgjELaNemxEFFBX+tszV7TY5aTImirvS1MPKhHQRqqMdnkpi+MFODHoLyV9b1v4D7oCVmMtyGSPziz8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763742522; c=relaxed/simple;
+	bh=M4oAHXhPrA7eRv/XIsmNXJ9zdV46S/ZYPrdLOazA/ag=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=Z7kwFqZLAGam3hTbnz5NKBU6M/uZefJJRI1Cwb+NOiWBwnbdNBTP54N8tQqHHphk4FpP5dpbH2Z/91zA02dtuqOx6UpyKjawXE6+ZfSN+nijajl4MYBwtg7K7kOIDBzwiMeqNWXTkbTrQ49Eg4c60NstYTrEa1UvgciM+S2z/w4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UzyVOiTd; arc=fail smtp.client-ip=52.101.52.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uKUI0QjZrvcLLm/mg5ZduwQf5r3MmFXXQpHwuFBP2aHlMm+oPBOuPfOca7/0BMWts8x2j74F4nEcKNkpj8rStdtmtNrMHlFDD+GbJLcF3TGCpEaj5UP5nsy6f3iEPaDjObvyNEvA0WYbHmhgGcXKSB0bjYpwydSV+s/5wC46je6dpD7YUUBgzd0lhLkp1QBTdHX6OVBBNSeZygtZpThE+Enqedgfa/XSOoXNq4MvAm4vSRVie+cYLU2KGNJ1H/Fn08DqqIJOesNoqY+u3hbs5auiv4kYjzQHQfGh99Pzim/0TGzB/7busNxP9VE+aB1HnnrVYEWe1SXnqiCPttAkQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a0usIkoGz6iy37HVF1JwfK3ivuxE8m6X2byOodeBC+c=;
+ b=XUSMLkpbGbfS/eWBybdMiXUpJBsGt96hbpw0L9HfccwxX+rINRQ6ZwZXtjhdErEZhLyyMB8AlTaGk8byhLLh8k8y7TXvw0H/x6wBS8PukJN/fHZeuqp9IlajcBYz6/VP5MGUuF2H4UfZj/m4ZQ94ZHrifJwY9AgqqDkrIXsUbmledSKwAfHUV7eddiPb5VZKDFBBImTPXE/GAtqnwCgrGNxGtXHqceycxYZgdiZxL02xm/1Bbw+otu6fnQYmLyuYzD0CIgGZ3J1BMv9uMMVeqv5qDV5LCpI0ATfgcF8Tte+6LoEUxc9RlFeCRzA4hqxl6sKuB3s8fEGxPM9wY6as0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a0usIkoGz6iy37HVF1JwfK3ivuxE8m6X2byOodeBC+c=;
+ b=UzyVOiTdp6sIstJsavNabZl7qQ7P36TjIcESjGn8LcaK43V27W8QNbDUJRhXKV5r0zNOcuDOEhsL4IkdbP1bfPLkvfEf/BaSGlKlgiadr1G2R/tq26Yle/oJdNnlrZmm4Jpl+hxqIAGIScyj629W3szZuybmNpRXJJT6er1KM/hDl6Zcx2QebCLOUA9U2j9IN7htxnZF5OMJkW5pz7kkU9GdS6gptuAVDUCHjSeX4Tf0QQO3L+PoYR9Q5LlI9Isq/NlOAl4DnA+xeaaD9ZMqt+ioPsJF5b7hcTWdCRwQz8tFpwGb0QAPJyPvAf/wPZ2AiNikrV2pXzZGpL/zlPE8Hw==
+Received: from BL1PR13CA0388.namprd13.prod.outlook.com (2603:10b6:208:2c0::33)
+ by CYYPR12MB8990.namprd12.prod.outlook.com (2603:10b6:930:ba::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
+ 2025 16:28:31 +0000
+Received: from MN1PEPF0000F0E0.namprd04.prod.outlook.com
+ (2603:10b6:208:2c0:cafe::30) by BL1PR13CA0388.outlook.office365.com
+ (2603:10b6:208:2c0::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.4 via Frontend Transport; Fri,
+ 21 Nov 2025 16:28:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MN1PEPF0000F0E0.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Fri, 21 Nov 2025 16:28:30 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 21 Nov
+ 2025 08:28:11 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 21 Nov
+ 2025 08:28:10 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 21 Nov 2025 08:28:10 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.6 000/529] 6.6.117-rc1 review
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <d941b1d4-d96e-4b31-8299-aa9cb4a44472@rnnvmail203.nvidia.com>
+Date: Fri, 21 Nov 2025 08:28:10 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E0:EE_|CYYPR12MB8990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65b41677-8c9a-49ae-9281-08de291b0230
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QkxKMnlzbU02Qk9yNm4yVlVSVWVmM1NHNTBQZUF2UmJPc3g5ai90VmhpdmUr?=
+ =?utf-8?B?dkdiY1czYVBKcDlTKy9XQVdCcVVoMHBMeUFiVFhBR1I5RVB4NTY2dWg5UzY2?=
+ =?utf-8?B?cHRNL0dEOFNjUGVVUXNTWWlTMDdQTzB2Q0Vtb0YwNkpaWU9haUljU0dxTTFw?=
+ =?utf-8?B?MkRzOW5BS0Y0K3BVdTlRUFJvMU5LV256N2RIbjhqOFlnMFlwRGFzQjdudnB2?=
+ =?utf-8?B?cm84M3JWVlI2MHZvUDBkSk5YaGE1NWt2LzQzSlNIa0lkeXVYSlhhNDZ0eGpW?=
+ =?utf-8?B?UnUwQkZHaHgyMDlPSldaUUc3VjJSYy9jQ01Uei81ck9pV1MwODBxdUlENnJ5?=
+ =?utf-8?B?MlVXK3dpR1AyZnNiUjFKNkdXcnRJSjZ2MlM5V3ZuRGUvUzBWeXA4VFlzdGZx?=
+ =?utf-8?B?UTgzUllSNitoaVU0SENPSGJlNWJQZU1mU2lCSDlVNG1saW5BY0FheGJvUFJM?=
+ =?utf-8?B?UGR5bUgxL0pTNUZzaTc4aCsvL0FnVThibGpFMUF6UFJFVHhjMXJEcXVGODN1?=
+ =?utf-8?B?MEVqVVZabmU2SHkxbGw3dnZTeFg1SG91SkN3OWFLeS91VDZYZ1JDcnovQlpW?=
+ =?utf-8?B?ZkN0UWpXRllPQU94NXVuT3pwOUVjUEZoTFJrYk5oNnBRWHprT3NKOFhTcWtF?=
+ =?utf-8?B?YjBjRDNZSHFzYjV0SDl2VWZFbW82L0hoYTNZTFo4U0U3bCs1bUlJcTV0aU9z?=
+ =?utf-8?B?c280ODBBK0JMOWI3VEQ3L1ZibWdwSExMMnFIZW1HemtCSUdiUU5sZjZrL3V4?=
+ =?utf-8?B?MTdUbVovMTEvL3IxV1QvWVE3RXVXMjBkM2xrelhBaUg3b09GTGpHYThWY1NV?=
+ =?utf-8?B?WVJDTDk3c2dFVmQwNzZUN2lqMzhVdnJZYnpLQXNkb21HZnhjd1NTenUvWmc5?=
+ =?utf-8?B?bExzTXBteWZ6dVJjQTNUQnY0VWFPamp4U1MvanZqVzUwdldld0NIZDZ1UjVp?=
+ =?utf-8?B?OWZFL25jVnIwcXBGR2hONEJyRFJoQ3IrT2NzZzVwcFB2V0lBU0NVMkM2L21o?=
+ =?utf-8?B?ZVBjK1k2VlBZVGhWYk1pNE4yRk1kUXdvUk1XUHh3Y0dCcGxRcVpjWFJHVTQx?=
+ =?utf-8?B?Z01MZUowUVpiQkhteDluWkh4ZWQ1SnNCRjhhYW0rTEhmeUdjdHZlQXAxWWlO?=
+ =?utf-8?B?WEpycjMvblVDaFcxMWFKZGlpK0swL0lkb2dNWEd4cjVVcTQvdld4K0JZbVRm?=
+ =?utf-8?B?bmlHWnNyL1ppUmZzNkgya1Zrb0ZkOTRHZVlNaVNIU0ZtUEc2ajFLNVAxZkEv?=
+ =?utf-8?B?VzFvZ3pZZFdZc0lIUU0rbjlCUDJaUFFGSHZtUDNLcnRkYmtCUDcvazNIZ2lw?=
+ =?utf-8?B?NVYvbGpkaUdpeFZzb2NLMHhoNE9lcmF2NUM4a1pUZDE4ekdFZUF1NVlRR1lq?=
+ =?utf-8?B?a3drb0RLNjNGWk42N1FwZ2xqMHUvNi9qbFhFWGdaUFJRSnEzWkFaakIxSnRz?=
+ =?utf-8?B?L25YWHA5V2UwcHZFOGowNDFtS3F2T3hEUExXUDQ2TDdmSTgyWDJtY0t3c3FZ?=
+ =?utf-8?B?aGhlT2thQUhXYW03aVUzd3JTWnVNU3FIeS9RcHJUajFzUytuTWhsVFZOVlUx?=
+ =?utf-8?B?dXdKRW93L3BXbHM1Uys5U00xTjNSQTcvdlNMZnRUUEhzTE5MVVJ6RUtZbm5t?=
+ =?utf-8?B?UDZTOGRuam9yNXI1UjBNK0J6L3FHWkoxTFlCdFdvOEZ6OTJNTS9GbENZSXV4?=
+ =?utf-8?B?WTV0TGVuNCtQd0srb0dRdnU3L0pDU3FNWGUwQlVrZXJpd2IrL3FoOW9QbUU1?=
+ =?utf-8?B?bHNzKzNacmw4OGNJbTRNRGtFbjdZWDBRZXJVRU1yM0k4VnVrUG8wREFLNU9y?=
+ =?utf-8?B?dGQvd21LM3BqOVJsS1BLTlgwcEYxN0hSN3hnbWM0YUtuZmtJZlFUcWRoNnE2?=
+ =?utf-8?B?RHUxR1l6UUxXaEo4ejRzTHJKbk5TZTJtcEpoOGIyOW1KWG5GdVVwUWVUZjNC?=
+ =?utf-8?B?SG55Zk5iR0NJUW51VDc5NzVFQjY1Ukk5QThlcHR3NHE0ZWdHN2xSd1dBektK?=
+ =?utf-8?B?RTg3UnRZcHVxSUNVRGgyNlJTdWxGQ1gzVjJqMktqbElxS3NkNHQ3bmNvdXFP?=
+ =?utf-8?B?Mi9xS09ZRGxmdldZM0Y0M2FXZTkvcTBJaFoyNTQ3VzRaZTZOcWNYT2N2RXpi?=
+ =?utf-8?Q?iGmA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 16:28:30.8944
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65b41677-8c9a-49ae-9281-08de291b0230
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0E0.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8990
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+On Fri, 21 Nov 2025 14:04:59 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.117 release.
+> There are 529 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.117-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
+All tests passing for Tegra ...
 
-If of_genpd_add_provider_onecell() fails during probe, the previously
-created generic power domains are not removed, leading to a memory leak
-and potential kernel crash later in genpd_debug_add().
+Test results for stable-v6.6:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    120 tests:	120 pass, 0 fail
 
-Add proper error handling to unwind the initialized domains before
-returning from probe to ensure all resources are correctly released on
-failure.
+Linux version:	6.6.117-rc1-g69eeb522a1e2
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-Example crash trace observed without this fix:
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-  | Unable to handle kernel paging request at virtual address fffffffffffffc70
-  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
-  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
-  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  | pc : genpd_debug_add+0x2c/0x160
-  | lr : genpd_debug_init+0x74/0x98
-  | Call trace:
-  |  genpd_debug_add+0x2c/0x160 (P)
-  |  genpd_debug_init+0x74/0x98
-  |  do_one_initcall+0xd0/0x2d8
-  |  do_initcall_level+0xa0/0x140
-  |  do_initcalls+0x60/0xa8
-  |  do_basic_setup+0x28/0x40
-  |  kernel_init_freeable+0xe8/0x170
-  |  kernel_init+0x2c/0x140
-  |  ret_from_fork+0x10/0x20
-
-Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/arm_scmi/scmi_pm_domain.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/arm_scmi/scmi_pm_domain.c b/drivers/firmware/arm_scmi/scmi_pm_domain.c
-index 0e05a79de82d8..82d923a9d75d7 100644
---- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
-+++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
-@@ -54,7 +54,7 @@ static int scmi_pd_power_off(struct generic_pm_domain *domain)
- 
- static int scmi_pm_domain_probe(struct scmi_device *sdev)
- {
--	int num_domains, i;
-+	int num_domains, i, ret;
- 	struct device *dev = &sdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct scmi_pm_domain *scmi_pd;
-@@ -112,9 +112,18 @@ static int scmi_pm_domain_probe(struct scmi_device *sdev)
- 	scmi_pd_data->domains = domains;
- 	scmi_pd_data->num_domains = num_domains;
- 
-+	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	if (ret)
-+		goto err_rm_genpds;
-+
- 	dev_set_drvdata(dev, scmi_pd_data);
- 
--	return of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	return 0;
-+err_rm_genpds:
-+	for (i = num_domains - 1; i >= 0; i--)
-+		pm_genpd_remove(domains[i]);
-+
-+	return ret;
- }
- 
- static void scmi_pm_domain_remove(struct scmi_device *sdev)
--- 
-2.51.0
-
+Jon
 
