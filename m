@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1273FC7934D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25DCC79691
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id EDF722DEFB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 80D6F35C71C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A3E341043;
-	Fri, 21 Nov 2025 13:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02753176E1;
+	Fri, 21 Nov 2025 13:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="125vcMAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/7kwins"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3108E2FF64E;
-	Fri, 21 Nov 2025 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753532765FF;
+	Fri, 21 Nov 2025 13:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731139; cv=none; b=g375qaSkQmQzTVYT+Hf1V1n6fsLWMe/od8LvwXTGef7fDLUEl0itLHAmfjFEK5pRMS/znqfo6+FSrPckUsLth5KAUcWQnGw/fw8SAaPPMUbx4Vs9bl9fFXcVfW4GDvhHZB0V5X8OnaTnmSpgnmHzdrc3yTeA0y5WFuRdc9DfTbw=
+	t=1763731618; cv=none; b=OSQd9MiQyScVRtquQuMv1HVB9xch/EuA/ynx73ibchvuEsw7w/YMJOxSePVq0MlQoJ7c/vnrDlzzHxchO5lzHkcVTMFrNMO+O2tdL0fIi5XbfwbS/9ooGpSU5A3ZyfHgMcTVeQkFMHZXVwBXtDDK92n6W9OB3RrWx5a6wBqYOMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731139; c=relaxed/simple;
-	bh=ZLtG3znRlWJKljGYcBp0GwGZIEZxPR2z28oM2w0J2oU=;
+	s=arc-20240116; t=1763731618; c=relaxed/simple;
+	bh=s+mpWI+znLBSZSjH0Y+Z9mKdfVZrQZ0nCDBA2KSSkAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otcsJUyasIODPofLrzKP1y7CXRLh/IvW9tz7nI/328ZrypgqcN1h+PjxoQZitrBSZktEFJJplv4e2pCwcpfcpiiSWjVAOhKihPThG4pqDMw+wL25CpUJCx45qLEHdCUMDRH/Ip46j0mdbEAFufdj245yRUco5THvgH9aRryd5Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=125vcMAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2ABC4CEF1;
-	Fri, 21 Nov 2025 13:18:58 +0000 (UTC)
+	 MIME-Version; b=gQA0HhclbBSLlYd/Wtbl47yLUxAidLWYe8wpmUPd57VD0wnSW7G5QqESgoSDWMr6VddJfLy5CbnNQakx9GODDva10NKpH7e8J+tllpwx6owV7rQuTW2xL8Hyac+g3oFDU9GcjH2IPbSRxs7WHrUJNRQ7056fjP99U6Lg6Z4K7lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/7kwins; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9E2C4CEF1;
+	Fri, 21 Nov 2025 13:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731138;
-	bh=ZLtG3znRlWJKljGYcBp0GwGZIEZxPR2z28oM2w0J2oU=;
+	s=korg; t=1763731618;
+	bh=s+mpWI+znLBSZSjH0Y+Z9mKdfVZrQZ0nCDBA2KSSkAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=125vcMATEKeCvYyCWHrlAvg8fi1H3i+jAwVLGACfA+/N+WeJyAhTiaAKdI2a5bMyW
-	 uLzMK9uIATf2FKgh/16tk4CJDRVNOG6jvmJ1YLm3AQCPe2IHqeTI/nh2orp37q/HtB
-	 YlYgYnOzlJb07ADg6xei8KMEPFWfknKjvwLgtAQY=
+	b=H/7kwins9cIlJa3VMaa/kiXRLByUY+/ok8x5A94e+kW6/AhOeIupoxf7XM6olAJVJ
+	 OE6mAsKHAznr5XZOs4nsSZfFR/7mRgmNCqDTaldgfNN42cLUwlcun4JufLpGXtPeNC
+	 PYku/YIWGJ/JLjhLuWZuNO5ppyngb7oteFMcmJT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 103/247] drm/panthor: Flush shmem writes before mapping buffers CPU-uncached
+Subject: [PATCH 6.12 023/185] NFS: check if suid/sgid was cleared after a write as needed
 Date: Fri, 21 Nov 2025 14:10:50 +0100
-Message-ID: <20251121130158.284795545@linuxfoundation.org>
+Message-ID: <20251121130144.711425672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 576c930e5e7dcb937648490611a83f1bf0171048 ]
+[ Upstream commit 9ff022f3820a31507cb93be6661bf5f3ca0609a4 ]
 
-The shmem layer zeroes out the new pages using cached mappings, and if
-we don't CPU-flush we might leave dirty cachelines behind, leading to
-potential data leaks and/or asynchronous buffer corruption when dirty
-cachelines are evicted.
+I noticed xfstests generic/193 and generic/355 started failing against
+knfsd after commit e7a8ebc305f2 ("NFSD: Offer write delegation for OPEN
+with OPEN4_SHARE_ACCESS_WRITE").
 
-Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251107171214.1186299-1-boris.brezillon@collabora.com
+I ran those same tests against ONTAP (which has had write delegation
+support for a lot longer than knfsd) and they fail there too... so
+while it's a new failure against knfsd, it isn't an entirely new
+failure.
+
+Add the NFS_INO_REVAL_FORCED flag so that the presence of a delegation
+doesn't keep the inode from being revalidated to fetch the updated mode.
+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_gem.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ fs/nfs/write.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index a123bc740ba14..eb5f0b9d437fc 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -291,6 +291,23 @@ panthor_gem_create_with_handle(struct drm_file *file,
- 
- 	panthor_gem_debugfs_set_usage_flags(bo, 0);
- 
-+	/* If this is a write-combine mapping, we query the sgt to force a CPU
-+	 * cache flush (dma_map_sgtable() is called when the sgt is created).
-+	 * This ensures the zero-ing is visible to any uncached mapping created
-+	 * by vmap/mmap.
-+	 * FIXME: Ideally this should be done when pages are allocated, not at
-+	 * BO creation time.
-+	 */
-+	if (shmem->map_wc) {
-+		struct sg_table *sgt;
-+
-+		sgt = drm_gem_shmem_get_pages_sgt(shmem);
-+		if (IS_ERR(sgt)) {
-+			ret = PTR_ERR(sgt);
-+			goto out_put_gem;
-+		}
-+	}
-+
- 	/*
- 	 * Allocate an id of idr table where the obj is registered
- 	 * and handle has the id what user can see.
-@@ -299,6 +316,7 @@ panthor_gem_create_with_handle(struct drm_file *file,
- 	if (!ret)
- 		*size = bo->base.base.size;
- 
-+out_put_gem:
- 	/* drop reference from allocate - handle holds it now. */
- 	drm_gem_object_put(&shmem->base);
- 
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index fd86546fafd3f..88d0e5168093a 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1577,7 +1577,8 @@ static int nfs_writeback_done(struct rpc_task *task,
+ 	/* Deal with the suid/sgid bit corner case */
+ 	if (nfs_should_remove_suid(inode)) {
+ 		spin_lock(&inode->i_lock);
+-		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE);
++		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE
++				| NFS_INO_REVAL_FORCED);
+ 		spin_unlock(&inode->i_lock);
+ 	}
+ 	return 0;
 -- 
 2.51.0
 
