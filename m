@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF41C79C99
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292F7C795E3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 4E33B2DF28
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAEEF4E985E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0AC346E72;
-	Fri, 21 Nov 2025 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D13C2750FB;
+	Fri, 21 Nov 2025 13:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0S4YG6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJBfPGjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B20E275AFF;
-	Fri, 21 Nov 2025 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC23E1F09B3;
+	Fri, 21 Nov 2025 13:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733075; cv=none; b=DcUANWeVvZjO0qBxNRMxkWXTKGqTp1ktNLW0ejTOZrRbiJlbo3S7R00OfH+/mrJDdUiHoqLmStTT2fJQzuWZMbB5c3uAAJlq8/eFvNihzslA73692nHort7vNNsMaPFnfCpIcKJpBDby85Ci4uHJKkywCnmk5CNZPFOlgH9T6+8=
+	t=1763731674; cv=none; b=d1PDsg/JU7w6iY34Eot82Zqw6t8Uf17cbiyGCaEjL/hgKvmEFeggpFvRYY5LAXbP27qg/DRbuq/Q3OVUC+VDRoBc/3Qm8ThfyR8cOfQzvBR9pH83ruQJmlcnjLCMbRRCzH4loGvEAhOiMcE/a77fdmNAxGyzsPGUWxGthIuwu6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733075; c=relaxed/simple;
-	bh=N9+o8/sWCR5usArrgI9dIj5eMYrHxhl0YluIIMnRhFc=;
+	s=arc-20240116; t=1763731674; c=relaxed/simple;
+	bh=ZTn0xEib5ArylGW3/frl3sW+F+Q45qidTGzIECFCWMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myU6DulGp4M6KRA0kqWBh41rJM6j2JyClV3z+AOf1FCNP/M2Ux6o9sYeoVjR+lxKdGuV6TYT6yZf/AdyPcTadprcGEujLqZjtxtDry5R06XHPIsLIAwDlkmK0FW+QHgIM/yBbsOJuX26kWNuLJvy2kGJAMbHAdz2iobdFMwWEAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0S4YG6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A95C116C6;
-	Fri, 21 Nov 2025 13:51:14 +0000 (UTC)
+	 MIME-Version; b=qoTOipncsQYdYw0IAzjd4xessHudkSq3b6KN/TDvWGepuKpX1+BZN+lZ75Zt3BS4lMlrVOG3chsqOdVCuljgjj2mgcokua9qKBB21V8V8WktJgZwr4ctKWqxw4rXm7+z/7g51Lm9gC4lnJNT0k5NCtBEwoXDY0vMT0Hu1eLzbG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJBfPGjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12812C4CEF1;
+	Fri, 21 Nov 2025 13:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733075;
-	bh=N9+o8/sWCR5usArrgI9dIj5eMYrHxhl0YluIIMnRhFc=;
+	s=korg; t=1763731673;
+	bh=ZTn0xEib5ArylGW3/frl3sW+F+Q45qidTGzIECFCWMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0S4YG6tUy2TWwx4Ii7suDozcknaS+S3SbY55vr3G1QUjyCAtbwvgoq+wHiSvZOPQ
-	 kCOEMepNATh5nyX6sb6Lle0eSE+Fea26g7oZ0nGdlF8HTpXhB7ld5Drcnjm6frO8Qn
-	 hNQ3lN5WhH5cvzW6AY4ErAkSOZiEA9VnZ/ORbMFA=
+	b=iJBfPGjyQB7M70ggHeyZYux9FJTdNOVa6WC9jeszwAG0CsLVf+96gH/xz6i6hG4dH
+	 LI8fZmVdSSpUGgxZpNgvjqi3N61cJN9Jgxhwos6yJhRdovRykFqNEJJjAQNg8mNFg1
+	 P6VgMESSYwmISQpFIFFTKOfk7jRM/wA4WNoXQr80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 341/529] selftests/net: use destination options instead of hop-by-hop
-Date: Fri, 21 Nov 2025 14:10:40 +0100
-Message-ID: <20251121130243.164337460@linuxfoundation.org>
+Subject: [PATCH 6.12 014/185] riscv: acpi: avoid errors caused by probing DT devices when ACPI is used
+Date: Fri, 21 Nov 2025 14:10:41 +0100
+Message-ID: <20251121130144.390653670@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Han Gao <rabenda.cn@gmail.com>
 
-[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
+[ Upstream commit 69a8b62a7aa1e54ff7623064f6507fa29c1d0d4e ]
 
-The GRO self-test, gro.c, currently constructs IPv6 packets containing a
-Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
-correctly handles IPv6 extension headers.
+Similar to the ARM64 commit 3505f30fb6a9s ("ARM64 / ACPI: If we chose
+to boot from acpi then disable FDT"), let's not do DT hardware probing
+if ACPI is enabled in early boot.  This avoids errors caused by
+repeated driver probing.
 
-However, network elements may be configured to drop packets with the
-Hop-by-Hop Options header (HBH). This causes the self-test to fail
-in environments where such network elements are present.
-
-To improve the robustness and reliability of this test in diverse
-network environments, switch from using IPPROTO_HOPOPTS to
-IPPROTO_DSTOPTS (Destination Options).
-
-The Destination Options header is less likely to be dropped by
-intermediate routers and still serves the core purpose of the test:
-validating GRO's handling of an IPv6 extension header. This change
-ensures the test can execute successfully without being incorrectly
-failed by network policies outside the kernel's control.
-
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Han Gao <rabenda.cn@gmail.com>
+Link: https://lore.kernel.org/r/20250910112401.552987-1-rabenda.cn@gmail.com
+[pjw@kernel.org: cleaned up patch description and subject]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/setup.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index 9c6f5b4033c37..8dd6857e52cb5 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -623,11 +623,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
- 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 194bda6d74ce7..4c430c9f017d8 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -298,11 +298,14 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Parse the ACPI tables for possible boot-time configuration */
+ 	acpi_boot_table_init();
  
- 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
--	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
- 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
++	if (acpi_disabled) {
+ #if IS_ENABLED(CONFIG_BUILTIN_DTB)
+-	unflatten_and_copy_device_tree();
++		unflatten_and_copy_device_tree();
+ #else
+-	unflatten_device_tree();
++		unflatten_device_tree();
+ #endif
++	}
++
+ 	misc_mem_init();
  
- 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
--	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
-+	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
- 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
- }
- 
+ 	init_resources();
 -- 
 2.51.0
 
