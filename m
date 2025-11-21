@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D739DC79C30
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1268C79CC0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 761862E510
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD1A94F0426
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C4242D7D;
-	Fri, 21 Nov 2025 13:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D6134DCFD;
+	Fri, 21 Nov 2025 13:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8c43AxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ri6rTz39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362785CDF1;
-	Fri, 21 Nov 2025 13:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18FF34DCD7;
+	Fri, 21 Nov 2025 13:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733007; cv=none; b=nXhL7zzPKzDVWyqswaV45OqL77zL/7AAuxGs8yDw3cWpSZ2ovt3tGsz6zjxXRjr9+VypdwWDg0JpDw2cYkr4iJaaTunC0dcy8GPMQAvyx+f3t+x6iCPY9+GxRAONEPfdz/hm7YXGGznEyBORBjtl/9G6i6lsWWY/riFIWN5prHY=
+	t=1763732904; cv=none; b=c+N1Aw+Kt8Mm4YUYwdWImVcqmgEFqXUo4apcH/wEW1WFKUXkKdPwqB0SW/dkS3IQls4acbR0iIihIm8DkHb/V9SLWiI3YgCU3oUBdKe6XOnVR2PRpyCecUgP5tKrALMa6GQy78kVPAdPLYiJ5t/C5tRHvGYTc6zXuYHEjqotL5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733007; c=relaxed/simple;
-	bh=tShpCri8rMd+CK0lwWf0ephLyEuHU+OskiJ+BBaGBr4=;
+	s=arc-20240116; t=1763732904; c=relaxed/simple;
+	bh=B008eceXsqsJ6oorGoNi8PUQZWVAW7TZOFz/6yZMg10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbgyducyzkIpBgBAXOOQ7p1JDwp3t2O7GB3PytMvXSwnhVq+ntCBp+lZVQRAUK3OdX3uMiZqmbBbfqCTtOgtQm7PNqOBQ/U/i2r0YfAZcgZdIluZJtngihXaHKnLvpRuWEjRqgAMO9wHa6XwkfbVBYEXdwJauB6PkHwQk8jykRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8c43AxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC59FC4CEF1;
-	Fri, 21 Nov 2025 13:50:06 +0000 (UTC)
+	 MIME-Version; b=a9KjsbMRgAc8TBMiyXQ1gtVrMkDeI8ot0BK5vGZfnUSkPGjSKXDOhtz5RXRd/S8sB4QFlUIQJW4CCBgcFiTeQz9GfQ3kEbhbKkvvo+a1xrUOCPvj5lZPnC3tAb3bSTMCykyWrc5EYFYmXWHr++taBiVF4lQyUmvByXaatl9vle0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ri6rTz39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20333C4CEF1;
+	Fri, 21 Nov 2025 13:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733007;
-	bh=tShpCri8rMd+CK0lwWf0ephLyEuHU+OskiJ+BBaGBr4=;
+	s=korg; t=1763732903;
+	bh=B008eceXsqsJ6oorGoNi8PUQZWVAW7TZOFz/6yZMg10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8c43AxBWfZyrImincMXX3xEv2uyRJzaghVPN5thBufvuxHSN0uhb/IqhI933AGB6
-	 Gw6MS8oufG4CZw5UMDaimAK9W26nuTkK+R8kVjL395zbpucPQX+QYf5zL/C9JncAuA
-	 ZTZuTLWik+wSC23QcfbROUvApn1ZjPwXSKxYPjX8=
+	b=ri6rTz39zlybBvxiGvatHYiOMFLtqqh4cH6YYpGeB7/tuN9cbjCoS04VTxC5PZFjg
+	 hDFaU4c3OgwUNlxzMEsP85cu1/Ov4DxpPJ8zWl3GL0dALtImzNEaUJ/MZ5QzRC5diJ
+	 /A2mDwMajfXx7jq2Rv0uFw29t/Qj1GYt76fOtI4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Tomer Tayar <tomer.tayar@intel.com>,
+	Koby Elbaz <koby.elbaz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/529] scsi: mpt3sas: Add support for 22.5 Gbps SAS link rate
-Date: Fri, 21 Nov 2025 14:09:34 +0100
-Message-ID: <20251121130240.816241014@linuxfoundation.org>
+Subject: [PATCH 6.6 276/529] accel/habanalabs: return ENOMEM if less than requested pages were pinned
+Date: Fri, 21 Nov 2025 14:09:35 +0100
+Message-ID: <20251121130240.851672075@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,37 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Tomer Tayar <tomer.tayar@intel.com>
 
-[ Upstream commit 4be7599d6b27bade41bfccca42901b917c01c30c ]
+[ Upstream commit 9f5067531c9b79318c4e48a933cb2694f53f3de2 ]
 
-Add handling for MPI26_SAS_NEG_LINK_RATE_22_5 in
-_transport_convert_phy_link_rate(). This maps the new 22.5 Gbps
-negotiated rate to SAS_LINK_RATE_22_5_GBPS, to get correct PHY link
-speeds.
+EFAULT is currently returned if less than requested user pages are
+pinned. This value means a "bad address" which might be confusing to
+the user, as the address of the given user memory is not necessarily
+"bad".
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Message-Id: <20250922095113.281484-4-ranjan.kumar@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Modify the return value to ENOMEM, as "out of memory" is more suitable
+in this case.
+
+Signed-off-by: Tomer Tayar <tomer.tayar@intel.com>
+Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_transport.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/accel/habanalabs/common/memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-index 7d6e4fe31ceed..02c970575464c 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-@@ -166,6 +166,9 @@ _transport_convert_phy_link_rate(u8 link_rate)
- 	case MPI25_SAS_NEG_LINK_RATE_12_0:
- 		rc = SAS_LINK_RATE_12_0_GBPS;
- 		break;
-+	case MPI26_SAS_NEG_LINK_RATE_22_5:
-+		rc = SAS_LINK_RATE_22_5_GBPS;
-+		break;
- 	case MPI2_SAS_NEG_LINK_RATE_PHY_DISABLED:
- 		rc = SAS_PHY_DISABLED;
- 		break;
+diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
+index 5b7d9a351133f..33a4246dd7358 100644
+--- a/drivers/accel/habanalabs/common/memory.c
++++ b/drivers/accel/habanalabs/common/memory.c
+@@ -2323,7 +2323,7 @@ static int get_user_memory(struct hl_device *hdev, u64 addr, u64 size,
+ 		if (rc < 0)
+ 			goto destroy_pages;
+ 		npages = rc;
+-		rc = -EFAULT;
++		rc = -ENOMEM;
+ 		goto put_pages;
+ 	}
+ 	userptr->npages = npages;
 -- 
 2.51.0
 
