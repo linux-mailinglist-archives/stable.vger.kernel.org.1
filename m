@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C240DC794D8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F25C7A020
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1762A4EC0E2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 4F01F354D5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5455B1F09B3;
-	Fri, 21 Nov 2025 13:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC7834EF1F;
+	Fri, 21 Nov 2025 13:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfiiYAha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7o233gV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1247326E6F4;
-	Fri, 21 Nov 2025 13:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908E2FC88B;
+	Fri, 21 Nov 2025 13:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731256; cv=none; b=qFKzaJzhA/N+DYnC/mwmE+rLhtgzV6CHyuu/jsYYfqxtBTywOMjIwu9boV8EV/L5wMm0HoqLQAYYWkZ4fN6ABTrlC+0Uz4LJhmHE6Eng1Hw3QQ39kwYOC82tOL23Fm5hiWJFFoqdlhjxys1N3pONjy7tTL1G5KH86x8wnW4guX8=
+	t=1763733218; cv=none; b=I5R6LR7i5Hve6lwQ5BolQLjIa8YFwazFzVpsZKaOFSpdz5A0Dqa+//8qhW9UsIRT9GZTe9E0H6n8vN9UE8BBelm5IQDJ/TlSoHsVIv32i2DixA8+gTLS0sMObJtjA+iDJJE6KnHB5/M/2WNXdgJNrcJm4jtFabfKWqMqqWgdaQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731256; c=relaxed/simple;
-	bh=k0Eybc8zhrSha0FAXrEtxOvAio5BhaAsOKWrUMHtxpk=;
+	s=arc-20240116; t=1763733218; c=relaxed/simple;
+	bh=dukgTRRj81PcQxLp1euul06hDPDrD2eLz0TPl5rDnbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKNipzsvGJZPfW5/IrmxSqOjtWTSKc+3WRx7vc/C60NolLz52MHmn2pFotKP8DNHywOFv7BdDF1SvGbIqvlPlXkPSR1Mebe6/bBaoDJrinerMdAk+PqLkhtPhA4FPuxTo2Ec6cxPHQdCtlTdYD0mE0WRIoG1oavZWE+51e+uQxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfiiYAha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B88C4CEF1;
-	Fri, 21 Nov 2025 13:20:55 +0000 (UTC)
+	 MIME-Version; b=BpniCF+zWSB6OC9lC5WVjXxvYp7qJaqSOLAfmhDJ04g35G9ubNbvs7ftzV4nKHNApU58lJZm4mSrd7s3k+i1ZI8IPtIO9uRR8gssfQBU+h5bwR6jh1CJgCiXdl8eNtE2hQu1TFpVYuexSzYxey2CseFAzXG8AKfOQoYOIIAyO78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7o233gV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F255EC4CEF1;
+	Fri, 21 Nov 2025 13:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731255;
-	bh=k0Eybc8zhrSha0FAXrEtxOvAio5BhaAsOKWrUMHtxpk=;
+	s=korg; t=1763733218;
+	bh=dukgTRRj81PcQxLp1euul06hDPDrD2eLz0TPl5rDnbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfiiYAhaA+XzqIz5knlmnywCgWoamFSKgByjUmGqpDNbWJipM6Ah0Bgfw+GF/9eQA
-	 6LXRBy+604YvpCZe19QMADzcOBACmIqCDtgPmIuA5i6K9mk06WQKQVrmngBqaDBJZl
-	 hA8ttHpxnYdWmF0TQSm6UQ7KZ3Ja4cLHmAwssXWg=
+	b=W7o233gVTgsheE7o8TOyjMX7bf0AQa8tchqJxMb8IRnO264lHFw5OGqAK2nCUH25p
+	 5bxXoTnU+zP3ikYqpsBosjmGJN6GU6PDb/0joy23B37DN92iyRjNowTrkSles6ZR1d
+	 flr2yBA9vqChIWXwjHcUoqPW+HHmSbGfvi1q0PjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Leonchikov <andreil499@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sharique Mohammad <sharq0406@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 144/247] arm64: dts: rockchip: Fix USB power enable pin for BTT CB2 and Pi2
-Date: Fri, 21 Nov 2025 14:11:31 +0100
-Message-ID: <20251121130159.893191127@linuxfoundation.org>
+Subject: [PATCH 6.6 393/529] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
+Date: Fri, 21 Nov 2025 14:11:32 +0100
+Message-ID: <20251121130245.005958907@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Leonchikov <andreil499@gmail.com>
+From: Sharique Mohammad <sharq0406@gmail.com>
 
-[ Upstream commit a59e927ff46a967f84ddf94e89cbb045810e8974 ]
+[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
 
- Fix typo into regulator GPIO definition. With current
- definition - USB powered off. Valid definition can be found on "pinctrl"
- section:
- 		vcc5v0_usb2t_en: vcc5v0-usb2t-en {
- 				rockchip,pins = <3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
- 				 		};
+The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
+suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
+are turned on or off, the required startup or shutdown sequences
+must be taken care by the max98090_shdn_event.
 
- 		vcc5v0_usb2b_en: vcc5v0-usb2b-en {
- 			rockchip,pins = <4 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
-
-Fixes: bfbc663d2733a ("arm64: dts: rockchip: Add BigTreeTech CB2 and Pi2")
-Signed-off-by: Andrey Leonchikov <andreil499@gmail.com>
-Link: https://patch.msgid.link/20251105210741.850031-1-andreil499@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
+Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/max98090.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-index f74590af7e33f..b6cf03a7ba66b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-@@ -187,7 +187,7 @@
- 	vcc5v0_usb2b: regulator-vcc5v0-usb2b {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
--		gpio = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
-+		gpio = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vcc5v0_usb2b_en>;
- 		regulator-name = "vcc5v0_usb2b";
-@@ -199,7 +199,7 @@
- 	vcc5v0_usb2t: regulator-vcc5v0-usb2t {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
--		gpios = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
-+		gpios = <&gpio3 RK_PD5 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vcc5v0_usb2t_en>;
- 		regulator-name = "vcc5v0_usb2t";
+diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
+index 2adf744c65263..4023b88e7bc13 100644
+--- a/sound/soc/codecs/max98090.c
++++ b/sound/soc/codecs/max98090.c
+@@ -1234,9 +1234,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
+ 	SND_SOC_DAPM_INPUT("DMIC4"),
+ 
+ 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
+-		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
++		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
++			SND_SOC_DAPM_POST_PMU),
+ 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
+-		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
++		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
++			 SND_SOC_DAPM_POST_PMU),
+ };
+ 
+ static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
 -- 
 2.51.0
 
