@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D25C7A0D4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0139C79775
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C7CE04F1832
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 7D51F2AEDC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454E834DB7C;
-	Fri, 21 Nov 2025 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B8834B415;
+	Fri, 21 Nov 2025 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Dhn8Cw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zd7eM5e3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FAA34D4CB;
-	Fri, 21 Nov 2025 13:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BBE33438C;
+	Fri, 21 Nov 2025 13:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733558; cv=none; b=YpzdujWyoXtoy5uCWgbXur2tF3V5vylvlCIaWiSam9YRDBdkh7cdEdFdlyGK3z/dr4GMg/BmjupJmvY0koCXUlG83+dFDH5zL78Kf0OmivIeslFUfw1nwadtDP2CXZ3JIm+zIxN1s0xefEzb47kPsIJ88AkjToUCYuZEZkaLP6E=
+	t=1763732080; cv=none; b=IpOcXZcHmxT0racIjnPRhi+zqrCwIlTE/LJznZaUo7AuV5dZiVuFSgG5t1LKgCcmnqI6rqAAAZSNGvBex7T3mo4TYKoOBcOlcvdmFrAy1orv5fUAofNGRIbtRa2oNCJ17MNgSWZnqJZFGly9fmjoRyA6YsuZh/oPbJ3TlWbmn7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733558; c=relaxed/simple;
-	bh=GKtYFsMINhdMczZY+79mqRmQv7Koh3cWNgEZdiZZz/Q=;
+	s=arc-20240116; t=1763732080; c=relaxed/simple;
+	bh=HNqwzzjiNQ26pHXh3wiSjycTFW5898utNMSqMnHOaV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6QbUWFcioiRS/Ir0Dv8XDqFTqEiF/EZXX2zOFd9qzyMu1pmXlIUo+p41jLI7QvCPNLww/+MDwBZfovD8iph1rBM3NoZx/zApEaXDsnSO2Df6mU/SnPSTiH84oRx/nBaOcpacOL71MgS0y7JrPVIXYJe8Z8V+7LiNQpQ9tklTME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Dhn8Cw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE02C4CEF1;
-	Fri, 21 Nov 2025 13:59:17 +0000 (UTC)
+	 MIME-Version; b=r1zMR3QmiqEmzWTlparH0MP04boZIikPCqOvRJi01MjLneT8cGed1+OMDrQnEDlJiBcVcjvJjr7e02s5/P1iStgiE4T9/7NKjL2KSohI9FBHcLE/i3zIfBr+0ZOpIUPdNNytBEPlpnvNtLRITYdhkPxf8nYI7LmL5Bcbsm2IpGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zd7eM5e3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF4CC4CEFB;
+	Fri, 21 Nov 2025 13:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733557;
-	bh=GKtYFsMINhdMczZY+79mqRmQv7Koh3cWNgEZdiZZz/Q=;
+	s=korg; t=1763732079;
+	bh=HNqwzzjiNQ26pHXh3wiSjycTFW5898utNMSqMnHOaV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9Dhn8Cw0Yzt57RsgD/VWDt2i+ka55qfEeYSqKueRRywp5UblV43zvUiD55dgrgQD
-	 7deKQtoC4jICG9PMXOWGWyMIDFHnKJ/+qAJCMgP+fCcKeKTdlSdEafPG56VgmtCplx
-	 Oh82EPr0nFBpoGvxq3Hb+He1uMio0hb2Ns1/Csjg=
+	b=Zd7eM5e3gkL+ULLaWfRap3g5xJvram79OFcgxmdMU2qw7z4nnuvPn43N0bJ79XF2k
+	 AdsberKcT7+pcsIZyvxg8UoICRVRBM1xcUAbOFqkLqe1EcYtew9ygpspY0eWIvv8Bn
+	 CSPJ+UGiIm9c2i8HiVX9VuPfS46kwjPWokBzfcto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 510/529] scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 182/185] net: phy: micrel: Fix lan8814_config_init
 Date: Fri, 21 Nov 2025 14:13:29 +0100
-Message-ID: <20251121130249.182147026@linuxfoundation.org>
+Message-ID: <20251121130150.460452270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit d968e99488c4b08259a324a89e4ed17bf36561a4 ]
+commit bf91f4bc9c1dfba75e457e6a5f11e3cda658729a upstream.
 
-Link startup becomes unreliable for Intel Alder Lake based host
-controllers when a 2nd DME_LINKSTARTUP is issued unnecessarily.  Employ
-UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress that from happening.
+The blamed commit introduced the function lanphy_modify_page_reg which
+as name suggests it, it modifies the registers. In the same commit we
+have started to use this function inside the drivers. The problem is
+that in the function lan8814_config_init we passed the wrong page number
+when disabling the aneg towards host side. We passed extended page number
+4(LAN8814_PAGE_COMMON_REGS) instead of extended page
+5(LAN8814_PAGE_PORT_REGS)
 
-Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-4-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0de636ed7a264 ("net: phy: micrel: Introduce lanphy_modify_page_reg")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250925064702.3906950-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/micrel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -463,7 +463,8 @@ static int ufs_intel_lkf_init(struct ufs
- static int ufs_intel_adl_init(struct ufs_hba *hba)
- {
- 	hba->nop_out_timeout = 200;
--	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8;
-+	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8 |
-+		       UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE;
- 	hba->caps |= UFSHCD_CAP_WB_EN;
- 	return ufs_intel_common_init(hba);
- }
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4085,7 +4085,7 @@ static int lan8814_config_init(struct ph
+ 	struct kszphy_priv *lan8814 = phydev->priv;
+ 
+ 	/* Disable ANEG with QSGMII PCS Host side */
+-	lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
++	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA,
+ 			       0);
 
 
 
