@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-195957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237E0C7997A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:45:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10346C79B8B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3AFE4381B38
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:38:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A697F3477FB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDE6335541;
-	Fri, 21 Nov 2025 13:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8915F34DCC4;
+	Fri, 21 Nov 2025 13:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXbmpQDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfG1Gk6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0F534BA5B;
-	Fri, 21 Nov 2025 13:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302B4346E72;
+	Fri, 21 Nov 2025 13:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732151; cv=none; b=d7QRXHZQuS+Vt+aWJxSG29gaJTmCUoa7e+ETvksohM0xiTf8UTJuRavwPX49cYPRCFlOaWODy8aFLA1vZu0jKo1FC59wRgBq98o9hwZU+f5zWAkmCXwuMYQFFx3uBuSxG2uCr1GLsaVSCqxeB07LjJjrzOkIcfpsoDT21bUllqI=
+	t=1763732279; cv=none; b=k2SyATkDGvR6sxQPOAXHQeFeFxVkVAJJVBBsQfneJQ9MGlCdQ3GRQ22OCOig4vbBzGpbBFIaiYPr7c1tOVo2Th2PDirFdPqggPEi2KFDxas9hPdABb32rJlNq4kmvUqyTSAPCHclNk22NvwlAAuQVnHi8WOvBP/4E1T3XdkrHnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732151; c=relaxed/simple;
-	bh=Qqc8lnP0nNW6ZR9TlqpNn9YgjyVTLaP6sA8z+RdFoCY=;
+	s=arc-20240116; t=1763732279; c=relaxed/simple;
+	bh=ojje+MKMyvYFAYUqlgqSU1z5aOS8IVHxYI5zrzfXwtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJovyDvOIeLkMp2kPN73wIaPsGVIN+XvK9BOJXu17OTSyZIf21V8Cmw4Q4sIVDx0CVp+crMw7+hFGSy2NU6yjrBp2OV6wST9mc43iFMYeoxPPJ6dc2J/96mqOHa+i1mgT+3QSI7sGrRRSo1dDCcoWf32feHuC4chQvMYMHo0r7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXbmpQDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BD7C4CEF1;
-	Fri, 21 Nov 2025 13:35:51 +0000 (UTC)
+	 MIME-Version; b=ehcXJpcBQgRtZw13yhmhclnPYqfkvu8BVwZHzwWf5dpOST7ujS7mn0oSGU/wlxdzlIbDH/wckcMEX6qfLD/xKdsnqjzcmvR7fd2B3DHiwBWVd6F1BMakY1mPAQztuTYlcgDOJtPo7cU5eAxJypoBgT1xPDd35phT47UdD/WID54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfG1Gk6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571C4C4CEF1;
+	Fri, 21 Nov 2025 13:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732151;
-	bh=Qqc8lnP0nNW6ZR9TlqpNn9YgjyVTLaP6sA8z+RdFoCY=;
+	s=korg; t=1763732278;
+	bh=ojje+MKMyvYFAYUqlgqSU1z5aOS8IVHxYI5zrzfXwtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXbmpQDbTx7bfYMQ/zlyDaQNX1uptuNTdddLy+JDvDBo7860bEE4jyHFwkfdlex0f
-	 uApLyZUlh6nBwZ4rjFg5+nl6S+4LeJDLvZpf7hor2lIH+NMycgX9LrZhRCxeZur8ZL
-	 4e0XDwhc8k0MQz8NdMO+2gkXIF38aJTtw3kOKZag=
+	b=SfG1Gk6ZVUxhO/tsfLAAtKtA0HXgwtCOemSMSMVzPi9YwiY74l8tf0MAW7uIUiSu3
+	 CJu25cOGO+P3NkfPYKo9WSpaY0mbKrbMpz8VH7f6S73pcyw1nS3RDcr3D9binBssKh
+	 +Z9DSqT4GNnpGj0KKZ0FZyukkScvbfZe4cFzX1Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com,
+	Noorain Eqbal <nooraineqbal@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/529] ALSA: usb-audio: fix control pipe direction
-Date: Fri, 21 Nov 2025 14:05:20 +0100
-Message-ID: <20251121130231.756310849@linuxfoundation.org>
+Subject: [PATCH 6.6 022/529] bpf: Sync pending IRQ work before freeing ring buffer
+Date: Fri, 21 Nov 2025 14:05:21 +0100
+Message-ID: <20251121130231.791322174@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,35 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Noorain Eqbal <nooraineqbal@gmail.com>
 
-[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
+[ Upstream commit 4e9077638301816a7d73fa1e1b4c1db4a7e3b59c ]
 
-Since the requesttype has USB_DIR_OUT the pipe should be
-constructed with usb_sndctrlpipe().
+Fix a race where irq_work can be queued in bpf_ringbuf_commit()
+but the ring buffer is freed before the work executes.
+In the syzbot reproducer, a BPF program attached to sched_switch
+triggers bpf_ringbuf_commit(), queuing an irq_work. If the ring buffer
+is freed before this work executes, the irq_work thread may accesses
+freed memory.
+Calling `irq_work_sync(&rb->work)` ensures that all pending irq_work
+complete before freeing the buffer.
 
-Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
+Reported-by: syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2617fc732430968b45d2
+Tested-by: syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com
+Signed-off-by: Noorain Eqbal <nooraineqbal@gmail.com>
+Link: https://lore.kernel.org/r/20251020180301.103366-1-nooraineqbal@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_s1810c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/ringbuf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
-index fac4bbc6b2757..65bdda0841048 100644
---- a/sound/usb/mixer_s1810c.c
-+++ b/sound/usb/mixer_s1810c.c
-@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
+diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
+index 6aff5ee483b60..c0c5e9b313e43 100644
+--- a/kernel/bpf/ringbuf.c
++++ b/kernel/bpf/ringbuf.c
+@@ -215,6 +215,8 @@ static struct bpf_map *ringbuf_map_alloc(union bpf_attr *attr)
  
- 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
- 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
--	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
-+	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
- 			      SC1810C_SET_STATE_REQ,
- 			      SC1810C_SET_STATE_REQTYPE,
- 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
+ static void bpf_ringbuf_free(struct bpf_ringbuf *rb)
+ {
++	irq_work_sync(&rb->work);
++
+ 	/* copy pages pointer and nr_pages to local variable, as we are going
+ 	 * to unmap rb itself with vunmap() below
+ 	 */
 -- 
 2.51.0
 
