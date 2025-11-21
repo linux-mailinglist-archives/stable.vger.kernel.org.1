@@ -1,90 +1,115 @@
-Return-Path: <stable+bounces-196568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3E2C7BBA8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 22:14:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03E1C7BE83
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 23:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92CC34E1661
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 21:14:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CBBFC36189D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 22:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B93305070;
-	Fri, 21 Nov 2025 21:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BCD30CDA1;
+	Fri, 21 Nov 2025 22:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="fmv+wuWj"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jzJZS4fX";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TXbhOGke"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC12DFA31
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 21:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EE7306B02
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763759651; cv=none; b=Z35sGCIDKGm5Je0Uil6We5IXVwGK82bKDfWujoVNWF2YpW4qcwt+PMzbrIukrFxlHHxdau+ThAzYvK6GZWMFX3CLKEcIKCHghCF7nA5SO/o0kjfniGenRm88RVFU2vWZc41w3PJBlGYuEo4j3uoXDl4gcu6L9v4i0H0UL5RB7hM=
+	t=1763765573; cv=none; b=hirDi/qX5vxpGiiATAEWuIJsvnT4ekSELCtTrFaG8+K6x5P5gBHw9o/DFP4jVTF03h6aAmmyrll/36U71vLwJ45hFs7ZmyhjO7k4UoiA+LNE6m8PmjerAzIXaqeYfEGD4VOx1hWqy6hJS2Amseocg1nP2qbUBpNQyx+maEgo5pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763759651; c=relaxed/simple;
-	bh=pEFooFR78YrhIvGWQXoeWCNC2kSSj2NyKh3ms4wsbIU=;
+	s=arc-20240116; t=1763765573; c=relaxed/simple;
+	bh=lE2Y4rxoGGpJUBovNGt4Zb4GKu+3YtYgDckjy0zhE+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nTYhvOcAR+FmA4BxHdNQ+wVTJuDGEtBgK/Sos14Hb16krwGroC1t2kzH+n6q583WPpS2UzUEky3i85NNxmxGFPRYXtyyVCjXddjWg+1cWSdN5ocWeiDVrLkzuIN/aix9oE29gq/anzljYDRzKUjQqZpFshWCAUgnyKBi5DocNVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=fmv+wuWj; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29558061c68so32941275ad.0
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 13:14:07 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=e5GyCwW9zRrLxkOrt5uoq0xQRq+GLstr58F+OQTAA3Fub4AQOaFM8CZVCV1IdYFaRvOcPy8aiyk1N2EimCcQPuW3BwZHyxgPwNrit9e9JA6Xm2/6/qFZEos4CwMVemmkSBbKhyfzEMXPrRAF9dfqIMAVwcIIYf9lB8yUWyaX36E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jzJZS4fX; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TXbhOGke; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ALJkmPX394738
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=2etO1CJNtpNIPe+HOa0WpqfB
+	qr/+g9F6UdlSM1ZdxJQ=; b=jzJZS4fX5y7pYNvKK11iZHHL5+4nqDZXgr3QEVUz
+	o3tFCpcTvUaJuQPdrNDiE8C78eBWcOkpXPWmdseLoMti2LxlaMRMJzw9bEkfMnB3
+	+23FBecTiSkJYQfloTP/UO9WoGtu30UJbYJdiN/ejDgri+wkRzvwExQbfE3vigEm
+	BqKxWkjLAxKQGwAYv6iiXxlg92cH6JyWknTCUs2LZH18Ktp454vkhTz4EGe49Imw
+	jDt+f8xe3cSARZUhYpxN9Fustx65F3fDoy2lDV0yIPFYQcz8sC8cQva3zxMtTs39
+	wfxjjwnBcm9U30HZqOgWN5HefauN2cFIZ76ZyugEwtgJ/g==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ajxhqgcqt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 22:52:50 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b1d8f56e24so739086685a.2
+        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 14:52:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1763759647; x=1764364447; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1763765569; x=1764370369; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DefMfvVzY19z1+5A+UQbLAdG6uc9MBGDJLgUd7SbSRA=;
-        b=fmv+wuWjKi2uEMilGjxHLN54e54K2K8/d2v97RM/sH/ysjIblA73WXriRlABt4ALUz
-         egGQPlWPtFDWUeJuDMJw3eOIhNLBN6GWB5Ja7mvbRWOF+dOCkB3DQEMsfDgSDpYy7xvb
-         RpGHuSLlG4U/0F4EhU4KgQhZjmZYh2M1INfN4=
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2etO1CJNtpNIPe+HOa0WpqfBqr/+g9F6UdlSM1ZdxJQ=;
+        b=TXbhOGkeLrkfFyi7fHa4zUDnNADyiBRwE4XzxAXGEy+/n9OQuM+DDdhPPrnAMf0Zbf
+         CRpyCcJCc199490EVqdsUo9gmOKl2EfHqSwY2R229y3JnwLz6XupnD1jZr2zO1Mr8uqu
+         5Qf4lG/87gACxkYUYhHp4ewxDtrl6hk5CQoH8mYzpsfh/ZIn81qlJSdDUZNk42RBFRvn
+         EAm7pMxDZ6Nvprah0VrAGbg5qmOXuGH0jntkPf8eok0HcsrNJiQ861u0yBhX8LlqiU8x
+         71sdZYxNnuNnpfOTi1BietI4FF/TOwnT3D1QZI+ZkFz/jNnFi2QouDZ5dC5SeK6FI1ur
+         2jSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763759647; x=1764364447;
+        d=1e100.net; s=20230601; t=1763765569; x=1764370369;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DefMfvVzY19z1+5A+UQbLAdG6uc9MBGDJLgUd7SbSRA=;
-        b=GK7J3Y8hEcHNXLknXgonnXCof5xshomp6vuNnkJNpvz2veBu6P8CPT3W4rZlLEk940
-         DiBDD14/E3/JNR+FFLnctT2ocbMZFE7GEQ8hFOoidrWzYYeH2zhb+Q5Gr4gJKy7dm7AM
-         +4AUeUpCnS0sdESNm11RwMpr1iJkxfvqKYL2vsQ4tiBgm9fMcq4TDzQwOoF6d6MUH5GU
-         5JNN5e37Z/BixON39ftFLhPT1iPwyfJDeo3hek58gaIzIPxwc+IYLszb61lYQyXypucn
-         PKbGEZ1b/oA6qbKJ+Pzat4r0zbpMa0UlXK2+DYSj83H/cqXxxSgIWkb5NFH7R/Iwzfvt
-         70Nw==
-X-Gm-Message-State: AOJu0YwwxhD+NZhRzAA4Xj3m2ToL3DBWIFOaj/rwkpv4KZS5crkfdm5s
-	AQgGfn01KjvF4bpwk3uEmCa6l3NF9pmFaHx+dQjOmxLu3LuzlPqhG9uWg1UojAoAVA==
-X-Gm-Gg: ASbGnctK8r509D+ANW2IOBq8HUjTx4LWVGyFD2727+nEBFcBULrRDT4foULFoOFnTvS
-	gvJnjk+8TpK5w7AxyyQIDqbKuqE3k8tx9GPdDLtZSO7yGUSTnKvsuc9wca4S/dlpIxxdag0tkw6
-	cuHyC9aEtK6LfBY/ApEZ/9yj0Xgpg/1yNy8pcgoQJOrB9J9Ah2A6frbVscyw7n2dVbPauqxD4CZ
-	RD7CTLd4+6skgRc0AXdLTbnkRvocM0Ydf197L2N75G9PUiyxs/KKgHBCFz51PlD7PdQb4rq7nVL
-	wO3kikZ+LQ0U2qcWevqB1KMKduv6UdKFvd8ZUc9bs8C07gwLIw1Rk6ms9hIsszQSmqNnuDLMsQi
-	g4clqw7y5S158Zg/UDM7yvHVORbAqFcxlxrP+zEZcRMJ/bB9qmq+SndiNNhIKkJ5ASJL23oYXeO
-	zWPlPii7L+w4m8q5+RT+jzux/K3/wiEkqt
-X-Google-Smtp-Source: AGHT+IGoICO5vKGUzbvGQPv8FA6NHPI2AeaS2RMHkJJXNl2UM/lBqDzjcLi9woXD/2w5OzxK19kA7g==
-X-Received: by 2002:a17:902:d587:b0:295:592e:7633 with SMTP id d9443c01a7336-29b6bf3b62bmr46414455ad.29.1763759647409;
-        Fri, 21 Nov 2025 13:14:07 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.123.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b105f79sm64411075ad.20.2025.11.21.13.14.05
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2etO1CJNtpNIPe+HOa0WpqfBqr/+g9F6UdlSM1ZdxJQ=;
+        b=Qre9IoyIsa9UektSAwLltSGKKUTFMqfFscWhpsrN3bM8qNXhS1ZhOYnb1npp4fAnlo
+         fRrAOSRCaN9B40bIPs50PbW7DZoF02uiw/DRN9JTcdKL1cAxo9xpdjRNEHx2aOAjPvBk
+         jxbfUM2E3VpoL2kf65IHGgjDfWajCSsgIlcynNHPMh5BcFFTyeS3eZOHVv7nmtaP3UpN
+         0A/73RZUgtPnBjPAFSqEZXIsEp7XLRdZww2sf8jVNXI++m2qjH6uhEasd5yfeFrCK1fU
+         dVSHENit67Qd4+sMB02XluzZeSJ3vXuRJJyoMhd4jDMyFXr/tT3hgAFOpoE1amsIMrgg
+         Zdgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaOu2FSkiTpwr1+Etxvad6/wJ9KaJbHz4Lnp1j3kn65WnY4kj3Z7myXK7nIei5n3gg87K0034=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk6jxoB9aFwkiYuOPhBLe4ro6sWY1MQgLtrbHYKqG54doeq2fS
+	5poS6Ldioa2O8/44frx6d0i0C/TpfOYckph8060H1V542m2dzyNE2ZUfyG+mWejvDCJl5JcRYqn
+	NpQ9FyrdleF8fNTTBNsXGxhfvlo6Y1AWihvnJW8nUGxYj/H5l7Foj+gWrHT8=
+X-Gm-Gg: ASbGncsna1+cRgU0QV/QUq6oTyHgUkBPYGp3gjaDVxYhDrvE395ewnR02wxNb1PFRTU
+	cd3rbQsg/eQLUqgFkWV2e7I1I9oPqCg2hsm6kZrqKJu3tg3Q+Ep2TP4rTpXUYb7KSWh311NXh+1
+	KcyGlw27tHx8CX9W76uXd87GDvvCVEx8uWV1acV25hVRf87bDgXECH5JIIN64s4DL58SCLbJYWO
+	NBUsok2GeUgsdkH+t01kSkitUKzTCSKhoK96KqB2vzCFme+BDS2FgTvNZVy8oFOJPb6myfyK5it
+	4Sh+NnxtovYH8fIAQUKbaXO6YQm29vKNX9mdi1iCd6YHAURUDHP88NJ/QgqEuEuRycrTwm8Tsuv
+	sKvMuPulbvvnC28KuWWae9qFwGfP50zmLuZTgidvAtQWTxleKmegVsTLbxW8q1dhHC2PwAWrcf2
+	NIVzGRhheUcm1ZrimqIp4ErCY=
+X-Received: by 2002:a05:620a:4404:b0:8b2:ed71:ded3 with SMTP id af79cd13be357-8b33d4a01a3mr524688585a.67.1763765569313;
+        Fri, 21 Nov 2025 14:52:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEb23lCKZ23glBp74IiVfz/K6muOGBwS6W382uq1fVOh0KAzZTTZ0BY7nggZa+sLLASNUkjfg==
+X-Received: by 2002:a05:620a:4404:b0:8b2:ed71:ded3 with SMTP id af79cd13be357-8b33d4a01a3mr524686285a.67.1763765568941;
+        Fri, 21 Nov 2025 14:52:48 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbcc90asm1975272e87.90.2025.11.21.14.52.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 13:14:06 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Fri, 21 Nov 2025 14:14:03 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
-Message-ID: <aSDWG9xH4l9QJYQK@fedora64.linuxtx.org>
-References: <20251121160640.254872094@linuxfoundation.org>
+        Fri, 21 Nov 2025 14:52:48 -0800 (PST)
+Date: Sat, 22 Nov 2025 00:52:46 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Anusha Srivatsa <asrivats@redhat.com>,
+        Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH REGRESSION] drm/panel: simple: restore connector_type
+ fallback
+Message-ID: <4am5nvb4ldzvvaavkdu2o36viltoxxyxwybrmj3h35wtdhfcpa@53t4zahc3y6c>
+References: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,29 +118,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
+In-Reply-To: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIxMDE3NiBTYWx0ZWRfX2l0+UqlrhFak
+ oVBZoHds492KIX85tIclCXAWDnjQ0GW+S++GJyR0Y1TwzFqyJSbr3oVNBPagH6G/XNet+rme8xM
+ TAphf1GPawed9J1bNzK3xVypjktfuXaWatsAwQqgcYGCrRD3wgc8CuljAjaJgHUdXfSHM2jSJb5
+ og5foBmoJmFiAcVrCyWorJn/BZl+XGnjOwwvka/sAyDtQxvdjwe9YALP4dOBnWUcpu2p4by9xTL
+ bkwnw8qzl4aP6yCBm1/IKWhwSlTClwgWCiknujPoNlYZOPIRejFFaFQWTBfZ4ZRI4B2FsmgRfuB
+ f1rIG16pBfzjh1V1JBrdvtMrOZ9Lae/yDy8PfLEdk8BEQZSchu/t9h7kzHfjd6xiE7wPpIIJzzc
+ vqtBB3N0zRy64eyHRlIk2iPuSxZ2iA==
+X-Proofpoint-GUID: QHrjYmQXdbsvJ2uO7KSK5dJ5w1gfTrUT
+X-Proofpoint-ORIG-GUID: QHrjYmQXdbsvJ2uO7KSK5dJ5w1gfTrUT
+X-Authority-Analysis: v=2.4 cv=I+Fohdgg c=1 sm=1 tr=0 ts=6920ed42 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=XYAwZIGsAAAA:8 a=255BHluu6XS_bZfolTkA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22 a=E8ToXWR_bxluHZ7gmE-Z:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-21_07,2025-11-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 clxscore=1015 suspectscore=0 impostorscore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511210176
 
-On Fri, Nov 21, 2025 at 05:07:19PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.9 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, Nov 21, 2025 at 02:20:48PM +0100, Ludovic Desroches wrote:
+> The switch from devm_kzalloc() + drm_panel_init() to
+> devm_drm_panel_alloc() introduced a regression.
 > 
-> Responses should be made by Sun, 23 Nov 2025 16:05:54 +0000.
-> Anything received after that time might be too late.
+> Several panel descriptors do not set connector_type. For those panels,
+> panel_simple_probe() used to compute a connector type (currently DPI as a
+> fallback) and pass that value to drm_panel_init(). After the conversion
+> to devm_drm_panel_alloc(), the call unconditionally used
+> desc->connector_type instead, ignoring the computed fallback and
+> potentially passing DRM_MODE_CONNECTOR_Unknown, which
+> drm_panel_bridge_add() does not allow.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.9-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
+> Move the connector_type validation / fallback logic before the
+> devm_drm_panel_alloc() call and pass the computed connector_type to
+> devm_drm_panel_alloc(), so panels without an explicit connector_type
+> once again get the DPI default.
 > 
-> thanks,
+> Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+> Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
+> ---
+> Hi,
 > 
-> greg k-h
+> I am not sure whether this regression has already been reported or
+> addressed. If it has, please feel free to drop this patch.
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Would it be better to fix those panels instead? In the end, the panel
+usually has only one bus.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+> ---
+>  drivers/gpu/drm/panel/panel-simple.c | 86 ++++++++++++++++++------------------
+>  1 file changed, 43 insertions(+), 43 deletions(-)
+
+-- 
+With best wishes
+Dmitry
 
