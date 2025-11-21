@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59374C79736
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1205FC793E9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 538502DD29
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 208CD24292
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022CE2765FF;
-	Fri, 21 Nov 2025 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BDF2773F7;
+	Fri, 21 Nov 2025 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tdl5oQvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML0r/TpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29C9190477;
-	Fri, 21 Nov 2025 13:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99D326CE33;
+	Fri, 21 Nov 2025 13:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731687; cv=none; b=VMwzeP+z67yt8QQiYeHIqytwap8e5goXZh6IcmS2uwYLL9nESOJBOrG2At9tr1x+0StSFa/1/q16dwEoCjgiWezuQhhFAh3uFRq/r+/bRx7Qxja5SYKKEWPAP+H89MNNNcvhVDKGPEtiMYSRFllYQm3b9nR8ZsuhZsXyE+XA3Y8=
+	t=1763731296; cv=none; b=N7C0Uha2LYGzjQkJt80CJlBVw/15gKtFnXQPU6rMUlrR5F7TtN31NO7WerpcJcRaVM0rVrM/Wzew5fImfJ9ZcSGPEPhmo7249vbrI1g7EkmRlPE8T5o8/Q2VhiiipzPtDK0aAeg49DiL342QVbpVp6SOS0qgFUcWbhp00xa/gqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731687; c=relaxed/simple;
-	bh=yM4Jxw4qS+VL40hD/odKc4KURq3/Z0/WVYiV72Os5KM=;
+	s=arc-20240116; t=1763731296; c=relaxed/simple;
+	bh=CR7RMU00PbnKH3efDkvFXlkbeHtfo0L22s2HwQCOd3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XW1PspB1JTuhC+dbw7200DbzpCadNrYaLXbZSpVYzZEg+kqkPTZ5b9yb2yWaVsnjmzZyNqEUsT1xP/iTSH9lq1hU+51DCHKC9gXzGOMUYvgQcjbLSaW134ZdNPiaC4btYP7sYK2hDS8d/GtBnvnX4lVN8iImOrwFunQCEDG/MhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tdl5oQvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35416C116D0;
-	Fri, 21 Nov 2025 13:28:07 +0000 (UTC)
+	 MIME-Version; b=HCpL77VJHv0KmrEfzMByZOYgnASciHqBsMakjzGo8nyGSv/LWUOwsgllTMA0LInA9aZGXlaHknmpXRKMSQEcGku00RS/XxU8m9jE2BVTliowHxdUBOZA+ZABI//pp+8IgoPPuPaWlZwRr9YIScjAOeUwuXWfrsXn1vw+kzfLc8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML0r/TpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A188C4CEF1;
+	Fri, 21 Nov 2025 13:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731687;
-	bh=yM4Jxw4qS+VL40hD/odKc4KURq3/Z0/WVYiV72Os5KM=;
+	s=korg; t=1763731295;
+	bh=CR7RMU00PbnKH3efDkvFXlkbeHtfo0L22s2HwQCOd3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tdl5oQvfyKY0WaM1NFTuh0kuBTwqh4PajeFRZUqLjygU23zDvwjq21iyTOEiWEoLI
-	 qemQ6BkgsLopw7cLtXOO60puEDJA1VkFSv42A70nlwYKTgix+7ML1HdKuUJSgVZvNb
-	 Enf64+H8tQ1sLuZlmIumbJzqjG2jhjs1dyXqRpiA=
+	b=ML0r/TpLrIFgxpeT0k7FHj9qh7O2eYfNkz/W7gPRMVMa5ZSwlaW6U+I+08prI8B32
+	 Ym5g8DLTZn5QQs/UcQTPHdJJqdaeAc+rvMfJCA1bFsh7SoDH/jrDudgGpoPlOxtw6p
+	 HkmzC04dI4o0GN+qfRojOJ3C4IzgCyH5F5JKe8s4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/185] net/smc: fix mismatch between CLC header and proposal
+Subject: [PATCH 6.17 125/247] mtd: onenand: Pass correct pointer to IRQ handler
 Date: Fri, 21 Nov 2025 14:11:12 +0100
-Message-ID: <20251121130145.505641796@linuxfoundation.org>
+Message-ID: <20251121130159.214728840@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ec33f2e5a2d0dbbfd71435209aee812fdc9369b8 ]
+[ Upstream commit 97315e7c901a1de60e8ca9b11e0e96d0f9253e18 ]
 
-The current CLC proposal message construction uses a mix of
-`ini->smc_type_v1/v2` and `pclc_base->hdr.typev1/v2` to decide whether
-to include optional extensions (IPv6 prefix extension for v1, and v2
-extension). This leads to a critical inconsistency: when
-`smc_clc_prfx_set()` fails - for example, in IPv6-only environments with
-only link-local addresses, or when the local IP address and the outgoing
-interface’s network address are not in the same subnet.
+This was supposed to pass "onenand" instead of "&onenand" with the
+ampersand.  Passing a random stack address which will be gone when the
+function ends makes no sense.  However the good thing is that the pointer
+is never used, so this doesn't cause a problem at run time.
 
-As a result, the proposal message is assembled using the stale
-`ini->smc_type_v1` value—causing the IPv6 prefix extension to be
-included even though the header indicates v1 is not supported.
-The peer then receives a malformed CLC proposal where the header type
-does not match the payload, and immediately resets the connection.
-
-The fix ensures consistency between the CLC header flags and the actual
-payload by synchronizing `ini->smc_type_v1` with `pclc_base->hdr.typev1`
-when prefix setup fails.
-
-Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20251107024029.88753-1-alibuda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e23abf4b7743 ("mtd: OneNAND: S5PC110: Implement DMA interrupt method")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/onenand/onenand_samsung.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 8a794333e9927..b3a8053d4ab4b 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -887,6 +887,7 @@ int smc_clc_send_proposal(struct smc_sock *smc, struct smc_init_info *ini)
- 				return SMC_CLC_DECL_CNFERR;
- 			}
- 			pclc_base->hdr.typev1 = SMC_TYPE_N;
-+			ini->smc_type_v1 = SMC_TYPE_N;
- 		} else {
- 			pclc_base->iparea_offset = htons(sizeof(*pclc_smcd));
- 			plen += sizeof(*pclc_prfx) +
+diff --git a/drivers/mtd/nand/onenand/onenand_samsung.c b/drivers/mtd/nand/onenand/onenand_samsung.c
+index f37a6138e461f..6d6aa709a21f8 100644
+--- a/drivers/mtd/nand/onenand/onenand_samsung.c
++++ b/drivers/mtd/nand/onenand/onenand_samsung.c
+@@ -906,7 +906,7 @@ static int s3c_onenand_probe(struct platform_device *pdev)
+ 			err = devm_request_irq(&pdev->dev, r->start,
+ 					       s5pc110_onenand_irq,
+ 					       IRQF_SHARED, "onenand",
+-					       &onenand);
++					       onenand);
+ 			if (err) {
+ 				dev_err(&pdev->dev, "failed to get irq\n");
+ 				return err;
 -- 
 2.51.0
 
