@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3E2C7954D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81855C79EA0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BD4BC34B225
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:20 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D533C3464E3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBA327147D;
-	Fri, 21 Nov 2025 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BE72F8BCB;
+	Fri, 21 Nov 2025 13:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2b0/Ym8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6bCcTSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0142F3632;
-	Fri, 21 Nov 2025 13:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D392045AD;
+	Fri, 21 Nov 2025 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731276; cv=none; b=D41wze82y00ovMXSQPAtUzFqSaYrSrzhXdSkNg8elxndHOJV1MgkkmD5DhNK6+3PR22gQlfUJe7NLK19E10565tscbQX1scB+h0S+zv6I/HF3roFynELB6N9OSrnjUBnvHAWOCeuJxzvqInu4JSsVBVAQExsFrmSoOb2EGAG6VA=
+	t=1763733232; cv=none; b=i/a1OGEmr7AIvWd8eSvbPEmX1Gr5j3/xar6Dbj1WS2EIgwsZwGohOasojmSL0/vC2wL8E4A+kfKgWN4rotlKUTwPUbcwXXXx7V3mZFicm+4G6HTFa5Z9nS4E2B0iZEV8XY/i1qI8LZ1wa7qLbjnnIEAehs1vZIbUhuj46/yqmQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731276; c=relaxed/simple;
-	bh=1UdYgKCQlVUj35rJVQb/OvPhOUZ7fgpC6InL4HcWakI=;
+	s=arc-20240116; t=1763733232; c=relaxed/simple;
+	bh=hN+titZgAn3wWQTkJxq+eooK68ACzV6OwdPJtpBh8jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkxY2F1s9k/6w0It8Ki75pWfhavhGArIYNmaRhxRln2BkWRMBJOO82dEX5Lf/09xlJDzB2U2Uzk7uDVo1y+Wgi0691LfTimzm/2FaLNEWfdCxe49uWiMfL+GletPPvudRD5gyY6+TW8ATZ3XXLwf1AasALDKyNDV32jcz9Z5ZjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2b0/Ym8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5945FC4CEF1;
-	Fri, 21 Nov 2025 13:21:15 +0000 (UTC)
+	 MIME-Version; b=e6lg3WFOaaOgd3tuzLlszOo0yn4MkkQin8FLfDK/WPqOK4LOEgpk/eDSnEOznJfFEA44JWDus7WkVgENnOC/HUYyZtfupReaVOaSWEmkA2Yok891N1OR//tE7zuxm0tjaOTHv6mquBkg5g1XPMsgMN3Xr58pTgs2jPrNOhoyfa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6bCcTSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50374C116C6;
+	Fri, 21 Nov 2025 13:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731275;
-	bh=1UdYgKCQlVUj35rJVQb/OvPhOUZ7fgpC6InL4HcWakI=;
+	s=korg; t=1763733232;
+	bh=hN+titZgAn3wWQTkJxq+eooK68ACzV6OwdPJtpBh8jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2b0/Ym8Kd7M4KYEnFXkPGx5PVDqB1iyDtot8rwEWytGNXefgcvWI3ibSD1qAfrq/
-	 bwed/5RzTLT/+cRvlkIMbyVHjIWagP5nQBan1FdUPqrMc/ZboGtRVY8IJzWG80ptmI
-	 zf60Exs+XqDpf5xG6eGLWO+hr8nQ/7ndnBsyoChc=
+	b=y6bCcTSD35dI44NvJeJiubI8BgFZ9oREJYUrbL6rgFV+jjTu3ii4ZqnZRoRWR2oew
+	 Y2yLiQoxUBHhUg9XDnwz2TbxC8q57e7DWl3eLBkazPiXOlbJUew0ECPTcBcekZEI/7
+	 fMh3vTmkyfk4dTh08gcl0coi1IDHr4ZPLQiXzjuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 150/247] LoongArch: KVM: Add delay until timer interrupt injected
+	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 398/529] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
 Date: Fri, 21 Nov 2025 14:11:37 +0100
-Message-ID: <20251121130200.109913318@linuxfoundation.org>
+Message-ID: <20251121130245.183269977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-commit d3c9515e4f9d10ccb113adb4809db5cc31e7ef65 upstream.
+[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
 
-When timer is fired in oneshot mode, CSR.TVAL will stop with value -1
-rather than 0. However when the register CSR.TVAL is restored, it will
-continue to count down rather than stop there.
+There is a KASAN: slab-use-after-free read in btusb_disconnect().
+Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
+free the btusb data associated with the interface. The same data is
+then used later in the function, hence the UAF.
 
-Now the method is to write 0 to CSR.TVAL, wait to count down for 1 cycle
-at least, which is 10ns with a timer freq 100MHz, and then retore timer
-interrupt status. Here add 2 cycles delay to assure that timer interrupt
-is injected.
+Fix by moving the accesses to btusb data to before the data is free'd.
 
-With this patch, timer selftest case passes to run always.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
+Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
+Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/timer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btusb.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -4,6 +4,7 @@
-  */
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 23a9a221056a4..74d264b64b534 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4713,6 +4713,11 @@ static void btusb_disconnect(struct usb_interface *intf)
  
- #include <linux/kvm_host.h>
-+#include <asm/delay.h>
- #include <asm/kvm_csr.h>
- #include <asm/kvm_vcpu.h>
+ 	hci_unregister_dev(hdev);
  
-@@ -95,6 +96,7 @@ void kvm_restore_timer(struct kvm_vcpu *
- 		 * and set CSR TVAL with -1
- 		 */
- 		write_gcsr_timertick(0);
-+		__delay(2); /* Wait cycles until timer interrupt injected */
++	if (data->oob_wake_irq)
++		device_init_wakeup(&data->udev->dev, false);
++	if (data->reset_gpio)
++		gpiod_put(data->reset_gpio);
++
+ 	if (intf == data->intf) {
+ 		if (data->isoc)
+ 			usb_driver_release_interface(&btusb_driver, data->isoc);
+@@ -4723,17 +4728,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 			usb_driver_release_interface(&btusb_driver, data->diag);
+ 		usb_driver_release_interface(&btusb_driver, data->intf);
+ 	} else if (intf == data->diag) {
+-		usb_driver_release_interface(&btusb_driver, data->intf);
+ 		if (data->isoc)
+ 			usb_driver_release_interface(&btusb_driver, data->isoc);
++		usb_driver_release_interface(&btusb_driver, data->intf);
+ 	}
  
- 		/*
- 		 * Writing CSR_TINTCLR_TI to LOONGARCH_CSR_TINTCLR will clear
+-	if (data->oob_wake_irq)
+-		device_init_wakeup(&data->udev->dev, false);
+-
+-	if (data->reset_gpio)
+-		gpiod_put(data->reset_gpio);
+-
+ 	hci_free_dev(hdev);
+ }
+ 
+-- 
+2.51.0
+
 
 
 
