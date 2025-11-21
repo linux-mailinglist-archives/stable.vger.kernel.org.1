@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-196357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4240BC79F21
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47E5C79577
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1720E4F1BD9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E59BF3679AB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4CD3502B1;
-	Fri, 21 Nov 2025 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4F234678E;
+	Fri, 21 Nov 2025 13:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO2qjj+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRkV6u3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97348350A0C;
-	Fri, 21 Nov 2025 13:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED80A27147D;
+	Fri, 21 Nov 2025 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733276; cv=none; b=e5y7+BWjb099c4aCII4PNImBp3huFATS+gGJRoNql0VztpeYU6IN6KioTRPVCqNvQ0xIn3OPe5HKJAvdxLazTTuADbFlTQABw6nNq/oQGUtTULI1Gc/Rre2r81/0bMEc0RtjcHxoppXFogYiV4El/PrdYqPofnJXKL3FBaORTTA=
+	t=1763731310; cv=none; b=mAyylybK4PKJ3ypay0JgLUY5s1J4Wobn0f0gBTeA/kT32m/BFSlHbs2gTStcfd7vj9OH8AVNM/JjULAgADwmrXOI7RdvI4HnTWbwwxwTzYWIwDPydwq+LUvuouYaiLopHLfWHh54EAf2BVdG6PTUraSCI7w8rlS1rgZ8nWrN1/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733276; c=relaxed/simple;
-	bh=BBNI3RDw1QkT/ZUZce1ouPQGdZJv4EM6v0bHqJNmL08=;
+	s=arc-20240116; t=1763731310; c=relaxed/simple;
+	bh=P0tECnlOGox1/3rjnREKKll7rfiYqCebQycXvlW/Vr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZA9hq7SMsl6eK+/hWtCZWk8q5gGg3+XTwvxKJh1VDuNhqQVirCAL6oGExmziNjjC2xOkDbRntxodxtqG+jBno2hIop9Fk67nkj1vz/snVJGzRqp70WMFH4qodfY7BxqHYGU7ihMIkkotrBIvY9DKYPBVemT9SFFgZwmiu6cHi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO2qjj+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C663EC4CEF1;
-	Fri, 21 Nov 2025 13:54:34 +0000 (UTC)
+	 MIME-Version; b=uirdr1GRzUMwFDWbZr0FnGSxn/96CYv27tldbugbiMC6n07/0ZMle8+eMWmaL9704yCV7wtL+XTX4gpiSkf/WoUE0qoo1itYMXp4ozKbmU/HGwYh9NxveCxE5DBQh9Sq+v//NszUVcbF9cltWeduJv0KmULb77tI5j4uMLpVt/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRkV6u3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403A2C4CEF1;
+	Fri, 21 Nov 2025 13:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733275;
-	bh=BBNI3RDw1QkT/ZUZce1ouPQGdZJv4EM6v0bHqJNmL08=;
+	s=korg; t=1763731309;
+	bh=P0tECnlOGox1/3rjnREKKll7rfiYqCebQycXvlW/Vr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NO2qjj+PabqcIl4IeAz+pr/bM6CuhbdQyKnDVwvSi+u8WQpKlozCDFfsUZpXkcZK/
-	 a9LMRcCRaDpsYXGsXDYfCXmjZSsT3dFxi7jnKN9o9SQMDAkgpzzIs3glPS4XRwFMIw
-	 l1lRcoobxDQchmpcFB94V3mno7JmlFnkJtNXpuvw=
+	b=vRkV6u3kpb3rfshnSWoDRO9/fLxywEZnrRKMH7tixCNi7gflwcsoY8xek6FepiXM0
+	 E/bTrGCHTR3pcHBVifpxULyyKtLe+nK/OBfMEH5D5REyGNl4kiMhk2M8FnXqeH5Zfe
+	 k36rnag+XZwefsaGm+GX7A/hNfmkiToMXAIuTFE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 412/529] net/mlx5e: Fix maxrate wraparound in threshold between units
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 164/247] kho: warn and fail on metadata or preserved memory in scratch area
 Date: Fri, 21 Nov 2025 14:11:51 +0100
-Message-ID: <20251121130245.678729407@linuxfoundation.org>
+Message-ID: <20251121130200.607393324@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +73,323 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
+commit e38f65d317df1fd2dcafe614d9c537475ecf9992 upstream.
 
-The previous calculation used roundup() which caused an overflow for
-rates between 25.5Gbps and 26Gbps.
-For example, a rate of 25.6Gbps would result in using 100Mbps units with
-value of 256, which would overflow the 8 bits field.
+Patch series "KHO: kfence + KHO memory corruption fix", v3.
 
-Simplify the upper_limit_mbps calculation by removing the
-unnecessary roundup, and adjust the comparison to use <= to correctly
-handle the boundary condition.
+This series fixes a memory corruption bug in KHO that occurs when KFENCE
+is enabled.
 
-Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause is that KHO metadata, allocated via kzalloc(), can be
+randomly serviced by kfence_alloc().  When a kernel boots via KHO, the
+early memblock allocator is restricted to a "scratch area".  This forces
+the KFENCE pool to be allocated within this scratch area, creating a
+conflict.  If KHO metadata is subsequently placed in this pool, it gets
+corrupted during the next kexec operation.
+
+Google is using KHO and have had obscure crashes due to this memory
+corruption, with stacks all over the place.  I would prefer this fix to be
+properly backported to stable so we can also automatically consume it once
+we switch to the upstream KHO.
+
+Patch 1/3 introduces a debug-only feature (CONFIG_KEXEC_HANDOVER_DEBUG)
+that adds checks to detect and fail any operation that attempts to place
+KHO metadata or preserved memory within the scratch area.  This serves as
+a validation and diagnostic tool to confirm the problem without affecting
+production builds.
+
+Patch 2/3 Increases bitmap to PAGE_SIZE, so buddy allocator can be used.
+
+Patch 3/3 Provides the fix by modifying KHO to allocate its metadata
+directly from the buddy allocator instead of slab.  This bypasses the
+KFENCE interception entirely.
+
+
+This patch (of 3):
+
+It is invalid for KHO metadata or preserved memory regions to be located
+within the KHO scratch area, as this area is overwritten when the next
+kernel is loaded, and used early in boot by the next kernel.  This can
+lead to memory corruption.
+
+Add checks to kho_preserve_* and KHO's internal metadata allocators
+(xa_load_or_alloc, new_chunk) to verify that the physical address of the
+memory does not overlap with any defined scratch region.  If an overlap is
+detected, the operation will fail and a WARN_ON is triggered.  To avoid
+performance overhead in production kernels, these checks are enabled only
+when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+
+[rppt@kernel.org: fix KEXEC_HANDOVER_DEBUG Kconfig dependency]
+  Link: https://lkml.kernel.org/r/aQHUyyFtiNZhx8jo@kernel.org
+[pasha.tatashin@soleen.com: build fix]
+  Link: https://lkml.kernel.org/r/CA+CK2bBnorfsTymKtv4rKvqGBHs=y=MjEMMRg_tE-RME6n-zUw@mail.gmail.com
+Link: https://lkml.kernel.org/r/20251021000852.2924827-1-pasha.tatashin@soleen.com
+Link: https://lkml.kernel.org/r/20251021000852.2924827-2-pasha.tatashin@soleen.com
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Mike Rapoport <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Matlack <dmatlack@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Samiullah Khawaja <skhawaja@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/Kconfig.kexec             |    9 ++++++
+ kernel/Makefile                  |    1 
+ kernel/kexec_handover.c          |   57 ++++++++++++++++++++++++++-------------
+ kernel/kexec_handover_debug.c    |   25 +++++++++++++++++
+ kernel/kexec_handover_internal.h |   20 +++++++++++++
+ 5 files changed, 93 insertions(+), 19 deletions(-)
+ create mode 100644 kernel/kexec_handover_debug.c
+ create mode 100644 kernel/kexec_handover_internal.h
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 8705cffc747ff..5e388cd518be9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
- 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
--	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
-+	__u64 upper_limit_mbps;
- 	int i;
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -109,6 +109,15 @@ config KEXEC_HANDOVER
+ 	  to keep data or state alive across the kexec. For this to work,
+ 	  both source and target kernels need to have this option enabled.
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
-+	upper_limit_mbps = 255 * MLX5E_100MB;
++config KEXEC_HANDOVER_DEBUG
++	bool "Enable Kexec Handover debug checks"
++	depends on KEXEC_HANDOVER
++	help
++	  This option enables extra sanity checks for the Kexec Handover
++	  subsystem. Since, KHO performance is crucial in live update
++	  scenarios and the extra code might be adding overhead it is
++	  only optionally enabled.
++
+ config CRASH_DUMP
+ 	bool "kernel crash dumps"
+ 	default ARCH_DEFAULT_CRASH_DUMP
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -82,6 +82,7 @@ obj-$(CONFIG_KEXEC) += kexec.o
+ obj-$(CONFIG_KEXEC_FILE) += kexec_file.o
+ obj-$(CONFIG_KEXEC_ELF) += kexec_elf.o
+ obj-$(CONFIG_KEXEC_HANDOVER) += kexec_handover.o
++obj-$(CONFIG_KEXEC_HANDOVER_DEBUG) += kexec_handover_debug.o
+ obj-$(CONFIG_BACKTRACE_SELF_TEST) += backtracetest.o
+ obj-$(CONFIG_COMPAT) += compat.o
+ obj-$(CONFIG_CGROUPS) += cgroup/
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -8,6 +8,7 @@
  
- 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
- 		if (!maxrate->tc_maxrate[i]) {
- 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
- 			continue;
- 		}
--		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
-+		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
--- 
-2.51.0
-
+ #define pr_fmt(fmt) "KHO: " fmt
+ 
++#include <linux/cleanup.h>
+ #include <linux/cma.h>
+ #include <linux/count_zeros.h>
+ #include <linux/debugfs.h>
+@@ -21,6 +22,7 @@
+ 
+ #include <asm/early_ioremap.h>
+ 
++#include "kexec_handover_internal.h"
+ /*
+  * KHO is tightly coupled with mm init and needs access to some of mm
+  * internal APIs.
+@@ -93,26 +95,26 @@ struct kho_serialization {
+ 
+ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+ {
+-	void *elm, *res;
++	void *res = xa_load(xa, index);
+ 
+-	elm = xa_load(xa, index);
+-	if (elm)
+-		return elm;
++	if (res)
++		return res;
++
++	void *elm __free(kfree) = kzalloc(sz, GFP_KERNEL);
+ 
+-	elm = kzalloc(sz, GFP_KERNEL);
+ 	if (!elm)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz)))
++		return ERR_PTR(-EINVAL);
++
+ 	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
+ 	if (xa_is_err(res))
+-		res = ERR_PTR(xa_err(res));
+-
+-	if (res) {
+-		kfree(elm);
++		return ERR_PTR(xa_err(res));
++	else if (res)
+ 		return res;
+-	}
+ 
+-	return elm;
++	return no_free_ptr(elm);
+ }
+ 
+ static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
+@@ -263,15 +265,19 @@ static_assert(sizeof(struct khoser_mem_c
+ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
+ 					  unsigned long order)
+ {
+-	struct khoser_mem_chunk *chunk;
++	struct khoser_mem_chunk *chunk __free(kfree) = NULL;
+ 
+ 	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!chunk)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
++
++	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE)))
++		return ERR_PTR(-EINVAL);
++
+ 	chunk->hdr.order = order;
+ 	if (cur_chunk)
+ 		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
+-	return chunk;
++	return no_free_ptr(chunk);
+ }
+ 
+ static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
+@@ -292,14 +298,17 @@ static int kho_mem_serialize(struct kho_
+ 	struct khoser_mem_chunk *chunk = NULL;
+ 	struct kho_mem_phys *physxa;
+ 	unsigned long order;
++	int err = -ENOMEM;
+ 
+ 	xa_for_each(&ser->track.orders, order, physxa) {
+ 		struct kho_mem_phys_bits *bits;
+ 		unsigned long phys;
+ 
+ 		chunk = new_chunk(chunk, order);
+-		if (!chunk)
++		if (IS_ERR(chunk)) {
++			err = PTR_ERR(chunk);
+ 			goto err_free;
++		}
+ 
+ 		if (!first_chunk)
+ 			first_chunk = chunk;
+@@ -309,8 +318,10 @@ static int kho_mem_serialize(struct kho_
+ 
+ 			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
+ 				chunk = new_chunk(chunk, order);
+-				if (!chunk)
++				if (IS_ERR(chunk)) {
++					err = PTR_ERR(chunk);
+ 					goto err_free;
++				}
+ 			}
+ 
+ 			elm = &chunk->bitmaps[chunk->hdr.num_elms];
+@@ -327,7 +338,7 @@ static int kho_mem_serialize(struct kho_
+ 
+ err_free:
+ 	kho_mem_ser_free(first_chunk);
+-	return -ENOMEM;
++	return err;
+ }
+ 
+ static void __init deserialize_bitmap(unsigned int order,
+@@ -380,8 +391,8 @@ static void __init kho_mem_deserialize(c
+  * area for early allocations that happen before page allocator is
+  * initialized.
+  */
+-static struct kho_scratch *kho_scratch;
+-static unsigned int kho_scratch_cnt;
++struct kho_scratch *kho_scratch;
++unsigned int kho_scratch_cnt;
+ 
+ /*
+  * The scratch areas are scaled by default as percent of memory allocated from
+@@ -684,6 +695,9 @@ int kho_preserve_folio(struct folio *fol
+ 	if (kho_out.finalized)
+ 		return -EBUSY;
+ 
++	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
++		return -EINVAL;
++
+ 	return __kho_preserve_order(track, pfn, order);
+ }
+ EXPORT_SYMBOL_GPL(kho_preserve_folio);
+@@ -713,6 +727,11 @@ int kho_preserve_phys(phys_addr_t phys,
+ 	if (!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(size))
+ 		return -EINVAL;
+ 
++	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
++					nr_pages << PAGE_SHIFT))) {
++		return -EINVAL;
++	}
++
+ 	while (pfn < end_pfn) {
+ 		const unsigned int order =
+ 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+--- /dev/null
++++ b/kernel/kexec_handover_debug.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * kexec_handover_debug.c - kexec handover optional debug functionality
++ * Copyright (C) 2025 Google LLC, Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#define pr_fmt(fmt) "KHO: " fmt
++
++#include "kexec_handover_internal.h"
++
++bool kho_scratch_overlap(phys_addr_t phys, size_t size)
++{
++	phys_addr_t scratch_start, scratch_end;
++	unsigned int i;
++
++	for (i = 0; i < kho_scratch_cnt; i++) {
++		scratch_start = kho_scratch[i].addr;
++		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
++
++		if (phys < scratch_end && (phys + size) > scratch_start)
++			return true;
++	}
++
++	return false;
++}
+--- /dev/null
++++ b/kernel/kexec_handover_internal.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef LINUX_KEXEC_HANDOVER_INTERNAL_H
++#define LINUX_KEXEC_HANDOVER_INTERNAL_H
++
++#include <linux/kexec_handover.h>
++#include <linux/types.h>
++
++extern struct kho_scratch *kho_scratch;
++extern unsigned int kho_scratch_cnt;
++
++#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
++bool kho_scratch_overlap(phys_addr_t phys, size_t size);
++#else
++static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
++{
++	return false;
++}
++#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
++
++#endif /* LINUX_KEXEC_HANDOVER_INTERNAL_H */
 
 
 
