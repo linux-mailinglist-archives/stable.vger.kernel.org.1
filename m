@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161A8C79E2B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8011C7942D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 965E14EF27B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 035344ED5A0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FB9351FD1;
-	Fri, 21 Nov 2025 13:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB312F6577;
+	Fri, 21 Nov 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG52vjES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaN8s92u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BED351FBF;
-	Fri, 21 Nov 2025 13:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFEA2750FB;
+	Fri, 21 Nov 2025 13:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733078; cv=none; b=HJM9GXsUKJ6Ll2atT2JXXAvSpxmHUEHkn/X4gsegiQq8WZ2pI/qfL+8cd+FfnxNm8j/zui2G9s1WpiN7BvWW4pe2gepCo4BPzRoXeUZPOjhgrCZN2nWB2GGEkklco/zmLGniWiQvph0O1ddk5NsR8v57BgEvqlg6I3U8ENrXqNo=
+	t=1763731113; cv=none; b=cX8nviYLywpYXONBjyLPxxpsrHdSd56eq89A1XIy8Mw4D/Tu1XPqaSOazQd1FE48lUgmqO5POhFmYOy+SXOieX2VOK002SdwxnaFKc5niAWEbxwB8QGqWOh4V/dCF/88fzgupvn0SnmfiCi3fQMz5nzzvqY7qI6nxpSAERkyww0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733078; c=relaxed/simple;
-	bh=VMtGZZmyOowG7QXkcfW3iAd0mk3w0Z1ZietlrvQeiXA=;
+	s=arc-20240116; t=1763731113; c=relaxed/simple;
+	bh=o1QH4DQwcFILUTmsjlqVqUiceyG5J4VJaPz+GFMXERo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gll6NELtEeUUQWJW/LVW1+IfG2O0/RLs0iTU8V96QxIjmo/0mtKOzu0bNo3/hn9wl7dz+Wxz/1arQ8zg/1R8SOzJm6YXcbHSMcrfh7XIOB25shSJDvJbVkv1ROE5tEMNLNVBFofW24JKlRYLBlcn7201dF7I+Eo+/2fl1HkVEA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG52vjES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260BDC4CEFB;
-	Fri, 21 Nov 2025 13:51:17 +0000 (UTC)
+	 MIME-Version; b=mnzMKy4eoRDMw6VvnV9r5NHM+NZoYZbrj8lViri3SGnUA61vgHQW5YY6lUOui+uF3wrXNoqHalSLWLkaHQ2G887VY3Uaahis9ml+w4w8mrY44hh0yhtrAgys8GIku+U8b9zjvp4hUO5jOxEDn1vNs1WzND+ZqvOVyPwf+cBRiaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaN8s92u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755E9C4CEF1;
+	Fri, 21 Nov 2025 13:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733078;
-	bh=VMtGZZmyOowG7QXkcfW3iAd0mk3w0Z1ZietlrvQeiXA=;
+	s=korg; t=1763731112;
+	bh=o1QH4DQwcFILUTmsjlqVqUiceyG5J4VJaPz+GFMXERo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aG52vjESAX/mRzFb3ZzUao0oKmv3MDeycD51wI6ehqOPIpNXWNuuojjTNdGF/cMIo
-	 rjDPSOZEcRSfMvL9IJgAALp+tOprlWlRovkd5DUmZ7G0BIbAbGdKhDLqfvHuxKa4ec
-	 imMe3NBOz3VaapjuAaPscZ7IOAhQumjeCPVEGhUo=
+	b=RaN8s92u14wPW9ZfC0xbI6gq6g8FWqlKu04r7LrVoB7uj0kUz3nuup5uFf+RltqmF
+	 Tdbkg+/nM34t+p8evCoXLNQyUEQDnH1FD1O77Q7VBdKFoeiVGen8LMmC8zlBIxY1Mc
+	 uYZcNqb4AucOiMNCagnttlmjBR3AzgX5ACCloB7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 342/529] netdevsim: add Makefile for selftests
-Date: Fri, 21 Nov 2025 14:10:41 +0100
-Message-ID: <20251121130243.200904914@linuxfoundation.org>
+Subject: [PATCH 6.17 095/247] io_uring/rsrc: dont use blk_rq_nr_phys_segments() as number of bvecs
+Date: Fri, 21 Nov 2025 14:10:42 +0100
+Message-ID: <20251121130158.001308865@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 8ff25dac88f616ebebb30830e3a20f079d7a30c9 ]
+[ Upstream commit 2d0e88f3fd1dcb37072d499c36162baf5b009d41 ]
 
-Add a Makefile for netdevsim selftests and add selftests path to
-MAINTAINERS
+io_buffer_register_bvec() currently uses blk_rq_nr_phys_segments() as
+the number of bvecs in the request. However, bvecs may be split into
+multiple segments depending on the queue limits. Thus, the number of
+segments may overestimate the number of bvecs. For ublk devices, the
+only current users of io_buffer_register_bvec(), virt_boundary_mask,
+seg_boundary_mask, max_segments, and max_segment_size can all be set
+arbitrarily by the ublk server process.
+Set imu->nr_bvecs based on the number of bvecs the rq_for_each_bvec()
+loop actually yields. However, continue using blk_rq_nr_phys_segments()
+as an upper bound on the number of bvecs when allocating imu to avoid
+needing to iterate the bvecs a second time.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://lore.kernel.org/r/20240130214620.3722189-5-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d01f8136d46b ("selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh")
+Link: https://lore.kernel.org/io-uring/20251111191530.1268875-1-csander@purestorage.com/
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Fixes: 27cb27b6d5ea ("io_uring: add support for kernel registered bvecs")
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                                     |  1 +
- .../selftests/drivers/net/netdevsim/Makefile    | 17 +++++++++++++++++
- 2 files changed, 18 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/netdevsim/Makefile
+ io_uring/rsrc.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 294d2ce29b735..c1aafeb3babf9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14725,6 +14725,7 @@ NETDEVSIM
- M:	Jakub Kicinski <kuba@kernel.org>
- S:	Maintained
- F:	drivers/net/netdevsim/*
-+F:	tools/testing/selftests/drivers/net/netdevsim/*
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 5961f21dd65d1..b0852674730c5 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -942,8 +942,8 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
+ 	struct req_iterator rq_iter;
+ 	struct io_mapped_ubuf *imu;
+ 	struct io_rsrc_node *node;
+-	struct bio_vec bv, *bvec;
+-	u16 nr_bvecs;
++	struct bio_vec bv;
++	unsigned int nr_bvecs = 0;
+ 	int ret = 0;
  
- NETEM NETWORK EMULATOR
- M:	Stephen Hemminger <stephen@networkplumber.org>
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-new file mode 100644
-index 0000000000000..7a29a05bea8bc
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -0,0 +1,17 @@
-+# SPDX-License-Identifier: GPL-2.0+ OR MIT
-+
-+TEST_PROGS = devlink.sh \
-+	devlink_in_netns.sh \
-+	devlink_trap.sh \
-+	ethtool-coalesce.sh \
-+	ethtool-fec.sh \
-+	ethtool-pause.sh \
-+	ethtool-ring.sh \
-+	fib.sh \
-+	hw_stats_l3.sh \
-+	nexthop.sh \
-+	psample.sh \
-+	tc-mq-visibility.sh \
-+	udp_tunnel_nic.sh \
-+
-+include ../../../lib.mk
+ 	io_ring_submit_lock(ctx, issue_flags);
+@@ -964,8 +964,11 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
+ 		goto unlock;
+ 	}
+ 
+-	nr_bvecs = blk_rq_nr_phys_segments(rq);
+-	imu = io_alloc_imu(ctx, nr_bvecs);
++	/*
++	 * blk_rq_nr_phys_segments() may overestimate the number of bvecs
++	 * but avoids needing to iterate over the bvecs
++	 */
++	imu = io_alloc_imu(ctx, blk_rq_nr_phys_segments(rq));
+ 	if (!imu) {
+ 		kfree(node);
+ 		ret = -ENOMEM;
+@@ -976,16 +979,15 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
+ 	imu->len = blk_rq_bytes(rq);
+ 	imu->acct_pages = 0;
+ 	imu->folio_shift = PAGE_SHIFT;
+-	imu->nr_bvecs = nr_bvecs;
+ 	refcount_set(&imu->refs, 1);
+ 	imu->release = release;
+ 	imu->priv = rq;
+ 	imu->is_kbuf = true;
+ 	imu->dir = 1 << rq_data_dir(rq);
+ 
+-	bvec = imu->bvec;
+ 	rq_for_each_bvec(bv, rq, rq_iter)
+-		*bvec++ = bv;
++		imu->bvec[nr_bvecs++] = bv;
++	imu->nr_bvecs = nr_bvecs;
+ 
+ 	node->buf = imu;
+ 	data->nodes[index] = node;
 -- 
 2.51.0
 
