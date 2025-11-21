@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-195573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1132CC793EC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886B9C7A01A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E59A4ECADE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 103923780C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3165A345743;
-	Fri, 21 Nov 2025 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C30E341AC5;
+	Fri, 21 Nov 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXq+zu4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muYEjCVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0533332904;
-	Fri, 21 Nov 2025 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3634D917;
+	Fri, 21 Nov 2025 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731058; cv=none; b=ssM6RqXcTdTK58vlWi+G2L5i9o0MJDF3rwykuwnnNSQBGcu6irWoXYzX5BhYPsj4BtprmhtEO5WqCnQHaSlatFqR7s0Rluu9VUMxmHVqdH4RguIn+mRh/j5VO519pv8/BFXKxGBYuxDZeVWAMn+XD2jWAd3iN0V7KhN9ChfsIMw=
+	t=1763733015; cv=none; b=RhOiGlJa3SgQyCwnEIH9KeQj5Gw3XlvSU5PvjxsL0+HkUZ5EfwtO40go1NKsAntNgIttrgHIJjsvexlz30POh4NYnqWjX4wUyqlkiW1TBfauxYXFrSWrZUSDiV0E3ugXMgpXbqm0ZmEdiwyEzEQ1Z6Ux/COq8HQ7Loc3ROFEZmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731058; c=relaxed/simple;
-	bh=59PzSM126wNUHUUp4dUXQBji+f/ZsF0kcuqF8z7leyU=;
+	s=arc-20240116; t=1763733015; c=relaxed/simple;
+	bh=jAJceNT+P0W2L8DXgWF27buBz4zgPN0AFAE7hCQ1UpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eR+mdcpHEF1WGdt2l3sHY11xjIWnlufZfmsaqvlJeZUPPYmK7ziGhNaRTr3fyo867Q9xkeAqyN5wNF8FHLef6qFgNsPJVgsm45nmOBtXaixfSeEw7e9DkBFBmvbd8VNlYhpQPhdAGXgXaQRIyBeILoJWi+yKurhBUGtnAqX0XGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXq+zu4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407DEC4CEFB;
-	Fri, 21 Nov 2025 13:17:37 +0000 (UTC)
+	 MIME-Version; b=IuWPCbh6TO3apJCFvTslqZt0kDbe3WTqmyofdpCiWNsSmGQveKe/wIjkaIlVX7EzUocwvPi2nzzdjV+Zom3CcsUb1DVNtmqDUQBlicDbLyr94MVfRdYPxd0MFPpffeiTVdA1SlEaM6Sxb0wLZ1s3r1EHo0gBDVzzikBFkgDUwCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muYEjCVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473EBC116C6;
+	Fri, 21 Nov 2025 13:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731057;
-	bh=59PzSM126wNUHUUp4dUXQBji+f/ZsF0kcuqF8z7leyU=;
+	s=korg; t=1763733015;
+	bh=jAJceNT+P0W2L8DXgWF27buBz4zgPN0AFAE7hCQ1UpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXq+zu4ZEkQK+64UjnrITrMOWFSMj4L1O4y3ZALKuGnLYSPT92f2Ap9oM8AaGj+yl
-	 UcVhv2CFRZHSUIJniLAqDQlbWwiCa5JprFXlgyjVAwI/NNG3nOqphQqpMfvLdBm0KK
-	 tqvIL7t8QaxFkrrvIHi1H58WZGvHASLEslGW0yL8=
+	b=muYEjCVDnT2zZMQtyhYqnJEF0j1d9ygMNXqrqsKr2JMLNrZbF1CoNQuPUEkyEmnut
+	 kQ5CrzYYXsJJR//GCorGxnMsH+UPgOCUg0qN8O+m1+Vkb9nCZr8KnXw6XdZWIvRKTj
+	 yj6CmzIY58ovk1y32NMzNH9lUbO3msF3VZVup870=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 074/247] net/mlx5e: Fix missing error assignment in mlx5e_xfrm_add_state()
+Subject: [PATCH 6.6 322/529] tools: lib: thermal: use pkg-config to locate libnl3
 Date: Fri, 21 Nov 2025 14:10:21 +0100
-Message-ID: <20251121130157.254225659@linuxfoundation.org>
+Message-ID: <20251121130242.483508316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 0bcd5b3b50cc1fcbf775479322cc37c15d35a489 ]
+[ Upstream commit b31f7f725cd932e2c2b41f3e4b66273653953687 ]
 
-Assign the return value of mlx5_eswitch_block_mode() to 'err' before
-checking it to avoid returning an uninitialized error code.
+To make libthermal more cross compile friendly use pkg-config to locate
+libnl3. Only if that fails fall back to hardcoded /usr/include/libnl3.
 
-Fixes: 22239eb258bc ("net/mlx5e: Prevent tunnel reformat when tunnel mode not allowed")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202510271649.uwsIxD6O-lkp@intel.com/
-Closes: http://lore.kernel.org/linux-rdma/aPIEK4rLB586FdDt@stanley.mountain/
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/lib/thermal/Makefile | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 0a4fb8c922684..35d9530037a65 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -804,7 +804,8 @@ static int mlx5e_xfrm_add_state(struct net_device *dev,
- 		goto err_xfrm;
- 	}
+diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
+index 1694889847caf..8d21ea1950a31 100644
+--- a/tools/lib/thermal/Makefile
++++ b/tools/lib/thermal/Makefile
+@@ -59,8 +59,12 @@ else
+   CFLAGS := -g -Wall
+ endif
  
--	if (mlx5_eswitch_block_mode(priv->mdev))
-+	err = mlx5_eswitch_block_mode(priv->mdev);
-+	if (err)
- 		goto unblock_ipsec;
- 
- 	if (x->props.mode == XFRM_MODE_TUNNEL &&
++NL3_CFLAGS = $(shell pkg-config --cflags libnl-3.0 2>/dev/null)
++ifeq ($(NL3_CFLAGS),)
++NL3_CFLAGS = -I/usr/include/libnl3
++endif
++
+ INCLUDES = \
+--I/usr/include/libnl3 \
+ -I$(srctree)/tools/lib/thermal/include \
+ -I$(srctree)/tools/lib/ \
+ -I$(srctree)/tools/include \
+@@ -72,6 +76,7 @@ INCLUDES = \
+ override CFLAGS += $(EXTRA_WARNINGS)
+ override CFLAGS += -Werror -Wall
+ override CFLAGS += -fPIC
++override CFLAGS += $(NL3_CFLAGS)
+ override CFLAGS += $(INCLUDES)
+ override CFLAGS += -fvisibility=hidden
+ override CFGLAS += -Wl,-L.
 -- 
 2.51.0
 
