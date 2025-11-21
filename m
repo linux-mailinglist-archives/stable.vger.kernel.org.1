@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-195857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A0BC79673
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E68C7A125
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E9AD94E9600
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 912A32E06C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488AD26560A;
-	Fri, 21 Nov 2025 13:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56409338932;
+	Fri, 21 Nov 2025 13:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bJWsp2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AHLj21B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC41F03D7;
-	Fri, 21 Nov 2025 13:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99DE2F1FEF;
+	Fri, 21 Nov 2025 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731864; cv=none; b=cd+ZVvw+t7Orn5b5YjmSkHXcjNA8t4z3mTL+fQL/Mz2JKsNOoV0BsGw/mT83KRdZEdBw/V2rtFJO18yN0gVftgXQqYYLcFGMhdLYELE4wP4XGwYtqBDRMxFB+qvJ7d0yjCQoW5MaY2rGAhUubSX3fhX2Vn9QygVWYCyhnynWpPI=
+	t=1763733338; cv=none; b=ZbHi8+jmsPrXSl1GSfrqF5qvk+GWyuUwQoMJhYdisgc1jSDRzAv9aqrhEx5VuKsgWVkIxz80NzfWzzCWP86PAcwlmbCHLmMxbN7fKFpXXKBSoex8vM5Ppu7Efb4KFQ+MvcRVhOqQaf9M4dW0AUz6mZC0vxipZTMPa7f8yDNmrOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731864; c=relaxed/simple;
-	bh=FXdGs4qyhrAvZgDrNq+0fbEN+p1GfYNVxoZUcctprsw=;
+	s=arc-20240116; t=1763733338; c=relaxed/simple;
+	bh=WSG7OhIDVYCoL2sr0+evi6NL0RFP3J5wJHE1OIQA5v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTAU7XD2uGzoFNz1Ytq1YSCkMXHI3fFhAzcDG0SkaH6wqAUr/uL7WClY+cB+LP8qlEe3xaJ3RNTVjTNj7yH9PsGqTVJ9Nw+iZF95qgi4tpvBIutqvZ4JV5tRkvaiL2DvoP+Zx8XJyiFvkTr/zA6TPQdUMb/EpyPE3L6uYVSALms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bJWsp2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D2BC4CEF1;
-	Fri, 21 Nov 2025 13:31:03 +0000 (UTC)
+	 MIME-Version; b=qnnjPOZFPhleMqgdcK49x9US15F64+Z9Olhh5PfzLea9yehqi/cIkN6uP7Vmxj5EitkDWmM1ZdR87Wr8O7KrpKAAXOnRBZ3P/0fuRuJhORFwuD0fwNrE9hHYDjEFC3Y1rGFXFClTWCc+8Xz4OCzq06KHER29HBqKT18cr7nHDA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AHLj21B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4E2C16AAE;
+	Fri, 21 Nov 2025 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731863;
-	bh=FXdGs4qyhrAvZgDrNq+0fbEN+p1GfYNVxoZUcctprsw=;
+	s=korg; t=1763733338;
+	bh=WSG7OhIDVYCoL2sr0+evi6NL0RFP3J5wJHE1OIQA5v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bJWsp2iVpHWmK7eZvgPY91kUVpooSrSMiaEUctlzjMTkI/qOveakXTVuINUB355K
-	 OocS0C5DZtksX0ZAx4venbYSJAizE9BEui/RxUbBQpw0bTfNPWj0kwaxyN9k6ysl4+
-	 //M7Tt3HDnmmibqDrOnoPyRznPgS7OT2FLPTku5o=
+	b=2AHLj21BaN3Ax4l3Bzl6cRqoUKopY7LJHDZa0Mueu0mMUicNs7Cui60v8q6vnRddV
+	 CvcVo9c+LEp/Nabbmt+2zVzXlJxJOLh7lBOqe4MmdhSSYh5AJz4dStmMtt9sNpTDFh
+	 9WIrb34NKL7BP9rv+zCHVJFEAHLCfTH0afnMNdWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 107/185] LoongArch: KVM: Restore guest PMU if it is enabled
+	Haein Lee <lhi0729@kaist.ac.kr>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 435/529] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
 Date: Fri, 21 Nov 2025 14:12:14 +0100
-Message-ID: <20251121130147.735208000@linuxfoundation.org>
+Message-ID: <20251121130246.491887143@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Haein Lee <lhi0729@kaist.ac.kr>
 
-commit 5001bcf86edf2de02f025a0f789bcac37fa040e6 upstream.
+[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
 
-On LoongArch system, guest PMU hardware is shared by guest and host but
-PMU interrupt is separated. PMU is pass-through to VM, and there is PMU
-context switch when exit to host and return to guest.
+In snd_usb_create_streams(), for UAC version 3 devices, the Interface
+Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
+call fails, a fallback routine attempts to obtain the IAD from the next
+interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
+assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
+without performing a NULL check. This can lead to a NULL pointer
+dereference when usb_ifnum_to_if() fails to find the interface descriptor.
 
-There is optimiation to check whether PMU is enabled by guest. If not,
-it is not necessary to return to guest. However, if it is enabled, PMU
-context for guest need switch on. Now KVM_REQ_PMU notification is set
-on vCPU context switch, but it is missing if there is no vCPU context
-switch while PMU is used by guest VM, so fix it.
+This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
+snd_usb_mixer_controls_badd() to prevent the dereference.
 
-Cc: <stable@vger.kernel.org>
-Fixes: f4e40ea9f78f ("LoongArch: KVM: Add PMU support for guest")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue was discovered by syzkaller, which triggered the bug by sending
+a crafted USB device descriptor.
+
+Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
+Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
+Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/vcpu.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/usb/mixer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -127,6 +127,9 @@ static void kvm_lose_pmu(struct kvm_vcpu
- 	 * Clear KVM_LARCH_PMU if the guest is not using PMU CSRs when
- 	 * exiting the guest, so that the next time trap into the guest.
- 	 * We don't need to deal with PMU CSRs contexts.
-+	 *
-+	 * Otherwise set the request bit KVM_REQ_PMU to restore guest PMU
-+	 * before entering guest VM
- 	 */
- 	val = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL0);
- 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL1);
-@@ -134,6 +137,8 @@ static void kvm_lose_pmu(struct kvm_vcpu
- 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL3);
- 	if (!(val & KVM_PMU_EVENT_ENABLED))
- 		vcpu->arch.aux_inuse &= ~KVM_LARCH_PMU;
-+	else
-+		kvm_make_request(KVM_REQ_PMU, vcpu);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index cc051756a4220..787cdeddbdf44 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -3079,6 +3079,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
+ 	int i;
  
- 	kvm_restore_host_pmu(vcpu);
- }
+ 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
++	if (!assoc)
++		return -EINVAL;
+ 
+ 	/* Detect BADD capture/playback channels from AS EP descriptors */
+ 	for (i = 0; i < assoc->bInterfaceCount; i++) {
+-- 
+2.51.0
+
 
 
 
