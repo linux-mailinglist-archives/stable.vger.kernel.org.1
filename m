@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-195671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F38C7941F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9057EC79EF4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id F10B32C41E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7BAC4EAED6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F331F09AC;
-	Fri, 21 Nov 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F13352F87;
+	Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxqhZCaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwwlHp1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2119D26E6F4;
-	Fri, 21 Nov 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319FE35292A;
+	Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731333; cv=none; b=i9T77vcCjgGSjOuqSZJc0DvFLDJbpUV+gZH5Pc8XMT/U78OC9yYrIl3tyqWT58oLoUaSxxFhBL6JFB271qWdusENhI6Xe5g776CJemn7kvuHYXAxsGKcJTYnWjmsn78RxRbDW9IuHtTUNHAqOrD08Pe9SkXunpm+cMvW7NCsoFU=
+	t=1763733244; cv=none; b=p/x1+wB/hUVH+v8yfCuoujttwcVWWUdjdVtYqcEjbRfSuMvhco/TsEaF8RdUK2BXRaov0byzM3Js+jBVp4kT/h9HWy8eKjyVULfzaCtuGZhnUFsGtzspg6/hB50D3cBwQEE997n9xOxkUQkv14O8Eib4FifxzwgXePengSTjSwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731333; c=relaxed/simple;
-	bh=A0B+VIRv/afT2JtNtZHWxfrmIC5MxQR/BaFBFJyhNR8=;
+	s=arc-20240116; t=1763733244; c=relaxed/simple;
+	bh=hAuPARZCqmovAr9j2jPOV1lvJeS8BgPslVZoadPhbtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7+IiwKoVYRNqAnR3W73Fj3rh/3f/S35LozL/yaWJjP7l3kC39DTSVoJFeVdGCJHgoX34FMNs1uLlxETbmsuZBVcVth1BCpJs1te8AiDpWe7JiQB4PmoIDfr6Nl4nRjELuje4DYacl5/m06X0TRnBDjr+MJyyj+iGFVzioPjSes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxqhZCaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFC7C4CEF1;
-	Fri, 21 Nov 2025 13:22:12 +0000 (UTC)
+	 MIME-Version; b=qc/md6zUZvBwnz14qNnIFDHs1TFT2DoROhjuiyaIeJVdlhX0zDV48FsYtZhoFJktJtSrMEefL/wLRnWedveU6t6hI/XGEmvrzSziBdITFEnsTOMX5nJX2w4q8bUYx9+2F339bjNQyJ83l0srmxjd9byYrFaJuiewOEXNptOqK/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwwlHp1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF584C4CEF1;
+	Fri, 21 Nov 2025 13:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731333;
-	bh=A0B+VIRv/afT2JtNtZHWxfrmIC5MxQR/BaFBFJyhNR8=;
+	s=korg; t=1763733244;
+	bh=hAuPARZCqmovAr9j2jPOV1lvJeS8BgPslVZoadPhbtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxqhZCaX2/icU1Dw7HOkm2gQA/Ci7xeF+PamZGKhpWerfjBBCvRn79IwFEix4yVWe
-	 TP/AvRz0k4LiMwZFv3frzf9RLtrjqu6Q2WfbgGEXcqXkTKmL6vTl1qWzOzM8fIRxFF
-	 qBwrJ6W5YXWZvYIAm+96Eprr8cZC4uWpC/LTyxzo=
+	b=mwwlHp1viFHmMKTIKfcrb3aGM7iZVAnUpn/ZeKMWbwpRjE+l2kVRDraLyNUgMG/nC
+	 chvdq0dVxW0ovCDpl/6tNA3ytaDD9fCmh1jueMbVBNHpl/M+pb8qzKCEYyqxCutQ8j
+	 Rm58av9AkeyQmR6ZCdCD+spxzivpF4F7JOwkf14U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Rizzo <matteorizzo@google.com>,
-	evn@google.com,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.17 154/247] KVM: SVM: Mark VMCB_LBR dirty when MSR_IA32_DEBUGCTLMSR is updated
+	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 402/529] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
 Date: Fri, 21 Nov 2025 14:11:41 +0100
-Message-ID: <20251121130200.251063451@linuxfoundation.org>
+Message-ID: <20251121130245.324645176@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-commit dc55b3c3f61246e483e50c85d8d5366f9567e188 upstream.
+[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
 
-The APM lists the DbgCtlMsr field as being tracked by the VMCB_LBR clean
-bit.  Always clear the bit when MSR_IA32_DEBUGCTLMSR is updated.
+syzbot reported a possible shift-out-of-bounds [1]
 
-The history is complicated, it was correctly cleared for L1 before
-commit 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when
-L2 is running").  At that point svm_set_msr() started to rely on
-svm_update_lbrv() to clear the bit, but when nested virtualization
-is enabled the latter does not always clear it even if MSR_IA32_DEBUGCTLMSR
-changed. Go back to clearing it directly in svm_set_msr().
+Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
 
-Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
-Reported-by: Matteo Rizzo <matteorizzo@google.com>
-Reported-by: evn@google.com
-Co-developed-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251108004524.1600006-2-yosry.ahmed@linux.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is unclear if some sctp users are setting very large rto_alpha
+and/or rto_beta.
+
+In order to prevent user regression, perform the test at run time.
+
+Also add READ_ONCE() annotations as sysctl values can change under us.
+
+[1]
+
+UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
+shift exponent 64 is too large for 32-bit type 'unsigned int'
+CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+  ubsan_epilogue lib/ubsan.c:233 [inline]
+  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
+  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
+  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
+  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
+  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
+  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
+
+Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
+Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/sctp/transport.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3044,7 +3044,11 @@ static int svm_set_msr(struct kvm_vcpu *
- 		if (data & DEBUGCTL_RESERVED_BITS)
- 			return 1;
+diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+index 31eca29b6cfbf..abb44c0ac1a0b 100644
+--- a/net/sctp/transport.c
++++ b/net/sctp/transport.c
+@@ -495,6 +495,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
  
-+		if (svm_get_lbr_vmcb(svm)->save.dbgctl == data)
-+			break;
-+
- 		svm_get_lbr_vmcb(svm)->save.dbgctl = data;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
- 	case MSR_VM_HSAVE_PA:
+ 	if (tp->rttvar || tp->srtt) {
+ 		struct net *net = tp->asoc->base.net;
++		unsigned int rto_beta, rto_alpha;
+ 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
+ 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
+ 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
+@@ -506,10 +507,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+ 		 * For example, assuming the default value of RTO.Alpha of
+ 		 * 1/8, rto_alpha would be expressed as 3.
+ 		 */
+-		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
+-			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
+-		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
+-			+ (rtt >> net->sctp.rto_alpha);
++		rto_beta = READ_ONCE(net->sctp.rto_beta);
++		if (rto_beta < 32)
++			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
++				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
++		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
++		if (rto_alpha < 32)
++			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
++				+ (rtt >> rto_alpha);
+ 	} else {
+ 		/* 6.3.1 C2) When the first RTT measurement R is made, set
+ 		 * SRTT <- R, RTTVAR <- R/2.
+-- 
+2.51.0
+
 
 
 
