@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85255C79442
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD88C79E35
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1844E3484F3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 968814F011A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CF82F3632;
-	Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C13351FB5;
+	Fri, 21 Nov 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEElPdyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt3Dkgv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4001F09B3;
-	Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457E535294E;
+	Fri, 21 Nov 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731116; cv=none; b=MimJHvJi7pEkjRJyHdROFu26K1h5HFO6GeBsQ78FPAQXILa08iD2K2JVDx6RCws+7ofryuN6mA9rggP+h4x8NaUJ13uhrH6liXUOVdzNfrl7q7dkeiXYxcS7bZBettuzTNNKQXGfoonn/kY1lhb7nW249eNMcVRCJ81eQcBDAzI=
+	t=1763733084; cv=none; b=GtaERC+xEc2W0ZPMtZy3LCmAureBmz1VF6J3ecizIj/QDxRfL47pPGBrLyw/OOdgTt5LaIT/KThKPmYu3kxiGMPbKXjGUc2OV0OR1JyxSRUb09I+zF/Uh8EzTwOS9LUBUlJrtz6T0WwI8GqAx0lrJJLVSlA6uKkZFcvhZl/Lqvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731116; c=relaxed/simple;
-	bh=3F39PmUWWmOnB0PHfssgC+OEDbZlUP5mo+UbQ/ktbjY=;
+	s=arc-20240116; t=1763733084; c=relaxed/simple;
+	bh=t74yt6+Q8LMQtwmmO4elpmPtCk7J3egbhhWAusUnBj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qX8l1Dy0hfRFgnrq0daPTMMnTCUPCzEOqZEh+BeVGJ4VmMR8LmYeb2csB9yFZJe4HkBAbQ0uPDbOZKp/wHEaAI2Iwwh4UQGJj7vqen7DJiNCGiHhsUknw+UHm82EvJey1++CU5049O09RPuKtOkrTVBTJ82mFww6+0SHM0SVBJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEElPdyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7261CC4CEF1;
-	Fri, 21 Nov 2025 13:18:35 +0000 (UTC)
+	 MIME-Version; b=Nd/rMoa2cV1oQwoMhWVYCmOQOsM/KIOj8a0d5nzeRVNBhSSrP+OOzhleyNhmTMMDVnSi/qPLH9FHO6p+hM9bHHwhP5fRpoB/12Ug18td7WZaZp6cKn/+q4i61VptoA9gumdjGRThqnaBvXmD+rzI1XqHq3lCHSrARx+yrXLdLgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt3Dkgv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32FBC4CEF1;
+	Fri, 21 Nov 2025 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731115;
-	bh=3F39PmUWWmOnB0PHfssgC+OEDbZlUP5mo+UbQ/ktbjY=;
+	s=korg; t=1763733084;
+	bh=t74yt6+Q8LMQtwmmO4elpmPtCk7J3egbhhWAusUnBj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEElPdyIQf6cDDheIJT6aVKv9kQhTryeCIqMEnVMcWGJujKPGq61HinYAHxg3ct7i
-	 6ApcnTkYR8Xh1/ZQtGS9EnWP7hsPtcyGIhVygDYU3z4mF2B0ezv9vjd9+TNxOPMbfr
-	 CBkUE2/8WGkY7dKO621ZRzg5yDgPP1rpqeK+Qaas=
+	b=zt3Dkgv31Ts0EkMXUqyw4WI+hsVgI7RPtn6NXwvcrWN1tdwAYwf4BiPSNeNGzL3aU
+	 gPYXkKqhMxwPwnhteVzzHoO4VUZBKcz2/Y0GDqrhlTFVUQbUAYumHYHojNbTdCWI+P
+	 5sdSi8hZjKMhhJM82p0WjkZgdRzCqH3o6hVTOpwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Zongyong <wuzongyong@linux.alibaba.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 096/247] acpi,srat: Fix incorrect device handle check for Generic Initiator
+Subject: [PATCH 6.6 344/529] net: vlan: sync VLAN features with lower device
 Date: Fri, 21 Nov 2025 14:10:43 +0100
-Message-ID: <20251121130158.037013816@linuxfoundation.org>
+Message-ID: <20251121130243.271113193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 7c3643f204edf1c5edb12b36b34838683ee5f8dc ]
+[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
 
-The Generic Initiator Affinity Structure in SRAT table uses device
-handle type field to indicate the device type. According to ACPI
-specification, the device handle type value of 1 represents PCI device,
-not 0.
+After registering a VLAN device and setting its feature flags, we need to
+synchronize the VLAN features with the lower device. For example, the VLAN
+device does not have the NETIF_F_LRO flag, it should be synchronized with
+the lower device based on the NETIF_F_UPPER_DISABLES definition.
 
-Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
-Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20250913023224.39281-1-xueshuai@linux.alibaba.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+As the dev->vlan_features has changed, we need to call
+netdev_update_features(). The caller must run after netdev_upper_dev_link()
+links the lower devices, so this patch adds the netdev_update_features()
+call in register_vlan_dev().
+
+Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/srat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/8021q/vlan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 53816dfab6452..aa87ee1583a4e 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -237,7 +237,7 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
- 		struct acpi_srat_generic_affinity *p =
- 			(struct acpi_srat_generic_affinity *)header;
+diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
+index 422f726346ea5..7c77482f31594 100644
+--- a/net/8021q/vlan.c
++++ b/net/8021q/vlan.c
+@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
+ 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
+ 	grp->nr_vlan_devs++;
  
--		if (p->device_handle_type == 0) {
-+		if (p->device_handle_type == 1) {
- 			/*
- 			 * For pci devices this may be the only place they
- 			 * are assigned a proximity domain
++	netdev_update_features(dev);
++
+ 	return 0;
+ 
+ out_unregister_netdev:
 -- 
 2.51.0
 
