@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1259C796F7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547CCC79FF9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 9052E28FCB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EDE54384421
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F029ACCD;
-	Fri, 21 Nov 2025 13:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D463351FCF;
+	Fri, 21 Nov 2025 13:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbq4/ZLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVkuuaF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FDB21E098;
-	Fri, 21 Nov 2025 13:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143A34EF19;
+	Fri, 21 Nov 2025 13:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731997; cv=none; b=lEMh5GcZ81Hn6xaOumV42z/zgxfoG4S5G00wYfPXvBGC2gkG1jeCBnG17slMdxZer3ZW9ZsR09jFu6cNG+Ap9KdXf+YWqGdTNmriOvgD9Vq/JEbzhMZwqnxPTM1NUvqlI3QhuJqSE8olsYeqZ871AekknjpBzMeqLgCC+oPRc5M=
+	t=1763733477; cv=none; b=ebb18clbdatot+zXkcAcphUWX3pScWcIjXsiA13CM5IJCsu8ysexS6w6FyltrRL08UfHpSXvtJ/Sj9S1/anJr5FMf28zPNv3KNSgZ9p/Rlsf32KsXT1pHQ2bTuz/R/WNaiKPkU46FHWMlF4OiUwydUvPeHeGD6N0WQG/4nBYQUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731997; c=relaxed/simple;
-	bh=WODrmMq3HhMKxT8d+zl8LqyFfeH/2WF3AZCN+PvrO8c=;
+	s=arc-20240116; t=1763733477; c=relaxed/simple;
+	bh=DX8xHgO3c72RSXkei1fAWhuSv16FAd36eUCurKPm7Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pi+NAgenNkh3Bl6xDZinCG+xPsFzCHHAyYazoUgoIh9Rf+N9q4wPTYlYRTP6FV4JrmAtwBAM9mJOll6/TgOMKCu0FXNpVrjqP+I2+FG5UFDuJIYV/bY8N0J1fnmEv3lP5tQ/LW3BXkB8kyVUE6gPCn5tqZd5JEFx3BltUrKTwzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbq4/ZLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135BFC4CEF1;
-	Fri, 21 Nov 2025 13:33:15 +0000 (UTC)
+	 MIME-Version; b=kZLtiaf2Q1Y/UR9fR8A9yfuC4DvtadX1/xDbuYExyRE46xn4Ms1U5MnAd4PybT/BGU24xN7pkDiaqqj7jtMtzsgdEIXQhdhEVfDdW6WeAwaV/uoJoYHLwt0l8kbZlxk+p2NPPxJFYSVbAe/jLIkyyJRuDm5uWF70jX2rKCO5MA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVkuuaF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6D3C4CEF1;
+	Fri, 21 Nov 2025 13:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731996;
-	bh=WODrmMq3HhMKxT8d+zl8LqyFfeH/2WF3AZCN+PvrO8c=;
+	s=korg; t=1763733477;
+	bh=DX8xHgO3c72RSXkei1fAWhuSv16FAd36eUCurKPm7Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbq4/ZLl1QTWut+HGWhJ3BuHqnA+P+XjdbA5HgtaJFDHMgFu7E0MEidDIN6iMxcNR
-	 xm7UlVmOfRUvrv6R0NSpOlmnkgbcKpeUT5ez9CXBEqztPcZby+FiPRyLlvdnvXLbwX
-	 CU1Emk9anVgiZgpcpNX6s/KU6GTYZ3LEnX118bok=
+	b=aVkuuaF0PzsP2cIlpBTCORORFf15LFNwFCjC0pC6FfRGZbtm4vvm0IWVIh18nUPnl
+	 7fxVibX1JQo5O7ZAZZldi7X3JwDlF4QJstH+CwvGIahUnfaVZjaldDDtQAmOyelnHU
+	 2n0TXK/QRtehLC/nN2dS6frGxC9pa2c98iyYokeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 152/185] pmdomain: samsung: plug potential memleak during probe
-Date: Fri, 21 Nov 2025 14:12:59 +0100
-Message-ID: <20251121130149.362695375@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 481/529] x86/microcode/AMD: Add Zen5 model 0x44, stepping 0x1 minrev
+Date: Fri, 21 Nov 2025 14:13:00 +0100
+Message-ID: <20251121130248.123430353@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 90c82941adf1986364e0f82c35cf59f2bf5f6a1d upstream.
+commit dd14022a7ce96963aa923e35cf4bcc8c32f95840 upstream.
 
-of_genpd_add_provider_simple() could fail, in which case this code
-leaks the domain name, pd->pd.name.
+Add the minimum Entrysign revision for that model+stepping to the list
+of minimum revisions.
 
-Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
-simplify existing error handling.
-
-Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/e94dd76b-4911-482f-8500-5c848a3df026@citrix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/samsung/exynos-pm-domains.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pmdomain/samsung/exynos-pm-domains.c
-+++ b/drivers/pmdomain/samsung/exynos-pm-domains.c
-@@ -92,13 +92,14 @@ static const struct of_device_id exynos_
- 	{ },
- };
- 
--static const char *exynos_get_domain_name(struct device_node *node)
-+static const char *exynos_get_domain_name(struct device *dev,
-+					  struct device_node *node)
- {
- 	const char *name;
- 
- 	if (of_property_read_string(node, "label", &name) < 0)
- 		name = kbasename(node->full_name);
--	return kstrdup_const(name, GFP_KERNEL);
-+	return devm_kstrdup_const(dev, name, GFP_KERNEL);
- }
- 
- static int exynos_pd_probe(struct platform_device *pdev)
-@@ -115,15 +116,13 @@ static int exynos_pd_probe(struct platfo
- 	if (!pd)
- 		return -ENOMEM;
- 
--	pd->pd.name = exynos_get_domain_name(np);
-+	pd->pd.name = exynos_get_domain_name(dev, np);
- 	if (!pd->pd.name)
- 		return -ENOMEM;
- 
- 	pd->base = of_iomap(np, 0);
--	if (!pd->base) {
--		kfree_const(pd->pd.name);
-+	if (!pd->base)
- 		return -ENODEV;
--	}
- 
- 	pd->pd.power_off = exynos_pd_power_off;
- 	pd->pd.power_on = exynos_pd_power_on;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -214,6 +214,7 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xb1010: return cur_rev <= 0xb101046; break;
+ 	case 0xb2040: return cur_rev <= 0xb204031; break;
+ 	case 0xb4040: return cur_rev <= 0xb404031; break;
++	case 0xb4041: return cur_rev <= 0xb404101; break;
+ 	case 0xb6000: return cur_rev <= 0xb600031; break;
+ 	case 0xb6080: return cur_rev <= 0xb608031; break;
+ 	case 0xb7000: return cur_rev <= 0xb700031; break;
 
 
 
