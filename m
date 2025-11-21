@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F8AC7953E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CC5C797B7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22FBD365EB3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 1A76A312C9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F327B358;
-	Fri, 21 Nov 2025 13:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB445344042;
+	Fri, 21 Nov 2025 13:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXmjq8aT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RO+zNPHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5C326CE33;
-	Fri, 21 Nov 2025 13:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7317831578E;
+	Fri, 21 Nov 2025 13:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731247; cv=none; b=kzRJ5vquqQJ6OhsLMK2hIPj7eTDkmuo5aHdyezO9kBHM/6IV4t1hD60dqpp3p4YzpksEh30AFlMlAuhxjdF7NdZc7vXcZUzYZgZ1t/kKLLYW1W+UVsMWxUDJj6OH0pG96Fghcdedv4BqTqfGbmORDgsEAvowDDeXyenEdM4txXg=
+	t=1763731729; cv=none; b=AOJSQEeLsLNM1GKQFNtJUzqRhmLLN0Zj+LQ8PyH+qaUJd8h/tuy+Biw6VbLKHNoYH3BJJ7FfNq1TA12MbO2/qdyUxuxWZE/sOGY6KIPwZ2oiJjUtYmC1LIyFnbRM6sqB2Wc0UoCvU2gYe+UdSI0PrKwtwwe7VkiOVcQqK5LJJUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731247; c=relaxed/simple;
-	bh=ivqBYN+6ThktE3XzatE0XzD+468QmYQOFbJRoYZvACU=;
+	s=arc-20240116; t=1763731729; c=relaxed/simple;
+	bh=dbte+gbiRX63UeM5rcZAM7P/1jtVjR3FCW2NwUZBCvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBpgV/kxtwRcPqlTW8zAYMnJwW/+A+4BkJ/abXSAmXq97Vpx1KbSPBcPGax3n0G4vtwzF0xf22hHe8RehBgcyi97kAKX63NFvj6c5gipzolocOW2KzIwn5YC2NufCl3ufuhVJcDZq/EqAytMmcaRx9FgD2h63JLDc6prTFvuwuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXmjq8aT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02537C4CEF1;
-	Fri, 21 Nov 2025 13:20:46 +0000 (UTC)
+	 MIME-Version; b=nTb47zWhFAJnCnaS/VHIZ7k3hxsrNw95IGoemCVhBv9jT4HhjD8PSprgb2MJZJP8PkgDx7+F7vv20ka7pWwEN+kIB7ThHCjo6AnbqF9WnbJeot2qXOG/1+R+0R7oK3xhcDKXC042c0KrOBfroW2gmA12BYj9x4OsUPyIL4gjaJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RO+zNPHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1DDC116D0;
+	Fri, 21 Nov 2025 13:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731247;
-	bh=ivqBYN+6ThktE3XzatE0XzD+468QmYQOFbJRoYZvACU=;
+	s=korg; t=1763731729;
+	bh=dbte+gbiRX63UeM5rcZAM7P/1jtVjR3FCW2NwUZBCvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXmjq8aTzyd2X6Wm/cILsTlnR49Va+vYhoAmfNGB5EnTVnJvCPdIPYjj6V60AReek
-	 Bby1aB/Q/S2ksBlQLbBG73pM7NwIAniwGYD2bwIqZiE3VUgcE/aNJoZARxBZsfuVRc
-	 CdXwLuAG2/1ld2l0/ynkZ8RPUI3S2Hy2/4iGLKTA=
+	b=RO+zNPHWWQ9dR+d3lsJYMN+JBE65kD+r3DGCVlESKRVRzsVi06sxMe7vEQsRPyGTE
+	 GMsGNWvTIGAbSMiODZZWJR1d1b0iujn03WuNnlLSEpgXIuZF3Q2dUn0WrDokejZ7M1
+	 0fLl9YTE45vh2GskoGhhulC61eunwQj+FfdzH5fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 141/247] arm64: dts: imx8mp-kontron: Fix USB OTG role switching
+Subject: [PATCH 6.12 061/185] hsr: Fix supervision frame sending on HSRv0
 Date: Fri, 21 Nov 2025 14:11:28 +0100
-Message-ID: <20251121130159.786748219@linuxfoundation.org>
+Message-ID: <20251121130146.077940986@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Felix Maurer <fmaurer@redhat.com>
 
-[ Upstream commit 6504297872c7a5d0d06247970d32940eba26b8b3 ]
+[ Upstream commit 96a3a03abf3d8cc38cd9cb0d280235fbcf7c3f7f ]
 
-The VBUS supply regulator is currently assigned to the PHY node.
-This causes the VBUS to be always on, even when the controller
-needs to be switched to peripheral mode.
+On HSRv0, no supervision frames were sent. The supervison frames were
+generated successfully, but failed the check for a sufficiently long mac
+header, i.e., at least sizeof(struct hsr_ethhdr), in hsr_fill_frame_info()
+because the mac header only contained the ethernet header.
 
-Fix the OTG role switching by adding a connector node and moving
-the VBUS supply regulator to that node. This way the VBUS gets
-correctly switched according to the current role.
+Fix this by including the HSR header in the mac header when generating HSR
+supervision frames. Note that the mac header now also includes the TLV
+fields. This matches how we set the headers on rx and also the size of
+struct hsrv0_ethhdr_sp.
 
-Fixes: 946ab10e3f40 ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Closes: https://lore.kernel.org/netdev/aMONxDXkzBZZRfE5@fedora/
+Fixes: 9cfb5e7f0ded ("net: hsr: fix hsr_init_sk() vs network/transport headers.")
+Signed-off-by: Felix Maurer <fmaurer@redhat.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/4354114fea9a642fe71f49aeeb6c6159d1d61840.1762876095.git.fmaurer@redhat.com
+Tested-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/freescale/imx8mp-kontron-bl-osm-s.dts | 24 +++++++++++++++----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/hsr/hsr_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
-index 0eb9e726a9b81..6c63f0a5fa91b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
-@@ -16,11 +16,20 @@
- 		ethernet1 = &eqos;
- 	};
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d2ae9fbed9e30..ae368cdcbd936 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -320,6 +320,9 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
+ 	}
  
--	extcon_usbc: usbc {
--		compatible = "linux,extcon-usb-gpio";
-+	connector {
-+		compatible = "gpio-usb-b-connector", "usb-b-connector";
-+		id-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
-+		label = "Type-C";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_usb1_id>;
--		id-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
-+		type = "micro";
-+		vbus-supply = <&reg_usb1_vbus>;
+ 	hsr_stag = skb_put(skb, sizeof(struct hsr_sup_tag));
++	skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
++	skb_reset_mac_len(skb);
 +
-+		port {
-+			usb_dr_connector: endpoint {
-+				remote-endpoint = <&usb3_dwc>;
-+			};
-+		};
- 	};
- 
- 	leds {
-@@ -230,9 +239,15 @@
- 	hnp-disable;
- 	srp-disable;
- 	dr_mode = "otg";
--	extcon = <&extcon_usbc>;
- 	usb-role-switch;
-+	role-switch-default-mode = "peripheral";
- 	status = "okay";
-+
-+	port {
-+		usb3_dwc: endpoint {
-+			remote-endpoint = <&usb_dr_connector>;
-+		};
-+	};
- };
- 
- &usb_dwc3_1 {
-@@ -261,7 +276,6 @@
- };
- 
- &usb3_phy0 {
--	vbus-supply = <&reg_usb1_vbus>;
- 	status = "okay";
- };
+ 	set_hsr_stag_path(hsr_stag, (hsr->prot_version ? 0x0 : 0xf));
+ 	set_hsr_stag_HSR_ver(hsr_stag, hsr->prot_version);
  
 -- 
 2.51.0
