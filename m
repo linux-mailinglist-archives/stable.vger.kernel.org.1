@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1974BC79D1D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7CDC79368
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 115472A93D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 091EB2CC05
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB68D34EEFB;
-	Fri, 21 Nov 2025 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3F230CD88;
+	Fri, 21 Nov 2025 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/oTmrYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lk3+3Knl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8969C34D4C2;
-	Fri, 21 Nov 2025 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984A42F360C;
+	Fri, 21 Nov 2025 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733195; cv=none; b=XmTp2xG3y+ACAropehmfPs4C7hLMulgRZG6YeHUcYQEfJgJsa6885Sya1RPLh+RZts5crfQs4Ne3kvzM906AYcKrvWBUchryBgtj4YqoTP2NhiytoOs1KxWF+UTpLF5Gpq57kNTkBviR8te6ah2FFNb218mIVKyOcBS0LcmrH8Q=
+	t=1763731141; cv=none; b=O8ARDyMdAFqDnTNTU8SigXPuTb7ca6XY1iZ3/92+opdNpJOfiqTS3uzbVYg4xOXHJcFWZvqI2erZHGag8TSoN5VJf9XE/nOc8mV/seUWr9HHbVmFpjXn2i8YqDAPvbcQOwBZSNj3dnSnFtFzfO2lZcdcsuQGWTt/wgP9lroVYuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733195; c=relaxed/simple;
-	bh=wkyvTf3u6Wz4hAgdM5jcoWRbD0EQxc8lDN35CRltYdw=;
+	s=arc-20240116; t=1763731141; c=relaxed/simple;
+	bh=aNdjpDSM8AkEs1tKCqB7z+Y6NXfEAo3d4m97uUx3Ly4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+M4qCRY1kH5khtaAKTaX3KB1rQNzjBl/sCN/na5pPXzZIRNyy2xGg7c3LgfgEIr/o129uPCNTmGuZCIG6A72HPrwoCQffcYCBQr2/ujuJplwEZHLXAKXJZujpQXUAWwvFlezGKs0TLhP/m7U8hzn/t+M6OyclshkPSqk3Zhf3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/oTmrYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB21FC4CEF1;
-	Fri, 21 Nov 2025 13:53:14 +0000 (UTC)
+	 MIME-Version; b=TKyWGfXn/exy2qnhXSWhb7GXmygP0+7c7bmqoUijciybIdpNF7wcPJBZquziyquP2VU/NsAIpsDm+BznIvBI1Zq2uY/aubhtIJ/XA/dyio7aBO0l9UaS8kTuMViDwJbh+13g6gJeqbIAPTDF258u3hDdcYYWD6auV71VT+s0rfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lk3+3Knl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232F7C4CEF1;
+	Fri, 21 Nov 2025 13:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733195;
-	bh=wkyvTf3u6Wz4hAgdM5jcoWRbD0EQxc8lDN35CRltYdw=;
+	s=korg; t=1763731141;
+	bh=aNdjpDSM8AkEs1tKCqB7z+Y6NXfEAo3d4m97uUx3Ly4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/oTmrYutL+1VHVLqwGBS2F7UaJJs+BCORcXWeoRZm7pmdmwnQNzHx1I2dIxgiYWV
-	 FveKGo4dQts8aO/5nScVUY482p3OCuamJctEms7sxjv5TvWV0Q1HbWzp0iiV5MRJJE
-	 JRC0ndf0bk2qbf1z/53zGGH6uWW+D2cqOSzDSASM=
+	b=Lk3+3KnlO+s322vpHP9g/79ETC+bMxsp4GL8TPezc9H6TJKw4zq2/xPtlS8Ows4A1
+	 4r5GUQH/GskmAcZ5qeOlpV2zAlYeZw6LagcV+Ai2NlbVLDUAHi9seWyPSqyrNcZ4XR
+	 lu2cVvewQ9Twqzwe08669NL3gxvR1WfqFavTvkyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/529] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
-Date: Fri, 21 Nov 2025 14:10:50 +0100
-Message-ID: <20251121130243.519755003@linuxfoundation.org>
+Subject: [PATCH 6.17 104/247] pnfs: Fix TLS logic in _nfs4_pnfs_v3_ds_connect()
+Date: Fri, 21 Nov 2025 14:10:51 +0100
+Message-ID: <20251121130158.320546345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
+[ Upstream commit 7aca00d950e782e66c34fbd045c9605eca343a36 ]
 
-Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
-This can trigger kernel panics on ARM64 when xfrm or other subsystems
-access the offset due to strict alignment checks.
+Don't try to add an RDMA transport to a client that is already marked as
+being a TCP/TLS transport.
 
-Initialize the MAC header to prevent such crashes.
-
-This can trigger kernel panics on ARM when running IPsec over the
-qmimux0 interface.
-
-Example trace:
-
-    Internal error: Oops: 000000009600004f [#1] SMP
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
-    Hardware name: LS1028A RDB Board (DT)
-    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : xfrm_input+0xde8/0x1318
-    lr : xfrm_input+0x61c/0x1318
-    sp : ffff800080003b20
-    Call trace:
-     xfrm_input+0xde8/0x1318
-     xfrm6_rcv+0x38/0x44
-     xfrm6_esp_rcv+0x48/0xa8
-     ip6_protocol_deliver_rcu+0x94/0x4b0
-     ip6_input_finish+0x44/0x70
-     ip6_input+0x44/0xc0
-     ipv6_rcv+0x6c/0x114
-     __netif_receive_skb_one_core+0x5c/0x8c
-     __netif_receive_skb+0x18/0x60
-     process_backlog+0x78/0x17c
-     __napi_poll+0x38/0x180
-     net_rx_action+0x168/0x2f0
-
-Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
-Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
-Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 04a15263662a ("pnfs/flexfiles: connect to NFSv3 DS using TLS if MDS connection uses TLS")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfs/pnfs_nfs.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index eba755b584a45..73df808978b20 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 		if (!skbn)
- 			return 0;
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index 7b32afb297827..ff48056bf750e 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -809,8 +809,11 @@ static int _nfs4_pnfs_v3_ds_connect(struct nfs_server *mds_srv,
+ 				 unsigned int retrans)
+ {
+ 	struct nfs_client *clp = ERR_PTR(-EIO);
++	struct nfs_client *mds_clp = mds_srv->nfs_client;
++	enum xprtsec_policies xprtsec_policy = mds_clp->cl_xprtsec.policy;
+ 	struct nfs4_pnfs_ds_addr *da;
+ 	unsigned long connect_timeout = timeo * (retrans + 1) * HZ / 10;
++	int ds_proto;
+ 	int status = 0;
  
-+	       /* Raw IP packets don't have a MAC header, but other subsystems
-+		* (like xfrm) may still access MAC header offsets, so they must
-+		* be initialized.
-+		*/
-+		skb_reset_mac_header(skbn);
+ 	dprintk("--> %s DS %s\n", __func__, ds->ds_remotestr);
+@@ -834,27 +837,28 @@ static int _nfs4_pnfs_v3_ds_connect(struct nfs_server *mds_srv,
+ 				.xprtsec = clp->cl_xprtsec,
+ 			};
+ 
+-			if (da->da_transport != clp->cl_proto &&
+-			    clp->cl_proto != XPRT_TRANSPORT_TCP_TLS)
+-				continue;
+-			if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-			    mds_srv->nfs_client->cl_proto == XPRT_TRANSPORT_TCP_TLS)
++			if (xprt_args.ident == XPRT_TRANSPORT_TCP &&
++			    clp->cl_proto == XPRT_TRANSPORT_TCP_TLS)
+ 				xprt_args.ident = XPRT_TRANSPORT_TCP_TLS;
+ 
+-			if (da->da_addr.ss_family != clp->cl_addr.ss_family)
++			if (xprt_args.ident != clp->cl_proto)
++				continue;
++			if (xprt_args.dstaddr->sa_family !=
++			    clp->cl_addr.ss_family)
+ 				continue;
+ 			/* Add this address as an alias */
+ 			rpc_clnt_add_xprt(clp->cl_rpcclient, &xprt_args,
+-					rpc_clnt_test_and_add_xprt, NULL);
++					  rpc_clnt_test_and_add_xprt, NULL);
+ 			continue;
+ 		}
+-		if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-		    mds_srv->nfs_client->cl_proto == XPRT_TRANSPORT_TCP_TLS)
+-			da->da_transport = XPRT_TRANSPORT_TCP_TLS;
+-		clp = get_v3_ds_connect(mds_srv,
+-				&da->da_addr,
+-				da->da_addrlen, da->da_transport,
+-				timeo, retrans);
 +
- 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
- 		case 0x40:
- 			skbn->protocol = htons(ETH_P_IP);
++		ds_proto = da->da_transport;
++		if (ds_proto == XPRT_TRANSPORT_TCP &&
++		    xprtsec_policy != RPC_XPRTSEC_NONE)
++			ds_proto = XPRT_TRANSPORT_TCP_TLS;
++
++		clp = get_v3_ds_connect(mds_srv, &da->da_addr, da->da_addrlen,
++					ds_proto, timeo, retrans);
+ 		if (IS_ERR(clp))
+ 			continue;
+ 		clp->cl_rpcclient->cl_softerr = 0;
 -- 
 2.51.0
 
