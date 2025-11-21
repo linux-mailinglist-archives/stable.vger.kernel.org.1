@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD34C79589
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB156C793E3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 1F47D23F7E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 089862BAAB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D12332904;
-	Fri, 21 Nov 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD752765FF;
+	Fri, 21 Nov 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ympksPOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2n1t1WIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E81A274FE3;
-	Fri, 21 Nov 2025 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0733E264612;
+	Fri, 21 Nov 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731683; cv=none; b=KJaH46BHrdFJoI/5k+poevfWoYcXfWEDniJHTg5hcimNVtMF5o1UfufmLTsijf+Qmtk060TCoMqiViNRrzbVjClsGgK45NdX5WkyUXV8F97iJI27M2Y+1IEhM3eaDxsidRfN43u87/pInprXzAH9x5vbaCueSwBoYSq1+zLYjV0=
+	t=1763731290; cv=none; b=MtEeOUlEl0cFbi7jlcgrgeqdZ3NSINUSvaj5oise5PLAsIS1GHkdA2b3J7fnRt/viNviSDY3Q5i7VHxkdzloIGd5vdHuaM2+ajYjGZzy1MVRQI5hk4AAjn3FH2g2EJviePbcZEXa8Esw9y8z2d4UQ1+gpvriCbhCaNTMd5SBSmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731683; c=relaxed/simple;
-	bh=Gl0Agtu2KLmmQhQFo0GBmNJjXKIJc2X6nBgHhhZYFSM=;
+	s=arc-20240116; t=1763731290; c=relaxed/simple;
+	bh=HehjfeLo+FrhOyu78Ph2T+AJxqUZ9HT5FCeGCKYUWw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V290UYbJ69mEDESO8u5hakgWfBu1CYT13sN5tkeuRbSx3LZLzoHdHD/bFKXGIGCEumL3giQbBWFNgKzoEvndAfpckGIDqkLSVgne6XmmwTA+f7Gi78PpwM2K8EsVCOVA2wTc+V5LBlqfwjDZWeyfl3gk7BV+8F2gGBkOkNp51eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ympksPOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74602C4CEF1;
-	Fri, 21 Nov 2025 13:28:01 +0000 (UTC)
+	 MIME-Version; b=vGM1e+t99aByLHUl7yrRSX4mR6bmDZK/SasZ9btsmg5Uw7b7Zk0otjs3ZB7BiClSeMXxRTZP55Gi6L24AY0K4ZJlNajOFYatpErljLy6TdgXa1QiiEKnAsG8O00jvxUAPnXX3a6oZehX1t5wrT29tPumfWN+jm6RV3oJ6vzHOSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2n1t1WIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8540AC4CEF1;
+	Fri, 21 Nov 2025 13:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731681;
-	bh=Gl0Agtu2KLmmQhQFo0GBmNJjXKIJc2X6nBgHhhZYFSM=;
+	s=korg; t=1763731289;
+	bh=HehjfeLo+FrhOyu78Ph2T+AJxqUZ9HT5FCeGCKYUWw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ympksPOp5PddgVOQZyfP1biVojB0+gTJ2T0cxghwQ473T4ikdIJQ3YylTq1FKl0uL
-	 9kdDFmBeoFf7bHiC5Y2QvokOTic668i7xEm9+RoC6gqQ7YNFUKwZaErjRQtjY4C1Zo
-	 swxz9heC6yBnnHuXDpq5OD99oT3UQRUyCq7kO2OQ=
+	b=2n1t1WIUoWOW+oUHoO+D4Y+XoI7tt2TO9m8bpEQEcov0y+j9Is+QRm3wipFEAKxGx
+	 qRfhwk8JIjycX5wPF7WGhS+Kbp5qzby9Fmq2wNg64X2uDnMvTyiyR8cHfsjH+ly4ik
+	 CkTocquwpz9EjBCxOLyLBjdlYds5RYBUrWAz2NPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Geoffrey Thorpe <geoff@geoffthorpe.net>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/185] Bluetooth: 6lowpan: Dont hold spin lock over sleeping functions
+Subject: [PATCH 6.17 123/247] hostfs: Fix only passing host root in boot stage with new mount
 Date: Fri, 21 Nov 2025 14:11:10 +0100
-Message-ID: <20251121130145.434455882@linuxfoundation.org>
+Message-ID: <20251121130158.998299567@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 98454bc812f3611551e4b1f81732da4aa7b9597e ]
+[ Upstream commit 2c2b67af5f5f77fc68261a137ad65dcfb8e52506 ]
 
-disconnect_all_peers() calls sleeping function (l2cap_chan_close) under
-spinlock.  Holding the lock doesn't actually do any good -- we work on a
-local copy of the list, and the lock doesn't protect against peer->chan
-having already been freed.
+In the old mount proceedure, hostfs could only pass root directory during
+boot. This is because it constructed the root directory using the @root_ino
+event without any mount options. However, when using it with the new mount
+API, this step is no longer triggered. As a result, if users mounts without
+specifying any mount options, the @host_root_path remains uninitialized. To
+prevent this issue, the @host_root_path should be initialized at the time
+of allocation.
 
-Fix by taking refcounts of peer->chan instead.  Clean up the code and
-old comments a bit.
-
-Take devices_lock instead of RCU, because the kfree_rcu();
-l2cap_chan_put(); construct in chan_close_cb() does not guarantee
-peer->chan is necessarily valid in RCU.
-
-Also take l2cap_chan_lock() which is required for l2cap_chan_close().
-
-Log: (bluez 6lowpan-tester Client Connect - Disable)
-------
-BUG: sleeping function called from invalid context at kernel/locking/mutex.c:575
-...
-<TASK>
-...
-l2cap_send_disconn_req (net/bluetooth/l2cap_core.c:938 net/bluetooth/l2cap_core.c:1495)
-...
-? __pfx_l2cap_chan_close (net/bluetooth/l2cap_core.c:809)
-do_enable_set (net/bluetooth/6lowpan.c:1048 net/bluetooth/6lowpan.c:1068)
-------
-
-Fixes: 90305829635d ("Bluetooth: 6lowpan: Converting rwlocks to use RCU")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Geoffrey Thorpe <geoff@geoffthorpe.net>
+Closes: https://lore.kernel.org/all/643333a0-f434-42fb-82ac-d25a0b56f3b7@geoffthorpe.net/
+Fixes: cd140ce9f611 ("hostfs: convert hostfs to use the new mount API")
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20251011092235.29880-1-lihongbo22@huawei.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 68 ++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 25 deletions(-)
+ fs/hostfs/hostfs_kern.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 73fe151a52a12..e5186a438290a 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -52,6 +52,11 @@ static bool enable_6lowpan;
- static struct l2cap_chan *listen_chan;
- static DEFINE_MUTEX(set_lock);
- 
-+enum {
-+	LOWPAN_PEER_CLOSING,
-+	LOWPAN_PEER_MAXBITS
-+};
-+
- struct lowpan_peer {
- 	struct list_head list;
- 	struct rcu_head rcu;
-@@ -60,6 +65,8 @@ struct lowpan_peer {
- 	/* peer addresses in various formats */
- 	unsigned char lladdr[ETH_ALEN];
- 	struct in6_addr peer_addr;
-+
-+	DECLARE_BITMAP(flags, LOWPAN_PEER_MAXBITS);
- };
- 
- struct lowpan_btle_dev {
-@@ -1013,41 +1020,52 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- static void disconnect_all_peers(void)
+diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
+index 01e516175bcd7..30fcce80a2c35 100644
+--- a/fs/hostfs/hostfs_kern.c
++++ b/fs/hostfs/hostfs_kern.c
+@@ -979,7 +979,7 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
  {
- 	struct lowpan_btle_dev *entry;
--	struct lowpan_peer *peer, *tmp_peer, *new_peer;
--	struct list_head peers;
+ 	struct hostfs_fs_info *fsi = fc->s_fs_info;
+ 	struct fs_parse_result result;
+-	char *host_root;
++	char *host_root, *tmp_root;
+ 	int opt;
+ 
+ 	opt = fs_parse(fc, hostfs_param_specs, param, &result);
+@@ -990,11 +990,13 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 	case Opt_hostfs:
+ 		host_root = param->string;
+ 		if (!*host_root)
+-			host_root = "";
+-		fsi->host_root_path =
+-			kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
+-		if (fsi->host_root_path == NULL)
++			break;
++		tmp_root = kasprintf(GFP_KERNEL, "%s%s",
++				     fsi->host_root_path, host_root);
++		if (!tmp_root)
+ 			return -ENOMEM;
++		kfree(fsi->host_root_path);
++		fsi->host_root_path = tmp_root;
+ 		break;
+ 	}
+ 
+@@ -1004,17 +1006,17 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ static int hostfs_parse_monolithic(struct fs_context *fc, void *data)
+ {
+ 	struct hostfs_fs_info *fsi = fc->s_fs_info;
+-	char *host_root = (char *)data;
++	char *tmp_root, *host_root = (char *)data;
+ 
+ 	/* NULL is printed as '(null)' by printf(): avoid that. */
+ 	if (host_root == NULL)
+-		host_root = "";
++		return 0;
+ 
+-	fsi->host_root_path =
+-		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
+-	if (fsi->host_root_path == NULL)
++	tmp_root = kasprintf(GFP_KERNEL, "%s%s", fsi->host_root_path, host_root);
++	if (!tmp_root)
+ 		return -ENOMEM;
 -
--	INIT_LIST_HEAD(&peers);
-+	struct lowpan_peer *peer;
-+	int nchans;
- 
--	/* We make a separate list of peers as the close_cb() will
--	 * modify the device peers list so it is better not to mess
--	 * with the same list at the same time.
-+	/* l2cap_chan_close() cannot be called from RCU, and lock ordering
-+	 * chan->lock > devices_lock prevents taking write side lock, so copy
-+	 * then close.
- 	 */
- 
- 	rcu_read_lock();
-+	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list)
-+		list_for_each_entry_rcu(peer, &entry->peers, list)
-+			clear_bit(LOWPAN_PEER_CLOSING, peer->flags);
-+	rcu_read_unlock();
- 
--	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
--		list_for_each_entry_rcu(peer, &entry->peers, list) {
--			new_peer = kmalloc(sizeof(*new_peer), GFP_ATOMIC);
--			if (!new_peer)
--				break;
-+	do {
-+		struct l2cap_chan *chans[32];
-+		int i;
- 
--			new_peer->chan = peer->chan;
--			INIT_LIST_HEAD(&new_peer->list);
-+		nchans = 0;
- 
--			list_add(&new_peer->list, &peers);
--		}
--	}
-+		spin_lock(&devices_lock);
- 
--	rcu_read_unlock();
-+		list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
-+			list_for_each_entry_rcu(peer, &entry->peers, list) {
-+				if (test_and_set_bit(LOWPAN_PEER_CLOSING,
-+						     peer->flags))
-+					continue;
- 
--	spin_lock(&devices_lock);
--	list_for_each_entry_safe(peer, tmp_peer, &peers, list) {
--		l2cap_chan_close(peer->chan, ENOENT);
-+				l2cap_chan_hold(peer->chan);
-+				chans[nchans++] = peer->chan;
- 
--		list_del_rcu(&peer->list);
--		kfree_rcu(peer, rcu);
--	}
--	spin_unlock(&devices_lock);
-+				if (nchans >= ARRAY_SIZE(chans))
-+					goto done;
-+			}
-+		}
-+
-+done:
-+		spin_unlock(&devices_lock);
-+
-+		for (i = 0; i < nchans; ++i) {
-+			l2cap_chan_lock(chans[i]);
-+			l2cap_chan_close(chans[i], ENOENT);
-+			l2cap_chan_unlock(chans[i]);
-+			l2cap_chan_put(chans[i]);
-+		}
-+	} while (nchans);
++	kfree(fsi->host_root_path);
++	fsi->host_root_path = tmp_root;
+ 	return 0;
  }
  
- struct set_enable {
+@@ -1049,6 +1051,11 @@ static int hostfs_init_fs_context(struct fs_context *fc)
+ 	if (!fsi)
+ 		return -ENOMEM;
+ 
++	fsi->host_root_path = kasprintf(GFP_KERNEL, "%s/", root_ino);
++	if (!fsi->host_root_path) {
++		kfree(fsi);
++		return -ENOMEM;
++	}
+ 	fc->s_fs_info = fsi;
+ 	fc->ops = &hostfs_context_ops;
+ 	return 0;
 -- 
 2.51.0
 
