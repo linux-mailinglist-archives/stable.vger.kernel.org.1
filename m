@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-195687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8E4C79536
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1C5C7A19E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFF2A4ED8C7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 0FFD12DA31
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED916334367;
-	Fri, 21 Nov 2025 13:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02661337B90;
+	Fri, 21 Nov 2025 13:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbTlLc/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jr1JmLUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD61F09B3;
-	Fri, 21 Nov 2025 13:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6D830F951;
+	Fri, 21 Nov 2025 13:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731378; cv=none; b=hvxA6DKDLZLmcHx0L9omWWJCdWEj8X/8936lLloObMcNfO0qwWgQIzSwcvshLiAS/fdpEDSu02rckDXJB/vg7NQJWOihCBv6peLZcGSXAjCcHZy6cv3U2fZZKApYYpso5SK5KKiJg1Cn5TbZkS69Nf9lCug6nX+iAqOX8aaev/s=
+	t=1763733335; cv=none; b=er/MrGEBa8QgHKMXUSWiELz9rDOc1o0kiEUvjcqhMVIVYZ1mUP+PyvKYq/7sLPNgfrJ1H5dfPN+KZNWjz5zC+l4J/SXG/oSZdHiAzCeKnAJd44CGdpOMMJix54Y+E9wbnHMDKggw/U8JnXp4gmBkCy4W72fRRw6Of21Xw756jBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731378; c=relaxed/simple;
-	bh=NeU+gv/RKV2M4SxXzQxnZhl3e7Y46iwVSD0ettK9neg=;
+	s=arc-20240116; t=1763733335; c=relaxed/simple;
+	bh=vHpnXiMyh7rxe7AKzosbNoVnRqmhblwsUxT0oOk+8ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/CpEH0of1foTpwWrgu+7GxoQ0xsHxZDRi0d25OIPbDGbGxj/f4I0HEmrXeVbtP3uex++BUP7s4DNnP0OqKEaEjQVNPKB3nXwXL6cPtL3pfu1raoRaiz7xLswarDDFo+a/94PsYy1YDyRNKqYNzB1UyXaw77VF4eleq9pbwV5QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbTlLc/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF97C4CEF1;
-	Fri, 21 Nov 2025 13:22:57 +0000 (UTC)
+	 MIME-Version; b=CPVC8qSy2rAEztdOoHGHthrqjpK11eE4DZjgV5rA14gOuCURgny/SEZfVkgunqdTAMFLPNBxyfxzcZCWNQ7wnbLTO8PjuHZy6P2xjGbip56DxfnP/yZ1HCEpDfX3h4Bx5Bu2NHqzmLFFv0Y4MASBzVWBI0YSMOjqQoWBcxUgrek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jr1JmLUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9E6C4CEF1;
+	Fri, 21 Nov 2025 13:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731378;
-	bh=NeU+gv/RKV2M4SxXzQxnZhl3e7Y46iwVSD0ettK9neg=;
+	s=korg; t=1763733335;
+	bh=vHpnXiMyh7rxe7AKzosbNoVnRqmhblwsUxT0oOk+8ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbTlLc/R3JQ9caq1lrHb+PPpYylVfhwm76G+CcTiKNVI/LwBhqEsn1abMCbeO7dfL
-	 L9Jxid17hy0WF3vs5LBg6zKHoswkgu2nOVnkHIEARkqC0RfPCvTZRGf5HEJCvEUNLA
-	 3IvhUZ+hunafGBWvS3f0LL65/DuSfiMViU2QXpIw=
+	b=jr1JmLUFZjQ1oRRXjhu3eGujZuOdtL9foT+skE2YglbkbV/oIsgDHv5MDadf3dXlo
+	 LtWUszAgykdb3rNXkCOpO10q02nYkMUryUvAW6iL/p1LMvDEsrXnvlahCnYWujZCLU
+	 vfuy8TEfrNar0+bwEGvzoirEVlz02fUPjAv5Uyno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 186/247] mm/shmem: fix THP allocation and fallback loop
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 434/529] NFSv4: Fix an incorrect parameter when calling nfs4_call_sync()
 Date: Fri, 21 Nov 2025 14:12:13 +0100
-Message-ID: <20251121130201.399038407@linuxfoundation.org>
+Message-ID: <20251121130246.456601261@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,73 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit fc745ff317566ec299e16346ebb9eacc8fe5b9d2 upstream.
+[ Upstream commit 1f214e9c3aef2d0936be971072e991d78a174d71 ]
 
-The order check and fallback loop is updating the index value on every
-loop.  This will cause the index to be wrongly aligned by a larger value
-while the loop shrinks the order.
+The Smatch static checker noted that in _nfs4_proc_lookupp(), the flag
+RPC_TASK_TIMEOUT is being passed as an argument to nfs4_init_sequence(),
+which is clearly incorrect.
+Since LOOKUPP is an idempotent operation, nfs4_init_sequence() should
+not ask the server to cache the result. The RPC_TASK_TIMEOUT flag needs
+to be passed down to the RPC layer.
 
-This may result in inserting and returning a folio of the wrong index and
-cause data corruption with some userspace workloads [1].
-
-[kasong@tencent.com: introduce a temporary variable to improve code]
-  Link: https://lkml.kernel.org/r/20251023065913.36925-1-ryncsn@gmail.com
-  Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Link: https://lkml.kernel.org/r/20251022105719.18321-1-ryncsn@gmail.com
-Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Fixes: e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
-Closes: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: 76998ebb9158 ("NFSv4: Observe the NFS_MOUNT_SOFTREVAL flag in _nfs4_proc_lookupp")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |    9 ++++++---
+ fs/nfs/nfs4proc.c | 9 ++++++---
  1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1919,6 +1919,7 @@ static struct folio *shmem_alloc_and_add
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	unsigned long suitable_orders = 0;
- 	struct folio *folio = NULL;
-+	pgoff_t aligned_index;
- 	long pages;
- 	int error, order;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 92e40e41443cd..a0a71a163ffed 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -4578,16 +4578,19 @@ static int _nfs4_proc_lookupp(struct inode *inode,
+ 	};
+ 	unsigned short task_flags = 0;
  
-@@ -1932,10 +1933,12 @@ static struct folio *shmem_alloc_and_add
- 		order = highest_order(suitable_orders);
- 		while (suitable_orders) {
- 			pages = 1UL << order;
--			index = round_down(index, pages);
--			folio = shmem_alloc_folio(gfp, order, info, index);
--			if (folio)
-+			aligned_index = round_down(index, pages);
-+			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
-+			if (folio) {
-+				index = aligned_index;
- 				goto allocated;
-+			}
+-	if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
++	if (server->flags & NFS_MOUNT_SOFTREVAL)
+ 		task_flags |= RPC_TASK_TIMEOUT;
++	if (server->caps & NFS_CAP_MOVEABLE)
++		task_flags |= RPC_TASK_MOVEABLE;
  
- 			if (pages == HPAGE_PMD_NR)
- 				count_vm_event(THP_FILE_FALLBACK);
+ 	args.bitmask = nfs4_bitmask(server, fattr->label);
+ 
+ 	nfs_fattr_init(fattr);
++	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
+ 
+ 	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
+-	status = nfs4_call_sync(clnt, server, &msg, &args.seq_args,
+-				&res.seq_res, task_flags);
++	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
++				   &res.seq_res, task_flags);
+ 	dprintk("NFS reply lookupp: %d\n", status);
+ 	return status;
+ }
+-- 
+2.51.0
+
 
 
 
