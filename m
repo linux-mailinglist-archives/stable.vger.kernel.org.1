@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE3FC79686
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09BEC796EB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id C79DE333A4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 2F92D23F8E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2799A313267;
-	Fri, 21 Nov 2025 13:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D9346FC8;
+	Fri, 21 Nov 2025 13:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w+DvOTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih+wa/OH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E742773F7;
-	Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20052745E;
+	Fri, 21 Nov 2025 13:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731557; cv=none; b=ZrINc3ym5G6U7c1hT+de0yAEpi5R89jNZjXPmBMobBdirEcSxKl8xZ5KmtpNuAYXYFx8fQJcNU5hlsjQRHQoQFE+I/LC/30NPVeHSJ34OqthVg8yGtXy12Vh8hom45IRD9cP1pr6zK/0vVPEQhzUGFtlK87Ip1PjCvIdMdOVVT4=
+	t=1763731982; cv=none; b=gthGA1O5OKCIVwkWy7Mmutgtsa11StCIjI+oxErdBQm9E5Ngshcrmx8hnjZZuCEH+8ATcMfvWV5pEx8k0MvL1OmoF2WZg6E7rAQcYBe/FK9MEF9WSCu+iJQEEkCE5sanGyteDbAJIc1XX1lrOygQy3uBzusk4gohjPlXTeu5wjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731557; c=relaxed/simple;
-	bh=drLnahT/i4d6C81bOIwv90iTw4egWBVCMmXgq2Vu2ak=;
+	s=arc-20240116; t=1763731982; c=relaxed/simple;
+	bh=DfeppnpHDieY+IRgerBzkb7BCSnglPCYW+IADUIMRfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ugRt2KFrgIK6yQVhqlfxHkzERJqODHEPhE3H35D9Fe4KCMmqptPfQFEHVc6+1GW/fFpO5aBsTWWhD0d3ElCV9uhgqaITBYsfzTZN8ufb4MGf7GfZguua3YHG3y01dZHuWVMn+NMrfUq57PGO3741F0cNyL+LBeSKYzxyn9Ewa7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w+DvOTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53963C4CEF1;
-	Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
+	 MIME-Version; b=CfjZgVTJt3J9spAIE06lYWgn7GCdeOdYYz5sSSZ9P46nghL5yCDQVjKJKKyBYwHI5iKaNgzo5cEP96a03hjeIh5GbOFY1ej0ktC/QOJxPJLpTs5vUEHcuhfu4HvU/YVfMkjOBkLIzizM7gPKr/+uHaIvOg2J/C22gfwaMKDsEuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih+wa/OH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBFEC4CEF1;
+	Fri, 21 Nov 2025 13:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731557;
-	bh=drLnahT/i4d6C81bOIwv90iTw4egWBVCMmXgq2Vu2ak=;
+	s=korg; t=1763731982;
+	bh=DfeppnpHDieY+IRgerBzkb7BCSnglPCYW+IADUIMRfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0w+DvOTUatU82rfgL+oBl0J5N2QQS6++B71GZHx5dV+qAbjPVS5mRskAnxPZkkw6Y
-	 XEiRAfwb8dwSEIPB39C4HI9X3g8O6s8iydD7SoQtY9ttm6TYOShtU4Wf6xVWlV4l7G
-	 2H2axnz74Ovsq2RE9y9k126rchz2EZ6M6+oxRomE=
+	b=ih+wa/OHFu5uKqE1A57Vt56LyGghCsoXpugxGoIuAtE9guuYk9Z1eqwSPtla1S2rR
+	 3TLoh5kYlBlKemQR15Sfuv5CGNfeKrB2cFDkaM7+FqLGWIpqPYFMXa5oU+Z6z3dy5q
+	 yrN7gaAHE/Ps/GUxyrkt5v9ll/IkBWjCZRKWQNyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 228/247] pmdomain: samsung: plug potential memleak during probe
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 148/185] drm/amdkfd: relax checks for over allocation of save area
 Date: Fri, 21 Nov 2025 14:12:55 +0100
-Message-ID: <20251121130202.918558928@linuxfoundation.org>
+Message-ID: <20251121130149.220623557@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-commit 90c82941adf1986364e0f82c35cf59f2bf5f6a1d upstream.
+commit d15deafab5d722afb9e2f83c5edcdef9d9d98bd1 upstream.
 
-of_genpd_add_provider_simple() could fail, in which case this code
-leaks the domain name, pd->pd.name.
+Over allocation of save area is not fatal, only under allocation is.
+ROCm has various components that independently claim authority over save
+area size.
 
-Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
-simplify existing error handling.
+Unless KFD decides to claim single authority, relax size checks.
 
-Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 15bd4958fe38e763bc17b607ba55155254a01f55)
 Cc: stable@vger.kernel.org
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/samsung/exynos-pm-domains.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/pmdomain/samsung/exynos-pm-domains.c
-+++ b/drivers/pmdomain/samsung/exynos-pm-domains.c
-@@ -92,13 +92,14 @@ static const struct of_device_id exynos_
- 	{ },
- };
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -297,16 +297,16 @@ int kfd_queue_acquire_buffers(struct kfd
+ 		goto out_err_unreserve;
+ 	}
  
--static const char *exynos_get_domain_name(struct device_node *node)
-+static const char *exynos_get_domain_name(struct device *dev,
-+					  struct device_node *node)
- {
- 	const char *name;
+-	if (properties->ctx_save_restore_area_size != topo_dev->node_props.cwsr_size) {
+-		pr_debug("queue cwsr size 0x%x not equal to node cwsr size 0x%x\n",
++	if (properties->ctx_save_restore_area_size < topo_dev->node_props.cwsr_size) {
++		pr_debug("queue cwsr size 0x%x not sufficient for node cwsr size 0x%x\n",
+ 			properties->ctx_save_restore_area_size,
+ 			topo_dev->node_props.cwsr_size);
+ 		err = -EINVAL;
+ 		goto out_err_unreserve;
+ 	}
  
- 	if (of_property_read_string(node, "label", &name) < 0)
- 		name = kbasename(node->full_name);
--	return kstrdup_const(name, GFP_KERNEL);
-+	return devm_kstrdup_const(dev, name, GFP_KERNEL);
- }
+-	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
+-			  * NUM_XCC(pdd->dev->xcc_mask);
++	total_cwsr_size = (properties->ctx_save_restore_area_size +
++			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
+ 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
  
- static int exynos_pd_probe(struct platform_device *pdev)
-@@ -115,15 +116,13 @@ static int exynos_pd_probe(struct platfo
- 	if (!pd)
- 		return -ENOMEM;
+ 	err = kfd_queue_buffer_get(vm, (void *)properties->ctx_save_restore_area_address,
+@@ -352,8 +352,8 @@ int kfd_queue_release_buffers(struct kfd
+ 	topo_dev = kfd_topology_device_by_id(pdd->dev->id);
+ 	if (!topo_dev)
+ 		return -EINVAL;
+-	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
+-			  * NUM_XCC(pdd->dev->xcc_mask);
++	total_cwsr_size = (properties->ctx_save_restore_area_size +
++			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
+ 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
  
--	pd->pd.name = exynos_get_domain_name(np);
-+	pd->pd.name = exynos_get_domain_name(dev, np);
- 	if (!pd->pd.name)
- 		return -ENOMEM;
- 
- 	pd->base = of_iomap(np, 0);
--	if (!pd->base) {
--		kfree_const(pd->pd.name);
-+	if (!pd->base)
- 		return -ENODEV;
--	}
- 
- 	pd->pd.power_off = exynos_pd_power_off;
- 	pd->pd.power_on = exynos_pd_power_on;
+ 	kfd_queue_buffer_svm_put(pdd, properties->ctx_save_restore_area_address, total_cwsr_size);
 
 
 
