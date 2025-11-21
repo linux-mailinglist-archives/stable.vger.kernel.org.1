@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-195852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7696CC797AE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E57BC79637
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 43BE234CC35
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id D85CB28D5E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7222745E;
-	Fri, 21 Nov 2025 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB982874F6;
+	Fri, 21 Nov 2025 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuPpVNef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9ySuY2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B883F9D2;
-	Fri, 21 Nov 2025 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAEB3F9D2;
+	Fri, 21 Nov 2025 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731849; cv=none; b=QbHVh36BbsXwyxZyMv3HStPIxk8DKSedBu91BKAr6Fbp7V+y0CQTpJONoc2m3lpUI6DjkU6+4Fy2omFSWRc8IegzMsEYjCIogdMg1fKPpeTtc3XuLCBxmghSyobaya2rcrdO4pZAqNfcjrBkQUZ8xcg3quLsmUWrpOMfxliOZk4=
+	t=1763731855; cv=none; b=f1gl8WiBcKmTfSyY9vpZmEDA80mEroB5PeKHLNUDU6c//LGCXF+CaSXMd4heaSVDch2rWAiJCmlPpcFQ2IhDdpnQk06TfDqcNA0U8kiJZtstRqtWxdRwt//mynr8DDkKVOFddv4zok+qL6iILm6kK0/Ba3z6BR7XUGk8C1IkzlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731849; c=relaxed/simple;
-	bh=HAlyxdha6aJKVxzK5vRA4lyjtJGoCOorGKj2gnoH1xc=;
+	s=arc-20240116; t=1763731855; c=relaxed/simple;
+	bh=oMIv46PoKYfj168AbrRszBoAC+0/ZAhzJBP63RQywU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jfqc/o0mnNFy+J20xSlJqYYWFVMvcFCu//AlobE3XLoeyD1g5XYqIsnXg5/6g/JUsRX0GWPbH6fdNIriDAQJy/ZMctliNuWdUaFvQFaTQACDF+NCzUcVyEsZc9q7BVVtxKZMjW9ibpNOqBYz64rfVQ3MkULjT6tWF8t37tFxQuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuPpVNef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21823C116C6;
-	Fri, 21 Nov 2025 13:30:48 +0000 (UTC)
+	 MIME-Version; b=nwmpnXtVFqsBElrmZ7GM4eXTnnV6JZi39Od+FApqBRkU44CPuVFyt/kSf6m8NEhgNM5QN91EEawxtQt2clHZEW9vHKcyPjThzE+zLC81hHtUcPJiHKUjXxb0ZUjr9Wfb7kGVOUwLfA+RmqgC9kT3NoY5nOyCCg2bE8TEotYNyEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9ySuY2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A5AC4CEF1;
+	Fri, 21 Nov 2025 13:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731849;
-	bh=HAlyxdha6aJKVxzK5vRA4lyjtJGoCOorGKj2gnoH1xc=;
+	s=korg; t=1763731855;
+	bh=oMIv46PoKYfj168AbrRszBoAC+0/ZAhzJBP63RQywU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuPpVNefSM17NpsUWh0b4C3Q0HyinZ242XPxqzoAU/vHcjnUQH68ysmTAg101SL7m
-	 y6dDL0Y3uN/8EwtRG9oDXzUEtYTcxyQneatAGz8m83DZrcKwzn554Q2sMlycyiO4jo
-	 YfEcm7ewxIbWvGkScKN9ax1Pxa40D1ztF5wMJCCU=
+	b=m9ySuY2LqIykxgOsRsLNLDuxYE2njoZVno331Wp6XFml4FmfLCMoTHld/19JiroeL
+	 GmVo8aUouItt5tXJM1pSf/3w0iLvdtDEj29JRsWOOHvIblWlGxUIDFdMRnbG+MRfVz
+	 hE1N771/j6bRkxlb5EyC4Sv5m/Bk+UD3Y3pEEU3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Silvan Jegen <s.jegen@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/185] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
-Date: Fri, 21 Nov 2025 14:12:10 +0100
-Message-ID: <20251121130147.590711155@linuxfoundation.org>
+Subject: [PATCH 6.12 104/185] HID: playstation: Fix memory leak in dualshock4_get_calibration_data()
+Date: Fri, 21 Nov 2025 14:12:11 +0100
+Message-ID: <20251121130147.626558855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
 References: <20251121130143.857798067@linuxfoundation.org>
@@ -60,43 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
+[ Upstream commit 8513c154f8ad7097653dd9bf43d6155e5aad4ab3 ]
 
-Luxul XAP-1440 has BCM54210E PHY at address 25.
+The memory allocated for buf is not freed in the error paths when
+ps_get_report() fails. Free buf before jumping to transfer_failed label
 
-Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 947992c7fa9e ("HID: playstation: DS4: Fix calibration workaround for clone devices")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-playstation.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-index ac44c745bdf8e..a39a021a39107 100644
---- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-@@ -55,8 +55,8 @@
- 	mdio {
- 		/delete-node/ switch@1e;
+diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
+index 1468fb11e39df..657e9ae1be1ee 100644
+--- a/drivers/hid/hid-playstation.c
++++ b/drivers/hid/hid-playstation.c
+@@ -1807,6 +1807,7 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
  
--		bcm54210e: ethernet-phy@0 {
--			reg = <0>;
-+		bcm54210e: ethernet-phy@25 {
-+			reg = <25>;
- 		};
- 	};
- };
+ 				hid_warn(hdev, "Failed to retrieve DualShock4 calibration info: %d\n", ret);
+ 				ret = -EILSEQ;
++				kfree(buf);
+ 				goto transfer_failed;
+ 			} else {
+ 				break;
+@@ -1824,6 +1825,7 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
+ 
+ 		if (ret) {
+ 			hid_warn(hdev, "Failed to retrieve DualShock4 calibration info: %d\n", ret);
++			kfree(buf);
+ 			goto transfer_failed;
+ 		}
+ 	}
 -- 
 2.51.0
 
