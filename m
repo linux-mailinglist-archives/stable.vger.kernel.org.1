@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-196133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C02C79AA6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:49:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D26DC79A31
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B4404EDFF3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:47:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 4A8B72DB3D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DF834C826;
-	Fri, 21 Nov 2025 13:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F79352937;
+	Fri, 21 Nov 2025 13:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a86fnrkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/l13cQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02237342526;
-	Fri, 21 Nov 2025 13:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AC1352931;
+	Fri, 21 Nov 2025 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732650; cv=none; b=ejaFY88aRyWAkaZjy91O3eomNgyTgMffVcWsTE8U4DOZwEDZjpfVxp9AhSwP3QGHdTr293MpI37w2th0ITjD9Vb9M8156aSHnFz7YsLgx/+hTzgFbyX1en75RpLy2MmnTOHsDpQGD5imTgWc2Xug6UUiyAHkYigg7NLf//ubHEo=
+	t=1763732655; cv=none; b=jWWRndoeFzVxYbWRhVFSQW8k1zd43mGwlr5jOhI0lzAsdjKB2zD6d0a88JeCgFNj7lmW7Wg2EQp22/H6l708///fO4iUXKFrsWFAWpfiTAmyeZpesqGJWE529+2RVSLfNURLRzD78Tx3zzy9x9hPOGFKu/ybZ7wI/bwmXNM4yWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732650; c=relaxed/simple;
-	bh=vkbOVhC4Kd4UAqlK3NE8exIvk9SCGFm84shPtbybdEc=;
+	s=arc-20240116; t=1763732655; c=relaxed/simple;
+	bh=9Yu1+BbFng3JBwmVNld62PgccIyFQsHykIA4XuCfMwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QaMbJrLS5orKZ7wLkterBOvmYD6E8VKW6e5+wxmkntAB9rp4OQKg4jrb89Uoq7BpMP3NBuFIHCfAgo4JoL6N3kvqxLM9Ng0oIgc37YYuhvWcrpFopzJG1cZ1EHK5vdvgRfP/i9P2UZ1pa/tzqECmYq7BhAgT+hRqcNxcLNpfhtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a86fnrkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C97C116C6;
-	Fri, 21 Nov 2025 13:44:09 +0000 (UTC)
+	 MIME-Version; b=RxW4N0MMbXuhiGnJTPYntX/MoUojtxfE6749tcJ09teXyu1CEq0UAnJxLsecq8YLphRfaZlz/cb5oBQbDZf8fTA8jc30/G0/21qIQ0Xd3HEKZ+Fagh2Wtud5yYuLJjAXhJxmOz0EpWjSNEsCXU9syomJdUxUUVe8DaxqKG4WUuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/l13cQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D8DC4CEF1;
+	Fri, 21 Nov 2025 13:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732649;
-	bh=vkbOVhC4Kd4UAqlK3NE8exIvk9SCGFm84shPtbybdEc=;
+	s=korg; t=1763732655;
+	bh=9Yu1+BbFng3JBwmVNld62PgccIyFQsHykIA4XuCfMwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a86fnrkOGF5hrdsCXFfhj3g9RWplJ+hfKEWelsCFsaHfg5c5arh7cgLOByXC+/nEZ
-	 /48UM/ytmGrEsi57aHi7PnpW/ZuQcLHB2YOEaovBISiLGHaGcjgbbTrp4grJJhFXdk
-	 KUJOQIegZ2O4mfrWyKax/nC2/H5n+3EvB/uFEA4A=
+	b=k/l13cQ7m2sefK8HTbJ+5DR+koDXq0E+KHu5NESGAAUhUBuoxgYdCn8TtCHocyUJd
+	 c8+ZISS4poV6uvnmxFo0Jcm7J9Pku1uQcuWPEMYY9IY4EIhwndELJuE4DRWLEjhV00
+	 BrA/PbArVlk9jI4Cf9EIEmeFhFvirfkGDRxB7M+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>,
-	Sven Peter <sven@kernel.org>,
-	Neal Gompa <neal@gompa.dev>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/529] iommu/apple-dart: Clear stream error indicator bits for T8110 DARTs
-Date: Fri, 21 Nov 2025 14:08:14 +0100
-Message-ID: <20251121130237.954780317@linuxfoundation.org>
+Subject: [PATCH 6.6 196/529] drm/amd: add more cyan skillfish PCI ids
+Date: Fri, 21 Nov 2025 14:08:15 +0100
+Message-ID: <20251121130237.991407503@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -69,46 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ecf6508923f87e4597228f70cc838af3d37f6662 ]
+[ Upstream commit 1e18746381793bef7c715fc5ec5611a422a75c4c ]
 
-These registers exist and at least on the t602x variant the IRQ only
-clears when theses are cleared.
+Add additional PCI IDs to the cyan skillfish family.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Sven Peter <sven@kernel.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Link: https://lore.kernel.org/r/20250826-dart-t8110-stream-error-v1-1-e33395112014@jannau.net
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/apple-dart.c | 5 +++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
-index 0b89275084274..0ea450cbb7786 100644
---- a/drivers/iommu/apple-dart.c
-+++ b/drivers/iommu/apple-dart.c
-@@ -121,6 +121,8 @@
- #define DART_T8110_ERROR_ADDR_LO 0x170
- #define DART_T8110_ERROR_ADDR_HI 0x174
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 940411f8e99be..b15ce4df74798 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -1983,6 +1983,11 @@ static const struct pci_device_id pciidlist[] = {
+ 	{0x1002, 0x7410, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_ALDEBARAN},
  
-+#define DART_T8110_ERROR_STREAMS 0x1c0
-+
- #define DART_T8110_PROTECT 0x200
- #define DART_T8110_UNPROTECT 0x204
- #define DART_T8110_PROTECT_LOCK 0x208
-@@ -1041,6 +1043,9 @@ static irqreturn_t apple_dart_t8110_irq(int irq, void *dev)
- 		error, stream_idx, error_code, fault_name, addr);
- 
- 	writel(error, dart->regs + DART_T8110_ERROR);
-+	for (int i = 0; i < BITS_TO_U32(dart->num_streams); i++)
-+		writel(U32_MAX, dart->regs + DART_T8110_ERROR_STREAMS + 4 * i);
-+
- 	return IRQ_HANDLED;
- }
+ 	/* CYAN_SKILLFISH */
++	{0x1002, 0x13DB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13F9, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FA, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
++	{0x1002, 0x13FC, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x13FE, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
+ 	{0x1002, 0x143F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
  
 -- 
 2.51.0
