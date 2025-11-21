@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3A2C7A058
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6725CC79661
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 54A4E348312
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 075B733173
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB8833B6EA;
-	Fri, 21 Nov 2025 13:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF782773F7;
+	Fri, 21 Nov 2025 13:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5qmNT9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPRaZQX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321DE2F2900;
-	Fri, 21 Nov 2025 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F42F2F3632;
+	Fri, 21 Nov 2025 13:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733507; cv=none; b=uiMfMiVEbtFENcFUqpiMS9uoTCVEOZF2nDRxILVTmIUkXdADxxCyQu2j1rIJ3WguCD0QH1SEu6beN8ob7U2zKu61XMM9ttkuHi5RaQbModmdkAuznybjubTzTw60qkm3ylHFuyqBMJv8TslW6HGgDBytHYFI74iz+UMzY9wrwVg=
+	t=1763731535; cv=none; b=jw2gqUMLXOCWQcWX8v+O8SMk2bvrRV2pjesHylglzhbZcJOY2+X38OPWIBYoi7v6Krod+KOdEdvw+0YBA/iV42+TIGsV1LXSIjXpgMuH6BCEcKtKT7YVOrydhdEwZJ1IRGx53uVaZsQx9TP8kKpja9I58wCrmqPdU5gH4BnDDxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733507; c=relaxed/simple;
-	bh=6JZeeMXetDOcrcXi0VXG55oW8q6cyzS2JOvAyamtenE=;
+	s=arc-20240116; t=1763731535; c=relaxed/simple;
+	bh=OaAs1zhBiFYjK6ymR03zV7UnUDuDrQ+ITafEhptLKYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uALPzlGjOnU4tJIoSrJdOyCInZlW686jjR5NQEUapC0n2b/YKS+3mJPBYcme67kLJl0NzNJjXcKWNo350kA+fIN0kwp6rrzvi+SLyQbHduD5ou2cKs8b970JyNRpX25kIBdTfMWeVubv8eURuNMc0X0kWBXgPNTQHAIAdt2P0UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5qmNT9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB66C4CEF1;
-	Fri, 21 Nov 2025 13:58:26 +0000 (UTC)
+	 MIME-Version; b=OnXQIzSGRrytlhHRMMe8o/aaXzzJ55LkeOxBc1yZECw6CF37exdSwec1dTi1qxt1Hiz0GRN+SMX2hGxnFU93PTdMMP4WeGIsqfCHQKpFsMwYnypMF/55R8qolq3UNqcwTZyg58PcRYg1JNBsMwu0k7qkLhHggaJBMgRfP0IoUJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPRaZQX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0656C4CEFB;
+	Fri, 21 Nov 2025 13:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733506;
-	bh=6JZeeMXetDOcrcXi0VXG55oW8q6cyzS2JOvAyamtenE=;
+	s=korg; t=1763731535;
+	bh=OaAs1zhBiFYjK6ymR03zV7UnUDuDrQ+ITafEhptLKYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5qmNT9GXt4jK+EAcusO/92dpymaSpChb7S4aR17+x2TMtZvbJcTlbbmyJjfaoIxT
-	 FrTTv6xnxsYADSx7CXIfNo8COjkIhz8619rCeCD5y+bGpqZCS/uu6JzWH5O0+3Ts9r
-	 JaCvzeVfDtMugBNUsYUAMXs8u7dGVFHq2shuqsM4=
+	b=kPRaZQX24J7JyKpWJotP+/0TPoWsmNtPqYrx3Qo7QcmDxD0VdUQJYmSpzx3EBiOzj
+	 khZi1oCDca3hzd0Y6iztVlUBre0MIhnWx6+zoYE+sLnqhiTbqa8vy5JPGhQ75VzFUG
+	 2nEpKSFlkG+2JgjUTsSg2aYgjl+yTqGwITu7w0a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 490/529] selftests: mptcp: join: rm: set backup flag
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 242/247] ASoC: da7213: Use component driver suspend/resume
 Date: Fri, 21 Nov 2025 14:13:09 +0100
-Message-ID: <20251121130248.442501599@linuxfoundation.org>
+Message-ID: <20251121130203.423558660@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit aea73bae662a0e184393d6d7d0feb18d2577b9b9 upstream.
+[ Upstream commit 249d96b492efb7a773296ab2c62179918301c146 ]
 
-Some of these 'remove' tests rarely fail because a subflow has been
-reset instead of cleanly removed. This can happen when one extra subflow
-which has never carried data is being closed (FIN) on one side, while
-the other is sending data for the first time.
+Since snd_soc_suspend() is invoked through snd_soc_pm_ops->suspend(),
+and snd_soc_pm_ops is associated with the soc_driver (defined in
+sound/soc/soc-core.c), and there is no parent-child relationship between
+the soc_driver and the DA7213 codec driver, the power management subsystem
+does not enforce a specific suspend/resume order between the DA7213 driver
+and the soc_driver.
 
-To avoid such subflows to be used right at the end, the backup flag has
-been added. With that, data will be only carried on the initial subflow.
+Because of this, the different codec component functionalities, called from
+snd_soc_resume() to reconfigure various functions, can race with the
+DA7213 struct dev_pm_ops::resume function, leading to misapplied
+configuration. This occasionally results in clipped sound.
 
-Fixes: d2c4333a801c ("selftests: mptcp: add testcases for removing addrs")
+Fix this by dropping the struct dev_pm_ops::{suspend, resume} and use
+instead struct snd_soc_component_driver::{suspend, resume}. This ensures
+the proper configuration sequence is handled by the ASoC subsystem.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-2-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 431e040065c8 ("ASoC: da7213: Add suspend to RAM support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251104114914.2060603-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   54 ++++++++++++------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ sound/soc/codecs/da7213.c |   69 +++++++++++++++++++++++++++++-----------------
+ sound/soc/codecs/da7213.h |    1 
+ 2 files changed, 45 insertions(+), 25 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2361,7 +2361,7 @@ remove_tests()
- 	if reset "remove single subflow"; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 0 1
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns2=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
-@@ -2374,8 +2374,8 @@ remove_tests()
- 	if reset "remove multiple subflows"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 0 2
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns2=-2 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
-@@ -2386,7 +2386,7 @@ remove_tests()
- 	# single address, remove
- 	if reset "remove single address"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 1
- 		addr_nr_ns1=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2399,9 +2399,9 @@ remove_tests()
- 	# subflow and signal, remove
- 	if reset "remove subflow and signal"; then
- 		pm_nl_set_limits $ns1 0 2
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 2
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		addr_nr_ns1=-1 addr_nr_ns2=-1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 2 2 2
-@@ -2413,10 +2413,10 @@ remove_tests()
- 	# subflows and signal, remove
- 	if reset "remove subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-1 addr_nr_ns2=-2 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2428,9 +2428,9 @@ remove_tests()
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2443,10 +2443,10 @@ remove_tests()
- 	# invalid addresses remove
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
- 		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
- 		pm_nl_set_limits $ns2 2 2
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2459,10 +2459,10 @@ remove_tests()
- 	# subflows and signal, flush
- 	if reset "flush subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2475,9 +2475,9 @@ remove_tests()
- 	if reset "flush subflows"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_set_limits $ns2 3 3
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow id 150
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup id 150
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
-@@ -2494,9 +2494,9 @@ remove_tests()
- 	# addresses flush
- 	if reset "flush addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2509,9 +2509,9 @@ remove_tests()
- 	# invalid addresses flush
- 	if reset "flush invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-8 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
+--- a/sound/soc/codecs/da7213.c
++++ b/sound/soc/codecs/da7213.c
+@@ -2124,11 +2124,50 @@ static int da7213_probe(struct snd_soc_c
+ 	return 0;
+ }
+ 
++static int da7213_runtime_suspend(struct device *dev)
++{
++	struct da7213_priv *da7213 = dev_get_drvdata(dev);
++
++	regcache_cache_only(da7213->regmap, true);
++	regcache_mark_dirty(da7213->regmap);
++	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
++
++	return 0;
++}
++
++static int da7213_runtime_resume(struct device *dev)
++{
++	struct da7213_priv *da7213 = dev_get_drvdata(dev);
++	int ret;
++
++	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
++	if (ret < 0)
++		return ret;
++	regcache_cache_only(da7213->regmap, false);
++	return regcache_sync(da7213->regmap);
++}
++
++static int da7213_suspend(struct snd_soc_component *component)
++{
++	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
++
++	return da7213_runtime_suspend(da7213->dev);
++}
++
++static int da7213_resume(struct snd_soc_component *component)
++{
++	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
++
++	return da7213_runtime_resume(da7213->dev);
++}
++
+ static const struct snd_soc_component_driver soc_component_dev_da7213 = {
+ 	.probe			= da7213_probe,
+ 	.set_bias_level		= da7213_set_bias_level,
+ 	.controls		= da7213_snd_controls,
+ 	.num_controls		= ARRAY_SIZE(da7213_snd_controls),
++	.suspend		= da7213_suspend,
++	.resume			= da7213_resume,
+ 	.dapm_widgets		= da7213_dapm_widgets,
+ 	.num_dapm_widgets	= ARRAY_SIZE(da7213_dapm_widgets),
+ 	.dapm_routes		= da7213_audio_map,
+@@ -2175,6 +2214,8 @@ static int da7213_i2c_probe(struct i2c_c
+ 	if (!da7213->fin_min_rate)
+ 		return -EINVAL;
+ 
++	da7213->dev = &i2c->dev;
++
+ 	i2c_set_clientdata(i2c, da7213);
+ 
+ 	/* Get required supplies */
+@@ -2224,31 +2265,9 @@ static void da7213_i2c_remove(struct i2c
+ 	pm_runtime_disable(&i2c->dev);
+ }
+ 
+-static int da7213_runtime_suspend(struct device *dev)
+-{
+-	struct da7213_priv *da7213 = dev_get_drvdata(dev);
+-
+-	regcache_cache_only(da7213->regmap, true);
+-	regcache_mark_dirty(da7213->regmap);
+-	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
+-
+-	return 0;
+-}
+-
+-static int da7213_runtime_resume(struct device *dev)
+-{
+-	struct da7213_priv *da7213 = dev_get_drvdata(dev);
+-	int ret;
+-
+-	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
+-	if (ret < 0)
+-		return ret;
+-	regcache_cache_only(da7213->regmap, false);
+-	return regcache_sync(da7213->regmap);
+-}
+-
+-static DEFINE_RUNTIME_DEV_PM_OPS(da7213_pm, da7213_runtime_suspend,
+-				 da7213_runtime_resume, NULL);
++static const struct dev_pm_ops da7213_pm = {
++	RUNTIME_PM_OPS(da7213_runtime_suspend, da7213_runtime_resume, NULL)
++};
+ 
+ static const struct i2c_device_id da7213_i2c_id[] = {
+ 	{ "da7213" },
+--- a/sound/soc/codecs/da7213.h
++++ b/sound/soc/codecs/da7213.h
+@@ -595,6 +595,7 @@ enum da7213_supplies {
+ /* Codec private data */
+ struct da7213_priv {
+ 	struct regmap *regmap;
++	struct device *dev;
+ 	struct mutex ctrl_lock;
+ 	struct regulator_bulk_data supplies[DA7213_NUM_SUPPLIES];
+ 	struct clk *mclk;
 
 
 
