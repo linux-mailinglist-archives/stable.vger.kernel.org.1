@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-196075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC315C79D2C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493E5C79C81
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id C16872C5F2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:45:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 4599B34F75
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406B634FF5A;
-	Fri, 21 Nov 2025 13:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F09349B14;
+	Fri, 21 Nov 2025 13:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx+NOZr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sl9nX3L/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E500B34D93A;
-	Fri, 21 Nov 2025 13:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9744238C03;
+	Fri, 21 Nov 2025 13:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732485; cv=none; b=uMQPuVmrBBdrjFxGIfsLd37MkSXt4TpVC2KU69MRHTuZVSf0jcVXdFMlcBYrMEsj1SNJ2FBzIGwNwPigk56YKZlfEmTxnnOuvdG3+BOYLmIN+J8B+CgAJ0l6jSUET8b6KbSD1d1ghqEQOD2UTgNTtWWdDDSj6BeXwnndnvqI6YI=
+	t=1763732384; cv=none; b=D0l65ePc1p01Uht24xuNQRlbfGiEpo/c8z7nZopdinD/kKK9O0h9VU3J07n1Xfk+rwIWErPKn08N4Ob0hV4h1srdIyUhTjZfP9C9nYGdxdATHtzByHC6+sy35Ycop4TX1eOSDkUHMUo4X2NecOPyMuCULhY3S6A5NRHKB3U/frU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732485; c=relaxed/simple;
-	bh=+1Osw+9FpVQeKY81DTXam5L9Ps4n5guJAVzyTIQbfQ8=;
+	s=arc-20240116; t=1763732384; c=relaxed/simple;
+	bh=knSjVujnyJIZJLHCYsW6HUsO8qKVujoIkBBb/UqgD7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NduvFRG1dyopkVTkyuz59SxkTwxEQfcmhjCfL4BCwQh9dU3jpeRUzniaUKFKsIc9M/GKl535Bm5yUx1WuFjgU/LY/vug/4ydKBmelJuciMW9XMDs4h0+k058knAc0cVBIAjTzrJrlQ85MWOx88cwPPM/WLwKQCMX8NuAsHu+PDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx+NOZr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72524C4CEF1;
-	Fri, 21 Nov 2025 13:41:24 +0000 (UTC)
+	 MIME-Version; b=R0t/YsCRb0hPQFGDd1xdMrxujpPukGWdbFgt6jWB7vrL1gmn2uNx0hjIwkgdOQpGcXFrmASTJyWKcPefuT+zCy7NBvQQNdc+9shu2HClloOw+9abzGaItzKDHGbDqyXT/kQ688lt+TbIB/bBSmjkNcgijlzQjBMd+Xw4ccU7Eso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sl9nX3L/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA4BC4CEF1;
+	Fri, 21 Nov 2025 13:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732484;
-	bh=+1Osw+9FpVQeKY81DTXam5L9Ps4n5guJAVzyTIQbfQ8=;
+	s=korg; t=1763732384;
+	bh=knSjVujnyJIZJLHCYsW6HUsO8qKVujoIkBBb/UqgD7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lx+NOZr/EvsXrv5nLgGDWr7p+jpMfS+bI8Kg0d60Y8zNvG5gNTuXZqzMlcz+20wy/
-	 QVdQOkiugiyaZ3cjJK69nUlXWuHz2ofe7q9qSXOZQ340Zbv7KXbYk4QIA0f/+lG420
-	 6UAtFcJJQb75KpzVgT671hfwSi73pU4LdP6ckTc4=
+	b=Sl9nX3L/nmRKbbgem/MqAbYLLYzCnLbnmnrVQPiJGbc4tU+s69Xa0m/Q6dwAtAmC9
+	 Ma+4HanXm6+exXi3OCPkv7IKTnPa6tTTi1LGZcJVCABI+D1saMwk5JXD/Cg5aZtAgL
+	 vPDMWukRladlID1HMX7/wR5qBcy7nwuXfJq+D8O4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
+	Tom Stellard <tstellar@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/529] power: supply: qcom_battmgr: handle charging state change notifications
-Date: Fri, 21 Nov 2025 14:06:33 +0100
-Message-ID: <20251121130234.372844878@linuxfoundation.org>
+Subject: [PATCH 6.6 095/529] bpftool: Fix -Wuninitialized-const-pointer warnings with clang >= 21
+Date: Fri, 21 Nov 2025 14:06:34 +0100
+Message-ID: <20251121130234.407609693@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,67 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+From: Tom Stellard <tstellar@redhat.com>
 
-[ Upstream commit 41307ec7df057239aae3d0f089cc35a0d735cdf8 ]
+[ Upstream commit 5612ea8b554375d45c14cbb0f8ea93ec5d172891 ]
 
-The X1E80100 battery management firmware sends a notification with
-code 0x83 when the battery charging state changes, such as switching
-between fast charge, taper charge, end of charge, or any other error
-charging states.
+This fixes the build with -Werror -Wall.
 
-The same notification code is used with bit[8] set when charging stops
-because the charge control end threshold is reached. Additionally,
-a 2-bit value is included in bit[10:9] with the same code to indicate
-the charging source capability, which is determined by the calculated
-power from voltage and current readings from PDOs: 2 means a strong
-charger over 60W, 1 indicates a weak charger, and 0 means there is no
-charging source.
+btf_dumper.c:71:31: error: variable 'finfo' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   71 |         info.func_info = ptr_to_u64(&finfo);
+      |                                      ^~~~~
 
-These 3-MSB [10:8] in the notification code is not much useful for now,
-hence just ignore them and trigger a power supply change event whenever
-0x83 notification code is received. This helps to eliminate the unknown
-notification error messages.
+prog.c:2294:31: error: variable 'func_info' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+ 2294 |         info.func_info = ptr_to_u64(&func_info);
+      |
 
-Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Closes: https://lore.kernel.org/all/r65idyc4of5obo6untebw4iqfj2zteiggnnzabrqtlcinvtddx@xc4aig5abesu/
-Signed-off-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+v2:
+  - Initialize instead of using memset.
+
+Signed-off-by: Tom Stellard <tstellar@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250917183847.318163-1-tstellar@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/qcom_battmgr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/btf_dumper.c | 2 +-
+ tools/bpf/bpftool/prog.c       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
-index c1cb338e54bbc..0c993780d3ef2 100644
---- a/drivers/power/supply/qcom_battmgr.c
-+++ b/drivers/power/supply/qcom_battmgr.c
-@@ -29,8 +29,9 @@ enum qcom_battmgr_variant {
- #define NOTIF_BAT_PROPERTY		0x30
- #define NOTIF_USB_PROPERTY		0x32
- #define NOTIF_WLS_PROPERTY		0x34
--#define NOTIF_BAT_INFO			0x81
- #define NOTIF_BAT_STATUS		0x80
-+#define NOTIF_BAT_INFO			0x81
-+#define NOTIF_BAT_CHARGING_STATE	0x83
+diff --git a/tools/bpf/bpftool/btf_dumper.c b/tools/bpf/bpftool/btf_dumper.c
+index 1b7f697146041..42c7b70f6996c 100644
+--- a/tools/bpf/bpftool/btf_dumper.c
++++ b/tools/bpf/bpftool/btf_dumper.c
+@@ -38,7 +38,7 @@ static int dump_prog_id_as_func_ptr(const struct btf_dumper *d,
+ 	__u32 info_len = sizeof(info);
+ 	const char *prog_name = NULL;
+ 	struct btf *prog_btf = NULL;
+-	struct bpf_func_info finfo;
++	struct bpf_func_info finfo = {};
+ 	__u32 finfo_rec_size;
+ 	char prog_str[1024];
+ 	int err;
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 174e076e56af2..90fa7a8d0f4b3 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -2203,7 +2203,7 @@ static void profile_print_readings(void)
  
- #define BATTMGR_BAT_INFO		0x9
- 
-@@ -940,12 +941,14 @@ static void qcom_battmgr_notification(struct qcom_battmgr *battmgr,
- 	}
- 
- 	notification = le32_to_cpu(msg->notification);
-+	notification &= 0xff;
- 	switch (notification) {
- 	case NOTIF_BAT_INFO:
- 		battmgr->info.valid = false;
- 		fallthrough;
- 	case NOTIF_BAT_STATUS:
- 	case NOTIF_BAT_PROPERTY:
-+	case NOTIF_BAT_CHARGING_STATE:
- 		power_supply_changed(battmgr->bat_psy);
- 		break;
- 	case NOTIF_USB_PROPERTY:
+ static char *profile_target_name(int tgt_fd)
+ {
+-	struct bpf_func_info func_info;
++	struct bpf_func_info func_info = {};
+ 	struct bpf_prog_info info = {};
+ 	__u32 info_len = sizeof(info);
+ 	const struct btf_type *t;
 -- 
 2.51.0
 
