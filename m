@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-195530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A963C792FF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C1AC79D74
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 439864ECD44
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E78484ECF26
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B109340277;
-	Fri, 21 Nov 2025 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA4534F486;
+	Fri, 21 Nov 2025 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3eAi6O0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QTNB9BA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014AE3321D9;
-	Fri, 21 Nov 2025 13:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9418D340D9A;
+	Fri, 21 Nov 2025 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730934; cv=none; b=C0uN4Qnh8SSJnpc/0/zfcgfLvC1uP+FuTQG7dwsKA2pNcRGbWOFJDvJAmP28Tr5Yd4LaeEjRHPfk4wmHaCdL6EODOGFAOGtqJlypFR0qTEXq1bIBTzQjYQXdP1CXDKxlHtnnGs/E1AhhaXYrhqAfXchtXyzTmZEus9txqVToAuc=
+	t=1763732992; cv=none; b=jTS+sHRgPUsQFJKYW0RjxAqbWs1n6IbabUuDK0NvB9ZTdDPPzL2pis1ClsE4/KCpMKUSiTpCZemUcJ/45UqInrl8vZJFke6Y3UL7IYTPy1c8Nnv4PL2B0AbENzfXnjs2MxVhY5mrYlrscLsA7afTvN4fPKzqISbfQl+P1BaGrlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730934; c=relaxed/simple;
-	bh=tPexeb7t2x0D/LGFt4OeB7Vy4FxzhM9g3q37FhxfWPk=;
+	s=arc-20240116; t=1763732992; c=relaxed/simple;
+	bh=0kICUGI8r4KtpRzTvqOplodThGK5fEpcAhRGSH4g2H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fnw/a7wPjAQhfmw1IkZMYwi0ZnevqVW+jI4c3smHXgUeb1bU+4rb7SvPdAtIJX62TyBV8nJ6XeuY2mWDwPUvIy14QeqnbIz7jwQctFIUmhuo945gOftodBhwHjf+VkLhC1y1h4nTDpoG7VtohYHRKhMWpzlIrAPNoYxyVhFLMrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3eAi6O0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279C2C4CEF1;
-	Fri, 21 Nov 2025 13:15:32 +0000 (UTC)
+	 MIME-Version; b=QUL3aHSoR/zuwl4w17pIU9jbrGTjZ4kqXtUxE5XJXyfnXQ3c2xdsqmmN36HWrjw1yPPPjz0wxZhLbjsBxf3+Oc3SjIBfJNzhyJnJ/Pevfx5ISMaxip4+ZBo1G5x5Hx0rG0lPymaPsecljBGkOnt1DJDyPyifaMQaf/7MtbYQ640=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QTNB9BA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F69C116D0;
+	Fri, 21 Nov 2025 13:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730933;
-	bh=tPexeb7t2x0D/LGFt4OeB7Vy4FxzhM9g3q37FhxfWPk=;
+	s=korg; t=1763732992;
+	bh=0kICUGI8r4KtpRzTvqOplodThGK5fEpcAhRGSH4g2H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3eAi6O0g6HqHJRkVniA1YVf/gsr1z8IC/fFkROhlahgCgWTwUzj/s/R6q/IX2g3w
-	 0G6Cqg+dYBEZDEP8YhVqIxbzRTZbDmS9twzXD/VHWwTVfzbzZ5nb/yibZXyl83CIIx
-	 JKDOw4SMVwAAK07qYYYhvUWJjodxTBGhwxBgtS4c=
+	b=0QTNB9BAn+DlIVZxWoNbR8vsM/fF6v8acGutgmgpMIDnDcyl2IEq6C6PiChSRooFw
+	 4iKnCYfo1/bOVDl3IqVm284PQVf7a4AjYb3AwMysxhjoVPgHJL1cdVv78WnGz3LxT9
+	 ZNVN52eRRGrLn0+bbnv+pty+nSwu7TkZXsYQlsH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Even Xu <even.xu@intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Julian Sun <sunjunchao@bytedance.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 032/247] HID: intel-thc-hid: intel-quickspi: Add ARL PCI Device Ids
+Subject: [PATCH 6.6 280/529] ext4: increase IO priority of fastcommit
 Date: Fri, 21 Nov 2025 14:09:39 +0100
-Message-ID: <20251121130155.757206294@linuxfoundation.org>
+Message-ID: <20251121130240.991717083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Julian Sun <sunjunchao@bytedance.com>
 
-[ Upstream commit 50f1f782f8d621a90108340c632bcb6ab4307d2e ]
+[ Upstream commit 46e75c56dfeafb6756773b71cabe187a6886859a ]
 
-Add the missing PCI ID for the quickspi device used on
-the Lenovo Yoga Pro 9i 16IAH10.
+The following code paths may result in high latency or even task hangs:
+   1. fastcommit io is throttled by wbt.
+   2. jbd2_fc_wait_bufs() might wait for a long time while
+JBD2_FAST_COMMIT_ONGOING is set in journal->flags, and then
+jbd2_journal_commit_transaction() waits for the
+JBD2_FAST_COMMIT_ONGOING bit for a long time while holding the write
+lock of j_state_lock.
+   3. start_this_handle() waits for read lock of j_state_lock which
+results in high latency or task hang.
 
-Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=220567
+Given the fact that ext4_fc_commit() already modifies the current
+process' IO priority to match that of the jbd2 thread, it should be
+reasonable to match jbd2's IO submission flags as well.
 
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Reviewed-by: Even Xu <even.xu@intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250827121812.1477634-1-sunjunchao@bytedance.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c | 6 ++++++
- drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h | 2 ++
- 2 files changed, 8 insertions(+)
+ fs/ext4/fast_commit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c b/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c
-index 84314989dc534..14cabd5dc6ddb 100644
---- a/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c
-+++ b/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c
-@@ -33,6 +33,10 @@ struct quickspi_driver_data ptl = {
- 	.max_packet_size_value = MAX_PACKET_SIZE_VALUE_LNL,
- };
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index b527f4ab47e02..62a6960242c5a 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -675,7 +675,7 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
  
-+struct quickspi_driver_data arl = {
-+	.max_packet_size_value = MAX_PACKET_SIZE_VALUE_MTL,
-+};
-+
- /* THC QuickSPI ACPI method to get device properties */
- /* HIDSPI Method: {6e2ac436-0fcf-41af-a265-b32a220dcfab} */
- static guid_t hidspi_guid =
-@@ -978,6 +982,8 @@ static const struct pci_device_id quickspi_pci_tbl[] = {
- 	{PCI_DEVICE_DATA(INTEL, THC_PTL_U_DEVICE_ID_SPI_PORT2, &ptl), },
- 	{PCI_DEVICE_DATA(INTEL, THC_WCL_DEVICE_ID_SPI_PORT1, &ptl), },
- 	{PCI_DEVICE_DATA(INTEL, THC_WCL_DEVICE_ID_SPI_PORT2, &ptl), },
-+	{PCI_DEVICE_DATA(INTEL, THC_ARL_DEVICE_ID_SPI_PORT1, &arl), },
-+	{PCI_DEVICE_DATA(INTEL, THC_ARL_DEVICE_ID_SPI_PORT2, &arl), },
- 	{}
- };
- MODULE_DEVICE_TABLE(pci, quickspi_pci_tbl);
-diff --git a/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h b/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h
-index f3532d866749c..c30e1a42eb098 100644
---- a/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h
-+++ b/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h
-@@ -21,6 +21,8 @@
- #define PCI_DEVICE_ID_INTEL_THC_PTL_U_DEVICE_ID_SPI_PORT2	0xE44B
- #define PCI_DEVICE_ID_INTEL_THC_WCL_DEVICE_ID_SPI_PORT1 	0x4D49
- #define PCI_DEVICE_ID_INTEL_THC_WCL_DEVICE_ID_SPI_PORT2 	0x4D4B
-+#define PCI_DEVICE_ID_INTEL_THC_ARL_DEVICE_ID_SPI_PORT1 	0x7749
-+#define PCI_DEVICE_ID_INTEL_THC_ARL_DEVICE_ID_SPI_PORT2 	0x774B
+ static void ext4_fc_submit_bh(struct super_block *sb, bool is_tail)
+ {
+-	blk_opf_t write_flags = REQ_SYNC;
++	blk_opf_t write_flags = JBD2_JOURNAL_REQ_FLAGS;
+ 	struct buffer_head *bh = EXT4_SB(sb)->s_fc_bh;
  
- /* HIDSPI special ACPI parameters DSM methods */
- #define ACPI_QUICKSPI_REVISION_NUM			2
+ 	/* Add REQ_FUA | REQ_PREFLUSH only its tail */
 -- 
 2.51.0
 
