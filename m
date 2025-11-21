@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-196365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF80C79F12
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6EF2C7960D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D8AF334D935
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 384FE4EB55A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2AD346A0E;
-	Fri, 21 Nov 2025 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E20340DA1;
+	Fri, 21 Nov 2025 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9/dRv4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS0zoefo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3AC3358B7;
-	Fri, 21 Nov 2025 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1804335541;
+	Fri, 21 Nov 2025 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733300; cv=none; b=U4cPwhFu7VlIzBaZSQa4PUtcPI0hz+fIEJneZXo4ZMRGHidzzgfiiz8r0G7+mudTXx/I8FsPid47BT5Fr77OzZrgLSbNMNrS9QmiBf/iHW664Z2NlRuFBSzYcQpoLAhd/YViL4HESIJQMEDftmbZIIlXJtspOncnwT70o4JQtDk=
+	t=1763731726; cv=none; b=V9Ul1hiVjc1qV/zGRlxxla3jX55w7wVaHdrwdH5nQZLbaJpVOPEaUXlR8XlvSDGnveVjRx9talmsujTRU+WtuOE7LVh7FJ2e7ahyVomy3mNwU06YG46DE+oLkLrBp77Yf4rKwL48U4v4nmv10fqgNBBOAbP3NjNqKg6bhWruJew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733300; c=relaxed/simple;
-	bh=guKnSdDZk4mBeTK3CkiTkGe5mSyIWVsp7c5Vg28Xhys=;
+	s=arc-20240116; t=1763731726; c=relaxed/simple;
+	bh=AifryU4JQMYZC/BKnfw0kYDVK8yMExFyzCfQfSC7Wyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2xExcnTczTKp7f22IzLrp8UYSnXIVcRv2FuZqLUnHucLM60ZAONBe1HAVTNxnY1em8Sk6ckc0GnkPJmnT7w1I+MdJhadhYRcNaV467r4ej65FgHuUvQMkr4MXzmI/qlqQDQbJ7RaSvxTXaC762BNxbbax0b69PMbx5CJ+NDPd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9/dRv4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2639EC4CEF1;
-	Fri, 21 Nov 2025 13:54:57 +0000 (UTC)
+	 MIME-Version; b=ltlP9vGLpNi4GqQ+NFf4Qlk2Z9EhNYYhS/G7g4BZEIhDA0hAEVov8brmzgNwxQ1D+NrDjhRwo+3rnDEjYus7GKNv5GSo8yrhR5+d2NTLZviRKCQBwcAdx0Z0XeNABjiWbjEkkiEie8paFGGfF9AnPR4VD0TCFhCnJ2y2dzMt+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS0zoefo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262AFC4CEF1;
+	Fri, 21 Nov 2025 13:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733298;
-	bh=guKnSdDZk4mBeTK3CkiTkGe5mSyIWVsp7c5Vg28Xhys=;
+	s=korg; t=1763731726;
+	bh=AifryU4JQMYZC/BKnfw0kYDVK8yMExFyzCfQfSC7Wyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9/dRv4BeoAFML+jN/uuSy4nYG2Q4rB7JOPQrGqqJMNGu9hum2a4JjYWTQzkyNnep
-	 kXm2PDYKsLjVProGMYK5WtK4z40iDhJ4q43CyrHhH8XGKrhrst6jdGEswSTyEijqBs
-	 +YjVZ7BQKoDXIWQD7x6fY1TvqwvcVuQku4/HelFA=
+	b=HS0zoefo30tYhZDznvSFXdooeWinEaGj2CibUmpv3LWwZc4j+a7fLsQetH4D1mPsn
+	 4diGYFS/yKZY+KkJGO+RZ63DYT1YkkmRmGPleUn+bsjB9VadaOWXzpC5VlFQPlcpcn
+	 56XWa2TKY/GEpOixWG2EUgooK4AVr9UBqZkjq5uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Alyssa Ross <hi@alyssa.is>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 387/529] NFS4: Fix state renewals missing after boot
-Date: Fri, 21 Nov 2025 14:11:26 +0100
-Message-ID: <20251121130244.792979828@linuxfoundation.org>
+Subject: [PATCH 6.12 060/185] virtio-net: fix incorrect flags recording in big mode
+Date: Fri, 21 Nov 2025 14:11:27 +0100
+Message-ID: <20251121130146.041955778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
+[ Upstream commit 0eff2eaa5322b5b141ff5d5ded26fac4a52b5f7b ]
 
-Since the last renewal time was initialized to 0 and jiffies start
-counting at -5 minutes, any clients connected in the first 5 minutes
-after a reboot would have their renewal timer set to a very long
-interval. If the connection was idle, this would result in the client
-state timing out on the server and the next call to the server would
-return NFS4ERR_BADSESSION.
+The purpose of commit 703eec1b2422 ("virtio_net: fixing XDP for fully
+checksummed packets handling") is to record the flags in advance, as
+their value may be overwritten in the XDP case. However, the flags
+recorded under big mode are incorrect, because in big mode, the passed
+buf does not point to the rx buffer, but rather to the page of the
+submitted buffer. This commit fixes this issue.
 
-Fix this by initializing the last renewal time to the current jiffies
-instead of 0.
+For the small mode, the commit c11a49d58ad2 ("virtio_net: Fix mismatched
+buf address when unmapping for small packets") fixed it.
 
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Tested-by: Alyssa Ross <hi@alyssa.is>
+Fixes: 703eec1b2422 ("virtio_net: fixing XDP for fully checksummed packets handling")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20251111090828.23186-1-xuanzhuo@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/virtio_net.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index f6dc42de48f03..32b1147fcafc4 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -222,6 +222,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
- 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
- 	clp->cl_mig_gen = 1;
-+	clp->cl_last_renewal = jiffies;
- #if IS_ENABLED(CONFIG_NFS_V4_1)
- 	init_waitqueue_head(&clp->cl_lock_waitq);
- #endif
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 259e3a35dce93..97c49f33122c1 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2455,22 +2455,28 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 		return;
+ 	}
+ 
+-	/* 1. Save the flags early, as the XDP program might overwrite them.
++	/* About the flags below:
++	 * 1. Save the flags early, as the XDP program might overwrite them.
+ 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
+ 	 * stay valid after XDP processing.
+ 	 * 2. XDP doesn't work with partially checksummed packets (refer to
+ 	 * virtnet_xdp_set()), so packets marked as
+ 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
+ 	 */
+-	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 
+-	if (vi->mergeable_rx_bufs)
++	if (vi->mergeable_rx_bufs) {
++		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
+ 					stats);
+-	else if (vi->big_packets)
++	} else if (vi->big_packets) {
++		void *p = page_address((struct page *)buf);
++
++		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
+ 		skb = receive_big(dev, vi, rq, buf, len, stats);
+-	else
++	} else {
++		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
++	}
+ 
+ 	if (unlikely(!skb))
+ 		return;
 -- 
 2.51.0
 
