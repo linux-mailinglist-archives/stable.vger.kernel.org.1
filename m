@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-196362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAE7C7A1AA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2FCC7967F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 098BD35844
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 9029223FD9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D577350A0C;
-	Fri, 21 Nov 2025 13:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED41133438C;
+	Fri, 21 Nov 2025 13:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBeo5uDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS+P6Ijr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37528350282;
-	Fri, 21 Nov 2025 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A215D2745E;
+	Fri, 21 Nov 2025 13:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733290; cv=none; b=DYzkVOWKWvHiwI7adUC98I29CwTWMSnhUAuJSR/xlaWQMb8Ndng2CSXfRy7iV3uqpry30wcb+/VcBsnze5uvYWhVDwYEnanOsJhz5JnrGfmPekpdnhH0XUHW2V4a5c9mCfjXzEmxmMMcqRfSvUUxVWCiirIhJRUf3tqP05ct+O4=
+	t=1763731903; cv=none; b=IDcQEZWp6rzBV6oVPd07KRr4qRSNqJt49ANxTAi/I+3znydiW81SN+iahTOaP8mGziaOVE3lTVs+shjxBFd+I/Je558BUL96sULeAQOXFdeIrW3RXNTefakvbnMjhvea0AbI8pzhFB8y5hcH3+fQs417nDIcAVrzZJN4TL+YnBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733290; c=relaxed/simple;
-	bh=jhYUHvVfI3EweO0pNIferuKs2gX1m/rTC0VT3vyDqWc=;
+	s=arc-20240116; t=1763731903; c=relaxed/simple;
+	bh=N8jQ19O1CNSPF//XgtmbUWKhWGjiYduwcKF+3Oh7nJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPpwp51PEdcix+erCHqFA/An1AonQ/jXoLF5NvNVWeV+DVAUbsp+bDmNr2Qy/jBqcuasCxkkreXTM2gP5jIgGwOKWCr3lmqFQ3+08GbHRV//r1+tiLCAtX/YooHcAAv6MS2jUPdFVLKoIKCnnAxmb113LSKdFoqcpCPyZtNJ67o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBeo5uDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B08C4CEF1;
-	Fri, 21 Nov 2025 13:54:49 +0000 (UTC)
+	 MIME-Version; b=IHnkjsJJPrbmDDnuN7tTzpL++FofIp/ZnvVv3HoxcWj2cZbk2LcWShEiw3iSbYhD/PTYL3u98VS6UhiwcDlbzUWyvsGSqC7e1WmzLi1DtiRtLiTG0a2Lgjs8oYbdGQScP3WC3lGtDcVl55WkyttqcRHERKA007FKDLigwWSYXEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS+P6Ijr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6C1C4CEF1;
+	Fri, 21 Nov 2025 13:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733289;
-	bh=jhYUHvVfI3EweO0pNIferuKs2gX1m/rTC0VT3vyDqWc=;
+	s=korg; t=1763731903;
+	bh=N8jQ19O1CNSPF//XgtmbUWKhWGjiYduwcKF+3Oh7nJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBeo5uDdawArdQPyoENLz3wcxD0RzYCamD+Lmxk5YHdjjtZqqsCrlb7vc0d7Ru2gG
-	 Vs71ocZV2gzgkjVy+O1fSfkxYI8k1EP12bMkUtIzxpj4e9ZXbZGZ63Z13YrTY64r9n
-	 NYmZ2duN4s/tnh06vg0AkwVSMagjQqtethpi+uj4=
+	b=NS+P6Ijrm37nkMI5FBcSEU5J99jl6sQKrnARH13L9yulJVbXtDuHeWM0ENS9d47bN
+	 QXX86z6qQR27eVWG+bK7e9B9veKO/RcphfcD8nozg43HWlxnq5OwtH+zJLMHfGn5Lr
+	 ED6gLsp8wQ9zledqj0ssIivreyKi1o6xf9tkBy1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alyssa Ross <hi@alyssa.is>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 416/529] virtio-net: fix incorrect flags recording in big mode
+Subject: [PATCH 6.12 088/185] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
 Date: Fri, 21 Nov 2025 14:11:55 +0100
-Message-ID: <20251121130245.820175177@linuxfoundation.org>
+Message-ID: <20251121130147.043287418@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 0eff2eaa5322b5b141ff5d5ded26fac4a52b5f7b ]
+commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
 
-The purpose of commit 703eec1b2422 ("virtio_net: fixing XDP for fully
-checksummed packets handling") is to record the flags in advance, as
-their value may be overwritten in the XDP case. However, the flags
-recorded under big mode are incorrect, because in big mode, the passed
-buf does not point to the rx buffer, but rather to the page of the
-submitted buffer. This commit fixes this issue.
+On big endian arm kernels, the arm optimized Curve25519 code produces
+incorrect outputs and fails the Curve25519 test.  This has been true
+ever since this code was added.
 
-For the small mode, the commit c11a49d58ad2 ("virtio_net: Fix mismatched
-buf address when unmapping for small packets") fixed it.
+It seems that hardly anyone (or even no one?) actually uses big endian
+arm kernels.  But as long as they're ostensibly supported, we should
+disable this code on them so that it's not accidentally used.
 
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Fixes: 703eec1b2422 ("virtio_net: fixing XDP for fully checksummed packets handling")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20251111090828.23186-1-xuanzhuo@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
+CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
+get removed in the future if big endian support gets dropped.
+
+Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/arm/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index fd5663075bd77..caae11ba2f8be 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1821,22 +1821,28 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 		return;
- 	}
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index f87e63b2212eb..df2ae5c6af953 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -4,7 +4,7 @@ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
  
--	/* 1. Save the flags early, as the XDP program might overwrite them.
-+	/* About the flags below:
-+	 * 1. Save the flags early, as the XDP program might overwrite them.
- 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
- 	 * stay valid after XDP processing.
- 	 * 2. XDP doesn't work with partially checksummed packets (refer to
- 	 * virtnet_xdp_set()), so packets marked as
- 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
- 	 */
--	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 
--	if (vi->mergeable_rx_bufs)
-+	if (vi->mergeable_rx_bufs) {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
- 					stats);
--	else if (vi->big_packets)
-+	} else if (vi->big_packets) {
-+		void *p = page_address((struct page *)buf);
-+
-+		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
- 		skb = receive_big(dev, vi, rq, buf, len, stats);
--	else
-+	} else {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
-+	}
- 
- 	if (unlikely(!skb))
- 		return;
+ config CRYPTO_CURVE25519_NEON
+ 	tristate
+-	depends on KERNEL_MODE_NEON
++	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
+ 	select CRYPTO_KPP
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
 -- 
 2.51.0
 
