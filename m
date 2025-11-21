@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3141EC796D4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:42 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36511C79E3F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CA872345066
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 24507368652
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709671F09B3;
-	Fri, 21 Nov 2025 13:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1C034CFC3;
+	Fri, 21 Nov 2025 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agm1+4hm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvR6MK0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2869B274FE3;
-	Fri, 21 Nov 2025 13:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268F6267AF2;
+	Fri, 21 Nov 2025 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731679; cv=none; b=OUAUFNgVImyEapkapGKofAvIEnkMwNK4sDAJ+XzAIxhKVj0cnGsFSodA7w3Wu+ziIv/7varfVUIIPwnV+tQnYZu+01fPxrAOQKI7JU9lThEs0vSZLywiFmHH99U6Xo8np0en7MX4cljIVAX/z6Xohn9Ts13xR5JAyEeVBlr4M8M=
+	t=1763733155; cv=none; b=DcJhjNekJQtzAEaHj12Wv1AAgu6rDh6tcRR9KogSec6+nZYLoR/zg0PGaIwIKMEVfVQNG/NVV0YkTMGA7NIygUyKIPSdhvNUaQU6glZJdGq5cSBtqa+AF8EKlMc8GLmwAap+zCxp+xkp0zGX/cSVy+PVwRgHLrT3tokLeGsm20Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731679; c=relaxed/simple;
-	bh=g0gxj8MXDP0UsloAMWNZS4mJq4UYBZwKzk0wJW42aSQ=;
+	s=arc-20240116; t=1763733155; c=relaxed/simple;
+	bh=H4ef1xg5LmXM04WIZdtcUKQr3dShSkOgivzcmM0e5oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tcb9cljLY+Iidl86wtTZEqOazouVAD2eU0dMwyj+lLIGRnhIPUoX7+4FZbn3gSfm7oQCGiCtIEFiCfcsimkBSTAnXjlZ+0RD+KpUbrJiUHGGjYYQ1H8nzifgIQodI4NKQEHTSnj+bny4a+M1GylPr+FRdSPe3tEtERrj2gswLyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agm1+4hm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B62C4CEF1;
-	Fri, 21 Nov 2025 13:27:58 +0000 (UTC)
+	 MIME-Version; b=d1TTsFRvjpoMzyZNM9NoOMr8PfDivdiv/BbT0YZ8QLl2yxVNzB5jVj38b1xq1qTP3Z3vhZDC0VTJXD1P7jxmU4F9ruyHXF1IqbHYpG+YQay98lViwhwvgGla6sjyClyjxCP8dnk4alqat7750nAqWaa/0mxsFTYkUBO9Zk37ixE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvR6MK0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF1EC4CEF1;
+	Fri, 21 Nov 2025 13:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731679;
-	bh=g0gxj8MXDP0UsloAMWNZS4mJq4UYBZwKzk0wJW42aSQ=;
+	s=korg; t=1763733155;
+	bh=H4ef1xg5LmXM04WIZdtcUKQr3dShSkOgivzcmM0e5oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agm1+4hmcPKwFsOZskyPAhmLF5nW54bo/BgDSBpt1OWFrcSJcUK1VUeCocJAPiUkC
-	 ivwdYtd9ABpcZADTBUXzRrZ2vrASiezUFinIDzYgCTxbjWBuNM87vBK+BRn0gxYRbZ
-	 8Yn1C6Q31W9ZqtKUgrQXB/cNhJ6XTX0TXRVcUjgI=
+	b=ZvR6MK0ogaozV6MncVIdbhh/Xem9fWT1K55i9WOTcaQzRE3wY3VLHUYLt0v3CsOHp
+	 Q20AAbFYwgkf3o9XoegsmyUEhul67U0aT2GHmmE0UdqiVWNH2AJlADkceM4h2g2+OP
+	 E4nZDDSxTt7ytqQWXgm6qzTYTr50lLVoNVpd4uMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/185] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.6 370/529] lib/crypto: curve25519-hacl64: Fix older clang KASAN workaround for GCC
 Date: Fri, 21 Nov 2025 14:11:09 +0100
-Message-ID: <20251121130145.397796167@linuxfoundation.org>
+Message-ID: <20251121130244.192074575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
+commit 2b81082ad37cc3f28355fb73a6a69b91ff7dbf20 upstream.
 
-Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
-e.g. debugfs "connect" command takes the former, and "disconnect" and
-"connect" to already connected device take the latter.  This is due to
-using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
-which take different dst_type values.
+Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
+clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
+for GCC unconditionally because clang-min-version will always evaluate
+to nothing for GCC. Add a check for CONFIG_CC_IS_CLANG to avoid applying
+the workaround for GCC, which is only needed for clang-17 and older.
 
-Fix address type passed to hci_conn_hash_lookup_le().
-
-Retain the debugfs API difference between "connect" and "disconnect"
-commands since it's been like this since 2015 and nobody apparently
-complained.
-
-Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251103-curve25519-hacl64-fix-kasan-workaround-v2-1-ab581cbd8035@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ lib/crypto/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index e313b066733f8..73fe151a52a12 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -956,10 +956,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
- }
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -31,7 +31,7 @@ libcurve25519-generic-y				:= curve25519
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
+ # clang versions prior to 18 may blow out the stack with KASAN
+-ifeq ($(call clang-min-version, 180000),)
++ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
+ KASAN_SANITIZE_curve25519-hacl64.o := n
+ endif
  
- static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
--			  struct l2cap_conn **conn)
-+			  struct l2cap_conn **conn, bool disconnect)
- {
- 	struct hci_conn *hcon;
- 	struct hci_dev *hdev;
-+	int le_addr_type;
- 	int n;
- 
- 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
-@@ -970,13 +971,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- 	if (n < 7)
- 		return -EINVAL;
- 
-+	if (disconnect) {
-+		/* The "disconnect" debugfs command has used different address
-+		 * type constants than "connect" since 2015. Let's retain that
-+		 * for now even though it's obviously buggy...
-+		 */
-+		*addr_type += 1;
-+	}
-+
-+	switch (*addr_type) {
-+	case BDADDR_LE_PUBLIC:
-+		le_addr_type = ADDR_LE_DEV_PUBLIC;
-+		break;
-+	case BDADDR_LE_RANDOM:
-+		le_addr_type = ADDR_LE_DEV_RANDOM;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
- 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
- 	if (!hdev)
- 		return -ENOENT;
- 
- 	hci_dev_lock(hdev);
--	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
-+	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
- 
-@@ -1103,7 +1123,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	buf[buf_size] = '\0';
- 
- 	if (memcmp(buf, "connect ", 8) == 0) {
--		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
- 		if (ret == -EINVAL)
- 			return ret;
- 
-@@ -1140,7 +1160,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	}
- 
- 	if (memcmp(buf, "disconnect ", 11) == 0) {
--		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
- 		if (ret < 0)
- 			return ret;
- 
--- 
-2.51.0
-
 
 
 
