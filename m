@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCECC79C21
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:26 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2337C79395
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 5E6232E83B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 602F4366657
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10C934F241;
-	Fri, 21 Nov 2025 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8A1346E51;
+	Fri, 21 Nov 2025 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWACJpVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dI6X17io"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B2E34EEED;
-	Fri, 21 Nov 2025 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5EB2F656A;
+	Fri, 21 Nov 2025 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732961; cv=none; b=ZObT6z/mvn0vc6Z9/pJp3+uJ2pRu5YguH1UxJX+k5PrvDP/UGuUQuL5Kv/T9dH+hyu08+1ekCHvwBaM1FrnyzcwRDcnOK/OfyNCZjP+sVUn2WNiKd/qbo6EdgFn2Tdkre//UK+XhjdyWVWmrCJxGGBlaSwR7/+U5FUuNZd6hT7I=
+	t=1763730997; cv=none; b=cWxTwsewqzCiWqUBcVsLSzSM1al18lVutg+B27tupC6eGJvGmHcw5ShJXaG+Ud0fexVeZTAMREYTOoCj3kEyfBxmf0r+ju0X+LnqGlEgY97KpBcUJ4uDCgxCc9QhSHc7twCnUCDJd9pk/FsH0uNNQIycMMzInoQ9pV1w9xP+tzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732961; c=relaxed/simple;
-	bh=jU2RKbhet7f8VeMN/3D26b/fVP09mR3wBh81zcipOkg=;
+	s=arc-20240116; t=1763730997; c=relaxed/simple;
+	bh=LeNZT30gEcL0HruqkChy6CdOxV1i95pa4ZEwVvuIGtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWGuyQfSuNozVi9wtQGXc5e4Hops6qZxgL5BxwrmnGwCReoIYW5wGHw6HeiipgxuQx3gaE7ghaIR8tHVn+LpvXRmjaAUvNVVLUAZXK4XSi/xyC5ReDWtalaiwpiHz8xQbDFnkRyIvcfU0PqBD3/AbKkSwf/NRHRhTz4weZvFSmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWACJpVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D403DC4CEF1;
-	Fri, 21 Nov 2025 13:49:20 +0000 (UTC)
+	 MIME-Version; b=a+5L2ZD1ci4BSbUcSodwwOOP8t2nHupwL2FSn9q4GAYBuxMsTSGBlQPOuRoZlZwzjvOmGpTrc4dwAuqqURZ+yg0HBcXNVOc9Gzl2PbplMHPe05xNqohumuRDNF9hyKbQ38IEbzqCoZuAJT7wKsYKexkOzV1rDbeSj+rRm4w7cuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dI6X17io; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D78C4CEFB;
+	Fri, 21 Nov 2025 13:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732961;
-	bh=jU2RKbhet7f8VeMN/3D26b/fVP09mR3wBh81zcipOkg=;
+	s=korg; t=1763730996;
+	bh=LeNZT30gEcL0HruqkChy6CdOxV1i95pa4ZEwVvuIGtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWACJpVw5ZLSZv4m33I8lQga8TXi1obJKkGV5lNDuK4NnNs0RJzDQx7ugwBKCD0J4
-	 /EYpCzWNY7omrXFBGJmPuNtVT8wn0Jahm9g2oVfdJZ4yej5Ji/5Zm+9pm8tWcwsW0W
-	 gt+k9m0gE5elDwZGwSjYoycyvoTG/LSjLosoltdA=
+	b=dI6X17ioUPQ76JGhTsN9t3bM1FNdSbM38XxQZu7+qBrAzWcs9KIDaP1PlQcKFsRwz
+	 +XK/HKcL6K5ApPq8p8tNezxX0RSqVNMEiOZC8/W+Huch2y3Edg7WglPzPAE1lnvzyr
+	 O86wyFNFc1XT9FKfco+mvbb8UhEe7CpqIvYaupU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 303/529] RDMA/hns: Fix the modification of max_send_sge
+Subject: [PATCH 6.17 055/247] Bluetooth: MGMT: cancel mesh send timer when hdev removed
 Date: Fri, 21 Nov 2025 14:10:02 +0100
-Message-ID: <20251121130241.805867353@linuxfoundation.org>
+Message-ID: <20251121130156.580860131@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
+[ Upstream commit 55fb52ffdd62850d667ebed842815e072d3c9961 ]
 
-The actual sge number may exceed the value specified in init_attr->cap
-when HW needs extra sge to enable inline feature. Since these extra
-sges are not expected by ULP, return the user-specified value to ULP
-instead of the expanded sge number.
+mesh_send_done timer is not canceled when hdev is removed, which causes
+crash if the timer triggers after hdev is gone.
 
-Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Cancel the timer when MGMT removes the hdev, like other MGMT timers.
+
+Should fix the BUG: sporadically seen by BlueZ test bot
+(in "Mesh - Send cancel - 1" test).
+
+Log:
+------
+BUG: KASAN: slab-use-after-free in run_timer_softirq+0x76b/0x7d0
+...
+Freed by task 36:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x43/0x70
+ kfree+0x103/0x500
+ device_release+0x9a/0x210
+ kobject_put+0x100/0x1e0
+ vhci_release+0x18b/0x240
+------
+
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Link: https://lore.kernel.org/linux-bluetooth/67364c09.0c0a0220.113cba.39ff@mx.google.com/
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/bluetooth/mgmt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 0cad6fc7bf32c..26784b296ffa6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -654,7 +654,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
- 
- 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
- 	hr_qp->sq.wqe_cnt = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
- 
- 	return 0;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 79762bfaea5ff..262bf984d2aaf 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9497,6 +9497,7 @@ void mgmt_index_removed(struct hci_dev *hdev)
+ 	cancel_delayed_work_sync(&hdev->discov_off);
+ 	cancel_delayed_work_sync(&hdev->service_cache);
+ 	cancel_delayed_work_sync(&hdev->rpa_expired);
++	cancel_delayed_work_sync(&hdev->mesh_send_done);
  }
-@@ -736,7 +735,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
  
- 	/* sync the parameters of kernel QP to user's configuration */
- 	cap->max_send_wr = cnt;
--	cap->max_send_sge = hr_qp->sq.max_gs;
- 
- 	return 0;
- }
+ void mgmt_power_on(struct hci_dev *hdev, int err)
 -- 
 2.51.0
 
