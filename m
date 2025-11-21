@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55750C7979C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CA8C7A101
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:14:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D571347984
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 0D9EF31719
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F1D345750;
-	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870B334EF15;
+	Fri, 21 Nov 2025 13:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKtPyg+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2QssrJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23BD3451A3;
-	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E1534EF01;
+	Fri, 21 Nov 2025 13:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731809; cv=none; b=jHUrywriIYML35GCPrYuK94qUr2EZ3t9LNh/jl3uEwghuGMRA34mFiZT753XmZtsht9X7Hl5FjcFdaVPx23+pP7U1lrdgF8Hv89p+tr+gnUxCZxxY6im9icYLvqD3BHC2nNhQB+iYRTUMvr7zyht1nyrDmLzE8iBc70Aak/yfpA=
+	t=1763733192; cv=none; b=pXiHwk5xZ/o/8iR4AGC/K2U3dTxA1/6hmEKyE8vAuRA1g3Lz9JwiFOe85/MdFBus2or6iHwcJnNY4WBDya0Z5f+GAZee1BT08mRHfvGNj1eLFuuKVoBIltou3ex3jG5lS4AgJyPOSUSZRRDy9QqrOuTzqlonXRUmhKK23jRAYFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731809; c=relaxed/simple;
-	bh=gAj7nqV32vVMZdq2Q4Uz568DMApcqFU+G9di+/1nzVI=;
+	s=arc-20240116; t=1763733192; c=relaxed/simple;
+	bh=jEIve6cdre4puF4LpSoKnFrFSJ9YzfnWdH7WmBC1REs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFYyhMT3xVkoTqaMfeRO7ezLZvDorWlD5iL1gwX6teGF1CiBoXAwkfPfY8TnFxI2tEN2w7lk9HGQZBP2l49zHyMSGKKxWetLScig0yDx0DI9C5dSEzOBdYpj6e0dafyG6cMuS7Mz4y1VHpF/I1zPJZZ7U9D9C+mef3jnzjlq/Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKtPyg+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBA1C4CEFB;
-	Fri, 21 Nov 2025 13:30:09 +0000 (UTC)
+	 MIME-Version; b=P2GTGCixQqqGD76iIY3Gs2TEWYlICFujEspifP+mHb0uE9FrDtP8PKCaPE1d4MI2wBT+43Vm98t0QoA6+4Rt3aenO/Hk1ySDu2IGtNAfIGkcGn/iV9cMkDHo+dQAxOccQVWypho7BB+7unp/Yx+/1UdP5zF5N5rrmsRoS7F2R74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2QssrJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3E3C4CEFB;
+	Fri, 21 Nov 2025 13:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731809;
-	bh=gAj7nqV32vVMZdq2Q4Uz568DMApcqFU+G9di+/1nzVI=;
+	s=korg; t=1763733192;
+	bh=jEIve6cdre4puF4LpSoKnFrFSJ9YzfnWdH7WmBC1REs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKtPyg+si6GmmXUBMFSGNuq4gZMmRyJbRDFcBIvhGaBIlITsN+OWEQ67aLLBGjLt4
-	 sKKGfyJ0NB5xW17pQhoeHBQ5gbxAvFVXv/yW+CHEStiJGtHFB1lmslIzDD2pysz6Mp
-	 rrY1yAqkWEI/XH+Yc4y4VTvEQmu3123yauubSDCY=
+	b=v2QssrJWQBNywTSzw7slRj30krQDMoHV2OiDwDiItVy8esRt76Xp8CPp01RDOoJ3p
+	 tQiR2vGtU8APynYbm1NV0DQQ0KsfgBQIGk2gRCJCReRlSeLrXUtPdMUdPqqBexJmK8
+	 r6DfCLs5/KZpRbhI0TZsO1o6m5PcVgMDKXf/v5RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/185] net: sched: act_connmark: initialize struct tc_ife to fix kernel leak
+Subject: [PATCH 6.6 382/529] compiler_types: Move unused static inline functions warning to W=2
 Date: Fri, 21 Nov 2025 14:11:21 +0100
-Message-ID: <20251121130145.826972345@linuxfoundation.org>
+Message-ID: <20251121130244.615775389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranganath V N <vnranganath.20@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 62b656e43eaeae445a39cd8021a4f47065af4389 ]
+[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
 
-In tcf_connmark_dump(), the variable 'opt' was partially initialized using a
-designatied initializer. While the padding bytes are reamined
-uninitialized. nla_put() copies the entire structure into a
-netlink message, these uninitialized bytes leaked to userspace.
+Per Nathan, clang catches unused "static inline" functions in C files
+since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
 
-Initialize the structure with memset before assigning its fields
-to ensure all members and padding are cleared prior to beign copied.
+Linus said:
 
-Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
-Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Fixes: 22a5dc0e5e3e ("net: sched: Introduce connmark action")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251109091336.9277-2-vnranganath.20@gmail.com
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> So I entirely ignore W=1 issues, because I think so many of the extra
+> warnings are bogus.
+>
+> But if this one in particular is causing more problems than most -
+> some teams do seem to use W=1 as part of their test builds - it's fine
+> to send me a patch that just moves bad warnings to W=2.
+>
+> And if anybody uses W=2 for their test builds, that's THEIR problem..
+
+Here is the change to bump the warning from W=1 to W=2.
+
+Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+Signed-off-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
+[nathan: Adjust comment as well]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_connmark.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ include/linux/compiler_types.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index 3e89927d71164..26ba8c2d20abf 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -195,13 +195,15 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 	const struct tcf_connmark_info *ci = to_connmark(a);
- 	unsigned char *b = skb_tail_pointer(skb);
- 	const struct tcf_connmark_parms *parms;
--	struct tc_connmark opt = {
--		.index   = ci->tcf_index,
--		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
--	};
-+	struct tc_connmark opt;
- 	struct tcf_t t;
- 
-+	memset(&opt, 0, sizeof(opt));
-+
-+	opt.index   = ci->tcf_index;
-+	opt.refcnt  = refcount_read(&ci->tcf_refcnt) - ref;
-+	opt.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind;
-+
- 	rcu_read_lock();
- 	parms = rcu_dereference(ci->parms);
- 
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 02f616dfb15f4..5c8aca9c34566 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -229,10 +229,9 @@ struct ftrace_likely_data {
+ /*
+  * GCC does not warn about unused static inline functions for -Wunused-function.
+  * Suppress the warning in clang as well by using __maybe_unused, but enable it
+- * for W=1 build. This will allow clang to find unused functions. Remove the
+- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
++ * for W=2 build. This will allow clang to find unused functions.
+  */
+-#ifdef KBUILD_EXTRA_WARN1
++#ifdef KBUILD_EXTRA_WARN2
+ #define __inline_maybe_unused
+ #else
+ #define __inline_maybe_unused __maybe_unused
 -- 
 2.51.0
 
