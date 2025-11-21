@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-196346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9057EC79EF4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974EBC7982C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7BAC4EAED6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5D6673518F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F13352F87;
-	Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7ED23176E1;
+	Fri, 21 Nov 2025 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwwlHp1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmxHS4BC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319FE35292A;
-	Fri, 21 Nov 2025 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6349330AADC;
+	Fri, 21 Nov 2025 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733244; cv=none; b=p/x1+wB/hUVH+v8yfCuoujttwcVWWUdjdVtYqcEjbRfSuMvhco/TsEaF8RdUK2BXRaov0byzM3Js+jBVp4kT/h9HWy8eKjyVULfzaCtuGZhnUFsGtzspg6/hB50D3cBwQEE997n9xOxkUQkv14O8Eib4FifxzwgXePengSTjSwE=
+	t=1763731769; cv=none; b=gvoOM0vOYZs7e/UCd57XTzoK7FRySfDM+Ux6I1ieddr/DOFsYy/8Kv1AXJy749QxwLeDcJBGlDm+eRnLHGmRB+B8K3OBctapm1XhSYLIPfvR8JgT2mS4I8iUoZKRM7aDjY7bk0QdRLnoSZcfaAjUcx2TONqJkpTU2pnzlQlM1qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733244; c=relaxed/simple;
-	bh=hAuPARZCqmovAr9j2jPOV1lvJeS8BgPslVZoadPhbtE=;
+	s=arc-20240116; t=1763731769; c=relaxed/simple;
+	bh=0nYemwQW234q/jHESQqvz17ZH633pxwEMcXhtbkpoX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qc/md6zUZvBwnz14qNnIFDHs1TFT2DoROhjuiyaIeJVdlhX0zDV48FsYtZhoFJktJtSrMEefL/wLRnWedveU6t6hI/XGEmvrzSziBdITFEnsTOMX5nJX2w4q8bUYx9+2F339bjNQyJ83l0srmxjd9byYrFaJuiewOEXNptOqK/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwwlHp1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF584C4CEF1;
-	Fri, 21 Nov 2025 13:54:03 +0000 (UTC)
+	 MIME-Version; b=UVWNS/ju5HvXyJNFay1C2FlHadwn3WswoUhYCwr1Py1ml5gTEaC4haqJHjsBZi+C+NuVjXxAye6FJ6E6xc0f4RwEkgpU0iYH2RRJoJLB9LZfVQHZJMNd95YJiZUlYvV1FVGP+u5xekISpha7J4UyDU47vMMCtg6xCYUGnCgXt7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmxHS4BC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3897C4CEF1;
+	Fri, 21 Nov 2025 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733244;
-	bh=hAuPARZCqmovAr9j2jPOV1lvJeS8BgPslVZoadPhbtE=;
+	s=korg; t=1763731769;
+	bh=0nYemwQW234q/jHESQqvz17ZH633pxwEMcXhtbkpoX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwwlHp1viFHmMKTIKfcrb3aGM7iZVAnUpn/ZeKMWbwpRjE+l2kVRDraLyNUgMG/nC
-	 chvdq0dVxW0ovCDpl/6tNA3ytaDD9fCmh1jueMbVBNHpl/M+pb8qzKCEYyqxCutQ8j
-	 Rm58av9AkeyQmR6ZCdCD+spxzivpF4F7JOwkf14U=
+	b=QmxHS4BCymSOF71l0VLGdDgq8vsmbzFAwoK4SZIo87NgcJV2Y2NbS/C2cZaGYDxNS
+	 kNNVnSXoLJzoQnNu2MXrD8COmWm7sm56M+7Wv4lYGHub+7BgVxIofOmpFLOiO89oTS
+	 6QXGLdd3PFe5+UX0GQi28ZtKbDvrbV3RF9IX4R4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/529] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
+Subject: [PATCH 6.12 074/185] pnfs: Set transport security policy to RPC_XPRTSEC_NONE unless using TLS
 Date: Fri, 21 Nov 2025 14:11:41 +0100
-Message-ID: <20251121130245.324645176@linuxfoundation.org>
+Message-ID: <20251121130146.543020235@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
+[ Upstream commit 8ab523ce78d4ca13add6b4ecbacff0f84c274603 ]
 
-syzbot reported a possible shift-out-of-bounds [1]
+The default setting for the transport security policy must be
+RPC_XPRTSEC_NONE, when using a TCP or RDMA connection without TLS.
+Conversely, when using TLS, the security policy needs to be set.
 
-Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
-
-It is unclear if some sctp users are setting very large rto_alpha
-and/or rto_beta.
-
-In order to prevent user regression, perform the test at run time.
-
-Also add READ_ONCE() annotations as sysctl values can change under us.
-
-[1]
-
-UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
-shift exponent 64 is too large for 32-bit type 'unsigned int'
-CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:233 [inline]
-  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
-  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
-  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
-  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
-  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
-  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
-
-Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
-Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6c0a8c5fcf71 ("NFS: Have struct nfs_client carry a TLS policy field")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/transport.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/nfs/nfs3client.c | 14 ++++++++++++--
+ fs/nfs/nfs4client.c | 14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-index 31eca29b6cfbf..abb44c0ac1a0b 100644
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -495,6 +495,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+diff --git a/fs/nfs/nfs3client.c b/fs/nfs/nfs3client.c
+index b0c8a39c2bbde..1aa4c43c9b3b4 100644
+--- a/fs/nfs/nfs3client.c
++++ b/fs/nfs/nfs3client.c
+@@ -2,6 +2,7 @@
+ #include <linux/nfs_fs.h>
+ #include <linux/nfs_mount.h>
+ #include <linux/sunrpc/addr.h>
++#include <net/handshake.h>
+ #include "internal.h"
+ #include "nfs3_fs.h"
+ #include "netns.h"
+@@ -98,7 +99,11 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
+ 		.net = mds_clp->cl_net,
+ 		.timeparms = &ds_timeout,
+ 		.cred = mds_srv->cred,
+-		.xprtsec = mds_clp->cl_xprtsec,
++		.xprtsec = {
++			.policy = RPC_XPRTSEC_NONE,
++			.cert_serial = TLS_NO_CERT,
++			.privkey_serial = TLS_NO_PRIVKEY,
++		},
+ 		.connect_timeout = connect_timeout,
+ 		.reconnect_timeout = connect_timeout,
+ 	};
+@@ -111,9 +116,14 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
+ 	cl_init.hostname = buf;
  
- 	if (tp->rttvar || tp->srtt) {
- 		struct net *net = tp->asoc->base.net;
-+		unsigned int rto_beta, rto_alpha;
- 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
- 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
- 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
-@@ -506,10 +507,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
- 		 * For example, assuming the default value of RTO.Alpha of
- 		 * 1/8, rto_alpha would be expressed as 3.
- 		 */
--		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
--			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
--		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
--			+ (rtt >> net->sctp.rto_alpha);
-+		rto_beta = READ_ONCE(net->sctp.rto_beta);
-+		if (rto_beta < 32)
-+			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
-+				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
-+		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
-+		if (rto_alpha < 32)
-+			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
-+				+ (rtt >> rto_alpha);
- 	} else {
- 		/* 6.3.1 C2) When the first RTT measurement R is made, set
- 		 * SRTT <- R, RTTVAR <- R/2.
+ 	switch (ds_proto) {
++	case XPRT_TRANSPORT_TCP_TLS:
++		if (mds_clp->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
++			cl_init.xprtsec = mds_clp->cl_xprtsec;
++		else
++			ds_proto = XPRT_TRANSPORT_TCP;
++		fallthrough;
+ 	case XPRT_TRANSPORT_RDMA:
+ 	case XPRT_TRANSPORT_TCP:
+-	case XPRT_TRANSPORT_TCP_TLS:
+ 		if (mds_clp->cl_nconnect > 1)
+ 			cl_init.nconnect = mds_clp->cl_nconnect;
+ 	}
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index aaf723471228b..b14688da814d6 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -11,6 +11,7 @@
+ #include <linux/sunrpc/xprt.h>
+ #include <linux/sunrpc/bc_xprt.h>
+ #include <linux/sunrpc/rpc_pipe_fs.h>
++#include <net/handshake.h>
+ #include "internal.h"
+ #include "callback.h"
+ #include "delegation.h"
+@@ -992,7 +993,11 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
+ 		.net = mds_clp->cl_net,
+ 		.timeparms = &ds_timeout,
+ 		.cred = mds_srv->cred,
+-		.xprtsec = mds_srv->nfs_client->cl_xprtsec,
++		.xprtsec = {
++			.policy = RPC_XPRTSEC_NONE,
++			.cert_serial = TLS_NO_CERT,
++			.privkey_serial = TLS_NO_PRIVKEY,
++		},
+ 	};
+ 	char buf[INET6_ADDRSTRLEN + 1];
+ 
+@@ -1001,9 +1006,14 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
+ 	cl_init.hostname = buf;
+ 
+ 	switch (ds_proto) {
++	case XPRT_TRANSPORT_TCP_TLS:
++		if (mds_srv->nfs_client->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
++			cl_init.xprtsec = mds_srv->nfs_client->cl_xprtsec;
++		else
++			ds_proto = XPRT_TRANSPORT_TCP;
++		fallthrough;
+ 	case XPRT_TRANSPORT_RDMA:
+ 	case XPRT_TRANSPORT_TCP:
+-	case XPRT_TRANSPORT_TCP_TLS:
+ 		if (mds_clp->cl_nconnect > 1) {
+ 			cl_init.nconnect = mds_clp->cl_nconnect;
+ 			cl_init.max_connect = NFS_MAX_TRANSPORTS;
 -- 
 2.51.0
 
