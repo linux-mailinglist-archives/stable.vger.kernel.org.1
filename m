@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0070C792CC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DC4C79CDE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 56FC82DA7E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2B6E4F066F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305B52F6577;
-	Fri, 21 Nov 2025 13:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D81130EF7F;
+	Fri, 21 Nov 2025 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrf7OWgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCAJWVY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCD734679A;
-	Fri, 21 Nov 2025 13:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB3E33C526;
+	Fri, 21 Nov 2025 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731023; cv=none; b=ThK/N3ALKCA9sacy5J4UdcHqynmApfLOltTjkqKQHtqeun4F7YAVwpofrHtyAc0s4KhJWJ8YH+mHLlmabRN/U5t/2oIWdCGF+31ScS6EmQdAJ+5LNZ6g1T4peB7ebygRQbYwwfLz3Oxw00noeM6Tx3q9Ovx3Rmy6qc3IbbueAPg=
+	t=1763732939; cv=none; b=mgbbEoXrl7b8AM3hazVghsmMpLxWGCKJA+YV1DeHU291cdjyEXGoZk+84U5mkxo5CXWQba0d7JVeCP4hODVKQqppwCFeIUWKcQ/95L5Pohmx0K2kVbSdkqpf/JGFAGGYZOccRFG247iShBj56cfut8NahlbtbV+xjVwTAmxMgW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731023; c=relaxed/simple;
-	bh=72EaicwGIfSIp2ztO1z5/BM5HuqY7B8Aac5J4kxhUgE=;
+	s=arc-20240116; t=1763732939; c=relaxed/simple;
+	bh=VhGdg3U9sumP4Ki+NAI7VtwcV83U/JHbnZHZgXdAozQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtlI6wAldGjo4XzJ3F53uZSJhrdPZcO7d2RT9IVlSF/IumCUSaU2UPlHqLBH76CKYA9fK2svh1+i0JFGe3zPxCF5f4k4b5QcRx7wjqDASEWwtmdccnvRbvSUqAgfo+mulN4PAnh+BQU75xckq8o03PHU5UdUdFUsuJQUfxixNX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrf7OWgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADFDC4CEF1;
-	Fri, 21 Nov 2025 13:17:02 +0000 (UTC)
+	 MIME-Version; b=HMYk5QoID+5Y49NyIxp1OwxsbgcjEgzypJFNucUm2absu3WdXdjlx+wNuG33ppiKFsWeAL3KH0Ljxo8CNssgHqZt2qAT3+x2CaPA74KR2A+w8gMJ2oz36eJgRGc3D4C/N/dPuo7En+L2U+9k3Wqj5ANwt76ga6nH+E2PGODlh/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCAJWVY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6934C4CEF1;
+	Fri, 21 Nov 2025 13:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731022;
-	bh=72EaicwGIfSIp2ztO1z5/BM5HuqY7B8Aac5J4kxhUgE=;
+	s=korg; t=1763732938;
+	bh=VhGdg3U9sumP4Ki+NAI7VtwcV83U/JHbnZHZgXdAozQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrf7OWgF90I35WCQApn6/AXxAcD+d/y7f6mU8NdsY6p0cXLEkbVuM2/czQJoz2FB6
-	 IW18Dlw6Zukt36fyIuuzPOMpVFje6PdvKXsjzSmoYksMCM5Jj2rA129cMGlk/PazG7
-	 HkLgK2/OqteOxSYn/MArBRtY7GfhcpIQt50/nnfY=
+	b=KCAJWVY+nCydgoayDIC6+Pa50Jx/H11cv/klW/DXP78m5ho192pL0ghQ6HmSSLVcB
+	 SjjbcQwgTqtXB+un/zK1JiAPvo1mSbvkMpdrL1kpHK52+XbTaT0ukuiy+AIEtv4hTI
+	 ogkmJ0oFHTK6ezcCLdJr3RVlxcSMyD9tBysI7YV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 046/247] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
-Date: Fri, 21 Nov 2025 14:09:53 +0100
-Message-ID: <20251121130156.255498477@linuxfoundation.org>
+Subject: [PATCH 6.6 295/529] ksmbd: use sock_create_kern interface to create kernel socket
+Date: Fri, 21 Nov 2025 14:09:54 +0100
+Message-ID: <20251121130241.524400317@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 9065b968752334f972e0d48e50c4463a172fc2a7 ]
+[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
 
-When reporting tx completion using ieee80211_tx_status_xxx() family of
-functions, the status part of the struct ieee80211_tx_info nested in the
-skb is used to report things like transmit rates & retry count to mac80211
+we should use sock_create_kern() if the socket resides in kernel space.
 
-On the TX data path, this is correctly memset to 0 before calling
-ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
-
-This leads to mac80211 treating garbage values as valid transmit counters
-(like tx retries for example) and accounting them as real statistics that
-makes their way to userland via station dump.
-
-The same issue was resolved in ath12k by commit 9903c0986f78 ("wifi:
-ath12k: Add memset and update default rate value in wmi tx completion")
-
-Tested-on: QCN9074 PCI WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251104083957.717825-1-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/transport_tcp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 0491e3fd6b5e1..e3b444333deed 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -5961,6 +5961,9 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index 665d21d40e7a1..279a61d0dcc6b 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -476,12 +476,13 @@ static int create_socket(struct interface *iface)
+ 	struct socket *ksmbd_socket;
+ 	bool ipv4 = false;
  
- 	info = IEEE80211_SKB_CB(msdu);
-+	memset(&info->status, 0, sizeof(info->status));
-+	info->status.rates[0].idx = -1;
-+
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) &&
- 	    !tx_compl_param->status) {
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+-	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
++	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
++			IPPROTO_TCP, &ksmbd_socket);
+ 	if (ret) {
+ 		if (ret != -EAFNOSUPPORT)
+ 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
+-		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
+-				  &ksmbd_socket);
++		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
++				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
+ 		if (ret) {
+ 			pr_err("Can't create socket for ipv4: %d\n", ret);
+ 			goto out_clear;
 -- 
 2.51.0
 
