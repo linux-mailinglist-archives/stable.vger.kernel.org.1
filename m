@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3157BC79E13
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADD8C796D9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDBC9342464
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE401346B3E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB22335067;
-	Fri, 21 Nov 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4392D31578E;
+	Fri, 21 Nov 2025 13:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snQbHu2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkxyOfzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAFF2FC89C;
-	Fri, 21 Nov 2025 13:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37F430AADC;
+	Fri, 21 Nov 2025 13:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733090; cv=none; b=DHCen/9ebZ5W9xRPliRsven5jfmrbRbnY3UyoSNdTOCEiTxnxOWxOk6ioDxg3aN14f+dw2ncfLOKDf8iR6StzY/A/Z7rorkcbJIAAtiumtMZi4DrC2PE6utbdiXEN8ZXwSZKlklcIj4QVGYjOmOzAFEqFWOTp7hpPzFokZoxPkY=
+	t=1763731704; cv=none; b=dE0UCQYA0A5PruRkW9E+vYgMcSkUTsl62WRUnyCvRye2iyN/qbNGxYzXg0JD2zhhFwn9Avpe8BiwN7ohrlvWuc2A0DqfGpTEZS87S6dsPUFW3bR2c/J02fH8EHmLRAlnWCW611sQFbCVPhLpJrGlGhhRG9ACmzf8qSxKptuZqKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733090; c=relaxed/simple;
-	bh=9gLh4+ahTkaCAyfH80frEwj0a4SjmWtnO+3c8UFRAAw=;
+	s=arc-20240116; t=1763731704; c=relaxed/simple;
+	bh=WKXSOm0SPAZtelLWB3gDfLjVg8mJn3EZBp1W+146uUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEFbI7jLbuQUpw8HOy96PlDQHVcn14imOQEiMUVgL4IZJeB9muszoGRPxlhaxBEIoJz6PA5LMrnQkEygzHExUUpOGHgcoahWjvG7knAKHUYkfp3DR0JNg3QiXgmi2b/DtNrmtHRWnysG5CeA0HR8bsIYXGNev0R6R6mJwU5KlLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snQbHu2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4446AC4CEF1;
-	Fri, 21 Nov 2025 13:51:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uGyjcws4yFCqvYWlZfa8bq4hnDOG+j2pQIQwXw7kKe/BGkDhCW5Vxlqv5/pauvowi1HqalajX+i0zGN0GGqtYhSSB+Nvt44SB1NPwmzpCqP3Qzh4jAa2lGLObBtg/1r5hrSzk3TMCzv9An1udK4v8FGQS4+2LjzYKdWH9orDLZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkxyOfzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78072C116C6;
+	Fri, 21 Nov 2025 13:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733089;
-	bh=9gLh4+ahTkaCAyfH80frEwj0a4SjmWtnO+3c8UFRAAw=;
+	s=korg; t=1763731703;
+	bh=WKXSOm0SPAZtelLWB3gDfLjVg8mJn3EZBp1W+146uUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snQbHu2GyYDc1RSohL8TkEUXT1LCas/orcv50xmJcVgJMar26XNLrV0D3LeqwMzsJ
-	 oKUtri8x6jSzzshmPAgdubDwo+2ZZoXpYpx9Q6DL9G4MvSxtSBqMq1f8dV1ONBjAXo
-	 qWqSnPBd/JzrUXma2/VsIbVszILUlYx2/m7gkgFA=
+	b=rkxyOfzGi5yOFNQvFWw7oE95otpfhSD5Lsn8MOffJry1+DlMCnJ3xLkby0mvPwNJP
+	 7G0NVSvFO/E0db5ki1eyPdnmlTuQD/iQRgEKshTPR+WkYcGtEPWtLOxy8TOSggJM7E
+	 2GAKC056ZmxHFOE4ldX2v6WWCkMsHhZsWX7H6TZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 346/529] net: dsa: b53: fix enabling ip multicast
+Subject: [PATCH 6.12 018/185] drm/amdgpu: Fix NULL pointer dereference in VRAM logic for APU devices
 Date: Fri, 21 Nov 2025 14:10:45 +0100
-Message-ID: <20251121130243.343038470@linuxfoundation.org>
+Message-ID: <20251121130144.533376655@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
+[ Upstream commit 883f309add55060233bf11c1ea6947140372920f ]
 
-In the New Control register bit 1 is either reserved, or has a different
-function:
+Previously, APU platforms (and other scenarios with uninitialized VRAM managers)
+triggered a NULL pointer dereference in `ttm_resource_manager_usage()`. The root
+cause is not that the `struct ttm_resource_manager *man` pointer itself is NULL,
+but that `man->bdev` (the backing device pointer within the manager) remains
+uninitialized (NULL) on APUs—since APUs lack dedicated VRAM and do not fully
+set up VRAM manager structures. When `ttm_resource_manager_usage()` attempts to
+acquire `man->bdev->lru_lock`, it dereferences the NULL `man->bdev`, leading to
+a kernel OOPS.
 
-    Out of Range Error Discard
+1. **amdgpu_cs.c**: Extend the existing bandwidth control check in
+   `amdgpu_cs_get_threshold_for_moves()` to include a check for
+   `ttm_resource_manager_used()`. If the manager is not used (uninitialized
+   `bdev`), return 0 for migration thresholds immediately—skipping VRAM-specific
+   logic that would trigger the NULL dereference.
 
-    When enabled, the ingress port discards any frames
-    if the Length field is between 1500 and 1536
-    (excluding 1500 and 1536) and with good CRC.
+2. **amdgpu_kms.c**: Update the `AMDGPU_INFO_VRAM_USAGE` ioctl and memory info
+   reporting to use a conditional: if the manager is used, return the real VRAM
+   usage; otherwise, return 0. This avoids accessing `man->bdev` when it is
+   NULL.
 
-The actual bit for enabling IP multicast is bit 0, which was only
-explicitly enabled for BCM5325 so far.
+3. **amdgpu_virt.c**: Modify the vf2pf (virtual function to physical function)
+   data write path. Use `ttm_resource_manager_used()` to check validity: if the
+   manager is usable, calculate `fb_usage` from VRAM usage; otherwise, set
+   `fb_usage` to 0 (APUs have no discrete framebuffer to report).
 
-For older switch chips, this bit defaults to 0, so we want to enable it
-as well, while newer switch chips default to 1, and their documentation
-says "It is illegal to set this bit to zero."
+This approach is more robust than APU-specific checks because it:
+- Works for all scenarios where the VRAM manager is uninitialized (not just APUs),
+- Aligns with TTM's design by using its native helper function,
+- Preserves correct behavior for discrete GPUs (which have fully initialized
+  `man->bdev` and pass the `ttm_resource_manager_used()` check).
 
-So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
-also for other switch chips. While at it, rename it to (B53_)IP_MC as
-that is how it is called in Broadcom code.
+v4: use ttm_resource_manager_used(&adev->mman.vram_mgr.manager) instead of checking the adev->gmc.is_app_apu flag (Christian)
 
-Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++--
- drivers/net/dsa/b53/b53_regs.h   | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c   | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c  | 7 ++++---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 4 ++--
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 4e850e5f7d220..3c5bf65aca6a2 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -349,11 +349,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		 * frames should be flooded or not.
- 		 */
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	} else {
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_IP_MCAST_25;
-+		mgmt |= B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	}
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 3179fe58de6b6..38e2d60dab7d5 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -104,8 +104,7 @@
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 082fc12fe28dc..844e49d1499ed 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -691,7 +691,7 @@ static void amdgpu_cs_get_threshold_for_moves(struct amdgpu_device *adev,
+ 	 */
+ 	const s64 us_upper_bound = 200000;
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
--#define  B53_IP_MCAST_25		BIT(0)
--#define  B53_IPMC_FWD_EN		BIT(1)
-+#define  B53_IP_MC			BIT(0)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
+-	if (!adev->mm_stats.log2_max_MBps) {
++	if ((!adev->mm_stats.log2_max_MBps) || !ttm_resource_manager_used(&adev->mman.vram_mgr.manager)) {
+ 		*max_bytes = 0;
+ 		*max_vis_bytes = 0;
+ 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 016a6f6c4267b..1291ca57a1cb3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -707,7 +707,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		ui64 = atomic64_read(&adev->num_vram_cpu_page_faults);
+ 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
+ 	case AMDGPU_INFO_VRAM_USAGE:
+-		ui64 = ttm_resource_manager_usage(&adev->mman.vram_mgr.manager);
++		ui64 = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++			ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) : 0;
+ 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
+ 	case AMDGPU_INFO_VIS_VRAM_USAGE:
+ 		ui64 = amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr);
+@@ -753,8 +754,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		mem.vram.usable_heap_size = adev->gmc.real_vram_size -
+ 			atomic64_read(&adev->vram_pin_size) -
+ 			AMDGPU_VM_RESERVED_VRAM;
+-		mem.vram.heap_usage =
+-			ttm_resource_manager_usage(vram_man);
++		mem.vram.heap_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++				ttm_resource_manager_usage(vram_man) : 0;
+ 		mem.vram.max_allocation = mem.vram.usable_heap_size * 3 / 4;
  
+ 		mem.cpu_accessible_vram.total_heap_size =
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 01dccd489a805..9247cd7b1868c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -595,8 +595,8 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
+ 	vf2pf_info->driver_cert = 0;
+ 	vf2pf_info->os_info.all = 0;
+ 
+-	vf2pf_info->fb_usage =
+-		ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20;
++	vf2pf_info->fb_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++		 ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20 : 0;
+ 	vf2pf_info->fb_vis_usage =
+ 		amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr) >> 20;
+ 	vf2pf_info->fb_size = adev->gmc.real_vram_size >> 20;
 -- 
 2.51.0
 
