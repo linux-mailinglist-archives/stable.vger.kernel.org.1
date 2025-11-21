@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3349BC798F6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885DEC7A00B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7631E34AD74
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:36:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 52D0938452E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E6634CFB6;
-	Fri, 21 Nov 2025 13:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707E8350286;
+	Fri, 21 Nov 2025 13:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I90OeS28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJQJ0JGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D728234C83D;
-	Fri, 21 Nov 2025 13:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD19A351FDD;
+	Fri, 21 Nov 2025 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732112; cv=none; b=Exmn/nZx+jxI+7GdUJ4aLMQOt84oD8JCrWKTHUXuECRfyD349j/tubtpBOM2JyJXeN/043DSsG7Ky679L0Ss0BbVWxRVbxhX56PzdOCfQ3AyvHKaQtmojZ4orypTwqBZxOspT/ci/+JGU5EVzuFiO6zpuLOyRK6V0Bo2Hm0LP6A=
+	t=1763733492; cv=none; b=jBh2f1Z+StWS8MoGXhQwCJLv60zugw1gUtJCcLa/+mGe6hEyeYr+v95gHXAJaX1lLQoL3QxLH/gAmBqmI30ZpXq0WcWFgb16ZAOz//9s+d1SmufhX45ymHqpdbuAAzkdovHcrKDt7Ns6P5yIazJmbwC3saAVV0MSHCMyl0Gc+mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732112; c=relaxed/simple;
-	bh=sPR5SO9R2GlaFvfzZHQunpVNbqc/Qb2we2V/PBYzy4E=;
+	s=arc-20240116; t=1763733492; c=relaxed/simple;
+	bh=/RzdJITi7Y0NGuGOclJ3zJ32KARFycjx1512NhLW81A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbQdam7ARB3XRKJGf+dHkX7UiNK2VWKSOpvzCvKnH55ZpZzonnIjncx2qj6QY1rjI360H3WYJQKRS8pDMkpYi2uksM0/yaC81BbQpGXIaIwJZcPIdYlwZ64nfkn7989o4QrWv4r+I+OnWyUgltpvuO1nWrmDODfcm4Z7VJeG6ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I90OeS28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A53C4CEF1;
-	Fri, 21 Nov 2025 13:35:10 +0000 (UTC)
+	 MIME-Version; b=KJuqHBeeiDNWkr2cGDyUq9JyJsb+cUhNl5HGfWaRpJg4WgZAIzd+RT4g2gMZ7QcpdA1BK5QKD5jmI5tkrBryrtqRWjb3PomSp+8/DSmu32+KBHI4YJNsihJ4M2KC5wUquvuOZRFm6qpkHji+Nta8piRJj5nI0Jj8A4pS+NeDYsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJQJ0JGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED34C4CEF1;
+	Fri, 21 Nov 2025 13:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732111;
-	bh=sPR5SO9R2GlaFvfzZHQunpVNbqc/Qb2we2V/PBYzy4E=;
+	s=korg; t=1763733492;
+	bh=/RzdJITi7Y0NGuGOclJ3zJ32KARFycjx1512NhLW81A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I90OeS284FTkULZHalZo0n8NhzEkPMtjGEd9axwqk15FXx/Ro3FXqGDIEOBXi1Td9
-	 0SBGXE3dk2xIvMOoNDMtzOva/Pa0FBRYDNiyGLo374k9f6BpupkUQ6bOG+Qw0FWcMs
-	 jkqvwcIlfUA813fyoNkAZZipZ1Ae3ZDw10hIkToc=
+	b=nJQJ0JGTix/jfihyfyDjL+S7TpkE4VFdZZHpafz8p0vpQcRiMpa+IKpCd8DAtiIVU
+	 TreF6Ze+pOl0Mklkeu4Z1uLOulY22pBSDUI7HQjv60NDefEjGsahGJFJJZmeG3Dxsa
+	 Z6xPC0qmDPYN64UKX/R8jDEIVid2VapcgSEqHnTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 156/185] selftests: mptcp: connect: trunc: read all recv data
-Date: Fri, 21 Nov 2025 14:13:03 +0100
-Message-ID: <20251121130149.505860527@linuxfoundation.org>
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.6 485/529] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
+Date: Fri, 21 Nov 2025 14:13:04 +0100
+Message-ID: <20251121130248.264388845@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit ee79980f7a428ec299f6261bea4c1084dcbc9631 upstream.
+commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
 
-MPTCP Join "fastclose server" selftest is sometimes failing because the
-client output file doesn't have the expected size, e.g. 296B instead of
-1024B.
+The current single-bit error injection mechanism flips bits directly in ECC RAM
+by performing write and read operations. When the ECC RAM is actively used by
+the Ethernet or USB controller, this approach sometimes trigger a false
+double-bit error.
 
-When looking at a packet trace when this happens, the server sent the
-expected 1024B in two parts -- 100B, then 924B -- then the MP_FASTCLOSE.
-It is then strange to see the client only receiving 296B, which would
-mean it only got a part of the second packet. The problem is then not on
-the networking side, but rather on the data reception side.
+Switch both Ethernet and USB EDAC devices to use the INTTEST register
+(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
+the existing double-bit error injection method.
 
-When mptcp_connect is launched with '-f -1', it means the connection
-might stop before having sent everything, because a reset has been
-received. When this happens, the program was directly stopped. But it is
-also possible there are still some data to read, simply because the
-previous 'read' step was done with a buffer smaller than the pending
-data, see do_rnd_read(). In this case, it is important to read what's
-left in the kernel buffers before stopping without error like before.
-
-SIGPIPE is now ignored, not to quit the app before having read
-everything.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-5-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/edac/altera_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -696,8 +696,14 @@ static int copyfd_io_poll(int infd, int
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1379,7 +1379,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
- 				bw = do_rnd_write(peerfd, winfo->buf + winfo->off, winfo->len);
- 				if (bw < 0) {
--					if (cfg_rcv_trunc)
--						return 0;
-+					/* expected reset, continue to read */
-+					if (cfg_rcv_trunc &&
-+					    (errno == ECONNRESET ||
-+					     errno == EPIPE)) {
-+						fds.events &= ~POLLOUT;
-+						continue;
-+					}
-+
- 					perror("write");
- 					return 111;
- 				}
-@@ -723,8 +729,10 @@ static int copyfd_io_poll(int infd, int
- 		}
+ #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
+@@ -1469,7 +1469,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
- 		if (fds.revents & (POLLERR | POLLNVAL)) {
--			if (cfg_rcv_trunc)
--				return 0;
-+			if (cfg_rcv_trunc) {
-+				fds.events &= ~(POLLERR | POLLNVAL);
-+				continue;
-+			}
- 			fprintf(stderr, "Unexpected revents: "
- 				"POLLERR/POLLNVAL(%x)\n", fds.revents);
- 			return 5;
-@@ -1419,7 +1427,7 @@ static void parse_opts(int argc, char **
- 			 */
- 			if (cfg_truncate < 0) {
- 				cfg_rcv_trunc = true;
--				signal(SIGPIPE, handle_signal);
-+				signal(SIGPIPE, SIG_IGN);
- 			}
- 			break;
- 		case 'j':
+ #endif	/* CONFIG_EDAC_ALTERA_USB */
 
 
 
