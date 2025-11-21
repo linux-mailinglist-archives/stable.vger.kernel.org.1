@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3986C797E7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4240BC79F21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C05B135F9DD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1720E4F1BD9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1B8335541;
-	Fri, 21 Nov 2025 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4CD3502B1;
+	Fri, 21 Nov 2025 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljPny212"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO2qjj+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B91F09B3;
-	Fri, 21 Nov 2025 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97348350A0C;
+	Fri, 21 Nov 2025 13:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731921; cv=none; b=TT3zMZxGKO9tlStifxOjkCKGdPHDbM95RynCwob4ZFzUWBDbLyNtB4HN/Odbj/AechhAKN6AUnd7DDCMdOTMn0M1U0ar8deyY5OjzPxhELUGUIf47ALBwXUfBc2PszU40aI7qxqmqSfjJMwHc+f+AghGoF3q4BQ0cE9sMbnLXdQ=
+	t=1763733276; cv=none; b=e5y7+BWjb099c4aCII4PNImBp3huFATS+gGJRoNql0VztpeYU6IN6KioTRPVCqNvQ0xIn3OPe5HKJAvdxLazTTuADbFlTQABw6nNq/oQGUtTULI1Gc/Rre2r81/0bMEc0RtjcHxoppXFogYiV4El/PrdYqPofnJXKL3FBaORTTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731921; c=relaxed/simple;
-	bh=QTr9aqBHOSH8dOUzFZLEVQ+Va/kFaCuTolAnIZ54LP8=;
+	s=arc-20240116; t=1763733276; c=relaxed/simple;
+	bh=BBNI3RDw1QkT/ZUZce1ouPQGdZJv4EM6v0bHqJNmL08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLYKEyNM/TMFwT1nVX811kyZALNQHxH/ypJ8kVLztF8MRzSRLEcBbPD5noD/w56bcpAHd8yxRKRkBoWjuk2EbR1yZ4pWXcdZlBgMlyFbZSoae/Wb7++Xw+ozjmoPTfyjq//7A5Oaa79ZtgbGdeScBsrI87ARMBW/kHv4SJFcEPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljPny212; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99515C4CEF1;
-	Fri, 21 Nov 2025 13:32:00 +0000 (UTC)
+	 MIME-Version; b=kZA9hq7SMsl6eK+/hWtCZWk8q5gGg3+XTwvxKJh1VDuNhqQVirCAL6oGExmziNjjC2xOkDbRntxodxtqG+jBno2hIop9Fk67nkj1vz/snVJGzRqp70WMFH4qodfY7BxqHYGU7ihMIkkotrBIvY9DKYPBVemT9SFFgZwmiu6cHi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO2qjj+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C663EC4CEF1;
+	Fri, 21 Nov 2025 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731921;
-	bh=QTr9aqBHOSH8dOUzFZLEVQ+Va/kFaCuTolAnIZ54LP8=;
+	s=korg; t=1763733275;
+	bh=BBNI3RDw1QkT/ZUZce1ouPQGdZJv4EM6v0bHqJNmL08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljPny212hMiekBar/4IQ/wlkjAydr5Sj1Muq3yRrKEmljND7PJM3DxGvq0uMCYd0a
-	 P2rkHM1hRHMX8o7nDdSSMfLalP68a5XxvJVfHyHb4OLzDexd114h4KUbzmLd51ppjN
-	 Usv9ThgwO74rAob4IKZ4JbvRStFw5nYi0qX3U1Is=
+	b=NO2qjj+PabqcIl4IeAz+pr/bM6CuhbdQyKnDVwvSi+u8WQpKlozCDFfsUZpXkcZK/
+	 a9LMRcCRaDpsYXGsXDYfCXmjZSsT3dFxi7jnKN9o9SQMDAkgpzzIs3glPS4XRwFMIw
+	 l1lRcoobxDQchmpcFB94V3mno7JmlFnkJtNXpuvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Hu <nick.hu@sifive.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/185] irqchip/riscv-intc: Add missing free() callback in riscv_intc_domain_ops
+Subject: [PATCH 6.6 412/529] net/mlx5e: Fix maxrate wraparound in threshold between units
 Date: Fri, 21 Nov 2025 14:11:51 +0100
-Message-ID: <20251121130146.900059826@linuxfoundation.org>
+Message-ID: <20251121130245.678729407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Hu <nick.hu@sifive.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 14473a1f88596fd729e892782efc267c0097dd1d ]
+[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
 
-The irq_domain_free_irqs() helper requires that the irq_domain_ops->free
-callback is implemented. Otherwise, the kernel reports the warning message
-"NULL pointer, cannot free irq" when irq_dispose_mapping() is invoked to
-release the per-HART local interrupts.
+The previous calculation used roundup() which caused an overflow for
+rates between 25.5Gbps and 26Gbps.
+For example, a rate of 25.6Gbps would result in using 100Mbps units with
+value of 256, which would overflow the 8 bits field.
 
-Set irq_domain_ops->free to irq_domain_free_irqs_top() to cure that.
+Simplify the upper_limit_mbps calculation by removing the
+unnecessary roundup, and adjust the comparison to use <= to correctly
+handle the boundary condition.
 
-Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
-Signed-off-by: Nick Hu <nick.hu@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251114-rv-intc-fix-v1-1-a3edd1c1a868@sifive.com
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index f653c13de62b5..a02ef98848d36 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -166,7 +166,8 @@ static int riscv_intc_domain_alloc(struct irq_domain *domain,
- static const struct irq_domain_ops riscv_intc_domain_ops = {
- 	.map	= riscv_intc_domain_map,
- 	.xlate	= irq_domain_xlate_onecell,
--	.alloc	= riscv_intc_domain_alloc
-+	.alloc	= riscv_intc_domain_alloc,
-+	.free	= irq_domain_free_irqs_top,
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 8705cffc747ff..5e388cd518be9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+-	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
++	__u64 upper_limit_mbps;
+ 	int i;
  
- static struct fwnode_handle *riscv_intc_hwnode(void)
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
++	upper_limit_mbps = 255 * MLX5E_100MB;
+ 
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+ 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
+ 			continue;
+ 		}
+-		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
++		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
 -- 
 2.51.0
 
