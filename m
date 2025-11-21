@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDB5C793A4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B92C79DB0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7905336738A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 222F1380C75
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B48633D6F2;
-	Fri, 21 Nov 2025 13:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A7E34C828;
+	Fri, 21 Nov 2025 13:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF4yP5KS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOeMUDlU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC6A3246FD;
-	Fri, 21 Nov 2025 13:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA3734F49D;
+	Fri, 21 Nov 2025 13:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731014; cv=none; b=Npm3dZG1pewAf/o/NGA1JIciLog/KRxWgoVNbuQCQoXlZID6rJSY1prIriJrbGyYr+gnS8SouUCDEsG1lLAXNMSlC9K1/Bep2m8sm+Jsbpms6do6P7VsQkANh/CeYzpHvZezPdIHNYStWKT/1CYVCrbcVaEVUKoMSfL1w+HSLy4=
+	t=1763732984; cv=none; b=XOL4zZhfc2ZJZVe/Rx6Ayln0tmT69l9KV0RrmrSx483cbrxwYVPUBK/ezWulun/e/aTADmBPmM3FC/FVD7JFapw7CjWlds1bjXjzTr6my/c3EEN8CBsjq8JDENFmna3cDc7ROGm8B4BpJxZ2MEDESW+lvetfHuRbYhUulmBmi64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731014; c=relaxed/simple;
-	bh=XpgHAjJtyCaJZk9HcaFTq7HticZo/+n7bHOeCN4GghE=;
+	s=arc-20240116; t=1763732984; c=relaxed/simple;
+	bh=ATXdDLeGyL2K7WfD9Bu0DG5d7drfAT47G9qO+1bk1mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIyK6SLbNDv0r4vB8AlV3xRzzFgS0NeYI4xh7anBMcuUoRJ9I72Ic1kGE6K1EUzJBw62GsTuMtFCBaqcYKsSaCe16Bl0x3I+LDKpzvej5thHPJVqaWmZ1EOBBiCHbXKOrv07p7oTabyOcz+VHehIyMScEnfW9pyeLv0Gn27q0EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF4yP5KS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D571C4CEF1;
-	Fri, 21 Nov 2025 13:16:53 +0000 (UTC)
+	 MIME-Version; b=sd2K8Ivi6DJQIP4p9iQPv5uNsfi5ooU61HYpCtfz6g3wRew4q8XsM57gm1mOPTBpR5tgViuoqPXXG49o8GaNyQbukB9sBwM2JX6I9fM8hPWvwB7GEIMr2OAPoTvtWjg0MmTj9FpCmOaqKildUT9u1fX/6O6J0Si24IIjngucBhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOeMUDlU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8426C4CEF1;
+	Fri, 21 Nov 2025 13:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731014;
-	bh=XpgHAjJtyCaJZk9HcaFTq7HticZo/+n7bHOeCN4GghE=;
+	s=korg; t=1763732984;
+	bh=ATXdDLeGyL2K7WfD9Bu0DG5d7drfAT47G9qO+1bk1mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yF4yP5KSSRnxKjjD88ZVJEObA29UNtPRHRlY3elAzZPgAcnZFCb8hvogYasbXSxhG
-	 Yxxra1BTedlMuKzrmcbI4hcivf/XdozqF6BngaJxuaNzsj6yZFUdBBnURRnAhgPCOJ
-	 NF4JUfX4UF+1zrvW6vXPn3vaZ7uWNAqAoMA25E+c=
+	b=XOeMUDlUY44YeKmNRhDJPApIpoPRMC58ZByXgGprvI8fiIyW2mZvbUwBps5sOTGAt
+	 fnJNMEcAfksjSjFWzq+/LUG2srguvrFo7ssUdoIHr5GgkiiJJhxbGFa3KEcGsCy7oy
+	 CxQ30ljiVf5o/SnMLZ7XJ/HQCiK/UfovxBqNxs8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 061/247] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
+Subject: [PATCH 6.6 309/529] rtc: pcf2127: clear minute/second interrupt
 Date: Fri, 21 Nov 2025 14:10:08 +0100
-Message-ID: <20251121130156.793376157@linuxfoundation.org>
+Message-ID: <20251121130242.018594795@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
+[ Upstream commit a6f1a4f05970664004a9370459c6799c1b2f2dcf ]
 
-syzbot reported a possible shift-out-of-bounds [1]
+PCF2127 can generate interrupt every full second or minute configured
+from control and status register 1, bits MI (1) and SI (0).
 
-Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
+On interrupt control register 2 bit MSF (7) is set and must be cleared
+to continue normal operation.
 
-It is unclear if some sctp users are setting very large rto_alpha
-and/or rto_beta.
+While the driver never enables this interrupt on its own, users or
+firmware may do so - e.g. as an easy way to test the interrupt.
 
-In order to prevent user regression, perform the test at run time.
+Add preprocessor definition for MSF bit and include it in the irq
+bitmask to ensure minute and second interrupts are cleared when fired.
 
-Also add READ_ONCE() annotations as sysctl values can change under us.
+This fixes an issue where the rtc enters a test mode and becomes
+unresponsive after a second interrupt has fired and is not cleared in
+time. In this state register writes to control registers have no
+effect and the interrupt line is kept asserted [1]:
 
-[1]
+[1] userspace commands to put rtc into unresponsive state:
+$ i2cget -f -y 2 0x51 0x00
+0x04
+$ i2cset -f -y 2 0x51 0x00 0x05 # set bit 0 SI
+$ i2cget -f -y 2 0x51 0x00
+0x84 # bit 8 EXT_TEST set
+$ i2cset -f -y 2 0x51 0x00 0x05 # try overwrite control register
+$ i2cget -f -y 2 0x51 0x00
+0x84 # no change
 
-UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
-shift exponent 64 is too large for 32-bit type 'unsigned int'
-CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:233 [inline]
-  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
-  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
-  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
-  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
-  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
-  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
-
-Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
-Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Link: https://lore.kernel.org/r/20250825-rtc-irq-v1-1-0133319406a7@solid-run.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/transport.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/rtc/rtc-pcf2127.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-index 4d258a6e8033c..e0cf9a41e0e43 100644
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -495,6 +495,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
+index 502571f0c203f..e793c019fb9d7 100644
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -41,6 +41,7 @@
+ #define PCF2127_BIT_CTRL2_AF			BIT(4)
+ #define PCF2127_BIT_CTRL2_TSF2			BIT(5)
+ #define PCF2127_BIT_CTRL2_WDTF			BIT(6)
++#define PCF2127_BIT_CTRL2_MSF			BIT(7)
+ /* Control register 3 */
+ #define PCF2127_REG_CTRL3		0x02
+ #define PCF2127_BIT_CTRL3_BLIE			BIT(0)
+@@ -94,7 +95,8 @@
+ #define PCF2127_CTRL2_IRQ_MASK ( \
+ 		PCF2127_BIT_CTRL2_AF | \
+ 		PCF2127_BIT_CTRL2_WDTF | \
+-		PCF2127_BIT_CTRL2_TSF2)
++		PCF2127_BIT_CTRL2_TSF2 | \
++		PCF2127_BIT_CTRL2_MSF)
  
- 	if (tp->rttvar || tp->srtt) {
- 		struct net *net = tp->asoc->base.net;
-+		unsigned int rto_beta, rto_alpha;
- 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
- 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
- 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
-@@ -506,10 +507,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
- 		 * For example, assuming the default value of RTO.Alpha of
- 		 * 1/8, rto_alpha would be expressed as 3.
- 		 */
--		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
--			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
--		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
--			+ (rtt >> net->sctp.rto_alpha);
-+		rto_beta = READ_ONCE(net->sctp.rto_beta);
-+		if (rto_beta < 32)
-+			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
-+				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
-+		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
-+		if (rto_alpha < 32)
-+			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
-+				+ (rtt >> rto_alpha);
- 	} else {
- 		/* 6.3.1 C2) When the first RTT measurement R is made, set
- 		 * SRTT <- R, RTTVAR <- R/2.
+ #define PCF2127_MAX_TS_SUPPORTED	4
+ 
 -- 
 2.51.0
 
