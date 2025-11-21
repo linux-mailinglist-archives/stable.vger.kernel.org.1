@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-196183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27A1C79BEB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96457C79B21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17F864EB8FD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E406D4EC2CA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F03350A05;
-	Fri, 21 Nov 2025 13:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20DC34EEF6;
+	Fri, 21 Nov 2025 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8L4M614"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lywXrcde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9BE34DB4D;
-	Fri, 21 Nov 2025 13:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF25934D90E;
+	Fri, 21 Nov 2025 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732793; cv=none; b=BveFzAGqwwZ61JMltmww/+CvCa3HZy8NDtTHzSeLT/is/AK5HcluwKN0Yy2W0MVtcF7dCsN8jC5krqVQqIGfnr0WDriFKisoKfj9sISayLWpwqX99a1cvf+5ndbCHj8RKPhsW2/rJ20+kyQRGMvxahrqxcUP3bJP8dtwjr47MU8=
+	t=1763732698; cv=none; b=lQXOJOT4TsZM+qp1itXBziZgU7fsQCVqfU69oOg0rHwsEhKoGg5/c6zRibJXDwunh4KBAxjIN0eLJyzHa+DgW5kHoScc7Uf4rCn86cBwYSdTUhAF4jb4yotH/xqaffFuAxzmBHU34u4+PdrKNQpf24KDECkYgD7HBg8/2T5DyAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732793; c=relaxed/simple;
-	bh=l9QG54mkN75DKNSTVYL+Wqm/e30eqOk+pDzjmFtB4sM=;
+	s=arc-20240116; t=1763732698; c=relaxed/simple;
+	bh=PqsdcOHQhogSMQcmxE1b2S21Hd5C02xn7L3Ur5ZHmfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afqd+WT/a1EOc9UUcPr50tbJNBgsxGX/u9LOpHGX9/10NZe35sTQJCGFhKHlBSz+U72mLf0tJzlnND1vM3o6U1Af3erzKA3g8f40fgUmEJWJWSGaRK+ryrRML3VyRofR3lvgRjfPP9lJhP37P8D3Ns6aS5q5czmTk6Apx2lorXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8L4M614; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EF6C4CEF1;
-	Fri, 21 Nov 2025 13:46:32 +0000 (UTC)
+	 MIME-Version; b=RBNmUF89WARFlgZVirR37Kid+MG4MD43WuDd/jKajK0RbtRuJEan7G2i6lG+lsmyL5gaHhrm5AArXHyNgCLbI15DyO3kKBZ3UOM34KWp9BdS7UfLQPYlAB31p6m6iJl3PihAAkreSEg8hq41F/+d5vEp6j2vXupA0/00X14GFvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lywXrcde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DA2C4CEF1;
+	Fri, 21 Nov 2025 13:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732793;
-	bh=l9QG54mkN75DKNSTVYL+Wqm/e30eqOk+pDzjmFtB4sM=;
+	s=korg; t=1763732698;
+	bh=PqsdcOHQhogSMQcmxE1b2S21Hd5C02xn7L3Ur5ZHmfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8L4M6142BXuS7inA+fPXJYl8kyATcys3DabT0fBxeBHGunNp8nSaGYkCkYX0la5S
-	 XoZ0L6UOaAvimy1Mo2ZXg2bYPrfcbVyD/2CZngxPXAyMyJGIXRFoZXobXoelAOUijw
-	 FSC6oJgYP6lTiizmevcbwuxRjRddJehLXS5mm+M0=
+	b=lywXrcdez62n+qL15Qw0HA8mARzkWW3+/IHE18zKV7azbDf+P5bqN6gM3bRpJHhaV
+	 n+nHWpTJZ4td7J9RRrac40urDV5ragqgOOt1vemlSwaa1j0X8LM0SwD7n9REx3OXKX
+	 q6uWCAw/8AKAnYa3g/LRgszgmLX2zBDQZnuOE9Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Dege <michael.dege@renesas.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/529] phy: renesas: r8a779f0-ether-serdes: add new step added to latest datasheet
-Date: Fri, 21 Nov 2025 14:08:31 +0100
-Message-ID: <20251121130238.558043846@linuxfoundation.org>
+Subject: [PATCH 6.6 213/529] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+Date: Fri, 21 Nov 2025 14:08:32 +0100
+Message-ID: <20251121130238.593235911@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,74 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Dege <michael.dege@renesas.com>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit e4a8db93b5ec9bca1cc66b295544899e3afd5e86 ]
+[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
 
-R-Car S4-8 datasheet Rev.1.20 describes some additional register
-settings at the end of the initialization.
+The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
+value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
+this offset is perfectly fine (in fact, register 0 is the only one in
+this register file).
+Introduce a boolean variable to indicate valid registers and allow writes
+to register 0.
 
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
-Link: https://lore.kernel.org/r/20250703-renesas-serdes-update-v4-2-1db5629cac2b@renesas.com
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/r8a779f0-ether-serdes.c | 28 +++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/renesas/r8a779f0-ether-serdes.c b/drivers/phy/renesas/r8a779f0-ether-serdes.c
-index 683b19bc411a8..59546301a6b9e 100644
---- a/drivers/phy/renesas/r8a779f0-ether-serdes.c
-+++ b/drivers/phy/renesas/r8a779f0-ether-serdes.c
-@@ -49,6 +49,13 @@ static void r8a779f0_eth_serdes_write32(void __iomem *addr, u32 offs, u32 bank,
- 	iowrite32(data, addr + offs);
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+index 98c92d6c482fe..279e19e7546b6 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+@@ -87,10 +87,11 @@ struct dphy_reg {
+ 	u32 offset;
+ 	u32 mask;
+ 	u32 shift;
++	u8 valid;
+ };
+ 
+ #define PHY_REG(_offset, _width, _shift) \
+-	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
++	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ 
+ static const struct dphy_reg rk1808_grf_dphy_regs[] = {
+ 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
+@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
+ 	const struct dphy_drv_data *drv_data = priv->drv_data;
+ 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 
+-	if (reg->offset)
++	if (reg->valid)
+ 		regmap_write(priv->grf, reg->offset,
+ 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
  }
- 
-+static u32 r8a779f0_eth_serdes_read32(void __iomem *addr, u32 offs,  u32 bank)
-+{
-+	iowrite32(bank, addr + R8A779F0_ETH_SERDES_BANK_SELECT);
-+
-+	return ioread32(addr + offs);
-+}
-+
- static int
- r8a779f0_eth_serdes_reg_wait(struct r8a779f0_eth_serdes_channel *channel,
- 			     u32 offs, u32 bank, u32 mask, u32 expected)
-@@ -261,6 +268,7 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
- *channel)
- {
- 	int ret;
-+	u32 val;
- 
- 	ret = r8a779f0_eth_serdes_chan_setting(channel);
- 	if (ret)
-@@ -274,6 +282,26 @@ static int r8a779f0_eth_serdes_hw_init_late(struct r8a779f0_eth_serdes_channel
- 
- 	r8a779f0_eth_serdes_write32(channel->addr, 0x03d0, 0x380, 0x0000);
- 
-+	val = r8a779f0_eth_serdes_read32(channel->addr, 0x00c0, 0x180);
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val | BIT(8));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 1);
-+	if (ret)
-+		return ret;
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x00c0, 0x180, val & ~BIT(8));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0100, 0x180, BIT(0), 0);
-+	if (ret)
-+		return ret;
-+
-+	val = r8a779f0_eth_serdes_read32(channel->addr, 0x0144, 0x180);
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val | BIT(4));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 1);
-+	if (ret)
-+		return ret;
-+	r8a779f0_eth_serdes_write32(channel->addr, 0x0144, 0x180, val & ~BIT(4));
-+	ret = r8a779f0_eth_serdes_reg_wait(channel, 0x0180, 0x180, BIT(0), 0);
-+	if (ret)
-+		return ret;
-+
- 	return r8a779f0_eth_serdes_monitor_linkup(channel);
- }
- 
 -- 
 2.51.0
 
