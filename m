@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C411FC79748
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDEFC7A026
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 66CC82908B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A05E368BCE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075E534B68F;
-	Fri, 21 Nov 2025 13:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3B0350A28;
+	Fri, 21 Nov 2025 13:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnrliel8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oppp0mia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7298534B191;
-	Fri, 21 Nov 2025 13:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209DE3F9D2;
+	Fri, 21 Nov 2025 13:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732054; cv=none; b=ZDUlyzEclPl0O+w04PJ38FCB0LmZVi/VnOCz5C+k74IBBXmlAjJOcHraLwgjvBcSGwQ8DWjobl6nwdLeKADsxb9BjPHo8NwGjs5iii/09wCdhTObq7y7EArnd7KSDEemALl7DSEaHsBbqwAz0KBXdCS3FEEydP5nLWFLIgP6Q8g=
+	t=1763733535; cv=none; b=cUQCwD35j+ZPsOYUXGQSNGRqIO5PAduo6FmEpNBS/jJndZ7LRw/9cUEmERCUWqD0Vo9PzDJ2r5qrAViYgmGC0NofvRrAlGaLNAWnjv4DF/HJjEvV268BYBQvpofQQzeZHyAqp/rEI4nKLuffwgNOx4gcTHhpeW69Ngo9oEcpjf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732054; c=relaxed/simple;
-	bh=v+s9Kokfer8ec8eX/sMC7/9CAHaiJu4avqds1Kzd68c=;
+	s=arc-20240116; t=1763733535; c=relaxed/simple;
+	bh=dgkvbYU5EHaD2RYk9b9vxkniTpsskDVpI6+ZLsnGNuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyMXPBaD28tnqggp2GHuktUc1k3pTgQifS81RtrL95HE2Qn+fJDNEejlDao8f5EuUftf1AyX4cTvCmGyn182G9U9G4V055/pCMoFZrEFsaO9iJ5rp1O6RJq7Z9N4QEm5jNacDHJDuOQRGcLxxzN5NEnVndqnb+AJLsqyFxYdaac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnrliel8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8550C4CEF1;
-	Fri, 21 Nov 2025 13:34:13 +0000 (UTC)
+	 MIME-Version; b=Z16hxVR9zRHlFFmBOttq8iA3PMsZYDg5XUyIacQIZC1caWwHC8H2Zq3FQIuZq1wDO5pp6NI99fT0/9VbuIj4Mns0HXbvhMRdwSi1Q3ewjUTK3618ZFGlPBO28fx7gO5S8BGpYc5mf0tBPK/8a2IRoEV9LB0HzeFVdQATrEHHMZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oppp0mia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99107C4CEF1;
+	Fri, 21 Nov 2025 13:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732054;
-	bh=v+s9Kokfer8ec8eX/sMC7/9CAHaiJu4avqds1Kzd68c=;
+	s=korg; t=1763733535;
+	bh=dgkvbYU5EHaD2RYk9b9vxkniTpsskDVpI6+ZLsnGNuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jnrliel8DLCu0b5pey+73fOm729cnOB5TFT5z1GhuVXY5VAgbFRu0O8Fg9CGXsPAG
-	 LsodXrR4W0Sa2igH9oRwcSopSBPTBWyqJj3Kb6+XrIkkXyRQ1SVVaFu0dnMuEnn8NM
-	 NlEnKZhu4EV/iL2pXc4Yv/6eDak1gTYRturVkJUs=
+	b=Oppp0mia85nEZaI14fxdhSyE9wiytx+m3gxbmClHsO4EPmkwjmUSVMnZZym0aNWbA
+	 GD9/Atz1eBYrcfX7egBGlwWJoMiZorrWx1Wpi+tkoUh5oAXHkHiDWljQ9fFgS0KBly
+	 5Fg8sa7QQbnlSFV+YfJCeeHzCY23jxO4p2O9GGYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/185] rust: kbuild: workaround `rustdoc` doctests modifier bug
+	Qingfang Deng <dqfext@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 502/529] net: stmmac: Fix accessing freed irq affinity_hint
 Date: Fri, 21 Nov 2025 14:13:21 +0100
-Message-ID: <20251121130150.167755093@linuxfoundation.org>
+Message-ID: <20251121130248.878141531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit fad472efab0a805dd939f017c5b8669a786a4bcf ]
+[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
 
-The `rustdoc` modifiers bug [1] was fixed in Rust 1.90.0 [2], for which
-we added a workaround in commit abbf9a449441 ("rust: workaround `rustdoc`
-target modifiers bug").
+The cpumask should not be a local variable, since its pointer is saved
+to irq_desc and may be accessed from procfs.
+To fix it, use the persistent mask cpumask_of(cpu#).
 
-However, `rustdoc`'s doctest generation still has a similar issue [3],
-being fixed at [4], which does not affect us because we apply the
-workaround to both, and now, starting with Rust 1.91.0 (released
-2025-10-30), `-Zsanitizer` is a target modifier too [5], which means we
-fail with:
-
-      RUSTDOC TK rust/kernel/lib.rs
-    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `kernel`
-     --> rust/kernel/lib.rs:3:1
-      |
-    3 | //! The `kernel` crate.
-      | ^
-      |
-      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
-      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
-      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
-
-A simple way around is to add the sanitizer to the list in the existing
-workaround (especially if we had not started to pass the sanitizer
-flags in the previous commit, since in that case that would not be
-necessary). However, that still applies the workaround in more cases
-than necessary.
-
-Instead, only modify the doctests flags to ignore the check for
-sanitizers, so that it is more local (and thus the compiler keeps checking
-it for us in the normal `rustdoc` calls). Since the previous commit
-already treated the `rustdoc` calls as kernel objects, this should allow
-us in the future to easily remove this workaround when the time comes.
-
-By the way, the `-Cunsafe-allow-abi-mismatch` flag overwrites previous
-ones rather than appending, so it needs to be all done in the same flag.
-Moreover, unknown modifiers are rejected, and thus we have to gate based
-on the version too.
-
-Finally, `-Zsanitizer-cfi-normalize-integers` is not affected (in Rust
-1.91.0), so it is not needed in the workaround for the moment.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/issues/144521 [1]
-Link: https://github.com/rust-lang/rust/pull/144523 [2]
-Link: https://github.com/rust-lang/rust/issues/146465 [3]
-Link: https://github.com/rust-lang/rust/pull/148068 [4]
-Link: https://github.com/rust-lang/rust/pull/138736 [5]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Link: https://patch.msgid.link/20251102212853.1505384-2-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ added --remap-path-prefix comments missing in stable branch ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -59,6 +59,8 @@ core-edition := $(if $(call rustc-min-ve
- # the time being (https://github.com/rust-lang/rust/issues/144521).
- rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3516,7 +3516,6 @@ static int stmmac_request_irq_multi_msi(
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	enum request_irq_err irq_err;
+-	cpumask_t cpu_mask;
+ 	int irq_idx = 0;
+ 	char *int_name;
+ 	int ret;
+@@ -3628,9 +3627,8 @@ static int stmmac_request_irq_multi_msi(
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->rx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
  
-+# Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
-+doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
- quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
-       cmd_rustdoc = \
- 	OBJTREE=$(abspath $(objtree)) \
-@@ -189,7 +191,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
- 		--extern bindings --extern uapi \
- 		--no-run --crate-name kernel -Zunstable-options \
- 		--sysroot=/dev/null \
--		$(rustdoc_modifiers_workaround) \
-+		$(doctests_modifiers_workaround) \
- 		--test-builder $(objtree)/scripts/rustdoc_test_builder \
- 		$< $(rustdoc_test_kernel_quiet); \
- 	$(objtree)/scripts/rustdoc_test_gen
+ 	/* Request Tx MSI irq */
+@@ -3653,9 +3651,8 @@ static int stmmac_request_irq_multi_msi(
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->tx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+ 	return 0;
 
 
 
