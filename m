@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837F4C7939E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2519C79D1A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E6C334AC94
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6EAAD4EB33D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C493734BA5B;
-	Fri, 21 Nov 2025 13:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A9B34676F;
+	Fri, 21 Nov 2025 13:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdDLXdyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg6z9hTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF2234BA49;
-	Fri, 21 Nov 2025 13:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097A533B6EA;
+	Fri, 21 Nov 2025 13:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731002; cv=none; b=Wr545F5uxMR5Blbs8fQJHWcTG1eF7GxR4K3R9wLn6bQJsIR2d5C+ZIWaVGMQAer4vE5ok1vsOnO6lSsw2f6r4NTYpadIikl7n7k7aIZR1uGXYUagApB+sZO5qRsrMwdV+A0V4AmviUBeRkDm7V7pBrISfORnjiULZGrlewjElJk=
+	t=1763732970; cv=none; b=N84eL0PDDaXcxlsDJuDZJIWyu/0AIzUM2kk7aZAsI/S9M0VxFe2lU7x+V4yeMmrnUD/zLLM2gyFNzvWHokv4HA/w+D5StKu7A7q6XDM0/bmcxW+8m2lObelKT7FPQ+EFTHLYnTxA0Ogz3X5q9qXzsvI62jdga4yFkO0ZRX7RRq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731002; c=relaxed/simple;
-	bh=6rNKFGOl/tXli5QdUI6jv3TbSaYxy5rR+0l7egrNlpo=;
+	s=arc-20240116; t=1763732970; c=relaxed/simple;
+	bh=t9kcRJamV8Dl9jslu7JD9JepDYzJrJxUBC8WnEWqWmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsBq1Ko+ZtuRWGVaSFtgRXpbXPnzjXBvgqi3HUCuj58w5ZebxPPshcy/+Nf+PF2Gy+refvTiMr2i+2T7qy2X4nNbr6q78YeP9OSW+pqjJcHLTNe5PWo9NSRdi90z0j7Hz3Yd3X/3lxH7kiY2RL4Jz5KoYHqCVgqa7dLzbjJJiU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdDLXdyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA83C4CEFB;
-	Fri, 21 Nov 2025 13:16:41 +0000 (UTC)
+	 MIME-Version; b=WPnbyr368YMQxWqwableI04FTmgKSf4ayZDD9tLdhPY0EUPMxxdxZZs9bAgGLhVVNyhtYt0LK9YXXpzvpZyJLoOf88HO5YzjzuUDqtZSGG42c6R9+BilZhbveeGZRCnlYnVOC9ygZRCndKZlHcYSL/4+H3sB5Pc9h/idgAlT4z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg6z9hTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E30FC4CEF1;
+	Fri, 21 Nov 2025 13:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731002;
-	bh=6rNKFGOl/tXli5QdUI6jv3TbSaYxy5rR+0l7egrNlpo=;
+	s=korg; t=1763732969;
+	bh=t9kcRJamV8Dl9jslu7JD9JepDYzJrJxUBC8WnEWqWmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdDLXdyAa68Qudx985iTy8tw40eP39kUrqLJR6wBkCLd+xRh7n3Zewsvbq+FPeqjT
-	 /1KkM+me4ffzCDHIecKLhguuEIwduEuQOQJbtQd95D4WIcWGpTq35DQGLWRKrjK1FR
-	 tTavoc4UnsuBDrOqyzaG8FDntCefk3T2vg2Mfwc8=
+	b=dg6z9hTS7uPiUI6kZnC+dVSN7TyTCOOpERx2ecONEadcYMD5r9D+FE96qDVglR4PA
+	 vTaLPxPl1/LZNGlZwuZuezF9HCExARzkpy/vAPaGUQnpnRJvQosqbqH+DHtHA2oLc2
+	 GwTr+m6bks4a/r5qikT5suBkaumNi9CuZIk8qIvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	austinchang <austinchang@synology.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 057/247] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
+Subject: [PATCH 6.6 305/529] btrfs: mark dirty extent range for out of bound prealloc extents
 Date: Fri, 21 Nov 2025 14:10:04 +0100
-Message-ID: <20251121130156.651550698@linuxfoundation.org>
+Message-ID: <20251121130241.875937672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: austinchang <austinchang@synology.com>
 
-[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
+[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
 
-Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
-header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
+In btrfs_fallocate(), when the allocated range overlaps with a prealloc
+extent and the extent starts after i_size, the range doesn't get marked
+dirty in file_extent_tree. This results in persisting an incorrect
+disk_i_size for the inode when not using the no-holes feature.
 
-Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
+This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
+per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
+("btrfs: don't allocate file extent tree for non regular files") and then
+visible again after commit 8679d2687c35 ("btrfs: initialize
+inode::file_extent_tree after i_mode has been set"), which fixes the
+previous commit.
 
-For the compressed one, it is done in lowpan_header_decompress().
+The following reproducer triggers the problem:
 
-Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
-------
-kernel BUG at net/core/skbuff.c:212!
-Call Trace:
-<IRQ>
-...
-packet_rcv (net/packet/af_packet.c:2152)
-...
-<TASK>
-__local_bh_enable_ip (kernel/softirq.c:407)
-netif_rx (net/core/dev.c:5648)
-chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
-------
+$ cat test.sh
 
-Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+MNT=/mnt/test
+DEV=/dev/vdb
+
+mkdir -p $MNT
+
+mkfs.btrfs -f -O ^no-holes $DEV
+mount $DEV $MNT
+
+touch $MNT/file1
+fallocate -n -o 1M -l 2M $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+len=$((1 * 1024 * 1024))
+
+fallocate -o 1M -l $len $MNT/file1
+
+du --bytes $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+du --bytes $MNT/file1
+
+umount $MNT
+
+Running the reproducer gives the following result:
+
+$ ./test.sh
+(...)
+2097152 /mnt/test/file1
+1048576 /mnt/test/file1
+
+The difference is exactly 1048576 as we assigned.
+
+Fix by adding a call to btrfs_inode_set_file_extent_range() in
+btrfs_fallocate_update_isize().
+
+Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
+Signed-off-by: austinchang <austinchang@synology.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index f0c862091bff2..f1d29fa4b4119 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -289,6 +289,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
- 		local_skb->pkt_type = PACKET_HOST;
- 		local_skb->dev = dev;
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index e794606e7c780..9ef543db8aab9 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -2825,12 +2825,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
+ {
+ 	struct btrfs_trans_handle *trans;
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
++	u64 range_start;
++	u64 range_end;
+ 	int ret;
+ 	int ret2;
  
-+		skb_reset_mac_header(local_skb);
- 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
+ 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
+ 		return 0;
  
- 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
++	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
++	range_end = round_up(end, root->fs_info->sectorsize);
++
++	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
++						range_end - range_start);
++	if (ret)
++		return ret;
++
+ 	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
 -- 
 2.51.0
 
