@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EF2C7960D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5286BC79537
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 384FE4EB55A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B1D6E365E54
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E20340DA1;
-	Fri, 21 Nov 2025 13:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6B527147D;
+	Fri, 21 Nov 2025 13:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS0zoefo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjM/l0mA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1804335541;
-	Fri, 21 Nov 2025 13:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B451A1F09B3;
+	Fri, 21 Nov 2025 13:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731726; cv=none; b=V9Ul1hiVjc1qV/zGRlxxla3jX55w7wVaHdrwdH5nQZLbaJpVOPEaUXlR8XlvSDGnveVjRx9talmsujTRU+WtuOE7LVh7FJ2e7ahyVomy3mNwU06YG46DE+oLkLrBp77Yf4rKwL48U4v4nmv10fqgNBBOAbP3NjNqKg6bhWruJew=
+	t=1763731244; cv=none; b=XGOKdq5O7u3GgRZ82GqACbqYghBs1AugI1K0V1aLU/lqh/sADW4nIM5WZfpaH2T7wtG9rCnfS161qdpFFTxpponeRodCrbTJrDEREWHKTh23CUljrTX1jkg7lIxUor1PqAYWg7esXWMO6VGmiKnzJsempVwmL94CpW+4kda/AkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731726; c=relaxed/simple;
-	bh=AifryU4JQMYZC/BKnfw0kYDVK8yMExFyzCfQfSC7Wyg=;
+	s=arc-20240116; t=1763731244; c=relaxed/simple;
+	bh=fTIN3qyeRNeHEXB7Lgn+kGx+Ik/t1iYfdibrj2yCKLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltlP9vGLpNi4GqQ+NFf4Qlk2Z9EhNYYhS/G7g4BZEIhDA0hAEVov8brmzgNwxQ1D+NrDjhRwo+3rnDEjYus7GKNv5GSo8yrhR5+d2NTLZviRKCQBwcAdx0Z0XeNABjiWbjEkkiEie8paFGGfF9AnPR4VD0TCFhCnJ2y2dzMt+/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS0zoefo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262AFC4CEF1;
-	Fri, 21 Nov 2025 13:28:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fpKGateoYOryqPok8oh9S056ySpcOCoSQsvmHSr3GPHT7DgwVaqAScRs4SwmuT1b+uPaFfqDANpS2ntbDKt6KXqE0YIelio39rGhvi9DrvwBfKvkGIqphl4ho8JE8EX91DvPF262il5a3dlmJVQZKDqioJW3jLh9OuI0cMrh7L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjM/l0mA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD07C4CEF1;
+	Fri, 21 Nov 2025 13:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731726;
-	bh=AifryU4JQMYZC/BKnfw0kYDVK8yMExFyzCfQfSC7Wyg=;
+	s=korg; t=1763731244;
+	bh=fTIN3qyeRNeHEXB7Lgn+kGx+Ik/t1iYfdibrj2yCKLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HS0zoefo30tYhZDznvSFXdooeWinEaGj2CibUmpv3LWwZc4j+a7fLsQetH4D1mPsn
-	 4diGYFS/yKZY+KkJGO+RZ63DYT1YkkmRmGPleUn+bsjB9VadaOWXzpC5VlFQPlcpcn
-	 56XWa2TKY/GEpOixWG2EUgooK4AVr9UBqZkjq5uc=
+	b=DjM/l0mAwXNbyQ6DeDc1xdIREVsNcKM7DuKybhKL9FLn6kMeoXecxy208HFvLpMdb
+	 pdRpZpGfa9MjsTtHkJXyCgHXHF0LY2fcBK/IReNLeQ34wYAg7LdEfWiU42iokRpWzH
+	 jToLL4+Iqq1WiQjeDFAd7C82NW8oavCFEaXNAO98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alyssa Ross <hi@alyssa.is>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/185] virtio-net: fix incorrect flags recording in big mode
+Subject: [PATCH 6.17 140/247] arm64: dts: imx8-ss-img: Avoid gpio0_mipi_csi GPIOs being deferred
 Date: Fri, 21 Nov 2025 14:11:27 +0100
-Message-ID: <20251121130146.041955778@linuxfoundation.org>
+Message-ID: <20251121130159.751265668@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
-[ Upstream commit 0eff2eaa5322b5b141ff5d5ded26fac4a52b5f7b ]
+[ Upstream commit ec4daace64a44b53df76f0629e82684ef09ce869 ]
 
-The purpose of commit 703eec1b2422 ("virtio_net: fixing XDP for fully
-checksummed packets handling") is to record the flags in advance, as
-their value may be overwritten in the XDP case. However, the flags
-recorded under big mode are incorrect, because in big mode, the passed
-buf does not point to the rx buffer, but rather to the page of the
-submitted buffer. This commit fixes this issue.
+The gpio0_mipi_csi DT nodes are enabled by default, but they are
+dependent on the irqsteer_csi nodes, which are not enabled. This causes
+the gpio0_mipi_csi GPIOs to be probe deferred. Since these GPIOs can be
+used independently of the CSI controller, enable irqsteer_csi by default
+too to prevent them from being deferred and to ensure they work out of
+the box.
 
-For the small mode, the commit c11a49d58ad2 ("virtio_net: Fix mismatched
-buf address when unmapping for small packets") fixed it.
-
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Fixes: 703eec1b2422 ("virtio_net: fixing XDP for fully checksummed packets handling")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20251111090828.23186-1-xuanzhuo@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2217f8243714 ("arm64: dts: imx8: add capture controller for i.MX8's img subsystem")
+Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 259e3a35dce93..97c49f33122c1 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2455,22 +2455,28 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 		return;
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+index 2cf0f7208350a..a72b2f1c4a1b2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+@@ -67,7 +67,6 @@ img_subsys: bus@58000000 {
+ 		power-domains = <&pd IMX_SC_R_CSI_0>;
+ 		fsl,channel = <0>;
+ 		fsl,num-irqs = <32>;
+-		status = "disabled";
+ 	};
  
--	/* 1. Save the flags early, as the XDP program might overwrite them.
-+	/* About the flags below:
-+	 * 1. Save the flags early, as the XDP program might overwrite them.
- 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
- 	 * stay valid after XDP processing.
- 	 * 2. XDP doesn't work with partially checksummed packets (refer to
- 	 * virtnet_xdp_set()), so packets marked as
- 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
- 	 */
--	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 	gpio0_mipi_csi0: gpio@58222000 {
+@@ -144,7 +143,6 @@ img_subsys: bus@58000000 {
+ 		power-domains = <&pd IMX_SC_R_CSI_1>;
+ 		fsl,channel = <0>;
+ 		fsl,num-irqs = <32>;
+-		status = "disabled";
+ 	};
  
--	if (vi->mergeable_rx_bufs)
-+	if (vi->mergeable_rx_bufs) {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
- 					stats);
--	else if (vi->big_packets)
-+	} else if (vi->big_packets) {
-+		void *p = page_address((struct page *)buf);
-+
-+		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
- 		skb = receive_big(dev, vi, rq, buf, len, stats);
--	else
-+	} else {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
-+	}
- 
- 	if (unlikely(!skb))
- 		return;
+ 	gpio0_mipi_csi1: gpio@58242000 {
 -- 
 2.51.0
 
