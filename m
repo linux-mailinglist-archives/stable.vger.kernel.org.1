@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C2AC79808
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56793C79631
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CE362345E74
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B008F34FFC6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E4C2874F6;
-	Fri, 21 Nov 2025 13:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C861341043;
+	Fri, 21 Nov 2025 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV9TY7r5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9VRvEhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0034E2745E;
-	Fri, 21 Nov 2025 13:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080B2331237;
+	Fri, 21 Nov 2025 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731965; cv=none; b=EB1Ogf3IyAZYE/1GTBzhyJ/wcLlAXNLTfryXvjE8A24umbYWtbqbCbokDLakktux8dLSu0AYDVLWB6PJod6Y7SPAf3rB3Iqdoi/YXg3iXwDD0gutbXMcDzkj+aZgGlTlG82zscY+8UID445usQqWrutT0H8VYBkmts51CFd1r3w=
+	t=1763731486; cv=none; b=Ib/tN8J521JL4KksBEo2fpIep7oB1BBFe1Sx20CXe2DgsagqkMWngm/y1PQBgY+Z5wTYms39D2vVLTrLlhLgsDB8tOqMggYIbioAAzJ2LYsymeGvVyW5I9PSxXESI63VBF8Fd6s3MxxiE7RJLwbzqRuTlXG6ZqoBGGb+bTXZYk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731965; c=relaxed/simple;
-	bh=NUQOsaB0oeRvnajkYaD1WIWJnWCbP3U+slRA1ka9Mj0=;
+	s=arc-20240116; t=1763731486; c=relaxed/simple;
+	bh=isgJrila3uJIFWrzNT1pk2v0CbuDyQZCpMk77CPLYaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awQTMn4+9VFOQYKdI/sOr5+9pYyn4kgONrrvI+n17r858chTj+HpL+TDaf533r/XRzqiEMy9Ctx7b5+Ky4C1G78yzRE6ut8MUqY00uPvfK3+HWnnltHXy3Lv9ZjYR/HcEx52TNpHzHw+2R9rc6IhU1rpsRYMLZNBQ3maiTeBbH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV9TY7r5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDF4C4CEF1;
-	Fri, 21 Nov 2025 13:32:44 +0000 (UTC)
+	 MIME-Version; b=ZORYQ+J9/TFoIfcB/SX6eUb0F6vdQxNdKmnwrPy9kQg9bpPd/w4Bi4riWLU90e7c2bc58/mSfC+y/S8I6ygKUp5+IL4WxqxWHREDIg6WWMISTihPX4w4GTdtF8LAegKpvXTzEP8Y2b+4qQyBkkFKx0AR2weGaXnEEI1ObAe+R2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9VRvEhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B08C4CEF1;
+	Fri, 21 Nov 2025 13:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731964;
-	bh=NUQOsaB0oeRvnajkYaD1WIWJnWCbP3U+slRA1ka9Mj0=;
+	s=korg; t=1763731485;
+	bh=isgJrila3uJIFWrzNT1pk2v0CbuDyQZCpMk77CPLYaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV9TY7r5OrEpuUlSac7QktcwMIuFAeB57m6LEY+mriAtyCMSwcL1Z7x48Q9KCFeiD
-	 Ke6sdsP9GUH5eqYFHfxxw51xQmD9NRZrRTv40xAOEgTZtci8dQLYlp6iJyc2Y0vxm6
-	 cb15EVlIBG+CyuOWjH8qP6b5b8DZjWE+qCZE8uaQ=
+	b=c9VRvEhdz10Zwtenyz22e2bG337QDNfL/rALXr9Kk+eabw+dTOLQnFaaWghhf4rZZ
+	 mXGe8TXucj5sh2K6+Fw4Y/ibdgznRJFkZ8T0kKvbX3rG2jmtXcYRPy461DY+ZmR1uV
+	 PjYS2T4bLfxtAudy8TQuK5eXR3L+bADha/6pTGiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Askar Safin <safinaskar@gmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 142/185] PM: hibernate: Emit an error when image writing fails
-Date: Fri, 21 Nov 2025 14:12:49 +0100
-Message-ID: <20251121130148.999436671@linuxfoundation.org>
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.17 223/247] drm/xe/xe3lpg: Extend Wa_15016589081 for xe3lpg
+Date: Fri, 21 Nov 2025 14:12:50 +0100
+Message-ID: <20251121130202.737419108@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-commit 62b9ca1706e1bbb60d945a58de7c7b5826f6b2a2 upstream.
+commit 240372edaf854c9136f5ead45f2d8cd9496a9cb3 upstream.
 
-If image writing fails, a return code is passed up to the caller, but
-none of the callers log anything to the log and so the only record
-of it is the return code that userspace gets.
+Wa_15016589081 applies to Xe3_LPG renderCS
 
-Adjust the logging so that the image size and speed of writing is
-only emitted on success and if there is an error, it's saved to the
-logs.
-
-Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
-Reported-by: Askar Safin <safinaskar@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Askar Safin <safinaskar@gmail.com>
-Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
-[ rjw: Added missing braces after "else", changelog edits ]
-Link: https://patch.msgid.link/20251106045158.3198061-2-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Link: https://patch.msgid.link/20251106100516.318863-2-nitin.r.gote@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 715974499a2199bd199fb4630501f55545342ea4)
+Cc: stable@vger.kernel.org # v6.16+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/swap.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_wa.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -882,11 +882,14 @@ out_finish:
- 	stop = ktime_get();
- 	if (!ret)
- 		ret = err2;
--	if (!ret)
-+	if (!ret) {
-+		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
-+		pr_info("Image size after compression: %d kbytes\n",
-+			(atomic_read(&compressed_size) / 1024));
- 		pr_info("Image saving done\n");
--	swsusp_show_speed(start, stop, nr_to_write, "Wrote");
--	pr_info("Image size after compression: %d kbytes\n",
--		(atomic_read(&compressed_size) / 1024));
-+	} else {
-+		pr_err("Image saving failed: %d\n", ret);
-+	}
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -883,6 +883,11 @@ static const struct xe_rtp_entry_sr lrc_
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3003), ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
+ 	},
++	{ XE_RTP_NAME("15016589081"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0),
++		       ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
++	},
+ };
  
- out_clean:
- 	hib_finish_batch(&hb);
+ static __maybe_unused const struct xe_rtp_entry oob_was[] = {
 
 
 
