@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8976CC795D7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00977C79372
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E16C4E2C75
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 206BE2C334
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB9D1F09B3;
-	Fri, 21 Nov 2025 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E39A2F656A;
+	Fri, 21 Nov 2025 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeDQpF1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWRFFmj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF4275B18;
-	Fri, 21 Nov 2025 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEABC26CE33;
+	Fri, 21 Nov 2025 13:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731644; cv=none; b=FUKaO2+/ohUFvaWOpSwI6UawtShMywbb2AFDzTz4aQYoluwbikQM3XBHyagOhk4+OApPyXy/Dn82WCFMt3cKZlmlQUuVyflbR2vMydnfPr9Ifg2l/OG/hEIg3yuMtF16qX8RJqekciCg6oTOUvyTyg/gYB9DxlD3gPHsRDq1JJ4=
+	t=1763731164; cv=none; b=jAZM6eFALkXaKc8w8Wz1l2L5PbobenYbT57RwKVhK0rCZkRKU1LdXolqMoQfaa7spJkmQJ0TXVHZEv7NC9JtbqZhtNLuWHbQqg2a1pjat6716KyC2ns13Kt4EJjHjFZNrM8M6Efi2zPNDIPEOPrYJVd3rmklLaSHTVlrtoun1/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731644; c=relaxed/simple;
-	bh=8qUL4Mrk7ez7jKywryLyaWAb2xkdufhYfsczvV32wws=;
+	s=arc-20240116; t=1763731164; c=relaxed/simple;
+	bh=tLFGxlgF42GbLxLXSHpHd2IDOz7Git4cvyj/I62glfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEXe1AMkjIhzbjqsQxUAkddRoSzF5Osk8/RMbsABktcdwE4rj9NiwiSWSZjEghKCtPXdPdjfoRGzPQL3HC9U/YDaYJekKsOU0G0Er+3VR0XjI6BWaXVIkU+EHUdLRxtOwnu9OtSSy6Q+RE7ntyorCaI8wjXKU4wVx5Z50wvvJBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeDQpF1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11529C116C6;
-	Fri, 21 Nov 2025 13:27:23 +0000 (UTC)
+	 MIME-Version; b=ISTNPcUiST4s+vPe7ywL2jNpy1u5o+OVwv9a3TYcnD/KqaUG9oMDLJdYLZZbdqdY5hFOxUrg9/PEi1zJN28i0CfSvzsw08rvhCEXn5RuSAzD2P1iwcPXamUPdUCzwV/G3xsswvSQoMDi9bjR09qVO2f24rnp4WQoLLtoisj/8Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWRFFmj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D23C4CEF1;
+	Fri, 21 Nov 2025 13:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731644;
-	bh=8qUL4Mrk7ez7jKywryLyaWAb2xkdufhYfsczvV32wws=;
+	s=korg; t=1763731164;
+	bh=tLFGxlgF42GbLxLXSHpHd2IDOz7Git4cvyj/I62glfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeDQpF1YvWfC0BMYd2YKiIDwMAnsmpT4wxBK0tH6eu2BIVPU+c2xC1utj6rOwwb0K
-	 MyRb+gLcn/PiB1+Vx9DDiojMoXKvthf0B9tG7JFahSQEUnKo4CdFCHlOrHquPEUlpR
-	 8SBEwsShDzyh4399WBXYzLSqkoJPnjWsKEKT+tLs=
+	b=xWRFFmj32Em8fIr3JfjP2xfeQ82ahPkMBCZrX5d2/q4VBuqSbgeV1paow+Mst81Np
+	 lyIWyxwXg3tW7rI05XjKfvrIMyNeWboc3BrE2/r6oojXHdn8bBW6cPiDv8nQuiMWsV
+	 IBuKcG3/XSpKn9RH8tvCzbtGky4Wfrnu5FhYrGj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Chao Yu <chao@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/185] erofs: avoid infinite loop due to incomplete zstd-compressed data
+Subject: [PATCH 6.17 111/247] NFSv4: Fix an incorrect parameter when calling nfs4_call_sync()
 Date: Fri, 21 Nov 2025 14:10:58 +0100
-Message-ID: <20251121130144.998155705@linuxfoundation.org>
+Message-ID: <20251121130158.568142826@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f2a12cc3b97f062186568a7b94ddb7aa2ef68140 ]
+[ Upstream commit 1f214e9c3aef2d0936be971072e991d78a174d71 ]
 
-Currently, the decompression logic incorrectly spins if compressed
-data is truncated in crafted (deliberately corrupted) images.
+The Smatch static checker noted that in _nfs4_proc_lookupp(), the flag
+RPC_TASK_TIMEOUT is being passed as an argument to nfs4_init_sequence(),
+which is clearly incorrect.
+Since LOOKUPP is an idempotent operation, nfs4_init_sequence() should
+not ask the server to cache the result. The RPC_TASK_TIMEOUT flag needs
+to be passed down to the RPC layer.
 
-Fixes: 7c35de4df105 ("erofs: Zstandard compression support")
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/r/50958.1761605413@localhost
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: 76998ebb9158 ("NFSv4: Observe the NFS_MOUNT_SOFTREVAL flag in _nfs4_proc_lookupp")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor_zstd.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/nfs/nfs4proc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/erofs/decompressor_zstd.c b/fs/erofs/decompressor_zstd.c
-index 7e177304967e1..24f4731a7a6d4 100644
---- a/fs/erofs/decompressor_zstd.c
-+++ b/fs/erofs/decompressor_zstd.c
-@@ -178,7 +178,6 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
- 	dctx.bounce = strm->bounce;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index e5fa29dcdd114..a1e95732fd031 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -4715,16 +4715,19 @@ static int _nfs4_proc_lookupp(struct inode *inode,
+ 	};
+ 	unsigned short task_flags = 0;
  
- 	do {
--		dctx.avail_out = out_buf.size - out_buf.pos;
- 		dctx.inbuf_sz = in_buf.size;
- 		dctx.inbuf_pos = in_buf.pos;
- 		err = z_erofs_stream_switch_bufs(&dctx, &out_buf.dst,
-@@ -194,14 +193,18 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
- 		in_buf.pos = dctx.inbuf_pos;
+-	if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
++	if (server->flags & NFS_MOUNT_SOFTREVAL)
+ 		task_flags |= RPC_TASK_TIMEOUT;
++	if (server->caps & NFS_CAP_MOVEABLE)
++		task_flags |= RPC_TASK_MOVEABLE;
  
- 		zerr = zstd_decompress_stream(stream, &out_buf, &in_buf);
--		if (zstd_is_error(zerr) || (!zerr && rq->outputsize)) {
-+		dctx.avail_out = out_buf.size - out_buf.pos;
-+		if (zstd_is_error(zerr) ||
-+		    ((rq->outputsize + dctx.avail_out) && (!zerr || (zerr > 0 &&
-+				!(rq->inputsize + in_buf.size - in_buf.pos))))) {
- 			erofs_err(sb, "failed to decompress in[%u] out[%u]: %s",
- 				  rq->inputsize, rq->outputsize,
--				  zerr ? zstd_get_error_name(zerr) : "unexpected end of stream");
-+				  zstd_is_error(zerr) ? zstd_get_error_name(zerr) :
-+					"unexpected end of stream");
- 			err = -EFSCORRUPTED;
- 			break;
- 		}
--	} while (rq->outputsize || out_buf.pos < out_buf.size);
-+	} while (rq->outputsize + dctx.avail_out);
+ 	args.bitmask = nfs4_bitmask(server, fattr->label);
  
- 	if (dctx.kout)
- 		kunmap_local(dctx.kout);
+ 	nfs_fattr_init(fattr);
++	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
+ 
+ 	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
+-	status = nfs4_call_sync(clnt, server, &msg, &args.seq_args,
+-				&res.seq_res, task_flags);
++	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
++				   &res.seq_res, task_flags);
+ 	dprintk("NFS reply lookupp: %d\n", status);
+ 	return status;
+ }
 -- 
 2.51.0
 
