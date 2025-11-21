@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-195851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FAEC79662
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE418C79463
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0A4C4E8151
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id E3B3B2D57A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A0326560A;
-	Fri, 21 Nov 2025 13:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD46E2F3632;
+	Fri, 21 Nov 2025 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9WD7PZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySSZSaFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38A61F03D7;
-	Fri, 21 Nov 2025 13:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4F61F09AC;
+	Fri, 21 Nov 2025 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731846; cv=none; b=ha3LXsWU/suPGwBf+HaXs+K3NAvrV/VXe/c6Isk9KOYIH94KCUMW8PQRAItLUN7bTpqLSOOvrKoYK90d6UYh6VXVLjNr73JzaBiwkng30rqWH9grX8xogwET5bq72HzdA7PSsNbHT28scp6JZhW0WsvNMUSjzcBP3/25O93T47Q=
+	t=1763731367; cv=none; b=hYy3qDHSzxF8uCfGjjj4y/aUDlJ0WXe7TAfr0Pqv5pcJF6PB1f2i+I5DAK6sXkU6pUT5PwFiFU0LGoOO5ccGb9EW1r66lO3HburZGD/2D+KyVGzWzJ+3STKLM3qMEj6pAi9doZX0rjdlNero6BYXEzfurJUMCJ3j64uCzeGdZvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731846; c=relaxed/simple;
-	bh=fx3QwFdjPNtp+4iQvGrrO5nC5aJMVUAzsgiVQpuK6lE=;
+	s=arc-20240116; t=1763731367; c=relaxed/simple;
+	bh=F3jJREo8zA39odiuepESpYen7GH14ur9/IlHRy1s8mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIVQWQYeT5c0obiXWZRIux9mQvJSNbBxymlKWTTz8ewB5jcECdBIUkkdN3fWCl21DsTNo+GzJlTBmyuWbYf5i0MQ5DzWqsn4SlMgzJZpj2hoziYoPN89luCMdAAblaR1frpKh6hWGp34jFvkL7qGweRW5u5aqZjjp95JxnSB8Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9WD7PZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDCDC4CEF1;
-	Fri, 21 Nov 2025 13:30:46 +0000 (UTC)
+	 MIME-Version; b=I5VJmfQW06wmwYr0cT1ZhcZy2cmNyDJi6aIcw5eE7Hl1spw22iVqBymKXe1ldejRoNDlLQD2+3iIgmhNrKLeYwsufZX15fkYpOj+tYZzJVAg6JkIIL2K8NDK0ehPgBzCqQM7PbuYUDAqwhlBqmR9dqg7tJvVFMpRE1p6AmvkbzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySSZSaFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD5C4CEF1;
+	Fri, 21 Nov 2025 13:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731846;
-	bh=fx3QwFdjPNtp+4iQvGrrO5nC5aJMVUAzsgiVQpuK6lE=;
+	s=korg; t=1763731367;
+	bh=F3jJREo8zA39odiuepESpYen7GH14ur9/IlHRy1s8mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9WD7PZzKu4K7btFUWHMwe7Yu0Xs/v3Vma+4DYPt+fC9S9KktlzNRagbMbORMZrnl
-	 UDM7vN8YjwT6K1dweynlTb6wG1Ti8oGOM5pz/PYrIpJb2MkTMKinomDaOtAyu9W8zs
-	 k4ldtDdltlYaWdNTHIpZlNMN0b69NhEAq1Lm5AkA=
+	b=ySSZSaFY7unW7BDxFhcx1x/0+XwXlrOK0nMK5QmDCvwv687Iqu+C6FJKO0LxM981s
+	 USyeZe8yZNANU3ula6VtzgkedCM/lUelMAd6glfGj1+ZMcHSE7OGs4MWKCEC8G6OTn
+	 F09gq6OwXMk9Msyynv0uOxzfGB2BQ8pgufmL+G9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/185] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+	Wei Yang <albinwyang@tencent.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 182/247] fs/proc: fix uaf in proc_readdir_de()
 Date: Fri, 21 Nov 2025 14:12:09 +0100
-Message-ID: <20251121130147.554088249@linuxfoundation.org>
+Message-ID: <20251121130201.255337759@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Ichikawa <masami256@gmail.com>
+From: Wei Yang <albinwyang@tencent.com>
 
-[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
+commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
 
-Use a scope-based cleanup helper for the buffer allocated with kmalloc()
-in ntrig_report_version() to simplify the cleanup logic and prevent
-memory leaks (specifically the !hid_is_usb()-case one).
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
 
-[jkosina@suse.com: elaborate on the actual existing leak]
-Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
-Signed-off-by: Masami Ichikawa <masami256@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
+
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
+
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
+
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
+
+CPU 0                                      |    CPU 1
+-------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
+
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
+
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ntrig.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
-index 0f76e241e0afb..a7f10c45f62bd 100644
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
- 	int ret;
- 	char buf[20];
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
--	unsigned char *data = kmalloc(8, GFP_KERNEL);
-+	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
- 
- 	if (!hid_is_usb(hdev))
- 		return;
- 
- 	if (!data)
--		goto err_free;
-+		return;
- 
- 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
- 			      USB_REQ_CLEAR_FEATURE,
-@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
- 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
- 			 buf, data[2], data[3], data[4], data[5]);
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -698,6 +698,12 @@ void pde_put(struct proc_dir_entry *pde)
  	}
--
--err_free:
--	kfree(data);
  }
  
- static ssize_t show_phys_width(struct device *dev,
--- 
-2.51.0
-
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
++
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -720,7 +726,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
+ 		}
+@@ -764,7 +770,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
+ 
+ 	de = root;
+ 	while (1) {
+@@ -776,7 +782,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
+ 			}
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
 
 
 
