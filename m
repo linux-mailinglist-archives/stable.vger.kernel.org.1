@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9412DC79EC4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6139EC797F9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20A6E4EDF27
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id EC8592E095
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A4B34F24D;
-	Fri, 21 Nov 2025 13:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722A9332904;
+	Fri, 21 Nov 2025 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl+0UWOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBxr3LVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA16346E6E;
-	Fri, 21 Nov 2025 13:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCCC2765FF;
+	Fri, 21 Nov 2025 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733227; cv=none; b=rj5Tf9nr+HpONsTsWehFNXUJ9aDGQ8MRMqVu4507LoD9zv8rClMpDSl/pfG2YSZZSUqkxD23KS2gS40MV6WZuD94lmwh5J/hNUsJ5X6/0LdIzbHkUxQZRlhgY3/fyHsAOTZO+GH1PlslsYUfN20oplSFKNPnotzZjtgViYXKa9E=
+	t=1763731752; cv=none; b=Kig3/B50tjBDlcuPXfrsou39GW9w7HrJHI+WDUeLp2lqOSR2fQUJkxLZgQP0ONhLISqyVcB6evhOHzQD7gMJ999ahMVtEZr1I7MtSNhJx0M9uQtRrZ9KJG+dtxyshP39jkZvBUUZYvF8grliOYXAHwk9T1WuOmxo2x7B/S9vgSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733227; c=relaxed/simple;
-	bh=smd++kgRC+pjDfzp86JzRdRyqGXcw6npZk7P8A2M5U0=;
+	s=arc-20240116; t=1763731752; c=relaxed/simple;
+	bh=0qtrjcL2rk+T6cyFtB9nEahQOMudTjvb59RSeWfr2bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyFLZ2iVC22mdeF4NPV5RdF590BO6HdGVWDQckWVEk4t3/d7awr1BCiuTDS1ac4APf7aSH4Z+MMJbLJbFFBOb+HZtZouWUq8CXB2SvKc69k5FYJXXoxqdyZhqSWHjzz82vyHxp1mtYwOYinMAR26N2rl463EleP1K1DnuH+zUCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl+0UWOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4F2C116C6;
-	Fri, 21 Nov 2025 13:53:46 +0000 (UTC)
+	 MIME-Version; b=frTRFhndcmDsevh9KMSD59yoMEwk/kPYZ0RgkJuveFCeGy2Meb1/ZPqisdiMSGS6bgsyW8WFvHrUSyzEJ31bUnjUWFXPynM4czyte1UlnB3es4E/ozYeAs8XK4d8vtURM+sPWotACuABDd09eAiyLSn078IJuWNIp59qsmD6Lw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBxr3LVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4556C4CEF1;
+	Fri, 21 Nov 2025 13:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733227;
-	bh=smd++kgRC+pjDfzp86JzRdRyqGXcw6npZk7P8A2M5U0=;
+	s=korg; t=1763731752;
+	bh=0qtrjcL2rk+T6cyFtB9nEahQOMudTjvb59RSeWfr2bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fl+0UWOdV/6pTC4RYFCieE1ucA/THg9OEnUinNiW5/cOb53r9JGVZXqhdkK93Zgt5
-	 Gfj8bSi8GemLR0q7qJTk2IUDKPb5/8V+TTCPMJ5tmfVzR1o6oWR8p32QDjTlIXoL59
-	 H9FTnkDIdFZgGyuqk2a8oqZxUroOchHPPu6w87To=
+	b=tBxr3LVJ8i07QejVqKW6I1oAW5DXxcvrbVZnUvvVSnWcLLNTfEQ3K8EsBJ6hri+D0
+	 tkOPHhJp+am2nl5G8Has6zZEI3GuTc3PJQhGc6hnQX5vUZb5LhrortR+5+e5oAdAU2
+	 OxiZYXujlLZiw96F7iXPWmrTU/hLV4oxIVjaUNK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 396/529] net: fec: correct rx_bytes statistic for the case SHIFT16 is set
+Subject: [PATCH 6.12 068/185] regulator: fixed: fix GPIO descriptor leak on register failure
 Date: Fri, 21 Nov 2025 14:11:35 +0100
-Message-ID: <20251121130245.112317614@linuxfoundation.org>
+Message-ID: <20251121130146.329569605@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit ad17e7e92a7c52ce70bb764813fcf99464f96903 ]
+[ Upstream commit 636f4618b1cd96f6b5a2b8c7c4f665c8533ecf13 ]
 
-Two additional bytes in front of each frame received into the RX FIFO if
-SHIFT16 is set, so we need to subtract the extra two bytes from pkt_len
-to correct the statistic of rx_bytes.
+In the commit referenced by the Fixes tag,
+devm_gpiod_get_optional() was replaced by manual
+GPIO management, relying on the regulator core to release the
+GPIO descriptor. However, this approach does not account for the
+error path: when regulator registration fails, the core never
+takes over the GPIO, resulting in a resource leak.
 
-Fixes: 3ac72b7b63d5 ("net: fec: align IP header in hardware")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251106021421.2096585-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add gpiod_put() before returning on regulator registration failure.
+
+Fixes: 5e6f3ae5c13b ("regulator: fixed: Let core handle GPIO descriptor")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251028172828.625-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/regulator/fixed.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 64cd72c194783..ee0306ab97714 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1776,6 +1776,8 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
- 		ndev->stats.rx_packets++;
- 		pkt_len = fec16_to_cpu(bdp->cbd_datlen);
- 		ndev->stats.rx_bytes += pkt_len;
-+		if (fep->quirks & FEC_QUIRK_HAS_RACC)
-+			ndev->stats.rx_bytes -= 2;
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index 1cb647ed70c62..a2d16e9abfb58 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -334,6 +334,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
+ 		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
+ 				    "Failed to register regulator: %ld\n",
+ 				    PTR_ERR(drvdata->dev));
++		gpiod_put(cfg.ena_gpiod);
+ 		return ret;
+ 	}
  
- 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
- 		page = rxq->rx_skb_info[index].page;
 -- 
 2.51.0
 
