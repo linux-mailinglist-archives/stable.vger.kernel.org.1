@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39805C793C5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B746C79D32
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id EE3BA2B273
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 1187D2DB8F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E912B27B358;
-	Fri, 21 Nov 2025 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE50A2FC88B;
+	Fri, 21 Nov 2025 13:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdDFb8kD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYptSoq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7685275B18;
-	Fri, 21 Nov 2025 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBF534165F;
+	Fri, 21 Nov 2025 13:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731265; cv=none; b=XRNNmW5h1n0PRCKHvecghPt7yL5bsa8SoVIZP14TBqD3pVtasYXvc9WWNVj5dMXmu4JQYKk6upBYGn93P3BKblEkVO0rjFlXuby08SVmiJUu4P1XSEp6kR0jIhkvIfc0XsFT78VqkTMhdsBmBBe9K1F8oCTD3/s8q8fVIrffi9M=
+	t=1763733221; cv=none; b=hO0tUa/htxElKZWcLfHEJyqO2UIuZRKyNn6I41yNK1pTJzVrv2NQYTT7LB1kt3tyJCtnhHDMisV+Na0ptw1+HZdZgOPBIjofa3z7p+j3+JI985U97Ws7Ud3HRlE3JcYhp7605u761qfpH+JLBe8QRsxzYWLbn3PxnSL3COhcunw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731265; c=relaxed/simple;
-	bh=WI6EwGNQ2gpN4PntncwU1GQEddG7qgq9rc/8V7UbZjE=;
+	s=arc-20240116; t=1763733221; c=relaxed/simple;
+	bh=IuboJO4YFa4cwbTDZGFkoOy/DJpIP/0XzuAxsGA06DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UKvbp51nOWCR0mcs7AD67oBuOe0IXrmSFX3bVZsY4Ck1qOjrjQ/pylrsCWbtYUPiXg89lWBqibkIaWL/EyNtp6vOnDJM7FAiyQ0IrK0yIeUq6t5hnuogjwval7ThgKXa2+cSZ6iuAmUW23Ibc9Vbpr5Cj+kj4MQCD0PJilQ8iBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdDFb8kD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B2FC4CEF1;
-	Fri, 21 Nov 2025 13:21:03 +0000 (UTC)
+	 MIME-Version; b=TdINsj7nj92CmMSsADe818RMSAQGXPkLp2bAYummjCql4lCJd5ue6UK8w50jQj9qivdhUN6ea0+MWQwOE2gls18uHe2vhBUjSxZbTNmRKlVpUKAAJ7dEB3bJ9/YkBYUSbx3Y+/eBmHAOkZrymdLiWVbpyHBaosfkPIIMesVa2T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYptSoq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3362C4CEF1;
+	Fri, 21 Nov 2025 13:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731264;
-	bh=WI6EwGNQ2gpN4PntncwU1GQEddG7qgq9rc/8V7UbZjE=;
+	s=korg; t=1763733221;
+	bh=IuboJO4YFa4cwbTDZGFkoOy/DJpIP/0XzuAxsGA06DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdDFb8kDlPEL0iHXq4s+7PvMjjS42ELMnArgHDXXpeqre0kAx8POC6oVTvaXYiw/R
-	 dv2ucIvrvHwUyMUlFwg8QLyvxvnngxujs6lHMeVe5J2TMDObnEaUwNmC7udjmVglIn
-	 MU+wCgiMaiqRuXRYahdBa4Mx6UAFZ/ctZHII72k4=
+	b=FYptSoq40XWJd8hVOW45g6Squ43XQkEToJuHcPF8sZ5ZoH7j9b5oa1da9J+XliyyW
+	 BH34+claX0aL0yVNmTD/dkz6sIOwCsxustkOazmF3YCDEK9gSZZq+p1gaJT8KAg8YA
+	 msXKPukB3LCQwc7WmDawv7CGVmOv1Ho25LSNe6R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luke Wang <ziniu.wang_1@nxp.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Liu Ying <victor.liu@nxp.com>
-Subject: [PATCH 6.17 146/247] pwm: adp5585: Correct mismatched pwm chip info
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 394/529] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
 Date: Fri, 21 Nov 2025 14:11:33 +0100
-Message-ID: <20251121130159.963560084@linuxfoundation.org>
+Message-ID: <20251121130245.041673418@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit f84fd5bec502447df145f31734793714690ce27f ]
+[ Upstream commit 9065b968752334f972e0d48e50c4463a172fc2a7 ]
 
-The register addresses of ADP5585 and ADP5589 are swapped.
+When reporting tx completion using ieee80211_tx_status_xxx() family of
+functions, the status part of the struct ieee80211_tx_info nested in the
+skb is used to report things like transmit rates & retry count to mac80211
 
-Fixes: 75024f97e82e ("pwm: adp5585: add support for adp5589")
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Tested-by: Liu Ying <victor.liu@nxp.com> # ADP5585 PWM
-Link: https://patch.msgid.link/20251114065308.2074893-1-ziniu.wang_1@nxp.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+On the TX data path, this is correctly memset to 0 before calling
+ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
+
+This leads to mac80211 treating garbage values as valid transmit counters
+(like tx retries for example) and accounting them as real statistics that
+makes their way to userland via station dump.
+
+The same issue was resolved in ath12k by commit 9903c0986f78 ("wifi:
+ath12k: Add memset and update default rate value in wmi tx completion")
+
+Tested-on: QCN9074 PCI WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251104083957.717825-1-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-adp5585.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pwm/pwm-adp5585.c b/drivers/pwm/pwm-adp5585.c
-index dc2860979e24e..806f8d79b0d7b 100644
---- a/drivers/pwm/pwm-adp5585.c
-+++ b/drivers/pwm/pwm-adp5585.c
-@@ -190,13 +190,13 @@ static int adp5585_pwm_probe(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 31dbabc9eaf33..16687223bdcba 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5841,6 +5841,9 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
--static const struct adp5585_pwm_chip adp5589_pwm_chip_info = {
-+static const struct adp5585_pwm_chip adp5585_pwm_chip_info = {
- 	.pwm_cfg = ADP5585_PWM_CFG,
- 	.pwm_offt_low = ADP5585_PWM_OFFT_LOW,
- 	.pwm_ont_low = ADP5585_PWM_ONT_LOW,
- };
- 
--static const struct adp5585_pwm_chip adp5585_pwm_chip_info = {
-+static const struct adp5585_pwm_chip adp5589_pwm_chip_info = {
- 	.pwm_cfg = ADP5589_PWM_CFG,
- 	.pwm_offt_low = ADP5589_PWM_OFFT_LOW,
- 	.pwm_ont_low = ADP5589_PWM_ONT_LOW,
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
++	info->status.rates[0].idx = -1;
++
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) &&
+ 	    !tx_compl_param->status) {
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
 -- 
 2.51.0
 
