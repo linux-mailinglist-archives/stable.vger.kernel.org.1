@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-195886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5855C797F6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16ACCC7A1EC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 31701363CA4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id F057833D7F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2F0341ADF;
-	Fri, 21 Nov 2025 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F19034EF16;
+	Fri, 21 Nov 2025 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs6++k7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bu7wTVEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C23F9D2;
-	Fri, 21 Nov 2025 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D0534EF04;
+	Fri, 21 Nov 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731947; cv=none; b=WmUfClZBwgJC9ALfTr4ESzVrzs0pjt2+dRV5qvE73h3nBrEisa2bWuB8rlDyUadOrCVVGaukJMCU9u/GUwf3JIO5uVu0DUN+o2zuTQ6npGZ9oylj6HBUCmhVfjFKjR92fhjarqdy1U97q0FCEWNwLcGv5xhZEXYKboeQ2YWLbO8=
+	t=1763733427; cv=none; b=sH9JswB6gf3xB9b7KBm6qD0juhNxwjK4fwnIUKu/EPjgBQhhmZDiChGKo/9YYLdxIBwbQZP5egn6GHCjm201wmqsX3La7pxUVDR2sRvH4hetw8TyowyKOOAuRDGvQ9O+qrWP0XDqA1wCqFflJl3ekkFQO6ptjr0Vy8/K4aieBoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731947; c=relaxed/simple;
-	bh=1KkAKOm18ohaa21aE2xtye2Nq/0JV1RmXAbYny6DgU4=;
+	s=arc-20240116; t=1763733427; c=relaxed/simple;
+	bh=HBBzTiuHRHCjr6N5jEBnYakwN0zleI7S5HV6SiXTo1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=An8vEfVlqximnDmLTMLFgDempl4ZwFzIsCabTgbWdpUk7ZL9icTxfSv63aSlpVRSWWmoPjXCCo4+foJuM+ezTNhc/l7Prh1FJ3B6kb/gSYQLozESuvXvh8YtEMR+qQuifFRKSglVyIsOQydZrUifu0KY8JvjrB9m+1jH/EgqBWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs6++k7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED70EC4CEFB;
-	Fri, 21 Nov 2025 13:32:26 +0000 (UTC)
+	 MIME-Version; b=VkpHG42uKUiVKXQb8Aopg7mMMKHU+Ii+5/kblidF02iFeNTQTZ4K7Y8LuCqNbDrX33YlSzEE4PH/z5Bld1GqZY/nSOc/qMigUD0QImYnDMt+46TFYSqM6n2j5DqSn6j7weAHPSv7v6e1tawBr5p1fau8xYx51hjT453DaXQbbpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bu7wTVEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E717C4CEF1;
+	Fri, 21 Nov 2025 13:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731947;
-	bh=1KkAKOm18ohaa21aE2xtye2Nq/0JV1RmXAbYny6DgU4=;
+	s=korg; t=1763733427;
+	bh=HBBzTiuHRHCjr6N5jEBnYakwN0zleI7S5HV6SiXTo1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vs6++k7Y3IlvVOorGvZ3HCrgnaWgsZWziLuQ8Ls5Ol5zyu62NUXQ9JVT8X3iGT0W8
-	 hqCtHsrJBSX9jw+K4t3HuXrzsZS27HfL61NEI2jtrcTpZeTUQqID8CBKUK9dZPSo5v
-	 Pp0mA4fjIz3fVDkqtCP7JMppdnCn0cSvJFNl7JaM=
+	b=bu7wTVEOkuh4lEUsOP/rP59MXuzVajtqDHJC27geg7HykcnV5GX3WlqXjN8m24Rzm
+	 /LlaGpvNcgY85OCYJzTe7rQPOh9kiIqxSZzGlqTaVBMg7LODidqWHOFbWuHaM2qnIz
+	 jHi4tv6qcvBA+M8fivPBybfjvQ2P8FMt9rh+FHRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	sunliming <sunliming@kylinos.cn>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 137/185] selftests/user_events: fix type cast for write_index packed member in perf_test
+	Joshua Rogers <linux@joshua.hu>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 465/529] ksmbd: close accepted socket when per-IP limit rejects connection
 Date: Fri, 21 Nov 2025 14:12:44 +0100
-Message-ID: <20251121130148.817740095@linuxfoundation.org>
+Message-ID: <20251121130247.554835332@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 216158f063fe24fb003bd7da0cd92cd6e2c4d48b upstream.
+commit 98a5fd31cbf72d46bf18e50b3ab0ce86d5f319a9 upstream.
 
-Accessing 'reg.write_index' directly triggers a -Waddress-of-packed-member
-warning due to potential unaligned pointer access:
+When the per-IP connection limit is exceeded in ksmbd_kthread_fn(),
+the code sets ret = -EAGAIN and continues the accept loop without
+closing the just-accepted socket. That leaks one socket per rejected
+attempt from a single IP and enables a trivial remote DoS.
 
-perf_test.c:239:38: warning: taking address of packed member 'write_index'
-of class or structure 'user_reg' may result in an unaligned pointer value
-[-Waddress-of-packed-member]
-  239 |         ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-      |                                             ^~~~~~~~~~~~~~~
+Release client_sk before continuing.
 
-Since write(2) works with any alignment. Casting '&reg.write_index'
-explicitly to 'void *' to suppress this warning.
+This bug was found with ZeroPath.
 
-Link: https://lkml.kernel.org/r/20251106095532.15185-1-ankitkhushwaha.linux@gmail.com
-Fixes: 42187bdc3ca4 ("selftests/user_events: Add perf self-test for empty arguments events")
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Cc: Beau Belgrave <beaub@linux.microsoft.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: sunliming <sunliming@kylinos.cn>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/user_events/perf_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_tcp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/user_events/perf_test.c
-+++ b/tools/testing/selftests/user_events/perf_test.c
-@@ -236,7 +236,7 @@ TEST_F(user, perf_empty_events) {
- 	ASSERT_EQ(1 << reg.enable_bit, self->check);
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -286,8 +286,11 @@ static int ksmbd_kthread_fn(void *p)
+ 			}
+ 		}
+ 		up_read(&conn_list_lock);
+-		if (ret == -EAGAIN)
++		if (ret == -EAGAIN) {
++			/* Per-IP limit hit: release the just-accepted socket. */
++			sock_release(client_sk);
+ 			continue;
++		}
  
- 	/* Ensure write shows up at correct offset */
--	ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-+	ASSERT_NE(-1, write(self->data_fd, (void *)&reg.write_index,
- 					sizeof(reg.write_index)));
- 	val = (void *)(((char *)perf_page) + perf_page->data_offset);
- 	ASSERT_EQ(PERF_RECORD_SAMPLE, *val);
+ skip_max_ip_conns_limit:
+ 
 
 
 
