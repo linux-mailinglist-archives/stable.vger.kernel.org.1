@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-195902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A091C796F4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C72BC7968D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 9F1402A445
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 78D3F2CF5E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA6F332904;
-	Fri, 21 Nov 2025 13:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA5E2F3632;
+	Fri, 21 Nov 2025 13:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biJIYw1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksQP/REX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90360339B3C;
-	Fri, 21 Nov 2025 13:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897B12DEA7E;
+	Fri, 21 Nov 2025 13:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731994; cv=none; b=W/X8KDWCpjpyXhYTxaYd2vzy2a8NBtedweNLy2tjWXtinwoPF/P21H2XFY+1JOC09lSE8o3shMEN8RXDV/YKBaTQsPFUFX7a8Qnn148bAHT7xnaC9cjEac3V9B4TxaKoJuW5Kxg0NNqyU7WbRuMqAsv3s3dLzssDGh7xeXL+rFM=
+	t=1763731569; cv=none; b=s/jJicej6Bp3MMJyTbwHPkon/3SaiZlP1p+VcuG/5Fe1/93uonbUCTDt5nfGTvFhf21wOjEK7Gfm18pyD0HKSRMX0C+DSiSa3vJV5OuU3zgBfltZu8U7f8tDvW6kPGkU9betGb0ONrtKjl1JSNzGtBSUrbApE56mLBzouD4PB/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731994; c=relaxed/simple;
-	bh=aWB4aE7a+42vREeaTq1zzefnYbM8blMqpcbl82HRhdo=;
+	s=arc-20240116; t=1763731569; c=relaxed/simple;
+	bh=mC+fmEmBNFsVgyvfygXAz120aPw1NapGHIgwn8d41Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fptm6SaQhhKD0a0Bd1jdlDucXH6LMZtG5P0otxQD64ok4Ia3WvGsQQIMM34w7b3QxgtibnUiL7IinB91A5ECEQKNaXq9DTW1dOIzIQdO/YnYgEtDuz2fJK1Aqm1ao+SwdmNzCzLjt8fyr/VcEngVKXmYrPWfDaz1XYsr0tzyYXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biJIYw1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF8C4CEF1;
-	Fri, 21 Nov 2025 13:33:13 +0000 (UTC)
+	 MIME-Version; b=HzPzB39jiei6ovvg8pKEpMSSgij1kwGBjhQ3HFgbrbMDnrEWHKvUtq/lSlI0UGxgDR+fNkaJeEKXhYhQ4m7hw0LkMTliQVB4OsY9WabqeMOFYzC7pzBiDLkXJGnGNEIadd6hP0shlxwTFx/++ldEIiVblkiNddWZiSySoBnZ3l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksQP/REX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AB0C4CEF1;
+	Fri, 21 Nov 2025 13:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731993;
-	bh=aWB4aE7a+42vREeaTq1zzefnYbM8blMqpcbl82HRhdo=;
+	s=korg; t=1763731569;
+	bh=mC+fmEmBNFsVgyvfygXAz120aPw1NapGHIgwn8d41Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=biJIYw1Pqth7c2+v5qthZk5xmgYWU0HkU035xe0Ar/vJsq2oiY+EWItzm297JwYuB
-	 Y/GqW1AKucIkSM9WaTOAfbEdrxGxaln13H+yIVR7GPA/N2Vod3DrVrSDw07cV/ng/E
-	 mjvGAAualEZ/DBy2pOmtMPRzYUbQ5r90tf1YnA14=
+	b=ksQP/REXXSlcvzTNlXFbCVETKhdSpYgdfDlSiOlaIlYYV6WCwrArtiwQtrZaEa3Tb
+	 tyKPWpXsRe+EAyEO0jY9+1kPYDIkOA6jcN/Pnke4jSpHhqNv9QcPdAOF3dGTbVofwF
+	 5eMybjGRTcSY+aCGcj6CsY1YpIWWjuKJqnxSOqIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 151/185] pmdomain: imx: Fix reference count leak in imx_gpc_remove
-Date: Fri, 21 Nov 2025 14:12:58 +0100
-Message-ID: <20251121130149.327486151@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 232/247] selftests: mptcp: join: endpoints: longer transfer
+Date: Fri, 21 Nov 2025 14:12:59 +0100
+Message-ID: <20251121130203.060859144@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 upstream.
+commit 6457595db9870298ee30b6d75287b8548e33fe19 upstream.
 
-of_get_child_by_name() returns a node pointer with refcount incremented, we
-should use of_node_put() on it when not needed anymore. Add the missing
-of_node_put() to avoid refcount leak.
+In rare cases, when the test environment is very slow, some userspace
+tests can fail because some expected events have not been seen.
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to make the
+connection longer. This connection will be killed at the end, after the
+verifications, so making it longer doesn't change anything, apart from
+avoid it to end before the end of the verifications
+
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now sharing a longer file (128KB) at slow speed.
+
+Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: e274f7154008 ("selftests: mptcp: add subflow limits test-cases")
+Fixes: b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-3-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/gpc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -537,6 +537,8 @@ static void imx_gpc_remove(struct platfo
- 			return;
- 		}
- 	}
-+
-+	of_node_put(pgc_node);
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3757,7 +3757,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		{ speed=slow \
++		{ test_linkfail=128 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- static struct platform_driver imx_gpc_driver = {
+@@ -3784,7 +3784,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		{ test_linkfail=4 speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
+@@ -3862,7 +3862,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		{ test_linkfail=4 speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
+@@ -3935,7 +3935,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		{ test_linkfail=4 speed=20 \
++		{ test_linkfail=128 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
 
 
 
