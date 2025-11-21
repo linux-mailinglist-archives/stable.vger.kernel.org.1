@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-195954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161DFC79971
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:45:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB723C799FB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 91F05365CBF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:37:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 17307381AF1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67B134A786;
-	Fri, 21 Nov 2025 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C001337B90;
+	Fri, 21 Nov 2025 13:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYoyVRtg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+nsnZIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921C1346A06;
-	Fri, 21 Nov 2025 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A2234C802;
+	Fri, 21 Nov 2025 13:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732143; cv=none; b=m5qGlkRTSgL1h0SJ2HkCfNIvAdPqfDJRYMC8/BcHJK7TGUnDYtxKLwI4QwNsBrAcTtVh6WZpbtyI8iPXmUvYbhTvvjjdp2xla7NOIpGihbCNrFLDO9zU4Qdzid1VkrWBiQYRYPKP2iD+gcz43AC7UUjypdn50F+0Yt4Z8uG2Ygk=
+	t=1763732149; cv=none; b=TFOrhCqD7LBEhbp2oXgu2mBKVNV8XfVZIiOujqfTTHhVfW2oDcqBxSdKg1bUcLuFr77bxc3AUu1/6qEEzDTtxuCo+WeTme8O4zuHaV7l9gNGK+zv/VoQc3nHcHGu2S+kpPT4TuHgxkcrdFd7DX3gmYJzQn5qHeEmmz7AIuIyTvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732143; c=relaxed/simple;
-	bh=CQsCZugfXZwXbWt/bfpLZRdy5pFE2ZA2c42XigCUCqI=;
+	s=arc-20240116; t=1763732149; c=relaxed/simple;
+	bh=wO5aYqaYisTEaZDl1d9E9FmZ4xb3qPdWxEOL08TTPvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipALYQ0B3FNp0WikiYUCEaKY+Q86RoaxHwHfkdXQ20UVztQS/eDLnipUHav74ma87nKI5WbS+zBUbS5NL91sOCcUV44yeUS/fE5GHaPQaj/yyIWMITEVEN25+Ftis4hc7vGNYjtq6c6XD9LyLPQunRP5kZjQC6uWeQWTHNPneNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYoyVRtg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2E9C4CEFB;
-	Fri, 21 Nov 2025 13:35:42 +0000 (UTC)
+	 MIME-Version; b=fo6F2BToON4rq90ONUva2Z2Twnjm0+glxtm3R0RgxnFZ8hL8+tsH4qdlJbdrpvdh1rKsfJ6F59IoBklH2RxDK6/6PJDfsN4+d2xjct5WYpfS2Q5m31bVUsD+n3s/eq8U5S4N3d2lhK/qESrZLkCrRdaWXeL4GEjgVd7ek+zqu84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+nsnZIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722F4C4CEF1;
+	Fri, 21 Nov 2025 13:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732143;
-	bh=CQsCZugfXZwXbWt/bfpLZRdy5pFE2ZA2c42XigCUCqI=;
+	s=korg; t=1763732148;
+	bh=wO5aYqaYisTEaZDl1d9E9FmZ4xb3qPdWxEOL08TTPvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYoyVRtgI76C5p7xW14TXBE+VdLIjAZSKIwZKWUYEtrDBEjce8b0/7jzBQmUk+AsP
-	 qagGyxO83km60ByOxpOSkpd0s1ZDDyMGCHfMFSlMUMHd1FwqA+EFugi0A4wb1RSAlT
-	 NauN6HbQPlgPQkoAnMnkrWD4TjwCYPBtpe39uyFQ=
+	b=M+nsnZIooNrZrY7zQ+pps1vtyN9nHeX2aw4PBU0cHj4Xe/soQrqxoRkUzwgq58nIy
+	 f0RZaRoO1paC/TEUyzUfj4TNavsREZoF1qVXchoeB1mM9lblR/CKlNqyyYz2sYGzxQ
+	 GTb13c2ZjPLWl343GQDBaeRKD3PnciiUznclCTAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik M <quic_karm@quicinc.com>,
-	Muna Sinada <muna.sinada@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/529] wifi: ath12k: free skb during idr cleanup callback
-Date: Fri, 21 Nov 2025 14:05:18 +0100
-Message-ID: <20251121130231.685464175@linuxfoundation.org>
+Subject: [PATCH 6.6 020/529] drm/msm/a6xx: Fix GMU firmware parser
+Date: Fri, 21 Nov 2025 14:05:19 +0100
+Message-ID: <20251121130231.720733489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -69,105 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karthik M <quic_karm@quicinc.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 92282074e1d2e7b6da5c05fe38a7cc974187fe14 ]
+[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
 
-ath12k just like ath11k [1] did not handle skb cleanup during idr
-cleanup callback. Both ath12k_mac_vif_txmgmt_idr_remove() and
-ath12k_mac_tx_mgmt_pending_free() performed idr cleanup and DMA
-unmapping for skb but only ath12k_mac_tx_mgmt_pending_free() freed
-skb. As a result, during vdev deletion a memory leak occurs.
+Current parser logic for GMU firmware assumes a dword aligned payload
+size for every block. This is not true for all GMU firmwares. So, fix
+this by using correct 'size' value in the calculation for the offset
+for the next block's header.
 
-Refactor all clean up steps into a new function. New function
-ath12k_mac_tx_mgmt_free() creates a centralized area where idr
-cleanup, DMA unmapping for skb and freeing skb is performed. Utilize
-skb pointer given by idr_remove(), instead of passed as a function
-argument because IDR will be protected by locking. This will prevent
-concurrent modification of the same IDR.
-
-Now ath12k_mac_tx_mgmt_pending_free() and
-ath12k_mac_vif_txmgmt_idr_remove() call ath12k_mac_tx_mgmt_free().
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Link: https://lore.kernel.org/r/1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com > # [1]
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Karthik M <quic_karm@quicinc.com>
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250923220316.1595758-1-muna.sinada@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/674040/
+Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 34 ++++++++++++++-------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index e1db6e69d2207..010413bfdb141 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4743,23 +4743,32 @@ static void ath12k_mgmt_over_wmi_tx_drop(struct ath12k *ar, struct sk_buff *skb)
- 		wake_up(&ar->txmgmt_empty_waitq);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index c50aafa0ecdb6..e816ddcac2f8d 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -693,6 +693,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ 	return true;
  }
  
--int ath12k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
-+static void ath12k_mac_tx_mgmt_free(struct ath12k *ar, int buf_id)
++#define NEXT_BLK(blk) \
++	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
++
+ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
  {
--	struct sk_buff *msdu = skb;
-+	struct sk_buff *msdu;
- 	struct ieee80211_tx_info *info;
--	struct ath12k *ar = ctx;
--	struct ath12k_base *ab = ar->ab;
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+@@ -723,7 +726,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
  
- 	spin_lock_bh(&ar->txmgmt_idr_lock);
--	idr_remove(&ar->txmgmt_idr, buf_id);
-+	msdu = idr_remove(&ar->txmgmt_idr, buf_id);
- 	spin_unlock_bh(&ar->txmgmt_idr_lock);
--	dma_unmap_single(ab->dev, ATH12K_SKB_CB(msdu)->paddr, msdu->len,
-+
-+	if (!msdu)
-+		return;
-+
-+	dma_unmap_single(ar->ab->dev, ATH12K_SKB_CB(msdu)->paddr, msdu->len,
- 			 DMA_TO_DEVICE);
+ 	for (blk = (const struct block_header *) fw_image->data;
+ 	     (const u8*) blk < fw_image->data + fw_image->size;
+-	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
++	     blk = NEXT_BLK(blk)) {
+ 		if (blk->size == 0)
+ 			continue;
  
- 	info = IEEE80211_SKB_CB(msdu);
- 	memset(&info->status, 0, sizeof(info->status));
- 
--	ath12k_mgmt_over_wmi_tx_drop(ar, skb);
-+	ath12k_mgmt_over_wmi_tx_drop(ar, msdu);
-+}
-+
-+int ath12k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
-+{
-+	struct ath12k *ar = ctx;
-+
-+	ath12k_mac_tx_mgmt_free(ar, buf_id);
- 
- 	return 0;
- }
-@@ -4768,17 +4777,10 @@ static int ath12k_mac_vif_txmgmt_idr_remove(int buf_id, void *skb, void *ctx)
- {
- 	struct ieee80211_vif *vif = ctx;
- 	struct ath12k_skb_cb *skb_cb = ATH12K_SKB_CB(skb);
--	struct sk_buff *msdu = skb;
- 	struct ath12k *ar = skb_cb->ar;
--	struct ath12k_base *ab = ar->ab;
- 
--	if (skb_cb->vif == vif) {
--		spin_lock_bh(&ar->txmgmt_idr_lock);
--		idr_remove(&ar->txmgmt_idr, buf_id);
--		spin_unlock_bh(&ar->txmgmt_idr_lock);
--		dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len,
--				 DMA_TO_DEVICE);
--	}
-+	if (skb_cb->vif == vif)
-+		ath12k_mac_tx_mgmt_free(ar, buf_id);
- 
- 	return 0;
- }
 -- 
 2.51.0
 
