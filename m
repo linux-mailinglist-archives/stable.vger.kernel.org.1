@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4030C796B5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA5FC794E4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 6F44633779
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B023335FB50
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089212DEA7E;
-	Fri, 21 Nov 2025 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164142DEA7E;
+	Fri, 21 Nov 2025 13:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXVH3M82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COLTj78G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E6D26CE33;
-	Fri, 21 Nov 2025 13:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CB727147D;
+	Fri, 21 Nov 2025 13:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731586; cv=none; b=Bj2OmY0GGC+dJaSSsGoyOs1wjgFVdCtTrMMZ8BrPCfL5Xkpms1S65YAE0V0T1g1IkNCQkxtQI5jneXwmqUfkou1akWDrtnLq2rhTYBGaVedcjio8FR1TKBO2Y4l1ew1xT5y9jlUwe8xtPHmlnj2xh2nss36FJ3Y6J5b8ubMBgDE=
+	t=1763731178; cv=none; b=iAqXroO1s5Ko13sQwjvmKsC5LAiQNbu6SUPLEHy8EkDjIt+s/XVP7+TmpFsm/YIunODhg6wCehtpFnfD9xKBs/Kb30eU8avDi3b6eZ69ErMuNU6fEmFa9buLBh32QqMLJP8ZXoOtMNx13o84+5oP2RWrTy3bSYpur6BdALAmzPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731586; c=relaxed/simple;
-	bh=mAM2C41XQ23We/nFcXMtp5uB8dNnvo79TMPjsB9rXLg=;
+	s=arc-20240116; t=1763731178; c=relaxed/simple;
+	bh=1eS2uH0dXZ2L2rji6Nz0AoCEIMHSCPmkqSE/NPFUwek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk7bVDYW+a/IFQWb0M7k49yupYUoWirKv49432uwoerY/MdtSYM5NgrtpgkjEHiGTZGW2W07xkfFSmwl7UXQeKfTFwW/T3dzWB/drTenwbKyiEiMO0lCuhClzrqityAetNNDfEG1ChMco7+nz7SsFhCq+7FjLD/rZSdLy8EJwwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXVH3M82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38850C4CEF1;
-	Fri, 21 Nov 2025 13:26:26 +0000 (UTC)
+	 MIME-Version; b=qbIxvGvfYK3kzYKLVhWbI1J0EAPsFw6q6SaBWMuKt5xQk1kzli0cqu2alKLyiYRiqZDAlMvgVDrmWYGFncLWEXNhD7HEhhluF1gNWwbRwNz6Ypz2PUUnN6kI4C5hfTd3xG3BL9b0O7MeMittjA5wxqhQyGfCa1yF4qT8wvc+4dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COLTj78G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5487BC4CEF1;
+	Fri, 21 Nov 2025 13:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731586;
-	bh=mAM2C41XQ23We/nFcXMtp5uB8dNnvo79TMPjsB9rXLg=;
+	s=korg; t=1763731178;
+	bh=1eS2uH0dXZ2L2rji6Nz0AoCEIMHSCPmkqSE/NPFUwek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXVH3M82S6kd6b7FbkYKkiGcK+ExEK1+fqX18FoF96ZCEXUb0RpNSCP9yPqzo2zVY
-	 CoQvgmMl/5UdO3D/QyEBxUFYcc1mcfi1aqwrt9hEDKzxa2TZID5WOg4fMqWSSvHxzQ
-	 3aW65SYnl2aUMbguCWWuLVp9CDliatc9jUS/gwJc=
+	b=COLTj78G1qcmmKTlfdHf4TyYHkUdS7trQNw+G2Hnlb4SkbrywftJJf8Duvu+fOybn
+	 zUdVw4dwLXUIstjwAGXPEjbLt/5BA5oF/UxkalqTrJQbhDgT6/54tleU9USCUtVtBx
+	 EvI5/FgO12Bs2kec2loiPCu/oJxps2949lBbVJWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/185] drm/i915: Fix conversion between clock ticks and nanoseconds
+Subject: [PATCH 6.17 083/247] wifi: iwlwifi: mvm: fix beacon template/fixed rate
 Date: Fri, 21 Nov 2025 14:10:30 +0100
-Message-ID: <20251121130143.990155373@linuxfoundation.org>
+Message-ID: <20251121130157.576260433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7d44ad6b43d0be43d080180413a1b6c24cfbd266 ]
+[ Upstream commit 3592c0083fb29cca13cd9978b8844d58b4eff548 ]
 
-When tick values are large, the multiplication by NSEC_PER_SEC is larger
-than 64 bits and results in bad conversions.
+During the development of the rate changes, I evidently made
+some changes that shouldn't have been there; beacon templates
+with rate_n_flags are only in old versions, so no changes to
+them should have been necessary, and evidently broke on some
+devices. This also would have broken fixed (injection) rates,
+it would seem. Restore the old handling of this.
 
-The issue is seen in PMU busyness counters that look like they have
-wrapped around due to bad conversion. i915 PMU implementation returns
-monotonically increasing counters. If a count is lesser than previous
-one, it will only return the larger value until the smaller value
-catches up. The user will see this as zero delta between two
-measurements even though the engines are busy.
-
-Fix it by using mul_u64_u32_div()
-
-Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14955
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://lore.kernel.org/r/20251016000350.1152382-2-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 2ada9cb1df3f5405a01d013b708b1b0914efccfe)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[Rodrigo: Added the Fixes tag while cherry-picking to fixes]
+Fixes: dabc88cb3b78 ("wifi: iwlwifi: handle v3 rates")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220558
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20251008112044.3bb8ea849d8d.I90f4d2b2c1f62eaedaf304a61d2ab9e50c491c2d@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 13 +++----------
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c    | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c b/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
-index 6e63505fe4781..f01399c78c99d 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_clock_utils.c
-@@ -209,7 +209,7 @@ static u64 div_u64_roundup(u64 nom, u32 den)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 8805ab344895a..0065c2ead56b1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -938,19 +938,12 @@ u8 iwl_mvm_mac_ctxt_get_lowest_rate(struct iwl_mvm *mvm,
  
- u64 intel_gt_clock_interval_to_ns(const struct intel_gt *gt, u64 count)
+ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
  {
--	return div_u64_roundup(count * NSEC_PER_SEC, gt->clock_frequency);
-+	return mul_u64_u32_div(count, NSEC_PER_SEC, gt->clock_frequency);
++	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+ 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
+-	u16 flags, cck_flag;
+-
+-	if (is_new_rate) {
+-		flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+-		cck_flag = IWL_MAC_BEACON_CCK;
+-	} else {
+-		cck_flag = IWL_MAC_BEACON_CCK_V1;
+-		flags = iwl_fw_rate_idx_to_plcp(rate_idx);
+-	}
+ 
+ 	if (rate_idx <= IWL_LAST_CCK_RATE)
+-		flags |= cck_flag;
++		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
++			  : IWL_MAC_BEACON_CCK_V1;
+ 
+ 	return flags;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 62da0132f3838..a62f5288dfd06 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -169,9 +169,15 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ 
+ u8 iwl_mvm_mac80211_idx_to_hwrate(const struct iwl_fw *fw, int rate_idx)
+ {
+-	return (rate_idx >= IWL_FIRST_OFDM_RATE ?
+-		rate_idx - IWL_FIRST_OFDM_RATE :
+-		rate_idx);
++	if (iwl_fw_lookup_cmd_ver(fw, TX_CMD, 0) > 8)
++		/* In the new rate legacy rates are indexed:
++		 * 0 - 3 for CCK and 0 - 7 for OFDM.
++		 */
++		return (rate_idx >= IWL_FIRST_OFDM_RATE ?
++			rate_idx - IWL_FIRST_OFDM_RATE :
++			rate_idx);
++
++	return iwl_fw_rate_idx_to_plcp(rate_idx);
  }
  
- u64 intel_gt_pm_interval_to_ns(const struct intel_gt *gt, u64 count)
-@@ -219,7 +219,7 @@ u64 intel_gt_pm_interval_to_ns(const struct intel_gt *gt, u64 count)
- 
- u64 intel_gt_ns_to_clock_interval(const struct intel_gt *gt, u64 ns)
- {
--	return div_u64_roundup(gt->clock_frequency * ns, NSEC_PER_SEC);
-+	return mul_u64_u32_div(ns, gt->clock_frequency, NSEC_PER_SEC);
- }
- 
- u64 intel_gt_ns_to_pm_interval(const struct intel_gt *gt, u64 ns)
+ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac)
 -- 
 2.51.0
 
