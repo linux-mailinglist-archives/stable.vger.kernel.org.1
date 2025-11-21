@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-195878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CE0C79690
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A43C7A1BC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id EC06A2DAD0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 4AD242EAD0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1D93F9D2;
-	Fri, 21 Nov 2025 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC4730AADC;
+	Fri, 21 Nov 2025 13:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIK3cP4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJISUJ2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D56199939;
-	Fri, 21 Nov 2025 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297CB2459C6;
+	Fri, 21 Nov 2025 13:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731923; cv=none; b=U18DwS4Z0D8zP1IskHtj3WrHvbJvLvhdGFtduxWwMyjYHQHGtFVNK85wLqMYBulxkO5tPn83L9EdzEavcW/AKs4wCmAI+0u94qmMiSk+R2ENvJDA3+J9kqgWZcdelupZSUIXQ8X0VTMOE3Nw0prWqmBe0smOkSQXaHhMrMouag0=
+	t=1763733384; cv=none; b=XjTJRHqh4c1vldnYCsyT8qFYR5dQJcigmKmh6f+zuothzrtvPR74PUotDoEtaXY6vrSB8dbQTqxsn7VNTxNCc8gzuHJUjtdUAhAuWMZjHqYF7/RckpCRpDcNea/j1yDf23dDwCN7FcWEm21jpiyEJWaLbD2fk2nwYL5uqb5nAGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731923; c=relaxed/simple;
-	bh=3y26b1m9bojBxeO1P3yZwfturPTwsVG3vFTN9PTdaoE=;
+	s=arc-20240116; t=1763733384; c=relaxed/simple;
+	bh=IOcKTFgwub30QBtm5SbTFePKOT07j/dYfV5yQVfGNcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVqAfdBGx70kZhn6um9hLiKC4FnQhvwQ6+iKlF6AUotXLJdqnPrG3Z71/nlTxxkWakdnZ3plTMzYcbiF5QZi9YPzZLDILGYF6eQVbJHzguGe6KNDowvqA5BB0blqLtJN0T6+2DIlO+rsWCVZNjfNOwF2yeRkN2h0g8mLb3Fv9zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIK3cP4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45393C4CEF1;
-	Fri, 21 Nov 2025 13:32:03 +0000 (UTC)
+	 MIME-Version; b=oBuRvQrMV7a5CmCTAxCzHrfa4T4RAecZ+TK9iXS8Q0B3vSLtLHfZHs18zqbxXq3MIFeSVC5ecfux++8owFpF4jsPu75XCOVaBO4fP5iI1ajsTIFJELJkaZbsELE7VhQNc8ReYkPkACfYk4rddwVNT4iZf/MQWLtRkPDFDMPICKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJISUJ2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F49C4CEF1;
+	Fri, 21 Nov 2025 13:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731923;
-	bh=3y26b1m9bojBxeO1P3yZwfturPTwsVG3vFTN9PTdaoE=;
+	s=korg; t=1763733384;
+	bh=IOcKTFgwub30QBtm5SbTFePKOT07j/dYfV5yQVfGNcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIK3cP4MgE8SuAH4M0gn+XV+OJojOlWjMoKLcafRc2SzHbZpWh3D+DduYTeJyAQ1s
-	 E1rfAtn6L2Rzd16Rqa8Eu0ij8ksRwSY6NWxljRz083s829RLgCLjlEzDSzCs97SiJl
-	 YTZ2Zs2sB8dWkbPYkhw8sYXJMd6xLqRvgLJJ7BZI=
+	b=lJISUJ2bagR26HTbAoEhM46Ix5fA3+TKgemRg2sg/n27k59kyck2ikTUZmXJEedM3
+	 Nx5KCqkrGo46WJURsndbl0ZyKq96ZajrXGzg0LnJEtiHUrJuaxLF7DczIk5VtXVL5/
+	 2rvfMiKYqqnZLOhaQYBeZtZS052ek8db50AZfttY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 121/185] nilfs2: avoid having an active sc_timer before freeing sci
+	David Ahern <dsahern@kernel.org>,
+	Wang Liang <wangliang74@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 449/529] net: fix NULL pointer dereference in l3mdev_l3_rcv
 Date: Fri, 21 Nov 2025 14:12:28 +0100
-Message-ID: <20251121130148.241441716@linuxfoundation.org>
+Message-ID: <20251121130246.986797527@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-commit 9a6b60cb147d53968753a34805211d2e5e08c027 upstream.
+[ Upstream commit 0032c99e83b9ce6d5995d65900aa4b6ffb501cce ]
 
-Because kthread_stop did not stop sc_task properly and returned -EINTR,
-the sc_timer was not properly closed, ultimately causing the problem [1]
-reported by syzbot when freeing sci due to the sc_timer not being closed.
+When delete l3s ipvlan:
 
-Because the thread sc_task main function nilfs_segctor_thread() returns 0
-when it succeeds, when the return value of kthread_stop() is not 0 in
-nilfs_segctor_destroy(), we believe that it has not properly closed
-sc_timer.
+    ip link del link eth0 ipvlan1 type ipvlan mode l3s
 
-We use timer_shutdown_sync() to sync wait for sc_timer to shutdown, and
-set the value of sc_task to NULL under the protection of lock
-sc_state_lock, so as to avoid the issue caused by sc_timer not being
-properly shutdowned.
+This may cause a null pointer dereference:
 
-[1]
-ODEBUG: free active (active state 0) object: 00000000dacb411a object type: timer_list hint: nilfs_construction_timeout
-Call trace:
- nilfs_segctor_destroy fs/nilfs2/segment.c:2811 [inline]
- nilfs_detach_log_writer+0x668/0x8cc fs/nilfs2/segment.c:2877
- nilfs_put_super+0x4c/0x12c fs/nilfs2/super.c:509
+    Call trace:
+     ip_rcv_finish+0x48/0xd0
+     ip_rcv+0x5c/0x100
+     __netif_receive_skb_one_core+0x64/0xb0
+     __netif_receive_skb+0x20/0x80
+     process_backlog+0xb4/0x204
+     napi_poll+0xe8/0x294
+     net_rx_action+0xd8/0x22c
+     __do_softirq+0x12c/0x354
 
-Link: https://lkml.kernel.org/r/20251029225226.16044-1-konishi.ryusuke@gmail.com
-Fixes: 3f66cc261ccb ("nilfs2: use kthread_create and kthread_stop for the log writer thread")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=24d8b70f039151f65590
-Tested-by: syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Cc: <stable@vger.kernel.org>	[6.12+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because l3mdev_l3_rcv() visit dev->l3mdev_ops after
+ipvlan_l3s_unregister() assign the dev->l3mdev_ops to NULL. The process
+like this:
+
+    (CPU1)                     | (CPU2)
+    l3mdev_l3_rcv()            |
+      check dev->priv_flags:   |
+        master = skb->dev;     |
+                               |
+                               | ipvlan_l3s_unregister()
+                               |   set dev->priv_flags
+                               |   dev->l3mdev_ops = NULL;
+                               |
+      visit master->l3mdev_ops |
+
+To avoid this by do not set dev->l3mdev_ops when unregister l3s ipvlan.
+
+Suggested-by: David Ahern <dsahern@kernel.org>
+Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250321090353.1170545-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ipvlan/ipvlan_l3s.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2787,7 +2787,12 @@ static void nilfs_segctor_destroy(struct
+diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
+index d5b05e8032199..ca35a50bb6405 100644
+--- a/drivers/net/ipvlan/ipvlan_l3s.c
++++ b/drivers/net/ipvlan/ipvlan_l3s.c
+@@ -224,5 +224,4 @@ void ipvlan_l3s_unregister(struct ipvl_port *port)
  
- 	if (sci->sc_task) {
- 		wake_up(&sci->sc_wait_daemon);
--		kthread_stop(sci->sc_task);
-+		if (kthread_stop(sci->sc_task)) {
-+			spin_lock(&sci->sc_state_lock);
-+			sci->sc_task = NULL;
-+			timer_shutdown_sync(&sci->sc_timer);
-+			spin_unlock(&sci->sc_state_lock);
-+		}
- 	}
- 
- 	spin_lock(&sci->sc_state_lock);
+ 	dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
+ 	ipvlan_unregister_nf_hook(read_pnet(&port->pnet));
+-	dev->l3mdev_ops = NULL;
+ }
+-- 
+2.51.0
+
 
 
 
