@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F352EC796CA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA03C7A059
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 87F7D365CB9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 2D6EA3510A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6812246762;
-	Fri, 21 Nov 2025 13:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D432934D3AA;
+	Fri, 21 Nov 2025 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dX8qVx0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWeeGtjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7146233E366;
-	Fri, 21 Nov 2025 13:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B7734D386;
+	Fri, 21 Nov 2025 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731668; cv=none; b=BW/NwFZU3bsEQNrWESN37NDSiVvuIbWSrYXh8A0QDLFpjLttn6N5xXkICLn3aNWGLccIaskhLCGXNGbj+l5BzxoYC+w87uJt8an4mWKagnxHzAPSRFDhQAlSD2CdiPTMm9g4eHdKm6TrFFnoIrCb09jaVRcau6nlekbMwR7xVy8=
+	t=1763733146; cv=none; b=Qotwdmgh4KgXqJ23xCO4aHaeyGdG03YBbOyU36C4WPqfrWvySLZ68HsNzPBv1c1fISUYbl7AdDR0Mzv5GNr1Dvk7AvBUKKxsEJK61zsE7HSrP0i6w86bXGPWrmud7u4u63XjYoeTQVrflS9gr5X3AL8oZ65d6RZUijo3ApeT4as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731668; c=relaxed/simple;
-	bh=vLVAgGzCmqFBtPlonoR4+4Ih813G+aHMorIddLBDXo0=;
+	s=arc-20240116; t=1763733146; c=relaxed/simple;
+	bh=iAbkt7+1szicb3OKdhgKPkwhR9ku2rnzNRNFURzkCxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPRt6pS6Ck6MEua88t2JcHFTLbr/IUlZRKTPs5GsV0MHi28kWlY5Q4fflaaG6nKLdrAuyoLruEO1A4KNMQ/k02UqeSWsT4NsvYaUQslKuNR1khKyWCWiA07RNPeMTaqjOcNIpB/HzmyGR4uay1raT3W4U5GinjUedtUWrkt9mjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dX8qVx0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F97C4CEF1;
-	Fri, 21 Nov 2025 13:27:46 +0000 (UTC)
+	 MIME-Version; b=bT7sIzYiMPhPi0+h0fv1SzZTGAJzfhePp5WTUJ93Xn//F5LlFcS4cbcM+jkBB2zkgf8W8ekoITC0VzY1brOGuxfO3ZQkg6SEgmYuDmyQvxE4R/JqBeP4OQcTvAN3RmsIy20trZmNmekRYiHD3hZYHvBnnM+BtZj1j1ObyBuJ6t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWeeGtjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124FAC4CEF1;
+	Fri, 21 Nov 2025 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731667;
-	bh=vLVAgGzCmqFBtPlonoR4+4Ih813G+aHMorIddLBDXo0=;
+	s=korg; t=1763733146;
+	bh=iAbkt7+1szicb3OKdhgKPkwhR9ku2rnzNRNFURzkCxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dX8qVx0geevtbYclZBiRLCfBNZN5rpdppKcarZaI2DSmNhlEj+TXmzAKf+AmkEruC
-	 +/SZqxkb88sIQWBo/2VW7YSsj//db1MFYWey5Ug9i2W+gnBqboN83POGu8obFD26os
-	 2x94RsU6qcyleBpxoywPbgD8XZMULs33p3++X+1o=
+	b=nWeeGtjnOor6WY6Cmd+TQEKjpxP0flQFK9JCA3ECz/NKLz0uzrCIA3FVhBz2dt6iC
+	 4vIWPR98wdassknrhX2D8NGx9ltPUhNO36WsLbcVTuEkyWv11pdehG18qRIdf27r0H
+	 OhUj8yc2qrk0Vav/PV70WlOpGUXjxMTE+jjguAS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/185] Bluetooth: MGMT: cancel mesh send timer when hdev removed
+	Joshua Rogers <linux@joshua.hu>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 367/529] smb: client: validate change notify buffer before copy
 Date: Fri, 21 Nov 2025 14:11:06 +0100
-Message-ID: <20251121130145.290549474@linuxfoundation.org>
+Message-ID: <20251121130244.086285627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Joshua Rogers <linux@joshua.hu>
 
-[ Upstream commit 55fb52ffdd62850d667ebed842815e072d3c9961 ]
+commit 4012abe8a78fbb8869634130024266eaef7081fe upstream.
 
-mesh_send_done timer is not canceled when hdev is removed, which causes
-crash if the timer triggers after hdev is gone.
+SMB2_change_notify called smb2_validate_iov() but ignored the return
+code, then kmemdup()ed using server provided OutputBufferOffset/Length.
 
-Cancel the timer when MGMT removes the hdev, like other MGMT timers.
+Check the return of smb2_validate_iov() and bail out on error.
 
-Should fix the BUG: sporadically seen by BlueZ test bot
-(in "Mesh - Send cancel - 1" test).
+Discovered with help from the ZeroPath security tooling.
 
-Log:
-------
-BUG: KASAN: slab-use-after-free in run_timer_softirq+0x76b/0x7d0
-...
-Freed by task 36:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x43/0x70
- kfree+0x103/0x500
- device_release+0x9a/0x210
- kobject_put+0x100/0x1e0
- vhci_release+0x18b/0x240
-------
-
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Link: https://lore.kernel.org/linux-bluetooth/67364c09.0c0a0220.113cba.39ff@mx.google.com/
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
+Fixes: e3e9463414f61 ("smb3: improve SMB3 change notification support")
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/smb2pdu.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 57295c3a8920f..c54cc701cdd48 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9492,6 +9492,7 @@ void mgmt_index_removed(struct hci_dev *hdev)
- 	cancel_delayed_work_sync(&hdev->discov_off);
- 	cancel_delayed_work_sync(&hdev->service_cache);
- 	cancel_delayed_work_sync(&hdev->rpa_expired);
-+	cancel_delayed_work_sync(&hdev->mesh_send_done);
- }
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4068,9 +4068,12 @@ replay_again:
  
- void mgmt_power_on(struct hci_dev *hdev, int err)
--- 
-2.51.0
-
+ 		smb_rsp = (struct smb2_change_notify_rsp *)rsp_iov.iov_base;
+ 
+-		smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
+-				le32_to_cpu(smb_rsp->OutputBufferLength), &rsp_iov,
++		rc = smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
++				le32_to_cpu(smb_rsp->OutputBufferLength),
++				&rsp_iov,
+ 				sizeof(struct file_notify_information));
++		if (rc)
++			goto cnotify_exit;
+ 
+ 		*out_data = kmemdup((char *)smb_rsp + le16_to_cpu(smb_rsp->OutputBufferOffset),
+ 				le32_to_cpu(smb_rsp->OutputBufferLength), GFP_KERNEL);
 
 
 
