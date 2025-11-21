@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CFBC795C5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEBBC79E97
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E22B14EE3BC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D848136586A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7227B45948;
-	Fri, 21 Nov 2025 13:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FADF33508F;
+	Fri, 21 Nov 2025 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPAY3p6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEJaDJY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3E51F09AC;
-	Fri, 21 Nov 2025 13:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524D7278E63;
+	Fri, 21 Nov 2025 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731147; cv=none; b=DBcUEh0FSyFO8YFHiEYEW0kVSWtaEA5hXqeL/z8Z9EQyDbiejSaaOvZqECZ3NQHG2zzyT7GVoVa8yexv65LwmxFEI96OaXOxyt4peHlzLlS/MDWVWEyuOU/p83qAelA/zBd44iwMSymsiANE9eVVVoiNaUPDayn6nwlGW5PJgIM=
+	t=1763733204; cv=none; b=kJJmjLGqIiio4NeOnAfsv1xOltivfFj710i3dm1o/S7qrCQCrrQDpdlOouhL9du2N4wegNROKLNPXyRk45WCt4i52FT/AVdvcoc3+PBb+g79IQuH4tF5xqT8tSxkbQ7qfxuMp5wNKW0sXJCQPR3WGQO/ppReDcl0pkNNOlppsEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731147; c=relaxed/simple;
-	bh=LrYSoamEYVUMGPjRdxy1Gl+Z3g/0BciaFi6s9C1oriM=;
+	s=arc-20240116; t=1763733204; c=relaxed/simple;
+	bh=bKn74NTNUI2zIwVIEoES6I8sDDCJLr92dhAH/nVN0V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZLh6mJxxqjY6ez2vVM9ikXUMr5OwxZ4iDAtBGjJnxslLcBDUJhXGaFxhH55leVTFNE3NfqmuvyA1McZfGHCKUXPPh6fNH4m18GP02lZyzYVttKkLyZA0a8ehacazzE3mZuBH30m00N+krJzmWpKj54S3+fFnbe3QXcdQyEVA0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPAY3p6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB9DC116C6;
-	Fri, 21 Nov 2025 13:19:06 +0000 (UTC)
+	 MIME-Version; b=IsAgkX+vAfDe6HzDXZHUn8v3mfrEP2wWwcLXts7dHd1o7T8r39Xy5v3Qmf4BqNh1ltlRNQFnG8GI+wKREuRMR2Uj28aMrT7KJZvcQwr3DIfar81H6nynvFtsRBBgvgOQdorRCXMyUDqV3KKqHJJNqIe5neFzcFAvGSuBJ5iAHko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEJaDJY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995DFC4CEFB;
+	Fri, 21 Nov 2025 13:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731147;
-	bh=LrYSoamEYVUMGPjRdxy1Gl+Z3g/0BciaFi6s9C1oriM=;
+	s=korg; t=1763733204;
+	bh=bKn74NTNUI2zIwVIEoES6I8sDDCJLr92dhAH/nVN0V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPAY3p6Dg/ebIAU7fzZ9XQQnnazfpJXJ+y6YWs9vc1l+RVZB68bkPHQiHa44H7aJD
-	 +g3NjRcdKaoR/jdtlZL9U67SvWDk3ISYAOZ/Sa9Qw+xn+mPPP7V0HCRivCpm0U4mNB
-	 Wy/XhlK6DKxtOezXdxBPXyZF0IZx3SfryFzUxE88=
+	b=UEJaDJY5eUKweBlG2EZsALWibTQhc9lpoaXb6UexqGz5vehs0QJyLT8eb4nO4CuUn
+	 /jcEqfjyoGCw8yzs+8l9FzctVfqCSIX8PYEYKKQjSw/m9BI6nqzORB5JFDQu/+np6p
+	 JmjvuIKf1UkGJV1VOBIac9Li3S+jMQrzC/tZvZAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 106/247] pnfs: Set transport security policy to RPC_XPRTSEC_NONE unless using TLS
+Subject: [PATCH 6.6 354/529] net/mlx5e: Use extack in get module eeprom by page callback
 Date: Fri, 21 Nov 2025 14:10:53 +0100
-Message-ID: <20251121130158.392319575@linuxfoundation.org>
+Message-ID: <20251121130243.625796780@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 8ab523ce78d4ca13add6b4ecbacff0f84c274603 ]
+[ Upstream commit b5100b72da688282558b28255c03a2d72241a729 ]
 
-The default setting for the transport security policy must be
-RPC_XPRTSEC_NONE, when using a TCP or RDMA connection without TLS.
-Conversely, when using TLS, the security policy needs to be set.
+In case of errors in get module eeprom by page, reflect it through
+extack instead of a dmesg print.
+While at it, make the messages more human friendly.
 
-Fixes: 6c0a8c5fcf71 ("NFS: Have struct nfs_client carry a TLS policy field")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808055927.2059700-10-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d1c94bc5b90c ("net/mlx5e: Fix return value in case of module EEPROM read error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs3client.c | 14 ++++++++++++--
- fs/nfs/nfs4client.c | 14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs3client.c b/fs/nfs/nfs3client.c
-index 0d7310c1ee0c0..5d97c1d38bb62 100644
---- a/fs/nfs/nfs3client.c
-+++ b/fs/nfs/nfs3client.c
-@@ -2,6 +2,7 @@
- #include <linux/nfs_fs.h>
- #include <linux/nfs_mount.h>
- #include <linux/sunrpc/addr.h>
-+#include <net/handshake.h>
- #include "internal.h"
- #include "nfs3_fs.h"
- #include "netns.h"
-@@ -98,7 +99,11 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 		.net = mds_clp->cl_net,
- 		.timeparms = &ds_timeout,
- 		.cred = mds_srv->cred,
--		.xprtsec = mds_clp->cl_xprtsec,
-+		.xprtsec = {
-+			.policy = RPC_XPRTSEC_NONE,
-+			.cert_serial = TLS_NO_CERT,
-+			.privkey_serial = TLS_NO_PRIVKEY,
-+		},
- 		.connect_timeout = connect_timeout,
- 		.reconnect_timeout = connect_timeout,
- 	};
-@@ -111,9 +116,14 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 54379297a7489..b189220f8a877 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -1842,8 +1842,10 @@ static int mlx5e_get_module_eeprom_by_page(struct net_device *netdev,
+ 		if (size_read == -EINVAL)
+ 			return -EINVAL;
+ 		if (size_read < 0) {
+-			netdev_err(priv->netdev, "%s: mlx5_query_module_eeprom_by_page failed:0x%x\n",
+-				   __func__, size_read);
++			NL_SET_ERR_MSG_FMT_MOD(
++				extack,
++				"Query module eeprom by page failed, read %u bytes, err %d\n",
++				i, size_read);
+ 			return i;
+ 		}
  
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_TCP_TLS:
-+		if (mds_clp->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
-+			cl_init.xprtsec = mds_clp->cl_xprtsec;
-+		else
-+			ds_proto = XPRT_TRANSPORT_TCP;
-+		fallthrough;
- 	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
--	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1)
- 			cl_init.nconnect = mds_clp->cl_nconnect;
- 	}
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 5998d6bd8a4f4..3a4baed993c96 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -11,6 +11,7 @@
- #include <linux/sunrpc/xprt.h>
- #include <linux/sunrpc/bc_xprt.h>
- #include <linux/sunrpc/rpc_pipe_fs.h>
-+#include <net/handshake.h>
- #include "internal.h"
- #include "callback.h"
- #include "delegation.h"
-@@ -983,7 +984,11 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 		.net = mds_clp->cl_net,
- 		.timeparms = &ds_timeout,
- 		.cred = mds_srv->cred,
--		.xprtsec = mds_srv->nfs_client->cl_xprtsec,
-+		.xprtsec = {
-+			.policy = RPC_XPRTSEC_NONE,
-+			.cert_serial = TLS_NO_CERT,
-+			.privkey_serial = TLS_NO_PRIVKEY,
-+		},
- 	};
- 	char buf[INET6_ADDRSTRLEN + 1];
- 
-@@ -992,9 +997,14 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
- 
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_TCP_TLS:
-+		if (mds_srv->nfs_client->cl_xprtsec.policy != RPC_XPRTSEC_NONE)
-+			cl_init.xprtsec = mds_srv->nfs_client->cl_xprtsec;
-+		else
-+			ds_proto = XPRT_TRANSPORT_TCP;
-+		fallthrough;
- 	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
--	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1) {
- 			cl_init.nconnect = mds_clp->cl_nconnect;
- 			cl_init.max_connect = NFS_MAX_TRANSPORTS;
 -- 
 2.51.0
 
