@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-195745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0818CC7966D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3056C79EEE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 7539F33254
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 2B6D02DE5B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247EB2F3632;
-	Fri, 21 Nov 2025 13:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DFE350D5A;
+	Fri, 21 Nov 2025 13:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3920dSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyH+QJje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46C8334367;
-	Fri, 21 Nov 2025 13:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAABD350A3D;
+	Fri, 21 Nov 2025 13:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731543; cv=none; b=ALS0bvyX/t/NuLTmrSgdxT/VdLzyBrZKaFEMKDGRZ4r6kLwVoOeJCaU1lq8u6tRwoTVbue61IcBYbTKep8GP402j+aWyPImL6sxAl0+ygZm01HzFsrNAMJItQ5JsPUJ7QCd/yKQ/cbimnwpEvb82zN0uX8bwbKoZfcMs1z8NoQI=
+	t=1763733529; cv=none; b=tsUWV/JnqVqncljTKRxp6fXpAT/DcZG0fxokJ/jFQwIYldqNvO7ZxikWjE4e2XU36PKUeZbgnXqKMnVLjmOsTVAOnL9CYmWtX+yElNXSn8PmvUsqXn8cPDFyPYxDhfHAMtlkbW2H0p2XnAUNvw6eqyCcKqjYsd/pQGkt7GUlwao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731543; c=relaxed/simple;
-	bh=lqeEjAGFT3aTvYvy3mpqFVvulU1lw7MVD6Vbl70ul1Y=;
+	s=arc-20240116; t=1763733529; c=relaxed/simple;
+	bh=YIw2+djKyzll9vTxc747enP37y7gVkZe57RyJqw0Af4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTwcFyRTkNp0xh0ZE2nGG0To71ikgWC4s/+LLpx13+Nlb0/PoqiGhryUjnRqy3uSCZlNgkp14l3wbnHNAp09x53kyJGV4u4nUp4sDCSdu1NTTw/fxfWfK7ZrHl3v6rkbLqQtqvEmJqAg9t02PbipY8ipHwfqY9icIXSMUeYXFO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3920dSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DAC4CEF1;
-	Fri, 21 Nov 2025 13:25:42 +0000 (UTC)
+	 MIME-Version; b=fPiFycBXpnP6kfPIF+aVUUsBkb75Qy6M5YbNH0uqjrdvoeZQGCLpvde75SX8UEtpc7Y3zAmYoXCuU6KwGw1lqh8xP1g3yKqHA1oc+zIf8b2APHZqcnZkl6Pgd6CZtG3HE3zIuL+HnIotxO7QTuF1SJRb7r0iYNIuE6wQcrtadmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyH+QJje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0DAC4CEF1;
+	Fri, 21 Nov 2025 13:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731543;
-	bh=lqeEjAGFT3aTvYvy3mpqFVvulU1lw7MVD6Vbl70ul1Y=;
+	s=korg; t=1763733529;
+	bh=YIw2+djKyzll9vTxc747enP37y7gVkZe57RyJqw0Af4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3920dSBuQXEG5Pko1NhhfxmaMC+5l14sMUzHe3u62o533SlGMmPH33AyTN4hYvkr
-	 r6ptFhlHZqzciqD4wyobRZf4yqNDm8KOnTNESpaksnCuJn8UdN00oUWPfysGpxmjYr
-	 G4rDbypYbPP9RU9Ifp7+LNzamdSMbsDseTi45XzU=
+	b=kyH+QJjeGFIl+urFaaF6sdevlbrTBW+lFYEISnaJQWyuCjDO/vkLCT95nLESltcZB
+	 0gsX5wv8CMOVfpqoM1ccE9u80sNY5rQtQWEu/lJydnaBdZlT03E8SLnNL4V87LMvug
+	 Fo3bkeVGDMO96kWNrrI0onpad1Rpmy61EUyUm2SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 244/247] KVM: x86: Add support for RDMSR/WRMSRNS w/ immediate on Intel
+	"jingxian.li" <jingxian.li@shopee.com>
+Subject: [PATCH 6.6 492/529] Revert "perf dso: Add missed dso__put to dso__load_kcore"
 Date: Fri, 21 Nov 2025 14:13:11 +0100
-Message-ID: <20251121130203.497557367@linuxfoundation.org>
+Message-ID: <20251121130248.512582668@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,312 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li <xin@zytor.com>
+From: "jingxian.li" <jingxian.li@shopee.com>
 
-[ Upstream commit 885df2d2109a60f84d84639ce6d95a91045f6c45 ]
+This reverts commit e5de9ea7796e79f3cd082624f788cc3442bff2a8.
 
-Add support for the immediate forms of RDMSR and WRMSRNS (currently
-Intel-only).  The immediate variants are only valid in 64-bit mode, and
-use a single general purpose register for the data (the register is also
-encoded in the instruction, i.e. not implicit like regular RDMSR/WRMSR).
+The patch introduced `map__zput(new_node->map)` in the kcore load
+path, causing a segmentation fault when running `perf c2c report`.
 
-The immediate variants are primarily motivated by performance, not code
-size: by having the MSR index in an immediate, it is available *much*
-earlier in the CPU pipeline, which allows hardware much more leeway about
-how a particular MSR is handled.
+The issue arises because `maps__merge_in` directly modifies and
+inserts the caller's `new_map`, causing it to be freed prematurely
+while still referenced by kmaps.
 
-Intel VMX support for the immediate forms of MSR accesses communicates
-exit information to the host as follows:
+Later branchs (6.12, 6.15, 6.16) are not affected because they use
+a different merge approach with a lazily sorted array, which avoids
+modifying the original `new_map`.
 
-  1) The immediate form of RDMSR uses VM-Exit Reason 84.
+Fixes: e5de9ea7796e ("perf dso: Add missed dso__put to dso__load_kcore")
 
-  2) The immediate form of WRMSRNS uses VM-Exit Reason 85.
-
-  3) For both VM-Exit reasons 84 and 85, the Exit Qualification field is
-     set to the MSR index that triggered the VM-Exit.
-
-  4) Bits 3 ~ 6 of the VM-Exit Instruction Information field are set to
-     the register encoding used by the immediate form of the instruction,
-     i.e. the destination register for RDMSR, and the source for WRMSRNS.
-
-  5) The VM-Exit Instruction Length field records the size of the
-     immediate form of the MSR instruction.
-
-To deal with userspace RDMSR exits, stash the destination register in a
-new kvm_vcpu_arch field, similar to cui_linear_rip, pio, etc.
-Alternatively, the register could be saved in kvm_run.msr or re-retrieved
-from the VMCS, but the former would require sanitizing the value to ensure
-userspace doesn't clobber the value to an out-of-bounds index, and the
-latter would require a new one-off kvm_x86_ops hook.
-
-Don't bother adding support for the instructions in KVM's emulator, as the
-only way for RDMSR/WRMSR to be encountered is if KVM is emulating large
-swaths of code due to invalid guest state, and a vCPU cannot have invalid
-guest state while in 64-bit mode.
-
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-[sean: minor tweaks, massage and expand changelog]
-Link: https://lore.kernel.org/r/20250805202224.1475590-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 9d7dfb95da2c ("KVM: VMX: Inject #UD if guest tries to execute SEAMCALL or TDCALL")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: jingxian.li <jingxian.li@shopee.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |    3 ++
- arch/x86/include/uapi/asm/vmx.h |    6 +++-
- arch/x86/kvm/vmx/nested.c       |   13 ++++++++-
- arch/x86/kvm/vmx/vmx.c          |   21 +++++++++++++++
- arch/x86/kvm/vmx/vmx.h          |    5 +++
- arch/x86/kvm/x86.c              |   55 ++++++++++++++++++++++++++++++++--------
- 6 files changed, 90 insertions(+), 13 deletions(-)
+ tools/perf/util/symbol.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -926,6 +926,7 @@ struct kvm_vcpu_arch {
- 	bool emulate_regs_need_sync_from_vcpu;
- 	int (*complete_userspace_io)(struct kvm_vcpu *vcpu);
- 	unsigned long cui_linear_rip;
-+	int cui_rdmsr_imm_reg;
- 
- 	gpa_t time;
- 	s8  pvclock_tsc_shift;
-@@ -2155,7 +2156,9 @@ int __kvm_get_msr(struct kvm_vcpu *vcpu,
- int kvm_get_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data);
- int kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data);
- int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
-+int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
- int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
-+int kvm_emulate_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
- int kvm_emulate_as_nop(struct kvm_vcpu *vcpu);
- int kvm_emulate_invd(struct kvm_vcpu *vcpu);
- int kvm_emulate_mwait(struct kvm_vcpu *vcpu);
---- a/arch/x86/include/uapi/asm/vmx.h
-+++ b/arch/x86/include/uapi/asm/vmx.h
-@@ -94,6 +94,8 @@
- #define EXIT_REASON_BUS_LOCK            74
- #define EXIT_REASON_NOTIFY              75
- #define EXIT_REASON_TDCALL              77
-+#define EXIT_REASON_MSR_READ_IMM        84
-+#define EXIT_REASON_MSR_WRITE_IMM       85
- 
- #define VMX_EXIT_REASONS \
- 	{ EXIT_REASON_EXCEPTION_NMI,         "EXCEPTION_NMI" }, \
-@@ -158,7 +160,9 @@
- 	{ EXIT_REASON_TPAUSE,                "TPAUSE" }, \
- 	{ EXIT_REASON_BUS_LOCK,              "BUS_LOCK" }, \
- 	{ EXIT_REASON_NOTIFY,                "NOTIFY" }, \
--	{ EXIT_REASON_TDCALL,                "TDCALL" }
-+	{ EXIT_REASON_TDCALL,                "TDCALL" }, \
-+	{ EXIT_REASON_MSR_READ_IMM,          "MSR_READ_IMM" }, \
-+	{ EXIT_REASON_MSR_WRITE_IMM,         "MSR_WRITE_IMM" }
- 
- #define VMX_EXIT_REASON_FLAGS \
- 	{ VMX_EXIT_REASONS_FAILED_VMENTRY,	"FAILED_VMENTRY" }
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -6216,19 +6216,26 @@ static bool nested_vmx_exit_handled_msr(
- 					struct vmcs12 *vmcs12,
- 					union vmx_exit_reason exit_reason)
- {
--	u32 msr_index = kvm_rcx_read(vcpu);
-+	u32 msr_index;
- 	gpa_t bitmap;
- 
- 	if (!nested_cpu_has(vmcs12, CPU_BASED_USE_MSR_BITMAPS))
- 		return true;
- 
-+	if (exit_reason.basic == EXIT_REASON_MSR_READ_IMM ||
-+	    exit_reason.basic == EXIT_REASON_MSR_WRITE_IMM)
-+		msr_index = vmx_get_exit_qual(vcpu);
-+	else
-+		msr_index = kvm_rcx_read(vcpu);
-+
- 	/*
- 	 * The MSR_BITMAP page is divided into four 1024-byte bitmaps,
- 	 * for the four combinations of read/write and low/high MSR numbers.
- 	 * First we need to figure out which of the four to use:
- 	 */
- 	bitmap = vmcs12->msr_bitmap;
--	if (exit_reason.basic == EXIT_REASON_MSR_WRITE)
-+	if (exit_reason.basic == EXIT_REASON_MSR_WRITE ||
-+	    exit_reason.basic == EXIT_REASON_MSR_WRITE_IMM)
- 		bitmap += 2048;
- 	if (msr_index >= 0xc0000000) {
- 		msr_index -= 0xc0000000;
-@@ -6527,6 +6534,8 @@ static bool nested_vmx_l1_wants_exit(str
- 		return nested_cpu_has2(vmcs12, SECONDARY_EXEC_DESC);
- 	case EXIT_REASON_MSR_READ:
- 	case EXIT_REASON_MSR_WRITE:
-+	case EXIT_REASON_MSR_READ_IMM:
-+	case EXIT_REASON_MSR_WRITE_IMM:
- 		return nested_vmx_exit_handled_msr(vcpu, vmcs12, exit_reason);
- 	case EXIT_REASON_INVALID_STATE:
- 		return true;
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6003,6 +6003,23 @@ static int handle_notify(struct kvm_vcpu
- 	return 1;
- }
- 
-+static int vmx_get_msr_imm_reg(struct kvm_vcpu *vcpu)
-+{
-+	return vmx_get_instr_info_reg(vmcs_read32(VMX_INSTRUCTION_INFO));
-+}
-+
-+static int handle_rdmsr_imm(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_emulate_rdmsr_imm(vcpu, vmx_get_exit_qual(vcpu),
-+				     vmx_get_msr_imm_reg(vcpu));
-+}
-+
-+static int handle_wrmsr_imm(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_emulate_wrmsr_imm(vcpu, vmx_get_exit_qual(vcpu),
-+				     vmx_get_msr_imm_reg(vcpu));
-+}
-+
- /*
-  * The exit handlers return 1 if the exit was handled fully and guest execution
-  * may resume.  Otherwise they set the kvm_run parameter to indicate what needs
-@@ -6061,6 +6078,8 @@ static int (*kvm_vmx_exit_handlers[])(st
- 	[EXIT_REASON_ENCLS]		      = handle_encls,
- 	[EXIT_REASON_BUS_LOCK]                = handle_bus_lock_vmexit,
- 	[EXIT_REASON_NOTIFY]		      = handle_notify,
-+	[EXIT_REASON_MSR_READ_IMM]            = handle_rdmsr_imm,
-+	[EXIT_REASON_MSR_WRITE_IMM]           = handle_wrmsr_imm,
- };
- 
- static const int kvm_vmx_max_exit_handlers =
-@@ -6495,6 +6514,8 @@ static int __vmx_handle_exit(struct kvm_
- #ifdef CONFIG_MITIGATION_RETPOLINE
- 	if (exit_reason.basic == EXIT_REASON_MSR_WRITE)
- 		return kvm_emulate_wrmsr(vcpu);
-+	else if (exit_reason.basic == EXIT_REASON_MSR_WRITE_IMM)
-+		return handle_wrmsr_imm(vcpu);
- 	else if (exit_reason.basic == EXIT_REASON_PREEMPTION_TIMER)
- 		return handle_preemption_timer(vcpu);
- 	else if (exit_reason.basic == EXIT_REASON_INTERRUPT_WINDOW)
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -706,6 +706,11 @@ static inline bool vmx_guest_state_valid
- 
- void dump_vmcs(struct kvm_vcpu *vcpu);
- 
-+static inline int vmx_get_instr_info_reg(u32 vmx_instr_info)
-+{
-+	return (vmx_instr_info >> 3) & 0xf;
-+}
-+
- static inline int vmx_get_instr_info_reg2(u32 vmx_instr_info)
- {
- 	return (vmx_instr_info >> 28) & 0xf;
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1997,6 +1997,15 @@ static int complete_fast_rdmsr(struct kv
- 	return complete_fast_msr_access(vcpu);
- }
- 
-+static int complete_fast_rdmsr_imm(struct kvm_vcpu *vcpu)
-+{
-+	if (!vcpu->run->msr.error)
-+		kvm_register_write(vcpu, vcpu->arch.cui_rdmsr_imm_reg,
-+				   vcpu->run->msr.data);
-+
-+	return complete_fast_msr_access(vcpu);
-+}
-+
- static u64 kvm_msr_reason(int r)
- {
- 	switch (r) {
-@@ -2031,39 +2040,53 @@ static int kvm_msr_user_space(struct kvm
- 	return 1;
- }
- 
--int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu)
-+static int __kvm_emulate_rdmsr(struct kvm_vcpu *vcpu, u32 msr, int reg,
-+			       int (*complete_rdmsr)(struct kvm_vcpu *))
- {
--	u32 msr = kvm_rcx_read(vcpu);
- 	u64 data;
- 	int r;
- 
- 	r = kvm_get_msr_with_filter(vcpu, msr, &data);
--
- 	if (!r) {
- 		trace_kvm_msr_read(msr, data);
- 
--		kvm_rax_write(vcpu, data & -1u);
--		kvm_rdx_write(vcpu, (data >> 32) & -1u);
-+		if (reg < 0) {
-+			kvm_rax_write(vcpu, data & -1u);
-+			kvm_rdx_write(vcpu, (data >> 32) & -1u);
-+		} else {
-+			kvm_register_write(vcpu, reg, data);
-+		}
- 	} else {
- 		/* MSR read failed? See if we should ask user space */
- 		if (kvm_msr_user_space(vcpu, msr, KVM_EXIT_X86_RDMSR, 0,
--				       complete_fast_rdmsr, r))
-+				       complete_rdmsr, r))
- 			return 0;
- 		trace_kvm_msr_read_ex(msr);
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1366,7 +1366,6 @@ static int dso__load_kcore(struct dso *d
+ 				goto out_err;
+ 			}
+ 		}
+-		map__zput(new_node->map);
+ 		free(new_node);
  	}
  
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
- }
-+
-+int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu)
-+{
-+	return __kvm_emulate_rdmsr(vcpu, kvm_rcx_read(vcpu), -1,
-+				   complete_fast_rdmsr);
-+}
- EXPORT_SYMBOL_GPL(kvm_emulate_rdmsr);
- 
--int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu)
-+int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg)
-+{
-+	vcpu->arch.cui_rdmsr_imm_reg = reg;
-+
-+	return __kvm_emulate_rdmsr(vcpu, msr, reg, complete_fast_rdmsr_imm);
-+}
-+EXPORT_SYMBOL_GPL(kvm_emulate_rdmsr_imm);
-+
-+static int __kvm_emulate_wrmsr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
- {
--	u32 msr = kvm_rcx_read(vcpu);
--	u64 data = kvm_read_edx_eax(vcpu);
- 	int r;
- 
- 	r = kvm_set_msr_with_filter(vcpu, msr, data);
--
- 	if (!r) {
- 		trace_kvm_msr_write(msr, data);
- 	} else {
-@@ -2079,8 +2102,20 @@ int kvm_emulate_wrmsr(struct kvm_vcpu *v
- 
- 	return kvm_x86_call(complete_emulated_msr)(vcpu, r);
- }
-+
-+int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu)
-+{
-+	return __kvm_emulate_wrmsr(vcpu, kvm_rcx_read(vcpu),
-+				   kvm_read_edx_eax(vcpu));
-+}
- EXPORT_SYMBOL_GPL(kvm_emulate_wrmsr);
- 
-+int kvm_emulate_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg)
-+{
-+	return __kvm_emulate_wrmsr(vcpu, msr, kvm_register_read(vcpu, reg));
-+}
-+EXPORT_SYMBOL_GPL(kvm_emulate_wrmsr_imm);
-+
- int kvm_emulate_as_nop(struct kvm_vcpu *vcpu)
- {
- 	return kvm_skip_emulated_instruction(vcpu);
 
 
 
