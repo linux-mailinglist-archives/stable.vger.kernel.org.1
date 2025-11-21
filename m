@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9A6C796CD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E512EC795F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id CF7922C66E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4F585344D9A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7FC33438C;
-	Fri, 21 Nov 2025 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3018D30AADC;
+	Fri, 21 Nov 2025 13:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wi/1lvUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdYPiRtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BEA2874F6;
-	Fri, 21 Nov 2025 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E003126CE33;
+	Fri, 21 Nov 2025 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731956; cv=none; b=N4mFyXYPIKi6qhHUuSv3qzjKLQlkc46shGewVPjZjPFWugX0SNrajmO+stzqwT9T5eSb7Wu/IjKnvr7PonV+tMnl1Q3OL/a4U2dljvDIi/tmozvTW7yXoV1muIqOjSLjJwWJRBkyiLoOW/g+jZY9MMQNk3wGW96dd62N6SETCf0=
+	t=1763731419; cv=none; b=g3NyjwLy/iziZ4Mb6g8vGprgppdST4fkZthOqDC/n/QwyLwdS2uMHyBO4myJzoM5cWEr5J+3gXT07Bg+xRvUOkFseCJgsiukovEGxBEhSFgNnHcfh9AjVqzy56lfXLiq8hBAuF6zT8CSPZPNIayH0Z3zPrRtyzHGPyPMkrih9AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731956; c=relaxed/simple;
-	bh=qgnWTxE0JdCnHZt9znke5GJjlsIEvKHmf+Z4SxIlNfw=;
+	s=arc-20240116; t=1763731419; c=relaxed/simple;
+	bh=5pOMt5LvJ+oKpPlMzcwq7Gy8eymdZunj0o9Cv/EBY98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5k0gTTQkWkq5kpBsejXTwnJk9qdqBfVDIr2wgVF5ejGrxOpGw7QMGMhHSGaYal6fstUFNeXwXNcwtZl+GrBs+vHXLqgQi81+hDeEd/pS9q6CZR21eetz4HzIjlldNe3KKcm783vHaQTQRNVIMTIQkwExeiybRQHzpYot3Uhlpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wi/1lvUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EBCC4CEF1;
-	Fri, 21 Nov 2025 13:32:35 +0000 (UTC)
+	 MIME-Version; b=Q+riDNdbSwAOkXnVYVFuHnEiGHqW0nsGccLW10YnmYhZlo9E03M8kYh8rnvr0v6iKR5MnHRJ9hufNAU7oj2725DEyvrw9BJvFTQ0+RzUeYkCJtoyip7Itydn5XEraRLCFZsTt2GXZCl4v6HUq0lvPhIPzozbis0yw4wUX3+YBEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdYPiRtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F910C4CEF1;
+	Fri, 21 Nov 2025 13:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731956;
-	bh=qgnWTxE0JdCnHZt9znke5GJjlsIEvKHmf+Z4SxIlNfw=;
+	s=korg; t=1763731418;
+	bh=5pOMt5LvJ+oKpPlMzcwq7Gy8eymdZunj0o9Cv/EBY98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wi/1lvUp1V8iCmc89YUEG0Ke5dSdz3CjhirHflqDnBG6OJZyJyR+7owPkfL/HYVqK
-	 R/OzRMzMCHCiciHxJx5y4Jzr/gU3JBOnjKo3SCecEoNUoJRL4FEuBEnXUPBplU6hJG
-	 DANk/rcDcXLbF8kz7TOTzZcN0sqkCcHUw0qq4euY=
+	b=HdYPiRtjFki1nUWJjMRGTIkvSJlEwATozJZOg4xhgqmG5qNosltqPkGElssRjdNru
+	 dHlpnecwPSluilAxgNBmhQVhDZmTeb5l7+Q7zH4Zl7h94ejwBN9q645y2Y/m8QIENl
+	 QkpB5hEIolUj/+xonNVKPT37lwQdxBxLKLU4H5aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.12 122/185] selftests/tracing: Run sample events to clear page cache events
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.17 202/247] x86/microcode/AMD: Add Zen5 model 0x44, stepping 0x1 minrev
 Date: Fri, 21 Nov 2025 14:12:29 +0100
-Message-ID: <20251121130148.278915387@linuxfoundation.org>
+Message-ID: <20251121130201.974540567@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit dd4adb986a86727ed8f56c48b6d0695f1e211e65 upstream.
+commit dd14022a7ce96963aa923e35cf4bcc8c32f95840 upstream.
 
-The tracing selftest "event-filter-function.tc" was failing because it
-first runs the "sample_events" function that triggers the kmem_cache_free
-event and it looks at what function was used during a call to "ls".
+Add the minimum Entrysign revision for that model+stepping to the list
+of minimum revisions.
 
-But the first time it calls this, it could trigger events that are used to
-pull pages into the page cache.
-
-The rest of the test uses the function it finds during that call to see if
-it will be called in subsequent "sample_events" calls. But if there's no
-need to pull pages into the page cache, it will not trigger that function
-and the test will fail.
-
-Call the "sample_events" twice to trigger all the page cache work before
-it calls it to find a function to use in subsequent checks.
-
-Cc: stable@vger.kernel.org
-Fixes: eb50d0f250e96 ("selftests/ftrace: Choose target function for filter test from samples")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/e94dd76b-4911-482f-8500-5c848a3df026@citrix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
-+++ b/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
-@@ -20,6 +20,10 @@ sample_events() {
- echo 0 > tracing_on
- echo 0 > events/enable
- 
-+# Clear functions caused by page cache; run sample_events twice
-+sample_events
-+sample_events
-+
- echo "Get the most frequently calling function"
- echo > trace
- sample_events
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -224,6 +224,7 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xb1010: return cur_rev <= 0xb101046; break;
+ 	case 0xb2040: return cur_rev <= 0xb204031; break;
+ 	case 0xb4040: return cur_rev <= 0xb404031; break;
++	case 0xb4041: return cur_rev <= 0xb404101; break;
+ 	case 0xb6000: return cur_rev <= 0xb600031; break;
+ 	case 0xb6080: return cur_rev <= 0xb608031; break;
+ 	case 0xb7000: return cur_rev <= 0xb700031; break;
 
 
 
