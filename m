@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8011C7942D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C39C796D7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 035344ED5A0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 686C53461AF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB312F6577;
-	Fri, 21 Nov 2025 13:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF123313267;
+	Fri, 21 Nov 2025 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaN8s92u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMWBWUGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFEA2750FB;
-	Fri, 21 Nov 2025 13:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B07A190477;
+	Fri, 21 Nov 2025 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731113; cv=none; b=cX8nviYLywpYXONBjyLPxxpsrHdSd56eq89A1XIy8Mw4D/Tu1XPqaSOazQd1FE48lUgmqO5POhFmYOy+SXOieX2VOK002SdwxnaFKc5niAWEbxwB8QGqWOh4V/dCF/88fzgupvn0SnmfiCi3fQMz5nzzvqY7qI6nxpSAERkyww0=
+	t=1763731695; cv=none; b=i7C1JcvwVIvJh5E7rqRMSGj4j5tqHUfNDDG12hI6y7dTmX20srlSCiDsBl1yNFhwCVoaLqTAgcq/lGcI3E59thBzNoeGqsJ6Gb31LWQCe+XjGPIFzYQcfgxnnRkFemsGhhwV/03/WvCxb1raNBi5UXRAkkjkKEOsSJlPudMBSNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731113; c=relaxed/simple;
-	bh=o1QH4DQwcFILUTmsjlqVqUiceyG5J4VJaPz+GFMXERo=;
+	s=arc-20240116; t=1763731695; c=relaxed/simple;
+	bh=qKsCRE5o5Ing10gBdcJIq/qxo93UoNivVVqY/2nu3Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnzMKy4eoRDMw6VvnV9r5NHM+NZoYZbrj8lViri3SGnUA61vgHQW5YY6lUOui+uF3wrXNoqHalSLWLkaHQ2G887VY3Uaahis9ml+w4w8mrY44hh0yhtrAgys8GIku+U8b9zjvp4hUO5jOxEDn1vNs1WzND+ZqvOVyPwf+cBRiaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaN8s92u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755E9C4CEF1;
-	Fri, 21 Nov 2025 13:18:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g3ekTfV8Zz/ZMUCchCSDTYY4y0UMpXR8rq1C66+WcjG3sUGiMeYZgA91YNtAXQeIrW8kWOeFfXcNBHo3A3U670vHIo2Ihiv0+zIFtKm5zEcPmEVLfdOKizucNFwEuzG4/ofmI3VMyChbCHUmjJyso06jDHwuBe76JPC0gL6n17A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMWBWUGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E587CC4CEF1;
+	Fri, 21 Nov 2025 13:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731112;
-	bh=o1QH4DQwcFILUTmsjlqVqUiceyG5J4VJaPz+GFMXERo=;
+	s=korg; t=1763731695;
+	bh=qKsCRE5o5Ing10gBdcJIq/qxo93UoNivVVqY/2nu3Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RaN8s92u14wPW9ZfC0xbI6gq6g8FWqlKu04r7LrVoB7uj0kUz3nuup5uFf+RltqmF
-	 Tdbkg+/nM34t+p8evCoXLNQyUEQDnH1FD1O77Q7VBdKFoeiVGen8LMmC8zlBIxY1Mc
-	 uYZcNqb4AucOiMNCagnttlmjBR3AzgX5ACCloB7c=
+	b=jMWBWUGh+p2hBZCRDEpr7QdA3dDiVIl+SDp/wj88VwStaash8FlYQea4dbWbbcD6+
+	 wjp3Qflr64SE5zfN6LFKjMNxjqiCppA/4xENAiAMhyDtRuuETicPtXJeAMA3ykmqPB
+	 eH6VzspeInw3BCe49LZnJ5f2dmQtHfG+M2uZgrw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 095/247] io_uring/rsrc: dont use blk_rq_nr_phys_segments() as number of bvecs
+Subject: [PATCH 6.12 015/185] drm/amdgpu: remove two invalid BUG_ON()s
 Date: Fri, 21 Nov 2025 14:10:42 +0100
-Message-ID: <20251121130158.001308865@linuxfoundation.org>
+Message-ID: <20251121130144.426579869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 2d0e88f3fd1dcb37072d499c36162baf5b009d41 ]
+[ Upstream commit 5d55ed19d4190d2c210ac05ac7a53f800a8c6fe5 ]
 
-io_buffer_register_bvec() currently uses blk_rq_nr_phys_segments() as
-the number of bvecs in the request. However, bvecs may be split into
-multiple segments depending on the queue limits. Thus, the number of
-segments may overestimate the number of bvecs. For ublk devices, the
-only current users of io_buffer_register_bvec(), virt_boundary_mask,
-seg_boundary_mask, max_segments, and max_segment_size can all be set
-arbitrarily by the ublk server process.
-Set imu->nr_bvecs based on the number of bvecs the rq_for_each_bvec()
-loop actually yields. However, continue using blk_rq_nr_phys_segments()
-as an upper bound on the number of bvecs when allocating imu to avoid
-needing to iterate the bvecs a second time.
+Those can be triggered trivially by userspace.
 
-Link: https://lore.kernel.org/io-uring/20251111191530.1268875-1-csander@purestorage.com/
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: 27cb27b6d5ea ("io_uring: add support for kernel registered bvecs")
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 --
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c | 2 --
+ 2 files changed, 4 deletions(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 5961f21dd65d1..b0852674730c5 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -942,8 +942,8 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
- 	struct req_iterator rq_iter;
- 	struct io_mapped_ubuf *imu;
- 	struct io_rsrc_node *node;
--	struct bio_vec bv, *bvec;
--	u16 nr_bvecs;
-+	struct bio_vec bv;
-+	unsigned int nr_bvecs = 0;
- 	int ret = 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 96e5c520af316..c0a15d1920e28 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -5632,8 +5632,6 @@ static void gfx_v11_0_ring_emit_ib_gfx(struct amdgpu_ring *ring,
+ 	unsigned vmid = AMDGPU_JOB_GET_VMID(job);
+ 	u32 header, control = 0;
  
- 	io_ring_submit_lock(ctx, issue_flags);
-@@ -964,8 +964,11 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
- 		goto unlock;
- 	}
+-	BUG_ON(ib->flags & AMDGPU_IB_FLAG_CE);
+-
+ 	header = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
  
--	nr_bvecs = blk_rq_nr_phys_segments(rq);
--	imu = io_alloc_imu(ctx, nr_bvecs);
-+	/*
-+	 * blk_rq_nr_phys_segments() may overestimate the number of bvecs
-+	 * but avoids needing to iterate over the bvecs
-+	 */
-+	imu = io_alloc_imu(ctx, blk_rq_nr_phys_segments(rq));
- 	if (!imu) {
- 		kfree(node);
- 		ret = -ENOMEM;
-@@ -976,16 +979,15 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
- 	imu->len = blk_rq_bytes(rq);
- 	imu->acct_pages = 0;
- 	imu->folio_shift = PAGE_SHIFT;
--	imu->nr_bvecs = nr_bvecs;
- 	refcount_set(&imu->refs, 1);
- 	imu->release = release;
- 	imu->priv = rq;
- 	imu->is_kbuf = true;
- 	imu->dir = 1 << rq_data_dir(rq);
+ 	control |= ib->length_dw | (vmid << 24);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+index adcfcf594286f..0c8581dfbee6e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -4330,8 +4330,6 @@ static void gfx_v12_0_ring_emit_ib_gfx(struct amdgpu_ring *ring,
+ 	unsigned vmid = AMDGPU_JOB_GET_VMID(job);
+ 	u32 header, control = 0;
  
--	bvec = imu->bvec;
- 	rq_for_each_bvec(bv, rq, rq_iter)
--		*bvec++ = bv;
-+		imu->bvec[nr_bvecs++] = bv;
-+	imu->nr_bvecs = nr_bvecs;
+-	BUG_ON(ib->flags & AMDGPU_IB_FLAG_CE);
+-
+ 	header = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
  
- 	node->buf = imu;
- 	data->nodes[index] = node;
+ 	control |= ib->length_dw | (vmid << 24);
 -- 
 2.51.0
 
