@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF357C79F6A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:07:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D63C79298
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id DA9F62DD8E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id A7C1C2DC98
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCEA34E762;
-	Fri, 21 Nov 2025 13:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80F727147D;
+	Fri, 21 Nov 2025 13:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFC7+bFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjbP8Fap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EAC34DCD7;
-	Fri, 21 Nov 2025 13:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ED523183B;
+	Fri, 21 Nov 2025 13:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732906; cv=none; b=N3fgzTMejlZ4GygJDCfl9eFcci4Rx3q40J8icvUarMyiCno2F4OJiJKIAQBi+wvNeYzD02rDiEjdOEMOVF84fHO0KmeamGAC1HGfO8g4xSS2mIWIqge85r6HDMsznyRxP0iI922TfseJ0xOOAhYUYAbNlDQD1MaaaCB3lFd1aVA=
+	t=1763730953; cv=none; b=ilyxnLaagpgeqxewffFAcY4fI/ncKUpExKxZ2OQZovSJLCkipX4jA84wGYHQX1DMAHyAxxZCXSeqZGXk4VuK/1LJbaFz3COrhp59/6fCd73ZBJ9U1N040DKQbHETNecFplzrlmfEcvb2yXVQ/ug+ohHMKwZzG1TDX+TywRt12TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732906; c=relaxed/simple;
-	bh=9/G6k6PS8xyKafmz6XjsSXeO/IR+86CObfBx+CAgZGY=;
+	s=arc-20240116; t=1763730953; c=relaxed/simple;
+	bh=CJg93SGIaExKqOY30e8/Lva8bMCZOuC3hR/Ko5yIBtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N8++e9HIsngVs/zZjoOJr5LKkfNLISH8h90yYyu2lX6r0GxBSoH8DWib5KBLz7R35LRQXK9EkS5fyf13w4XoNIE5YA7VS1tkGs+RtkdAN78SWUIK6J7xDs2PzP4i9udltzlIag035lU8n6cR65t4YCBgFGwKIxPnzjAjvUP8amo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFC7+bFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9A4C4CEF1;
-	Fri, 21 Nov 2025 13:48:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y6Om8bP2ryBIFfUSqg9+DtsdUSCa6b181b8F0oObi9aUnZWD6+My9B5ctCQzaS237Jq1hqjSg4Fnj9Lj5SJ+cHxhnqCJjqo4npbJ7/3TdnRtaWdWSpEg9vlIg2pBotbHI0bBzEr413N2Ue5i4Wpat5YdzQXMIoIPi4neO+bEHy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjbP8Fap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108D5C4CEF1;
+	Fri, 21 Nov 2025 13:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732906;
-	bh=9/G6k6PS8xyKafmz6XjsSXeO/IR+86CObfBx+CAgZGY=;
+	s=korg; t=1763730953;
+	bh=CJg93SGIaExKqOY30e8/Lva8bMCZOuC3hR/Ko5yIBtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFC7+bFVQl1dsdmQtiT05fGIoXo6tZSSzO0O5gs79g4HFAGf7SLwYHlXO1khrld1e
-	 RhWNA+INYYo0yrLqUUUmpVIgPmK1fChpHhyELrdiqUEcGHHFoXfpjQacO+OrdQlRi0
-	 ySVV4Ni9DZp9/vYr65nUWk9u1RGydgEtkpl/AX5k=
+	b=IjbP8FapnZPVE3OYYCoqawZirz99mjTjoE+6lUXwzGwjRxEkeCrsgXlZzsRLGViGF
+	 qhMF2Ii1VNjHP0zFb/cEl6pifhzpyW9HifAtQdXlxgA+OCOISAFClSPYszwFovZ2MH
+	 V3WSKCojq3pHpZGTWpsL9Jbf7I5rAYF6s3191MQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Seunghun Han <kkamagui@gmail.com>,
+	Jihoon Kwon <jimmyxyz010315@gmail.com>,
+	Jaehun Gou <p22gone@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/529] net: macb: avoid dealing with endianness in macb_set_hwaddr()
-Date: Fri, 21 Nov 2025 14:09:44 +0100
-Message-ID: <20251121130241.169733638@linuxfoundation.org>
+Subject: [PATCH 6.17 038/247] exfat: fix improper check of dentry.stream.valid_size
+Date: Fri, 21 Nov 2025 14:09:45 +0100
+Message-ID: <20251121130155.971633588@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +65,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Jaehun Gou <p22gone@gmail.com>
 
-[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
+[ Upstream commit 82ebecdc74ff555daf70b811d854b1f32a296bea ]
 
-bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
-pointer and dereferencing implies dealing manually with endianness,
-which is error-prone.
+We found an infinite loop bug in the exFAT file system that can lead to a
+Denial-of-Service (DoS) condition. When a dentry in an exFAT filesystem is
+malformed, the following system calls — SYS_openat, SYS_ftruncate, and
+SYS_pwrite64 — can cause the kernel to hang.
 
-Replace by calls to get_unaligned_le32|le16() helpers.
+Root cause analysis shows that the size validation code in exfat_find()
+does not check whether dentry.stream.valid_size is negative. As a result,
+the system calls mentioned above can succeed and eventually trigger the DoS
+issue.
 
-This was found using sparse:
-   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
-   warning: incorrect type in assignment (different base types)
-      expected unsigned int [usertype] bottom
-      got restricted __le32 [usertype]
-   warning: incorrect type in assignment (different base types)
-      expected unsigned short [usertype] top
-      got restricted __le16 [usertype]
-   ...
+This patch adds a check for negative dentry.stream.valid_size to prevent
+this vulnerability.
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Seunghun Han <kkamagui@gmail.com>
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
+Co-developed-by: Jihoon Kwon <jimmyxyz010315@gmail.com>
+Signed-off-by: Jihoon Kwon <jimmyxyz010315@gmail.com>
+Signed-off-by: Jaehun Gou <p22gone@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/exfat/namei.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index b836ab2a649a2..7593255e6e53d 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -281,9 +281,9 @@ static void macb_set_hwaddr(struct macb *bp)
- 	u32 bottom;
- 	u16 top;
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index f5f1c4e8a29fd..d8964d7368142 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -642,10 +642,14 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
  
--	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
-+	bottom = get_unaligned_le32(bp->dev->dev_addr);
- 	macb_or_gem_writel(bp, SA1B, bottom);
--	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
-+	top = get_unaligned_le16(bp->dev->dev_addr + 4);
- 	macb_or_gem_writel(bp, SA1T, top);
+ 	info->type = exfat_get_entry_type(ep);
+ 	info->attr = le16_to_cpu(ep->dentry.file.attr);
+-	info->size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->valid_size = le64_to_cpu(ep2->dentry.stream.valid_size);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.size);
  
- 	if (gem_has_ptp(bp)) {
++	if (info->valid_size < 0) {
++		exfat_fs_error(sb, "data valid size is invalid(%lld)", info->valid_size);
++		return -EIO;
++	}
++
+ 	if (unlikely(EXFAT_B_TO_CLU_ROUND_UP(info->size, sbi) > sbi->used_clusters)) {
+ 		exfat_fs_error(sb, "data size is invalid(%lld)", info->size);
+ 		return -EIO;
 -- 
 2.51.0
 
