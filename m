@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC39C79B3D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD70C79289
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id B9AE42C1B8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 46C592AF60
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A200234BA56;
-	Fri, 21 Nov 2025 13:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42C83469EB;
+	Fri, 21 Nov 2025 13:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8bPN409"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWLAA+FW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5780934B68F;
-	Fri, 21 Nov 2025 13:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEECA2F12A4;
+	Fri, 21 Nov 2025 13:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732857; cv=none; b=YvNNNnqfH88PHtT75NntzKyeqZox+Z3xEQdGh322qThSzKpbEs3YcNrJihZNEpQz592P4r5oPfhetiT6lgiyFOKpG2k0F0hbXIfpe0qwc1FHgH7PEwiajfGc03wlUfND36BSpnPQN0Wr4LcDGGT7VQXCk1HQVVWQz/x81bcusr8=
+	t=1763730894; cv=none; b=GwcLnbhOC8VkpdDHFeqKRwi5CUxuAw99hHI+dvhFMHQhwsjSAcy8PB2g3XWmGMMnX3hSxVKgx+1mwgUruJaTfBB6Cy39Ne6EgM6tqu6QhdDzi6wcKwy8aVL8WS3QliZfHs46FDxZUsa0KIvjF20gPjkwiXHYTwh9KAi6ynGD1Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732857; c=relaxed/simple;
-	bh=vtGa2ttcxqSu7Yfr4jIfOEAg2CcLwOxvDUg2/GSN/7I=;
+	s=arc-20240116; t=1763730894; c=relaxed/simple;
+	bh=WkBbdcbQ6vIKatlEJtkMR4j4sA5sPAJSx3ATtePqUM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ld4q7dbO8C11+yw1kXrd9fAy9Q3VncAFgq8l/IfI+imwN62V4JCkMNDGJ7PteV2s6fBUympu8sLLaXYRdHpvyCwjUXZyqiJ88MkUtQ54xMm/eDOGDmjT4D0U26MpoymbnAa6qUuXElixGkiJom/qaU///Ik4nfZ2HjCgk/BinnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8bPN409; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9E7C4CEF1;
-	Fri, 21 Nov 2025 13:47:36 +0000 (UTC)
+	 MIME-Version; b=VISeYQ3rTkTksVFODP12lenbVwc8CKnx1TVYqvHB7B2FQjtfivZPOdE/JGrJXvH2YsQvG642GzkXCBSQAVCVyT58FY/3yjejf1KFXI3VCblBpyZclMN3lHbmCn1aSzb1GknbC2BP6A6ClpseoLVxJsc+S1lHpRFD8vitqpKBVFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWLAA+FW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581D4C116C6;
+	Fri, 21 Nov 2025 13:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732857;
-	bh=vtGa2ttcxqSu7Yfr4jIfOEAg2CcLwOxvDUg2/GSN/7I=;
+	s=korg; t=1763730892;
+	bh=WkBbdcbQ6vIKatlEJtkMR4j4sA5sPAJSx3ATtePqUM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8bPN4092fPATXsZnZQXnfcqiEZ3FvJT4/dbwTtQ9hTWK5mfm4zZOGBXKlj0Xg6go
-	 O8JhTVD7GfidTP8HJpBi3wNW6PUI2KpbiVYtEoimT2dpaWQ0kF332P8ixr0S2cperU
-	 prXi1LVqHJRLkFVaZdLKuXsZc67hgTob6WCCumDs=
+	b=FWLAA+FWVnrlquftBJ3I8/oTC7FvFlQVD12cpSKnqDBP/BQrV1UUzGXHpmlMrgVIt
+	 zT30z3LJpsm0vvmAsKxNzmGfrMN02uEnJeFRcqucIQZ+JG4OhlBisarH5LBQS01t6h
+	 UJHMAGkUGC5+Wfqu8quoWGBDltX0vcIhZtrNf+cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/529] wifi: ath12k: Increase DP_REO_CMD_RING_SIZE to 256
+Subject: [PATCH 6.17 019/247] arm64: kprobes: check the return value of set_memory_rox()
 Date: Fri, 21 Nov 2025 14:09:26 +0100
-Message-ID: <20251121130240.522947125@linuxfoundation.org>
+Message-ID: <20251121130155.290725985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-[ Upstream commit 82993345aef6987a916337ebd2fca3ff4a6250a7 ]
+[ Upstream commit 0ec364c0c95fc85bcbc88f1a9a06ebe83c88e18c ]
 
-Increase DP_REO_CMD_RING_SIZE from 128 to 256 to avoid
-queuing failures observed during stress test scenarios.
+Since commit a166563e7ec3 ("arm64: mm: support large block mapping when
+rodata=full"), __change_memory_common has more chance to fail due to
+memory allocation failure when splitting page table. So check the return
+value of set_memory_rox(), then bail out if it fails otherwise we may have
+RW memory mapping for kprobes insn page.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250806111750.3214584-2-nithyanantham.paramasivam@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 195a1b7d8388 ("arm64: kprobes: call set_memory_rox() for kprobe page")
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/probes/kprobes.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 61f765432516b..284032db0b98d 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -162,7 +162,7 @@ struct ath12k_pdev_dp {
- #define DP_REO_REINJECT_RING_SIZE	32
- #define DP_RX_RELEASE_RING_SIZE		1024
- #define DP_REO_EXCEPTION_RING_SIZE	128
--#define DP_REO_CMD_RING_SIZE		128
-+#define DP_REO_CMD_RING_SIZE		256
- #define DP_REO_STATUS_RING_SIZE		2048
- #define DP_RXDMA_BUF_RING_SIZE		4096
- #define DP_RXDMA_REFILL_RING_SIZE	2048
+diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
+index 8ab6104a4883d..43a0361a8bf04 100644
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -49,7 +49,10 @@ void *alloc_insn_page(void)
+ 	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
+ 	if (!addr)
+ 		return NULL;
+-	set_memory_rox((unsigned long)addr, 1);
++	if (set_memory_rox((unsigned long)addr, 1)) {
++		execmem_free(addr);
++		return NULL;
++	}
+ 	return addr;
+ }
+ 
 -- 
 2.51.0
 
