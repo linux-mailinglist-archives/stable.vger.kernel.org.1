@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C939C7A04A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAADFC797CF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 737984E4D3B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:02:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2B6EA345437
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3809134E779;
-	Fri, 21 Nov 2025 13:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00DE2749C5;
+	Fri, 21 Nov 2025 13:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d46jZyUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emI00hLf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BFB3557E2;
-	Fri, 21 Nov 2025 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A12745E;
+	Fri, 21 Nov 2025 13:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733421; cv=none; b=oiPg3i0Z2xCrA3zj/FmXvYTZAMQcAzSGvFl0Ikzhxq0E0ZsaR3xxUFCCh2elWf3QsYjFtsW9/q8yprxKcS0qGdhKnTQa1DAiG8vE2x5ZmZWOIY0VMmr++S8MnH+MU569jI0AEKKTjNWT1qdX1peLnNDoVpNr2qW4A5Moq2kC5LQ=
+	t=1763731915; cv=none; b=Tl5BThd0v09b8d0UiZcAAjqSolP4XKYmXTeuJZ95VLWnk4LkFV6+gEYNmI70dRKRaHRRmeVIIS6Wbn/N82AW6rokCDC2BxQZdo0BzcyWpRJOFQv/g3muQA0V7F9BFmYDHjOgniMmszaV8e+nffm1xMrAHdiqILKAzgqCuXxvvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733421; c=relaxed/simple;
-	bh=D3BmuUqnLGKsPZU8mfK31uFiXHxnRPxaFrHJj8TTgc8=;
+	s=arc-20240116; t=1763731915; c=relaxed/simple;
+	bh=QCCR/6Fhr9tq/J+NJNcyHkBVL3EbApreY7WoJ8IftT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YymR5dy8ae+jjqNueLo8Ml4njCPTJFZd2uoLVrpZYDHWu5PCom2y7vj80Ye5ORkxZQqDHr8pLQMoxhFclD/KLntnPCILG3ROvlQvGvwtk2zERu2Du78dyjzrWRiJmc1wTId0se8egQGA9WRBWrtEplKwUg1U/4gjWQjzTyzbA2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d46jZyUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A191C4CEF1;
-	Fri, 21 Nov 2025 13:57:01 +0000 (UTC)
+	 MIME-Version; b=FIg8ffoeRn4LgomzTY3yv8RFgfmh9tNJgjRPX8UZ+ULHltPwZLcx7Dh1jqaXFhiNHzhAggPCHFVZJsnscPXzmUalbGtF731dO5RlPiK+QSHKM4eeMrWFEmg6bSJZ0ZPFAvTf1CLq8R2VE6/BQeGwRsmx5I/0XEiVJanTeqdPufA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emI00hLf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3073C4CEF1;
+	Fri, 21 Nov 2025 13:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733421;
-	bh=D3BmuUqnLGKsPZU8mfK31uFiXHxnRPxaFrHJj8TTgc8=;
+	s=korg; t=1763731915;
+	bh=QCCR/6Fhr9tq/J+NJNcyHkBVL3EbApreY7WoJ8IftT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d46jZyUG/VmoBjKfttL0Aa5yvrnG+Ssu802pnqLtx6mDTbu801H29mkEhfZuWL6/1
-	 8/M7M1pSoXbCbU9jrlX1TBNQUsbgfN0rLVBJWzhRh+FJZSOgVX7hU62mMxGtMOCBpT
-	 nb9vVqJGNTEN9k1eW5/tdL9au5nElQewv1AlRTYQ=
+	b=emI00hLfXPLQLkt7avdY2E8xqe9dODI5sq99tUqDg6Cw/J5jYe/VihUAjmcEJpshT
+	 CvpLIACi3ciBikwLvXDDxVCZPHepBYzvOasSwETGBQtRgeQugFJoR3++AO8t0Rtk2m
+	 84epaAzN77fl1mqFUB254RUnY4n4JKCDPdy5XnFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Geoffrey Thorpe <geoff@geoffthorpe.net>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 419/529] ACPI: CPPC: Perform fast check switch only for online CPUs
-Date: Fri, 21 Nov 2025 14:11:58 +0100
-Message-ID: <20251121130245.924995831@linuxfoundation.org>
+Subject: [PATCH 6.12 092/185] hostfs: Fix only passing host root in boot stage with new mount
+Date: Fri, 21 Nov 2025 14:11:59 +0100
+Message-ID: <20251121130147.188170451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 8821c8e80a65bc4eb73daf63b34aac6b8ad69461 ]
+[ Upstream commit 2c2b67af5f5f77fc68261a137ad65dcfb8e52506 ]
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+In the old mount proceedure, hostfs could only pass root directory during
+boot. This is because it constructed the root directory using the @root_ino
+event without any mount options. However, when using it with the new mount
+API, this step is no longer triggered. As a result, if users mounts without
+specifying any mount options, the @host_root_path remains uninitialized. To
+prevent this issue, the @host_root_path should be initialized at the time
+of allocation.
 
-However the function cppc_allow_fast_switch() checks for the validity
-of the _CPC object for all the present CPUs. This breaks when the
-kernel is booted with "nosmt=force".
-
-Check fast_switch capability only on online CPUs
-
-Fixes: 15eece6c5b05 ("ACPI: CPPC: Fix NULL pointer dereference when nosmp is used")
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-4-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Geoffrey Thorpe <geoff@geoffthorpe.net>
+Closes: https://lore.kernel.org/all/643333a0-f434-42fb-82ac-d25a0b56f3b7@geoffthorpe.net/
+Fixes: cd140ce9f611 ("hostfs: convert hostfs to use the new mount API")
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20251011092235.29880-1-lihongbo22@huawei.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hostfs/hostfs_kern.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 39f248be9611f..6e579be36a1eb 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -461,7 +461,7 @@ bool cppc_allow_fast_switch(void)
- 	struct cpc_desc *cpc_ptr;
- 	int cpu;
+diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
+index a16a7df0766cd..3e143b679156d 100644
+--- a/fs/hostfs/hostfs_kern.c
++++ b/fs/hostfs/hostfs_kern.c
+@@ -972,7 +972,7 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ {
+ 	struct hostfs_fs_info *fsi = fc->s_fs_info;
+ 	struct fs_parse_result result;
+-	char *host_root;
++	char *host_root, *tmp_root;
+ 	int opt;
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
- 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
+ 	opt = fs_parse(fc, hostfs_param_specs, param, &result);
+@@ -983,11 +983,13 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 	case Opt_hostfs:
+ 		host_root = param->string;
+ 		if (!*host_root)
+-			host_root = "";
+-		fsi->host_root_path =
+-			kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
+-		if (fsi->host_root_path == NULL)
++			break;
++		tmp_root = kasprintf(GFP_KERNEL, "%s%s",
++				     fsi->host_root_path, host_root);
++		if (!tmp_root)
+ 			return -ENOMEM;
++		kfree(fsi->host_root_path);
++		fsi->host_root_path = tmp_root;
+ 		break;
+ 	}
+ 
+@@ -997,17 +999,17 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ static int hostfs_parse_monolithic(struct fs_context *fc, void *data)
+ {
+ 	struct hostfs_fs_info *fsi = fc->s_fs_info;
+-	char *host_root = (char *)data;
++	char *tmp_root, *host_root = (char *)data;
+ 
+ 	/* NULL is printed as '(null)' by printf(): avoid that. */
+ 	if (host_root == NULL)
+-		host_root = "";
++		return 0;
+ 
+-	fsi->host_root_path =
+-		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
+-	if (fsi->host_root_path == NULL)
++	tmp_root = kasprintf(GFP_KERNEL, "%s%s", fsi->host_root_path, host_root);
++	if (!tmp_root)
+ 		return -ENOMEM;
+-
++	kfree(fsi->host_root_path);
++	fsi->host_root_path = tmp_root;
+ 	return 0;
+ }
+ 
+@@ -1042,6 +1044,11 @@ static int hostfs_init_fs_context(struct fs_context *fc)
+ 	if (!fsi)
+ 		return -ENOMEM;
+ 
++	fsi->host_root_path = kasprintf(GFP_KERNEL, "%s/", root_ino);
++	if (!fsi->host_root_path) {
++		kfree(fsi);
++		return -ENOMEM;
++	}
+ 	fc->s_fs_info = fsi;
+ 	fc->ops = &hostfs_context_ops;
+ 	return 0;
 -- 
 2.51.0
 
