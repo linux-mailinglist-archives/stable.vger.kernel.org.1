@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A318C79E88
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A392AC797AB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 392204F1174
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC834348155
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892AE3451AF;
-	Fri, 21 Nov 2025 13:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4E6332904;
+	Fri, 21 Nov 2025 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mmbn7jbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tm08y7n5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346B830EF7F;
-	Fri, 21 Nov 2025 13:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292CF1F03D7;
+	Fri, 21 Nov 2025 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733169; cv=none; b=ODdqiUBriaWFUpMzUKSvopgvzm5+lW7kb+KRUSqbdFHsGiRr7xQeRfm7GVSAMTKKh3ibozIKfEjApf8z0yonaUzuC8kjnika5+8KEhXp+v0BeMSW1/8XDjanMFPEy1vrjuLyiRK5bzXCBtsxrMhg24s3WToTkFN2Ulgq0sojF+4=
+	t=1763731818; cv=none; b=iuO6FpYOv1wnolLSBcBlPgGJkSmYzmukfU87Zui3NlXueRNu610itfL7CrR5cuLDH+pak87gsEPwfvaItBuUJi4DFRcNT+tG/MIA245kjOjQCJG19R7do83m149EIf7V+m2hFe1XMFgiLlSXMNLiDToTcE/UqkCRwVeal3MUbXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733169; c=relaxed/simple;
-	bh=g646qc3woR6+zAYmIm3VHrNq4IgwJAkNFUiMO7fEYT0=;
+	s=arc-20240116; t=1763731818; c=relaxed/simple;
+	bh=phW7KzWlMnnCSJTfQVxF4+wdXt1kmDux9krINajj6ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GH7c/qucJhQ7g1olfgxnWGAZQAX5gVN/8cyCAuO/y7FMiYZ+Xaft5LOKb9Llng0n4jIwyRvYDhtXk/8EtLlowLW3/D1c8YTYCvJIG4MIqV0iz7gz6FVneGAqMgURQrzJEXozUJy6SPwH8pbKgDNBaxh4bD+KKjpigz1q2KhdnEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mmbn7jbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA430C4CEF1;
-	Fri, 21 Nov 2025 13:52:48 +0000 (UTC)
+	 MIME-Version; b=f+QGDEXk0D3WmTw3Bj/trPL6noPsY/eQl5Dc+/Y+1ULloT8s8UrK1A+JzEmUr5YvtGOzElyzeh6hVn6eWzCsgPR67m+froD8HS8PnJgwGRyNlmyfA9SQVZJILUSnLLppYr/KLDFo5sQ2MeatVLnW6y9nY1zXiF9fV3ZHbVvTO0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tm08y7n5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD83C4CEF1;
+	Fri, 21 Nov 2025 13:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733169;
-	bh=g646qc3woR6+zAYmIm3VHrNq4IgwJAkNFUiMO7fEYT0=;
+	s=korg; t=1763731818;
+	bh=phW7KzWlMnnCSJTfQVxF4+wdXt1kmDux9krINajj6ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mmbn7jbF/cPfrCzWDMyYteYm0OsKOeffLVlL6CyLMZPfEf8UufDpNhkHMW8lc/Qt6
-	 ptXsv0feVd7klDOVmjvfZ3UgRkRJbJXBiqmzClx0pqoLY87z4CfQ6SPhMBW3XtA1vt
-	 BzFn7kUDL1Xp1lHfdJPBI47QWg0FOdzAC3waqFlo=
+	b=tm08y7n51K3Cxz5/ffWDAaCmRu211NE11bTSiP0hvWQA9xhCIgzV44oe/zFD1a7ez
+	 Cs9WYJJR7PSBy2skaYTCNQ67v81nHUq2zZvwpTSmDTIGqS+np7zFtr9Ka/uBoiHFVV
+	 SK7Po24ThaPF4kV/VomC5mbeSQq56UD9Cx8P9uLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 375/529] riscv: stacktrace: fix backtracing through exceptions
+	Aksh Garg <a-garg7@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 047/185] net: ethernet: ti: am65-cpsw-qos: fix IET verify/response timeout
 Date: Fri, 21 Nov 2025 14:11:14 +0100
-Message-ID: <20251121130244.369468845@linuxfoundation.org>
+Message-ID: <20251121130145.576897029@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Aksh Garg <a-garg7@ti.com>
 
-commit 51356ce60e5915a6bd812873186ed54e45c2699d upstream.
+[ Upstream commit 49b3916465176a5abcb29a0e464825f553d55d58 ]
 
-Prior to commit 5d5fc33ce58e ("riscv: Improve exception and system call
-latency"), backtrace through exception worked since ra was filled with
-ret_from_exception symbol address and the stacktrace code checked 'pc' to
-be equal to that symbol. Now that handle_exception uses regular 'call'
-instructions, this isn't working anymore and backtrace stops at
-handle_exception(). Since there are multiple call site to C code in the
-exception handling path, rather than checking multiple potential return
-addresses, add a new symbol at the end of exception handling and check pc
-to be in that range.
+The CPSW module uses the MAC_VERIFY_CNT bit field in the
+CPSW_PN_IET_VERIFY_REG_k register to set the verify/response timeout
+count. This register specifies the number of clock cycles to wait before
+resending a verify packet if the verification fails.
 
-Fixes: 5d5fc33ce58e ("riscv: Improve exception and system call latency")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20241209155714.1239665-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The verify/response timeout count, as being set by the function
+am65_cpsw_iet_set_verify_timeout_count() is hardcoded for 125MHz
+clock frequency, which varies based on PHY mode and link speed.
+
+The respective clock frequencies are as follows:
+- RGMII mode:
+  * 1000 Mbps: 125 MHz
+  * 100 Mbps: 25 MHz
+  * 10 Mbps: 2.5 MHz
+- QSGMII/SGMII mode: 125 MHz (all speeds)
+
+Fix this by adding logic to calculate the correct timeout counts
+based on the actual PHY interface mode and link speed.
+
+Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+Link: https://patch.msgid.link/20251106092305.1437347-2-a-garg7@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/entry.S      |    1 +
- arch/riscv/kernel/stacktrace.c |    4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-qos.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -174,6 +174,7 @@ SYM_CODE_START_NOALIGN(ret_from_exceptio
- #else
- 	sret
- #endif
-+SYM_INNER_LABEL(ret_from_exception_end, SYM_L_GLOBAL)
- SYM_CODE_END(ret_from_exception)
- ASM_NOKPROBE(ret_from_exception)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+index fa96db7c1a130..ad06942ce461a 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+@@ -276,9 +276,31 @@ static int am65_cpsw_iet_set_verify_timeout_count(struct am65_cpsw_port *port)
+ 	/* The number of wireside clocks contained in the verify
+ 	 * timeout counter. The default is 0x1312d0
+ 	 * (10ms at 125Mhz in 1G mode).
++	 * The frequency of the clock depends on the link speed
++	 * and the PHY interface.
+ 	 */
+-	val = 125 * HZ_PER_MHZ;	/* assuming 125MHz wireside clock */
++	switch (port->slave.phy_if) {
++	case PHY_INTERFACE_MODE_RGMII:
++	case PHY_INTERFACE_MODE_RGMII_ID:
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		if (port->qos.link_speed == SPEED_1000)
++			val = 125 * HZ_PER_MHZ;	/* 125 MHz at 1000Mbps*/
++		else if (port->qos.link_speed == SPEED_100)
++			val = 25 * HZ_PER_MHZ;	/* 25 MHz at 100Mbps*/
++		else
++			val = (25 * HZ_PER_MHZ) / 10;	/* 2.5 MHz at 10Mbps*/
++		break;
++
++	case PHY_INTERFACE_MODE_QSGMII:
++	case PHY_INTERFACE_MODE_SGMII:
++		val = 125 * HZ_PER_MHZ;	/* 125 MHz */
++		break;
  
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -33,6 +33,7 @@
- })
++	default:
++		netdev_err(port->ndev, "selected mode does not supported IET\n");
++		return -EOPNOTSUPP;
++	}
+ 	val /= MILLIHZ_PER_HZ;		/* count per ms timeout */
+ 	val *= verify_time_ms;		/* count for timeout ms */
  
- extern asmlinkage void handle_exception(void);
-+extern unsigned long ret_from_exception_end;
- 
- static inline int fp_is_valid(unsigned long fp, unsigned long sp)
- {
-@@ -88,7 +89,8 @@ void notrace walk_stackframe(struct task
- 			pc = READ_ONCE_TASK_STACK(task, frame->ra);
- 			pc = ftrace_graph_ret_addr(current, &graph_idx, pc,
- 						   &frame->ra);
--			if (pc == (unsigned long)handle_exception) {
-+			if (pc >= (unsigned long)handle_exception &&
-+			    pc < (unsigned long)&ret_from_exception_end) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
- 					break;
- 
+-- 
+2.51.0
+
 
 
 
