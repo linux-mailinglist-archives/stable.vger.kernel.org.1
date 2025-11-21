@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6139EC797F9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DA0C793CE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id EC8592E095
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 32A44293B0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722A9332904;
-	Fri, 21 Nov 2025 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951C62F363E;
+	Fri, 21 Nov 2025 13:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBxr3LVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0XOdgYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCCC2765FF;
-	Fri, 21 Nov 2025 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9AF26E6F4;
+	Fri, 21 Nov 2025 13:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731752; cv=none; b=Kig3/B50tjBDlcuPXfrsou39GW9w7HrJHI+WDUeLp2lqOSR2fQUJkxLZgQP0ONhLISqyVcB6evhOHzQD7gMJ999ahMVtEZr1I7MtSNhJx0M9uQtRrZ9KJG+dtxyshP39jkZvBUUZYvF8grliOYXAHwk9T1WuOmxo2x7B/S9vgSs=
+	t=1763731270; cv=none; b=luHeVdvo8NO5TjE+itBT/ZSUZkhwrYx7ZoMkXuPiuJntgFa3LtkpfvtyJD0bP2tLKWXCa+O6kS5AaA7vevi/mLJ2/D/pAccL5ywpa62EHnBTvS5yTHVrt5zTLVBJ6jTEufPOsbwQueuOd1LzucYqeT7INCJpR0CF4No9iRH+PPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731752; c=relaxed/simple;
-	bh=0qtrjcL2rk+T6cyFtB9nEahQOMudTjvb59RSeWfr2bo=;
+	s=arc-20240116; t=1763731270; c=relaxed/simple;
+	bh=yJIdz6Oov/kG6TWyzHMvZuO8SOtYrLa2qsM95yV2u9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frTRFhndcmDsevh9KMSD59yoMEwk/kPYZ0RgkJuveFCeGy2Meb1/ZPqisdiMSGS6bgsyW8WFvHrUSyzEJ31bUnjUWFXPynM4czyte1UlnB3es4E/ozYeAs8XK4d8vtURM+sPWotACuABDd09eAiyLSn078IJuWNIp59qsmD6Lw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBxr3LVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4556C4CEF1;
-	Fri, 21 Nov 2025 13:29:11 +0000 (UTC)
+	 MIME-Version; b=c3qIEw0FyzJktu+nr0ywQ4a5Sl6uQeeyBiA4VgUshmflvVkqkggKIFK+whtYDArJZaQXMZF1M0430ecIFAG46Q37qNfCdEIYXEQRPudxk5nrVZc/WrsOygaZeeqrkLJWxjEA0sH82+BQhOxEVxpdF5S+F6hD7ibvGb0U5OVcT0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0XOdgYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6798C4CEF1;
+	Fri, 21 Nov 2025 13:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731752;
-	bh=0qtrjcL2rk+T6cyFtB9nEahQOMudTjvb59RSeWfr2bo=;
+	s=korg; t=1763731270;
+	bh=yJIdz6Oov/kG6TWyzHMvZuO8SOtYrLa2qsM95yV2u9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBxr3LVJ8i07QejVqKW6I1oAW5DXxcvrbVZnUvvVSnWcLLNTfEQ3K8EsBJ6hri+D0
-	 tkOPHhJp+am2nl5G8Has6zZEI3GuTc3PJQhGc6hnQX5vUZb5LhrortR+5+e5oAdAU2
-	 OxiZYXujlLZiw96F7iXPWmrTU/hLV4oxIVjaUNK0=
+	b=v0XOdgYVEboBJT+xFl0z4WMYbZ03Yzk5AMPKtruJWfv6usRPVcETXVqdN279qxau2
+	 r4dQjDlEiqm5n98V4z+ID3sS76ISWQjiGlknKhNmXqD/ad7ySwjrmjT2/jbi+GNff9
+	 qywrwWFWYJNyVzUzzFKj9to1p5Vfkk5SeNSOr3ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/185] regulator: fixed: fix GPIO descriptor leak on register failure
+Subject: [PATCH 6.17 148/247] HID: uclogic: Fix potential memory leak in error path
 Date: Fri, 21 Nov 2025 14:11:35 +0100
-Message-ID: <20251121130146.329569605@linuxfoundation.org>
+Message-ID: <20251121130200.039279451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 636f4618b1cd96f6b5a2b8c7c4f665c8533ecf13 ]
+[ Upstream commit a78eb69d60ce893de48dd75f725ba21309131fc2 ]
 
-In the commit referenced by the Fixes tag,
-devm_gpiod_get_optional() was replaced by manual
-GPIO management, relying on the regulator core to release the
-GPIO descriptor. However, this approach does not account for the
-error path: when regulator registration fails, the core never
-takes over the GPIO, resulting in a resource leak.
+In uclogic_params_ugee_v2_init_event_hooks(), the memory allocated for
+event_hook is not freed in the next error path. Fix that by freeing it.
 
-Add gpiod_put() before returning on regulator registration failure.
-
-Fixes: 5e6f3ae5c13b ("regulator: fixed: Let core handle GPIO descriptor")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251028172828.625-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a251d6576d2a ("HID: uclogic: Handle wireless device reconnection")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/fixed.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-uclogic-params.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index 1cb647ed70c62..a2d16e9abfb58 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -334,6 +334,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
- 		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
- 				    "Failed to register regulator: %ld\n",
- 				    PTR_ERR(drvdata->dev));
-+		gpiod_put(cfg.ena_gpiod);
- 		return ret;
- 	}
+diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
+index 4a17f7332c3f5..016d1f08bd1db 100644
+--- a/drivers/hid/hid-uclogic-params.c
++++ b/drivers/hid/hid-uclogic-params.c
+@@ -1369,8 +1369,10 @@ static int uclogic_params_ugee_v2_init_event_hooks(struct hid_device *hdev,
+ 	event_hook->hdev = hdev;
+ 	event_hook->size = ARRAY_SIZE(reconnect_event);
+ 	event_hook->event = kmemdup(reconnect_event, event_hook->size, GFP_KERNEL);
+-	if (!event_hook->event)
++	if (!event_hook->event) {
++		kfree(event_hook);
+ 		return -ENOMEM;
++	}
+ 
+ 	list_add_tail(&event_hook->list, &p->event_hooks->list);
  
 -- 
 2.51.0
