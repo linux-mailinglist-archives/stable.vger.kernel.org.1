@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAB3C793D1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390D2C79C96
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 717E234B1F0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 8810B2E216
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC21342526;
-	Fri, 21 Nov 2025 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2283A34DB77;
+	Fri, 21 Nov 2025 13:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hqp2Ob2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ffr4esQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6B931578E;
-	Fri, 21 Nov 2025 13:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14AB31578E;
+	Fri, 21 Nov 2025 13:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731032; cv=none; b=AsdeDBZPC2AP94W6UGCAkiQ7o7jY3nQlFbB8xPyAPthdvhmBNW+lJsqYglEjo5q46Q3vIaDaCsRjrttEsrYyVGNsV8quBlekJxHAriBX8jhFDLFDWY8iRJPfsVh9nqeocsdWI7Zxnd09EO+7/dqqziaB1JS9elwtFHqF4Z1LTfA=
+	t=1763733072; cv=none; b=JywrShPc1beZrYT/TreVgAFT8JhSy2Rb/8gfh51oIFIZK5o68tJovpEwgtq3koIAFEXdQVQWs33e0WJneeb3CNwWpKU61jG0EUJnpEhxO1yD8+IJz+f+cqOljuwW5Tc/hCiqtcxUy6Y+267irYQqymW46Fee93EMxIYrQPKY1ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731032; c=relaxed/simple;
-	bh=07lj6hf6oE4HFQN9E+aEYNVwQIuTFeUdp+yI/CtFfoI=;
+	s=arc-20240116; t=1763733072; c=relaxed/simple;
+	bh=XSF/8pk00X005vXnDF8Bnwc3H5kBtMKjUGSoI2qWSwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9BiDSGUR9Bo88s7Cex7BJzYjPO3zycTT3LhSYoIoWHxlBPE/gQpEvi9FZ1vSOyJguANvSTpJxTq7ADFOI49pMGhcZv/j9PakEOd1dFqOrVS3w6rI5W+1q+/6YabQiUmibySf50KPbNRIXLjSXUnq/OklvhveRS8NfNn6+77dEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hqp2Ob2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619A5C4CEFB;
-	Fri, 21 Nov 2025 13:17:11 +0000 (UTC)
+	 MIME-Version; b=UmQ6Ks2MBk5ykGRCqWXii8KOxKZJvcAb1qqB9Yz/HCqPqMziHHiYLkIowHhNyd1+X/X6/psMOwvpuqqhI8OBwECXArY9qsTwP2zMhA0i3MuHg0a6qiUjLVR74T/a4C1vfYjak5c99RuAMYXK7i7X4XakeFwWo4xiQhSOLnur2YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ffr4esQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C572C4CEF1;
+	Fri, 21 Nov 2025 13:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731031;
-	bh=07lj6hf6oE4HFQN9E+aEYNVwQIuTFeUdp+yI/CtFfoI=;
+	s=korg; t=1763733072;
+	bh=XSF/8pk00X005vXnDF8Bnwc3H5kBtMKjUGSoI2qWSwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hqp2Ob2vCQIGQAmP/XJt4Bkdmuoy6bXPGXLrWej2JCRVgL3DoYHgDqT6eCTSXLS5d
-	 ffAM21RRqNG38Prm+7InWSVPP4jwAfcI0UEbOB2WdvjoMHeBAzOUy3h8XxxhAmM8xI
-	 UI23uN8tJS/mN26AMNKt0tqPLw8yaliAo+UjvtvM=
+	b=Ffr4esQrE7gPWXk2IcWZFbTYQmkVNSB3BIgwdSMt0kWsaKvkEcvVY6+yVtn2W5V+S
+	 u+3KSBz6w8LEYVCINGTUgM+pRRLswbmWqXDkKhgzsgthin+EoQi1UyCaYL/P1BXkqO
+	 3dQcg/YU0vo/Dv0NkIdM+29Z9hsmRn/MGt6jlEN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 066/247] net: ethernet: ti: am65-cpsw-qos: fix IET verify retry mechanism
+Subject: [PATCH 6.6 314/529] NTB: epf: Allow arbitrary BAR mapping
 Date: Fri, 21 Nov 2025 14:10:13 +0100
-Message-ID: <20251121130156.971213316@linuxfoundation.org>
+Message-ID: <20251121130242.198000281@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit d4b00d132d7cb70a74bc039c91c1d6120943c71b ]
+[ Upstream commit 5ad865862a0fd349163243e1834ed98ba9b81905 ]
 
-The am65_cpsw_iet_verify_wait() function attempts verification 20 times,
-toggling the AM65_CPSW_PN_IET_MAC_LINKFAIL bit in each iteration. When
-the LINKFAIL bit transitions from 1 to 0, the MAC merge layer initiates
-the verification process and waits for the timeout configured in
-MAC_VERIFY_CNT before automatically retransmitting. The MAC_VERIFY_CNT
-register is configured according to the user-defined verify/response
-timeout in am65_cpsw_iet_set_verify_timeout_count(). As per IEEE 802.3
-Clause 99, the hardware performs this automatic retry up to 3 times.
+The NTB epf host driver assumes the BAR number associated with a memory
+window is just incremented from the BAR number associated with MW1. This
+seems to have been enough so far but this is not really how the endpoint
+side work and the two could easily become mis-aligned.
 
-Current implementation toggles LINKFAIL after the user-configured
-verify/response timeout in each iteration, forcing the hardware to
-restart verification instead of respecting the MAC_VERIFY_CNT timeout.
-This bypasses the hardware's automatic retry mechanism.
+ntb_epf_mw_to_bar() even assumes that the BAR number is the memory window
+index + 2, which means the function only returns a proper result if BAR_2
+is associated with MW1.
 
-Fix this by moving the LINKFAIL bit toggle outside the retry loop and
-reducing the retry count from 20 to 3. The software now only monitors
-the status register while the hardware autonomously handles the 3
-verification attempts at proper MAC_VERIFY_CNT intervals.
+Instead, fully describe and allow arbitrary NTB BAR mapping.
 
-Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Link: https://patch.msgid.link/20251106092305.1437347-3-a-garg7@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-qos.c | 27 +++++++++++++------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/ntb/hw/epf/ntb_hw_epf.c | 103 ++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-index ad06942ce461a..66e8b224827b6 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-@@ -317,20 +317,21 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
- 	u32 ctrl, status;
- 	int try;
+diff --git a/drivers/ntb/hw/epf/ntb_hw_epf.c b/drivers/ntb/hw/epf/ntb_hw_epf.c
+index b640aa0bf45e6..5e79cfce8649c 100644
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -49,6 +49,7 @@
+ #define NTB_EPF_COMMAND_TIMEOUT	1000 /* 1 Sec */
  
--	try = 20;
--	do {
--		/* Reset the verify state machine by writing 1
--		 * to LINKFAIL
--		 */
--		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
--		ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
--		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
-+	try = 3;
+ enum pci_barno {
++	NO_BAR = -1,
+ 	BAR_0,
+ 	BAR_1,
+ 	BAR_2,
+@@ -57,16 +58,26 @@ enum pci_barno {
+ 	BAR_5,
+ };
  
--		/* Clear MAC_LINKFAIL bit to start Verify. */
--		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
--		ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
--		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
-+	/* Reset the verify state machine by writing 1
-+	 * to LINKFAIL
-+	 */
-+	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
-+	ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
-+	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
- 
-+	/* Clear MAC_LINKFAIL bit to start Verify. */
-+	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
-+	ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
-+	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++enum epf_ntb_bar {
++	BAR_CONFIG,
++	BAR_PEER_SPAD,
++	BAR_DB,
++	BAR_MW1,
++	BAR_MW2,
++	BAR_MW3,
++	BAR_MW4,
++	NTB_BAR_NUM,
++};
 +
-+	do {
- 		msleep(port->qos.iet.verify_time_ms);
++#define NTB_EPF_MAX_MW_COUNT	(NTB_BAR_NUM - BAR_MW1)
++
+ struct ntb_epf_dev {
+ 	struct ntb_dev ntb;
+ 	struct device *dev;
+ 	/* Mutex to protect providing commands to NTB EPF */
+ 	struct mutex cmd_lock;
  
- 		status = readl(port->port_base + AM65_CPSW_PN_REG_IET_STATUS);
-@@ -352,7 +353,7 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
- 			netdev_dbg(port->ndev, "MAC Merge verify error\n");
- 			return -ENODEV;
- 		}
--	} while (try-- > 0);
-+	} while (--try > 0);
+-	enum pci_barno ctrl_reg_bar;
+-	enum pci_barno peer_spad_reg_bar;
+-	enum pci_barno db_reg_bar;
+-	enum pci_barno mw_bar;
++	const enum pci_barno *barno_map;
  
- 	netdev_dbg(port->ndev, "MAC Merge verify timeout\n");
- 	return -ETIMEDOUT;
+ 	unsigned int mw_count;
+ 	unsigned int spad_count;
+@@ -85,17 +96,6 @@ struct ntb_epf_dev {
+ 
+ #define ntb_ndev(__ntb) container_of(__ntb, struct ntb_epf_dev, ntb)
+ 
+-struct ntb_epf_data {
+-	/* BAR that contains both control region and self spad region */
+-	enum pci_barno ctrl_reg_bar;
+-	/* BAR that contains peer spad region */
+-	enum pci_barno peer_spad_reg_bar;
+-	/* BAR that contains Doorbell region and Memory window '1' */
+-	enum pci_barno db_reg_bar;
+-	/* BAR that contains memory windows*/
+-	enum pci_barno mw_bar;
+-};
+-
+ static int ntb_epf_send_command(struct ntb_epf_dev *ndev, u32 command,
+ 				u32 argument)
+ {
+@@ -144,7 +144,7 @@ static int ntb_epf_mw_to_bar(struct ntb_epf_dev *ndev, int idx)
+ 		return -EINVAL;
+ 	}
+ 
+-	return idx + 2;
++	return ndev->barno_map[BAR_MW1 + idx];
+ }
+ 
+ static int ntb_epf_mw_count(struct ntb_dev *ntb, int pidx)
+@@ -413,7 +413,9 @@ static int ntb_epf_mw_set_trans(struct ntb_dev *ntb, int pidx, int idx,
+ 		return -EINVAL;
+ 	}
+ 
+-	bar = idx + ndev->mw_bar;
++	bar = ntb_epf_mw_to_bar(ndev, idx);
++	if (bar < 0)
++		return bar;
+ 
+ 	mw_size = pci_resource_len(ntb->pdev, bar);
+ 
+@@ -455,7 +457,9 @@ static int ntb_epf_peer_mw_get_addr(struct ntb_dev *ntb, int idx,
+ 	if (idx == 0)
+ 		offset = readl(ndev->ctrl_reg + NTB_EPF_MW1_OFFSET);
+ 
+-	bar = idx + ndev->mw_bar;
++	bar = ntb_epf_mw_to_bar(ndev, idx);
++	if (bar < 0)
++		return bar;
+ 
+ 	if (base)
+ 		*base = pci_resource_start(ndev->ntb.pdev, bar) + offset;
+@@ -560,6 +564,11 @@ static int ntb_epf_init_dev(struct ntb_epf_dev *ndev)
+ 	ndev->mw_count = readl(ndev->ctrl_reg + NTB_EPF_MW_COUNT);
+ 	ndev->spad_count = readl(ndev->ctrl_reg + NTB_EPF_SPAD_COUNT);
+ 
++	if (ndev->mw_count > NTB_EPF_MAX_MW_COUNT) {
++		dev_err(dev, "Unsupported MW count: %u\n", ndev->mw_count);
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -596,14 +605,15 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
+ 		dev_warn(&pdev->dev, "Cannot DMA highmem\n");
+ 	}
+ 
+-	ndev->ctrl_reg = pci_iomap(pdev, ndev->ctrl_reg_bar, 0);
++	ndev->ctrl_reg = pci_iomap(pdev, ndev->barno_map[BAR_CONFIG], 0);
+ 	if (!ndev->ctrl_reg) {
+ 		ret = -EIO;
+ 		goto err_pci_regions;
+ 	}
+ 
+-	if (ndev->peer_spad_reg_bar) {
+-		ndev->peer_spad_reg = pci_iomap(pdev, ndev->peer_spad_reg_bar, 0);
++	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG]) {
++		ndev->peer_spad_reg = pci_iomap(pdev,
++						ndev->barno_map[BAR_PEER_SPAD], 0);
+ 		if (!ndev->peer_spad_reg) {
+ 			ret = -EIO;
+ 			goto err_pci_regions;
+@@ -614,7 +624,7 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
+ 		ndev->peer_spad_reg = ndev->ctrl_reg + spad_off  + spad_sz;
+ 	}
+ 
+-	ndev->db_reg = pci_iomap(pdev, ndev->db_reg_bar, 0);
++	ndev->db_reg = pci_iomap(pdev, ndev->barno_map[BAR_DB], 0);
+ 	if (!ndev->db_reg) {
+ 		ret = -EIO;
+ 		goto err_pci_regions;
+@@ -659,12 +669,7 @@ static void ntb_epf_cleanup_isr(struct ntb_epf_dev *ndev)
+ static int ntb_epf_pci_probe(struct pci_dev *pdev,
+ 			     const struct pci_device_id *id)
+ {
+-	enum pci_barno peer_spad_reg_bar = BAR_1;
+-	enum pci_barno ctrl_reg_bar = BAR_0;
+-	enum pci_barno db_reg_bar = BAR_2;
+-	enum pci_barno mw_bar = BAR_2;
+ 	struct device *dev = &pdev->dev;
+-	struct ntb_epf_data *data;
+ 	struct ntb_epf_dev *ndev;
+ 	int ret;
+ 
+@@ -675,18 +680,10 @@ static int ntb_epf_pci_probe(struct pci_dev *pdev,
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
+-	data = (struct ntb_epf_data *)id->driver_data;
+-	if (data) {
+-		peer_spad_reg_bar = data->peer_spad_reg_bar;
+-		ctrl_reg_bar = data->ctrl_reg_bar;
+-		db_reg_bar = data->db_reg_bar;
+-		mw_bar = data->mw_bar;
+-	}
++	ndev->barno_map = (const enum pci_barno *)id->driver_data;
++	if (!ndev->barno_map)
++		return -EINVAL;
+ 
+-	ndev->peer_spad_reg_bar = peer_spad_reg_bar;
+-	ndev->ctrl_reg_bar = ctrl_reg_bar;
+-	ndev->db_reg_bar = db_reg_bar;
+-	ndev->mw_bar = mw_bar;
+ 	ndev->dev = dev;
+ 
+ 	ntb_epf_init_struct(ndev, pdev);
+@@ -730,30 +727,36 @@ static void ntb_epf_pci_remove(struct pci_dev *pdev)
+ 	ntb_epf_deinit_pci(ndev);
+ }
+ 
+-static const struct ntb_epf_data j721e_data = {
+-	.ctrl_reg_bar = BAR_0,
+-	.peer_spad_reg_bar = BAR_1,
+-	.db_reg_bar = BAR_2,
+-	.mw_bar = BAR_2,
++static const enum pci_barno j721e_map[NTB_BAR_NUM] = {
++	[BAR_CONFIG]	= BAR_0,
++	[BAR_PEER_SPAD]	= BAR_1,
++	[BAR_DB]	= BAR_2,
++	[BAR_MW1]	= BAR_2,
++	[BAR_MW2]	= BAR_3,
++	[BAR_MW3]	= BAR_4,
++	[BAR_MW4]	= BAR_5
+ };
+ 
+-static const struct ntb_epf_data mx8_data = {
+-	.ctrl_reg_bar = BAR_0,
+-	.peer_spad_reg_bar = BAR_0,
+-	.db_reg_bar = BAR_2,
+-	.mw_bar = BAR_4,
++static const enum pci_barno mx8_map[NTB_BAR_NUM] = {
++	[BAR_CONFIG]	= BAR_0,
++	[BAR_PEER_SPAD]	= BAR_0,
++	[BAR_DB]	= BAR_2,
++	[BAR_MW1]	= BAR_4,
++	[BAR_MW2]	= BAR_5,
++	[BAR_MW3]	= NO_BAR,
++	[BAR_MW4]	= NO_BAR
+ };
+ 
+ static const struct pci_device_id ntb_epf_pci_tbl[] = {
+ 	{
+ 		PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
+-		.driver_data = (kernel_ulong_t)&j721e_data,
++		.driver_data = (kernel_ulong_t)j721e_map,
+ 	},
+ 	{
+ 		PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x0809),
+ 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
+-		.driver_data = (kernel_ulong_t)&mx8_data,
++		.driver_data = (kernel_ulong_t)mx8_map,
+ 	},
+ 	{ },
+ };
 -- 
 2.51.0
 
