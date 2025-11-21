@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-195787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B28C7971B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E00C79CB7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 225293464A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id B35092DFAA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFC0335541;
-	Fri, 21 Nov 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC1E34C819;
+	Fri, 21 Nov 2025 13:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzOBOwsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZl2HfXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0A72750FB;
-	Fri, 21 Nov 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCC349B1E;
+	Fri, 21 Nov 2025 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731662; cv=none; b=b12ysx15YQijGQkvTVZgeDW15GNBzn584zvKLjOQtCHXzeCZ+hy0uVGM05lPo1trxNifHM+TLC0L7VzUR2QRXFhVpJrlqbQSnjQHP2L0oQvqRhoXDTLm5JzToXYSSHsBvnDJQxUPXfgaE097VaT0Pjew/2oeC6ObPf1sHVipV9Y=
+	t=1763733138; cv=none; b=ZYhBoUssgvKmBP6me3FeT8KAIuTcl+CLDlBauzMt80Pl9HAmyfJEDJJyVHlMaaDhesc+XzdnVCN0oN+sGSfqHAOTvIFkgbrinYU1Y6G/mNobkX85MeeqyDi/OmcfyFqsB/iRCC9HGNuINWLQk+9m8n3szfi/sEOiFl9mQvhiaS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731662; c=relaxed/simple;
-	bh=BZRcHfvn1khg/jCw56qUuap7cVsVnWJ+41toUrJqYow=;
+	s=arc-20240116; t=1763733138; c=relaxed/simple;
+	bh=v3OQCgnAS8f2ZCNQDgW/N3rWOpZ1mfQziZidChXt3is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWgJoRTNEPNc8N4/WxmcVfy6QhNXKCetj1Uv1n1FWa5ELs8qDjPrjcjI8Wag59VXn0hmveQ7a8iKf3p+hEEn6IES8A4Xy/TPG3emj2nj0qENDyN/me8RHHu8h2SaPcY1Xzz13sXJpNy1lqc27i+UZH+N/jbeuV5O1TpHEEeSkj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzOBOwsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9675FC4CEF1;
-	Fri, 21 Nov 2025 13:27:41 +0000 (UTC)
+	 MIME-Version; b=WgKmm8ErlaGqtxigDV/xKN3iNrLkj4gsVp9UgH/DwPEh6oYK0nj4hDqZ/ifG6izruAKRwDGpVUZQUQvLdBWvsKMiU+a3RBdG0XmoZJDL07HxhVlktq+MmqZZD6nQo+e7wXlhgvnfMUD89Qh0dRS9wO1dXyU/TgFmQf9SvmB16h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZl2HfXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E171C4CEF1;
+	Fri, 21 Nov 2025 13:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731662;
-	bh=BZRcHfvn1khg/jCw56qUuap7cVsVnWJ+41toUrJqYow=;
+	s=korg; t=1763733137;
+	bh=v3OQCgnAS8f2ZCNQDgW/N3rWOpZ1mfQziZidChXt3is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzOBOwsxKwhkXaq2kQhLw9qPjgqknVLarRnJcOxUjbPwgyN0y0e02SgCwpKdS8hLL
-	 E0JYbMNrOHsj/4bBtaq0QK4CU2JL1S9nzQzg/hayy1Q1FcQy5QLBbgdR+NKna4k4tZ
-	 kved2RjdVKKtp/AlWNnS60XhqJt+qBI2JF8UQvuE=
+	b=xZl2HfXgC1To9mmPRkidAcKpWI83qoPk84fvzD2imKdRAzgfE+wzgOKcU7lyXjroF
+	 IlOu6HoFzXQYWBTS8OxZF/KUQlkqgquTv7nQxx8cwbeKQzn0rR1qjJ1db6ql6DDePw
+	 8vdpmqnajijmsxNJpxLuNkSz6D2J0P0tQPZzj8is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/185] rust: Add -fno-isolate-erroneous-paths-dereference to bindgen_skip_c_flags
+	Yuta Hayama <hayama@lineo.co.jp>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 365/529] rtc: rx8025: fix incorrect register reference
 Date: Fri, 21 Nov 2025 14:11:04 +0100
-Message-ID: <20251121130145.217081214@linuxfoundation.org>
+Message-ID: <20251121130244.015970319@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Yuta Hayama <hayama@lineo.co.jp>
 
-[ Upstream commit fe4b3a34e9a9654d98d274218dac0270779db0ae ]
+commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
 
-It's used to work around an objtool issue since commit abb2a5572264
-("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference"), but
-it's then passed to bindgen and cause an error because Clang does not
-have this option.
+This code is intended to operate on the CTRL1 register, but ctrl[1] is
+actually CTRL2. Correctly, ctrl[0] is CTRL1.
 
-Fixes: abb2a5572264 ("LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference")
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
+Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/Makefile | 2 +-
+ drivers/rtc/rtc-rx8025.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 07c13100000cd..c68c147205ed8 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -249,7 +249,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	-fzero-init-padding-bits=% -mno-fdpic \
--	--param=% --param asan-%
-+	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
- 
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
--- 
-2.51.0
-
+--- a/drivers/rtc/rtc-rx8025.c
++++ b/drivers/rtc/rtc-rx8025.c
+@@ -316,7 +316,7 @@ static int rx8025_init_client(struct i2c
+ 			return hour_reg;
+ 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
+ 	} else {
+-		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
++		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
+ 	}
+ out:
+ 	return err;
 
 
 
