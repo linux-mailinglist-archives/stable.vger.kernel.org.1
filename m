@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20C7C79742
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DF0C79F36
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E846A346A81
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 860634EEDCC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A07433E366;
-	Fri, 21 Nov 2025 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85C03502B3;
+	Fri, 21 Nov 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FPKAuOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlFuv/FL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2322737FC;
-	Fri, 21 Nov 2025 13:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E683358BE;
+	Fri, 21 Nov 2025 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731720; cv=none; b=WQi6Aq/OED0rftLa6dTzaytmaLpqvlvZKQWOZuTSbQBpyd/W3L2kfYZz5w3yCLuGjyshc8ZR2Rj28LMOU/mbIWF4rWut8RPVGId+hR5WTyeA2DxBJqSA0b1ik89imy+q8SyK5tSN2jOmen7Fok4bJn+EZLSolCCppIVYsNLBj7M=
+	t=1763733279; cv=none; b=FwIhzpiEeg5bC13yEeOwXT4weST5gwUlO40SEkywJeYDDcmRFW4lhS51iGgNvatAC0e/z/LPG1+FhckOwt0xgZzGlPXnE6M86lq+7H/hRmdmdaBlqvnqp3zPDbOQnLkVjupw0fNuxrLUKYLXVIkRhvvzIm5bFBYjMty+Q3HLrFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731720; c=relaxed/simple;
-	bh=1+IdtvDJld87XeJnFdLsFEES6lF1nyYudIfPO8LGZO0=;
+	s=arc-20240116; t=1763733279; c=relaxed/simple;
+	bh=sjsxBV+x9Bp/Q8hFDaDes12h4Qzn4bpHevjTI2NMjto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbkgeEv1fAsH77jb7ZKxRDPs5AK5WloiNpKT14FHqI1PI0qyC7ZZpBu9Y+7rTbOgVWmy5ynVkAYOCg2TSAf6zwVj3FjEdAp1DU3tiZ1zelvDo/K/HLUKKaDWkhZ0UMViPzvuR6OLEpy8XEdXZfEQUH6UgRWrhN0z5aVNjqXCFIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FPKAuOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62496C4CEF1;
-	Fri, 21 Nov 2025 13:28:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JWQCiXpHZkq7J/ck8FE/O2WuuwYq3UjjESAYzm7iPlDoGJB1AmqU9QQIEgGGeBnLQrzLJBoTGYFnI5T4YNrzbK5JZZTDMSiyHUhyniozaxfCVYayL6r7ofigTgcSxH+KaM1e3s0mcQ33jGAcf+qC+YSp8Zc74Eiqynis5fYyR9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlFuv/FL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC54EC4CEF1;
+	Fri, 21 Nov 2025 13:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731720;
-	bh=1+IdtvDJld87XeJnFdLsFEES6lF1nyYudIfPO8LGZO0=;
+	s=korg; t=1763733278;
+	bh=sjsxBV+x9Bp/Q8hFDaDes12h4Qzn4bpHevjTI2NMjto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FPKAuOrSS6wOKqVwfKZiXMGp9ym8Y/21moxerT1/riTA99/VgUlI850u2F/PpBRM
-	 GPNOqLPGsaeabHp7ZlBXvcYu6vMqWMIKowjqABt/olFV/acNj5wH+nWXg1eD91mmiL
-	 8EUByvVGkS1I755vn3wo4IkNBiSMjiEusFuefYa0=
+	b=AlFuv/FLnx/nOA96sOQfwyVglWqrN/MaoXEIAkIGKw15wqDCgjT0Nv5z6arm7fWmd
+	 05bdsmFeH9ecRWQCEe4Kz8Rj6ewMiOYaSohqViiTjtSQFDMc+onDay7Nda8gHJCxZz
+	 h2P8kRrdEOK+irIeIQK3xhM9pg7k1dSfBMdIysBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/185] net/mlx5e: Fix potentially misleading debug message
+Subject: [PATCH 6.6 386/529] drm/amdgpu: Fix NULL pointer dereference in VRAM logic for APU devices
 Date: Fri, 21 Nov 2025 14:11:25 +0100
-Message-ID: <20251121130145.971356361@linuxfoundation.org>
+Message-ID: <20251121130244.758112632@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
+[ Upstream commit 883f309add55060233bf11c1ea6947140372920f ]
 
-Change the debug message to print the correct units instead of always
-assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
+Previously, APU platforms (and other scenarios with uninitialized VRAM managers)
+triggered a NULL pointer dereference in `ttm_resource_manager_usage()`. The root
+cause is not that the `struct ttm_resource_manager *man` pointer itself is NULL,
+but that `man->bdev` (the backing device pointer within the manager) remains
+uninitialized (NULL) on APUs—since APUs lack dedicated VRAM and do not fully
+set up VRAM manager structures. When `ttm_resource_manager_usage()` attempts to
+acquire `man->bdev->lru_lock`, it dereferences the NULL `man->bdev`, leading to
+a kernel OOPS.
 
-Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+1. **amdgpu_cs.c**: Extend the existing bandwidth control check in
+   `amdgpu_cs_get_threshold_for_moves()` to include a check for
+   `ttm_resource_manager_used()`. If the manager is not used (uninitialized
+   `bdev`), return 0 for migration thresholds immediately—skipping VRAM-specific
+   logic that would trigger the NULL dereference.
+
+2. **amdgpu_kms.c**: Update the `AMDGPU_INFO_VRAM_USAGE` ioctl and memory info
+   reporting to use a conditional: if the manager is used, return the real VRAM
+   usage; otherwise, return 0. This avoids accessing `man->bdev` when it is
+   NULL.
+
+3. **amdgpu_virt.c**: Modify the vf2pf (virtual function to physical function)
+   data write path. Use `ttm_resource_manager_used()` to check validity: if the
+   manager is usable, calculate `fb_usage` from VRAM usage; otherwise, set
+   `fb_usage` to 0 (APUs have no discrete framebuffer to report).
+
+This approach is more robust than APU-specific checks because it:
+- Works for all scenarios where the VRAM manager is uninitialized (not just APUs),
+- Aligns with TTM's design by using its native helper function,
+- Preserves correct behavior for discrete GPUs (which have fully initialized
+  `man->bdev` and pass the `ttm_resource_manager_used()` check).
+
+v4: use ttm_resource_manager_used(&adev->mman.vram_mgr.manager) instead of checking the adev->gmc.is_app_apu flag (Christian)
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c   | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c  | 7 ++++---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 4 ++--
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 154f8d9eec02a..2ca32fb1961e1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -598,6 +598,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	__u64 upper_limit_mbps;
- 	__u64 upper_limit_gbps;
- 	int i;
-+	struct {
-+		int scale;
-+		const char *units_str;
-+	} units[] = {
-+		[MLX5_100_MBPS_UNIT] = {
-+			.scale = 100,
-+			.units_str = "Mbps",
-+		},
-+		[MLX5_GBPS_UNIT] = {
-+			.scale = 1,
-+			.units_str = "Gbps",
-+		},
-+	};
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 5b4d7fe148586..05712d322024a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -690,7 +690,7 @@ static void amdgpu_cs_get_threshold_for_moves(struct amdgpu_device *adev,
+ 	 */
+ 	const s64 us_upper_bound = 200000;
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
-@@ -628,8 +641,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	}
+-	if (!adev->mm_stats.log2_max_MBps) {
++	if ((!adev->mm_stats.log2_max_MBps) || !ttm_resource_manager_used(&adev->mman.vram_mgr.manager)) {
+ 		*max_bytes = 0;
+ 		*max_vis_bytes = 0;
+ 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 5797055b1148f..1f0de6e717112 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -651,7 +651,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		ui64 = atomic64_read(&adev->num_vram_cpu_page_faults);
+ 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
+ 	case AMDGPU_INFO_VRAM_USAGE:
+-		ui64 = ttm_resource_manager_usage(&adev->mman.vram_mgr.manager);
++		ui64 = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++			ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) : 0;
+ 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
+ 	case AMDGPU_INFO_VIS_VRAM_USAGE:
+ 		ui64 = amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr);
+@@ -697,8 +698,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		mem.vram.usable_heap_size = adev->gmc.real_vram_size -
+ 			atomic64_read(&adev->vram_pin_size) -
+ 			AMDGPU_VM_RESERVED_VRAM;
+-		mem.vram.heap_usage =
+-			ttm_resource_manager_usage(vram_man);
++		mem.vram.heap_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++				ttm_resource_manager_usage(vram_man) : 0;
+ 		mem.vram.max_allocation = mem.vram.usable_heap_size * 3 / 4;
  
- 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
--		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
--			   __func__, i, max_bw_value[i]);
-+		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
-+			   max_bw_value[i] * units[max_bw_unit[i]].scale,
-+			   units[max_bw_unit[i]].units_str);
- 	}
+ 		mem.cpu_accessible_vram.total_heap_size =
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 7cb4b4118335a..5a4b1b625f037 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -604,8 +604,8 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
+ 	vf2pf_info->driver_cert = 0;
+ 	vf2pf_info->os_info.all = 0;
  
- 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
+-	vf2pf_info->fb_usage =
+-		ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20;
++	vf2pf_info->fb_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
++		 ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20 : 0;
+ 	vf2pf_info->fb_vis_usage =
+ 		amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr) >> 20;
+ 	vf2pf_info->fb_size = adev->gmc.real_vram_size >> 20;
 -- 
 2.51.0
 
