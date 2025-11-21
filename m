@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0078FC792A7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:16:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB9CC79ED6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EF3C834802E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 1EEFC34209
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4F2F1FE7;
-	Fri, 21 Nov 2025 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52919350D4A;
+	Fri, 21 Nov 2025 13:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtSVqeol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUvQG5U4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1EB2F363E;
-	Fri, 21 Nov 2025 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8DE346A0E;
+	Fri, 21 Nov 2025 13:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730875; cv=none; b=fTVxaiseBecK1BzfpgHhp3TelmyTSChm9MpPGXIHTgRvAdEFNrrJRYtkF8TDX6wsNyvDOgJY3hhzWvQwijHR76sc8PCtkurr6euvS4rHLU1XNlmbl8UB6f0Ygu+GTVLVj0JQqfs9FZ+NR6UVQOxEcirPyPGGxTWL5jcNoOP4qiw=
+	t=1763732814; cv=none; b=kcY2mz634web2E69pBBddSOzELPo9PbILKbuag5Tdwc8jfxDKzMbzp52fey2hjLLugAa0b76t6jDznTzqzl/R3Vc9sks2O5s0KxRaiT9m4Vrtu/cBCBvMIJnGU1e4roQRWBLrpnIVOtPxWRZthKeNjA1rVd1tykvYo8Zk0BK+mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730875; c=relaxed/simple;
-	bh=8hQs+m1/m5JeHnVZTR5nwrHjvuPIMNj9dMwJEfcsqGE=;
+	s=arc-20240116; t=1763732814; c=relaxed/simple;
+	bh=9BRKknYp/+4hA6Kvzud4XdmnnB5o3OBWddJK8yPbD7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPyX1hN+CWPbMIiLBcyZXSCD9ycWeIsIkIYrYA1CZTTkGqCk4g777JWu1AKUJn3BzSAD7UzWBgnXFjJ1hSFgEqXPiOiXvnmQgtyJQyFshUsnCUhdZWxBwCWB5rS08WYtHRVQYkAMQfS7kZrihOEMWLSAPQgPA5Tu2lqBK/STo6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtSVqeol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750EDC4CEF1;
-	Fri, 21 Nov 2025 13:14:34 +0000 (UTC)
+	 MIME-Version; b=Vo32qvellH4eEtwyP56yB8VfaV0MUHwmZSEjbCr/5kQqkv09Rl0RNaCBxXzU9pDmdJyxOxz1ZG2/gIRo2RKqUnzJvRlI8j3JCiETzrRS+8tkXtcLMwKfV5jzoer5jBEBefXbbMjQXhWV85k0uAeLXdbeT1/86DHuNGrzVw7UXnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUvQG5U4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81459C4CEF1;
+	Fri, 21 Nov 2025 13:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730874;
-	bh=8hQs+m1/m5JeHnVZTR5nwrHjvuPIMNj9dMwJEfcsqGE=;
+	s=korg; t=1763732813;
+	bh=9BRKknYp/+4hA6Kvzud4XdmnnB5o3OBWddJK8yPbD7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtSVqeolbvkh/Rr1EeHHmee+5g64VDWP/W1b1aQq5mjweCB23/EtQ3BPW7wSAp/Lt
-	 u7+av5EETg07wzX6P/B9bXy5zGdXXZWP+mSpP4g1JmdjZJfwp832FwsDaabfdVIrcq
-	 dKT2f7wAjgGMCC2pHe42l8gi3pQip/QgoUeYDOVU=
+	b=tUvQG5U4JKrw6gbN/EA5R48yNHtEU2zu8AJLyKGO3omuUMAt39AhpGZa+CamwSKZa
+	 nQXtlemwF7fx4Oyk9COYi8AnvW6+SyxQf5KxK5LggrUD8AGbeVAeMUDDDrPwzyzKXd
+	 SZ57vuC7+4GO2mfxEnw10vPGgok/pymSaP8YiZKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 005/247] drm/amdgpu: set default gfx reset masks for gfx6-8
+Subject: [PATCH 6.6 253/529] jfs: fix uninitialized waitqueue in transaction manager
 Date: Fri, 21 Nov 2025 14:09:12 +0100
-Message-ID: <20251121130154.790062647@linuxfoundation.org>
+Message-ID: <20251121130240.021598827@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit 90b75e12a6e831c8516498f690058d4165d5a5d6 ]
+[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
 
-These were not set so soft recovery was inadvertantly
-disabled.
+The transaction manager initialization in txInit() was not properly
+initializing TxBlock[0].waitor waitqueue, causing a crash when
+txEnd(0) is called on read-only filesystems.
 
-Fixes: 6ac55eab4fc4 ("drm/amdgpu: move reset support type checks into the caller")
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1972763505d728c604b537180727ec8132e619df)
+When a filesystem is mounted read-only, txBegin() returns tid=0 to
+indicate no transaction. However, txEnd(0) still gets called and
+tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
+waitqueue was never initialized because the initialization loop
+started at index 1 instead of 0.
+
+This causes a 'non-static key' lockdep warning and system crash:
+  INFO: trying to register non-static key in txEnd
+
+Fix by ensuring all transaction blocks including TxBlock[0] have
+their waitqueues properly initialized during txInit().
+
+Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
+
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 5 +++++
- drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c | 5 +++++
- drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c | 5 +++++
- 3 files changed, 15 insertions(+)
+ fs/jfs/jfs_txnmgr.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-index 70d7a1f434c4b..e2cf598f773a4 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-@@ -3103,6 +3103,11 @@ static int gfx_v6_0_sw_init(struct amdgpu_ip_block *ip_block)
- 			return r;
+diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+index dccc8b3f10459..42fb833ef2834 100644
+--- a/fs/jfs/jfs_txnmgr.c
++++ b/fs/jfs/jfs_txnmgr.c
+@@ -272,14 +272,15 @@ int txInit(void)
+ 	if (TxBlock == NULL)
+ 		return -ENOMEM;
+ 
+-	for (k = 1; k < nTxBlock - 1; k++) {
+-		TxBlock[k].next = k + 1;
++	for (k = 0; k < nTxBlock; k++) {
+ 		init_waitqueue_head(&TxBlock[k].gcwait);
+ 		init_waitqueue_head(&TxBlock[k].waitor);
  	}
- 
-+	adev->gfx.gfx_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.gfx_ring[0]);
-+	adev->gfx.compute_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.compute_ring[0]);
 +
- 	return r;
- }
++	for (k = 1; k < nTxBlock - 1; k++) {
++		TxBlock[k].next = k + 1;
++	}
+ 	TxBlock[k].next = 0;
+-	init_waitqueue_head(&TxBlock[k].gcwait);
+-	init_waitqueue_head(&TxBlock[k].waitor);
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-index 2aa323dab34e3..df1993d137364 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-@@ -4400,6 +4400,11 @@ static int gfx_v7_0_sw_init(struct amdgpu_ip_block *ip_block)
- 
- 	gfx_v7_0_gpu_early_init(adev);
- 
-+	adev->gfx.gfx_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.gfx_ring[0]);
-+	adev->gfx.compute_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.compute_ring[0]);
-+
- 	return r;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-index 367449d8061b0..13e38b44540bd 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-@@ -2024,6 +2024,11 @@ static int gfx_v8_0_sw_init(struct amdgpu_ip_block *ip_block)
- 	if (r)
- 		return r;
- 
-+	adev->gfx.gfx_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.gfx_ring[0]);
-+	adev->gfx.compute_supported_reset =
-+		amdgpu_get_soft_full_reset_mask(&adev->gfx.compute_ring[0]);
-+
- 	return 0;
- }
- 
+ 	TxAnchor.freetid = 1;
+ 	init_waitqueue_head(&TxAnchor.freewait);
 -- 
 2.51.0
 
