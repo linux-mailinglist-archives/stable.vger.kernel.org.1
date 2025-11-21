@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-196497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9420C7A686
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:08:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBA0C7A698
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3624D3A1A74
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D383A35F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F4C2D877A;
-	Fri, 21 Nov 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76DA25EFBB;
+	Fri, 21 Nov 2025 15:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAR9WgFJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lm8OnJDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3568287268;
-	Fri, 21 Nov 2025 15:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066B9155757;
+	Fri, 21 Nov 2025 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737404; cv=none; b=tgN7bbaVT2tWwGGI1EOGSNvhRwPa3XiUr1eYu/4wtKaUcJf+V6DqUDD13hoF/8ikHg5L7+MUd+p470VOcHT3BxzT+2nEp6j0RWml/pp6Hes6yMCtB16BXeGDkzYz+afEmTkJ590Mf3g5hDd8t60pdaMdhnIv8KuL7gZehmcXtS8=
+	t=1763737431; cv=none; b=VpcemZFqPE30rr0wIHLqkZ/9nHE7a6sdOJ/e6tSUt3BBOfzCua9bNm/knY7D9G/zqOHCg4nuKWkivWFlf6xceKvdVHHjYOHRPwliQ/NBW3x4m4L8rXE1lZArWvs7c4S11Bw7lZkXyOuHTjnpLZuUPqeV4Y5hb48r3K+usB5teOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737404; c=relaxed/simple;
-	bh=yv1/yE9ZrOhqlQ97TIqyj69zG5L9BWBNunf0n4Xbwc4=;
+	s=arc-20240116; t=1763737431; c=relaxed/simple;
+	bh=4Y010r8OP+aEQDTrEp6aW2CR91SGZ7aMkR2g+id02+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TT9m4k1Og7CS7lWnIonZA7GafNhaL+2/qLLPz6dEZ7gFEwAG0ArOfSADcbjaIpeK8nlu9gEODmyhNZ+lDElNoBZ2f9iyNYXBMCUbCFhaGYddd2EYc7+xs4/1zQAAb+gv1fNuqPsEDbqAUCtZ3ZFBJvaLWVoYOXVWDsFrjfLInDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAR9WgFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7875C4CEF1;
-	Fri, 21 Nov 2025 15:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763737404;
-	bh=yv1/yE9ZrOhqlQ97TIqyj69zG5L9BWBNunf0n4Xbwc4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=KDX8LqexBBg83Bhu0wlu4/00dbVgSujgHH35U2g9kf+Bh+03oO1QdAljQrcrwt6u0WAphx9tL1TNr31X1F3t0Y0UiH2qC8viXmleeZmJU3xOu7G/RZAp75j1feEjeisAToVAfG9TNKT4GSSS47RE4h/oBrkizKhNPQBsB7STD1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lm8OnJDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B61FC4CEF1;
+	Fri, 21 Nov 2025 15:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763737429;
+	bh=4Y010r8OP+aEQDTrEp6aW2CR91SGZ7aMkR2g+id02+k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WAR9WgFJ5JGMZRduxabcDwu3zUnUM0tMaPgTVK72XqiBhu5PjgTgjwKuu7KkhHH2T
-	 kw9N1cg0gJHqLI2dIK2eGAstwtO3yPfIJWTHQHK75OGvzgk/CrP2Aq/lLcWFcEoNv/
-	 BLmKG0+iFOCpG1Tj4lEaoMnhaBZdwZ4TOSHsnTms=
-Date: Fri, 21 Nov 2025 16:03:14 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Cc: Felipe Balbi <felipe.balbi@linux.intel.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	b=lm8OnJDBehbBmGJ7X1hIZnEUh4EB1eHF3gULcLdzDXoj0YrwTLRJbREcyOm9KRboX
+	 GGaKW9c7UJBQj0qE9/fxthktOvss2pKFWbKeTwAfxnvW8Rz7vKiKz9deAOqLau0+ul
+	 U8WUJukFlMRs/Mv2Ay1Wk1/44ZTCO+EN9SeDmuTK37IRuOfl0JYzaUN9UZvDFlWbn7
+	 oXFdw04ARCldxMd0Y+X1er1JS+Feu8Brnp7h5LN3f+S0YXDDpMs+xyqu+jcxhV+4xU
+	 ZeDzuIvK8fvV8ufLw0tJpeHYtE1tp/SQiz3lOUT9XRCj2bkEg4YKDkRt0lfJfKcOuE
+	 yk9Kwb54bF+RQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vMSfu-000000006be-1iiH;
+	Fri, 21 Nov 2025 16:03:50 +0100
+Date: Fri, 21 Nov 2025 16:03:50 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: phy: Initialize struct usb_phy list_head
-Message-ID: <2025112100-backstage-wager-0d5a@gregkh>
-References: <20251113-diogo-smaug_typec-v1-1-f1aa3b48620d@tecnico.ulisboa.pt>
- <2025112139-resale-upward-3366@gregkh>
- <8837bf19-dd98-40f9-b2ff-192a511c357c@tecnico.ulisboa.pt>
+Subject: Re: [PATCH] soc: samsung: exynos-pmu: fix device leak on regmap
+ lookup
+Message-ID: <aSB_VoKvDUHDbNDb@hovoldconsulting.com>
+References: <20251121121852.16825-1-johan@kernel.org>
+ <fb573584-4027-4988-a703-7f619fa830fc@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,68 +65,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8837bf19-dd98-40f9-b2ff-192a511c357c@tecnico.ulisboa.pt>
+In-Reply-To: <fb573584-4027-4988-a703-7f619fa830fc@kernel.org>
 
-On Fri, Nov 21, 2025 at 02:55:35PM +0000, Diogo Ivo wrote:
-> 
-> 
-> On 11/21/25 14:09, Greg Kroah-Hartman wrote:
-> > On Thu, Nov 13, 2025 at 02:59:06PM +0000, Diogo Ivo wrote:
-> > > When executing usb_add_phy() and usb_add_phy_dev() it is possible that
-> > > usb_add_extcon() fails (for example with -EPROBE_DEFER), in which case
-> > > the usb_phy does not get added to phy_list via
-> > > list_add_tail(&x->head, phy_list).
-> > > 
-> > > Then, when the driver that tried to add the phy receives the error
-> > > propagated from usb_add_extcon() and calls into usb_remove_phy() to
-> > > undo the partial registration there will be an unconditional call to
-> > > list_del(&x->head) which is notinitialized and leads to a NULL pointer
-> > > dereference.
-> > > 
-> > > Fix this by initializing x->head before usb_add_extcon() has a chance to
-> > > fail.
-> > > 
-> > > Fixes: 7d21114dc6a2d53 ("usb: phy: Introduce one extcon device into usb phy")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-> > > ---
-> > >   drivers/usb/phy/phy.c | 4 ++++
-> > >   1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
-> > > index e1435bc59662..5a9b9353f343 100644
-> > > --- a/drivers/usb/phy/phy.c
-> > > +++ b/drivers/usb/phy/phy.c
-> > > @@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum usb_phy_type type)
-> > >   		return -EINVAL;
-> > >   	}
-> > > +	INIT_LIST_HEAD(&x->head);
-> > > +
-> > >   	usb_charger_init(x);
-> > >   	ret = usb_add_extcon(x);
-> > >   	if (ret)
-> > > @@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
-> > >   		return -EINVAL;
-> > >   	}
-> > > +	INIT_LIST_HEAD(&x->head);
-> > > +
-> > >   	usb_charger_init(x);
-> > >   	ret = usb_add_extcon(x);
-> > >   	if (ret)
-> > > 
+On Fri, Nov 21, 2025 at 01:59:59PM +0100, Krzysztof Kozlowski wrote:
+> On 21/11/2025 13:18, Johan Hovold wrote:
+> > Make sure to drop the reference taken when looking up the PMU device and
+> > its regmap.
 > > 
-> > Shouldn't you be also removing an existing call to INIT_LIST_HEAD()
-> > somewhere?  This is not "moving" the code, it is adding it.
+> > Note that holding a reference to a device does not prevent its regmap
+> > from going away so there is no point in keeping the reference.
+
+> > Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
+> > Cc: stable@vger.kernel.org	# 6.9
 > 
-> From my understanding that's exactly the problem, currently there is no
-> call to INIT_LIST_HEAD() anywhere on these code paths, meaning that if
-> we do not reach the point of calling list_add_tail() at the end of
-> usb_add_phy() and usb_phy_add_dev() then x->head will remain uninitialized
-> and fault when running usb_remove_phy().
+> Fix is fine, but unfortunately the code in v6.9 was different and I
+> believe keeping dev reference made sense there - driver was relying on
+> drvdata. While the leak was there as well, it was intentional. I think
+> the leak can be fixed only since commit
+> 35d6b98c625867209bc47df99cf03edf4280799f .
 
-Then how does this work at all if the list is never initialized?
+It makes no difference actually as holding a reference to a device does
+not prevent its driver data from going away either.
 
-thanks,
-
-greg k-h
+Johan
 
