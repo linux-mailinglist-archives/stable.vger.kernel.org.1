@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-195482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F7EC7839F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:48:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA94DC783A2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B52B44E9634
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:46:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 02B7E4E97C9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8B83126CC;
-	Fri, 21 Nov 2025 09:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E6933A029;
+	Fri, 21 Nov 2025 09:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gclqJUBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP66n868"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAD02F3632
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 09:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35483346B4
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 09:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763718375; cv=none; b=IpZnFu0KrGSnZMTif42N3JbD06lWrBOsSFoacHiwwsYw4IWWsQnJ9wAifMj9hcRfGC/wFCCB90bBw6NyHtUMMyg+LsZ1gdlYR1RZa0BtZe25dt9gmwwW3BFClivJXq9OFTwCQj+bMiY8qC5vnS6xzExfinOZkhA02J760A91O+M=
+	t=1763718424; cv=none; b=Ay8mmcDA3uRHn1Aw24+w0BhW5YSs4MddtUroHFwiHMfJbnCYSmuABGt+JVb43LKg0vw2Bj8tuO+xqxLbxsrRhi9UzN81za+jilDRv6nmDlgkimQlXr0OmsCpTLoK5aI9cF4MljPQeJagXHkDzErmelhfFY1FZUcOqT3SVQVU61E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763718375; c=relaxed/simple;
-	bh=ctITErH5aUw2ZjJBqCTspU0fxJuVrUxQTUxkeQkRoXg=;
+	s=arc-20240116; t=1763718424; c=relaxed/simple;
+	bh=v5OQ0Ro4ieMtTpnoZv+iT876VOwAjXszAP2NE/waJNY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=to1dFHIYGTR4aTKCqs4Xk/b/AghYwM6n5Vwmk+/rsaFXy4reihc59HbyFnPF/0mpIiMNHCSzVpmRkx6H9edMwo0Cy8BvR9b01r3vAcF5BSEPSbXADm4fF4B/GZITAk6DsCg8IcKUd4coKgeFa9S937B0kAwtXL93zEyEeJidsy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gclqJUBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D066AC4CEF1;
-	Fri, 21 Nov 2025 09:46:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Be61GDWL1EmTDqcdUNFYhrdFDcHkUEHr4qQ9PNpsCTXu2SvxJFvcOPwk4dv5SqYuaCXgmY9Rf66vN3lG+o/kgCieX02gALbWpsqe4XFaAto66vTp4poMe4COPi7aFRUGzFOQ7Uv6ifQzFn+KAkrdLLBIPCtrlVM7EvY5ndi7PCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP66n868; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8026C4CEF1;
+	Fri, 21 Nov 2025 09:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763718374;
-	bh=ctITErH5aUw2ZjJBqCTspU0fxJuVrUxQTUxkeQkRoXg=;
+	s=korg; t=1763718423;
+	bh=v5OQ0Ro4ieMtTpnoZv+iT876VOwAjXszAP2NE/waJNY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gclqJUBeZNVhyW6Og1NFEQf42kixLrZSpgZnZQktNZ7DcmWuAdw2s6UMyUpIJmkjC
-	 O4INEfpDxCaUK6K60Hz2iNkCczFZOrbeXLtSidUXRL298VnTEgLB94uuLWFCHjFD7r
-	 mIzi4YdehciuzUcnzo03Vu72A9ZVhABBemjBDYtM=
-Date: Fri, 21 Nov 2025 10:46:11 +0100
+	b=uP66n868Jmph2qksUND9TyMYJgtSrgmrdf/Xmf0BXqCx54nsXqtYNr4235ZocdV26
+	 V7y/Y5+3tCjjG9H8eIDIQ2HrQ4BVRv2nqstXIeL8OaJE9SaSDO3xMCYTsORM/8hUwb
+	 nsMJ8ujgRa7XuLcFgxT6XZE0WxOk4avqv5CHXeH4=
+Date: Fri, 21 Nov 2025 10:47:00 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.17.y] mm/truncate: unmap large folio on split failure
-Message-ID: <2025112149-antirust-saggy-93e1@gregkh>
-References: <2025112037-resurface-backlight-da75@gregkh>
- <20251120165221.892852-1-kas@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: akpm@linux-foundation.org, broonie@kernel.org, catalin.marinas@arm.com,
+	leitao@debian.org, luca.ceresoli@bootlin.com, mark.rutland@arm.com,
+	matttbe@kernel.org, mbenes@suse.cz, puranjay@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] scripts/decode_stacktrace.sh: fix build
+ ID and PC source" failed to apply to 6.17-stable tree
+Message-ID: <2025112154-shelter-showcase-4333@gregkh>
+References: <2025112031-catalyze-sleep-ba6e@gregkh>
+ <aR9P13YfvZ6AMSfC@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,59 +58,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120165221.892852-1-kas@kernel.org>
+In-Reply-To: <aR9P13YfvZ6AMSfC@google.com>
 
-On Thu, Nov 20, 2025 at 04:52:21PM +0000, Kiryl Shutsemau wrote:
-> Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> supposed to generate SIGBUS.
+On Thu, Nov 20, 2025 at 05:28:55PM +0000, Carlos Llamas wrote:
+> On Thu, Nov 20, 2025 at 04:56:31PM +0100, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.17-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 7d9f7d390f6af3a29614e81e802e2b9c238eb7b2
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112031-catalyze-sleep-ba6e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+> > 
+> > Possible dependencies:
 > 
-> This behavior might not be respected on truncation.
+> The dependencies I missed to specify are the following 2 fixes:
+>   d322f6a24ee5 ("scripts/decode_stacktrace.sh: symbol: avoid trailing whitespaces")
+>   4a2fc4897b5e ("scripts/decode_stacktrace.sh: symbol: preserve alignment")
 > 
-> During truncation, the kernel splits a large folio in order to reclaim
-> memory.  As a side effect, it unmaps the folio and destroys PMD mappings
-> of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
-> are preserved.
+> They apply cleanly on top of linux-6.17.y:
+>   git cherry-pick -xs d322f6a24ee5 4a2fc4897b5e 7d9f7d390f6a
 > 
-> However, if the split fails, PMD mappings are preserved and the user will
-> not receive SIGBUS on any accesses within the PMD.
+> I've also verified the expected fixes work for all 3 patches.
 > 
-> Unmap the folio on split failure.  It will lead to refault as PTEs and
-> preserve SIGBUS semantics.
-> 
-> Make an exception for shmem/tmpfs that for long time intentionally mapped
-> with PMDs across i_size.
-> 
-> Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
-> Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: "Darrick J. Wong" <djwong@kernel.org>
-> Cc: Dave Chinner <david@fromorbit.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Liam Howlett <liam.howlett@oracle.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit fa04f5b60fda62c98a53a60de3a1e763f11feb41)
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
+> Greg, do you need me to send these?
 
-Does not apply to 6.17.y at all :(
-
-Did you forget to apply this on top of other commits?
-
-thanks,
+Nope, that worked, thanks!
 
 greg k-h
 
