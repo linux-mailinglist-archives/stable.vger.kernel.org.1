@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-195680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6AFC79425
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBF0C7A110
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 979FB2DAC7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id CBA3538F18
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C25F2EA46B;
-	Fri, 21 Nov 2025 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C05351FD1;
+	Fri, 21 Nov 2025 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBuLmaXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07FcnZxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1904D275B18;
-	Fri, 21 Nov 2025 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8DB275AFF;
+	Fri, 21 Nov 2025 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731359; cv=none; b=On0bHe1U6JWD0V6hU0lt/v2mOjl7+GvWvsd3OVe5SL4nAK66HN9upw2EIp7urOMmMnwUVfeljzqpw4FAufTZCc1HpZbonT5rroCpMcR6RWO//Ax2MAGx/Z9vonKpItlReZZGk+L7c+kYJnIgig98L6mL8fvkikvjmfp8AhVwu/k=
+	t=1763733321; cv=none; b=Grv7YJey6nM3fE3XYjw7L3YYM09FmXuiUeJyWBvEISKzSOwFg3wryFQ9NbrkdtmPAVTKWzlhYQboU2fQ6Yk8SmuouGNO806WILZE6nx6Qr5PR5Z1MiHQgHyZw82bYHgvWtkn6AzNQPO6gORiwM2JNF9CK3CLkPbqIV4sWNxGkJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731359; c=relaxed/simple;
-	bh=H7n5sSb9xZODVAN028BV35a2fjM4VsVLvt9+gC/seGM=;
+	s=arc-20240116; t=1763733321; c=relaxed/simple;
+	bh=UgQOf+hUgf/2ct6qqcNkg+tVPSkcxjYtHRpPm9tBzR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYmzs5QtmCGnalp4Q2GM7LqydX5EcjRsg2irX5Lr/Z0kXMDy6Ex38fLtjVHdc+ZWkQzkfcOfnYmCjRSGDLMFycyr1WoqPgtI9855cQdKQZsqss1jQKA1oo9z/CKO7Tf/6Hkq3DTM7rxpdzpgN1lnm3l2X93d+73xiJUppHhNRkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBuLmaXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C66EC4CEF1;
-	Fri, 21 Nov 2025 13:22:38 +0000 (UTC)
+	 MIME-Version; b=ebygw+fh8lwf06Z7jH7+SOUva6GYrkfAV6UbDHhuwWy1XSpnXRM14MH4nQNzQYoqlecnBlhQLRKqZ6MFPrGFUB1J8Jd5SQGwE229nuudTj+D6/JztDN366oYidIHY0pMk+2dGwROFZdb05x/HTxbpBp1em/iNWYl+vLauLqx2NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07FcnZxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7DFC4CEF1;
+	Fri, 21 Nov 2025 13:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731358;
-	bh=H7n5sSb9xZODVAN028BV35a2fjM4VsVLvt9+gC/seGM=;
+	s=korg; t=1763733321;
+	bh=UgQOf+hUgf/2ct6qqcNkg+tVPSkcxjYtHRpPm9tBzR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBuLmaXekQaqVY4RluR6aJ4TPF3gXgZoZ8v73qMFWPeDtxXOrfiBMKJdfsx2BaoKD
-	 Hlu9SN2WK40/4Uj6QCbKFtw6QcZYLDg22+qkQHg8YowKzuCfY5nRiLuCwxHtYln2L3
-	 8MDtQbRuPeGoTq3tQUpuGdt0mmX7X/uvRl0Oh9xI=
+	b=07FcnZxB+pQcOoI2Y6Vig0aapOudUmWVoXWJb06bwbAakazbhAn23fAdvpDnE0Trb
+	 l81Ju0axiY+1Wd2guxD6eYgLlOTrDYjeacL7CMu8wjndQ+xsBFzA6nPAkO+1MfqOlQ
+	 hGMvEG9Boj7ludkT+8vtQzgDhkOX8vs4Ma0G7YUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.17 180/247] wifi: mac80211: reject address change while connecting
-Date: Fri, 21 Nov 2025 14:12:07 +0100
-Message-ID: <20251121130201.182920283@linuxfoundation.org>
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 429/529] ASoC: tas2781: fix getting the wrong device number
+Date: Fri, 21 Nov 2025 14:12:08 +0100
+Message-ID: <20251121130246.280449135@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-commit a9da90e618cd0669a22bcc06a96209db5dd96e9b upstream.
+[ Upstream commit 29528c8e643bb0c54da01237a35010c6438423d2 ]
 
-While connecting, the MAC address can already no longer be
-changed. The change is already rejected if netif_carrier_ok(),
-but of course that's not true yet while connecting. Check for
-auth_data or assoc_data, so the MAC address cannot be changed.
+The return value of device_property_read_u32_array used for getting the
+property is the status instead of the number of the property.
 
-Also more comprehensively check that there are no stations on
-the interface being changed - if any peer station is added it
-will know about our address already, so we cannot change it.
-
-Cc: stable@vger.kernel.org
-Fixes: 3c06e91b40db ("wifi: mac80211: Support POWERED_ADDR_CHANGE feature")
-Link: https://patch.msgid.link/20251105154119.f9f6c1df81bb.I9bb3760ede650fb96588be0d09a5a7bdec21b217@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20251107054959.950-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ sound/soc/codecs/tas2781-i2c.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -223,6 +223,10 @@ static int ieee80211_can_powered_addr_ch
- 	if (netif_carrier_ok(sdata->dev))
- 		return -EBUSY;
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 43775c1944452..836cf06a45266 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -616,7 +616,8 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ {
+ 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
+ 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
+-	int i, ndev = 0;
++	int ndev = 0;
++	int i, rc;
  
-+	/* if any stations are set known (so they know this vif too), reject */
-+	if (sta_info_get_by_idx(sdata, 0))
-+		return -EBUSY;
-+
- 	/* First check no ROC work is happening on this iface */
- 	list_for_each_entry(roc, &local->roc_list, list) {
- 		if (roc->sdata != sdata)
-@@ -242,12 +246,16 @@ static int ieee80211_can_powered_addr_ch
- 			ret = -EBUSY;
- 	}
+ 	if (tas_priv->isacpi) {
+ 		ndev = device_property_read_u32_array(&client->dev,
+@@ -627,8 +628,12 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ 		} else {
+ 			ndev = (ndev < ARRAY_SIZE(dev_addrs))
+ 				? ndev : ARRAY_SIZE(dev_addrs);
+-			ndev = device_property_read_u32_array(&client->dev,
++			rc = device_property_read_u32_array(&client->dev,
+ 				"ti,audio-slots", dev_addrs, ndev);
++			if (rc != 0) {
++				ndev = 1;
++				dev_addrs[0] = client->addr;
++			}
+ 		}
  
-+	/*
-+	 * More interface types could be added here but changing the
-+	 * address while powered makes the most sense in client modes.
-+	 */
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_P2P_CLIENT:
--		/* More interface types could be added here but changing the
--		 * address while powered makes the most sense in client modes.
--		 */
-+		/* refuse while connecting */
-+		if (sdata->u.mgd.auth_data || sdata->u.mgd.assoc_data)
-+			return -EBUSY;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+ 		tas_priv->irq =
+-- 
+2.51.0
+
 
 
 
