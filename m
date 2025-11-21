@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29845C7980B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E94C7A017
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF877345F6C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32FAB4F300F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A379341ADF;
-	Fri, 21 Nov 2025 13:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC102FC88B;
+	Fri, 21 Nov 2025 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A46DPM5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxrlDWtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EFD283CA3;
-	Fri, 21 Nov 2025 13:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9434165F;
+	Fri, 21 Nov 2025 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731968; cv=none; b=cZUlYs/5BCE3MyimgM9vaydBm0ySfT1Tma2YHlxcc5jh6D0g2+gtQ5ONFbHQR42ZUYmLFrd+s/J7OBBsx/OD5hlE3DWPzdK876fWgiBEjFxNKQHrTVCu/fQIiW3BxqjwHk0K9Gk7fv8JhldpG7jzBWRxdrUVxtDc7XUXuyEn3RA=
+	t=1763733445; cv=none; b=fFIwabmBhfAqNPVvk4TwB2VqFX2SbwM+0K0KayQHKZMxmOIK8uj8PMZLx/KRYE/mDiAwwm+EKfGxEpgOEifqC+sIWB1uDjaH65jrQ1CY4Ed6OH8oYpwFpF17A7nFjW3tw0vcOcTkyLsazy2RUbWotKJd3q1v0kFbjJmxZD8Wddo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731968; c=relaxed/simple;
-	bh=b6rtrOXfPlJuwTmIQFmB8lo02o1ZCFXjxFyUXUWo5f0=;
+	s=arc-20240116; t=1763733445; c=relaxed/simple;
+	bh=uZFhnuvvrCBMN+0j7dDl2dLQtwnRKuindQvUb+la8vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcrUNkqJQPDxqGTff5RIWccQ31au44uI4pE7RkfiYYvulb/7sXJ8XkDT9aad6SawkqvkrhkzDajd97Zwdd2PrX5Y1/IRQiY98ZUr3QZDOL8i8sBAUOgfiBrjzwIzMmBs3cLuBM4YT3boojRluMMwkScluhtIhbGr2GZIMpzxa8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A46DPM5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42200C4CEF1;
-	Fri, 21 Nov 2025 13:32:47 +0000 (UTC)
+	 MIME-Version; b=GX7x+qsg90x+XZJbpZicgYdkhrwwDz1m7C/xDMQzAMNo2VZKCaaF+IGc+tZ86hjNbWKRrKvlGLuRZGYTVNuxrWv5jFge6qwiyJVlwhCHZ2ynKZlcLcdHt955JcpkyM4Ky6lcqJKMKrVF1MD9SkPtYLlp6nTenNPo6/sActYd6tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxrlDWtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5E7C16AAE;
+	Fri, 21 Nov 2025 13:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731967;
-	bh=b6rtrOXfPlJuwTmIQFmB8lo02o1ZCFXjxFyUXUWo5f0=;
+	s=korg; t=1763733445;
+	bh=uZFhnuvvrCBMN+0j7dDl2dLQtwnRKuindQvUb+la8vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A46DPM5Ser5U4Mpi1565AUvCiBfsIvCAYL1XmHEszb78LnaJK9wXNEClUD7EFGyzY
-	 HQ8zQLLzRXpyoRr6NTqIChC6YV6KcMzIaehMe+smFFlll+CPW02zaxwkyMdmWGfQa8
-	 DKRFapUydNxGsxBcjQfcmdF9Hee0lA1mIhRRPjwc=
+	b=wxrlDWtbghz2619UBNvHLGf2W9p6SwXMkTL2Q4kqoWfGiqBmuc46PwWfdlDz1Oyxc
+	 HzRvCCokjHhmNg8m+kMNu8/ppfTW4RkY6Alz5kVgPT0iF4eafd3yZU4p16sxg28vTE
+	 5nnNFRf0F57rGOfFWRzRtj5Ed1HOXnRz+5aCADJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Askar Safin <safinaskar@gmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 143/185] PM: hibernate: Use atomic64_t for compressed_size variable
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 471/529] selftests/tracing: Run sample events to clear page cache events
 Date: Fri, 21 Nov 2025 14:12:50 +0100
-Message-ID: <20251121130149.036184276@linuxfoundation.org>
+Message-ID: <20251121130247.768286138@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 66ededc694f1d06a71ca35a3c8e3689e9b85b3ce upstream.
+commit dd4adb986a86727ed8f56c48b6d0695f1e211e65 upstream.
 
-`compressed_size` can overflow, showing nonsensical values.
+The tracing selftest "event-filter-function.tc" was failing because it
+first runs the "sample_events" function that triggers the kmem_cache_free
+event and it looks at what function was used during a call to "ls".
 
-Change from `atomic_t` to `atomic64_t` to prevent overflow.
+But the first time it calls this, it could trigger events that are used to
+pull pages into the page cache.
 
-Fixes: a06c6f5d3cc9 ("PM: hibernate: Move to crypto APIs for LZO compression")
-Reported-by: Askar Safin <safinaskar@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Askar Safin <safinaskar@gmail.com>
-Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
-Link: https://patch.msgid.link/20251106045158.3198061-3-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The rest of the test uses the function it finds during that call to see if
+it will be called in subsequent "sample_events" calls. But if there's no
+need to pull pages into the page cache, it will not trigger that function
+and the test will fail.
+
+Call the "sample_events" twice to trigger all the page cache work before
+it calls it to find a function to use in subsequent checks.
+
+Cc: stable@vger.kernel.org
+Fixes: eb50d0f250e96 ("selftests/ftrace: Choose target function for filter test from samples")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/swap.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -648,7 +648,7 @@ struct cmp_data {
- };
+--- a/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
++++ b/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
+@@ -20,6 +20,10 @@ sample_events() {
+ echo 0 > tracing_on
+ echo 0 > events/enable
  
- /* Indicates the image size after compression */
--static atomic_t compressed_size = ATOMIC_INIT(0);
-+static atomic64_t compressed_size = ATOMIC_INIT(0);
- 
- /*
-  * Compression function that runs in its own thread.
-@@ -676,7 +676,7 @@ static int compress_threadfn(void *data)
- 					      &cmp_len);
- 		d->cmp_len = cmp_len;
- 
--		atomic_set(&compressed_size, atomic_read(&compressed_size) + d->cmp_len);
-+		atomic64_add(d->cmp_len, &compressed_size);
- 		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
-@@ -708,7 +708,7 @@ static int save_compressed_image(struct
- 
- 	hib_init_batch(&hb);
- 
--	atomic_set(&compressed_size, 0);
-+	atomic64_set(&compressed_size, 0);
- 
- 	/*
- 	 * We'll limit the number of threads for compression to limit memory
-@@ -884,8 +884,8 @@ out_finish:
- 		ret = err2;
- 	if (!ret) {
- 		swsusp_show_speed(start, stop, nr_to_write, "Wrote");
--		pr_info("Image size after compression: %d kbytes\n",
--			(atomic_read(&compressed_size) / 1024));
-+		pr_info("Image size after compression: %lld kbytes\n",
-+			(atomic64_read(&compressed_size) / 1024));
- 		pr_info("Image saving done\n");
- 	} else {
- 		pr_err("Image saving failed: %d\n", ret);
++# Clear functions caused by page cache; run sample_events twice
++sample_events
++sample_events
++
+ echo "Get the most frequently calling function"
+ echo > trace
+ sample_events
 
 
 
