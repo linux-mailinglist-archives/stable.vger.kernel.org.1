@@ -1,94 +1,127 @@
-Return-Path: <stable+bounces-195453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E84C772F8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 04:49:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E8EC77313
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 04:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 7133129A2D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:49:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E279F4E6D35
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F1A2701D1;
-	Fri, 21 Nov 2025 03:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="spoLQxjk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA042882D0;
+	Fri, 21 Nov 2025 03:52:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1355B27702E
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 03:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E266F1A2630;
+	Fri, 21 Nov 2025 03:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763696972; cv=none; b=Nsd/C4HdOu+qv5ZV742d+VAnu2/H55XPRnugWwrvmUQcEycgvjtEqynSpyAFyTFOW65HR9Bp7kESzZFGs0rTV0BtEIXiSRS4KMIsInJzs6Qo6sUsa5bdAQ3gV10qfMD+hBvHvdvhUxjhEOZ+gkiv3tIjrn4V90CDakQ4YhyXpjM=
+	t=1763697153; cv=none; b=WoBbHNPq5PS5rdpyn7rNQu80XWLcuCbODQHat2lUkRNdaJorJdaswUHCJ9Cy4+gm4/L4xOlC5rnObO+puNeE8cEdmXwmbFgm3N9+QTIRjVTgiv/BoyCVUh0hSRmONj6JD/S6ua17gAft//RDavGQ6z5j+U8hTFqrvz46ttm+lz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763696972; c=relaxed/simple;
-	bh=a1doaysq9Nil/3qONO52jTyBmEug72290VcvQu9YkIY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=SfpKO1X6LEh1ne+YanebXvSWPgV4tZtJKzG3F5ZZGoJey7Htf9u0byx9i2mFbum9b/iKAZ9189Mu7UnYHhnmi19zdfWdDzjqFu172bl2p0C2d3Dq3ER1qwwWFl6gSgzlPTPk3OIuHQIcp/2/l9ytDA43I7DYU7JH+iIEwXFAhoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=spoLQxjk; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=spoLQxjkK1isspDxlCdd7zhAyA/h/9yQfufjwUJDdgaGGdM7o2Ys6vabTCL0qHuLE9O5A3uJaylKS
-	 2JMYu1mx+CecrIRp45X9ZaYNintdSVTnOWFfRxP2E2xO/bbMPXSsBc+CMxXfg/pr/9J1yuQYwkzvJk
-	 M8jJfQMMxMo/3fQ0=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[117.129.7.61])
-	by rmsmtp-lg-appmail-24-12027 (RichMail) with SMTP id 2efb691fe087fd2-f8c67;
-	Fri, 21 Nov 2025 11:46:16 +0800 (CST)
-X-RM-TRANSID:2efb691fe087fd2-f8c67
-From: Rajani Kantha <681739313@139.com>
-To: chao@kernel.org,
-	jaegeuk@kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y] f2fs: fix to avoid overflow while left shift operation
-Date: Fri, 21 Nov 2025 11:46:10 +0800
-Message-Id: <20251121034610.2709-1-681739313@139.com>
+	s=arc-20240116; t=1763697153; c=relaxed/simple;
+	bh=M6Ctx6m102bBxdU8/i2dOzPqVv+ZyA9HUSq23fFJuik=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=UQQpmaiEzM/OZ50RI1sOxA7pxkNAES9WxJhtTO7ZM8GAOC9riFt37vigLVtkGi8ZRuC4GDKxLDpKGmGfizmauX5kuPofZrBEtfG3pM8zdUS665ta/y8axQmdWJDEM6OvztsOQ4x37QD97zS4T6fzRrRAbrsQqCQrbY9TQQDLico=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowACnONvD4R9pEEJ_AQ--.40522S2;
+	Fri, 21 Nov 2025 11:51:37 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	florian.fainelli@broadcom.com,
+	stephen@networkplumber.org,
+	robh@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: dsa: Fix error handling in dsa_port_parse_of
+Date: Fri, 21 Nov 2025 11:51:30 +0800
+Message-Id: <20251121035130.16020-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowACnONvD4R9pEEJ_AQ--.40522S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFy7uFWkAryrGr4UCrWDXFb_yoW8XFy3pa
+	13Cay5KrWDG392kr4vvw18C3y2kw40k3ySk34xC34Sqrn3Jr15JrWj9F1Y9w15ArWxC348
+	JFZFqF95CFWUZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUnYFADUUU
+	U
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-From: Chao Yu <chao@kernel.org>
+When of_find_net_device_by_node() successfully acquires a reference to
+a network device but the subsequent call to dsa_port_parse_cpu()
+fails, dsa_port_parse_of() returns without releasing the reference
+count on the network device.
 
-[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
+of_find_net_device_by_node() increments the reference count of the
+returned structure, which should be balanced with a corresponding
+put_device() when the reference is no longer needed.
 
-Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
-while left shift operation.
+Found by code review.
 
-Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Modification: Using rpages[i]->index instead of folio->index due to
-it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
-f2fs_truncate_partial_cluster()") on 6.14 ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Cc: stable@vger.kernel.org
+Fixes: 6ca80638b90c ("net: dsa: Use conduit and user terms")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- fs/f2fs/compress.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/dsa.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index e962de4ecaa2..c3b2f78ca4e3 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1209,7 +1209,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
- 		int i;
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 5b01a0e43ebe..632e0d716d62 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1246,6 +1246,7 @@ static int dsa_port_parse_of(struct dsa_port *dp, struct device_node *dn)
+ 	struct device_node *ethernet = of_parse_phandle(dn, "ethernet", 0);
+ 	const char *name = of_get_property(dn, "label", NULL);
+ 	bool link = of_property_read_bool(dn, "link");
++	int err;
  
- 		for (i = cluster_size - 1; i >= 0; i--) {
--			loff_t start = rpages[i]->index << PAGE_SHIFT;
-+			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
+ 	dp->dn = dn;
  
- 			if (from <= start) {
- 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
+@@ -1259,7 +1260,13 @@ static int dsa_port_parse_of(struct dsa_port *dp, struct device_node *dn)
+ 			return -EPROBE_DEFER;
+ 
+ 		user_protocol = of_get_property(dn, "dsa-tag-protocol", NULL);
+-		return dsa_port_parse_cpu(dp, conduit, user_protocol);
++		err = dsa_port_parse_cpu(dp, conduit, user_protocol);
++		if (err) {
++			put_device(conduit);
++			return err;
++		}
++
++		return 0;
+ 	}
+ 
+ 	if (link)
 -- 
 2.17.1
-
 
 
