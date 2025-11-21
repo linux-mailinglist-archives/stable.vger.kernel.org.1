@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB392C79274
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:14:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4A1C79BF1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 92FEB2DD15
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B8514EEEAF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EA034403C;
-	Fri, 21 Nov 2025 13:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9613A350A0C;
+	Fri, 21 Nov 2025 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukweaJSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXdzLG3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E05332904;
-	Fri, 21 Nov 2025 13:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506163491D0;
+	Fri, 21 Nov 2025 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730863; cv=none; b=YpwIilXi7zy64cp/F1twtpZE+4HgSNv/9teG5wyJsgRpFj+KXA/YCZDdZnjbTjGw3hUgVQSTAlQURnOrlGwXUi0xm94X/I6DGPS7d2Fpj/i0YmXsb4sJcuXa/UgjVp4+Sf0x3XlhSc7vxJC3cI+33IUBpEewwjaO/TlEg2LSPk4=
+	t=1763732802; cv=none; b=GdllafyobhD43w5OKSpoqq+NKSra4H9z2J/YLEN+R2soHNATofG3eqkqP/UPLoBiMBFiadQojFNWGEiEjqn634w6nXMHX4wuYw3FFEMY9Ltdd+7E7m8cEVr1+sULrOg5NqeLbQRpzdYgNlY3yBsHonP5Y0h/7Mv3XgupQ2ZbaE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730863; c=relaxed/simple;
-	bh=EhhsKuRnHMzkexv/FWaOA8UNiZQ6TxMUz3JQGNohNcs=;
+	s=arc-20240116; t=1763732802; c=relaxed/simple;
+	bh=pth6rVsianPMNP2D9Hon0JCbgtPYTw/WrEfrkWWu/0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1cYjIlxubWnPHPfbuy2FoO26ZBnSrLtt1zL04+5BW/cY2gn4tUU4mSarAxf/iPvy8DE4Lw6CcrelaQH+gRga4xjoJUn6TqDei7YQxMjmROfYOAMoZSTwpunaZo/RR4occeec7DsGF4pcMFDjAgDeumVEwvj/xoF57I9ZPiuqnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukweaJSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B975FC4CEFB;
-	Fri, 21 Nov 2025 13:14:22 +0000 (UTC)
+	 MIME-Version; b=txWXbegNnLxoDNFj+wLKNW/BBJkNsAIjm3v8Ubvdndo77lUt0B9xIkMOC20595U3ybDkS1duYiS5gHErz0nEBk1rauRthdcfLRhDZrPi2F29dyAzS58jb7vSw40QAJaVu/mP2c9UwC5q+UYAiVzyLdeCxa0vdCbnNImtdd6d0ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXdzLG3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1FFC4CEF1;
+	Fri, 21 Nov 2025 13:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730863;
-	bh=EhhsKuRnHMzkexv/FWaOA8UNiZQ6TxMUz3JQGNohNcs=;
+	s=korg; t=1763732802;
+	bh=pth6rVsianPMNP2D9Hon0JCbgtPYTw/WrEfrkWWu/0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukweaJSLbW3LwRuNi+R27Ao6q5Xd4ficlUNI3YIfves98/vFae/z2UF2JAQIayfBm
-	 ctHVhvXb7Ur6eSXYk+jUVohLJyVLaiyKUOZ1XUc06sNw9Wjd7qZckDww7+/hGsk0BJ
-	 cdjVMwcfeqNdAzrAZ0sJqXROdszXlr01S4e6yMDA=
+	b=aXdzLG3jfBCzgJf6WIiJ9VyruM4RB6khFWj57+BIJJoASZVCZi3O5KGFqE05Z4qZb
+	 EnuAeYH1UeD7xasjhPC9dh0FHiys9TZHVuvE7ElnsRzml/5rXqIQXPiz+WXo/eid5F
+	 NT3dZVF/9sdyfCegCZbTDGlARWjVy2MP1+hhGj7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	wangzijie <wangzijie1@honor.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 001/247] iommufd/selftest: Fix ioctl return value in _test_cmd_trigger_vevents()
+Subject: [PATCH 6.6 249/529] f2fs: fix infinite loop in __insert_extent_tree()
 Date: Fri, 21 Nov 2025 14:09:08 +0100
-Message-ID: <20251121130154.646275388@linuxfoundation.org>
+Message-ID: <20251121130239.877131195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: wangzijie <wangzijie1@honor.com>
 
-[ Upstream commit b09ed52db1e688eb8205b1939ca1345179ecd515 ]
+[ Upstream commit 23361bd54966b437e1ed3eb1a704572f4b279e58 ]
 
-The ioctl returns 0 upon success, so !0 returning -1 breaks the selftest.
+When we get wrong extent info data, and look up extent_node in rb tree,
+it will cause infinite loop (CONFIG_F2FS_CHECK_FS=n). Avoiding this by
+return NULL and print some kernel messages in that case.
 
-Drop the '!' to fix it.
-
-Fixes: 1d235d849425 ("iommu/selftest: prevent use of uninitialized variable")
-Link: https://patch.msgid.link/r/20251014214847.1113759-1-nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/iommufd_utils.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/extent_cache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
-index 772ca1db6e597..9f472c20c1905 100644
---- a/tools/testing/selftests/iommu/iommufd_utils.h
-+++ b/tools/testing/selftests/iommu/iommufd_utils.h
-@@ -1044,8 +1044,8 @@ static int _test_cmd_trigger_vevents(int fd, __u32 dev_id, __u32 nvevents)
- 	};
- 
- 	while (nvevents--) {
--		if (!ioctl(fd, _IOMMU_TEST_CMD(IOMMU_TEST_OP_TRIGGER_VEVENT),
--			    &trigger_vevent_cmd))
-+		if (ioctl(fd, _IOMMU_TEST_CMD(IOMMU_TEST_OP_TRIGGER_VEVENT),
-+			  &trigger_vevent_cmd))
- 			return -1;
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 6a77581106a9e..79d07c786f6ae 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -562,7 +562,13 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
+ 			p = &(*p)->rb_right;
+ 			leftmost = false;
+ 		} else {
++			f2fs_err_ratelimited(sbi, "%s: corrupted extent, type: %d, "
++				"extent node in rb tree [%u, %u, %u], age [%llu, %llu], "
++				"extent node to insert [%u, %u, %u], age [%llu, %llu]",
++				__func__, et->type, en->ei.fofs, en->ei.blk, en->ei.len, en->ei.age,
++				en->ei.last_blocks, ei->fofs, ei->blk, ei->len, ei->age, ei->last_blocks);
+ 			f2fs_bug_on(sbi, 1);
++			return NULL;
+ 		}
  	}
- 	return 0;
+ 
 -- 
 2.51.0
 
