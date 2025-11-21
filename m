@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-195607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D4EC7936C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:47 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6D5C79685
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id F3F782BF37
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 735D1344ABF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218632F6577;
-	Fri, 21 Nov 2025 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12956274FE3;
+	Fri, 21 Nov 2025 13:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhQ2FcWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XgAprf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C6B2F656A;
-	Fri, 21 Nov 2025 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B07190477;
+	Fri, 21 Nov 2025 13:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731155; cv=none; b=HT/bau4mN5ZjM7Dg5ydXiDuDpXhrE+WUm7Sd/6LjxjHqXF+27PYxiLEpM9JYmwmjsH3ynurUNG1jCgszwJkJQJDzJ1BWDzF6xr4r39imRXzEv0G7tzelwKaoYykdkiFRWSO6ZmEq2Skdd/WY/XkgGxLQsbq1lNccLDkubHAw64A=
+	t=1763731583; cv=none; b=jk1i5xNaKl2cTC6yQWPO6pZLnY9B6TA+C4MXK6pql6vTx8RbmRXaIldxZImMRwFknxF9EhGRDejAN7ZNvY++oLl8RpE4H7xez3AX1OX+DfNty7AK9bFUZy8OhPPmiBs56+STiAuebxsfdWyqB4zU93vGKgFxJXfmZog2rh6QuvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731155; c=relaxed/simple;
-	bh=DrsKRLZj9LgGoHGOY8b25xLbMwO8JxbvfglJotJwhNc=;
+	s=arc-20240116; t=1763731583; c=relaxed/simple;
+	bh=sXp2+9zC1DSts/v7J1pjgD3W1d2AGhnsWmWwX29BFUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZcEQ0FrfG0VdQtTB12Uh75sIWXoF+h9zZ93gNlj2YMEDsudJ8dBPz4MXgVPkKYu74IReXEleXddJjcGcjkVvAJ0zxmWF1CytS+fT8Uhp/ZFRfrnNcv2Byr3GWi+4OG3V0RJdYgl0WpdbyIWuA7iI+rpcuD3Yz+3jfD/q2HoprE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhQ2FcWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F98C4CEF1;
-	Fri, 21 Nov 2025 13:19:15 +0000 (UTC)
+	 MIME-Version; b=JZrGNMz5GTL2dq+sDjfSPFoatYyqioTlsAFCORQQJ2NewNAVOD4HfYxoVwUml6yBIdNMEcg1eyGzibiUb7TnAsQUBVtG2ocGU6BbcGXs80g9oEAFRVK9OasqiMGTmD5ixU6Kw6DX2+nO95qh3Xm3LaI+zKiFeVP0hvwmY8/ycW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XgAprf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4499DC4CEF1;
+	Fri, 21 Nov 2025 13:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731155;
-	bh=DrsKRLZj9LgGoHGOY8b25xLbMwO8JxbvfglJotJwhNc=;
+	s=korg; t=1763731583;
+	bh=sXp2+9zC1DSts/v7J1pjgD3W1d2AGhnsWmWwX29BFUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhQ2FcWSUfovTkT40XoNEDPBvzIqr1NEp13+awGsKIdSphlWUbukfU87QRbAj2dB2
-	 LvdcqSF1fVhDZgrs3NyU9TGkwlT56pa2xdu+Eayqk0HO1geLJzBFdYbp1AnKXtsDMW
-	 FZT9u3oP441Nau8BTn5JMz0dx6Eg5vwINfqC9Dcw=
+	b=1XgAprf8w/+UFCVib9mV9rnTmV1lJVMlIx+OSDtl5arcXqgfotAnCWZQlrFD9+y9y
+	 1USD5Gljcr3tf/1HUwdLuhixhJoP9M8WWLQs9Id/vnpy2BEo0OmKRxAq2JCyhykJFM
+	 fpPX30hIXkAi0VAHaGcRIc+9MB2OH/8Vpkfv3DX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 082/247] net_sched: limit try_bulk_dequeue_skb() batches
+Subject: [PATCH 6.12 002/185] drm/i915: Avoid lock inversion when pinning to GGTT on CHV/BXT+VTD
 Date: Fri, 21 Nov 2025 14:10:29 +0100
-Message-ID: <20251121130157.539944486@linuxfoundation.org>
+Message-ID: <20251121130143.953638256@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +64,280 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
+[ Upstream commit 84bbe327a5cbb060f3321c9d9d4d53936fc1ef9b ]
 
-After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
-I started seeing many qdisc requeues on IDPF under high TX workload.
+On completion of i915_vma_pin_ww(), a synchronous variant of
+dma_fence_work_commit() is called.  When pinning a VMA to GGTT address
+space on a Cherry View family processor, or on a Broxton generation SoC
+with VTD enabled, i.e., when stop_machine() is then called from
+intel_ggtt_bind_vma(), that can potentially lead to lock inversion among
+reservation_ww and cpu_hotplug locks.
 
-$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
-qdisc mq 1: root
- Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
- backlog 1056Kb 6675p requeues 3532840114
-qdisc mq 1: root
- Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
- backlog 781164b 4822p requeues 3537737653
+[86.861179] ======================================================
+[86.861193] WARNING: possible circular locking dependency detected
+[86.861209] 6.15.0-rc5-CI_DRM_16515-gca0305cadc2d+ #1 Tainted: G     U
+[86.861226] ------------------------------------------------------
+[86.861238] i915_module_loa/1432 is trying to acquire lock:
+[86.861252] ffffffff83489090 (cpu_hotplug_lock){++++}-{0:0}, at: stop_machine+0x1c/0x50
+[86.861290]
+but task is already holding lock:
+[86.861303] ffffc90002e0b4c8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
+[86.862233]
+which lock already depends on the new lock.
+[86.862251]
+the existing dependency chain (in reverse order) is:
+[86.862265]
+-> #5 (reservation_ww_class_mutex){+.+.}-{3:3}:
+[86.862292]        dma_resv_lockdep+0x19a/0x390
+[86.862315]        do_one_initcall+0x60/0x3f0
+[86.862334]        kernel_init_freeable+0x3cd/0x680
+[86.862353]        kernel_init+0x1b/0x200
+[86.862369]        ret_from_fork+0x47/0x70
+[86.862383]        ret_from_fork_asm+0x1a/0x30
+[86.862399]
+-> #4 (reservation_ww_class_acquire){+.+.}-{0:0}:
+[86.862425]        dma_resv_lockdep+0x178/0x390
+[86.862440]        do_one_initcall+0x60/0x3f0
+[86.862454]        kernel_init_freeable+0x3cd/0x680
+[86.862470]        kernel_init+0x1b/0x200
+[86.862482]        ret_from_fork+0x47/0x70
+[86.862495]        ret_from_fork_asm+0x1a/0x30
+[86.862509]
+-> #3 (&mm->mmap_lock){++++}-{3:3}:
+[86.862531]        down_read_killable+0x46/0x1e0
+[86.862546]        lock_mm_and_find_vma+0xa2/0x280
+[86.862561]        do_user_addr_fault+0x266/0x8e0
+[86.862578]        exc_page_fault+0x8a/0x2f0
+[86.862593]        asm_exc_page_fault+0x27/0x30
+[86.862607]        filldir64+0xeb/0x180
+[86.862620]        kernfs_fop_readdir+0x118/0x480
+[86.862635]        iterate_dir+0xcf/0x2b0
+[86.862648]        __x64_sys_getdents64+0x84/0x140
+[86.862661]        x64_sys_call+0x1058/0x2660
+[86.862675]        do_syscall_64+0x91/0xe90
+[86.862689]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[86.862703]
+-> #2 (&root->kernfs_rwsem){++++}-{3:3}:
+[86.862725]        down_write+0x3e/0xf0
+[86.862738]        kernfs_add_one+0x30/0x3c0
+[86.862751]        kernfs_create_dir_ns+0x53/0xb0
+[86.862765]        internal_create_group+0x134/0x4c0
+[86.862779]        sysfs_create_group+0x13/0x20
+[86.862792]        topology_add_dev+0x1d/0x30
+[86.862806]        cpuhp_invoke_callback+0x4b5/0x850
+[86.862822]        cpuhp_issue_call+0xbf/0x1f0
+[86.862836]        __cpuhp_setup_state_cpuslocked+0x111/0x320
+[86.862852]        __cpuhp_setup_state+0xb0/0x220
+[86.862866]        topology_sysfs_init+0x30/0x50
+[86.862879]        do_one_initcall+0x60/0x3f0
+[86.862893]        kernel_init_freeable+0x3cd/0x680
+[86.862908]        kernel_init+0x1b/0x200
+[86.862921]        ret_from_fork+0x47/0x70
+[86.862934]        ret_from_fork_asm+0x1a/0x30
+[86.862947]
+-> #1 (cpuhp_state_mutex){+.+.}-{3:3}:
+[86.862969]        __mutex_lock+0xaa/0xed0
+[86.862982]        mutex_lock_nested+0x1b/0x30
+[86.862995]        __cpuhp_setup_state_cpuslocked+0x67/0x320
+[86.863012]        __cpuhp_setup_state+0xb0/0x220
+[86.863026]        page_alloc_init_cpuhp+0x2d/0x60
+[86.863041]        mm_core_init+0x22/0x2d0
+[86.863054]        start_kernel+0x576/0xbd0
+[86.863068]        x86_64_start_reservations+0x18/0x30
+[86.863084]        x86_64_start_kernel+0xbf/0x110
+[86.863098]        common_startup_64+0x13e/0x141
+[86.863114]
+-> #0 (cpu_hotplug_lock){++++}-{0:0}:
+[86.863135]        __lock_acquire+0x1635/0x2810
+[86.863152]        lock_acquire+0xc4/0x2f0
+[86.863166]        cpus_read_lock+0x41/0x100
+[86.863180]        stop_machine+0x1c/0x50
+[86.863194]        bxt_vtd_ggtt_insert_entries__BKL+0x3b/0x60 [i915]
+[86.863987]        intel_ggtt_bind_vma+0x43/0x70 [i915]
+[86.864735]        __vma_bind+0x55/0x70 [i915]
+[86.865510]        fence_work+0x26/0xa0 [i915]
+[86.866248]        fence_notify+0xa1/0x140 [i915]
+[86.866983]        __i915_sw_fence_complete+0x8f/0x270 [i915]
+[86.867719]        i915_sw_fence_commit+0x39/0x60 [i915]
+[86.868453]        i915_vma_pin_ww+0x462/0x1360 [i915]
+[86.869228]        i915_vma_pin.constprop.0+0x133/0x1d0 [i915]
+[86.870001]        initial_plane_vma+0x307/0x840 [i915]
+[86.870774]        intel_initial_plane_config+0x33f/0x670 [i915]
+[86.871546]        intel_display_driver_probe_nogem+0x1c6/0x260 [i915]
+[86.872330]        i915_driver_probe+0x7fa/0xe80 [i915]
+[86.873057]        i915_pci_probe+0xe6/0x220 [i915]
+[86.873782]        local_pci_probe+0x47/0xb0
+[86.873802]        pci_device_probe+0xf3/0x260
+[86.873817]        really_probe+0xf1/0x3c0
+[86.873833]        __driver_probe_device+0x8c/0x180
+[86.873848]        driver_probe_device+0x24/0xd0
+[86.873862]        __driver_attach+0x10f/0x220
+[86.873876]        bus_for_each_dev+0x7f/0xe0
+[86.873892]        driver_attach+0x1e/0x30
+[86.873904]        bus_add_driver+0x151/0x290
+[86.873917]        driver_register+0x5e/0x130
+[86.873931]        __pci_register_driver+0x7d/0x90
+[86.873945]        i915_pci_register_driver+0x23/0x30 [i915]
+[86.874678]        i915_init+0x37/0x120 [i915]
+[86.875347]        do_one_initcall+0x60/0x3f0
+[86.875369]        do_init_module+0x97/0x2a0
+[86.875385]        load_module+0x2c54/0x2d80
+[86.875398]        init_module_from_file+0x96/0xe0
+[86.875413]        idempotent_init_module+0x117/0x330
+[86.875426]        __x64_sys_finit_module+0x77/0x100
+[86.875440]        x64_sys_call+0x24de/0x2660
+[86.875454]        do_syscall_64+0x91/0xe90
+[86.875470]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[86.875486]
+other info that might help us debug this:
+[86.875502] Chain exists of:
+  cpu_hotplug_lock --> reservation_ww_class_acquire --> reservation_ww_class_mutex
+[86.875539]  Possible unsafe locking scenario:
+[86.875552]        CPU0                    CPU1
+[86.875563]        ----                    ----
+[86.875573]   lock(reservation_ww_class_mutex);
+[86.875588]                                lock(reservation_ww_class_acquire);
+[86.875606]                                lock(reservation_ww_class_mutex);
+[86.875624]   rlock(cpu_hotplug_lock);
+[86.875637]
+ *** DEADLOCK ***
+[86.875650] 3 locks held by i915_module_loa/1432:
+[86.875663]  #0: ffff888101f5c1b0 (&dev->mutex){....}-{3:3}, at: __driver_attach+0x104/0x220
+[86.875699]  #1: ffffc90002e0b4a0 (reservation_ww_class_acquire){+.+.}-{0:0}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
+[86.876512]  #2: ffffc90002e0b4c8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
+[86.877305]
+stack backtrace:
+[86.877326] CPU: 0 UID: 0 PID: 1432 Comm: i915_module_loa Tainted: G     U              6.15.0-rc5-CI_DRM_16515-gca0305cadc2d+ #1 PREEMPT(voluntary)
+[86.877334] Tainted: [U]=USER
+[86.877336] Hardware name:  /NUC5CPYB, BIOS PYBSWCEL.86A.0079.2020.0420.1316 04/20/2020
+[86.877339] Call Trace:
+[86.877344]  <TASK>
+[86.877353]  dump_stack_lvl+0x91/0xf0
+[86.877364]  dump_stack+0x10/0x20
+[86.877369]  print_circular_bug+0x285/0x360
+[86.877379]  check_noncircular+0x135/0x150
+[86.877390]  __lock_acquire+0x1635/0x2810
+[86.877403]  lock_acquire+0xc4/0x2f0
+[86.877408]  ? stop_machine+0x1c/0x50
+[86.877422]  ? __pfx_bxt_vtd_ggtt_insert_entries__cb+0x10/0x10 [i915]
+[86.878173]  cpus_read_lock+0x41/0x100
+[86.878182]  ? stop_machine+0x1c/0x50
+[86.878191]  ? __pfx_bxt_vtd_ggtt_insert_entries__cb+0x10/0x10 [i915]
+[86.878916]  stop_machine+0x1c/0x50
+[86.878927]  bxt_vtd_ggtt_insert_entries__BKL+0x3b/0x60 [i915]
+[86.879652]  intel_ggtt_bind_vma+0x43/0x70 [i915]
+[86.880375]  __vma_bind+0x55/0x70 [i915]
+[86.881133]  fence_work+0x26/0xa0 [i915]
+[86.881851]  fence_notify+0xa1/0x140 [i915]
+[86.882566]  __i915_sw_fence_complete+0x8f/0x270 [i915]
+[86.883286]  i915_sw_fence_commit+0x39/0x60 [i915]
+[86.884003]  i915_vma_pin_ww+0x462/0x1360 [i915]
+[86.884756]  ? i915_vma_pin.constprop.0+0x6c/0x1d0 [i915]
+[86.885513]  i915_vma_pin.constprop.0+0x133/0x1d0 [i915]
+[86.886281]  initial_plane_vma+0x307/0x840 [i915]
+[86.887049]  intel_initial_plane_config+0x33f/0x670 [i915]
+[86.887819]  intel_display_driver_probe_nogem+0x1c6/0x260 [i915]
+[86.888587]  i915_driver_probe+0x7fa/0xe80 [i915]
+[86.889293]  ? mutex_unlock+0x12/0x20
+[86.889301]  ? drm_privacy_screen_get+0x171/0x190
+[86.889308]  ? acpi_dev_found+0x66/0x80
+[86.889321]  i915_pci_probe+0xe6/0x220 [i915]
+[86.890038]  local_pci_probe+0x47/0xb0
+[86.890049]  pci_device_probe+0xf3/0x260
+[86.890058]  really_probe+0xf1/0x3c0
+[86.890067]  __driver_probe_device+0x8c/0x180
+[86.890072]  driver_probe_device+0x24/0xd0
+[86.890078]  __driver_attach+0x10f/0x220
+[86.890083]  ? __pfx___driver_attach+0x10/0x10
+[86.890088]  bus_for_each_dev+0x7f/0xe0
+[86.890097]  driver_attach+0x1e/0x30
+[86.890101]  bus_add_driver+0x151/0x290
+[86.890107]  driver_register+0x5e/0x130
+[86.890113]  __pci_register_driver+0x7d/0x90
+[86.890119]  i915_pci_register_driver+0x23/0x30 [i915]
+[86.890833]  i915_init+0x37/0x120 [i915]
+[86.891482]  ? __pfx_i915_init+0x10/0x10 [i915]
+[86.892135]  do_one_initcall+0x60/0x3f0
+[86.892145]  ? __kmalloc_cache_noprof+0x33f/0x470
+[86.892157]  do_init_module+0x97/0x2a0
+[86.892164]  load_module+0x2c54/0x2d80
+[86.892168]  ? __kernel_read+0x15c/0x300
+[86.892185]  ? kernel_read_file+0x2b1/0x320
+[86.892195]  init_module_from_file+0x96/0xe0
+[86.892199]  ? init_module_from_file+0x96/0xe0
+[86.892211]  idempotent_init_module+0x117/0x330
+[86.892224]  __x64_sys_finit_module+0x77/0x100
+[86.892230]  x64_sys_call+0x24de/0x2660
+[86.892236]  do_syscall_64+0x91/0xe90
+[86.892243]  ? irqentry_exit+0x77/0xb0
+[86.892249]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[86.892256]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[86.892261] RIP: 0033:0x7303e1b2725d
+[86.892271] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8b bb 0d 00 f7 d8 64 89 01 48
+[86.892276] RSP: 002b:00007ffddd1fdb38 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[86.892281] RAX: ffffffffffffffda RBX: 00005d771d88fd90 RCX: 00007303e1b2725d
+[86.892285] RDX: 0000000000000000 RSI: 00005d771d893aa0 RDI: 000000000000000c
+[86.892287] RBP: 00007ffddd1fdbf0 R08: 0000000000000040 R09: 00007ffddd1fdb80
+[86.892289] R10: 00007303e1c03b20 R11: 0000000000000246 R12: 00005d771d893aa0
+[86.892292] R13: 0000000000000000 R14: 00005d771d88f0d0 R15: 00005d771d895710
+[86.892304]  </TASK>
 
-This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
+Call asynchronous variant of dma_fence_work_commit() in that case.
 
-perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
-...
- netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
- netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
- netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
- netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
- netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
- netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
- netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
-...
+v3: Provide more verbose in-line comment (Andi),
+  - mention target environments in commit message.
 
-This is bad because :
-
-1) Large batches hold one victim cpu for a very long time.
-
-2) Driver often hit their own TX ring limit (all slots are used).
-
-3) We call dev_requeue_skb()
-
-4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
-   implement FQ or priority scheduling.
-
-5) dequeue_skb() gets packets from q->gso_skb one skb at a time
-   with no xmit_more support. This is causing many spinlock games
-   between the qdisc and the device driver.
-
-Requeues were supposed to be very rare, lets keep them this way.
-
-Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
-__qdisc_run() was designed to use.
-
-Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7d1c2618eac59 ("drm/i915: Take reservation lock around i915_vma_pin.")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14985
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Acked-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20251023082925.351307-6-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 648ef1324add1c2e2b6041cdf0b28d31fbca5f13)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_generic.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/i915_vma.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 1e008a228ebdf..7dee9748a56be 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -180,9 +180,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
- static void try_bulk_dequeue_skb(struct Qdisc *q,
- 				 struct sk_buff *skb,
- 				 const struct netdev_queue *txq,
--				 int *packets)
-+				 int *packets, int budget)
- {
- 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
-+	int cnt = 0;
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index d2f064d2525cc..48f66d7f13678 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -1595,8 +1595,20 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ err_vma_res:
+ 	i915_vma_resource_free(vma_res);
+ err_fence:
+-	if (work)
+-		dma_fence_work_commit_imm(&work->base);
++	if (work) {
++		/*
++		 * When pinning VMA to GGTT on CHV or BXT with VTD enabled,
++		 * commit VMA binding asynchronously to avoid risk of lock
++		 * inversion among reservation_ww locks held here and
++		 * cpu_hotplug_lock acquired from stop_machine(), which we
++		 * wrap around GGTT updates when running in those environments.
++		 */
++		if (i915_vma_is_ggtt(vma) &&
++		    intel_vm_no_concurrent_access_wa(vma->vm->i915))
++			dma_fence_work_commit(&work->base);
++		else
++			dma_fence_work_commit_imm(&work->base);
++	}
+ err_rpm:
+ 	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
  
- 	while (bytelimit > 0) {
- 		struct sk_buff *nskb = q->dequeue(q);
-@@ -193,8 +194,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
--		(*packets)++; /* GSO counts as one pkt */
-+		if (++cnt >= budget)
-+			break;
- 	}
-+	(*packets) += cnt;
- 	skb_mark_not_on_list(skb);
- }
- 
-@@ -228,7 +231,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
-  * A requeued skb (via q->gso_skb) can also be a SKB list.
-  */
- static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
--				   int *packets)
-+				   int *packets, int budget)
- {
- 	const struct netdev_queue *txq = q->dev_queue;
- 	struct sk_buff *skb = NULL;
-@@ -295,7 +298,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	if (skb) {
- bulk:
- 		if (qdisc_may_bulk(q))
--			try_bulk_dequeue_skb(q, skb, txq, packets);
-+			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
- 			try_bulk_dequeue_skb_slow(q, skb, packets);
- 	}
-@@ -387,7 +390,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
-  *				>0 - queue is not empty.
-  *
-  */
--static inline bool qdisc_restart(struct Qdisc *q, int *packets)
-+static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
- {
- 	spinlock_t *root_lock = NULL;
- 	struct netdev_queue *txq;
-@@ -396,7 +399,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
- 	bool validate;
- 
- 	/* Dequeue packet */
--	skb = dequeue_skb(q, &validate, packets);
-+	skb = dequeue_skb(q, &validate, packets, budget);
- 	if (unlikely(!skb))
- 		return false;
- 
-@@ -414,7 +417,7 @@ void __qdisc_run(struct Qdisc *q)
- 	int quota = READ_ONCE(net_hotdata.dev_tx_weight);
- 	int packets;
- 
--	while (qdisc_restart(q, &packets)) {
-+	while (qdisc_restart(q, &packets, quota)) {
- 		quota -= packets;
- 		if (quota <= 0) {
- 			if (q->flags & TCQ_F_NOLOCK)
 -- 
 2.51.0
 
