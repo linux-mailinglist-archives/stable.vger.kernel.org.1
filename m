@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EACC79F5A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:07:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837F4C7939E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 875FC36F27
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E6C334AC94
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9884333D6CB;
-	Fri, 21 Nov 2025 13:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C493734BA5B;
+	Fri, 21 Nov 2025 13:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWxJ9mEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdDLXdyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526DA342CB2;
-	Fri, 21 Nov 2025 13:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF2234BA49;
+	Fri, 21 Nov 2025 13:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732964; cv=none; b=nWIH5nerQtJNwg+b4X6Zsp2SNaAcsPC8Az0FPVlz9QS4cmW2LbqmZeajAE0WYVZSXkZ+PosN/kE7qeJHzg6OmEqBUhtpuXMlcSqkWyh6QvhUWPtoBJ+LzBuO5zXW4WIM2wy6ogFQSi1/mRy0OA+JKbGhPKXEMOziI8IUrQqXzB0=
+	t=1763731002; cv=none; b=Wr545F5uxMR5Blbs8fQJHWcTG1eF7GxR4K3R9wLn6bQJsIR2d5C+ZIWaVGMQAer4vE5ok1vsOnO6lSsw2f6r4NTYpadIikl7n7k7aIZR1uGXYUagApB+sZO5qRsrMwdV+A0V4AmviUBeRkDm7V7pBrISfORnjiULZGrlewjElJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732964; c=relaxed/simple;
-	bh=YZ5R9VJKmZmOJZV8u3n6aM9fZ3XVL1IFncRxFGvXlJw=;
+	s=arc-20240116; t=1763731002; c=relaxed/simple;
+	bh=6rNKFGOl/tXli5QdUI6jv3TbSaYxy5rR+0l7egrNlpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZVZ++u/hIc5JZ9ctleQaJ6cJaK0s3N8YV6v+kQ+TuaPdYi8dY0dzoZDeYYgqkyW4Jl5yYciAJuywH1tPr3dN+j4WH1VHMeHIIaavB2O8ilKNfwk2h4tsvR8qkfPQTz6FCpkYiLn19yIEkaYvExmHAfd67UodC0FGX8HNoHV5ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWxJ9mEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA036C4CEF1;
-	Fri, 21 Nov 2025 13:49:23 +0000 (UTC)
+	 MIME-Version; b=HsBq1Ko+ZtuRWGVaSFtgRXpbXPnzjXBvgqi3HUCuj58w5ZebxPPshcy/+Nf+PF2Gy+refvTiMr2i+2T7qy2X4nNbr6q78YeP9OSW+pqjJcHLTNe5PWo9NSRdi90z0j7Hz3Yd3X/3lxH7kiY2RL4Jz5KoYHqCVgqa7dLzbjJJiU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdDLXdyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA83C4CEFB;
+	Fri, 21 Nov 2025 13:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732964;
-	bh=YZ5R9VJKmZmOJZV8u3n6aM9fZ3XVL1IFncRxFGvXlJw=;
+	s=korg; t=1763731002;
+	bh=6rNKFGOl/tXli5QdUI6jv3TbSaYxy5rR+0l7egrNlpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWxJ9mEJ2ErJJT1IRBMi+/CDYNJUpdvz7k7nRP1Kgc2ykeM3OhePoMlsc/L0cOleV
-	 fCz7V0jwdj+PRyl/6HMJQQipMofrLEX6aktuXftPvdI+HbhQbAqVNjTSG9PRrT59NS
-	 bWyLhM7IEn9tHcaUUF2bnXyfJhRfCYttz/+YG890=
+	b=PdDLXdyAa68Qudx985iTy8tw40eP39kUrqLJR6wBkCLd+xRh7n3Zewsvbq+FPeqjT
+	 /1KkM+me4ffzCDHIecKLhguuEIwduEuQOQJbtQd95D4WIcWGpTq35DQGLWRKrjK1FR
+	 tTavoc4UnsuBDrOqyzaG8FDntCefk3T2vg2Mfwc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/529] RDMA/hns: Fix wrong WQE data when QP wraps around
-Date: Fri, 21 Nov 2025 14:10:03 +0100
-Message-ID: <20251121130241.840928478@linuxfoundation.org>
+Subject: [PATCH 6.17 057/247] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
+Date: Fri, 21 Nov 2025 14:10:04 +0100
+Message-ID: <20251121130156.651550698@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit fe9622011f955e35ba84d3af7b2f2fed31cf8ca1 ]
+[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
 
-When QP wraps around, WQE data from the previous use at the same
-position still remains as driver does not clear it. The WQE field
-layout differs across different opcodes, causing that the fields
-that are not explicitly assigned for the current opcode retain
-stale values, and are issued to HW by mistake. Such fields are as
-follows:
+Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
+header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
 
-* MSG_START_SGE_IDX field in ATOMIC WQE
-* BLOCK_SIZE and ZBVA fields in FRMR WQE
-* DirectWQE fields when DirectWQE not used
+Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
 
-For ATOMIC WQE, always set the latest sge index in MSG_START_SGE_IDX
-as required by HW.
+For the compressed one, it is done in lowpan_header_decompress().
 
-For FRMR WQE and DirectWQE, clear only those unassigned fields
-instead of the entire WQE to avoid performance penalty.
+Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
+------
+kernel BUG at net/core/skbuff.c:212!
+Call Trace:
+<IRQ>
+...
+packet_rcv (net/packet/af_packet.c:2152)
+...
+<TASK>
+__local_bh_enable_ip (kernel/softirq.c:407)
+netif_rx (net/core/dev.c:5648)
+chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
+------
 
-Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20251016114051.1963197-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/bluetooth/6lowpan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 4a10b826d15a3..f1d4494c7d008 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -161,6 +161,8 @@ static void set_frmr_seg(struct hns_roce_v2_rc_send_wqe *rc_sq_wqe,
- 	hr_reg_write(fseg, FRMR_PBL_BUF_PG_SZ,
- 		     to_hr_hw_page_shift(mr->pbl_mtr.hem_cfg.buf_pg_shift));
- 	hr_reg_clear(fseg, FRMR_BLK_MODE);
-+	hr_reg_clear(fseg, FRMR_BLOCK_SIZE);
-+	hr_reg_clear(fseg, FRMR_ZBVA);
- }
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index f0c862091bff2..f1d29fa4b4119 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -289,6 +289,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
+ 		local_skb->pkt_type = PACKET_HOST;
+ 		local_skb->dev = dev;
  
- static void set_atomic_seg(const struct ib_send_wr *wr,
-@@ -335,9 +337,6 @@ static int set_rwqe_data_seg(struct ib_qp *ibqp, const struct ib_send_wr *wr,
- 	int j = 0;
- 	int i;
++		skb_reset_mac_header(local_skb);
+ 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
  
--	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
--		     (*sge_ind) & (qp->sge.sge_cnt - 1));
--
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_INLINE,
- 		     !!(wr->send_flags & IB_SEND_INLINE));
- 	if (wr->send_flags & IB_SEND_INLINE)
-@@ -586,6 +585,9 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_CQE,
- 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
- 
-+	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_MSG_START_SGE_IDX,
-+		     curr_idx & (qp->sge.sge_cnt - 1));
-+
- 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
- 	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
- 		if (msg_len != ATOMIC_WR_LEN)
-@@ -734,6 +736,9 @@ static int hns_roce_v2_post_send(struct ib_qp *ibqp,
- 		owner_bit =
- 		       ~(((qp->sq.head + nreq) >> ilog2(qp->sq.wqe_cnt)) & 0x1);
- 
-+		/* RC and UD share the same DirectWQE field layout */
-+		((struct hns_roce_v2_rc_send_wqe *)wqe)->byte_4 = 0;
-+
- 		/* Corresponding to the QP type, wqe process separately */
- 		if (ibqp->qp_type == IB_QPT_RC)
- 			ret = set_rc_wqe(qp, wr, wqe, &sge_idx, owner_bit);
+ 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
 -- 
 2.51.0
 
