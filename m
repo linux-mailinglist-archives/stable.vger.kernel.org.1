@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5BEC792AA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:16:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C41C79C24
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 78F69348599
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0855F4EFCB0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E06341AC7;
-	Fri, 21 Nov 2025 13:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657A6351FBD;
+	Fri, 21 Nov 2025 13:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Tyboker"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShlFM+r4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4A633C527;
-	Fri, 21 Nov 2025 13:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C153351FA6;
+	Fri, 21 Nov 2025 13:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730881; cv=none; b=nMPIw0yqXweaMF6BUE+wfyoJKby04QAyBWEBAMF+eTG0gp0/mv6B13Z2ItUMwKkmrm+hMBOrxW3MvYJqCaLsmM7IJ7PZAw1InGUXtHxaSk1P+g2qbgiStsrQg5OgeAP2VV1nQa0tmcmbPb7bBvHRMivM/1NSzME6Hz5h0JqFq64=
+	t=1763732820; cv=none; b=C7iMEw1znIp4uagQvgrJ7P36gBEy0gq96UftE0b0zAvY6u2bjzjQ/khHR+MhWA7FM/7VUYvPXtreUMabQpyfT1F3RKmBcYeNXJ1vOAM8wTQAxn3QzxzoNZWhs341s0Z8XkjJl4TrZtbvMK19zqb7KC02kyuPOv9DkTMKldsGc+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730881; c=relaxed/simple;
-	bh=IYDEJ5Z/lnFP6N9FxVpGMysDyhm8+2MuwWWwM2uVB5M=;
+	s=arc-20240116; t=1763732820; c=relaxed/simple;
+	bh=edq9AjZxs7i0hMHNJpGX7AszfcoBakMVhRm2GtKDrhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9a5c0w1qHNYXt5NySXkhtL4lk//V9ieCNR1ENLG+JWzakaN2xZDDGAoSt9Rc1rPbONHXNxN9iZb4zUB1drmduNr0ucw4FcGRSAYvvJB5/EIyrtr1MypKV+Br9+3astxnQEOSMKTmy0HcF5oaQVuhJ7uh4/URvIcxxOTdrUZOng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Tyboker; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CB5C4CEF1;
-	Fri, 21 Nov 2025 13:14:40 +0000 (UTC)
+	 MIME-Version; b=U1a9K/tMbAu5UCMEYpl6JKunGfqLDFHYKziU7R1ChJZgfXubiM230mCw03eWtZpfGQg2ijW/gL09Ty6+k5COhmY3c699sIVU9f5BAIjAJ+rW/tbCfXL8B/eGiprE2YjbfgZuhYTqbJalumKKFIk3XSJkTQFcQCtOTkC/NULBQos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShlFM+r4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4927BC4CEF1;
+	Fri, 21 Nov 2025 13:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730881;
-	bh=IYDEJ5Z/lnFP6N9FxVpGMysDyhm8+2MuwWWwM2uVB5M=;
+	s=korg; t=1763732819;
+	bh=edq9AjZxs7i0hMHNJpGX7AszfcoBakMVhRm2GtKDrhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Tyboker+axaEHJf5e7vkBcbUhMqGD+2OtXNMTQBDzfP0qgUbejxrMs96PKiLUN59
-	 PKE1CujPH9+vjMpRxdsSi4QjCoR/edIhpr59hxcb5kCFIe/RChhOGBKPFgh97pBPxl
-	 k5annyDHyWFfZ/JBQya6BKTxS9OJkeDfBUcshD84=
+	b=ShlFM+r4UozmGuGZOHVYS46Xj+9MApuLZWcPc6M0FeOB8uvzTiy4eK9iJ8i/kreBL
+	 Hxvv63i5wc++l3jG9V7ycuhUiwiGsrovoAhaFzIv+MqslrEn6q8Jc3e2SksMkwrN1H
+	 W36GqT585WkVieq4swbfSvRYIfK4aZaWG/kcj+N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Steve French <stfrench@microsoft.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 007/247] smb: client: fix refcount leak in smb2_set_path_attr
+Subject: [PATCH 6.6 255/529] net: phy: clear link parameters on admin link down
 Date: Fri, 21 Nov 2025 14:09:14 +0100
-Message-ID: <20251121130154.862329963@linuxfoundation.org>
+Message-ID: <20251121130240.094487729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit b540de9e3b4fab3b9e10f30714a6f5c1b2a50ec3 ]
+[ Upstream commit 60f887b1290b43a4f5a3497982a725687b193fa4 ]
 
-Fix refcount leak in `smb2_set_path_attr` when path conversion fails.
+When a PHY is halted (e.g. `ip link set dev lan2 down`), several
+fields in struct phy_device may still reflect the last active
+connection. This leads to ethtool showing stale values even though
+the link is down.
 
-Function `cifs_get_writable_path` returns `cfile` with its reference
-counter `cfile->count` increased on success. Function `smb2_compound_op`
-would decrease the reference counter for `cfile`, as stated in its
-comment. By calling `smb2_rename_path`, the reference counter of `cfile`
-would leak if `cifs_convert_path_to_utf16` fails in `smb2_set_path_attr`.
+Reset selected fields in _phy_state_machine() when transitioning
+to PHY_HALTED and the link was previously up:
 
-Fixes: 8de9e86c67ba ("cifs: create a helper to find a writeable handle by path name")
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+- speed/duplex -> UNKNOWN, but only in autoneg mode (in forced mode
+  these fields carry configuration, not status)
+- master_slave_state -> UNKNOWN if previously supported
+- mdix -> INVALID (state only, same meaning as "unknown")
+- lp_advertising -> always cleared
+
+The cleanup is skipped if the PHY is in PHY_ERROR state, so the
+last values remain available for diagnostics.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250917094751.2101285-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/phy/phy.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index e441fa2e76897..ff9cb25327458 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1294,6 +1294,8 @@ static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
- 	smb2_to_name = cifs_convert_path_to_utf16(to_name, cifs_sb);
- 	if (smb2_to_name == NULL) {
- 		rc = -ENOMEM;
-+		if (cfile)
-+			cifsFileInfo_put(cfile);
- 		goto smb2_rename_path;
- 	}
- 	in_iov.iov_base = smb2_to_name;
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index df54c137c5f5f..cf171bdd667aa 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1482,6 +1482,19 @@ void phy_state_machine(struct work_struct *work)
+ 		}
+ 		break;
+ 	case PHY_HALTED:
++		if (phydev->link) {
++			if (phydev->autoneg == AUTONEG_ENABLE) {
++				phydev->speed = SPEED_UNKNOWN;
++				phydev->duplex = DUPLEX_UNKNOWN;
++			}
++			if (phydev->master_slave_state !=
++						MASTER_SLAVE_STATE_UNSUPPORTED)
++				phydev->master_slave_state =
++						MASTER_SLAVE_STATE_UNKNOWN;
++			phydev->mdix = ETH_TP_MDI_INVALID;
++			linkmode_zero(phydev->lp_advertising);
++		}
++		fallthrough;
+ 	case PHY_ERROR:
+ 		if (phydev->link) {
+ 			phydev->link = 0;
 -- 
 2.51.0
 
