@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EC8C79F03
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A28C7962E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A4E74F1B33
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D42E4EA1DE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4A434D917;
-	Fri, 21 Nov 2025 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454E11DE2A5;
+	Fri, 21 Nov 2025 13:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLquLMsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc0ZS5ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277D0348477;
-	Fri, 21 Nov 2025 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B8B190477;
+	Fri, 21 Nov 2025 13:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733253; cv=none; b=k572OQN10wEaiGHXoqLJ35Lvn1B5dmM0u0DV8QFPmgypNSevyzEbpEXm+a1IJ9Jvj/XSHj4cKnanZBdL7fc4jZCi8CnBzRXwNilpt8Jh84XjlwDMll2xUhjsqzbD1So+zuZV45E5eu+SCGanxktIIqt3x5kxc0yIaaJkOshVGe0=
+	t=1763731775; cv=none; b=FUvVkLC8IQihVNqlQcgquyGx3VicWG3cMzj8zVslUT7b02zh/yazG3UDbXcTqD2DtN1JeNcGAmstSVFP7Rx4eG7g1/+a/F56jr72nPdXoQpB3giHykFJczR3NScTV29q3/sUTAuoHyQO8xhVJ8hF0WyfyBhtVNVHselqRMAkyDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733253; c=relaxed/simple;
-	bh=gmQ0HIP9Sw6Rb9v1+hQTwW3YMMr9zEyg4TUPfklAKVE=;
+	s=arc-20240116; t=1763731775; c=relaxed/simple;
+	bh=iUa/w9L37OdPqyLGwc4R8edkpl20XaqEo1L1PTeN14U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmHNU/f75wGKj7JDS/JJQOy+pIJhwYLBZmpSuU8gcNCM0xAX8NqRmD2++CgddDR3DWBtn4TQ4dKQgf09KhqSUE94PYsAYx2ySJteoY0grb9Fhy0plzOyPpHdqEfJST6qNTvoRfbfVqiC1EkF3pVpFDSGV5McpiFIYw1neV6/PiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLquLMsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA78C4CEF1;
-	Fri, 21 Nov 2025 13:54:12 +0000 (UTC)
+	 MIME-Version; b=uA6wI4kipHABlaZWakCoJK6+ee2Inpu+KtpJk9aOT/Az9lWujgHBwYDJ08cyN6X+x1paWOQw9j3dix01jFIzbsdNxky3VUcZ0fdxUMJAWUZjWWW85qw5N1Q64eCWonjJPAjAkfOSPSM6Ml16WKMeEK7R2kSd2XdSmKc/CIvehRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc0ZS5ab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE78C4CEF1;
+	Fri, 21 Nov 2025 13:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733252;
-	bh=gmQ0HIP9Sw6Rb9v1+hQTwW3YMMr9zEyg4TUPfklAKVE=;
+	s=korg; t=1763731774;
+	bh=iUa/w9L37OdPqyLGwc4R8edkpl20XaqEo1L1PTeN14U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLquLMsFkyrYNktGK1fpF4Gu+3kFrPJix1w3YExZo5v3Q9cUjxyccyr5ueX9+8HQI
-	 mvxvYffdpSJ6dLSKdRbV5FMJURya9K8E7oLKqTfdtkns/h9U42GJjhKoSzud0tow3e
-	 AgvZMI+O+RU7nXBG+UZhob78kmZDmHfqCf5ikIzY=
+	b=mc0ZS5abBZoXxad0SQTmJ8Vjuj3D0aB3528FJv1EpDhqn7bzaZIQOxckUfXEpMqzU
+	 /uuTw+yCLr5es3ftsT0e1JYZ9jrpsc1DJ4IM4wvXXvQqXluLqJwtsQXUTC2XDpil1V
+	 EY5/STph3p/orN/pL3Pvw6PlFM/VsJALQyEOGF5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Abbene <sabbene87@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	NeilBrown <neil@brown.name>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 404/529] net/handshake: Fix memory leak in tls_handshake_accept()
+Subject: [PATCH 6.12 076/185] NFSv2/v3: Fix error handling in nfs_atomic_open_v23()
 Date: Fri, 21 Nov 2025 14:11:43 +0100
-Message-ID: <20251121130245.395840118@linuxfoundation.org>
+Message-ID: <20251121130146.614996414@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3072f00bba764082fa41b3c3a2a7b013335353d2 ]
+[ Upstream commit 85d2c2392ac6348e1171d627497034a341a250c1 ]
 
-In tls_handshake_accept(), a netlink message is allocated using
-genlmsg_new(). In the error handling path, genlmsg_cancel() is called
-to cancel the message construction, but the message itself is not freed.
-This leads to a memory leak.
+When nfs_do_create() returns an EEXIST error, it means that a regular
+file could not be created. That could mean that a symlink needs to be
+resolved. If that's the case, a lookup needs to be kicked off.
 
-Fix this by calling nlmsg_free() in the error path after genlmsg_cancel()
-to release the allocated memory.
-
-Fixes: 2fd5532044a89 ("net/handshake: Add a kernel API for requesting a TLSv1.3 handshake")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://patch.msgid.link/20251106144511.3859535-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Stephen Abbene <sabbene87@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220710
+Fixes: 7c6c5249f061 ("NFS: add atomic_open for NFSv3 to handle O_TRUNC correctly.")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/handshake/tlshd.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/dir.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
-index bbfb4095ddd6b..06916a80cc130 100644
---- a/net/handshake/tlshd.c
-+++ b/net/handshake/tlshd.c
-@@ -254,6 +254,7 @@ static int tls_handshake_accept(struct handshake_req *req,
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index c05c737ac5282..048ce25ebfb70 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2280,11 +2280,12 @@ int nfs_atomic_open_v23(struct inode *dir, struct dentry *dentry,
+ 		return -ENAMETOOLONG;
  
- out_cancel:
- 	genlmsg_cancel(msg, hdr);
-+	nlmsg_free(msg);
- out:
- 	return ret;
- }
+ 	if (open_flags & O_CREAT) {
+-		file->f_mode |= FMODE_CREATED;
+ 		error = nfs_do_create(dir, dentry, mode, open_flags);
+-		if (error)
++		if (!error) {
++			file->f_mode |= FMODE_CREATED;
++			return finish_open(file, dentry, NULL);
++		} else if (error != -EEXIST || open_flags & O_EXCL)
+ 			return error;
+-		return finish_open(file, dentry, NULL);
+ 	}
+ 	if (d_in_lookup(dentry)) {
+ 		/* The only flags nfs_lookup considers are
 -- 
 2.51.0
 
