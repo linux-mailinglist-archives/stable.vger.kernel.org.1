@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-196427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1505FC79EC1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623A5C794F9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5285E2F6B5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 738052BAFD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC183559D3;
-	Fri, 21 Nov 2025 13:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758B41F09B3;
+	Fri, 21 Nov 2025 13:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOPU4LSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9WG/rQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53653348477;
-	Fri, 21 Nov 2025 13:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297E2264612;
+	Fri, 21 Nov 2025 13:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733481; cv=none; b=ZeVzXAL6ht5buzp+jYj6rZ10NnscisrG9Z/SVLSdMYrtWTZZ/EhY1nv+0sp6W0YHxJvvFovzZrV4EvTdoSE1QrarCRep/ldPg6FUd49nHgzdwZr0kHNtFOzkx6cSVHiYZBXuJlwwtW/hlF3AJnRtKtiYgDVG5vsnjZyxytqWVwY=
+	t=1763731512; cv=none; b=URwLtS693rVVPMJNM3NUrNNhFBO8nCCJpzmaA2XHfLC00LdH/mGykH3zLsU0JC7zngJFC1cb6UW3mL7LRcT24xc8O3fHup0996OWnEgqBoTNaKuFJujbpwqCfEU4KcsyBvtEk1Es6jJ08ir/WrBYwVUs5ha7PtK3moypHnwzxzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733481; c=relaxed/simple;
-	bh=tDfFMaN8YzZtGGkm99bcCdUtnyi6OlIJnkUK0Lpr4fc=;
+	s=arc-20240116; t=1763731512; c=relaxed/simple;
+	bh=IxBBeK0O4ZqA3gPbvAaFzFKcYoCEOuhGq3WpRMCmQf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4VWXUjJyOPPePckMArFVVppLfBeCueDDx3XmTwNFI3hPYHDwZbTCqvcWite0MvxBRlgS0omDrznIdbgiPdCfXZo6Ls4Xvu86wXC4OR22yX+brJGps2S0HfC/w3mU6bInrQj50cDcjUgyhLTyeGYCMBCZhbyEEZvmir/7twcuKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOPU4LSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5042C4CEF1;
-	Fri, 21 Nov 2025 13:57:59 +0000 (UTC)
+	 MIME-Version; b=YsTq/Mei3FBg6sQbk9gsdCU0zr+IjzCD2z00OQ0r5olEUBSDGJoBykB+H0bI6w/+S09oc4WnIihASj1jfPcIagHv3xJojb9bo2cCyugykHkE0Kt4EXuAI8tr7Lu3nhbNIiIwvE5/ni6My7cDsQz9xBpoBSviiaFgp5TDVJ2Q858=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9WG/rQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B33C4CEF1;
+	Fri, 21 Nov 2025 13:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733480;
-	bh=tDfFMaN8YzZtGGkm99bcCdUtnyi6OlIJnkUK0Lpr4fc=;
+	s=korg; t=1763731511;
+	bh=IxBBeK0O4ZqA3gPbvAaFzFKcYoCEOuhGq3WpRMCmQf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOPU4LSdDAIsBdc/ccKkiqWNY5uWrqM8XNL5oupMmE4rZWyRLXlys0mARzRcUIiHW
-	 bvHJHIQVfaKanOfGCA8F+jPracNwNs6elBLkkA4Bug+hvANjeQaEv4bzPGYY7q6LDq
-	 mad/O0Gkl7U1qLKXV1heCymCV6trYTLjSa3fRHAI=
+	b=X9WG/rQepJ+fnj+WRy/HOZ2SK2IcGvlWw7zX2lmQH05y2LxmNJaqOcjhEOBfS8f+7
+	 BnMJvjeWop9uGhPbVCQ5fwZ/vERFuLbQ9GscthaCyPpVt562mcwhVDQtagYe0ccF/M
+	 MORAcWEdorGDhtakyDyI5vwPKji45Xj1PkQmD7zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	sunliming <sunliming@kylinos.cn>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 482/529] selftests/user_events: fix type cast for write_index packed member in perf_test
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 234/247] selftests: mptcp: join: userspace: longer transfer
 Date: Fri, 21 Nov 2025 14:13:01 +0100
-Message-ID: <20251121130248.158508128@linuxfoundation.org>
+Message-ID: <20251121130203.134788382@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,58 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 216158f063fe24fb003bd7da0cd92cd6e2c4d48b upstream.
+commit 290493078b96ce2ce3e60f55c23654acb678042a upstream.
 
-Accessing 'reg.write_index' directly triggers a -Waddress-of-packed-member
-warning due to potential unaligned pointer access:
+In rare cases, when the test environment is very slow, some userspace
+tests can fail because some expected events have not been seen.
 
-perf_test.c:239:38: warning: taking address of packed member 'write_index'
-of class or structure 'user_reg' may result in an unaligned pointer value
-[-Waddress-of-packed-member]
-  239 |         ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-      |                                             ^~~~~~~~~~~~~~~
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to make the
+connection longer. This connection will be killed at the end, after the
+verifications, so making it longer doesn't change anything, apart from
+avoid it to end before the end of the verifications
 
-Since write(2) works with any alignment. Casting '&reg.write_index'
-explicitly to 'void *' to suppress this warning.
+To play it safe, all userspace tests not waiting for the end of the
+transfer are now sharing a longer file (128KB) at slow speed.
 
-Link: https://lkml.kernel.org/r/20251106095532.15185-1-ankitkhushwaha.linux@gmail.com
-Fixes: 42187bdc3ca4 ("selftests/user_events: Add perf self-test for empty arguments events")
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Cc: Beau Belgrave <beaub@linux.microsoft.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: sunliming <sunliming@kylinos.cn>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+Cc: stable@vger.kernel.org
+Fixes: b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
+Fixes: e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
+Fixes: b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-4-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/user_events/perf_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/user_events/perf_test.c b/tools/testing/selftests/user_events/perf_test.c
-index 5288e768b207..68625362add2 100644
---- a/tools/testing/selftests/user_events/perf_test.c
-+++ b/tools/testing/selftests/user_events/perf_test.c
-@@ -236,7 +236,7 @@ TEST_F(user, perf_empty_events) {
- 	ASSERT_EQ(1 << reg.enable_bit, self->check);
- 
- 	/* Ensure write shows up at correct offset */
--	ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-+	ASSERT_NE(-1, write(self->data_fd, (void *)&reg.write_index,
- 					sizeof(reg.write_index)));
- 	val = (void *)(((char *)perf_page) + perf_page->data_offset);
- 	ASSERT_EQ(PERF_RECORD_SAMPLE, *val);
--- 
-2.52.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3620,7 +3620,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns2 2 2
+-		{ speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
+@@ -3653,7 +3653,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3681,7 +3681,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3702,7 +3702,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3726,7 +3726,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns2 1 1
+-		{ speed=5 \
++		{ test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
 
 
 
