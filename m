@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2336C79727
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC28C793DD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 0A1413476B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 58BF2215AA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843F633858B;
-	Fri, 21 Nov 2025 13:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E705A27147D;
+	Fri, 21 Nov 2025 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUyk/gXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjXX7BIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE204274FE3;
-	Fri, 21 Nov 2025 13:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28CD264612;
+	Fri, 21 Nov 2025 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731671; cv=none; b=gt6qYsV4CMzmczH3SkBFtRde1LvKWoPf2TYOW9UMbMLFLki/yAm0MV/LsOunrJ4oaUXlUS7ymSjBQo6vlseoWxamC2o85ZqoQ1hExcZ1aXtZyWIc0piLKNx2OGFWttN2n66wB1TXlqpJ6IDYuXQ6KURqiW8s2tZ7z/bamechQlw=
+	t=1763731281; cv=none; b=abUSt/7SMXLmrYRFKbeiz+GxHifoMwpuC+DgYs+N6RHyo6UbRHvKaheY9bBEdAYRGJ9y7vh/9ycDqM+z1cCGhoL/asLP8aRY0mywAWycmzz4WXg1m9o0e0OORq4t2fLbBr6hTgsGzTqygnzvqEXNNQ1V1MOCawaew47LbEwekPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731671; c=relaxed/simple;
-	bh=LzEcXmli/XIX0fuPoDEYSCyqjDkYCZCa7xOcXGiDei4=;
+	s=arc-20240116; t=1763731281; c=relaxed/simple;
+	bh=VJcST6xD0RE88+R08zXmA8kIl39qXrhkyf6LmjsDEQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDJAlSIGtepYgtBJaYNar5s2iZZjwBI3AbIHKbPQhnsLDvMSTLoNVTVBuAuAmByiC6yiKxar/SEBYsUJ5lLP0a2/1KwbDpAzxVNih+mZvTd8LA+OX1ENHimKy6we8BlU8dx852ltNVQjgZBlWM5Z08wwQFMpDll2yr44VfZ3xJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUyk/gXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CD5C4CEF1;
-	Fri, 21 Nov 2025 13:27:49 +0000 (UTC)
+	 MIME-Version; b=EDuuOhDNdjXee8dO0L7n8MHLlX4oNcxKB2Do3IlwxplIIRHmMqWIvVeTlrxJeTeD8ymqOZ1ciRRhmtOZKhxdNXir5RhKDBJswnluUrcJ9y7gAOENHZ5fKXh2awRJiVUBjFxalyjrsblw4KBIcADTUXHBBaR92ie7RgpMoA9KKu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjXX7BIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288E5C4CEF1;
+	Fri, 21 Nov 2025 13:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731670;
-	bh=LzEcXmli/XIX0fuPoDEYSCyqjDkYCZCa7xOcXGiDei4=;
+	s=korg; t=1763731281;
+	bh=VJcST6xD0RE88+R08zXmA8kIl39qXrhkyf6LmjsDEQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUyk/gXVq0LCdNBeaRWxHpSKgQxpnMlHsK7xEf2DQNTAaFgle8QrZ/rWsbjbzf7Es
-	 0dV/vFF1r9vMrCRlQB7TK07hG1PqsO/tYdtkrKUMaWGqT0nbAqgHlrZd17celjVqSs
-	 VuC1vdevJWAr68FDENxVFCUmUWcvghh9l45Qjkak=
+	b=wjXX7BIumLilpy60jZ2rqpIwgUq+wgG+hJ4MRPdAGDridwB/sOQpb+KNxJqKBe878
+	 JYfLDOJRMThQ86p9xc6d7cRwHfLnx0+ln+Ozuy9ul4iTLIcZ5sbkX1nhDXxyZ9Fbs3
+	 g6mZbckwwRS7mGwSGgBV+Ov6clWfgBvwaovucuaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nick Hu <nick.hu@sifive.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/185] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
+Subject: [PATCH 6.17 120/247] irqchip/riscv-intc: Add missing free() callback in riscv_intc_domain_ops
 Date: Fri, 21 Nov 2025 14:11:07 +0100
-Message-ID: <20251121130145.326382374@linuxfoundation.org>
+Message-ID: <20251121130158.890712977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Nick Hu <nick.hu@sifive.com>
 
-[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
+[ Upstream commit 14473a1f88596fd729e892782efc267c0097dd1d ]
 
-There is a KASAN: slab-use-after-free read in btusb_disconnect().
-Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
-free the btusb data associated with the interface. The same data is
-then used later in the function, hence the UAF.
+The irq_domain_free_irqs() helper requires that the irq_domain_ops->free
+callback is implemented. Otherwise, the kernel reports the warning message
+"NULL pointer, cannot free irq" when irq_dispose_mapping() is invoked to
+release the per-HART local interrupts.
 
-Fix by moving the accesses to btusb data to before the data is free'd.
+Set irq_domain_ops->free to irq_domain_free_irqs_top() to cure that.
 
-Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
-Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
+Signed-off-by: Nick Hu <nick.hu@sifive.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251114-rv-intc-fix-v1-1-a3edd1c1a868@sifive.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-riscv-intc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index a734c5135a8be..aedb478614000 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4179,6 +4179,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index e5805885394ee..70290b35b3173 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -166,7 +166,8 @@ static int riscv_intc_domain_alloc(struct irq_domain *domain,
+ static const struct irq_domain_ops riscv_intc_domain_ops = {
+ 	.map	= riscv_intc_domain_map,
+ 	.xlate	= irq_domain_xlate_onecell,
+-	.alloc	= riscv_intc_domain_alloc
++	.alloc	= riscv_intc_domain_alloc,
++	.free	= irq_domain_free_irqs_top,
+ };
  
- 	hci_unregister_dev(hdev);
- 
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
-+	if (data->reset_gpio)
-+		gpiod_put(data->reset_gpio);
-+
- 	if (intf == data->intf) {
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-@@ -4189,17 +4194,11 @@ static void btusb_disconnect(struct usb_interface *intf)
- 			usb_driver_release_interface(&btusb_driver, data->diag);
- 		usb_driver_release_interface(&btusb_driver, data->intf);
- 	} else if (intf == data->diag) {
--		usb_driver_release_interface(&btusb_driver, data->intf);
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-+		usb_driver_release_interface(&btusb_driver, data->intf);
- 	}
- 
--	if (data->oob_wake_irq)
--		device_init_wakeup(&data->udev->dev, false);
--
--	if (data->reset_gpio)
--		gpiod_put(data->reset_gpio);
--
- 	hci_free_dev(hdev);
- }
- 
+ static struct fwnode_handle *riscv_intc_hwnode(void)
 -- 
 2.51.0
 
