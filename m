@@ -1,105 +1,100 @@
-Return-Path: <stable+bounces-196551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F044C7B406
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:14:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8549EC7B3C7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B30D4F0A41
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4107D3A1CC3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167642E6CD2;
-	Fri, 21 Nov 2025 18:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF4924C076;
+	Fri, 21 Nov 2025 18:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pOIKIXMg"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bCxG49Wc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4F92DF6F8
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 18:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192F626B760
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 18:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763748637; cv=none; b=XC5xODs5OTGaXoHHvyRpWcTbrKTiIixjd5MdjEwzC0vVeQLoM7UdEdGvkS87RK6HWyNQ2ZbDtJZA1oall2bZ05h19716liu76EzLkC8MiIbCKTrqeIGWGFyN7Di8BTqIBJ2h34ppayVJrLKDITHcBmQgz9cl3Gtw3ojF/aej2xk=
+	t=1763748682; cv=none; b=DPfMgW2BsGyRWpTYF5C+WYxXzdGRgTMVN8s/jLjYf2kGv0Xjv7hUuWnl4qpiKY/qfkT74XGQhyQd6MVgfJ6I7Uq0tfIcF7YK9OFwxL5F9VpFwQQ1mRdeGtliC5wJaA/b2VvlHIujg9ASZsKwOKM7Sahfrethiyg62wJoFXbJO5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763748637; c=relaxed/simple;
-	bh=QIFDOVZuZhL7aInL+RFFF8j9IlafO9HdTk+A+ru+5/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXLjgmSxXh2u7gh3uLQjJQPKkM5AL4u/qRUyEIt4FDnwqrtvsSZnmDp3iLPgn+pDwYWymLOp1i3IiLBL2bz9LKGVJ5T2wHShjax65GYLQK4PMqgSRLIFY23GBoHKzIZr/Rpjv9/CREkMEIekWWSDW3fWdJaF9BkK6LAQMQqLwPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pOIKIXMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3E7C4CEF1;
-	Fri, 21 Nov 2025 18:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763748637;
-	bh=QIFDOVZuZhL7aInL+RFFF8j9IlafO9HdTk+A+ru+5/o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOIKIXMg+C7+Lpwkgztncc/3hELONQQm9Sou8pCSD/96WpLMbisnlmHqCNNPvud2w
-	 G72b4gPLrTYj2fczO/Smf8Ag+OTWwPPAw+ENmq1BI+q+slU+XZ94VdO7uhH3k8frh3
-	 7RSpQ1D2bnTFsVTN00LRADm4Y8GxE+jTzX/cxpbd8pzN8ks3uIM+fv9z6k+3UC5k6B
-	 Oxza+hmxL2T+D898iVn8VargzIos8aTbM3bWVLajBLjw0SuAjg3K5AiDQ6gnY3DKhk
-	 pWWv2VBAc3om0ClgjSO2ZDCuI60VwJ7N6QxUROy/UBb4iRniOSnT83++ywlGOKAakK
-	 LHAhc/pBTadDQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] selftests: mptcp: connect: fix fallback note due to OoO
-Date: Fri, 21 Nov 2025 13:10:34 -0500
-Message-ID: <20251121181034.2640730-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112058-distinct-glisten-21aa@gregkh>
-References: <2025112058-distinct-glisten-21aa@gregkh>
+	s=arc-20240116; t=1763748682; c=relaxed/simple;
+	bh=BwomLA10EK6iEUjqglnJ2PiLV249RI+140gyOy4IGxM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aa1s9BzcLHrxtjKvxg5YEBz/W1iBP1poPQfG5b8+UdtPAboZOIqcaxMiniCQosoTmq4FKfPqgJcglOrx47nPHkchxj9uj1GCwfV5l1V/kkRoRHXM+yFgNeQdA5jXfhrsJYZLcxTMmoJUoolhmK6svWvrf0DCqJQa6CTO1i7MyvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bCxG49Wc; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343daf0f38aso2597781a91.3
+        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 10:11:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763748680; x=1764353480; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yNrny/DxltAFbS+FZGRQHmrXuFVOcMuPRz31LNxOZMI=;
+        b=bCxG49WcPSM8/JyfdMMkTKvoVCWiM4gbs4lj0jUiTq1s2bYeA0dSnd3hi3gCiYK1HW
+         x4tUc6hZwsh97tFwdLegn84CW5Ni4K8HNQeHKaXdQ362RawzMJvNRkuZJgupKfBIr/jy
+         HzWM2HAPtNVOjVe5uAITnazu5tat8iMVIiNRy7zTIhA/sz+0UAj2FvrxYpBMQ2OAWhoz
+         67bA7WuqY2rlxENYvOCq08lh2RYrHaUCkkjskzp/3BPHjXplGJPb92JprTo4+8mQasTO
+         kVr9363gkWJw9cwkyxKGcC8bRkQJ200mYK0H7nHQaSM4oXT27z9ca2cqKavmub10dp4c
+         5zSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763748680; x=1764353480;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yNrny/DxltAFbS+FZGRQHmrXuFVOcMuPRz31LNxOZMI=;
+        b=KtqgQhqf2uIBUKryK0OCJpgaUWqhzpyT20Iq76vzj97kwcULwUGnZozW2Zl5VH6vVH
+         3PO+CVS7XvxTaFSwZTH3EhW/gpMSkNhagZbBa6Z6SruDThZuxzQ4x3LTYiwgzUe4Dpts
+         G9JP8FqveuGD906AoUFCPrBhylOnLExE2CRNNaZP2HjuVBP0wRKEwhABfW7S8Sdx9NRP
+         O4Xo5otJNHW7J9wNGZlVdJfQ/Tm0YM+ITw7xEE2xxb4PDO9n3xgjPtdT6Yep8BTicFQg
+         pel7JeSqlFkif0e3PaXXhXJspIH0EPKOcZCQzNs6ZfCVPwpatqk2qbArDarlJzS6Xna9
+         yNYA==
+X-Gm-Message-State: AOJu0YxEy0b9rIhZbSFxoBzo5XcNoENhKqdBFOrcG8yHYuYB1X0Fb/uD
+	QvTT/D4aaeaiKhNX03SXKaeXnyvwq0FSNiPE1hiMu0mFwjyo9B0yPn8G4NLRC4TcIYIaGGJrhyA
+	TrNTMCg==
+X-Google-Smtp-Source: AGHT+IGcLAxt/QA5aNg9tWFORIZKXpCjgRvaBxkI6hajeWn0eoc2jRNpGt4zBkuhAcGy+WViPM8w+dCBHjY=
+X-Received: from pjbpt9.prod.google.com ([2002:a17:90b:3d09:b0:340:a5c6:acc3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5450:b0:340:2a18:1536
+ with SMTP id 98e67ed59e1d1-34733f2a0c7mr3443352a91.25.1763748680340; Fri, 21
+ Nov 2025 10:11:20 -0800 (PST)
+Date: Fri, 21 Nov 2025 10:11:18 -0800
+In-Reply-To: <20251121055209.66918-1-Sukrit.Bhatnagar@sony.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251121055209.66918-1-Sukrit.Bhatnagar@sony.com>
+Message-ID: <aSCrRoe3fcBgLo8W@google.com>
+Subject: Re: [PATCH 6.12.y] KVM: VMX: Fix check for valid GVA on an EPT violation
+From: Sean Christopherson <seanjc@google.com>
+To: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
+Cc: stable@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+On Fri, Nov 21, 2025, Sukrit Bhatnagar wrote:
+> On an EPT violation, bit 7 of the exit qualification is set if the
+> guest linear-address is valid. The derived page fault error code
+> should not be checked for this bit.
+> 
+> Fixes: f3009482512e ("KVM: VMX: Set PFERR_GUEST_{FINAL,PAGE}_MASK if and only if the GVA is valid")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Link: https://patch.msgid.link/20251106052853.3071088-1-Sukrit.Bhatnagar@sony.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> (cherry picked from commit d0164c161923ac303bd843e04ebe95cfd03c6e19)
+> Signed-off-by: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
+> ---
 
-[ Upstream commit 63c643aa7b7287fdbb0167063785f89ece3f000f ]
-
-The "fallback due to TCP OoO" was never printed because the stat_ooo_now
-variable was checked twice: once in the parent if-statement, and one in
-the child one. The second condition was then always true then, and the
-'else' branch was never taken.
-
-The idea is that when there are more ACK + MP_CAPABLE than expected, the
-test either fails if there was no out of order packets, or a notice is
-printed.
-
-Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Different operators used ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_connect.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-index 5a1277d172865..1853285d78e67 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -535,7 +535,7 @@ do_transfer()
- 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
- 		retc=1
- 	fi
--	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
-+	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
- 		if [ ${stat_ooo_now} -eq 0 ]; then
- 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
- 				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
--- 
-2.51.0
-
+No need for the manual "backport", commits that are tagged for stable@ are
+automically pulled into LTS kernels so long as they apply cleanly (and obviously
+don't cause problems).
 
