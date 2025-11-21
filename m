@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE955C793E0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA2FC7A032
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id A51BB2DD49
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id A1A2F35141
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF75B2737FC;
-	Fri, 21 Nov 2025 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346C5346A1D;
+	Fri, 21 Nov 2025 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+vp3+Sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkIkgiZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE6A264612;
-	Fri, 21 Nov 2025 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49B33A291;
+	Fri, 21 Nov 2025 13:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731287; cv=none; b=Ty2DkwVXNQ/aQnMD1jBEDKdFGJ/gj2/PngmmWXV5lFK7CJVsVAwW5yCfWuIECV5wAS6eN/zQZIVf02hhbECXK5qZjvl2HsZGxQQr+H+dfJgtIAgmALsn/8/vzAxevl2CDclwYns7aLO5SAb0q44N2qcPEzEjTeipCbY+HyCWGrg=
+	t=1763733158; cv=none; b=lAfMbUImhuL7ENUJv9AJwzq1gBYzeuVwBLE1SRemQusimANbsEhs/vMEbQ2TdI9iGG07fq9kS5w6u5R7xwpkCFTzt/aGQ/MgIOGXxhVNJqd47LMA2qxUnGUCu4db0A2m6QGJxdxxIGxDU/+lgn3rsChdZzszlGBcy5HcSaqBU38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731287; c=relaxed/simple;
-	bh=DxK6KQ7I57YXZ9HbleXNB5DRXQj48g3hQ7kQMwSCuuI=;
+	s=arc-20240116; t=1763733158; c=relaxed/simple;
+	bh=Zl3oZclNS92FEIXAaKMSYUnCQwiOMra9ZCRNsxK9Vqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jyqhzj1dnYHs8qoC6ungwl/IHpSfx5XhtSWib59lmLKLO0uAAnIsZ7UPebdOqQvq7ZqsN1Mw4yYfaBF9sC+8wbpdyK/SE7zInw/Rlz4x61kt5Pxj/Y+suLSqBIqmdsXtgU0lVpJXr07iveZke/dGj9G9dSTt3gmzt+Nrb9xxcIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+vp3+Sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31DEC4CEF1;
-	Fri, 21 Nov 2025 13:21:26 +0000 (UTC)
+	 MIME-Version; b=QVjAkCvMf63DCzYQ/MGAQsCrVxkXCtG7+hQilzBIL8jT/gbWYN1vN0oPfk0aziGw6N0dBgb9yIn2xdKtpHqdghUFkXD9wBpm/oc9MhFuQrrdg6JqOD1dSNQjl+OvykGYXohgRvh9KKcKU/+4NRP+YHk/Q4O81dC1FDJQZ2w6+qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkIkgiZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D98C4CEF1;
+	Fri, 21 Nov 2025 13:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731287;
-	bh=DxK6KQ7I57YXZ9HbleXNB5DRXQj48g3hQ7kQMwSCuuI=;
+	s=korg; t=1763733157;
+	bh=Zl3oZclNS92FEIXAaKMSYUnCQwiOMra9ZCRNsxK9Vqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+vp3+SzQ/qsaXwZhpeUV8Je4nIOEnKHMTFWPoIRggB1jPi7JLAmxpIW0HANO6ah8
-	 t2nMe4v+HiBacdrC3Mwo/rXXpbY9oa01WoeTGUyjYJIHtt827Wu7+jJV+IEJ/zvE5W
-	 1XFBeEF2KZhQS8B3pXdWAIXw6PPgkGHXdLto4D2c=
+	b=tkIkgiZL+QR8MxE5OP8KQQhoDx4fE+e5fk5IddkmoENIwtxIcu+sl8hhUWVSMjWWR
+	 n1/GPlN7HhzU5cVPS+PWQPH8T8wpEBJOenzIgdlCRbdQym3AuHWd5Yrp4f8io9P7DK
+	 TNgUFOI5sZeoEHIskMsKsKLw7rfOZn9ZSmtiq/YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 122/247] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
-Date: Fri, 21 Nov 2025 14:11:09 +0100
-Message-ID: <20251121130158.962675596@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 371/529] scsi: ufs: ufs-pci: Fix S0ix/S3 for Intel controllers
+Date: Fri, 21 Nov 2025 14:11:10 +0100
+Message-ID: <20251121130244.226919121@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
+commit bb44826c3bdbf1fa3957008a04908f45e5666463 upstream.
 
-On big endian arm kernels, the arm optimized Curve25519 code produces
-incorrect outputs and fails the Curve25519 test.  This has been true
-ever since this code was added.
+Intel platforms with UFS, can support Suspend-to-Idle (S0ix) and
+Suspend-to-RAM (S3).  For S0ix the link state should be HIBERNATE.  For
+S3, state is lost, so the link state must be OFF.  Driver policy,
+expressed by spm_lvl, can be 3 (link HIBERNATE, device SLEEP) for S0ix
+but must be changed to 5 (link OFF, device POWEROFF) for S3.
 
-It seems that hardly anyone (or even no one?) actually uses big endian
-arm kernels.  But as long as they're ostensibly supported, we should
-disable this code on them so that it's not accidentally used.
+Fix support for S0ix/S3 by switching spm_lvl as needed.  During suspend
+->prepare(), if the suspend target state is not Suspend-to-Idle, ensure
+the spm_lvl is at least 5 to ensure that resume will be possible from
+deep sleep states.  During suspend ->complete(), restore the spm_lvl to
+its original value that is suitable for S0ix.
 
-Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
-CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
-get removed in the future if big endian support gets dropped.
+This fix is first needed in Intel Alder Lake based controllers.
 
-Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
 Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-2-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/host/ufshcd-pci.c |   67 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 65 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index 1e5f3cdf691c4..a00ab9265280f 100644
---- a/arch/arm/crypto/Kconfig
-+++ b/arch/arm/crypto/Kconfig
-@@ -4,7 +4,7 @@ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -15,6 +15,7 @@
+ #include <linux/pci.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_qos.h>
++#include <linux/suspend.h>
+ #include <linux/debugfs.h>
+ #include <linux/uuid.h>
+ #include <linux/acpi.h>
+@@ -34,6 +35,7 @@ struct intel_host {
+ 	u32		dsm_fns;
+ 	u32		active_ltr;
+ 	u32		idle_ltr;
++	int		saved_spm_lvl;
+ 	struct dentry	*debugfs_root;
+ 	struct gpio_desc *reset_gpio;
+ };
+@@ -375,6 +377,7 @@ static int ufs_intel_common_init(struct
+ 	host = devm_kzalloc(hba->dev, sizeof(*host), GFP_KERNEL);
+ 	if (!host)
+ 		return -ENOMEM;
++	host->saved_spm_lvl = -1;
+ 	ufshcd_set_variant(hba, host);
+ 	intel_dsm_init(host, hba->dev);
+ 	if (INTEL_DSM_SUPPORTED(host, RESET)) {
+@@ -542,6 +545,66 @@ static int ufshcd_pci_restore(struct dev
  
- config CRYPTO_CURVE25519_NEON
- 	tristate
--	depends on KERNEL_MODE_NEON
-+	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
- 	select CRYPTO_KPP
- 	select CRYPTO_LIB_CURVE25519_GENERIC
- 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
--- 
-2.51.0
-
+ 	return ufshcd_system_resume(dev);
+ }
++
++static int ufs_intel_suspend_prepare(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++	struct intel_host *host = ufshcd_get_variant(hba);
++	int err;
++
++	/*
++	 * Only s2idle (S0ix) retains link state.  Force power-off
++	 * (UFS_PM_LVL_5) for any other case.
++	 */
++	if (pm_suspend_target_state != PM_SUSPEND_TO_IDLE && hba->spm_lvl < UFS_PM_LVL_5) {
++		host->saved_spm_lvl = hba->spm_lvl;
++		hba->spm_lvl = UFS_PM_LVL_5;
++	}
++
++	err = ufshcd_suspend_prepare(dev);
++
++	if (err < 0 && host->saved_spm_lvl != -1) {
++		hba->spm_lvl = host->saved_spm_lvl;
++		host->saved_spm_lvl = -1;
++	}
++
++	return err;
++}
++
++static void ufs_intel_resume_complete(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++	struct intel_host *host = ufshcd_get_variant(hba);
++
++	ufshcd_resume_complete(dev);
++
++	if (host->saved_spm_lvl != -1) {
++		hba->spm_lvl = host->saved_spm_lvl;
++		host->saved_spm_lvl = -1;
++	}
++}
++
++static int ufshcd_pci_suspend_prepare(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++
++	if (!strcmp(hba->vops->name, "intel-pci"))
++		return ufs_intel_suspend_prepare(dev);
++
++	return ufshcd_suspend_prepare(dev);
++}
++
++static void ufshcd_pci_resume_complete(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++
++	if (!strcmp(hba->vops->name, "intel-pci")) {
++		ufs_intel_resume_complete(dev);
++		return;
++	}
++
++	ufshcd_resume_complete(dev);
++}
+ #endif
+ 
+ /**
+@@ -624,8 +687,8 @@ static const struct dev_pm_ops ufshcd_pc
+ 	.thaw		= ufshcd_system_resume,
+ 	.poweroff	= ufshcd_system_suspend,
+ 	.restore	= ufshcd_pci_restore,
+-	.prepare	= ufshcd_suspend_prepare,
+-	.complete	= ufshcd_resume_complete,
++	.prepare	= ufshcd_pci_suspend_prepare,
++	.complete	= ufshcd_pci_resume_complete,
+ #endif
+ };
+ 
 
 
 
