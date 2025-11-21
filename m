@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2990BC7A005
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB2DC794CF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 35804383F30
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 178062DAD4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D581A3559C8;
-	Fri, 21 Nov 2025 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2714313267;
+	Fri, 21 Nov 2025 13:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDDYllzv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3ioiTaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8993559C9;
-	Fri, 21 Nov 2025 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E07D26E6F4;
+	Fri, 21 Nov 2025 13:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733433; cv=none; b=S+RfpJulnpOYONA0IfkIZFpv3fIVJ0xgQT8bNxuDKslPQCm4C0JJBQsriU395xOfEvnjfNRjl4idjjgE+k0SIjDaBIL5z+NiY31cDKi+RZmSedDRyTgUOsaGa2IfWhAfEBeV/Mvt/e1jWsu8rQ4FSloHPwzZCA/ORQ3qlHnN+2I=
+	t=1763731477; cv=none; b=YNVRmGhjPIXlw1RVe2prgkCHxSgCnbPSdVAXL7bU96XJTP9JgFoSwezq1NYZR4AhMXS++rIoy/xyr4HNctHv4cwyxy/lrxrYLIexUzAjRu7JjPW5+hxMG0LEvzVyrPQRu5qGYSu6cGCrpWhzRNEiJI8VHIm1/xom3yxeA1X/7Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733433; c=relaxed/simple;
-	bh=B2RpMgmhgf8vqSwBSXm1THZt3nBpK3fnie48C9mmego=;
+	s=arc-20240116; t=1763731477; c=relaxed/simple;
+	bh=Twf+PbOdsLOFjnnQLSixDS9YLmRNrSNp4AYeKbB4r/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6LETe2WZ9YhnAkP8i5lefserTv64RLX566k1g9Va2TLeNM6gmxKFk+it+QVJQldWL4wEPfS5XpxklLAATB6YMlLVndFvBzMy38LUZZPeauuDbmyyD/Waf7AQM+A4G0PISOyOtvQlrDyyMUeGYQRvd1QP/+l9j82CTBS1GFsxt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDDYllzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F022C4CEF1;
-	Fri, 21 Nov 2025 13:57:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hK6AAvdg924Jl+phoj0FD4aq5k2PaRc5h7Qsu13nea9wyIxC1P8vkqBDE0/1SVFuiXyyfwRMrDeDBLE6EhnZekHgQmeLiCOXwfetQR5sR/AIDCW/Vl0rrfcwzDpT8JST9G8sdnsTyrJ2TMVVMQvBwUGUoylxg2sKUDxyAMlEpL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3ioiTaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B22C4CEF1;
+	Fri, 21 Nov 2025 13:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733433;
-	bh=B2RpMgmhgf8vqSwBSXm1THZt3nBpK3fnie48C9mmego=;
+	s=korg; t=1763731477;
+	bh=Twf+PbOdsLOFjnnQLSixDS9YLmRNrSNp4AYeKbB4r/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDDYllzvSigAdaukYFBqsUsWBy/7Wn5LgoQKYW+/VLHgp7Ria8S0i5XLOsaW/GRp+
-	 IFJV19DbXeXHGMfh6Xze6N0t8UQ0b+vTFwbrC8JBG/JpUwRON9yKQX2CcgBrqh5lTn
-	 9WYeZLkbER6ONc5bTl9ZC4E9zGYRXF9ntZZsOBiM=
+	b=F3ioiTaNo4Ys+0nh1uKTyqu+LCvFtWjwe5tbfMURvF9nWb+KQNXvbxCsnL3W0xbkN
+	 O0CXsS1dzmNyu4chuRmq/a06i8E/dDAFpQihzJB7AjXL07fezZ/pzbvcpwcO+uwdhi
+	 IyDbiFQGSrYHzYIQGE38Ab/QuCZ4DSVswf51FsJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Barry Song <baohua@kernel.org>,
-	Qinxin Xia <xiaqinxin@huawei.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.6 467/529] dma-mapping: benchmark: Restore padding to ensure uABI remained consistent
-Date: Fri, 21 Nov 2025 14:12:46 +0100
-Message-ID: <20251121130247.627632215@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 220/247] drm/amdgpu: fix lock warning in amdgpu_userq_fence_driver_process
+Date: Fri, 21 Nov 2025 14:12:47 +0100
+Message-ID: <20251121130202.630077958@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qinxin Xia <xiaqinxin@huawei.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-commit 23ee8a2563a0f24cf4964685ced23c32be444ab8 upstream.
+commit 6623c5f9fd877868fba133b4ae4dab0052e82dad upstream.
 
-The padding field in the structure was previously reserved to
-maintain a stable interface for potential new fields, ensuring
-compatibility with user-space shared data structures.
-However,it was accidentally removed by tiantao in a prior commit,
-which may lead to incompatibility between user space and the kernel.
+Fix a potential deadlock caused by inconsistent spinlock usage
+between interrupt and process contexts in the userq fence driver.
 
-This patch reinstates the padding to restore the original structure
-layout and preserve compatibility.
+The issue occurs when amdgpu_userq_fence_driver_process() is called
+from both:
+- Interrupt context: gfx_v11_0_eop_irq() -> amdgpu_userq_fence_driver_process()
+- Process context: amdgpu_eviction_fence_suspend_worker() ->
+  amdgpu_userq_fence_driver_force_completion() -> amdgpu_userq_fence_driver_process()
 
-Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
+In interrupt context, the spinlock was acquired without disabling
+interrupts, leaving it in {IN-HARDIRQ-W} state. When the same lock
+is acquired in process context, the kernel detects inconsistent
+locking since the process context acquisition would enable interrupts
+while holding a lock previously acquired in interrupt context.
+
+Kernel log shows:
+[ 4039.310790] inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+[ 4039.310804] kworker/7:2/409 [HC0[0]:SC0[0]:HE1:SE1] takes:
+[ 4039.310818] ffff9284e1bed000 (&fence_drv->fence_list_lock){?...}-{3:3},
+[ 4039.310993] {IN-HARDIRQ-W} state was registered at:
+[ 4039.311004]   lock_acquire+0xc6/0x300
+[ 4039.311018]   _raw_spin_lock+0x39/0x80
+[ 4039.311031]   amdgpu_userq_fence_driver_process.part.0+0x30/0x180 [amdgpu]
+[ 4039.311146]   amdgpu_userq_fence_driver_process+0x17/0x30 [amdgpu]
+[ 4039.311257]   gfx_v11_0_eop_irq+0x132/0x170 [amdgpu]
+
+Fix by using spin_lock_irqsave()/spin_unlock_irqrestore() to properly
+manage interrupt state regardless of calling context.
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ded3ad780cf97a04927773c4600823b84f7f3cc2)
 Cc: stable@vger.kernel.org
-Acked-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-Reported-by: Barry Song <baohua@kernel.org>
-Closes: https://lore.kernel.org/lkml/CAGsJ_4waiZ2+NBJG+SCnbNk+nQ_ZF13_Q5FHJqZyxyJTcEop2A@mail.gmail.com/
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251028120900.2265511-2-xiaqinxin@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/map_benchmark.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/map_benchmark.h
-+++ b/include/linux/map_benchmark.h
-@@ -27,5 +27,6 @@ struct map_benchmark {
- 	__u32 dma_dir; /* DMA data direction */
- 	__u32 dma_trans_ns; /* time for DMA transmission in ns */
- 	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
-+	__u8 expansion[76]; /* For future use */
- };
- #endif /* _KERNEL_DMA_BENCHMARK_H */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -143,15 +143,16 @@ void amdgpu_userq_fence_driver_process(s
+ {
+ 	struct amdgpu_userq_fence *userq_fence, *tmp;
+ 	struct dma_fence *fence;
++	unsigned long flags;
+ 	u64 rptr;
+ 	int i;
+ 
+ 	if (!fence_drv)
+ 		return;
+ 
++	spin_lock_irqsave(&fence_drv->fence_list_lock, flags);
+ 	rptr = amdgpu_userq_fence_read(fence_drv);
+ 
+-	spin_lock(&fence_drv->fence_list_lock);
+ 	list_for_each_entry_safe(userq_fence, tmp, &fence_drv->fences, link) {
+ 		fence = &userq_fence->base;
+ 
+@@ -166,7 +167,7 @@ void amdgpu_userq_fence_driver_process(s
+ 		list_del(&userq_fence->link);
+ 		dma_fence_put(fence);
+ 	}
+-	spin_unlock(&fence_drv->fence_list_lock);
++	spin_unlock_irqrestore(&fence_drv->fence_list_lock, flags);
+ }
+ 
+ void amdgpu_userq_fence_driver_destroy(struct kref *ref)
 
 
 
