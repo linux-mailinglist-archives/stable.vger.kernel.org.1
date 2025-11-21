@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-195875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAADFC797CF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EF7C79517
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2B6EA345437
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30DF44ED322
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00DE2749C5;
-	Fri, 21 Nov 2025 13:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF2313267;
+	Fri, 21 Nov 2025 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emI00hLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6ZD+iv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A12745E;
-	Fri, 21 Nov 2025 13:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A1A2773F7;
+	Fri, 21 Nov 2025 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731915; cv=none; b=Tl5BThd0v09b8d0UiZcAAjqSolP4XKYmXTeuJZ95VLWnk4LkFV6+gEYNmI70dRKRaHRRmeVIIS6Wbn/N82AW6rokCDC2BxQZdo0BzcyWpRJOFQv/g3muQA0V7F9BFmYDHjOgniMmszaV8e+nffm1xMrAHdiqILKAzgqCuXxvvpA=
+	t=1763731336; cv=none; b=hzFMGRVowVl0Yn+6AU3Vr+bgw2IPrYcnm4mUcwaJKK/dmZdLMWmQ8wZrtuoaSCrGNg+i1k3UFm4Oc/nkciPhze5ykLlfhrgIu4gNqFk1K5HocwBkaJOfDWCIHpYbEdZdb4RH6sY7BD+hihQNM5Q5OD5qSPazk8WKFK6IH9Ct5+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731915; c=relaxed/simple;
-	bh=QCCR/6Fhr9tq/J+NJNcyHkBVL3EbApreY7WoJ8IftT0=;
+	s=arc-20240116; t=1763731336; c=relaxed/simple;
+	bh=2a0AZKiIU/BxINWWLr7MAdTE7lydimUHETsKeOGc6C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIg8ffoeRn4LgomzTY3yv8RFgfmh9tNJgjRPX8UZ+ULHltPwZLcx7Dh1jqaXFhiNHzhAggPCHFVZJsnscPXzmUalbGtF731dO5RlPiK+QSHKM4eeMrWFEmg6bSJZ0ZPFAvTf1CLq8R2VE6/BQeGwRsmx5I/0XEiVJanTeqdPufA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emI00hLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3073C4CEF1;
-	Fri, 21 Nov 2025 13:31:54 +0000 (UTC)
+	 MIME-Version; b=kGvW2fEZ4GBJbECbdZ+6u8q/yG+RVyiwTSEUQlqdRh5RwqAwSU/pkuPyY68A1NPNgLCncSZ7nz6iRUM7naPRRDybuDlXETeXb07sl6X9xlifQF6eUqHj5XkM5OZVE9Ml8ds57mREVmiybDRXotIcEg1iG977MZdTw0pzDyauYF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6ZD+iv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90987C4CEF1;
+	Fri, 21 Nov 2025 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731915;
-	bh=QCCR/6Fhr9tq/J+NJNcyHkBVL3EbApreY7WoJ8IftT0=;
+	s=korg; t=1763731336;
+	bh=2a0AZKiIU/BxINWWLr7MAdTE7lydimUHETsKeOGc6C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emI00hLfXPLQLkt7avdY2E8xqe9dODI5sq99tUqDg6Cw/J5jYe/VihUAjmcEJpshT
-	 CvpLIACi3ciBikwLvXDDxVCZPHepBYzvOasSwETGBQtRgeQugFJoR3++AO8t0Rtk2m
-	 84epaAzN77fl1mqFUB254RUnY4n4JKCDPdy5XnFc=
+	b=C6ZD+iv19VrAo7F2XMweZYFhhg1kb8gAhS0C7p/hdduW15v9A/u+pckwIl2aOdX5d
+	 lfPRIHXnthsJjHPcuvpsARZLoJ5nQE/2/9baFw1yhJTiln6F183Qgnp04z1O2NljJ/
+	 ZBRyd5AnQnd4t18w9FRRhzkEklwmzJn6OYN97BnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geoffrey Thorpe <geoff@geoffthorpe.net>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/185] hostfs: Fix only passing host root in boot stage with new mount
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 172/247] LoongArch: Use correct accessor to read FWPC/MWPC
 Date: Fri, 21 Nov 2025 14:11:59 +0100
-Message-ID: <20251121130147.188170451@linuxfoundation.org>
+Message-ID: <20251121130200.893976916@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongbo Li <lihongbo22@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 2c2b67af5f5f77fc68261a137ad65dcfb8e52506 ]
+commit eeeeaafa62ea0cd4b86390f657dc0aea73bff4f5 upstream.
 
-In the old mount proceedure, hostfs could only pass root directory during
-boot. This is because it constructed the root directory using the @root_ino
-event without any mount options. However, when using it with the new mount
-API, this step is no longer triggered. As a result, if users mounts without
-specifying any mount options, the @host_root_path remains uninitialized. To
-prevent this issue, the @host_root_path should be initialized at the time
-of allocation.
+CSR.FWPC and CSR.MWPC are 32bit registers, so use csr_read32() rather
+than csr_read64() to read the values of FWPC/MWPC.
 
-Reported-by: Geoffrey Thorpe <geoff@geoffthorpe.net>
-Closes: https://lore.kernel.org/all/643333a0-f434-42fb-82ac-d25a0b56f3b7@geoffthorpe.net/
-Fixes: cd140ce9f611 ("hostfs: convert hostfs to use the new mount API")
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://patch.msgid.link/20251011092235.29880-1-lihongbo22@huawei.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: edffa33c7bb5a73 ("LoongArch: Add hardware breakpoints/watchpoints support")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hostfs/hostfs_kern.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ arch/loongarch/include/asm/hw_breakpoint.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index a16a7df0766cd..3e143b679156d 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -972,7 +972,7 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+--- a/arch/loongarch/include/asm/hw_breakpoint.h
++++ b/arch/loongarch/include/asm/hw_breakpoint.h
+@@ -134,13 +134,13 @@ static inline void hw_breakpoint_thread_
+ /* Determine number of BRP registers available. */
+ static inline int get_num_brps(void)
  {
- 	struct hostfs_fs_info *fsi = fc->s_fs_info;
- 	struct fs_parse_result result;
--	char *host_root;
-+	char *host_root, *tmp_root;
- 	int opt;
- 
- 	opt = fs_parse(fc, hostfs_param_specs, param, &result);
-@@ -983,11 +983,13 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 	case Opt_hostfs:
- 		host_root = param->string;
- 		if (!*host_root)
--			host_root = "";
--		fsi->host_root_path =
--			kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
--		if (fsi->host_root_path == NULL)
-+			break;
-+		tmp_root = kasprintf(GFP_KERNEL, "%s%s",
-+				     fsi->host_root_path, host_root);
-+		if (!tmp_root)
- 			return -ENOMEM;
-+		kfree(fsi->host_root_path);
-+		fsi->host_root_path = tmp_root;
- 		break;
- 	}
- 
-@@ -997,17 +999,17 @@ static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- static int hostfs_parse_monolithic(struct fs_context *fc, void *data)
- {
- 	struct hostfs_fs_info *fsi = fc->s_fs_info;
--	char *host_root = (char *)data;
-+	char *tmp_root, *host_root = (char *)data;
- 
- 	/* NULL is printed as '(null)' by printf(): avoid that. */
- 	if (host_root == NULL)
--		host_root = "";
-+		return 0;
- 
--	fsi->host_root_path =
--		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
--	if (fsi->host_root_path == NULL)
-+	tmp_root = kasprintf(GFP_KERNEL, "%s%s", fsi->host_root_path, host_root);
-+	if (!tmp_root)
- 		return -ENOMEM;
--
-+	kfree(fsi->host_root_path);
-+	fsi->host_root_path = tmp_root;
- 	return 0;
+-	return csr_read64(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
++	return csr_read32(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
  }
  
-@@ -1042,6 +1044,11 @@ static int hostfs_init_fs_context(struct fs_context *fc)
- 	if (!fsi)
- 		return -ENOMEM;
+ /* Determine number of WRP registers available. */
+ static inline int get_num_wrps(void)
+ {
+-	return csr_read64(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
++	return csr_read32(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
+ }
  
-+	fsi->host_root_path = kasprintf(GFP_KERNEL, "%s/", root_ino);
-+	if (!fsi->host_root_path) {
-+		kfree(fsi);
-+		return -ENOMEM;
-+	}
- 	fc->s_fs_info = fsi;
- 	fc->ops = &hostfs_context_ops;
- 	return 0;
--- 
-2.51.0
-
+ #endif	/* __KERNEL__ */
 
 
 
