@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-196272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE563C79DDE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAB3C793D1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F48B4EBDE4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:31 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 717E234B1F0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC2350A21;
-	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC21342526;
+	Fri, 21 Nov 2025 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa6PE3We"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hqp2Ob2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E58350A0B;
-	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6B931578E;
+	Fri, 21 Nov 2025 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733041; cv=none; b=i5Cvs3GyZZEigIUufLz3Qx6OseXDvzXnKfuEeC4t8zD2A2j35gyyfB2PhHKR1aSPPe+nAr7CtNCGmn01TG3Y03yzNSRKK4EOD2sHVetvQU3orj2grwUZMNeNW5Y8gYDVMO9twQUxjG5A88BEJmE0j3j7ucqxwd4xc9Pv9568JUI=
+	t=1763731032; cv=none; b=AsdeDBZPC2AP94W6UGCAkiQ7o7jY3nQlFbB8xPyAPthdvhmBNW+lJsqYglEjo5q46Q3vIaDaCsRjrttEsrYyVGNsV8quBlekJxHAriBX8jhFDLFDWY8iRJPfsVh9nqeocsdWI7Zxnd09EO+7/dqqziaB1JS9elwtFHqF4Z1LTfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733041; c=relaxed/simple;
-	bh=AfaMk9OctL+1EiEhiml59OBZN6bmgtBYYSo11iiqsZI=;
+	s=arc-20240116; t=1763731032; c=relaxed/simple;
+	bh=07lj6hf6oE4HFQN9E+aEYNVwQIuTFeUdp+yI/CtFfoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GshxY3yX8CcOJw0BGuYwEda2sMVq6j89eeRoWk0BejmaXXUfhrtCzDTsSg/b+CMJYdjZNxdjQMBX2Sw2y9pUF2GUcxVGTO5spPC4aRLIVqFy3TWPFYgDdqYlc9IzjqduM5neB5ENlDL+Xhr9cqqCCQjsNbiEG9WLQwA+guKXGn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aa6PE3We; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32361C4CEF1;
-	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
+	 MIME-Version; b=h9BiDSGUR9Bo88s7Cex7BJzYjPO3zycTT3LhSYoIoWHxlBPE/gQpEvi9FZ1vSOyJguANvSTpJxTq7ADFOI49pMGhcZv/j9PakEOd1dFqOrVS3w6rI5W+1q+/6YabQiUmibySf50KPbNRIXLjSXUnq/OklvhveRS8NfNn6+77dEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hqp2Ob2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619A5C4CEFB;
+	Fri, 21 Nov 2025 13:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733041;
-	bh=AfaMk9OctL+1EiEhiml59OBZN6bmgtBYYSo11iiqsZI=;
+	s=korg; t=1763731031;
+	bh=07lj6hf6oE4HFQN9E+aEYNVwQIuTFeUdp+yI/CtFfoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aa6PE3We+QvdC8GtmdJmsKYDo0yUuC9eDKqRU5qfaJZ/HDXB7mfp30zwbcDYjiyp5
-	 89wtx8pSf1JTRSaKiMAEJVNHMTlP0oimvt9CzsgOUPi1J2/zcR9z7NgrdGfH24eEmO
-	 9hj3ZTEYTc2NRVbW2FPnWWxiXro3i/W5zTHZlcmk=
+	b=Hqp2Ob2vCQIGQAmP/XJt4Bkdmuoy6bXPGXLrWej2JCRVgL3DoYHgDqT6eCTSXLS5d
+	 ffAM21RRqNG38Prm+7InWSVPP4jwAfcI0UEbOB2WdvjoMHeBAzOUy3h8XxxhAmM8xI
+	 UI23uN8tJS/mN26AMNKt0tqPLw8yaliAo+UjvtvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Aksh Garg <a-garg7@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/529] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
-Date: Fri, 21 Nov 2025 14:10:12 +0100
-Message-ID: <20251121130242.161330427@linuxfoundation.org>
+Subject: [PATCH 6.17 066/247] net: ethernet: ti: am65-cpsw-qos: fix IET verify retry mechanism
+Date: Fri, 21 Nov 2025 14:10:13 +0100
+Message-ID: <20251121130156.971213316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Aksh Garg <a-garg7@ti.com>
 
-[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
+[ Upstream commit d4b00d132d7cb70a74bc039c91c1d6120943c71b ]
 
-As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
-can't be disabled - the clock module will just be stuck in transitioning
-state forever, resulting in the following warning message after the wait
-loop times out:
+The am65_cpsw_iet_verify_wait() function attempts verification 20 times,
+toggling the AM65_CPSW_PN_IET_MAC_LINKFAIL bit in each iteration. When
+the LINKFAIL bit transitions from 1 to 0, the MAC merge layer initiates
+the verification process and waits for the timeout configured in
+MAC_VERIFY_CNT before automatically retransmitting. The MAC_VERIFY_CNT
+register is configured according to the user-defined verify/response
+timeout in am65_cpsw_iet_set_verify_timeout_count(). As per IEEE 802.3
+Clause 99, the hardware performs this automatic retry up to 3 times.
 
-    l3-aon-clkctrl:0000:0: failed to disable
+Current implementation toggles LINKFAIL after the user-configured
+verify/response timeout in each iteration, forcing the hardware to
+restart verification instead of respecting the MAC_VERIFY_CNT timeout.
+This bypasses the hardware's automatic retry mechanism.
 
-Just add the clock to enable_init_clks, so no attempt is made to disable
-it.
+Fix this by moving the LINKFAIL bit toggle outside the retry loop and
+reducing the retry count from 20 to 3. The software now only monitors
+the status register while the hardware autonomously handles the 3
+verification attempts at proper MAC_VERIFY_CNT intervals.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+Link: https://patch.msgid.link/20251106092305.1437347-3-a-garg7@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-33xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/am65-cpsw-qos.c | 27 +++++++++++++------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
-index 85c50ea39e6da..9269e6a0db6a4 100644
---- a/drivers/clk/ti/clk-33xx.c
-+++ b/drivers/clk/ti/clk-33xx.c
-@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
- 	"dpll_ddr_m2_ck",
- 	"dpll_mpu_m2_ck",
- 	"l3_gclk",
-+	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
-+	"l3-aon-clkctrl:0000:0",
- 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
- 	"l3-clkctrl:00bc:0",
- 	"l4hs_gclk",
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+index ad06942ce461a..66e8b224827b6 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
+@@ -317,20 +317,21 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
+ 	u32 ctrl, status;
+ 	int try;
+ 
+-	try = 20;
+-	do {
+-		/* Reset the verify state machine by writing 1
+-		 * to LINKFAIL
+-		 */
+-		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+-		ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
+-		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	try = 3;
+ 
+-		/* Clear MAC_LINKFAIL bit to start Verify. */
+-		ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+-		ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
+-		writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	/* Reset the verify state machine by writing 1
++	 * to LINKFAIL
++	 */
++	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	ctrl |= AM65_CPSW_PN_IET_MAC_LINKFAIL;
++	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
+ 
++	/* Clear MAC_LINKFAIL bit to start Verify. */
++	ctrl = readl(port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++	ctrl &= ~AM65_CPSW_PN_IET_MAC_LINKFAIL;
++	writel(ctrl, port->port_base + AM65_CPSW_PN_REG_IET_CTRL);
++
++	do {
+ 		msleep(port->qos.iet.verify_time_ms);
+ 
+ 		status = readl(port->port_base + AM65_CPSW_PN_REG_IET_STATUS);
+@@ -352,7 +353,7 @@ static int am65_cpsw_iet_verify_wait(struct am65_cpsw_port *port)
+ 			netdev_dbg(port->ndev, "MAC Merge verify error\n");
+ 			return -ENODEV;
+ 		}
+-	} while (try-- > 0);
++	} while (--try > 0);
+ 
+ 	netdev_dbg(port->ndev, "MAC Merge verify timeout\n");
+ 	return -ETIMEDOUT;
 -- 
 2.51.0
 
