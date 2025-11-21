@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115A7C79305
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EABC79CE1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 274BE2D351
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 277954EEB8E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85F346FC6;
-	Fri, 21 Nov 2025 13:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB79F34D4F8;
+	Fri, 21 Nov 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZXlJJn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3SUUEsE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F16346E46;
-	Fri, 21 Nov 2025 13:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C113533C526;
+	Fri, 21 Nov 2025 13:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731055; cv=none; b=Q7gJh5mm79Aem2EiNvjFVx0V1m0LNlfl2D56bVeCLxLxD5oF9UR0ud4prhgOjnuk5ttM5q81pMptZdaScJbb+OJl/iCByzGOZe1/cFtVX7kaakLzUei0Hd0uJae3dC10uIBZO4yzv1bKaxaHYC5gPR24c/qypn3qDBTEtB9b2/Q=
+	t=1763732941; cv=none; b=M9N7O+LrpVm17bwsvcGn4a26rNQho9I4Ngg1lXpctYKCZg3M5KwG5YHZl0TBgJBDzas10JwIPEZhHhfqyQoPR62w/EQcdciM5Z+zFJMGPV+bFm31pUueGPD+Ie5aRaSFvHOJRyNuU6bgFPnQ4PPmAVIKV8qmhbw6ms6Ejwmow88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731055; c=relaxed/simple;
-	bh=Oeit348/hU5826Xe4ST+vB+1fNIPlLXkGgA8UiaJsIE=;
+	s=arc-20240116; t=1763732941; c=relaxed/simple;
+	bh=06PR4VVm7aD+uAsVRGxG2RF2TfC68FDTxs6zuHXI8CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkemZK06iH8KUhtmB+0KVRa1kDSWsvkCH9PyF17/qWjP3A3X5+RDIBmnHZPReNz/dbIDych0qrWdmdZnWmGmsIpeRDKSgb5wc8qTgKwHm4cRN+I20JiGnPLA1rCjvaDDi8pe66lJre5GsprGv0gHHnBkiLXBmawMS6cH9NsrJPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZXlJJn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74998C4CEFB;
-	Fri, 21 Nov 2025 13:17:34 +0000 (UTC)
+	 MIME-Version; b=KOaxxLfItrtTvHGVZumK5QFVC3ZpkutyW7M4wmHbPQNRikha/GgRE5grqhG6S7aaJLGZ+sqVWaCDPCa2AaQTKCM1GfM+eFXKoUiXYitHysSjWfL+ssNwQrFtXI7SmJnoKfLFPxlvjZLHS4BpbAbdGKR7Ded35qSTDgCV7RbT0Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3SUUEsE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA035C4CEF1;
+	Fri, 21 Nov 2025 13:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731054;
-	bh=Oeit348/hU5826Xe4ST+vB+1fNIPlLXkGgA8UiaJsIE=;
+	s=korg; t=1763732941;
+	bh=06PR4VVm7aD+uAsVRGxG2RF2TfC68FDTxs6zuHXI8CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZXlJJn/DOqrDJ+b3pM2iEr7/2OMluZyj99+Cefrft+8qZ3/v+K20Z8izModpRSEo
-	 9Qd3yTLpjLZKEMu20Tjt5I0FmlYqoqNAQLHtGa51ivqo8rJY8oBb1wbAPQXy1trFtP
-	 DvpQJUqOkkUjza54zajgkDXLzAtBM/b0PHs60tR8=
+	b=k3SUUEsEwrVAGlj3ma60eYdnv7BTXMRv4y61+5xmtWu9Q18sczewZY5Uj5/Whg7TD
+	 8VK+i0zZOUfh9m0B1nexrpuq/IcwEQy/JcB6Q2O4mj34DQxph2N2u75RznashdH5yS
+	 gTbjDB24AaN2J54t5PnAsBc2jbuTfYsOnRHubx8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Chao Yu <chao@kernel.org>,
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 047/247] erofs: avoid infinite loop due to incomplete zstd-compressed data
-Date: Fri, 21 Nov 2025 14:09:54 +0100
-Message-ID: <20251121130156.290880520@linuxfoundation.org>
+Subject: [PATCH 6.6 296/529] smb: client: transport: avoid reconnects triggered by pending task work
+Date: Fri, 21 Nov 2025 14:09:55 +0100
+Message-ID: <20251121130241.559000203@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-[ Upstream commit f2a12cc3b97f062186568a7b94ddb7aa2ef68140 ]
+[ Upstream commit 00be6f26a2a7c671f1402d74c4d3c30a5844660a ]
 
-Currently, the decompression logic incorrectly spins if compressed
-data is truncated in crafted (deliberately corrupted) images.
+When io_uring is used in the same task as CIFS, there might be
+unnecessary reconnects, causing issues in user-space applications
+like QEMU with a log like:
 
-Fixes: 7c35de4df105 ("erofs: Zstandard compression support")
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/r/50958.1761605413@localhost
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
+> CIFS: VFS: \\10.10.100.81 Error -512 sending data on socket to server
+
+Certain io_uring completions might be added to task_work with
+notify_method being TWA_SIGNAL and thus TIF_NOTIFY_SIGNAL is set for
+the task.
+
+In __smb_send_rqst(), signals are masked before calling
+smb_send_kvec(), but the masking does not apply to TIF_NOTIFY_SIGNAL.
+
+If sk_stream_wait_memory() is reached via sock_sendmsg() while
+TIF_NOTIFY_SIGNAL is set, signal_pending(current) will evaluate to
+true there, and -EINTR will be propagated all the way from
+sk_stream_wait_memory() to sock_sendmsg() in smb_send_kvec().
+Afterwards, __smb_send_rqst() will see that not everything was written
+and reconnect.
+
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor_zstd.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/smb/client/transport.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/decompressor_zstd.c b/fs/erofs/decompressor_zstd.c
-index b4bfe14229f9f..e38d93bb21048 100644
---- a/fs/erofs/decompressor_zstd.c
-+++ b/fs/erofs/decompressor_zstd.c
-@@ -172,7 +172,6 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
- 	dctx.bounce = strm->bounce;
- 
- 	do {
--		dctx.avail_out = out_buf.size - out_buf.pos;
- 		dctx.inbuf_sz = in_buf.size;
- 		dctx.inbuf_pos = in_buf.pos;
- 		err = z_erofs_stream_switch_bufs(&dctx, &out_buf.dst,
-@@ -188,14 +187,18 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
- 		in_buf.pos = dctx.inbuf_pos;
- 
- 		zerr = zstd_decompress_stream(stream, &out_buf, &in_buf);
--		if (zstd_is_error(zerr) || (!zerr && rq->outputsize)) {
-+		dctx.avail_out = out_buf.size - out_buf.pos;
-+		if (zstd_is_error(zerr) ||
-+		    ((rq->outputsize + dctx.avail_out) && (!zerr || (zerr > 0 &&
-+				!(rq->inputsize + in_buf.size - in_buf.pos))))) {
- 			erofs_err(sb, "failed to decompress in[%u] out[%u]: %s",
- 				  rq->inputsize, rq->outputsize,
--				  zerr ? zstd_get_error_name(zerr) : "unexpected end of stream");
-+				  zstd_is_error(zerr) ? zstd_get_error_name(zerr) :
-+					"unexpected end of stream");
- 			err = -EFSCORRUPTED;
- 			break;
- 		}
--	} while (rq->outputsize || out_buf.pos < out_buf.size);
-+	} while (rq->outputsize + dctx.avail_out);
- 
- 	if (dctx.kout)
- 		kunmap_local(dctx.kout);
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 7b2560612bd6a..719b04202ed1c 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -22,6 +22,7 @@
+ #include <linux/mempool.h>
+ #include <linux/sched/signal.h>
+ #include <linux/task_io_accounting_ops.h>
++#include <linux/task_work.h>
+ #include "cifspdu.h"
+ #include "cifsglob.h"
+ #include "cifsproto.h"
+@@ -211,9 +212,16 @@ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
+ 		 * send a packet.  In most cases if we fail to send
+ 		 * after the retries we will kill the socket and
+ 		 * reconnect which may clear the network problem.
++		 *
++		 * Even if regular signals are masked, EINTR might be
++		 * propagated from sk_stream_wait_memory() to here when
++		 * TIF_NOTIFY_SIGNAL is used for task work. For example,
++		 * certain io_uring completions will use that. Treat
++		 * having EINTR with pending task work the same as EAGAIN
++		 * to avoid unnecessary reconnects.
+ 		 */
+ 		rc = sock_sendmsg(ssocket, smb_msg);
+-		if (rc == -EAGAIN) {
++		if (rc == -EAGAIN || unlikely(rc == -EINTR && task_work_pending(current))) {
+ 			retries++;
+ 			if (retries >= 14 ||
+ 			    (!server->noblocksnd && (retries > 2))) {
 -- 
 2.51.0
 
