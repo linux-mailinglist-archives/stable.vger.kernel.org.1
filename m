@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-195812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FF7C797DE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A37C794D2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 2B26731A56
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D11C4EBE3B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC94346E57;
-	Fri, 21 Nov 2025 13:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732D2765FF;
+	Fri, 21 Nov 2025 13:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGk79Epy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neDEMXvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF7190477;
-	Fri, 21 Nov 2025 13:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438861F09AC;
+	Fri, 21 Nov 2025 13:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731735; cv=none; b=IEnrn4RWuSPMQFJ0QxHLuUzFjBFgotWHywi+uTUH1ou0IoX5vSysFI0Twr7mCg8lhNpo2BaLhK924uqP/na9HPb4LrrixlLg9WNE4MjeXYd1Utq+DoCNnbRhp7JqDUPIsGSY/sk/etRikGsbQx1lvmDrKTcP+hE+8WUGU+JpOEI=
+	t=1763731253; cv=none; b=tLqlWUnru963rXOfI+hdmO7Mcs+65sY8whHhZib/EXf+FMCJ1BaRBkPEE72X9IEQdiSdJBScNhs/i403UpvtEZfXmMIOBOUwmoRq47bmIdlxn52LQjGDZglZphZrKZpWwSTJLgIwKLSc1iWsUIBuaYfPcYKmRnPmsu5fAXOtDTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731735; c=relaxed/simple;
-	bh=FtShmEp/ueSC+4npFUjz0MxJoQA2EYjnMAn0WFDYww8=;
+	s=arc-20240116; t=1763731253; c=relaxed/simple;
+	bh=9OK1+JIJWDgUtqsaqDoFm9OS3Cb8bV+Cl4w6jZpIp80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1LNkr6b4EN4/19j6G/IqCb1iN8kdUktQlk5NzpzLVlgsfF/bts/j+De7lnGbCQcPMUVTFrTQbG4JC9YWyZE+NtAsOmL0P/J+Sc4AqjPa2NLi+xMhav7KwPHY59A7MIVdepwYfhwxsoCBOk5XSjl5Sg8yCTm55+Du9rOWJu/aS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGk79Epy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2ADC4CEF1;
-	Fri, 21 Nov 2025 13:28:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hvqs/MXqkMa+xu8+7bT3PtAmB65nLRZY9hpzRfkHI7ZW0PonASiwMIbiTjGIZVi5rslpxfPYog0WOO30Mnp2OEKtuheKzMa937TZLMzJ9813pHh7/TevITa0GmbGrYaQz5TDLslc53lop5b6AH8are5MXavK6E9Mri1V0qdij44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neDEMXvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB0DC4CEF1;
+	Fri, 21 Nov 2025 13:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731735;
-	bh=FtShmEp/ueSC+4npFUjz0MxJoQA2EYjnMAn0WFDYww8=;
+	s=korg; t=1763731253;
+	bh=9OK1+JIJWDgUtqsaqDoFm9OS3Cb8bV+Cl4w6jZpIp80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGk79EpymyWGJcp/MP6bWC+yKO4XByDJMBrKJSA+m6UG/kXZ+IuXlySAXIVzmkHRA
-	 3LjE4DHHZCV/xCCUyip6FJux04sTRbC7s/+IHR+AbNmA3VXMiO+4JWj90z1gCIc0oV
-	 n8yrWPE/V25/zmDMnsnZZ5OOqjzIx7WxRyeSvK3o=
+	b=neDEMXvy1gKUtVFUr2y5bhR4MSdmlzALGSggCMnd3S/vfgBK9xH1yko7tuKFSYQB4
+	 f6NOTD/FfWXumsHjQjAY1/wG7vSfYD86H2a4P2Nljpda9LIwGXIZ2HVCB1gSq+Vaui
+	 ocLpqbutC8sTzyLwRT3XBzm6G+ZIleJkNdo5Inig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/185] ACPI: CPPC: Check _CPC validity for only the online CPUs
+Subject: [PATCH 6.17 143/247] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
 Date: Fri, 21 Nov 2025 14:11:30 +0100
-Message-ID: <20251121130146.149847506@linuxfoundation.org>
+Message-ID: <20251121130159.856847079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 6dd3b8a709a130a4d55c866af9804c81b8486d28 ]
+[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+Luxul XAP-1440 has BCM54210E PHY at address 25.
 
-However the function acpi_cpc_valid() checks for the validity of the
-_CPC object for all the present CPUs. This breaks when the kernel is
-booted with "nosmt=force".
-
-Hence check the validity of the _CPC objects of only the online CPUs.
-
-Fixes: 2aeca6bd0277 ("ACPI: CPPC: Check present CPUs for determining _CPC is valid")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-3-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index dab941dc984a9..3ce5bb87d25b7 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -447,7 +447,7 @@ bool acpi_cpc_valid(void)
- 	if (acpi_disabled)
- 		return false;
+diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+index ac44c745bdf8e..a39a021a39107 100644
+--- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
++++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+@@ -55,8 +55,8 @@
+ 	mdio {
+ 		/delete-node/ switch@1e;
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		if (!cpc_ptr)
- 			return false;
+-		bcm54210e: ethernet-phy@0 {
+-			reg = <0>;
++		bcm54210e: ethernet-phy@25 {
++			reg = <25>;
+ 		};
+ 	};
+ };
 -- 
 2.51.0
 
