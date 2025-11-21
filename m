@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81855C79EA0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF5FC79628
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D533C3464E3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CB764E94B9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BE72F8BCB;
-	Fri, 21 Nov 2025 13:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D98F3396E5;
+	Fri, 21 Nov 2025 13:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6bCcTSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2e7l2Iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D392045AD;
-	Fri, 21 Nov 2025 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E332A246762;
+	Fri, 21 Nov 2025 13:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733232; cv=none; b=i/a1OGEmr7AIvWd8eSvbPEmX1Gr5j3/xar6Dbj1WS2EIgwsZwGohOasojmSL0/vC2wL8E4A+kfKgWN4rotlKUTwPUbcwXXXx7V3mZFicm+4G6HTFa5Z9nS4E2B0iZEV8XY/i1qI8LZ1wa7qLbjnnIEAehs1vZIbUhuj46/yqmQs=
+	t=1763731758; cv=none; b=FO/RkmSgWP/NWUjC/jnH+MPpzV9t7dypHGKc3hUlqY3M2JMuNRpQpnXjCMBklpi3gjhAp8i4MI++82KinurU1OgxXMsrCZDJgZZ70U/Bu6gwsOlz3kGHNp0mNV/Epx2g6ccQk7j368PdwHKzfRvq8WwqQ5gWFR+uUBU2hz/XCxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733232; c=relaxed/simple;
-	bh=hN+titZgAn3wWQTkJxq+eooK68ACzV6OwdPJtpBh8jc=;
+	s=arc-20240116; t=1763731758; c=relaxed/simple;
+	bh=hMUHQqkq281eAhgeAr0mixj+3QAQ6fCImPhyugu1N00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6lg3WFOaaOgd3tuzLlszOo0yn4MkkQin8FLfDK/WPqOK4LOEgpk/eDSnEOznJfFEA44JWDus7WkVgENnOC/HUYyZtfupReaVOaSWEmkA2Yok891N1OR//tE7zuxm0tjaOTHv6mquBkg5g1XPMsgMN3Xr58pTgs2jPrNOhoyfa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6bCcTSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50374C116C6;
-	Fri, 21 Nov 2025 13:53:52 +0000 (UTC)
+	 MIME-Version; b=a6GwZil4E5NVnRVdSZOJIzN0ClBFFYqtBiTQb2obyq7jQr8KInvMmwD4nOS1o2Hm/GRLYuSouVBu04V5ouMwQn27ovKru0mF9hZOhwu/zfkCnAYMUFyGOTeTUgAQuiFpABm/433NaKKJ1xKAqjnIle1S5LTpTu+R3GOTVUfrQeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2e7l2Iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71756C4CEF1;
+	Fri, 21 Nov 2025 13:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733232;
-	bh=hN+titZgAn3wWQTkJxq+eooK68ACzV6OwdPJtpBh8jc=;
+	s=korg; t=1763731757;
+	bh=hMUHQqkq281eAhgeAr0mixj+3QAQ6fCImPhyugu1N00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6bCcTSD35dI44NvJeJiubI8BgFZ9oREJYUrbL6rgFV+jjTu3ii4ZqnZRoRWR2oew
-	 Y2yLiQoxUBHhUg9XDnwz2TbxC8q57e7DWl3eLBkazPiXOlbJUew0ECPTcBcekZEI/7
-	 fMh3vTmkyfk4dTh08gcl0coi1IDHr4ZPLQiXzjuE=
+	b=G2e7l2Iz9crVm1Zuf3H6j2j9L3flFucgLSBZm0O3MBXqi04Dx/AsPkcEOzGKndIZk
+	 c6nPDcNt7Z9rwAsibfK9YBaDLJeqiBzNmxSD4N1wVkqCB7NUm8PZysIRV+i2M0UBN2
+	 xlUUgguDoTydDhMemJrYteAD/Nvay/MQKCZQnQKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 398/529] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
+Subject: [PATCH 6.12 070/185] ASoC: codecs: va-macro: fix resource leak in probe error path
 Date: Fri, 21 Nov 2025 14:11:37 +0100
-Message-ID: <20251121130245.183269977@linuxfoundation.org>
+Message-ID: <20251121130146.400234782@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
+[ Upstream commit 3dc8c73365d3ca25c99e7e1a0f493039d7291df5 ]
 
-There is a KASAN: slab-use-after-free read in btusb_disconnect().
-Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
-free the btusb data associated with the interface. The same data is
-then used later in the function, hence the UAF.
+In the commit referenced by the Fixes tag, clk_hw_get_clk()
+was added in va_macro_probe() to get the fsgen clock,
+but forgot to add the corresponding clk_put() in va_macro_remove().
+This leads to a clock reference leak when the driver is unloaded.
 
-Fix by moving the accesses to btusb data to before the data is free'd.
+Switch to devm_clk_hw_get_clk() to automatically manage the
+clock resource.
 
-Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
-Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 30097967e056 ("ASoC: codecs: va-macro: use fsgen as clock")
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251106143114.729-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ sound/soc/codecs/lpass-va-macro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 23a9a221056a4..74d264b64b534 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4713,6 +4713,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
+index c781da4762407..d44b5b0a80a1c 100644
+--- a/sound/soc/codecs/lpass-va-macro.c
++++ b/sound/soc/codecs/lpass-va-macro.c
+@@ -1637,7 +1637,7 @@ static int va_macro_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_clkout;
  
- 	hci_unregister_dev(hdev);
- 
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
-+	if (data->reset_gpio)
-+		gpiod_put(data->reset_gpio);
-+
- 	if (intf == data->intf) {
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-@@ -4723,17 +4728,11 @@ static void btusb_disconnect(struct usb_interface *intf)
- 			usb_driver_release_interface(&btusb_driver, data->diag);
- 		usb_driver_release_interface(&btusb_driver, data->intf);
- 	} else if (intf == data->diag) {
--		usb_driver_release_interface(&btusb_driver, data->intf);
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-+		usb_driver_release_interface(&btusb_driver, data->intf);
- 	}
- 
--	if (data->oob_wake_irq)
--		device_init_wakeup(&data->udev->dev, false);
--
--	if (data->reset_gpio)
--		gpiod_put(data->reset_gpio);
--
- 	hci_free_dev(hdev);
- }
- 
+-	va->fsgen = clk_hw_get_clk(&va->hw, "fsgen");
++	va->fsgen = devm_clk_hw_get_clk(dev, &va->hw, "fsgen");
+ 	if (IS_ERR(va->fsgen)) {
+ 		ret = PTR_ERR(va->fsgen);
+ 		goto err_clkout;
 -- 
 2.51.0
 
