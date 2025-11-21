@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-196490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25373C7A489
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:49:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A61A7C7A3C1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:42:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id A5398337EF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 14E162E044
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964D3337BAF;
-	Fri, 21 Nov 2025 14:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48BC34C83D;
+	Fri, 21 Nov 2025 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7JNPNcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM6dz6uu"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563B12D1932
-	for <Stable@vger.kernel.org>; Fri, 21 Nov 2025 14:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC7434C81E
+	for <Stable@vger.kernel.org>; Fri, 21 Nov 2025 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763735602; cv=none; b=CyIt7kZrVN9Yl7dFltqD6vbvDYs+3qZSJSAZ3zleiFjGSUQT01IaMv3x3Sydv6c6T5uUwH1/pbmd1zEch9f1PRg2jayb8qi5kUjKi97iO4gjD9tu/sP8Q2nNEUiY//1UxI+qXpSBmHSql1wirXKV/AwDJFYxZ0FttSQ5/9pxhiI=
+	t=1763736041; cv=none; b=tF0gJO6B7mCn1mb4otnYnuJ7Re5IeFOEDINwjqg4ySc9TUsfW6pJObFG2qYDyZhTvXXqnvd8S5dbsrdaFDaehynnAgYbGQq16LAGFH8Dm+5y/8zP4hw01GPwHgExzzRor1kSw4kaV7AorrL+nsRnykDItUJrubBsm5ECe0boSDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763735602; c=relaxed/simple;
-	bh=JbMyuna0M9qmGrDnsDSvWfQ707bnNqfhgIOKljHFkZA=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=WceqlaPri1Kbm6u1JlWOr5iJlB6HVxCaCOq7xVwdpFMsFyFYvyffYtnhmh83PyfBjHzxKuIpet9Nj/naU5IxNK4MHKBp3qp4N6hofXds7FabLrLI0S8BzU6Hxp5M+1sYbCgGaTE0xrXr2MkGFC9MGo+KcPNqQw/mX409tF2cAxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7JNPNcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D310C4CEF1;
-	Fri, 21 Nov 2025 14:33:21 +0000 (UTC)
+	s=arc-20240116; t=1763736041; c=relaxed/simple;
+	bh=jgFJC0/5i3LRgX/ZSNFsCjDV1AzMWVrgoJbcoGnaiOQ=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=YoJsVyj3WJqL+T0df2WkqbmCUGePOle0e2nL+Z7qI8rB+ABVHrJ6NrKP5XMRQuXi1Di0Odu1Z3VNI99NBhlMj/afBmVvu6pv5f6epN/yU6d5PINtmXMcROEzS+ZNR3lC1aPHWcXCBcQhcuIf3sOHWmKGllBR0ySY/bHwhUtLgPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM6dz6uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D4EC116C6;
+	Fri, 21 Nov 2025 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763735601;
-	bh=JbMyuna0M9qmGrDnsDSvWfQ707bnNqfhgIOKljHFkZA=;
+	s=korg; t=1763736041;
+	bh=jgFJC0/5i3LRgX/ZSNFsCjDV1AzMWVrgoJbcoGnaiOQ=;
 	h=Subject:To:From:Date:From;
-	b=T7JNPNcf8vkFap7xUaerMImDUqkCrL9ZEh1xthY4S9/di7ZbW2d5/wWXEzjd5fDUJ
-	 FZbbbOYzcieTFobTg1vcueWiX2VnNbLnYvXYJvDVDvzXyaWd7baSMpq3lpmxiJVceZ
-	 y7bXVmuwcQQ4PLdZ6g1BgD3vU1C0dxQXfYkE7Xt8=
-Subject: patch "iio: adc: ad4080: fix chip identification" added to char-misc-testing
+	b=tM6dz6uun+o+kF2VGxdnucz7y8+9PZB+gollFZCQL3atB8vOOzvwGGM8GG3aC2nBt
+	 xdHVGcIgQNtJprycjZZWTTmgdJB3BxIWLoTlrd1/YWfIQd3kavU6cXsZQBwRWHRzeA
+	 R2PQ5kOyJec3uo8Vm0mD1OjKCpkMHJYTFSxoMM+4=
+Subject: patch "iio: adc: ad4080: fix chip identification" added to char-misc-next
 To: antoniu.miclaus@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 21 Nov 2025 15:26:41 +0100
-Message-ID: <2025112141-aground-dugout-fcd2@gregkh>
+Date: Fri, 21 Nov 2025 15:27:57 +0100
+Message-ID: <2025112157-unknown-fragility-383a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
