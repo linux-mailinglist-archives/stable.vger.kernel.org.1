@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-195910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D16C79844
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC4EC79610
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5F22C344221
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3214734A771
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A9F340DA1;
-	Fri, 21 Nov 2025 13:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78B7274B2E;
+	Fri, 21 Nov 2025 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSQTWwZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqRiEZsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA2E26CE33;
-	Fri, 21 Nov 2025 13:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7829A275B18;
+	Fri, 21 Nov 2025 13:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732016; cv=none; b=feoYFSisNjWUSN6MLxO5YTFSQQ8Znlr4PpWtWL+pilpjEGEiXaKUbvUWqotD0bqPdRR2utzbiexuppXc7OJPgtRg7OhHbZ4rRvbYWae1wZ7d77Cq7fCf+dE/Y+Jqo2Zf5UNCg+PDoGTIDh6PnqTemKxvnWlswhbJQlujuXAsfC4=
+	t=1763731437; cv=none; b=OF3Mf+wBL3XLa8O2l5zHbW4aEulBPKi1sSGkUB3R+ej2sYj13bySKS/T81IOEHaSd1QB2gMABkTBHIQUMvIHDjJwuEBLrdczGL1ICcd+hJJ/Wc1oJ4CjCZrC1oSnOQStc2oB4Zxd3uVcrkVapRInZb0sremZ92KReYCtA649pWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732016; c=relaxed/simple;
-	bh=uZ+9yy/22RHpHTF1PK1YB7b9bNedIO/s7hVaL+K5qv8=;
+	s=arc-20240116; t=1763731437; c=relaxed/simple;
+	bh=vgqDxueuKHW8lFeft4qWAAVZwjzIoZz2NuCRVl+JEoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEA5z5zODWH2cWMGK4K6KMwH/nz10fGaE604RzqODqGG/4cu9ldTa/f0hZXLv5T+PhLZBTRgQfhNe2eGCNIXpk88rOnJf6zobxXwA4EJVD3x7iVee3kYWSRMyT67/Bz8DMW0bhxmY26NHmOTbHOGl0duLjpI/m8FAU7iWV90XO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSQTWwZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21844C4CEF1;
-	Fri, 21 Nov 2025 13:33:35 +0000 (UTC)
+	 MIME-Version; b=s5yhQHiUFIyCKPP0wuFlCV8iSeUmNaACwi80R9jgFNGmPbYifw37QMUqUGfd8VzYck/GpmdpoINmPk75/zMwJv5m0U3jeYz5kAa1fvJL3nZS2bQ+S1JBSCP4XYfj1liyzPYfts4bpOBscQCvj7JS/lQkjwr1SrHnrci3cVvs/M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqRiEZsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD30CC4CEF1;
+	Fri, 21 Nov 2025 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732016;
-	bh=uZ+9yy/22RHpHTF1PK1YB7b9bNedIO/s7hVaL+K5qv8=;
+	s=korg; t=1763731436;
+	bh=vgqDxueuKHW8lFeft4qWAAVZwjzIoZz2NuCRVl+JEoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSQTWwZTnMKyJkijPLaokniAAqWaCwiOW91FzxbhMaQzUUKlrvrM480aVoPCrhlsv
-	 w5o07tqtooxNlNrS447QvMfAlhhR6Q3dhSl25YzhiwjX3bQYMT8dMhMGrOzO7MhKAE
-	 CzLN6xLZiE1Z6rPn2hD7SQEwX3KseyCKEqwpbNXQ=
+	b=RqRiEZsC8cjFBy3RTojXRHALas3+CCp5gcGpqAD6o9B4Z2Bi5IPl3cuwj7I3SALxZ
+	 x3fl8o2ta0lOvNIROAJtcRdQm22ENwzyHFbT2ECfRfYGakLCjA2yTBBRrmv1jsxZWa
+	 nVgNPPWTOOk7H2ChdX50Tw6ug6JR1E2mSylKyEAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Hugh Cole-Baker <sigmaris@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 127/185] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to 0x4
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.17 207/247] ftrace: Fix BPF fexit with livepatch
 Date: Fri, 21 Nov 2025 14:12:34 +0100
-Message-ID: <20251121130148.459835139@linuxfoundation.org>
+Message-ID: <20251121130202.154810322@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +65,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Song Liu <song@kernel.org>
 
-commit a28352cf2d2f8380e7aca8cb61682396dca7a991 upstream.
+commit 56b3c85e153b84f27e6cff39623ba40a1ad299d3 upstream.
 
-strbin signal delay under 0x8 configuration is not stable after massive
-test. The recommandation of it should be 0x4.
+When livepatch is attached to the same function as bpf trampoline with
+a fexit program, bpf trampoline code calls register_ftrace_direct()
+twice. The first time will fail with -EAGAIN, and the second time it
+will succeed. This requires register_ftrace_direct() to unregister
+the address on the first attempt. Otherwise, the bpf trampoline cannot
+attach. Here is an easy way to reproduce this issue:
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Alexey Charkov <alchark@gmail.com>
-Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
-Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+  insmod samples/livepatch/livepatch-sample.ko
+  bpftrace -e 'fexit:cmdline_proc_show {}'
+  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
+
+Fix this by cleaning up the hash when register_ftrace_function_nolock hits
+errors.
+
+Also, move the code that resets ops->func and ops->trampoline to the error
+path of register_ftrace_direct(); and add a helper function reset_direct()
+in register_ftrace_direct() and unregister_ftrace_direct().
+
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251027175023.1521602-2-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/trampoline.c |    5 -----
+ kernel/trace/ftrace.c   |   20 ++++++++++++++------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -94,7 +94,7 @@
- #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
- #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
- #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
--#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
- #define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
- #define DLL_STRBIN_DELAY_NUM_SEL	BIT(26)
- #define DLL_STRBIN_DELAY_NUM_OFFSET	16
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -479,11 +479,6 @@ again:
+ 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
+ 		 * trampoline again, and retry register.
+ 		 */
+-		/* reset fops->func and fops->trampoline for re-register */
+-		tr->fops->func = NULL;
+-		tr->fops->trampoline = 0;
+-
+-		/* free im memory and reallocate later */
+ 		bpf_tramp_image_free(im);
+ 		goto again;
+ 	}
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5953,6 +5953,17 @@ static void register_ftrace_direct_cb(st
+ 	free_ftrace_hash(fhp);
+ }
+ 
++static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
++{
++	struct ftrace_hash *hash = ops->func_hash->filter_hash;
++
++	remove_direct_functions_hash(hash, addr);
++
++	/* cleanup for possible another register call */
++	ops->func = NULL;
++	ops->trampoline = 0;
++}
++
+ /**
+  * register_ftrace_direct - Call a custom trampoline directly
+  * for multiple functions registered in @ops
+@@ -6048,6 +6059,8 @@ int register_ftrace_direct(struct ftrace
+ 	ops->direct_call = addr;
+ 
+ 	err = register_ftrace_function_nolock(ops);
++	if (err)
++		reset_direct(ops, addr);
+ 
+  out_unlock:
+ 	mutex_unlock(&direct_mutex);
+@@ -6080,7 +6093,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct
+ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
+ 			     bool free_filters)
+ {
+-	struct ftrace_hash *hash = ops->func_hash->filter_hash;
+ 	int err;
+ 
+ 	if (check_direct_multi(ops))
+@@ -6090,13 +6102,9 @@ int unregister_ftrace_direct(struct ftra
+ 
+ 	mutex_lock(&direct_mutex);
+ 	err = unregister_ftrace_function(ops);
+-	remove_direct_functions_hash(hash, addr);
++	reset_direct(ops, addr);
+ 	mutex_unlock(&direct_mutex);
+ 
+-	/* cleanup for possible another register call */
+-	ops->func = NULL;
+-	ops->trampoline = 0;
+-
+ 	if (free_filters)
+ 		ftrace_free_filter(ops);
+ 	return err;
 
 
 
