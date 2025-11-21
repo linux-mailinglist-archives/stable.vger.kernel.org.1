@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8963AC79490
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B95CC79E04
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:00:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1BAE54EA28D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 997A94EE78D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896E026E6F4;
-	Fri, 21 Nov 2025 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192F6350D63;
+	Fri, 21 Nov 2025 13:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhGswPnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRWhKrUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448172765FF;
-	Fri, 21 Nov 2025 13:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95AD34DB70;
+	Fri, 21 Nov 2025 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731193; cv=none; b=NBx5QzXWG8jloBB/p8oPnXoo3uArts+c9/kcezhhtJAEarMs63IoAQp9vZIXm+lQcqCiWNev7vvGh8BYWSTXyqqd5RpNDn8+D3DdbfF4vyrGGQF8FbLsBiqfxbHPRp43oLYmPxXTWXNNMi9vRflHAZs5S1m6rstzfox+Bsmnyyc=
+	t=1763733058; cv=none; b=LiiuIs39QU9wZig3bx5Jq0h8vUr9MO+V/IPGviIENCP8b1JxU+7SrJWJWSmHWq0r7NYnCpYklIwPKuT2Kf0pcLnYULF5Yuej7859e7ds5MxNDhLQ63j+p0+YAPDFYCrFO56haQP1Nkpu8gyR+TcJSU3FirwGGDLBW6kmlgk3nbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731193; c=relaxed/simple;
-	bh=axABcC6O/lojn5EQX0/R9rCNvXNZxyT1H4yqXoi3Xp0=;
+	s=arc-20240116; t=1763733058; c=relaxed/simple;
+	bh=lNsxBDUjn2pkyyUtxT7B+jHAXiwO/w8+xAgfeVrY7I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppkGkZ9E5ekU1FMdDO3EAUzlia588lwEv7jP5M1ppu0fB37tVvUbzHfBQxY2gZyJ3tPd1d8uhfGPfouF6+ye5h32sCcp0tAqeOi49sEev0d3651jib92eov+uvnvVm32oNFEBuVOSR6lcIozr+tcpDaF7Afn2ZENZ/sSRRdk/pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhGswPnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79133C4CEF1;
-	Fri, 21 Nov 2025 13:19:52 +0000 (UTC)
+	 MIME-Version; b=RwsqEPxTOVJefstsvus3vPN9wHWsW9KBPNsCIqmbgBTAl8S0nWmj1K72nF84dBCMsrL6JEeavd03/UfL1lQ7gvhJqZDvNLWLV4RGB4ue5wsm6VKZQEZUHWX5tLZiFYz+T8Z0YCdt12T+BsDv0GgmH4RZjTiMDoqLdgsz6CBZgGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRWhKrUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4621CC4CEF1;
+	Fri, 21 Nov 2025 13:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731192;
-	bh=axABcC6O/lojn5EQX0/R9rCNvXNZxyT1H4yqXoi3Xp0=;
+	s=korg; t=1763733058;
+	bh=lNsxBDUjn2pkyyUtxT7B+jHAXiwO/w8+xAgfeVrY7I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhGswPnUL03utlkU3zU1i1NZ52yvIDM45x41dUhDI/Wu6UaoJYIMXXSUF6UV1Smv9
-	 XBZrP6uEud4E4ZXubx4JYHSVG6nVofI7OjCB6m5VaZeJEbqmiTkBegNLFzbsqm63tg
-	 B8war8V+3ifD8rubPQJXPxmTcWekz/UbWMavwyeQ=
+	b=cRWhKrUIDXjjG/W8e7KXm/0YHO1gAid1ydQW+EftYOivKZEFv50fEW2L7zFvOambS
+	 +g+d+xd4AjWD+NolTYalYPjkoLgoKk5l9uOIkVgAeYLCuLZldYHegvqxUTMR/uz0CR
+	 3G6PyV7/wOOxwkSsagL0Cu2MIjPKJSn/dXvoV2Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 088/247] ACPI: CPPC: Detect preferred core availability on online CPUs
+Subject: [PATCH 6.6 336/529] Bluetooth: hci_event: validate skb length for unknown CC opcode
 Date: Fri, 21 Nov 2025 14:10:35 +0100
-Message-ID: <20251121130157.752632800@linuxfoundation.org>
+Message-ID: <20251121130242.986169715@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit 4fe5934db4a7187d358f1af1b3ef9b6dd59bce58 ]
+[ Upstream commit 5c5f1f64681cc889d9b13e4a61285e9e029d6ab5 ]
 
-Commit 279f838a61f9 ("x86/amd: Detect preferred cores in
-amd_get_boost_ratio_numerator()") introduced the ability to detect the
-preferred core on AMD platforms by checking if there at least two
-distinct highest_perf values.
+In hci_cmd_complete_evt(), if the command complete event has an unknown
+opcode, we assume the first byte of the remaining skb->data contains the
+return status. However, parameter data has previously been pulled in
+hci_event_func(), which may leave the skb empty. If so, using skb->data[0]
+for the return status uses un-init memory.
 
-However, it uses for_each_present_cpu() to iterate through all the
-CPUs in the platform, which is problematic when the kernel is booted
-with "nosmt=force" commandline option.
+The fix is to check skb->len before using skb->data.
 
-Hence limit the search to only the online CPUs.
-
-Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-2-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a9a4bedfca6aa9d7fa24
+Tested-by: syzbot+a9a4bedfca6aa9d7fa24@syzkaller.appspotmail.com
+Fixes: afcb3369f46ed ("Bluetooth: hci_event: Fix vendor (unknown) opcode status handling")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/acpi/cppc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index 7047124490f64..d7c8ef1e354d3 100644
---- a/arch/x86/kernel/acpi/cppc.c
-+++ b/arch/x86/kernel/acpi/cppc.c
-@@ -196,7 +196,7 @@ int amd_detect_prefcore(bool *detected)
- 		break;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 4e70b85647035..4aa445e7f56bc 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4208,6 +4208,13 @@ static void hci_cmd_complete_evt(struct hci_dev *hdev, void *data,
  	}
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		u32 tmp;
- 		int ret;
- 
+ 	if (i == ARRAY_SIZE(hci_cc_table)) {
++		if (!skb->len) {
++			bt_dev_err(hdev, "Unexpected cc 0x%4.4x with no status",
++				   *opcode);
++			*status = HCI_ERROR_UNSPECIFIED;
++			return;
++		}
++
+ 		/* Unknown opcode, assume byte 0 contains the status, so
+ 		 * that e.g. __hci_cmd_sync() properly returns errors
+ 		 * for vendor specific commands send by HCI drivers.
 -- 
 2.51.0
 
