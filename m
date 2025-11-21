@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1102C793C8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2ADC79E9D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 8D80C2B0E8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9E8B434D126
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9985B26E6F4;
-	Fri, 21 Nov 2025 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E05A340D9A;
+	Fri, 21 Nov 2025 13:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuyO6Y1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIBO+3Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA441F09AC;
-	Fri, 21 Nov 2025 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E282FD1DB;
+	Fri, 21 Nov 2025 13:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731267; cv=none; b=Rt0swRieZzEYIXmNw9mypekcyNAvaF8QkuFA5fIVH6AD24JIQb3Ebd3fXbyIlLLCd5p4+B9zuRMRCsUb676S0L2T1xSa4yvKJcW6cX+p8CK9mRUD3e7oqbrBq7Pa1Qr6kVmXac324sh+jum1lr9P2iYRE/kcs566W5f9aFov65Q=
+	t=1763733224; cv=none; b=ZmyY4llFYqOJ3oSyctcnNfuA4lxyqWKEG3pB98jS1AjSmtbcvhACRKbR+JLZZYVVV0bUyENfH129uwN2z+20xHVNURX5LFXAX63GVUuIx6ZIphGa1z94kL60WhdnaynABkSc2ZUs6oc+vbkzQL8kI4EQ2UA8L00JcQvM9F13hiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731267; c=relaxed/simple;
-	bh=ESr4MwQeQ77RTJpWm+kBMbfttRLTJlZLOkLu+59wwa4=;
+	s=arc-20240116; t=1763733224; c=relaxed/simple;
+	bh=ObINufOHkzyAAC5e0YLQtgnwpmspvZYkO2dTc4AugtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+V3iMFqCBs3IVz08uFuvfnAuxx+hDmXShWXG8am8Q7Hld7F4H1csgQt5snFItUIimLRihrEecw6LA1h0nJcabMGZMFJgPjd8g8n5rTBD/F0gGBZE/5PA8itffuq0XkZn970y1O0h/9Y9lWaeN5T03PP7m3glPGSeB70tjgAleQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuyO6Y1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6FDC4CEF1;
-	Fri, 21 Nov 2025 13:21:06 +0000 (UTC)
+	 MIME-Version; b=L7dGzoVehURCoyoR/8vhspzjQAXsp60le+WxJK4Dv5zsGYkWW8vvJxzR6gA1ABQEdS6nL+7DnBBqWESzBm6ol8sEWEV+vND0wgrtIH/b1Zf3Vr5FVmdrfX36CchGTp8LxqZP/YaKX+1Y0UdaC9sZHD7YTeAR8zKJKKJNyo2og7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIBO+3Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8707C4CEF1;
+	Fri, 21 Nov 2025 13:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731267;
-	bh=ESr4MwQeQ77RTJpWm+kBMbfttRLTJlZLOkLu+59wwa4=;
+	s=korg; t=1763733224;
+	bh=ObINufOHkzyAAC5e0YLQtgnwpmspvZYkO2dTc4AugtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuyO6Y1ZgjnZWD3EUeICz4Lj3X44rn4P4ouWTbE4sqXh9jN/8FLeGewZ0KgVPFdat
-	 dwTKyrGpiG/AYzum/X1YVbR60bf6r84DXmRPbHOxBI/H1Ash3JftMSqn1jQJLO9Yty
-	 25Xq2VuEkXiFNic6ZbOLxMVCZD1IlCw1fvbX7sbc=
+	b=LIBO+3Au43mG/G1UuGXIIM7hLv6pbuWm4sOXIm03EX6Y6V11+4qA+ombTLc4k6VnO
+	 wLpEkJmutk4PiZh2nT5GaOZzscmwXRjds3GlExQlgbRgRBS2viIDwbgNTRHrldUh4r
+	 MAsKGC9spYDtPYlW01noUS1+ZuoBnbW/SVscjpZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 147/247] HID: playstation: Fix memory leak in dualshock4_get_calibration_data()
+Subject: [PATCH 6.6 395/529] selftests: net: local_termination: Wait for interfaces to come up
 Date: Fri, 21 Nov 2025 14:11:34 +0100
-Message-ID: <20251121130200.003660389@linuxfoundation.org>
+Message-ID: <20251121130245.077160599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 8513c154f8ad7097653dd9bf43d6155e5aad4ab3 ]
+[ Upstream commit 57531b3416448d1ced36a2a974a4085ec43d57b0 ]
 
-The memory allocated for buf is not freed in the error paths when
-ps_get_report() fails. Free buf before jumping to transfer_failed label
+It seems that most of the tests prepare the interfaces once before the test
+run (setup_prepare()), rely on setup_wait() to wait for link and only then
+run the test(s).
 
-Fixes: 947992c7fa9e ("HID: playstation: DS4: Fix calibration workaround for clone devices")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+local_termination brings the physical interfaces down and up during test
+run but never wait for them to come up. If the auto-negotiation takes
+some seconds, first test packets are being lost, which leads to
+false-negative test results.
+
+Use setup_wait() in run_test() to make sure auto-negotiation has been
+completed after all simple_if_init() calls on physical interfaces and test
+packets will not be lost because of the race against link establishment.
+
+Fixes: 90b9566aa5cd3f ("selftests: forwarding: add a test for local_termination.sh")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20251106161213.459501-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-playstation.c | 2 ++
+ tools/testing/selftests/net/forwarding/local_termination.sh | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 1468fb11e39df..657e9ae1be1ee 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -1807,6 +1807,7 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index 9b5a63519b949..6cde61f10fd0e 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -108,6 +108,8 @@ run_test()
+ 	local smac=$(mac_get $h1)
+ 	local rcv_dmac=$(mac_get $rcv_if_name)
  
- 				hid_warn(hdev, "Failed to retrieve DualShock4 calibration info: %d\n", ret);
- 				ret = -EILSEQ;
-+				kfree(buf);
- 				goto transfer_failed;
- 			} else {
- 				break;
-@@ -1824,6 +1825,7 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
++	setup_wait
++
+ 	tcpdump_start $rcv_if_name
  
- 		if (ret) {
- 			hid_warn(hdev, "Failed to retrieve DualShock4 calibration info: %d\n", ret);
-+			kfree(buf);
- 			goto transfer_failed;
- 		}
- 	}
+ 	mc_route_prepare $h1
 -- 
 2.51.0
 
