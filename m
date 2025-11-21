@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9129BC79745
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF80C79F12
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F889346C64
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D8AF334D935
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B302750FB;
-	Fri, 21 Nov 2025 13:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2AD346A0E;
+	Fri, 21 Nov 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaMDLmUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9/dRv4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E191F09B3;
-	Fri, 21 Nov 2025 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3AC3358B7;
+	Fri, 21 Nov 2025 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731723; cv=none; b=so3nMiHW9N6GzEuD0uqa273cjpIFZgHiqYqHOBlWAbT4+GwOSrnZxwqPuvDjMFAPtZtFKJO05DRCM3fvXNVmqy9pb/DJenAi0X/vi2lEU5F3YhlOdZzb8IYXdZUyidPgWBQjL4tm2qfk7ZiHc0iJIEP/2UeWTMFaK4sAcUTV6Ww=
+	t=1763733300; cv=none; b=U4cPwhFu7VlIzBaZSQa4PUtcPI0hz+fIEJneZXo4ZMRGHidzzgfiiz8r0G7+mudTXx/I8FsPid47BT5Fr77OzZrgLSbNMNrS9QmiBf/iHW664Z2NlRuFBSzYcQpoLAhd/YViL4HESIJQMEDftmbZIIlXJtspOncnwT70o4JQtDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731723; c=relaxed/simple;
-	bh=j2WGYaTGiJvyeqcBkhl98kC3ROE6+2UHjCu8H4Uemyw=;
+	s=arc-20240116; t=1763733300; c=relaxed/simple;
+	bh=guKnSdDZk4mBeTK3CkiTkGe5mSyIWVsp7c5Vg28Xhys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zi0s3U7nJe3NDRZKW2RUp2N4NxrvVI1U+a49xZ7rVHZStXwQkWnGgNrAIVbOvYA1l3YHiGpA9jibSkcVi1BUN8bYoh2vjbl4fXNZR4fcBjGq3KqX8F++cDQoo7riasWofgp6EYeAjX505R7xWsKaxjLoBvCW1tJsTaeFNprbvuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaMDLmUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578BAC4CEF1;
-	Fri, 21 Nov 2025 13:28:43 +0000 (UTC)
+	 MIME-Version; b=J2xExcnTczTKp7f22IzLrp8UYSnXIVcRv2FuZqLUnHucLM60ZAONBe1HAVTNxnY1em8Sk6ckc0GnkPJmnT7w1I+MdJhadhYRcNaV467r4ej65FgHuUvQMkr4MXzmI/qlqQDQbJ7RaSvxTXaC762BNxbbax0b69PMbx5CJ+NDPd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9/dRv4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2639EC4CEF1;
+	Fri, 21 Nov 2025 13:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731723;
-	bh=j2WGYaTGiJvyeqcBkhl98kC3ROE6+2UHjCu8H4Uemyw=;
+	s=korg; t=1763733298;
+	bh=guKnSdDZk4mBeTK3CkiTkGe5mSyIWVsp7c5Vg28Xhys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zaMDLmUQ3OqOYiKJmgy/YDFYf3bCT0Gj4IaT6szupnsX/Am7R4i6IeokL+zk3h466
-	 lqOhguTSY0ZoqhfoxflO7vo+K1E4OMXdgZeHhUQkLDIzqE7Fvm2HnZjKJDEjEkWn9F
-	 e7PP8OBNxQxXRfo1rQfWavWoYiQMahh4hAltxcro=
+	b=t9/dRv4BeoAFML+jN/uuSy4nYG2Q4rB7JOPQrGqqJMNGu9hum2a4JjYWTQzkyNnep
+	 kXm2PDYKsLjVProGMYK5WtK4z40iDhJ4q43CyrHhH8XGKrhrst6jdGEswSTyEijqBs
+	 +YjVZ7BQKoDXIWQD7x6fY1TvqwvcVuQku4/HelFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Joshua Watt <jpewhacker@gmail.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/185] net_sched: limit try_bulk_dequeue_skb() batches
+Subject: [PATCH 6.6 387/529] NFS4: Fix state renewals missing after boot
 Date: Fri, 21 Nov 2025 14:11:26 +0100
-Message-ID: <20251121130146.006830274@linuxfoundation.org>
+Message-ID: <20251121130244.792979828@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Joshua Watt <jpewhacker@gmail.com>
 
-[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
+[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
 
-After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
-I started seeing many qdisc requeues on IDPF under high TX workload.
+Since the last renewal time was initialized to 0 and jiffies start
+counting at -5 minutes, any clients connected in the first 5 minutes
+after a reboot would have their renewal timer set to a very long
+interval. If the connection was idle, this would result in the client
+state timing out on the server and the next call to the server would
+return NFS4ERR_BADSESSION.
 
-$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
-qdisc mq 1: root
- Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
- backlog 1056Kb 6675p requeues 3532840114
-qdisc mq 1: root
- Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
- backlog 781164b 4822p requeues 3537737653
+Fix this by initializing the last renewal time to the current jiffies
+instead of 0.
 
-This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
-
-perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
-...
- netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
- netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
- netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
- netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
- netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
- netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
- netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
-...
-
-This is bad because :
-
-1) Large batches hold one victim cpu for a very long time.
-
-2) Driver often hit their own TX ring limit (all slots are used).
-
-3) We call dev_requeue_skb()
-
-4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
-   implement FQ or priority scheduling.
-
-5) dequeue_skb() gets packets from q->gso_skb one skb at a time
-   with no xmit_more support. This is causing many spinlock games
-   between the qdisc and the device driver.
-
-Requeues were supposed to be very rare, lets keep them this way.
-
-Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
-__qdisc_run() was designed to use.
-
-Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_generic.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ fs/nfs/nfs4client.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 8874ae6680952..d27383c54b70b 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -179,9 +179,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
- static void try_bulk_dequeue_skb(struct Qdisc *q,
- 				 struct sk_buff *skb,
- 				 const struct netdev_queue *txq,
--				 int *packets)
-+				 int *packets, int budget)
- {
- 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
-+	int cnt = 0;
- 
- 	while (bytelimit > 0) {
- 		struct sk_buff *nskb = q->dequeue(q);
-@@ -192,8 +193,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
--		(*packets)++; /* GSO counts as one pkt */
-+		if (++cnt >= budget)
-+			break;
- 	}
-+	(*packets) += cnt;
- 	skb_mark_not_on_list(skb);
- }
- 
-@@ -227,7 +230,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
-  * A requeued skb (via q->gso_skb) can also be a SKB list.
-  */
- static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
--				   int *packets)
-+				   int *packets, int budget)
- {
- 	const struct netdev_queue *txq = q->dev_queue;
- 	struct sk_buff *skb = NULL;
-@@ -294,7 +297,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	if (skb) {
- bulk:
- 		if (qdisc_may_bulk(q))
--			try_bulk_dequeue_skb(q, skb, txq, packets);
-+			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
- 			try_bulk_dequeue_skb_slow(q, skb, packets);
- 	}
-@@ -386,7 +389,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
-  *				>0 - queue is not empty.
-  *
-  */
--static inline bool qdisc_restart(struct Qdisc *q, int *packets)
-+static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
- {
- 	spinlock_t *root_lock = NULL;
- 	struct netdev_queue *txq;
-@@ -395,7 +398,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
- 	bool validate;
- 
- 	/* Dequeue packet */
--	skb = dequeue_skb(q, &validate, packets);
-+	skb = dequeue_skb(q, &validate, packets, budget);
- 	if (unlikely(!skb))
- 		return false;
- 
-@@ -413,7 +416,7 @@ void __qdisc_run(struct Qdisc *q)
- 	int quota = READ_ONCE(net_hotdata.dev_tx_weight);
- 	int packets;
- 
--	while (qdisc_restart(q, &packets)) {
-+	while (qdisc_restart(q, &packets, quota)) {
- 		quota -= packets;
- 		if (quota <= 0) {
- 			if (q->flags & TCQ_F_NOLOCK)
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index f6dc42de48f03..32b1147fcafc4 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -222,6 +222,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
+ 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
+ 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
+ 	clp->cl_mig_gen = 1;
++	clp->cl_last_renewal = jiffies;
+ #if IS_ENABLED(CONFIG_NFS_V4_1)
+ 	init_waitqueue_head(&clp->cl_lock_waitq);
+ #endif
 -- 
 2.51.0
 
