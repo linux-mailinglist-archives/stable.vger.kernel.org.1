@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-195883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AD7C796AF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E41C795E9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id BA7C728FAE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id A323931EDC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7C433FE03;
-	Fri, 21 Nov 2025 13:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460AD3446AB;
+	Fri, 21 Nov 2025 13:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaAJyPf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCUSr01F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7621F09B3;
-	Fri, 21 Nov 2025 13:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018383446CD;
+	Fri, 21 Nov 2025 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731938; cv=none; b=khxRJd1vdP+/ZerD6OA8nfHPbjBepbI8Cpily+dhkSw5Qda7rSK3kZJsYFgldMkg8/yRxpFBQXfay74WOTpSZ5ZtkpPeNyCriDzxLYMtRXir51GzwhKJIPomXr8izER6MGx4037tK8mC4NcatdxUxziSHGUbiuz4IGDhm9D5VO8=
+	t=1763731460; cv=none; b=tzVJOvtFFbJPxXWn+pi4CknghqHH1GCA+l3EXSDKhlzXbCTHKF0I1FYz1C5pEAlbgAP4+9LNCW6RMK45AVQLpMOSKYTYrPPgQdv+h0DVj1s6BdYtSRQfFvhDG91wTAZx3qHNPnb3QLeuoL483OZOuadzAzaDabsDwvJ+RDTmFuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731938; c=relaxed/simple;
-	bh=vZRfWjYkSesOn3i2PaYErBU78Cu2sHiJIZKvz2kEdHg=;
+	s=arc-20240116; t=1763731460; c=relaxed/simple;
+	bh=ltbFZdaC8/2dcFcYgQd5hywcCgm/xDtykvNRmoDG2W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrtZCQFa/43tE9kg0oMURUDzx21RjkIIB6bkT/cgdCYCbKy/7gakUjSACye4z+VV6ZcucoQbKfwp9Fi7U+PsGpF3wCBHLFGZeLPRdNG1jzfQCGOqFenuUG07mPGo97d4t62kCGeHE1mFvCuuiE3HqyhBDlx4ukDQ7lp2xINMSSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaAJyPf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2784FC4CEF1;
-	Fri, 21 Nov 2025 13:32:17 +0000 (UTC)
+	 MIME-Version; b=sIuQhRBdb9TkcmERBo/K68mv6qXRkhxn9ql60BSyAkTS14u4sXOomcB9hxfbBo4kvzNKPDaxqm2ITDVJLz4kjAlxAJFpuK5fRKwPY/5HcvvvvIYEA8yMR+ihk+PFlqo1ocgkSYK6YWUmDRBRP7LbRmMWiH9rMWiUnwJ7/StbW1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCUSr01F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0C6C4CEFB;
+	Fri, 21 Nov 2025 13:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731938;
-	bh=vZRfWjYkSesOn3i2PaYErBU78Cu2sHiJIZKvz2kEdHg=;
+	s=korg; t=1763731459;
+	bh=ltbFZdaC8/2dcFcYgQd5hywcCgm/xDtykvNRmoDG2W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaAJyPf5juhG5xn9okNh6fy0EFsG8cwnpIa7GsjQ012h3r50xHW1ooZn3ccPR4Qid
-	 WWGfb3i7O4ft2DhmkBuiTW/elYRlDiK+ccO7mKIHBgJP2pW9yH8fGy12eMx07KNmK+
-	 m1qRx/ds7sfUlOejsqiK5dQU3KS9QYn/F7hEsEsc=
+	b=SCUSr01FERCdkgHrkNUJ4BoXno/doeXXHBkgpPM4TMhxiw78gxltS3ybgeXtCRoK6
+	 dvV8xpzIavlil9uzDha4nNN2aGzOC7VlTAHe99a0iZe1B5Bi0gPs7W8qLIk8bqH6ii
+	 9eJDaPZvvfN4YcszJOJnD24FM+gsw4UQ5BRVJSeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 134/185] smb: client: fix cifs_pick_channel when channel needs reconnect
-Date: Fri, 21 Nov 2025 14:12:41 +0100
-Message-ID: <20251121130148.710628781@linuxfoundation.org>
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.17 215/247] btrfs: zoned: fix stripe width calculation
+Date: Fri, 21 Nov 2025 14:12:42 +0100
+Message-ID: <20251121130202.447673666@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit 79280191c2fd7f24899bbd640003b5389d3c109c upstream.
+commit 6a1ab50135ce829b834b448ce49867b5210a1641 upstream.
 
-cifs_pick_channel iterates candidate channels using cur. The
-reconnect-state test mistakenly used a different variable.
+The stripe offset calculation in the zoned code for raid0 and raid10
+wrongly uses map->stripe_size to calculate it. In fact, map->stripe_size is
+the size of the device extent composing the block group, which always is
+the zone_size on the zoned setup.
 
-This checked the wrong slot and would cause us to skip a healthy channel
-and to dispatch on one that needs reconnect, occasionally failing
-operations when a channel was down.
+Fix it by using BTRFS_STRIPE_LEN and BTRFS_STRIPE_LEN_SHIFT. Also, optimize
+the calculation a bit by doing the common calculation only once.
 
-Fix by replacing for the correct variable.
-
-Fixes: fc43a8ac396d ("cifs: cifs_pick_channel should try selecting active channels")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c0d90a79e8e6 ("btrfs: zoned: fix alloc_offset calculation for partly conventional block groups")
+CC: stable@vger.kernel.org # 6.17+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/zoned.c |   56 +++++++++++++++++++++++++------------------------------
+ 1 file changed, 26 insertions(+), 30 deletions(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1050,7 +1050,7 @@ struct TCP_Server_Info *cifs_pick_channe
- 		if (!server || server->terminate)
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1523,6 +1523,8 @@ static int btrfs_load_block_group_raid0(
+ 					u64 last_alloc)
+ {
+ 	struct btrfs_fs_info *fs_info = bg->fs_info;
++	u64 stripe_nr = 0, stripe_offset = 0;
++	u32 stripe_index = 0;
+ 
+ 	if ((map->type & BTRFS_BLOCK_GROUP_DATA) && !fs_info->stripe_root) {
+ 		btrfs_err(fs_info, "zoned: data %s needs raid-stripe-tree",
+@@ -1530,28 +1532,26 @@ static int btrfs_load_block_group_raid0(
+ 		return -EINVAL;
+ 	}
+ 
++	if (last_alloc) {
++		u32 factor = map->num_stripes;
++
++		stripe_nr = last_alloc >> BTRFS_STRIPE_LEN_SHIFT;
++		stripe_offset = last_alloc & BTRFS_STRIPE_LEN_MASK;
++		stripe_nr = div_u64_rem(stripe_nr, factor, &stripe_index);
++	}
++
+ 	for (int i = 0; i < map->num_stripes; i++) {
+ 		if (zone_info[i].alloc_offset == WP_MISSING_DEV)
  			continue;
  
--		if (CIFS_CHAN_NEEDS_RECONNECT(ses, i))
-+		if (CIFS_CHAN_NEEDS_RECONNECT(ses, cur))
- 			continue;
+ 		if (zone_info[i].alloc_offset == WP_CONVENTIONAL) {
+-			u64 stripe_nr, full_stripe_nr;
+-			u64 stripe_offset;
+-			int stripe_index;
+-
+-			stripe_nr = div64_u64(last_alloc, map->stripe_size);
+-			stripe_offset = stripe_nr * map->stripe_size;
+-			full_stripe_nr = div_u64(stripe_nr, map->num_stripes);
+-			div_u64_rem(stripe_nr, map->num_stripes, &stripe_index);
  
- 		/*
+-			zone_info[i].alloc_offset =
+-				full_stripe_nr * map->stripe_size;
++			zone_info[i].alloc_offset = btrfs_stripe_nr_to_offset(stripe_nr);
+ 
+ 			if (stripe_index > i)
+-				zone_info[i].alloc_offset += map->stripe_size;
++				zone_info[i].alloc_offset += BTRFS_STRIPE_LEN;
+ 			else if (stripe_index == i)
+-				zone_info[i].alloc_offset +=
+-					(last_alloc - stripe_offset);
++				zone_info[i].alloc_offset += stripe_offset;
+ 		}
+ 
+ 		if (test_bit(0, active) != test_bit(i, active)) {
+@@ -1575,6 +1575,8 @@ static int btrfs_load_block_group_raid10
+ 					 u64 last_alloc)
+ {
+ 	struct btrfs_fs_info *fs_info = bg->fs_info;
++	u64 stripe_nr = 0, stripe_offset = 0;
++	u32 stripe_index = 0;
+ 
+ 	if ((map->type & BTRFS_BLOCK_GROUP_DATA) && !fs_info->stripe_root) {
+ 		btrfs_err(fs_info, "zoned: data %s needs raid-stripe-tree",
+@@ -1582,6 +1584,14 @@ static int btrfs_load_block_group_raid10
+ 		return -EINVAL;
+ 	}
+ 
++	if (last_alloc) {
++		u32 factor = map->num_stripes / map->sub_stripes;
++
++		stripe_nr = last_alloc >> BTRFS_STRIPE_LEN_SHIFT;
++		stripe_offset = last_alloc & BTRFS_STRIPE_LEN_MASK;
++		stripe_nr = div_u64_rem(stripe_nr, factor, &stripe_index);
++	}
++
+ 	for (int i = 0; i < map->num_stripes; i++) {
+ 		if (zone_info[i].alloc_offset == WP_MISSING_DEV)
+ 			continue;
+@@ -1595,26 +1605,12 @@ static int btrfs_load_block_group_raid10
+ 		}
+ 
+ 		if (zone_info[i].alloc_offset == WP_CONVENTIONAL) {
+-			u64 stripe_nr, full_stripe_nr;
+-			u64 stripe_offset;
+-			int stripe_index;
+-
+-			stripe_nr = div64_u64(last_alloc, map->stripe_size);
+-			stripe_offset = stripe_nr * map->stripe_size;
+-			full_stripe_nr = div_u64(stripe_nr,
+-					 map->num_stripes / map->sub_stripes);
+-			div_u64_rem(stripe_nr,
+-				    (map->num_stripes / map->sub_stripes),
+-				    &stripe_index);
+-
+-			zone_info[i].alloc_offset =
+-				full_stripe_nr * map->stripe_size;
++			zone_info[i].alloc_offset = btrfs_stripe_nr_to_offset(stripe_nr);
+ 
+ 			if (stripe_index > (i / map->sub_stripes))
+-				zone_info[i].alloc_offset += map->stripe_size;
++				zone_info[i].alloc_offset += BTRFS_STRIPE_LEN;
+ 			else if (stripe_index == (i / map->sub_stripes))
+-				zone_info[i].alloc_offset +=
+-					(last_alloc - stripe_offset);
++				zone_info[i].alloc_offset += stripe_offset;
+ 		}
+ 
+ 		if ((i % map->sub_stripes) == 0) {
 
 
 
