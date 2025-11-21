@@ -1,413 +1,239 @@
-Return-Path: <stable+bounces-195489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E754C7868B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 11:14:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51334C787F5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 11:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45A874EE705
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:09:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 76B6136710
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD98E33EB0D;
-	Fri, 21 Nov 2025 10:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1DC2D8766;
+	Fri, 21 Nov 2025 10:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lQt5ND/C"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="JfzNSQ4U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C930BF67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B72ED16B
 	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 10:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763719504; cv=none; b=b1LmKgqseu23nYRlSCHxfcgJH/tWi4s5V3C3tjmNCJrTH3uMtSQzGduyXs9YsfGMFDJpenK/QidOpw1cguXdG1IlHlzs9aTuvi3LLhTymaKJ07SA00CiCpJchauK7iQVIgtgyOjkEVLECwPFjP2dEnayxWFOK5Vj3xq2a+Jhx9Y=
+	t=1763719505; cv=none; b=jZ6YKT3x8nePb0Fx+V5iX9hErZtPO1QQfmdPfivjY/F1c2LUaXGz/45hUR0HJtD7QxdIwV8go6TORo8b+5smiceHEdSssmd9kZNnzTLNbP3dUhZ4eSsjmsUdSz7JNzbImXxKl8gcLUWtm/tEJveY4UyRvulYUDQfIDXFiSaTWh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763719504; c=relaxed/simple;
-	bh=7Si22rh4Tf/bQ7/t0HrnYRavSCVnpqFDwfmCrQawGc8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pDkXGuYtGtdMmmTHUhwDZIuJaQ2hDZKbKgobtsHCxMuPq62FtJkQRcvJIqemvGJV/Dk7KoX25GeaY0IdCKGUe7vSM+IpvumEc7u6wg4OoFZBeRO3vUim4dsGNT9ULYHICTqe0vQsUFOX5zgEdLenV6eLeN/t6ZL35OPc1V7bTZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lQt5ND/C; arc=none smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-640d43060d2so1657443d50.2
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 02:05:00 -0800 (PST)
+	s=arc-20240116; t=1763719505; c=relaxed/simple;
+	bh=NNbhXflv5R2vEixobq/WA2G1uBqr//AH3LROjVRZg2Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MuLmWMAf4m6mvX7+SufG9k9WGHhEy2K4XT9BUy4KZOXO21Aisf5Bopa4ZbUDOF0n6slC6mfzUxMK4jXSJLObmaz5eVmDcDPqwMjZsjxD0x4L+0ZbeU5gXX3jXV9wNysHK3oJlrtQRQNf+PILQF/axfq9kQFPB6xWxQ9fAxKYHtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=JfzNSQ4U; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so12740595e9.0
+        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 02:04:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763719499; x=1764324299; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OIIgIkxfHCz92I+68s+r+O0mgnsfZxyTvtLxRq9jr8w=;
-        b=lQt5ND/C330CxOu1aCsboNxTw8pJnBJMLBwX832Q3Sw930ljX4D82WfAvi/ha38zog
-         JtecZ4U+8NH2dexkDrUEVDgSXdxBHq+z4YTppAtAIprUzsFwsZJTocDL/iwMktEMWAMs
-         kPJW4vEZhBtehNY8Q8oV7jPB5rbeP2PoHgwi2zrxmQ2RSZv8t9okVcgoCc8mnepCf5yy
-         3mwu7EywzUZtGusN05oEjcjAWoC/lxFwT4SGEYwlo8nYhTSpqVA6ai5ZXInCe1a/owSA
-         6bKeW198CPvO8G2/YClWZrbp0AFkTEuggdtpOvztnl4DsPAazHz69Ds7F7CS2erjuEGg
-         0lIw==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763719497; x=1764324297; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kYHDN3XWhdrUYswWPNAoZZ7SN5o3+zAlN+kFhNb/5Zw=;
+        b=JfzNSQ4UhwlOBH9D2AIByvtjhu5cftluWC4dUqTdrN+sZsMppKRTBPVPgJm1WqxxOR
+         l2pLxaLQnJqrkahJUuXIVtLrhqly97D3MTNSELQ3ABFwxZ/l08SMeW6p+mojpWGvND3z
+         nm8iwwEM+tr2BhvK+uo7Mv/LygO/aU7IaIu52bEjGDtMFBPGm1lLjHWOJTFehnmVMuoI
+         V6WtfUJvG3WKE4F4TrFJWYE2D9LQHSUV0vtuOAWVgzQaDo1VMD9FMry9VfWUHw/JBua8
+         +CV5zUJV5AiPvfiJAsWkTZEL9ISo/DifpSNWISGHf3G4GfZdMq5Ome19lNCzyuFwOiD8
+         g3zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763719499; x=1764324299;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OIIgIkxfHCz92I+68s+r+O0mgnsfZxyTvtLxRq9jr8w=;
-        b=FNXm12/TSh+q5SREAZZo8+b1VymEx/vgGcGdK4Y4EqBftFhum/Ywe9jkxBVZrIBq9e
-         6/GyEuWGU5PucAQlFn6uN4FMBxWYoUbBxgAIyNDrGHWK2+dcLIDq/oQo7Sdwe23Mv5XQ
-         RlzRdiX5v2E88KXuV2ySaqJbcGz7sML7VqkkWk+BNc9sVsYg7CYlOtsCSu9wMiOTMQE7
-         BzNV39i+b6y0Gm9jpgiDxiADQvpuFJtKz5o1RwO9X9e/UDCzqwsbbhJjRAj2v7ajKavo
-         3WSHJ+IDjojd9W2ySBykiEMBb31aqSH3Q+1mwnI6SKR0vQ3pDYya1ErKdQ83J+gUu/pp
-         Z4OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVmOk7D6Fdu7X+imlphCD+NOhlusqhLAaN83aEK1Vc8GNB2eM4esU/Uc2G1XZf/sggmsGopJo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy70T97IYNUIQirPcSgIkiKqfObqnCHgM9r9gvv/6eVfy0pJNoq
-	PvR9H1BvoJM0xm/zjZyvmR6IeiQsSvbgAcMXbyT23/97JrdenWFegjRdNZnq5LnArjgjCcCeaB0
-	WFIoK8qeue05db6iqhC7DOyMFqpepNEs=
-X-Gm-Gg: ASbGncumHtDWgeChGBcD33c0Eb5lzJISwMqHn2PZAz1jhSAS0P55rinjMQpIXKia1bv
-	wssWYsUJbYTjvgEy1F9L4xbu7JDZnhTkwbO1Q+t59HErhv+ArdgWJj47x7vt/f1h7pOhPKfCOQk
-	RlfDE1DL5eVgMz1XaUMOmrj/7sOIDCa/gHGzIYXW+JTu7NxUP7OLK+TlAcdOUwdM4SVo8U5R+dN
-	ICWfN1Hl8e970C1SjZCa9xFORaDigQ2ST3JY6OYTBJ3z+2mrvzBVASDBGw0+Z06WSgl8Hhc9O78
-	3Yg5NfO0CzmcGaGHQMaRh7mSc8qa3OHNH5ONKVS5w5NEpG4EeA==
-X-Google-Smtp-Source: AGHT+IGajTqx5ininoheMFSj0eIdsKKhAPp8owIB8VPS/3Gx5x92AgXKkrsibqg1KttLu2r8aPJHrFxvdzJj68SXp80=
-X-Received: by 2002:a05:690e:1442:b0:642:2cf:f9fb with SMTP id
- 956f58d0204a3-64302a2eaadmr1092911d50.4.1763719499250; Fri, 21 Nov 2025
- 02:04:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763719497; x=1764324297;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kYHDN3XWhdrUYswWPNAoZZ7SN5o3+zAlN+kFhNb/5Zw=;
+        b=EkumNhBDV/ppFRTk0qiOrozNBJJ0HSyjOsHiJ3DMphQBncFmSfI8OgAn2MYKj/z1cF
+         evBU/EckKTJbFhvDwum700oMwfoQxC/zuq2HwGwJeNSwUo6nFK1bkC7+/rlFYE47qmtE
+         o0LX6YNOkqVSfOwqsj0NBbujSxHVYmbAC6LzMLjFgCKyefszciR/+yok3yQ0CVq8mLxB
+         YHVOI96BWH/MtTKXG6cZCD+7y9JbQXIWb/N0sCLDiuAn+wgyqYAwvgkSEnxn9PMYIp4d
+         2UchgaB6pUGN5VesFPchhtRu8BkImsdFDQzMqI55tOGTf5zVnhXnISvUYTCcousVa5i6
+         9aWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbEcO89RwrcT1ebZbRQ3Wcw8NisPHsMmhHUe8S7IEmci393myTzwIe4D+UcXZRZJf+1jLg4SM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywyj3bnsE/yA5P4b2ay16OAExXhYFA0dBCXAtdh13MgPv2GC4Fz
+	AkNdTGIz/MZ/XSixxVhgmvcTRLHCY5sbtWkTk7IXHrml+V0OXkQyAgnABbiExxsf0q0=
+X-Gm-Gg: ASbGnctbWCfZvJeHol+9PFiTjSBqsc0HtIa74gckOEAG0WJiCJFX9q878sqdyhwM1bm
+	01eXPkM6+gSqM3icdlXESP7z1USvAgL1Bvx4YwdCbPlxp4O0xJ4uIM02AfTvC5tiYSOcnEbZ2DB
+	di1kU2uAgB7QYxeJ9KyGl9YgbkHoHblC+uOQN43DO6c+Ua70G298Br/W2liS+btvSCNnX/J7LnR
+	zN0KmOn0s3d22zLBS2fVZUB/oCiDIvX8t3gtGFERXOrWv4OpRoIMbBwEK1wfJiJNbKfqGh3BuY0
+	M+zbdfoY/uC3j9Oe5hxy7dk9DYO3xh3TtNL6LtRmC97HYFoLyXkFucpFnyM5/bYfznOaovyZFOg
+	1mttfX8X6Yy/V7fd5KjwSDQekIrRd27QdfbG2mAAsBxhjOzAAWqFKPtBKNLDbESevu16JE6U34T
+	YkJlxnvA==
+X-Google-Smtp-Source: AGHT+IElB02/Ep10lh/BdZNWOZ9UNe38Adz4Jl7bRbLXN2uP/3XG5Ln17dAUNkGE9BVFgHs6RC5NGw==
+X-Received: by 2002:a05:600c:450f:b0:477:54cd:202e with SMTP id 5b1f17b1804b1-477c10c84b8mr13860705e9.2.1763719497047;
+        Fri, 21 Nov 2025 02:04:57 -0800 (PST)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:ab1f:63b4:bcef:12ba])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a973390csm81773385e9.4.2025.11.21.02.04.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 02:04:56 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 21 Nov 2025 11:04:50 +0100
+Subject: [PATCH] platform/x86: intel: chtwc_int33fe: don't dereference
+ swnode args
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aRYjk4JBqHvVl-wN@eldamar.lan> <7a38c04d-4e54-4f1a-96fd-43f0f11ab97b@linux.microsoft.com>
- <CAFcZKTwQgd9hrTaXnThML=+WG82TH3DK90FT1-WWsBSoRj7dRw@mail.gmail.com>
- <176298819854.487825.11724175116974643582.reportbug@p15v.lan>
- <18bcf829-04f9-46ec-a874-7c2b9338cf3d@linux.microsoft.com>
- <aRei1DGOWy13GqvE@eldamar.lan> <25aff5ca-b5e1-4907-bd12-6571f8454146@linux.microsoft.com>
-In-Reply-To: <25aff5ca-b5e1-4907-bd12-6571f8454146@linux.microsoft.com>
-From: Peter Morrow <pdmorrow@gmail.com>
-Date: Fri, 21 Nov 2025 10:04:48 +0000
-X-Gm-Features: AWmQ_bml56ba4FPvLQfXiG7sOJrkgfM8uYLy9yqvr1L2535PTJhYrBej5B9nsTw
-Message-ID: <CAFcZKTyOcDqDJRB4sgN7Q-dabBU0eg7KKs=yBJhB=CNDyy7scQ@mail.gmail.com>
-Subject: Re: Bug#1120602: [REGRESSION 6.12.y] hyper-v: BUG: kernel NULL
- pointer dereference, address: 00000000000000a0: RIP: 0010:hv_uio_channel_cb+0xd/0x20
- [uio_hv_generic]
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, 1120602@bugs.debian.org, 
-	Long Li <longli@microsoft.com>, linux-hyperv@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org, John Starks <jostarks@microsoft.com>, 
-	Michael Kelley <mhklinux@outlook.com>, Tianyu Lan <tiala@microsoft.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251121-int33fe-swnode-fix-v1-1-713e7b7c6046@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAEE5IGkC/x2MywqAIBAAfyX23IKPFOtXooPkVnvR0Kgg+vek4
+ wzMPFAoMxUYmgcynVw4xQqybWDefFwJOVQGJZSRUknkeGi9EJYrpkC48I3keht8Z5yxAmq4Z6r
+ 6n47T+346GurqZAAAAA==
+X-Change-ID: 20251121-int33fe-swnode-fix-e896da458560
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ stable@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4348;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=9xVvg4mqL3TmJeRf+mIeyELW8a1RoZesNOGIJ+GdEnw=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBpIDlEX/VgktNV+bsy2NxBqjCK5duKZTAMJa7fj
+ 0jMweZ04CaJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCaSA5RAAKCRAFnS7L/zaE
+ w1bPD/9RfxiKvUpDCwYrGdj+Icl4v2zSnwkHsEEIyrVtF3KvQG7UI8S+BgVClRg7dBgGGvLZB2h
+ vXhgRcnD8Hvzh3kK1TNEZpCmnUaRfMR50+TkP3ga9JG83k4dy0KG++KHmrrdf3gjpaiFqFAI6qF
+ LR8xytBXigkPSAmg90sSnN1rXuJnLGnSbeB7tKc5uzjLIq7c3nNXOXTDWSfY0XeiC0wvlsC2B4f
+ kW1gmOroFNN7742gzCdqWGQInnMhYBhMCjhxT+olvWoJj0eHu5J2qsMwhDUHNvwfMi/vxjXf81e
+ 7zx1G82I9L17/cbj4Q7MM/9AIg/lRbvrE6e2lurYvvQpwJ1xbufKKs8mPyn0QdHp6jB3Tv2mXlo
+ 11VEpFEBNCXmX+s8vue4A6Iuf+/8m32qxWksBVieYb+C84Zzh16Frce6Agdi4q7aZIfwu0tZqYR
+ 5IXbs+7puPT3B9gKMdYntCYQ09qptG+EFB3PcY9gIYTkbP/mGSM63tW54UGgk+YO8g9lBV4nHpF
+ lfbLGAkJiMMFDdjI670h8okJhIrxx+lW7htSNfEzdxN8NZG5Erj/ZzIxzhE4mmzx4xN/gJfhRyD
+ oaa2OYpDG5/7ZnB8AmAOa8V1nr0z9ASFFXgUf5HhYSpbo+wbg5bShzGCxaX8aiOhbYcTlsh/RMG
+ /skRf2I+9HI1fxA==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
-Hi Naman/Salvatore,
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Is it possible to get this fixed in the 6.1 LTS series too? I just ran
-into this crash when moving from bookworm based Debian kernel
-6.1.153-1 to 6.1.158-1. I saw that "uio_hv_generic: Let userspace take
-care of interrupt mask" appeared in 6.1.156.
+Members of struct software_node_ref_args should not be dereferenced
+directly but set using the provided macros. Commit d7cdbbc93c56
+("software node: allow referencing firmware nodes") changed the name of
+the software node member and caused a build failure. Remove all direct
+dereferences of the ref struct as a fix.
 
-Thanks,
-Peter.
+However, this driver also seems to abuse the software node interface by
+waiting for a node with an arbitrary name "intel-xhci-usb-sw" to appear
+in the system before setting up the reference for the I2C device, while
+the actual software node already exists in the intel-xhci-usb-role-switch
+module and should be used to set up a static reference. Add a FIXME for
+a future improvement.
 
-On Sat, 15 Nov 2025 at 09:04, Naman Jain <namjain@linux.microsoft.com> wrot=
-e:
->
->
->
-> On 11/15/2025 3:14 AM, Salvatore Bonaccorso wrote:
-> > Hi,
-> >
-> > On Fri, Nov 14, 2025 at 08:05:55PM +0530, Naman Jain wrote:
-> >>
-> >>
-> >> On 11/14/2025 5:19 PM, Peter Morrow wrote:
-> >>> Hi Naman,
-> >>>
-> >>> On Fri, 14 Nov 2025 at 06:03, Naman Jain <namjain@linux.microsoft.com=
-> wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> On 11/13/2025 11:59 PM, Salvatore Bonaccorso wrote:
-> >>>>> Peter Morrow reported in Debian a regression, reported in
-> >>>>> https://bugs.debian.org/1120602 . The regression was seen after
-> >>>>> updating, to 6.12.57-1 in Debian, but details on the offending comm=
-it
-> >>>>> follows.
-> >>>>>
-> >>>>> His report was as follows:
-> >>>>>
-> >>>>>> Dear Maintainer,
-> >>>>>>
-> >>>>>> I'm seeing a kernel crash quite soon after boot on a debian trixie=
- based
-> >>>>>> system running 6.12.57+deb13-amd64, unfortunately the kernel panic=
-s before
-> >>>>>> I can access the system to gather more information. Thus I'll prov=
-ide details
-> >>>>>> of the system using a previously known good version. The panic is =
-happening
-> >>>>>> 100% of the time unfortunately. I have access to the serial consol=
-e however
-> >>>>>> so can enable any required verbose logging during boot if necessar=
-y.
-> >>>>>>
-> >>>>>> Crucially the crash is not seen with kernel version 6.12.41+deb13-=
-amd64 with the
-> >>>>>> same userspace. We had pinned to that version until very recently =
-to in order
-> >>>>>> to work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=
-=3D1109676
-> >>>>>>
-> >>>>>> I'm running a dpdk application here (VPP) on Azure, VM form factor=
- is a
-> >>>>>> "Standard DS3 v2 (4 vcpus, 14 GiB memory)".
-> >>>>>>
-> >>>>>> The only relevant upstream commit in this area (as far as I can se=
-e) is:
-> >>>>>>
-> >>>>>> https://lore.kernel.org/linux-hyperv/1bb599ee-fe28-409d-b430-2fc08=
-6268936@linux.microsoft.com/
-> >>>>>>
-> >>>>>> The comment regarding avoiding races at start adds a bit more weig=
-ht behind this
-> >>>>>> hunch, though it's only a hunch as I am most definitely nowhere ne=
-ar an expert
-> >>>>>> in this area.
-> >>>>>>
-> >>>>>> -- Package-specific info:
-> >>>>>>
-> >>>>>> [   19.625535] BUG: kernel NULL pointer dereference, address: 0000=
-0000000000a0
-> >>>>>> [   19.628874] #PF: supervisor read access in kernel mode
-> >>>>>> [   19.630841] #PF: error_code(0x0000) - not-present page
-> >>>>>> [   19.632788] PGD 0 P4D 0
-> >>>>>> [   19.633905] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-> >>>>>> [   19.635586] CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.=
-12.57+deb13-amd64 #1  Debian 6.12.57-1
-> >>>>>> [   19.640216] Hardware name: Microsoft Corporation Virtual Machin=
-e/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-> >>>>>> [   19.644514] RIP: 0010:hv_uio_channel_cb+0xd/0x20 [uio_hv_generi=
-c]
-> >>>>>> [   19.646994] Code: 02 00 00 5b 5d e9 53 98 69 e9 0f 1f 00 90 90 =
-90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b =
-47 10 <48> 8b b8 a0 00 00 00 f0 83 44 24 fc 00 e9 51 6f fa ff 90 90 90 90
-> >>>>>> [   19.654377] RSP: 0018:ffffb15ac01a4fa8 EFLAGS: 00010046
-> >>>>>> [   19.656385] RAX: 0000000000000000 RBX: 0000000000000015 RCX: 00=
-00000000000015
-> >>>>>> [   19.659240] RDX: 0000000000000001 RSI: ffffffffffffffff RDI: ff=
-ff8ff69c759400
-> >>>>>> [   19.662168] RBP: ffff8ff548790200 R08: ffff8ff548790200 R09: 00=
-fca75150b080e9
-> >>>>>> [   19.665239] R10: 0000000000000000 R11: ffffb15ac01a4ff8 R12: ff=
-ff8ff871dc1480
-> >>>>>> [   19.668193] R13: ffff8ff69c759400 R14: ffff8ff69c7596a0 R15: ff=
-ffffffc106e160
-> >>>>>> [   19.671106] FS:  0000000000000000(0000) GS:ffff8ff871d80000(000=
-0) knlGS:0000000000000000
-> >>>>>> [   19.674281] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >>>>>> [   19.676533] CR2: 00000000000000a0 CR3: 0000000100ba6003 CR4: 00=
-000000003706f0
-> >>>>>> [   19.679385] Call Trace:
-> >>>>>> [   19.680361]  <IRQ>
-> >>>>>> [   19.681181]  vmbus_isr+0x1a5/0x210 [hv_vmbus]
-> >>>>>> [   19.682916]  __sysvec_hyperv_callback+0x32/0x60
-> >>>>>> [   19.684991]  sysvec_hyperv_callback+0x6c/0x90
-> >>>>>> [   19.686665]  </IRQ>
-> >>>>>> [   19.687509]  <TASK>
-> >>>>>> [   19.688366]  asm_sysvec_hyperv_callback+0x1a/0x20
-> >>>>>> [   19.690262] RIP: 0010:pv_native_safe_halt+0xf/0x20
-> >>>>>> [   19.692067] Code: 09 e9 c5 08 01 00 0f 1f 44 00 00 90 90 90 90 =
-90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d e5 3b 31 00 =
-fb f4 <c3> cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90
-> >>>>>> [   19.699119] RSP: 0018:ffffb15ac0103ed8 EFLAGS: 00000246
-> >>>>>> [   19.701412] RAX: 0000000000000003 RBX: ffff8ff5403b1fc0 RCX: ff=
-ff8ff54c64ce30
-> >>>>>> [   19.704328] RDX: 0000000000000000 RSI: 0000000000000003 RDI: 00=
-0000000001f894
-> >>>>>> [   19.706910] RBP: 0000000000000003 R08: 000000000bb760d9 R09: 00=
-fca75150b080e9
-> >>>>>> [   19.709762] R10: 0000000000000003 R11: 0000000000000001 R12: 00=
-00000000000000
-> >>>>>> [   19.712510] R13: 0000000000000000 R14: 0000000000000000 R15: 00=
-00000000000000
-> >>>>>> [   19.715173]  default_idle+0x9/0x20
-> >>>>>> [   19.716846]  default_idle_call+0x29/0x100
-> >>>>>> [   19.718623]  do_idle+0x1fe/0x240
-> >>>>>> [   19.720045]  cpu_startup_entry+0x29/0x30
-> >>>>>> [   19.721595]  start_secondary+0x11e/0x140
-> >>>>>> [   19.723080]  common_startup_64+0x13e/0x141
-> >>>>>> [   19.725222]  </TASK>
-> >>>>>> [   19.726387] Modules linked in: isofs cdrom uio_hv_generic uio b=
-infmt_misc intel_rapl_msr intel_rapl_common intel_uncore_frequency_common i=
-sst_if_mbox_msr isst_if_common rpcrdma skx_edac_common nfit sunrpc libnvdim=
-m crct10dif_pclmul ghash_clmulni_intel sha512_ssse3 sha256_ssse3 rdma_ucm i=
-b_iser sha1_ssse3 rdma_cm aesni_intel iw_cm gf128mul crypto_simd libiscsi c=
-ryptd ib_umad ib_ipoib scsi_transport_iscsi ib_cm rapl sg hv_utils hv_ballo=
-on evdev pcspkr joydev mpls_router ip_tunnel ramoops configfs pstore_blk ef=
-i_pstore pstore_zone nfnetlink vsock_loopback vmw_vsock_virtio_transport_co=
-mmon hv_sock vmw_vsock_vmci_transport vsock vmw_vmci efivarfs ip_tables x_t=
-ables autofs4 overlay squashfs dm_verity dm_bufio reed_solomon dm_mod loop =
-ext4 crc16 mbcache jbd2 crc32c_generic mlx5_ib ib_uverbs ib_core mlx5_core =
-mlxfw pci_hyperv pci_hyperv_intf hyperv_drm drm_shmem_helper sd_mod drm_kms=
-_helper hv_storvsc scsi_transport_fc drm scsi_mod hid_generic hid_hyperv hi=
-d serio_raw hv_netvsc hyperv_keyboard scsi_common hv_vmbus
-> >>>>>> [   19.726466]  crc32_pclmul crc32c_intel
-> >>>>>> [   19.765771] CR2: 00000000000000a0
-> >>>>>> [   19.767524] ---[ end trace 0000000000000000 ]---
-> >>>>>> [   19.800433] RIP: 0010:hv_uio_channel_cb+0xd/0x20 [uio_hv_generi=
-c]
-> >>>>>> [   19.803170] Code: 02 00 00 5b 5d e9 53 98 69 e9 0f 1f 00 90 90 =
-90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b =
-47 10 <48> 8b b8 a0 00 00 00 f0 83 44 24 fc 00 e9 51 6f fa ff 90 90 90 90
-> >>>>>> [   19.811041] RSP: 0018:ffffb15ac01a4fa8 EFLAGS: 00010046
-> >>>>>> [   19.813466] RAX: 0000000000000000 RBX: 0000000000000015 RCX: 00=
-00000000000015
-> >>>>>> [   19.816504] RDX: 0000000000000001 RSI: ffffffffffffffff RDI: ff=
-ff8ff69c759400
-> >>>>>> [   19.819484] RBP: ffff8ff548790200 R08: ffff8ff548790200 R09: 00=
-fca75150b080e9
-> >>>>>> [   19.822625] R10: 0000000000000000 R11: ffffb15ac01a4ff8 R12: ff=
-ff8ff871dc1480
-> >>>>>> [   19.825569] R13: ffff8ff69c759400 R14: ffff8ff69c7596a0 R15: ff=
-ffffffc106e160
-> >>>>>> [   19.828804] FS:  0000000000000000(0000) GS:ffff8ff871d80000(000=
-0) knlGS:0000000000000000
-> >>>>>> [   19.832214] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >>>>>> [   19.834709] CR2: 00000000000000a0 CR3: 0000000100ba6003 CR4: 00=
-000000003706f0
-> >>>>>> [   19.837976] Kernel panic - not syncing: Fatal exception in inte=
-rrupt
-> >>>>>> [   19.841825] Kernel Offset: 0x28a00000 from 0xffffffff81000000 (=
-relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-> >>>>>> [   19.896620] ---[ end Kernel panic - not syncing: Fatal exceptio=
-n in interrupt ]---
-> >>>>>>
-> >>>>
-> >>>> <snip>
-> >>>>
-> >>>>> The offending commit appers to be the backport of b15b7d2a1b09
-> >>>>> ("uio_hv_generic: Let userspace take care of interrupt mask") for
-> >>>>> 6.12.y.
-> >>>>>
-> >>>>> Peter confirmed that reverting this commit on top of 6.12.57-1 as
-> >>>>> packaged in Debian resolves indeed the issue. Interestingly the iss=
-ue
-> >>>>> is *not* seen with 6.17.7 based kernel in Debian.
-> >>>>>
-> >>>>> #regzbot introduced: 37bd91f22794dc05436130d6983302cb90ecfe7e
-> >>>>> #regzbot monitor: https://bugs.debian.org/1120602
-> >>>>>
-> >>>>> Thank you already!
-> >>>>>
-> >>>>> Regards,
-> >>>>> Salvatore
-> >>>>
-> >>>> Hi Peter, Salvatore,
-> >>>> Thanks for reporting this crash, and sorry for the trouble. Here is =
-my
-> >>>> analysis.
-> >>>>
-> >>>> On 6.17.7, where commit d062463edf17 ("uio_hv_generic: Set event for=
- all
-> >>>> channels on the device") is present, hv_uio_irqcontrol() supports
-> >>>> setting of interrupt mask from userspace for sub-channels as well.
-> >>>>
-> >>>> This aligns with commit e29587c07537 ("uio_hv_generic: Let userspace
-> >>>> take care of interrupt mask") which relies on userspace to manage
-> >>>> interrupt mask, so it safely removes the interrupt mask management l=
-ogic
-> >>>> in the driver.
-> >>>>
-> >>>> However, in 6.12.57, the first commit is not present, but the second=
- one
-> >>>> is, so there is no way to disable interrupt mask for sub-channels an=
-d
-> >>>> interrupt_mask stays 0, which means interrupts are not masked. So we=
- may
-> >>>> be having an interrupt callback being handled for a sub-channel, whe=
-re
-> >>>> we do not expect it to come. This may be causing this issue.
-> >>>>
-> >>>> This would have led to a crash in hv_uio_channel_cb() for sub-channe=
-ls:
-> >>>> struct hv_device *hv_dev =3D chan->device_obj;
-> >>>>
-> >>>>
-> >>>> I have ported commit d062463edf17 ("uio_hv_generic: Set event for al=
-l
-> >>>> channels on the device") on 6.12.57, and resolved some merge conflic=
-ts.
-> >>>> Could you please help with testing this, if it works for you.
-> >>>
-> >>> Applying the patch against the debian 6.12.57 kernel worked, I am no
-> >>> longer seeing that panic on boot:
-> >>>
-> >>> gnos@vEdge:~$ uname -a
-> >>> Linux vEdge 6.12+unreleased-amd64 #1 SMP PREEMPT_DYNAMIC Debian
-> >>> 6.12.57-1a~test (2025-11-14) x86_64 GNU/Linux
-> >>> gnos@vEdge:~$ uptime
-> >>>    11:46:33 up 4 min,  1 user,  load average: 3.31, 2.07, 0.89
-> >>> gnos@vEdge:~$ sudo dmidecode -t system
-> >>> # dmidecode 3.6
-> >>> Getting SMBIOS data from sysfs.
-> >>> SMBIOS 3.1.0 present.
-> >>>
-> >>> Handle 0x0001, DMI type 1, 27 bytes
-> >>> System Information
-> >>>           Manufacturer: Microsoft Corporation
-> >>>           Product Name: Virtual Machine
-> >>>           Version: Hyper-V UEFI Release v4.1
-> >>>           Serial Number: 0000-0002-8036-1108-7588-3134-50
-> >>>           UUID: 26e86d6e-140c-496a-862c-a3b3bbcd16ad
-> >>>           Wake-up Type: Power Switch
-> >>>           SKU Number: None
-> >>>           Family: Virtual Machine
-> >>>
-> >>> Handle 0x0010, DMI type 32, 11 bytes
-> >>> System Boot Information
-> >>>           Status: No errors detected
-> >>>
-> >>> gnos@vEdge:~$
-> >>>
-> >>> Thanks a lot for the quick analysis!
-> >>>
-> >>> Peter.
-> >>
-> >> Hi Peter,
-> >>
-> >> Thanks for confirming. I am discussing this with Long Li, to hear his
-> >> thoughts on this, and have kept the patch ready.
-> >> Porting the same on 6.6 and older kernels would be a little different =
-since
-> >> we don't have commit 547fa4ffd799 ("uio_hv_generic: Enable interrupt f=
-or low
-> >> speed VMBus devices") on these kernels and this would lead to merge
-> >> conflicts, which needs to be handled separately.
-> >>
-> >> Meanwhile, if I should be including any tags in the fix patch for debi=
-an
-> >> bug, please let me know.
-> >
-> > Thank you very much for the quick analysis and fix.
-> >
-> > If you can add a Closes: https://bugs.debian.org/1120602 that would
-> > make our tracking for the fixes easier. But not sure if this is
-> > allowed for proposing the backport for a stable series, as it did not
-> > affect the upper releases.
-> >
-> > In any case your work is much appreciated!
-> >
-> > Regards,
-> > Salvatore
->
-> Hi,
-> I have sent the patches now to the list. Please consider adding your
-> tested-by if you find it alright.
->
-> Thanks.
->
-> Regards,
-> Naman
+Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
+Fixes: 53c24c2932e5 ("platform/x86: intel_cht_int33fe: use inline reference properties")
+Cc: stable@vger.kernel.org
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/all/20251121111534.7cdbfe5c@canb.auug.org.au/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+This should go into the reset tree as a fix to the regression introduced
+by the reset-gpio driver rework.
+---
+ drivers/platform/x86/intel/chtwc_int33fe.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/platform/x86/intel/chtwc_int33fe.c b/drivers/platform/x86/intel/chtwc_int33fe.c
+index 29e8b5432f4c9eea7dc45b83d94c0e00373f901b..d183aa53c318ba8d57c7124c38506e6956b3ee36 100644
+--- a/drivers/platform/x86/intel/chtwc_int33fe.c
++++ b/drivers/platform/x86/intel/chtwc_int33fe.c
+@@ -77,7 +77,7 @@ static const struct software_node max17047_node = {
+  * software node.
+  */
+ static struct software_node_ref_args fusb302_mux_refs[] = {
+-	{ .node = NULL },
++	SOFTWARE_NODE_REFERENCE(NULL),
+ };
+ 
+ static const struct property_entry fusb302_properties[] = {
+@@ -190,11 +190,6 @@ static void cht_int33fe_remove_nodes(struct cht_int33fe_data *data)
+ {
+ 	software_node_unregister_node_group(node_group);
+ 
+-	if (fusb302_mux_refs[0].node) {
+-		fwnode_handle_put(software_node_fwnode(fusb302_mux_refs[0].node));
+-		fusb302_mux_refs[0].node = NULL;
+-	}
+-
+ 	if (data->dp) {
+ 		data->dp->secondary = NULL;
+ 		fwnode_handle_put(data->dp);
+@@ -202,7 +197,15 @@ static void cht_int33fe_remove_nodes(struct cht_int33fe_data *data)
+ 	}
+ }
+ 
+-static int cht_int33fe_add_nodes(struct cht_int33fe_data *data)
++static void cht_int33fe_put_swnode(void *data)
++{
++	struct fwnode_handle *fwnode = data;
++
++	fwnode_handle_put(fwnode);
++	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(NULL);
++}
++
++static int cht_int33fe_add_nodes(struct device *dev, struct cht_int33fe_data *data)
+ {
+ 	const struct software_node *mux_ref_node;
+ 	int ret;
+@@ -212,17 +215,25 @@ static int cht_int33fe_add_nodes(struct cht_int33fe_data *data)
+ 	 * until the mux driver has created software node for the mux device.
+ 	 * It means we depend on the mux driver. This function will return
+ 	 * -EPROBE_DEFER until the mux device is registered.
++	 *
++	 * FIXME: the relevant software node exists in intel-xhci-usb-role-switch
++	 * and - if exported - could be used to set up a static reference.
+ 	 */
+ 	mux_ref_node = software_node_find_by_name(NULL, "intel-xhci-usb-sw");
+ 	if (!mux_ref_node)
+ 		return -EPROBE_DEFER;
+ 
++	ret = devm_add_action_or_reset(dev, cht_int33fe_put_swnode,
++				       software_node_fwnode(mux_ref_node));
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Update node used in "usb-role-switch" property. Note that we
+ 	 * rely on software_node_register_node_group() to use the original
+ 	 * instance of properties instead of copying them.
+ 	 */
+-	fusb302_mux_refs[0].node = mux_ref_node;
++	fusb302_mux_refs[0] = SOFTWARE_NODE_REFERENCE(mux_ref_node);
+ 
+ 	ret = software_node_register_node_group(node_group);
+ 	if (ret)
+@@ -345,7 +356,7 @@ static int cht_int33fe_typec_probe(struct platform_device *pdev)
+ 		return fusb302_irq;
+ 	}
+ 
+-	ret = cht_int33fe_add_nodes(data);
++	ret = cht_int33fe_add_nodes(dev, data);
+ 	if (ret)
+ 		return ret;
+ 
+
+---
+base-commit: cba510406ba76569782ead6007a0e4eb5d34a7ab
+change-id: 20251121-int33fe-swnode-fix-e896da458560
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
 
