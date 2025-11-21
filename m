@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F25C7A020
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ADBC793BC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 4F01F354D5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 8412E2B55C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC7834EF1F;
-	Fri, 21 Nov 2025 13:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3C827B358;
+	Fri, 21 Nov 2025 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7o233gV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlwM9q/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908E2FC88B;
-	Fri, 21 Nov 2025 13:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7AC26CE33;
+	Fri, 21 Nov 2025 13:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733218; cv=none; b=I5R6LR7i5Hve6lwQ5BolQLjIa8YFwazFzVpsZKaOFSpdz5A0Dqa+//8qhW9UsIRT9GZTe9E0H6n8vN9UE8BBelm5IQDJ/TlSoHsVIv32i2DixA8+gTLS0sMObJtjA+iDJJE6KnHB5/M/2WNXdgJNrcJm4jtFabfKWqMqqWgdaQ8=
+	t=1763731259; cv=none; b=sgNGQFGC0D/fO+SF9i63GUZEONl0IpRJjZlbTvUzgc10wu9bybNaXGpV22Z2W3Ft1uWqA0Ki/1dqhIM6vpvUTtIKPg+If4NlTbdWCx6JSXQWO+gKqDkHdhEqxqxcz6NmyVDPwPRgj5Ma/7SksTvefxewiXOdO8e1Yl+Sci7RMNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733218; c=relaxed/simple;
-	bh=dukgTRRj81PcQxLp1euul06hDPDrD2eLz0TPl5rDnbE=;
+	s=arc-20240116; t=1763731259; c=relaxed/simple;
+	bh=1SnpEB3RqQG44QGH2FnB7wJWUJtXrAMwUjLNAUrxIXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpniCF+zWSB6OC9lC5WVjXxvYp7qJaqSOLAfmhDJ04g35G9ubNbvs7ftzV4nKHNApU58lJZm4mSrd7s3k+i1ZI8IPtIO9uRR8gssfQBU+h5bwR6jh1CJgCiXdl8eNtE2hQu1TFpVYuexSzYxey2CseFAzXG8AKfOQoYOIIAyO78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7o233gV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F255EC4CEF1;
-	Fri, 21 Nov 2025 13:53:37 +0000 (UTC)
+	 MIME-Version; b=gQQY4mJobK280yEQ6ryTwHLI3yGN5Cu6MSoYJncGlsMSmGBgsx42JbsZq3L31gDxDBfqqb+OSA+lk3nhaOwGmpHb817wF0V+wObzd/mz/8sr8WnstDVwryqWiF+UwQqUvSmd1oWKKb1qGa8S1lj4yMHjhPcBpU5+hpauEL6aB5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlwM9q/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42020C4CEF1;
+	Fri, 21 Nov 2025 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733218;
-	bh=dukgTRRj81PcQxLp1euul06hDPDrD2eLz0TPl5rDnbE=;
+	s=korg; t=1763731258;
+	bh=1SnpEB3RqQG44QGH2FnB7wJWUJtXrAMwUjLNAUrxIXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7o233gVTgsheE7o8TOyjMX7bf0AQa8tchqJxMb8IRnO264lHFw5OGqAK2nCUH25p
-	 5bxXoTnU+zP3ikYqpsBosjmGJN6GU6PDb/0joy23B37DN92iyRjNowTrkSles6ZR1d
-	 flr2yBA9vqChIWXwjHcUoqPW+HHmSbGfvi1q0PjY=
+	b=JlwM9q/DIpkL8eaj1lUIXhRDPMlglrZwP8UnKRnGkU5H2vqiyKHeucS/QJZu4ajEi
+	 u+RfioBmvjFIcvLkEM4Jr9BkqSOXjbL3CvIUxSy83nYOUxtYbZ1cW75SkrS6gAVCoS
+	 i1GckePshcDPD2umKKBIW1/Sh39K4LTBDpUNdtKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharique Mohammad <sharq0406@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 393/529] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
+Subject: [PATCH 6.17 145/247] arm64: dts: rockchip: drop reset from rk3576 i2c9 node
 Date: Fri, 21 Nov 2025 14:11:32 +0100
-Message-ID: <20251121130245.005958907@linuxfoundation.org>
+Message-ID: <20251121130159.928164722@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharique Mohammad <sharq0406@gmail.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
+[ Upstream commit 264152a97edf9f1b7ed5372e4033e46108e41422 ]
 
-The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
-suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
-are turned on or off, the required startup or shutdown sequences
-must be taken care by the max98090_shdn_event.
+The reset property is not part of the binding, so drop it.
+It is also not used by the driver, so it was likely copied
+from some vendor-kernel node.
 
-Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
-Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 57b1ce903966 ("arm64: dts: rockchip: Add rk3576 SoC base DT")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://patch.msgid.link/20251101140101.302229-1-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98090.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
-index 2adf744c65263..4023b88e7bc13 100644
---- a/sound/soc/codecs/max98090.c
-+++ b/sound/soc/codecs/max98090.c
-@@ -1234,9 +1234,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
- 	SND_SOC_DAPM_INPUT("DMIC4"),
- 
- 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
-+			SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
-+			 SND_SOC_DAPM_POST_PMU),
- };
- 
- static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+index c3cdae8a54941..f236edcac3767 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+@@ -2311,8 +2311,6 @@
+ 			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&i2c9m0_xfer>;
+-			resets = <&cru SRST_I2C9>, <&cru SRST_P_I2C9>;
+-			reset-names = "i2c", "apb";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			status = "disabled";
 -- 
 2.51.0
 
