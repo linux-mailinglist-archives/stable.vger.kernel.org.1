@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D550C79286
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:15:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3749C79C87
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 45C952DD75
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AA82B4EF327
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2243342C8B;
-	Fri, 21 Nov 2025 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477D434B68F;
+	Fri, 21 Nov 2025 13:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z65ku5dP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajP3YYsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A72431158A;
-	Fri, 21 Nov 2025 13:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051EB34403B;
+	Fri, 21 Nov 2025 13:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730899; cv=none; b=aFED7jUUuvv1PUTrsb7Idq6E0iQ+NE4A010MHvDjjWq4G9yBn97zBnG4AQp7EWcQstxbZLj8Qs2DeLYaDaavEnplm/aO/A/+rAb7IESD6q5p63+2z6rQas2IIxKX6AvBgEXJRD90nB0g3TYG0F9CGXkFwp/gNX4Pk3eR5SXDFsE=
+	t=1763732870; cv=none; b=DQWnGbTvg+OWbJqpod74IotOZvopKQjXolx5J3J1W1TCfAssE9LpBzHZBZfG07Erl4np7z6MwH53OHrqKxrFWvK1Sw6+pkv4HEwRGHXCo1dhTIh6eHuMgf4EK01voaHgLKOqUuHVLaamOvBfl8jx4GBY/sGG0T6Ahtvrv4a83HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730899; c=relaxed/simple;
-	bh=aEHcJxbupDEP+5YAmIB69RKhTXHeVDtNqA54bJe1W4E=;
+	s=arc-20240116; t=1763732870; c=relaxed/simple;
+	bh=LPljobZcc0oo3Hw60/zRknBEqX3Xo8ebvxMEgJd52Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=im4ThlF1Lh+LlsGrqyYfeZWjlk++8lPOG6wM3GUrAs9UOKEwr9yPVe3HdNd9WnJjgLrsPaX7GlLXGxajTrC4KmhRabQzvD4+oTImDLWFek1di3Hbu2ht1Q3KOVmRyO03kfFW+60wmJSOLW6eIkBPRYAlo+6x4yq67Q1cwCuxeKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z65ku5dP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2579BC4CEFB;
-	Fri, 21 Nov 2025 13:14:57 +0000 (UTC)
+	 MIME-Version; b=mgYdT4cGEGjZC4MTO1sN2i76rjvcyISyUjnKvnDhx/bs6fZQbFYLDctKOzTRtNUlWExWQfpkjbuqzXJnh4dROUaia68jEZUJAlULmjsc21gPuvMZTiTRRK71G3ybLQII9UU7ZyFT3M3A6v2laB5qopEXKJk3QusA4DLkSwHzVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajP3YYsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305ACC4CEF1;
+	Fri, 21 Nov 2025 13:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730898;
-	bh=aEHcJxbupDEP+5YAmIB69RKhTXHeVDtNqA54bJe1W4E=;
+	s=korg; t=1763732868;
+	bh=LPljobZcc0oo3Hw60/zRknBEqX3Xo8ebvxMEgJd52Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z65ku5dPZWhpp32csxU6BBoz8hihAwX4jmtXgaFVr/60WUjDY7D0XhlhGKl5JHeAr
-	 bF7Vae0VnzzVeulVQDI75vSmyvOm6hRrE0xMSsAp9205esYiBkc0LPuyKfmLbCeVXB
-	 +e94FYY9GgJvgMFY6B+jELjIu5xEI8Cazamx/oBY=
+	b=ajP3YYsM9sdD1Q7JYERn5qU4PCe2A7Xs0x8SW+dHPmkeNHqZpo947TvMzrSIch7oQ
+	 MUHM6dntk6vDkrkfqGP+kCXdh6MC4DC31v2iGndZeEXZUi/ZBv11w8s74OgkyPznYW
+	 AFQ5pKrFvuUMbobm5av9W5/v15BxFDi7aKKRhG9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Jiang <jiangfeng@kylinos.cn>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 021/247] riscv: Build loader.bin exclusively for Canaan K210
-Date: Fri, 21 Nov 2025 14:09:28 +0100
-Message-ID: <20251121130155.363449989@linuxfoundation.org>
+Subject: [PATCH 6.6 270/529] NFSv4.1: fix mount hang after CREATE_SESSION failure
+Date: Fri, 21 Nov 2025 14:09:29 +0100
+Message-ID: <20251121130240.628480345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Jiang <jiangfeng@kylinos.cn>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 3ad1b71fdc5707d14332d9ae710a237de936be9b ]
+[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
 
-According to the explanation in commit ef10bdf9c3e6 ("riscv:
-Kconfig.socs: Split ARCH_CANAAN and SOC_CANAAN_K210"),
-loader.bin is a special feature of the Canaan K210 and
-is not applicable to other SoCs.
+When client initialization goes through server trunking discovery, it
+schedules the state manager and then sleeps waiting for nfs_client
+initialization completion.
 
-Fixes: e79dfcbfb902 ("riscv: make image compression configurable")
-Signed-off-by: Feng Jiang <jiangfeng@kylinos.cn>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Link: https://lore.kernel.org/r/20251029094429.553842-1-jiangfeng@kylinos.cn
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+The state manager can fail during state recovery, and specifically in
+lease establishment as nfs41_init_clientid() will bail out in case of
+errors returned from nfs4_proc_create_session(), without ever marking
+the client ready. The session creation can fail for a variety of reasons
+e.g. during backchannel parameter negotiation, with status -EINVAL.
+
+The error status will propagate all the way to the nfs4_state_manager
+but the client status will not be marked, and thus the mount process
+will remain blocked waiting.
+
+Fix it by adding -EINVAL error handling to nfs4_state_manager().
+
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index df57654a615e0..c4e394ede6256 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -166,7 +166,7 @@ boot-image-$(CONFIG_KERNEL_LZO)		:= Image.lzo
- boot-image-$(CONFIG_KERNEL_ZSTD)	:= Image.zst
- boot-image-$(CONFIG_KERNEL_XZ)		:= Image.xz
- ifdef CONFIG_RISCV_M_MODE
--boot-image-$(CONFIG_ARCH_CANAAN)	:= loader.bin
-+boot-image-$(CONFIG_SOC_CANAAN_K210)	:= loader.bin
- endif
- boot-image-$(CONFIG_EFI_ZBOOT)		:= vmlinuz.efi
- boot-image-$(CONFIG_XIP_KERNEL)		:= xipImage
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 9fc71dc090c25..78d52c2006dcc 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2746,6 +2746,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	case -ENETUNREACH:
+ 		nfs_mark_client_ready(clp, -EIO);
+ 		break;
++	case -EINVAL:
++		nfs_mark_client_ready(clp, status);
++		break;
+ 	default:
+ 		ssleep(1);
+ 		break;
 -- 
 2.51.0
 
