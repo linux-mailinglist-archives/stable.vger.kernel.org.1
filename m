@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904A4C7A0A4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C696C796DA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF3474F3146
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 1689B2A6AA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECFB34EF1F;
-	Fri, 21 Nov 2025 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7D0346A06;
+	Fri, 21 Nov 2025 13:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOH0uLaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsOR+yIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DE034EF19;
-	Fri, 21 Nov 2025 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CB4346A0E;
+	Fri, 21 Nov 2025 13:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733460; cv=none; b=S/iZ3hodZRgq+VtJkG1/h3YLENIQ+lr0WPiO0b6AjizwRb2nt8/Yzm4LYvD0/se4EKuwaG054Lu6CyYwgD5MYkr7GshCWQjwRUCgg1NLT3Vh7WZlRFoKz0qqO4WJuC4ndMQyDBaxzRhSlKwblPii2XJQNT3zM89OqYo1NvHbQPI=
+	t=1763731979; cv=none; b=tio5Whfnpb0jSA4KUJBtmRE74OBtDwVV/V6LPhU++F67gIlEjApV1DQuvUFs0/Z++iX4iZMm9buECd31FXYLSjaSRD4SCA+Yei2S6J2R0bC3Yvuk1UNpLe8EHm6+rfCJeSPg/qKmIvF6Q+vhkg6P+H2YV6HmGUK360vKO5aPvAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733460; c=relaxed/simple;
-	bh=fGjtVKYdMVSJ9m2uOdsqUzojBymU2XBofCz6UmECXCE=;
+	s=arc-20240116; t=1763731979; c=relaxed/simple;
+	bh=IyH6dU674VyWLsyhZQrB+xsO1vX2+HxerrF1dwXU6OQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyPSmEVwawvFTVytjH8ahTCtJ8EZZLyB+hZeqZQ4wU0bfLaq26Ri2gxdgyFF63+aXWxKhhEBOkg+47cAuP/aO4qy3yGx3QesQXlS2niGH0MOkDiQIZDNipvaSJzr9iyz36EVEP1mKedimoWJhkrRVPqWzmeFaYfFBEsEufVGe7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOH0uLaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AD0C4CEF1;
-	Fri, 21 Nov 2025 13:57:39 +0000 (UTC)
+	 MIME-Version; b=gr6xVM/QM5kuco6j9i9J473EHCa1V7A24EVqA3C6XYSHFhVKOBzWP3YoYMYxhA/DI4xhgT1AdfQExTBD2decA1khqEOT8Yd5G8fwl/AWoedbotyxy11O+ATJao04JeEyyYM1HzWd7jSS2EIiy4ZuG2+E+XBs8vNf3DAwoVHpCpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsOR+yIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95289C4CEF1;
+	Fri, 21 Nov 2025 13:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733460;
-	bh=fGjtVKYdMVSJ9m2uOdsqUzojBymU2XBofCz6UmECXCE=;
+	s=korg; t=1763731979;
+	bh=IyH6dU674VyWLsyhZQrB+xsO1vX2+HxerrF1dwXU6OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOH0uLaZToXCzMpiayfPO7qlJGujAsgGnvaRqQYBSEYK+dTxoAj9JTk7nmJftQUNC
-	 Bo1h4slA93HZF66F7oGQUE2p31K+XrrInSj3GnaaVKRQ0UecllozV+l7fWT2uogXSV
-	 ocMbdb7pja/li4aCvcOzsC80Vz+C+UWn2wAqt3xc=
+	b=LsOR+yIMdiRy4iNLK+tRah4SKf9znZD94pILJ9l0n77dTH50N29kXRxcLAoTINox2
+	 1A4OnyPtBPgKUXtqqJ8rHDcTmtfeM5wr0AWGY71KTI/54F6H9PAWOP+IudVEYMzD6r
+	 Ct6TyCK/PzRmuynI6ql9n41P3HJ2G3N++W5x6eK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Hugh Cole-Baker <sigmaris@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 475/529] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to 0x4
+	Qu Wenruo <wqu@suse.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 147/185] btrfs: release root after error in data_reloc_print_warning_inode()
 Date: Fri, 21 Nov 2025 14:12:54 +0100
-Message-ID: <20251121130247.911464708@linuxfoundation.org>
+Message-ID: <20251121130149.183505494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit a28352cf2d2f8380e7aca8cb61682396dca7a991 upstream.
+commit c367af440e03eba7beb0c9f3fe540f9bcb69134a upstream.
 
-strbin signal delay under 0x8 configuration is not stable after massive
-test. The recommandation of it should be 0x4.
+data_reloc_print_warning_inode() calls btrfs_get_fs_root() to obtain
+local_root, but fails to release its reference when paths_from_inode()
+returns an error. This causes a potential memory leak.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Alexey Charkov <alchark@gmail.com>
-Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
-Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Add a missing btrfs_put_root() call in the error path to properly
+decrease the reference count of local_root.
+
+Fixes: b9a9a85059cde ("btrfs: output affected files when relocation fails")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -54,7 +54,7 @@
- #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
- #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
- #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
--#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
- #define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
- #define DLL_STRBIN_DELAY_NUM_SEL	BIT(26)
- #define DLL_STRBIN_DELAY_NUM_OFFSET	16
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -174,8 +174,10 @@ static int data_reloc_print_warning_inod
+ 		return ret;
+ 	}
+ 	ret = paths_from_inode(inum, ipath);
+-	if (ret < 0)
++	if (ret < 0) {
++		btrfs_put_root(local_root);
+ 		goto err;
++	}
+ 
+ 	/*
+ 	 * We deliberately ignore the bit ipath might have been too small to
 
 
 
