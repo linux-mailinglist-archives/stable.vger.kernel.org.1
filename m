@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-196441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9625C7A047
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B810CC79886
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 10686348E80
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 6E9FD2F411
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43855346E57;
-	Fri, 21 Nov 2025 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB35341ADF;
+	Fri, 21 Nov 2025 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klerKMhY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YES6Xu4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE904350A09;
-	Fri, 21 Nov 2025 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96852332904;
+	Fri, 21 Nov 2025 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733521; cv=none; b=YlhKfXe99RThYGZcg5LT+OyMkZHfjFfgJgWUoSOvh7CfwbuimZsWfMnoiNyO28O2vTy+jmgE5vLh1PgmhRg5goxihYwOzGVPGffAdz4gK5e/nRSYStKdpzOd75NAJ4nbSUyTo/owbJZuh4HqEaJ0U8YK0EorFvyN6mzcmJ7I/yg=
+	t=1763731941; cv=none; b=PiBPBDp/DFTwnMXCZMSixYLRSzCPbl758tItFNuYZRKXCPKACQVyTZxjmP67hjJCXQOMP+zQMlR1PactkooSKRlM157khH3hHtgmfLS6jBWTlxbNZJ+2bseOqDjn2OsAoIgqbH+xCunzU3j9RjgDEe/V85wpk63deJC8JL6ZPuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733521; c=relaxed/simple;
-	bh=s9x1lgHQFNw01M9ijSx+9mjgPjLF0lIEKnVpngWnxBM=;
+	s=arc-20240116; t=1763731941; c=relaxed/simple;
+	bh=BT0f1X799ahFFW4+Gz+VY1gqUWtSrAOCYV7kqaRsj2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+txXMNGxUQAQJhJJNE6w707kpeVKrh1pBG4+5JG+YoE/qRKRZNvOsw4jMSdRKA3j3SA2YNGUY1NXGObcWozFuNRE6RdtnTiXTlXXxDdnYuo+Wc41E61AcOYbc8AfBYlhyp8RiVEgSAwB0QOc1/mIQ4Z4TCB2tLSZWu4LCSD3DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klerKMhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA1FC116C6;
-	Fri, 21 Nov 2025 13:58:40 +0000 (UTC)
+	 MIME-Version; b=EYpkVa71P/TCzjoGKPk4Bd2v8GISHwxNCGqlYkj2GQ9koYWQCkXoXfNdSCpAGeVGu2aWh8KkKnsQt6B2/IZNrPA9oPXnxcHIq606vk7o3WNS0h/9FxRS18Kwo579cBxycznEVJ68fEU23STXp+ZGvohopGAprDMTSqaOv/zM0Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YES6Xu4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6788C4CEF1;
+	Fri, 21 Nov 2025 13:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733520;
-	bh=s9x1lgHQFNw01M9ijSx+9mjgPjLF0lIEKnVpngWnxBM=;
+	s=korg; t=1763731941;
+	bh=BT0f1X799ahFFW4+Gz+VY1gqUWtSrAOCYV7kqaRsj2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klerKMhYgS71VW1wN57ugv6JeSDzuM6zuVqcwZSGOkYx0+FpObqj0v1fi9iM7HD9o
-	 7FDivNCOIqFAjOxnLpuc5F/VhpJbF+S4872Y0NaOWcw3nZogv9xo2mH1eUKIsnuflP
-	 HKBu7/bbTG6VBGoYeUL7+TV72gUfYzkQkjyLSe5g=
+	b=YES6Xu4LCiDql4EAAWejnnftSQImU1YTXgEtxJBdaAi5w1emWbpweJyUUsIN12wI4
+	 5/KEg3bMnYsKjkPTwcmpGO3BcWD79JWSOmh9KJykUowTq3SpR0UM+KY8Fj5iy7bmmg
+	 QX0j/EzZxb9/o0152lSl/NccM9PwF39FAx0GfS8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rtm@csail.mit.edu,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 463/529] NFSD: free copynotify stateid in nfs4_free_ol_stateid()
+	Hans de Goede <hansg@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 135/185] spi: Try to get ACPI GPIO IRQ earlier
 Date: Fri, 21 Nov 2025 14:12:42 +0100
-Message-ID: <20251121130247.484977332@linuxfoundation.org>
+Message-ID: <20251121130148.746433702@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Hans de Goede <hansg@kernel.org>
 
-commit 4aa17144d5abc3c756883e3a010246f0dba8b468 upstream.
+commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
 
-Typically copynotify stateid is freed either when parent's stateid
-is being close/freed or in nfsd4_laundromat if the stateid hasn't
-been used in a lease period.
+Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+on the SPI device.
 
-However, in case when the server got an OPEN (which created
-a parent stateid), followed by a COPY_NOTIFY using that stateid,
-followed by a client reboot. New client instance while doing
-CREATE_SESSION would force expire previous state of this client.
-It leads to the open state being freed thru release_openowner->
-nfs4_free_ol_stateid() and it finds that it still has copynotify
-stateid associated with it. We currently print a warning and is
-triggerred
+If there is no driver for the SPI device then the move to spi_probe()
+results in acpi_dev_gpio_irq_get() never getting called. This may
+cause problems by leaving the GPIO pin floating because this call is
+responsible for setting up the GPIO pin direction and/or bias according
+to the values from the ACPI tables.
 
-WARNING: CPU: 1 PID: 8858 at fs/nfsd/nfs4state.c:1550 nfs4_free_ol_stateid+0xb0/0x100 [nfsd]
+Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+to ensure the GPIO pin is always correctly setup, while keeping the
+acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+-EPROBE_DEFER returns caused by the GPIO controller not having a driver
+yet.
 
-This patch, instead, frees the associated copynotify stateid here.
-
-If the parent stateid is freed (without freeing the copynotify
-stateids associated with it), it leads to the list corruption
-when laundromat ends up freeing the copynotify state later.
-
-[ 1626.839430] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[ 1626.842828] Modules linked in: nfnetlink_queue nfnetlink_log bluetooth cfg80211 rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd nfs_acl lockd grace nfs_localio ext4 crc16 mbcache jbd2 overlay uinput snd_seq_dummy snd_hrtimer qrtr rfkill vfat fat uvcvideo snd_hda_codec_generic videobuf2_vmalloc videobuf2_memops snd_hda_intel uvc snd_intel_dspcfg videobuf2_v4l2 videobuf2_common snd_hda_codec snd_hda_core videodev snd_hwdep snd_seq mc snd_seq_device snd_pcm snd_timer snd soundcore sg loop auth_rpcgss vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs 8021q garp stp llc mrp nvme ghash_ce e1000e nvme_core sr_mod nvme_keyring nvme_auth cdrom vmwgfx drm_ttm_helper ttm sunrpc dm_mirror dm_region_hash dm_log iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse dm_multipath dm_mod nfnetlink
-[ 1626.855594] CPU: 2 UID: 0 PID: 199 Comm: kworker/u24:33 Kdump: loaded Tainted: G    B   W           6.17.0-rc7+ #22 PREEMPT(voluntary)
-[ 1626.857075] Tainted: [B]=BAD_PAGE, [W]=WARN
-[ 1626.857573] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
-[ 1626.858724] Workqueue: nfsd4 laundromat_main [nfsd]
-[ 1626.859304] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[ 1626.860010] pc : __list_del_entry_valid_or_report+0x148/0x200
-[ 1626.860601] lr : __list_del_entry_valid_or_report+0x148/0x200
-[ 1626.861182] sp : ffff8000881d7a40
-[ 1626.861521] x29: ffff8000881d7a40 x28: 0000000000000018 x27: ffff0000c2a98200
-[ 1626.862260] x26: 0000000000000600 x25: 0000000000000000 x24: ffff8000881d7b20
-[ 1626.862986] x23: ffff0000c2a981e8 x22: 1fffe00012410e7d x21: ffff0000920873e8
-[ 1626.863701] x20: ffff0000920873e8 x19: ffff000086f22998 x18: 0000000000000000
-[ 1626.864421] x17: 20747562202c3839 x16: 3932326636383030 x15: 3030666666662065
-[ 1626.865092] x14: 6220646c756f6873 x13: 0000000000000001 x12: ffff60004fd9e4a3
-[ 1626.865713] x11: 1fffe0004fd9e4a2 x10: ffff60004fd9e4a2 x9 : dfff800000000000
-[ 1626.866320] x8 : 00009fffb0261b5e x7 : ffff00027ecf2513 x6 : 0000000000000001
-[ 1626.866938] x5 : ffff00027ecf2510 x4 : ffff60004fd9e4a3 x3 : 0000000000000000
-[ 1626.867553] x2 : 0000000000000000 x1 : ffff000096069640 x0 : 000000000000006d
-[ 1626.868167] Call trace:
-[ 1626.868382]  __list_del_entry_valid_or_report+0x148/0x200 (P)
-[ 1626.868876]  _free_cpntf_state_locked+0xd0/0x268 [nfsd]
-[ 1626.869368]  nfs4_laundromat+0x6f8/0x1058 [nfsd]
-[ 1626.869813]  laundromat_main+0x24/0x60 [nfsd]
-[ 1626.870231]  process_one_work+0x584/0x1050
-[ 1626.870595]  worker_thread+0x4c4/0xc60
-[ 1626.870893]  kthread+0x2f8/0x398
-[ 1626.871146]  ret_from_fork+0x10/0x20
-[ 1626.871422] Code: aa1303e1 aa1403e3 910e8000 97bc55d7 (d4210000)
-[ 1626.871892] SMP: stopping secondary CPUs
-
-Reported-by: rtm@csail.mit.edu
-Closes: https://lore.kernel.org/linux-nfs/d8f064c1-a26f-4eed-b4f0-1f7f608f415f@oracle.com/T/#t
-Fixes: 624322f1adc5 ("NFSD add COPY_NOTIFY operation")
+Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
 Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1496,7 +1496,8 @@ static void nfs4_free_ol_stateid(struct
- 	release_all_access(stp);
- 	if (stp->st_stateowner)
- 		nfs4_put_stateowner(stp->st_stateowner);
--	WARN_ON(!list_empty(&stid->sc_cp_list));
-+	if (!list_empty(&stid->sc_cp_list))
-+		nfs4_free_cpntf_statelist(stid->sc_client->net, stid);
- 	kmem_cache_free(stateid_slab, stid);
- }
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2879,6 +2879,16 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
++	/*
++	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
++	 * the GPIO controller does not have a driver yet. This needs to be done
++	 * here too, because this call sets the GPIO direction and/or bias.
++	 * Setting these needs to be done even if there is no driver, in which
++	 * case spi_probe() will never get called.
++	 */
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++
+ 	acpi_device_set_enumerated(adev);
+ 
+ 	adev->power.flags.ignore_parent = true;
 
 
 
