@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4FFC79EF7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68790C7927D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 7603934532
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 0E15C2DA48
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDFC350D51;
-	Fri, 21 Nov 2025 13:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C922F363E;
+	Fri, 21 Nov 2025 13:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR4Ymhi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPLeLhI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7CB346A0E;
-	Fri, 21 Nov 2025 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B742FDC3E;
+	Fri, 21 Nov 2025 13:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732816; cv=none; b=dajbT+CPjch7tqbF6IAKin5rfljWcAFVwgKj7sQpFvHqOF4PR44eN5UU3H/OMiu0nLUeDGMF9tgpiJDPYGLt2wWSKh6CCfHIXSNeVYbVJju9gLjEGBus3koEPLNBO8KPZXGUJQEV16mGEHM1+qzouFTm9M8K5bwERDbLkKb48aA=
+	t=1763730878; cv=none; b=kpag6EbqWkEUvkAXrQMwUJnotgjdkfL2vlXcZcZgxS8cSbVmlUWoRtC6/8pbc8f2FJM8Y7C8qUdch9hGrlwvXZY3yFculVU+c1ugsEdQzuGSgowsXieuAvX1GXMwMxIt3TIbPL3LpI5gP270Hv/FJkL2s6dzXav1YgRUSmkss6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732816; c=relaxed/simple;
-	bh=RbijoJT+ktgBPqCIwL52aup2UvmfjzlxPQ1PHC1rOJY=;
+	s=arc-20240116; t=1763730878; c=relaxed/simple;
+	bh=Rp8CunzxZkZZZ56gSTMaXX4vV/rzBK+n5pOiDpR4zS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+ui+No7PCmhelv5R2gfwv0m2r1In5SnkHtlqZnSXsa2iJPVLylF3rcQ1ZJ2m1Xoe6CZKlVBOLrwkYYE0fzCSHd8ycEbpdgzM4y5YAYqOJGUJDYxPOp9cSa/8xpin2F+ontv9fBK9cYe7zAO6u/WICVASog0mQ/F2MWCqwsrDQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR4Ymhi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5334AC4CEFB;
-	Fri, 21 Nov 2025 13:46:56 +0000 (UTC)
+	 MIME-Version; b=dofu7np6hlh1fvd6M+iAAuZN1ys7Kn7WkVCkQY9sCfO5o0qRSoG7M4dfnMeHdfySt1z4Yd+2aLK1BhSJkkYR79cc0/usiBjAfSLdspov2w3M0E9MtY0RRTpSmJw/X/pjFc0tKthiQiyMyTLdWvm2NyJGtxUXEC8O7V036nUo3kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPLeLhI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6695AC4CEF1;
+	Fri, 21 Nov 2025 13:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732816;
-	bh=RbijoJT+ktgBPqCIwL52aup2UvmfjzlxPQ1PHC1rOJY=;
+	s=korg; t=1763730878;
+	bh=Rp8CunzxZkZZZ56gSTMaXX4vV/rzBK+n5pOiDpR4zS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xR4Ymhi2HQU7vQH2F/Yf2nk6TXV8y0+kvovWnWSj0SIRXEjlac5egVRNrfZcjoD+D
-	 PrFaQzYHq9TNrb99JZT74yHNXrbBQlIh5y/EpuO95B0qqsL502Q6gXQ7Bcc5DHcFyw
-	 UDh1a7XWklDFmybcONlu0SwLYVaKSAJ69xlbfnwo=
+	b=mPLeLhI0e2tGM3m8h6asX4wOyrrUFgpummQ6n2u7xDHMWS7KWcQywUzaab1Uknszd
+	 7RJwG12ZmhjjObyjQ6RnKX8Z/b4A/KNWC6AIsr2VSC5Qd5dW5A88b3H3R5ytk149Am
+	 BhbeF5Vdb2ervuo4pZUecxRCWXSnNsicfGJAmXbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/529] ASoC: qcom: sc8280xp: explicitly set S16LE format in sc8280xp_be_hw_params_fixup()
+Subject: [PATCH 6.17 006/247] drm/amd/display: Dont stretch non-native images by default in eDP
 Date: Fri, 21 Nov 2025 14:09:13 +0100
-Message-ID: <20251121130240.057705856@linuxfoundation.org>
+Message-ID: <20251121130154.825677407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 9565c9d53c5b440f0dde6fa731a99c1b14d879d2 ]
+[ Upstream commit 3362692fea915ce56345366364a501c629c9ff17 ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+commit 978fa2f6d0b12 ("drm/amd/display: Use scaling for non-native
+resolutions on eDP") started using the GPU scaler hardware to scale
+when a non-native resolution was picked on eDP. This scaling was done
+to fill the screen instead of maintain aspect ratio.
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250911154340.2798304-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The idea was supposed to be that if a different scaling behavior is
+preferred then the compositor would request it.  The not following
+aspect ratio behavior however isn't desirable, so adjust it to follow
+aspect ratio and still try to fill screen.
+
+Note: This will lead to black bars in some cases for non-native
+resolutions. Compositors can request the previous behavior if desired.
+
+Fixes: 978fa2f6d0b1 ("drm/amd/display: Use scaling for non-native resolutions on eDP")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4538
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 825df7ff4bb1a383ad4827545e09aec60d230770)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sc8280xp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
-index d5cc967992d16..ee195a54d0c3b 100644
---- a/sound/soc/qcom/sc8280xp.c
-+++ b/sound/soc/qcom/sc8280xp.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include <sound/jack.h>
- #include <linux/input-event-codes.h>
-@@ -58,8 +59,10 @@ static int sc8280xp_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 
- 	rate->min = rate->max = 48000;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
- 	channels->min = 2;
- 	channels->max = 2;
- 	switch (cpu_dai->id) {
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index b997718f624f8..f06c918f5a33a 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8003,7 +8003,7 @@ static int dm_encoder_helper_atomic_check(struct drm_encoder *encoder,
+ 				       "mode %dx%d@%dHz is not native, enabling scaling\n",
+ 				       adjusted_mode->hdisplay, adjusted_mode->vdisplay,
+ 				       drm_mode_vrefresh(adjusted_mode));
+-			dm_new_connector_state->scaling = RMX_FULL;
++			dm_new_connector_state->scaling = RMX_ASPECT;
+ 		}
+ 		return 0;
+ 	}
 -- 
 2.51.0
 
