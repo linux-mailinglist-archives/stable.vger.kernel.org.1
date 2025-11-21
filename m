@@ -1,91 +1,150 @@
-Return-Path: <stable+bounces-196498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBA0C7A698
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:08:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEA5C7A719
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D383A35F8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22EF63A1294
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76DA25EFBB;
-	Fri, 21 Nov 2025 15:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1492F28D82F;
+	Fri, 21 Nov 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lm8OnJDB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tRqYNPzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066B9155757;
-	Fri, 21 Nov 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C860E221F0A
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737431; cv=none; b=VpcemZFqPE30rr0wIHLqkZ/9nHE7a6sdOJ/e6tSUt3BBOfzCua9bNm/knY7D9G/zqOHCg4nuKWkivWFlf6xceKvdVHHjYOHRPwliQ/NBW3x4m4L8rXE1lZArWvs7c4S11Bw7lZkXyOuHTjnpLZuUPqeV4Y5hb48r3K+usB5teOw=
+	t=1763737903; cv=none; b=c7e4qlJ9XmKXrC2a5frRDST1dqiLfx6o0NK62PIU0jNME6LtBJrOUgFvHVfydWYL6wVt1w8hd5HfZtuKgjtSeD5zBjU7g5WTwOhxQDvQugOeqVbvBHAb8G6jVDRhcCXVDrDh6NR9kozUMhlPVNap7BAywvyhlmcC/3SwtN8EdQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737431; c=relaxed/simple;
-	bh=4Y010r8OP+aEQDTrEp6aW2CR91SGZ7aMkR2g+id02+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDX8LqexBBg83Bhu0wlu4/00dbVgSujgHH35U2g9kf+Bh+03oO1QdAljQrcrwt6u0WAphx9tL1TNr31X1F3t0Y0UiH2qC8viXmleeZmJU3xOu7G/RZAp75j1feEjeisAToVAfG9TNKT4GSSS47RE4h/oBrkizKhNPQBsB7STD1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lm8OnJDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B61FC4CEF1;
-	Fri, 21 Nov 2025 15:03:49 +0000 (UTC)
+	s=arc-20240116; t=1763737903; c=relaxed/simple;
+	bh=tLQk0k5vh+Mj6/nbDJE9tSmjNZwEVI2yygeNEEc394c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mUorR7tGuCpX3HxzyChyT489DIWFdOChcZfUSDVh8qybtV5HXzjvKwSv2iXlaXlSOUMoBLS+rk9KbH0bv7av0RO4HACJXDZC4V+L3h7t7L02BF562h7XmLZtNyOCGelpTUeEpl5rB+k06KH3KEv01roGyTEdxe4x7tKhTnvvwKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tRqYNPzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919B8C4CEF1;
+	Fri, 21 Nov 2025 15:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763737429;
-	bh=4Y010r8OP+aEQDTrEp6aW2CR91SGZ7aMkR2g+id02+k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lm8OnJDBehbBmGJ7X1hIZnEUh4EB1eHF3gULcLdzDXoj0YrwTLRJbREcyOm9KRboX
-	 GGaKW9c7UJBQj0qE9/fxthktOvss2pKFWbKeTwAfxnvW8Rz7vKiKz9deAOqLau0+ul
-	 U8WUJukFlMRs/Mv2Ay1Wk1/44ZTCO+EN9SeDmuTK37IRuOfl0JYzaUN9UZvDFlWbn7
-	 oXFdw04ARCldxMd0Y+X1er1JS+Feu8Brnp7h5LN3f+S0YXDDpMs+xyqu+jcxhV+4xU
-	 ZeDzuIvK8fvV8ufLw0tJpeHYtE1tp/SQiz3lOUT9XRCj2bkEg4YKDkRt0lfJfKcOuE
-	 yk9Kwb54bF+RQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vMSfu-000000006be-1iiH;
-	Fri, 21 Nov 2025 16:03:50 +0100
-Date: Fri, 21 Nov 2025 16:03:50 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] soc: samsung: exynos-pmu: fix device leak on regmap
- lookup
-Message-ID: <aSB_VoKvDUHDbNDb@hovoldconsulting.com>
-References: <20251121121852.16825-1-johan@kernel.org>
- <fb573584-4027-4988-a703-7f619fa830fc@kernel.org>
+	s=k20201202; t=1763737903;
+	bh=tLQk0k5vh+Mj6/nbDJE9tSmjNZwEVI2yygeNEEc394c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tRqYNPzG6H+1hD2zKkea3CpBATFUNEChCUUkkz/Jbj5squVBAyqoFXVqypgVyyQWA
+	 lymb8VSyo6xa+R3FSLO/fLMeSSpDa7/zsMFmN7ajYrkAgp6AtR/PQgLFpQqQwsbfGC
+	 AcNNx8yKahYJfEUk71YoEEaAn7Aqcmzqyv6swQJr2FoLL5diDxkob2wyeKkcy7dQRZ
+	 A/h6eGWTHAAOaYuukOUT/0c4tFRDkHZ7LpW2j67+prYACYRS1y5yGVLCQ3HeLZG8AG
+	 ZUs1YRc2oZ0RtInJmJr6DljBd1TyUf134h4g6aW1eYn9QI6jgnE2pd7zTa/+J+8WzN
+	 xa5JVwyQVdssw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] crash: fix crashkernel resource shrink
+Date: Fri, 21 Nov 2025 10:11:40 -0500
+Message-ID: <20251121151140.2560469-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112029-arrogance-bondless-6a5b@gregkh>
+References: <2025112029-arrogance-bondless-6a5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb573584-4027-4988-a703-7f619fa830fc@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 21, 2025 at 01:59:59PM +0100, Krzysztof Kozlowski wrote:
-> On 21/11/2025 13:18, Johan Hovold wrote:
-> > Make sure to drop the reference taken when looking up the PMU device and
-> > its regmap.
-> > 
-> > Note that holding a reference to a device does not prevent its regmap
-> > from going away so there is no point in keeping the reference.
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-> > Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
-> > Cc: stable@vger.kernel.org	# 6.9
-> 
-> Fix is fine, but unfortunately the code in v6.9 was different and I
-> believe keeping dev reference made sense there - driver was relying on
-> drvdata. While the leak was there as well, it was intentional. I think
-> the leak can be fixed only since commit
-> 35d6b98c625867209bc47df99cf03edf4280799f .
+[ Upstream commit 00fbff75c5acb4755f06f08bd1071879c63940c5 ]
 
-It makes no difference actually as holding a reference to a device does
-not prevent its driver data from going away either.
+When crashkernel is configured with a high reservation, shrinking its
+value below the low crashkernel reservation causes two issues:
 
-Johan
+1. Invalid crashkernel resource objects
+2. Kernel crash if crashkernel shrinking is done twice
+
+For example, with crashkernel=200M,high, the kernel reserves 200MB of high
+memory and some default low memory (say 256MB).  The reservation appears
+as:
+
+cat /proc/iomem | grep -i crash
+af000000-beffffff : Crash kernel
+433000000-43f7fffff : Crash kernel
+
+If crashkernel is then shrunk to 50MB (echo 52428800 >
+/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
+af000000-beffffff : Crash kernel
+
+Instead, it should show 50MB:
+af000000-b21fffff : Crash kernel
+
+Further shrinking crashkernel to 40MB causes a kernel crash with the
+following trace (x86):
+
+BUG: kernel NULL pointer dereference, address: 0000000000000038
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+<snip...>
+Call Trace: <TASK>
+? __die_body.cold+0x19/0x27
+? page_fault_oops+0x15a/0x2f0
+? search_module_extables+0x19/0x60
+? search_bpf_extables+0x5f/0x80
+? exc_page_fault+0x7e/0x180
+? asm_exc_page_fault+0x26/0x30
+? __release_resource+0xd/0xb0
+release_resource+0x26/0x40
+__crash_shrink_memory+0xe5/0x110
+crash_shrink_memory+0x12a/0x190
+kexec_crash_size_store+0x41/0x80
+kernfs_fop_write_iter+0x141/0x1f0
+vfs_write+0x294/0x460
+ksys_write+0x6d/0xf0
+<snip...>
+
+This happens because __crash_shrink_memory()/kernel/crash_core.c
+incorrectly updates the crashk_res resource object even when
+crashk_low_res should be updated.
+
+Fix this by ensuring the correct crashkernel resource object is updated
+when shrinking crashkernel memory.
+
+Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
+Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Applied fix to `kernel/kexec_core.c` instead of `kernel/crash_core.c` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/kexec_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index b7246b7171b73..88024cb22a9db 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1132,7 +1132,7 @@ static int __crash_shrink_memory(struct resource *old_res,
+ 		old_res->start = 0;
+ 		old_res->end   = 0;
+ 	} else {
+-		crashk_res.end = ram_res->start - 1;
++		old_res->end = ram_res->start - 1;
+ 	}
+ 
+ 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
+-- 
+2.51.0
+
 
