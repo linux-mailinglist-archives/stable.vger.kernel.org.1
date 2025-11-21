@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-195730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B40C79646
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9953EC7A18D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25F56357C5C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id BBE422D4A9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9353C2F656A;
-	Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B970733D6CD;
+	Fri, 21 Nov 2025 13:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4/wOuIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtYRc3GV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503071B4F0A;
-	Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CAD346FD2;
+	Fri, 21 Nov 2025 13:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731500; cv=none; b=P+p3R2ALO8RkJJ4gaQE7ffGMaNS9UxcglKzu/TueeOyjVJVemEx8amS0EQKb6L1VLjkrOtpZMgnMk5otpRHhoF6NQYWxqt44qnelJAXnmrRV+kfDg9/B84f4ziZ7b0ydyRJ6ETiynym5aE06YHt6Z25aPIU4s8C0W+cLZYEPSIY=
+	t=1763733364; cv=none; b=aNLjyzq3aokSsblfNAl4tRCYrrtXJ6Xl4tiTUZANRRl0h2Qr167HcjWeDig6+pXldRdTWqgfif6D+Bl1poo3HvCGPHDWWJajxBxzbfFHFUSmqise8OPkf3ZmTQ7zHF1Umu1JE04s8NQ5X0Ttmk3ooCWOwQOVaQzchHJ6dyBr4wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731500; c=relaxed/simple;
-	bh=1UuT8BOc6z+EJUBmYje4x+f5IgaKElvpPyfJMwveWYo=;
+	s=arc-20240116; t=1763733364; c=relaxed/simple;
+	bh=fU5YlP0L7DeNo9NWSQHEmzMYmbWnGmdFJOPszv89Gkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ww7As9QX2KAuAJo9bMZxOykfgB708et8amGk+nVUkYtt2Jyuo1Rtwo6XG8pK0ay8rTs5RlxUiJoYPPfCJeXidEZEdfgBL0arq33qO/MFTYaevkaMAORL+rBvbssUeSoywkio/CJPCKBSjpKMgWfKsUCwSQLMeDDRoPI+OPHYRss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4/wOuIQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C625CC4CEF1;
-	Fri, 21 Nov 2025 13:24:59 +0000 (UTC)
+	 MIME-Version; b=alg8c405dCnVJzLt0tlsl5R3bf+FQs2nxKTZQMWfpigOtr3dHjQpWc7l3g2XtxLVbMPt2TDe0oSt17dQoxY651CyUlpeQZz2GO0kEZ9nVPFl8cQ1jS0finSEBJcWXnUF192VDwaQQlGqgTiEj8QaomjU0UI+WjnXGuXKvZaJWq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtYRc3GV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D2DC4CEF1;
+	Fri, 21 Nov 2025 13:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731500;
-	bh=1UuT8BOc6z+EJUBmYje4x+f5IgaKElvpPyfJMwveWYo=;
+	s=korg; t=1763733364;
+	bh=fU5YlP0L7DeNo9NWSQHEmzMYmbWnGmdFJOPszv89Gkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4/wOuIQ+W+qrO/KSdhP+MnWgcaFsfqyViLIxEz1ZY5FbgilO2lDAUkScp1quiRO2
-	 FYdqcBCGJNGCwFpKCHPkzUuIijO1vir6a2HEeYxQe2eXCTf3VDiZnJAg3HX6MFc7nf
-	 uh2Bo/9cbChRRngDCkXul7Cq1cLooxWfozFksHUo=
+	b=FtYRc3GVEhvF5xT6Qg5Y1rgk8btJq9G7qYzSzg14jFhC3lRNq6bI+KTkLbuTmHVVA
+	 dGr1xMLWibf4bKBBO9Tn4hW5x75tVKYgqd79WL3E/YDk48NFqO5/JR3iPigbm4b/ED
+	 xCS27gErWV6K64hjsdx6/fiwr26DDzM7xWCR/smY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 195/247] ASoC: sdw_utils: fix device reference leak in is_sdca_endpoint_present()
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 443/529] acpi: numa: Add setting of generic port system locality attributes
 Date: Fri, 21 Nov 2025 14:12:22 +0100
-Message-ID: <20251121130201.722426143@linuxfoundation.org>
+Message-ID: <20251121130246.773981247@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit 1a58d865f423f4339edf59053e496089075fa950 upstream.
+[ Upstream commit a3a3e341f169511823f7b2d140a0bdfbd620dcbd ]
 
-The bus_find_device_by_name() function returns a device pointer with an
-incremented reference count, but the original code was missing put_device()
-calls in some return paths, leading to reference count leaks.
+Add generic port support for the parsing of HMAT system locality sub-table.
+The attributes will be added to the third array member of the access
+coordinates in order to not mix with the existing memory attributes. It
+only provides the system locality attributes from initiator to the
+generic port targets and is missing the rest of the data to the actual
+memory device.
 
-Fix this by ensuring put_device() is called before function exit after
-  bus_find_device_by_name() succeeds
+The complete attributes will be updated when a memory device is
+attached and the system locality information is calculated end to end.
 
-This follows the same pattern used elsewhere in the kernel where
-bus_find_device_by_name() is properly paired with put_device().
+Through hmat_update_target_attrs(), the best performance attributes will
+be setup in target->coord.
 
-Found via static analysis and code review.
-
-Fixes: 4f8ef33dd44a ("ASoC: soc_sdw_utils: skip the endpoint that doesn't present")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://patch.msgid.link/20251029071804.8425-1-linmq006@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/170319618135.2212653.13778540010384821833.stgit@djiang5-mobl3
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 214291cbaace ("acpi/hmat: Fix lockdep warning for hmem_register_resource()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdw_utils/soc_sdw_utils.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/acpi/numa/hmat.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/sound/soc/sdw_utils/soc_sdw_utils.c
-+++ b/sound/soc/sdw_utils/soc_sdw_utils.c
-@@ -1239,7 +1239,7 @@ static int is_sdca_endpoint_present(stru
- 	struct sdw_slave *slave;
- 	struct device *sdw_dev;
- 	const char *sdw_codec_name;
--	int i;
-+	int ret, i;
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 4cae2e84251a2..8a1802e078f3c 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -61,6 +61,7 @@ struct target_cache {
+ enum {
+ 	NODE_ACCESS_CLASS_0 = 0,
+ 	NODE_ACCESS_CLASS_1,
++	NODE_ACCESS_CLASS_GENPORT_SINK,
+ 	NODE_ACCESS_CLASS_MAX,
+ };
  
- 	dlc = kzalloc(sizeof(*dlc), GFP_KERNEL);
- 	if (!dlc)
-@@ -1269,13 +1269,16 @@ static int is_sdca_endpoint_present(stru
- 	}
+@@ -654,6 +655,11 @@ static void hmat_update_target_attrs(struct memory_target *target,
+ 	u32 best = 0;
+ 	int i;
  
- 	slave = dev_to_sdw_dev(sdw_dev);
--	if (!slave)
--		return -EINVAL;
-+	if (!slave) {
-+		ret = -EINVAL;
-+		goto put_device;
-+	}
- 
- 	/* Make sure BIOS provides SDCA properties */
- 	if (!slave->sdca_data.interface_revision) {
- 		dev_warn(&slave->dev, "SDCA properties not found in the BIOS\n");
--		return 1;
-+		ret = 1;
-+		goto put_device;
- 	}
- 
- 	for (i = 0; i < slave->sdca_data.num_functions; i++) {
-@@ -1284,7 +1287,8 @@ static int is_sdca_endpoint_present(stru
- 		if (dai_type == dai_info->dai_type) {
- 			dev_dbg(&slave->dev, "DAI type %d sdca function %s found\n",
- 				dai_type, slave->sdca_data.function[i].name);
--			return 1;
-+			ret = 1;
-+			goto put_device;
- 		}
- 	}
- 
-@@ -1292,7 +1296,11 @@ static int is_sdca_endpoint_present(stru
- 		"SDCA device function for DAI type %d not supported, skip endpoint\n",
- 		dai_info->dai_type);
- 
--	return 0;
-+	ret = 0;
++	/* Don't update for generic port if there's no device handle */
++	if (access == NODE_ACCESS_CLASS_GENPORT_SINK &&
++	    !(*(u16 *)target->gen_port_device_handle))
++		return;
 +
-+put_device:
-+	put_device(sdw_dev);
-+	return ret;
+ 	bitmap_zero(p_nodes, MAX_NUMNODES);
+ 	/*
+ 	 * If the Address Range Structure provides a local processor pxm, set
+@@ -723,6 +729,14 @@ static void __hmat_register_target_initiators(struct memory_target *target,
+ 	}
  }
  
- int asoc_sdw_parse_sdw_endpoints(struct snd_soc_card *card,
++static void hmat_register_generic_target_initiators(struct memory_target *target)
++{
++	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
++
++	__hmat_register_target_initiators(target, p_nodes,
++					  NODE_ACCESS_CLASS_GENPORT_SINK);
++}
++
+ static void hmat_register_target_initiators(struct memory_target *target)
+ {
+ 	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
+@@ -774,6 +788,17 @@ static void hmat_register_target(struct memory_target *target)
+ 	 */
+ 	hmat_register_target_devices(target);
+ 
++	/*
++	 * Register generic port perf numbers. The nid may not be
++	 * initialized and is still NUMA_NO_NODE.
++	 */
++	mutex_lock(&target_lock);
++	if (*(u16 *)target->gen_port_device_handle) {
++		hmat_register_generic_target_initiators(target);
++		target->registered = true;
++	}
++	mutex_unlock(&target_lock);
++
+ 	/*
+ 	 * Skip offline nodes. This can happen when memory
+ 	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+-- 
+2.51.0
+
 
 
 
