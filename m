@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-195718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DD6C79622
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A600C79DC2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5A07534D84E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id C0D582DC82
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E5C27147D;
-	Fri, 21 Nov 2025 13:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BEE34A3D6;
+	Fri, 21 Nov 2025 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls4H9xsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpLwQTbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92D131578E;
-	Fri, 21 Nov 2025 13:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A1A254AFF;
+	Fri, 21 Nov 2025 13:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731465; cv=none; b=IJXMpzDHClJCUmRuH8upJPDuKyH/4W55TQbTbV81JdI2CG+AbXjIqjrWU8CjnTxsDmnpCWI1YyQ0U+ZW+Hgr8qumeB3ePQCNJbDwa7p1tVXWDNKbFv6w1l/LDuvthnjNSKeswNP+KW4+d1ANQ8zzn7sTZBrGGCh/6yFwn/YRWQw=
+	t=1763733352; cv=none; b=RmMkXimZhfXPwzyz7qLwDcCTHjXRc5l78At/xngPp4UrqgtQVki+4iOThgDdIRVeEUFc1Gd+ydQo9H6By3bs+ZOODkfjORNVqg61RNWA3Yw0Gf9XZYOu/L9vVYbNQDpk7eVRF1eEBugCRAv1NxNXKVtZKxMcwkIvJM0VuWcq7qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731465; c=relaxed/simple;
-	bh=1jPEKcaGvnY4tBXJSX7zQpRXDuqy07sU66iciVmL8uM=;
+	s=arc-20240116; t=1763733352; c=relaxed/simple;
+	bh=IbtpvmHwwjh91zN4RGepEdL+xNQD7dlh+9kizqQ5okM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amtWnc/xLfwZvyZRFHOGJwWtcRV6W3WPBMdnC7q2vbqIJjD+wHi22tghD7+16o2VzxNhKW0mnfCM2lzfx7Zgkd4M7FNjWiceEjwBkmxtHunumZ/CXZc2G0P8hijuzCjWNDW66/jUv5ZtguhmAH9C+4jKmt1av9tQigA7veNAPN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls4H9xsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094CBC4CEF1;
-	Fri, 21 Nov 2025 13:24:24 +0000 (UTC)
+	 MIME-Version; b=TaqrIPcIvFUrhMRkv6njCQit3g0LMg7UPc226votZXF+zz3zI4Yuv30eCLwoi7cJyh/1/YE33U7bnVPL6zFLd5H/iuHaUwGHQLeZLxCx+czBQcMrM4ZrT3EDtwG9Fq7quH0R0kQQb52Bzdo/WPTF+tdEcsuQRXdVRmKMCZC8BI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpLwQTbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E51C4CEF1;
+	Fri, 21 Nov 2025 13:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731465;
-	bh=1jPEKcaGvnY4tBXJSX7zQpRXDuqy07sU66iciVmL8uM=;
+	s=korg; t=1763733352;
+	bh=IbtpvmHwwjh91zN4RGepEdL+xNQD7dlh+9kizqQ5okM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls4H9xsZRFBPZtputMgSR7z0UMwfVB4MDwXFZ4b2FXlsxRgwKQSSE6M1Vli18JY1u
-	 t1iRR955dhmemYZg6aF8I/PM7jyAHeJtc+wp/ktItBL5oOmK6r2tZl6nYUOavLulPI
-	 CoYPbaHPJnnWAuDrWGjftv+QVn5KU4T4Yb6PjT2I=
+	b=SpLwQTbnkMqcW9ObJ4dxxfkx7fCvGRLjTSmq88iQq4/a3oXVzLC+FLx0F8Sy5+D0C
+	 O+zCNtrgcLNK2c+A6DkbKDxtEKqMQ1KjIIQxuj9yXDEYlKxLi+JlUMyDSXa5nYos2x
+	 gczSwQ687NM0PRI7n2/RNhoQUGjU98argRo2R6Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Hugh Cole-Baker <sigmaris@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 190/247] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to 0x4
-Date: Fri, 21 Nov 2025 14:12:17 +0100
-Message-ID: <20251121130201.542591476@linuxfoundation.org>
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 439/529] base/node / acpi: Change node_hmem_attrs to access_coordinates
+Date: Fri, 21 Nov 2025 14:12:18 +0100
+Message-ID: <20251121130246.634461446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,316 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit a28352cf2d2f8380e7aca8cb61682396dca7a991 upstream.
+[ Upstream commit 6a954e94d038f41d79c4e04348c95774d1c9337d ]
 
-strbin signal delay under 0x8 configuration is not stable after massive
-test. The recommandation of it should be 0x4.
+Dan Williams suggested changing the struct 'node_hmem_attrs' to
+'access_coordinates' [1]. The struct is a container of r/w-latency and
+r/w-bandwidth numbers. Moving forward, this container will also be used by
+CXL to store the performance characteristics of each link hop in
+the PCIE/CXL topology. So, where node_hmem_attrs is just the access
+parameters of a memory-node, access_coordinates applies more broadly
+to hardware topology characteristics. The observation is that seemed like
+an exercise in having the application identify "where" it falls on a
+spectrum of bandwidth and latency needs. For the tuple of
+read/write-latency and read/write-bandwidth, "coordinates" is not a perfect
+fit. Sometimes it is just conveying values in isolation and not a
+"location" relative to other performance points, but in the end this data
+is used to identify the performance operation point of a given memory-node.
+[2]
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Alexey Charkov <alchark@gmail.com>
-Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
-Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: http://lore.kernel.org/r/64471313421f7_1b66294d5@dwillia2-xfh.jf.intel.com.notmuch/
+Link: https://lore.kernel.org/linux-cxl/645e6215ee0de_1e6f2945e@dwillia2-xfh.jf.intel.com.notmuch/
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/170319615734.2212653.15319394025985499185.stgit@djiang5-mobl3
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 214291cbaace ("acpi/hmat: Fix lockdep warning for hmem_register_resource()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/numa/hmat.c     | 28 ++++++++++++++--------------
+ drivers/base/node.c          | 12 ++++++------
+ include/linux/memory-tiers.h | 10 +++++-----
+ include/linux/node.h         |  8 ++++----
+ mm/memory-tiers.c            | 12 ++++++------
+ 5 files changed, 35 insertions(+), 35 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -94,7 +94,7 @@
- #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
- #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
- #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
--#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
- #define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
- #define DLL_STRBIN_DELAY_NUM_SEL	BIT(26)
- #define DLL_STRBIN_DELAY_NUM_OFFSET	16
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 9ef5f1bdcfdbc..83bc2b69401bf 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -63,7 +63,7 @@ struct memory_target {
+ 	unsigned int memory_pxm;
+ 	unsigned int processor_pxm;
+ 	struct resource memregions;
+-	struct node_hmem_attrs hmem_attrs[2];
++	struct access_coordinate coord[2];
+ 	struct list_head caches;
+ 	struct node_cache_attrs cache_attrs;
+ 	bool registered;
+@@ -228,24 +228,24 @@ static void hmat_update_target_access(struct memory_target *target,
+ {
+ 	switch (type) {
+ 	case ACPI_HMAT_ACCESS_LATENCY:
+-		target->hmem_attrs[access].read_latency = value;
+-		target->hmem_attrs[access].write_latency = value;
++		target->coord[access].read_latency = value;
++		target->coord[access].write_latency = value;
+ 		break;
+ 	case ACPI_HMAT_READ_LATENCY:
+-		target->hmem_attrs[access].read_latency = value;
++		target->coord[access].read_latency = value;
+ 		break;
+ 	case ACPI_HMAT_WRITE_LATENCY:
+-		target->hmem_attrs[access].write_latency = value;
++		target->coord[access].write_latency = value;
+ 		break;
+ 	case ACPI_HMAT_ACCESS_BANDWIDTH:
+-		target->hmem_attrs[access].read_bandwidth = value;
+-		target->hmem_attrs[access].write_bandwidth = value;
++		target->coord[access].read_bandwidth = value;
++		target->coord[access].write_bandwidth = value;
+ 		break;
+ 	case ACPI_HMAT_READ_BANDWIDTH:
+-		target->hmem_attrs[access].read_bandwidth = value;
++		target->coord[access].read_bandwidth = value;
+ 		break;
+ 	case ACPI_HMAT_WRITE_BANDWIDTH:
+-		target->hmem_attrs[access].write_bandwidth = value;
++		target->coord[access].write_bandwidth = value;
+ 		break;
+ 	default:
+ 		break;
+@@ -681,7 +681,7 @@ static void hmat_register_target_cache(struct memory_target *target)
+ static void hmat_register_target_perf(struct memory_target *target, int access)
+ {
+ 	unsigned mem_nid = pxm_to_node(target->memory_pxm);
+-	node_set_perf_attrs(mem_nid, &target->hmem_attrs[access], access);
++	node_set_perf_attrs(mem_nid, &target->coord[access], access);
+ }
+ 
+ static void hmat_register_target_devices(struct memory_target *target)
+@@ -765,7 +765,7 @@ static int hmat_set_default_dram_perf(void)
+ 	int rc;
+ 	int nid, pxm;
+ 	struct memory_target *target;
+-	struct node_hmem_attrs *attrs;
++	struct access_coordinate *attrs;
+ 
+ 	if (!default_dram_type)
+ 		return -EIO;
+@@ -775,7 +775,7 @@ static int hmat_set_default_dram_perf(void)
+ 		target = find_mem_target(pxm);
+ 		if (!target)
+ 			continue;
+-		attrs = &target->hmem_attrs[1];
++		attrs = &target->coord[1];
+ 		rc = mt_set_default_dram_perf(nid, attrs, "ACPI HMAT");
+ 		if (rc)
+ 			return rc;
+@@ -789,7 +789,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
+ {
+ 	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
+ 	struct memory_target *target;
+-	struct node_hmem_attrs *perf;
++	struct access_coordinate *perf;
+ 	int *adist = data;
+ 	int pxm;
+ 
+@@ -802,7 +802,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
+ 	hmat_update_target_attrs(target, p_nodes, 1);
+ 	mutex_unlock(&target_lock);
+ 
+-	perf = &target->hmem_attrs[1];
++	perf = &target->coord[1];
+ 
+ 	if (mt_perf_to_adistance(perf, adist))
+ 		return NOTIFY_OK;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 47960a34305d3..9a312650bd57e 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -74,14 +74,14 @@ static BIN_ATTR_RO(cpulist, CPULIST_FILE_MAX_BYTES);
+  * @dev:	Device for this memory access class
+  * @list_node:	List element in the node's access list
+  * @access:	The access class rank
+- * @hmem_attrs: Heterogeneous memory performance attributes
++ * @coord:	Heterogeneous memory performance coordinates
+  */
+ struct node_access_nodes {
+ 	struct device		dev;
+ 	struct list_head	list_node;
+ 	unsigned int		access;
+ #ifdef CONFIG_HMEM_REPORTING
+-	struct node_hmem_attrs	hmem_attrs;
++	struct access_coordinate	coord;
+ #endif
+ };
+ #define to_access_nodes(dev) container_of(dev, struct node_access_nodes, dev)
+@@ -167,7 +167,7 @@ static ssize_t property##_show(struct device *dev,			\
+ 			   char *buf)					\
+ {									\
+ 	return sysfs_emit(buf, "%u\n",					\
+-			  to_access_nodes(dev)->hmem_attrs.property);	\
++			  to_access_nodes(dev)->coord.property);	\
+ }									\
+ static DEVICE_ATTR_RO(property)
+ 
+@@ -187,10 +187,10 @@ static struct attribute *access_attrs[] = {
+ /**
+  * node_set_perf_attrs - Set the performance values for given access class
+  * @nid: Node identifier to be set
+- * @hmem_attrs: Heterogeneous memory performance attributes
++ * @coord: Heterogeneous memory performance coordinates
+  * @access: The access class the for the given attributes
+  */
+-void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
++void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+ 			 unsigned int access)
+ {
+ 	struct node_access_nodes *c;
+@@ -205,7 +205,7 @@ void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
+ 	if (!c)
+ 		return;
+ 
+-	c->hmem_attrs = *hmem_attrs;
++	c->coord = *coord;
+ 	for (i = 0; access_attrs[i] != NULL; i++) {
+ 		if (sysfs_add_file_to_group(&c->dev.kobj, access_attrs[i],
+ 					    "initiators")) {
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 9d27ca3b143e6..c906de6e077ab 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -31,7 +31,7 @@ struct memory_dev_type {
+ 	struct kref kref;
+ };
+ 
+-struct node_hmem_attrs;
++struct access_coordinate;
+ 
+ #ifdef CONFIG_NUMA
+ extern bool numa_demotion_enabled;
+@@ -43,9 +43,9 @@ void clear_node_memory_type(int node, struct memory_dev_type *memtype);
+ int register_mt_adistance_algorithm(struct notifier_block *nb);
+ int unregister_mt_adistance_algorithm(struct notifier_block *nb);
+ int mt_calc_adistance(int node, int *adist);
+-int mt_set_default_dram_perf(int nid, struct node_hmem_attrs *perf,
++int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+ 			     const char *source);
+-int mt_perf_to_adistance(struct node_hmem_attrs *perf, int *adist);
++int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+ #ifdef CONFIG_MIGRATION
+ int next_demotion_node(int node);
+ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+@@ -124,13 +124,13 @@ static inline int mt_calc_adistance(int node, int *adist)
+ 	return NOTIFY_DONE;
+ }
+ 
+-static inline int mt_set_default_dram_perf(int nid, struct node_hmem_attrs *perf,
++static inline int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+ 					   const char *source)
+ {
+ 	return -EIO;
+ }
+ 
+-static inline int mt_perf_to_adistance(struct node_hmem_attrs *perf, int *adist)
++static inline int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
+ {
+ 	return -EIO;
+ }
+diff --git a/include/linux/node.h b/include/linux/node.h
+index 427a5975cf405..25b66d705ee2e 100644
+--- a/include/linux/node.h
++++ b/include/linux/node.h
+@@ -20,14 +20,14 @@
+ #include <linux/list.h>
+ 
+ /**
+- * struct node_hmem_attrs - heterogeneous memory performance attributes
++ * struct access_coordinate - generic performance coordinates container
+  *
+  * @read_bandwidth:	Read bandwidth in MB/s
+  * @write_bandwidth:	Write bandwidth in MB/s
+  * @read_latency:	Read latency in nanoseconds
+  * @write_latency:	Write latency in nanoseconds
+  */
+-struct node_hmem_attrs {
++struct access_coordinate {
+ 	unsigned int read_bandwidth;
+ 	unsigned int write_bandwidth;
+ 	unsigned int read_latency;
+@@ -65,7 +65,7 @@ struct node_cache_attrs {
+ 
+ #ifdef CONFIG_HMEM_REPORTING
+ void node_add_cache(unsigned int nid, struct node_cache_attrs *cache_attrs);
+-void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
++void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+ 			 unsigned access);
+ #else
+ static inline void node_add_cache(unsigned int nid,
+@@ -74,7 +74,7 @@ static inline void node_add_cache(unsigned int nid,
+ }
+ 
+ static inline void node_set_perf_attrs(unsigned int nid,
+-				       struct node_hmem_attrs *hmem_attrs,
++				       struct access_coordinate *coord,
+ 				       unsigned access)
+ {
+ }
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index fa1a8b418f9a8..5e4c5ae4e2e80 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -109,7 +109,7 @@ static struct demotion_nodes *node_demotion __read_mostly;
+ static BLOCKING_NOTIFIER_HEAD(mt_adistance_algorithms);
+ 
+ static bool default_dram_perf_error;
+-static struct node_hmem_attrs default_dram_perf;
++static struct access_coordinate default_dram_perf;
+ static int default_dram_perf_ref_nid = NUMA_NO_NODE;
+ static const char *default_dram_perf_ref_source;
+ 
+@@ -600,15 +600,15 @@ void clear_node_memory_type(int node, struct memory_dev_type *memtype)
+ }
+ EXPORT_SYMBOL_GPL(clear_node_memory_type);
+ 
+-static void dump_hmem_attrs(struct node_hmem_attrs *attrs, const char *prefix)
++static void dump_hmem_attrs(struct access_coordinate *coord, const char *prefix)
+ {
+ 	pr_info(
+ "%sread_latency: %u, write_latency: %u, read_bandwidth: %u, write_bandwidth: %u\n",
+-		prefix, attrs->read_latency, attrs->write_latency,
+-		attrs->read_bandwidth, attrs->write_bandwidth);
++		prefix, coord->read_latency, coord->write_latency,
++		coord->read_bandwidth, coord->write_bandwidth);
+ }
+ 
+-int mt_set_default_dram_perf(int nid, struct node_hmem_attrs *perf,
++int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+ 			     const char *source)
+ {
+ 	int rc = 0;
+@@ -665,7 +665,7 @@ int mt_set_default_dram_perf(int nid, struct node_hmem_attrs *perf,
+ 	return rc;
+ }
+ 
+-int mt_perf_to_adistance(struct node_hmem_attrs *perf, int *adist)
++int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
+ {
+ 	if (default_dram_perf_error)
+ 		return -EIO;
+-- 
+2.51.0
+
 
 
 
