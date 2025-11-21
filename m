@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-195939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DA1C798DB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA3A2C7A058
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A41F344E80
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 54A4E348312
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9D2347FF8;
-	Fri, 21 Nov 2025 13:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB8833B6EA;
+	Fri, 21 Nov 2025 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuCzBQR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5qmNT9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB86C2F28F0;
-	Fri, 21 Nov 2025 13:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321DE2F2900;
+	Fri, 21 Nov 2025 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732100; cv=none; b=bcHdi4saQFHGH12FzmBTZbst3Pl4nA2j4GrtkqugyKR7BYJK1agUFkfgiA+22d+bFVkEN/641/9Xm6JnUiUC4t7QXxiJCw0coGtJccXHAfVm5VQEzHbRPtQmfKqs0Fpi6/9LBCVbR6aDl+yJOUuRBya24IuVgppZ+SYytQpjocY=
+	t=1763733507; cv=none; b=uiMfMiVEbtFENcFUqpiMS9uoTCVEOZF2nDRxILVTmIUkXdADxxCyQu2j1rIJ3WguCD0QH1SEu6beN8ob7U2zKu61XMM9ttkuHi5RaQbModmdkAuznybjubTzTw60qkm3ylHFuyqBMJv8TslW6HGgDBytHYFI74iz+UMzY9wrwVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732100; c=relaxed/simple;
-	bh=L9IXDYPWHesGW+axhlLGBYd3WwEVz1VZaW6MTUOOMZk=;
+	s=arc-20240116; t=1763733507; c=relaxed/simple;
+	bh=6JZeeMXetDOcrcXi0VXG55oW8q6cyzS2JOvAyamtenE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0qeaKigVm7M44roa9w9Crqdcjp9G3rvPNmBrpxWGoFBX0y+bM0iklqPAs0YWNPfmg1ZbQZh6bOFwIwnbgGacFZheqVtgXkzjSiKko3dB5QS0O5m1kkDNrJV9jDb9XZ0KdlfnljGu+sJXk7qPlg4HygyCPrsTYQITbvqMkk8JO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuCzBQR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68062C4CEF1;
-	Fri, 21 Nov 2025 13:34:59 +0000 (UTC)
+	 MIME-Version; b=uALPzlGjOnU4tJIoSrJdOyCInZlW686jjR5NQEUapC0n2b/YKS+3mJPBYcme67kLJl0NzNJjXcKWNo350kA+fIN0kwp6rrzvi+SLyQbHduD5ou2cKs8b970JyNRpX25kIBdTfMWeVubv8eURuNMc0X0kWBXgPNTQHAIAdt2P0UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5qmNT9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB66C4CEF1;
+	Fri, 21 Nov 2025 13:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732099;
-	bh=L9IXDYPWHesGW+axhlLGBYd3WwEVz1VZaW6MTUOOMZk=;
+	s=korg; t=1763733506;
+	bh=6JZeeMXetDOcrcXi0VXG55oW8q6cyzS2JOvAyamtenE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AuCzBQR7xps4DRcVEpXFFQAeAU2RzwNf9W3SjMAJBl8x7tmsscCb5+isSmZqua971
-	 2TycLBFQQvvUWZDhARzZ7NE4ZRTGwbbg8PCYUphpMaYV8NBi6vC3M8NPqodkNHaPuD
-	 axDvL+LoXwbI+LHoTZww4pRaKS5Z3DEBDsjOwHpU=
+	b=M5qmNT9GXt4jK+EAcusO/92dpymaSpChb7S4aR17+x2TMtZvbJcTlbbmyJjfaoIxT
+	 FrTTv6xnxsYADSx7CXIfNo8COjkIhz8619rCeCD5y+bGpqZCS/uu6JzWH5O0+3Ts9r
+	 JaCvzeVfDtMugBNUsYUAMXs8u7dGVFHq2shuqsM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hocko <mhocko@suse.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dennis Zhou <dennis@kernel.org>,
-	Filipe David Manana <fdmanana@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH 6.12 162/185] mm, percpu: do not consider sleepable allocations atomic
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 490/529] selftests: mptcp: join: rm: set backup flag
 Date: Fri, 21 Nov 2025 14:13:09 +0100
-Message-ID: <20251121130149.722347430@linuxfoundation.org>
+Message-ID: <20251121130248.442501599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +62,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hocko <mhocko@suse.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
+commit aea73bae662a0e184393d6d7d0feb18d2577b9b9 upstream.
 
-28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
-that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
-the worker context with full GFP_KERNEL allocation/reclaim power and which
-is using the same lock cannot block the NOFS pcpu_alloc caller.
+Some of these 'remove' tests rarely fail because a subflow has been
+reset instead of cleanly removed. This can happen when one extra subflow
+which has never carried data is being closed (FIN) on one side, while
+the other is sending data for the first time.
 
-On the other hand this is a very conservative approach that could lead to
-failures because pcpu_alloc lockless implementation is quite limited.
+To avoid such subflows to be used right at the end, the backup flag has
+been added. With that, data will be only carried on the initial subflow.
 
-We have a bug report about premature failures when scsi array of 193
-devices is scanned.  Sometimes (not consistently) the scanning aborts
-because the iscsid daemon fails to create the queue for a random scsi
-device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
-set so all allocations from this process context are GFP_NOIO.  This in
-turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
-to pre-mature failures.
-
-It has turned out that iscsid has worked around this by dropping
-PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
-scanning host.  But we can do better in this case on the kernel side and
-use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
-too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
-that by enforcing scoped GFP_NOIO for the whole execution of
-pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
-remove the dependency chain and preserve the full allocation power of the
-pcpu_alloc call.
-
-While at it make is_atomic really test for blockable allocations.
-
-Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
-Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Filipe David Manana <fdmanana@suse.com>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
+Fixes: d2c4333a801c ("selftests: mptcp: add testcases for removing addrs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-2-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/percpu.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   54 ++++++++++++------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1758,7 +1758,7 @@ void __percpu *pcpu_alloc_noprof(size_t
- 	gfp = current_gfp_context(gfp);
- 	/* whitelisted flags that can be passed to the backing allocators */
- 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
--	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
-+	is_atomic = !gfpflags_allow_blocking(gfp);
- 	do_warn = !(gfp & __GFP_NOWARN);
- 
- 	/*
-@@ -2203,7 +2203,12 @@ static void pcpu_balance_workfn(struct w
- 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
- 	 * to move fully free chunks to the active list to be freed if
- 	 * appropriate.
-+	 *
-+	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
-+	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
-+	 * dependency through pcpu_alloc_mutex
- 	 */
-+	unsigned int flags = memalloc_noio_save();
- 	mutex_lock(&pcpu_alloc_mutex);
- 	spin_lock_irq(&pcpu_lock);
- 
-@@ -2214,6 +2219,7 @@ static void pcpu_balance_workfn(struct w
- 
- 	spin_unlock_irq(&pcpu_lock);
- 	mutex_unlock(&pcpu_alloc_mutex);
-+	memalloc_noio_restore(flags);
- }
- 
- /**
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2361,7 +2361,7 @@ remove_tests()
+ 	if reset "remove single subflow"; then
+ 		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_set_limits $ns2 0 1
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
+ 		addr_nr_ns2=-1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+@@ -2374,8 +2374,8 @@ remove_tests()
+ 	if reset "remove multiple subflows"; then
+ 		pm_nl_set_limits $ns1 0 2
+ 		pm_nl_set_limits $ns2 0 2
+-		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
+ 		addr_nr_ns2=-2 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 2 2 2
+@@ -2386,7 +2386,7 @@ remove_tests()
+ 	# single address, remove
+ 	if reset "remove single address"; then
+ 		pm_nl_set_limits $ns1 0 1
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 1 1
+ 		addr_nr_ns1=-1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+@@ -2399,9 +2399,9 @@ remove_tests()
+ 	# subflow and signal, remove
+ 	if reset "remove subflow and signal"; then
+ 		pm_nl_set_limits $ns1 0 2
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 1 2
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
+ 		addr_nr_ns1=-1 addr_nr_ns2=-1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 2 2 2
+@@ -2413,10 +2413,10 @@ remove_tests()
+ 	# subflows and signal, remove
+ 	if reset "remove subflows and signal"; then
+ 		pm_nl_set_limits $ns1 0 3
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 1 3
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
+-		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
++		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
+ 		addr_nr_ns1=-1 addr_nr_ns2=-2 speed=10 \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
+@@ -2428,9 +2428,9 @@ remove_tests()
+ 	# addresses remove
+ 	if reset "remove addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
+-		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
++		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
++		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 3 3
+ 		addr_nr_ns1=-3 speed=10 \
+ 			run_tests $ns1 $ns2 10.0.1.1
+@@ -2443,10 +2443,10 @@ remove_tests()
+ 	# invalid addresses remove
+ 	if reset "remove invalid addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
+-		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
+ 		# broadcast IP: no packet for this address will be received on ns1
+-		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
++		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal,backup
++		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 2 2
+ 		addr_nr_ns1=-3 speed=10 \
+ 			run_tests $ns1 $ns2 10.0.1.1
+@@ -2459,10 +2459,10 @@ remove_tests()
+ 	# subflows and signal, flush
+ 	if reset "flush subflows and signal"; then
+ 		pm_nl_set_limits $ns1 0 3
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 1 3
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
+-		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
++		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
+ 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
+@@ -2475,9 +2475,9 @@ remove_tests()
+ 	if reset "flush subflows"; then
+ 		pm_nl_set_limits $ns1 3 3
+ 		pm_nl_set_limits $ns2 3 3
+-		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow id 150
+-		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
+-		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup id 150
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
++		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
+ 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
+@@ -2494,9 +2494,9 @@ remove_tests()
+ 	# addresses flush
+ 	if reset "flush addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
+-		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
+-		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
++		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
++		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 3 3
+ 		addr_nr_ns1=-8 addr_nr_ns2=-8 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+@@ -2509,9 +2509,9 @@ remove_tests()
+ 	# invalid addresses flush
+ 	if reset "flush invalid addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
+-		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
++		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
++		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
++		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal,backup
+ 		pm_nl_set_limits $ns2 3 3
+ 		addr_nr_ns1=-8 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
 
 
 
