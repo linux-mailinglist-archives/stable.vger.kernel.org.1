@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03680C793D4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D679C79814
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 165612DC72
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:21:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id CD4483509A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579D626E6F4;
-	Fri, 21 Nov 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2F6346A1D;
+	Fri, 21 Nov 2025 13:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xDxkMJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfcExzeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146CC1F09AC;
-	Fri, 21 Nov 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A6F341043;
+	Fri, 21 Nov 2025 13:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731273; cv=none; b=okFIcrZqqXSFZSKI3HDsa5T8Qj2e2mI72XZY235FkNEQ/SHha+EcLmmcDJnjgs03TRxMpesDu4skTzEjdj7yC9pGskzovYHZdEm5zKVClaUnVZN33jEq1M+kXpjmDnMRXQZ6+seES/JtwUgtXg9ZHUGrNvIuui3fRHsnixoROlA=
+	t=1763731755; cv=none; b=RLC2au7DSTQ1DhRrOfAFEztECo5mM5/dTSJHBUw/dfxi9qyRt1vhtk4MiykYdGh7X31qrSHeya1afO5z3j7iIbBbi417C74EgbwXSY3YV826XMY5PiMBbSfRBhuVrRjZgn+VN7AtTDR0jeXTjhb6Omdf4RCjJ3WIU/BeuCkwRO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731273; c=relaxed/simple;
-	bh=wKn0WRwOGrWAgs7ruLkXPA+AXKIjWKh36wUJ93fxwqA=;
+	s=arc-20240116; t=1763731755; c=relaxed/simple;
+	bh=rAbsr2BJD4DzhpiIJsfgAT+a5k+ic7cZxMRYTP7a2o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru3l+px74qVyn696Ue2KFvCbNM8VFeSYIvjnGBUkdOUKct104ut+R5l00Vi5xAHXtPYbY8k0dRhfdMVXoOY4uW7HtGkFph6tZqh1gDnkRzidNwg4sDh4ve1J5svI/4oA1EBe8kqgDTpbMaYZCYBHqD7WDyj0UCVFXQa2WnlqPlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xDxkMJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942FBC4CEF1;
-	Fri, 21 Nov 2025 13:21:12 +0000 (UTC)
+	 MIME-Version; b=ct1pu2U2uDZxq1ASdiwZZoZbsVEmWSZEvt+DuxlP6A6+b6JTc7isPDj/64I9eg6EiQPqKjHF7hSZjF1FeRiuMQl9C9JeKmC7/q7Bp1GZCvFBBSh8L7Le7dGUwl6R+EMZc3eEt/YlTWKLhLomucXqUm60dzVZiyxxTW5+r3cNRJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfcExzeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFA6C4CEF1;
+	Fri, 21 Nov 2025 13:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731273;
-	bh=wKn0WRwOGrWAgs7ruLkXPA+AXKIjWKh36wUJ93fxwqA=;
+	s=korg; t=1763731755;
+	bh=rAbsr2BJD4DzhpiIJsfgAT+a5k+ic7cZxMRYTP7a2o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xDxkMJkjWGBOpY1Ty2PqmT1TxTOvMV7IG+wjaP6/A2do1FmbaWgiEvmsNtelkHQb
-	 ra3D4bReK1609pbcXaMmQYyXLW9GN6TqYIXyN4JAPCYLSD1d9Imt03aSI8T6XbEQ0b
-	 imeSVefg+KEUwc85OrALB8Ft1K4wt9IRor4/Y3sk=
+	b=qfcExzeHG7PvWm4YQSiXHzM9HI9Fg2SGlJXLC1sD902xalz6xyv8X3WwbE5ORuNr3
+	 JdMGPRNTUT0YZ1o6T4s6as98VJDtOjIlKYUQi4CEUc1tHB72X26/Wx4tOVNwYjI22Y
+	 QlSdt2ckrP8/BeGfTGOjDnsXq1T9aPH0kk0JAK6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 149/247] LoongArch: KVM: Restore guest PMU if it is enabled
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 069/185] ASoC: cs4271: Fix regulator leak on probe failure
 Date: Fri, 21 Nov 2025 14:11:36 +0100
-Message-ID: <20251121130200.074688584@linuxfoundation.org>
+Message-ID: <20251121130146.364398911@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 5001bcf86edf2de02f025a0f789bcac37fa040e6 upstream.
+[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
 
-On LoongArch system, guest PMU hardware is shared by guest and host but
-PMU interrupt is separated. PMU is pass-through to VM, and there is PMU
-context switch when exit to host and return to guest.
+The probe function enables regulators at the beginning
+but fails to disable them in its error handling path.
+If any operation after enabling the regulators fails,
+the probe will exit with an error, leaving the regulators
+permanently enabled, which could lead to a resource leak.
 
-There is optimiation to check whether PMU is enabled by guest. If not,
-it is not necessary to return to guest. However, if it is enabled, PMU
-context for guest need switch on. Now KVM_REQ_PMU notification is set
-on vCPU context switch, but it is missing if there is no vCPU context
-switch while PMU is used by guest VM, so fix it.
+Add a proper error handling path to call regulator_bulk_disable()
+before returning an error.
 
-Cc: <stable@vger.kernel.org>
-Fixes: f4e40ea9f78f ("LoongArch: KVM: Add PMU support for guest")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/vcpu.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/codecs/cs4271.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -133,6 +133,9 @@ static void kvm_lose_pmu(struct kvm_vcpu
- 	 * Clear KVM_LARCH_PMU if the guest is not using PMU CSRs when
- 	 * exiting the guest, so that the next time trap into the guest.
- 	 * We don't need to deal with PMU CSRs contexts.
-+	 *
-+	 * Otherwise set the request bit KVM_REQ_PMU to restore guest PMU
-+	 * before entering guest VM
- 	 */
- 	val = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL0);
- 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL1);
-@@ -140,6 +143,8 @@ static void kvm_lose_pmu(struct kvm_vcpu
- 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL3);
- 	if (!(val & KVM_PMU_EVENT_ENABLED))
- 		vcpu->arch.aux_inuse &= ~KVM_LARCH_PMU;
-+	else
-+		kvm_make_request(KVM_REQ_PMU, vcpu);
+diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
+index e864188ae5eb9..1d3261d0f1fd0 100644
+--- a/sound/soc/codecs/cs4271.c
++++ b/sound/soc/codecs/cs4271.c
+@@ -581,17 +581,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
  
- 	kvm_restore_host_pmu(vcpu);
+ 	ret = regcache_sync(cs4271->regmap);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN, 0);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	/* Power-up sequence requires 85 uS */
+ 	udelay(85);
+ 
+@@ -601,6 +601,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+ 				   CS4271_MODE2_MUTECAEQUB);
+ 
+ 	return 0;
++
++err_disable_regulator:
++	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
++	return ret;
  }
+ 
+ static void cs4271_component_remove(struct snd_soc_component *component)
+-- 
+2.51.0
+
 
 
 
