@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B9C79C66
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988DAC79AEE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 490923448BF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:47:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6BB414EE6BE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FE134DCC2;
-	Fri, 21 Nov 2025 13:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495CB346A1D;
+	Fri, 21 Nov 2025 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORvi4Ymt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvmYNelz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3FD34DB78;
-	Fri, 21 Nov 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73A02DCF55;
+	Fri, 21 Nov 2025 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732652; cv=none; b=QMvAWHrbHF3M5qUcMdtYe78xkklZ3hlm30iE85WbGh6NgOa+2+ZxJaDFpikyLE5+RLWlDmehjY9r7hocvtkkcgds6CSY1BWJsxaEIPOTeBwyWHUK4uZRtZZJz+JiETY7/XIgOtS7laXzITzq0GQw4DjGppT9XwN6XLX0Wpnk8TY=
+	t=1763732676; cv=none; b=lr3vKU0HWjYFCHsi//wVh/pAFDLcOl1C8r4Wtms2Z5pDMxSt+IQ3jQBxQlh7rUcJdwbtdrdQYez0+NNEmPCS0KvEK73Qs0Fj1+O4AYNUc4q8zeILYfJKT+7YuLxIUYz9AT45rfNCoELxSDok32aYKq0DLIZJIILae4JvVo0gSJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732652; c=relaxed/simple;
-	bh=5z/8BmKmGNZIhktmlhG157MzlZnr0PPj5OTogn92dUY=;
+	s=arc-20240116; t=1763732676; c=relaxed/simple;
+	bh=ypBWEsENghZQFvjxiiFsEaLbWGP7TlB6MyJjBNFd4x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzkcC2jhmH5/EYYVJ18J53O/fdIgr/nQj1t3Q0uwf66wTaihxNV70qGtIt7DSn8RnQmhWsueOUlaENVD8bPBTVHdUdkPu6fM6hKwMPayQsNz5OUsJcHzAnMdp9Is3eBYU/sUlF52fbeCy/9o4hvaekTDdY8EcnFuh0/yDUH87H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORvi4Ymt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D66C4CEFB;
-	Fri, 21 Nov 2025 13:44:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LH5vabX2XAnloUd0qp6Zs8b+kB4IlwTRe9ffNWTdq6gyuYUs53F3agIMxRS85d8PcnVLXDAb1nOusZKQy+IcFupUVGdyvxTyYJU4oW9NVM8ZL+QsTlto5171aXWOyRu8Hg+WuwZZ4je3oa6w7yb1iIjxH/r+JZAaB1yNMVjJE4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvmYNelz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52233C4CEF1;
+	Fri, 21 Nov 2025 13:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732652;
-	bh=5z/8BmKmGNZIhktmlhG157MzlZnr0PPj5OTogn92dUY=;
+	s=korg; t=1763732675;
+	bh=ypBWEsENghZQFvjxiiFsEaLbWGP7TlB6MyJjBNFd4x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORvi4Ymtibn0JOLbnWVjHH5MlnCW/OyAUkOMwHflOPjQ8YOJJFh/iZRuJiuVxzUO0
-	 +8ewuJq84dKaOM0Zvl/HaA2rgQFnw1YwLkzzu2OkxbK+dj2jcdFeN4taWV86Oyt/Sn
-	 2HRdVGXJsNAU2/bc2cPuSuJbXKStPbnfr/PWMkaM=
+	b=tvmYNelzvfCmmkfSRlk5m7qI28SaOXYHzEPZxcxoO0ztFkuOFvnWv7WMS39hZ1DO3
+	 1/5G8Lq2AVQY8uznIwuQ2kvl9UEDhwR+BzWQGmvaXxaahnpouAKG4u/vifq5489adz
+	 h1W5edkmhysSgCTqTPOHca2luQ4f3jVXf5g1Z0zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/529] media: fix uninitialized symbol warnings
-Date: Fri, 21 Nov 2025 14:07:48 +0100
-Message-ID: <20251121130237.032712390@linuxfoundation.org>
+Subject: [PATCH 6.6 170/529] drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)
+Date: Fri, 21 Nov 2025 14:07:49 +0100
+Message-ID: <20251121130237.067950702@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -60,117 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
+[ Upstream commit 585b2f685c56c5095cc22c7202bf74d8e9a73cdd ]
 
-Initialize variables to fix these smatch warnings
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'protocol'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'scancode'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'toggle'.
-drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
-symbol 'snr'.
-drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
-symbol 'totalgain'.
+Update the legacy (non-DC) display code to respect the maximum
+pixel clock for HDMI and DVI-D. Reject modes that would require
+a higher pixel clock than can be supported.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
+Also update the maximum supported HDMI clock value depending on
+the ASIC type.
+
+For reference, see the DC code:
+check max_hdmi_pixel_clock in dce*_resource.c
+
+v2:
+Fix maximum clocks for DVI-D and DVI/HDMI adapters.
+
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
- drivers/media/tuners/xc4000.c  |  8 ++++----
- drivers/media/tuners/xc5000.c  | 12 ++++++------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ .../gpu/drm/amd/amdgpu/amdgpu_connectors.c    | 57 ++++++++++++++-----
+ 1 file changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
-index b37a2aaf8ac04..a8026f0f980f9 100644
---- a/drivers/media/i2c/ir-kbd-i2c.c
-+++ b/drivers/media/i2c/ir-kbd-i2c.c
-@@ -321,9 +321,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+index d34037b85cf85..eb20018b61e47 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+@@ -1205,29 +1205,60 @@ static void amdgpu_connector_dvi_force(struct drm_connector *connector)
+ 		amdgpu_connector->use_digital = true;
+ }
  
- static int ir_key_poll(struct IR_i2c *ir)
++/**
++ * Returns the maximum supported HDMI (TMDS) pixel clock in KHz.
++ */
++static int amdgpu_max_hdmi_pixel_clock(const struct amdgpu_device *adev)
++{
++	if (adev->asic_type >= CHIP_POLARIS10)
++		return 600000;
++	else if (adev->asic_type >= CHIP_TONGA)
++		return 300000;
++	else
++		return 297000;
++}
++
++/**
++ * Validates the given display mode on DVI and HDMI connectors,
++ * including analog signals on DVI-I.
++ */
+ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+ 					    struct drm_display_mode *mode)
  {
--	enum rc_proto protocol;
--	u32 scancode;
--	u8 toggle;
-+	enum rc_proto protocol = 0;
-+	u32 scancode = 0;
-+	u8 toggle = 0;
- 	int rc;
+ 	struct drm_device *dev = connector->dev;
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
++	const int max_hdmi_pixel_clock = amdgpu_max_hdmi_pixel_clock(adev);
++	const int max_dvi_single_link_pixel_clock = 165000;
++	int max_digital_pixel_clock_khz;
  
- 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 29bc63021c5aa..6fb3550811a28 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1087,12 +1087,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
+ 	/* XXX check mode bandwidth */
  
- static void xc_debug_dump(struct xc4000_priv *priv)
- {
--	u16	adc_envelope;
-+	u16	adc_envelope = 0;
- 	u32	freq_error_hz = 0;
--	u16	lock_status;
-+	u16	lock_status = 0;
- 	u32	hsync_freq_hz = 0;
--	u16	frame_lines;
--	u16	quality;
-+	u16	frame_lines = 0;
-+	u16	quality = 0;
- 	u16	signal = 0;
- 	u16	noise = 0;
- 	u8	hw_majorversion = 0, hw_minorversion = 0;
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index ec9a3cd4784e1..a28481edd22ed 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
+-	if (amdgpu_connector->use_digital && (mode->clock > 165000)) {
+-		if ((amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D) ||
+-		    (amdgpu_connector->connector_object_id == CONNECTOR_OBJECT_ID_HDMI_TYPE_B)) {
+-			return MODE_OK;
+-		} else if (connector->display_info.is_hdmi) {
+-			/* HDMI 1.3+ supports max clock of 340 Mhz */
+-			if (mode->clock > 340000)
+-				return MODE_CLOCK_HIGH;
+-			else
+-				return MODE_OK;
+-		} else {
+-			return MODE_CLOCK_HIGH;
++	if (amdgpu_connector->use_digital) {
++		switch (amdgpu_connector->connector_object_id) {
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_A:
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_SINGLE_LINK_DVI_D:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock;
++			break;
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_I:
++		case CONNECTOR_OBJECT_ID_DUAL_LINK_DVI_D:
++		case CONNECTOR_OBJECT_ID_HDMI_TYPE_B:
++			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock * 2;
++			break;
+ 		}
++
++		/* When the display EDID claims that it's an HDMI display,
++		 * we use the HDMI encoder mode of the display HW,
++		 * so we should verify against the max HDMI clock here.
++		 */
++		if (connector->display_info.is_hdmi)
++			max_digital_pixel_clock_khz = max_hdmi_pixel_clock;
++
++		if (mode->clock > max_digital_pixel_clock_khz)
++			return MODE_CLOCK_HIGH;
+ 	}
  
- static void xc_debug_dump(struct xc5000_priv *priv)
- {
--	u16 adc_envelope;
-+	u16 adc_envelope = 0;
- 	u32 freq_error_hz = 0;
--	u16 lock_status;
-+	u16 lock_status = 0;
- 	u32 hsync_freq_hz = 0;
--	u16 frame_lines;
--	u16 quality;
--	u16 snr;
--	u16 totalgain;
-+	u16 frame_lines = 0;
-+	u16 quality = 0;
-+	u16 snr = 0;
-+	u16 totalgain = 0;
- 	u8 hw_majorversion = 0, hw_minorversion = 0;
- 	u8 fw_majorversion = 0, fw_minorversion = 0;
- 	u16 fw_buildversion = 0;
+ 	/* check against the max pixel clock */
 -- 
 2.51.0
 
