@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-195532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66847C79308
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D5BC79D86
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 628AC4ECEF9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 131E94E9344
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0FD27147D;
-	Fri, 21 Nov 2025 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B2F34FF49;
+	Fri, 21 Nov 2025 13:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENtrFn/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNqZYSoi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4509F23183B;
-	Fri, 21 Nov 2025 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C634E345CAA;
+	Fri, 21 Nov 2025 13:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730939; cv=none; b=U4kbKI7Fjz2JwibQ6oAaR4JPb3ImITaaUsxCR4Q04Nk324qTRGlggXUCXc0y9xM99mzVCRQb/OsG6ZYblAGszRashrM2MZQBH75SLFmWopyzWA2Zju5MFoDWiaqG8Ru7pbrRcBFdNjaeKBjp1Ii9rNYu/LK792TiJ2CC8VwhKqg=
+	t=1763733001; cv=none; b=cZgLgfnAsYOE9olHf2mAnOp29/hsMdSJKLhKJYWy5x2lEncbC7hfnNutH5lhWBaRdl8/rjh6Ik5lw2fZesA2Ptxz67N1UhrFszjb6h3LIoOgOD+40pjD6hw1ruZcUQ7X8tFV+7XAsY/8KKX3t1FKPYUn1ehM6tBQALJqv50LLq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730939; c=relaxed/simple;
-	bh=nhw1rnV6iPkarIDWN/8aBB5nR78wpYJq6FtcAA532Qc=;
+	s=arc-20240116; t=1763733001; c=relaxed/simple;
+	bh=apZ5t8jZPxcJ+bTswT6Vc8oWLwaHrTkTQoDiXUzvFp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pb0c++W1fO6/4jdabpdQjxVLhlt/Ol0MtAUhDGATWThuCO651i3mubKS343Q7gTVcE7xb953NHNjE5JO1idVt9BLo5urMEEdFkF0uE9AN5F3Gn05d8BP/kHfCCnybeG0ecMKRA9IGWh6TbcmgPJ5QiPDZ2m3GsdVwwnmC118urE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENtrFn/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF3EC4CEF1;
-	Fri, 21 Nov 2025 13:15:38 +0000 (UTC)
+	 MIME-Version; b=BPUpR79P4K7TfQRP/1YEvS0DEwPNLCFbrxdwTalQFaNYbh+8wRrkfXc234IuaJbg2DoLEmh6di42OTYoc0dAZVoTS7QGyAC/H/cvR5XVJ4y0/7DwNGQexSAglo9yiUMqzrcg8eFf0EEFDInmVHMwmyy+0DA92abvLt8hxmGZe7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNqZYSoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D570AC4CEF1;
+	Fri, 21 Nov 2025 13:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730939;
-	bh=nhw1rnV6iPkarIDWN/8aBB5nR78wpYJq6FtcAA532Qc=;
+	s=korg; t=1763733001;
+	bh=apZ5t8jZPxcJ+bTswT6Vc8oWLwaHrTkTQoDiXUzvFp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENtrFn/Ozrcm6h2UQpNQsHLnroblljiPVHcgmJGbaay1J7u7OLq8p16aGkDovp8KB
-	 lDqPA6fRwE4uKA2+PXPtKfiXGrKwLLUN1cSrr/3TzPc5yEIxl/g4blvRITFi3BLmf9
-	 WKLhqRXe/c/Ga+1ZrOA00pPEZIe32P7S5yxdaTBE=
+	b=BNqZYSoiUpYS3P8cqnVNiOU0E18+6AlELZ9P0v9S8o3VRdhaA5hwMBRopuUbGgBgD
+	 0sf11mT81/NRrCqeTbKedhZr+tql+Yl88Av9cVJPd4+jm1/LpjXKhi80UkqRcjlJGV
+	 hWkTV7/pRGXs4B+RK3qdfJjObYNjPYgFoYg4Y0oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 034/247] ixgbe: handle IXGBE_VF_GET_PF_LINK_STATE mailbox operation
-Date: Fri, 21 Nov 2025 14:09:41 +0100
-Message-ID: <20251121130155.828422497@linuxfoundation.org>
+Subject: [PATCH 6.6 283/529] ASoC: tlv320aic3x: Fix class-D initialization for tlv320aic3007
+Date: Fri, 21 Nov 2025 14:09:42 +0100
+Message-ID: <20251121130241.099808568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,164 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit f7f97cbc03a470ce405d48dedb7f135713caa0fa ]
+[ Upstream commit 733a763dd8b3ac2858dd238a91bb3a2fdff4739e ]
 
-Update supported API version and provide handler for
-IXGBE_VF_GET_PF_LINK_STATE cmd.
-Simply put stored values of link speed and link_up from adapter context.
+The problem of having class-D initialization sequence in probe using
+regmap_register_patch() is that it will do hardware register writes
+immediately after being called as it bypasses regcache. Afterwards, in
+aic3x_init() we also perform codec soft reset, rendering class-D init
+sequence pointless. This issue is even more apparent when using reset
+GPIO line, since in that case class-D amplifier initialization fails
+with "Failed to init class D: -5" message as codec is already held in
+reset state after requesting the reset GPIO and hence hardware I/O
+fails with -EIO errno.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Link: https://lore.kernel.org/stable/20250828095227.1857066-3-jedrzej.jagielski%40intel.com
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251009-jk-iwl-net-2025-10-01-v3-3-ef32a425b92a@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Thus move class-D amplifier initialization sequence from probe function
+to aic3x_set_power() just before the usual regcache sync. Use bypassed
+regmap_multi_reg_write_bypassed() function to make sure, class-D init
+sequence is performed in proper order as described in the datasheet.
+
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Link: https://patch.msgid.link/20250925085929.2581749-1-primoz.fiser@norik.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h  |  5 +++
- .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    | 42 +++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ sound/soc/codecs/tlv320aic3x.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-index 4af149b63a39f..f7256a339c99b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-@@ -50,6 +50,8 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_12,	/* API version 1.2, linux/freebsd VF driver */
- 	ixgbe_mbox_api_13,	/* API version 1.3, linux/freebsd VF driver */
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
-+	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
-+	ixgbe_mbox_api_16,	/* API version 1.6, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
+diff --git a/sound/soc/codecs/tlv320aic3x.c b/sound/soc/codecs/tlv320aic3x.c
+index 56e795a00e22f..591f6c9f9d3a6 100644
+--- a/sound/soc/codecs/tlv320aic3x.c
++++ b/sound/soc/codecs/tlv320aic3x.c
+@@ -121,6 +121,16 @@ static const struct reg_default aic3x_reg[] = {
+ 	{ 108, 0x00 }, { 109, 0x00 },
  };
-@@ -86,6 +88,9 @@ enum ixgbe_pfvf_api_rev {
  
- #define IXGBE_VF_GET_LINK_STATE 0x10 /* get vf link state */
- 
-+/* mailbox API, version 1.6 VF requests */
-+#define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
++static const struct reg_sequence aic3007_class_d[] = {
++	/* Class-D speaker driver init; datasheet p. 46 */
++	{ AIC3X_PAGE_SELECT, 0x0D },
++	{ 0xD, 0x0D },
++	{ 0x8, 0x5C },
++	{ 0x8, 0x5D },
++	{ 0x8, 0x5C },
++	{ AIC3X_PAGE_SELECT, 0x00 },
++};
 +
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN 4
- /* word in permanent address message with the current multicast type */
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 32ac1e020d915..b09271d61a4ef 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -510,6 +510,7 @@ static int ixgbe_set_vf_lpe(struct ixgbe_adapter *adapter, u32 max_frame, u32 vf
- 		case ixgbe_mbox_api_12:
- 		case ixgbe_mbox_api_13:
- 		case ixgbe_mbox_api_14:
-+		case ixgbe_mbox_api_16:
- 			/* Version 1.1 supports jumbo frames on VFs if PF has
- 			 * jumbo frames enabled which means legacy VFs are
- 			 * disabled
-@@ -1046,6 +1047,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_12:
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
-+	case ixgbe_mbox_api_16:
- 		adapter->vfinfo[vf].vf_api = api;
- 		return 0;
- 	default:
-@@ -1072,6 +1074,7 @@ static int ixgbe_get_vf_queues(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_12:
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
-+	case ixgbe_mbox_api_16:
- 		break;
- 	default:
- 		return -1;
-@@ -1112,6 +1115,7 @@ static int ixgbe_get_vf_reta(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
+ static bool aic3x_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+@@ -1393,6 +1403,10 @@ static int aic3x_set_power(struct snd_soc_component *component, int power)
+ 			gpiod_set_value(aic3x->gpio_reset, 0);
+ 		}
  
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_12:
-@@ -1145,6 +1149,7 @@ static int ixgbe_get_vf_rss_key(struct ixgbe_adapter *adapter,
- 
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_12:
-@@ -1174,6 +1179,7 @@ static int ixgbe_update_vf_xcast_mode(struct ixgbe_adapter *adapter,
- 		fallthrough;
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
-+	case ixgbe_mbox_api_16:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1244,6 +1250,7 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_12:
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
-+	case ixgbe_mbox_api_16:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1254,6 +1261,38 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
- 	return 0;
++		if (aic3x->model == AIC3X_MODEL_3007)
++			regmap_multi_reg_write_bypassed(aic3x->regmap, aic3007_class_d,
++							ARRAY_SIZE(aic3007_class_d));
++
+ 		/* Sync reg_cache with the hardware */
+ 		regcache_cache_only(aic3x->regmap, false);
+ 		regcache_sync(aic3x->regmap);
+@@ -1723,17 +1737,6 @@ static void aic3x_configure_ocmv(struct device *dev, struct aic3x_priv *aic3x)
+ 	}
  }
  
-+/**
-+ * ixgbe_send_vf_link_status - send link status data to VF
-+ * @adapter: pointer to adapter struct
-+ * @msgbuf: pointer to message buffers
-+ * @vf: VF identifier
-+ *
-+ * Reply for IXGBE_VF_GET_PF_LINK_STATE mbox command sending link status data.
-+ *
-+ * Return: 0 on success or -EOPNOTSUPP when operation is not supported.
-+ */
-+static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
-+				     u32 *msgbuf, u32 vf)
-+{
-+	struct ixgbe_hw *hw = &adapter->hw;
-+
-+	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_16:
-+		if (hw->mac.type != ixgbe_mac_e610)
-+			return -EOPNOTSUPP;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+	/* Simply provide stored values as watchdog & link status events take
-+	 * care of its freshness.
-+	 */
-+	msgbuf[1] = adapter->link_speed;
-+	msgbuf[2] = adapter->link_up;
-+
-+	return 0;
-+}
-+
- static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
+-
+-static const struct reg_sequence aic3007_class_d[] = {
+-	/* Class-D speaker driver init; datasheet p. 46 */
+-	{ AIC3X_PAGE_SELECT, 0x0D },
+-	{ 0xD, 0x0D },
+-	{ 0x8, 0x5C },
+-	{ 0x8, 0x5D },
+-	{ 0x8, 0x5C },
+-	{ AIC3X_PAGE_SELECT, 0x00 },
+-};
+-
+ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver_data)
  {
- 	u32 mbx_size = IXGBE_VFMAILBOX_SIZE;
-@@ -1328,6 +1367,9 @@ static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
- 	case IXGBE_VF_IPSEC_DEL:
- 		retval = ixgbe_ipsec_vf_del_sa(adapter, msgbuf, vf);
- 		break;
-+	case IXGBE_VF_GET_PF_LINK_STATE:
-+		retval = ixgbe_send_vf_link_status(adapter, msgbuf, vf);
-+		break;
- 	default:
- 		e_err(drv, "Unhandled Msg %8.8x\n", msgbuf[0]);
- 		retval = -EIO;
+ 	struct aic3x_priv *aic3x;
+@@ -1825,13 +1828,6 @@ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver
+ 
+ 	aic3x_configure_ocmv(dev, aic3x);
+ 
+-	if (aic3x->model == AIC3X_MODEL_3007) {
+-		ret = regmap_register_patch(aic3x->regmap, aic3007_class_d,
+-					    ARRAY_SIZE(aic3007_class_d));
+-		if (ret != 0)
+-			dev_err(dev, "Failed to init class D: %d\n", ret);
+-	}
+-
+ 	ret = devm_snd_soc_register_component(dev, &soc_component_dev_aic3x, &aic3x_dai, 1);
+ 	if (ret)
+ 		return ret;
 -- 
 2.51.0
 
