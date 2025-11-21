@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB64C794A2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AE6C797ED
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 1FC3628A33
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C9EB362044
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A3B343D67;
-	Fri, 21 Nov 2025 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3013346A06;
+	Fri, 21 Nov 2025 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/dqr4mU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlPaHii5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E59334367;
-	Fri, 21 Nov 2025 13:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE5A340DA1;
+	Fri, 21 Nov 2025 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731448; cv=none; b=q3ymj5tcaBnKtfWKaRprmZxttGxvwjRmnAjE3biEAk4uhjiPv6B7MVHQASHqjjywvnbogPJ5zH3ifmCrwm1aXXOuRHvX15h2oAK8okL1S1c89E1qoE6qWdBY1ge/8aEY5ArEftKGu2/0JoKnCWvxq+12nhqSeRu6Ph3L46RFyxw=
+	t=1763731932; cv=none; b=NLmk4jmVzbqFv4+6US/7X3ufybGY4uFgSPYX0DsOMDxE4502MU3pdhWrBeWJctJOLSz34Kj0AYIu9D1otK05IvY/fT6/1+Ne5yGKl2SAvsS1vMNpOgklO03rQzFj+5nG2f9fii3BCn2N/GkFFOPWj/w/+6eTkxUJtUV4YmRuAEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731448; c=relaxed/simple;
-	bh=N5aJ57JNbeFTd8Xqg4HHpZ1yVQIzCXbwc2RWw7ZlhyA=;
+	s=arc-20240116; t=1763731932; c=relaxed/simple;
+	bh=cotOMNCAlxrphN0vM7gdWek9SkX7xvRCFsg90C3WVXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2x2pOrHVzwSUbKoJX2mXa9ilmQjpPJXMxE4wvwFN45iwJ1//BBYhXPiHqZaBwWjzWnvOyOJbcAeYvV/RQqvFKESr5gbjjflvC2VGpV/2A+NVR8h6A+sxSHnSSMWXA/n+dD1inEaReUfRk3MH/7nNVnr4pO1bscnpcQzaHIllqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/dqr4mU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDD5C4CEF1;
-	Fri, 21 Nov 2025 13:24:07 +0000 (UTC)
+	 MIME-Version; b=qCY8HmUR3oFQSAL36KHA89Fo9optIOkdatgtlyHi7kXSeMHX4KhGTsGFUhxThRY8yoUM1pdgjk5Bgx/wSeW8fjq9jU4BUrRlS6WPbWjbSP1ICHEDyeQvOLwTZGYiExwlRDZAPMCv8p/OzBI0VjzPW7h8OtAzuW0mF+DqVT2m3xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlPaHii5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C58C4CEF1;
+	Fri, 21 Nov 2025 13:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731448;
-	bh=N5aJ57JNbeFTd8Xqg4HHpZ1yVQIzCXbwc2RWw7ZlhyA=;
+	s=korg; t=1763731932;
+	bh=cotOMNCAlxrphN0vM7gdWek9SkX7xvRCFsg90C3WVXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/dqr4mUmRfCivFfDQzr7gS+1MS0ZRKzPLjQkVT5ByIgc43l4mYUGnQD5cMjd0Q75
-	 r7OgY9vYfG/Wz1vbwkGh5yDjCq7fhRzH1iWvpFhlUrk+cBm2ITcD2Kz3ZBz4ZB1yI8
-	 ANHSx0vEYr7nkJjhyA1HA4+kKTGgvAhQd/Gb9qQ4=
+	b=vlPaHii53LyWMaPR80zXqzX73mWdo1HkB+krcdyNB3WRMcx7rDr86nLaCp2BTlDUY
+	 MqKp9Sy8ouZ+sfBl0LykOOMv7GhRo+qcPIFbVdFn+DOki4GcgP4reX1pXGfn6XTuwk
+	 gRIi7qjFLUDtOaxmkSM6XRWISRSPTGOAx9eElvUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.17 211/247] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
-Date: Fri, 21 Nov 2025 14:12:38 +0100
-Message-ID: <20251121130202.300924326@linuxfoundation.org>
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 132/185] crash: fix crashkernel resource shrink
+Date: Fri, 21 Nov 2025 14:12:39 +0100
+Message-ID: <20251121130148.639479347@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
+commit 00fbff75c5acb4755f06f08bd1071879c63940c5 upstream.
 
-The current single-bit error injection mechanism flips bits directly in ECC RAM
-by performing write and read operations. When the ECC RAM is actively used by
-the Ethernet or USB controller, this approach sometimes trigger a false
-double-bit error.
+When crashkernel is configured with a high reservation, shrinking its
+value below the low crashkernel reservation causes two issues:
 
-Switch both Ethernet and USB EDAC devices to use the INTTEST register
-(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
-the existing double-bit error injection method.
+1. Invalid crashkernel resource objects
+2. Kernel crash if crashkernel shrinking is done twice
 
-Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
+For example, with crashkernel=200M,high, the kernel reserves 200MB of high
+memory and some default low memory (say 256MB).  The reservation appears
+as:
+
+cat /proc/iomem | grep -i crash
+af000000-beffffff : Crash kernel
+433000000-43f7fffff : Crash kernel
+
+If crashkernel is then shrunk to 50MB (echo 52428800 >
+/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
+af000000-beffffff : Crash kernel
+
+Instead, it should show 50MB:
+af000000-b21fffff : Crash kernel
+
+Further shrinking crashkernel to 40MB causes a kernel crash with the
+following trace (x86):
+
+BUG: kernel NULL pointer dereference, address: 0000000000000038
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+<snip...>
+Call Trace: <TASK>
+? __die_body.cold+0x19/0x27
+? page_fault_oops+0x15a/0x2f0
+? search_module_extables+0x19/0x60
+? search_bpf_extables+0x5f/0x80
+? exc_page_fault+0x7e/0x180
+? asm_exc_page_fault+0x26/0x30
+? __release_resource+0xd/0xb0
+release_resource+0x26/0x40
+__crash_shrink_memory+0xe5/0x110
+crash_shrink_memory+0x12a/0x190
+kexec_crash_size_store+0x41/0x80
+kernfs_fop_write_iter+0x141/0x1f0
+vfs_write+0x294/0x460
+ksys_write+0x6d/0xf0
+<snip...>
+
+This happens because __crash_shrink_memory()/kernel/crash_core.c
+incorrectly updates the crashk_res resource object even when
+crashk_low_res should be updated.
+
+Fix this by ensuring the correct crashkernel resource object is updated
+when shrinking crashkernel memory.
+
+Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
+Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/crash_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1369,7 +1369,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -352,7 +352,7 @@ static int __crash_shrink_memory(struct
+ 		old_res->start = 0;
+ 		old_res->end   = 0;
+ 	} else {
+-		crashk_res.end = ram_res->start - 1;
++		old_res->end = ram_res->start - 1;
+ 	}
  
- #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
-@@ -1459,7 +1459,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
- 
- #endif	/* CONFIG_EDAC_ALTERA_USB */
+ 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
 
 
 
