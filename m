@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-196364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04505C7A11A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5D9C79583
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 05BB135A88
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D83FE3800C4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F3935292A;
-	Fri, 21 Nov 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC1A2F363E;
+	Fri, 21 Nov 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn2pS30g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIR4qeGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9781E351FDB;
-	Fri, 21 Nov 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1431F09AC;
+	Fri, 21 Nov 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733295; cv=none; b=qbQebh17uzCl1LKqYOygynEvYL/kNYDYN4mXmcE4SOgDild1Mg70I+7lKf9V1YjN3yR7Npu0MEmw7y3S20u/YxC5BCPJ3civJgC8dZrcRQ9O0WhRADs+fsE7/UkCFGqpu6B7asaRAPsYp4N+1yV4sJlCrn792NarLOBS9YBZPnY=
+	t=1763731327; cv=none; b=GCwJOZGoPj1Fs8sFraNpZYbBzsvuwjVSgHXyM5ULLN6baIR7VhCKFbrRd2ebyyAUNT5j7S4hRvB8YlNNDLca7QOOj12RDsPoCnCvi8m/Y3zVi9OGQkINqaFjMhTDQ8KyW4nP+kGjIMav8oFk53+EMyEvMuX2lOA+Rl9wrvlUhfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733295; c=relaxed/simple;
-	bh=9ONQtvdy1W/XoRrE2ziDKfLGDILlCbIXmPpA6zNHdsw=;
+	s=arc-20240116; t=1763731327; c=relaxed/simple;
+	bh=BUUBbKGhzM7yqmWOC2Jna4PVu73MlyyLq5gKb29/gCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9toLDgdphov4oGjDVCGMUBkys9n7ny+FoVyFA1TcRIIaui4BHkyyLzGi95ysTacG4/jQIc8ONn54TA1PbFJUnohVFlRSnlaq4XQ8+ogYXiNUrudxyRZSArp6yNQ7XOPj9pnMnqQfJ+x9dpkHZ+631xRWOT8JR5LI0Ha99FMyjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn2pS30g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E590C116C6;
-	Fri, 21 Nov 2025 13:54:54 +0000 (UTC)
+	 MIME-Version; b=dVJ1SOWHXrHzblddwDQoXeKm3PEUZBe9CNayTTdZP7zRl7uz360dnlJUKVm+Lo+RrKQnMWRT/iFyPoYHqP2f8Qq4DSkxY2+NWuxotG1tDB1DozwjKHVSnHePPt3Vfxw35Qo7SGPVpPmAfUiqdwEM5/ycN18zMLxqqEAaC2F7OrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIR4qeGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DBAC4CEF1;
+	Fri, 21 Nov 2025 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733295;
-	bh=9ONQtvdy1W/XoRrE2ziDKfLGDILlCbIXmPpA6zNHdsw=;
+	s=korg; t=1763731327;
+	bh=BUUBbKGhzM7yqmWOC2Jna4PVu73MlyyLq5gKb29/gCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn2pS30gkcEJ8cO2Xtb9WBR/PAqOoOsGmn+mtLKlqi1OU+doB1lHT9MBeKxDn76wI
-	 pwso2viSWpCFGryXkoK2K01e6RCrkLfYNPlI9XGXE0qpbXejFeTAu7NtBKsWDkaj+I
-	 /CXpIr34f80+u8pAed4V7mMhoPsYfJAh9RWQvFUQ=
+	b=dIR4qeGnL9FPG1RNWN1/xMrbJsBHL6zNWR3FuUPoDXCl8Mr9sDz6zdugYeNgU8Kz2
+	 ufFYSqWjEcp+yp8VV264IvWSqrqN+5OT8Jhc/JWm+ywu0OiqaBcJBXMLZYGh7eOSST
+	 1HFK7XMjPkDVBk6huzeZxpyFJhhyuPaoVuR9h9l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 418/529] ACPI: CPPC: Check _CPC validity for only the online CPUs
+	Martin Kaiser <martin@kaiser.cx>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 170/247] maple_tree: fix tracepoint string pointers
 Date: Fri, 21 Nov 2025 14:11:57 +0100
-Message-ID: <20251121130245.890266795@linuxfoundation.org>
+Message-ID: <20251121130200.822211535@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 6dd3b8a709a130a4d55c866af9804c81b8486d28 ]
+commit 91a54090026f84ceffaa12ac53c99b9f162946f6 upstream.
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+maple_tree tracepoints contain pointers to function names. Such a pointer
+is saved when a tracepoint logs an event. There's no guarantee that it's
+still valid when the event is parsed later and the pointer is dereferenced.
 
-However the function acpi_cpc_valid() checks for the validity of the
-_CPC object for all the present CPUs. This breaks when the kernel is
-booted with "nosmt=force".
+The kernel warns about these unsafe pointers.
 
-Hence check the validity of the _CPC objects of only the online CPUs.
+	event 'ma_read' has unsafe pointer field 'fn'
+	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
 
-Fixes: 2aeca6bd0277 ("ACPI: CPPC: Check present CPUs for determining _CPC is valid")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-3-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mark the function names as tracepoint_string() to fix the events.
+
+One case that doesn't work without my patch would be trace-cmd record
+to save the binary ringbuffer and trace-cmd report to parse it in
+userspace.  The address of __func__ can't be dereferenced from
+userspace but tracepoint_string will add an entry to
+/sys/kernel/tracing/printk_formats
+
+Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/maple_tree.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 10d531427ba77..39f248be9611f 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -445,7 +445,7 @@ bool acpi_cpc_valid(void)
- 	if (acpi_disabled)
- 		return false;
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -64,6 +64,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/maple_tree.h>
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		if (!cpc_ptr)
++#define TP_FCT tracepoint_string(__func__)
++
+ /*
+  * Kernel pointer hashing renders much of the maple tree dump useless as tagged
+  * pointers get hashed to arbitrary values.
+@@ -2976,7 +2978,7 @@ static inline void mas_rebalance(struct
+ 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
+ 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
+ 
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 
+ 	/*
+ 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
+@@ -3337,7 +3339,7 @@ static void mas_split(struct ma_state *m
+ 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
+ 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
+ 
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 
+ 	mast.l = &l_mas;
+ 	mast.r = &r_mas;
+@@ -3512,7 +3514,7 @@ static bool mas_is_span_wr(struct ma_wr_
  			return false;
--- 
-2.51.0
-
+ 	}
+ 
+-	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
++	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
+ 	return true;
+ }
+ 
+@@ -3756,7 +3758,7 @@ static noinline void mas_wr_spanning_sto
+ 	 * of data may happen.
+ 	 */
+ 	mas = wr_mas->mas;
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 
+ 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
+ 		return mas_new_root(mas, wr_mas->entry);
+@@ -3894,7 +3896,7 @@ done:
+ 	} else {
+ 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
+ 	}
+-	trace_ma_write(__func__, mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
+ 	mas_update_gap(mas);
+ 	mas->end = new_end;
+ 	return;
+@@ -3938,7 +3940,7 @@ static inline void mas_wr_slot_store(str
+ 		mas->offset++; /* Keep mas accurate. */
+ 	}
+ 
+-	trace_ma_write(__func__, mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
+ 	/*
+ 	 * Only update gap when the new entry is empty or there is an empty
+ 	 * entry in the original two ranges.
+@@ -4059,7 +4061,7 @@ static inline void mas_wr_append(struct
+ 		mas_update_gap(mas);
+ 
+ 	mas->end = new_end;
+-	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
+ 	return;
+ }
+ 
+@@ -4073,7 +4075,7 @@ static void mas_wr_bnode(struct ma_wr_st
+ {
+ 	struct maple_big_node b_node;
+ 
+-	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
+ 	memset(&b_node, 0, sizeof(struct maple_big_node));
+ 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
+ 	mas_commit_b_node(wr_mas, &b_node);
+@@ -5405,7 +5407,7 @@ void *mas_store(struct ma_state *mas, vo
+ 	int request;
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 
+-	trace_ma_write(__func__, mas, 0, entry);
++	trace_ma_write(TP_FCT, mas, 0, entry);
+ #ifdef CONFIG_DEBUG_MAPLE_TREE
+ 	if (MAS_WARN_ON(mas, mas->index > mas->last))
+ 		pr_err("Error %lX > %lX " PTR_FMT "\n", mas->index, mas->last,
+@@ -5506,7 +5508,7 @@ void mas_store_prealloc(struct ma_state
+ 	}
+ 
+ store:
+-	trace_ma_write(__func__, mas, 0, entry);
++	trace_ma_write(TP_FCT, mas, 0, entry);
+ 	mas_wr_store_entry(&wr_mas);
+ 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
+ 	mas_destroy(mas);
+@@ -6319,7 +6321,7 @@ void *mtree_load(struct maple_tree *mt,
+ 	MA_STATE(mas, mt, index, index);
+ 	void *entry;
+ 
+-	trace_ma_read(__func__, &mas);
++	trace_ma_read(TP_FCT, &mas);
+ 	rcu_read_lock();
+ retry:
+ 	entry = mas_start(&mas);
+@@ -6362,7 +6364,7 @@ int mtree_store_range(struct maple_tree
+ 	MA_STATE(mas, mt, index, last);
+ 	int ret = 0;
+ 
+-	trace_ma_write(__func__, &mas, 0, entry);
++	trace_ma_write(TP_FCT, &mas, 0, entry);
+ 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
+ 		return -EINVAL;
+ 
+@@ -6585,7 +6587,7 @@ void *mtree_erase(struct maple_tree *mt,
+ 	void *entry = NULL;
+ 
+ 	MA_STATE(mas, mt, index, index);
+-	trace_ma_op(__func__, &mas);
++	trace_ma_op(TP_FCT, &mas);
+ 
+ 	mtree_lock(mt);
+ 	entry = mas_erase(&mas);
+@@ -6923,7 +6925,7 @@ void *mt_find(struct maple_tree *mt, uns
+ 	unsigned long copy = *index;
+ #endif
+ 
+-	trace_ma_read(__func__, &mas);
++	trace_ma_read(TP_FCT, &mas);
+ 
+ 	if ((*index) > max)
+ 		return NULL;
 
 
 
