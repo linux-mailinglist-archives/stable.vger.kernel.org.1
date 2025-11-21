@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-196413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF38C79E8E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D369EC794D5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 773EC2DD53
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 8CE472DABC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE8934D93C;
-	Fri, 21 Nov 2025 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79CB275B18;
+	Fri, 21 Nov 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXmBtIti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXIi3KEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6316349AF7;
-	Fri, 21 Nov 2025 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC682EA46B;
+	Fri, 21 Nov 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733439; cv=none; b=OP8QByzQ+zZWn7Qd9mbk+/HM3f1oBKYIPkx2/xsqBvXL+xLuYhGY20z/SfYtE0w2FcSNjbqn6rheCbrsT1bW8q3keuqBA/I7HPyVucpmrtBnJNH4M5hbZQgku2EfpQJfTXzSWn8a93qwjyq1LXkLz1tzJ5PXXnfMs6C7z2znhF4=
+	t=1763731480; cv=none; b=jPvzDjCcw3YjUssu+YQN0NLvHxmSf4qfoIEqS7M/G0gL/DdeCFtWcPaQr8j3oclDop7j2eft/xyvIF4LVaNyq2hzacM3MoOoyTqX9m7tro+JXFZN3S06jfZfRmicPRJ8SN3IEqNa+xeCqbPRMU1v85sDCFBlzjrO8wydaYjlJHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733439; c=relaxed/simple;
-	bh=BUGhI/q2XTyMML8q6BX6aFGnEsm2CqeVXKsq4ZKD7cM=;
+	s=arc-20240116; t=1763731480; c=relaxed/simple;
+	bh=qa11pUmcf+JmJ61QfNzXuzwv4Ed4pd3KvKRZQwXVvHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIz9Jo42SCIBTO4vdfgDRyEABQtVpg1r0v5yPCquasEk8Qo+ed+b3XKRgJ+HnVad+EROrxCbJJKmlA4IXs49p0v/gma5l4WTO4m1s7d7FJyukuzMT41C85aaZMIGX9CeorjpvB+wY1oDQwqBOPIylUugeW8Ww6Q23AL7oncLV8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXmBtIti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F264EC4CEF1;
-	Fri, 21 Nov 2025 13:57:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cPWxgZGxxx6R4MJk8DKIUHoLIwT778SvOLV5SrQ1VCRYtreMhCk79AaIEGSiO4XqXotBDQXNDOOnL1GE5j9U0cgRkdvxifS/FdYbEdo1nadFDHgzfq7ow5AuQW9NW5qXN3FSKIO85f/b/f3qVZbXzhNLSb3qab3ZM9wh4pumWdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXIi3KEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C4CEFB;
+	Fri, 21 Nov 2025 13:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733439;
-	bh=BUGhI/q2XTyMML8q6BX6aFGnEsm2CqeVXKsq4ZKD7cM=;
+	s=korg; t=1763731480;
+	bh=qa11pUmcf+JmJ61QfNzXuzwv4Ed4pd3KvKRZQwXVvHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXmBtItib4PDcn4QkB6wsGr0Ig9curzQJEaJfpVWKJ43EUH0cLu1IWAFmIMEoLiJD
-	 eVggVntQV8Q0HU84ha+k4DRIE0LdEjHJiVJe1N9upxDzS5SQwqJK95lFKyG/8Q+4sa
-	 BfD/ZIhWtLn3wmf31DbqyyAb5yWyRW4pzusryRbQ=
+	b=GXIi3KExHli46OTseQZwEEGQikF8MmBz0doG+88xrmQTIZSApob4iTJoMZ7dG7D7J
+	 Epdz39yiuztH6guPsTNeK1FP4BSgjgq8N71/RAATrwOWoB7zqHC8sk5qdmBDzXbKnL
+	 q76yYj9xk9suAePeiSXvmrAWINy4xkoKwwTJll9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liupu Wang <wangliupu@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: [PATCH 6.6 469/529] LoongArch: Let {pte,pmd}_modify() record the status of _PAGE_DIRTY
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 221/247] drm/amdgpu: disable peer-to-peer access for DCC-enabled GC12 VRAM surfaces
 Date: Fri, 21 Nov 2025 14:12:48 +0100
-Message-ID: <20251121130247.697858281@linuxfoundation.org>
+Message-ID: <20251121130202.665711109@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-commit a073d637c8cfbfbab39b7272226a3fbf3b887580 upstream.
+commit 22a36e660d014925114feb09a2680bb3c2d1e279 upstream.
 
-Now if the PTE/PMD is dirty with _PAGE_DIRTY but without _PAGE_MODIFIED,
-after {pte,pmd}_modify() we lose _PAGE_DIRTY, then {pte,pmd}_dirty()
-return false and lead to data loss. This can happen in certain scenarios
-such as HW PTW doesn't set _PAGE_MODIFIED automatically, so here we need
-_PAGE_MODIFIED to record the dirty status (_PAGE_DIRTY).
+Certain multi-GPU configurations (especially GFX12) may hit
+data corruption when a DCC-compressed VRAM surface is shared across GPUs
+using peer-to-peer (P2P) DMA transfers.
 
-The new modification involves checking whether the original PTE/PMD has
-the _PAGE_DIRTY flag. If it exists, the _PAGE_MODIFIED bit is also set,
-ensuring that the {pte,pmd}_dirty() interface can always return accurate
-information.
+Such surfaces rely on device-local metadata and cannot be safely accessed
+through a remote GPU’s page tables. Attempting to import a DCC-enabled
+surface through P2P leads to incorrect rendering or GPU faults.
 
+This change disables P2P for DCC-enabled VRAM buffers that are contiguous
+and allocated on GFX12+ hardware.  In these cases, the importer falls back
+to the standard system-memory path, avoiding invalid access to compressed
+surfaces.
+
+Future work could consider optional migration (VRAM→System→VRAM) if a
+performance regression is observed when `attach->peer2peer = false`.
+
+Tested on:
+ - Dual RX 9700 XT (Navi4x) setup
+ - GNOME and Wayland compositor scenarios
+ - Confirmed no corruption after disabling P2P under these conditions
+v2: Remove check TTM_PL_VRAM & TTM_PL_FLAG_CONTIGUOUS.
+v3: simplify for upsteam and fix ip version check (Alex)
+
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9dff2bb709e6fbd97e263fd12bf12802d2b5a0cf)
 Cc: stable@vger.kernel.org
-Co-developed-by: Liupu Wang <wangliupu@loongson.cn>
-Signed-off-by: Liupu Wang <wangliupu@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/pgtable.h |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -448,6 +448,9 @@ static inline unsigned long pte_accessib
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -82,6 +82,18 @@ static int amdgpu_dma_buf_attach(struct
+ 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
  
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
-+	if (pte_val(pte) & _PAGE_DIRTY)
-+		pte_val(pte) |= _PAGE_MODIFIED;
++	/*
++	 * Disable peer-to-peer access for DCC-enabled VRAM surfaces on GFX12+.
++	 * Such buffers cannot be safely accessed over P2P due to device-local
++	 * compression metadata. Fallback to system-memory path instead.
++	 * Device supports GFX12 (GC 12.x or newer)
++	 * BO was created with the AMDGPU_GEM_CREATE_GFX12_DCC flag
++	 *
++	 */
++	if (amdgpu_ip_version(adev, GC_HWIP, 0) >= IP_VERSION(12, 0, 0) &&
++	    bo->flags & AMDGPU_GEM_CREATE_GFX12_DCC)
++		attach->peer2peer = false;
 +
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) |
- 		     (pgprot_val(newprot) & ~_PAGE_CHG_MASK));
- }
-@@ -570,9 +573,11 @@ static inline struct page *pmd_page(pmd_
- 
- static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
- {
--	pmd_val(pmd) = (pmd_val(pmd) & _HPAGE_CHG_MASK) |
--				(pgprot_val(newprot) & ~_HPAGE_CHG_MASK);
--	return pmd;
-+	if (pmd_val(pmd) & _PAGE_DIRTY)
-+		pmd_val(pmd) |= _PAGE_MODIFIED;
-+
-+	return __pmd((pmd_val(pmd) & _HPAGE_CHG_MASK) |
-+		     (pgprot_val(newprot) & ~_HPAGE_CHG_MASK));
- }
- 
- static inline pmd_t pmd_mkinvalid(pmd_t pmd)
+ 	if (!amdgpu_dmabuf_is_xgmi_accessible(attach_adev, bo) &&
+ 	    pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
+ 		attach->peer2peer = false;
 
 
 
