@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-195667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D93C79514
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAE7C7A1AA
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5AE344EEFC7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 098BD35844
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C61B4F0A;
-	Fri, 21 Nov 2025 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D577350A0C;
+	Fri, 21 Nov 2025 13:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjpK8fya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBeo5uDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E9A3321D9;
-	Fri, 21 Nov 2025 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37528350282;
+	Fri, 21 Nov 2025 13:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731321; cv=none; b=ZOxHL4fVy7x6jk+iV5r6VPr+beqU7yCviAHUidszF1SfHGKxuFevJL+XpMXivy5nAAIIr5Fi7TpFvMNvrrE/689fl8458ULi9SuZj1T11KBWd9TGBpgmS57NlZdhVexzU3XgPLghW9tqFjsbUsPv3HwxX7E5Im9mLepwIw8vBMM=
+	t=1763733290; cv=none; b=DYzkVOWKWvHiwI7adUC98I29CwTWMSnhUAuJSR/xlaWQMb8Ndng2CSXfRy7iV3uqpry30wcb+/VcBsnze5uvYWhVDwYEnanOsJhz5JnrGfmPekpdnhH0XUHW2V4a5c9mCfjXzEmxmMMcqRfSvUUxVWCiirIhJRUf3tqP05ct+O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731321; c=relaxed/simple;
-	bh=fI2whQr/xZGTgkMvVMKqgjdXrzq/Ani1Y2DzKLumVTA=;
+	s=arc-20240116; t=1763733290; c=relaxed/simple;
+	bh=jhYUHvVfI3EweO0pNIferuKs2gX1m/rTC0VT3vyDqWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQ9LFCaG7D/W39XrEuAUErTccPZcEwbP+ek+ES6Fp4GSjjYq40uBt4JE5wBDhZGq7A/0l6C3uFJx66QrUNB7nzL6wi82oavAs+ZP/KB97kdOfxSUcM7DMINLjuLon6GPttKfUpnBoKLb8hheOayYihbIT89jroy8sjTdg93fy88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjpK8fya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC0BC4CEF1;
-	Fri, 21 Nov 2025 13:22:00 +0000 (UTC)
+	 MIME-Version; b=WPpwp51PEdcix+erCHqFA/An1AonQ/jXoLF5NvNVWeV+DVAUbsp+bDmNr2Qy/jBqcuasCxkkreXTM2gP5jIgGwOKWCr3lmqFQ3+08GbHRV//r1+tiLCAtX/YooHcAAv6MS2jUPdFVLKoIKCnnAxmb113LSKdFoqcpCPyZtNJ67o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBeo5uDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B08C4CEF1;
+	Fri, 21 Nov 2025 13:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731321;
-	bh=fI2whQr/xZGTgkMvVMKqgjdXrzq/Ani1Y2DzKLumVTA=;
+	s=korg; t=1763733289;
+	bh=jhYUHvVfI3EweO0pNIferuKs2gX1m/rTC0VT3vyDqWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjpK8fyaYhu/AeiL1gDdeYQE7XRzYUAA9Kz1hqzdB+mS1qWQojSAD+j49Ev46OnVP
-	 Z66Uzo3jph7zSuwDJSaZG6wIiisWuTAHZWTz+gvwYxV8lMuYUOsnA4fl+l4vr3Y+U/
-	 77jC206a/sXh1+9g1k/bGM4B0oZQlfM1qd6PczZU=
+	b=uBeo5uDdawArdQPyoENLz3wcxD0RzYCamD+Lmxk5YHdjjtZqqsCrlb7vc0d7Ru2gG
+	 Vs71ocZV2gzgkjVy+O1fSfkxYI8k1EP12bMkUtIzxpj4e9ZXbZGZ63Z13YrTY64r9n
+	 NYmZ2duN4s/tnh06vg0AkwVSMagjQqtethpi+uj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nate Karstens <nate.karstens@garmin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 168/247] strparser: Fix signed/unsigned mismatch bug
+	Alyssa Ross <hi@alyssa.is>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 416/529] virtio-net: fix incorrect flags recording in big mode
 Date: Fri, 21 Nov 2025 14:11:55 +0100
-Message-ID: <20251121130200.750365117@linuxfoundation.org>
+Message-ID: <20251121130245.820175177@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nate Karstens <nate.karstens@garmin.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-commit 4da4e4bde1c453ac5cc2dce5def81d504ae257ee upstream.
+[ Upstream commit 0eff2eaa5322b5b141ff5d5ded26fac4a52b5f7b ]
 
-The `len` member of the sk_buff is an unsigned int. This is cast to
-`ssize_t` (a signed type) for the first sk_buff in the comparison,
-but not the second sk_buff. On 32-bit systems, this can result in
-an integer underflow for certain values because unsigned arithmetic
-is being used.
+The purpose of commit 703eec1b2422 ("virtio_net: fixing XDP for fully
+checksummed packets handling") is to record the flags in advance, as
+their value may be overwritten in the XDP case. However, the flags
+recorded under big mode are incorrect, because in big mode, the passed
+buf does not point to the rx buffer, but rather to the page of the
+submitted buffer. This commit fixes this issue.
 
-This appears to be an oversight: if the intention was to use unsigned
-arithmetic, then the first cast would have been omitted. The change
-ensures both len values are cast to `ssize_t`.
+For the small mode, the commit c11a49d58ad2 ("virtio_net: Fix mismatched
+buf address when unmapping for small packets") fixed it.
 
-The underflow causes an issue with ktls when multiple TLS PDUs are
-included in a single TCP segment. The mainline kernel does not use
-strparser for ktls anymore, but this is still useful for other
-features that still use strparser, and for backporting.
-
-Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
-Cc: stable@vger.kernel.org
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251106222835.1871628-1-nate.karstens@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Alyssa Ross <hi@alyssa.is>
+Fixes: 703eec1b2422 ("virtio_net: fixing XDP for fully checksummed packets handling")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20251111090828.23186-1-xuanzhuo@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/strparser/strparser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/virtio_net.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t
- 				strp_parser_err(strp, -EMSGSIZE, desc);
- 				break;
- 			} else if (len <= (ssize_t)head->len -
--					  skb->len - stm->strp.offset) {
-+					  (ssize_t)skb->len - stm->strp.offset) {
- 				/* Length must be into new skb (and also
- 				 * greater than zero)
- 				 */
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index fd5663075bd77..caae11ba2f8be 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1821,22 +1821,28 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 		return;
+ 	}
+ 
+-	/* 1. Save the flags early, as the XDP program might overwrite them.
++	/* About the flags below:
++	 * 1. Save the flags early, as the XDP program might overwrite them.
+ 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
+ 	 * stay valid after XDP processing.
+ 	 * 2. XDP doesn't work with partially checksummed packets (refer to
+ 	 * virtnet_xdp_set()), so packets marked as
+ 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
+ 	 */
+-	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 
+-	if (vi->mergeable_rx_bufs)
++	if (vi->mergeable_rx_bufs) {
++		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
+ 					stats);
+-	else if (vi->big_packets)
++	} else if (vi->big_packets) {
++		void *p = page_address((struct page *)buf);
++
++		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
+ 		skb = receive_big(dev, vi, rq, buf, len, stats);
+-	else
++	} else {
++		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+ 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
++	}
+ 
+ 	if (unlikely(!skb))
+ 		return;
+-- 
+2.51.0
+
 
 
 
