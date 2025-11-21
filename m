@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-196444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3056C79EEE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14C3C79799
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 2B6D02DE5B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id BACFF23F22
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DFE350D5A;
-	Fri, 21 Nov 2025 13:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058EC34C819;
+	Fri, 21 Nov 2025 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyH+QJje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLuhaUiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAABD350A3D;
-	Fri, 21 Nov 2025 13:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A986434BA4E;
+	Fri, 21 Nov 2025 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733529; cv=none; b=tsUWV/JnqVqncljTKRxp6fXpAT/DcZG0fxokJ/jFQwIYldqNvO7ZxikWjE4e2XU36PKUeZbgnXqKMnVLjmOsTVAOnL9CYmWtX+yElNXSn8PmvUsqXn8cPDFyPYxDhfHAMtlkbW2H0p2XnAUNvw6eqyCcKqjYsd/pQGkt7GUlwao=
+	t=1763732105; cv=none; b=IFhVtfUOSbHYw+fOTE4LFgabaJsPJGjlfYb/s2ChmIr7AZJr7ok2+A0fBlQHCfwPpks36bJhrnoOI5L9NF1viYKG4RFIwX/OWFTJ896UGEwPUB6L1eaOM8bPigOFeckA2xYNJEb2H0KoYNeR1YOwCTHEjwJoWbZCVY+AKGeSDzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733529; c=relaxed/simple;
-	bh=YIw2+djKyzll9vTxc747enP37y7gVkZe57RyJqw0Af4=;
+	s=arc-20240116; t=1763732105; c=relaxed/simple;
+	bh=Sks7V1H2+1/vdsYYVgRjV1GuYwY+MCWBdYYNZduCzWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPiFycBXpnP6kfPIF+aVUUsBkb75Qy6M5YbNH0uqjrdvoeZQGCLpvde75SX8UEtpc7Y3zAmYoXCuU6KwGw1lqh8xP1g3yKqHA1oc+zIf8b2APHZqcnZkl6Pgd6CZtG3HE3zIuL+HnIotxO7QTuF1SJRb7r0iYNIuE6wQcrtadmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyH+QJje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0DAC4CEF1;
-	Fri, 21 Nov 2025 13:58:48 +0000 (UTC)
+	 MIME-Version; b=c5q7n3CAJ2bNIyFBJWybukV8VUpOaaZxU+iNuOBl19UZCAQA0FsgkhRvzIQmlqcP/Bi+Dz0PNH42i1bas/gLnjcKLR+Cr7WoYEYwQtog2xWJAW3kiEo6VXf4PsLMl0kvXs+HChh/cQiS97VHSJAcYMha9tz83GwddUDT0UkP2o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLuhaUiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B8DC4CEF1;
+	Fri, 21 Nov 2025 13:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733529;
-	bh=YIw2+djKyzll9vTxc747enP37y7gVkZe57RyJqw0Af4=;
+	s=korg; t=1763732105;
+	bh=Sks7V1H2+1/vdsYYVgRjV1GuYwY+MCWBdYYNZduCzWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyH+QJjeGFIl+urFaaF6sdevlbrTBW+lFYEISnaJQWyuCjDO/vkLCT95nLESltcZB
-	 0gsX5wv8CMOVfpqoM1ccE9u80sNY5rQtQWEu/lJydnaBdZlT03E8SLnNL4V87LMvug
-	 Fo3bkeVGDMO96kWNrrI0onpad1Rpmy61EUyUm2SA=
+	b=YLuhaUiYjn5ZqYOh0v1SZdzETPrvs3mN3BhdVzNqE/gi1WtDCzvA/eNdS9EVcYWjF
+	 Hj0mLDh/syn1jvQ/0AbAM2RC3GTVgK4ghzSWbCV2mNSueOHQ00NJhoEHv3eNm7ddlk
+	 2qE4ueJjMeMF9IDXlvk1pCVbojh0scbzUeOvfudM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"jingxian.li" <jingxian.li@shopee.com>
-Subject: [PATCH 6.6 492/529] Revert "perf dso: Add missed dso__put to dso__load_kcore"
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 164/185] KVM: guest_memfd: Remove RCU-protected attribute from slot->gmem.file
 Date: Fri, 21 Nov 2025 14:13:11 +0100
-Message-ID: <20251121130248.512582668@linuxfoundation.org>
+Message-ID: <20251121130149.796294327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "jingxian.li" <jingxian.li@shopee.com>
+From: Yan Zhao <yan.y.zhao@intel.com>
 
-This reverts commit e5de9ea7796e79f3cd082624f788cc3442bff2a8.
+[ Upstream commit 67b43038ce14d6b0673bdffb2052d879065c94ae ]
 
-The patch introduced `map__zput(new_node->map)` in the kcore load
-path, causing a segmentation fault when running `perf c2c report`.
+Remove the RCU-protected attribute from slot->gmem.file. No need to use RCU
+primitives rcu_assign_pointer()/synchronize_rcu() to update this pointer.
 
-The issue arises because `maps__merge_in` directly modifies and
-inserts the caller's `new_map`, causing it to be freed prematurely
-while still referenced by kmaps.
+- slot->gmem.file is updated in 3 places:
+  kvm_gmem_bind(), kvm_gmem_unbind(), kvm_gmem_release().
+  All of them are protected by kvm->slots_lock.
 
-Later branchs (6.12, 6.15, 6.16) are not affected because they use
-a different merge approach with a lazily sorted array, which avoids
-modifying the original `new_map`.
+- slot->gmem.file is read in 2 paths:
+  (1) kvm_gmem_populate
+        kvm_gmem_get_file
+        __kvm_gmem_get_pfn
 
-Fixes: e5de9ea7796e ("perf dso: Add missed dso__put to dso__load_kcore")
+  (2) kvm_gmem_get_pfn
+         kvm_gmem_get_file
+         __kvm_gmem_get_pfn
 
-Signed-off-by: jingxian.li <jingxian.li@shopee.com>
+  Path (1) kvm_gmem_populate() requires holding kvm->slots_lock, so
+  slot->gmem.file is protected by the kvm->slots_lock in this path.
+
+  Path (2) kvm_gmem_get_pfn() does not require holding kvm->slots_lock.
+  However, it's also not guarded by rcu_read_lock() and rcu_read_unlock().
+  So synchronize_rcu() in kvm_gmem_unbind()/kvm_gmem_release() actually
+  will not wait for the readers in kvm_gmem_get_pfn() due to lack of RCU
+  read-side critical section.
+
+  The path (2) kvm_gmem_get_pfn() is safe without RCU protection because:
+  a) kvm_gmem_bind() is called on a new memslot, before the memslot is
+     visible to kvm_gmem_get_pfn().
+  b) kvm->srcu ensures that kvm_gmem_unbind() and freeing of a memslot
+     occur after the memslot is no longer visible to kvm_gmem_get_pfn().
+  c) get_file_active() ensures that kvm_gmem_get_pfn() will not access the
+     stale file if kvm_gmem_release() sets it to NULL.  This is because if
+     kvm_gmem_release() occurs before kvm_gmem_get_pfn(), get_file_active()
+     will return NULL; if get_file_active() does not return NULL,
+     kvm_gmem_release() should not occur until after kvm_gmem_get_pfn()
+     releases the file reference.
+
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Message-ID: <20241104084303.29909-1-yan.y.zhao@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when gmem is dying")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/symbol.c |    1 -
- 1 file changed, 1 deletion(-)
+ include/linux/kvm_host.h |    7 ++++++-
+ virt/kvm/guest_memfd.c   |   34 +++++++++++++++++++++-------------
+ 2 files changed, 27 insertions(+), 14 deletions(-)
 
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1366,7 +1366,6 @@ static int dso__load_kcore(struct dso *d
- 				goto out_err;
- 			}
- 		}
--		map__zput(new_node->map);
- 		free(new_node);
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -608,7 +608,12 @@ struct kvm_memory_slot {
+ 
+ #ifdef CONFIG_KVM_PRIVATE_MEM
+ 	struct {
+-		struct file __rcu *file;
++		/*
++		 * Writes protected by kvm->slots_lock.  Acquiring a
++		 * reference via kvm_gmem_get_file() is protected by
++		 * either kvm->slots_lock or kvm->srcu.
++		 */
++		struct file *file;
+ 		pgoff_t pgoff;
+ 	} gmem;
+ #endif
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -261,15 +261,19 @@ static int kvm_gmem_release(struct inode
+ 	 * dereferencing the slot for existing bindings needs to be protected
+ 	 * against memslot updates, specifically so that unbind doesn't race
+ 	 * and free the memslot (kvm_gmem_get_file() will return NULL).
++	 *
++	 * Since .release is called only when the reference count is zero,
++	 * after which file_ref_get() and get_file_active() fail,
++	 * kvm_gmem_get_pfn() cannot be using the file concurrently.
++	 * file_ref_put() provides a full barrier, and get_file_active() the
++	 * matching acquire barrier.
+ 	 */
+ 	mutex_lock(&kvm->slots_lock);
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+ 	xa_for_each(&gmem->bindings, index, slot)
+-		rcu_assign_pointer(slot->gmem.file, NULL);
+-
+-	synchronize_rcu();
++		WRITE_ONCE(slot->gmem.file, NULL);
+ 
+ 	/*
+ 	 * All in-flight operations are gone and new bindings can be created.
+@@ -298,8 +302,7 @@ static inline struct file *kvm_gmem_get_
+ 	/*
+ 	 * Do not return slot->gmem.file if it has already been closed;
+ 	 * there might be some time between the last fput() and when
+-	 * kvm_gmem_release() clears slot->gmem.file, and you do not
+-	 * want to spin in the meanwhile.
++	 * kvm_gmem_release() clears slot->gmem.file.
+ 	 */
+ 	return get_file_active(&slot->gmem.file);
+ }
+@@ -510,11 +513,11 @@ int kvm_gmem_bind(struct kvm *kvm, struc
+ 	}
+ 
+ 	/*
+-	 * No synchronize_rcu() needed, any in-flight readers are guaranteed to
+-	 * be see either a NULL file or this new file, no need for them to go
+-	 * away.
++	 * memslots of flag KVM_MEM_GUEST_MEMFD are immutable to change, so
++	 * kvm_gmem_bind() must occur on a new memslot.  Because the memslot
++	 * is not visible yet, kvm_gmem_get_pfn() is guaranteed to see the file.
+ 	 */
+-	rcu_assign_pointer(slot->gmem.file, file);
++	WRITE_ONCE(slot->gmem.file, file);
+ 	slot->gmem.pgoff = start;
+ 
+ 	xa_store_range(&gmem->bindings, start, end - 1, slot, GFP_KERNEL);
+@@ -550,8 +553,12 @@ void kvm_gmem_unbind(struct kvm_memory_s
+ 
+ 	filemap_invalidate_lock(file->f_mapping);
+ 	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
+-	rcu_assign_pointer(slot->gmem.file, NULL);
+-	synchronize_rcu();
++
++	/*
++	 * synchronize_srcu(&kvm->srcu) ensured that kvm_gmem_get_pfn()
++	 * cannot see this memslot.
++	 */
++	WRITE_ONCE(slot->gmem.file, NULL);
+ 	filemap_invalidate_unlock(file->f_mapping);
+ 
+ 	fput(file);
+@@ -563,11 +570,12 @@ static struct folio *__kvm_gmem_get_pfn(
+ 					pgoff_t index, kvm_pfn_t *pfn,
+ 					bool *is_prepared, int *max_order)
+ {
++	struct file *gmem_file = READ_ONCE(slot->gmem.file);
+ 	struct kvm_gmem *gmem = file->private_data;
+ 	struct folio *folio;
+ 
+-	if (file != slot->gmem.file) {
+-		WARN_ON_ONCE(slot->gmem.file);
++	if (file != gmem_file) {
++		WARN_ON_ONCE(gmem_file);
+ 		return ERR_PTR(-EFAULT);
  	}
  
 
