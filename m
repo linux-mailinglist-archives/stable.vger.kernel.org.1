@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-195924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DE1C79914
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8338BC79EF1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 2A5CE2F9FC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 7F5122EE33
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7086034BA5B;
-	Fri, 21 Nov 2025 13:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54011348889;
+	Fri, 21 Nov 2025 13:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEZmKsVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xo2L4Dl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECCB26CE33;
-	Fri, 21 Nov 2025 13:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E628D3358BE;
+	Fri, 21 Nov 2025 13:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732057; cv=none; b=ANXqjJE4EGNiau53686NRnnVXX4s6sRpE3Xk5Z5xMBar8oEs8Rr5pB6qvpjpCXYzCcyx89uu5sg1DViVFp2FHj+/EeKkzu0BOpDe9unWeIt86ceE41bLOvZreeQkztTDy9tkrCrHap9jUZv0E3ICMMdK59nEWuTPhk4yhpSxcQA=
+	t=1763733538; cv=none; b=nNFH0VxSRcoO54N4Y//WMvlrhkQ145fjyULU8zEJu+f3DZ/bynL7+39Qx6tUCD2BCV+ry2YIbEuircgqmlNOLEPMunsl8Spw2HEAiD7eH+hGdo1UyEqcLVMxi2+6WEbtHx8n3lxsj8pYxT9fxtmXME9pPUMb7RDkQtv34/zQCms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732057; c=relaxed/simple;
-	bh=tJg74wQt86hP6tqdaJQhoSLS8znsLaYF9W/4Pq9MDW8=;
+	s=arc-20240116; t=1763733538; c=relaxed/simple;
+	bh=uGfmz8q5K3KCMUTL7Hn1ZzaGRIORFst2Vhy0dHNh4Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ3gAogdxHrjr8n7uwVEKO8mkLRElH+5ZKIuprz4nWRHhgSig9Iwg/pFVoUUO3qydhWEDiTrIGko4Dm7FvKHHjXhqncOyCCFL0QmhRGn1TTHKIYz6Z5/Qxzs2QJxqaaOldgPDqT/algiRlxKYNWdgYK7h4wY9zDCRJZ9MxHKVt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEZmKsVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712D4C4CEF1;
-	Fri, 21 Nov 2025 13:34:16 +0000 (UTC)
+	 MIME-Version; b=DD0zcmtWj97U94WdOVPj9SI4pM0cQfQmptq5PuxIHnB4n1r7s4152qloTiyE5/+R+Cp3/lyXhDXNEdD3fYGKJEFVzQgLHK9x4bGm4J+5ZRk5bANY+WQRKcg3IFlBXWbDyB6azPV6Q1wSqRJoRTc4DIsB7Rodf9V51mlS3tajGVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xo2L4Dl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B39C4CEF1;
+	Fri, 21 Nov 2025 13:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732056;
-	bh=tJg74wQt86hP6tqdaJQhoSLS8znsLaYF9W/4Pq9MDW8=;
+	s=korg; t=1763733537;
+	bh=uGfmz8q5K3KCMUTL7Hn1ZzaGRIORFst2Vhy0dHNh4Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEZmKsVnHx/JAPe7Icdq69bzaRY87C7ij5JXeCD/s2X6hNNtVWQx45lmrgvAZXYEj
-	 8pHMWXYewt47h1hlVAwxtrRmmWo3crizHhWI5OUK3aRgj6Bt6H42nNeaVqyHetugzH
-	 WhaaT3Nnax0YrUWL2AV9IZAthMzmWgwgWS9BWIKM=
+	b=xo2L4Dl5uK13jPaUhTMk476hckD3ilqALw9WG1BQy+fxSx6ezzfqFGtzG7/M/9630
+	 nEzbBg2b6QkPbv5772OTeKzY4x7+02nHY6dt5n4IjAehJDtfUSjZwot80/KM6vsMv9
+	 JV3A1mz1OQ2mOooEbrfVxNor6SfzUzyu438L7/0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 6.12 175/185] uio_hv_generic: Set event for all channels on the device
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 503/529] scsi: ufs: core: Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE
 Date: Fri, 21 Nov 2025 14:13:22 +0100
-Message-ID: <20251121130150.204542638@linuxfoundation.org>
+Message-ID: <20251121130248.915376362@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
+[ Upstream commit c2a90eee29f41630225c9a64d26c425e1d50b401 ]
 
-Hyper-V may offer a non latency sensitive device with subchannels without
-monitor bit enabled. The decision is entirely on the Hyper-V host not
-configurable within guest.
+Add UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE which lets UFS host drivers
+initialize the blk_crypto_profile themselves rather than have it be
+initialized by ufshcd-core according to the UFSHCI standard.  This is
+needed to support inline encryption on the "Exynos" UFS controller which
+has a nonstandard interface.
 
-When a device has subchannels, also signal events for the subchannel
-if its monitor bit is disabled.
-
-This patch also removes the memory barrier when monitor bit is enabled
-as it is not necessary. The memory barrier is only needed between
-setting up interrupt mask and calling vmbus_set_event() when monitor
-bit is disabled.
-
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
-Fixes: 37bd91f22794 ("uio_hv_generic: Let userspace take care of interrupt mask")
-Cc: <stable@vger.kernel.org> # 6.12.x
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20240708235330.103590-2-ebiggers@kernel.org
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d968e99488c4 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/ufs/core/ufshcd-crypto.c |   10 +++++++---
+ include/ufs/ufshcd.h             |    9 +++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -65,6 +65,16 @@ struct hv_uio_private_data {
- 	char	send_name[32];
+--- a/drivers/ufs/core/ufshcd-crypto.c
++++ b/drivers/ufs/core/ufshcd-crypto.c
+@@ -159,6 +159,9 @@ int ufshcd_hba_init_crypto_capabilities(
+ 	int err = 0;
+ 	enum blk_crypto_mode_num blk_mode_num;
+ 
++	if (hba->quirks & UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE)
++		return 0;
++
+ 	/*
+ 	 * Don't use crypto if either the hardware doesn't advertise the
+ 	 * standard crypto capability bit *or* if the vendor specific driver
+@@ -228,9 +231,10 @@ void ufshcd_init_crypto(struct ufs_hba *
+ 	if (!(hba->caps & UFSHCD_CAP_CRYPTO))
+ 		return;
+ 
+-	/* Clear all keyslots - the number of keyslots is (CFGC + 1) */
+-	for (slot = 0; slot < hba->crypto_capabilities.config_count + 1; slot++)
+-		ufshcd_clear_keyslot(hba, slot);
++	/* Clear all keyslots. */
++	for (slot = 0; slot < hba->crypto_profile.num_slots; slot++)
++		hba->crypto_profile.ll_ops.keyslot_evict(&hba->crypto_profile,
++							 NULL, slot);
+ }
+ 
+ void ufshcd_crypto_register(struct ufs_hba *hba, struct request_queue *q)
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -642,6 +642,15 @@ enum ufshcd_quirks {
+ 	 * thus need this quirk to skip related flow.
+ 	 */
+ 	UFSHCD_QUIRK_MCQ_BROKEN_RTC			= 1 << 21,
++
++	/*
++	 * This quirk needs to be enabled if the host controller supports inline
++	 * encryption but it needs to initialize the crypto capabilities in a
++	 * nonstandard way and/or needs to override blk_crypto_ll_ops.  If
++	 * enabled, the standard code won't initialize the blk_crypto_profile;
++	 * ufs_hba_variant_ops::init() must do it instead.
++	 */
++	UFSHCD_QUIRK_CUSTOM_CRYPTO_PROFILE		= 1 << 22,
  };
  
-+static void set_event(struct vmbus_channel *channel, s32 irq_state)
-+{
-+	channel->inbound.ring_buffer->interrupt_mask = !irq_state;
-+	if (!channel->offermsg.monitor_allocated && irq_state) {
-+		/* MB is needed for host to see the interrupt mask first */
-+		virt_mb();
-+		vmbus_set_event(channel);
-+	}
-+}
-+
- /*
-  * This is the irqcontrol callback to be registered to uio_info.
-  * It can be used to disable/enable interrupt from user space processes.
-@@ -79,12 +89,15 @@ hv_uio_irqcontrol(struct uio_info *info,
- {
- 	struct hv_uio_private_data *pdata = info->priv;
- 	struct hv_device *dev = pdata->device;
-+	struct vmbus_channel *primary, *sc;
- 
--	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
--	virt_mb();
-+	primary = dev->channel;
-+	set_event(primary, irq_state);
- 
--	if (!dev->channel->offermsg.monitor_allocated && irq_state)
--		vmbus_setevent(dev->channel);
-+	mutex_lock(&vmbus_connection.channel_mutex);
-+	list_for_each_entry(sc, &primary->sc_list, sc_list)
-+		set_event(sc, irq_state);
-+	mutex_unlock(&vmbus_connection.channel_mutex);
- 
- 	return 0;
- }
-@@ -95,11 +108,18 @@ hv_uio_irqcontrol(struct uio_info *info,
- static void hv_uio_channel_cb(void *context)
- {
- 	struct vmbus_channel *chan = context;
--	struct hv_device *hv_dev = chan->device_obj;
--	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
-+	struct hv_device *hv_dev;
-+	struct hv_uio_private_data *pdata;
- 
- 	virt_mb();
- 
-+	/*
-+	 * The callback may come from a subchannel, in which case look
-+	 * for the hv device in the primary channel
-+	 */
-+	hv_dev = chan->primary_channel ?
-+		 chan->primary_channel->device_obj : chan->device_obj;
-+	pdata = hv_get_drvdata(hv_dev);
- 	uio_event_notify(&pdata->info);
- }
- 
+ enum ufshcd_caps {
 
 
 
