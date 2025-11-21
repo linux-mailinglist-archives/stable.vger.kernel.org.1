@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-196061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0FCC7994A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:44:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C2FC79962
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id F2E0228A3B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id C35BC2DE66
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C839634F254;
-	Fri, 21 Nov 2025 13:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D3D34D90E;
+	Fri, 21 Nov 2025 13:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYiHWYQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTILZdo2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAF29B78F;
-	Fri, 21 Nov 2025 13:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9770347BC9;
+	Fri, 21 Nov 2025 13:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732447; cv=none; b=DbHMjOVkT7wTAg1tWLADNXDnUH4utubg9HdfdrsYXn8yXvYhESwB8ftWHGDoyDgMrJ0Rs1vEjz/Y/TzGhPSEK2A4xhLhRiOogq7Y7wSCQu0xIrK1dNJL2nLywiFwhdJJi5ecmbFrqqkDZuSJDCYrcSXo1cR/AJYA1rQ9YaDctQM=
+	t=1763732467; cv=none; b=GN8X4VmsAOheukyjXwCsHMUPo9bnlicdZrojMrBb3ZHTvd7BcJGkJ8Ir/KPkP7YUL5ZTM4Zd6MnzwTfT/III24+7y61DbbHhr0bbq241eCe/lhyty6C3GyWGTGj3A4E6ulto5J9WjpM5G0lXqezkGLHwDkmYt8m0wZiq04uuI+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732447; c=relaxed/simple;
-	bh=+CSzQhb9Sph8yAVwA4OzBLIt4e4DjRvazfRmc4moB7U=;
+	s=arc-20240116; t=1763732467; c=relaxed/simple;
+	bh=o4DiLuIigl1jRitcralaJyPfmH95Aox0dbOTPHkw8Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWt+PqXHmJbAw5Yz8oCEFrRS2JKstivqpSJyOGQH8/8KnBl9pfUM3yZpwMOwIhDbkrIF8IhycKLEyXV8zXL6lQAFfvcsVwnESaa5s6PxEZDSaKf3AlYArUv60P6hcY8cslMxVjIy4wMD9HnyIJEq/gWeVeJGNlNpibmN1PqxmzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYiHWYQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB53FC4CEF1;
-	Fri, 21 Nov 2025 13:40:46 +0000 (UTC)
+	 MIME-Version; b=h/ntqlGio/1BMvsUJpQrEz3VPF2Qk4W3CEmVRdzJrY0o1K0uR2oM+NlEt9a3psgJ+8WB6FogYOhrHnUSRgCiDJv/COdX784oWn9nG3DcBmSpNjcLNGiQezDsMZ0EhffcljjcFORmEfV2O4ROkx/XRlE60Odd0vuaB0OGkltW+Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTILZdo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD126C4CEF1;
+	Fri, 21 Nov 2025 13:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732447;
-	bh=+CSzQhb9Sph8yAVwA4OzBLIt4e4DjRvazfRmc4moB7U=;
+	s=korg; t=1763732467;
+	bh=o4DiLuIigl1jRitcralaJyPfmH95Aox0dbOTPHkw8Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYiHWYQjX2jmZZaByXxLikB2ntYJrsSdwxgICVJoqVQbUVrBFCWgkep9krlrEd7CL
-	 699f3RHV2Qz5LQnbXfgCtUpBRpqEOAXp4fNF4DwJE1j3pmlqKUdD8HD+AJhqSAFRTL
-	 J9KLT2b5tdkV93rq9CvPX/6OuLoC26PlzIQNzF9Q=
+	b=MTILZdo2+/xBB1gi9txJzGhWcLROgwrXnUKWRwLg0OjbuDmK51Tq33KP4d/c592Wp
+	 pnKFng6FTUcWjVnRF+YG5Tlq1QqfKzXNBbo3AczP58Q9TA9+6euKoxj943asyzzEOg
+	 /qgWr/fACZbbZsIiBgBU8+ZL0AutprnybAvTOfio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jann@thejh.net>,
-	Pranav Tyagi <pranav.tyagi03@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/529] futex: Dont leak robust_list pointer on exec race
-Date: Fri, 21 Nov 2025 14:06:36 +0100
-Message-ID: <20251121130234.478165169@linuxfoundation.org>
+Subject: [PATCH 6.6 098/529] spi: rpc-if: Add resume support for RZ/G3E
+Date: Fri, 21 Nov 2025 14:06:37 +0100
+Message-ID: <20251121130234.513023085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,196 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pranav Tyagi <pranav.tyagi03@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 6b54082c3ed4dc9821cdf0edb17302355cc5bb45 ]
+[ Upstream commit ad4728740bd68d74365a43acc25a65339a9b2173 ]
 
-sys_get_robust_list() and compat_get_robust_list() use ptrace_may_access()
-to check if the calling task is allowed to access another task's
-robust_list pointer. This check is racy against a concurrent exec() in the
-target process.
+On RZ/G3E using PSCI, s2ram powers down the SoC. After resume,
+reinitialize the hardware for SPI operations.
 
-During exec(), a task may transition from a non-privileged binary to a
-privileged one (e.g., setuid binary) and its credentials/memory mappings
-may change. If get_robust_list() performs ptrace_may_access() before
-this transition, it may erroneously allow access to sensitive information
-after the target becomes privileged.
-
-A racy access allows an attacker to exploit a window during which
-ptrace_may_access() passes before a target process transitions to a
-privileged state via exec().
-
-For example, consider a non-privileged task T that is about to execute a
-setuid-root binary. An attacker task A calls get_robust_list(T) while T
-is still unprivileged. Since ptrace_may_access() checks permissions
-based on current credentials, it succeeds. However, if T begins exec
-immediately afterwards, it becomes privileged and may change its memory
-mappings. Because get_robust_list() proceeds to access T->robust_list
-without synchronizing with exec() it may read user-space pointers from a
-now-privileged process.
-
-This violates the intended post-exec access restrictions and could
-expose sensitive memory addresses or be used as a primitive in a larger
-exploit chain. Consequently, the race can lead to unauthorized
-disclosure of information across privilege boundaries and poses a
-potential security risk.
-
-Take a read lock on signal->exec_update_lock prior to invoking
-ptrace_may_access() and accessing the robust_list/compat_robust_list.
-This ensures that the target task's exec state remains stable during the
-check, allowing for consistent and synchronized validation of
-credentials.
-
-Suggested-by: Jann Horn <jann@thejh.net>
-Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/linux-fsdevel/1477863998-3298-5-git-send-email-jann@thejh.net/
-Link: https://github.com/KSPP/linux/issues/119
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20250921112649.104516-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/syscalls.c | 106 +++++++++++++++++++++-------------------
- 1 file changed, 56 insertions(+), 50 deletions(-)
+ drivers/spi/spi-rpc-if.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/futex/syscalls.c b/kernel/futex/syscalls.c
-index a8074079b09e8..48feaa545b3c7 100644
---- a/kernel/futex/syscalls.c
-+++ b/kernel/futex/syscalls.c
-@@ -40,6 +40,56 @@ SYSCALL_DEFINE2(set_robust_list, struct robust_list_head __user *, head,
- 	return 0;
- }
- 
-+static inline void __user *futex_task_robust_list(struct task_struct *p, bool compat)
-+{
-+#ifdef CONFIG_COMPAT
-+	if (compat)
-+		return p->compat_robust_list;
-+#endif
-+	return p->robust_list;
-+}
-+
-+static void __user *futex_get_robust_list_common(int pid, bool compat)
-+{
-+	struct task_struct *p = current;
-+	void __user *head;
-+	int ret;
-+
-+	scoped_guard(rcu) {
-+		if (pid) {
-+			p = find_task_by_vpid(pid);
-+			if (!p)
-+				return (void __user *)ERR_PTR(-ESRCH);
-+		}
-+		get_task_struct(p);
-+	}
-+
-+	/*
-+	 * Hold exec_update_lock to serialize with concurrent exec()
-+	 * so ptrace_may_access() is checked against stable credentials
-+	 */
-+	ret = down_read_killable(&p->signal->exec_update_lock);
-+	if (ret)
-+		goto err_put;
-+
-+	ret = -EPERM;
-+	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
-+		goto err_unlock;
-+
-+	head = futex_task_robust_list(p, compat);
-+
-+	up_read(&p->signal->exec_update_lock);
-+	put_task_struct(p);
-+
-+	return head;
-+
-+err_unlock:
-+	up_read(&p->signal->exec_update_lock);
-+err_put:
-+	put_task_struct(p);
-+	return (void __user *)ERR_PTR(ret);
-+}
-+
- /**
-  * sys_get_robust_list() - Get the robust-futex list head of a task
-  * @pid:	pid of the process [zero for current task]
-@@ -50,36 +100,14 @@ SYSCALL_DEFINE3(get_robust_list, int, pid,
- 		struct robust_list_head __user * __user *, head_ptr,
- 		size_t __user *, len_ptr)
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index 7cce2d2ab9ca6..a1696672d12fe 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -193,6 +193,8 @@ static int __maybe_unused rpcif_spi_resume(struct device *dev)
  {
--	struct robust_list_head __user *head;
--	unsigned long ret;
--	struct task_struct *p;
--
--	rcu_read_lock();
--
--	ret = -ESRCH;
--	if (!pid)
--		p = current;
--	else {
--		p = find_task_by_vpid(pid);
--		if (!p)
--			goto err_unlock;
--	}
--
--	ret = -EPERM;
--	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
--		goto err_unlock;
-+	struct robust_list_head __user *head = futex_get_robust_list_common(pid, false);
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
  
--	head = p->robust_list;
--	rcu_read_unlock();
-+	if (IS_ERR(head))
-+		return PTR_ERR(head);
- 
- 	if (put_user(sizeof(*head), len_ptr))
- 		return -EFAULT;
- 	return put_user(head, head_ptr);
--
--err_unlock:
--	rcu_read_unlock();
--
--	return ret;
++	rpcif_hw_init(dev, false);
++
+ 	return spi_controller_resume(ctlr);
  }
- 
- long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
-@@ -322,36 +350,14 @@ COMPAT_SYSCALL_DEFINE3(get_robust_list, int, pid,
- 			compat_uptr_t __user *, head_ptr,
- 			compat_size_t __user *, len_ptr)
- {
--	struct compat_robust_list_head __user *head;
--	unsigned long ret;
--	struct task_struct *p;
--
--	rcu_read_lock();
--
--	ret = -ESRCH;
--	if (!pid)
--		p = current;
--	else {
--		p = find_task_by_vpid(pid);
--		if (!p)
--			goto err_unlock;
--	}
--
--	ret = -EPERM;
--	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
--		goto err_unlock;
-+	struct compat_robust_list_head __user *head = futex_get_robust_list_common(pid, true);
- 
--	head = p->compat_robust_list;
--	rcu_read_unlock();
-+	if (IS_ERR(head))
-+		return PTR_ERR(head);
- 
- 	if (put_user(sizeof(*head), len_ptr))
- 		return -EFAULT;
- 	return put_user(ptr_to_compat(head), head_ptr);
--
--err_unlock:
--	rcu_read_unlock();
--
--	return ret;
- }
- #endif /* CONFIG_COMPAT */
  
 -- 
 2.51.0
