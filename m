@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93270C795B9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4E5C79460
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id A39D2208C3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3EB7C34B126
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080852DEA7E;
-	Fri, 21 Nov 2025 13:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734D02F360C;
+	Fri, 21 Nov 2025 13:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzzH5US4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbhLJ6l0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C533451A3;
-	Fri, 21 Nov 2025 13:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA4D26CE33;
+	Fri, 21 Nov 2025 13:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731706; cv=none; b=lhmSHo/BP0lgaEjdoByPleJMVLbcAq+m7q/QrL+I44g5uQ3fd867OjF0X3ST4sfriZBRIwIL3UzIrWyrqk3U8I7F8HbDHur8PjWcFmamnpeuvmIdn3cp+oBzEqQjhQhTI68KKxsXedg0nR6GFEHQZKhgL92v+TdpA4X3aGnvZm0=
+	t=1763731127; cv=none; b=nttqgIFxPJR/FyxO+dWJj3OPz0gAy9hGTwUoNfbIWIMkbjpMMb2FeQWtMuNhhw/1hXdf6jgH+8lVz89lYjV7TqJz8mNy3ziLx8WOUKRLIRltmBa1taAE/F0dLMeU4YvT1rgRWzJSUSl7p/N60LfLxLmunuO+XyxsTe3C1oBFdUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731706; c=relaxed/simple;
-	bh=5aUlO81byvI7fNzIdP65RsUUUgEh/1a4yTKIfN5IdSw=;
+	s=arc-20240116; t=1763731127; c=relaxed/simple;
+	bh=ZUoN1wxSzwR+duEfhHV0iSCz7ZcyoNNVNReOm/Bqczc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvSsCc5/KQeUzhFAw6HudmJs1+qkZC/wMYzZyql/AeWdL2tSvt3BiNUH6f+0Wy+LOUbL30qnoYGSq3Dd3Yz1QUW66B8VyLYgO194PI4VXjDx5mK1IVyxCIjjZaVppzxL52LTya8Cid0Z21yZ8P2Gt9GU4VCvzMdHbDinz6y7ONo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzzH5US4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4425FC4CEF1;
-	Fri, 21 Nov 2025 13:28:26 +0000 (UTC)
+	 MIME-Version; b=Jmc5eJUxhRz6R3sV0SvR7nEw/lk10out0zp9Ln3LV0SBY79AKC0gJ8XmJU9YY71JP2GntPxz0Ih0QW78rVqPZ99dvYKsb4p1gpPaYJ46SRYA/+yWpv0x9Tmmq89WHHbdmc4Wj2ibOmkfjLNIYzmNnVGRfKV45Mfox9/8O6ST5T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbhLJ6l0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAE7C4CEF1;
+	Fri, 21 Nov 2025 13:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731706;
-	bh=5aUlO81byvI7fNzIdP65RsUUUgEh/1a4yTKIfN5IdSw=;
+	s=korg; t=1763731127;
+	bh=ZUoN1wxSzwR+duEfhHV0iSCz7ZcyoNNVNReOm/Bqczc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzzH5US4Q2h5cEDcSaIdvhcO39c55bKSI9vXWyn2ItIHP22yi/sEGcM9VpjTX4dRH
-	 jRgn/6/IJfwLC4t/eSCtHI94cHyeLnosmP/rvFiIUbH91EE9wPIMj/62TqTm0lHHtb
-	 ipE646YlOygWvqB3H2CptznhEURGsd62MFa3VSQQ=
+	b=JbhLJ6l05o+QFwe5SBNP95iS1cNjpHoVcrhdh/Gv3Q6wCl3PDksXL8AhVH/+4cznL
+	 8uTWPRSPqWKBNohxUcPvZ+/4UUnIKZjpOPgzXixlnZF9ZURCEXAQJwSePb7RfH3++M
+	 2aSC2KneixgatqFSHukiwm3n7S+Tur1FPJaTohv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/185] NFS4: Fix state renewals missing after boot
+Subject: [PATCH 6.17 099/247] ASoC: codecs: va-macro: fix resource leak in probe error path
 Date: Fri, 21 Nov 2025 14:10:46 +0100
-Message-ID: <20251121130144.569365213@linuxfoundation.org>
+Message-ID: <20251121130158.143603141@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
+[ Upstream commit 3dc8c73365d3ca25c99e7e1a0f493039d7291df5 ]
 
-Since the last renewal time was initialized to 0 and jiffies start
-counting at -5 minutes, any clients connected in the first 5 minutes
-after a reboot would have their renewal timer set to a very long
-interval. If the connection was idle, this would result in the client
-state timing out on the server and the next call to the server would
-return NFS4ERR_BADSESSION.
+In the commit referenced by the Fixes tag, clk_hw_get_clk()
+was added in va_macro_probe() to get the fsgen clock,
+but forgot to add the corresponding clk_put() in va_macro_remove().
+This leads to a clock reference leak when the driver is unloaded.
 
-Fix this by initializing the last renewal time to the current jiffies
-instead of 0.
+Switch to devm_clk_hw_get_clk() to automatically manage the
+clock resource.
 
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 30097967e056 ("ASoC: codecs: va-macro: use fsgen as clock")
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251106143114.729-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/lpass-va-macro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 37c17f70cebe3..aaf723471228b 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -222,6 +222,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
- 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
- 	clp->cl_mig_gen = 1;
-+	clp->cl_last_renewal = jiffies;
- #if IS_ENABLED(CONFIG_NFS_V4_1)
- 	init_waitqueue_head(&clp->cl_lock_waitq);
- #endif
+diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
+index a49551f3fb29a..fead5c941f210 100644
+--- a/sound/soc/codecs/lpass-va-macro.c
++++ b/sound/soc/codecs/lpass-va-macro.c
+@@ -1636,7 +1636,7 @@ static int va_macro_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_clkout;
+ 
+-	va->fsgen = clk_hw_get_clk(&va->hw, "fsgen");
++	va->fsgen = devm_clk_hw_get_clk(dev, &va->hw, "fsgen");
+ 	if (IS_ERR(va->fsgen)) {
+ 		ret = PTR_ERR(va->fsgen);
+ 		goto err_clkout;
 -- 
 2.51.0
 
