@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-196112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5372EC799F8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEF1C79DD5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id E70E1292DF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:46:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id EED732E5AC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872A334C123;
-	Fri, 21 Nov 2025 13:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA7B2F28F0;
+	Fri, 21 Nov 2025 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf62wrVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfYLYvi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B200351FCF;
-	Fri, 21 Nov 2025 13:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F3E35958;
+	Fri, 21 Nov 2025 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732590; cv=none; b=SMJkzikAUozEtxYBXuHYp++AeWncduPoJKVivslkGPFlY4HXSfJLfG+0HyyIVjoXX1VYqzcSzr8R/IEdaexaB+faV/N7bPAi6dByCDcrzgpX2xoZ7mvig8kZHuVKOKgqNy5Emx7c9cCTILUtHi8eFYFe6ELsP5rmTjpEWG/rU3g=
+	t=1763732621; cv=none; b=ErZ6p426ixTW5RDIg7zMf6hy89bk1hOuVQiVQj2bf/tTV2JkaQfRgsqjIZtdY21Z7Us6syRXcGw3ha2HuWRFHzOd3OWREDk4kiljZ57h0d9mO/1VwI3wjjeKQ1LmHIOUW5hLxDWB1Dv0hEsj1prit2SsV3lgbXD/EYiK7TuZs+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732590; c=relaxed/simple;
-	bh=yTEOROQthZyKIw0e3VQ7+WqghfqcBJikus6hc8/eInA=;
+	s=arc-20240116; t=1763732621; c=relaxed/simple;
+	bh=a3RpxfJsNgLe9+YXK/9MB7sjDcxlaxsuFmrApmdD580=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WI+EHqeQe3jw7qjLiXEnD+pHJw7pTKzkpenfuKHG4qZst6QPfS7ELX/g7cpfAzjfWxDN3yCh2CZ1DEBYOlkOYsfXY1jNSMxGr8nPVyHmS07CNbIur5JlDutvi+cPQESxMQxMQqm2pDvoKOr5V7TOG5WoKrawO8/Y1qJtmEc8eNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf62wrVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B740EC4CEF1;
-	Fri, 21 Nov 2025 13:43:09 +0000 (UTC)
+	 MIME-Version; b=rly2KeIZf8SBQ0FZFhUV6zTwTHHXRyq+fh1JC+rW0K4SwrNA1NLqnEjMGeFPOAwOWbGX7q2axpDCn+GJ9AR310QnrVJ0LOsE7KZn908BDsp1n0ctjqMdqXGsR2wfgGnnzyxq3lYuf3vrVOhzaSQmySvQTLBbLySXcHpa0gTGxeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfYLYvi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D070EC4CEF1;
+	Fri, 21 Nov 2025 13:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732590;
-	bh=yTEOROQthZyKIw0e3VQ7+WqghfqcBJikus6hc8/eInA=;
+	s=korg; t=1763732621;
+	bh=a3RpxfJsNgLe9+YXK/9MB7sjDcxlaxsuFmrApmdD580=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cf62wrVo/61SrwXurfpXxiJSx6F5Lkp5v34QAA0u3iwlW7Oc1hJZzC1wsNuPGDbQY
-	 yyi1FcOebRk0w7tT3GuRHQSo/HGoq7Tl8IncUymA52C+eqtxpeU8iJNopgFiWOuhD1
-	 Ud6JkHVuafD9M5ihfaZ8uMZEVL3I5TDMlIpTOhf4=
+	b=hfYLYvi469w+UJvwFR0G2MFVd5/9QiY1LlahikiXoChVVgfMIQAl84ET3cNXmDmrP
+	 0o2aCdyLzeAj9/2aR/EWK328hFS97YoPdaAgU7klZ/zXn7jkfxJQXWaSroTp7U3Bjl
+	 4KwmnAQF4jb34ZpSiZOA3otEB8UWxacKUHJtmx90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
+	Amber Lin <Amber.Lin@amd.com>,
 	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/529] drm/amdkfd: fix vram allocation failure for a special case
-Date: Fri, 21 Nov 2025 14:07:46 +0100
-Message-ID: <20251121130236.961329799@linuxfoundation.org>
+Subject: [PATCH 6.6 168/529] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Date: Fri, 21 Nov 2025 14:07:47 +0100
+Message-ID: <20251121130236.997281517@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,41 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 93aa919ca05bec544b17ee9a1bfe394ce6c94bd8 ]
+[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
 
-When it only allocates vram without va, which is 0, and a
-SVM range allocated stays in this range, the vram allocation
-returns failure. It should be skipped for this case from
-SVM usage check.
+When KFD asks CP to preempt queues, other than preempt CP queues, CP
+also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
+Currently queue_preemption_timeout_ms is 9000 ms by default but can be
+configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
+4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
+queue_preemption_timeout_ms so in a slow system such as emulator, both
+CP and SDMA slowness are taken into account.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
 Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index f77324a5e9584..76196ab75475e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1085,7 +1085,12 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
- 	svm_range_list_lock_and_flush_work(&p->svms, current->mm);
- 	mutex_lock(&p->svms.lock);
- 	mmap_write_unlock(current->mm);
--	if (interval_tree_iter_first(&p->svms.objects,
-+
-+	/* Skip a special case that allocates VRAM without VA,
-+	 * VA will be invalid of 0.
-+	 */
-+	if (!(!args->va_addr && (flags & KFD_IOC_ALLOC_MEM_FLAGS_VRAM)) &&
-+	    interval_tree_iter_first(&p->svms.objects,
- 				     args->va_addr >> PAGE_SHIFT,
- 				     (args->va_addr + args->size - 1) >> PAGE_SHIFT)) {
- 		pr_err("Address: 0x%llx already allocated by SVM\n",
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 27c9d5c43765a..b475c2ab9768a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -111,7 +111,14 @@
+ 
+ #define KFD_KERNEL_QUEUE_SIZE 2048
+ 
+-#define KFD_UNMAP_LATENCY_MS	(4000)
++/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
++ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
++ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
++ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
++ *  The format here makes CP workload 10% of total timeout
++ */
++#define KFD_UNMAP_LATENCY_MS	\
++	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
+ 
+ #define KFD_MAX_SDMA_QUEUES	128
+ 
 -- 
 2.51.0
 
