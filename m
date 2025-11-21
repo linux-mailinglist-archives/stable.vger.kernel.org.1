@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC1EC79580
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C868EC7A0E3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7F926380056
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id EB20438D94
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6ED33E366;
-	Fri, 21 Nov 2025 13:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09835349B0F;
+	Fri, 21 Nov 2025 13:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZD5Z4T9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qtl20rLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7896D3176E1;
-	Fri, 21 Nov 2025 13:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E9D258ECB;
+	Fri, 21 Nov 2025 13:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731324; cv=none; b=S+SYRrzKA2iZcyKIyoXpXN56CfRqUJj3MYyxck6zrRQjTsor8TL6p/2SyTG6MVfS4+vK+DtYtl7r/MOE6gmTpuru67cyuJCkc9UAJflUFLlNzatZZxTkiSDbdtblY2EdbvcwBnQipXJ6Q7Hz3w1u18BHwhfDT5w4lJvD36qZ3CA=
+	t=1763733292; cv=none; b=SMM24X3ytrj7ghJpIS735a7OcZISbq89r1F59yZDPW2iuIrrz2PaQdYP7d9uv1OGaXwHHS1rqYQmyvCreHhUysONSSZj6NRIpxf4teMx7WVPBaFB1PJNyQ6tQCvtVOJbSpjDI2Qq15iGr+k9arFexAWy3g4mS1kk3UVvsVgsH6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731324; c=relaxed/simple;
-	bh=TLf4y0pdkawNAOuFJsP6O3yD+K3m1KAFiAuEeeKUyFs=;
+	s=arc-20240116; t=1763733292; c=relaxed/simple;
+	bh=qyENcVdlIPBUWWrAGGs+RgnnBL5aQkQkEiBnYU4BLfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUK3WGzsrh3Uhh/fhN+Hx2AgWUf3/npe6JDbenU2wpMv4QgAA7sL8SjNZVerownvof6zhFKuC1boAvei6+FU15X6aa/rfe92hPwTEBG6d1z6GO6zhYdlqzdydaRWMnAP3L6PeZeVW2z6J0sstd6aBpPJNKDJ3H4mbfWHWNDddBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZD5Z4T9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFE5C4CEF1;
-	Fri, 21 Nov 2025 13:22:03 +0000 (UTC)
+	 MIME-Version; b=OW0To/NQaVmGXZCBneccryHMR36OE+r0fptxRJrRaF6IjF0UG2c0ZUrw0FUT1BzMcHS4eRmBL39CDRWbdq9e8hZjYrTlQ/MFAoMIho9wMsOXEdFd1HaqQurCXWDszIDjzCLlbSXQJ7vkgj+07f4tGEOR3iLHBQOZCZv120r6PMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qtl20rLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3612AC116D0;
+	Fri, 21 Nov 2025 13:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731324;
-	bh=TLf4y0pdkawNAOuFJsP6O3yD+K3m1KAFiAuEeeKUyFs=;
+	s=korg; t=1763733292;
+	bh=qyENcVdlIPBUWWrAGGs+RgnnBL5aQkQkEiBnYU4BLfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZD5Z4T90EPsvPXmogNVNTrciMkfm5qPZWSdd0FobejYdI5qc98kUvwFV0HCqUm07
-	 dKCUKVLL7YlD7W9ETGty247Z7eLqnfa0t8VHjD/flrKJnBPK9B0xu448ChwI24iyOW
-	 eMYwxVD29mm2h8v2Pdxq7hMzfLUixcZjXZwHoCZA=
+	b=Qtl20rLmeYrwMcRy13s9IQ/7A+gpPJK/m3oi8WPmFhAPV9KVd1Iq8DZWYyhF0BXZM
+	 cPpi2fxk9VS2yaC9VA7GoS8KrNJnGWeKLetshXh7CldVXE7OffAk5q3uqleSptUBAz
+	 PLl+T2rHW6d4rcDNy5N3aYGnFT26DLCa6OQDeTR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Barry Song <baohua@kernel.org>,
-	Qinxin Xia <xiaqinxin@huawei.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.17 169/247] dma-mapping: benchmark: Restore padding to ensure uABI remained consistent
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 417/529] hsr: Fix supervision frame sending on HSRv0
 Date: Fri, 21 Nov 2025 14:11:56 +0100
-Message-ID: <20251121130200.785523551@linuxfoundation.org>
+Message-ID: <20251121130245.855197922@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qinxin Xia <xiaqinxin@huawei.com>
+From: Felix Maurer <fmaurer@redhat.com>
 
-commit 23ee8a2563a0f24cf4964685ced23c32be444ab8 upstream.
+[ Upstream commit 96a3a03abf3d8cc38cd9cb0d280235fbcf7c3f7f ]
 
-The padding field in the structure was previously reserved to
-maintain a stable interface for potential new fields, ensuring
-compatibility with user-space shared data structures.
-However,it was accidentally removed by tiantao in a prior commit,
-which may lead to incompatibility between user space and the kernel.
+On HSRv0, no supervision frames were sent. The supervison frames were
+generated successfully, but failed the check for a sufficiently long mac
+header, i.e., at least sizeof(struct hsr_ethhdr), in hsr_fill_frame_info()
+because the mac header only contained the ethernet header.
 
-This patch reinstates the padding to restore the original structure
-layout and preserve compatibility.
+Fix this by including the HSR header in the mac header when generating HSR
+supervision frames. Note that the mac header now also includes the TLV
+fields. This matches how we set the headers on rx and also the size of
+struct hsrv0_ethhdr_sp.
 
-Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
-Cc: stable@vger.kernel.org
-Acked-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-Reported-by: Barry Song <baohua@kernel.org>
-Closes: https://lore.kernel.org/lkml/CAGsJ_4waiZ2+NBJG+SCnbNk+nQ_ZF13_Q5FHJqZyxyJTcEop2A@mail.gmail.com/
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251028120900.2265511-2-xiaqinxin@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Closes: https://lore.kernel.org/netdev/aMONxDXkzBZZRfE5@fedora/
+Fixes: 9cfb5e7f0ded ("net: hsr: fix hsr_init_sk() vs network/transport headers.")
+Signed-off-by: Felix Maurer <fmaurer@redhat.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/4354114fea9a642fe71f49aeeb6c6159d1d61840.1762876095.git.fmaurer@redhat.com
+Tested-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/map_benchmark.h |    1 +
- 1 file changed, 1 insertion(+)
+ net/hsr/hsr_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/map_benchmark.h
-+++ b/include/linux/map_benchmark.h
-@@ -27,5 +27,6 @@ struct map_benchmark {
- 	__u32 dma_dir; /* DMA data direction */
- 	__u32 dma_trans_ns; /* time for DMA transmission in ns */
- 	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
-+	__u8 expansion[76]; /* For future use */
- };
- #endif /* _KERNEL_DMA_BENCHMARK_H */
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 5514b5bedc929..70e958caa956d 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -313,6 +313,9 @@ static void send_hsr_supervision_frame(struct hsr_port *master,
+ 	}
+ 
+ 	hsr_stag = skb_put(skb, sizeof(struct hsr_sup_tag));
++	skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
++	skb_reset_mac_len(skb);
++
+ 	set_hsr_stag_path(hsr_stag, (hsr->prot_version ? 0x0 : 0xf));
+ 	set_hsr_stag_HSR_ver(hsr_stag, hsr->prot_version);
+ 
+-- 
+2.51.0
+
 
 
 
