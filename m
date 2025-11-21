@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-196186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4A1C79BF1
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:53:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CCEC79E8F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B8514EEEAF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 9F2ED342B8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9613A350A0C;
-	Fri, 21 Nov 2025 13:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2658350A23;
+	Fri, 21 Nov 2025 13:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXdzLG3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIQ0f7Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506163491D0;
-	Fri, 21 Nov 2025 13:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB9A34C127;
+	Fri, 21 Nov 2025 13:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732802; cv=none; b=GdllafyobhD43w5OKSpoqq+NKSra4H9z2J/YLEN+R2soHNATofG3eqkqP/UPLoBiMBFiadQojFNWGEiEjqn634w6nXMHX4wuYw3FFEMY9Ltdd+7E7m8cEVr1+sULrOg5NqeLbQRpzdYgNlY3yBsHonP5Y0h/7Mv3XgupQ2ZbaE4=
+	t=1763732805; cv=none; b=tyVQZeAm7ncJOSNEXwno56r+Mvc5J4zOAv3Kc6LeZulncc+2h6LPP+nn/Wg8BXkOAaESKDe5AjTK9RI+WORroqqJuDA4Dn97WtMwcc2K3ks2LyyBk0ha/vIyd15XzMUIRC82ms0Q0MpHGnVpfvXj+v8R2G9qPb6wx3HtaK5EGJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732802; c=relaxed/simple;
-	bh=pth6rVsianPMNP2D9Hon0JCbgtPYTw/WrEfrkWWu/0U=;
+	s=arc-20240116; t=1763732805; c=relaxed/simple;
+	bh=EF3fpOLeSqisRI3E1Zg9azN8sQly8UIJuzZ2uxMx3GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txWXbegNnLxoDNFj+wLKNW/BBJkNsAIjm3v8Ubvdndo77lUt0B9xIkMOC20595U3ybDkS1duYiS5gHErz0nEBk1rauRthdcfLRhDZrPi2F29dyAzS58jb7vSw40QAJaVu/mP2c9UwC5q+UYAiVzyLdeCxa0vdCbnNImtdd6d0ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXdzLG3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1FFC4CEF1;
-	Fri, 21 Nov 2025 13:46:41 +0000 (UTC)
+	 MIME-Version; b=R1e4xcq6JgZU5/CrCdeLtUFuoou5FI7OCntUESi7KjUAZdfvMj2koHXTfyKamsJiq3RdJC7pidiniacSHFkqprRSogo/EggklZfbEnb6RNUvpTqoK/F+8S1rw0BLi1HnXL6XyfwD6WdOq7RNgzh4UXnEdBSJIguNIGKVpsg9Yw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIQ0f7Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D032DC4CEF1;
+	Fri, 21 Nov 2025 13:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732802;
-	bh=pth6rVsianPMNP2D9Hon0JCbgtPYTw/WrEfrkWWu/0U=;
+	s=korg; t=1763732805;
+	bh=EF3fpOLeSqisRI3E1Zg9azN8sQly8UIJuzZ2uxMx3GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXdzLG3jfBCzgJf6WIiJ9VyruM4RB6khFWj57+BIJJoASZVCZi3O5KGFqE05Z4qZb
-	 EnuAeYH1UeD7xasjhPC9dh0FHiys9TZHVuvE7ElnsRzml/5rXqIQXPiz+WXo/eid5F
-	 NT3dZVF/9sdyfCegCZbTDGlARWjVy2MP1+hhGj7I=
+	b=gIQ0f7ZrwykooiyttoNHbW1fZ3SNVdgkUHJ5A4Gs9XcHmOnQz7ZJFw4NhAhzK1fHq
+	 Ls/ZcK4639pgqN4GtqFo6L3PtRQ9nnaIeix1AaIC6QiYoAZcVTiye1g8+Y9gUB/q0x
+	 aKa9IlW8JSDaD9dshl45pERt3rS4uQc0ylBsTN6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/529] f2fs: fix infinite loop in __insert_extent_tree()
-Date: Fri, 21 Nov 2025 14:09:08 +0100
-Message-ID: <20251121130239.877131195@linuxfoundation.org>
+Subject: [PATCH 6.6 250/529] ipv6: np->rxpmtu race annotation
+Date: Fri, 21 Nov 2025 14:09:09 +0100
+Message-ID: <20251121130239.912392329@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,40 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 23361bd54966b437e1ed3eb1a704572f4b279e58 ]
+[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
 
-When we get wrong extent info data, and look up extent_node in rb tree,
-it will cause infinite loop (CONFIG_F2FS_CHECK_FS=n). Avoiding this by
-return NULL and print some kernel messages in that case.
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 6a77581106a9e..79d07c786f6ae 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -562,7 +562,13 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 			p = &(*p)->rb_right;
- 			leftmost = false;
- 		} else {
-+			f2fs_err_ratelimited(sbi, "%s: corrupted extent, type: %d, "
-+				"extent node in rb tree [%u, %u, %u], age [%llu, %llu], "
-+				"extent node to insert [%u, %u, %u], age [%llu, %llu]",
-+				__func__, et->type, en->ei.fofs, en->ei.blk, en->ei.len, en->ei.age,
-+				en->ei.last_blocks, ei->fofs, ei->blk, ei->len, ei->age, ei->last_blocks);
- 			f2fs_bug_on(sbi, 1);
-+			return NULL;
- 		}
- 	}
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 4f526606bc894..7d72633ea0198 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -438,7 +438,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ 	skb = skb_recv_datagram(sk, flags, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 9ff8e723402ba..6df2459f25618 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -347,7 +347,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
+ 
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ try_again:
 -- 
 2.51.0
 
