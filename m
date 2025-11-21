@@ -1,109 +1,105 @@
-Return-Path: <stable+bounces-196547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9DDC7B2F5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:03:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0642C7B397
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 19:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 558623418F8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:01:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4E0A4F000E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 18:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1320434C123;
-	Fri, 21 Nov 2025 18:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5205B2E6CD2;
+	Fri, 21 Nov 2025 18:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aERrClO1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmZtx7qF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD078332909;
-	Fri, 21 Nov 2025 18:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FD626F2A1
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 18:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763748054; cv=none; b=E91BAbA50MziDePBcteuQyS9oWk9c8+1ODAkpH+8IOf9pMPpbOsAe8q9q1gCuIaJlbhOkK6ep4vW87JRCXRnOa4shupkg2+/sX+V5lZ0gGz87mzZmRunUJl+a8WaqkqFvjXqEWSMkGsAgxGvCQne7Vue4JTpgZRo6LyOFgd1ask=
+	t=1763748279; cv=none; b=KvFFlxZXzhYu6b1/n0i4NZ4lOt6SA9U3pDZCd7/c59d+dm2h0OSCkZ8twzopXKKV6C8Nj+teDx1QS5sBajZd9ZeHoy2PxkxmTGGrts8pnzMK2NLPMQfkr4TwmJ6J1vcR3VngRYo9JgpaOB4C4tMjZisyIDQnK8vKz3m2tn9vrJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763748054; c=relaxed/simple;
-	bh=CZHQnN3iOCJ6aN0E5u5hK1R02monCvhynklOLawB+FQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MCZ9cVXSCjG6RxgjOpOJXz80Z6ty0GQQbcH1HokIwz5B1FRLA1l9xVex4cPGobMy9f+6CJqFnqrHKWaIE1SQIlD51P4dVG6IL9ySDy1y5Rl33EXNLTjM/H2fYw2+Xw1U6wOFEIbTkdtz7TcDP+9tiYK63/y+3YGGCHFGm9nE8Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aERrClO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBCAC16AAE;
-	Fri, 21 Nov 2025 18:00:54 +0000 (UTC)
+	s=arc-20240116; t=1763748279; c=relaxed/simple;
+	bh=R74su8ySQdausE3Rfv64FndH2cOLmbfDURtu0TW0ZVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CQUC0lSS08Yo9vUQ6VZPH/9yM6oMaS3zWwMcFlaKLhesUo7BTp5Hf69UEvwBGqEZw6BSDcuIx3xQnXh1vYniPON+KT1yR0umscflUqlmpz/SZr6W943ht/t3imoLEFm5hvtWpinEHTbbE3zHtZoUF3bLvj+dh0Ot1lYiRKc4dSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmZtx7qF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46418C4CEF1;
+	Fri, 21 Nov 2025 18:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763748054;
-	bh=CZHQnN3iOCJ6aN0E5u5hK1R02monCvhynklOLawB+FQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aERrClO1nZEVOGDNM/yjtuedLrKj0ht6vKFy4SL08A+VU6hRFYCXisY6O9OCKFS3X
-	 yivuNVF4+31DClBs72OZ/2lXc+vWiCyu0FyQzPoVNW8CAcDXLrD6aETyy95B2RT/7+
-	 Wdb08ip1N1eB/ZL2PVOOGyzDlWE7TYZ3LY2K/nDvNl8tz2dDJ/8O74uA/Fz2lb6xW+
-	 NyQ/C8+SfHBs0rt2p/4A+H8sLB976pGv58enbOwk3tPEb9sHkhv7gvt6+Ps4Y2lRos
-	 W6WHnwdnTh27h7l51afVwft+9ma/J6xNDiklN2Lg0aS1r4Txhg39CDqisP2SpmGo53
-	 vc7hMKLLA4/rQ==
-Date: Fri, 21 Nov 2025 10:00:53 -0800
-From: Kees Cook <kees@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
-Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
-Message-ID: <202511210951.39AA2F97@keescook>
-References: <20250623130632.993849527@linuxfoundation.org>
- <CA+G9fYuU5uSG1MKdYPoaC6O=-w5z6BtLtwd=+QBzrtZ1uQ8VXg@mail.gmail.com>
- <2025062439-tamer-diner-68e9@gregkh>
- <CA+G9fYvUG9=yGCp1W9-9+dhA6xLRo7mrL=7x9kBNJmzg7TCn7w@mail.gmail.com>
- <2025062517-lucrative-justness-83fe@gregkh>
- <202511061127.52ECA4AB40@keescook>
- <2025112157-renewable-batboy-7b5c@gregkh>
+	s=k20201202; t=1763748278;
+	bh=R74su8ySQdausE3Rfv64FndH2cOLmbfDURtu0TW0ZVc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NmZtx7qFL4GvyVdN3yFxkVsuO8XXaOgpFjygo6T8x8vaO0ZGZEKAEd6XjODCsRmID
+	 KRVBM+tZfWAj1m3T0PCsU4oR+kkKi3lQmg/hshAX+4JBrHnxo+jkQFGgaiHuKptuGA
+	 B9i6D/wqTXKT9GCXyEpysefyeuGlQmjb9xQneUqOr1MC4NynXw2shDb8l3im8QS4VV
+	 6hHQjMzTnn4+RuOd6lF2c3WW3G5BY5xHjzmv5OF36QLhHWj7I29YSQD1vNoGk+WGtL
+	 OzNCjjswQXzZ9EaL3s8hykRx3wwbAgVOIzlHqm6MNY1C/bWDs3R7Zgzy1696MENXoL
+	 dQADOjzG4lBiw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] selftests: mptcp: connect: fix fallback note due to OoO
+Date: Fri, 21 Nov 2025 13:04:36 -0500
+Message-ID: <20251121180436.2635827-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112057-untapped-profile-9004@gregkh>
+References: <2025112057-untapped-profile-9004@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025112157-renewable-batboy-7b5c@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 21, 2025 at 10:36:22AM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Nov 06, 2025 at 11:32:18AM -0800, Kees Cook wrote:
-> > This thread got pointed out to me. You can put this back in if you want;
-> > you just need the other associated fix (which had a bit of an obscure
-> > Fixes tag):
-> 
-> What exactly is "this" commit?
-> 
-> > d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
-> 
-> Can you give a list of git ids asked for here?  This thread is confusing
-> :)
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-Sorry! For stable, you want these, if they're not already present:
+[ Upstream commit 63c643aa7b7287fdbb0167063785f89ece3f000f ]
 
-960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
-d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
-e136a4062174 ("randstruct: gcc-plugin: Remove bogus void member")
-f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
+The "fallback due to TCP OoO" was never printed because the stat_ooo_now
+variable was checked twice: once in the parent if-statement, and one in
+the child one. The second condition was then always true then, and the
+'else' branch was never taken.
 
+The idea is that when there are more ACK + MP_CAPABLE than expected, the
+test either fails if there was no out of order packets, or a notice is
+printed.
 
-An additional bit of confusion is that the fix in 960013ec5b5e landed
-twice via 2 trees:
-6b3ab7f2cbfa ("net: qede: Initialize qede_ll_ops with designated initializer")
-960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
+Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Different operators used ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Obviously either is fine.
-
-
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+index dacf4cf2246da..d43eb907d244e 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -523,7 +523,7 @@ do_transfer()
+ 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
+ 		retc=1
+ 	fi
+-	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
++	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
+ 		if [ ${stat_ooo_now} -eq 0 ]; then
+ 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
+ 				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
 -- 
-Kees Cook
+2.51.0
+
 
