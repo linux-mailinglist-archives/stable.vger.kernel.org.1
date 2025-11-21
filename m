@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3234DC7952D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 776AEC797A8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1621B34AA90
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E62CF347D6B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63912F6577;
-	Fri, 21 Nov 2025 13:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7489334403C;
+	Fri, 21 Nov 2025 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofg/B8pd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkzsqw1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E63226E6F4;
-	Fri, 21 Nov 2025 13:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4AB335541;
+	Fri, 21 Nov 2025 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731233; cv=none; b=NtxvxFkJbIOUnepANumSq2XhbiDa5IlKNxSZgBhEICXzAT6I7HCeo2P+VEMzMtBM1P8LJw1oRHppCP3j8NhIzh3vwSWFUkXaG9KyUUSHrBYVsH1E2ZSQX9SdMGB5ZETMpvL9OlKthnku8p5n9wSw+jYbs1jsmW2yz3g7RUZXta8=
+	t=1763731815; cv=none; b=qpRJYsTngLLFv36a0btpn7TDJ4noRAPHKCq4MkABSU/ZpaAGP1Ts6xi92ZBmWRLh9HYeu0QeE5Yy8Qy5Fvg8s11bhkYxfnFllC395kjLx9gSX4kW7X+SMq2qHeZlXE+2bSp0ejbs5qz9UdiaKfVoDiMSguBFlR+hC/eCWrRY14w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731233; c=relaxed/simple;
-	bh=Fm+UVIC0ATupjHxyjatWzJqSI7mIY2KW8/5vYP/Xx1E=;
+	s=arc-20240116; t=1763731815; c=relaxed/simple;
+	bh=mw2uhfpNlEU+YIBUu22TZnjD51fzOhmGp5nkXfiju8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sf0JQoVHHQIKc3TkHl359oxFO++XG3vLClG9vNrqrrFjaO/WwhOfVseZ0d1PAlqGwSYL0MKOxoh3Yp++vbHT+FKGFmk65qMZ+s0nBIG0amJSDS3QE6lPqGyQ4+rUzTQweMTg29J+Js5F0F25TWTMxVgraMFOezfUa/2at5nREVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofg/B8pd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8398CC4CEF1;
-	Fri, 21 Nov 2025 13:20:32 +0000 (UTC)
+	 MIME-Version; b=KiZE7jzxo1BrBS6mmB3iEE1JOOMG2fjP6juMbpBilqyCaRFA8/enkXnj8Y+6Dw1DPO0Mox0auV+u70yAmM4jEhHuBGDRK3GX57UXbFMZCEWjhLW1uRnxRJHVMR1SbcSwnsLnJhtu4ijqGdTA03qsVAew5TvM2C1B8Gu30y12Kik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkzsqw1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF58C4CEF1;
+	Fri, 21 Nov 2025 13:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731232;
-	bh=Fm+UVIC0ATupjHxyjatWzJqSI7mIY2KW8/5vYP/Xx1E=;
+	s=korg; t=1763731815;
+	bh=mw2uhfpNlEU+YIBUu22TZnjD51fzOhmGp5nkXfiju8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofg/B8pdMCpwBTpdCMVz28xBU2CWLVSeJbBU5VkxGOtuchDuZjej4sfsWC4N900Xt
-	 xd+8Bf6QdZ6gHvXnsuTLTK9DTno0V7W7H0/pF515QJdNzbEHs3JIeX+YPBjfC7r3jy
-	 MluADXL2aZVwAHXmzx/g8IGeEZLu6cCT/uVF3xQY=
+	b=bkzsqw1L6p8GxhUOItQsvWKhg3Q7K/WR5/LZnxkVzBMJYGSXyHFAs3R5OIzCY+rPQ
+	 s2uEGBULiJfFBAShwU0BAG0btmg1iuX0A3STw2bB2CywZYMGAcNK1fJKaitp71gy9U
+	 kzYSiYRnVV1ZSjsKePSc/b2JmAmYTlNPqF+cVAd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Leonchikov <andreil499@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 136/247] arm64: dts: rockchip: Fix PCIe power enable pin for BigTreeTech CB2 and Pi2
+Subject: [PATCH 6.12 056/185] net/mlx5e: Fix maxrate wraparound in threshold between units
 Date: Fri, 21 Nov 2025 14:11:23 +0100
-Message-ID: <20251121130159.609481957@linuxfoundation.org>
+Message-ID: <20251121130145.899469511@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Leonchikov <andreil499@gmail.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit e179de737d13ad99bd19ea0fafab759d4074a425 ]
+[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
 
-Fix typo into regulator GPIO definition. With current definition, PCIe
-doesn't start up. Valid definition is already used in  "pinctrl" section,
-"pcie_drv" (gpio4, RK_PB1).
+The previous calculation used roundup() which caused an overflow for
+rates between 25.5Gbps and 26Gbps.
+For example, a rate of 25.6Gbps would result in using 100Mbps units with
+value of 256, which would overflow the 8 bits field.
 
-Fixes: bfbc663d2733a ("arm64: dts: rockchip: Add BigTreeTech CB2 and Pi2")
-Signed-off-by: Andrey Leonchikov <andreil499@gmail.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Simplify the upper_limit_mbps calculation by removing the
+unnecessary roundup, and adjust the comparison to use <= to correctly
+handle the boundary condition.
+
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-index 7f578c50b4ad1..f74590af7e33f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-bigtreetech-cb2.dtsi
-@@ -120,7 +120,7 @@
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc3v3_pcie";
- 		enable-active-high;
--		gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
-+		gpios = <&gpio4 RK_PB1 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pcie_drv>;
- 		regulator-always-on;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index b08328fe1aa30..99ee288ed43a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -595,18 +595,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+-	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
++	__u64 upper_limit_mbps;
+ 	int i;
+ 
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
++	upper_limit_mbps = 255 * MLX5E_100MB;
+ 
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+ 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
+ 			continue;
+ 		}
+-		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
++		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
 -- 
 2.51.0
 
