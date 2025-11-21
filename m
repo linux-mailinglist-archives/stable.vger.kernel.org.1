@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-195683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE418C79463
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194E3C7A113
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id E3B3B2D57A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 28AC438F36
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD46E2F3632;
-	Fri, 21 Nov 2025 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0241350D53;
+	Fri, 21 Nov 2025 13:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySSZSaFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfo8KZUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4F61F09AC;
-	Fri, 21 Nov 2025 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321C2346E72;
+	Fri, 21 Nov 2025 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731367; cv=none; b=hYy3qDHSzxF8uCfGjjj4y/aUDlJ0WXe7TAfr0Pqv5pcJF6PB1f2i+I5DAK6sXkU6pUT5PwFiFU0LGoOO5ccGb9EW1r66lO3HburZGD/2D+KyVGzWzJ+3STKLM3qMEj6pAi9doZX0rjdlNero6BYXEzfurJUMCJ3j64uCzeGdZvQ=
+	t=1763733325; cv=none; b=fxGW9Js79sRjAF8ahC0s7mb5UAdqBK5RC5TdzpwzeeK40s/Px+Lb8N/D7dab1Af8sc9uo8368LCiM5uwiHKEkdzGL79SxOCkmXGZ7yrQfkMJEZzqCXc0C561ZGmr2HyFdy2VEGsEZ5i6i255zLqLdGA/B1OqOAjMbHP3RlNSUGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731367; c=relaxed/simple;
-	bh=F3jJREo8zA39odiuepESpYen7GH14ur9/IlHRy1s8mY=;
+	s=arc-20240116; t=1763733325; c=relaxed/simple;
+	bh=eI/rFC4hWxVLjKnW//pCD+lv+EpaFI8VuMik0vmmecg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5VJmfQW06wmwYr0cT1ZhcZy2cmNyDJi6aIcw5eE7Hl1spw22iVqBymKXe1ldejRoNDlLQD2+3iIgmhNrKLeYwsufZX15fkYpOj+tYZzJVAg6JkIIL2K8NDK0ehPgBzCqQM7PbuYUDAqwhlBqmR9dqg7tJvVFMpRE1p6AmvkbzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySSZSaFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD5C4CEF1;
-	Fri, 21 Nov 2025 13:22:46 +0000 (UTC)
+	 MIME-Version; b=SDXan2gqtxm/C+t83wiNCP6Lv/QnO8Tzmf1KpjSH+X1+GlaZYHT1wI2au97VYGbntf8TU0J3lErTr/+4xhFXN2Bea6LPB27ETYTzV3sQMhMDdA48BHSt585VMqCcO9GSnODqJtGwipCEc8WIpeVvd2N4jMOSsVEB9+BO59r4hqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfo8KZUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6EFC4CEF1;
+	Fri, 21 Nov 2025 13:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731367;
-	bh=F3jJREo8zA39odiuepESpYen7GH14ur9/IlHRy1s8mY=;
+	s=korg; t=1763733324;
+	bh=eI/rFC4hWxVLjKnW//pCD+lv+EpaFI8VuMik0vmmecg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySSZSaFY7unW7BDxFhcx1x/0+XwXlrOK0nMK5QmDCvwv687Iqu+C6FJKO0LxM981s
-	 USyeZe8yZNANU3ula6VtzgkedCM/lUelMAd6glfGj1+ZMcHSE7OGs4MWKCEC8G6OTn
-	 F09gq6OwXMk9Msyynv0uOxzfGB2BQ8pgufmL+G9M=
+	b=Zfo8KZUXM9shxkfJhPGr1qQwXlyIg0VnB2zkZ8g14Ablc4QjCZakvXU+JWfIikDo9
+	 FeqDIt6u9oGI8UyYBlO+H+cff8mUvvIZO4fb0BdZplzpKcOhDh+d33YTJJDDPC/u1Z
+	 NyNODXwsL6sy58wD8wrQ8Esq5FbUOwHXFyUtcPyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <albinwyang@tencent.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	wangzijie <wangzijie1@honor.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 182/247] fs/proc: fix uaf in proc_readdir_de()
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 430/529] pnfs: Fix TLS logic in _nfs4_pnfs_v4_ds_connect()
 Date: Fri, 21 Nov 2025 14:12:09 +0100
-Message-ID: <20251121130201.255337759@linuxfoundation.org>
+Message-ID: <20251121130246.315521298@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <albinwyang@tencent.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
+[ Upstream commit 28e19737e1570c7c71890547c2e43c3e0da79df9 ]
 
-Pde is erased from subdir rbtree through rb_erase(), but not set the node
-to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
-set the erased node to EMPTY, then pde_subdir_next() will return NULL to
-avoid uaf access.
+Don't try to add an RDMA transport to a client that is already marked as
+being a TCP/TLS transport.
 
-We found an uaf issue while using stress-ng testing, need to run testcase
-getdent and tun in the same time.  The steps of the issue is as follows:
-
-1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
-   pde is tun3;
-
-2) in the [time windows] unregister netdevice tun3 and tun2, and erase
-   them from rbtree.  erase tun3 first, and then erase tun2.  the
-   pde(tun2) will be released to slab;
-
-3) continue to getdent process, then pde_subdir_next() will return
-   pde(tun2) which is released, it will case uaf access.
-
-CPU 0                                      |    CPU 1
--------------------------------------------------------------------------
-traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
-sys_getdents64()                           |
-  iterate_dir()                            |
-    proc_readdir()                         |
-      proc_readdir_de()                    |     snmp6_unregister_dev()
-        pde_get(de);                       |       proc_remove()
-        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
-                                           |           write_lock(&proc_subdir_lock);
-        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
-                                           |           write_unlock(&proc_subdir_lock);
-        read_lock(&proc_subdir_lock);      |
-        next = pde_subdir_next(de);        |
-        pde_put(de);                       |
-        de = next;    //UAF                |
-
-rbtree of dev_snmp6
-                        |
-                    pde(tun3)
-                     /    \
-                  NULL  pde(tun2)
-
-Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
-Signed-off-by: Wei Yang <albinwyang@tencent.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: wangzijie <wangzijie1@honor.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a35518cae4b3 ("NFSv4.1/pnfs: fix NFS with TLS in pnfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/generic.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/nfs/pnfs_nfs.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -698,6 +698,12 @@ void pde_put(struct proc_dir_entry *pde)
- 	}
- }
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index 1b317c44da126..5314dabb725d8 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -914,7 +914,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				 u32 minor_version)
+ {
+ 	struct nfs_client *clp = ERR_PTR(-EIO);
++	struct nfs_client *mds_clp = mds_srv->nfs_client;
++	enum xprtsec_policies xprtsec_policy = mds_clp->cl_xprtsec.policy;
+ 	struct nfs4_pnfs_ds_addr *da;
++	int ds_proto;
+ 	int status = 0;
  
-+static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
-+{
-+	rb_erase(&pde->subdir_node, &parent->subdir);
-+	RB_CLEAR_NODE(&pde->subdir_node);
-+}
-+
- /*
-  * Remove a /proc entry and free it if it's not currently in use.
-  */
-@@ -720,7 +726,7 @@ void remove_proc_entry(const char *name,
- 			WARN(1, "removing permanent /proc entry '%s'", de->name);
- 			de = NULL;
- 		} else {
--			rb_erase(&de->subdir_node, &parent->subdir);
-+			pde_erase(de, parent);
- 			if (S_ISDIR(de->mode))
- 				parent->nlink--;
- 		}
-@@ -764,7 +770,7 @@ int remove_proc_subtree(const char *name
- 			root->parent->name, root->name);
- 		return -EINVAL;
- 	}
--	rb_erase(&root->subdir_node, &parent->subdir);
-+	pde_erase(root, parent);
+ 	dprintk("--> %s DS %s\n", __func__, ds->ds_remotestr);
+@@ -942,12 +945,8 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				.data = &xprtdata,
+ 			};
  
- 	de = root;
- 	while (1) {
-@@ -776,7 +782,7 @@ int remove_proc_subtree(const char *name
- 					next->parent->name, next->name);
- 				return -EINVAL;
+-			if (da->da_transport != clp->cl_proto &&
+-					clp->cl_proto != XPRT_TRANSPORT_TCP_TLS)
+-				continue;
+-			if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-				mds_srv->nfs_client->cl_proto ==
+-					XPRT_TRANSPORT_TCP_TLS) {
++			if (xprt_args.ident == XPRT_TRANSPORT_TCP &&
++			    clp->cl_proto == XPRT_TRANSPORT_TCP_TLS) {
+ 				struct sockaddr *addr =
+ 					(struct sockaddr *)&da->da_addr;
+ 				struct sockaddr_in *sin =
+@@ -978,7 +977,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				xprt_args.ident = XPRT_TRANSPORT_TCP_TLS;
+ 				xprt_args.servername = servername;
  			}
--			rb_erase(&next->subdir_node, &de->subdir);
-+			pde_erase(next, de);
- 			de = next;
- 			continue;
+-			if (da->da_addr.ss_family != clp->cl_addr.ss_family)
++			if (xprt_args.ident != clp->cl_proto)
++				continue;
++			if (xprt_args.dstaddr->sa_family !=
++			    clp->cl_addr.ss_family)
+ 				continue;
+ 
+ 			/**
+@@ -992,15 +994,14 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 			if (xprtdata.cred)
+ 				put_cred(xprtdata.cred);
+ 		} else {
+-			if (da->da_transport == XPRT_TRANSPORT_TCP &&
+-				mds_srv->nfs_client->cl_proto ==
+-					XPRT_TRANSPORT_TCP_TLS)
+-				da->da_transport = XPRT_TRANSPORT_TCP_TLS;
+-			clp = nfs4_set_ds_client(mds_srv,
+-						&da->da_addr,
+-						da->da_addrlen,
+-						da->da_transport, timeo,
+-						retrans, minor_version);
++			ds_proto = da->da_transport;
++			if (ds_proto == XPRT_TRANSPORT_TCP &&
++			    xprtsec_policy != RPC_XPRTSEC_NONE)
++				ds_proto = XPRT_TRANSPORT_TCP_TLS;
++
++			clp = nfs4_set_ds_client(mds_srv, &da->da_addr,
++						 da->da_addrlen, ds_proto,
++						 timeo, retrans, minor_version);
+ 			if (IS_ERR(clp))
+ 				continue;
+ 
+@@ -1011,7 +1012,6 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 				clp = ERR_PTR(-EIO);
+ 				continue;
+ 			}
+-
  		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
