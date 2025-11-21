@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6725CC79661
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A757C7A081
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 075B733173
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6DE2E380675
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF782773F7;
-	Fri, 21 Nov 2025 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217D8346A1D;
+	Fri, 21 Nov 2025 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPRaZQX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvbMuaxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F42F2F3632;
-	Fri, 21 Nov 2025 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E2A3451AF;
+	Fri, 21 Nov 2025 14:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731535; cv=none; b=jw2gqUMLXOCWQcWX8v+O8SMk2bvrRV2pjesHylglzhbZcJOY2+X38OPWIBYoi7v6Krod+KOdEdvw+0YBA/iV42+TIGsV1LXSIjXpgMuH6BCEcKtKT7YVOrydhdEwZJ1IRGx53uVaZsQx9TP8kKpja9I58wCrmqPdU5gH4BnDDxY=
+	t=1763733627; cv=none; b=XS1PbwG+kFBhd2ijSYMK2qL53jaZB9LCKC0CisqhtkdIyMaIZQXPPSka7rs/T74Rrx/ZCIKplN+rwt2VvYjtCtxNYL3NKpJ+2obNPhHwgjnnHTqMH1rTTFtqFDYJAHC3aJQBK7IOLxVXOr4Gcdr+8qSwp/eWeNlMQvT9rQ13pcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731535; c=relaxed/simple;
-	bh=OaAs1zhBiFYjK6ymR03zV7UnUDuDrQ+ITafEhptLKYk=;
+	s=arc-20240116; t=1763733627; c=relaxed/simple;
+	bh=BEmRg/tslVWpVAYXXyvx+gO1Lgrv50kSh8tI8cZbgzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnXQIzSGRrytlhHRMMe8o/aaXzzJ55LkeOxBc1yZECw6CF37exdSwec1dTi1qxt1Hiz0GRN+SMX2hGxnFU93PTdMMP4WeGIsqfCHQKpFsMwYnypMF/55R8qolq3UNqcwTZyg58PcRYg1JNBsMwu0k7qkLhHggaJBMgRfP0IoUJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPRaZQX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0656C4CEFB;
-	Fri, 21 Nov 2025 13:25:34 +0000 (UTC)
+	 MIME-Version; b=XhatGcg9iwYQfXrX50kLTnFrn9ClJHXtSbMSr+FWG+zEYb4RoTfJjLnujkTDH4/1EFcqhtr1tm8QYlYQYvmgcsL8zbEgSqSpvWLBuYnaevor5PdeEXmiAVgiNxBXhvFlL4hxciXK/PH+vd52fvRdbd6WqJymIb89259Q7W8O+1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvbMuaxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B120C4CEFB;
+	Fri, 21 Nov 2025 14:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731535;
-	bh=OaAs1zhBiFYjK6ymR03zV7UnUDuDrQ+ITafEhptLKYk=;
+	s=korg; t=1763733627;
+	bh=BEmRg/tslVWpVAYXXyvx+gO1Lgrv50kSh8tI8cZbgzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPRaZQX24J7JyKpWJotP+/0TPoWsmNtPqYrx3Qo7QcmDxD0VdUQJYmSpzx3EBiOzj
-	 khZi1oCDca3hzd0Y6iztVlUBre0MIhnWx6+zoYE+sLnqhiTbqa8vy5JPGhQ75VzFUG
-	 2nEpKSFlkG+2JgjUTsSg2aYgjl+yTqGwITu7w0a0=
+	b=FvbMuaxDYMp9yIBEGUIiVXrEac+5Y6eD9sRzC1cRdpJMuuxkYFqBnULT8kDEGxtnt
+	 mmBiKdCH6210MK1vraU+7uGoYh4ed0c4wC6fBWaECVBBYGzw2VP+nj1jud9umyIdxR
+	 /WCHwUWTcFTQo0wS8xMecONh8wbkC74E4mul5umk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 242/247] ASoC: da7213: Use component driver suspend/resume
-Date: Fri, 21 Nov 2025 14:13:09 +0100
-Message-ID: <20251121130203.423558660@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 491/529] selftests: mptcp: connect: trunc: read all recv data
+Date: Fri, 21 Nov 2025 14:13:10 +0100
+Message-ID: <20251121130248.477410164@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 249d96b492efb7a773296ab2c62179918301c146 ]
+commit ee79980f7a428ec299f6261bea4c1084dcbc9631 upstream.
 
-Since snd_soc_suspend() is invoked through snd_soc_pm_ops->suspend(),
-and snd_soc_pm_ops is associated with the soc_driver (defined in
-sound/soc/soc-core.c), and there is no parent-child relationship between
-the soc_driver and the DA7213 codec driver, the power management subsystem
-does not enforce a specific suspend/resume order between the DA7213 driver
-and the soc_driver.
+MPTCP Join "fastclose server" selftest is sometimes failing because the
+client output file doesn't have the expected size, e.g. 296B instead of
+1024B.
 
-Because of this, the different codec component functionalities, called from
-snd_soc_resume() to reconfigure various functions, can race with the
-DA7213 struct dev_pm_ops::resume function, leading to misapplied
-configuration. This occasionally results in clipped sound.
+When looking at a packet trace when this happens, the server sent the
+expected 1024B in two parts -- 100B, then 924B -- then the MP_FASTCLOSE.
+It is then strange to see the client only receiving 296B, which would
+mean it only got a part of the second packet. The problem is then not on
+the networking side, but rather on the data reception side.
 
-Fix this by dropping the struct dev_pm_ops::{suspend, resume} and use
-instead struct snd_soc_component_driver::{suspend, resume}. This ensures
-the proper configuration sequence is handled by the ASoC subsystem.
+When mptcp_connect is launched with '-f -1', it means the connection
+might stop before having sent everything, because a reset has been
+received. When this happens, the program was directly stopped. But it is
+also possible there are still some data to read, simply because the
+previous 'read' step was done with a buffer smaller than the pending
+data, see do_rnd_read(). In this case, it is important to read what's
+left in the kernel buffers before stopping without error like before.
 
+SIGPIPE is now ignored, not to quit the app before having read
+everything.
+
+Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
 Cc: stable@vger.kernel.org
-Fixes: 431e040065c8 ("ASoC: da7213: Add suspend to RAM support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251104114914.2060603-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-5-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/da7213.c |   69 +++++++++++++++++++++++++++++-----------------
- sound/soc/codecs/da7213.h |    1 
- 2 files changed, 45 insertions(+), 25 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/sound/soc/codecs/da7213.c
-+++ b/sound/soc/codecs/da7213.c
-@@ -2124,11 +2124,50 @@ static int da7213_probe(struct snd_soc_c
- 	return 0;
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -696,8 +696,14 @@ static int copyfd_io_poll(int infd, int
  
-+static int da7213_runtime_suspend(struct device *dev)
-+{
-+	struct da7213_priv *da7213 = dev_get_drvdata(dev);
+ 				bw = do_rnd_write(peerfd, winfo->buf + winfo->off, winfo->len);
+ 				if (bw < 0) {
+-					if (cfg_rcv_trunc)
+-						return 0;
++					/* expected reset, continue to read */
++					if (cfg_rcv_trunc &&
++					    (errno == ECONNRESET ||
++					     errno == EPIPE)) {
++						fds.events &= ~POLLOUT;
++						continue;
++					}
 +
-+	regcache_cache_only(da7213->regmap, true);
-+	regcache_mark_dirty(da7213->regmap);
-+	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
-+
-+	return 0;
-+}
-+
-+static int da7213_runtime_resume(struct device *dev)
-+{
-+	struct da7213_priv *da7213 = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
-+	if (ret < 0)
-+		return ret;
-+	regcache_cache_only(da7213->regmap, false);
-+	return regcache_sync(da7213->regmap);
-+}
-+
-+static int da7213_suspend(struct snd_soc_component *component)
-+{
-+	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
-+
-+	return da7213_runtime_suspend(da7213->dev);
-+}
-+
-+static int da7213_resume(struct snd_soc_component *component)
-+{
-+	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
-+
-+	return da7213_runtime_resume(da7213->dev);
-+}
-+
- static const struct snd_soc_component_driver soc_component_dev_da7213 = {
- 	.probe			= da7213_probe,
- 	.set_bias_level		= da7213_set_bias_level,
- 	.controls		= da7213_snd_controls,
- 	.num_controls		= ARRAY_SIZE(da7213_snd_controls),
-+	.suspend		= da7213_suspend,
-+	.resume			= da7213_resume,
- 	.dapm_widgets		= da7213_dapm_widgets,
- 	.num_dapm_widgets	= ARRAY_SIZE(da7213_dapm_widgets),
- 	.dapm_routes		= da7213_audio_map,
-@@ -2175,6 +2214,8 @@ static int da7213_i2c_probe(struct i2c_c
- 	if (!da7213->fin_min_rate)
- 		return -EINVAL;
+ 					perror("write");
+ 					return 111;
+ 				}
+@@ -723,8 +729,10 @@ static int copyfd_io_poll(int infd, int
+ 		}
  
-+	da7213->dev = &i2c->dev;
-+
- 	i2c_set_clientdata(i2c, da7213);
- 
- 	/* Get required supplies */
-@@ -2224,31 +2265,9 @@ static void da7213_i2c_remove(struct i2c
- 	pm_runtime_disable(&i2c->dev);
- }
- 
--static int da7213_runtime_suspend(struct device *dev)
--{
--	struct da7213_priv *da7213 = dev_get_drvdata(dev);
--
--	regcache_cache_only(da7213->regmap, true);
--	regcache_mark_dirty(da7213->regmap);
--	regulator_bulk_disable(DA7213_NUM_SUPPLIES, da7213->supplies);
--
--	return 0;
--}
--
--static int da7213_runtime_resume(struct device *dev)
--{
--	struct da7213_priv *da7213 = dev_get_drvdata(dev);
--	int ret;
--
--	ret = regulator_bulk_enable(DA7213_NUM_SUPPLIES, da7213->supplies);
--	if (ret < 0)
--		return ret;
--	regcache_cache_only(da7213->regmap, false);
--	return regcache_sync(da7213->regmap);
--}
--
--static DEFINE_RUNTIME_DEV_PM_OPS(da7213_pm, da7213_runtime_suspend,
--				 da7213_runtime_resume, NULL);
-+static const struct dev_pm_ops da7213_pm = {
-+	RUNTIME_PM_OPS(da7213_runtime_suspend, da7213_runtime_resume, NULL)
-+};
- 
- static const struct i2c_device_id da7213_i2c_id[] = {
- 	{ "da7213" },
---- a/sound/soc/codecs/da7213.h
-+++ b/sound/soc/codecs/da7213.h
-@@ -595,6 +595,7 @@ enum da7213_supplies {
- /* Codec private data */
- struct da7213_priv {
- 	struct regmap *regmap;
-+	struct device *dev;
- 	struct mutex ctrl_lock;
- 	struct regulator_bulk_data supplies[DA7213_NUM_SUPPLIES];
- 	struct clk *mclk;
+ 		if (fds.revents & (POLLERR | POLLNVAL)) {
+-			if (cfg_rcv_trunc)
+-				return 0;
++			if (cfg_rcv_trunc) {
++				fds.events &= ~(POLLERR | POLLNVAL);
++				continue;
++			}
+ 			fprintf(stderr, "Unexpected revents: "
+ 				"POLLERR/POLLNVAL(%x)\n", fds.revents);
+ 			return 5;
+@@ -1419,7 +1427,7 @@ static void parse_opts(int argc, char **
+ 			 */
+ 			if (cfg_truncate < 0) {
+ 				cfg_rcv_trunc = true;
+-				signal(SIGPIPE, handle_signal);
++				signal(SIGPIPE, SIG_IGN);
+ 			}
+ 			break;
+ 		case 'j':
 
 
 
