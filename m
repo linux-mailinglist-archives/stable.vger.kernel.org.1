@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-196398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF66DC79DF2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:00:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87A2C796FD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 990A02ADE9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id A34E72A445
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC5F34CFDB;
-	Fri, 21 Nov 2025 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013683F9D2;
+	Fri, 21 Nov 2025 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqVgjiU/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE16ZO+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D635934CFC6;
-	Fri, 21 Nov 2025 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3469337B90;
+	Fri, 21 Nov 2025 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733394; cv=none; b=o6dxsglTS7dx3xPfy6vg8soN9SNmmP/A+3+E2ohvOK8PGIemN8u80JlYXCLJMAimXxdo2jIp3HiA8jl5PZ9E32Yg14zJv+iowcXBsMAs9pEDcscX2yXpJHUSbGYfqaMAVTsiFoak22I690I+MBzrMFKESld0USD/pwo9Dd3sR9U=
+	t=1763732007; cv=none; b=PQruBNqG8uu551m4lmB4+cSvx5nN2H/VMMOkwdumGIlrB32oLaZFDdo2KWbrOq9iN2McswPqbbcrzzfxrEDzvNJAlFlXocFZI590pcYEUFxhmFXny6lA2qjZ90rXAtgKCUA8mfNCc3Ckc2Fh8OxYj4VcIHFJY7QdqkI7DZyPdDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733394; c=relaxed/simple;
-	bh=e+zUI+foOeFJpJTJdsSV9dSl8Cnl2JgiBYUAaeIOIQI=;
+	s=arc-20240116; t=1763732007; c=relaxed/simple;
+	bh=EoTUlzpUxD6HzSVZny5wTnDJEB3EqTbNwxvfB9H9OJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRwV+mWvaWI8OZQdXntOqy99UeEAeFr9eT1eGKOaPYk7TwJL5HhuSXKUG4ioq338959l3FSBlknocYH1nJ+VdAw03SeLHXCium8QbRkD7yVC66DZQKWiyza+1rjuV4iNocOGT+3SnWn2IgoYqj70Xj1gFnG1QrMZ4s1HVLUeSYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqVgjiU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1575C116D0;
-	Fri, 21 Nov 2025 13:56:33 +0000 (UTC)
+	 MIME-Version; b=NM8s5PTws3B7jj/GYbvOrcES5qGGcmTGmbko9B80ssuvgkMnlOLzxVhzR7ghxGzXqR61fyM3iOJPM1N79ZoGuER230I7Fy+WyaDtVFld9hYhgCSyzXnVo80s8+W/Jy0w7yXI74+YpOe2ptEyOUKAQb8ss8FODloN8lgYRcTBWwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE16ZO+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A719C4CEF1;
+	Fri, 21 Nov 2025 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733394;
-	bh=e+zUI+foOeFJpJTJdsSV9dSl8Cnl2JgiBYUAaeIOIQI=;
+	s=korg; t=1763732007;
+	bh=EoTUlzpUxD6HzSVZny5wTnDJEB3EqTbNwxvfB9H9OJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqVgjiU/3f70dafZIN1ok94MtAvPLtGKSRAIiXwweSsEFIB4mU00Mza7OWg5IvEg+
-	 wtxwaDQUGoIAonS9ITZjyhRqgDVK9MGBCg10Ejymwa7mSyFbg1dMxSuUqx46RgyzgT
-	 8MlhKJgxCBOKrmeW966OiAr0yhRxVPoHlo7zz35E=
+	b=nE16ZO+UfxVbIVKyQlVTBm6iKstHHTEEIrDLAuAIhVqEqvKpI56cA+eWmOi4nchEQ
+	 o5l8QsXMgiaGZ9nNayO5ohj/u/P4vVbywrQrLN+jpb3LRjbe4GB0w78c3+CSG2Uf9C
+	 UX1l9ezHxFg6Gc3FTmGomB0A3wQu/mRp4zMqELrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 452/529] espintcp: fix skb leaks
+	Wei Yang <albinwyang@tencent.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 124/185] fs/proc: fix uaf in proc_readdir_de()
 Date: Fri, 21 Nov 2025 14:12:31 +0100
-Message-ID: <20251121130247.092082979@linuxfoundation.org>
+Message-ID: <20251121130148.350001542@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Wei Yang <albinwyang@tencent.com>
 
-[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
+commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
 
-A few error paths are missing a kfree_skb.
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ Minor context change fixed. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
+
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
+
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
+
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
+
+CPU 0                                      |    CPU 1
+-------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
+
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
+
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/esp4.c     | 4 +++-
- net/ipv6/esp6.c     | 4 +++-
- net/xfrm/espintcp.c | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 49fd664f50fc0..2caf6a2a819b2 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -152,8 +152,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -694,6 +694,12 @@ void pde_put(struct proc_dir_entry *pde)
+ 	}
+ }
  
- 	sk = esp_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
++
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -716,7 +722,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
+ 		}
+@@ -760,7 +766,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
  
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 7e4c8628cf983..2caaab61b9967 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -169,8 +169,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp6_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index d3b3f9e720b3b..427072285b8c7 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -169,8 +169,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
- {
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
- 
--	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog))
-+	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog)) {
-+		kfree_skb(skb);
- 		return -ENOBUFS;
-+	}
- 
- 	__skb_queue_tail(&ctx->out_queue, skb);
- 
--- 
-2.51.0
-
+ 	de = root;
+ 	while (1) {
+@@ -772,7 +778,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
+ 			}
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
 
 
 
