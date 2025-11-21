@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-196378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1C5C7A19E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A0BC79673
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 0FFD12DA31
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E9AD94E9600
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02661337B90;
-	Fri, 21 Nov 2025 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488AD26560A;
+	Fri, 21 Nov 2025 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jr1JmLUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bJWsp2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6D830F951;
-	Fri, 21 Nov 2025 13:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC41F03D7;
+	Fri, 21 Nov 2025 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733335; cv=none; b=er/MrGEBa8QgHKMXUSWiELz9rDOc1o0kiEUvjcqhMVIVYZ1mUP+PyvKYq/7sLPNgfrJ1H5dfPN+KZNWjz5zC+l4J/SXG/oSZdHiAzCeKnAJd44CGdpOMMJix54Y+E9wbnHMDKggw/U8JnXp4gmBkCy4W72fRRw6Of21Xw756jBk=
+	t=1763731864; cv=none; b=cd+ZVvw+t7Orn5b5YjmSkHXcjNA8t4z3mTL+fQL/Mz2JKsNOoV0BsGw/mT83KRdZEdBw/V2rtFJO18yN0gVftgXQqYYLcFGMhdLYELE4wP4XGwYtqBDRMxFB+qvJ7d0yjCQoW5MaY2rGAhUubSX3fhX2Vn9QygVWYCyhnynWpPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733335; c=relaxed/simple;
-	bh=vHpnXiMyh7rxe7AKzosbNoVnRqmhblwsUxT0oOk+8ak=;
+	s=arc-20240116; t=1763731864; c=relaxed/simple;
+	bh=FXdGs4qyhrAvZgDrNq+0fbEN+p1GfYNVxoZUcctprsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPVC8qSy2rAEztdOoHGHthrqjpK11eE4DZjgV5rA14gOuCURgny/SEZfVkgunqdTAMFLPNBxyfxzcZCWNQ7wnbLTO8PjuHZy6P2xjGbip56DxfnP/yZ1HCEpDfX3h4Bx5Bu2NHqzmLFFv0Y4MASBzVWBI0YSMOjqQoWBcxUgrek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jr1JmLUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9E6C4CEF1;
-	Fri, 21 Nov 2025 13:55:34 +0000 (UTC)
+	 MIME-Version; b=aTAU7XD2uGzoFNz1Ytq1YSCkMXHI3fFhAzcDG0SkaH6wqAUr/uL7WClY+cB+LP8qlEe3xaJ3RNTVjTNj7yH9PsGqTVJ9Nw+iZF95qgi4tpvBIutqvZ4JV5tRkvaiL2DvoP+Zx8XJyiFvkTr/zA6TPQdUMb/EpyPE3L6uYVSALms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bJWsp2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D2BC4CEF1;
+	Fri, 21 Nov 2025 13:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733335;
-	bh=vHpnXiMyh7rxe7AKzosbNoVnRqmhblwsUxT0oOk+8ak=;
+	s=korg; t=1763731863;
+	bh=FXdGs4qyhrAvZgDrNq+0fbEN+p1GfYNVxoZUcctprsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jr1JmLUFZjQ1oRRXjhu3eGujZuOdtL9foT+skE2YglbkbV/oIsgDHv5MDadf3dXlo
-	 LtWUszAgykdb3rNXkCOpO10q02nYkMUryUvAW6iL/p1LMvDEsrXnvlahCnYWujZCLU
-	 vfuy8TEfrNar0+bwEGvzoirEVlz02fUPjAv5Uyno=
+	b=1bJWsp2iVpHWmK7eZvgPY91kUVpooSrSMiaEUctlzjMTkI/qOveakXTVuINUB355K
+	 OocS0C5DZtksX0ZAx4venbYSJAizE9BEui/RxUbBQpw0bTfNPWj0kwaxyN9k6ysl4+
+	 //M7Tt3HDnmmibqDrOnoPyRznPgS7OT2FLPTku5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 434/529] NFSv4: Fix an incorrect parameter when calling nfs4_call_sync()
-Date: Fri, 21 Nov 2025 14:12:13 +0100
-Message-ID: <20251121130246.456601261@linuxfoundation.org>
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 107/185] LoongArch: KVM: Restore guest PMU if it is enabled
+Date: Fri, 21 Nov 2025 14:12:14 +0100
+Message-ID: <20251121130147.735208000@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 1f214e9c3aef2d0936be971072e991d78a174d71 ]
+commit 5001bcf86edf2de02f025a0f789bcac37fa040e6 upstream.
 
-The Smatch static checker noted that in _nfs4_proc_lookupp(), the flag
-RPC_TASK_TIMEOUT is being passed as an argument to nfs4_init_sequence(),
-which is clearly incorrect.
-Since LOOKUPP is an idempotent operation, nfs4_init_sequence() should
-not ask the server to cache the result. The RPC_TASK_TIMEOUT flag needs
-to be passed down to the RPC layer.
+On LoongArch system, guest PMU hardware is shared by guest and host but
+PMU interrupt is separated. PMU is pass-through to VM, and there is PMU
+context switch when exit to host and return to guest.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Fixes: 76998ebb9158 ("NFSv4: Observe the NFS_MOUNT_SOFTREVAL flag in _nfs4_proc_lookupp")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is optimiation to check whether PMU is enabled by guest. If not,
+it is not necessary to return to guest. However, if it is enabled, PMU
+context for guest need switch on. Now KVM_REQ_PMU notification is set
+on vCPU context switch, but it is missing if there is no vCPU context
+switch while PMU is used by guest VM, so fix it.
+
+Cc: <stable@vger.kernel.org>
+Fixes: f4e40ea9f78f ("LoongArch: KVM: Add PMU support for guest")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/loongarch/kvm/vcpu.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 92e40e41443cd..a0a71a163ffed 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4578,16 +4578,19 @@ static int _nfs4_proc_lookupp(struct inode *inode,
- 	};
- 	unsigned short task_flags = 0;
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -127,6 +127,9 @@ static void kvm_lose_pmu(struct kvm_vcpu
+ 	 * Clear KVM_LARCH_PMU if the guest is not using PMU CSRs when
+ 	 * exiting the guest, so that the next time trap into the guest.
+ 	 * We don't need to deal with PMU CSRs contexts.
++	 *
++	 * Otherwise set the request bit KVM_REQ_PMU to restore guest PMU
++	 * before entering guest VM
+ 	 */
+ 	val = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL0);
+ 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL1);
+@@ -134,6 +137,8 @@ static void kvm_lose_pmu(struct kvm_vcpu
+ 	val |= kvm_read_sw_gcsr(csr, LOONGARCH_CSR_PERFCTRL3);
+ 	if (!(val & KVM_PMU_EVENT_ENABLED))
+ 		vcpu->arch.aux_inuse &= ~KVM_LARCH_PMU;
++	else
++		kvm_make_request(KVM_REQ_PMU, vcpu);
  
--	if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
-+	if (server->flags & NFS_MOUNT_SOFTREVAL)
- 		task_flags |= RPC_TASK_TIMEOUT;
-+	if (server->caps & NFS_CAP_MOVEABLE)
-+		task_flags |= RPC_TASK_MOVEABLE;
- 
- 	args.bitmask = nfs4_bitmask(server, fattr->label);
- 
- 	nfs_fattr_init(fattr);
-+	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
- 
- 	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
--	status = nfs4_call_sync(clnt, server, &msg, &args.seq_args,
--				&res.seq_res, task_flags);
-+	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
-+				   &res.seq_res, task_flags);
- 	dprintk("NFS reply lookupp: %d\n", status);
- 	return status;
+ 	kvm_restore_host_pmu(vcpu);
  }
--- 
-2.51.0
-
 
 
 
