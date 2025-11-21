@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-196177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6931C79ABB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:50:26 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05303C79D68
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id AD91C2DFFA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:50:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48B8435DFC3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063691A00F0;
-	Fri, 21 Nov 2025 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6491834E77A;
+	Fri, 21 Nov 2025 13:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GekpKoJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAkWIW0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB72D341ADF;
-	Fri, 21 Nov 2025 13:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8243451AF;
+	Fri, 21 Nov 2025 13:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732776; cv=none; b=Vt0uKfJerXOK+79H32odaqTAkOao/ksTZlRR+nMAutv32b3TS4JpgIiJjpAVtDaRQeZtSTTT1qt6EqqEVzPpnJN01CFm6DHrqe3mR/p73lT+FPjzn7GUwGqojd50MEplvJumNF9+9dutHuftU08T6TFbP82ymGXuhH2gXHLfKRg=
+	t=1763732901; cv=none; b=mooU0tFcgtvQarwGtkFKfG0UtjQw9sK1HlY7OVX73aMafrTUI6GiT2qJmUMrxx3y3H4gm6g7kJ8FI1lEbPKquN77CRsuC4GlFduEJzXlHb6ZpXtz8GilCf5EWQ0Gu5PStwDWc7L9ljdCRzLojNp5clIZcZsJkpXiU/IE2EVOM30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732776; c=relaxed/simple;
-	bh=wMk3WpWS6Hz57VXqi6I+TG4Hw3MLMc6QMuwTJGwXlbc=;
+	s=arc-20240116; t=1763732901; c=relaxed/simple;
+	bh=ENojRCHsYBNRuGrak3pSIwYGwOXzHbU9xDhd/ncYtRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bC4ySDwm2K01Pl+LbJIj6bY0kH/hqR1JzoZbjtkOpWFsobAdQmtltFSVEWDIk5WosXudIZDwiltFFE8xD7TRgOqIB7zMk+NozO0W5nnEaowuQZ/+ajMpj4s6vYHmEHol8Kmdym6o4905K/ZltrlCugcBOsRsnKfF/KFjv43NpUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GekpKoJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF35C116C6;
-	Fri, 21 Nov 2025 13:46:16 +0000 (UTC)
+	 MIME-Version; b=JlTXJg+3Iq0NXR2mxyr9pBpM+qQiz68mBkaiWrU617BjSeV97sWNubEpC34uJj4HP6jkRHirpSzuAN4S1IuK7NNtdA2ExnKCFPc12rBQFKzAh1pptpGnxkPbd5r8N4Bup8uGhiVTfFfbQHkqdhiVDD6MNBIYCi940p18B5nDTNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAkWIW0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD3C4CEF1;
+	Fri, 21 Nov 2025 13:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732776;
-	bh=wMk3WpWS6Hz57VXqi6I+TG4Hw3MLMc6QMuwTJGwXlbc=;
+	s=korg; t=1763732900;
+	bh=ENojRCHsYBNRuGrak3pSIwYGwOXzHbU9xDhd/ncYtRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GekpKoJjejcgov4kif1RpibzFhfaR4LzNBVdMsadRFUIyFPCbmMHYvsCP8swVpL8q
-	 7/q9NVxkNV/Y5H0rgplWiIlkPc4SVVSu7sp0WTFrPHdQjnddpYQC0lnapWF6YvxWlU
-	 Lz6/hBDwU44Y8Fp9kkxj/FTouxSLDfIt264HN3Sk=
+	b=rAkWIW0/JgCvB5jBJKqdc9i+tHlzDsCzdX2XXemQC3cbcdKvqj1mxUa42Ut7N107K
+	 KZbAJgta3W21wCUKnY2Gbje8UpltEA0ljYGt56p4BoV51qLhnnSJDarDvgAz1ywVF5
+	 nJdGj6W5RTadJDIHiFq49IzmWFhAhpIsIDMDno5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/529] ethernet: Extend device_get_mac_address() to use NVMEM
-Date: Fri, 21 Nov 2025 14:08:57 +0100
-Message-ID: <20251121130239.486898216@linuxfoundation.org>
+Subject: [PATCH 6.6 239/529] HID: i2c-hid: Resolve touchpad issues on Dell systems during S4
+Date: Fri, 21 Nov 2025 14:08:58 +0100
+Message-ID: <20251121130239.522193928@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,40 +66,128 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit d2d3f529e7b6ff2aa432b16a2317126621c28058 ]
+[ Upstream commit 7d62beb102d6fa9a4e5e874be7fbf47a62fcc4f6 ]
 
-A lot of modern SoC have the ability to store MAC addresses in their
-NVMEM. So extend the generic function device_get_mac_address() to
-obtain the MAC address from an nvmem cell named 'mac-address' in
-case there is no firmware node which contains the MAC address directly.
+Dell systems utilize an EC-based touchpad emulation when the ACPI
+touchpad _DSM is not invoked. This emulation acts as a secondary
+master on the I2C bus, designed for scenarios where the I2C touchpad
+driver is absent, such as in BIOS menus. Typically, loading the
+i2c-hid module triggers the _DSM at initialization, disabling the
+EC-based emulation.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250912140332.35395-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, if the i2c-hid module is missing from the boot kernel
+used for hibernation snapshot restoration, the _DSM remains
+uncalled, resulting in dual masters on the I2C bus and
+subsequent arbitration errors. This issue arises when i2c-hid
+resides in the rootfs instead of the kernel or initramfs.
+
+To address this, switch from using the SYSTEM_SLEEP_PM_OPS()
+macro to dedicated callbacks, introducing a specific
+callback for restoring the S4 image. This callback ensures
+the _DSM is invoked.
+
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethernet/eth.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/i2c-hid/i2c-hid-acpi.c |  8 ++++++++
+ drivers/hid/i2c-hid/i2c-hid-core.c | 28 +++++++++++++++++++++++++++-
+ drivers/hid/i2c-hid/i2c-hid.h      |  2 ++
+ 3 files changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index 049c3adeb8504..b4a6e26ec2871 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -615,7 +615,10 @@ EXPORT_SYMBOL(fwnode_get_mac_address);
-  */
- int device_get_mac_address(struct device *dev, char *addr)
+diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+index 1b49243adb16a..abd700a101f46 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
++++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+@@ -76,6 +76,13 @@ static int i2c_hid_acpi_get_descriptor(struct i2c_hid_acpi *ihid_acpi)
+ 	return hid_descriptor_address;
+ }
+ 
++static void i2c_hid_acpi_restore_sequence(struct i2chid_ops *ops)
++{
++	struct i2c_hid_acpi *ihid_acpi = container_of(ops, struct i2c_hid_acpi, ops);
++
++	i2c_hid_acpi_get_descriptor(ihid_acpi);
++}
++
+ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
  {
--	return fwnode_get_mac_address(dev_fwnode(dev), addr);
-+	if (!fwnode_get_mac_address(dev_fwnode(dev), addr))
+ 	struct i2c_hid_acpi *ihid_acpi = container_of(ops, struct i2c_hid_acpi, ops);
+@@ -96,6 +103,7 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
+ 
+ 	ihid_acpi->adev = ACPI_COMPANION(dev);
+ 	ihid_acpi->ops.shutdown_tail = i2c_hid_acpi_shutdown_tail;
++	ihid_acpi->ops.restore_sequence = i2c_hid_acpi_restore_sequence;
+ 
+ 	ret = i2c_hid_acpi_get_descriptor(ihid_acpi);
+ 	if (ret < 0)
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 3dcdd3368b463..172b783274201 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -937,6 +937,14 @@ static void i2c_hid_core_shutdown_tail(struct i2c_hid *ihid)
+ 	ihid->ops->shutdown_tail(ihid->ops);
+ }
+ 
++static void i2c_hid_core_restore_sequence(struct i2c_hid *ihid)
++{
++	if (!ihid->ops->restore_sequence)
++		return;
++
++	ihid->ops->restore_sequence(ihid->ops);
++}
++
+ static int i2c_hid_core_suspend(struct i2c_hid *ihid, bool force_poweroff)
+ {
+ 	struct i2c_client *client = ihid->client;
+@@ -1320,8 +1328,26 @@ static int i2c_hid_core_pm_resume(struct device *dev)
+ 	return i2c_hid_core_resume(ihid);
+ }
+ 
++static int i2c_hid_core_pm_restore(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct i2c_hid *ihid = i2c_get_clientdata(client);
++
++	if (ihid->is_panel_follower)
 +		return 0;
 +
-+	return nvmem_get_mac_address(dev, addr);
- }
- EXPORT_SYMBOL(device_get_mac_address);
++	i2c_hid_core_restore_sequence(ihid);
++
++	return i2c_hid_core_resume(ihid);
++}
++
+ const struct dev_pm_ops i2c_hid_core_pm = {
+-	SYSTEM_SLEEP_PM_OPS(i2c_hid_core_pm_suspend, i2c_hid_core_pm_resume)
++	.suspend = pm_sleep_ptr(i2c_hid_core_pm_suspend),
++	.resume = pm_sleep_ptr(i2c_hid_core_pm_resume),
++	.freeze = pm_sleep_ptr(i2c_hid_core_pm_suspend),
++	.thaw = pm_sleep_ptr(i2c_hid_core_pm_resume),
++	.poweroff = pm_sleep_ptr(i2c_hid_core_pm_suspend),
++	.restore = pm_sleep_ptr(i2c_hid_core_pm_restore),
+ };
+ EXPORT_SYMBOL_GPL(i2c_hid_core_pm);
  
+diff --git a/drivers/hid/i2c-hid/i2c-hid.h b/drivers/hid/i2c-hid/i2c-hid.h
+index 2c7b66d5caa0f..1724a435c783a 100644
+--- a/drivers/hid/i2c-hid/i2c-hid.h
++++ b/drivers/hid/i2c-hid/i2c-hid.h
+@@ -27,11 +27,13 @@ static inline u32 i2c_hid_get_dmi_quirks(const u16 vendor, const u16 product)
+  * @power_up: do sequencing to power up the device.
+  * @power_down: do sequencing to power down the device.
+  * @shutdown_tail: called at the end of shutdown.
++ * @restore_sequence: hibernation restore sequence.
+  */
+ struct i2chid_ops {
+ 	int (*power_up)(struct i2chid_ops *ops);
+ 	void (*power_down)(struct i2chid_ops *ops);
+ 	void (*shutdown_tail)(struct i2chid_ops *ops);
++	void (*restore_sequence)(struct i2chid_ops *ops);
+ };
+ 
+ int i2c_hid_core_probe(struct i2c_client *client, struct i2chid_ops *ops,
 -- 
 2.51.0
 
