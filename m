@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-196210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C8CC79C84
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D550C79286
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 563DE4ED94A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 45C952DD75
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173C4267AF2;
-	Fri, 21 Nov 2025 13:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2243342C8B;
+	Fri, 21 Nov 2025 13:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XycY7hjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z65ku5dP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EFA3F9D2;
-	Fri, 21 Nov 2025 13:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A72431158A;
+	Fri, 21 Nov 2025 13:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732865; cv=none; b=G+4cfUckTAT09Il+50OrBQ7xB/M+5V3YRY/v5i5vvusvAMImOKbJv9xbC15mbj8TXs5m0K1/VvQ6LsHjNxR9vD19CcIQiEu08h73ZxdfIOcl0LWdriseN8HvCVj1XXG23oNnn8AUjgwPxVneOsP0NVrD62Bo5BbJ5brFJbmNyqI=
+	t=1763730899; cv=none; b=aFED7jUUuvv1PUTrsb7Idq6E0iQ+NE4A010MHvDjjWq4G9yBn97zBnG4AQp7EWcQstxbZLj8Qs2DeLYaDaavEnplm/aO/A/+rAb7IESD6q5p63+2z6rQas2IIxKX6AvBgEXJRD90nB0g3TYG0F9CGXkFwp/gNX4Pk3eR5SXDFsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732865; c=relaxed/simple;
-	bh=jltXjxztMhURTdOpnPmmyF8wTdsn/C4dmB4gfgauDiA=;
+	s=arc-20240116; t=1763730899; c=relaxed/simple;
+	bh=aEHcJxbupDEP+5YAmIB69RKhTXHeVDtNqA54bJe1W4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsVYaZtkwqWJB9B1m7yrM5IgAvqsUUG2oya8FIFah4WvkPWP+Xxqo3XQ7A7LyyvTQKWoVHI1cC8sUbV0jykkSmTGSQb+nv2C5tubDhcktczTknKU4inU4etS4PXgya5FkXXmoV7m+cXxi+Eb1ksTGn5iMGSvH9vo0hN/BCpR50g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XycY7hjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1E4C4CEF1;
-	Fri, 21 Nov 2025 13:47:45 +0000 (UTC)
+	 MIME-Version; b=im4ThlF1Lh+LlsGrqyYfeZWjlk++8lPOG6wM3GUrAs9UOKEwr9yPVe3HdNd9WnJjgLrsPaX7GlLXGxajTrC4KmhRabQzvD4+oTImDLWFek1di3Hbu2ht1Q3KOVmRyO03kfFW+60wmJSOLW6eIkBPRYAlo+6x4yq67Q1cwCuxeKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z65ku5dP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2579BC4CEFB;
+	Fri, 21 Nov 2025 13:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732865;
-	bh=jltXjxztMhURTdOpnPmmyF8wTdsn/C4dmB4gfgauDiA=;
+	s=korg; t=1763730898;
+	bh=aEHcJxbupDEP+5YAmIB69RKhTXHeVDtNqA54bJe1W4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XycY7hjrR7hv91nalLNWWEgdJl5jrqcpZmWJNvYkTcvQ5Ed8L7OFFsJB5osqVOFPy
-	 tIPl02ZkDhk4C1wH3FfHw/KfyG/nvridM/mx81BtWkZptZOaKg4Oc7B9NbnPDP6ooc
-	 3ZttRx+l4o79HzHjiHye2h+bnw1JGoxIBGAr963E=
+	b=z65ku5dPZWhpp32csxU6BBoz8hihAwX4jmtXgaFVr/60WUjDY7D0XhlhGKl5JHeAr
+	 bF7Vae0VnzzVeulVQDI75vSmyvOm6hRrE0xMSsAp9205esYiBkc0LPuyKfmLbCeVXB
+	 +e94FYY9GgJvgMFY6B+jELjIu5xEI8Cazamx/oBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Feng Jiang <jiangfeng@kylinos.cn>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 269/529] NFSv4: handle ERR_GRACE on delegation recalls
+Subject: [PATCH 6.17 021/247] riscv: Build loader.bin exclusively for Canaan K210
 Date: Fri, 21 Nov 2025 14:09:28 +0100
-Message-ID: <20251121130240.593229403@linuxfoundation.org>
+Message-ID: <20251121130155.363449989@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Feng Jiang <jiangfeng@kylinos.cn>
 
-[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
+[ Upstream commit 3ad1b71fdc5707d14332d9ae710a237de936be9b ]
 
-RFC7530 states that clients should be prepared for the return of
-NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
+According to the explanation in commit ef10bdf9c3e6 ("riscv:
+Kconfig.socs: Split ARCH_CANAAN and SOC_CANAAN_K210"),
+loader.bin is a special feature of the Canaan K210 and
+is not applicable to other SoCs.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: e79dfcbfb902 ("riscv: make image compression configurable")
+Signed-off-by: Feng Jiang <jiangfeng@kylinos.cn>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Link: https://lore.kernel.org/r/20251029094429.553842-1-jiangfeng@kylinos.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 94a1caf326699..cfeef23ac9412 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7658,10 +7658,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
- 		return err;
- 	do {
- 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
--		if (err != -NFS4ERR_DELAY)
-+		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
- 			break;
- 		ssleep(1);
--	} while (err == -NFS4ERR_DELAY);
-+	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
- 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
- }
- 
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index df57654a615e0..c4e394ede6256 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -166,7 +166,7 @@ boot-image-$(CONFIG_KERNEL_LZO)		:= Image.lzo
+ boot-image-$(CONFIG_KERNEL_ZSTD)	:= Image.zst
+ boot-image-$(CONFIG_KERNEL_XZ)		:= Image.xz
+ ifdef CONFIG_RISCV_M_MODE
+-boot-image-$(CONFIG_ARCH_CANAAN)	:= loader.bin
++boot-image-$(CONFIG_SOC_CANAAN_K210)	:= loader.bin
+ endif
+ boot-image-$(CONFIG_EFI_ZBOOT)		:= vmlinuz.efi
+ boot-image-$(CONFIG_XIP_KERNEL)		:= xipImage
 -- 
 2.51.0
 
