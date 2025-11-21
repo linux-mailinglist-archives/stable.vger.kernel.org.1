@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CB5C7978E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CC4C795B6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 00E8E3459A2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A233038084C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91297313267;
-	Fri, 21 Nov 2025 13:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73CE26CE33;
+	Fri, 21 Nov 2025 13:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shmdIfi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcb3z1zF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF6190477;
-	Fri, 21 Nov 2025 13:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640A8275B18;
+	Fri, 21 Nov 2025 13:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731783; cv=none; b=RZGO0shwRo/3dJimtcbPWIAR1+lnOKonb+pxs3dQSCpHpm89BCWhZNy+4LSUYbhR/34SSPf2qMxbM9ixiKyaKP0mem7pedo5m8FSYhLglnpMSWz0X93xXnxxz0sLIR9ui6+39jgwrm0N+SZcFfUtZScaar4CS84MLFrZ9AUrvh4=
+	t=1763731387; cv=none; b=SnVkPY2lBaLK9OM1+rANUdNOzJMCLnyGNKOkcz/7TrNHRqaavsDp5B3beCYPPtcH2hnj+xb2Jx5EwpLUcPepCTt1CANLI9O9yC48MWVFr4YmR2bzUllVScaxIF9KZx9pqsa7Lid4F+jtimyyL8PUm32pNdCJELlaaZ9DiSyG5yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731783; c=relaxed/simple;
-	bh=SV+dCIIMyTZNbrnDWO6q3b+TNK321+MX3S0Exrdd84c=;
+	s=arc-20240116; t=1763731387; c=relaxed/simple;
+	bh=ppFpRN69lDXCKu+LtDjvR5IZU8/H8qhEUb7Iypt7h8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxCj9CIrUGINVE8dyWMLt7dbjQLKpG3u52WpeVO5wlRr7qGk2Jl+mhNHLyCA7FLe5buWub/DQ3zuHexUcckGEzPuqQNylRdVIS0DYd3fAVFLk3WkvZQMRAnyBOSbv48E/+f1O6A/vVeCFsk5HKZ4V46FoWtPOze0H7e9Poy/uf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shmdIfi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B1FC4CEF1;
-	Fri, 21 Nov 2025 13:29:42 +0000 (UTC)
+	 MIME-Version; b=lOVQulW6wlS++fzPm8iVNuhBKYHZU/m/pKcg6cCual2c81Rc+xXjUKKGzqRgfPUkroNq05kQoH7Gp2pFMbJc3klUp9FuKsdty2yScpVy3/mdvWVg+49LT/VDtP+VaIUQPzxrK2rJF/MSKNiKYwgMjn+/2Y9jqGxMSMvCIaQcA/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcb3z1zF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D476AC4CEF1;
+	Fri, 21 Nov 2025 13:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731783;
-	bh=SV+dCIIMyTZNbrnDWO6q3b+TNK321+MX3S0Exrdd84c=;
+	s=korg; t=1763731387;
+	bh=ppFpRN69lDXCKu+LtDjvR5IZU8/H8qhEUb7Iypt7h8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=shmdIfi2BN6mo1at4vqSV/vJzyEbo88+pGBa3WPqxTUIv4FBRTygYVtRQwXFy1vYJ
-	 rN7FsDSpqcntGHY1vddb/9wps5G2Fgn+tmDfXtTjQPNE6Ulyh6kXKca33BGx6VDH1B
-	 1wUQkx/oElfNn/+8louk4QsNvL6Naq2XS5GbdJ3Y=
+	b=zcb3z1zFccpxtUit1A+O70a+2m0w2Hi+8INBzlea5iD1lSW3HfoGL53FneNpCiDD3
+	 4FQrX/n5ET1gGlmj7It7dCRjfbPTVxIcKciDkvCdVAUIZQa+XMsTqnnkqkgdqOQyg4
+	 gyGDMgsrub4cH2ItiV8rpVS41wZzEjA+A9RJIHQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/185] NFSv4: Fix an incorrect parameter when calling nfs4_call_sync()
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	tianshuo han <hantianshuo233@gmail.com>
+Subject: [PATCH 6.17 158/247] nfsd: fix refcount leak in nfsd_set_fh_dentry()
 Date: Fri, 21 Nov 2025 14:11:45 +0100
-Message-ID: <20251121130146.686064069@linuxfoundation.org>
+Message-ID: <20251121130200.393218648@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 1f214e9c3aef2d0936be971072e991d78a174d71 ]
+commit 8a7348a9ed70bda1c1f51d3f1815bcbdf9f3b38c upstream.
 
-The Smatch static checker noted that in _nfs4_proc_lookupp(), the flag
-RPC_TASK_TIMEOUT is being passed as an argument to nfs4_init_sequence(),
-which is clearly incorrect.
-Since LOOKUPP is an idempotent operation, nfs4_init_sequence() should
-not ask the server to cache the result. The RPC_TASK_TIMEOUT flag needs
-to be passed down to the RPC layer.
+nfsd exports a "pseudo root filesystem" which is used by NFSv4 to find
+the various exported filesystems using LOOKUP requests from a known root
+filehandle.  NFSv3 uses the MOUNT protocol to find those exported
+filesystems and so is not given access to the pseudo root filesystem.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Fixes: 76998ebb9158 ("NFSv4: Observe the NFS_MOUNT_SOFTREVAL flag in _nfs4_proc_lookupp")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a v3 (or v2) client uses a filehandle from that filesystem,
+nfsd_set_fh_dentry() will report an error, but still stores the export
+in "struct svc_fh" even though it also drops the reference (exp_put()).
+This means that when fh_put() is called an extra reference will be dropped
+which can lead to use-after-free and possible denial of service.
+
+Normal NFS usage will not provide a pseudo-root filehandle to a v3
+client.  This bug can only be triggered by the client synthesising an
+incorrect filehandle.
+
+To fix this we move the assignments to the svc_fh later, after all
+possible error cases have been detected.
+
+Reported-and-tested-by: tianshuo han <hantianshuo233@gmail.com>
+Fixes: ef7f6c4904d0 ("nfsd: move V4ROOT version check to nfsd_set_fh_dentry()")
+Signed-off-by: NeilBrown <neil@brown.name>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/nfsd/nfsfh.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index a4531386c6485..6342d360732d2 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4695,16 +4695,19 @@ static int _nfs4_proc_lookupp(struct inode *inode,
- 	};
- 	unsigned short task_flags = 0;
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -269,9 +269,6 @@ static __be32 nfsd_set_fh_dentry(struct
+ 				dentry);
+ 	}
  
--	if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
-+	if (server->flags & NFS_MOUNT_SOFTREVAL)
- 		task_flags |= RPC_TASK_TIMEOUT;
-+	if (server->caps & NFS_CAP_MOVEABLE)
-+		task_flags |= RPC_TASK_MOVEABLE;
+-	fhp->fh_dentry = dentry;
+-	fhp->fh_export = exp;
+-
+ 	switch (fhp->fh_maxsize) {
+ 	case NFS4_FHSIZE:
+ 		if (dentry->d_sb->s_export_op->flags & EXPORT_OP_NOATOMIC_ATTR)
+@@ -293,6 +290,9 @@ static __be32 nfsd_set_fh_dentry(struct
+ 			goto out;
+ 	}
  
- 	args.bitmask = nfs4_bitmask(server, fattr->label);
- 
- 	nfs_fattr_init(fattr);
-+	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
- 
- 	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
--	status = nfs4_call_sync(clnt, server, &msg, &args.seq_args,
--				&res.seq_res, task_flags);
-+	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
-+				   &res.seq_res, task_flags);
- 	dprintk("NFS reply lookupp: %d\n", status);
- 	return status;
- }
--- 
-2.51.0
-
++	fhp->fh_dentry = dentry;
++	fhp->fh_export = exp;
++
+ 	return 0;
+ out:
+ 	exp_put(exp);
 
 
 
