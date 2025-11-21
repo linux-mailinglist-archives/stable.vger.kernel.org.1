@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-195542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03720C79347
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4BDC79413
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 96463347AB5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:16:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 122B24ED19A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CF1346A14;
-	Fri, 21 Nov 2025 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B46C27147D;
+	Fri, 21 Nov 2025 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8i3FWBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkJ1OBEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3931534678E;
-	Fri, 21 Nov 2025 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D731230CD88;
+	Fri, 21 Nov 2025 13:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730968; cv=none; b=oJ4aMkJ7xsc0sKmOVMRLbzxj4whUJN9LMyZSL+Br7ht9ZqATh2XR+qPycdouH7JogTAUJUS5mC685QgZFttuG+YEyDVfsadBJrr6P5h93BV6HV1lRMLCCFBVaCB8Mz9bd6h8M/uzGjHJerSi+q00S2sWo/wryDJVe50Yiit7iFA=
+	t=1763731089; cv=none; b=g+WyA09zVNGFbqugYw+8E/DYjtvipsD7Qug344bWgpHnSqK3mcmAVttPCj/ZaYRtjnm0pv0R6zHecLssTprGnOgX+JuBfHo1KnCr7rFDDWGjj834ffa+e+j79xgQI0D92XH0MVpCFLNFJTZDm9+MjRYWF1G3V0H/uSlVJP0qq8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730968; c=relaxed/simple;
-	bh=cIjQI+mGtRoK9cQTRwd0xnqg/RPXe8QPMpH0vhXSS6U=;
+	s=arc-20240116; t=1763731089; c=relaxed/simple;
+	bh=NDXIxDdqm64Df4Q9j4hWa1uJ6zyiOO/39cCx0W7/shU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvL2WTX/QC7K20El0/XqyAiAj3fzfUNWpvVx8y86PqRf0OjCvcbIzCsSyuvRzX3RtIcUsd8zNSg9o9wKQcRmwMuhdrh2+WfeGyuaLgT3phGv1E2BoGPHgRUPf1q5CaB+W3FPFVQH68AabHVM0xQaz5qvZyIhqndgctbxdY6+tf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8i3FWBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F53BC4CEFB;
-	Fri, 21 Nov 2025 13:16:07 +0000 (UTC)
+	 MIME-Version; b=Ar6hY/cuchGTHKzio/6B+qwej0RE5RztY9c5g5A4LujiX1FSOSIUXQO8PbX7bQOG22er0d60Pi0hBsr3vkT56Vu3mi0MbgSesVdGVbFt9DJfi0JomFgXeZ+k9Li75StZti0b8vvweee3fdjc8USmzMB8pVs+len2hdYj1KyBFOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkJ1OBEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F5C4CEF1;
+	Fri, 21 Nov 2025 13:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730968;
-	bh=cIjQI+mGtRoK9cQTRwd0xnqg/RPXe8QPMpH0vhXSS6U=;
+	s=korg; t=1763731089;
+	bh=NDXIxDdqm64Df4Q9j4hWa1uJ6zyiOO/39cCx0W7/shU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8i3FWByfCsCmXmhDwaEs6xkwq15N7pp5xiiFaWuxHagZJoP5C8LvRjmACCD5r2J+
-	 HIUNod+9cE8pn99DWmRxOW5Qd+IjGT/0tyU8/WQfHuRDpofp398UJg07TXOXe8gTXK
-	 42On9uJgOzIMTqc9TkZAfl8tqe2SexjbFl1MrJ5s=
+	b=xkJ1OBEqU5eviQ1NBpbiU1fXEwVjKHoKxfGHYALXBH6bKJ36HVjoJwh+E2KJYAtKe
+	 nuEJoyR1ieGqwlPnUKlZcKEtIEYp49uXbD/Kg7sBgTNGqHjZI16onowuF9uBTN/LXz
+	 04bqBzn0t3isbq25I8vLIJ3vvV52Yj+TLkv0x9a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharique Mohammad <sharq0406@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dawn Gardner <dawn.auroali@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 043/247] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
-Date: Fri, 21 Nov 2025 14:09:50 +0100
-Message-ID: <20251121130156.148775951@linuxfoundation.org>
+Subject: [PATCH 6.17 044/247] ALSA: hda/realtek: Fix mute led for HP Omen 17-cb0xxx
+Date: Fri, 21 Nov 2025 14:09:51 +0100
+Message-ID: <20251121130156.184589542@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
 References: <20251121130154.587656062@linuxfoundation.org>
@@ -66,41 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sharique Mohammad <sharq0406@gmail.com>
+From: Dawn Gardner <dawn.auroali@gmail.com>
 
-[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
+[ Upstream commit 2a786348004b34c5f61235d51c40c1c718b1f8f9 ]
 
-The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
-suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
-are turned on or off, the required startup or shutdown sequences
-must be taken care by the max98090_shdn_event.
+This laptop uses the ALC285 codec, fixed by enabling
+the ALC285_FIXUP_HP_MUTE_LED quirk
 
-Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
-Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dawn Gardner <dawn.auroali@gmail.com>
+Link: https://patch.msgid.link/20251016184218.31508-3-dawn.auroali@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98090.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
-index 22177c1ce1602..cb1508fc99f89 100644
---- a/sound/soc/codecs/max98090.c
-+++ b/sound/soc/codecs/max98090.c
-@@ -1234,9 +1234,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
- 	SND_SOC_DAPM_INPUT("DMIC4"),
- 
- 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
-+			SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
-+			 SND_SOC_DAPM_POST_PMU),
- };
- 
- static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 28297e936a96f..19604352317dd 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6399,6 +6399,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
++	SND_PCI_QUIRK(0x103c, 0x8603, "HP Omen 17-cb0xxx", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x860c, "HP ZBook 17 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 -- 
 2.51.0
 
