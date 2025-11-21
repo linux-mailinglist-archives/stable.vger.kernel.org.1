@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-195722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB2DC794CF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F52C7A05A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 178062DAD4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 391694F059C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2714313267;
-	Fri, 21 Nov 2025 13:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3A434EF07;
+	Fri, 21 Nov 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3ioiTaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmYyL5dP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E07D26E6F4;
-	Fri, 21 Nov 2025 13:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6D13559D2;
+	Fri, 21 Nov 2025 13:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731477; cv=none; b=YNVRmGhjPIXlw1RVe2prgkCHxSgCnbPSdVAXL7bU96XJTP9JgFoSwezq1NYZR4AhMXS++rIoy/xyr4HNctHv4cwyxy/lrxrYLIexUzAjRu7JjPW5+hxMG0LEvzVyrPQRu5qGYSu6cGCrpWhzRNEiJI8VHIm1/xom3yxeA1X/7Dw=
+	t=1763733437; cv=none; b=VCjvqV2emK24DwIhCAyjiW0Ne9x+YjPu7PAQMPGk2gTYzJuquq115INUdt12CsKpTlnk/eD9baR1wMMuctruv4hTpmiSTPzvxl3gA2ulGy2dOq9ziYJ+L3bRbHvNqJ+aCwIB1st4NFN23knuaiTfRRxVxxKOm48zCF++YeBP3UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731477; c=relaxed/simple;
-	bh=Twf+PbOdsLOFjnnQLSixDS9YLmRNrSNp4AYeKbB4r/8=;
+	s=arc-20240116; t=1763733437; c=relaxed/simple;
+	bh=kjWNCiiOCY2sdjlHZna1cD3PZaBun+F7soFSps9zQKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hK6AAvdg924Jl+phoj0FD4aq5k2PaRc5h7Qsu13nea9wyIxC1P8vkqBDE0/1SVFuiXyyfwRMrDeDBLE6EhnZekHgQmeLiCOXwfetQR5sR/AIDCW/Vl0rrfcwzDpT8JST9G8sdnsTyrJ2TMVVMQvBwUGUoylxg2sKUDxyAMlEpL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3ioiTaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B22C4CEF1;
-	Fri, 21 Nov 2025 13:24:36 +0000 (UTC)
+	 MIME-Version; b=WO84AkYj1Bl9SisGHxtiO2G5WJRwJ9JUemy6JinG1rMMhB/T53tiVfh2hR3aS0L4R5atX26zZ7AC/YkRtUG5gR+vr8/xHQ3EivCWF5NB+GsDlLjah8/8AgqF+DUJlD6b/VuVzHmjzQy0tgUBP9+igtDBPy5GBCRnJrttI6jWIaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmYyL5dP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DA6C4CEF1;
+	Fri, 21 Nov 2025 13:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731477;
-	bh=Twf+PbOdsLOFjnnQLSixDS9YLmRNrSNp4AYeKbB4r/8=;
+	s=korg; t=1763733436;
+	bh=kjWNCiiOCY2sdjlHZna1cD3PZaBun+F7soFSps9zQKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3ioiTaNo4Ys+0nh1uKTyqu+LCvFtWjwe5tbfMURvF9nWb+KQNXvbxCsnL3W0xbkN
-	 O0CXsS1dzmNyu4chuRmq/a06i8E/dDAFpQihzJB7AjXL07fezZ/pzbvcpwcO+uwdhi
-	 IyDbiFQGSrYHzYIQGE38Ab/QuCZ4DSVswf51FsJA=
+	b=dmYyL5dPMx/Mv6j031LOlXBw+HVkGcUkUUeeyYFxETIdsG0uCobH2x7jEze/aT2iY
+	 AKploOfbTm6uJMTOwU2PwKMIy0loKCYbiUkTnKiU5oezPV2m44IAfXvF2EjZO5HGCB
+	 cWYp0I1yI02NBCn/QdrzOmuKMdlE4LV5U90NGEv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 220/247] drm/amdgpu: fix lock warning in amdgpu_userq_fence_driver_process
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 468/529] LoongArch: Use correct accessor to read FWPC/MWPC
 Date: Fri, 21 Nov 2025 14:12:47 +0100
-Message-ID: <20251121130202.630077958@linuxfoundation.org>
+Message-ID: <20251121130247.662715798@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 6623c5f9fd877868fba133b4ae4dab0052e82dad upstream.
+commit eeeeaafa62ea0cd4b86390f657dc0aea73bff4f5 upstream.
 
-Fix a potential deadlock caused by inconsistent spinlock usage
-between interrupt and process contexts in the userq fence driver.
+CSR.FWPC and CSR.MWPC are 32bit registers, so use csr_read32() rather
+than csr_read64() to read the values of FWPC/MWPC.
 
-The issue occurs when amdgpu_userq_fence_driver_process() is called
-from both:
-- Interrupt context: gfx_v11_0_eop_irq() -> amdgpu_userq_fence_driver_process()
-- Process context: amdgpu_eviction_fence_suspend_worker() ->
-  amdgpu_userq_fence_driver_force_completion() -> amdgpu_userq_fence_driver_process()
-
-In interrupt context, the spinlock was acquired without disabling
-interrupts, leaving it in {IN-HARDIRQ-W} state. When the same lock
-is acquired in process context, the kernel detects inconsistent
-locking since the process context acquisition would enable interrupts
-while holding a lock previously acquired in interrupt context.
-
-Kernel log shows:
-[ 4039.310790] inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
-[ 4039.310804] kworker/7:2/409 [HC0[0]:SC0[0]:HE1:SE1] takes:
-[ 4039.310818] ffff9284e1bed000 (&fence_drv->fence_list_lock){?...}-{3:3},
-[ 4039.310993] {IN-HARDIRQ-W} state was registered at:
-[ 4039.311004]   lock_acquire+0xc6/0x300
-[ 4039.311018]   _raw_spin_lock+0x39/0x80
-[ 4039.311031]   amdgpu_userq_fence_driver_process.part.0+0x30/0x180 [amdgpu]
-[ 4039.311146]   amdgpu_userq_fence_driver_process+0x17/0x30 [amdgpu]
-[ 4039.311257]   gfx_v11_0_eop_irq+0x132/0x170 [amdgpu]
-
-Fix by using spin_lock_irqsave()/spin_unlock_irqrestore() to properly
-manage interrupt state regardless of calling context.
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ded3ad780cf97a04927773c4600823b84f7f3cc2)
 Cc: stable@vger.kernel.org
+Fixes: edffa33c7bb5a73 ("LoongArch: Add hardware breakpoints/watchpoints support")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/hw_breakpoint.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-@@ -143,15 +143,16 @@ void amdgpu_userq_fence_driver_process(s
+--- a/arch/loongarch/include/asm/hw_breakpoint.h
++++ b/arch/loongarch/include/asm/hw_breakpoint.h
+@@ -134,13 +134,13 @@ static inline void hw_breakpoint_thread_
+ /* Determine number of BRP registers available. */
+ static inline int get_num_brps(void)
  {
- 	struct amdgpu_userq_fence *userq_fence, *tmp;
- 	struct dma_fence *fence;
-+	unsigned long flags;
- 	u64 rptr;
- 	int i;
- 
- 	if (!fence_drv)
- 		return;
- 
-+	spin_lock_irqsave(&fence_drv->fence_list_lock, flags);
- 	rptr = amdgpu_userq_fence_read(fence_drv);
- 
--	spin_lock(&fence_drv->fence_list_lock);
- 	list_for_each_entry_safe(userq_fence, tmp, &fence_drv->fences, link) {
- 		fence = &userq_fence->base;
- 
-@@ -166,7 +167,7 @@ void amdgpu_userq_fence_driver_process(s
- 		list_del(&userq_fence->link);
- 		dma_fence_put(fence);
- 	}
--	spin_unlock(&fence_drv->fence_list_lock);
-+	spin_unlock_irqrestore(&fence_drv->fence_list_lock, flags);
+-	return csr_read64(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
++	return csr_read32(LOONGARCH_CSR_FWPC) & CSR_FWPC_NUM;
  }
  
- void amdgpu_userq_fence_driver_destroy(struct kref *ref)
+ /* Determine number of WRP registers available. */
+ static inline int get_num_wrps(void)
+ {
+-	return csr_read64(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
++	return csr_read32(LOONGARCH_CSR_MWPC) & CSR_MWPC_NUM;
+ }
+ 
+ #endif	/* __KERNEL__ */
 
 
 
