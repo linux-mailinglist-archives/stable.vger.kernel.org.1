@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-196433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF24C7A035
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:11:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F47C7950E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 08BE8347270
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id BD83F23FA1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F3634FF4C;
-	Fri, 21 Nov 2025 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC43334029C;
+	Fri, 21 Nov 2025 13:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qojLeBZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FB9esIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D4C34F48B;
-	Fri, 21 Nov 2025 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884FA264612;
+	Fri, 21 Nov 2025 13:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733498; cv=none; b=JQMq4XZqRfcJKEj7fGCeQSqEAJXlbHtmwpoHrUL6E0zk/oq6VSRHqgmA3th/zzb6rsNF5KfV6P81xGrEldm8JzycIknxMVi2XX/B0W1E4xRhvum1XoQBAOXApyy3mXsWgPRDy+Lg4iJqd8U0ZQL5cuinZ13dtlFdzyb6E5vfcxo=
+	t=1763731526; cv=none; b=ETaXhe03RGr0Uwa4V6AtUloRXC0439POoqvBykMn5eWNT8ISAItgUig5+pVGFQcqYwnYaDuYL5jxH2JM6S6NYVrxtXNknD1sXkhiU/Ihn5qWOK2GUpP2jm/PjUZGCpzAnAKhL+OZR+NhmUTn4R4IgKz/wke9d1EOuXaMJmIk4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733498; c=relaxed/simple;
-	bh=NHnzOt0ct90oKEhzkAvPzg3Ym9z+LmLi2ijEHgP2O18=;
+	s=arc-20240116; t=1763731526; c=relaxed/simple;
+	bh=fJVBFeAYkKRkibgCx13CeKTzfZnlBCqYo0ZkwsUX8kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeY94Qh3C3S1fNvHvq0Vruvvuam2WKoX7T1YBkkNjHbi/xRJQ/EA6W+dzMo+acDvKklbHJbTyTbfBpAEK/mhrRWK2NHMYq3ze4KGKxL64iTL5zBX0qdiqfonzjrYjopOWvmlEszwnrgPWU6jE2X4dCleTs+GJHYpAek81O5HOSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qojLeBZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CC0C4CEF1;
-	Fri, 21 Nov 2025 13:58:17 +0000 (UTC)
+	 MIME-Version; b=tTVB40z2N8PVmzQipPMZc1QbcHrOsXGgAQFgGhJ8QgCbHeTACVQS/9k3XIwWPc2XvtcvGEsxEJsT81au3M9CUNWHyeVn2/QJmXgzZjD33+1WgpqhrHipFW6YRoCLAqISL8C19SgsluuzuwqTzSYZ+qnrPRR6/rQKPgp3z/itGZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FB9esIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D78C4CEF1;
+	Fri, 21 Nov 2025 13:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733497;
-	bh=NHnzOt0ct90oKEhzkAvPzg3Ym9z+LmLi2ijEHgP2O18=;
+	s=korg; t=1763731526;
+	bh=fJVBFeAYkKRkibgCx13CeKTzfZnlBCqYo0ZkwsUX8kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qojLeBZm0D69QqjjEnLMnr6Eb6K/BCQLOY2IDaeoBTnCpicxLCmC9mTc92btvqCaI
-	 7flgOpzXvz5WDxPww5FScmuBip9/TQHP8GNFWflDtdt93gLni7weeLQJg/1HSP8UEI
-	 dJCA3cGXKYJGSYC3GRl5FWaTdYP/kZ4ULSPGIMxM=
+	b=1FB9esIpqOPnK157yGeQapTMoYYM/i/4RfTV+BsHx7PL27RxrNph8liA2t6ea1VhM
+	 /FY6gJYHXuRqr9IsPQWrHyzCh55X9mC1coWHXAhhvsWX5bWVXaCWQZW/VBZO7wNRS7
+	 JYpr5swt4hK0HZXag/qXYkWMCOLm6Gh0yii4Bg+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 487/529] btrfs: do not update last_log_commit when logging inode due to a new name
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 239/247] scripts/decode_stacktrace.sh: symbol: preserve alignment
 Date: Fri, 21 Nov 2025 14:13:06 +0100
-Message-ID: <20251121130248.335264000@linuxfoundation.org>
+Message-ID: <20251121130203.314915757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +66,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit bfe3d755ef7cec71aac6ecda34a107624735aac7 upstream.
+commit 4a2fc4897b5e0ca1e7a3cb4e32f44c7db3367dee upstream.
 
-When logging that a new name exists, we skip updating the inode's
-last_log_commit field to prevent a later explicit fsync against the inode
-from doing nothing (as updating last_log_commit makes btrfs_inode_in_log()
-return true). We are detecting, at btrfs_log_inode(), that logging a new
-name is happening by checking the logging mode is not LOG_INODE_EXISTS,
-but that is not enough because we may log parent directories when logging
-a new name of a file in LOG_INODE_ALL mode - we need to check that the
-logging_new_name field of the log context too.
+With lines having a symbol to decode, the script was only trying to
+preserve the alignment for the timestamps, but not the rest, nor when the
+caller was set (CONFIG_PRINTK_CALLER=y).
 
-An example scenario where this results in an explicit fsync against a
-directory not persisting changes to the directory is the following:
+With this sample ...
 
-  $ mkfs.btrfs -f /dev/sdc
-  $ mount /dev/sdc /mnt
+  [   52.080924] Call Trace:
+  [   52.080926]  <TASK>
+  [   52.080931]  dump_stack_lvl+0x6f/0xb0
 
-  $ touch /mnt/foo
+... the script was producing the following output:
 
-  $ sync
+  [   52.080924] Call Trace:
+  [   52.080926]  <TASK>
+  [   52.080931] dump_stack_lvl (arch/x86/include/asm/irqflags.h:19)
 
-  $ mkdir /mnt/dir
+  (dump_stack_lvl is no longer aligned with <TASK>: one missing space)
 
-  # Write some data to our file and fsync it.
-  $ xfs_io -c "pwrite -S 0xab 0 64K" -c "fsync" /mnt/foo
+With this other sample ...
 
-  # Add a new link to our file. Since the file was logged before, we
-  # update it in the log tree by calling btrfs_log_new_name().
-  $ ln /mnt/foo /mnt/dir/bar
+  [   52.080924][   T48] Call Trace:
+  [   52.080926][   T48]  <TASK>
+  [   52.080931][   T48]  dump_stack_lvl+0x6f/0xb0
 
-  # fsync the root directory - we expect it to persist the dentry for
-  # the new directory "dir".
-  $ xfs_io -c "fsync" /mnt
+... the script was producing the following output:
 
-  <power fail>
+  [   52.080924][   T48] Call Trace:
+  [   52.080926][   T48]  <TASK>
+  [ 52.080931][ T48] dump_stack_lvl (arch/x86/include/asm/irqflags.h:19)
 
-After mounting the fs the entry for directory "dir" does not exists,
-despite the explicit fsync on the root directory.
+  (the misalignment is clearer here)
 
-Here's why this happens:
+That's because the script had a workaround for CONFIG_PRINTK_TIME=y only,
+see the previous comment called "Format timestamps with tabs".
 
-1) When we fsync the file we log the inode, so that it's present in the
-   log tree;
+To always preserve spaces, they need to be recorded along the words.  That
+is what is now done with the new 'spaces' array.
 
-2) When adding the new link we enter btrfs_log_new_name(), and since the
-   inode is in the log tree we proceed to updating the inode in the log
-   tree;
+Some notes:
 
-3) We first set the inode's last_unlink_trans to the current transaction
-   (early in btrfs_log_new_name());
+- 'extglob' is needed only for this operation, and that's why it is set
+  in a dedicated subshell.
 
-4) We then eventually enter btrfs_log_inode_parent(), and after logging
-   the file's inode, we call btrfs_log_all_parents() because the inode's
-   last_unlink_trans matches the current transaction's ID (updated in the
-   previous step);
+- 'read' is used with '-r' not to treat a <backslash> character in any
+  special way, e.g. when followed by a space.
 
-5) So btrfs_log_all_parents() logs the root directory by calling
-   btrfs_log_inode() for the root's inode with a log mode of LOG_INODE_ALL
-   so that new dentries are logged;
+- When a word is removed from the 'words' array, the corresponding space
+  needs to be removed from the 'spaces' array as well.
 
-6) At btrfs_log_inode(), because the log mode is LOG_INODE_ALL, we
-   update root inode's last_log_commit to the last transaction that
-   changed the inode (->last_sub_trans field of the inode), which
-   corresponds to the current transaction's ID;
+With the last sample, we now have:
 
-7) Then later when user space explicitly calls fsync against the root
-   directory, we enter btrfs_sync_file(), which calls skip_inode_logging()
-   and that returns true, since its call to btrfs_inode_in_log() returns
-   true and there are no ordered extents (it's a directory, never has
-   ordered extents). This results in btrfs_sync_file() returning without
-   syncing the log or committing the current transaction, so all the
-   updates we did when logging the new name, including logging the root
-   directory,  are not persisted.
+  [   52.080924][   T48] Call Trace:
+  [   52.080926][   T48]  <TASK>
+  [   52.080931][   T48]  dump_stack_lvl (arch/x86/include/asm/irqflags.h:19)
 
-So fix this by but updating the inode's last_log_commit if we are sure
-we are not logging a new name (if ctx->logging_new_name is false).
+  (the alignment is preserved)
 
-A test case for fstests will follow soon.
-
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/03c5d7ec-5b3d-49d1-95bc-8970a7f82d87@gmail.com/
-Fixes: 130341be7ffa ("btrfs: always update the logged transaction when logging new names")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/20250908-decode_strace_indent-v1-2-28e5e4758080@kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Tested-by: Carlos Llamas <cmllamas@google.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Elliot Berman <quic_eberman@quicinc.com>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/decode_stacktrace.sh |   26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6765,7 +6765,7 @@ log_extents:
- 	 *    a power failure unless the log was synced as part of an fsync
- 	 *    against any other unrelated inode.
- 	 */
--	if (inode_only != LOG_INODE_EXISTS)
-+	if (!ctx->logging_new_name && inode_only != LOG_INODE_EXISTS)
- 		inode->last_log_commit = inode->last_sub_trans;
- 	spin_unlock(&inode->lock);
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -255,10 +255,11 @@ handle_line() {
+ 		basepath=${basepath%/init/main.c:*)}
+ 	fi
  
+-	local words
++	local words spaces
+ 
+-	# Tokenize
+-	read -a words <<<"$1"
++	# Tokenize: words and spaces to preserve the alignment
++	read -ra words <<<"$1"
++	IFS='#' read -ra spaces <<<"$(shopt -s extglob; echo "${1//+([^[:space:]])/#}")"
+ 
+ 	# Remove hex numbers. Do it ourselves until it happens in the
+ 	# kernel
+@@ -270,19 +271,13 @@ handle_line() {
+ 	for i in "${!words[@]}"; do
+ 		# Remove the address
+ 		if [[ ${words[$i]} =~ \[\<([^]]+)\>\] ]]; then
+-			unset words[$i]
+-		fi
+-
+-		# Format timestamps with tabs
+-		if [[ ${words[$i]} == \[ && ${words[$i+1]} == *\] ]]; then
+-			unset words[$i]
+-			words[$i+1]=$(printf "[%13s\n" "${words[$i+1]}")
++			unset words[$i] spaces[$i]
+ 		fi
+ 	done
+ 
+ 	if [[ ${words[$last]} =~ ^[0-9a-f]+\] ]]; then
+ 		words[$last-1]="${words[$last-1]} ${words[$last]}"
+-		unset words[$last]
++		unset words[$last] spaces[$last]
+ 		last=$(( $last - 1 ))
+ 	fi
+ 
+@@ -294,7 +289,7 @@ handle_line() {
+ 	local info_str=""
+ 	if [[ ${words[$last]} =~ \([A-Z]*\) ]]; then
+ 		info_str=${words[$last]}
+-		unset words[$last]
++		unset words[$last] spaces[$last]
+ 		last=$(( $last - 1 ))
+ 	fi
+ 
+@@ -311,7 +306,7 @@ handle_line() {
+ 			modbuildid=
+ 		fi
+ 		symbol=${words[$last-1]}
+-		unset words[$last-1]
++		unset words[$last-1] spaces[$last-1]
+ 	else
+ 		# The symbol is the last element, process it
+ 		symbol=${words[$last]}
+@@ -323,7 +318,10 @@ handle_line() {
+ 	parse_symbol # modifies $symbol
+ 
+ 	# Add up the line number to the symbol
+-	echo "${words[@]}" "${symbol}${module:+ ${module}}${info_str:+ ${info_str}}"
++	for i in "${!words[@]}"; do
++		echo -n "${spaces[i]}${words[i]}"
++	done
++	echo "${spaces[$last]}${symbol}${module:+ ${module}}${info_str:+ ${info_str}}"
+ }
+ 
+ while read line; do
 
 
 
