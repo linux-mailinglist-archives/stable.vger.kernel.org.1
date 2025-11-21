@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-196370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57AEC79F7E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A476C797E8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B1C704F1F7A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 93BEC34F16
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F82D352934;
-	Fri, 21 Nov 2025 13:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE83341043;
+	Fri, 21 Nov 2025 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sp2f8X4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MclSZca9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B48350A2A;
-	Fri, 21 Nov 2025 13:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56500332904;
+	Fri, 21 Nov 2025 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733314; cv=none; b=T4bHVWgqgpg6SuRVOytq+wGfh97AK9p/DnOxWNhnynpxMpipN+XhgV2XUmgEuqHFCIrSrCJa1Xq7RaCSHg/MD8UuQGfBhLHnjNV0MiiiJ0pNtL7GMtUEQsEvJ7/SSsR3r/feEV33S4TQ2stWHXoFLr2Qto/yNGstlV8HrIFg5OA=
+	t=1763731738; cv=none; b=TFW1egE1yqdQBNsR11XcSsPfCnAFzqtTUj1BgHLt40s/vzLPTj1+YQLB9ZZC1lVrWWP+Pxr5BLLi4OXIpBapCb5HkDuH+UsDNoPbFLd7KuYRrFqjGrAnAmcBxvqzIXv1XgvASD4guWtVZcaqVo9PvF3U6NYUQxCTAEvWOqBsr6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733314; c=relaxed/simple;
-	bh=tmhOkKadNlfFx6xf8M/7wVM8e2lVe4m+6GocpCzzvV0=;
+	s=arc-20240116; t=1763731738; c=relaxed/simple;
+	bh=lxeSOqo6sPnoFelYY038M5a/9Pi1WQinnx45NU8GKoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EITOp7Cw4SiVQir3AYtUl+P/DSehdgMS+waw2ukT2GY6p1a0utJrOhr1WfrYahNpVYfr9J8H4WjNZaf8tfwo+Ot9Ag7F6ClpPbnCGBmqrHOymJq52P2LjBM/bYL6mLzHjsc7YsKv3irJqOibbt8chR7UniVwTo9gbLsMDhcJFiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sp2f8X4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D84C4CEF1;
-	Fri, 21 Nov 2025 13:55:12 +0000 (UTC)
+	 MIME-Version; b=muF8wbKIf+8UVnoickVfww0Cmhq+NBgFskHbcYpPxd1wXTESRA8H9nV+iFtb41luD1SKPTOo/e52jUf58krg1OZuxq51Pm68I6dgfOSGiqz0ppOJVzwAjrZtB0dYIa1gWsAhbyouHcFxytDUYgn7t3tSVx4eiTCNdgDsqeRIJR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MclSZca9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF72C4CEF1;
+	Fri, 21 Nov 2025 13:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733312;
-	bh=tmhOkKadNlfFx6xf8M/7wVM8e2lVe4m+6GocpCzzvV0=;
+	s=korg; t=1763731738;
+	bh=lxeSOqo6sPnoFelYY038M5a/9Pi1WQinnx45NU8GKoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sp2f8X4QVrLDmROFg1+PQnNSfVlcD/oithDSKQQnKtPJpsnnnZrNmCpzOEQVGRt3e
-	 mBWn8S7X+nzSTRm5M2/Zh/wrJXkSjnRIeOjYxMHoCLMAdzqRC/Aa/pgyh7OJ5v8sJq
-	 CbLEKkylUu8gkVaQZsRB+OjFaM+MqSP0T5tu9uok=
+	b=MclSZca9AfGxS9hF2XAyhYaG3QDb/cOSvQA96WCO1InODSARKWLAMqRp4FBRudXTD
+	 Onxpb7J5+XFmV5tXi5WAQDMqQtrBjwpmdG+aA+CWalkdP8E2PIyJN8KiEE1wA5s8iX
+	 6Wxff544TSqlgMDOsnuoaBKUrO0yhtefFbGZFknM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 392/529] smb/server: fix possible refcount leak in smb2_sess_setup()
+Subject: [PATCH 6.12 064/185] ACPI: CPPC: Perform fast check switch only for online CPUs
 Date: Fri, 21 Nov 2025 14:11:31 +0100
-Message-ID: <20251121130244.970144238@linuxfoundation.org>
+Message-ID: <20251121130146.186825980@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 379510a815cb2e64eb0a379cb62295d6ade65df0 ]
+[ Upstream commit 8821c8e80a65bc4eb73daf63b34aac6b8ad69461 ]
 
-Reference count of ksmbd_session will leak when session need reconnect.
-Fix this by adding the missing ksmbd_user_session_put().
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+However the function cppc_allow_fast_switch() checks for the validity
+of the _CPC object for all the present CPUs. This breaks when the
+kernel is booted with "nosmt=force".
+
+Check fast_switch capability only on online CPUs
+
+Fixes: 15eece6c5b05 ("ACPI: CPPC: Fix NULL pointer dereference when nosmp is used")
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-4-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index b3fa983a522fb..9f64808c7917c 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1793,6 +1793,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 3ce5bb87d25b7..c4a1fee4b4873 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -463,7 +463,7 @@ bool cppc_allow_fast_switch(void)
+ 	struct cpc_desc *cpc_ptr;
+ 	int cpu;
  
- 		if (ksmbd_conn_need_reconnect(conn)) {
- 			rc = -EFAULT;
-+			ksmbd_user_session_put(sess);
- 			sess = NULL;
- 			goto out_err;
- 		}
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
+ 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
 -- 
 2.51.0
 
