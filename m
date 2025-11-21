@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577C2C794DE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF4BC79C9F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 307B4348AC6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id AE2332DBEB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524602EA46B;
-	Fri, 21 Nov 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021834B19A;
+	Fri, 21 Nov 2025 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9lpFBm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tfr2DkbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4B526CE33;
-	Fri, 21 Nov 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C5F34886B;
+	Fri, 21 Nov 2025 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731173; cv=none; b=f7rp5IOMmsyiP+tGmDeCDwL4ZD4uHW5CaiQXW+81KqQEIQfIH943dCdqeSAB7WRvq7cdctJTDCDJm0L7vFxuWltIKVlX+o8MF6k2qJIvB9SX+v80NElbdmBfBuvfDReH9b2Lzw5CON3R3P4AIlXPolbPGx2TKoA2ZqBZrT59GT8=
+	t=1763733129; cv=none; b=QooqsKb/CbDcRUhmfFTni1P22ewHzkXqYu5d6wvndECi5+AYtuM5HfQLUhkAUHfX5VyoO+ZvrYFGiHq7WQIToEZKIA3AV36Um0GYSD4m96E/CyBekKvQeeQ2an8Ni2rLj2Hts1/oYS2AF30NCejKBdKkZYEMe+FgorTAP0Mhk8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731173; c=relaxed/simple;
-	bh=nST0DxULIe3PgNbdgKaBFzXBF4O472J9TZDok5wIc2U=;
+	s=arc-20240116; t=1763733129; c=relaxed/simple;
+	bh=evbpnrkTsHCb5olAesq2YNU79eGT036owWQscp3pZiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZH9Sfon+q5v7B3LFEJYjYB/5sA8uTzfVhbHAELIdEevPnIPiqfPtcCngmSzfVGvaLN2UXYRsnpU3ahk31KYOIfyiuYmbhi8nnqI8oYg7cY469HFBomMoLUEU8VKcuyAu7i9YXkwbdnNyDul0GQxKiruAZl2BbIk0HCBmXM9a0pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9lpFBm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D164C4CEF1;
-	Fri, 21 Nov 2025 13:19:32 +0000 (UTC)
+	 MIME-Version; b=NuTWKQx78EzJXJb5yuL5MvxhQog8xbK28tgqKgOBKgag2kKnnWMQprld7jHBVrdN33wwlINGu1lPby3B7mVLnQfYo96mMQcMfyldBqGGSjpyDKT5WeWAkLwHU9Z82MLpZv3/6aIlqPRE48oqoXjD+rvG664yK96e+BLDhBNNz9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tfr2DkbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8788C4CEF1;
+	Fri, 21 Nov 2025 13:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731172;
-	bh=nST0DxULIe3PgNbdgKaBFzXBF4O472J9TZDok5wIc2U=;
+	s=korg; t=1763733129;
+	bh=evbpnrkTsHCb5olAesq2YNU79eGT036owWQscp3pZiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9lpFBm18oA1cAw8xzUN/vdyzsb5voRbZhwpElKCuJF9ZgU2zDnShRV+9DtaqRvDV
-	 0CFAlLryacJdRqPRX4+Rvn+x/Z0hEELuQn+mDM0ZQQ7pNElrXQ0tA3vSw+naqz00pK
-	 BDQjazyDlyrEH9of4fMaAJm/M/Nl1MEiibpkZ+r0=
+	b=Tfr2DkbCsdiq8NQbusOrxI4mDieRXyefdvsLsMjLY9DcaVQz4S8YdyiQVlZkle6KH
+	 LWcE23Q50jZBiN7Z0YkTQ93EURlwm0f80pxg6UoYuHwI0TPAUCclqGIk64gbsMKprO
+	 DNz2KuFxPilqzs4NHx/oJXF0p/x4LgQH/OjFlG3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Pratap Nirujogi <pratap.nirujogi@amd.com>,
-	Sultan Alsawaf <sultan@kerneltoast.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 114/247] drm/amd/amdgpu: Ensure isp_kernel_buffer_alloc() creates a new BO
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.6 362/529] drm/amd/display: Enable mst when its detected but yet to be initialized
 Date: Fri, 21 Nov 2025 14:11:01 +0100
-Message-ID: <20251121130158.674031245@linuxfoundation.org>
+Message-ID: <20251121130243.908160263@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sultan Alsawaf <sultan@kerneltoast.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 7132f7e025f9382157543dd86a62d161335b48b9 ]
+commit 3c6a743c6961cc2cab453b343bb157d6bbbf8120 upstream.
 
-When the BO pointer provided to amdgpu_bo_create_kernel() points to
-non-NULL, amdgpu_bo_create_kernel() takes it as a hint to pin that address
-rather than allocate a new BO.
+[Why]
+drm_dp_mst_topology_queue_probe() is used under the assumption that
+mst is already initialized. If we connect system with SST first
+then switch to the mst branch during suspend, we will fail probing
+topology by calling the wrong API since the mst manager is yet to
+be initialized.
 
-This functionality is never desired for allocating ISP buffers. A new BO
-should always be created when isp_kernel_buffer_alloc() is called, per the
-description for isp_kernel_buffer_alloc().
+[How]
+At dm_resume(), once it's detected as mst branc connected, check if
+the mst is initialized already. If not, call
+dm_helpers_dp_mst_start_top_mgr() instead to initialize mst
 
-Ensure this by zeroing *bo right before the amdgpu_bo_create_kernel() call.
+V2: Adjust the commit msg a bit
 
-Fixes: 55d42f616976 ("drm/amd/amdgpu: Add helper functions for isp buffers")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Pratap Nirujogi <pratap.nirujogi@amd.com>
-Signed-off-by: Sultan Alsawaf <sultan@kerneltoast.com>
+Fixes: bc068194f548 ("drm/amd/display: Don't write DP_MSTM_CTRL after LT")
+Cc: Fangzhi Zuo <jerry.zuo@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 73c8c29baac7f0c7e703d92eba009008cbb5228e)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(cherry picked from commit 62320fb8d91a0bddc44a228203cfa9bfbb5395bd)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_isp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_isp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_isp.c
-index 9cddbf50442a4..37270c4dab8dd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_isp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_isp.c
-@@ -280,6 +280,8 @@ int isp_kernel_buffer_alloc(struct device *dev, u64 size,
- 	if (ret)
- 		return ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2993,6 +2993,7 @@ static int dm_resume(void *handle)
+ 	/* Do mst topology probing after resuming cached state*/
+ 	drm_connector_list_iter_begin(ddev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
++		bool init = false;
  
-+	/* Ensure *bo is NULL so a new BO will be created */
-+	*bo = NULL;
- 	ret = amdgpu_bo_create_kernel(adev,
- 				      size,
- 				      ISP_MC_ADDR_ALIGN,
--- 
-2.51.0
-
+ 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
+ 			continue;
+@@ -3002,7 +3003,14 @@ static int dm_resume(void *handle)
+ 		    aconnector->mst_root)
+ 			continue;
+ 
+-		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
++		scoped_guard(mutex, &aconnector->mst_mgr.lock) {
++			init = !aconnector->mst_mgr.mst_primary;
++		}
++		if (init)
++			dm_helpers_dp_mst_start_top_mgr(aconnector->dc_link->ctx,
++				aconnector->dc_link, false);
++		else
++			drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+ 
 
 
 
