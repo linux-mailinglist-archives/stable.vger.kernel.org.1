@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-196478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6538C7A186
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:17:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F714C7973F
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A41E4F443B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47CB64E262D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5E4223324;
-	Fri, 21 Nov 2025 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2085F346E55;
+	Fri, 21 Nov 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmB7ReV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff20ExAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B0229B78F;
-	Fri, 21 Nov 2025 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705C43F9D2;
+	Fri, 21 Nov 2025 13:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733625; cv=none; b=Yo11INR1s4gerebArl69+3wUfNaRH/rtgI+x/3FGVd7zETjQnZ5qXtZrzCCQQkjsH6JHLiKGyVIWhWtuB8SY5plSS9OsmBYWBG2ZJ2EIj7NswvuyD8mPJ0kH8BJP/Yp1B3+K27MESo82gYuoJ0suZvnHldLcuETnxmRdX4aWOsg=
+	t=1763732051; cv=none; b=J52IL3NCD5Z7I/7/yaQRBnPjtX3iaj7z6iC53ufb/a8MV4RobwTYBFMArfMfJuWGkQUqoAJjr7V9anH0zE53hx1CvTDSY2GS/Qr9l2SHPnQDg4hhi7cGv62VfSmr+spDr9jdMAqQDxBg7jnHzTe00TETMiw2Nc9Q3YlJjvyl5Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733625; c=relaxed/simple;
-	bh=hm+mJFTnNE1s4N4HBMKBhRkgyxtbWAVwS3j3W08NEuo=;
+	s=arc-20240116; t=1763732051; c=relaxed/simple;
+	bh=7yGlqQPkJk5eZZnUa8nT1STlQMVmBajZj7JCZewua0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOt4aDyHHGR5JI5Vt6SX5iJ5ntEF2QNbtvCANGfY4cUTG+DyfR1SLuwEsthgAwd1gxie/fyE0CLkik/31jROYBNc7xfVSNwuzKP0iaHyMKsCaxQ+pjeENty5XLuXF9yNOG6Eh54is+Q8N6xRzbmY/WjiVXDFiLrPyLBxS0TAe08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmB7ReV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BA1C4CEF1;
-	Fri, 21 Nov 2025 14:00:24 +0000 (UTC)
+	 MIME-Version; b=ckU5HgJNBNZoDKNyCJmEWNyyfxNjhxrkdIngxGk89PFPCq/2fni0/9xLtROqO04TSLLyE1LyXbrNx2T+dCdv9mG1XKT9xE55lTaflUMCvFRid0B36GyQxj4DgNOxJrwxWRTQQCJeOhInmF+TdUMA4z9RpHcz7EqEowq3UUc8Wfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff20ExAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18A0C4CEFB;
+	Fri, 21 Nov 2025 13:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733624;
-	bh=hm+mJFTnNE1s4N4HBMKBhRkgyxtbWAVwS3j3W08NEuo=;
+	s=korg; t=1763732051;
+	bh=7yGlqQPkJk5eZZnUa8nT1STlQMVmBajZj7JCZewua0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmB7ReV4fC8M6CsqlrIR+z0/b0VSQdPho0Ftf3zIA58DO0R8OmMWTsiMUc5YzbF6i
-	 QWe/QWxnTixlzYeVYx1wRWyHyVm78qN+OtZckHFWqzUpq4DRiXUEiwoGUQg+6/ucI7
-	 DqyfbiTte8sKZh3+2AnRECDf9nDTsQOqst9Z/xDE=
+	b=Ff20ExAmdPYJhIlFido2QGY5cZK9jYqHYvIFPiMw4+ogYmXPWB6VYijVzUrjMYqNa
+	 dGfKVN+/3Bt+eX4xwg+wisVs4Vy+mX9PMCYhlrGCbitIuTUGBaA4eUoLEIr3NiN5bp
+	 FfJjDICmJ9xN475xtLDiWEnvJfvBFqS1p589s5g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 500/529] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
-Date: Fri, 21 Nov 2025 14:13:19 +0100
-Message-ID: <20251121130248.805550257@linuxfoundation.org>
+Subject: [PATCH 6.12 173/185] rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
+Date: Fri, 21 Nov 2025 14:13:20 +0100
+Message-ID: <20251121130150.130827779@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
+[ Upstream commit 16c43a56b79e2c3220b043236369a129d508c65a ]
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+Even if normally `build_error` isn't a kernel object, it should still
+be treated as such so that we pass the same flags. Similarly, `rustdoc`
+targets are never kernel objects, but we need to treat them as such.
 
-Scenario causing lack of proper cleanup:
+Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
+will complain about missing sanitizer flags since `-Zsanitizer` is a
+target modifier too [1]:
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
+    error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
+     --> rust/build_error.rs:3:1
+      |
+    3 | //! Build-time error.
+      | ^
+      |
+      = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
+      = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
+      = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
+      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
 
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
+Thus explicitly mark them as kernel objects.
 
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/138736 [1]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Link: https://patch.msgid.link/20251102212853.1505384-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ rust/Makefile |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -843,6 +843,10 @@ void __netpoll_cleanup(struct netpoll *n
- 	if (!npinfo)
- 		return;
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -107,12 +107,18 @@ rustdoc-core: private rustc_target_flags
+ rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
++# Even if `rustdoc` targets are not kernel objects, they should still be
++# treated as such so that we pass the same flags. Otherwise, for instance,
++# `rustdoc` will complain about missing sanitizer flags causing an ABI mismatch.
++rustdoc-compiler_builtins: private is-kernel-object := y
+ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
+ 	+$(call if_changed,rustdoc)
  
-@@ -852,8 +856,7 @@ void __netpoll_cleanup(struct netpoll *n
++rustdoc-ffi: private is-kernel-object := y
+ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+ 	+$(call if_changed,rustdoc)
  
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
++rustdoc-kernel: private is-kernel-object := y
+ rustdoc-kernel: private rustc_target_flags = --extern ffi \
+     --extern build_error --extern macros=$(objtree)/$(obj)/libmacros.so \
+     --extern bindings --extern uapi
+@@ -433,6 +439,10 @@ $(obj)/compiler_builtins.o: private rust
+ $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
  
- 	skb_pool_flush(np);
- }
++# Even if normally `build_error` is not a kernel object, it should still be
++# treated as such so that we pass the same flags. Otherwise, for instance,
++# `rustc` will complain about missing sanitizer flags causing an ABI mismatch.
++$(obj)/build_error.o: private is-kernel-object := y
+ $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
 
 
 
