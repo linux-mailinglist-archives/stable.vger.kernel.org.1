@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857E1C79E75
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E7AC79619
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2BADF350472
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 4A8AA2B381
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDDE34DCEB;
-	Fri, 21 Nov 2025 13:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417F626560A;
+	Fri, 21 Nov 2025 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQgbBKlq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj3D4if4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C842E92B0;
-	Fri, 21 Nov 2025 13:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A91335541;
+	Fri, 21 Nov 2025 13:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733189; cv=none; b=c2NblYxKFH6lwxEbLrkvb1+yBJ5pnxDC02FQLa7nFcWlKfHxVwiVk5c7FtnIi/uSIK0+TpcJqP0kMAID2++BGz8w9/OoRcReTSZV+JM+EbXQIqxvUaEm8JCrFLrV6wWnDtsVeo9QsWry7j9siRBC83zg0SvezkVpcyF84N5ij1k=
+	t=1763731807; cv=none; b=jOafSmTladzX80JU5/BhueKS9bLzqFcu5VaXig5Ps9jWGjhOWQwHV9va4GYVRCSAW3PDWUwxvONtdrVLZ+UjD/H2pc+Wb7EcJUeN6+p4vgViWkYmhsRMH5jgFWCox8xurFFw61Dqm++/8o8zwevnMGuKpoxuVWOiDVjEX2r/23E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733189; c=relaxed/simple;
-	bh=2SpawXRoT0nIpVC6cZ+k8/a5L5s6yXHbxAKoODSeo/0=;
+	s=arc-20240116; t=1763731807; c=relaxed/simple;
+	bh=QkijOYQdkiYT4ZT2m+d5vF4FQ2uvuoSgdxp49saGlxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/iLKZU4sM1Kkt/Dkg4G+MDfOCuVmO5+EsYVkENbMhERHSVnrqRI2DGtu3wQJ52wVRl4nssDHtY5Avh3Tfy9tJo76qIU/NsVujKOIyFFYh4ID6FYAN/bC843Ojl7ZdAY/yrLIdNnZbmaUsiLi0rR6lzHBhsmUV/q+jjXwGEdOVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQgbBKlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9112C4CEF1;
-	Fri, 21 Nov 2025 13:53:08 +0000 (UTC)
+	 MIME-Version; b=W0pYH3VJCa9nt34Gg4ONxtI5D23uIfOSqm+RGp41LMX0SC3HfHJmjP0NGRiAJxu4UEMrL7M/yw4z9rda/WLIFTvlICqQovvHl9Z8/Qfkq3+06rQTcBdrTfivOcMDE7azYNEvumABPdZ20cZ/tHhYLsqMyVwaRd4yYUDBHQ5gIa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj3D4if4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22281C4CEF1;
+	Fri, 21 Nov 2025 13:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733189;
-	bh=2SpawXRoT0nIpVC6cZ+k8/a5L5s6yXHbxAKoODSeo/0=;
+	s=korg; t=1763731806;
+	bh=QkijOYQdkiYT4ZT2m+d5vF4FQ2uvuoSgdxp49saGlxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQgbBKlqrxlyCWEFIVDHjwrcLCSthU27Y8eU4xLxTpZzbqmG6UENDUpzD+4OkAUIx
-	 B4AJqWyc0Ag9OH3x5j+sIqYulGtPgKW0hkA8S/n1JBo/hCDTM+E8WDXYKcyl9jxr5s
-	 Wu87Io2D6zuikMOxpHUkudv47tOm75xDGHorxBxM=
+	b=mj3D4if41aiqWo0MCR7p1gu5RrMoXWH7ErWk9+xxHyGM7RmcOj4KYxzaOSdWk9o4S
+	 l0B4jYcX71tRcp3dnRtqdV61pIxlkCoT6HaGk8I2RYOTW0GyVZRru1mirycjhebPCS
+	 eovPccov2G0jlvJVxbPXLA1aVPAfMqbHWwR7L+BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 381/529] drm/amd: Fix suspend failure with secure display TA
+Subject: [PATCH 6.12 053/185] net_sched: act_connmark: use RCU in tcf_connmark_dump()
 Date: Fri, 21 Nov 2025 14:11:20 +0100
-Message-ID: <20251121130244.581117611@linuxfoundation.org>
+Message-ID: <20251121130145.791216595@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b09cb2996cdf50cd1ab4020e002c95d742c81313 ]
+[ Upstream commit 0d752877705c0252ef2726e4c63c5573f048951c ]
 
-commit c760bcda83571 ("drm/amd: Check whether secure display TA loaded
-successfully") attempted to fix extra messages, but failed to port the
-cleanup that was in commit 5c6d52ff4b61e ("drm/amd: Don't try to enable
-secure display TA multiple times") to prevent multiple tries.
+Also storing tcf_action into struct tcf_connmark_parms
+makes sure there is no discrepancy in tcf_connmark_act().
 
-Add that to the failure handling path even on a quick failure.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4679
-Fixes: c760bcda8357 ("drm/amd: Check whether secure display TA loaded successfully")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4104c0a454f6a4d1e0d14895d03c0e7bdd0c8240)
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250709090204.797558-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/tc_act/tc_connmark.h |  1 +
+ net/sched/act_connmark.c         | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index d358a08b5e006..08886e0ee6428 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -2015,8 +2015,11 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
- 	if (!ret && !psp->securedisplay_context.context.resp_status) {
- 		psp->securedisplay_context.context.initialized = true;
- 		mutex_init(&psp->securedisplay_context.mutex);
--	} else
-+	} else {
-+		/* don't try again */
-+		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
- 		return ret;
-+	}
+diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
+index e8dd77a967480..a5ce83f3eea4b 100644
+--- a/include/net/tc_act/tc_connmark.h
++++ b/include/net/tc_act/tc_connmark.h
+@@ -7,6 +7,7 @@
+ struct tcf_connmark_parms {
+ 	struct net *net;
+ 	u16 zone;
++	int action;
+ 	struct rcu_head rcu;
+ };
  
- 	mutex_lock(&psp->securedisplay_context.mutex);
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 0fce631e7c911..3e89927d71164 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -88,7 +88,7 @@ TC_INDIRECT_SCOPE int tcf_connmark_act(struct sk_buff *skb,
+ 	/* using overlimits stats to count how many packets marked */
+ 	tcf_action_inc_overlimit_qstats(&ca->common);
+ out:
+-	return READ_ONCE(ca->tcf_action);
++	return parms->action;
+ }
  
+ static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
+@@ -167,6 +167,8 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		goto release_idr;
+ 
++	nparms->action = parm->action;
++
+ 	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
+@@ -190,20 +192,20 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 				    int bind, int ref)
+ {
++	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_connmark_info *ci = to_connmark(a);
++	const struct tcf_connmark_parms *parms;
+ 	struct tc_connmark opt = {
+ 		.index   = ci->tcf_index,
+ 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+ 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+ 	};
+-	struct tcf_connmark_parms *parms;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&ci->tcf_lock);
+-	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
++	rcu_read_lock();
++	parms = rcu_dereference(ci->parms);
+ 
+-	opt.action = ci->tcf_action;
++	opt.action = parms->action;
+ 	opt.zone = parms->zone;
+ 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -212,12 +214,12 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	if (nla_put_64bit(skb, TCA_CONNMARK_TM, sizeof(t), &t,
+ 			  TCA_CONNMARK_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
 -- 
 2.51.0
 
