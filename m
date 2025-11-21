@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B1FC79422
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3766BC7A119
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 42A862DA7E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5678138FE1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641A72F656A;
-	Fri, 21 Nov 2025 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B826134A3DB;
+	Fri, 21 Nov 2025 13:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eac3rKsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xj8LDHss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4A026E6F4;
-	Fri, 21 Nov 2025 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA513491D5;
+	Fri, 21 Nov 2025 13:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731339; cv=none; b=r1XWMKlwMYU6dyUSdTEWGWaojd30X9H9mdsKo7w0cDuNjZJpYaAA9nr+Lv1fBO/oBykNcrGxVONczmEAY+9/Sop9v/WOdnHiX7WGGkUJxvKvuUDz38skP+wPYqSZh1fQl3QmLGPvDZ/5RSO+dv2em9SYOl4Y2eZGZSB7n5LynBg=
+	t=1763733350; cv=none; b=LBBfOExeCBlpGJ7mQQzpnh7Ajw20cZ+i/Yc9ZYAaOkD7UViFGsMpjYxp9TBackfo3ipBdrOxSSt7q92VpG9PkI+wPsfRsmJwl+oDcrkn/Jq6h0KkFhf7VOxOyg+f2i0R9qMqmLEEcnqgRvjw0crJMmhNqCPS2EDGOXUQsfIJJks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731339; c=relaxed/simple;
-	bh=keLyYB07+nk8ANsooJwPD3GXYNdTblpPD6vw1hMXNo0=;
+	s=arc-20240116; t=1763733350; c=relaxed/simple;
+	bh=2N6QOEao2pJXAd5y+z+8HTfHIBxIi6sKZWXv+jGPVvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4tE+S7hVnU/UD/Qz1glszZDPhZaUxP6aq1k7ngQVt/4S3bSDExdb4TOHzgDLIe3ES61WJAV0mrTxu4XNVNzb9ui7047tx8VbaJ8FFzI4Dt2SGlktTa00tqUvkyELHOlVT3zbF+k8NRzm7pQDPzXJlrGLqxJ0bpC32FFQsnLtDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eac3rKsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CCCC4CEF1;
-	Fri, 21 Nov 2025 13:22:18 +0000 (UTC)
+	 MIME-Version; b=bXl1nwjLQesXcqLvctJW1Y4gkD4/v8Yx9AjPYtH/U2324rjWxbyAAaqo84BscOVqMpswAT/BaDdWF7MF0UPa6gE1QNL5QVUvNaX71Fk1DIoSViu8dLgm8AsSq+6jXAgdShX9wlcxecCYnUZOsJTUwkiCjsgOD9/oKMX+bZRgBfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xj8LDHss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE95C4CEF1;
+	Fri, 21 Nov 2025 13:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731339;
-	bh=keLyYB07+nk8ANsooJwPD3GXYNdTblpPD6vw1hMXNo0=;
+	s=korg; t=1763733349;
+	bh=2N6QOEao2pJXAd5y+z+8HTfHIBxIi6sKZWXv+jGPVvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eac3rKsz+WvZOhZgAYOA7KRekbq82ugY8J6GM+ZA7faammU+P+YDOnarLUSni1ibZ
-	 w8M+y0pvjwyD1V6OJxxHa3GhZr2zinI8MLzVF6GTzDFfnU+I5TWsGk2D60bqIH9lD1
-	 Wo6d0EvtL+LbE+bHtR6WuLTTx1EBF6nJ6yWWCEFU=
+	b=xj8LDHss9PASmvgR6q8a3DemSKAPpSaccIPzAbmPVImMOWoZecSaxao4rlmh0Gcok
+	 IEE+y9MZ5TL19iSgP1XbnjTN8nlsiZ4GIROrkf95hWZKgw8XqN4XFVXqiNlyUg7Gae
+	 Yl0515mxdCYsLCdUf5DHNhjiPzhaXPEdH1BNbxTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liupu Wang <wangliupu@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: [PATCH 6.17 173/247] LoongArch: Let {pte,pmd}_modify() record the status of _PAGE_DIRTY
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 421/529] Bluetooth: L2CAP: export l2cap_chan_hold for modules
 Date: Fri, 21 Nov 2025 14:12:00 +0100
-Message-ID: <20251121130200.929507298@linuxfoundation.org>
+Message-ID: <20251121130245.994445933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit a073d637c8cfbfbab39b7272226a3fbf3b887580 upstream.
+[ Upstream commit e060088db0bdf7932e0e3c2d24b7371c4c5b867c ]
 
-Now if the PTE/PMD is dirty with _PAGE_DIRTY but without _PAGE_MODIFIED,
-after {pte,pmd}_modify() we lose _PAGE_DIRTY, then {pte,pmd}_dirty()
-return false and lead to data loss. This can happen in certain scenarios
-such as HW PTW doesn't set _PAGE_MODIFIED automatically, so here we need
-_PAGE_MODIFIED to record the dirty status (_PAGE_DIRTY).
+l2cap_chan_put() is exported, so export also l2cap_chan_hold() for
+modules.
 
-The new modification involves checking whether the original PTE/PMD has
-the _PAGE_DIRTY flag. If it exists, the _PAGE_MODIFIED bit is also set,
-ensuring that the {pte,pmd}_dirty() interface can always return accurate
-information.
+l2cap_chan_hold() has use case in net/bluetooth/6lowpan.c
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Liupu Wang <wangliupu@loongson.cn>
-Signed-off-by: Liupu Wang <wangliupu@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/pgtable.h |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -424,6 +424,9 @@ static inline unsigned long pte_accessib
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index dabc07700197c..ad46112cb596b 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -497,6 +497,7 @@ void l2cap_chan_hold(struct l2cap_chan *c)
  
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
-+	if (pte_val(pte) & _PAGE_DIRTY)
-+		pte_val(pte) |= _PAGE_MODIFIED;
-+
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) |
- 		     (pgprot_val(newprot) & ~_PAGE_CHG_MASK));
+ 	kref_get(&c->kref);
  }
-@@ -547,9 +550,11 @@ static inline struct page *pmd_page(pmd_
++EXPORT_SYMBOL_GPL(l2cap_chan_hold);
  
- static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ struct l2cap_chan *l2cap_chan_hold_unless_zero(struct l2cap_chan *c)
  {
--	pmd_val(pmd) = (pmd_val(pmd) & _HPAGE_CHG_MASK) |
--				(pgprot_val(newprot) & ~_HPAGE_CHG_MASK);
--	return pmd;
-+	if (pmd_val(pmd) & _PAGE_DIRTY)
-+		pmd_val(pmd) |= _PAGE_MODIFIED;
-+
-+	return __pmd((pmd_val(pmd) & _HPAGE_CHG_MASK) |
-+		     (pgprot_val(newprot) & ~_HPAGE_CHG_MASK));
- }
- 
- static inline pmd_t pmd_mkinvalid(pmd_t pmd)
+-- 
+2.51.0
+
 
 
 
