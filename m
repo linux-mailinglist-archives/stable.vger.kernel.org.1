@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836B9C79C1E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B80C79392
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id DFEBE2E859
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CD1034A4D2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EAF34EF1F;
-	Fri, 21 Nov 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA46346A06;
+	Fri, 21 Nov 2025 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf98Ibyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peGhV59k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CA4345751;
-	Fri, 21 Nov 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17957346A0E;
+	Fri, 21 Nov 2025 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732958; cv=none; b=dfB7iqpo30NFj62Bmu30L5m7sUCamRw8PwqxuKAJ0m/M8zGXGK87gBPOcfNFFYmJami8VZBU/j+z1LQUjXB483/xY8CmNrnXQEwhGRqjacHkdu5syjP/DZWVYOMyfE7h3ewP9WhTj1pGsRjzB6wfSqqgyCgoAcZGm6uKmN/ixj4=
+	t=1763730994; cv=none; b=AzPACk26Yg1axheMg4rLIT0vbyMgedus7c5Znrmivroep3uUTWS6Poo1S8vuy0Y/YZt3ICyEHcSmGgAdN/KSWplh6/2Zih//87PaX7a91hdXFd6KoOphIgk7W/eXY19wJZ4gNCIUUdG6DqNXVjIfn3gd9rND7pOUQ4tS5bc+nPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732958; c=relaxed/simple;
-	bh=rHnfaeFpej2EKEjUGZ7b3tAYfFV5vgLFHgjgRioDni4=;
+	s=arc-20240116; t=1763730994; c=relaxed/simple;
+	bh=9noAOYfhf9vCiN0DrZVtNm8Hcd3FKMUWazeZtYHde0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgFe6bMcsngpFiUquvVEu59nszgLKWw1t4hFd9s0z8w6HS/WL09WlY6rdAjE/m0WcmL9MmknzBG31jFb5c3SxNRB2MYKteBm8rpd4h/Pk4Tupf6xqQ6xyGzYyi/76zY+jfunBeEth87Vblxo+Cn/uot8vVgs7bAJDQhX4Mory7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf98Ibyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17966C4CEF1;
-	Fri, 21 Nov 2025 13:49:17 +0000 (UTC)
+	 MIME-Version; b=GpJqYtNBI0mIkcGAo4fSHJPvi5SnBeYsAoqorXrU3ft+b/9Y82Q27mY/N12fqwZPwbnmShUsbdZTItqAq6Dz9S+WTgD9A/y9090IAYzUPSTrr7XXiIk37Qk/f4gTPTPuu6Q3i/ScW4ZdQZSKJvYREu9hXJNGT+By59KK3bdwAs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peGhV59k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D60EC4CEF1;
+	Fri, 21 Nov 2025 13:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732958;
-	bh=rHnfaeFpej2EKEjUGZ7b3tAYfFV5vgLFHgjgRioDni4=;
+	s=korg; t=1763730994;
+	bh=9noAOYfhf9vCiN0DrZVtNm8Hcd3FKMUWazeZtYHde0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf98IbyhnSJEl0sUY6aNnyD6wV9zeJX9dwl8/HjxFioMaKUho/av9zMmwU9BP5P9e
-	 zGbDjOYHa9IrzFGahp1tMXmqomBEcZTWMqv3w8blZR/7jrluOrG7vFfulIrM4WjM/n
-	 0Td8phvkX5Kls/BVx4ng7QBlEG/pFyaBN8q7NRnk=
+	b=peGhV59kpluKZF+VpTQ6/QO+V6FsEAIW6jYJajIFGH+Kl5v04pppwk1v25OiO07pu
+	 i+6CuBBepO749kFhli9YhxOWr7hc9UUrsYr1y7S1JBrC3s22afwgr5uuAsl36eo/mh
+	 j0XDBUWfiLyeka90+eGf5jHvCVqySbHxm9HQB054=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	rtm@csail.mit.edu,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/529] RDMA/irdma: Set irdma_cq cq_num field during CQ create
+Subject: [PATCH 6.17 054/247] NFSD: Skip close replay processing if XDR encoding fails
 Date: Fri, 21 Nov 2025 14:10:01 +0100
-Message-ID: <20251121130241.770777580@linuxfoundation.org>
+Message-ID: <20251121130156.545041972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
+[ Upstream commit ff8141e49cf70d2d093a5228f5299ce188de6142 ]
 
-The driver maintains a CQ table that is used to ensure that a CQ is
-still valid when processing CQ related AEs. When a CQ is destroyed,
-the table entry is cleared, using irdma_cq.cq_num as the index. This
-field was never being set, so it was just always clearing out entry
-0.
+The replay logic added by commit 9411b1d4c7df ("nfsd4: cleanup
+handling of nfsv4.0 closed stateid's") cannot be done if encoding
+failed due to a short send buffer; there's no guarantee that the
+operation encoder has actually encoded the data that is being copied
+to the replay cache.
 
-Additionally, the cq_num field size was increased to accommodate HW
-supporting more than 64K CQs.
-
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
-Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: rtm@csail.mit.edu
+Closes: https://lore.kernel.org/linux-nfs/c3628d57-94ae-48cf-8c9e-49087a28cec9@oracle.com/T/#t
+Fixes: 9411b1d4c7df ("nfsd4: cleanup handling of nfsv4.0 closed stateid's")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- drivers/infiniband/hw/irdma/verbs.h | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4xdr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 7243255c224f4..29540b2b2373c 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2077,6 +2077,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 	spin_lock_init(&iwcq->lock);
- 	INIT_LIST_HEAD(&iwcq->resize_list);
- 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
-+	iwcq->cq_num = cq_num;
- 	info.dev = dev;
- 	ukinfo->cq_size = max(entries, 4);
- 	ukinfo->cq_id = cq_num;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index 50c2610d1cbfb..bb9ab945938e0 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -113,7 +113,7 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_num;
-+	u32 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 1f6c3db3bc6e5..37541ea408fc0 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -5928,8 +5928,7 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
+ 		 */
+ 		warn_on_nonidempotent_op(op);
+ 		xdr_truncate_encode(xdr, op_status_offset + XDR_UNIT);
+-	}
+-	if (so) {
++	} else if (so) {
+ 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
+ 
+ 		so->so_replay.rp_status = op->status;
 -- 
 2.51.0
 
