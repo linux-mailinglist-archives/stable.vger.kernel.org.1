@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B593C79F78
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90D0C793A2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FCD74F1EEF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id B85972DDAE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F912350D64;
-	Fri, 21 Nov 2025 13:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5849275B18;
+	Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzX9RyDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh5mWXCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868A7352934;
-	Fri, 21 Nov 2025 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B91F09B3;
+	Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733306; cv=none; b=rY85tqi+RWa9mmyEbvhOCY6EkMVlK4k3zeuWgdaNRtjrX6w+GUwUa4LbjNrody8Ew4v6QlF4TCHH/DZMMFlIs+XBvo/Ldf9Wtu6PajOpKxBfoYJ6R7rmeMEpF0mBgIfTlSJHIPybdFbeBjkPLFONbuMs8EWeN2b6h99taenpm7g=
+	t=1763731250; cv=none; b=rUc/ywWDKbSBiUrI8BQdYZuMG4u+nWOcnmc7e+TD6+yH4oga6/EEFRfGbBr6UFN9KzY6SAW89OcPXvmMtOL0M1hnP2zl262TfZ7asjVJIdwrVdbdneE3SZV+8al18XcVpyBs7R0K2gSmdAgNZ9JtZK1FgDjZZKPOU760W/TmFb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733306; c=relaxed/simple;
-	bh=2NabsI/t5UkbYMqq648BXzwcfxw4KNG/SBkIF7HmvOM=;
+	s=arc-20240116; t=1763731250; c=relaxed/simple;
+	bh=mpFht4rcPK9jmQlP9cqzbfBzaD+1+NTjHjfEfgIDZWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3WTMnGgVitKoAbJ/Kp7OmJGSjaiWbhwghpCNSDBE7DTc/OdADKTd+Al6ZYJn+pwePJ0R8pj/n0y4JF8LELi50ttXU2r63s5Bz9H32qOLtAmdppVt6+1inBw6VUH+n3gm8K2ngRTuiOYkpeI7BehGuAJKdXRhrxgqWIY3rcDIao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzX9RyDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61E8C4CEF1;
-	Fri, 21 Nov 2025 13:55:03 +0000 (UTC)
+	 MIME-Version; b=ZwZxUgHwan0VA0F8yBjbwrgJ2xdpXStiqh8iJOu+TVka2hDptTWkYj8tcGwYBehJeWfeil5v9Fmwlc8d/inuCDKiBQS1aPO7e+V1GmGDcXWJ5dOC6cGIsSIB3XpFOpPSiKLRKkrPsdUchdVmJH5G6yLGrPjzpxuwVojwYzygWEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh5mWXCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAE9C4CEF1;
+	Fri, 21 Nov 2025 13:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733304;
-	bh=2NabsI/t5UkbYMqq648BXzwcfxw4KNG/SBkIF7HmvOM=;
+	s=korg; t=1763731250;
+	bh=mpFht4rcPK9jmQlP9cqzbfBzaD+1+NTjHjfEfgIDZWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzX9RyDRODfConPPW8CDaDl4qVZ7CDBMHyy59MNti5tM3G99auLsPA/PWjQFPBSzD
-	 bS2sf45f2MupvEfPTaY603QGCr1yUOwu4kjfUdaDp5P2NUzY5o/o/h0WfLYTZb6xuJ
-	 EvAo37cQq8qEMcFaaHBCORTetq4L2O3NXcwsmE2Q=
+	b=Fh5mWXCBV7o8bfjZdhj0yoYkMjksMDnFKiIyDG7f9UqU5g6omOSVf1oL6dTQGg4F5
+	 k9g2sN3AZYcRiVk6qZ3hphQ47ko5zUzw0gdg6yneCAX4sZqBmXfTl5Cy2iA5sZHFoA
+	 DM/s44fJPoiA8i4rjc1OONSNXXVxMTMUX1EVh+xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Masami Ichikawa <masami256@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 389/529] NFS: check if suid/sgid was cleared after a write as needed
-Date: Fri, 21 Nov 2025 14:11:28 +0100
-Message-ID: <20251121130244.863306166@linuxfoundation.org>
+Subject: [PATCH 6.17 142/247] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+Date: Fri, 21 Nov 2025 14:11:29 +0100
+Message-ID: <20251121130159.821518976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Masami Ichikawa <masami256@gmail.com>
 
-[ Upstream commit 9ff022f3820a31507cb93be6661bf5f3ca0609a4 ]
+[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
 
-I noticed xfstests generic/193 and generic/355 started failing against
-knfsd after commit e7a8ebc305f2 ("NFSD: Offer write delegation for OPEN
-with OPEN4_SHARE_ACCESS_WRITE").
+Use a scope-based cleanup helper for the buffer allocated with kmalloc()
+in ntrig_report_version() to simplify the cleanup logic and prevent
+memory leaks (specifically the !hid_is_usb()-case one).
 
-I ran those same tests against ONTAP (which has had write delegation
-support for a lot longer than knfsd) and they fail there too... so
-while it's a new failure against knfsd, it isn't an entirely new
-failure.
-
-Add the NFS_INO_REVAL_FORCED flag so that the presence of a delegation
-doesn't keep the inode from being revalidated to fetch the updated mode.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+[jkosina@suse.com: elaborate on the actual existing leak]
+Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
+Signed-off-by: Masami Ichikawa <masami256@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/write.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ntrig.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index cb1e9996fcc8e..ef69b15aa72e5 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -1638,7 +1638,8 @@ static int nfs_writeback_done(struct rpc_task *task,
- 	/* Deal with the suid/sgid bit corner case */
- 	if (nfs_should_remove_suid(inode)) {
- 		spin_lock(&inode->i_lock);
--		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE);
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE
-+				| NFS_INO_REVAL_FORCED);
- 		spin_unlock(&inode->i_lock);
+diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
+index 0f76e241e0afb..a7f10c45f62bd 100644
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 	int ret;
+ 	char buf[20];
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+-	unsigned char *data = kmalloc(8, GFP_KERNEL);
++	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
+ 
+ 	if (!hid_is_usb(hdev))
+ 		return;
+ 
+ 	if (!data)
+-		goto err_free;
++		return;
+ 
+ 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
+ 			      USB_REQ_CLEAR_FEATURE,
+@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
+ 			 buf, data[2], data[3], data[4], data[5]);
  	}
- 	return 0;
+-
+-err_free:
+-	kfree(data);
+ }
+ 
+ static ssize_t show_phys_width(struct device *dev,
 -- 
 2.51.0
 
