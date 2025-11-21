@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27839C79401
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34657C79D9B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02105367E7D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA1F24F0DA1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D57E346FD2;
-	Fri, 21 Nov 2025 13:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EAA34B1B7;
+	Fri, 21 Nov 2025 13:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7K5i5bG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZu8eEM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42BA346782;
-	Fri, 21 Nov 2025 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF7336D4F0;
+	Fri, 21 Nov 2025 13:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731069; cv=none; b=Z4SLWJIgUuQRwuOzPFW/fD7RW+164qR7TFHKk4DWUKRrOhFuAFoE8vMGt9EQ5D80CMUqN7IIp1vnPFbSZmIeWuPUqUWso7cSbg0HyPOZ5Ynu+IKJLmyu7ph99RAaUCFd5nwO1nXwGr/wTqEQbDoGipUDtYxVnXEOPtC4jHIH1gY=
+	t=1763733027; cv=none; b=Ggaf1Pt3kDDHT5cwBQa5F+mycLFw0lAniRL0ShaISuNlc8vDsf8TXvl+8hj8OpHvbCYw9y+cecnQY/cmIh6hHV/qLVaMZQTJcNYkJQMrQAJ9duF5fRQCqOY1P0M/97cEYgeEprX5e70SHgASZsDOVSphHDt09lccIaAAG4qSUxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731069; c=relaxed/simple;
-	bh=1jPii+LBMyq8SxhB+S+i0+dvYgzsvZcjxlODT7+RP9M=;
+	s=arc-20240116; t=1763733027; c=relaxed/simple;
+	bh=gSCmMRx6GyByx5Is0M7vv0oJA1tssGXP52aCBR2ZDkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bT4i3JBLckzSMEnnIP6BsY+qm+0LZZ2QrYlWCN9Y/vGRI96vVN87Cy5XqGE3rlW6SL4zHy9+U8sosesb/UOdxBC/zMGcoPQaZZn8IrgrzAd7F6PV8AD/C3pmXwYKkN/uCtVbU7IajY7m9/+HntB0lgXnqD3qw0k7SOOM2R1lHUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7K5i5bG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB438C4CEF1;
-	Fri, 21 Nov 2025 13:17:48 +0000 (UTC)
+	 MIME-Version; b=aNiosQxOUHf3xlnbeun/i0MDx728uh1MYF/ZUiVWxgEZbhvERrQHOapvCovAXgcTYtn8GAQipajh+WAA0KoIHo2KOEe+o46p4/lwiBMva4m8imYEgPlfjqg6esnc87TYMSh4MUoqtd2+3T3kmJY18GZoqmMLOjUQN2M/K+6Zy/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZu8eEM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032D4C4CEF1;
+	Fri, 21 Nov 2025 13:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731069;
-	bh=1jPii+LBMyq8SxhB+S+i0+dvYgzsvZcjxlODT7+RP9M=;
+	s=korg; t=1763733027;
+	bh=gSCmMRx6GyByx5Is0M7vv0oJA1tssGXP52aCBR2ZDkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7K5i5bGNA1d0xCNzPOwgcq4uGSUh8ZgBKLg4l3/njDniP3Zqdt75/D6GdVQj5YHn
-	 FZNOYdnYl9toAA18UgeEskWNpjkCDGa9VPokZjWB85YknYw63NobjolNin3vfHszg+
-	 MIBdBDUpTi7h/c7jVq4UMlgYUfZMTUyE+3GRj1T4=
+	b=DZu8eEM9KoEVVvbWif8Jjv6jUb2mhJNc9xz9XDM7NwlukNAwzG1TaqdYx7ZwRtT+n
+	 ylLkD2iPrY8dwpe+KwP2RO8L0wXeBzFjOcIzYISHHf8nICPr/3J/TeeC0Jsktd4FL9
+	 vfgROfcAjXHthNClfcZy1FIYlpZqBe4yfWEpTuFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Valerio Setti <vsetti@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 078/247] net/mlx5: Fix typo of MLX5_EQ_DOORBEL_OFFSET
+Subject: [PATCH 6.6 326/529] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
 Date: Fri, 21 Nov 2025 14:10:25 +0100
-Message-ID: <20251121130157.395871940@linuxfoundation.org>
+Message-ID: <20251121130242.627283632@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Valerio Setti <vsetti@baylibre.com>
 
-[ Upstream commit 917449e7c3cdc7a0dfe429de997e39098d9cdd20 ]
+[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
 
-Also convert it to a simple define.
+According to I2S specs audio data is sampled on the rising edge of the
+clock and it can change on the falling one. When operating in normal mode
+this SoC behaves the opposite so a clock polarity inversion is required
+in this case.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e5eba42f0134 ("mlx5: Fix default values in create CQ")
+This was tested on an OdroidC2 (Amlogic S905 SoC) board.
+
+Signed-off-by: Valerio Setti <vsetti@baylibre.com>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Tested-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-index 1ab77159409d6..f3c714ebd9cb4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-@@ -32,9 +32,7 @@ enum {
- 	MLX5_EQ_STATE_ALWAYS_ARMED	= 0xb,
+diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
+index a0dd914c8ed13..3b4061508c180 100644
+--- a/sound/soc/meson/aiu-encoder-i2s.c
++++ b/sound/soc/meson/aiu-encoder-i2s.c
+@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	    inv == SND_SOC_DAIFMT_IB_IF)
+ 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
+ 
+-	if (inv == SND_SOC_DAIFMT_IB_NF ||
+-	    inv == SND_SOC_DAIFMT_IB_IF)
++	/*
++	 * The SoC changes data on the rising edge of the bitclock
++	 * so an inversion of the bitclock is required in normal mode
++	 */
++	if (inv == SND_SOC_DAIFMT_NB_NF ||
++	    inv == SND_SOC_DAIFMT_NB_IF)
+ 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
+ 
+ 	/* Signal skew */
+@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
+ 	.startup	= aiu_encoder_i2s_startup,
+ 	.shutdown	= aiu_encoder_i2s_shutdown,
  };
- 
--enum {
--	MLX5_EQ_DOORBEL_OFFSET	= 0x40,
--};
-+#define MLX5_EQ_DOORBELL_OFFSET 0x40
- 
- /* budget must be smaller than MLX5_NUM_SPARE_EQE to guarantee that we update
-  * the ci before we polled all the entries in the EQ. MLX5_NUM_SPARE_EQE is
-@@ -322,7 +320,7 @@ create_map_eq(struct mlx5_core_dev *dev, struct mlx5_eq *eq,
- 	eq->eqn = MLX5_GET(create_eq_out, out, eq_number);
- 	eq->irqn = pci_irq_vector(dev->pdev, vecidx);
- 	eq->dev = dev;
--	eq->doorbell = priv->uar->map + MLX5_EQ_DOORBEL_OFFSET;
-+	eq->doorbell = priv->uar->map + MLX5_EQ_DOORBELL_OFFSET;
- 
- 	err = mlx5_debug_eq_add(dev, eq);
- 	if (err)
+-
 -- 
 2.51.0
 
