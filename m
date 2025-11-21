@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-195821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A610BC7981A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D728FC7A18E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id DC6353218D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 2440538978
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61347340DA1;
-	Fri, 21 Nov 2025 13:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B234F259;
+	Fri, 21 Nov 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw1mu2AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VCgbm5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBFC30AADC;
-	Fri, 21 Nov 2025 13:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897D525F96D;
+	Fri, 21 Nov 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731761; cv=none; b=Qa4Z63+S/LjN22hd5cGcHc8ytpF/pwzywbxoIIUF63BckAsgGZA5qkswLXUqWPrkBoy2hckxFbeFiPlvj/jof0L3DfnjdXRfiOy86p19vgiTzXGwkscR5JpOI9KwN2YieWqTeBZddlYfyN0u5uG9Yxe4g8kpe/EOJVStHFMaV0g=
+	t=1763733235; cv=none; b=ZzTpuA2eA/P3wAhP8WY6pDK/AM194kZ/S8KeWISckjtFpYTeiF2Ff56n6SmupcFC7PxDW4U2VXGyhEapMUj89crgkhXvGUhfyVOwNEBn9vvzM2JBGc/6wC95G56C4sqBA9hRVDESMBOR3ixkmUg5hpG+pckX7ERKK+RY30O6ON4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731761; c=relaxed/simple;
-	bh=Lzt5bAchoVC9nok4uJzOfFznG2ilQs8w9OY45r2mZwI=;
+	s=arc-20240116; t=1763733235; c=relaxed/simple;
+	bh=yZoWK4ox1QCg8IYW0cnv16sBlc4583mnRtHQNghvG/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBb51EdqZzDkZA0nXhb2bPiP3GorAaUHkfQ7mIkyuoRil9Obud699bpuOzwgpobMd+HpoaqOzfC0LUrzU63zxj6+Vz3LF804WuuAOaXIOcfDT1qpBGIH+FLzC6JtrWZHpIbl0BNu0rd9EYyWl9esGuD5Lb0r78zZvxjV29OTHWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw1mu2AZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38623C4CEFB;
-	Fri, 21 Nov 2025 13:29:20 +0000 (UTC)
+	 MIME-Version; b=C/E1iOObbmLrCr1d0I4ZSeCocgkqy2MoiKFoyz+Ixrijh6BarK79Xulsj+Y/DPHvmr6+7EScf0XldOlt6Bv1ZiV98wHAVyul09pOIVhvC/DOpgbmWhUek3RgNhvC88B6DQrGaBLgJEDmv2NevwyS9pbmSjLNX+TAGMo6P9r6MoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VCgbm5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BC8C116D0;
+	Fri, 21 Nov 2025 13:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731760;
-	bh=Lzt5bAchoVC9nok4uJzOfFznG2ilQs8w9OY45r2mZwI=;
+	s=korg; t=1763733235;
+	bh=yZoWK4ox1QCg8IYW0cnv16sBlc4583mnRtHQNghvG/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zw1mu2AZI89n1NF0tPWJcijwj3FXJBY8489N+YEAiecLxlsyUyXwDVySSH8RpFh0O
-	 +KuDF0K/XwuGZqJqXnGiuZ7dAv81vp2Rr+LyBDx6jrb7W0MMknoRxhlLZS3SPK0cMe
-	 tiyfeCvYP9QJtuWklEjQ6R6ZKjHFTV/gHxHPnGYA=
+	b=1VCgbm5h5/WFr4AzKEdAKXKN4r59v/9qK8BrqrfWoA4yomtZeJEXoBjNTtSruKxIN
+	 8uj5BcgrC7IohjQfKUaerjSzl5T4SjWxEL3+nQtyqrTGmciB6sAe/G40ohO0TYJlzA
+	 kMFE8s0s3mHlbHtccGZtOQ+Lz8niFIkiqeSp+66I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Keshri <rkeshri@redhat.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/185] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+Subject: [PATCH 6.6 399/529] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
 Date: Fri, 21 Nov 2025 14:11:38 +0100
-Message-ID: <20251121130146.435642855@linuxfoundation.org>
+Message-ID: <20251121130245.219320945@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
+[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
 
-This data originates from userspace and is used in buffer offset
-calculations which could potentially overflow causing an out-of-bounds
-access.
+Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
+header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
 
-Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
-Reported-by: Rohit Keshri <rkeshri@redhat.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
+Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
+
+For the compressed one, it is done in lowpan_header_decompress().
+
+Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
+------
+kernel BUG at net/core/skbuff.c:212!
+Call Trace:
+<IRQ>
+...
+packet_rcv (net/packet/af_packet.c:2152)
+...
+<TASK>
+__local_bh_enable_ip (kernel/softirq.c:407)
+netif_rx (net/core/dev.c:5648)
+chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
+------
+
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/6lowpan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 8b72848bb25cd..0c1bd3acf3598 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -3686,6 +3686,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 13b752c169bed..50ed3a6b0b0c4 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -288,6 +288,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
+ 		local_skb->pkt_type = PACKET_HOST;
+ 		local_skb->dev = dev;
  
++		skb_reset_mac_header(local_skb);
+ 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
  
- 	cmd_id = header->id;
-+	if (header->size > SVGA_CMD_MAX_DATASIZE) {
-+		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
-+			       cmd_id + SVGA_3D_CMD_BASE);
-+		return -E2BIG;
-+	}
- 	*size = header->size + sizeof(SVGA3dCmdHeader);
- 
- 	cmd_id -= SVGA_3D_CMD_BASE;
+ 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
 -- 
 2.51.0
 
