@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-196296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB4DC79CA5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C54DC792FC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 202BA2DF76
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 177D02DE1E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341CC2749C5;
-	Fri, 21 Nov 2025 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50E034B40C;
+	Fri, 21 Nov 2025 13:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzH4Y34b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSA0NdKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48C12D94BA;
-	Fri, 21 Nov 2025 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944C434B191;
+	Fri, 21 Nov 2025 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733104; cv=none; b=u4KEAb4/JXnxqU1+vs1wifDaRRkHrhAayodjvWdMpGQNSKrq/+ArHuQIif3JhgKzSjgqXMKLW4szC3llYvUMf25khYFWPEzIKpfKlVY+s5lVLtM57QFtiswGiwJy031Otz3PFryb+sHQ1ysRzkrkicL+tHmgK8jmNqAWUppv2d0=
+	t=1763731046; cv=none; b=oj4UrJ1ObduAZ56Si4TJB/ajGFDjjp+gx9+jxKTbjUJb3K0mkRlHhAhCaczUvqQOyIWYtXfqSFeOcF0GFfdaybz0bBZSf/aAU0/sK/2+Lmz2I/v/WfkrMxw2lYFqSuTbgIKT/7lHEmf2YV3ODxy4Xl0aog4Ad7SMiX3Nh1PhHvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733104; c=relaxed/simple;
-	bh=uF8zjAAyNRuPSJQTA5pH2TBKAv1Qw4iQJy2Qs0HxEJc=;
+	s=arc-20240116; t=1763731046; c=relaxed/simple;
+	bh=C23BwULp/AY0I7np2XyFTa2aZQ2MOB4MYqfRlklJFmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bd8Aov7r4z9/r/aQy8hIdgM/RRlEtCsA3RCDFyZtysQpHk8vtZkIOZ1iKINh5pcpH3S9XX8VDg385sRT3T2YAdFcIy1uSeUpv6baJn8fMM626N3PI3D4MzY4PrPpJW+nsAqMPD+Bd4IY/W+tKYYebQu3bqoKS/UeZX+ksG+0D0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzH4Y34b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7209DC4CEF1;
-	Fri, 21 Nov 2025 13:51:43 +0000 (UTC)
+	 MIME-Version; b=LT0lWUAS5IzjwrmrDJNBEZDC7P9XKcfa0sPNbgx18NHVSxT801k4bDyS+V/8LEQq14EjMB14o6ZtLkaewQTLdDSfkadWsKxyRCUknYLaI4e1eVrWZksCA0KXCgt6xL6nA3JmP3mPetakkVrD53FoaRXx5sOb0AM5wVlnUeF1qBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSA0NdKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63DDC4CEF1;
+	Fri, 21 Nov 2025 13:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733103;
-	bh=uF8zjAAyNRuPSJQTA5pH2TBKAv1Qw4iQJy2Qs0HxEJc=;
+	s=korg; t=1763731046;
+	bh=C23BwULp/AY0I7np2XyFTa2aZQ2MOB4MYqfRlklJFmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzH4Y34bezLqK1Zc/XoUmOdgw04n9TrDi9N3AgAUAqFFYcK/cZMqkUle14Iqd2HO0
-	 bU3Wlv/RROJ2SKV/m5qROEqU5i3nWuNDSw4kQz2ynTLD1k9xZ3SfctkltO3acI7Zaw
-	 Y63URQMcbCN4tKg5pGcMwJFVdDOURqgWD9Xbg1lg=
+	b=aSA0NdKaZnHhxIgYOKYkVebApdH9vO35ACx5iiLqni4SteXSy1xGMFmRe3iuyEMwP
+	 90sPD9e9I+2NELtmz4HlNq2lDO9+bdK7weolPyfHbEwGT41lLf+AF2/qAnpAKTbKup
+	 LGHygWNIm7l+QUggAb5y2G09eNEOWSwm5/6Qzwjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/529] ACPI: property: Return present device nodes only on fwnode interface
+Subject: [PATCH 6.17 071/247] Bluetooth: hci_event: Fix not handling PA Sync Lost event
 Date: Fri, 21 Nov 2025 14:10:18 +0100
-Message-ID: <20251121130242.376504405@linuxfoundation.org>
+Message-ID: <20251121130157.148618198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
+[ Upstream commit 485e0626e58768f3c53ba61ab9e09d6b60a455f4 ]
 
-fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
-device nodes and there has been no check these devices are present
-in the system, unlike there has been on fwnode OF backend.
+This handles PA Sync Lost event which previously was assumed to be
+handled with BIG Sync Lost but their lifetime are not the same thus why
+there are 2 different events to inform when each sync is lost.
 
-In order to provide consistent behaviour towards callers,
-add a check for device presence by introducing
-a new function acpi_get_next_present_subnode(), used as the
-get_next_child_node() fwnode operation that also checks device
-node presence.
-
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
-[ rjw: Kerneldoc comment and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b2a5f2e1c127 ("Bluetooth: hci_event: Add support for handling LE BIG Sync Lost event")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci.h |  5 ++++
+ net/bluetooth/hci_event.c   | 49 ++++++++++++++++++++++++++-----------
+ 2 files changed, 40 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 5898c3c8c2a7f..d02b332744e64 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1286,6 +1286,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
- 	return NULL;
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index dca650cede3c4..63160cfcf2b22 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -2782,6 +2782,11 @@ struct hci_ev_le_per_adv_report {
+ 	__u8     data[];
+ } __packed;
+ 
++#define HCI_EV_LE_PA_SYNC_LOST		0x10
++struct hci_ev_le_pa_sync_lost {
++	__le16 handle;
++} __packed;
++
+ #define LE_PA_DATA_COMPLETE	0x00
+ #define LE_PA_DATA_MORE_TO_COME	0x01
+ #define LE_PA_DATA_TRUNCATED	0x02
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 0380d2f596c97..a9a5d12943fa0 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5853,6 +5853,29 @@ static void hci_le_enh_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 			     le16_to_cpu(ev->supervision_timeout));
  }
  
-+/*
-+ * acpi_get_next_present_subnode - Return the next present child node handle
-+ * @fwnode: Firmware node to find the next child node for.
-+ * @child: Handle to one of the device's child nodes or a null handle.
-+ *
-+ * Like acpi_get_next_subnode(), but the device nodes returned by
-+ * acpi_get_next_present_subnode() are guaranteed to be present.
-+ *
-+ * Returns: The fwnode handle of the next present sub-node.
-+ */
-+static struct fwnode_handle *
-+acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
-+			      struct fwnode_handle *child)
++static void hci_le_pa_sync_lost_evt(struct hci_dev *hdev, void *data,
++				    struct sk_buff *skb)
 +{
-+	do {
-+		child = acpi_get_next_subnode(fwnode, child);
-+	} while (is_acpi_device_node(child) &&
-+		 !acpi_device_is_present(to_acpi_device_node(child)));
++	struct hci_ev_le_pa_sync_lost *ev = data;
++	u16 handle = le16_to_cpu(ev->handle);
++	struct hci_conn *conn;
 +
-+	return child;
++	bt_dev_dbg(hdev, "sync handle 0x%4.4x", handle);
++
++	hci_dev_lock(hdev);
++
++	/* Delete the pa sync connection */
++	conn = hci_conn_hash_lookup_pa_sync_handle(hdev, handle);
++	if (conn) {
++		clear_bit(HCI_CONN_BIG_SYNC, &conn->flags);
++		clear_bit(HCI_CONN_PA_SYNC, &conn->flags);
++		hci_disconn_cfm(conn, HCI_ERROR_REMOTE_USER_TERM);
++		hci_conn_del(conn);
++	}
++
++	hci_dev_unlock(hdev);
 +}
 +
- /**
-  * acpi_node_get_parent - Return parent fwnode of this fwnode
-  * @fwnode: Firmware node whose parent to get
-@@ -1629,7 +1651,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
- 		.property_read_string_array =				\
- 			acpi_fwnode_property_read_string_array,		\
- 		.get_parent = acpi_node_get_parent,			\
--		.get_next_child_node = acpi_get_next_subnode,		\
-+		.get_next_child_node = acpi_get_next_present_subnode,	\
- 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
- 		.get_name = acpi_fwnode_get_name,			\
- 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
+ static void hci_le_ext_adv_term_evt(struct hci_dev *hdev, void *data,
+ 				    struct sk_buff *skb)
+ {
+@@ -7056,29 +7079,24 @@ static void hci_le_big_sync_lost_evt(struct hci_dev *hdev, void *data,
+ 				     struct sk_buff *skb)
+ {
+ 	struct hci_evt_le_big_sync_lost *ev = data;
+-	struct hci_conn *bis, *conn;
+-	bool mgmt_conn;
++	struct hci_conn *bis;
++	bool mgmt_conn = false;
+ 
+ 	bt_dev_dbg(hdev, "big handle 0x%2.2x", ev->handle);
+ 
+ 	hci_dev_lock(hdev);
+ 
+-	/* Delete the pa sync connection */
+-	bis = hci_conn_hash_lookup_pa_sync_big_handle(hdev, ev->handle);
+-	if (bis) {
+-		conn = hci_conn_hash_lookup_pa_sync_handle(hdev,
+-							   bis->sync_handle);
+-		if (conn)
+-			hci_conn_del(conn);
+-	}
+-
+ 	/* Delete each bis connection */
+ 	while ((bis = hci_conn_hash_lookup_big_state(hdev, ev->handle,
+ 						     BT_CONNECTED,
+ 						     HCI_ROLE_SLAVE))) {
+-		mgmt_conn = test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &bis->flags);
+-		mgmt_device_disconnected(hdev, &bis->dst, bis->type, bis->dst_type,
+-					 ev->reason, mgmt_conn);
++		if (!mgmt_conn) {
++			mgmt_conn = test_and_clear_bit(HCI_CONN_MGMT_CONNECTED,
++						       &bis->flags);
++			mgmt_device_disconnected(hdev, &bis->dst, bis->type,
++						 bis->dst_type, ev->reason,
++						 mgmt_conn);
++		}
+ 
+ 		clear_bit(HCI_CONN_BIG_SYNC, &bis->flags);
+ 		hci_disconn_cfm(bis, ev->reason);
+@@ -7192,6 +7210,9 @@ static const struct hci_le_ev {
+ 				 hci_le_per_adv_report_evt,
+ 				 sizeof(struct hci_ev_le_per_adv_report),
+ 				 HCI_MAX_EVENT_SIZE),
++	/* [0x10 = HCI_EV_LE_PA_SYNC_LOST] */
++	HCI_LE_EV(HCI_EV_LE_PA_SYNC_LOST, hci_le_pa_sync_lost_evt,
++		  sizeof(struct hci_ev_le_pa_sync_lost)),
+ 	/* [0x12 = HCI_EV_LE_EXT_ADV_SET_TERM] */
+ 	HCI_LE_EV(HCI_EV_LE_EXT_ADV_SET_TERM, hci_le_ext_adv_term_evt,
+ 		  sizeof(struct hci_evt_le_ext_adv_set_term)),
 -- 
 2.51.0
 
