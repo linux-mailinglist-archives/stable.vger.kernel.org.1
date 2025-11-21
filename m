@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F8CC7985F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A82C7951D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3C1933487FB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 312D22DDA4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D245F346A0E;
-	Fri, 21 Nov 2025 13:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6BC2EA46B;
+	Fri, 21 Nov 2025 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Om7drd7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K12rBYRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD7830E0DC;
-	Fri, 21 Nov 2025 13:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28576190477;
+	Fri, 21 Nov 2025 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732034; cv=none; b=gKn6Uj2CCZVPyuRGkZFLMhOkos9ymjpSpR1st1iJS7DB02uzXdchP4LA5RDo4csNW5LtbrxmTYqP/7WDR2gNH8UpBmfVRi26nby0eJwwt4GTjuq/+9posIhzhPzJSVZB8kfbzLP3uG/eAsx3zBjEH8qM5iGTnBGpiqXufSQ/UYo=
+	t=1763731552; cv=none; b=ac63UcUe3AnGt4ndNE3cGZUZB2A45OcMBvJ1t7gKRqN/P+lWjwfJcEDVImLJqndyqyxZF6HQ+niOqVZN0QJSTg4GgiIvagImEndRBfNJ4SlGTwzX6mUAFjoK1Vxb81ob211SNW9LqyY25X8usfXWSfqmgoCpJqPC3PHMW/2jjcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732034; c=relaxed/simple;
-	bh=YxhcGB0FhaVydds85kxCXZJytVRRp6iSQnzDjxicJYs=;
+	s=arc-20240116; t=1763731552; c=relaxed/simple;
+	bh=8qOCg76eZ186Ylt2kxaish4AdX+BvuyyAMcgZyvE5Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvoHlC1NMlKZRZ5vP74OK28RsX3jZdca8zVHhMx8g+SlSlbAqfW3Ueo6Lz8ZyXmwMpgXnORNQhCsc6FaMuF09rnDUdwWrgSbLxSdw7DKg2CZA5sURvgDTgAXg9Yj+Do9fxe/yqhK+AYab1p3GXy5+hjCBJXuaUpUpYzWKhS4mD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Om7drd7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85065C4CEF1;
-	Fri, 21 Nov 2025 13:33:53 +0000 (UTC)
+	 MIME-Version; b=W3XuoDUkcZCzmcn/XD8Itc2EKt/dawsr3xlWTz29+3gjd2fTn2J3Rb9ucJftT7r02DAuZdetqgOwOThI0kewS0E+tcDJMw2Rddi9bAEfi2j2U5sUeNdOT5djdbtCOKXWikRY82C0SD6KfRHcy/fMj4pN0WwU+M104VRzDFT6dhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K12rBYRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A819AC4CEF1;
+	Fri, 21 Nov 2025 13:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732033;
-	bh=YxhcGB0FhaVydds85kxCXZJytVRRp6iSQnzDjxicJYs=;
+	s=korg; t=1763731552;
+	bh=8qOCg76eZ186Ylt2kxaish4AdX+BvuyyAMcgZyvE5Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Om7drd7nNPveEHi27zVlr1eN7KAroAvThILOqFckXm9x7yn6fwiW1NRVEIFGVMSNo
-	 IoNYNaPD80dJeZpCN31LREq1TCfoEIaXMBAFCJPRRs43EfcUetaDyMX64aYoWPKBo1
-	 usa70lPJ1iPGeD5woc2vodxpSZExHrj1EFWI0//g=
+	b=K12rBYRugLjd132gulq7Ln5s4WU7cD8YRDG84MB2zH9GN85jOcYMrCJIx25kfUqbx
+	 nN4rIPQvgsGRjegTwsBVDvrJ3oUassGW+6p1uX5tz/4MIme2uLD6uMr87WB/2v5uD+
+	 L1/oeRb5mq+bLCgyS8pLtp6wIQ+wHSXtiF3F9UN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/185] net: netpoll: flush skb pool during cleanup
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 247/247] net: phy: micrel: Fix lan8814_config_init
 Date: Fri, 21 Nov 2025 14:13:14 +0100
-Message-ID: <20251121130149.906990300@linuxfoundation.org>
+Message-ID: <20251121130203.607530142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 6c59f16f1770481a6ee684720ec55b1e38b3a4b2 ]
+commit bf91f4bc9c1dfba75e457e6a5f11e3cda658729a upstream.
 
-The netpoll subsystem maintains a pool of 32 pre-allocated SKBs per
-instance, but these SKBs are not freed when the netpoll user is brought
-down. This leads to memory waste as these buffers remain allocated but
-unused.
+The blamed commit introduced the function lanphy_modify_page_reg which
+as name suggests it, it modifies the registers. In the same commit we
+have started to use this function inside the drivers. The problem is
+that in the function lan8814_config_init we passed the wrong page number
+when disabling the aneg towards host side. We passed extended page number
+4(LAN8814_PAGE_COMMON_REGS) instead of extended page
+5(LAN8814_PAGE_PORT_REGS)
 
-Add skb_pool_flush() to properly clean up these SKBs when netconsole is
-terminated, improving memory efficiency.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241114-skb_buffers_v2-v3-2-9be9f52a8b69@debian.org
+Fixes: a0de636ed7a264 ("net: phy: micrel: Introduce lanphy_modify_page_reg")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250925064702.3906950-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 49c8d2c1f94c ("net: netpoll: fix incorrect refcount handling causing incorrect cleanup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/phy/micrel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -536,6 +536,14 @@ static int netpoll_parse_ip_addr(const c
- 	return -1;
- }
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4328,7 +4328,7 @@ static int lan8814_config_init(struct ph
+ 	struct kszphy_priv *lan8814 = phydev->priv;
  
-+static void skb_pool_flush(struct netpoll *np)
-+{
-+	struct sk_buff_head *skb_pool;
-+
-+	skb_pool = &np->skb_pool;
-+	skb_queue_purge_reason(skb_pool, SKB_CONSUMED);
-+}
-+
- int netpoll_parse_options(struct netpoll *np, char *opt)
- {
- 	char *cur=opt, *delim;
-@@ -784,7 +792,7 @@ put_noaddr:
- 
- 	err = __netpoll_setup(np, ndev);
- 	if (err)
--		goto put;
-+		goto flush;
- 	rtnl_unlock();
- 
- 	/* Make sure all NAPI polls which started before dev->npinfo
-@@ -795,6 +803,8 @@ put_noaddr:
- 
- 	return 0;
- 
-+flush:
-+	skb_pool_flush(np);
- put:
- 	DEBUG_NET_WARN_ON_ONCE(np->dev);
- 	if (ip_overwritten)
-@@ -842,6 +852,8 @@ void __netpoll_cleanup(struct netpoll *n
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
- 	} else
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+
-+	skb_pool_flush(np);
- }
- EXPORT_SYMBOL_GPL(__netpoll_cleanup);
- 
+ 	/* Disable ANEG with QSGMII PCS Host side */
+-	lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
++	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA,
+ 			       0);
 
 
 
