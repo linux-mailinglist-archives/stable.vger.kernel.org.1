@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-195850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6155EC7985C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580DBC79523
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id E8AC62E4D8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E9324ED147
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9F3332904;
-	Fri, 21 Nov 2025 13:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D535264612;
+	Fri, 21 Nov 2025 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLmw1hl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcGaTwHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B92745E;
-	Fri, 21 Nov 2025 13:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF5D54763;
+	Fri, 21 Nov 2025 13:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731844; cv=none; b=QOFHgtg4e1nCcv5YOKPKAJqv4JH1A7AtLUWii6t5sJdxEhFhjVX4BXvIA9811ENV2ZgDxflwW8UVlXjTZtjz2/IG1X4r7LotlGu98ElRHbLhelVm/S7C4QAly4137snSSFuuE5aeIh40y2yTKf3zYtED3M70beXog5oWVaGWXQw=
+	t=1763731361; cv=none; b=Gl++ZYD1I2eOPnwskQzyxR2LoRP2c+auYu7D4UOAYXxdmAAs+AweXfmkVbg71NmoA5urmwTmo9082XP3dE1AfFhSISqfL46QrIAhZ7tbBl8l1QiM/RIzpI4EJNk3t5pNwJ7O+/lKYiEEAqQGyAW4NpG5w7JoA1nlF8jFZPPHRq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731844; c=relaxed/simple;
-	bh=XMIFNHimzpWRPseNauInu0fplrerLRVrjhOYOI/sZCc=;
+	s=arc-20240116; t=1763731361; c=relaxed/simple;
+	bh=Y4/fPPodj75Iuv7whpf7nwnZVs/z74V/u9mhFYt6c+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsW1U9kpXm2I7PWcQ77FcR4B5u5YrdUsFjBZPDZ7azae0BfUbk9ZGBJMML+ugkaBQ6A9BRcAcXe1wkROxuR0xAaG2o5r9a9lEVsqDmklj67kKS+mFEMUii9k77VvjcFP1FDbfD7vQScERn8PXoRnvdDu7S7Rw6ayfFejVUfYPok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLmw1hl9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874BCC4CEF1;
-	Fri, 21 Nov 2025 13:30:43 +0000 (UTC)
+	 MIME-Version; b=MNDwKJ6+uqfmFklA4P31ym4MQ3HtpJTDghk1W6BOlKCeiMFyh9tn6kS8Yvc6vqkjQVAg6+QST5zkoOzcJql6DSY7OfyWpaXwLniHaKOVfeZ3OeUXJQAwZqvJD5/YSdpPBmA2615KMwQRa4FQuY0nJrKEZvj/MevbqLMf7gLy9Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcGaTwHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23565C4CEF1;
+	Fri, 21 Nov 2025 13:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731843;
-	bh=XMIFNHimzpWRPseNauInu0fplrerLRVrjhOYOI/sZCc=;
+	s=korg; t=1763731361;
+	bh=Y4/fPPodj75Iuv7whpf7nwnZVs/z74V/u9mhFYt6c+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLmw1hl9bI5NlDb3aR4IIgB9b+HYow6d4C+dlFi0GusP21aBbdN3DHS23V57UdC+O
-	 MwJYcg3wieL83XdGRL62Gsm5xzaZIcibWR8VA2vpUldys3lsqy7ya+kCTpBxPuI2ad
-	 avq18kO2WFuk948UvkP5VUEvZWt7Ak11hvTvvLeQ=
+	b=hcGaTwHKH9pk/O69WIt8OZK80jms4HeRszpP1ESd3lae2P3iIVSM2MpsSB+IgrJlw
+	 ifPX2nA4Ai4K4bVqN5hMxwiPVMstfLbH7lHYUCCMOLrvzNqnfxG2mZ8d1khAt+LhfV
+	 MXbpxPWKYUEQ8BATJuXrCrZA70BUGgY+A5Ns9hvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/185] ARM: dts: imx51-zii-rdu1: Fix audmux node names
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Pankaj Raghav <kernel@pankajraghav.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 181/247] mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order
 Date: Fri, 21 Nov 2025 14:12:08 +0100
-Message-ID: <20251121130147.518599847@linuxfoundation.org>
+Message-ID: <20251121130201.219084291@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +78,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit f31e261712a0d107f09fb1d3dc8f094806149c83 ]
+commit fa5a061700364bc28ee1cb1095372f8033645dcb upstream.
 
-Rename the 'ssi2' and 'aud3' nodes to 'mux-ssi2' and 'mux-aud3' in the
-audmux configuration of imx51-zii-rdu1.dts to comply with the naming
-convention in imx-audmux.yaml.
+folio split clears PG_has_hwpoisoned, but the flag should be preserved in
+after-split folios containing pages with PG_hwpoisoned flag if the folio
+is split to >0 order folios.  Scan all pages in a to-be-split folio to
+determine which after-split folios need the flag.
 
-This fixes the following dt-schema warning:
+An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
+avoid the scan and set it on all after-split folios, but resulting false
+positive has undesirable negative impact.  To remove false positive,
+caller of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page()
+needs to do the scan.  That might be causing a hassle for current and
+future callers and more costly than doing the scan in the split code.
+More details are discussed in [1].
 
-  imx51-zii-rdu1.dtb: audmux@83fd0000 (fsl,imx51-audmux): 'aud3', 'ssi2'
-  do not match any of the regexes: '^mux-[0-9a-z]*$', '^pinctrl-[0-9]+$'
+This issue can be exposed via:
+1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
+2. truncating part of a has_hwpoisoned folio in
+   truncate_inode_partial_folio().
 
-Fixes: ceef0396f367f ("ARM: dts: imx: add ZII RDU1 board")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And later accesses to a hwpoisoned page could be possible due to the
+missing has_hwpoisoned folio flag.  This will lead to MCE errors.
+
+Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
+Link: https://lkml.kernel.org/r/20251023030521.473097-1-ziy@nvidia.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Pankaj Raghav <kernel@pankajraghav.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/huge_memory.c |   23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-index 7cd17b43b4b26..33b0a427ed5ca 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-@@ -259,7 +259,7 @@
- 	pinctrl-0 = <&pinctrl_audmux>;
- 	status = "okay";
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3271,6 +3271,14 @@ bool can_split_folio(struct folio *folio
+ 					caller_pins;
+ }
  
--	ssi2 {
-+	mux-ssi2 {
- 		fsl,audmux-port = <1>;
- 		fsl,port-config = <
- 			(IMX_AUDMUX_V2_PTCR_SYN |
-@@ -271,7 +271,7 @@
- 		>;
- 	};
++static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
++{
++	for (; nr_pages; page++, nr_pages--)
++		if (PageHWPoison(page))
++			return true;
++	return false;
++}
++
+ /*
+  * It splits @folio into @new_order folios and copies the @folio metadata to
+  * all the resulting folios.
+@@ -3278,17 +3286,24 @@ bool can_split_folio(struct folio *folio
+ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		int new_order)
+ {
++	/* Scan poisoned pages when split a poisoned folio to large folios */
++	const bool handle_hwpoison = folio_test_has_hwpoisoned(folio) && new_order;
+ 	long new_nr_pages = 1 << new_order;
+ 	long nr_pages = 1 << old_order;
+ 	long i;
  
--	aud3 {
-+	mux-aud3 {
- 		fsl,audmux-port = <2>;
- 		fsl,port-config = <
- 			IMX_AUDMUX_V2_PTCR_SYN
--- 
-2.51.0
-
++	folio_clear_has_hwpoisoned(folio);
++
++	/* Check first new_nr_pages since the loop below skips them */
++	if (handle_hwpoison &&
++	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
++		folio_set_has_hwpoisoned(folio);
+ 	/*
+ 	 * Skip the first new_nr_pages, since the new folio from them have all
+ 	 * the flags from the original folio.
+ 	 */
+ 	for (i = new_nr_pages; i < nr_pages; i += new_nr_pages) {
+ 		struct page *new_head = &folio->page + i;
+-
+ 		/*
+ 		 * Careful: new_folio is not a "real" folio before we cleared PageTail.
+ 		 * Don't pass it around before clear_compound_head().
+@@ -3330,6 +3345,10 @@ static void __split_folio_to_order(struc
+ 				 (1L << PG_dirty) |
+ 				 LRU_GEN_MASK | LRU_REFS_MASK));
+ 
++		if (handle_hwpoison &&
++		    page_range_has_hwpoisoned(new_head, new_nr_pages))
++			folio_set_has_hwpoisoned(new_folio);
++
+ 		new_folio->mapping = folio->mapping;
+ 		new_folio->index = folio->index + i;
+ 
+@@ -3430,8 +3449,6 @@ static int __split_unmapped_folio(struct
+ 	if (folio_test_anon(folio))
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 
+-	folio_clear_has_hwpoisoned(folio);
+-
+ 	/*
+ 	 * split to new_order one order at a time. For uniform split,
+ 	 * folio is split to new_order directly.
 
 
 
