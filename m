@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-196361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3EDC7A189
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:17:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D94BC79416
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id D47B8356DC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 2F1522DD42
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E7C33B6EA;
-	Fri, 21 Nov 2025 13:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A7954763;
+	Fri, 21 Nov 2025 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIsQcn9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/XVqytt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49B8346A0E;
-	Fri, 21 Nov 2025 13:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DADC1F09AC;
+	Fri, 21 Nov 2025 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733287; cv=none; b=qEJMv06rsDkZLuLInRfFigZxZXmM3J2Q3H/d1Vr2IVexl1rJTBTRKSQ5TOGm6Jx3InGdY9kzCZPoH3owLlMsu2lyCSS0w62UII4HZTdKCxZ4lELhxrmQve4OwV2a6Nink0qyENonFPM7tzuVqTG7UWPIXHkipwdQfxeiXVEtR6A=
+	t=1763731318; cv=none; b=d7TQRonygucEqJBclnVVrifwdaX/ppka32vR7wNPOb/ftDTKb7WcghBgh9YeCwG1uuScsmstYvLg3UGjLvzygE4mgRclkWOI4QhEbCHd1oLUV96u8iEsA9QHm4rgurBpoc1gL0gzES6WCqwz3BFzsHGVOCqRGYVckSQG0KtGP9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733287; c=relaxed/simple;
-	bh=MwnVyb8eBxcQ9OVPQeWiNp8fmQGTotiRjHPkJGBtTJw=;
+	s=arc-20240116; t=1763731318; c=relaxed/simple;
+	bh=Yjo9MV1p5ZeZ67AwY9p89DLAjVpYGluUKNWyezrwc4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4RKm9kFNhJrGYcrGwcwHZAMJjNsMabpHVu/sqcZKefk7DrsatLErcMutgmtC5DqDaqM7tc7wrrN/Vegst8SFSB/rm01VjL4f0ut0eUiLaU6ChE08DL7f/978zri5lsWONU6FQud9sj/BCS85wYC4m4Z+3CD3LxT0jK4qCGyEWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIsQcn9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65923C116C6;
-	Fri, 21 Nov 2025 13:54:46 +0000 (UTC)
+	 MIME-Version; b=I2grfXAhpiF5ZTB+Nwiw+4Cl1MxjH0wO9fVUnU00F9rWKEjiJ7I3NDIn9KoTzcBsiDHyDqoZqsCaSMNWwA5hiIP8Qo+Wa763JBVYHLC2izAInpJsEeop/rW3jKPSvFBiNsl6xYBd0UTP7s8aZOvyGl9iE8qdCSSMVGVmu1Xz1TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/XVqytt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FBBC4CEF1;
+	Fri, 21 Nov 2025 13:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733286;
-	bh=MwnVyb8eBxcQ9OVPQeWiNp8fmQGTotiRjHPkJGBtTJw=;
+	s=korg; t=1763731318;
+	bh=Yjo9MV1p5ZeZ67AwY9p89DLAjVpYGluUKNWyezrwc4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIsQcn9brPUwqw4P+JLSOs3NjSIp+r/L6UEulPQd98VcimTS96YxnudB7bVR/M9V5
-	 k0Kkd8HDOBqKD4Mua1X/K7vuKqtmpzxPcykBL76R595QCBFja2lFV3dbbW/Sb+N3k7
-	 uDZ26rZYG8Dg3qmgvus/QwepdnSUwn6/1BpmBkn0=
+	b=G/XVqyttCgA3u/SoLNCRCi4POF3JbZEMVzOkcHaFeLpQPPiTEpbp9qmS8m/712bZm
+	 Txp1U2Zv/AMwmLSVOxXnWV2awvtXDY59V2Z4uwKx5An9mneyVc5oVrx+DIdZiDMIqI
+	 vGNVHX5D486dtaK+MISrmqU0F7/eYLdEibxaKLJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 415/529] net_sched: limit try_bulk_dequeue_skb() batches
+	Pratyush Yadav <pratyush@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Baoquan He <bhe@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 167/247] kho: warn and exit when unpreserved page wasnt preserved
 Date: Fri, 21 Nov 2025 14:11:54 +0100
-Message-ID: <20251121130245.784771105@linuxfoundation.org>
+Message-ID: <20251121130200.714711845@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pratyush Yadav <pratyush@kernel.org>
 
-[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
+commit b05addf6f0596edb1f82ab4059438c7ef2d2686d upstream.
 
-After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
-I started seeing many qdisc requeues on IDPF under high TX workload.
+Calling __kho_unpreserve() on a pair of (pfn, end_pfn) that wasn't
+preserved is a bug.  Currently, if that is done, the physxa or bits can be
+NULL.  This results in a soft lockup since a NULL physxa or bits results
+in redoing the loop without ever making any progress.
 
-$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
-qdisc mq 1: root
- Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
- backlog 1056Kb 6675p requeues 3532840114
-qdisc mq 1: root
- Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
- backlog 781164b 4822p requeues 3537737653
+Return when physxa or bits are not found, but WARN first to loudly
+indicate invalid behaviour.
 
-This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
-
-perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
-...
- netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
- netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
- netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
- netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
- netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
- netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
- netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
-...
-
-This is bad because :
-
-1) Large batches hold one victim cpu for a very long time.
-
-2) Driver often hit their own TX ring limit (all slots are used).
-
-3) We call dev_requeue_skb()
-
-4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
-   implement FQ or priority scheduling.
-
-5) dequeue_skb() gets packets from q->gso_skb one skb at a time
-   with no xmit_more support. This is causing many spinlock games
-   between the qdisc and the device driver.
-
-Requeues were supposed to be very rare, lets keep them this way.
-
-Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
-__qdisc_run() was designed to use.
-
-Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251103180235.71409-3-pratyush@kernel.org
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_generic.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ kernel/kexec_handover.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index b51af871a621c..1b51b3038b4bd 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -178,9 +178,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
- static void try_bulk_dequeue_skb(struct Qdisc *q,
- 				 struct sk_buff *skb,
- 				 const struct netdev_queue *txq,
--				 int *packets)
-+				 int *packets, int budget)
- {
- 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
-+	int cnt = 0;
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -131,12 +131,12 @@ static void __kho_unpreserve(struct kho_
+ 		const unsigned long pfn_high = pfn >> order;
  
- 	while (bytelimit > 0) {
- 		struct sk_buff *nskb = q->dequeue(q);
-@@ -191,8 +192,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
--		(*packets)++; /* GSO counts as one pkt */
-+		if (++cnt >= budget)
-+			break;
- 	}
-+	(*packets) += cnt;
- 	skb_mark_not_on_list(skb);
- }
+ 		physxa = xa_load(&track->orders, order);
+-		if (!physxa)
+-			continue;
++		if (WARN_ON_ONCE(!physxa))
++			return;
  
-@@ -226,7 +229,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
-  * A requeued skb (via q->gso_skb) can also be a SKB list.
-  */
- static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
--				   int *packets)
-+				   int *packets, int budget)
- {
- 	const struct netdev_queue *txq = q->dev_queue;
- 	struct sk_buff *skb = NULL;
-@@ -293,7 +296,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	if (skb) {
- bulk:
- 		if (qdisc_may_bulk(q))
--			try_bulk_dequeue_skb(q, skb, txq, packets);
-+			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
- 			try_bulk_dequeue_skb_slow(q, skb, packets);
- 	}
-@@ -385,7 +388,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
-  *				>0 - queue is not empty.
-  *
-  */
--static inline bool qdisc_restart(struct Qdisc *q, int *packets)
-+static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
- {
- 	spinlock_t *root_lock = NULL;
- 	struct netdev_queue *txq;
-@@ -394,7 +397,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
- 	bool validate;
+ 		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+-		if (!bits)
+-			continue;
++		if (WARN_ON_ONCE(!bits))
++			return;
  
- 	/* Dequeue packet */
--	skb = dequeue_skb(q, &validate, packets);
-+	skb = dequeue_skb(q, &validate, packets, budget);
- 	if (unlikely(!skb))
- 		return false;
+ 		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
  
-@@ -412,7 +415,7 @@ void __qdisc_run(struct Qdisc *q)
- 	int quota = READ_ONCE(dev_tx_weight);
- 	int packets;
- 
--	while (qdisc_restart(q, &packets)) {
-+	while (qdisc_restart(q, &packets, quota)) {
- 		quota -= packets;
- 		if (quota <= 0) {
- 			if (q->flags & TCQ_F_NOLOCK)
--- 
-2.51.0
-
 
 
 
