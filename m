@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF164C794AF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48E1C79E94
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5BD1934D6B5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 748813436D5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0B32EA46B;
-	Fri, 21 Nov 2025 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917FD310782;
+	Fri, 21 Nov 2025 13:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GteZvwjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzcbvYOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EFD26CE33;
-	Fri, 21 Nov 2025 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2092FC88B;
+	Fri, 21 Nov 2025 13:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731144; cv=none; b=dxebYg4i3fFWsjkPKYBQG9V7LZc0Dxr4lQfYnaWJcEQqKpA/XCP4GEBp16MG55FIgg/Fab1070eX4DfM0ugNnVCjpbmE1VbLt6063hZy7Nm30qJ+pVRR/YOtdo98N1/oGO8d3c6WkCwxGsjOGBPce2QW3gdf7zTGgy5L8WkWZeI=
+	t=1763733201; cv=none; b=t+r0Nxk/3uOqDkmtfR0zZem/QBxiw4p9MTWuo81CHkgSAEC+uPsDB+kyOp9wwA09mq75Jj6258lFfONi8RruhvEIBI06Ve8/1DXEVOCu3rnVQ2RWup/Qkiq2CLWiKpGPkEh+eH7NT1qxL8sd88PkCq80qJZ3uZLTqASruoGucXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731144; c=relaxed/simple;
-	bh=CwQl0x1/VRZgs7jOfBWjlHzWgeqqq6aj+I0JERYEOBA=;
+	s=arc-20240116; t=1763733201; c=relaxed/simple;
+	bh=WD1DQk1FVpkP7L1p+GRmko+ZdJba9X/CICgG/9p4TfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbnEshpElT/BXkR5rN6+ZTso8L6CQ0Z0+khhArSFUI7o3MNY7ian43AYHV/wEdfoUhujsH+nUCqtpgj5AK0buBVtPGJzast3t3CspDlsxAhiqWk0ngn3U05ePY24XlxJTUS75Zht5egM9LuB3qornbIlMtufVAPeA6sjVBe0WQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GteZvwjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8265C4CEF1;
-	Fri, 21 Nov 2025 13:19:03 +0000 (UTC)
+	 MIME-Version; b=CDurO6ARqTnIwtqEkfdqEA76Zv5l0VQJAGE8vjazyXoaTjXVb4u8Q83xAaWhIVchUekuKxlH+Reh9BqNKfODnCR/E97x/09b4Wwfa562u5N+7/tDco4TpEFgRXCFEKUBNONwXY4DzNOV1/SvQJvg2kpj6orDPntbUvus/u4qFQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzcbvYOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75A2C4CEF1;
+	Fri, 21 Nov 2025 13:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731144;
-	bh=CwQl0x1/VRZgs7jOfBWjlHzWgeqqq6aj+I0JERYEOBA=;
+	s=korg; t=1763733201;
+	bh=WD1DQk1FVpkP7L1p+GRmko+ZdJba9X/CICgG/9p4TfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GteZvwjpDPZ5ww33WyT6emuh4s2c+a2ygc7wvfUplo4aVG8+isy2eN+mR2lzTh9Cl
-	 WADFM0mzhDizzgEmsH1VI65zxiibhgxwMt+e4Lg4dYUAbfGzUmSl4IVnbh/XeXdCKV
-	 jkhWRJCuSh1oD/VyY5eN6+S9beMaEizQVo2SIdj8=
+	b=HzcbvYOPtLUkOcDh3CcKyVCeDeroFkB6qOzP0QDrageCPepIs+EIeVnz7fU8Cy/DS
+	 HEQBt+AD5kSp6bkL9oWlAgo0+K7t0CH8D74v0idrE1VNK0lTn/3Lj7MygfYgQyoMg9
+	 EZNk1iPvXIAEuiH5WrHKTM7IcYLPWwrqG9d5TmWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Martin Willi <martin@strongswan.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 105/247] pnfs: Fix TLS logic in _nfs4_pnfs_v4_ds_connect()
+Subject: [PATCH 6.6 353/529] wifi: mac80211_hwsim: Limit destroy_on_close radio removal to netgroup
 Date: Fri, 21 Nov 2025 14:10:52 +0100
-Message-ID: <20251121130158.356664474@linuxfoundation.org>
+Message-ID: <20251121130243.590536667@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Martin Willi <martin@strongswan.org>
 
-[ Upstream commit 28e19737e1570c7c71890547c2e43c3e0da79df9 ]
+[ Upstream commit c74619e7602e88a0239cd4999571dd31081e9adf ]
 
-Don't try to add an RDMA transport to a client that is already marked as
-being a TCP/TLS transport.
+hwsim radios marked destroy_on_close are removed when the Netlink socket
+that created them is closed. As the portid is not unique across network
+namespaces, closing a socket in one namespace may remove radios in another
+if it has the destroy_on_close flag set.
 
-Fixes: a35518cae4b3 ("NFSv4.1/pnfs: fix NFS with TLS in pnfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Instead of matching the network namespace, match the netgroup of the radio
+to limit radio removal to those that have been created by the closing
+Netlink socket. The netgroup of a radio identifies the network namespace
+it was created in, and matching on it removes a destroy_on_close radio
+even if it has been moved to another namespace.
+
+Fixes: 100cb9ff40e0 ("mac80211_hwsim: Allow managing radios from non-initial namespaces")
+Signed-off-by: Martin Willi <martin@strongswan.org>
+Link: https://patch.msgid.link/20251103082436.30483-1-martin@strongswan.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs_nfs.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
-index ff48056bf750e..9976cc16b6890 100644
---- a/fs/nfs/pnfs_nfs.c
-+++ b/fs/nfs/pnfs_nfs.c
-@@ -884,7 +884,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
- 				 u32 minor_version)
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index f5f48f7e6d26e..1214e7dcc8124 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -6189,14 +6189,15 @@ static struct genl_family hwsim_genl_family __ro_after_init = {
+ 	.n_mcgrps = ARRAY_SIZE(hwsim_mcgrps),
+ };
+ 
+-static void remove_user_radios(u32 portid)
++static void remove_user_radios(u32 portid, int netgroup)
  {
- 	struct nfs_client *clp = ERR_PTR(-EIO);
-+	struct nfs_client *mds_clp = mds_srv->nfs_client;
-+	enum xprtsec_policies xprtsec_policy = mds_clp->cl_xprtsec.policy;
- 	struct nfs4_pnfs_ds_addr *da;
-+	int ds_proto;
- 	int status = 0;
+ 	struct mac80211_hwsim_data *entry, *tmp;
+ 	LIST_HEAD(list);
  
- 	dprintk("--> %s DS %s\n", __func__, ds->ds_remotestr);
-@@ -912,12 +915,8 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
- 				.data = &xprtdata,
- 			};
+ 	spin_lock_bh(&hwsim_radio_lock);
+ 	list_for_each_entry_safe(entry, tmp, &hwsim_radios, list) {
+-		if (entry->destroy_on_close && entry->portid == portid) {
++		if (entry->destroy_on_close && entry->portid == portid &&
++		    entry->netgroup == netgroup) {
+ 			list_move(&entry->list, &list);
+ 			rhashtable_remove_fast(&hwsim_radios_rht, &entry->rht,
+ 					       hwsim_rht_params);
+@@ -6221,7 +6222,7 @@ static int mac80211_hwsim_netlink_notify(struct notifier_block *nb,
+ 	if (state != NETLINK_URELEASE)
+ 		return NOTIFY_DONE;
  
--			if (da->da_transport != clp->cl_proto &&
--					clp->cl_proto != XPRT_TRANSPORT_TCP_TLS)
--				continue;
--			if (da->da_transport == XPRT_TRANSPORT_TCP &&
--				mds_srv->nfs_client->cl_proto ==
--					XPRT_TRANSPORT_TCP_TLS) {
-+			if (xprt_args.ident == XPRT_TRANSPORT_TCP &&
-+			    clp->cl_proto == XPRT_TRANSPORT_TCP_TLS) {
- 				struct sockaddr *addr =
- 					(struct sockaddr *)&da->da_addr;
- 				struct sockaddr_in *sin =
-@@ -948,7 +947,10 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
- 				xprt_args.ident = XPRT_TRANSPORT_TCP_TLS;
- 				xprt_args.servername = servername;
- 			}
--			if (da->da_addr.ss_family != clp->cl_addr.ss_family)
-+			if (xprt_args.ident != clp->cl_proto)
-+				continue;
-+			if (xprt_args.dstaddr->sa_family !=
-+			    clp->cl_addr.ss_family)
- 				continue;
+-	remove_user_radios(notify->portid);
++	remove_user_radios(notify->portid, hwsim_net_get_netgroup(notify->net));
  
- 			/**
-@@ -962,15 +964,14 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
- 			if (xprtdata.cred)
- 				put_cred(xprtdata.cred);
- 		} else {
--			if (da->da_transport == XPRT_TRANSPORT_TCP &&
--				mds_srv->nfs_client->cl_proto ==
--					XPRT_TRANSPORT_TCP_TLS)
--				da->da_transport = XPRT_TRANSPORT_TCP_TLS;
--			clp = nfs4_set_ds_client(mds_srv,
--						&da->da_addr,
--						da->da_addrlen,
--						da->da_transport, timeo,
--						retrans, minor_version);
-+			ds_proto = da->da_transport;
-+			if (ds_proto == XPRT_TRANSPORT_TCP &&
-+			    xprtsec_policy != RPC_XPRTSEC_NONE)
-+				ds_proto = XPRT_TRANSPORT_TCP_TLS;
-+
-+			clp = nfs4_set_ds_client(mds_srv, &da->da_addr,
-+						 da->da_addrlen, ds_proto,
-+						 timeo, retrans, minor_version);
- 			if (IS_ERR(clp))
- 				continue;
- 
-@@ -981,7 +982,6 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
- 				clp = ERR_PTR(-EIO);
- 				continue;
- 			}
--
- 		}
- 	}
- 
+ 	if (notify->portid == hwsim_net_get_wmediumd(notify->net)) {
+ 		printk(KERN_INFO "mac80211_hwsim: wmediumd released netlink"
 -- 
 2.51.0
 
