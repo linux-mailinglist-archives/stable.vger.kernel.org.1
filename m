@@ -1,40 +1,64 @@
-Return-Path: <stable+bounces-196526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B581C7ADF9
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21731C7AE65
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 17:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7642D4E3807
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:36:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D26FB4EDB89
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E6B2DC765;
-	Fri, 21 Nov 2025 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3312EA468;
+	Fri, 21 Nov 2025 16:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="EjEIz3Ay"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E9D2D2398;
-	Fri, 21 Nov 2025 16:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EED52E9EB1;
+	Fri, 21 Nov 2025 16:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763742957; cv=none; b=f2C72Oa5/jBi2TvEKrAUtYyK8sa4w1ieH+YoT8q32pJtuWrASef9XakpImYIe8hnKjjDwkmRwDsN6kAj54oe+nXdwddSAHzfazSkbrY8o4QyP5CYTobl+hNNvNS1iCbG3kBWddh+cNxeNwGYJN/J2qWE0L/vI4V+l4BXM5VUq74=
+	t=1763743210; cv=none; b=GANmLipizhku+yIGbv2KN84LX0ZC3tv3IpxO+bbtO/4CW5rgFLJMsa71V4wh8wqcL6nKrTjp7LhSgRHzgqF87yLY1GCNLG6tVkELmWaKMlluy2YVBDJd5GtGRZ2VB7R99J+TUx7S1cpeBn8F1uJI+F5+1v1OaP0qCNZLvW1l7Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763742957; c=relaxed/simple;
-	bh=7+Wch1allgJ/u2F4dLGQvty/3cVdSYDoZQ3qohajjag=;
+	s=arc-20240116; t=1763743210; c=relaxed/simple;
+	bh=cq+mOApO3YEzpzvvIt/G2fMP1l5T4nenEN3tFL5PCQs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dP3hmApdnD60lBxhRfj5flI6FBvK4dOoVcPrqX9W7X5eZRhKyRrW4crZ26wW8Q1dsK+hisNBdyUCpNKtnt7LUPT7SlQFRTO5sX+zDL31IFjPxRiBTvkELQNhIwvJNWALAZ0JAyJXqQGlP4CmxvsgJPHKpZqfDirVAJfYY0yfNyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE1FE339;
-	Fri, 21 Nov 2025 08:35:40 -0800 (PST)
-Received: from [10.57.73.129] (unknown [10.57.73.129])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9122B3F73B;
-	Fri, 21 Nov 2025 08:35:45 -0800 (PST)
-Message-ID: <6e50830f-a1b8-452a-86a7-1621cd3968ce@arm.com>
-Date: Fri, 21 Nov 2025 16:35:43 +0000
+	 In-Reply-To:Content-Type; b=tDYsp3Y+hbWNjujg8nV1uj0CA1QfZj6EvLle4AU3NFkm9Wdf1KR0tPadW4dYEOFqtQTx4YT31iR0GQOoYP28ygnEOMjrWoo3q0IK0lwWJn2LtZ1BkB+g9Cmcfh4t/rj8HN8SQZZpQ4/gDE9RfCNm76qGRSTRDbIyTulYAbHE9Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=EjEIz3Ay; arc=none smtp.client-ip=193.136.128.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id B48986002313;
+	Fri, 21 Nov 2025 16:40:02 +0000 (WET)
+X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
+Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
+ by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
+ with LMTP id 6-D8MXEghn3S; Fri, 21 Nov 2025 16:40:00 +0000 (WET)
+Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [IPv6:2001:690:2100:1::b3dd:b9ac])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 39ACB6003C0B;
+	Fri, 21 Nov 2025 16:40:00 +0000 (WET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
+	s=mail2; t=1763743200;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8LR5uTYZZlgFKDhJ2nx1opV/Ai9cjcaHfV2BTPzMcGQ=;
+	b=EjEIz3Ay2+69yDek66agj6HHEEraA4zz2vE2UgvZ8pUfGZXa4ik8d4hORJEKU/HJSAA7fN
+	91aoKwg+QX6Om0tm/eOyVvyGJ5e9Qvsf2ZjoOqJC9Nq89D+c/zs2Ch9VDDzZIdpJKjx7e3
+	jXpEIplWvsX2Hh9FmtnMTGgbSFlBejkPdtUVN6ZYTqiAKrsfa69NcZqQ1212s5pQgqqpW3
+	sP71hHxoMHEolObOyIpftqZnJCIe+J756AZHRJwtOVDLKgwpqALxhlwBBmgA2j/YQHEsBT
+	YOrmNIvdvvoFWedJNo4yEKFZemOWkR7mF0TUgv7Jhe074hMTI8TSCYKt8ClNNQ==
+Received: from [IPV6:2001:8a0:57db:f00:3ee2:38aa:e2c9:7dde] (unknown [IPv6:2001:8a0:57db:f00:3ee2:38aa:e2c9:7dde])
+	(Authenticated sender: ist187313)
+	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id 59AD1360108;
+	Fri, 21 Nov 2025 16:39:58 +0000 (WET)
+Message-ID: <44e00ee1-401d-41e8-b5c7-8070ce6d514e@tecnico.ulisboa.pt>
+Date: Fri, 21 Nov 2025 16:39:58 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,220 +66,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
- performance estimation' causes a regression
-To: Yu-Che Cheng <giver@chromium.org>,
- Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lukasz Luba <lukasz.luba@arm.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>
-References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
- <86d759a5-9a96-49ff-9f75-8b56e2626d65@arm.com>
- <2ktr5znjidilpxm2ycixunqlmhu253xwov4tpnb2qablrsqmbv@ysacm5nbcjw7>
- <CAKfTPtBBtMysuYgBYZR2EH=WPR7X5F_RRzGmf94UhyDiGmmqCg@mail.gmail.com>
- <CAKchOA03GKXMUbfVvEXtyp3=-t0mWOzQVHNkB6F9QsMfTzCofA@mail.gmail.com>
+Subject: Re: [PATCH] usb: phy: Initialize struct usb_phy list_head
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Felipe Balbi <felipe.balbi@linux.intel.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251113-diogo-smaug_typec-v1-1-f1aa3b48620d@tecnico.ulisboa.pt>
+ <2025112139-resale-upward-3366@gregkh>
+ <8837bf19-dd98-40f9-b2ff-192a511c357c@tecnico.ulisboa.pt>
+ <2025112100-backstage-wager-0d5a@gregkh>
 Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <CAKchOA03GKXMUbfVvEXtyp3=-t0mWOzQVHNkB6F9QsMfTzCofA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+In-Reply-To: <2025112100-backstage-wager-0d5a@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 11/21/25 15:37, Yu-Che Cheng wrote:
-> Hi Vincent,
-> 
-> On Fri, Nov 21, 2025 at 10:00 PM Vincent Guittot <vincent.guittot@linaro.org>
-> wrote:
+
+
+On 11/21/25 15:03, Greg Kroah-Hartman wrote:
+> On Fri, Nov 21, 2025 at 02:55:35PM +0000, Diogo Ivo wrote:
 >>
->> On Fri, 21 Nov 2025 at 04:55, Sergey Senozhatsky
->> <senozhatsky@chromium.org> wrote:
->>>
->>> Hi Christian,
->>>
->>> On (25/11/20 10:15), Christian Loehle wrote:
->>>> On 11/20/25 04:45, Sergey Senozhatsky wrote:
->>>>> Hi,
->>>>>
->>>>> We are observing a performance regression on one of our arm64
-> boards.
->>>>> We tracked it down to the linux-6.6.y commit ada8d7fa0ad4
-> ("sched/cpufreq:
 >>
->> You mentioned that you tracked down to linux-6.6.y but which kernel
->> are you using ?
->>
-> 
-> We're using ChromeOS 6.6 kernel, which is currently on top of linux-v6.6.99.
-> But we've tested that the performance regression still happens on exactly
-> the same scheduler codes (`kernel/sched`) as upstream v6.6.99, compared to
-> those on v6.6.88.
-> 
->>>>> Rework schedutil governor performance estimation").
->>>>>
->>>>> UI speedometer benchmark:
->>>>> w/commit:   395  +/-38
->>>>> w/o commit: 439  +/-14
->>>>>
+>> On 11/21/25 14:09, Greg Kroah-Hartman wrote:
+>>> On Thu, Nov 13, 2025 at 02:59:06PM +0000, Diogo Ivo wrote:
+>>>> When executing usb_add_phy() and usb_add_phy_dev() it is possible that
+>>>> usb_add_extcon() fails (for example with -EPROBE_DEFER), in which case
+>>>> the usb_phy does not get added to phy_list via
+>>>> list_add_tail(&x->head, phy_list).
 >>>>
->>>> Hi Sergey,
->>>> Would be nice to get some details. What board?
+>>>> Then, when the driver that tried to add the phy receives the error
+>>>> propagated from usb_add_extcon() and calls into usb_remove_phy() to
+>>>> undo the partial registration there will be an unconditional call to
+>>>> list_del(&x->head) which is notinitialized and leads to a NULL pointer
+>>>> dereference.
+>>>>
+>>>> Fix this by initializing x->head before usb_add_extcon() has a chance to
+>>>> fail.
+>>>>
+>>>> Fixes: 7d21114dc6a2d53 ("usb: phy: Introduce one extcon device into usb phy")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+>>>> ---
+>>>>    drivers/usb/phy/phy.c | 4 ++++
+>>>>    1 file changed, 4 insertions(+)
+>>>>
+>>>> diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
+>>>> index e1435bc59662..5a9b9353f343 100644
+>>>> --- a/drivers/usb/phy/phy.c
+>>>> +++ b/drivers/usb/phy/phy.c
+>>>> @@ -646,6 +646,8 @@ int usb_add_phy(struct usb_phy *x, enum usb_phy_type type)
+>>>>    		return -EINVAL;
+>>>>    	}
+>>>> +	INIT_LIST_HEAD(&x->head);
+>>>> +
+>>>>    	usb_charger_init(x);
+>>>>    	ret = usb_add_extcon(x);
+>>>>    	if (ret)
+>>>> @@ -696,6 +698,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+>>>>    		return -EINVAL;
+>>>>    	}
+>>>> +	INIT_LIST_HEAD(&x->head);
+>>>> +
+>>>>    	usb_charger_init(x);
+>>>>    	ret = usb_add_extcon(x);
+>>>>    	if (ret)
+>>>>
 >>>
->>> It's an MT8196 chromebook.
->>>
->>>> What do the OPPs look like?
->>>
->>> How do I find that out?
+>>> Shouldn't you be also removing an existing call to INIT_LIST_HEAD()
+>>> somewhere?  This is not "moving" the code, it is adding it.
 >>
->> In /sys/kernel/debug/opp/cpu*/
->> or
->> /sys/devices/system/cpu/cpufreq/policy*/scaling_available_frequencies
->> with related_cpus
->>
+>>  From my understanding that's exactly the problem, currently there is no
+>> call to INIT_LIST_HEAD() anywhere on these code paths, meaning that if
+>> we do not reach the point of calling list_add_tail() at the end of
+>> usb_add_phy() and usb_phy_add_dev() then x->head will remain uninitialized
+>> and fault when running usb_remove_phy().
 > 
-> The energy model on the device is:
-> 
-> CPU0-3:
-> +------------+------------+
-> | freq (khz) | power (uw) |
-> +============+============+
-> |     339000 |      34362 |
-> |     400000 |      42099 |
-> |     500000 |      52907 |
-> |     600000 |      63795 |
-> |     700000 |      74747 |
-> |     800000 |      88445 |
-> |     900000 |     101444 |
-> |    1000000 |     120377 |
-> |    1100000 |     136859 |
-> |    1200000 |     154162 |
-> |    1300000 |     174843 |
-> |    1400000 |     196833 |
-> |    1500000 |     217052 |
-> |    1600000 |     247844 |
-> |    1700000 |     281464 |
-> |    1800000 |     321764 |
-> |    1900000 |     352114 |
-> |    2000000 |     383791 |
-> |    2100000 |     421809 |
-> |    2200000 |     461767 |
-> |    2300000 |     503648 |
-> |    2400000 |     540731 |
-> +------------+------------+
-> 
-> CPU4-6:
-> +------------+------------+
-> | freq (khz) | power (uw) |
-> +============+============+
-> |     622000 |     131738 |
-> |     700000 |     147102 |
-> |     800000 |     172219 |
-> |     900000 |     205455 |
-> |    1000000 |     233632 |
-> |    1100000 |     254313 |
-> |    1200000 |     288843 |
-> |    1300000 |     330863 |
-> |    1400000 |     358947 |
-> |    1500000 |     400589 |
-> |    1600000 |     444247 |
-> |    1700000 |     497941 |
-> |    1800000 |     539959 |
-> |    1900000 |     584011 |
-> |    2000000 |     657172 |
-> |    2100000 |     746489 |
-> |    2200000 |     822854 |
-> |    2300000 |     904913 |
-> |    2400000 |    1006581 |
-> |    2500000 |    1115458 |
-> |    2600000 |    1205167 |
-> |    2700000 |    1330751 |
-> |    2800000 |    1450661 |
-> |    2900000 |    1596740 |
-> |    3000000 |    1736568 |
-> |    3100000 |    1887001 |
-> |    3200000 |    2048877 |
-> |    3300000 |    2201141 |
-> +------------+------------+
-> 
-> CPU7:
-> 
-> +------------+------------+
-> | freq (khz) | power (uw) |
-> +============+============+
-> |     798000 |     320028 |
-> |     900000 |     330714 |
-> |    1000000 |     358108 |
-> |    1100000 |     384730 |
-> |    1200000 |     410669 |
-> |    1300000 |     438355 |
-> |    1400000 |     469865 |
-> |    1500000 |     502740 |
-> |    1600000 |     531645 |
-> |    1700000 |     560380 |
-> |    1800000 |     588902 |
-> |    1900000 |     617278 |
-> |    2000000 |     645584 |
-> |    2100000 |     698653 |
-> |    2200000 |     744179 |
-> |    2300000 |     810471 |
-> |    2400000 |     895816 |
-> |    2500000 |     985234 |
-> |    2600000 |    1097802 |
-> |    2700000 |    1201162 |
-> |    2800000 |    1332076 |
-> |    2900000 |    1439847 |
-> |    3000000 |    1575917 |
-> |    3100000 |    1741987 |
-> |    3200000 |    1877346 |
-> |    3300000 |    2161512 |
-> |    3400000 |    2437879 |
-> |    3500000 |    2933742 |
-> |    3600000 |    3322959 |
-> |    3626000 |    3486345 |
-> +------------+------------+
-> 
->>>
->>>> Does this system use uclamp during the benchmark? How?
->>>
->>> How do I find that out?
->>
->> it can be set per cgroup
->> /sys/fs/cgroup/system.slice/<name>/cpu.uclam.min|max
->> or per task with sched_setattr()
->>
->> You most probably use it because it's the main reason for ada8d7fa0ad4
->> to remove wrong overestimate of OPP
->>
-> 
-> For the speedometer case, yes, we set the uclamp.min to 20 for the whole
-> browser and UI (chrome).
-> There's no system-wide uclamp settings though.
+> Then how does this work at all if the list is never initialized?
 
-(From Sergey's traces)
-Per-cluster time‑weighted average frequency base => revert:
-little (cpu0–3, max 2.4 GHz): 0.746 GHz => 1.132 GHz (+51.6%)
-mid (cpu4–6, max 3.3 GHz): 1.043 GHz => 1.303 GHz (+24.9%)
-big (cpu7, max 3.626 GHz): 2.563 GHz => 3.116 GHz (+21.6%)
+In this case in drivers/usb/phy/phy.c a static LIST_HEAD(phy_list) is
+declared and then for each new 'struct usb_phy *x' the x->head entry
+will get added to this list by calling list_add_tail(&x->head, &phy_list).
 
-And in particular time spent at OPPs (base => revert):
-Big core at upper 10%: 29.6% => 61.5%
-little cluster at 339 MHz: 50.1% => 1.0% 
+Best regards,
+Diogo
 
-Interesting that a uclamp.min of 20 (which shouldn't really have
-much affect on big CPU at all, with or without headroom AFAICS?)
-makes such a big difference here?
-
+> thanks,
 > 
-> But we also found other performance regressions in an Android guest VM,
-> where there's no uclamp for the VM and vCPU processes from the host side.
-> Particularly, the RAR extraction throughput reduces about 20% in the RAR
-> app (from RARLAB).
-> Although it's hard to tell if this is some sort of a side-effect of the UI
-> regression as the UI is also running at the same time.
-> 
-I'd be inclined to say that is because of the vastly different DVFS from the
-UI workload, yes.
+> greg k-h
 
