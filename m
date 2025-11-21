@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E94C7A017
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8FDC7968E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32FAB4F300F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id D61012DC2E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC102FC88B;
-	Fri, 21 Nov 2025 13:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697502DEA7E;
+	Fri, 21 Nov 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxrlDWtb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWAjvdr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9434165F;
-	Fri, 21 Nov 2025 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A111F09B3;
+	Fri, 21 Nov 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733445; cv=none; b=fFIwabmBhfAqNPVvk4TwB2VqFX2SbwM+0K0KayQHKZMxmOIK8uj8PMZLx/KRYE/mDiAwwm+EKfGxEpgOEifqC+sIWB1uDjaH65jrQ1CY4Ed6OH8oYpwFpF17A7nFjW3tw0vcOcTkyLsazy2RUbWotKJd3q1v0kFbjJmxZD8Wddo=
+	t=1763731575; cv=none; b=BeF975wNdhS2tfYQuP++7iS3b5SXMee2NNnI12vhiCZIuf4SDR2LoWdJnbr2gEhw/ayC6lrAVhycTS1BK4nlewRBDIKyTPYR0Xx4CPI2LCsPqv0we533P90KVI+OWFvxvOfVEPFVWaxYNKTjOZcBNRubIokhUhomN2iCqVNIQn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733445; c=relaxed/simple;
-	bh=uZFhnuvvrCBMN+0j7dDl2dLQtwnRKuindQvUb+la8vs=;
+	s=arc-20240116; t=1763731575; c=relaxed/simple;
+	bh=Ij+RZncpriJJZhOX5SJY6UjQYdw2dZRz7kMkycz6FAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GX7x+qsg90x+XZJbpZicgYdkhrwwDz1m7C/xDMQzAMNo2VZKCaaF+IGc+tZ86hjNbWKRrKvlGLuRZGYTVNuxrWv5jFge6qwiyJVlwhCHZ2ynKZlcLcdHt955JcpkyM4Ky6lcqJKMKrVF1MD9SkPtYLlp6nTenNPo6/sActYd6tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxrlDWtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5E7C16AAE;
-	Fri, 21 Nov 2025 13:57:24 +0000 (UTC)
+	 MIME-Version; b=t38Q/XUmZeWaRUz0r+2uMRgpOxhm8Fa48nI9MCQ2GK7SpfiZlzm7TJEBs/WjIOWAROck29gxYYA0sWaS6HL2c4JzOO8WsZbOTGMyauv/OX83tuLTWDLYKIK8Mhs8sbvIN7cK1NpUAsExfXeImmpmA+24NqaP57v/RvGqQMk7HB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWAjvdr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A562CC4CEF1;
+	Fri, 21 Nov 2025 13:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733445;
-	bh=uZFhnuvvrCBMN+0j7dDl2dLQtwnRKuindQvUb+la8vs=;
+	s=korg; t=1763731575;
+	bh=Ij+RZncpriJJZhOX5SJY6UjQYdw2dZRz7kMkycz6FAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxrlDWtbghz2619UBNvHLGf2W9p6SwXMkTL2Q4kqoWfGiqBmuc46PwWfdlDz1Oyxc
-	 HzRvCCokjHhmNg8m+kMNu8/ppfTW4RkY6Alz5kVgPT0iF4eafd3yZU4p16sxg28vTE
-	 5nnNFRf0F57rGOfFWRzRtj5Ed1HOXnRz+5aCADJo=
+	b=MWAjvdr08XvUbgoDKjABNqdRm4N6pN2ELuMvMxa+NxrsQu6NO4xa+87ApgXS1pyuQ
+	 IWdTV9T3q0BpdzBRNqTea+JHq75ZYVNSvRyqIuWoh7vvQUP40qHHROyWSO6tGDKiO+
+	 hIce1TpRiQb4KPyqnYPu0ZpP1awbHBLchVDItf4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.6 471/529] selftests/tracing: Run sample events to clear page cache events
-Date: Fri, 21 Nov 2025 14:12:50 +0100
-Message-ID: <20251121130247.768286138@linuxfoundation.org>
+	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.17 224/247] drm/xe/xe3: Extend wa_14023061436
+Date: Fri, 21 Nov 2025 14:12:51 +0100
+Message-ID: <20251121130202.773632377@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
 
-commit dd4adb986a86727ed8f56c48b6d0695f1e211e65 upstream.
+commit fa3376319b83ba8b7fd55f2c1a268dcbf9d6eedc upstream.
 
-The tracing selftest "event-filter-function.tc" was failing because it
-first runs the "sample_events" function that triggers the kmem_cache_free
-event and it looks at what function was used during a call to "ls".
+Extend wa_14023061436 to Graphics Versions 30.03, 30.04
+and 30.05.
 
-But the first time it calls this, it could trigger events that are used to
-pull pages into the page cache.
-
-The rest of the test uses the function it finds during that call to see if
-it will be called in subsequent "sample_events" calls. But if there's no
-need to pull pages into the page cache, it will not trigger that function
-and the test will fail.
-
-Call the "sample_events" twice to trigger all the page cache work before
-it calls it to find a function to use in subsequent checks.
-
-Cc: stable@vger.kernel.org
-Fixes: eb50d0f250e96 ("selftests/ftrace: Choose target function for filter test from samples")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patch.msgid.link/20251030154626.3124565-1-tilak.tirumalesh.tangudu@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 0dd656d06f50ae4cedf160634cf13fd9e0944cf7)
+Cc: stable@vger.kernel.org # v6.17+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_wa.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
-+++ b/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
-@@ -20,6 +20,10 @@ sample_events() {
- echo 0 > tracing_on
- echo 0 > events/enable
- 
-+# Clear functions caused by page cache; run sample_events twice
-+sample_events
-+sample_events
-+
- echo "Get the most frequently calling function"
- echo > trace
- sample_events
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -653,6 +653,8 @@ static const struct xe_rtp_entry_sr engi
+ 	},
+ 	{ XE_RTP_NAME("14023061436"),
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001),
++		       FUNC(xe_rtp_match_first_render_or_compute), OR,
++		       GRAPHICS_VERSION_RANGE(3003, 3005),
+ 		       FUNC(xe_rtp_match_first_render_or_compute)),
+ 	  XE_RTP_ACTIONS(SET(TDL_CHICKEN, QID_WAIT_FOR_THREAD_NOT_RUN_DISABLE))
+ 	},
 
 
 
