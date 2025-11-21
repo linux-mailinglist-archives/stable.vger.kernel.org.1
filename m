@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-196419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48B5C79FFF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2ED0C79616
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 12FB33823A6
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 25F7234AD6A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D8A34B691;
-	Fri, 21 Nov 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3866D341043;
+	Fri, 21 Nov 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvDGb1Wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEyWEaLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAA4343215;
-	Fri, 21 Nov 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B232773F7;
+	Fri, 21 Nov 2025 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733457; cv=none; b=kZLBKLrzlAGehEpAv+Ym5nrZKBioYQKtO9bSLMBSa8w+ZiZtCEO2WdIUzw5kYc28G9HXoLtFEk139dFaCqSG2AdHUWuMFvI1Y30QaQ309kWFMtqaw9547TLezNAm4/VrZRklWP0waBw4npmsu58bYmAdZYb9wtpsQIBedNBSSV0=
+	t=1763731442; cv=none; b=R7ZOkP1WDFY3TGT/tlAigSQgJi7HZSTNiR7YvJc9cKXRoetuYkEAY1ZT0wrzwMbAk1E5x8mlzDpKHT8iKFH1GidBFtrrw1fX+Q1+QpZ2fgq+cPapKiUtyH8nWiSWezIyqLAAugfFMpAYEWHsElyV/Cj/MESIS3PAj3/kIsI4/1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733457; c=relaxed/simple;
-	bh=GDKLNLnGcvvZVGXwsGuK3WnOmrijuXPNGZKLNBcU6kQ=;
+	s=arc-20240116; t=1763731442; c=relaxed/simple;
+	bh=2PNJ8HZ0e4Ri5Qzls+rJoOYhZWj8nB7UZG4kZ+Ho2xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tg7Ief9ABTvRJO0JudPQUVEtRP7ryi6Gxru8weTbraiI/9wwFdiQBoGq+0f3smQl/YVet3GhXNlsCF10jqbMewvQZZROKDLaI9qfhCNi2UvrFyxVs+exNV43ywYP/6I9zfTlx0BFwAxLMlx+QEgt3boXmI63ZQxes3S/eVJATEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvDGb1Wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22153C4CEF1;
-	Fri, 21 Nov 2025 13:57:36 +0000 (UTC)
+	 MIME-Version; b=SXbZ3pDR94fT+pNyK0oeL6DDcAQBcZzxlAPUJ6CuIg6t6XeENQd3wLxINmQA81GT1gQbrrN8OGOSKku2v3oL4aK6xpIXOnEuv9b2/O/uEvl8nvEls7gAgJZW5DPOHpJbWX1ZFchSR19+q7HaY+T8c/tCdxfe9jDw8TUM2pfv52c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEyWEaLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3210C4CEF1;
+	Fri, 21 Nov 2025 13:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733457;
-	bh=GDKLNLnGcvvZVGXwsGuK3WnOmrijuXPNGZKLNBcU6kQ=;
+	s=korg; t=1763731442;
+	bh=2PNJ8HZ0e4Ri5Qzls+rJoOYhZWj8nB7UZG4kZ+Ho2xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvDGb1WtjODXc47qtTgSPvwe62PZqKW2OPsKJGj6Jex8VdIACBeUb8Zc1qlLxCB96
-	 Nj58aaAiTwlqLfqfojK6je1VpcMU24mD7GIhAHq2PZk4ZD1pBE2Dtw68t7u8TcHGBp
-	 h3JISeOIdnn1Su/MCO6niLra/FmEZDIq1zHbAP8s=
+	b=kEyWEaLLCtefElHcFNjx9/+5BCC9PF2crdB3eHi5AMXM1xzFuGH55IVf+dq7TKq9h
+	 BmWh2EOMtdQUJa+EXMAdNW2K1ULdHzKRWejnQ/EzOotitDUx8Mbn0RusRQHtTiz3vX
+	 0KTfkDCI9/UdA8lGmq+ZLYUbeBAk3LB215ywwRkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 457/529] arm64: dts: rockchip: Set correct pinctrl for I2S1 8ch TX on odroid-m1
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.17 209/247] LoongArch: Use physical addresses for CSR_MERRENTRY/CSR_TLBRENTRY
 Date: Fri, 21 Nov 2025 14:12:36 +0100
-Message-ID: <20251121130247.271460725@linuxfoundation.org>
+Message-ID: <20251121130202.229009786@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Moon <linux.amoon@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit d425aef66e62221fa6bb0ccb94296df29e4cc107 ]
+commit 4e67526840fc55917581b90f6a4b65849a616dd8 upstream.
 
-Enable proper pin multiplexing for the I2S1 8-channel transmit interface by
-adding the default pinctrl configuration which esures correct signal routing
-and avoids pinmux conflicts during audio playback.
+Now we use virtual addresses to fill CSR_MERRENTRY/CSR_TLBRENTRY, but
+hardware hope physical addresses. Now it works well because the high
+bits are ignored above PA_BITS (48 bits), but explicitly use physical
+addresses can avoid potential bugs. So fix it.
 
-Changes fix the error
-[  116.856643] [    T782] rockchip-pinctrl pinctrl: pin gpio1-10 already requested by affinity_hint; cannot claim for fe410000.i2s
-[  116.857567] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: pin-42 (fe410000.i2s)
-[  116.857618] [    T782] rockchip-pinctrl pinctrl: error -EINVAL: could not request pin 42 (gpio1-10) from group i2s1m0-sdi1 on device rockchip-pinctrl
-[  116.857659] [    T782] rockchip-i2s-tdm fe410000.i2s: Error applying setting, reverse things back
-
-I2S1 on the M1 to the codec in the RK809 only uses the SCLK, LRCK, SDI0
-and SDO0 signals, so limit the claimed pins to those.
-
-With this change audio output works as expected:
-
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: fe400000.i2s-i2s-hifi i2s-hifi-0 [fe400000.i2s-i2s-hifi i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-card 1: RK817 [Analog RK817], device 0: fe410000.i2s-rk817-hifi rk817-hifi-0 [fe410000.i2s-rk817-hifi rk817-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-
-Fixes: 78f858447cb7 ("arm64: dts: rockchip: Add analog audio on ODROID-M1")
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Signed-off-by: Anand Moon <linux.amoon@gmail.com>
-[adapted the commit message a bit]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/kernel/traps.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-index 6a02db4f073f2..a5426b82552ed 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-@@ -482,6 +482,8 @@
- };
+--- a/arch/loongarch/kernel/traps.c
++++ b/arch/loongarch/kernel/traps.c
+@@ -1131,8 +1131,8 @@ static void configure_exception_vector(v
+ 	tlbrentry = (unsigned long)exception_handlers + 80*VECSIZE;
  
- &i2s1_8ch {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2s1m0_sclktx &i2s1m0_lrcktx &i2s1m0_sdi0 &i2s1m0_sdo0>;
- 	rockchip,trcm-sync-tx-only;
- 	status = "okay";
- };
--- 
-2.51.0
-
+ 	csr_write64(eentry, LOONGARCH_CSR_EENTRY);
+-	csr_write64(eentry, LOONGARCH_CSR_MERRENTRY);
+-	csr_write64(tlbrentry, LOONGARCH_CSR_TLBRENTRY);
++	csr_write64(__pa(eentry), LOONGARCH_CSR_MERRENTRY);
++	csr_write64(__pa(tlbrentry), LOONGARCH_CSR_TLBRENTRY);
+ }
+ 
+ void per_cpu_trap_init(int cpu)
 
 
 
