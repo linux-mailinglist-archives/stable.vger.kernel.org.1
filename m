@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-195756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8FDC7968E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F7BC7980E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id D61012DC2E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3791B346240
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697502DEA7E;
-	Fri, 21 Nov 2025 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6251F09B3;
+	Fri, 21 Nov 2025 13:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWAjvdr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D76skDQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A111F09B3;
-	Fri, 21 Nov 2025 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1821E098;
+	Fri, 21 Nov 2025 13:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731575; cv=none; b=BeF975wNdhS2tfYQuP++7iS3b5SXMee2NNnI12vhiCZIuf4SDR2LoWdJnbr2gEhw/ayC6lrAVhycTS1BK4nlewRBDIKyTPYR0Xx4CPI2LCsPqv0we533P90KVI+OWFvxvOfVEPFVWaxYNKTjOZcBNRubIokhUhomN2iCqVNIQn8=
+	t=1763731970; cv=none; b=t/kYkvSJyVCeBPdHwm16jLGtzDoEVoce+zu1IFhcmjj2JlpVl+hEEeMSjxBCIYFbli2XIstFV5whvJ1UppRIlaSA6O6YTOj4HGW1SPnl12D6hfoqn+V4dFRzN9NGJtBRy+ZjoRp7k35WomaG9Gy76Yyevg/5cYgViFW4K1FAYns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731575; c=relaxed/simple;
-	bh=Ij+RZncpriJJZhOX5SJY6UjQYdw2dZRz7kMkycz6FAM=;
+	s=arc-20240116; t=1763731970; c=relaxed/simple;
+	bh=NjyCs3v2Wt7LXSCIBOFc0nltn4GxwL5nPheIwVGx/Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t38Q/XUmZeWaRUz0r+2uMRgpOxhm8Fa48nI9MCQ2GK7SpfiZlzm7TJEBs/WjIOWAROck29gxYYA0sWaS6HL2c4JzOO8WsZbOTGMyauv/OX83tuLTWDLYKIK8Mhs8sbvIN7cK1NpUAsExfXeImmpmA+24NqaP57v/RvGqQMk7HB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWAjvdr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A562CC4CEF1;
-	Fri, 21 Nov 2025 13:26:14 +0000 (UTC)
+	 MIME-Version; b=g/rqcE7mmKnohOsL5gahf5cHB86gD4GMWBu/LgxKDd4GcMj2onDm/sxmzTepLZaMjlcNQt8b8odWh5+xHjTZ2fHJtr0UG1tmuL13HD8Gca0FaqrvfEw1tcetI1rRKhIVSRoiFermlHV0FflaZePedQ5G2gjE5y/y28WQGzmXf6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D76skDQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086F4C4CEF1;
+	Fri, 21 Nov 2025 13:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731575;
-	bh=Ij+RZncpriJJZhOX5SJY6UjQYdw2dZRz7kMkycz6FAM=;
+	s=korg; t=1763731970;
+	bh=NjyCs3v2Wt7LXSCIBOFc0nltn4GxwL5nPheIwVGx/Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWAjvdr08XvUbgoDKjABNqdRm4N6pN2ELuMvMxa+NxrsQu6NO4xa+87ApgXS1pyuQ
-	 IWdTV9T3q0BpdzBRNqTea+JHq75ZYVNSvRyqIuWoh7vvQUP40qHHROyWSO6tGDKiO+
-	 hIce1TpRiQb4KPyqnYPu0ZpP1awbHBLchVDItf4Q=
+	b=D76skDQ5TSej+41EICs+xYBfvt1EgrDVsBOCknOGqKy5JcXZvtVRC14JmV/FNLJZ4
+	 rz6vduTkW7dEWdCP+KAh5NQhp3oR/0MNPtvAp5MVrYhs7yvVFZuL6F91B4VMbyzKHt
+	 64jdhASO6aj0YKjSnD6UrPXzip/KGxI10dO/JdW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.17 224/247] drm/xe/xe3: Extend wa_14023061436
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 144/185] btrfs: zoned: fix conventional zone capacity calculation
 Date: Fri, 21 Nov 2025 14:12:51 +0100
-Message-ID: <20251121130202.773632377@linuxfoundation.org>
+Message-ID: <20251121130149.073163199@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit fa3376319b83ba8b7fd55f2c1a268dcbf9d6eedc upstream.
+commit 94f54924b96d3565c6b559294b3401b5496c21ac upstream.
 
-Extend wa_14023061436 to Graphics Versions 30.03, 30.04
-and 30.05.
+When a block group contains both conventional zone and sequential zone, the
+capacity of the block group is wrongly set to the block group's full
+length. The capacity should be calculated in btrfs_load_block_group_* using
+the last allocation offset.
 
-Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patch.msgid.link/20251030154626.3124565-1-tilak.tirumalesh.tangudu@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 0dd656d06f50ae4cedf160634cf13fd9e0944cf7)
-Cc: stable@vger.kernel.org # v6.17+
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 568220fa9657 ("btrfs: zoned: support RAID0/1/10 on top of raid stripe tree")
+CC: stable@vger.kernel.org # v6.12+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/zoned.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -653,6 +653,8 @@ static const struct xe_rtp_entry_sr engi
- 	},
- 	{ XE_RTP_NAME("14023061436"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001),
-+		       FUNC(xe_rtp_match_first_render_or_compute), OR,
-+		       GRAPHICS_VERSION_RANGE(3003, 3005),
- 		       FUNC(xe_rtp_match_first_render_or_compute)),
- 	  XE_RTP_ACTIONS(SET(TDL_CHICKEN, QID_WAIT_FOR_THREAD_NOT_RUN_DISABLE))
- 	},
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1300,6 +1300,7 @@ static int btrfs_load_zone_info(struct b
+ 	if (!btrfs_dev_is_sequential(device, info->physical)) {
+ 		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_CONVENTIONAL;
++		info->capacity = device->zone_info->zone_size;
+ 		return 0;
+ 	}
+ 
+@@ -1598,8 +1599,6 @@ int btrfs_load_block_group_zone_info(str
+ 		set_bit(BLOCK_GROUP_FLAG_SEQUENTIAL_ZONE, &cache->runtime_flags);
+ 
+ 	if (num_conventional > 0) {
+-		/* Zone capacity is always zone size in emulation */
+-		cache->zone_capacity = cache->length;
+ 		ret = calculate_alloc_pointer(cache, &last_alloc, new);
+ 		if (ret) {
+ 			btrfs_err(fs_info,
+@@ -1608,6 +1607,7 @@ int btrfs_load_block_group_zone_info(str
+ 			goto out;
+ 		} else if (map->num_stripes == num_conventional) {
+ 			cache->alloc_offset = last_alloc;
++			cache->zone_capacity = cache->length;
+ 			set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &cache->runtime_flags);
+ 			goto out;
+ 		}
 
 
 
