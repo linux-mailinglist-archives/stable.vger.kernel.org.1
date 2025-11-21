@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67B5C79D53
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:57:50 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236F7C792CD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B35BC347AFF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EC7BD345564
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EB134C9B5;
-	Fri, 21 Nov 2025 13:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B953330B19;
+	Fri, 21 Nov 2025 13:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul3SJhvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhIVNjBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DC43271F5;
-	Fri, 21 Nov 2025 13:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03D82989A2;
+	Fri, 21 Nov 2025 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732881; cv=none; b=urxSAGWP1L/2hrWnWPtTj2NR9GBhrrKoh5ZCvLvngmbvEx6p/8BTk+py3L8QFnJarfvjRBEL43Rfq7Rm8SJCn0WC0BqhK+oAk2LaDKMjOiRZI9lI2O7OyEMogcPGmu5FTxtP2qZmzAuW3PQZhxALYNCggjwwytQ383oK0cCPvVc=
+	t=1763730916; cv=none; b=sp1O6/sDncKVg6paye04fmDvlYMPbQPBmwvIn/NATh5f7ayhH6l4+MbxWUQQ8q+eg+iOhz3a2q5WGjD8TpNcvjzzi81L0PXKgJ9yaZjrn8y1jSObyDlq7ISRlGcAVkYylvxiSEMBS0h07Z9xEkP0E9J7/I+qrn3tHibu5WV7ggw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732881; c=relaxed/simple;
-	bh=Y4RW3940pkCXCJ8ciOIwAGi/qioV9nqRCU1QFjLOp1I=;
+	s=arc-20240116; t=1763730916; c=relaxed/simple;
+	bh=WfPc+S4EWYIBQhZ17M33wGFOm2vMjgTCgUMV0CU/1w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4T1XFwXsVBYd2MBGJtD57UX3yei7KMuuukIqyq0U6dcVNTMzXXwUvuzC4rTBo/LVe+7rIceThC7E1XGHTeFoQA68VlgGzzsr5qq7+AnXEAvf1TiwCDXkUPvMdMP9EbaUZfJboH+PxEUWAtXDJH8j5KohiUcMEBC4IUo3ZO17zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul3SJhvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E26BC4CEF1;
-	Fri, 21 Nov 2025 13:47:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WDDssi1oRZHXMdYh0ENj7uW7IE5e+zTdCO+yvUPCWkiZo6DTZWu02dWgEJeuLtt7di0QroG14gm9KsEusdMVDb3eSsk9AL2zj2a8naumrQypCW6HqlgPcsrpIBo7OpMsvhGMORlRMD/E0W/tZR4w2gHaylRceIfJqD2WZxCwHjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhIVNjBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F2CC4CEFB;
+	Fri, 21 Nov 2025 13:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732880;
-	bh=Y4RW3940pkCXCJ8ciOIwAGi/qioV9nqRCU1QFjLOp1I=;
+	s=korg; t=1763730916;
+	bh=WfPc+S4EWYIBQhZ17M33wGFOm2vMjgTCgUMV0CU/1w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ul3SJhvP7VmW222h68CykHR85i3Qzmd1OWaVuKsMQCBxV+Pg2jJsSmIA1PSIcnmyZ
-	 lphjoAmnzbqSBZYcgAboIRG1eJyAby619rZDxWrVNAQS6Vt7YxxWGu4B/E5CPHB4kP
-	 rzp8+4w9d1K1QicFx39rXBAQvMYH0TuBBcxc1PqY=
+	b=hhIVNjBFN1jEqVSlkjB/YObqEIqGvFbkQFgVH1oVfBl7moIplm/YYgtENNKkeLQMZ
+	 z8tqpLHCV66vmeElIqBA8Iv9JpCCUlABcJR4rINWP1DKM5jK5JZlFjDYYr+uBdxAKH
+	 kZMdW1tuNV436P0NaDLfSeJI17vg3fKvG8w1vdw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vered Yavniely <vered.yavniely@intel.com>,
-	Koby Elbaz <koby.elbaz@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/529] accel/habanalabs/gaudi2: fix BMON disable configuration
-Date: Fri, 21 Nov 2025 14:09:33 +0100
-Message-ID: <20251121130240.771161898@linuxfoundation.org>
+Subject: [PATCH 6.17 027/247] drm/amdgpu: hide VRAM sysfs attributes on GPUs without VRAM
+Date: Fri, 21 Nov 2025 14:09:34 +0100
+Message-ID: <20251121130155.579249466@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vered Yavniely <vered.yavniely@intel.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit b4fd8e56c9a3b614370fde2d45aec1032eb67ddd ]
+[ Upstream commit 33cc891b56b93cad1a83263eaf2e417436f70c82 ]
 
-Change the BMON_CR register value back to its original state before
-enabling, so that BMON does not continue to collect information
-after being disabled.
+Otherwise accessing them can cause a crash.
 
-Signed-off-by: Vered Yavniely <vered.yavniely@intel.com>
-Reviewed-by: Koby Elbaz <koby.elbaz@intel.com>
-Signed-off-by: Koby Elbaz <koby.elbaz@intel.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Tested-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c b/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
-index 25b5368f37dde..9ff00b65ae34b 100644
---- a/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
-+++ b/drivers/accel/habanalabs/gaudi2/gaudi2_coresight.c
-@@ -2409,7 +2409,7 @@ static int gaudi2_config_bmon(struct hl_device *hdev, struct hl_debug_params *pa
- 		WREG32(base_reg + mmBMON_ADDRH_E3_OFFSET, 0);
- 		WREG32(base_reg + mmBMON_REDUCTION_OFFSET, 0);
- 		WREG32(base_reg + mmBMON_STM_TRC_OFFSET, 0x7 | (0xA << 8));
--		WREG32(base_reg + mmBMON_CR_OFFSET, 0x77 | 0xf << 24);
-+		WREG32(base_reg + mmBMON_CR_OFFSET, 0x41);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 78f9e86ccc099..832ab87eb3451 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -234,6 +234,9 @@ static umode_t amdgpu_vram_attrs_is_visible(struct kobject *kobj,
+ 	    !adev->gmc.vram_vendor)
+ 		return 0;
  
- 	return 0;
++	if (!ttm_resource_manager_used(&adev->mman.vram_mgr.manager))
++		return 0;
++
+ 	return attr->mode;
+ }
+ 
 -- 
 2.51.0
 
