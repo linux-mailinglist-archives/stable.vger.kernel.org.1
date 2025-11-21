@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24336C796D0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8963AC79490
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id E5CEB339E3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:26:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1BAE54EA28D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EDC274FE3;
-	Fri, 21 Nov 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896E026E6F4;
+	Fri, 21 Nov 2025 13:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCVIYhJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhGswPnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E83190477;
-	Fri, 21 Nov 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448172765FF;
+	Fri, 21 Nov 2025 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731601; cv=none; b=kWySG+9xsL/9PRO5bWO/l7efhtj+cx+XEauRGK2fjvaQ2Ma+tyuiyJXej49Qv86Wr9S2UO7o1IXCaJkfDkVrJK4qrpYy7DXM+KY9YX9uTTTHmXivTh+FOkZkcRGKntuH8tCRefWu9Sd2iQcrgKRwDPDYa7vdHtvp1HiR+qHTEaE=
+	t=1763731193; cv=none; b=NBx5QzXWG8jloBB/p8oPnXoo3uArts+c9/kcezhhtJAEarMs63IoAQp9vZIXm+lQcqCiWNev7vvGh8BYWSTXyqqd5RpNDn8+D3DdbfF4vyrGGQF8FbLsBiqfxbHPRp43oLYmPxXTWXNNMi9vRflHAZs5S1m6rstzfox+Bsmnyyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731601; c=relaxed/simple;
-	bh=JVruydgNVdmh3mj9BF74jUqTDECNrG+JJnH3z4G8bpU=;
+	s=arc-20240116; t=1763731193; c=relaxed/simple;
+	bh=axABcC6O/lojn5EQX0/R9rCNvXNZxyT1H4yqXoi3Xp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvjgLe89DolzpSWCiTSd79i3XdJObBUii6nVV6X/03mZaTJZcwmJ0H08wqkQJ4Fphgdwrz/zk4nzO5LvxfASlz4q7a7wjND1RC3l3Ln9YEp3MtnA+mn8WTjoUlcHXMqkZMGZwhHBPmgaF/NSWt/sh0t80eVPB1U8nt72EbW0Y+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCVIYhJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41D1C4CEF1;
-	Fri, 21 Nov 2025 13:26:40 +0000 (UTC)
+	 MIME-Version; b=ppkGkZ9E5ekU1FMdDO3EAUzlia588lwEv7jP5M1ppu0fB37tVvUbzHfBQxY2gZyJ3tPd1d8uhfGPfouF6+ye5h32sCcp0tAqeOi49sEev0d3651jib92eov+uvnvVm32oNFEBuVOSR6lcIozr+tcpDaF7Afn2ZENZ/sSRRdk/pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhGswPnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79133C4CEF1;
+	Fri, 21 Nov 2025 13:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731601;
-	bh=JVruydgNVdmh3mj9BF74jUqTDECNrG+JJnH3z4G8bpU=;
+	s=korg; t=1763731192;
+	bh=axABcC6O/lojn5EQX0/R9rCNvXNZxyT1H4yqXoi3Xp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCVIYhJCakeeYixmeEKIjMiczAJO/1X1wn0zhzgyTbh7blL+YfZ5djEHG/Z2R7Pt1
-	 odBHRycepgWwWxeoAqvT9y/aM+VyjjfTHuiTyTjdfy9Z5aTSAmrkwlJxkM5uqp+rds
-	 nwFF/WvHd6R8QZs/EMPLeV8yGvEgYsdFx5CXstXI=
+	b=xhGswPnUL03utlkU3zU1i1NZ52yvIDM45x41dUhDI/Wu6UaoJYIMXXSUF6UV1Smv9
+	 XBZrP6uEud4E4ZXubx4JYHSVG6nVofI7OjCB6m5VaZeJEbqmiTkBegNLFzbsqm63tg
+	 B8war8V+3ifD8rubPQJXPxmTcWekz/UbWMavwyeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Christopher Harris <chris.harris79@gmail.com>,
+	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/185] drm/xe: Move declarations under conditional branch
+Subject: [PATCH 6.17 088/247] ACPI: CPPC: Detect preferred core availability on online CPUs
 Date: Fri, 21 Nov 2025 14:10:35 +0100
-Message-ID: <20251121130144.170171089@linuxfoundation.org>
+Message-ID: <20251121130157.752632800@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 9cd27eec872f0b95dcdd811edc39d2d32e4158c8 ]
+[ Upstream commit 4fe5934db4a7187d358f1af1b3ef9b6dd59bce58 ]
 
-The xe_device_shutdown() function was needing a few declarations
-that were only required under a specific condition. This change
-moves those declarations to be within that conditional branch
-to avoid unnecessary declarations.
+Commit 279f838a61f9 ("x86/amd: Detect preferred cores in
+amd_get_boost_ratio_numerator()") introduced the ability to detect the
+preferred core on AMD platforms by checking if there at least two
+distinct highest_perf values.
 
-Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20251007100208.1407021-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 15b3036045188f4da4ca62b2ed01b0f160252e9b)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Stable-dep-of: b11a020d914c ("drm/xe: Do clean shutdown also when using flr")
+However, it uses for_each_present_cpu() to iterate through all the
+CPUs in the platform, which is problematic when the kernel is booted
+with "nosmt=force" commandline option.
+
+Hence limit the search to only the online CPUs.
+
+Fixes: 279f838a61f9 ("x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()")
+Reported-by: Christopher Harris <chris.harris79@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
+Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20251107074145.2340-2-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/acpi/cppc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 2e1d6d248d2e0..3fab4e67ef8c1 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -809,12 +809,12 @@ void xe_device_remove(struct xe_device *xe)
+diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
+index 7047124490f64..d7c8ef1e354d3 100644
+--- a/arch/x86/kernel/acpi/cppc.c
++++ b/arch/x86/kernel/acpi/cppc.c
+@@ -196,7 +196,7 @@ int amd_detect_prefcore(bool *detected)
+ 		break;
+ 	}
  
- void xe_device_shutdown(struct xe_device *xe)
- {
--	struct xe_gt *gt;
--	u8 id;
--
- 	drm_dbg(&xe->drm, "Shutting down device\n");
+-	for_each_present_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		u32 tmp;
+ 		int ret;
  
- 	if (xe_driver_flr_disabled(xe)) {
-+		struct xe_gt *gt;
-+		u8 id;
-+
- 		xe_display_pm_shutdown(xe);
- 
- 		xe_irq_suspend(xe);
 -- 
 2.51.0
 
