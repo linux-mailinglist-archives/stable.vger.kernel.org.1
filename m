@@ -1,145 +1,113 @@
-Return-Path: <stable+bounces-195449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B82DC77120
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:52:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA547C77175
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 04:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDE993550A7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 02:52:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 19BAE31840
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B9254B18;
-	Fri, 21 Nov 2025 02:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B06D2DECD3;
+	Fri, 21 Nov 2025 03:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vAbv4k9w"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PCkYEqnz"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3111F2DC350
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 02:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343C5155322
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 03:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763693542; cv=none; b=sFVP9U6IlvlsySteMzTaj6qQiyEcoKOSRN+bJUfJ4RF3/GPullAkCCaR8nSbPldpFb6XGxrKZm8ioajdIClf8dNQX0P3v3F/iPp+/sibrEbJy21hV05JurfityvCdEF8Yv2TUh4/+Am257QhW4tfz5BbY+IwEbFZIrx8FAWPhok=
+	t=1763694013; cv=none; b=O2eqkxQMo+YjwNWTAYPuTGpGhj3yYHXr5fz2wM10CbjiVhzmV/gSeSbrE1h+/swZ9aMbFyxyj26ajczKwURKvaULPcIYOvA9gffuileS1XoFXInpCreeFbsux4lQ+CuS81Wd6YL71+5eHeuzGz1Q2qAJh4Dtb14qNUFGOzOeuIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763693542; c=relaxed/simple;
-	bh=22kvScepeUgzy9u+iV1TUCoKsrEkefE67Zj+ksREK4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MZRqRPZLVdzgiZY4vK2fsbALjOlFjlPCFo0I0zMC1Zjw+bAl/2wNosqUj+Ht9lICQTfF86RnS1EjADS7xyVVR9dUUCP7GNeMAgTJdXRLiWlQuAsq4aLzzxoYk+cEdF6fgwwfa2/stMc+ykXiCkkq9gQgqC9afbAFLvsQCXvLRTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vAbv4k9w; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <e9cab398-5d55-45fb-b155-50919546300c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763693538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M0RxOUEnJhI6YS05bfTKGDCbdsZIWZGOMrBhCkCIu1s=;
-	b=vAbv4k9w0csPoygKpVNy7oXlMQLlU8N7fNv0rm7sqb71qjM8dbwqv4GcSoZH7xLZTawj2B
-	C8adv7WhxQvzceifh0wHI2Q75vxXaMxxgniAgg5xHWha4NdIfZx52UBNKbMODpaxunadFh
-	BQQQhrUv9JsP0s5MN95OAylivfkOMeI=
-Date: Fri, 21 Nov 2025 10:52:11 +0800
+	s=arc-20240116; t=1763694013; c=relaxed/simple;
+	bh=6UnKMS9m0WzkUknJ2P9VGxsS5gNcxDJtdGWfBbGjn1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YME2TPx7/iup0TghgoM1v9STnOzjx/gaDyIQNjbje/66h8uAMPPGgjPfnys7eBTo+NTZpdEAP24fkaTLARL8kz4oR6P9ER3nwvIXBXiDrQ4UpyKRbsOnSTYtDuS6M+AvCoefadnMiiuun3uiappEhEjvYzj8FJf0Qt+coJI0fAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PCkYEqnz; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7bf0ad0cb87so1439843b3a.2
+        for <stable@vger.kernel.org>; Thu, 20 Nov 2025 19:00:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1763694011; x=1764298811; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TwXQx/qh+8r1jODh/v1DnkHGAbvpfSuxgYbOTg93Q/g=;
+        b=PCkYEqnzlfx+xPV/Cqay/WRE2XkIHLn0aPt+yHp9Eet2RPkchzc4kwdn5LveOY2GhC
+         AGswL3+58ZmlX8Pb4b7q/qi/L+taj/gtQWnG0Mkc6i3snbnHBbBDCA5sJGhv6x3WZ3Po
+         Vy/eiLw3bD+egVfH8fM8Y3mmgsbC2DNjan1Gs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763694011; x=1764298811;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TwXQx/qh+8r1jODh/v1DnkHGAbvpfSuxgYbOTg93Q/g=;
+        b=El87oQAJdCdxtYbeQJT6piCWxDAInVGoYmcwmmgZicWtdUhuEZ0+ITxI5L2yxOo2dY
+         odH/hbXBOZaPfjhpku6Dd6HT8zxjq6A8xcfzPnBVf/+3wcV3ExZpsH827JWzqE/4K/le
+         ZVXj748BW9RxPDg6wG9Zq+mTVyeyrW3n0IydzjIDmS8QCHo77JV0k4/PzqA29L6iNDq4
+         qw6OqeNydx5J1m9Vc/ncs9R3jdgifWZZ1QORAvaRAU8aHpkp5qI4VZU6FT9FJkqAQhwC
+         2ShuSI5URTgnDubjUi3Mz6lczjEK8aMtTYEfcnGbm5W3JnKb620avpE7nhyIpv8YIvC4
+         CucQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwP8LU+Lrp/ooIAfPTXw+q+qY3fMHegpsuV4wjQpwGJhtfj99JMIJeUEN0CJbgy9DFbDZY75I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8KvdWr3tJ1tsDi23shKNH7Q4K6rReG3douxt+R1D6kdjVLULI
+	j+VQLXDWHPbp1o1/y+OSLglAsEkqrBMZq0Q3lA9tmaLiywXzcyZ9i75oYzZ+Y+zQAg==
+X-Gm-Gg: ASbGncutjatebWe5eqlm8viT3Mz2MGknXUDTWQQlxle40Wf8F2lDLLsZpPyhsk51b0P
+	FadvYrJNzBGRjOGrUfH3KXheH6rMW7SwxX0loPGazEB/dU2i5qX5BWLFjkZdOoMlXVzV1xuIYJ4
+	k294b4aLMjyoR1Ue0lCstVuGdWuBC4HcdZVtKhxUfiR/pIIVvH9L7l4h4P6syjPr+euo8pS2umP
+	+5ldvCweM3KfpCzdFVLCXwRdBTH9cHVQEKrCH2qcDb1NFF4G1704vn3N/U7ANr9y3CBRHJGFGd8
+	NmIXKpvACRT4uxtiVDYDGs1a95+RZ9hOdSg083Tyn2g0NLjBjxL7MKOdOj/l/9N5ZQk+U5aW6nE
+	7EjLapkRFLKPxPZaTQ6dHVYAbiGjn4CY9DTDue31X7EKO9BBVvAXEIZkF2cp3PsD4Gqqpz7kdWj
+	fPl01SukSLH3EbPQ==
+X-Google-Smtp-Source: AGHT+IG951CqwfOawPLG6jVVC1czgIM+nx3fCQxsmCgvHKHhNOQ+U/RwEh2phaqkDepdH4cN/K2ebQ==
+X-Received: by 2002:a05:6a00:1895:b0:7b9:a3c8:8c3a with SMTP id d2e1a72fcca58-7c58beb75bfmr652832b3a.7.1763694011521;
+        Thu, 20 Nov 2025 19:00:11 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:b321:53f:aff8:76e2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3ecf7d849sm4210618b3a.14.2025.11.20.19.00.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Nov 2025 19:00:11 -0800 (PST)
+Date: Fri, 21 Nov 2025 12:00:06 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yu-Che Cheng <giver@google.com>, 
+	Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
+ performance estimation' causes a regression
+Message-ID: <xhv2eshihzyt3j2tc7oz2gn2gkhucmlnxhoxyrdkxdnxtfwkmb@ebknoqcery5u>
+References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
+ <CAKfTPtAkYfCYc3giCzbDFLBDNTM-nXjkE8FXMZhvJj_im+Qz0Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.1.y] mm/secretmem: fix use-after-free race in fault
- handler
-Content-Language: en-US
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Google Big Sleep <big-sleep-vuln-reports@google.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
-References: <2025112032-parted-progeny-cd9e@gregkh>
- <20251120191547.2344004-1-rppt@kernel.org> <aR9vzeI5Tso6g7PO@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aR9vzeI5Tso6g7PO@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKfTPtAkYfCYc3giCzbDFLBDNTM-nXjkE8FXMZhvJj_im+Qz0Q@mail.gmail.com>
 
-Hi Mike,
-
-Thanks for taking care of the backport conflicts, much appreciated! That
-saved me a lot of work/time!
-
-Cheers,
-Lance
-
-On 2025/11/21 03:45, Mike Rapoport wrote:
-> Oops, copied the wrong git send-email command, sorry for the noise
+On (25/11/20 11:55), Vincent Guittot wrote:
+> > Hi,
+> >
+> > We are observing a performance regression on one of our arm64 boards.
+> > We tracked it down to the linux-6.6.y commit ada8d7fa0ad4 ("sched/cpufreq:
+> > Rework schedutil governor performance estimation").
 > 
-> On Thu, Nov 20, 2025 at 09:15:47PM +0200, Mike Rapoport wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> When a page fault occurs in a secret memory file created with
->> `memfd_secret(2)`, the kernel will allocate a new page for it, mark the
->> underlying page as not-present in the direct map, and add it to the file
->> mapping.
->>
->> If two tasks cause a fault in the same page concurrently, both could end
->> up allocating a page and removing the page from the direct map, but only
->> one would succeed in adding the page to the file mapping.  The task that
->> failed undoes the effects of its attempt by (a) freeing the page again
->> and (b) putting the page back into the direct map.  However, by doing
->> these two operations in this order, the page becomes available to the
->> allocator again before it is placed back in the direct mapping.
->>
->> If another task attempts to allocate the page between (a) and (b), and the
->> kernel tries to access it via the direct map, it would result in a
->> supervisor not-present page fault.
->>
->> Fix the ordering to restore the direct map before the page is freed.
->>
->> Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
->> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
->> Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->> (cherry picked from commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d)
->> [rppt: replaced folio with page in the patch and in the changelog]
->> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> ---
->>   mm/secretmem.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/secretmem.c b/mm/secretmem.c
->> index 624663a94808..0c86133ad33f 100644
->> --- a/mm/secretmem.c
->> +++ b/mm/secretmem.c
->> @@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->>   		__SetPageUptodate(page);
->>   		err = add_to_page_cache_lru(page, mapping, offset, gfp);
->>   		if (unlikely(err)) {
->> -			put_page(page);
->>   			/*
->>   			 * If a split of large page was required, it
->>   			 * already happened when we marked the page invalid
->>   			 * which guarantees that this call won't fail
->>   			 */
->>   			set_direct_map_default_noflush(page);
->> +			put_page(page);
->>   			if (err == -EEXIST)
->>   				goto retry;
->>   
->> -- 
->> 2.50.1
->>
-> 
+> Do you have the fix ?
+> https://lore.kernel.org/all/170539970061.398.16662091173685476681.tip-bot2@tip-bot2/
 
+Doesn't seem to be helping.
+
+> And do you have more details to share?
+
+Sure, I'm going to be offline for some days, so I'm trying to
+find someone on the team who can take this over while I'm away.
+I'll try to help as much as I can before that.
 
