@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-195977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF56DC79A7C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:48:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDA2C798BF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 86E5134DA4E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:40:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id C25EE292D8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C1834FF4B;
-	Fri, 21 Nov 2025 13:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485A2350D61;
+	Fri, 21 Nov 2025 13:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ndjz/LNK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XU9jBw+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C3734FF45;
-	Fri, 21 Nov 2025 13:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036FF34D917;
+	Fri, 21 Nov 2025 13:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732210; cv=none; b=ZJz+NJjN+VvL0sG/tFkUVXzWR+Hdg/mjisY5EeMLXfeLHWl1tDu8vhDuLq9Pq8Vuxt08A6QAQd3Ls4pHAaySqpNWXet6BV46diOCVclNqyHpwinMjwkSBxd3gdLSCIyqy+KL61EhqZEuCP6iGv79sGouc/CACcdQJwWxhkDL3E0=
+	t=1763732242; cv=none; b=XmNlnrU29wz8K4jsRNWVWezuFnaaoVN8wVQ8MB6WbwaIXDZTN3K7I9jHJFdnSGj7XeHnpYwZoYYBsg35fZXS+Za+DpwbVsfzdQpoO78OWLReR7YtxOwpPEpapoWOumHaOA8z0Tv8lcExZA9NkG0hF8pFsD2DdvlfjvHv3IS4yFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732210; c=relaxed/simple;
-	bh=lVFSbB2PT/bS79NfSmGtZCHmW2UDyr8Ot7HVe507/po=;
+	s=arc-20240116; t=1763732242; c=relaxed/simple;
+	bh=hC5a4gP42qwR5rnw1vPHnghN3IwSpNnC2bdKZ5YLrR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHBPRb5aUyZW0wZX21Qk+DPjFwE6GDK0xK7M5gMhPWOFOwCyjxqL7I7+LXAqeT+Nr5yHdTLAoRXu3geBIaXJ14wLsO377Pb4mlaym/ktGUtt2u7Jml+zzreGZrxJErjwGN3D/FBeEYN2THWfuQVqxMYXOSzMp59piQmy4M37arQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ndjz/LNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A722C4CEF1;
-	Fri, 21 Nov 2025 13:36:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qc6kNmCHbueDKkwmxagahM+4xRtu0XSS8oTpmdxOkzZQsDWCVJebJeiRq/SvJ10K+XmejeKTq8cFFp2ZR0wtcdFCU5i3NqAFJriCA5mf4nEVaxSWrRLnJHtgQ19ePHfM2+obMtR+sHPyhaZ/kSxKz/7zFAuoEFelV4ypZOD0cVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XU9jBw+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2ECC116C6;
+	Fri, 21 Nov 2025 13:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732209;
-	bh=lVFSbB2PT/bS79NfSmGtZCHmW2UDyr8Ot7HVe507/po=;
+	s=korg; t=1763732241;
+	bh=hC5a4gP42qwR5rnw1vPHnghN3IwSpNnC2bdKZ5YLrR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ndjz/LNKZoS9p+Jw2xo1RQyf9rKYV70Geynw2sUl+gwZ+dt4BljOw2lAiMyjOZ3Zz
-	 LAq6RML1MAzflt/TMtDXKxcrmQttiWA0vp51s/CjiShlsuHwVKvTNbJNatbLJ8Ts5R
-	 xc0qsqtYPxpW/hAUVmNswKqA+m1Oqecna5xw2NA0=
+	b=XU9jBw+iqaiFW5nROWtsq42J79qEvNLeoLSr3Nw2nwpk2pYtahhoZ4rd5PYjnMKeM
+	 sThZRIcGk/1wHX8vagZTcJnpXxZIICFAuucS21xnbB7TpH5vxLWB8UX1oLsocfMhFC
+	 R5jaLOKTMEu91dG4f+WHsyQZj+/KDM99CLwTIN2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/529] bpf: Do not audit capability check in do_jit()
-Date: Fri, 21 Nov 2025 14:05:23 +0100
-Message-ID: <20251121130231.860692317@linuxfoundation.org>
+Subject: [PATCH 6.6 025/529] crypto: aspeed-acry - Convert to platform remove callback returning void
+Date: Fri, 21 Nov 2025 14:05:24 +0100
+Message-ID: <20251121130231.895793641@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -61,54 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 881a9c9cb7856b24e390fad9f59acfd73b98b3b2 ]
+[ Upstream commit 8819da7e685008de2c1926c067a388b1ecaeb8aa ]
 
-The failure of this check only results in a security mitigation being
-applied, slightly affecting performance of the compiled BPF program. It
-doesn't result in a failed syscall, an thus auditing a failed LSM
-permission check for it is unwanted. For example with SELinux, it causes
-a denial to be reported for confined processes running as root, which
-tends to be flagged as a problem to be fixed in the policy. Yet
-dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
-desirable, as it would allow/silence also other checks - either going
-against the principle of least privilege or making debugging potentially
-harder.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Fix it by changing it from capable() to ns_capable_noaudit(), which
-instructs the LSMs to not audit the resulting denials.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2369326
-Fixes: d4e89d212d40 ("x86/bpf: Call branch history clearing sequence on exit")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Link: https://lore.kernel.org/r/20251021122758.2659513-1-omosnace@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 3c9bf72cc1ce ("crypto: aspeed - fix double free caused by devm")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/aspeed/aspeed-acry.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index 07592eef253c2..0be138fbd0a05 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1995,7 +1995,7 @@ st:			if (is_imm8(insn->off))
- 			ctx->cleanup_addr = proglen;
+diff --git a/drivers/crypto/aspeed/aspeed-acry.c b/drivers/crypto/aspeed/aspeed-acry.c
+index 247c568aa8dfe..b4613bd4ad964 100644
+--- a/drivers/crypto/aspeed/aspeed-acry.c
++++ b/drivers/crypto/aspeed/aspeed-acry.c
+@@ -794,7 +794,7 @@ static int aspeed_acry_probe(struct platform_device *pdev)
+ 	return rc;
+ }
  
- 			if (bpf_prog_was_classic(bpf_prog) &&
--			    !capable(CAP_SYS_ADMIN)) {
-+			    !ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
- 				u8 *ip = image + addrs[i - 1];
+-static int aspeed_acry_remove(struct platform_device *pdev)
++static void aspeed_acry_remove(struct platform_device *pdev)
+ {
+ 	struct aspeed_acry_dev *acry_dev = platform_get_drvdata(pdev);
  
- 				if (emit_spectre_bhb_barrier(&prog, ip, bpf_prog))
+@@ -802,15 +802,13 @@ static int aspeed_acry_remove(struct platform_device *pdev)
+ 	crypto_engine_exit(acry_dev->crypt_engine_rsa);
+ 	tasklet_kill(&acry_dev->done_task);
+ 	clk_disable_unprepare(acry_dev->clk);
+-
+-	return 0;
+ }
+ 
+ MODULE_DEVICE_TABLE(of, aspeed_acry_of_matches);
+ 
+ static struct platform_driver aspeed_acry_driver = {
+ 	.probe		= aspeed_acry_probe,
+-	.remove		= aspeed_acry_remove,
++	.remove_new	= aspeed_acry_remove,
+ 	.driver		= {
+ 		.name   = KBUILD_MODNAME,
+ 		.of_match_table = aspeed_acry_of_matches,
 -- 
 2.51.0
 
