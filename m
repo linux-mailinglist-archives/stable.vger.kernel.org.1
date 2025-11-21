@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEBBC79E97
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D636C796B2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D848136586A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:57:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 054F436426E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FADF33508F;
-	Fri, 21 Nov 2025 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1797B3396E5;
+	Fri, 21 Nov 2025 13:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEJaDJY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdmIdmQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524D7278E63;
-	Fri, 21 Nov 2025 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76E1334367;
+	Fri, 21 Nov 2025 13:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733204; cv=none; b=kJJmjLGqIiio4NeOnAfsv1xOltivfFj710i3dm1o/S7qrCQCrrQDpdlOouhL9du2N4wegNROKLNPXyRk45WCt4i52FT/AVdvcoc3+PBb+g79IQuH4tF5xqT8tSxkbQ7qfxuMp5wNKW0sXJCQPR3WGQO/ppReDcl0pkNNOlppsEo=
+	t=1763731629; cv=none; b=V7Y0jKj4vzG5ivf2M2rxEVMMr9mD1lIOSliWA7Kp07ARBvftwqNfD3naBBvtVTU87fJW4vF7vfxcjiAkR46pHDst+27MtDb9lmfsJNXwhEWk0vUb+X47As7wwu/HHEmMkCsnQU3vgVeCyLpExcO8ETHJ3x7P44ik+AJ7Kpc9EKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733204; c=relaxed/simple;
-	bh=bKn74NTNUI2zIwVIEoES6I8sDDCJLr92dhAH/nVN0V8=;
+	s=arc-20240116; t=1763731629; c=relaxed/simple;
+	bh=HYrUEAVXZqgCx8jMSR2Ifk2lGrFkl5+1qyfhMtMgrYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsAgkX+vAfDe6HzDXZHUn8v3mfrEP2wWwcLXts7dHd1o7T8r39Xy5v3Qmf4BqNh1ltlRNQFnG8GI+wKREuRMR2Uj28aMrT7KJZvcQwr3DIfar81H6nynvFtsRBBgvgOQdorRCXMyUDqV3KKqHJJNqIe5neFzcFAvGSuBJ5iAHko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEJaDJY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995DFC4CEFB;
-	Fri, 21 Nov 2025 13:53:23 +0000 (UTC)
+	 MIME-Version; b=qslb59IGjk7lbRmMV2KbWBlwDYEMYlmSXu64DwiDyQ8bz/i5touyBAXbNfsm7xk+NWvjgaiH/jt9lIQCygymV0RTLUaVY2/fu13rom83cX2zUWq2poGOpJnfL83pPXhlGVfU3y5ijAh0henZD2deW2hdb/V4odhAOmW2/qzriIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdmIdmQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9ADC4CEF1;
+	Fri, 21 Nov 2025 13:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733204;
-	bh=bKn74NTNUI2zIwVIEoES6I8sDDCJLr92dhAH/nVN0V8=;
+	s=korg; t=1763731629;
+	bh=HYrUEAVXZqgCx8jMSR2Ifk2lGrFkl5+1qyfhMtMgrYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEJaDJY5eUKweBlG2EZsALWibTQhc9lpoaXb6UexqGz5vehs0QJyLT8eb4nO4CuUn
-	 /jcEqfjyoGCw8yzs+8l9FzctVfqCSIX8PYEYKKQjSw/m9BI6nqzORB5JFDQu/+np6p
-	 JmjvuIKf1UkGJV1VOBIac9Li3S+jMQrzC/tZvZAM=
+	b=PdmIdmQXEKbKEmHRIBmdbSVR6w+1sx0y5dW1qWzdaq8xRjr8W/IpTiPKlghY+1WiR
+	 oB07MnjMb8hTHZrlOAPwwCXZaAvFtATL6Pw4ro3J9Rld0fOGFkkFXZunWBSIsWgme4
+	 RqIWehqUf4fMf3hp4SwULC2mxSTqoOPv4Vtxnx0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	ZhangGuoDong <zhangguodong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 354/529] net/mlx5e: Use extack in get module eeprom by page callback
-Date: Fri, 21 Nov 2025 14:10:53 +0100
-Message-ID: <20251121130243.625796780@linuxfoundation.org>
+Subject: [PATCH 6.12 027/185] smb/server: fix possible refcount leak in smb2_sess_setup()
+Date: Fri, 21 Nov 2025 14:10:54 +0100
+Message-ID: <20251121130144.854410706@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: ZhangGuoDong <zhangguodong@kylinos.cn>
 
-[ Upstream commit b5100b72da688282558b28255c03a2d72241a729 ]
+[ Upstream commit 379510a815cb2e64eb0a379cb62295d6ade65df0 ]
 
-In case of errors in get module eeprom by page, reflect it through
-extack instead of a dmesg print.
-While at it, make the messages more human friendly.
+Reference count of ksmbd_session will leak when session need reconnect.
+Fix this by adding the missing ksmbd_user_session_put().
 
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20240808055927.2059700-10-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d1c94bc5b90c ("net/mlx5e: Fix return value in case of module EEPROM read error")
+Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 54379297a7489..b189220f8a877 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1842,8 +1842,10 @@ static int mlx5e_get_module_eeprom_by_page(struct net_device *netdev,
- 		if (size_read == -EINVAL)
- 			return -EINVAL;
- 		if (size_read < 0) {
--			netdev_err(priv->netdev, "%s: mlx5_query_module_eeprom_by_page failed:0x%x\n",
--				   __func__, size_read);
-+			NL_SET_ERR_MSG_FMT_MOD(
-+				extack,
-+				"Query module eeprom by page failed, read %u bytes, err %d\n",
-+				i, size_read);
- 			return i;
- 		}
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 67021dc6dfd81..cd42d25812661 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1798,6 +1798,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
  
+ 		if (ksmbd_conn_need_reconnect(conn)) {
+ 			rc = -EFAULT;
++			ksmbd_user_session_put(sess);
+ 			sess = NULL;
+ 			goto out_err;
+ 		}
 -- 
 2.51.0
 
