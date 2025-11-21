@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-196375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7F7C7A174
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:17:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA32C79469
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 4478D38F69
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5BE4C2C6E2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39088351FA0;
-	Fri, 21 Nov 2025 13:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ED82FF64E;
+	Fri, 21 Nov 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6w+IeSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHhzB5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CB334DB51;
-	Fri, 21 Nov 2025 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4F7258EFC;
+	Fri, 21 Nov 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733328; cv=none; b=YgxbWTWaNGj6YOifG1hNPor5GBsdwTgm7OMLgHJEssd2QapJpw+z3nWSpvsvndyMD/UETUkL5tFwgogp0bqTsB8Ncug/JZmPTXXVvUwbBEeSf+w4CKgDXPeOfqIk+oTER3M8TXBZ0xtnAmaiW4SRE1iy88gDtV7fKmJSmOajjU0=
+	t=1763731370; cv=none; b=DOlL4twIgZCp7FbOsRcc4RvrE6AzPZw3zGw6WuyuAZMgKLuSnG5wHa8KWM+fmn/26a25+kes9jbYbsDAOVfOGyJ8nFUmxP/Qa4OxZXNQygkhSwCVBEF7gzOy9PfE1/3DP3om6DkE8CENJlC8hegreAIi+Z/iEnHZ3ED3Xa2dqWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733328; c=relaxed/simple;
-	bh=0o7fcO/1TamWMDQGqCwFoz7b8mpoaRpsFMQpodj7Lr0=;
+	s=arc-20240116; t=1763731370; c=relaxed/simple;
+	bh=MiLNc611i9nss9mPLSFKtlUcfl44M6oWvzMbcraR0EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qATN/MyIKDYBki1bppmM+8L+fgaZQoTMGWPFqsjSgjSDcnrp/Fz+al597pJxGQqonSH6QjIVdsGCO3933RR+4Spim9oAAnni4Z6KPrT1AdlpqBpJi+0ELEztRcA7PSSLHBijEAay+ac641zMGJeFgOR1qbTzOiIela2JwyXZQ84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6w+IeSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF560C4CEF1;
-	Fri, 21 Nov 2025 13:55:26 +0000 (UTC)
+	 MIME-Version; b=kVdU7QLUyj/zFZuPiY23U1VkTWEsmw00PmkWLA/uuTYeilipe9chKT59k3N5tzFhps/k3s2+um5XhnJR3bhDxYZEf6gYj/ebMj/cT6YJbHC4GWR12GavqiiGQarWHIpuCVVTeRhCac+fiZfb+hspPxRe/yVz3vBLDd1srErazKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHhzB5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A86C116C6;
+	Fri, 21 Nov 2025 13:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733327;
-	bh=0o7fcO/1TamWMDQGqCwFoz7b8mpoaRpsFMQpodj7Lr0=;
+	s=korg; t=1763731370;
+	bh=MiLNc611i9nss9mPLSFKtlUcfl44M6oWvzMbcraR0EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6w+IeSLJqJU1IPq9XKtpezfs3Q/EuRkVrPPqfOaeb7B5OdrlYSLh5ySa5Jx78hmn
-	 GwrJtvlWtc9NynccVVZymtZdeSnRIYex2gDsxwNrTMxrAMJBO1JnTPlnMT6y/wRSBW
-	 LhJibzDcAmazpXxiMTd1Z9uSWvSLHvWfKtJCatMA=
+	b=mdHhzB5gEpH/hFgPJBnJcxslrAif9Y63XflKVTiGxP7QDProxrUcyr9VlEoz6KK7E
+	 oI0JxoKHcBs3vEMkkjxP9/L1MgV1hBpbqdy4sHmsie+FnsrwYWLFnqU33qGGIzJuqR
+	 jiDiFo9tUV0Dpa+HZRBQz4L8lNmV6ep1NJpgFi9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 431/529] NFS: enable nconnect for RDMA
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 183/247] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
 Date: Fri, 21 Nov 2025 14:12:10 +0100
-Message-ID: <20251121130246.350998441@linuxfoundation.org>
+Message-ID: <20251121130201.291160370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Isaac J. Manjarres <isaacmanjarres@google.com>
 
-[ Upstream commit b326df4a8ec6ef53e2e2f1c2cbf14f8a20e85baa ]
+commit 0d6c356dd6547adac2b06b461528e3573f52d953 upstream.
 
-It appears that in certain cases, RDMA capable transports can benefit
-from the ability to establish multiple connections to increase their
-throughput. This patch therefore enables the use of the "nconnect" mount
-option for those use cases.
+When emitting the order of the allocation for a hash table,
+alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
+base 2 of the allocation size.  This is not correct if the allocation size
+is smaller than a page, and yields a negative value for the order as seen
+below:
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 8ab523ce78d4 ("pnfs: Set transport security policy to RPC_XPRTSEC_NONE unless using TLS")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
+bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+
+Use get_order() to compute the order when emitting the hash table
+information to correctly handle cases where the allocation size is smaller
+than a page:
+
+TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
+bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+
+Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs3client.c | 1 +
- fs/nfs/nfs4client.c | 2 ++
- 2 files changed, 3 insertions(+)
+ mm/mm_init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs3client.c b/fs/nfs/nfs3client.c
-index 674c012868b1a..b0c8a39c2bbde 100644
---- a/fs/nfs/nfs3client.c
-+++ b/fs/nfs/nfs3client.c
-@@ -111,6 +111,7 @@ struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2537,7 +2537,7 @@ void *__init alloc_large_system_hash(con
+ 		panic("Failed to allocate %s hash table\n", tablename);
  
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
- 	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1)
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 32b1147fcafc4..aaf723471228b 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -924,6 +924,7 @@ static int nfs4_set_client(struct nfs_server *server,
- 	else
- 		cl_init.max_connect = max_connect;
- 	switch (proto) {
-+	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
- 	case XPRT_TRANSPORT_TCP_TLS:
- 		cl_init.nconnect = nconnect;
-@@ -1000,6 +1001,7 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 	cl_init.hostname = buf;
+ 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
+-		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
++		tablename, 1UL << log2qty, get_order(size), size,
+ 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
  
- 	switch (ds_proto) {
-+	case XPRT_TRANSPORT_RDMA:
- 	case XPRT_TRANSPORT_TCP:
- 	case XPRT_TRANSPORT_TCP_TLS:
- 		if (mds_clp->cl_nconnect > 1) {
--- 
-2.51.0
-
+ 	if (_hash_shift)
 
 
 
