@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6542AC79F93
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4658C7963A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 711FE4E8102
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 803EC289FD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424C73491D0;
-	Fri, 21 Nov 2025 13:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F3326560A;
+	Fri, 21 Nov 2025 13:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peiruWM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn4/EyyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E79830AD19;
-	Fri, 21 Nov 2025 13:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E93F9D2;
+	Fri, 21 Nov 2025 13:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733333; cv=none; b=X1JDclIdQTHPLJW3FCcjy5EfhRokdblq5BRuGQbsEbmK90O6CNYVOa0tlvCBHpo64xUPacSXNXXn1Q8dpYINtVHniDSswyyOxNP32NqYLneXu9g94c86HmkbewMm/WlKS9mcTaibuckUcdhXwXOMh4ZLe98Pd4Y4WiNh7TL9Bzs=
+	t=1763731858; cv=none; b=DJhqBraSteUuexJr/zseYpu3d8DpIBX9US22uoQ8yj4+c/+P0xauCipy7d0cXppNiNz2AGPcXV+Qf94wkCW+2qnjJStBFFxfMq4Kk2DC88JVZ10qR5E5vUp+O7lv/yXmY/n6cec8dVzBfkbjMYGYxuwTAQyaWgBMjlQsp+OpLWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733333; c=relaxed/simple;
-	bh=RjRXkgWeRDljy4YDKzBHp4vC+mzKkUBDk26O8N3iSw8=;
+	s=arc-20240116; t=1763731858; c=relaxed/simple;
+	bh=qmKRMspvxxmjAZi1q6yzMrYQRluPFc3oSzIr4+L3gCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBH69yASAQ1fQoTRjnsBVHOZ4fBzrgDY0xKAzW+LtoCaTfyiUgyTKM6aVS2ovAUzEs7ohUPuBytAWQqvxn9/v6I+DT+FcZVZRv2VZlTOBPb0skAvH2ljwmvaWScOa4bqbZ3Rod8gOIj/HFqwD4ocAZju7Auozoix8mk27MfP0CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peiruWM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F011C4CEF1;
-	Fri, 21 Nov 2025 13:55:32 +0000 (UTC)
+	 MIME-Version; b=cuhlDclHdoE3rg/6f4vSritm/dNGG5EOv2ZUhW3y1eS7Cjhm65N7/WPE1I2RW9Kk425FKuAExKSkdrT40AwrbTCWhD2GTXnTIna3Cb8ogBj5VV/2aqbCut2MlatX7IvebAzMdYtRZKHYdfetuRVAnoK7Jpa9ysZj18Cwrt1KrOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn4/EyyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EDDC4CEF1;
+	Fri, 21 Nov 2025 13:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733332;
-	bh=RjRXkgWeRDljy4YDKzBHp4vC+mzKkUBDk26O8N3iSw8=;
+	s=korg; t=1763731857;
+	bh=qmKRMspvxxmjAZi1q6yzMrYQRluPFc3oSzIr4+L3gCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peiruWM7juv/GqzAsIHDxBAorHo/GeQqIeNvHDDxI9pyUoREZFEEnd1MxUc9GyIwM
-	 YyK3es5uS5M+8Zjgb6BGx6mgLiMDJXdHuP/a0XE+fERNGbMw8D6wS4+WmJAaso4yCl
-	 GaTtSsf3uHjHb/+JBGlrb0dCbKPR8pMP7LrWT5Uc=
+	b=Fn4/EyyUlRaQIcJfh1ifI3g5tpf0o3H+9RaakqUeBfe8QOlOcH37vdQg0GmVgtP7K
+	 SgoYj5jOEK76uvLJM1Y71fXVVc2R+sJTZNnQ6j2KJJhD4HeqioptD39oCX6Oyk/9w6
+	 C7vq7bNAs9ZEGpPv+ORLkL8PwWBED50m0egDULjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>,
-	Benjamin Coddington <ben.coddington@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 433/529] NFS: sysfs: fix leak when nfs_client kobject add fails
+Subject: [PATCH 6.12 105/185] HID: uclogic: Fix potential memory leak in error path
 Date: Fri, 21 Nov 2025 14:12:12 +0100
-Message-ID: <20251121130246.421242067@linuxfoundation.org>
+Message-ID: <20251121130147.662512985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 7a7a3456520b309a0bffa1d9d62bd6c9dcab89b3 ]
+[ Upstream commit a78eb69d60ce893de48dd75f725ba21309131fc2 ]
 
-If adding the second kobject fails, drop both references to avoid sysfs
-residue and memory leak.
+In uclogic_params_ugee_v2_init_event_hooks(), the memory allocated for
+event_hook is not freed in the next error path. Fix that by freeing it.
 
-Fixes: e96f9268eea6 ("NFS: Make all of /sys/fs/nfs network-namespace unique")
-
-Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
-Reviewed-by: Benjamin Coddington <ben.coddington@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: a251d6576d2a ("HID: uclogic: Handle wireless device reconnection")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-uclogic-params.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index 784f7c1d003bf..53d4cdf28ee00 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -189,6 +189,7 @@ static struct nfs_netns_client *nfs_netns_client_alloc(struct kobject *parent,
- 			return p;
+diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
+index ef26c7defcf61..89fa2610f02ba 100644
+--- a/drivers/hid/hid-uclogic-params.c
++++ b/drivers/hid/hid-uclogic-params.c
+@@ -1367,8 +1367,10 @@ static int uclogic_params_ugee_v2_init_event_hooks(struct hid_device *hdev,
+ 	event_hook->hdev = hdev;
+ 	event_hook->size = ARRAY_SIZE(reconnect_event);
+ 	event_hook->event = kmemdup(reconnect_event, event_hook->size, GFP_KERNEL);
+-	if (!event_hook->event)
++	if (!event_hook->event) {
++		kfree(event_hook);
+ 		return -ENOMEM;
++	}
  
- 		kobject_put(&p->kobject);
-+		kobject_put(&p->nfs_net_kobj);
- 	}
- 	return NULL;
- }
+ 	list_add_tail(&event_hook->list, &p->event_hooks->list);
+ 
 -- 
 2.51.0
 
