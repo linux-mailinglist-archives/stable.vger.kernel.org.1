@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72A9C792CF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C8CC79C84
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 177AB4EC149
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 563DE4ED94A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E23033E34E;
-	Fri, 21 Nov 2025 13:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173C4267AF2;
+	Fri, 21 Nov 2025 13:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRGbWA8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XycY7hjr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5710D346FCA;
-	Fri, 21 Nov 2025 13:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EFA3F9D2;
+	Fri, 21 Nov 2025 13:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730896; cv=none; b=mDzAeMLA0LQo6DKECRxMwuUPS0R9BrMCEaP1IxK5ZvmhxzeLKJH03AdeMXwgG3HQ+h7OMGPC1zn9r3f7JToe3m3K6ZgccxGizT+wBAUohIIRlEbyXnPpYGQp99lNE4zEWRdOcJnVgGZA522EwZ1d7Nd1avMhpIduEknCkXopt60=
+	t=1763732865; cv=none; b=G+4cfUckTAT09Il+50OrBQ7xB/M+5V3YRY/v5i5vvusvAMImOKbJv9xbC15mbj8TXs5m0K1/VvQ6LsHjNxR9vD19CcIQiEu08h73ZxdfIOcl0LWdriseN8HvCVj1XXG23oNnn8AUjgwPxVneOsP0NVrD62Bo5BbJ5brFJbmNyqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730896; c=relaxed/simple;
-	bh=gqokv+UAu0E4pn07Bry2AcFuHfNIfx+kbscdjzFSn+0=;
+	s=arc-20240116; t=1763732865; c=relaxed/simple;
+	bh=jltXjxztMhURTdOpnPmmyF8wTdsn/C4dmB4gfgauDiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkbSt1ojv9XW6BCwp3ZJ5ukDANu37asePhkTw2LWzynITh77zWj4I/YldDqasYOI2rTfMSAd+T0Er9c2WjEGZJ+W+zszdJ8GLgm4xoCfiRfW8B6O74zMFu4EvjjRQZ7DJC0c1WDSb72OVDFlRc4Z99KBVAbyHser7OJ/RyhTrXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRGbWA8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47487C4CEF1;
-	Fri, 21 Nov 2025 13:14:55 +0000 (UTC)
+	 MIME-Version; b=rsVYaZtkwqWJB9B1m7yrM5IgAvqsUUG2oya8FIFah4WvkPWP+Xxqo3XQ7A7LyyvTQKWoVHI1cC8sUbV0jykkSmTGSQb+nv2C5tubDhcktczTknKU4inU4etS4PXgya5FkXXmoV7m+cXxi+Eb1ksTGn5iMGSvH9vo0hN/BCpR50g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XycY7hjr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1E4C4CEF1;
+	Fri, 21 Nov 2025 13:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730895;
-	bh=gqokv+UAu0E4pn07Bry2AcFuHfNIfx+kbscdjzFSn+0=;
+	s=korg; t=1763732865;
+	bh=jltXjxztMhURTdOpnPmmyF8wTdsn/C4dmB4gfgauDiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRGbWA8DvgaMMPBSHkylAbDeZFXWVKYT++8wL8Ufl34IFHku2VzSJylhgDT/Ii3Nl
-	 zPaFyPwXYnqfkOXXUa4Kn/gq1mROjHXRaAMiecL4casx/0vcGH4cWT2MTlsG8HY1Y3
-	 UnLsd52EOcmYAmKDXuxhkVSonsTNLda7Ili4Oe58=
+	b=XycY7hjrR7hv91nalLNWWEgdJl5jrqcpZmWJNvYkTcvQ5Ed8L7OFFsJB5osqVOFPy
+	 tIPl02ZkDhk4C1wH3FfHw/KfyG/nvridM/mx81BtWkZptZOaKg4Oc7B9NbnPDP6ooc
+	 3ZttRx+l4o79HzHjiHye2h+bnw1JGoxIBGAr963E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 020/247] compiler_types: Move unused static inline functions warning to W=2
-Date: Fri, 21 Nov 2025 14:09:27 +0100
-Message-ID: <20251121130155.327287171@linuxfoundation.org>
+Subject: [PATCH 6.6 269/529] NFSv4: handle ERR_GRACE on delegation recalls
+Date: Fri, 21 Nov 2025 14:09:28 +0100
+Message-ID: <20251121130240.593229403@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
+[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
 
-Per Nathan, clang catches unused "static inline" functions in C files
-since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+RFC7530 states that clients should be prepared for the return of
+NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
 
-Linus said:
-
-> So I entirely ignore W=1 issues, because I think so many of the extra
-> warnings are bogus.
->
-> But if this one in particular is causing more problems than most -
-> some teams do seem to use W=1 as part of their test builds - it's fine
-> to send me a patch that just moves bad warnings to W=2.
->
-> And if anybody uses W=2 for their test builds, that's THEIR problem..
-
-Here is the change to bump the warning from W=1 to W=2.
-
-Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
-[nathan: Adjust comment as well]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler_types.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 16755431fc11e..e768d2c693662 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -250,10 +250,9 @@ struct ftrace_likely_data {
- /*
-  * GCC does not warn about unused static inline functions for -Wunused-function.
-  * Suppress the warning in clang as well by using __maybe_unused, but enable it
-- * for W=1 build. This will allow clang to find unused functions. Remove the
-- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
-+ * for W=2 build. This will allow clang to find unused functions.
-  */
--#ifdef KBUILD_EXTRA_WARN1
-+#ifdef KBUILD_EXTRA_WARN2
- #define __inline_maybe_unused
- #else
- #define __inline_maybe_unused __maybe_unused
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 94a1caf326699..cfeef23ac9412 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -7658,10 +7658,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
+ 		return err;
+ 	do {
+ 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
+-		if (err != -NFS4ERR_DELAY)
++		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
+ 			break;
+ 		ssleep(1);
+-	} while (err == -NFS4ERR_DELAY);
++	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
+ 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
+ }
+ 
 -- 
 2.51.0
 
