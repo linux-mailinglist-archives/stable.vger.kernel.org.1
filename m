@@ -1,179 +1,143 @@
-Return-Path: <stable+bounces-196504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90320C7A882
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA871C7A885
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330F73A2198
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:21:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AD6C3A4D31
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750AB29BDAB;
-	Fri, 21 Nov 2025 15:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7676E292918;
+	Fri, 21 Nov 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idHHdSW+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3AWxVGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08638178372
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353632D94B8
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763738404; cv=none; b=Buf90bV6oaRQLtfcnBFAdC0zUDiWwfw7x0RY89NV6Tav4vMEVaR8nTFHcZEzGfwfSa3Em8ztvRQdFE0KRYhWI4Yx3E4hkdU3P5RxMdZbhv3LarabaDRS/xXYVF51KTjgGFYtN3vX/zWJWMjZ2teulhojtObW62RNygKZAmhhV9Q=
+	t=1763738418; cv=none; b=CRfEiebU2Vj4mMbc4SC7tC1AEBPx22/jR9SXfKeQtmeBWekrj/9XnV7X1WwD7MNH+YkxKelXW2D2r+9eAMk5GTCE3JmS2Xc9KmVPkSVYGVwm6gy+328Vh+bUTg6/5pa/e/MNHTwR9eEtuweZYnbvNu8vey0Wt26pIAn/AE93eQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763738404; c=relaxed/simple;
-	bh=S91R0JrQrKJKxdEYRIXhRczEsMtoKEtP1XH3tqkO6NQ=;
+	s=arc-20240116; t=1763738418; c=relaxed/simple;
+	bh=YzNdjNocdBS+qC3NrgKrXhno1tFz3DUKWrX6DXN4x0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVDoG+cslIbd9A7fwb92oKJNa2ulQDtpfS6mcjyppcVEfNc8UYNYgPn5VbKWiOZF0K3KXTRH+C8XRRBBSAqHTmbTDxsaEN9TqrlMQ8NPZsBVcd8v6Cwh2/LzA+HjDiwNSzTcLS6bFMQq3NQcobA8da7z8r/+kzCCo0PsoaEFoI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idHHdSW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9632BC4CEF1;
-	Fri, 21 Nov 2025 15:20:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ryr3LidLvS/qv7AvuPTJM/V4n7ev+bdLxIlP1O0wEHUvKwqUC2WiFAQeBckA37+MUI8+4VK4KaRMBTn1/sRhmfWRNn079hvBFAWDx6kwjIoAQVBz9iYxuCRhkoorhwLO4W54BhzT7EawJ/MAehKYq2a9VQK0vyGB7cVEAhoOTBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3AWxVGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3125DC4CEF1;
+	Fri, 21 Nov 2025 15:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763738403;
-	bh=S91R0JrQrKJKxdEYRIXhRczEsMtoKEtP1XH3tqkO6NQ=;
+	s=k20201202; t=1763738417;
+	bh=YzNdjNocdBS+qC3NrgKrXhno1tFz3DUKWrX6DXN4x0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idHHdSW+y/gTsOGUlykky0m6rMzwS5RWJpnd/xjRFJ3NSWgswRIFhMg6de1DKk6P2
-	 q06LoWEJobYBtr4WkU0js7fcd8B8RowDUxZ7RuNCKQ/QimbOi7+TZAx6oZ/gYPIuOe
-	 8dAdUJVLhx0RQIBFw6ly2Wr+UX40u0QkxbzJ+fySVijSD4fPbPOXQz9DEnnbI+qLgK
-	 rkm4u/mQvck/+8H7bcsFGvVvf/oIHOcbEQTl+RVaxoCbddD5gyTb7y13+qE7fyOYaP
-	 NNxj3zo+Ackiyd3Dp8rBUb9p36iSHE59Gv67JTUYQ7gDp6PFQK5AZs/4odDtwRPb1v
-	 GX+CV3Qzi/BqA==
+	b=L3AWxVGKOcbYA4cTRub0ZlEAbvEHoNJH5CSnmowJ6ND6eE2XG16C3NrxRTEVTtISm
+	 YScTjIeCkNu7hYM1ZESG/aP0pAx8k4rz2QfFcbydtd7uMOwDCq0iuxwn6TJ7TAs45n
+	 e23DP4UZ+iHTbsYgg7DVGXATZs55Jx/u6qYv31kiV3uCnqaTezvbeR2R4Sa5KC6Iyq
+	 82Hx9vSz+TRuyXv4IOuOr/vVFU9Zd+Vtqw+cB0kAJOyeLO539cFiT6k0bRfC/HkEwP
+	 JxZMIyPbl1Jx1V9xNHr2VG2P7aAomM//IQY5XbIe1AOp6cOJjbz/7bt11ZB3HiAVX+
+	 BFROGzI6hLIsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Song Liu <song@kernel.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ftrace: Fix BPF fexit with livepatch
-Date: Fri, 21 Nov 2025 10:20:00 -0500
-Message-ID: <20251121152000.2567643-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/2] drm/i915/psr: Check drm_dp_dpcd_read return value on PSR dpcd init
+Date: Fri, 21 Nov 2025 10:20:14 -0500
+Message-ID: <20251121152015.2567941-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112016-arrogance-recast-439f@gregkh>
-References: <2025112016-arrogance-recast-439f@gregkh>
+In-Reply-To: <2025112017-voter-absentee-5ffd@gregkh>
+References: <2025112017-voter-absentee-5ffd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Song Liu <song@kernel.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit 56b3c85e153b84f27e6cff39623ba40a1ad299d3 ]
+[ Upstream commit 9cc10041e9fe7f32c4817e3cdd806ff1986d266c ]
 
-When livepatch is attached to the same function as bpf trampoline with
-a fexit program, bpf trampoline code calls register_ftrace_direct()
-twice. The first time will fail with -EAGAIN, and the second time it
-will succeed. This requires register_ftrace_direct() to unregister
-the address on the first attempt. Otherwise, the bpf trampoline cannot
-attach. Here is an easy way to reproduce this issue:
+Currently we are ignoriong drm_dp_dpcd_read return values when reading PSR
+and Panel Replay capability DPCD register. Rework intel_psr_dpcd a bit to
+take care of checking the return value.
 
-  insmod samples/livepatch/livepatch-sample.ko
-  bpftrace -e 'fexit:cmdline_proc_show {}'
-  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
+v2: use drm_dp_dpcd_read_data
 
-Fix this by cleaning up the hash when register_ftrace_function_nolock hits
-errors.
-
-Also, move the code that resets ops->func and ops->trampoline to the error
-path of register_ftrace_direct(); and add a helper function reset_direct()
-in register_ftrace_direct() and unregister_ftrace_direct().
-
-Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251027175023.1521602-2-song@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[ moved cleanup to reset_direct() ]
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250821045918.17757-1-jouni.hogander@intel.com
+Stable-dep-of: f2687d3cc9f9 ("drm/i915/dp_mst: Disable Panel Replay")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/trampoline.c |  4 ----
- kernel/trace/ftrace.c   | 20 ++++++++++++++------
- 2 files changed, 14 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 32 ++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index e97aeda3a86b5..b6024fc903490 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -460,10 +460,6 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
- 		 * trampoline again, and retry register.
- 		 */
--		/* reset fops->func and fops->trampoline for re-register */
--		tr->fops->func = NULL;
--		tr->fops->trampoline = 0;
--
- 		/* reset im->image memory attr for arch_prepare_bpf_trampoline */
- 		set_memory_nx((long)im->image, 1);
- 		set_memory_rw((long)im->image, 1);
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 15785a729a0cd..ecda59d6acb4c 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5370,6 +5370,17 @@ static void remove_direct_functions_hash(struct ftrace_hash *hash, unsigned long
- 	}
- }
- 
-+static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
-+{
-+	struct ftrace_hash *hash = ops->func_hash->filter_hash;
-+
-+	remove_direct_functions_hash(hash, addr);
-+
-+	/* cleanup for possible another register call */
-+	ops->func = NULL;
-+	ops->trampoline = 0;
-+}
-+
- /**
-  * register_ftrace_direct - Call a custom trampoline directly
-  * for multiple functions registered in @ops
-@@ -5465,6 +5476,8 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 	ops->direct_call = addr;
- 
- 	err = register_ftrace_function_nolock(ops);
-+	if (err)
-+		reset_direct(ops, addr);
- 
-  out_unlock:
- 	mutex_unlock(&direct_mutex);
-@@ -5497,7 +5510,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct);
- int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
- 			     bool free_filters)
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 41988e193a415..88531c9be22cb 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -600,6 +600,16 @@ static void intel_dp_get_su_granularity(struct intel_dp *intel_dp)
+ static void _panel_replay_init_dpcd(struct intel_dp *intel_dp)
  {
--	struct ftrace_hash *hash = ops->func_hash->filter_hash;
- 	int err;
+ 	struct intel_display *display = to_intel_display(intel_dp);
++	int ret;
++
++	ret = drm_dp_dpcd_read_data(&intel_dp->aux, DP_PANEL_REPLAY_CAP_SUPPORT,
++				    &intel_dp->pr_dpcd, sizeof(intel_dp->pr_dpcd));
++	if (ret < 0)
++		return;
++
++	if (!(intel_dp->pr_dpcd[INTEL_PR_DPCD_INDEX(DP_PANEL_REPLAY_CAP_SUPPORT)] &
++	      DP_PANEL_REPLAY_SUPPORT))
++		return;
  
- 	if (check_direct_multi(ops))
-@@ -5507,13 +5519,9 @@ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
+ 	if (intel_dp_is_edp(intel_dp)) {
+ 		if (!intel_alpm_aux_less_wake_supported(intel_dp)) {
+@@ -631,6 +641,15 @@ static void _panel_replay_init_dpcd(struct intel_dp *intel_dp)
+ static void _psr_init_dpcd(struct intel_dp *intel_dp)
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
++	int ret;
++
++	ret = drm_dp_dpcd_read_data(&intel_dp->aux, DP_PSR_SUPPORT, intel_dp->psr_dpcd,
++				    sizeof(intel_dp->psr_dpcd));
++	if (ret < 0)
++		return;
++
++	if (!intel_dp->psr_dpcd[0])
++		return;
  
- 	mutex_lock(&direct_mutex);
- 	err = unregister_ftrace_function(ops);
--	remove_direct_functions_hash(hash, addr);
-+	reset_direct(ops, addr);
- 	mutex_unlock(&direct_mutex);
+ 	drm_dbg_kms(display->drm, "eDP panel supports PSR version %x\n",
+ 		    intel_dp->psr_dpcd[0]);
+@@ -676,18 +695,9 @@ static void _psr_init_dpcd(struct intel_dp *intel_dp)
  
--	/* cleanup for possible another register call */
--	ops->func = NULL;
--	ops->trampoline = 0;
+ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
+ {
+-	drm_dp_dpcd_read(&intel_dp->aux, DP_PSR_SUPPORT, intel_dp->psr_dpcd,
+-			 sizeof(intel_dp->psr_dpcd));
 -
- 	if (free_filters)
- 		ftrace_free_filter(ops);
- 	return err;
+-	drm_dp_dpcd_read(&intel_dp->aux, DP_PANEL_REPLAY_CAP_SUPPORT,
+-			 &intel_dp->pr_dpcd, sizeof(intel_dp->pr_dpcd));
+-
+-	if (intel_dp->pr_dpcd[INTEL_PR_DPCD_INDEX(DP_PANEL_REPLAY_CAP_SUPPORT)] &
+-	    DP_PANEL_REPLAY_SUPPORT)
+-		_panel_replay_init_dpcd(intel_dp);
++	_psr_init_dpcd(intel_dp);
+ 
+-	if (intel_dp->psr_dpcd[0])
+-		_psr_init_dpcd(intel_dp);
++	_panel_replay_init_dpcd(intel_dp);
+ 
+ 	if (intel_dp->psr.sink_psr2_support ||
+ 	    intel_dp->psr.sink_panel_replay_su_support)
 -- 
 2.51.0
 
