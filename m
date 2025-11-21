@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEDEC793CB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE563C79DDE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21F38367707
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F48B4EBDE4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A11341043;
-	Fri, 21 Nov 2025 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC2350A21;
+	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNyrvila"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa6PE3We"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D2F33506C;
-	Fri, 21 Nov 2025 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E58350A0B;
+	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731029; cv=none; b=dn1kEfxlfvm4aIcFloT5XVpZRweMNP2teyK2bAq1IhF9sxgmL7ET2k4ILLXj9TLAdaCqlZU/wGouDiw8zIGGEU12acoCjXFgG+y30dkweOQowYoyGJ9bJT6vNHLTTC4Oke33dYZBX/pY3v6J2gmA8OL8zvls30zSjHKTqoB/SO4=
+	t=1763733041; cv=none; b=i5Cvs3GyZZEigIUufLz3Qx6OseXDvzXnKfuEeC4t8zD2A2j35gyyfB2PhHKR1aSPPe+nAr7CtNCGmn01TG3Y03yzNSRKK4EOD2sHVetvQU3orj2grwUZMNeNW5Y8gYDVMO9twQUxjG5A88BEJmE0j3j7ucqxwd4xc9Pv9568JUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731029; c=relaxed/simple;
-	bh=CwVs4SjtVGIhPxuUwRMxfhCseMNcrYwDFq/nW3FuvqA=;
+	s=arc-20240116; t=1763733041; c=relaxed/simple;
+	bh=AfaMk9OctL+1EiEhiml59OBZN6bmgtBYYSo11iiqsZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qO8//bjVghQt2bma+GFyIjP4UvnxkXoySXW+L1pwKozcSzNfDger1F485FFnWHyuo3suwpKrg426QtA6K+/tDFzqh73Jm7GxCUv/7aeYzR++aI/D+PHfmWT7nmmlYw0WyYSgHZNF90ba7ssRDN3VSuQ5Pr4wnUb36cfyk6qfmn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNyrvila; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F440C4CEF1;
-	Fri, 21 Nov 2025 13:17:08 +0000 (UTC)
+	 MIME-Version; b=GshxY3yX8CcOJw0BGuYwEda2sMVq6j89eeRoWk0BejmaXXUfhrtCzDTsSg/b+CMJYdjZNxdjQMBX2Sw2y9pUF2GUcxVGTO5spPC4aRLIVqFy3TWPFYgDdqYlc9IzjqduM5neB5ENlDL+Xhr9cqqCCQjsNbiEG9WLQwA+guKXGn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aa6PE3We; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32361C4CEF1;
+	Fri, 21 Nov 2025 13:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731028;
-	bh=CwVs4SjtVGIhPxuUwRMxfhCseMNcrYwDFq/nW3FuvqA=;
+	s=korg; t=1763733041;
+	bh=AfaMk9OctL+1EiEhiml59OBZN6bmgtBYYSo11iiqsZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNyrvilaqnghY9jWTLOzHZJeB8nFtPjhkx+6ktyKiLRe4mU2tfunI/z+SaAvQfnny
-	 q1W37ihV6Im3XU2Ku1am1ec6nhtBvFc9EhRIEuIAlVdfXt4ccXC/yOSaoyhp13O5/e
-	 tJlc3hV8rZt7ndlNCw1W1sTkcRz2stg+JehnFrcU=
+	b=Aa6PE3We+QvdC8GtmdJmsKYDo0yUuC9eDKqRU5qfaJZ/HDXB7mfp30zwbcDYjiyp5
+	 89wtx8pSf1JTRSaKiMAEJVNHMTlP0oimvt9CzsgOUPi1J2/zcR9z7NgrdGfH24eEmO
+	 9hj3ZTEYTc2NRVbW2FPnWWxiXro3i/W5zTHZlcmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 065/247] net: ethernet: ti: am65-cpsw-qos: fix IET verify/response timeout
+Subject: [PATCH 6.6 313/529] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
 Date: Fri, 21 Nov 2025 14:10:12 +0100
-Message-ID: <20251121130156.935355327@linuxfoundation.org>
+Message-ID: <20251121130242.161330427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-[ Upstream commit 49b3916465176a5abcb29a0e464825f553d55d58 ]
+[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
 
-The CPSW module uses the MAC_VERIFY_CNT bit field in the
-CPSW_PN_IET_VERIFY_REG_k register to set the verify/response timeout
-count. This register specifies the number of clock cycles to wait before
-resending a verify packet if the verification fails.
+As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
+can't be disabled - the clock module will just be stuck in transitioning
+state forever, resulting in the following warning message after the wait
+loop times out:
 
-The verify/response timeout count, as being set by the function
-am65_cpsw_iet_set_verify_timeout_count() is hardcoded for 125MHz
-clock frequency, which varies based on PHY mode and link speed.
+    l3-aon-clkctrl:0000:0: failed to disable
 
-The respective clock frequencies are as follows:
-- RGMII mode:
-  * 1000 Mbps: 125 MHz
-  * 100 Mbps: 25 MHz
-  * 10 Mbps: 2.5 MHz
-- QSGMII/SGMII mode: 125 MHz (all speeds)
+Just add the clock to enable_init_clks, so no attempt is made to disable
+it.
 
-Fix this by adding logic to calculate the correct timeout counts
-based on the actual PHY interface mode and link speed.
-
-Fixes: 49a2eb9068246 ("net: ethernet: ti: am65-cpsw-qos: Add Frame Preemption MAC Merge support")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-Link: https://patch.msgid.link/20251106092305.1437347-2-a-garg7@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-qos.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/clk/ti/clk-33xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-qos.c b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-index fa96db7c1a130..ad06942ce461a 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-qos.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-qos.c
-@@ -276,9 +276,31 @@ static int am65_cpsw_iet_set_verify_timeout_count(struct am65_cpsw_port *port)
- 	/* The number of wireside clocks contained in the verify
- 	 * timeout counter. The default is 0x1312d0
- 	 * (10ms at 125Mhz in 1G mode).
-+	 * The frequency of the clock depends on the link speed
-+	 * and the PHY interface.
- 	 */
--	val = 125 * HZ_PER_MHZ;	/* assuming 125MHz wireside clock */
-+	switch (port->slave.phy_if) {
-+	case PHY_INTERFACE_MODE_RGMII:
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+		if (port->qos.link_speed == SPEED_1000)
-+			val = 125 * HZ_PER_MHZ;	/* 125 MHz at 1000Mbps*/
-+		else if (port->qos.link_speed == SPEED_100)
-+			val = 25 * HZ_PER_MHZ;	/* 25 MHz at 100Mbps*/
-+		else
-+			val = (25 * HZ_PER_MHZ) / 10;	/* 2.5 MHz at 10Mbps*/
-+		break;
-+
-+	case PHY_INTERFACE_MODE_QSGMII:
-+	case PHY_INTERFACE_MODE_SGMII:
-+		val = 125 * HZ_PER_MHZ;	/* 125 MHz */
-+		break;
- 
-+	default:
-+		netdev_err(port->ndev, "selected mode does not supported IET\n");
-+		return -EOPNOTSUPP;
-+	}
- 	val /= MILLIHZ_PER_HZ;		/* count per ms timeout */
- 	val *= verify_time_ms;		/* count for timeout ms */
- 
+diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
+index 85c50ea39e6da..9269e6a0db6a4 100644
+--- a/drivers/clk/ti/clk-33xx.c
++++ b/drivers/clk/ti/clk-33xx.c
+@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
+ 	"dpll_ddr_m2_ck",
+ 	"dpll_mpu_m2_ck",
+ 	"l3_gclk",
++	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
++	"l3-aon-clkctrl:0000:0",
+ 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
+ 	"l3-clkctrl:00bc:0",
+ 	"l4hs_gclk",
 -- 
 2.51.0
 
