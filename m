@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-196149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97399C79B16
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFADC79B72
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1CCAF4EE89A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FFE54EF522
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1794634EF00;
-	Fri, 21 Nov 2025 13:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12A634D92F;
+	Fri, 21 Nov 2025 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUMVuVt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwO/9AYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831834EEE7;
-	Fri, 21 Nov 2025 13:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E16F3446A0;
+	Fri, 21 Nov 2025 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732695; cv=none; b=fF8buAv3iWNqk1emzsoykIykmGBMdOtQOEAJiED1bd9Mdhb7ARMx1Gz7x4YQGtpLpKjkHmiXxqqryOUPWa4hBIcUcW4HIAQGXZlFD35CqAM593DzlYUioM8FrXrMm+V/b+1kGtjhuaDZLJDsFdXQgZHgz1pWboPTn4SoK5sirVs=
+	t=1763732728; cv=none; b=o+9aV8qHXC74mfTxjLQDcbskPRc8a/l3pY+SrJgC5ZH17rX9KfBoXY+KtkuTQoOiW+9K0RiZTTIOQth6dTxKMjIU1KM+s00nAX1BsYKzK7vdffIT8DLAOC5TYBQgf63WnlrORhSmVuU3HG8PUZB0wlRUnKDsjul2YWOBVXI6h6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732695; c=relaxed/simple;
-	bh=0Stl4b1HPFelTDuSELirBinZL3a4d9bOmN0qoEyyE+g=;
+	s=arc-20240116; t=1763732728; c=relaxed/simple;
+	bh=5m3+L2vDNg0MmrAL5R+HRhRHH+NIAA8TsXxg2n60sUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJ3tscZiw3Dtmqx0GWi25nMJS0x5gJFDE7KkYrmGN1Q/GVAy4VQrPcoFNKSbz4pC3GMfZZELibh/B7TFKYtdxeXUX6VZAP/KErJP9Ab1NwIYlnlu/H0CVbwnGN49F5QPfyL2RSCP8gkBt+qYa/+U0ek8++GC6alTzUCoY1xfdWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUMVuVt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2D3C116C6;
-	Fri, 21 Nov 2025 13:44:54 +0000 (UTC)
+	 MIME-Version; b=tfrfUMo0Bs5e8sVE9JkpRbyakCaxZzJTTbnWmv/ea3x/qd3aJS1cpbOPbq0KDtFo3/4qjHYMKXke5qY8cClWg2nexvCfcDDR3MZN7eeilY8Sg0te3kYPHiyGudtlG5XwWecmnf3Vpyu2A/g20Cosg2QS8iffyYY75pV31Hq5XkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwO/9AYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900CFC4CEF1;
+	Fri, 21 Nov 2025 13:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732695;
-	bh=0Stl4b1HPFelTDuSELirBinZL3a4d9bOmN0qoEyyE+g=;
+	s=korg; t=1763732728;
+	bh=5m3+L2vDNg0MmrAL5R+HRhRHH+NIAA8TsXxg2n60sUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUMVuVt8kV2kzSIdc+TkaxKtVe9NcmyXf5/r2K8LUrD3f6Gtr6oYQ0yKgBDIIsx0N
-	 G3ffNvGtEdlavinmAYrp8teGsEChGlTGn0zSuUtJtOMTFCjyIURJFpLfNQIMNhBmSn
-	 DISmK4bsoPPE9UlYeOeo0lnLCKH+DZGrblKP/Y54=
+	b=CwO/9AYeu2vcPgzPYfIZspdSFKqLiDXJc/iHQh6U1sHqWKf5iF5Gpj/n6xyCQbABS
+	 8ziX5/6T84KU4mYvbXdXSkF8IDqWoMN7L4hjCO0lj9zeGzc/MAdJXyKlSXLVj7woYm
+	 NzxeUupnPvdmmx2hJ01F2pBh+b+dulJVG+pRkVVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/529] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
-Date: Fri, 21 Nov 2025 14:08:23 +0100
-Message-ID: <20251121130238.276814458@linuxfoundation.org>
+Subject: [PATCH 6.6 205/529] scsi: ufs: host: mediatek: Enhance recovery on resume failure
+Date: Fri, 21 Nov 2025 14:08:24 +0100
+Message-ID: <20251121130238.311969931@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,56 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
+[ Upstream commit 15ef3f5aa822f32524cba1463422a2c9372443f0 ]
 
-The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
-8-bit and 10-bit RAW output formats only.
+Improve the recovery process for failed resume operations. Log the
+device's power status and return 0 if both resume and recovery fail to
+prevent I/O hang.
 
-That said the planar greyscale Y8/Y10 media formats are more appropriate
-for the sensor instead of the originally and arbitrary selected SGRBG one,
-since there is no red, green or blue color components.
-
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/og01a1b.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-mediatek.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
-index 365ce56845836..9bd204911651e 100644
---- a/drivers/media/i2c/og01a1b.c
-+++ b/drivers/media/i2c/og01a1b.c
-@@ -676,7 +676,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
- {
- 	fmt->width = mode->width;
- 	fmt->height = mode->height;
--	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
- 	fmt->field = V4L2_FIELD_NONE;
- }
- 
-@@ -867,7 +867,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
- 	if (code->index > 0)
- 		return -EINVAL;
- 
--	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	code->code = MEDIA_BUS_FMT_Y10_1X10;
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 7ede6531bf40c..6f2e5b83ff0c9 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1444,8 +1444,21 @@ static int ufs_mtk_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 	}
  
  	return 0;
++
+ fail:
+-	return ufshcd_link_recovery(hba);
++	/*
++	 * Check if the platform (parent) device has resumed, and ensure that
++	 * power, clock, and MTCMOS are all turned on.
++	 */
++	err = ufshcd_link_recovery(hba);
++	if (err) {
++		dev_err(hba->dev, "Device PM: req=%d, status:%d, err:%d\n",
++			hba->dev->power.request,
++			hba->dev->power.runtime_status,
++			hba->dev->power.runtime_error);
++	}
++
++	return 0; /* Cannot return a failure, otherwise, the I/O will hang. */
  }
-@@ -879,7 +879,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
- 	if (fse->index >= ARRAY_SIZE(supported_modes))
- 		return -EINVAL;
  
--	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
-+	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
- 		return -EINVAL;
- 
- 	fse->min_width = supported_modes[fse->index].width;
+ static void ufs_mtk_dbg_register_dump(struct ufs_hba *hba)
 -- 
 2.51.0
 
