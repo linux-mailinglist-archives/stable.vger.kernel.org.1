@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459F6C79502
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF799C797F3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1B5F73650F8
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id F061B34FC0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD59C2F360C;
-	Fri, 21 Nov 2025 13:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E757A34403E;
+	Fri, 21 Nov 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Zbnldtl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO3fqc5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640C32DEA7E;
-	Fri, 21 Nov 2025 13:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09472F656A;
+	Fri, 21 Nov 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731210; cv=none; b=IGUFukqpL7aec0WPUYHL1PtT2dz0cLDQ3U/FOmAk32LHuAzSmR6O+uu5gqtCvdkg+zo6LLWewyWuqsR6KSpcblZXq0NF/akbB3Q1PB9er2dlnEOzjB2Ttq8/WvkO+LDUmk/PYy7ckElDItmUEMQGjPjpLtHBYe0IMpR6gP+g/oY=
+	t=1763731746; cv=none; b=XFCHR+ubkerosIyaal90bMqVZUWH5Uj2RXNVE19jI0JIsx/lIraHZ5348fozVSooXwuk9WI4+EhFUdi99gM7029BZ0WTmO8ZA2lBn4Ay1tqn8czYTiIbNKxs9ovuwsRwPz3Z4Vi+aw9+bxV0PW9pEGp1IaYLwv6sy4PCa9GCJN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731210; c=relaxed/simple;
-	bh=7CF/UM7r6PuSbPSJ6DpCPoXVzAsCnvy1M7TL7CJgIX4=;
+	s=arc-20240116; t=1763731746; c=relaxed/simple;
+	bh=WTrAaXssP/46LWDIxKN8d+cQXUW+I3Y3MuHA0tQUdWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyZDn5/mO5uUfw8+04FK5q/H6cvHFCEwUUsBgAc48lRFl8GTg2FESP6K7fEPlrLq0STBFWqiMR03XrbD3bEfhzrBTMwgT10DPPhHIWFrbvAYvERHN8vw4zBc189XT6Iwi9r0qjx+krVSsG9Vco6INc1fmC3lhhU7X9uUrOGVpu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Zbnldtl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D930CC16AAE;
-	Fri, 21 Nov 2025 13:20:09 +0000 (UTC)
+	 MIME-Version; b=mxB7CbwLN2b+TIDUTNIfdv8GewRicDUd/od+dO47QqsyqAIWS33WZZUNqxPOTdlb3zgl7hzsYxu0Uc0GgIzlM1JDID1SRsglumlIVOJJWImQqXp0Vo86ZT7urZz8yrh46dSOHNwvYmWFvOx5FQvgJbl0GdBo2XdXCBS2sP0rh4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO3fqc5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C345C4CEF1;
+	Fri, 21 Nov 2025 13:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731210;
-	bh=7CF/UM7r6PuSbPSJ6DpCPoXVzAsCnvy1M7TL7CJgIX4=;
+	s=korg; t=1763731746;
+	bh=WTrAaXssP/46LWDIxKN8d+cQXUW+I3Y3MuHA0tQUdWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Zbnldtl/Djxg6kBoJympHCwWqgmfEqfyLGN7A/dSFCGlVH2RT1m7PJ96QjFbbVdu
-	 +V4+n3UUX/qs+fw1MarqGjf8WMjc+1JPSRxmppKDdnNa/Plh/oWhACvzHXmIztEP7t
-	 Cd4IIKjNz19rO7tTybrF4H8XnGz8u0lt3fH/XElg=
+	b=ZO3fqc5c+hCM/QP+44Wq1rBOWbY0P9F6V/avmBa46g0PLwWkx0+9f+3kyWSOR+bqW
+	 rYNLKw/c3In4Swyzj8ydEn2elAfXvCr5ZElxyFlJeZHyLhTfr/pRhwudzYHVEYrt/x
+	 2j7v6d0FUnnibuMhOY6RFijYo+Y47hhfE4+6PE6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
+	syzbot+d7dad7fd4b3921104957@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 129/247] sched_ext: Fix unsafe locking in the scx_dump_state()
+Subject: [PATCH 6.12 049/185] tipc: Fix use-after-free in tipc_mon_reinit_self().
 Date: Fri, 21 Nov 2025 14:11:16 +0100
-Message-ID: <20251121130159.357259455@linuxfoundation.org>
+Message-ID: <20251121130145.648356840@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +64,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 5f02151c411dda46efcc5dc57b0845efcdcfc26d ]
+[ Upstream commit 0725e6afb55128be21a2ca36e9674f573ccec173 ]
 
-For built with CONFIG_PREEMPT_RT=y kernels, the dump_lock will be converted
-sleepable spinlock and not disable-irq, so the following scenarios occur:
+syzbot reported use-after-free of tipc_net(net)->monitors[]
+in tipc_mon_reinit_self(). [0]
 
-inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
-irq_work/0/27 [HC0[0]:SC0[0]:HE1:SE1] takes:
-(&rq->__lock){?...}-{2:2}, at: raw_spin_rq_lock_nested+0x2b/0x40
-{IN-HARDIRQ-W} state was registered at:
-   lock_acquire+0x1e1/0x510
-   _raw_spin_lock_nested+0x42/0x80
-   raw_spin_rq_lock_nested+0x2b/0x40
-   sched_tick+0xae/0x7b0
-   update_process_times+0x14c/0x1b0
-   tick_periodic+0x62/0x1f0
-   tick_handle_periodic+0x48/0xf0
-   timer_interrupt+0x55/0x80
-   __handle_irq_event_percpu+0x20a/0x5c0
-   handle_irq_event_percpu+0x18/0xc0
-   handle_irq_event+0xb5/0x150
-   handle_level_irq+0x220/0x460
-   __common_interrupt+0xa2/0x1e0
-   common_interrupt+0xb0/0xd0
-   asm_common_interrupt+0x2b/0x40
-   _raw_spin_unlock_irqrestore+0x45/0x80
-   __setup_irq+0xc34/0x1a30
-   request_threaded_irq+0x214/0x2f0
-   hpet_time_init+0x3e/0x60
-   x86_late_time_init+0x5b/0xb0
-   start_kernel+0x308/0x410
-   x86_64_start_reservations+0x1c/0x30
-   x86_64_start_kernel+0x96/0xa0
-   common_startup_64+0x13e/0x148
+The array is protected by RTNL, but tipc_mon_reinit_self()
+iterates over it without RTNL.
 
- other info that might help us debug this:
- Possible unsafe locking scenario:
+tipc_mon_reinit_self() is called from tipc_net_finalize(),
+which is always under RTNL except for tipc_net_finalize_work().
 
-        CPU0
-        ----
-   lock(&rq->__lock);
-   <Interrupt>
-     lock(&rq->__lock);
+Let's hold RTNL in tipc_net_finalize_work().
 
-  *** DEADLOCK ***
+[0]:
+BUG: KASAN: slab-use-after-free in __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
+Read of size 1 at addr ffff88805eae1030 by task kworker/0:7/5989
 
- stack backtrace:
- CPU: 0 UID: 0 PID: 27 Comm: irq_work/0
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x8c/0xd0
-  dump_stack+0x14/0x20
-  print_usage_bug+0x42e/0x690
-  mark_lock.part.44+0x867/0xa70
-  ? __pfx_mark_lock.part.44+0x10/0x10
-  ? string_nocheck+0x19c/0x310
-  ? number+0x739/0x9f0
-  ? __pfx_string_nocheck+0x10/0x10
-  ? __pfx_check_pointer+0x10/0x10
-  ? kvm_sched_clock_read+0x15/0x30
-  ? sched_clock_noinstr+0xd/0x20
-  ? local_clock_noinstr+0x1c/0xe0
-  __lock_acquire+0xc4b/0x62b0
-  ? __pfx_format_decode+0x10/0x10
-  ? __pfx_string+0x10/0x10
-  ? __pfx___lock_acquire+0x10/0x10
-  ? __pfx_vsnprintf+0x10/0x10
-  lock_acquire+0x1e1/0x510
-  ? raw_spin_rq_lock_nested+0x2b/0x40
-  ? __pfx_lock_acquire+0x10/0x10
-  ? dump_line+0x12e/0x270
-  ? raw_spin_rq_lock_nested+0x20/0x40
-  _raw_spin_lock_nested+0x42/0x80
-  ? raw_spin_rq_lock_nested+0x2b/0x40
-  raw_spin_rq_lock_nested+0x2b/0x40
-  scx_dump_state+0x3b3/0x1270
-  ? finish_task_switch+0x27e/0x840
-  scx_ops_error_irq_workfn+0x67/0x80
-  irq_work_single+0x113/0x260
-  irq_work_run_list.part.3+0x44/0x70
-  run_irq_workd+0x6b/0x90
-  ? __pfx_run_irq_workd+0x10/0x10
-  smpboot_thread_fn+0x529/0x870
-  ? __pfx_smpboot_thread_fn+0x10/0x10
-  kthread+0x305/0x3f0
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x40/0x70
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+CPU: 0 UID: 0 PID: 5989 Comm: kworker/0:7 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Workqueue: events tipc_net_finalize_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ __kasan_check_byte+0x2a/0x40 mm/kasan/common.c:568
+ kasan_check_byte include/linux/kasan.h:399 [inline]
+ lock_acquire+0x8d/0x360 kernel/locking/lockdep.c:5842
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
+ rtlock_slowlock kernel/locking/rtmutex.c:1894 [inline]
+ rwbase_rtmutex_lock_state kernel/locking/spinlock_rt.c:160 [inline]
+ rwbase_write_lock+0xd3/0x7e0 kernel/locking/rwbase_rt.c:244
+ rt_write_lock+0x76/0x110 kernel/locking/spinlock_rt.c:243
+ write_lock_bh include/linux/rwlock_rt.h:99 [inline]
+ tipc_mon_reinit_self+0x79/0x430 net/tipc/monitor.c:718
+ tipc_net_finalize+0x115/0x190 net/tipc/net.c:140
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x439/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-This commit therefore use rq_lock_irqsave/irqrestore() to replace
-rq_lock/unlock() in the scx_dump_state().
+Allocated by task 6089:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:405
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x1a8/0x320 mm/slub.c:4407
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ tipc_mon_create+0xc3/0x4d0 net/tipc/monitor.c:657
+ tipc_enable_bearer net/tipc/bearer.c:357 [inline]
+ __tipc_nl_bearer_enable+0xe16/0x13f0 net/tipc/bearer.c:1047
+ __tipc_nl_compat_doit net/tipc/netlink_compat.c:371 [inline]
+ tipc_nl_compat_doit+0x3bc/0x5f0 net/tipc/netlink_compat.c:393
+ tipc_nl_compat_handle net/tipc/netlink_compat.c:-1 [inline]
+ tipc_nl_compat_recv+0x83c/0xbe0 net/tipc/netlink_compat.c:1321
+ genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:729
+ ____sys_sendmsg+0x508/0x820 net/socket.c:2614
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
+ __sys_sendmsg net/socket.c:2700 [inline]
+ __do_sys_sendmsg net/socket.c:2705 [inline]
+ __se_sys_sendmsg net/socket.c:2703 [inline]
+ __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2703
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 07814a9439a3 ("sched_ext: Print debug dump after an error exit")
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Freed by task 6088:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:243 [inline]
+ __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2422 [inline]
+ slab_free mm/slub.c:4695 [inline]
+ kfree+0x195/0x550 mm/slub.c:4894
+ tipc_l2_device_event+0x380/0x650 net/tipc/bearer.c:-1
+ notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
+ call_netdevice_notifiers net/core/dev.c:2281 [inline]
+ unregister_netdevice_many_notify+0x14d7/0x1fe0 net/core/dev.c:12166
+ unregister_netdevice_many net/core/dev.c:12229 [inline]
+ unregister_netdevice_queue+0x33c/0x380 net/core/dev.c:12073
+ unregister_netdevice include/linux/netdevice.h:3385 [inline]
+ __tun_detach+0xe4d/0x1620 drivers/net/tun.c:621
+ tun_detach drivers/net/tun.c:637 [inline]
+ tun_chr_close+0x10d/0x1c0 drivers/net/tun.c:3433
+ __fput+0x458/0xa80 fs/file_table.c:468
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:43
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
+Reported-by: syzbot+d7dad7fd4b3921104957@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/690c323a.050a0220.baf87.007f.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107064038.2361188-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tipc/net.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index e1b502ef1243c..313206067ea3d 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4270,7 +4270,7 @@ static void scx_dump_state(struct scx_exit_info *ei, size_t dump_len)
- 		size_t avail, used;
- 		bool idle;
+diff --git a/net/tipc/net.c b/net/tipc/net.c
+index 0e95572e56b41..7e65d0b0c4a8d 100644
+--- a/net/tipc/net.c
++++ b/net/tipc/net.c
+@@ -145,7 +145,9 @@ void tipc_net_finalize_work(struct work_struct *work)
+ {
+ 	struct tipc_net *tn = container_of(work, struct tipc_net, work);
  
--		rq_lock(rq, &rf);
-+		rq_lock_irqsave(rq, &rf);
++	rtnl_lock();
+ 	tipc_net_finalize(tipc_link_net(tn->bcl), tn->trial_addr);
++	rtnl_unlock();
+ }
  
- 		idle = list_empty(&rq->scx.runnable_list) &&
- 			rq->curr->sched_class == &idle_sched_class;
-@@ -4339,7 +4339,7 @@ static void scx_dump_state(struct scx_exit_info *ei, size_t dump_len)
- 		list_for_each_entry(p, &rq->scx.runnable_list, scx.runnable_node)
- 			scx_dump_task(&s, &dctx, p, ' ');
- 	next:
--		rq_unlock(rq, &rf);
-+		rq_unlock_irqrestore(rq, &rf);
- 	}
- 
- 	dump_newline(&s);
+ void tipc_net_stop(struct net *net)
 -- 
 2.51.0
 
