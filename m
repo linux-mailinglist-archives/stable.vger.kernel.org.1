@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBF0C7A110
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:15:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6155EC7985C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id CBA3538F18
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id E8AC62E4D8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C05351FD1;
-	Fri, 21 Nov 2025 13:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9F3332904;
+	Fri, 21 Nov 2025 13:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07FcnZxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLmw1hl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8DB275AFF;
-	Fri, 21 Nov 2025 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B92745E;
+	Fri, 21 Nov 2025 13:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733321; cv=none; b=Grv7YJey6nM3fE3XYjw7L3YYM09FmXuiUeJyWBvEISKzSOwFg3wryFQ9NbrkdtmPAVTKWzlhYQboU2fQ6Yk8SmuouGNO806WILZE6nx6Qr5PR5Z1MiHQgHyZw82bYHgvWtkn6AzNQPO6gORiwM2JNF9CK3CLkPbqIV4sWNxGkJQ=
+	t=1763731844; cv=none; b=QOFHgtg4e1nCcv5YOKPKAJqv4JH1A7AtLUWii6t5sJdxEhFhjVX4BXvIA9811ENV2ZgDxflwW8UVlXjTZtjz2/IG1X4r7LotlGu98ElRHbLhelVm/S7C4QAly4137snSSFuuE5aeIh40y2yTKf3zYtED3M70beXog5oWVaGWXQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733321; c=relaxed/simple;
-	bh=UgQOf+hUgf/2ct6qqcNkg+tVPSkcxjYtHRpPm9tBzR8=;
+	s=arc-20240116; t=1763731844; c=relaxed/simple;
+	bh=XMIFNHimzpWRPseNauInu0fplrerLRVrjhOYOI/sZCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebygw+fh8lwf06Z7jH7+SOUva6GYrkfAV6UbDHhuwWy1XSpnXRM14MH4nQNzQYoqlecnBlhQLRKqZ6MFPrGFUB1J8Jd5SQGwE229nuudTj+D6/JztDN366oYidIHY0pMk+2dGwROFZdb05x/HTxbpBp1em/iNWYl+vLauLqx2NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07FcnZxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7DFC4CEF1;
-	Fri, 21 Nov 2025 13:55:20 +0000 (UTC)
+	 MIME-Version; b=BsW1U9kpXm2I7PWcQ77FcR4B5u5YrdUsFjBZPDZ7azae0BfUbk9ZGBJMML+ugkaBQ6A9BRcAcXe1wkROxuR0xAaG2o5r9a9lEVsqDmklj67kKS+mFEMUii9k77VvjcFP1FDbfD7vQScERn8PXoRnvdDu7S7Rw6ayfFejVUfYPok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLmw1hl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874BCC4CEF1;
+	Fri, 21 Nov 2025 13:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733321;
-	bh=UgQOf+hUgf/2ct6qqcNkg+tVPSkcxjYtHRpPm9tBzR8=;
+	s=korg; t=1763731843;
+	bh=XMIFNHimzpWRPseNauInu0fplrerLRVrjhOYOI/sZCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07FcnZxB+pQcOoI2Y6Vig0aapOudUmWVoXWJb06bwbAakazbhAn23fAdvpDnE0Trb
-	 l81Ju0axiY+1Wd2guxD6eYgLlOTrDYjeacL7CMu8wjndQ+xsBFzA6nPAkO+1MfqOlQ
-	 hGMvEG9Boj7ludkT+8vtQzgDhkOX8vs4Ma0G7YUY=
+	b=CLmw1hl9bI5NlDb3aR4IIgB9b+HYow6d4C+dlFi0GusP21aBbdN3DHS23V57UdC+O
+	 MwJYcg3wieL83XdGRL62Gsm5xzaZIcibWR8VA2vpUldys3lsqy7ya+kCTpBxPuI2ad
+	 avq18kO2WFuk948UvkP5VUEvZWt7Ak11hvTvvLeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 429/529] ASoC: tas2781: fix getting the wrong device number
+Subject: [PATCH 6.12 101/185] ARM: dts: imx51-zii-rdu1: Fix audmux node names
 Date: Fri, 21 Nov 2025 14:12:08 +0100
-Message-ID: <20251121130246.280449135@linuxfoundation.org>
+Message-ID: <20251121130147.518599847@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 29528c8e643bb0c54da01237a35010c6438423d2 ]
+[ Upstream commit f31e261712a0d107f09fb1d3dc8f094806149c83 ]
 
-The return value of device_property_read_u32_array used for getting the
-property is the status instead of the number of the property.
+Rename the 'ssi2' and 'aud3' nodes to 'mux-ssi2' and 'mux-aud3' in the
+audmux configuration of imx51-zii-rdu1.dts to comply with the naming
+convention in imx-audmux.yaml.
 
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20251107054959.950-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This fixes the following dt-schema warning:
+
+  imx51-zii-rdu1.dtb: audmux@83fd0000 (fsl,imx51-audmux): 'aud3', 'ssi2'
+  do not match any of the regexes: '^mux-[0-9a-z]*$', '^pinctrl-[0-9]+$'
+
+Fixes: ceef0396f367f ("ARM: dts: imx: add ZII RDU1 board")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-i2c.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 43775c1944452..836cf06a45266 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -616,7 +616,8 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- {
- 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
- 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
--	int i, ndev = 0;
-+	int ndev = 0;
-+	int i, rc;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
+index 7cd17b43b4b26..33b0a427ed5ca 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
+@@ -259,7 +259,7 @@
+ 	pinctrl-0 = <&pinctrl_audmux>;
+ 	status = "okay";
  
- 	if (tas_priv->isacpi) {
- 		ndev = device_property_read_u32_array(&client->dev,
-@@ -627,8 +628,12 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 		} else {
- 			ndev = (ndev < ARRAY_SIZE(dev_addrs))
- 				? ndev : ARRAY_SIZE(dev_addrs);
--			ndev = device_property_read_u32_array(&client->dev,
-+			rc = device_property_read_u32_array(&client->dev,
- 				"ti,audio-slots", dev_addrs, ndev);
-+			if (rc != 0) {
-+				ndev = 1;
-+				dev_addrs[0] = client->addr;
-+			}
- 		}
+-	ssi2 {
++	mux-ssi2 {
+ 		fsl,audmux-port = <1>;
+ 		fsl,port-config = <
+ 			(IMX_AUDMUX_V2_PTCR_SYN |
+@@ -271,7 +271,7 @@
+ 		>;
+ 	};
  
- 		tas_priv->irq =
+-	aud3 {
++	mux-aud3 {
+ 		fsl,audmux-port = <2>;
+ 		fsl,port-config = <
+ 			IMX_AUDMUX_V2_PTCR_SYN
 -- 
 2.51.0
 
