@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-196001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10346C79B8B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:52:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4A9C799B4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A697F3477FB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id BAF412E2B0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8915F34DCC4;
-	Fri, 21 Nov 2025 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E07334E753;
+	Fri, 21 Nov 2025 13:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfG1Gk6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11AAHelY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302B4346E72;
-	Fri, 21 Nov 2025 13:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEB034EEE3;
+	Fri, 21 Nov 2025 13:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732279; cv=none; b=k2SyATkDGvR6sxQPOAXHQeFeFxVkVAJJVBBsQfneJQ9MGlCdQ3GRQ22OCOig4vbBzGpbBFIaiYPr7c1tOVo2Th2PDirFdPqggPEi2KFDxas9hPdABb32rJlNq4kmvUqyTSAPCHclNk22NvwlAAuQVnHi8WOvBP/4E1T3XdkrHnA=
+	t=1763732178; cv=none; b=GT1hTBWcuSgQdbIG09yxi2GuuFRlzpu2daHI9nYh4DBQYO+bEcNgYlh8qvLQbIKoftwDivGBh7UICwwLBejIVX+t3Da5dDvcLSwAbrdcGdO3DE/9P2B53UZN3jh3tovhjmC6Oj+Op0I+PiIC+p92i0dtP2PBVwCegWbJWWx04FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732279; c=relaxed/simple;
-	bh=ojje+MKMyvYFAYUqlgqSU1z5aOS8IVHxYI5zrzfXwtM=;
+	s=arc-20240116; t=1763732178; c=relaxed/simple;
+	bh=QOURxnPE2UN2dpHtr5VqWERprB82JQxe6R9urJl+QhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehcXJpcBQgRtZw13yhmhclnPYqfkvu8BVwZHzwWf5dpOST7ujS7mn0oSGU/wlxdzlIbDH/wckcMEX6qfLD/xKdsnqjzcmvR7fd2B3DHiwBWVd6F1BMakY1mPAQztuTYlcgDOJtPo7cU5eAxJypoBgT1xPDd35phT47UdD/WID54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfG1Gk6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571C4C4CEF1;
-	Fri, 21 Nov 2025 13:37:58 +0000 (UTC)
+	 MIME-Version; b=H4QOA/+j7QgbdSAUNLdbGrHmZIKQvhFAzcSUexrlDky2FJXjTQYSc86B7xo6D/rscWjfJAx5Fd7iZ+Rm1ZcE7lEh0KcHcq2AefBlwTcxSRPrHbs564M6M4QwVUWBLmW3mx7LPVW6Uy2qXlXKrNzi+ikR6v5+XpusMfykWL0KBYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11AAHelY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311A6C4CEF1;
+	Fri, 21 Nov 2025 13:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732278;
-	bh=ojje+MKMyvYFAYUqlgqSU1z5aOS8IVHxYI5zrzfXwtM=;
+	s=korg; t=1763732178;
+	bh=QOURxnPE2UN2dpHtr5VqWERprB82JQxe6R9urJl+QhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfG1Gk6ZVUxhO/tsfLAAtKtA0HXgwtCOemSMSMVzPi9YwiY74l8tf0MAW7uIUiSu3
-	 CJu25cOGO+P3NkfPYKo9WSpaY0mbKrbMpz8VH7f6S73pcyw1nS3RDcr3D9binBssKh
-	 +Z9DSqT4GNnpGj0KKZ0FZyukkScvbfZe4cFzX1Uo=
+	b=11AAHelYpUIwHlPIKjFAWWIHSOwjWh+tgKPmJILXe0rVHd47ztJr/VzJvMUJR54s7
+	 aAw5tKjr4trUfnhXOaM221McZNVM48gfMXoYBfYNTMQ3n9AYy/RambM5MktQ8Cl6LN
+	 WdMoYNpzEs1a3lKlw4MMCAn4pgo7S86jMq3oj49U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com,
-	Noorain Eqbal <nooraineqbal@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wonkon Kim <wkon.kim@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/529] bpf: Sync pending IRQ work before freeing ring buffer
-Date: Fri, 21 Nov 2025 14:05:21 +0100
-Message-ID: <20251121130231.791322174@linuxfoundation.org>
+Subject: [PATCH 6.6 023/529] scsi: ufs: core: Initialize value of an attribute returned by uic cmd
+Date: Fri, 21 Nov 2025 14:05:22 +0100
+Message-ID: <20251121130231.826084680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -67,44 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Noorain Eqbal <nooraineqbal@gmail.com>
+From: Wonkon Kim <wkon.kim@samsung.com>
 
-[ Upstream commit 4e9077638301816a7d73fa1e1b4c1db4a7e3b59c ]
+[ Upstream commit 6fe4c679dde3075cb481beb3945269bb2ef8b19a ]
 
-Fix a race where irq_work can be queued in bpf_ringbuf_commit()
-but the ring buffer is freed before the work executes.
-In the syzbot reproducer, a BPF program attached to sched_switch
-triggers bpf_ringbuf_commit(), queuing an irq_work. If the ring buffer
-is freed before this work executes, the irq_work thread may accesses
-freed memory.
-Calling `irq_work_sync(&rb->work)` ensures that all pending irq_work
-complete before freeing the buffer.
+If ufshcd_send_cmd() fails, *mib_val may have a garbage value. It can
+get an unintended value of an attribute.
 
-Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
-Reported-by: syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2617fc732430968b45d2
-Tested-by: syzbot+2617fc732430968b45d2@syzkaller.appspotmail.com
-Signed-off-by: Noorain Eqbal <nooraineqbal@gmail.com>
-Link: https://lore.kernel.org/r/20251020180301.103366-1-nooraineqbal@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Make ufshcd_dme_get_attr() always initialize *mib_val.
+
+Fixes: 12b4fdb4f6bc ("[SCSI] ufs: add dme configuration primitives")
+Signed-off-by: Wonkon Kim <wkon.kim@samsung.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251020061539.28661-2-wkon.kim@samsung.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/ringbuf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ufs/core/ufshcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
-index 6aff5ee483b60..c0c5e9b313e43 100644
---- a/kernel/bpf/ringbuf.c
-+++ b/kernel/bpf/ringbuf.c
-@@ -215,6 +215,8 @@ static struct bpf_map *ringbuf_map_alloc(union bpf_attr *attr)
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 7dcdaac31546b..2080b251580c8 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4176,8 +4176,8 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
+ 			get, UIC_GET_ATTR_ID(attr_sel),
+ 			UFS_UIC_COMMAND_RETRIES - retries);
  
- static void bpf_ringbuf_free(struct bpf_ringbuf *rb)
- {
-+	irq_work_sync(&rb->work);
-+
- 	/* copy pages pointer and nr_pages to local variable, as we are going
- 	 * to unmap rb itself with vunmap() below
- 	 */
+-	if (mib_val && !ret)
+-		*mib_val = uic_cmd.argument3;
++	if (mib_val)
++		*mib_val = ret == 0 ? uic_cmd.argument3 : 0;
+ 
+ 	if (peer && (hba->quirks & UFSHCD_QUIRK_DME_PEER_ACCESS_AUTO_MODE)
+ 	    && pwr_mode_change)
 -- 
 2.51.0
 
