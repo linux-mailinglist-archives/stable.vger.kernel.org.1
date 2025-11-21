@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-195548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4B2C79389
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:20:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F3CC79C7B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 98C47349AEB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:17:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 483714F00B5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869AC34B402;
-	Fri, 21 Nov 2025 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A199434A3D6;
+	Fri, 21 Nov 2025 13:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADWko4Om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f99DIzIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427FC34AB1E;
-	Fri, 21 Nov 2025 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D32F343D6C;
+	Fri, 21 Nov 2025 13:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730985; cv=none; b=Yc/ttuwaU3NKIeqhJn6HGAenRX0GBcs/edcDrcSeL6wuViC4IkohEi+21oRxEcuCUAy8hfxm5G2oFwB+tLWhAr70mNbX/kwMsbCZ3JrEypHQwlEMB+TiTuC+os1dUfDcsWd8vPbO9eEFmkGt3zSI5iT6ySfs4nYul3KuLnKZ2Kk=
+	t=1763732854; cv=none; b=m17174rRiLQwkIJUeu6PhXslAral6P15t7EiulYNGAQIWNSmYZsph1K85M6tLhmNEM8thhbbFigBgwlhjQHbRo9md4s23DLY7Csv2Znjry0RrL84q38r3QE2tvCFfuaDVUiej0jhhT9CDBj8UYemEzuQoFZy5LjQ4B2z/4G+vDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730985; c=relaxed/simple;
-	bh=kOqUhFb/5JNxUeHCyfCvUu3BkVKK44WtFkayOsgKNGo=;
+	s=arc-20240116; t=1763732854; c=relaxed/simple;
+	bh=uR+IzB2iGKqlr27hELKkktKA0iav1jtDjznEHS+7B7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t+VIKxsVlcWcert3cS5SDItpogCW/TEb2DTgkIimDMoA3OCeEC4t5SzkrcUxfjqsTsPaRh/LvcegmMj1I1QHb02aasCxSXTLjlb0FNbYaA0PAd97J3b1gNdk6qPv9Asv5+jVVyRLapgWPnFRzpXkkqy6oTEnrXNLsTgc7kxQ2zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADWko4Om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4584C4CEF1;
-	Fri, 21 Nov 2025 13:16:24 +0000 (UTC)
+	 MIME-Version; b=jTORK2IabOSWpsadrH5/qFyy1GNOSN47IVrMyxyjapNjWxNFF3CqtWE8LwVauCxfaDWHBwCI4MAA7cHtz4LEy91DnC9Kopcvw2mpjTQSST7yapMUgsTwmaSAmUBD4pBvj3AFwnKdghfwRqFYf3uadoY54Rem66KV/kTWlbNRfmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f99DIzIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5344C4CEF1;
+	Fri, 21 Nov 2025 13:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730985;
-	bh=kOqUhFb/5JNxUeHCyfCvUu3BkVKK44WtFkayOsgKNGo=;
+	s=korg; t=1763732854;
+	bh=uR+IzB2iGKqlr27hELKkktKA0iav1jtDjznEHS+7B7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADWko4OmjiSekXwe1W0mDIkDo8AKRhdop/VKnpd6QMdI+Fuhj8JmJXboUeVXTp/fB
-	 LvPk5AMLu96lXFkyyKy3VCMog/a+e2MznoqYspzQPMrDF3qXMqPwhm4Ul0cmQrk83m
-	 6nxPovTc7cbhGRTLk0QwGG0QhMWrypOzV//dmU34=
+	b=f99DIzIcIiL1m9fCwFwfX+deUzXYfC0TWZCk0TptfuCr55kc8DrbTBs3NjF3jvupv
+	 3Cq4Y7PK1N21PtlhEvKsKqhqeAcS/fgaScIu0OtpFNbi7SqBEvTrc/9yYu4fmRqOHC
+	 b9Ax4A/TeqBmcMCFTIlknXBksw6GID1Pn3DQc+XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 017/247] drm/amd/pm: Disable MCLK switching on SI at high pixel clocks
-Date: Fri, 21 Nov 2025 14:09:24 +0100
-Message-ID: <20251121130155.219533173@linuxfoundation.org>
+Subject: [PATCH 6.6 266/529] remoteproc: qcom: q6v5: Avoid handling handover twice
+Date: Fri, 21 Nov 2025 14:09:25 +0100
+Message-ID: <20251121130240.488355157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 5c05bcf6ae7732da1bd4dc1958d527b5f07f216a ]
+[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
 
-On various SI GPUs, a flickering can be observed near the bottom
-edge of the screen when using a single 4K 60Hz monitor over DP.
-Disabling MCLK switching works around this problem.
+A remoteproc could theoretically signal handover twice. This is unexpected
+and would break the reference counting for the handover resources (power
+domains, clocks, regulators, etc), so add a check to prevent that from
+happening.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 +++++
+ drivers/remoteproc/qcom_q6v5.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 70efa4dce3848..a2b411a93b0fe 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3500,6 +3500,11 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 	 * for these GPUs to calculate bandwidth requirements.
- 	 */
- 	if (high_pixelclock_count) {
-+		/* Work around flickering lines at the bottom edge
-+		 * of the screen when using a single 4K 60Hz monitor.
-+		 */
-+		disable_mclk_switching = true;
+diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
+index 769c6d6d6a731..58d5b85e58cda 100644
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -164,6 +164,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
+ {
+ 	struct qcom_q6v5 *q6v5 = data;
+ 
++	if (q6v5->handover_issued) {
++		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
++		return IRQ_HANDLED;
++	}
 +
- 		/* On Oland, we observe some flickering when two 4K 60Hz
- 		 * displays are connected, possibly because voltage is too low.
- 		 * Raise the voltage by requiring a higher SCLK.
+ 	if (q6v5->handover)
+ 		q6v5->handover(q6v5);
+ 
 -- 
 2.51.0
 
