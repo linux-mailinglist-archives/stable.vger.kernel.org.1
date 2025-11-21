@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-195596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1713C7933E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A66C79FAB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 936822BE3D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id D1C4437BC5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5FD34029C;
-	Fri, 21 Nov 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398C1350A1D;
+	Fri, 21 Nov 2025 13:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAqnQMTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3ZsM/ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642932750FB;
-	Fri, 21 Nov 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66F6258ECB;
+	Fri, 21 Nov 2025 13:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731124; cv=none; b=ua2y5O/VZw5N0vI5Amg2Z0PUM9FpKqb5BAbomCrI2BuOtOGQbMg6O/cOshtWXsbZ2dc18UYTmfGLNlYTN4q4wpj2dtMEHdPSE1GXuJcmuNUBheYJq2X3SETr3uNl1g6xRhoP2iX6rrzTHOp4WSAGXB54hG8pnissvVeHybHCbhI=
+	t=1763733039; cv=none; b=YQfHW1ShGMXQqP/NYSrf/B9KWadLdoQS+UrHHbAtEEPi4xJAIaB+GIViMoc7KBEJn4kiGZZw+GnDTbcYXjk3aj4zoiRXIbTc4BwgQdTPY7vRW6kAV7RNS8VFXCxCT+P9X/4QbvauzMKesBe3SEfgta9UkzGLlocDMbMzoPLHOL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731124; c=relaxed/simple;
-	bh=nRec5Crx3zI4DHXD/i1fv7h9dwST/cyyVkpjb1WqFQo=;
+	s=arc-20240116; t=1763733039; c=relaxed/simple;
+	bh=hT21iXneMz5//QkhieUrOfgZFr3O1KUoSYdhaLRwk/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dG8Sco9A6ninOlD+m+qeHXM8mWV3t8ZnsxCQp1mGGiGo/LtMtezqfPUsXhdzrpwatOLczKa5tyExpwFU+p17gf4e8KK1H0DBy7+4a7fESUHNOBaehoL5oecQVbn+B2A55g+PAxUCt0t7IamlgpLAlHKynSpfPuCXNE9JBrRidg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAqnQMTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD728C4CEF1;
-	Fri, 21 Nov 2025 13:18:43 +0000 (UTC)
+	 MIME-Version; b=qDVcl1UAeyRZ7dY/Oj0hDdbBs/+MBnnHvwFh1wMtqGxUn7wZvPivu0EDngVt/9RQ3yfGH0ruZW/J9OnRGr7uIULPHrJIsmZpO3yZsOxhb+DPEDr9gmqsg2vL4kSX/nrYKgdr95LmvWaMzt2IjZH+OzrSOufbYqCi/HLGF1rH4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3ZsM/ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E650C4CEF1;
+	Fri, 21 Nov 2025 13:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731124;
-	bh=nRec5Crx3zI4DHXD/i1fv7h9dwST/cyyVkpjb1WqFQo=;
+	s=korg; t=1763733038;
+	bh=hT21iXneMz5//QkhieUrOfgZFr3O1KUoSYdhaLRwk/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAqnQMTtBzjmKcwmEEfqj4ar6igrVepzGYoW7OgUQh7TTl5WJg5T8UFGPX4rLEavo
-	 QgRmOXHRil3qWPFfKqNjNTsiwbMp7hgNJ+1K96CVyyZGrrNbx8+O3Z69IhfPmtpSel
-	 w+F0mXFPM0lJd1kJLGU7Unn0BxbdIzyINO6YBMis=
+	b=b3ZsM/ai2ltDx5jD4xqi+MihyxBa0NQD5VfI/iDAW7hcd8IkpRRud3cM/+rHQdTtX
+	 reQQs+WIYjOn67vGyyGpILEmlaCOzhlh/mI90ypc8fwMbptkllXhXpoVG+eCDXpiFb
+	 ODLw0RFT4S2Aoypj1IE9Cu49QNSoRdLbrhy+r/Mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 081/247] mlx5: Fix default values in create CQ
-Date: Fri, 21 Nov 2025 14:10:28 +0100
-Message-ID: <20251121130157.504163956@linuxfoundation.org>
+	Angel4005 <ooara1337@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 330/529] media: uvcvideo: Use heuristic to find stream entity
+Date: Fri, 21 Nov 2025 14:10:29 +0100
+Message-ID: <20251121130242.768769562@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,308 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit e5eba42f01340f73888dfe560be2806057c25913 ]
+commit 758dbc756aad429da11c569c0d067f7fd032bcf7 upstream.
 
-Currently, CQs without a completion function are assigned the
-mlx5_add_cq_to_tasklet function by default. This is problematic since
-only user CQs created through the mlx5_ib driver are intended to use
-this function.
+Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
+descriptor where multiple entities share the same ID, this is invalid
+and makes it impossible to make a proper entity tree without heuristics.
 
-Additionally, all CQs that will use doorbells instead of polling for
-completions must call mlx5_cq_arm. However, the default CQ creation flow
-leaves a valid value in the CQ's arm_db field, allowing FW to send
-interrupts to polling-only CQs in certain corner cases.
+We have recently introduced a change in the way that we handle invalid
+entities that has caused a regression on broken devices.
 
-These two factors would allow a polling-only kernel CQ to be triggered
-by an EQ interrupt and call a completion function intended only for user
-CQs, causing a null pointer exception.
+Implement a new heuristic to handle these devices properly.
 
-Some areas in the driver have prevented this issue with one-off fixes
-but did not address the root cause.
-
-This patch fixes the described issue by adding defaults to the create CQ
-flow. It adds a default dummy completion function to protect against
-null pointer exceptions, and it sets an invalid command sequence number
-by default in kernel CQs to prevent the FW from sending an interrupt to
-the CQ until it is armed. User CQs are responsible for their own
-initialization values.
-
-Callers of mlx5_core_create_cq are responsible for changing the
-completion function and arming the CQ per their needs.
-
-Fixes: cdd04f4d4d71 ("net/mlx5: Add support to create SQ and CQ for ASO")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Acked-by: Leon Romanovsky <leon@kernel.org>
-Link: https://patch.msgid.link/1762681743-1084694-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Angel4005 <ooara1337@gmail.com>
+Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
+Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/cq.c               | 11 +++++---
- drivers/net/ethernet/mellanox/mlx5/core/cq.c  | 23 +++++++++++++--
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  1 -
- .../ethernet/mellanox/mlx5/core/fpga/conn.c   | 15 +++++-----
- .../mellanox/mlx5/core/steering/hws/send.c    |  7 -----
- .../mellanox/mlx5/core/steering/sws/dr_send.c | 28 +++++--------------
- drivers/vdpa/mlx5/net/mlx5_vnet.c             |  6 ++--
- include/linux/mlx5/cq.h                       |  1 +
- 8 files changed, 44 insertions(+), 48 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
-index a23b364e24ffe..651d76bca114d 100644
---- a/drivers/infiniband/hw/mlx5/cq.c
-+++ b/drivers/infiniband/hw/mlx5/cq.c
-@@ -1020,15 +1020,18 @@ int mlx5_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 	if (cq->create_flags & IB_UVERBS_CQ_FLAGS_IGNORE_OVERRUN)
- 		MLX5_SET(cqc, cqc, oi, 1);
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -165,13 +165,26 @@ static struct uvc_entity *uvc_entity_by_
  
-+	if (udata) {
-+		cq->mcq.comp = mlx5_add_cq_to_tasklet;
-+		cq->mcq.tasklet_ctx.comp = mlx5_ib_cq_comp;
-+	} else {
-+		cq->mcq.comp  = mlx5_ib_cq_comp;
-+	}
-+
- 	err = mlx5_core_create_cq(dev->mdev, &cq->mcq, cqb, inlen, out, sizeof(out));
- 	if (err)
- 		goto err_cqb;
- 
- 	mlx5_ib_dbg(dev, "cqn 0x%x\n", cq->mcq.cqn);
--	if (udata)
--		cq->mcq.tasklet_ctx.comp = mlx5_ib_cq_comp;
--	else
--		cq->mcq.comp  = mlx5_ib_cq_comp;
- 	cq->mcq.event = mlx5_ib_cq_event;
- 
- 	INIT_LIST_HEAD(&cq->wc_list);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cq.c b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-index e9f319a9bdd6b..60f7ab1d72e78 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
-@@ -66,8 +66,8 @@ void mlx5_cq_tasklet_cb(struct tasklet_struct *t)
- 		tasklet_schedule(&ctx->task);
- }
- 
--static void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
--				   struct mlx5_eqe *eqe)
-+void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
-+			    struct mlx5_eqe *eqe)
+ static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
  {
- 	unsigned long flags;
- 	struct mlx5_eq_tasklet *tasklet_ctx = cq->tasklet_ctx.priv;
-@@ -95,7 +95,15 @@ static void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
- 	if (schedule_tasklet)
- 		tasklet_schedule(&tasklet_ctx->task);
- }
-+EXPORT_SYMBOL(mlx5_add_cq_to_tasklet);
+-	struct uvc_streaming *stream;
++	struct uvc_streaming *stream, *last_stream;
++	unsigned int count = 0;
  
-+static void mlx5_core_cq_dummy_cb(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe)
-+{
-+	mlx5_core_err(cq->eq->core.dev,
-+		      "CQ default completion callback, CQ #%u\n", cq->cqn);
-+}
-+
-+#define MLX5_CQ_INIT_CMD_SN cpu_to_be32(2 << 28)
- /* Callers must verify outbox status in case of err */
- int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
- 		   u32 *in, int inlen, u32 *out, int outlen)
-@@ -121,10 +129,19 @@ int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
- 	cq->arm_sn     = 0;
- 	cq->eq         = eq;
- 	cq->uid = MLX5_GET(create_cq_in, in, uid);
-+
-+	/* Kernel CQs must set the arm_db address prior to calling
-+	 * this function, allowing for the proper value to be
-+	 * initialized. User CQs are responsible for their own
-+	 * initialization since they do not use the arm_db field.
-+	 */
-+	if (cq->arm_db)
-+		*cq->arm_db = MLX5_CQ_INIT_CMD_SN;
-+
- 	refcount_set(&cq->refcount, 1);
- 	init_completion(&cq->free);
- 	if (!cq->comp)
--		cq->comp = mlx5_add_cq_to_tasklet;
-+		cq->comp = mlx5_core_cq_dummy_cb;
- 	/* assuming CQ will be deleted before the EQ */
- 	cq->tasklet_ctx.priv = &eq->tasklet_ctx;
- 	INIT_LIST_HEAD(&cq->tasklet_ctx.list);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 110d654796de9..885ffb1e718a8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -2218,7 +2218,6 @@ static int mlx5e_alloc_cq_common(struct mlx5_core_dev *mdev,
- 	mcq->set_ci_db  = cq->wq_ctrl.db.db;
- 	mcq->arm_db     = cq->wq_ctrl.db.db + 1;
- 	*mcq->set_ci_db = 0;
--	*mcq->arm_db    = 0;
- 	mcq->vector     = param->eq_ix;
- 	mcq->comp       = mlx5e_completion_event;
- 	mcq->event      = mlx5e_cq_error_event;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-index cb1319974f83f..ccef64fb40b66 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-@@ -421,6 +421,13 @@ static int mlx5_fpga_conn_create_cq(struct mlx5_fpga_conn *conn, int cq_size)
- 	__be64 *pas;
- 	u32 i;
- 
-+	conn->cq.mcq.cqe_sz     = 64;
-+	conn->cq.mcq.set_ci_db  = conn->cq.wq_ctrl.db.db;
-+	conn->cq.mcq.arm_db     = conn->cq.wq_ctrl.db.db + 1;
-+	*conn->cq.mcq.set_ci_db = 0;
-+	conn->cq.mcq.vector     = 0;
-+	conn->cq.mcq.comp       = mlx5_fpga_conn_cq_complete;
-+
- 	cq_size = roundup_pow_of_two(cq_size);
- 	MLX5_SET(cqc, temp_cqc, log_cq_size, ilog2(cq_size));
- 
-@@ -468,15 +475,7 @@ static int mlx5_fpga_conn_create_cq(struct mlx5_fpga_conn *conn, int cq_size)
- 	if (err)
- 		goto err_cqwq;
- 
--	conn->cq.mcq.cqe_sz     = 64;
--	conn->cq.mcq.set_ci_db  = conn->cq.wq_ctrl.db.db;
--	conn->cq.mcq.arm_db     = conn->cq.wq_ctrl.db.db + 1;
--	*conn->cq.mcq.set_ci_db = 0;
--	*conn->cq.mcq.arm_db    = 0;
--	conn->cq.mcq.vector     = 0;
--	conn->cq.mcq.comp       = mlx5_fpga_conn_cq_complete;
- 	tasklet_setup(&conn->cq.tasklet, mlx5_fpga_conn_cq_tasklet);
--
- 	mlx5_fpga_dbg(fdev, "Created CQ #0x%x\n", conn->cq.mcq.cqn);
- 
- 	goto out;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-index 24ef7d66fa8aa..7510c46e58a57 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-@@ -873,12 +873,6 @@ static int hws_send_ring_open_sq(struct mlx5hws_context *ctx,
- 	return err;
- }
- 
--static void hws_cq_complete(struct mlx5_core_cq *mcq,
--			    struct mlx5_eqe *eqe)
--{
--	pr_err("CQ completion CQ: #%u\n", mcq->cqn);
--}
--
- static int hws_send_ring_alloc_cq(struct mlx5_core_dev *mdev,
- 				  int numa_node,
- 				  struct mlx5hws_send_engine *queue,
-@@ -901,7 +895,6 @@ static int hws_send_ring_alloc_cq(struct mlx5_core_dev *mdev,
- 	mcq->cqe_sz = 64;
- 	mcq->set_ci_db = cq->wq_ctrl.db.db;
- 	mcq->arm_db = cq->wq_ctrl.db.db + 1;
--	mcq->comp = hws_cq_complete;
- 
- 	for (i = 0; i < mlx5_cqwq_get_size(&cq->wq); i++) {
- 		cqe = mlx5_cqwq_get_wqe(&cq->wq, i);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-index 077a77fde670e..d034372fa0476 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
-@@ -1049,12 +1049,6 @@ static int dr_prepare_qp_to_rts(struct mlx5dr_domain *dmn)
- 	return 0;
- }
- 
--static void dr_cq_complete(struct mlx5_core_cq *mcq,
--			   struct mlx5_eqe *eqe)
--{
--	pr_err("CQ completion CQ: #%u\n", mcq->cqn);
--}
--
- static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 				      struct mlx5_uars_page *uar,
- 				      size_t ncqe)
-@@ -1089,6 +1083,13 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 		cqe->op_own = MLX5_CQE_INVALID << 4 | MLX5_CQE_OWNER_MASK;
+ 	list_for_each_entry(stream, &dev->streams, list) {
++		count += 1;
++		last_stream = stream;
+ 		if (stream->header.bTerminalLink == id)
+ 			return stream;
  	}
  
-+	cq->mcq.cqe_sz = 64;
-+	cq->mcq.set_ci_db = cq->wq_ctrl.db.db;
-+	cq->mcq.arm_db = cq->wq_ctrl.db.db + 1;
-+	*cq->mcq.set_ci_db = 0;
-+	cq->mcq.vector = 0;
-+	cq->mdev = mdev;
++	/*
++	 * If the streaming entity is referenced by an invalid ID, notify the
++	 * user and use heuristics to guess the correct entity.
++	 */
++	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
++		dev_warn(&dev->intf->dev,
++			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
++		return last_stream;
++	}
 +
- 	inlen = MLX5_ST_SZ_BYTES(create_cq_in) +
- 		sizeof(u64) * cq->wq_ctrl.buf.npages;
- 	in = kvzalloc(inlen, GFP_KERNEL);
-@@ -1112,27 +1113,12 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	pas = (__be64 *)MLX5_ADDR_OF(create_cq_in, in, pas);
- 	mlx5_fill_page_frag_array(&cq->wq_ctrl.buf, pas);
- 
--	cq->mcq.comp  = dr_cq_complete;
--
- 	err = mlx5_core_create_cq(mdev, &cq->mcq, in, inlen, out, sizeof(out));
- 	kvfree(in);
- 
- 	if (err)
- 		goto err_cqwq;
- 
--	cq->mcq.cqe_sz = 64;
--	cq->mcq.set_ci_db = cq->wq_ctrl.db.db;
--	cq->mcq.arm_db = cq->wq_ctrl.db.db + 1;
--	*cq->mcq.set_ci_db = 0;
--
--	/* set no-zero value, in order to avoid the HW to run db-recovery on
--	 * CQ that used in polling mode.
--	 */
--	*cq->mcq.arm_db = cpu_to_be32(2 << 28);
--
--	cq->mcq.vector = 0;
--	cq->mdev = mdev;
--
- 	return cq;
- 
- err_cqwq:
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 0ed2fc28e1cef..53cc9ef01e9f7 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -573,6 +573,8 @@ static int cq_create(struct mlx5_vdpa_net *ndev, u16 idx, u32 num_ent)
- 	vcq->mcq.set_ci_db = vcq->db.db;
- 	vcq->mcq.arm_db = vcq->db.db + 1;
- 	vcq->mcq.cqe_sz = 64;
-+	vcq->mcq.comp = mlx5_vdpa_cq_comp;
-+	vcq->cqe = num_ent;
- 
- 	err = cq_frag_buf_alloc(ndev, &vcq->buf, num_ent);
- 	if (err)
-@@ -612,10 +614,6 @@ static int cq_create(struct mlx5_vdpa_net *ndev, u16 idx, u32 num_ent)
- 	if (err)
- 		goto err_vec;
- 
--	vcq->mcq.comp = mlx5_vdpa_cq_comp;
--	vcq->cqe = num_ent;
--	vcq->mcq.set_ci_db = vcq->db.db;
--	vcq->mcq.arm_db = vcq->db.db + 1;
- 	mlx5_cq_arm(&mvq->cq.mcq, MLX5_CQ_DB_REQ_NOT, uar_page, mvq->cq.mcq.cons_index);
- 	kfree(in);
- 	return 0;
-diff --git a/include/linux/mlx5/cq.h b/include/linux/mlx5/cq.h
-index 7ef2c7c7d803d..9d47cdc727ad0 100644
---- a/include/linux/mlx5/cq.h
-+++ b/include/linux/mlx5/cq.h
-@@ -183,6 +183,7 @@ static inline void mlx5_cq_put(struct mlx5_core_cq *cq)
- 		complete(&cq->free);
+ 	return NULL;
  }
  
-+void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe);
- int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
- 		   u32 *in, int inlen, u32 *out, int outlen);
- int mlx5_core_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
--- 
-2.51.0
-
 
 
 
