@@ -1,96 +1,94 @@
-Return-Path: <stable+bounces-195452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33813C772AA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 04:36:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E84C772F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 04:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id D348029329
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:36:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 7133129A2D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 03:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA8B1DF26E;
-	Fri, 21 Nov 2025 03:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F1A2701D1;
+	Fri, 21 Nov 2025 03:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ld5bAgcV"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="spoLQxjk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDCF36D503;
-	Fri, 21 Nov 2025 03:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1355B27702E
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 03:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763696201; cv=none; b=bdxCdmw4HF+T/UcsoD4b2cyuBhxEiqumqs3E8t7WhnrtZIWWKPgyrLIEgYO68o19VPfmHNNW4fAd5LDdt70iu/Cnr4HHpLvTDSmqWZ6eHPmIxD9aTCXXOZ7JOYWNs9Wzko5tUHENxZ05gsUKKZS5PkSzDvhnT+Ratw6GjVVb0M8=
+	t=1763696972; cv=none; b=Nsd/C4HdOu+qv5ZV742d+VAnu2/H55XPRnugWwrvmUQcEycgvjtEqynSpyAFyTFOW65HR9Bp7kESzZFGs0rTV0BtEIXiSRS4KMIsInJzs6Qo6sUsa5bdAQ3gV10qfMD+hBvHvdvhUxjhEOZ+gkiv3tIjrn4V90CDakQ4YhyXpjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763696201; c=relaxed/simple;
-	bh=RTGzRlhkDVgF1eYukksVbU2Pj67kpS07q4SHZcG8JME=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKYawQMddXnehBP2bPPapqAchZqWdbF2abXZFrWt05GovIO3JivpXSbS/QcoyG9m0palAnKUD6Wqlc8/UiH04HIDSZz4wfOm8+2hZ6oB2dHmN872Hs1WnAnmh7SJ9Ws/T0xw3sSV2QXvr/NgZVBo7tj0i5dQ2cv39j9osBKCBsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ld5bAgcV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1FEC4CEF1;
-	Fri, 21 Nov 2025 03:36:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763696200;
-	bh=RTGzRlhkDVgF1eYukksVbU2Pj67kpS07q4SHZcG8JME=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ld5bAgcV+naw5iPMe9JQzP1ajedhedbX/DLy3RemRdGpvy2d1cEr1ttwwSGKb4CuJ
-	 fwjVxxFF1RpJSyzpp6pTFOr6ngn43bFdTY0U3c430RRpfIWo8cSrCZ9x6NZFMe3rBA
-	 +0x4lfUA710rp2+Ru9KonTkVd9maqlCBvj2uGiy4PO6stYxBQaGAUALhBo6WplypZd
-	 cwBis/aZgWG+pXR/7RGG29HT6dmPa9+J+meucLqYdsZscQpka9T3gsfJiaiH3FH0nL
-	 VbRhbJqwJDqGChJDr+6xB8Y3ONiCXKKdTVM254vOJ5xSOH51OHRFr1RmFBEFASxxaY
-	 BMhnXbYxN+vaw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] lib/crypto: tests: Fix KMSAN warning in test_sha256_finup_2x()
-Date: Thu, 20 Nov 2025 19:34:31 -0800
-Message-ID: <20251121033431.34406-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.51.2
+	s=arc-20240116; t=1763696972; c=relaxed/simple;
+	bh=a1doaysq9Nil/3qONO52jTyBmEug72290VcvQu9YkIY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=SfpKO1X6LEh1ne+YanebXvSWPgV4tZtJKzG3F5ZZGoJey7Htf9u0byx9i2mFbum9b/iKAZ9189Mu7UnYHhnmi19zdfWdDzjqFu172bl2p0C2d3Dq3ER1qwwWFl6gSgzlPTPk3OIuHQIcp/2/l9ytDA43I7DYU7JH+iIEwXFAhoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=spoLQxjk; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=spoLQxjkK1isspDxlCdd7zhAyA/h/9yQfufjwUJDdgaGGdM7o2Ys6vabTCL0qHuLE9O5A3uJaylKS
+	 2JMYu1mx+CecrIRp45X9ZaYNintdSVTnOWFfRxP2E2xO/bbMPXSsBc+CMxXfg/pr/9J1yuQYwkzvJk
+	 M8jJfQMMxMo/3fQ0=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.61])
+	by rmsmtp-lg-appmail-24-12027 (RichMail) with SMTP id 2efb691fe087fd2-f8c67;
+	Fri, 21 Nov 2025 11:46:16 +0800 (CST)
+X-RM-TRANSID:2efb691fe087fd2-f8c67
+From: Rajani Kantha <681739313@139.com>
+To: chao@kernel.org,
+	jaegeuk@kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] f2fs: fix to avoid overflow while left shift operation
+Date: Fri, 21 Nov 2025 11:46:10 +0800
+Message-Id: <20251121034610.2709-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Fully initialize *ctx, including the buf field which sha256_init()
-doesn't initialize, to avoid a KMSAN warning when comparing *ctx to
-orig_ctx.  This KMSAN warning slipped in while KMSAN was not working
-reliably due to a stackdepot bug, which has now been fixed.
+From: Chao Yu <chao@kernel.org>
 
-Fixes: 6733968be7cb ("lib/crypto: tests: Add tests and benchmark for sha256_finup_2x()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+[ Upstream commit 0fe1c6bec54ea68ed8c987b3890f2296364e77bb ]
+
+Should cast type of folio->index from pgoff_t to loff_t to avoid overflow
+while left shift operation.
+
+Fixes: 3265d3db1f16 ("f2fs: support partial truncation on compressed inode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Modification: Using rpages[i]->index instead of folio->index due to
+it was changed since commit:1cda5bc0b2fe ("f2fs: Use a folio in
+f2fs_truncate_partial_cluster()") on 6.14 ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
- lib/crypto/tests/sha256_kunit.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/compress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/crypto/tests/sha256_kunit.c b/lib/crypto/tests/sha256_kunit.c
-index dcedfca06df6..5dccdee79693 100644
---- a/lib/crypto/tests/sha256_kunit.c
-+++ b/lib/crypto/tests/sha256_kunit.c
-@@ -66,10 +66,11 @@ static void test_sha256_finup_2x(struct kunit *test)
- 	ctx = alloc_guarded_buf(test, sizeof(*ctx));
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index e962de4ecaa2..c3b2f78ca4e3 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1209,7 +1209,7 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
+ 		int i;
  
- 	rand_bytes(data1_buf, max_data_len);
- 	rand_bytes(data2_buf, max_data_len);
- 	rand_bytes(salt, sizeof(salt));
-+	memset(ctx, 0, sizeof(*ctx));
+ 		for (i = cluster_size - 1; i >= 0; i--) {
+-			loff_t start = rpages[i]->index << PAGE_SHIFT;
++			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
  
- 	for (size_t i = 0; i < 500; i++) {
- 		size_t salt_len = rand_length(sizeof(salt));
- 		size_t data_len = rand_length(max_data_len);
- 		const u8 *data1 = data1_buf + max_data_len - data_len;
-
-base-commit: 10a1140107e0b98bd67d37ae7af72989dd7df00b
+ 			if (from <= start) {
+ 				zero_user_segment(rpages[i], 0, PAGE_SIZE);
 -- 
-2.51.2
+2.17.1
+
 
 
