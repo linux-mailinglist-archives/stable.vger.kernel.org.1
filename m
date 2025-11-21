@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-195912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A9CC7972D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D62C79880
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 0E1F92DC8C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:33:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 6D4722EEC2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EEF33438C;
-	Fri, 21 Nov 2025 13:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A626346A0E;
+	Fri, 21 Nov 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYw+jrMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzNe5r2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657E12745E;
-	Fri, 21 Nov 2025 13:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24321F09B3;
+	Fri, 21 Nov 2025 13:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732022; cv=none; b=ZaIiVbElIEKlBN7xCapLQ9HT10f3Y0gEibjWxFOnPdV5Cgy1Xf2zPq3l+1npS9S9G6luCB7nJD0SfEmqtHPSadoJyNg2jPMWUn2AZ4/5nQ3zov7D8lLd+UUYRALqrI7DNkQYLzWIy0YRBzUaQBISVK+s84x5EZR1EpQ5FUsXVaI=
+	t=1763731926; cv=none; b=QU/3ohHQVi6YFGNOIezpFBtLlmZZQxdyB4Y9FxzyZSSdBdzZdMLrUpTMxOBd318DWvOtGqqOkfvfJ39056VHffWDw+Qmb+8Ft6VKEAgpB/+wm3Q1y9yOJqiYNPlsKocOwmbb/Cxjc9FkmwlLWokhZY7s5jqNqDO6fB+j3dTlR2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732022; c=relaxed/simple;
-	bh=Ec4p98RmaJ/xrzvHyc7oHygDRrPQWODjpXMp80pU+yg=;
+	s=arc-20240116; t=1763731926; c=relaxed/simple;
+	bh=4V0hz3DPILaisVDF34C0bZDf08RbH9c0ZeBBRHjRRNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u89u5hxW4toSh+cpd+tZRS4SEgp20lzDifGHITFaAKdErXO9Sv+7UR92Rsu/9InafUl8FjPqdgyC9VpqHnb4jybBZxB1+ZfBjcDtfya5MzpdSRgHXARZIBpQpxGuMXi6R28UUuVL5k54eNhgRjPUvY5OqvMT9z3/rR9OfCwl7LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYw+jrMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0402C4CEF1;
-	Fri, 21 Nov 2025 13:33:41 +0000 (UTC)
+	 MIME-Version; b=MjJ0/cKcfS8t2xQNrh0J8FLU5Y3h4EEmOSPkYefDxDXnXJs26/Cv2z1BslNI7L5rNtH0RMz/HIzEPsQCzA4ShQsbNzx7S52/o2/Nz2dRgCH4sDOMl3umajztLEhjKab638khwgJkYRO+FnD3fkpcK20zXFbMV5bwdRxR/A+gAr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzNe5r2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D424C4CEF1;
+	Fri, 21 Nov 2025 13:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732022;
-	bh=Ec4p98RmaJ/xrzvHyc7oHygDRrPQWODjpXMp80pU+yg=;
+	s=korg; t=1763731926;
+	bh=4V0hz3DPILaisVDF34C0bZDf08RbH9c0ZeBBRHjRRNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYw+jrMB2uHZy50igqPlEGx7xk3TJeIyNYtoJewdmYtl9CHpj+LVTgPTtkSLXzfxy
-	 LnX0YhYxTFOroeH8vLrO2u3g7WQpORwBw0R/gewsBUWdRN2mtZcmydVtBbaRka1ROF
-	 OVI0YRuBB1i3B6MSzdZFeKA7nrhDFai5pwGMvPh4=
+	b=VzNe5r2N+OxydDM9k1TyhjxM1jYsYrVl7SOfpaSCo6KcVLTTzY/ezupBx0xUgL7cH
+	 SoN9hKl+mjUpnk410iFtEYGHkYnldwUr8rxlfczR5lKU8U3FaNugnIU0E3j187RhXc
+	 QJAK188tYw4A7aYw3Jgzd9OfUPRkTiULApkVhOeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 129/185] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
-Date: Fri, 21 Nov 2025 14:12:36 +0100
-Message-ID: <20251121130148.531200002@linuxfoundation.org>
+	syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 130/185] cifs: client: fix memory leak in smb3_fs_context_parse_param
+Date: Fri, 21 Nov 2025 14:12:37 +0100
+Message-ID: <20251121130148.567196001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
 References: <20251121130143.857798067@linuxfoundation.org>
@@ -66,54 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf upstream.
+commit e8c73eb7db0a498cd4b22d2819e6ab1a6f506bd6 upstream.
 
-The PCM stream data in USB-audio driver is transferred over USB URB
-packet buffers, and each packet size is determined dynamically.  The
-packet sizes are limited by some factors such as wMaxPacketSize USB
-descriptor.  OTOH, in the current code, the actually used packet sizes
-are determined only by the rate and the PPS, which may be bigger than
-the size limit above.  This results in a buffer overflow, as reported
-by syzbot.
+The user calls fsconfig twice, but when the program exits, free() only
+frees ctx->source for the second fsconfig, not the first.
+Regarding fc->source, there is no code in the fs context related to its
+memory reclamation.
 
-Basically when the limit is smaller than the calculated packet size,
-it implies that something is wrong, most likely a weird USB
-descriptor.  So the best option would be just to return an error at
-the parameter setup time before doing any further operations.
+To fix this memory leak, release the source memory corresponding to ctx
+or fc before each parsing.
 
-This patch introduces such a sanity check, and returns -EINVAL when
-the packet size is greater than maxpacksize.  The comparison with
-ep->packsize[1] alone should suffice since it's always equal or
-greater than ep->packsize[0].
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888128afa360 (size 96):
+  backtrace (crc 79c9c7ba):
+    kstrdup+0x3c/0x80 mm/util.c:84
+    smb3_fs_context_parse_param+0x229b/0x36c0 fs/smb/client/fs_context.c:1444
 
-Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
-Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+BUG: memory leak
+unreferenced object 0xffff888112c7d900 (size 96):
+  backtrace (crc 79c9c7ba):
+    smb3_fs_context_fullpath+0x70/0x1b0 fs/smb/client/fs_context.c:629
+    smb3_fs_context_parse_param+0x2266/0x36c0 fs/smb/client/fs_context.c:1438
+
+Reported-by: syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=72afd4c236e6bc3f4bac
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/endpoint.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/fs_context.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1386,6 +1386,11 @@ int snd_usb_endpoint_set_params(struct s
- 	ep->sample_rem = ep->cur_rate % ep->pps;
- 	ep->packsize[0] = ep->cur_rate / ep->pps;
- 	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
-+	if (ep->packsize[1] > ep->maxpacksize) {
-+		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
-+			      ep->maxpacksize, ep->cur_rate, ep->pps);
-+		return -EINVAL;
-+	}
- 
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1380,12 +1380,14 @@ static int smb3_fs_context_parse_param(s
+ 			cifs_errorf(fc, "Unknown error parsing devname\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		kfree(ctx->source);
+ 		ctx->source = smb3_fs_context_fullpath(ctx, '/');
+ 		if (IS_ERR(ctx->source)) {
+ 			ctx->source = NULL;
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		kfree(fc->source);
+ 		fc->source = kstrdup(ctx->source, GFP_KERNEL);
+ 		if (fc->source == NULL) {
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
 
 
 
