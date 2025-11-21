@@ -1,189 +1,261 @@
-Return-Path: <stable+bounces-195477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C02CC77D62
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:18:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EECEC780E0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 10:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1BA724EB6BC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 08:14:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 53FDF35C3DB
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 09:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F6A3358B7;
-	Fri, 21 Nov 2025 08:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D545D33E369;
+	Fri, 21 Nov 2025 09:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hgscvUQ0"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OtvIACLX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="oDoLwJr6";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OtvIACLX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="oDoLwJr6"
 X-Original-To: stable@vger.kernel.org
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013070.outbound.protection.outlook.com [40.107.201.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5962233A00F;
-	Fri, 21 Nov 2025 08:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763712852; cv=fail; b=n4uWYTDVPTr6w1UONfmQCb1X9QSua3uy45Imgmf7E8R0oTz5QMf277BYrNzMFvKRXHLDQl6xFDYzvfPGF9vax0t44Jmp/ZqefV7Zg/9CXgZ6ootkfM/ruXQMgTdI5DyBLFKFIx+nf33gk5QQKKlj75UTxZMsYzNnw3JKvlo1hMU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763712852; c=relaxed/simple;
-	bh=q7SxXMECa6WLFiqRRO2N82woUHuYk1Vliy1DXwlsq/U=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=p3/HtfJazKBN3+4SKx8okvcwACyONCDjhGITxZI/MTIUCzthSwBw2hGS0fgqQJmcWKCisw19ByeyQ4cdgg5Hr/BAngrx7b5WOeUy19PKF8/wWVbTITF8E1PhHxULpOeFBg5ksj04fJUTLd6f/sHphOicoFwzlgA/wXHYcPGeqXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hgscvUQ0; arc=fail smtp.client-ip=40.107.201.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wzzMbIwNq8QV3W+vXlIYqmSkWBZh5h7kv8aFVUVvJgBN8NJS5d5eXi4NrCD6ieDPvo64QLOh+WLAiPHrEs7rAVjFGWeR3KZqOCbspuMDQvyDcP1dngRKBodnwosvHJRWCYcOSnFe2ZPM79gpj9UY5jUO3kGF6GWw4AzIllrszuqkomdT+8qGcCWN4GNo4M5lMLoo991TTUh03XcO5NnUmK994xHSUHKy43EhzxYMG+uAhW1oZm5VWefGrTzwtb7pLIa2dUtdfqvTkgZoZo+q8U7BPFju3CMmQ6MRhivj8/nbs4sApgeW1ydISxXBACT7Poa/aRE/k0q8BxUO8G5qXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qyzAz2i04XSWJbOyxzke2238BVwMkYnVZHY6cgRVu0c=;
- b=q4gjlLhrkkBbIgHT8P3cOMHMsTozuRtEuwbI5aKbr8M6vUAoYFoBnEkesG89OmgsN89uFggU83OzTU9lYlT/8MaVnrY9KqrbbqRK0SaS4M+4BKtTA+tQrJr/iRIlW+4OrMNjAfhrvev6SLMT3UB1B1QNCH63eDFexMeNrVjGCus7g/UDHOU1LfjQIyx3KdGaZWp23yeKrWRSIC+hSAY+3mtBrSBBi+tTdkCrAILB7HJr2pFNrXUc1LIsoNz2ac94xhlvXF22UPd7LzSepa8v6TDCc4NK+T81QM/t27Y/Mq00Gr/KSzHQM47tRx93fE2F0ZZBqPESgGQmJZZsVmijew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qyzAz2i04XSWJbOyxzke2238BVwMkYnVZHY6cgRVu0c=;
- b=hgscvUQ0DDbDe5eOeSX7PHlE7Slpg7iLRU/AvN/G7fC8SouVqb+MMMW5vWwxYTyBzp8n78t1egXtZ13jkQJk3QOdC8d5C3WfijbvbDGBVkeTydyXEJpv95f4qPkJ5Lk+8E0nqlbm1IMeP5pHoPxUINo7J6vhqbWMK4I5+nfhwXw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
- CH2PR12MB4310.namprd12.prod.outlook.com (2603:10b6:610:a9::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.12; Fri, 21 Nov 2025 08:14:08 +0000
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::a5e0:9d7e:d941:c74d]) by DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::a5e0:9d7e:d941:c74d%7]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
- 08:14:08 +0000
-Message-ID: <653f362e-a32a-416e-89c6-d8c51abf2cce@amd.com>
-Date: Fri, 21 Nov 2025 13:44:01 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iommu/amd: Relay __modify_irte_ga() error in
- modify_irte_ga()
-To: Jinhui Guo <guojinhui.liam@bytedance.com>, joro@8bytes.org,
- suravee.suthikulpanit@amd.com, Ankit.Soni@amd.com
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251121052139.550-1-guojinhui.liam@bytedance.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <20251121052139.550-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0036.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:97::15) To DS7PR12MB6048.namprd12.prod.outlook.com
- (2603:10b6:8:9f::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CAA33DEE8
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 09:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763716104; cv=none; b=hKlCbht/nRM/SeTR6Qw4jA3iO1Kz9sf3TQYbBVy0JvYUBOMQW0LHNWwkQmCOPKHAJLERFbCFZUovSdWKhQHz2/Pqw7qAF8WDohgxvYs9DQaFZO651QSKu9KLq8PvwXKKmwJjx52CdtrDeU38t9N/VL7UQ81AfATi0ZgFqxNqaQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763716104; c=relaxed/simple;
+	bh=jpLNNWNHADLggZ3eXZrUj8mMWm8GM5xqwjHe3NiQoEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n7fdFVNb39G7hXz9eQBplqGSjD4r4kKWHnS4sWZoXMr9D4XunCQFK8HaAkgv8TpoqhQ2pfS/xa5xiNHrGFw9rkFq7JL3jnYwXL3L13FcyukVeOVtXBGo6w+sBuFxi0PIfcQc6ZH+rU7GPpc+11ZA7GhSm7cpNYE7I2ybC3Yfzzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OtvIACLX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=oDoLwJr6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OtvIACLX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=oDoLwJr6; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 47F2E20F11;
+	Fri, 21 Nov 2025 09:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763716100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aui9l7AgpNh+vCcDY9SRw7llzOsh+jqboWLjXhXxfO4=;
+	b=OtvIACLXgtdbS8YoKbF6+sVqsKnkEmY7oTxuELuDiFPTIyaNZBWaZ1Qp/ieCd1Ubi9epsp
+	jw8pDdzt7N0oQtGqUTGY+LfwfUMgD0n9g9LM4UqBsHffwOv+PQoptPHLGI4bvTxloTI9DK
+	rMPoIyyZIToZoxyiIEsNQWF+5aBB6p0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763716100;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aui9l7AgpNh+vCcDY9SRw7llzOsh+jqboWLjXhXxfO4=;
+	b=oDoLwJr6URXKC+fm3LWfjBq+79HSjVrlrtdX3ZtS8ERo7FwOlBnjYssE1qX9ZFTsN/HGU1
+	vlXZgQQIDrtfXZDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OtvIACLX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oDoLwJr6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763716100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aui9l7AgpNh+vCcDY9SRw7llzOsh+jqboWLjXhXxfO4=;
+	b=OtvIACLXgtdbS8YoKbF6+sVqsKnkEmY7oTxuELuDiFPTIyaNZBWaZ1Qp/ieCd1Ubi9epsp
+	jw8pDdzt7N0oQtGqUTGY+LfwfUMgD0n9g9LM4UqBsHffwOv+PQoptPHLGI4bvTxloTI9DK
+	rMPoIyyZIToZoxyiIEsNQWF+5aBB6p0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763716100;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aui9l7AgpNh+vCcDY9SRw7llzOsh+jqboWLjXhXxfO4=;
+	b=oDoLwJr6URXKC+fm3LWfjBq+79HSjVrlrtdX3ZtS8ERo7FwOlBnjYssE1qX9ZFTsN/HGU1
+	vlXZgQQIDrtfXZDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2E6D93EA61;
+	Fri, 21 Nov 2025 09:08:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nvLuCgQsIGlkXgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 21 Nov 2025 09:08:20 +0000
+Message-ID: <18ae4b82-b18a-4ed8-8b72-4a9697a4dc8f@suse.cz>
+Date: Fri, 21 Nov 2025 10:08:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|CH2PR12MB4310:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1f9c869-fb6e-4899-eb00-08de28d5f1a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ejEvN2RXK0ZHQS9HaUlYbzJadVB6Vjg5Y2prckFoSVV3UFhuUkVQY1hnK25P?=
- =?utf-8?B?RWlUTENqQU8veE9TQkdGS0o2M1ltUFdqMTN3NUIxSUtHYWtmS1cwTkNPU3Jh?=
- =?utf-8?B?THVDNlRBck9sRENjOFd5N3ExZ2xia1JMUm5jeG4wRUdLVlFPalZRZkZDSzBK?=
- =?utf-8?B?ZURiOFRWc3JIS014N1R4ekhzUU8veXg5aERFUmZTRHFDWnhMYzdVcmtCdFBI?=
- =?utf-8?B?WXEzWEJJOVhkQ2NKTEtZVTUrdUh5Z0Y3V21HazFSLzJXYWd1R0NKSE94Si9M?=
- =?utf-8?B?TEJuWUtCV09QZ2pvTXRXMDZlWmx5bGJtMkVvV25nWmRtL1FUL1Yyc1VOcnFu?=
- =?utf-8?B?S2dpTkVQNE1CS0ZqTzZxdUhITmZkcXcvaDdKU29TR0tESXZiWXVabGF0aW9h?=
- =?utf-8?B?dU9SSTFrdStsTkNRci93L3V5ZnR0cFNOSy9vV2krMkdsMUpJUFF4M2liZTV3?=
- =?utf-8?B?eGNYanFlLzczRWsxUHZWcUtTbzZ0akR1blY2RlR5MUR0UllDVEwxQU8zem04?=
- =?utf-8?B?c2xnQUNHdE4rOHFUSUJ3UjQ5aUFjSy9Oc2cweTZlY1ZEcEhVVGF1dmpGeS9t?=
- =?utf-8?B?OFA4WFpZZjFnaHVJK0ZrZGw1WnV4QnNHblZwemJuekp6d0xjTWpJeW42OHly?=
- =?utf-8?B?U0kyZXR5Tzd6LzN6eFJBSjloYWwvRlhhRmtnaVZGbmtHcVlMVW9SWW5CUCtm?=
- =?utf-8?B?Mk5pTHh4ckF0WG1RNVFpc3F3L2R1Z2dVWVRQZkRxbmdLd3VtcFNWZDNRU0lY?=
- =?utf-8?B?WGpJNWwzbVppMHhoZTBhVElDT0xzS200cHA3Y1gwSFNiZTVnNnBXSS9rYmpk?=
- =?utf-8?B?RE0zNGNrK1lvaGI4ZDc5MXgxclM3cEpFM01PbGFwSXkvU09oNDRpVzZSb2M1?=
- =?utf-8?B?R2tyQTREV2xlTDE0NHlLcmd5NlNZcVVUKzVHcTlhNjNXcENxWEhHOC9HUEhx?=
- =?utf-8?B?akFETExHMkVQRkFzQVFxeDBjSVViczgwaE1HWThZY2YvemNUWVdmRWxsbGRW?=
- =?utf-8?B?d2x1bW1qQUlOQ3F0SE9KRENKbnprbndQblFlRjRnZjRiMjhja2M1a1IzM3Fn?=
- =?utf-8?B?Nkd1QnZUSWNXVXEySy9qNG8wbHpTYjlDbUZ6WmtCTjdyNjBxaWh0ZGxYbFp5?=
- =?utf-8?B?TFRCVEthVEVhSUhydVY0dDFqM2VHQVZ2VlNtNlVjdjBYb0FvcExjdUZqUGhH?=
- =?utf-8?B?aVF5c1NNNDh0My9SRVRKRitOcFYwS0FDb25uN2txSXd4MUtnR0lKNlJ4WUdo?=
- =?utf-8?B?N250WUw1WUdEaUJyZlpKMTExanUxMkNKd0djb1doUlRlWFVXbDVueFJ5M3Bk?=
- =?utf-8?B?M3pUbHlMaHlURGJKUlgyNThTZFdLdVg5Q09Yc09VOWIyRCtINW9FSXVSaGd1?=
- =?utf-8?B?WnRsTW45U3pKWTFsSmhoQTlsYzgxVmdCV1VXOTdRZ3l0Z0NKYlR6aWZYamFP?=
- =?utf-8?B?UGh4KzB1WS9XeDJKSXZnRkJ2Rkl5d1VZN3cxUlhyZTZLdmU0ckVOTCsxaXZB?=
- =?utf-8?B?VU9ZZ0FvTFZBK0h5a2hXWHQvMmNZbHkxY01pUS9ramFCNHplYk9BYTlzUjBU?=
- =?utf-8?B?c2dVUjlaVEgzbWRTOUY2UHFsWTNhVlVoWEJSaVFKdTc0dWozQTBpNzJiSjZI?=
- =?utf-8?B?alQyMTc4ajJVVEJ3UFcyVkZrVEpKZHI3MUVCbG9BOXVpakh5ZkNtTnBxbUhZ?=
- =?utf-8?B?OEhXeGJNS1lOV3B1VzhhYzd6REdrV2hWWjl1TGtPNk4wdXI4aE5ETFFuS2Ri?=
- =?utf-8?B?bWR6M09BRmdqN1IvY3NscGlYTUlSaXZwakVOMlFBZmM3cklQOGZUVHlQczNE?=
- =?utf-8?B?dUs0SFpMYnpNOGhaTStLVDY1dzNVaG1NeGZYREdvZ2gzUjN0TStaK1RQdkhM?=
- =?utf-8?B?VHFmV3k4emlmckEwWWFzWWdFTTMrbGw0SEVPREFwcnBuMGlTK1BLN1dnTnps?=
- =?utf-8?Q?kGa3musgjRb4eUrrUw+azWRuw1XsvN6j?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnFIUHg4V2diVXdNSWNtZG05Y0h6NGNtcWJDL0FKNEFZbzFINm83Mjhtemp6?=
- =?utf-8?B?SmVlcUVxWU5jUklxQ01jYmJrdmZFSEY1MXU0RGdscG9tU1BTVjhFNGxPWHM0?=
- =?utf-8?B?WGNOTTZXb3phZFk3dGFQMFZ1NTBobCsrd1BDZ2RMTzJXdUppdVdtbWc5bzFZ?=
- =?utf-8?B?NHVOUUhTWWc5WFRrYVlYZm5tM0k4clVoaE1vakdpSWd4TnRQUWZ0MGpWSTQ0?=
- =?utf-8?B?NFZieExzZlF6cjhueVdXWGlwdldsb2tIWEdqcnp3Y1lIeDZrN1BqOENRbTBV?=
- =?utf-8?B?VUhUQ0RQK0I4SWF4RlU3eTMvSGNlZjdtNk5mMGRwdnNmRkE3S3E5d2UwNVBn?=
- =?utf-8?B?ZkVzNUM1MnQ3R2FqTHFFc3ZFbXpIaGZ5TEw3MGNQYTh4bnVqYkFBM0xtTHN0?=
- =?utf-8?B?L21Pa2h1SmlrYmRWeThFMGxVU1dXeUc2eEtqb0JyRTJoeWoxN1o3S0ZCOXZV?=
- =?utf-8?B?cDByY1J1MlZaN0hmMFZnL3BkQmpQbTJqZVd2Nmp4TE43TEFUeDBiOGsvanRj?=
- =?utf-8?B?U1l5Uk9oeG5qVk1pUEtML0N3TWNQV0phVGdSR0hVV0VvbEkvNE1HUTlpdVpa?=
- =?utf-8?B?U2hUSUxoV2RjQmdtNjRWTW5OL293OGtjcC9PUXZJZ2lsR3dZSFczc0dBYUp2?=
- =?utf-8?B?aGZnTDA2SUp3YXpJazJZT0lEaDJUVlFpZ1Vkdi9pVTFSeHV3dTBzb2NJdThR?=
- =?utf-8?B?cTgxbVQwTGNDU2Zhd2hETDBjejQvenBGUUlmR2JadTc2UW0yZ1FlRGdXWUFX?=
- =?utf-8?B?MjdIcFFpZzYrNFM0UTBuWkdKTUxTYVlqWkpxSStyaTdiL0J0ZkR4NXhIT1BN?=
- =?utf-8?B?VWo2OHhjb1haNjBtc0gvYWNpQlp3aTk0UDlJOE5FUDZtcHNNUyszUEZzVUFC?=
- =?utf-8?B?c1pveVQ1bkpTWXhzWVBlM1JHYmR2WmJPRVNMb2dSUytTSzkraTZscGNaZnNi?=
- =?utf-8?B?TlFjOWJ3R0JXT3h1M1hUR04xSzgyOURoOHhaN3ZHSjF5UnRaSXNtZGJ0UXA4?=
- =?utf-8?B?c2J2bTA2NXJaSis4ZStzckdBakJVemIyUFN0VnNGVU9laFQvVFhyRXpwRnNW?=
- =?utf-8?B?TExvYWJXUmU4U1ZBNFlNc3REQmpscFZmRGlNRS8wL3MyRURzS0F3K1hUL09j?=
- =?utf-8?B?Z3pYZERIY1ZVZVJoTjA0RUJYVXhSMU1VTkhDcGZvQkY3V1R2TlVST01OSWph?=
- =?utf-8?B?MHMwbE1wajJWM0Qxayt5a1IvOHhFb1FkZldrWUp5Y25WOEx6dFB2ZzZwODBy?=
- =?utf-8?B?VmoxM1ovcEpicnM1OHdSa2xOSDRpSjh4b0I3QklVQ29ZOFVoVGhsV095UVd0?=
- =?utf-8?B?eTRlNi9pdmN6WnVtQk9UYmR5dzQweURxak1ROHZGVCtBVUFJZUIzSFdub2lG?=
- =?utf-8?B?dm9JSU5ncFhCK2NsYjhXM2dmN1lPQ1ppT1R5UlkxUnViUHpRQVdZb0pxdVg2?=
- =?utf-8?B?aGF5QlhRUU9zbUFQOHN6SVB4d1BQWFdEeDVhd0kvOXBpbTRONXpLVkN3eEN6?=
- =?utf-8?B?S0NGRlNhbkxZczZzS1N0MTJuTnAwalJaTXQwV2haTHA4UG1LNWhzOUNXSkdS?=
- =?utf-8?B?M2VCOW85ZndvQ3VXaE5Fbm1XcWJtSzJ6MFk1VmpyODVRejdmc1kvV3JyK2Vi?=
- =?utf-8?B?cGxQZ0pFODExdzhVaXNuakNMMUxVVThIcXNmWW9lSExuUTRhNDFYWk1mY2Vs?=
- =?utf-8?B?NHhmU3o1MlllWG1kM1pwQWtCK0k3TDdGVW5hclFkc2plTWJDOUpkeXFLL3k3?=
- =?utf-8?B?SC9OblhDN0dzSFVKcVVMT3A5NHR6NkFRK2s1RERCdWRyQVNES2Q2Z2xmdHJ6?=
- =?utf-8?B?amZ5dkp6NlhKdUJ6M2o1VG1JWjEwVS9Rb2gwNzkrVHUvMlJBdENjWjJ6OERS?=
- =?utf-8?B?UUorQ2d1VnlxSmE1b2Z5VzI2MEdrcjlMUzZNQmR6QnZlVk5VUFZtR0tDMHpm?=
- =?utf-8?B?UHJQLzZiRWhMNy9XdlBCZXpGTldsS3J6VmRIaDNVSWV0R01kQk1qSDdhRGcv?=
- =?utf-8?B?ZVJrNG9oSzNkQlFRODFVSEsvVGFqVVptYXBnU0J3SlkxTnFDU2ZqNGJ2S2I5?=
- =?utf-8?B?MHp1STJQN21LMGdsOC8xN2FYMHBVeGZKaW45ZlpBSDdkeXJRQ0lsZW5Mb0xH?=
- =?utf-8?Q?jf5WFqop04od61iZxXcNPdEqU?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1f9c869-fb6e-4899-eb00-08de28d5f1a6
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:14:08.4878
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PzRLkXXEvosxQrM77wIsZsKG4nWy6SwDYqNYgyIyGawgx61BRAKZlspG/M1cVYQwmnHIYlIZeLHzc1sGeoq+qg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4310
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+ stable@vger.kernel.org, syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+ <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+ <aRUggwAQJsnQV_07@casper.infradead.org>
+ <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
+ <f7abdb4c-b7e2-4fe4-9198-f313d0cacacb@lucifer.local>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <f7abdb4c-b7e2-4fe4-9198-f313d0cacacb@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 47F2E20F11
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	TAGGED_RCPT(0.00)[131f9eb2b5807573275c];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
 
-On 11/21/2025 10:51 AM, Jinhui Guo wrote:
-> The return type of __modify_irte_ga() is int, but modify_irte_ga()
-> treats it as a bool. Casting the int to bool discards the error code.
+(sorry for the late reply)
+
+On 11/13/25 12:05, Lorenzo Stoakes wrote:
+>> > > I think one source of confusion for me with maple tree operations is - what
+>> > > to do if we are in a position where some kind of reset is needed?
+>> > >
+>> > > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
+>> > > to me that we ought to set to the address.
+>> >
+>> > I think that's a separate problem.
+>> >
+>> > > > +++ b/mm/mmap_lock.c
+>> > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>> > > >  		if (PTR_ERR(vma) == -EAGAIN) {
+>> > > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+>> > > >  			/* The area was replaced with another one */
+>> > > > +			mas_set(&mas, address);
+>> > >
+>> > > I wonder if we could detect that the RCU lock was released (+ reacquired) in
+>> > > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+>> >
+>> > Dropping and reacquiring the RCU read lock should have been a big red
+>> > flag.  I didn't have time to review the patches, but if I had, I would
+>> > have suggested passing the mas down to the routine that drops the rcu
+>> > read lock so it can be invalidated before dropping the readlock.
+>>
+>> There has been some academic efforts to check for RCU-protected pointers
+>> leaking from one RCU read-side critical section to another, but nothing
+>> useful has come from this.  :-/
 > 
-> To fix the issue, change the type of ret to int in modify_irte_ga().
+> Ugh a pity. I was hoping we could do (in debug mode only obv) something
+> absolutely roughly like:
 > 
-> Fixes: 57cdb720eaa5 ("iommu/amd: Do not flush IRTE when only updating isRun and destination fields")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+> On init:
+> 
+> mas->rcu_critical_section = rcu_get_critical_section_blah();
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+AFAICT, get_state_synchronize_rcu()?
 
--Vasant
+> ...
+> 
+> On walk:
+> 
+> 	VM_WARN_ON(rcu_critical_section_blah() != mas->rcu_critical_section);
+
+And here, poll_state_synchronize_rcu()?
+
+It wouldn't detect directly that we dropped and reacquired the rcu read
+lock, but with enough testing, that would at some point translate to a new
+grace period between the first and second read lock, and we'd catch it then?
+
+> But sounds like that isn't feasible.
+I don't think what Paul says means your suggestion is not feasible. I think
+he says there are no known ways to do this checking automagicallt. But your
+suggestion is doing it manually for a specific case. I guess it depends on
+how many maple tree functions we'd have to change and how ugly it would be.
+
+> I always like the idea of us having debug stuff that helps highlight dumb
+> mistakes very quickly, no matter how silly they might be :)
+> 
+>>
+>> But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
+>> documentation, but also to suppress the inevitable false positives should
+>> anyone figure out how to detect leaking of RCU-protected pointers.
+>>
+>> 							Thanx, Paul
+> 
+> Cheers, Lorenzo
 
 
