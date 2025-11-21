@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB97C79443
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03DAC79ED3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 4CDE52DA7E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8938B347F57
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257912773F7;
-	Fri, 21 Nov 2025 13:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FCA3446B0;
+	Fri, 21 Nov 2025 13:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6TBnepI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5Ot/7Cq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D637D54763;
-	Fri, 21 Nov 2025 13:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587B734C127;
+	Fri, 21 Nov 2025 13:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731392; cv=none; b=nWATXPCMI/+ZtsB8bOvxyGHia1cngg6jEziklMCFr61RTVwas7XAMBFd4rQ6goE2f2PIRtveeLZUAgCJ+1wasTb7fE1bmL2AAgOTo0jfqFl38+UjQvPRZkaYYmJYUfRDULtVLzvc1TEPN8+albevsKDTpoIyp39HU50Q4ocs7x4=
+	t=1763733268; cv=none; b=ZprLHUD4D5u9Ev1mJxzFeHN+4gbofkNR0jwAQpChsfFKqxfpjQolr6Jhh7ePf+5Uz2JztThWx9Ys/9d+MBEeDPsoI4bziZb/g/MpZAlCXLGqMszGvH3jij09BPzkbn6Shoiz5Dc7fMy+Fr171xlHFh+s6Zd0NBNraoHahIySvyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731392; c=relaxed/simple;
-	bh=O1MQY8D7K/F/D3o+FI23iKrriGx9CBecWQHfnFMzZU0=;
+	s=arc-20240116; t=1763733268; c=relaxed/simple;
+	bh=Vc9x/6HqdmP4qqSGEEeJrMorLFcFeiL31+SU6k8zfhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxBDNhNb18GD0llLIOzVI4xreI7yAjs6z4Fwp8tPPLjD4fGQjDpvPCFp/zHW0fIlyUecGrrbeVP+GRfe00RjXtRcYM8hqpnI1j6AZ3dEda8z1tf/dVDSidW4laKJ4mB2j6oaC59pTCHswSP2wxcgTGsIPYy7KqI4VEmjT//VjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6TBnepI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61105C4CEF1;
-	Fri, 21 Nov 2025 13:23:12 +0000 (UTC)
+	 MIME-Version; b=jmS1rW4aTRkOESBeKvkptJFgH2Se2A0Ue5zghcm668QgDdZOL4i3sZA3wmtGeU/rG7G+U/lTHF7EnIqQqjCn915VEcR31BAD/6EgMoCBtMC+Ijq2FsE+UHy5q1aBLjCOMYW81cWewZ6L6meFO/z8u6sbUlmPkZ582mslTFbaTlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5Ot/7Cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD30C4CEF1;
+	Fri, 21 Nov 2025 13:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731392;
-	bh=O1MQY8D7K/F/D3o+FI23iKrriGx9CBecWQHfnFMzZU0=;
+	s=korg; t=1763733266;
+	bh=Vc9x/6HqdmP4qqSGEEeJrMorLFcFeiL31+SU6k8zfhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6TBnepIEhm43jhAXqhVieBNSAO1eyb8ylEvc/2GCc5YP/VUIx27xt7lrTZTJi3kV
-	 SFr0Q+esAUqbc+KrnNF/3izVEbm3U/MsN9R9vm2CbQZ0VowDIp0d7cD2aWjYw8kRZz
-	 MpR9GAg1Pat+sadRdOax9WgDLLFulYXPW0ZwLFOY=
+	b=w5Ot/7Cq9lsFGzDowQdlvpgWlfI30aGHEoK0gj8I/R8GjxcVYGNq1NPEbrKfYZLmn
+	 Js/JjdDw0tWL+DJBr1ny90R1OMnuD9Om5nh7V9anjLZsF060yb1vUbECkHEnvbU/jW
+	 HWc+Xf0tLpsvnT970faof7jBSfOc+oytsLX8cIdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rtm@csail.mit.edu,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.17 160/247] NFSD: free copynotify stateid in nfs4_free_ol_stateid()
-Date: Fri, 21 Nov 2025 14:11:47 +0100
-Message-ID: <20251121130200.464524120@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 409/529] net_sched: act_connmark: use RCU in tcf_connmark_dump()
+Date: Fri, 21 Nov 2025 14:11:48 +0100
+Message-ID: <20251121130245.572181753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 4aa17144d5abc3c756883e3a010246f0dba8b468 upstream.
+[ Upstream commit 0d752877705c0252ef2726e4c63c5573f048951c ]
 
-Typically copynotify stateid is freed either when parent's stateid
-is being close/freed or in nfsd4_laundromat if the stateid hasn't
-been used in a lease period.
+Also storing tcf_action into struct tcf_connmark_parms
+makes sure there is no discrepancy in tcf_connmark_act().
 
-However, in case when the server got an OPEN (which created
-a parent stateid), followed by a COPY_NOTIFY using that stateid,
-followed by a client reboot. New client instance while doing
-CREATE_SESSION would force expire previous state of this client.
-It leads to the open state being freed thru release_openowner->
-nfs4_free_ol_stateid() and it finds that it still has copynotify
-stateid associated with it. We currently print a warning and is
-triggerred
-
-WARNING: CPU: 1 PID: 8858 at fs/nfsd/nfs4state.c:1550 nfs4_free_ol_stateid+0xb0/0x100 [nfsd]
-
-This patch, instead, frees the associated copynotify stateid here.
-
-If the parent stateid is freed (without freeing the copynotify
-stateids associated with it), it leads to the list corruption
-when laundromat ends up freeing the copynotify state later.
-
-[ 1626.839430] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[ 1626.842828] Modules linked in: nfnetlink_queue nfnetlink_log bluetooth cfg80211 rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd nfs_acl lockd grace nfs_localio ext4 crc16 mbcache jbd2 overlay uinput snd_seq_dummy snd_hrtimer qrtr rfkill vfat fat uvcvideo snd_hda_codec_generic videobuf2_vmalloc videobuf2_memops snd_hda_intel uvc snd_intel_dspcfg videobuf2_v4l2 videobuf2_common snd_hda_codec snd_hda_core videodev snd_hwdep snd_seq mc snd_seq_device snd_pcm snd_timer snd soundcore sg loop auth_rpcgss vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs 8021q garp stp llc mrp nvme ghash_ce e1000e nvme_core sr_mod nvme_keyring nvme_auth cdrom vmwgfx drm_ttm_helper ttm sunrpc dm_mirror dm_region_hash dm_log iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse dm_multipath dm_mod nfnetlink
-[ 1626.855594] CPU: 2 UID: 0 PID: 199 Comm: kworker/u24:33 Kdump: loaded Tainted: G    B   W           6.17.0-rc7+ #22 PREEMPT(voluntary)
-[ 1626.857075] Tainted: [B]=BAD_PAGE, [W]=WARN
-[ 1626.857573] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
-[ 1626.858724] Workqueue: nfsd4 laundromat_main [nfsd]
-[ 1626.859304] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[ 1626.860010] pc : __list_del_entry_valid_or_report+0x148/0x200
-[ 1626.860601] lr : __list_del_entry_valid_or_report+0x148/0x200
-[ 1626.861182] sp : ffff8000881d7a40
-[ 1626.861521] x29: ffff8000881d7a40 x28: 0000000000000018 x27: ffff0000c2a98200
-[ 1626.862260] x26: 0000000000000600 x25: 0000000000000000 x24: ffff8000881d7b20
-[ 1626.862986] x23: ffff0000c2a981e8 x22: 1fffe00012410e7d x21: ffff0000920873e8
-[ 1626.863701] x20: ffff0000920873e8 x19: ffff000086f22998 x18: 0000000000000000
-[ 1626.864421] x17: 20747562202c3839 x16: 3932326636383030 x15: 3030666666662065
-[ 1626.865092] x14: 6220646c756f6873 x13: 0000000000000001 x12: ffff60004fd9e4a3
-[ 1626.865713] x11: 1fffe0004fd9e4a2 x10: ffff60004fd9e4a2 x9 : dfff800000000000
-[ 1626.866320] x8 : 00009fffb0261b5e x7 : ffff00027ecf2513 x6 : 0000000000000001
-[ 1626.866938] x5 : ffff00027ecf2510 x4 : ffff60004fd9e4a3 x3 : 0000000000000000
-[ 1626.867553] x2 : 0000000000000000 x1 : ffff000096069640 x0 : 000000000000006d
-[ 1626.868167] Call trace:
-[ 1626.868382]  __list_del_entry_valid_or_report+0x148/0x200 (P)
-[ 1626.868876]  _free_cpntf_state_locked+0xd0/0x268 [nfsd]
-[ 1626.869368]  nfs4_laundromat+0x6f8/0x1058 [nfsd]
-[ 1626.869813]  laundromat_main+0x24/0x60 [nfsd]
-[ 1626.870231]  process_one_work+0x584/0x1050
-[ 1626.870595]  worker_thread+0x4c4/0xc60
-[ 1626.870893]  kthread+0x2f8/0x398
-[ 1626.871146]  ret_from_fork+0x10/0x20
-[ 1626.871422] Code: aa1303e1 aa1403e3 910e8000 97bc55d7 (d4210000)
-[ 1626.871892] SMP: stopping secondary CPUs
-
-Reported-by: rtm@csail.mit.edu
-Closes: https://lore.kernel.org/linux-nfs/d8f064c1-a26f-4eed-b4f0-1f7f608f415f@oracle.com/T/#t
-Fixes: 624322f1adc5 ("NFSD add COPY_NOTIFY operation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250709090204.797558-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/tc_act/tc_connmark.h |  1 +
+ net/sched/act_connmark.c         | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1505,7 +1505,8 @@ static void nfs4_free_ol_stateid(struct
- 	release_all_access(stp);
- 	if (stp->st_stateowner)
- 		nfs4_put_stateowner(stp->st_stateowner);
--	WARN_ON(!list_empty(&stid->sc_cp_list));
-+	if (!list_empty(&stid->sc_cp_list))
-+		nfs4_free_cpntf_statelist(stid->sc_client->net, stid);
- 	kmem_cache_free(stateid_slab, stid);
+diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
+index e8dd77a967480..a5ce83f3eea4b 100644
+--- a/include/net/tc_act/tc_connmark.h
++++ b/include/net/tc_act/tc_connmark.h
+@@ -7,6 +7,7 @@
+ struct tcf_connmark_parms {
+ 	struct net *net;
+ 	u16 zone;
++	int action;
+ 	struct rcu_head rcu;
+ };
+ 
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 0d7aee8933c5f..31719a113ed31 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -88,7 +88,7 @@ TC_INDIRECT_SCOPE int tcf_connmark_act(struct sk_buff *skb,
+ 	/* using overlimits stats to count how many packets marked */
+ 	tcf_action_inc_overlimit_qstats(&ca->common);
+ out:
+-	return READ_ONCE(ca->tcf_action);
++	return parms->action;
  }
  
+ static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
+@@ -167,6 +167,8 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		goto release_idr;
+ 
++	nparms->action = parm->action;
++
+ 	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
+@@ -190,20 +192,20 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 				    int bind, int ref)
+ {
++	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_connmark_info *ci = to_connmark(a);
++	const struct tcf_connmark_parms *parms;
+ 	struct tc_connmark opt = {
+ 		.index   = ci->tcf_index,
+ 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+ 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+ 	};
+-	struct tcf_connmark_parms *parms;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&ci->tcf_lock);
+-	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
++	rcu_read_lock();
++	parms = rcu_dereference(ci->parms);
+ 
+-	opt.action = ci->tcf_action;
++	opt.action = parms->action;
+ 	opt.zone = parms->zone;
+ 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -212,12 +214,12 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	if (nla_put_64bit(skb, TCA_CONNMARK_TM, sizeof(t), &t,
+ 			  TCA_CONNMARK_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
+-- 
+2.51.0
+
 
 
 
