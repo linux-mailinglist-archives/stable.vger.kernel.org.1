@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-196401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F96AC79FBA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DBEC7964D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A39484F2CCE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:01:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCB154E3C14
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2D4352951;
-	Fri, 21 Nov 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C46133FE03;
+	Fri, 21 Nov 2025 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJMSPKhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeAxD4++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4767C35388B;
-	Fri, 21 Nov 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43C2874F6;
+	Fri, 21 Nov 2025 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733404; cv=none; b=VMLaaRvY5fYQFhtP/4bCozR1DIz5dUaFEdcI7NVk7HTS9To7xWfL0dTa7DeMOaCXO/xU4Y4vArlnRA0cghmiGUo4MHTEf2DySAJKhMjXY7tWmPowhknMXPAbxxD8TiL34AfGRrDrA4bZdmg2VkxnTv/h7A19Y0AHBE77C5O+5Bw=
+	t=1763731826; cv=none; b=lTuuugscRIbFL/0IMXFs6qAPH09pEHhgHvVp6td54pG/9R+lhORYSrpX2a6d901t60rYWJjDi3gvcX0cyM2Asum5uDKihjfU4mQAjHr3fRI/hYMJFtAzd0V69Pl7I3tf+48BQajPXSK2yBCqVKuxviR9oRNwSUUwsWsmQ4CFNJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733404; c=relaxed/simple;
-	bh=5T1I+WHE6W26R6pi8KePN/EFVLxTDINXoQZeS51tc98=;
+	s=arc-20240116; t=1763731826; c=relaxed/simple;
+	bh=TcNsIkRPxbLAm/Nq2hOx1XE0L6pvCA686l0bYLOlmjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6uUmGm8QrhiN7RRH8yn8NPrrlywWSG3jmUJc8m2FilaZ1P8XUrHVsl8EvLwOx1TMCjzBSSZ5b3PKBX37wUgxsgT4WJRNBzr4XRucbc0mn3wtf/MhU6wgCLJc75odmXNCnRtlAWJs+m2d4QHS8PXXLdwCCkHo8Pf3IMtN5DnsCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJMSPKhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917BCC116C6;
-	Fri, 21 Nov 2025 13:56:43 +0000 (UTC)
+	 MIME-Version; b=W/x6Re8G3zodaA/Su/KLuaWzdgv9O1LUvaSs7XL2Nu3hgBFkNIp+zxywY+h3uFKCtVRHS4Zt2SFgHlghxfb+WDwowc5B088dicZwo3zWHBHpgBrEx2gxRQxpbBtCKS0bsSe0zMID4x+YoOaZnmYXyglt2aNjkMGTr6dCeY50cL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeAxD4++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA18C4CEF1;
+	Fri, 21 Nov 2025 13:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733403;
-	bh=5T1I+WHE6W26R6pi8KePN/EFVLxTDINXoQZeS51tc98=;
+	s=korg; t=1763731826;
+	bh=TcNsIkRPxbLAm/Nq2hOx1XE0L6pvCA686l0bYLOlmjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJMSPKhFs3BIitYg1srm7mLJVjK/ZBH0sQ4Ybv7IoePyG9aUwsYoG1i1W5ZaGDF9H
-	 pgDRUu+wFbuxHVqJKhpIhDJHsJNL5iHrg/UrezfswykNu2LhiikSMZRc/OHZPinehe
-	 Bz8f7qVRUOGLmjiMSID41/lVG5YwtwITWW3RvtWA=
+	b=EeAxD4++vuTJR5EV/FFCKHhwvxrze64ZbyVy+Yd9w83+MVZizQNJomvRoBQaS9ZMs
+	 h+ppGpin4HzmVnrdGls1m37EPSY9gjYASOqt66pIqbe0xLpTQ5AVcaqK4BFJ32/z7q
+	 T5GI3BTBGjIIeq4foNzpmZY4m+JFRNxxMZ23B6KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	David Howells <dhowells@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 423/529] cifs: Fix uncached read into ITER_KVEC iterator
+	Christian Brauner <brauner@kernel.org>,
+	Andrei Vagin <avagin@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 095/185] fs/namespace: correctly handle errors returned by grab_requested_mnt_ns
 Date: Fri, 21 Nov 2025 14:12:02 +0100
-Message-ID: <20251121130246.065763635@linuxfoundation.org>
+Message-ID: <20251121130147.295930289@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +63,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Andrei Vagin <avagin@google.com>
 
-If a cifs share is mounted cache=none, internal reads (such as by exec)
-will pass a KVEC iterator down from __cifs_readv() to
-cifs_send_async_read() which will then call cifs_limit_bvec_subset() upon
-it to limit the number of contiguous elements for RDMA purposes.  This
-doesn't work on non-BVEC iterators, however.
+[ Upstream commit 78f0e33cd6c939a555aa80dbed2fec6b333a7660 ]
 
-Fix this by extracting a KVEC iterator into a BVEC iterator in
-__cifs_readv()  (it would be dup'd anyway it async).
+grab_requested_mnt_ns was changed to return error codes on failure, but
+its callers were not updated to check for error pointers, still checking
+only for a NULL return value.
 
-This caused the following warning:
+This commit updates the callers to use IS_ERR() or IS_ERR_OR_NULL() and
+PTR_ERR() to correctly check for and propagate errors.
 
-  WARNING: CPU: 0 PID: 6290 at fs/smb/client/file.c:3549 cifs_limit_bvec_subset+0xe/0xc0
-  ...
-  Call Trace:
-   <TASK>
-   cifs_send_async_read+0x146/0x2e0
-   __cifs_readv+0x207/0x2d0
-   __kernel_read+0xf6/0x160
-   search_binary_handler+0x49/0x210
-   exec_binprm+0x4a/0x140
-   bprm_execve.part.0+0xe4/0x170
-   do_execveat_common.isra.0+0x196/0x1c0
-   do_execve+0x1f/0x30
+This also makes sure that the logic actually works and mount namespace
+file descriptors can be used to refere to mounts.
 
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Acked-by: Bharath SM <bharathsm@microsoft.com>
-Tested-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: stable@kernel.org # v6.6~v6.9
+Christian Brauner <brauner@kernel.org> says:
+
+Rework the patch to be more ergonomic and in line with our overall error
+handling patterns.
+
+Fixes: 7b9d14af8777 ("fs: allow mount namespace fd")
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Link: https://patch.msgid.link/20251111062815.2546189-1-avagin@google.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/file.c | 97 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 94 insertions(+), 3 deletions(-)
+ fs/namespace.c             | 32 ++++++++++++++++----------------
+ include/uapi/linux/mount.h |  2 +-
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 1f0a53738426e..92e43589fd83f 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -37,6 +37,81 @@
- #include "cifs_ioctl.h"
- #include "cached_dir.h"
+diff --git a/fs/namespace.c b/fs/namespace.c
+index cc4926d53e7de..035d6f1f0b6ef 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -158,7 +158,8 @@ static void mnt_ns_release(struct mnt_namespace *ns)
+ 		kfree(ns);
+ 	}
+ }
+-DEFINE_FREE(mnt_ns_release, struct mnt_namespace *, if (_T) mnt_ns_release(_T))
++DEFINE_FREE(mnt_ns_release, struct mnt_namespace *,
++	    if (!IS_ERR(_T)) mnt_ns_release(_T))
  
-+/*
-+ * Allocate a bio_vec array and extract up to sg_max pages from a KVEC-type
-+ * iterator and add them to the array.  This can deal with vmalloc'd buffers as
-+ * well as kmalloc'd or static buffers.  The pages are not pinned.
-+ */
-+static ssize_t extract_kvec_to_bvec(struct iov_iter *iter, ssize_t maxsize,
-+					unsigned int bc_max,
-+					struct bio_vec **_bv, unsigned int *_bc)
-+{
-+	const struct kvec *kv = iter->kvec;
-+	struct bio_vec *bv;
-+	unsigned long start = iter->iov_offset;
-+	unsigned int i, bc = 0;
-+	ssize_t ret = 0;
-+
-+	bc_max = iov_iter_npages(iter, bc_max);
-+	if (bc_max == 0) {
-+		*_bv = NULL;
-+		*_bc = 0;
-+		return 0;
-+	}
-+
-+	bv = kvmalloc(array_size(bc_max, sizeof(*bv)), GFP_NOFS);
-+	if (!bv) {
-+		*_bv = NULL;
-+		*_bc = 0;
-+		return -ENOMEM;
-+	}
-+	*_bv = bv;
-+
-+	for (i = 0; i < iter->nr_segs; i++) {
-+		struct page *page;
-+		unsigned long kaddr;
-+		size_t off, len, seg;
-+
-+		len = kv[i].iov_len;
-+		if (start >= len) {
-+			start -= len;
-+			continue;
-+		}
-+
-+		kaddr = (unsigned long)kv[i].iov_base + start;
-+		off = kaddr & ~PAGE_MASK;
-+		len = min_t(size_t, maxsize, len - start);
-+		kaddr &= PAGE_MASK;
-+
-+		maxsize -= len;
-+		ret += len;
-+		do {
-+			seg = umin(len, PAGE_SIZE - off);
-+			if (is_vmalloc_or_module_addr((void *)kaddr))
-+				page = vmalloc_to_page((void *)kaddr);
-+			else
-+				page = virt_to_page((void *)kaddr);
-+
-+			bvec_set_page(bv, page, len, off);
-+			bv++;
-+			bc++;
-+
-+			len -= seg;
-+			kaddr += PAGE_SIZE;
-+			off = 0;
-+		} while (len > 0 && bc < bc_max);
-+
-+		if (maxsize <= 0 || bc >= bc_max)
-+			break;
-+		start = 0;
-+	}
-+
-+	if (ret > 0)
-+		iov_iter_advance(iter, ret);
-+	*_bc = bc;
-+	return ret;
-+}
-+
- /*
-  * Remove the dirty flags from a span of pages.
+ static void mnt_ns_tree_remove(struct mnt_namespace *ns)
+ {
+@@ -5325,7 +5326,7 @@ static int copy_mnt_id_req(const struct mnt_id_req __user *req,
+ 	ret = copy_struct_from_user(kreq, sizeof(*kreq), req, usize);
+ 	if (ret)
+ 		return ret;
+-	if (kreq->spare != 0)
++	if (kreq->mnt_ns_fd != 0 && kreq->mnt_ns_id)
+ 		return -EINVAL;
+ 	/* The first valid unique mount id is MNT_UNIQUE_ID_OFFSET + 1. */
+ 	if (kreq->mnt_id <= MNT_UNIQUE_ID_OFFSET)
+@@ -5342,16 +5343,12 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
+ {
+ 	struct mnt_namespace *mnt_ns;
+ 
+-	if (kreq->mnt_ns_id && kreq->spare)
+-		return ERR_PTR(-EINVAL);
+-
+-	if (kreq->mnt_ns_id)
+-		return lookup_mnt_ns(kreq->mnt_ns_id);
+-
+-	if (kreq->spare) {
++	if (kreq->mnt_ns_id) {
++		mnt_ns = lookup_mnt_ns(kreq->mnt_ns_id);
++	} else if (kreq->mnt_ns_fd) {
+ 		struct ns_common *ns;
+ 
+-		CLASS(fd, f)(kreq->spare);
++		CLASS(fd, f)(kreq->mnt_ns_fd);
+ 		if (fd_empty(f))
+ 			return ERR_PTR(-EBADF);
+ 
+@@ -5366,6 +5363,8 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
+ 	} else {
+ 		mnt_ns = current->nsproxy->mnt_ns;
+ 	}
++	if (!mnt_ns)
++		return ERR_PTR(-ENOENT);
+ 
+ 	refcount_inc(&mnt_ns->passive);
+ 	return mnt_ns;
+@@ -5390,8 +5389,8 @@ SYSCALL_DEFINE4(statmount, const struct mnt_id_req __user *, req,
+ 		return ret;
+ 
+ 	ns = grab_requested_mnt_ns(&kreq);
+-	if (!ns)
+-		return -ENOENT;
++	if (IS_ERR(ns))
++		return PTR_ERR(ns);
+ 
+ 	if (kreq.mnt_ns_id && (ns != current->nsproxy->mnt_ns) &&
+ 	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
+@@ -5500,8 +5499,8 @@ static void __free_klistmount_free(const struct klistmount *kls)
+ static inline int prepare_klistmount(struct klistmount *kls, struct mnt_id_req *kreq,
+ 				     size_t nr_mnt_ids)
+ {
+-
+ 	u64 last_mnt_id = kreq->param;
++	struct mnt_namespace *ns;
+ 
+ 	/* The first valid unique mount id is MNT_UNIQUE_ID_OFFSET + 1. */
+ 	if (last_mnt_id != 0 && last_mnt_id <= MNT_UNIQUE_ID_OFFSET)
+@@ -5515,9 +5514,10 @@ static inline int prepare_klistmount(struct klistmount *kls, struct mnt_id_req *
+ 	if (!kls->kmnt_ids)
+ 		return -ENOMEM;
+ 
+-	kls->ns = grab_requested_mnt_ns(kreq);
+-	if (!kls->ns)
+-		return -ENOENT;
++	ns = grab_requested_mnt_ns(kreq);
++	if (IS_ERR(ns))
++		return PTR_ERR(ns);
++	kls->ns = ns;
+ 
+ 	kls->mnt_parent_id = kreq->mnt_id;
+ 	return 0;
+diff --git a/include/uapi/linux/mount.h b/include/uapi/linux/mount.h
+index 225bc366ffcbf..dbf65f2ffcf33 100644
+--- a/include/uapi/linux/mount.h
++++ b/include/uapi/linux/mount.h
+@@ -186,7 +186,7 @@ struct statmount {
   */
-@@ -4330,11 +4405,27 @@ static ssize_t __cifs_readv(
- 		ctx->bv = (void *)ctx->iter.bvec;
- 		ctx->bv_need_unpin = iov_iter_extract_will_pin(to);
- 		ctx->should_dirty = true;
--	} else if ((iov_iter_is_bvec(to) || iov_iter_is_kvec(to)) &&
--		   !is_sync_kiocb(iocb)) {
-+	} else if (iov_iter_is_kvec(to)) {
-+		/*
-+		 * Extract a KVEC-type iterator into a BVEC-type iterator.  We
-+		 * assume that the storage will be retained by the caller; in
-+		 * any case, we may or may not be able to pin the pages, so we
-+		 * don't try.
-+		 */
-+		unsigned int bc;
-+
-+		rc = extract_kvec_to_bvec(to, iov_iter_count(to), INT_MAX,
-+					&ctx->bv, &bc);
-+		if (rc < 0) {
-+			kref_put(&ctx->refcount, cifs_aio_ctx_release);
-+			return rc;
-+		}
-+
-+		iov_iter_bvec(&ctx->iter, ITER_DEST, ctx->bv, bc, rc);
-+	} else if (iov_iter_is_bvec(to) && !is_sync_kiocb(iocb)) {
- 		/*
- 		 * If the op is asynchronous, we need to copy the list attached
--		 * to a BVEC/KVEC-type iterator, but we assume that the storage
-+		 * to a BVEC-type iterator, but we assume that the storage
- 		 * will be retained by the caller; in any case, we may or may
- 		 * not be able to pin the pages, so we don't try.
- 		 */
+ struct mnt_id_req {
+ 	__u32 size;
+-	__u32 spare;
++	__u32 mnt_ns_fd;
+ 	__u64 mnt_id;
+ 	__u64 param;
+ 	__u64 mnt_ns_id;
 -- 
 2.51.0
 
