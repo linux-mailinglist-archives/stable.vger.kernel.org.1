@@ -1,118 +1,97 @@
-Return-Path: <stable+bounces-196501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A07C7A795
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:20:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3397DC7A862
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 16:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E6EA635E7AA
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96013A349A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340F334CFDA;
-	Fri, 21 Nov 2025 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7218834EF14;
+	Fri, 21 Nov 2025 15:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/YJjjXo"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j+D9ZBtA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE36233D6E2
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2457B34F487
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 15:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737980; cv=none; b=cPAOuwx/VywG6uANH/2aNKLQl2eVKzGEC+IikZIDvwYyui4e7YqU3gQAo0Ll0D2SXCRWOFYA1p6ItGPA7H98rGFtrZy7Z2wGk+M2LCxyHkVQ3Nzm2+FfCutrHF0VyLtVWZbPnfZyC9QJqFHgznVtePXyiSPYf5EH46sXN47EPYs=
+	t=1763738286; cv=none; b=dFG9FoZHhm9TLQ3lup2NmdNbn3fyF8nIWAXA5z3kxD0ZyD9JCVuTChfEOgAiNQJCiK0KHgan6vakDU/j/+zvamKhGp4PJKlDPc6pbvKaBXPyDRh3Reil8cFvENWWoXgDd42emlj9IOqh5t45qT3NjPUR4C09HtPoWafP/WUtpkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737980; c=relaxed/simple;
-	bh=nPFgacPqaiw+M7MNW1xJ2mJ2k/vqIZdckb3YyMOZnGk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvSZsa+sGnVLm1z5moMo+ux+JQxFT3Bsx54fpd+GYMcyF4n2BILHYYtTmLVJ9XkYZT0uCp4wXL5f+GGHK4tmVJkvaluG/FP6JsyBcnS56qmkYVMZ92cyREIFvi8rcCK/Igt/DmKnp6mr7sKi9vwHXn26McEtIe1St8banbwVHdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/YJjjXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3B4C4CEF1;
-	Fri, 21 Nov 2025 15:12:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763737980;
-	bh=nPFgacPqaiw+M7MNW1xJ2mJ2k/vqIZdckb3YyMOZnGk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/YJjjXobbCZVFN5z1p4pdtazAUM3+7mrYBMi5h3SB6TC9e51pVFmI/p8fwEU0cNN
-	 H184eEOBDyAtVX4D0YG40PNG6/2lq2nCkygpni3kyq2bqgvWJpucmxKaTqlDo+qt2a
-	 EFEcr9EuymZBQbcIMtWm4m2M6PN2bi+isI+v7oRZaJ+HPSVl8KoDb2s/JdMvTXhfqo
-	 NkWOPMGVGp8IQxA5RDmd/DkoivdION9A4pTLUTgZXt7WKj1bxuyX+iQncz45b74wAF
-	 LbF3mQcGsdxfhOlipu1Fgiqwx6hAPMuswT1fyMPzhdfCKa3FSNH6/Vstn8Hqe0u5/U
-	 yh73tIojdpa7A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
-Date: Fri, 21 Nov 2025 10:12:56 -0500
-Message-ID: <20251121151256.2561194-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112036-clever-sponsor-bfdf@gregkh>
-References: <2025112036-clever-sponsor-bfdf@gregkh>
+	s=arc-20240116; t=1763738286; c=relaxed/simple;
+	bh=jLqKxQ8X29aVd/cFW/VJ1isuzqtpA61AoT0JxdGcTeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ji44kiVB3tC68VXbOh5mVZbUrvfB9UV3QI2UMYyT+8kQx8U+zaDunXY2QifAn9pS6ob2YRhwmGfTYN0oNm5HytrwImuVEMrCqv75xfl9tB0Ni+A1IoYZNF5XHy7bWH7wJdnAXMsN1kwC4MDOgTsKLnuibGz36JdhidBC9FZIyUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j+D9ZBtA; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 21 Nov 2025 15:17:56 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763738280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoU+3RJsy1nSFSv3/JtuVaaz9FtJQECWLE+Re75HYkE=;
+	b=j+D9ZBtALnuBPR8r2wU1dqExABVFcow8ZG7S2U6WQGyqc0t/x2CKgMT45btb6BWFnrDohj
+	s7NQtyyI7TIBmz+ygSj48D2hQGORZFe9lE/MEgh+6JyibpXx5N1BdPgGGY9aeVdnZBsYPE
+	fKZ1Z+mDHkeXkhw7GYXJqXWZvMDcPDc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.12.y 0/5] LBR virtualization fixes
+Message-ID: <xgsmwdvpvacnvlay77a4qqeofemunst5mtokf5oupw27mjz2pp@2ssqtpcunrw2>
+References: <2025112046-confider-smelting-6296@gregkh>
+ <20251120233936.2407119-1-yosry.ahmed@linux.dev>
+ <2025112118-everyone-perish-5a7a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025112118-everyone-perish-5a7a@gregkh>
+X-Migadu-Flow: FLOW_OUT
 
-From: Takashi Iwai <tiwai@suse.de>
+On Fri, Nov 21, 2025 at 10:55:38AM +0100, Greg KH wrote:
+> On Thu, Nov 20, 2025 at 11:39:31PM +0000, Yosry Ahmed wrote:
+> > This is a backport of LBR virtualization fixes that recently landed in
+> > Linus's tree to 6.12.y.
+> > 
+> > Patch 1 is not a backport, it's introducing a helper that exists in
+> > Linus's tree to make the following backports more straightforward to
+> > apply.
+> 
+> Why not include the actual commit that adds that helper?
 
-[ Upstream commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf ]
+It was introduced as part of a much larger commit,
+160f143cc131 ("KVM: SVM: Manually recalc all MSR intercepts on userspace
+MSR filter change"), which was a part of a 30+ patch series. The effort
+and risk to backport all of that for the helper is not justifiable.
 
-The PCM stream data in USB-audio driver is transferred over USB URB
-packet buffers, and each packet size is determined dynamically.  The
-packet sizes are limited by some factors such as wMaxPacketSize USB
-descriptor.  OTOH, in the current code, the actually used packet sizes
-are determined only by the rate and the PPS, which may be bigger than
-the size limit above.  This results in a buffer overflow, as reported
-by syzbot.
+> 
+> > Patch 2 should already be in queue-6.12, but it's included here as the
+> > remaining patches depend on it.
+> 
+> So this series will not apply?
 
-Basically when the limit is smaller than the calculated packet size,
-it implies that something is wrong, most likely a weird USB
-descriptor.  So the best option would be just to return an error at
-the parameter setup time before doing any further operations.
+It applies on 6.12.y today, but if it gets merged to 6.12.y first [1],
+then we may need to drop patch 2 from the to apply. There's a change
+that git drops it though because it should be identical ot the patch
+[1].
 
-This patch introduces such a sanity check, and returns -EINVAL when
-the packet size is greater than maxpacksize.  The comparison with
-ep->packsize[1] alone should suffice since it's always equal or
-greater than ep->packsize[0].
+[1]https://lore.kernel.org/stable/20251121130147.807480816@linuxfoundation.org/
 
-Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
-Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ changed ep->cur_rate to rate parameter and chip to ep->chip ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/usb/endpoint.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
-index 80dcac5abe0c4..21bcdc811a810 100644
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1093,6 +1093,11 @@ int snd_usb_endpoint_set_params(struct snd_usb_endpoint *ep,
- 	ep->sample_rem = rate % ep->pps;
- 	ep->packsize[0] = rate / ep->pps;
- 	ep->packsize[1] = (rate + (ep->pps - 1)) / ep->pps;
-+	if (ep->packsize[1] > ep->maxpacksize) {
-+		usb_audio_dbg(ep->chip, "Too small maxpacksize %u for rate %u / pps %u\n",
-+			      ep->maxpacksize, rate, ep->pps);
-+		return -EINVAL;
-+	}
- 
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
--- 
-2.51.0
-
+> 
+> confused,
+> 
+> greg k-h
 
