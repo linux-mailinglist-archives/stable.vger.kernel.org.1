@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-195888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74F9C796C7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF35C794CC
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 80E9028996
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 984EA289C7
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D6521E098;
-	Fri, 21 Nov 2025 13:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB25231B124;
+	Fri, 21 Nov 2025 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fi8PO4yN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmYWsM7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1CE1F09B3;
-	Fri, 21 Nov 2025 13:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833242EA46B;
+	Fri, 21 Nov 2025 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731953; cv=none; b=G+cshJXJOa7wjtyFpM6CCHvrgpX46vqm9Ts9pXOgNp1bCw7Rn4SYo16tn1aFiZyOkOI7Pk5ZslSUdt+AUM5mgOOyx1riGAIZaGv9rdsbrJv5702QJ0Sr5vtgjjqxh7mnEhq0A+YOXC4sFrCJpCQzQhPSqWyXYFG3rar8cGPyCHo=
+	t=1763731474; cv=none; b=WFvJr/rfJpQf+zG0to8OMjGlWqWH18I4+veUZHC70vbCiJ0ue7QyLGt0vov0lpgD7WopAObktfiJEA9itHfXbjPNHUtHbe2A/VEI8qpBcNOmQ1GZDDd+VGjUgemh0aUjDN1m/Vjcorwwrw+ayq3sPBYkoylFz95npWgkveJs51I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731953; c=relaxed/simple;
-	bh=k4RLjh2J8JbMGmhA80DHfQZ06AqT+BIkhcy2LJbB6I0=;
+	s=arc-20240116; t=1763731474; c=relaxed/simple;
+	bh=3O3TFnNK2GXFSaPrFR8voJdYwwRdpOg2c2EZFD5J5sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHRLOdci+FsqSWV7ss3gaVKfqbtpX2yiKAcwNnmb7FdEfv08ngR1KypQclD5dKVv9GNa1gowpELfRYZ/L908mocV/cIj5M3Gxg4o3HAcnR+F2S3B7MRt0MaaUSk0fQ+RyYYe5FnGqIUH1kfP9kyInMtL+Ox51oBwAmGZyukZBVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fi8PO4yN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E72C4CEF1;
-	Fri, 21 Nov 2025 13:32:32 +0000 (UTC)
+	 MIME-Version; b=MZihbytyz2n15HR+VRZY1WWXrMDKwO+mc3ohoO1WVrriyD4xu9aekPhWjlN4Zp2KB3Z7DEPrD68StXY6ushIsTT5ef9eJWig6nUgDzi0mdnTh+nhyVkUNHCZP1Uf3iK++Bc7bT3ZKOFK9JelXFaRdIW8NVNI8jrVqCgsFKL4YRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmYWsM7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30C6C116C6;
+	Fri, 21 Nov 2025 13:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731953;
-	bh=k4RLjh2J8JbMGmhA80DHfQZ06AqT+BIkhcy2LJbB6I0=;
+	s=korg; t=1763731474;
+	bh=3O3TFnNK2GXFSaPrFR8voJdYwwRdpOg2c2EZFD5J5sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fi8PO4yNhEvDmi9zkKOMLgykEzfkDvM1ajCjhuex4PqWezUyHXXZIBcvRMlI5uFXS
-	 2AZRm1x2Kskv92j3wc4YYpENc5/KXyrsjv4Mvk8d5+eHwUvfMU1eppJEoo1jk/aA51
-	 DOk0B6Vii6YcXNTUFQvslxOMc5RJJ1UZF5h/RMFk=
+	b=AmYWsM7cL1pylHVwji1GVVyRTlP6u/WWPpV6zWtCacQg2n4We2KStVqflUXpGW2lG
+	 DVuLfg6mFMsF6Y8MsFn+V2hhJEeKYqmB4B3hCkeu6KDnvvM8lADLKd6H76HMh02rpo
+	 b6hkKXJTjsfbmvmy3S+LQB1mWezsmnMBwrTgPPA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 139/185] LoongArch: Use physical addresses for CSR_MERRENTRY/CSR_TLBRENTRY
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 219/247] drm/amdkfd: relax checks for over allocation of save area
 Date: Fri, 21 Nov 2025 14:12:46 +0100
-Message-ID: <20251121130148.891221755@linuxfoundation.org>
+Message-ID: <20251121130202.594149928@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-commit 4e67526840fc55917581b90f6a4b65849a616dd8 upstream.
+commit d15deafab5d722afb9e2f83c5edcdef9d9d98bd1 upstream.
 
-Now we use virtual addresses to fill CSR_MERRENTRY/CSR_TLBRENTRY, but
-hardware hope physical addresses. Now it works well because the high
-bits are ignored above PA_BITS (48 bits), but explicitly use physical
-addresses can avoid potential bugs. So fix it.
+Over allocation of save area is not fatal, only under allocation is.
+ROCm has various components that independently claim authority over save
+area size.
 
+Unless KFD decides to claim single authority, relax size checks.
+
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 15bd4958fe38e763bc17b607ba55155254a01f55)
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/traps.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/loongarch/kernel/traps.c
-+++ b/arch/loongarch/kernel/traps.c
-@@ -1123,8 +1123,8 @@ static void configure_exception_vector(v
- 	tlbrentry = (unsigned long)exception_handlers + 80*VECSIZE;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -297,16 +297,16 @@ int kfd_queue_acquire_buffers(struct kfd
+ 		goto out_err_unreserve;
+ 	}
  
- 	csr_write64(eentry, LOONGARCH_CSR_EENTRY);
--	csr_write64(eentry, LOONGARCH_CSR_MERRENTRY);
--	csr_write64(tlbrentry, LOONGARCH_CSR_TLBRENTRY);
-+	csr_write64(__pa(eentry), LOONGARCH_CSR_MERRENTRY);
-+	csr_write64(__pa(tlbrentry), LOONGARCH_CSR_TLBRENTRY);
- }
+-	if (properties->ctx_save_restore_area_size != topo_dev->node_props.cwsr_size) {
+-		pr_debug("queue cwsr size 0x%x not equal to node cwsr size 0x%x\n",
++	if (properties->ctx_save_restore_area_size < topo_dev->node_props.cwsr_size) {
++		pr_debug("queue cwsr size 0x%x not sufficient for node cwsr size 0x%x\n",
+ 			properties->ctx_save_restore_area_size,
+ 			topo_dev->node_props.cwsr_size);
+ 		err = -EINVAL;
+ 		goto out_err_unreserve;
+ 	}
  
- void per_cpu_trap_init(int cpu)
+-	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
+-			  * NUM_XCC(pdd->dev->xcc_mask);
++	total_cwsr_size = (properties->ctx_save_restore_area_size +
++			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
+ 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
+ 
+ 	err = kfd_queue_buffer_get(vm, (void *)properties->ctx_save_restore_area_address,
+@@ -352,8 +352,8 @@ int kfd_queue_release_buffers(struct kfd
+ 	topo_dev = kfd_topology_device_by_id(pdd->dev->id);
+ 	if (!topo_dev)
+ 		return -EINVAL;
+-	total_cwsr_size = (topo_dev->node_props.cwsr_size + topo_dev->node_props.debug_memory_size)
+-			  * NUM_XCC(pdd->dev->xcc_mask);
++	total_cwsr_size = (properties->ctx_save_restore_area_size +
++			   topo_dev->node_props.debug_memory_size) * NUM_XCC(pdd->dev->xcc_mask);
+ 	total_cwsr_size = ALIGN(total_cwsr_size, PAGE_SIZE);
+ 
+ 	kfd_queue_buffer_svm_put(pdd, properties->ctx_save_restore_area_address, total_cwsr_size);
 
 
 
