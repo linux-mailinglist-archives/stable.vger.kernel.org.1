@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D988C79D98
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:59:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C200C793FE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA6574EF9C2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:54:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBA994EC540
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA02934DB49;
-	Fri, 21 Nov 2025 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA973176E1;
+	Fri, 21 Nov 2025 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqVuDq6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAJDZ1Y6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933413358BE;
-	Fri, 21 Nov 2025 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CCA332904;
+	Fri, 21 Nov 2025 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733024; cv=none; b=Bwqt4T2SSPGQ2qZBqmXEbvGy2rhqPttV0f+EhViX4fvgLRutYGNVwRI0YK3uAkn87LBrfDt3GMRi2BDaLC2+MKBuUiuK73/NjzCb45aVE35Wd8yXHZxIKMPScKQhMSwTOEkKWBMU7C2TjjA4/O6UREthoAt3naFcZsawts73de0=
+	t=1763731066; cv=none; b=kBw0l14aH1HgY6H1y5GBXeRhEMAdG78/PADHbdN/wTe5nZo3XnDUJpQlMGbmiAbg1QXPpPGknEQLidnbTn1kmc6L5ABjc2RzdewTFnaUEGZr+TBj3AaldAglwDjfm7WXy8sU14opvIUCZa4YCoGiGzK9DqkS+qO0LDPp+QLWtDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733024; c=relaxed/simple;
-	bh=am8Miq0uIfuNyRCF2XBHD/YaSPGCHjxaVXc/Q+7yM2g=;
+	s=arc-20240116; t=1763731066; c=relaxed/simple;
+	bh=GU2YJE6da1vFszGXyhEI+0lS19E7Ewluu3+vLSKTBek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U6OfwXw2tEUKd1mvm7gsooDBIiLPgF/ImzYJg2waI9e4P3IH/LCoCwf8pktmdtdEvNC4q10Faqen5YZibUvcUBX7DERRTuQq24fSMpkK4xhEyz/ux6i01Ic0zBRsuWNcB7e0f7H24inaQlLBAOSWgm6U93qKOU6/FJjWYi4RHis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqVuDq6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14365C4CEF1;
-	Fri, 21 Nov 2025 13:50:23 +0000 (UTC)
+	 MIME-Version; b=uf3MWOt1pnxtDQL/PbzvkSFCddbWmuXTMRGUKbzmt90P2TpiysjWSj0i8blD1xF8l6aCDeIKxr/73tUfxk4MfSN10Nx+W5/OHI/LkW1m6hEA5AR5om4NNhetcARDXqIye4JGs3SGV/Kf2oCuU0M4T4wdnTM9P20Mh5YfMUd5PrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAJDZ1Y6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026E9C4CEF1;
+	Fri, 21 Nov 2025 13:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733024;
-	bh=am8Miq0uIfuNyRCF2XBHD/YaSPGCHjxaVXc/Q+7yM2g=;
+	s=korg; t=1763731066;
+	bh=GU2YJE6da1vFszGXyhEI+0lS19E7Ewluu3+vLSKTBek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqVuDq6d2iHVo0/Fk3d4AQBQqP8w75yulwyGCwuKRRcv8+CZgn0TwhIxc340eUwjh
-	 0ZF3og/owVurZ8fWzutw8VYi5HThjjUdJ9AnVMTke/H++Q5EyaZpb7ItlvC3tcEzDd
-	 9x2/sJ2q+X+VOoaoBoq8Aebo9ZXebRc7oWJ5fPvE=
+	b=pAJDZ1Y6XeWWG3kwQfVy3hhBqR0Noy5B2y3+L5aoldMA4xwXK2AtHvLesVWBCXbwt
+	 4tRQmCFEvYxV37d8XOphnqksSIg0efsAJNDA6+7CB16Mvu6JtJKNLMq6ox7Um6p9sA
+	 N697LtIrI6PT+VkPJOtqZx3BeYdpzOtm0jWFbfBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 325/529] kbuild: uapi: Strip comments before size type check
+Subject: [PATCH 6.17 077/247] net/mlx5e: Fix potentially misleading debug message
 Date: Fri, 21 Nov 2025 14:10:24 +0100
-Message-ID: <20251121130242.591149564@linuxfoundation.org>
+Message-ID: <20251121130157.360651026@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 66128f4287b04aef4d4db9bf5035985ab51487d5 ]
+[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
 
-On m68k, check_sizetypes in headers_check reports:
+Change the debug message to print the correct units instead of always
+assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
 
-    ./usr/include/asm/bootinfo-amiga.h:17: found __[us]{8,16,32,64} type without #include <linux/types.h>
-
-This header file does not use any of the Linux-specific integer types,
-but merely refers to them from comments, so this is a false positive.
-As of commit c3a9d74ee413bdb3 ("kbuild: uapi: upgrade check_sizetypes()
-warning to error"), this check was promoted to an error, breaking m68k
-all{mod,yes}config builds.
-
-Fix this by stripping simple comments before looking for Linux-specific
-integer types.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://patch.msgid.link/949f096337e28d50510e970ae3ba3ec9c1342ec0.1759753998.git.geert@linux-m68k.org
-[nathan: Adjust comment and remove unnecessary escaping from slashes in
-         regex]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- usr/include/headers_check.pl | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/usr/include/headers_check.pl b/usr/include/headers_check.pl
-index b6aec5e4365f9..682980781eb37 100755
---- a/usr/include/headers_check.pl
-+++ b/usr/include/headers_check.pl
-@@ -160,6 +160,8 @@ sub check_sizetypes
- 	if (my $included = ($line =~ /^\s*#\s*include\s+[<"](\S+)[>"]/)[0]) {
- 		check_include_typesh($included);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index d88a48210fdcb..9b93da4d52f64 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -598,6 +598,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	__u64 upper_limit_mbps;
+ 	__u64 upper_limit_gbps;
+ 	int i;
++	struct {
++		int scale;
++		const char *units_str;
++	} units[] = {
++		[MLX5_100_MBPS_UNIT] = {
++			.scale = 100,
++			.units_str = "Mbps",
++		},
++		[MLX5_GBPS_UNIT] = {
++			.scale = 1,
++			.units_str = "Gbps",
++		},
++	};
+ 
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+@@ -628,8 +641,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
  	}
-+	# strip single-line comments, as types may be referenced within them
-+	$line =~ s@/\*.*?\*/@@;
- 	if ($line =~ m/__[us](8|16|32|64)\b/) {
- 		printf STDERR "$filename:$lineno: " .
- 		              "found __[us]{8,16,32,64} type " .
+ 
+ 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
+-		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
+-			   __func__, i, max_bw_value[i]);
++		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
++			   max_bw_value[i] * units[max_bw_unit[i]].scale,
++			   units[max_bw_unit[i]].units_str);
+ 	}
+ 
+ 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
 -- 
 2.51.0
 
