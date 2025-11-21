@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-196366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0E6C79F69
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:07:48 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F8AC7953E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 546D94EF9F4
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22FBD365EB3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A21347FEE;
-	Fri, 21 Nov 2025 13:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F327B358;
+	Fri, 21 Nov 2025 13:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="My+Vbd+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXmjq8aT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E22344058;
-	Fri, 21 Nov 2025 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5C326CE33;
+	Fri, 21 Nov 2025 13:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733301; cv=none; b=rydgQ8FzJm2mikUZSWkZh4XMeE/xkYnA4T7fp7nlRk5Rob+ECbvKHMtrSnnMPZ+bNCVU1p56ikFgDbJbXdMS3KUxCeGC2ifsIUxXL48EzLo0W25qwNdw8v7d6mvebbGwRBJ1o/AOGviRCRWfYbP0WM1zSMXhSfE4LOK48mVGAk4=
+	t=1763731247; cv=none; b=kzRJ5vquqQJ6OhsLMK2hIPj7eTDkmuo5aHdyezO9kBHM/6IV4t1hD60dqpp3p4YzpksEh30AFlMlAuhxjdF7NdZc7vXcZUzYZgZ1t/kKLLYW1W+UVsMWxUDJj6OH0pG96Fghcdedv4BqTqfGbmORDgsEAvowDDeXyenEdM4txXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733301; c=relaxed/simple;
-	bh=Xm8gX2SQkagqvYlsoLE7Uv5f7dLgdd1iQM0cqAXJe8M=;
+	s=arc-20240116; t=1763731247; c=relaxed/simple;
+	bh=ivqBYN+6ThktE3XzatE0XzD+468QmYQOFbJRoYZvACU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmB5a+3fGpooO2nfqW+AqYI7JNasw4t350MDJfvFNyB68kcwlDONZnqHvuEtFrtJAZ9zon6xiTgzapesQABMbMtmeQjT1vS8urRI4r7YjTYIgtU6TxWlIi+xTF7nK3BEyq7YYUWqfpfpg/CxTigse3RQGiGI0ahVzxw/qKv8wtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=My+Vbd+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E81C4CEF1;
-	Fri, 21 Nov 2025 13:55:00 +0000 (UTC)
+	 MIME-Version; b=HBpgV/kxtwRcPqlTW8zAYMnJwW/+A+4BkJ/abXSAmXq97Vpx1KbSPBcPGax3n0G4vtwzF0xf22hHe8RehBgcyi97kAKX63NFvj6c5gipzolocOW2KzIwn5YC2NufCl3ufuhVJcDZq/EqAytMmcaRx9FgD2h63JLDc6prTFvuwuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXmjq8aT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02537C4CEF1;
+	Fri, 21 Nov 2025 13:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733301;
-	bh=Xm8gX2SQkagqvYlsoLE7Uv5f7dLgdd1iQM0cqAXJe8M=;
+	s=korg; t=1763731247;
+	bh=ivqBYN+6ThktE3XzatE0XzD+468QmYQOFbJRoYZvACU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=My+Vbd+JXHMp+jkkIhPSst5sQUfitPyBMab5IeXt3U3CmPmGf9FK6KX4ueu1npye6
-	 m4TH9AIDUswuxLsfUF8mxpVYKD4ZSJTAR85Pjhckrh25M/WDk/GhCWaq8gDbvtasnk
-	 DXrttu0J2Vo9vD7fwAQdcK97lJY2rOvYXZDRdqWg=
+	b=ZXmjq8aTzyd2X6Wm/cILsTlnR49Va+vYhoAmfNGB5EnTVnJvCPdIPYjj6V60AReek
+	 Bby1aB/Q/S2ksBlQLbBG73pM7NwIAniwGYD2bwIqZiE3VUgcE/aNJoZARxBZsfuVRc
+	 CdXwLuAG2/1ld2l0/ynkZ8RPUI3S2Hy2/4iGLKTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Lobb <tristan.lobb@it-lobb.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 388/529] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
-Date: Fri, 21 Nov 2025 14:11:27 +0100
-Message-ID: <20251121130244.827737884@linuxfoundation.org>
+Subject: [PATCH 6.17 141/247] arm64: dts: imx8mp-kontron: Fix USB OTG role switching
+Date: Fri, 21 Nov 2025 14:11:28 +0100
+Message-ID: <20251121130159.786748219@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Lobb <tristan.lobb@it-lobb.de>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
+[ Upstream commit 6504297872c7a5d0d06247970d32940eba26b8b3 ]
 
-The Cooler Master Mice Dongle includes a vendor defined HID interface
-alongside its mouse interface. Not polling it will cause the mouse to
-stop responding to polls on any interface once woken up again after
-going into power saving mode.
+The VBUS supply regulator is currently assigned to the PHY node.
+This causes the VBUS to be always on, even when the controller
+needs to be switched to peripheral mode.
 
-Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
-the Dongle's PID.
+Fix the OTG role switching by adding a connector node and moving
+the VBUS supply regulator to that node. This way the VBUS gets
+correctly switched according to the current role.
 
-Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 946ab10e3f40 ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ .../dts/freescale/imx8mp-kontron-bl-osm-s.dts | 24 +++++++++++++++----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 8de59d8a54580..be24029782b10 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -332,6 +332,9 @@
- #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
- #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
+index 0eb9e726a9b81..6c63f0a5fa91b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
+@@ -16,11 +16,20 @@
+ 		ethernet1 = &eqos;
+ 	};
  
-+#define USB_VENDOR_ID_COOLER_MASTER	0x2516
-+#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
+-	extcon_usbc: usbc {
+-		compatible = "linux,extcon-usb-gpio";
++	connector {
++		compatible = "gpio-usb-b-connector", "usb-b-connector";
++		id-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
++		label = "Type-C";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_usb1_id>;
+-		id-gpios = <&gpio1 10 GPIO_ACTIVE_HIGH>;
++		type = "micro";
++		vbus-supply = <&reg_usb1_vbus>;
 +
- #define USB_VENDOR_ID_CORSAIR		0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
- #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 64f9728018b88..468a47de96b10 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
++		port {
++			usb_dr_connector: endpoint {
++				remote-endpoint = <&usb3_dwc>;
++			};
++		};
+ 	};
+ 
+ 	leds {
+@@ -230,9 +239,15 @@
+ 	hnp-disable;
+ 	srp-disable;
+ 	dr_mode = "otg";
+-	extcon = <&extcon_usbc>;
+ 	usb-role-switch;
++	role-switch-default-mode = "peripheral";
+ 	status = "okay";
++
++	port {
++		usb3_dwc: endpoint {
++			remote-endpoint = <&usb_dr_connector>;
++		};
++	};
+ };
+ 
+ &usb_dwc3_1 {
+@@ -261,7 +276,6 @@
+ };
+ 
+ &usb3_phy0 {
+-	vbus-supply = <&reg_usb1_vbus>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.51.0
 
