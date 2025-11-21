@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-195879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D62C79880
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:40:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC5DC79ECD
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 6D4722EEC2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id B3FBD30EEF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A626346A0E;
-	Fri, 21 Nov 2025 13:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18CC346E7B;
+	Fri, 21 Nov 2025 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzNe5r2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ji8Ey/lE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24321F09B3;
-	Fri, 21 Nov 2025 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922D13502A0;
+	Fri, 21 Nov 2025 13:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731926; cv=none; b=QU/3ohHQVi6YFGNOIezpFBtLlmZZQxdyB4Y9FxzyZSSdBdzZdMLrUpTMxOBd318DWvOtGqqOkfvfJ39056VHffWDw+Qmb+8Ft6VKEAgpB/+wm3Q1y9yOJqiYNPlsKocOwmbb/Cxjc9FkmwlLWokhZY7s5jqNqDO6fB+j3dTlR2Y=
+	t=1763733489; cv=none; b=DAOSPkvvk28OBk90clhsW3fUMXj30kRZ1l+o+uhnfKFegFahE3mgIFt3UqR3VIvv/DQ3uu3Pz2BScjdtBqQFIpDOZO8An0oWBtSNQI0AxNH1b/9KYY+k8Dsaddms5szD0xy34OmDVS633UcqObxk6eHU21mBuFI52FLQfzKQ6vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731926; c=relaxed/simple;
-	bh=4V0hz3DPILaisVDF34C0bZDf08RbH9c0ZeBBRHjRRNE=;
+	s=arc-20240116; t=1763733489; c=relaxed/simple;
+	bh=1rw38aQmcEfvrMWjzMjMYDXBwIrM962pfukkdI1/+No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjJ0/cKcfS8t2xQNrh0J8FLU5Y3h4EEmOSPkYefDxDXnXJs26/Cv2z1BslNI7L5rNtH0RMz/HIzEPsQCzA4ShQsbNzx7S52/o2/Nz2dRgCH4sDOMl3umajztLEhjKab638khwgJkYRO+FnD3fkpcK20zXFbMV5bwdRxR/A+gAr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzNe5r2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D424C4CEF1;
-	Fri, 21 Nov 2025 13:32:06 +0000 (UTC)
+	 MIME-Version; b=GJBlz7SP+zg7RJUgH9DMmDsv6pbVeqof2UPBMvCmJEZplhSABOdh+/VfSOSKuXC/BZo9v0VlHg+GazFDBMU0Ch3eMAFxVpnuQKsFkKGPvblMP4D0mxYwcTjXiM9a6jw8zZjQ7J/fbkpi6WTE8iR/nQfvtzEM4elEwDjTFMOCni4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ji8Ey/lE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39E9C116C6;
+	Fri, 21 Nov 2025 13:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731926;
-	bh=4V0hz3DPILaisVDF34C0bZDf08RbH9c0ZeBBRHjRRNE=;
+	s=korg; t=1763733489;
+	bh=1rw38aQmcEfvrMWjzMjMYDXBwIrM962pfukkdI1/+No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzNe5r2N+OxydDM9k1TyhjxM1jYsYrVl7SOfpaSCo6KcVLTTzY/ezupBx0xUgL7cH
-	 SoN9hKl+mjUpnk410iFtEYGHkYnldwUr8rxlfczR5lKU8U3FaNugnIU0E3j187RhXc
-	 QJAK188tYw4A7aYw3Jgzd9OfUPRkTiULApkVhOeU=
+	b=Ji8Ey/lEsvfsNYu5hqpvfqHzbHnF7/fH3tyxYWc7pucQb31Xv1s5RgUAuMVfF0ai1
+	 uHfZJhF1C9wQdRhD5mW2MQCBZtULm484tfwNXGIWNlGjtvx1Rjh7deVtnhGSvq0Gk8
+	 0XZe2bWFDBcR4gsOS8BvRyEVr0KwQHD/ftvOseGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 130/185] cifs: client: fix memory leak in smb3_fs_context_parse_param
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 458/529] ARM: dts: imx51-zii-rdu1: Fix audmux node names
 Date: Fri, 21 Nov 2025 14:12:37 +0100
-Message-ID: <20251121130148.567196001@linuxfoundation.org>
+Message-ID: <20251121130247.307015857@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-commit e8c73eb7db0a498cd4b22d2819e6ab1a6f506bd6 upstream.
+[ Upstream commit f31e261712a0d107f09fb1d3dc8f094806149c83 ]
 
-The user calls fsconfig twice, but when the program exits, free() only
-frees ctx->source for the second fsconfig, not the first.
-Regarding fc->source, there is no code in the fs context related to its
-memory reclamation.
+Rename the 'ssi2' and 'aud3' nodes to 'mux-ssi2' and 'mux-aud3' in the
+audmux configuration of imx51-zii-rdu1.dts to comply with the naming
+convention in imx-audmux.yaml.
 
-To fix this memory leak, release the source memory corresponding to ctx
-or fc before each parsing.
+This fixes the following dt-schema warning:
 
-syzbot reported:
-BUG: memory leak
-unreferenced object 0xffff888128afa360 (size 96):
-  backtrace (crc 79c9c7ba):
-    kstrdup+0x3c/0x80 mm/util.c:84
-    smb3_fs_context_parse_param+0x229b/0x36c0 fs/smb/client/fs_context.c:1444
+  imx51-zii-rdu1.dtb: audmux@83fd0000 (fsl,imx51-audmux): 'aud3', 'ssi2'
+  do not match any of the regexes: '^mux-[0-9a-z]*$', '^pinctrl-[0-9]+$'
 
-BUG: memory leak
-unreferenced object 0xffff888112c7d900 (size 96):
-  backtrace (crc 79c9c7ba):
-    smb3_fs_context_fullpath+0x70/0x1b0 fs/smb/client/fs_context.c:629
-    smb3_fs_context_parse_param+0x2266/0x36c0 fs/smb/client/fs_context.c:1438
-
-Reported-by: syzbot+72afd4c236e6bc3f4bac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=72afd4c236e6bc3f4bac
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ceef0396f367f ("ARM: dts: imx: add ZII RDU1 board")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1380,12 +1380,14 @@ static int smb3_fs_context_parse_param(s
- 			cifs_errorf(fc, "Unknown error parsing devname\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		kfree(ctx->source);
- 		ctx->source = smb3_fs_context_fullpath(ctx, '/');
- 		if (IS_ERR(ctx->source)) {
- 			ctx->source = NULL;
- 			cifs_errorf(fc, "OOM when copying UNC string\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		kfree(fc->source);
- 		fc->source = kstrdup(ctx->source, GFP_KERNEL);
- 		if (fc->source == NULL) {
- 			cifs_errorf(fc, "OOM when copying UNC string\n");
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
+index 5d4b29d765853..6cc4c2f08b15d 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
+@@ -259,7 +259,7 @@
+ 	pinctrl-0 = <&pinctrl_audmux>;
+ 	status = "okay";
+ 
+-	ssi2 {
++	mux-ssi2 {
+ 		fsl,audmux-port = <1>;
+ 		fsl,port-config = <
+ 			(IMX_AUDMUX_V2_PTCR_SYN |
+@@ -271,7 +271,7 @@
+ 		>;
+ 	};
+ 
+-	aud3 {
++	mux-aud3 {
+ 		fsl,audmux-port = <2>;
+ 		fsl,port-config = <
+ 			IMX_AUDMUX_V2_PTCR_SYN
+-- 
+2.51.0
+
 
 
 
