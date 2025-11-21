@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-195932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0139C79775
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:35:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8D6C7A0C2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 7D51F2AEDC
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:35:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 997434F18A5
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B8834B415;
-	Fri, 21 Nov 2025 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F033C34FF69;
+	Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zd7eM5e3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrcj8kO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BBE33438C;
-	Fri, 21 Nov 2025 13:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC36A34D4CB;
+	Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732080; cv=none; b=IpOcXZcHmxT0racIjnPRhi+zqrCwIlTE/LJznZaUo7AuV5dZiVuFSgG5t1LKgCcmnqI6rqAAAZSNGvBex7T3mo4TYKoOBcOlcvdmFrAy1orv5fUAofNGRIbtRa2oNCJ17MNgSWZnqJZFGly9fmjoRyA6YsuZh/oPbJ3TlWbmn7k=
+	t=1763733563; cv=none; b=QwvQxt+igLiQFyWJVs4IGCBpYHA8GvdaGq0j8fz+9NFFRNa+wjMVLk1WT4dv+dCQc83/VhtDcjLPDnk/10kvzXQklH3KUFkjsJeDZqcWs2hc5+gw1/KVbN/WSGMu8O4YTU4oqhWMP2V3Y+ppyy/iLhPFGiIMzccSujB0Mios4WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732080; c=relaxed/simple;
-	bh=HNqwzzjiNQ26pHXh3wiSjycTFW5898utNMSqMnHOaV4=;
+	s=arc-20240116; t=1763733563; c=relaxed/simple;
+	bh=JWJoUMNIxrDEKHmdD35A7sDsyaXIwjDqPn01SuOIZsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1zMR3QmiqEmzWTlparH0MP04boZIikPCqOvRJi01MjLneT8cGed1+OMDrQnEDlJiBcVcjvJjr7e02s5/P1iStgiE4T9/7NKjL2KSohI9FBHcLE/i3zIfBr+0ZOpIUPdNNytBEPlpnvNtLRITYdhkPxf8nYI7LmL5Bcbsm2IpGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zd7eM5e3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF4CC4CEFB;
-	Fri, 21 Nov 2025 13:34:39 +0000 (UTC)
+	 MIME-Version; b=Qiy7HnJ4Z9zk3oHNem37Z4sgPd6W47qJVyqeCV+iHdn8XUr6wXHbaWhpteifYssMyzcaazN7QhfhYJ6GmHCeEdmU4ax0wSAnksyJqXn23WdTGMIyDqktB3VyW8R8Cq9cjuUgk8wclL+G27iqQEniHQ2ORV9DLDXcMO+q4mfaP7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrcj8kO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A839C4CEF1;
+	Fri, 21 Nov 2025 13:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732079;
-	bh=HNqwzzjiNQ26pHXh3wiSjycTFW5898utNMSqMnHOaV4=;
+	s=korg; t=1763733563;
+	bh=JWJoUMNIxrDEKHmdD35A7sDsyaXIwjDqPn01SuOIZsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zd7eM5e3gkL+ULLaWfRap3g5xJvram79OFcgxmdMU2qw7z4nnuvPn43N0bJ79XF2k
-	 AdsberKcT7+pcsIZyvxg8UoICRVRBM1xcUAbOFqkLqe1EcYtew9ygpspY0eWIvv8Bn
-	 CSPJ+UGiIm9c2i8HiVX9VuPfS46kwjPWokBzfcto=
+	b=rrcj8kO1iT+sWe3b9JHKaSNds4+Nb7sD8NejvXGtVyw3kk8d5buRQvbXRm1Isp1hH
+	 pLknLlFbJkGmvyAhSLJKa8/rKgNvdG2SKQxV/aHknp+h12jvhij077EUt+8w/avdvf
+	 R/dO338aqZ9vN03eLG2EWBg4q0toFeKA4ak8HLjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 182/185] net: phy: micrel: Fix lan8814_config_init
-Date: Fri, 21 Nov 2025 14:13:29 +0100
-Message-ID: <20251121130150.460452270@linuxfoundation.org>
+	Xin Hao <vernhao@tencent.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeelb@google.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Leon Huang Fu <leon.huangfu@shopee.com>
+Subject: [PATCH 6.6 511/529] mm: memcg: add THP swap out info for anonymous reclaim
+Date: Fri, 21 Nov 2025 14:13:30 +0100
+Message-ID: <20251121130249.218124865@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Xin Hao <vernhao@tencent.com>
 
-commit bf91f4bc9c1dfba75e457e6a5f11e3cda658729a upstream.
+[ Upstream commit 811244a501b967b00fecb1ae906d5dc6329c91e0 ]
 
-The blamed commit introduced the function lanphy_modify_page_reg which
-as name suggests it, it modifies the registers. In the same commit we
-have started to use this function inside the drivers. The problem is
-that in the function lan8814_config_init we passed the wrong page number
-when disabling the aneg towards host side. We passed extended page number
-4(LAN8814_PAGE_COMMON_REGS) instead of extended page
-5(LAN8814_PAGE_PORT_REGS)
+At present, we support per-memcg reclaim strategy, however we do not know
+the number of transparent huge pages being reclaimed, as we know the
+transparent huge pages need to be splited before reclaim them, and they
+will bring some performance bottleneck effect.  for example, when two
+memcg (A & B) are doing reclaim for anonymous pages at same time, and 'A'
+memcg is reclaiming a large number of transparent huge pages, we can
+better analyze that the performance bottleneck will be caused by 'A'
+memcg.  therefore, in order to better analyze such problems, there add THP
+swap out info for per-memcg.
 
-Fixes: a0de636ed7a264 ("net: phy: micrel: Introduce lanphy_modify_page_reg")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250925064702.3906950-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[akpm@linux-foundation.orgL fix swap_writepage_fs(), per Johannes]
+  Link: https://lkml.kernel.org/r/20230913213343.GB48476@cmpxchg.org
+Link: https://lkml.kernel.org/r/20230913164938.16918-1-vernhao@tencent.com
+Signed-off-by: Xin Hao <vernhao@tencent.com>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Leon Huang Fu <leon.huangfu@shopee.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/cgroup-v2.rst |    9 +++++++++
+ mm/memcontrol.c                         |    2 ++
+ mm/page_io.c                            |    8 ++++----
+ mm/vmscan.c                             |    1 +
+ 4 files changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4085,7 +4085,7 @@ static int lan8814_config_init(struct ph
- 	struct kszphy_priv *lan8814 = phydev->priv;
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1532,6 +1532,15 @@ PAGE_SIZE multiple when read back.
+ 		collapsing an existing range of pages. This counter is not
+ 		present when CONFIG_TRANSPARENT_HUGEPAGE is not set.
  
- 	/* Disable ANEG with QSGMII PCS Host side */
--	lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA,
- 			       0);
++	  thp_swpout (npn)
++		Number of transparent hugepages which are swapout in one piece
++		without splitting.
++
++	  thp_swpout_fallback (npn)
++		Number of transparent hugepages which were split before swapout.
++		Usually because failed to allocate some continuous swap space
++		for the huge page.
++
+   memory.numa_stat
+ 	A read-only nested-keyed file which exists on non-root cgroups.
+ 
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -704,6 +704,8 @@ static const unsigned int memcg_vm_event
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	THP_FAULT_ALLOC,
+ 	THP_COLLAPSE_ALLOC,
++	THP_SWPOUT,
++	THP_SWPOUT_FALLBACK,
+ #endif
+ };
+ 
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -208,8 +208,10 @@ int swap_writepage(struct page *page, st
+ static inline void count_swpout_vm_event(struct folio *folio)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (unlikely(folio_test_pmd_mappable(folio)))
++	if (unlikely(folio_test_pmd_mappable(folio))) {
++		count_memcg_folio_events(folio, THP_SWPOUT, 1);
+ 		count_vm_event(THP_SWPOUT);
++	}
+ #endif
+ 	count_vm_events(PSWPOUT, folio_nr_pages(folio));
+ }
+@@ -278,9 +280,6 @@ static void sio_write_complete(struct ki
+ 			set_page_dirty(page);
+ 			ClearPageReclaim(page);
+ 		}
+-	} else {
+-		for (p = 0; p < sio->pages; p++)
+-			count_swpout_vm_event(page_folio(sio->bvec[p].bv_page));
+ 	}
+ 
+ 	for (p = 0; p < sio->pages; p++)
+@@ -296,6 +295,7 @@ static void swap_writepage_fs(struct pag
+ 	struct file *swap_file = sis->swap_file;
+ 	loff_t pos = page_file_offset(page);
+ 
++	count_swpout_vm_event(page_folio(page));
+ 	set_page_writeback(page);
+ 	unlock_page(page);
+ 	if (wbc->swap_plug)
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1922,6 +1922,7 @@ retry:
+ 								folio_list))
+ 						goto activate_locked;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
++					count_memcg_folio_events(folio, THP_SWPOUT_FALLBACK, 1);
+ 					count_vm_event(THP_SWPOUT_FALLBACK);
+ #endif
+ 					if (!add_to_swap(folio))
 
 
 
