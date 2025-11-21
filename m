@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B805C79CDB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF92FC79568
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id AC7742DBCD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 7E30528C6D
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492DA34B1BE;
-	Fri, 21 Nov 2025 13:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E2330E823;
+	Fri, 21 Nov 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQFxbUoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4IFU79J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E881C5D77;
-	Fri, 21 Nov 2025 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868093176E1;
+	Fri, 21 Nov 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733175; cv=none; b=uKms8FCdFHbECFcOZ6UL6yOS1yttKLgpSX95Dou0WYj4WsZCI89w5Gf4IbJ5Jpb+b78UWeChQeZIrl8dEUTZefwb6mHW7qMYe8lAJaMCZcDnOp71NiN0kqGBmLIkhCevEWhHBByV2DRWEpEmQn7pgGafEWgxJBQQRF1apCBPKNA=
+	t=1763731615; cv=none; b=Np3asFvb0vUqt1oSAgFk9nYjtFUjUPnsoO72WJ3UuSx0UJawP5vyi3VwXfu161wKfZ2JKYCVwosnDxFg37m5irNHjVQdzKfJ59dWwWaSUSNFISAQ8DvnIZxBwOBNinNDnSog1l3h2p2yFDBu+2KpYcGRsOrlGDnThvFwJahnuZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733175; c=relaxed/simple;
-	bh=rqfZ8lVoOHbbZoPyTCp+VRrtVhwSWL+VbAC2IV3tQg8=;
+	s=arc-20240116; t=1763731615; c=relaxed/simple;
+	bh=xppCginuM+isz92kfOvTC5Symw+Acy+vw0hT8yWUma4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8Yx9lvcmCj2EpWAggh3CLqnZqvCcUVlF9S4uWMRUmTgn/tyIIlnN0oPTCXjQDh69lsPGxuB9usPCyNuSHh840M7Ik4v61wwmzQpipBaU1PmAPQFWUQYM8/R8qMR7TM2h5dcInIKQCwKjTvyBXWjP7OBoFMdSqL/R5K2gfh+AFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQFxbUoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E6EC4CEF1;
-	Fri, 21 Nov 2025 13:52:54 +0000 (UTC)
+	 MIME-Version; b=K9ak2KmTnWI6/28hTGUXKwXIG+qCT2i9yjpy1sTxbPKH7Mj7Oj14dACpK0Mm/d3St/Wt5vP526PJUKu7LMbB4VQ3rsUhY83mqZURGii+rIVJhPU9TMcNjOnp/poWiMdmblbHzrn5bzt+DCsweZlYIKzGWwEM2CMoMuxprULbu3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4IFU79J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B45C4CEF1;
+	Fri, 21 Nov 2025 13:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733174;
-	bh=rqfZ8lVoOHbbZoPyTCp+VRrtVhwSWL+VbAC2IV3tQg8=;
+	s=korg; t=1763731615;
+	bh=xppCginuM+isz92kfOvTC5Symw+Acy+vw0hT8yWUma4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQFxbUoA+oZ5um62spm/oxvCFGPvIxt61FeTCKHdtW9gMnwAsgdiH7lktj+nKMP62
-	 TT8myTMRZ54WZVBOMXJI755rkYFCWbItGYMfcwIhRIth4g3vD/3Zy5Wl7WJoHm6xle
-	 pc90fBVnFw0WKSGqb6iCe+bRxgzYpXunAWMBteRw=
+	b=J4IFU79JykLYFfSgGRMuPQobpXhJGFulDjTOtUwz5uZK0YAnVCcicSVBJvbBGVDSZ
+	 dkddPWetz3EXSmgn2BQ/31nL7JnJdoFus/LxMNH715L9d2OtLv5ooJ/lLJL4lFI1z0
+	 XZo/36IL8LKG22zykdttWqcOyMSzbX/jGROTDNUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 350/529] sctp: Hold sock lock while iterating over address list
+Subject: [PATCH 6.12 022/185] HID: nintendo: Wait longer for initial probe
 Date: Fri, 21 Nov 2025 14:10:49 +0100
-Message-ID: <20251121130243.484613590@linuxfoundation.org>
+Message-ID: <20251121130144.676229328@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
+[ Upstream commit b73bc6a51f0c0066912c7e181acee41091c70fe6 ]
 
-Move address list traversal in inet_assoc_attr_size() under the sock
-lock to avoid holding the RCU read lock.
+Some third-party controllers, such as the PB Tails CHOC, won't always
+respond quickly on startup. Since this packet is needed for probe, and only
+once during probe, let's just wait an extra second, which makes connecting
+consistent.
 
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/hid/hid-nintendo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 7799e5abdbd05..ad3e1462a896e 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -230,14 +230,15 @@ struct sctp_comm_param {
- 	bool net_admin;
- };
+diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
+index 2a3ae1068739d..6bdc9165f8226 100644
+--- a/drivers/hid/hid-nintendo.c
++++ b/drivers/hid/hid-nintendo.c
+@@ -2424,7 +2424,7 @@ static int joycon_read_info(struct joycon_ctlr *ctlr)
+ 	struct joycon_input_report *report;
  
--static size_t inet_assoc_attr_size(struct sctp_association *asoc)
-+static size_t inet_assoc_attr_size(struct sock *sk,
-+				   struct sctp_association *asoc)
- {
- 	int addrlen = sizeof(struct sockaddr_storage);
- 	int addrcnt = 0;
- 	struct sctp_sockaddr_entry *laddr;
- 
- 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
--				list)
-+				list, lockdep_sock_is_held(sk))
- 		addrcnt++;
- 
- 	return	  nla_total_size(sizeof(struct sctp_info))
-@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
- 	if (err)
- 		return err;
- 
--	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
--	if (!rep)
-+	lock_sock(sk);
-+
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		release_sock(sk);
- 		return -ENOMEM;
-+	}
- 
--	lock_sock(sk);
- 	if (ep != assoc->ep) {
- 		err = -EAGAIN;
- 		goto out;
+ 	req.subcmd_id = JC_SUBCMD_REQ_DEV_INFO;
+-	ret = joycon_send_subcmd(ctlr, &req, 0, HZ);
++	ret = joycon_send_subcmd(ctlr, &req, 0, 2 * HZ);
+ 	if (ret) {
+ 		hid_err(ctlr->hdev, "Failed to get joycon info; ret=%d\n", ret);
+ 		return ret;
 -- 
 2.51.0
 
