@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-196002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B3AC798E7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3648DC798F3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sto.lore.kernel.org (Postfix) with ESMTPS id 3E6D7292DB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id CDCC8292F9
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC6434A786;
-	Fri, 21 Nov 2025 13:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5B534BA5B;
+	Fri, 21 Nov 2025 13:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmeFDqih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFuMGCj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FC4346E72;
-	Fri, 21 Nov 2025 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B489349AF4;
+	Fri, 21 Nov 2025 13:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732282; cv=none; b=sq5exENzo0eDD7P2W1iTmI32ObcUgxuysrUhpShpJJnJO35ZqeZAT2y21cBAHnQy4g10+wqPPgCBC9f2phNi8nP3wGwU9LqQSQWzucAPzUjkZgUYfR/0BZdYKEH4CSXzgXaAgAlkf6KPfwlV6/3YLFqbpyn7ZxSUXB8uK5W5/CA=
+	t=1763732313; cv=none; b=kEX6ESio7OWVFNxII/z6Q7cv+ChcBAFYJKygzcmSE/uxxxfI1L/HdsXxnItDX79eJczIs+OcGHCNNyvVeOY9gcB6CvfY96ZbHV48NqwpQd7NtofGHAHwFLmqYdBwBZoeey5g49j60DxNlrdrJRyOaOYSiBOwY8gV8L8YRAm4D2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732282; c=relaxed/simple;
-	bh=gW9nrDJ3TnOm5F3Bjq9ox27YkwPWmPbAEzYxGFYdW2E=;
+	s=arc-20240116; t=1763732313; c=relaxed/simple;
+	bh=5NUKpm/8Q5lSjC1F09NwDBtNc4PZyeQssDwa3ED+fzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdaaOr8Njri3jyyBJ7LgB5YI1qQ6nMLjmIVq57egU38E9s978TNffLfmKhSfC2RQVrsxAoXV42VGbVTMIQlxY9jwbbCW8vP8mfsAaIHvyV0cQQUqEivvLzrnKcZ7u90WN4ZH6sm/3+gdkVqF2uKC/EOcDyvOA2/Eqdk3xu7xd98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmeFDqih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29122C4CEF1;
-	Fri, 21 Nov 2025 13:38:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZHdtEvijvRspbMIXi1/5XEy21EAMacD0Ikpp07CTDPjif3shwLJQ6N5xl59nM+7SWY9pwb1wvf5Y1IOFv09hHlXdnZp+2NqKG8gqkUbzp0RRB0T6GB1edSIAnw58V7nVyOQpIQL0V6tfZ1L5Am1IiwXfVEeXTOAmmU5Ge1EkWD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFuMGCj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5DDC4CEF1;
+	Fri, 21 Nov 2025 13:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732281;
-	bh=gW9nrDJ3TnOm5F3Bjq9ox27YkwPWmPbAEzYxGFYdW2E=;
+	s=korg; t=1763732312;
+	bh=5NUKpm/8Q5lSjC1F09NwDBtNc4PZyeQssDwa3ED+fzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmeFDqihxm7LRxmLcEaFOy5t61CvOQFdrYzS3g1btKLhFjg/aTepwPLobGrJwM/H1
-	 lpZJ2gj///jspBw4fYaM5Ev+EX1NvONe0SJ/mJvaFgXenbvFv3Z9wKYtMbn6NHTcs7
-	 pq6ylMAE+Flb+WEhSmsK0psVasVoERCqUIlMt6wY=
+	b=JFuMGCj1b9JOdfYPxblmAv0YR/3cVTk86lfNNdD9N3DFSsXmIm9yIWLa5H256s07N
+	 /ACn8DI9WvB31nIVy017rIEVP0qPzLgk+k9dzoL+3t3jm0i4I2nQYi6gnqk0KdVY2L
+	 V9bFfuPxSICOYsRg/g3RXdFOlKPljXAVHNTRc2yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Reidel <adrian@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/529] soc: qcom: smem: Fix endian-unaware access of num_entries
-Date: Fri, 21 Nov 2025 14:05:58 +0100
-Message-ID: <20251121130233.121865358@linuxfoundation.org>
+Subject: [PATCH 6.6 060/529] spi: loopback-test: Dont use %pK through printk
+Date: Fri, 21 Nov 2025 14:05:59 +0100
+Message-ID: <20251121130233.156976331@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -60,42 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Reidel <adrian@mainlining.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 19e7aa0e9e46d0ad111a4af55b3d681b6ad945e0 ]
+[ Upstream commit b832b19318534bb4f1673b24d78037fee339c679 ]
 
-Add a missing le32_to_cpu when accessing num_entries, which is always a
-little endian integer.
+In the past %pK was preferable to %p as it would not leak raw pointer
+values into the kernel log.
+Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+the regular %p has been improved to avoid this issue.
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping locks in atomic contexts.
 
-Fixes booting on Xiaomi Mi 9T (xiaomi-davinci) in big endian.
+Switch to the regular pointer formatting which is safer and
+easier to reason about.
+There are still a few users of %pK left, but these use it through seq_file,
+for which its usage is safe.
 
-Signed-off-by: Jens Reidel <adrian@mainlining.org>
-Link: https://lore.kernel.org/r/20250726235646.254730-1-adrian@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://patch.msgid.link/20250811-restricted-pointers-spi-v1-1-32c47f954e4d@linutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-loopback-test.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index 2e8568d6cde94..aead7dd482ea3 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -870,7 +870,7 @@ static u32 qcom_smem_get_item_count(struct qcom_smem *smem)
- 	if (IS_ERR_OR_NULL(ptable))
- 		return SMEM_ITEM_COUNT;
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 69b6c87c5525e..41e1fb27a9f34 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -447,7 +447,7 @@ static void spi_test_dump_message(struct spi_device *spi,
+ 	int i;
+ 	u8 b;
  
--	info = (struct smem_info *)&ptable->entry[ptable->num_entries];
-+	info = (struct smem_info *)&ptable->entry[le32_to_cpu(ptable->num_entries)];
- 	if (memcmp(info->magic, SMEM_INFO_MAGIC, sizeof(info->magic)))
- 		return SMEM_ITEM_COUNT;
+-	dev_info(&spi->dev, "  spi_msg@%pK\n", msg);
++	dev_info(&spi->dev, "  spi_msg@%p\n", msg);
+ 	if (msg->status)
+ 		dev_info(&spi->dev, "    status:        %i\n",
+ 			 msg->status);
+@@ -457,15 +457,15 @@ static void spi_test_dump_message(struct spi_device *spi,
+ 		 msg->actual_length);
  
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-		dev_info(&spi->dev, "    spi_transfer@%pK\n", xfer);
++		dev_info(&spi->dev, "    spi_transfer@%p\n", xfer);
+ 		dev_info(&spi->dev, "      len:    %i\n", xfer->len);
+-		dev_info(&spi->dev, "      tx_buf: %pK\n", xfer->tx_buf);
++		dev_info(&spi->dev, "      tx_buf: %p\n", xfer->tx_buf);
+ 		if (dump_data && xfer->tx_buf)
+ 			spi_test_print_hex_dump("          TX: ",
+ 						xfer->tx_buf,
+ 						xfer->len);
+ 
+-		dev_info(&spi->dev, "      rx_buf: %pK\n", xfer->rx_buf);
++		dev_info(&spi->dev, "      rx_buf: %p\n", xfer->rx_buf);
+ 		if (dump_data && xfer->rx_buf)
+ 			spi_test_print_hex_dump("          RX: ",
+ 						xfer->rx_buf,
+@@ -559,7 +559,7 @@ static int spi_check_rx_ranges(struct spi_device *spi,
+ 		/* if still not found then something has modified too much */
+ 		/* we could list the "closest" transfer here... */
+ 		dev_err(&spi->dev,
+-			"loopback strangeness - rx changed outside of allowed range at: %pK\n",
++			"loopback strangeness - rx changed outside of allowed range at: %p\n",
+ 			addr);
+ 		/* do not return, only set ret,
+ 		 * so that we list all addresses
+@@ -697,7 +697,7 @@ static int spi_test_translate(struct spi_device *spi,
+ 	}
+ 
+ 	dev_err(&spi->dev,
+-		"PointerRange [%pK:%pK[ not in range [%pK:%pK[ or [%pK:%pK[\n",
++		"PointerRange [%p:%p[ not in range [%p:%p[ or [%p:%p[\n",
+ 		*ptr, *ptr + len,
+ 		RX(0), RX(SPI_TEST_MAX_SIZE),
+ 		TX(0), TX(SPI_TEST_MAX_SIZE));
 -- 
 2.51.0
 
