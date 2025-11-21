@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-196303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D97C79E28
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7952C79377
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 516FB352FC7
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 817352C344
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C7634A3D6;
-	Fri, 21 Nov 2025 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2B5275B18;
+	Fri, 21 Nov 2025 13:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mh7ojJ8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvCD3Dg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA5B33F38B;
-	Fri, 21 Nov 2025 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE171F09B3;
+	Fri, 21 Nov 2025 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733123; cv=none; b=ZeSxVYdq7GJcYM/3eE+yL57tWqwer2clAHhYwwpXxJYNJgl+BkEzcFEBpX2S9DDIA5uuEaWOqKMyI2vmI6GgVAWW1l8TZS120RcGI1fsn5iGVYKa8nnuiH2y31tQLp1X3LhmuLY0km+bcJAQku/rh4wL4AyGf6ITm46m/GzNvtI=
+	t=1763731167; cv=none; b=lUGukzNHfeB+9IlUI3JkyeK0+EAv0A1BaPvnTwGRNelHB1fXjyrxtuXs9e/GGfh4y6LncMX2gJu4PpeAvgVJ4eWWWFNFJRFe9V4JG4mxh4P1aMslXzF9etSw4D4rjNhcooByx7qZ1oCS1BkGxHpnip54surj5bhxb5+Hf2koYs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733123; c=relaxed/simple;
-	bh=7x1/uABPiExD0VmIfPNdgdXLEajF9YsbKf8kWZsoJCE=;
+	s=arc-20240116; t=1763731167; c=relaxed/simple;
+	bh=S3OgCF7pHC8K7dncM45/EuxVYGVBIsLEaOCj0PudpgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJqrF2L14PxObPOBRubnC3HFAaqBdfjqFDb8qraTCu/a0dhprh31tfvadtG4JnH2nORAKSdDvTnn+noVcaKgpraS+RDoSPmqhRj9C0MgPtrwApy15h0poBCV188O+U1/ig8gEl8iw6bKHXks4gNFlA9hCmJp/jizHNUxnk0WOLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mh7ojJ8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C91C4CEF1;
-	Fri, 21 Nov 2025 13:52:02 +0000 (UTC)
+	 MIME-Version; b=DixJeM5rkPs6jsFuxnE+pfgZD3zSyIGuQop1bdJe4ZlG9E43LfzaQmAKsB+fUiQzwpkpnWnydw2t66EOcjmpM1DLnb15WJNtktHFNP5yS47bmYtbmU5vso//kOjdaCu7miJzYkmQ+qL/809ALax+vw2Ue6iSExU0OBmB8pyqmtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvCD3Dg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F578C4CEF1;
+	Fri, 21 Nov 2025 13:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733123;
-	bh=7x1/uABPiExD0VmIfPNdgdXLEajF9YsbKf8kWZsoJCE=;
+	s=korg; t=1763731167;
+	bh=S3OgCF7pHC8K7dncM45/EuxVYGVBIsLEaOCj0PudpgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mh7ojJ8xYe7/kgod4CnlYow4pWCuK0lC+ksKZ+FZd46mg5ujEM0MWUOTdsVgiAmUz
-	 vFgNsjZZwhQ0pZBbBI6Icpwb/tcR7AqsSdcQhHZzjY18nbn9YXBT4QyGjT1OmdHK5v
-	 /Qj3tJ2mIoRCrzr6vCFZ9vW31sc6ZcMjQEhpkhhw=
+	b=PvCD3Dg3ZYruOvFkwM3BtC0uMb2ibjfLJe6+r3s+4QAMF7vjazeM+yXvVi8n88Wgt
+	 AYOWqIH+/xr4QczNLaX0fmY7abkRAFQof+3W3GLvDj/EP3omGaCP5hdtOpkL6RF0iW
+	 MirIYJOEFxwchvXo5DVQFDC8pybjEuZC2wHwggZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 360/529] net: bridge: fix MST static key usage
+Subject: [PATCH 6.17 112/247] NFS: Fix LTP test failures when timestamps are delegated
 Date: Fri, 21 Nov 2025 14:10:59 +0100
-Message-ID: <20251121130243.836862601@linuxfoundation.org>
+Message-ID: <20251121130158.603639938@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit ee87c63f9b2a418f698d79c2991347e31a7d2c27 ]
+[ Upstream commit b623390045a81fc559decb9bfeb79319721d3dfb ]
 
-As Ido pointed out, the static key usage in MST is buggy and should use
-inc/dec instead of enable/disable because we can have multiple bridges
-with MST enabled which means a single bridge can disable MST for all.
-Use static_branch_inc/dec to avoid that. When destroying a bridge decrement
-the key if MST was enabled.
+The utimes01 and utime06 tests fail when delegated timestamps are
+enabled, specifically in subtests that modify the atime and mtime
+fields using the 'nobody' user ID.
 
-Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://lore.kernel.org/netdev/20251104120313.1306566-1-razor@blackwall.org/T/#m6888d87658f94ed1725433940f4f4ebb00b5a68b
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251105111919.1499702-3-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The problem can be reproduced as follow:
+
+# echo "/media *(rw,no_root_squash,sync)" >> /etc/exports
+# export -ra
+# mount -o rw,nfsvers=4.2 127.0.0.1:/media /tmpdir
+# cd /opt/ltp
+# ./runltp -d /tmpdir -s utimes01
+# ./runltp -d /tmpdir -s utime06
+
+This issue occurs because nfs_setattr does not verify the inode's
+UID against the caller's fsuid when delegated timestamps are
+permitted for the inode.
+
+This patch adds the UID check and if it does not match then the
+request is sent to the server for permission checking.
+
+Fixes: e12912d94137 ("NFSv4: Add support for delegated atime and mtime attributes")
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_if.c      |  1 +
- net/bridge/br_mst.c     | 10 ++++++++--
- net/bridge/br_private.h |  5 +++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ fs/nfs/inode.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index 2450690f98cfa..6ffc81eedf074 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -386,6 +386,7 @@ void br_dev_delete(struct net_device *dev, struct list_head *head)
- 		del_nbp(p);
- 	}
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 49df9debb1a69..35bdb49236bac 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -718,6 +718,8 @@ nfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	struct nfs_fattr *fattr;
+ 	loff_t oldsize = i_size_read(inode);
+ 	int error = 0;
++	kuid_t task_uid = current_fsuid();
++	kuid_t owner_uid = inode->i_uid;
  
-+	br_mst_uninit(br);
- 	br_recalculate_neigh_suppress_enabled(br);
+ 	nfs_inc_stats(inode, NFSIOS_VFSSETATTR);
  
- 	br_fdb_delete_by_port(br, NULL, 0, 1);
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 3f24b4ee49c27..43a300ae6bfaf 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -22,6 +22,12 @@ bool br_mst_enabled(const struct net_device *dev)
- }
- EXPORT_SYMBOL_GPL(br_mst_enabled);
- 
-+void br_mst_uninit(struct net_bridge *br)
-+{
-+	if (br_opt_get(br, BROPT_MST_ENABLED))
-+		static_branch_dec(&br_mst_used);
-+}
-+
- int br_mst_get_info(const struct net_device *dev, u16 msti, unsigned long *vids)
- {
- 	const struct net_bridge_vlan_group *vg;
-@@ -225,9 +231,9 @@ int br_mst_set_enabled(struct net_bridge *br, bool on,
- 		return err;
- 
- 	if (on)
--		static_branch_enable(&br_mst_used);
-+		static_branch_inc(&br_mst_used);
- 	else
--		static_branch_disable(&br_mst_used);
-+		static_branch_dec(&br_mst_used);
- 
- 	br_opt_toggle(br, BROPT_MST_ENABLED, on);
- 	return 0;
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 798960ef2dcd0..c8a4e3b39b0e2 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1899,6 +1899,7 @@ int br_mst_fill_info(struct sk_buff *skb,
- 		     const struct net_bridge_vlan_group *vg);
- int br_mst_process(struct net_bridge_port *p, const struct nlattr *mst_attr,
- 		   struct netlink_ext_ack *extack);
-+void br_mst_uninit(struct net_bridge *br);
- #else
- static inline bool br_mst_is_enabled(const struct net_bridge_port *p)
- {
-@@ -1934,6 +1935,10 @@ static inline int br_mst_process(struct net_bridge_port *p,
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline void br_mst_uninit(struct net_bridge *br)
-+{
-+}
- #endif
- 
- struct nf_br_ops {
+@@ -739,9 +741,11 @@ nfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	if (nfs_have_delegated_mtime(inode) && attr->ia_valid & ATTR_MTIME) {
+ 		spin_lock(&inode->i_lock);
+ 		if (attr->ia_valid & ATTR_MTIME_SET) {
+-			nfs_set_timestamps_to_ts(inode, attr);
+-			attr->ia_valid &= ~(ATTR_MTIME|ATTR_MTIME_SET|
++			if (uid_eq(task_uid, owner_uid)) {
++				nfs_set_timestamps_to_ts(inode, attr);
++				attr->ia_valid &= ~(ATTR_MTIME|ATTR_MTIME_SET|
+ 						ATTR_ATIME|ATTR_ATIME_SET);
++			}
+ 		} else {
+ 			nfs_update_timestamps(inode, attr->ia_valid);
+ 			attr->ia_valid &= ~(ATTR_MTIME|ATTR_ATIME);
+@@ -751,10 +755,12 @@ nfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		   attr->ia_valid & ATTR_ATIME &&
+ 		   !(attr->ia_valid & ATTR_MTIME)) {
+ 		if (attr->ia_valid & ATTR_ATIME_SET) {
+-			spin_lock(&inode->i_lock);
+-			nfs_set_timestamps_to_ts(inode, attr);
+-			spin_unlock(&inode->i_lock);
+-			attr->ia_valid &= ~(ATTR_ATIME|ATTR_ATIME_SET);
++			if (uid_eq(task_uid, owner_uid)) {
++				spin_lock(&inode->i_lock);
++				nfs_set_timestamps_to_ts(inode, attr);
++				spin_unlock(&inode->i_lock);
++				attr->ia_valid &= ~(ATTR_ATIME|ATTR_ATIME_SET);
++			}
+ 		} else {
+ 			nfs_update_delegated_atime(inode);
+ 			attr->ia_valid &= ~ATTR_ATIME;
 -- 
 2.51.0
 
