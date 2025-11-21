@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-195665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85004C79433
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86AAC79EDF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id C26952D615
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:22:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 230FD380467
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75E2347FED;
-	Fri, 21 Nov 2025 13:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF70F34DB4A;
+	Fri, 21 Nov 2025 13:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9pNA9jc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5QBQyll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A5331578E;
-	Fri, 21 Nov 2025 13:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4034C127;
+	Fri, 21 Nov 2025 13:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731315; cv=none; b=vAsMc7Z6WCftIFt3bgi+odLYp9D41RPQkgR8UNkXQX4oDiChcdT1aY0kXtNk+fJLU23DE2/U5VHQPWEYqY8+aoxGrkiyEPWOWVWaV2eihWrOYu6/cYWv6DxUc/28G10SuMh0eF0wQQKQdcjKMk3nzCCUa9iTfg9hoLPPLtzkQvc=
+	t=1763733284; cv=none; b=R7hepQuQCM6C3xOO1g//dCzE+k4oFolHg1dSBfDlMjOxA8l4LpbxDkj1qnvI4JkJYW/r4sjne+NP9B5lhq+vjfpWetSXnMb+WASMa1HVeUaITOjZNohknqGIBWCJDuNBkHDIPwCX3I0c4vUo2wAhrFrsqzMm+8cN+6mUF1oe/b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731315; c=relaxed/simple;
-	bh=CMyQH4Bbu35X8Z0Gm+MEgrXACK+JzmxqH1JPQgRP+L4=;
+	s=arc-20240116; t=1763733284; c=relaxed/simple;
+	bh=D1lzFaPDw/ASlqWA+jxCK6a8GUZUJV1ymbNK3rzelOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3mPT6tg6RHUGTdp2ftMA/ZbgCUqAHGqwjgwajjtN/koVza307zsh+pJxjhQNE8YlhYp+GzHeRzyG+guwCxRVHUR/GomD6YS0ip/wjYyfgpZ3y+FDGOebYc5S3+oJ0fnDnbMi9dnUSl72YZGJ3PSec3wfkLOu61eh/cbhoAcWDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9pNA9jc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5ADC4CEF1;
-	Fri, 21 Nov 2025 13:21:54 +0000 (UTC)
+	 MIME-Version; b=DSohdqksxMDrnMGYh4c1zNK1w2ITSwMrklzBjlfp1NiV71TLD2Yf0iNMIrAgzQHiCoD87x7mKqoc6r77hbRP3/ePbG7wg2Tibr2cQkJwtYDGJbrffzE1It+0446qTL5eAeXXvtqJez3KvZX7Zt1J71FQXWd7WUlC9lag0SSUULM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5QBQyll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F67CC4CEF1;
+	Fri, 21 Nov 2025 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731315;
-	bh=CMyQH4Bbu35X8Z0Gm+MEgrXACK+JzmxqH1JPQgRP+L4=;
+	s=korg; t=1763733283;
+	bh=D1lzFaPDw/ASlqWA+jxCK6a8GUZUJV1ymbNK3rzelOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9pNA9jcIu6HDJpYpBSxihI/S8LF7xSHOsJL2cPY95zVKmUchuIr6yCDMeRv3ziwN
-	 H5MFDexIblJYxbY0s1SrETU1vJuDh+maeRCfGlLgH5knpFPVDdl8dT3IiBFrcSJQGb
-	 aZU1HdKxKC2is29QLyHI/HiLi5gXryZW5RttjyN4=
+	b=i5QBQyllK+qlmi4VLDpBEXXVq/yNOszBGcav+pz6ykGrcdPhLkJ1hZFrcfP44nNRW
+	 eASKkpHvJM1iSctJZ+h1QuKJ99IXRSJbKh7Mbn/r3TZMeTBaPNj9EflJKN7TIKlA71
+	 kI0li9dFnTLYtHV4+dP2TPSsLj0KtIzq8RFSR8K0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 166/247] kho: allocate metadata directly from the buddy allocator
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 414/529] net/mlx5e: Fix potentially misleading debug message
 Date: Fri, 21 Nov 2025 14:11:53 +0100
-Message-ID: <20251121130200.679088434@linuxfoundation.org>
+Message-ID: <20251121130245.749798980@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,95 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit fa759cd75bce5489eed34596daa53f721849a86f upstream.
+[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
 
-KHO allocates metadata for its preserved memory map using the slab
-allocator via kzalloc().  This metadata is temporary and is used by the
-next kernel during early boot to find preserved memory.
+Change the debug message to print the correct units instead of always
+assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
 
-A problem arises when KFENCE is enabled.  kzalloc() calls can be randomly
-intercepted by kfence_alloc(), which services the allocation from a
-dedicated KFENCE memory pool.  This pool is allocated early in boot via
-memblock.
-
-When booting via KHO, the memblock allocator is restricted to a "scratch
-area", forcing the KFENCE pool to be allocated within it.  This creates a
-conflict, as the scratch area is expected to be ephemeral and
-overwriteable by a subsequent kexec.  If KHO metadata is placed in this
-KFENCE pool, it leads to memory corruption when the next kernel is loaded.
-
-To fix this, modify KHO to allocate its metadata directly from the buddy
-allocator instead of slab.
-
-Link: https://lkml.kernel.org/r/20251021000852.2924827-4-pasha.tatashin@soleen.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Matlack <dmatlack@google.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Samiullah Khawaja <skhawaja@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/gfp.h     |    3 +++
- kernel/kexec_handover.c |    6 +++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -7,6 +7,7 @@
- #include <linux/mmzone.h>
- #include <linux/topology.h>
- #include <linux/alloc_tag.h>
-+#include <linux/cleanup.h>
- #include <linux/sched.h>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index ca096d8bcca60..29e633e6dd3f0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -590,6 +590,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	__u64 upper_limit_mbps;
+ 	__u64 upper_limit_gbps;
+ 	int i;
++	struct {
++		int scale;
++		const char *units_str;
++	} units[] = {
++		[MLX5_100_MBPS_UNIT] = {
++			.scale = 100,
++			.units_str = "Mbps",
++		},
++		[MLX5_GBPS_UNIT] = {
++			.scale = 1,
++			.units_str = "Gbps",
++		},
++	};
  
- struct vm_area_struct;
-@@ -463,4 +464,6 @@ static inline struct folio *folio_alloc_
- /* This should be paired with folio_put() rather than free_contig_range(). */
- #define folio_alloc_gigantic(...) alloc_hooks(folio_alloc_gigantic_noprof(__VA_ARGS__))
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+@@ -620,8 +633,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	}
  
-+DEFINE_FREE(free_page, void *, free_page((unsigned long)_T))
-+
- #endif /* __LINUX_GFP_H */
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -102,7 +102,7 @@ static void *xa_load_or_alloc(struct xar
- 	if (res)
- 		return res;
+ 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
+-		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
+-			   __func__, i, max_bw_value[i]);
++		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
++			   max_bw_value[i] * units[max_bw_unit[i]].scale,
++			   units[max_bw_unit[i]].units_str);
+ 	}
  
--	void *elm __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	void *elm __free(free_page) = (void *)get_zeroed_page(GFP_KERNEL);
- 
- 	if (!elm)
- 		return ERR_PTR(-ENOMEM);
-@@ -266,9 +266,9 @@ static_assert(sizeof(struct khoser_mem_c
- static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
- 					  unsigned long order)
- {
--	struct khoser_mem_chunk *chunk __free(kfree) = NULL;
-+	struct khoser_mem_chunk *chunk __free(free_page) = NULL;
- 
--	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	chunk = (void *)get_zeroed_page(GFP_KERNEL);
- 	if (!chunk)
- 		return ERR_PTR(-ENOMEM);
- 
+ 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
+-- 
+2.51.0
+
 
 
 
