@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-195861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14C2C79649
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B31EC794E1
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 7A834289FD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id C6E0528B21
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4398D2874F6;
-	Fri, 21 Nov 2025 13:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1E23176E1;
+	Fri, 21 Nov 2025 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baS5vYaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtPiZMkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D2E25F7BF;
-	Fri, 21 Nov 2025 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB44026CE33;
+	Fri, 21 Nov 2025 13:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731875; cv=none; b=QBNfG1IZ5srU+F2m2SZNfdyLiLy6XgvDgu/n0c6pKmgR8mNczeh02N3jz2moEV74kmQUExOO5OU7yLftbDNrX91U3EOUu65VIVVd7o3aosDQ0FBYrYTOEMOOyaaeCmMQkWNSB8o/k1H/YFDQg2aJhohYejUzKvVjv7pMQmyJ7h8=
+	t=1763731489; cv=none; b=h0MnOTr6e7QUpEywEIeRmWlLBiVe6ywO0rkNRK1fcH86TMgqco+e69nwrJjSNLXiApKjRHDpwoVaq35qJyDFNsF9pGJOLmuqgp93Nx2TW1IdZTvSk5B+38uxxqXYd3Jsp3eDrINJsnoQ1YHzjynh/GMWQxnYP8OIkXnvHw+0g3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731875; c=relaxed/simple;
-	bh=uYqKYx+OW8wzBkvrHlNxn5CipID/3HNIgRgLDgG4tpc=;
+	s=arc-20240116; t=1763731489; c=relaxed/simple;
+	bh=Ll1whMh/J8X4w3qN8KKGdjKDK3qAN2lNecUBqWxKhMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWq1BKCWssv/clGVrG80bx3IQf9NO3tUa0hPBDStoacjvpBbahXu12kPSMJiBrEwVFn2UkrogoS84xRnQabWExFujZVSjb5TYlqzdfORs5Oc0oJQdOwKElGc5hM3QoGa6LhBh2ktl3LWSJD1hfvYs1wlevbFw8XzamcVJSj2Zdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baS5vYaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801EBC4CEF1;
-	Fri, 21 Nov 2025 13:31:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BE2NAvIe3na1pIzfRerXIJPHppT7qb3lgp6c79jkuxP25O3O4bdikL/kJqrV0T4zm1k1Xr4CvC+nE6aSHrJ04Y5mys3mg7qBx744+//g6oj11zCld1n1WZaE3FTPvkGV+tmF8C2IYyxpRxJFS0KVJikXAUVXpArsddwlh1MJAQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtPiZMkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AD4C4CEF1;
+	Fri, 21 Nov 2025 13:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731874;
-	bh=uYqKYx+OW8wzBkvrHlNxn5CipID/3HNIgRgLDgG4tpc=;
+	s=korg; t=1763731488;
+	bh=Ll1whMh/J8X4w3qN8KKGdjKDK3qAN2lNecUBqWxKhMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baS5vYaBKFPuX+rrW8vmWtbKw2WdY6adC9tfCbFzXHDRrD6GBceCS4KV4Pk43cxRt
-	 oj2Q3Nc1b59b0wmcI3QsCcHQt3dAhJ6ox49iBYDb1z3ZX3cV6xYd3S3MXlz5BIxVWc
-	 Cx3zexieD6BQirZ06z+5gu+JEHSPzk8FsGFxl0bU=
+	b=gtPiZMkqiP9e3HjQFGQQHctnsGMx1S8e2XzFjPdl8VsCtoveWA1v+sr9BUY6ubq8r
+	 sYMB0xt8WwLRzUtzfKTtm1mNz7VFZ+sAD7ECzY6e69W/wpUyd8sG6AJW0vwHHpLCXz
+	 GmFpB9Cy5o7BGXYF4Dm6O172gJqE50quIQY+WZsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 111/185] nfsd: add missing FATTR4_WORD2_CLONE_BLKSIZE from supported attributes
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Rakuram Eswaran <rakuram.e96@gmail.com>,
+	Khalid Aziz <khalid@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.17 191/247] mmc: pxamci: Simplify pxamci_probe() error handling using devm APIs
 Date: Fri, 21 Nov 2025 14:12:18 +0100
-Message-ID: <20251121130147.879751493@linuxfoundation.org>
+Message-ID: <20251121130201.578663916@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Rakuram Eswaran <rakuram.e96@gmail.com>
 
-commit 4d3dbc2386fe051e44efad663e0ec828b98ab53f upstream.
+commit 9e805625218b70d865fcee2105dbf835d473c074 upstream.
 
-RFC 7862 Section 4.1.2 says that if the server supports CLONE it MUST
-support clone_blksize attribute.
+This patch refactors pxamci_probe() to use devm-managed resource
+allocation (e.g. devm_dma_request_chan) and dev_err_probe() for
+improved readability and automatic cleanup on probe failure.
 
-Fixes: d6ca7d2643ee ("NFSD: Implement FATTR4_CLONE_BLKSIZE attribute")
+It also removes redundant NULL assignments and manual resource release
+logic from pxamci_probe(), and eliminates the corresponding release
+calls from pxamci_remove().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202510041841.pRlunIfl-lkp@intel.com/
+Fixes: 58c40f3faf742c ("mmc: pxamci: Use devm_mmc_alloc_host() helper")
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Rakuram Eswaran <rakuram.e96@gmail.com>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsd.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/pxamci.c | 56 +++++++++++++--------------------------
+ 1 file changed, 18 insertions(+), 38 deletions(-)
 
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -458,6 +458,7 @@ enum {
- #define NFSD4_2_SUPPORTED_ATTRS_WORD2 \
- 	(NFSD4_1_SUPPORTED_ATTRS_WORD2 | \
- 	FATTR4_WORD2_MODE_UMASK | \
-+	FATTR4_WORD2_CLONE_BLKSIZE | \
- 	NFSD4_2_SECURITY_ATTRS | \
- 	FATTR4_WORD2_XATTR_SUPPORT)
+diff --git a/drivers/mmc/host/pxamci.c b/drivers/mmc/host/pxamci.c
+index 26d03352af63..b5ea058ed467 100644
+--- a/drivers/mmc/host/pxamci.c
++++ b/drivers/mmc/host/pxamci.c
+@@ -652,10 +652,9 @@ static int pxamci_probe(struct platform_device *pdev)
+ 	host->clkrt = CLKRT_OFF;
  
+ 	host->clk = devm_clk_get(dev, NULL);
+-	if (IS_ERR(host->clk)) {
+-		host->clk = NULL;
+-		return PTR_ERR(host->clk);
+-	}
++	if (IS_ERR(host->clk))
++		return dev_err_probe(dev, PTR_ERR(host->clk),
++					"Failed to acquire clock\n");
+ 
+ 	host->clkrate = clk_get_rate(host->clk);
+ 
+@@ -703,46 +702,37 @@ static int pxamci_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, mmc);
+ 
+-	host->dma_chan_rx = dma_request_chan(dev, "rx");
+-	if (IS_ERR(host->dma_chan_rx)) {
+-		host->dma_chan_rx = NULL;
++	host->dma_chan_rx = devm_dma_request_chan(dev, "rx");
++	if (IS_ERR(host->dma_chan_rx))
+ 		return dev_err_probe(dev, PTR_ERR(host->dma_chan_rx),
+ 				     "unable to request rx dma channel\n");
+-	}
+ 
+-	host->dma_chan_tx = dma_request_chan(dev, "tx");
+-	if (IS_ERR(host->dma_chan_tx)) {
+-		dev_err(dev, "unable to request tx dma channel\n");
+-		ret = PTR_ERR(host->dma_chan_tx);
+-		host->dma_chan_tx = NULL;
+-		goto out;
+-	}
++
++	host->dma_chan_tx = devm_dma_request_chan(dev, "tx");
++	if (IS_ERR(host->dma_chan_tx))
++		return dev_err_probe(dev, PTR_ERR(host->dma_chan_tx),
++					"unable to request tx dma channel\n");
+ 
+ 	if (host->pdata) {
+ 		host->detect_delay_ms = host->pdata->detect_delay_ms;
+ 
+ 		host->power = devm_gpiod_get_optional(dev, "power", GPIOD_OUT_LOW);
+-		if (IS_ERR(host->power)) {
+-			ret = PTR_ERR(host->power);
+-			dev_err(dev, "Failed requesting gpio_power\n");
+-			goto out;
+-		}
++		if (IS_ERR(host->power))
++			return dev_err_probe(dev, PTR_ERR(host->power),
++						"Failed requesting gpio_power\n");
+ 
+ 		/* FIXME: should we pass detection delay to debounce? */
+ 		ret = mmc_gpiod_request_cd(mmc, "cd", 0, false, 0);
+-		if (ret && ret != -ENOENT) {
+-			dev_err(dev, "Failed requesting gpio_cd\n");
+-			goto out;
+-		}
++		if (ret && ret != -ENOENT)
++			return dev_err_probe(dev, ret, "Failed requesting gpio_cd\n");
+ 
+ 		if (!host->pdata->gpio_card_ro_invert)
+ 			mmc->caps2 |= MMC_CAP2_RO_ACTIVE_HIGH;
+ 
+ 		ret = mmc_gpiod_request_ro(mmc, "wp", 0, 0);
+-		if (ret && ret != -ENOENT) {
+-			dev_err(dev, "Failed requesting gpio_ro\n");
+-			goto out;
+-		}
++		if (ret && ret != -ENOENT)
++			return dev_err_probe(dev, ret, "Failed requesting gpio_ro\n");
++
+ 		if (!ret)
+ 			host->use_ro_gpio = true;
+ 
+@@ -759,16 +749,8 @@ static int pxamci_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		if (host->pdata && host->pdata->exit)
+ 			host->pdata->exit(dev, mmc);
+-		goto out;
+ 	}
+ 
+-	return 0;
+-
+-out:
+-	if (host->dma_chan_rx)
+-		dma_release_channel(host->dma_chan_rx);
+-	if (host->dma_chan_tx)
+-		dma_release_channel(host->dma_chan_tx);
+ 	return ret;
+ }
+ 
+@@ -791,8 +773,6 @@ static void pxamci_remove(struct platform_device *pdev)
+ 
+ 		dmaengine_terminate_all(host->dma_chan_rx);
+ 		dmaengine_terminate_all(host->dma_chan_tx);
+-		dma_release_channel(host->dma_chan_rx);
+-		dma_release_channel(host->dma_chan_tx);
+ 	}
+ }
+ 
+-- 
+2.52.0
+
 
 
 
