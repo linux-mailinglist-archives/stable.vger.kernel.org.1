@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2989DC79439
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:23:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 161A8C79E2B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 78CAD346B3C
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 965E14EF27B
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A71275B18;
-	Fri, 21 Nov 2025 13:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FB9351FD1;
+	Fri, 21 Nov 2025 13:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwRSRo8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG52vjES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232C1272801;
-	Fri, 21 Nov 2025 13:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BED351FBF;
+	Fri, 21 Nov 2025 13:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731110; cv=none; b=RmFPFcran07Hc34W8tmWlDKyugCit0aeLiYSswgOVrvdAO3aJLQu9q4YJA4Yh+BevRXQEbX9/oAsywXRRMIwxkyPtroY9sp7fmq8VA5SKMojgZkE8k7aTekt961kaVyUH5KQF354Zi7/hEW2L1aUYgoiwL0Zq6VAfB7go/VbE1E=
+	t=1763733078; cv=none; b=HJM9GXsUKJ6Ll2atT2JXXAvSpxmHUEHkn/X4gsegiQq8WZ2pI/qfL+8cd+FfnxNm8j/zui2G9s1WpiN7BvWW4pe2gepCo4BPzRoXeUZPOjhgrCZN2nWB2GGEkklco/zmLGniWiQvph0O1ddk5NsR8v57BgEvqlg6I3U8ENrXqNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731110; c=relaxed/simple;
-	bh=ktirzTsCPbRachrpQuNbFwCEL3P4y+vgsQzn6lFUXRs=;
+	s=arc-20240116; t=1763733078; c=relaxed/simple;
+	bh=VMtGZZmyOowG7QXkcfW3iAd0mk3w0Z1ZietlrvQeiXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYbbcc9nSKvce7f8sC2hTwZzvlPoeRM3tKTuVw/z/XWeCqzCVz3fUsEqqY9RgtcWMXdSkhK3xGqoWkYnWH5dG2rU6RX12k8JkShMEKnNefCqPXSS5Nn17H3EA0WL6L9M3vYs14nnQGSLR9zZcevug5RL5ZdI/5h1v09+JOlCe/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwRSRo8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CA6C4CEF1;
-	Fri, 21 Nov 2025 13:18:29 +0000 (UTC)
+	 MIME-Version; b=Gll6NELtEeUUQWJW/LVW1+IfG2O0/RLs0iTU8V96QxIjmo/0mtKOzu0bNo3/hn9wl7dz+Wxz/1arQ8zg/1R8SOzJm6YXcbHSMcrfh7XIOB25shSJDvJbVkv1ROE5tEMNLNVBFofW24JKlRYLBlcn7201dF7I+Eo+/2fl1HkVEA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG52vjES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260BDC4CEFB;
+	Fri, 21 Nov 2025 13:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731110;
-	bh=ktirzTsCPbRachrpQuNbFwCEL3P4y+vgsQzn6lFUXRs=;
+	s=korg; t=1763733078;
+	bh=VMtGZZmyOowG7QXkcfW3iAd0mk3w0Z1ZietlrvQeiXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwRSRo8mcsRcKL5bv5b5EznYLax1+RLYeU1pxol2pfJLQBZKn8syZXt/vqwIHD3wQ
-	 O0gqya/vi4Zi1yxiFpM9YjVw8kdaiNn4nm0UPYMhy0HdPOsv/go/vHBglI0qjJE8ee
-	 /OIWpZxzULo5vUuzxZFP++OzCGDNCLL4JN3090YM=
+	b=aG52vjESAX/mRzFb3ZzUao0oKmv3MDeycD51wI6ehqOPIpNXWNuuojjTNdGF/cMIo
+	 rjDPSOZEcRSfMvL9IJgAALp+tOprlWlRovkd5DUmZ7G0BIbAbGdKhDLqfvHuxKa4ec
+	 imMe3NBOz3VaapjuAaPscZ7IOAhQumjeCPVEGhUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Melnychenko <a.melnychenko@vyos.io>,
-	Florian Westphal <fw@strlen.de>,
+	David Wei <dw@davidwei.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 094/247] netfilter: nft_ct: add seqadj extension for natted connections
+Subject: [PATCH 6.6 342/529] netdevsim: add Makefile for selftests
 Date: Fri, 21 Nov 2025 14:10:41 +0100
-Message-ID: <20251121130157.965926802@linuxfoundation.org>
+Message-ID: <20251121130243.200904914@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Melnychenko <a.melnychenko@vyos.io>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit 90918e3b6404c2a37837b8f11692471b4c512de2 ]
+[ Upstream commit 8ff25dac88f616ebebb30830e3a20f079d7a30c9 ]
 
-Sequence adjustment may be required for FTP traffic with PASV/EPSV modes.
-due to need to re-write packet payload (IP, port) on the ftp control
-connection. This can require changes to the TCP length and expected
-seq / ack_seq.
+Add a Makefile for netdevsim selftests and add selftests path to
+MAINTAINERS
 
-The easiest way to reproduce this issue is with PASV mode.
-Example ruleset:
-table inet ftp_nat {
-        ct helper ftp_helper {
-                type "ftp" protocol tcp
-                l3proto inet
-        }
-
-        chain prerouting {
-                type filter hook prerouting priority 0; policy accept;
-                tcp dport 21 ct state new ct helper set "ftp_helper"
-        }
-}
-table ip nat {
-        chain prerouting {
-                type nat hook prerouting priority -100; policy accept;
-                tcp dport 21 dnat ip prefix to ip daddr map {
-			192.168.100.1 : 192.168.13.2/32 }
-        }
-
-        chain postrouting {
-                type nat hook postrouting priority 100 ; policy accept;
-                tcp sport 21 snat ip prefix to ip saddr map {
-			192.168.13.2 : 192.168.100.1/32 }
-        }
-}
-
-Note that the ftp helper gets assigned *after* the dnat setup.
-
-The inverse (nat after helper assign) is handled by an existing
-check in nf_nat_setup_info() and will not show the problem.
-
-Topoloy:
-
- +-------------------+     +----------------------------------+
- | FTP: 192.168.13.2 | <-> | NAT: 192.168.13.3, 192.168.100.1 |
- +-------------------+     +----------------------------------+
-                                      |
-                         +-----------------------+
-                         | Client: 192.168.100.2 |
-                         +-----------------------+
-
-ftp nat changes do not work as expected in this case:
-Connected to 192.168.100.1.
-[..]
-ftp> epsv
-EPSV/EPRT on IPv4 off.
-ftp> ls
-227 Entering passive mode (192,168,100,1,209,129).
-421 Service not available, remote server has closed connection.
-
-Kernel logs:
-Missing nfct_seqadj_ext_add() setup call
-WARNING: CPU: 1 PID: 0 at net/netfilter/nf_conntrack_seqadj.c:41
-[..]
- __nf_nat_mangle_tcp_packet+0x100/0x160 [nf_nat]
- nf_nat_ftp+0x142/0x280 [nf_nat_ftp]
- help+0x4d1/0x880 [nf_conntrack_ftp]
- nf_confirm+0x122/0x2e0 [nf_conntrack]
- nf_hook_slow+0x3c/0xb0
- ..
-
-Fix this by adding the required extension when a conntrack helper is assigned
-to a connection that has a nat binding.
-
-Fixes: 1a64edf54f55 ("netfilter: nft_ct: add helper set support")
-Signed-off-by: Andrii Melnychenko <a.melnychenko@vyos.io>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://lore.kernel.org/r/20240130214620.3722189-5-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d01f8136d46b ("selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ MAINTAINERS                                     |  1 +
+ .../selftests/drivers/net/netdevsim/Makefile    | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
+ create mode 100644 tools/testing/selftests/drivers/net/netdevsim/Makefile
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index d526e69a2a2b8..f358cdc5e6926 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -22,6 +22,7 @@
- #include <net/netfilter/nf_conntrack_timeout.h>
- #include <net/netfilter/nf_conntrack_l4proto.h>
- #include <net/netfilter/nf_conntrack_expect.h>
-+#include <net/netfilter/nf_conntrack_seqadj.h>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 294d2ce29b735..c1aafeb3babf9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14725,6 +14725,7 @@ NETDEVSIM
+ M:	Jakub Kicinski <kuba@kernel.org>
+ S:	Maintained
+ F:	drivers/net/netdevsim/*
++F:	tools/testing/selftests/drivers/net/netdevsim/*
  
- struct nft_ct_helper_obj  {
- 	struct nf_conntrack_helper *helper4;
-@@ -1173,6 +1174,10 @@ static void nft_ct_helper_obj_eval(struct nft_object *obj,
- 	if (help) {
- 		rcu_assign_pointer(help->helper, to_assign);
- 		set_bit(IPS_HELPER_BIT, &ct->status);
+ NETEM NETWORK EMULATOR
+ M:	Stephen Hemminger <stephen@networkplumber.org>
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
+new file mode 100644
+index 0000000000000..7a29a05bea8bc
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
+@@ -0,0 +1,17 @@
++# SPDX-License-Identifier: GPL-2.0+ OR MIT
 +
-+		if ((ct->status & IPS_NAT_MASK) && !nfct_seqadj(ct))
-+			if (!nfct_seqadj_ext_add(ct))
-+				regs->verdict.code = NF_DROP;
- 	}
- }
- 
++TEST_PROGS = devlink.sh \
++	devlink_in_netns.sh \
++	devlink_trap.sh \
++	ethtool-coalesce.sh \
++	ethtool-fec.sh \
++	ethtool-pause.sh \
++	ethtool-ring.sh \
++	fib.sh \
++	hw_stats_l3.sh \
++	nexthop.sh \
++	psample.sh \
++	tc-mq-visibility.sh \
++	udp_tunnel_nic.sh \
++
++include ../../../lib.mk
 -- 
 2.51.0
 
