@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-195463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A472DC77794
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 06:53:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F558C777BE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 06:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3ECD7362392
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 05:51:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id A3632330BE
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 05:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEFF824BD;
-	Fri, 21 Nov 2025 05:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4283B18A6A7;
+	Fri, 21 Nov 2025 05:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="EUS3K6sp"
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="jE19mFoY"
 X-Original-To: stable@vger.kernel.org
-Received: from jpms-ob01.noc.sony.co.jp (jpms-ob01.noc.sony.co.jp [211.125.140.164])
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B452EFD90
-	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 05:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645291D90DF
+	for <stable@vger.kernel.org>; Fri, 21 Nov 2025 05:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763703944; cv=none; b=AC+7Vg/zru2W1OO+zuQFX2ofPdHV+/K2j2QvkzoC4f47A9w+tlFpQ+UyhaSL21kIuejyo0BS/PGWiPSykB3JNZIc32i3vhcLwbf8Aurr+CwiPTestrWYdOQ7/51uKag1oY3FRAlB7PhOLrjUEY+WUuZH/DFqE4XYLEQ0by7xvT4=
+	t=1763704046; cv=none; b=uPdBHPBD0jV8riW7dDdLZM729ODFvs1iA8m8V2GrP5oRc0W6y34FVyKKMikPK+CrK87d36VagJ+h6JcPQ/JlJbM0whMO4o6DVwG/UntdfOa/WN1zOk4q5k/H09RzEvyIC1ndTGKMxuv7zaRD7s2VM1dVa7xsZT0KakISdHrE4oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763703944; c=relaxed/simple;
+	s=arc-20240116; t=1763704046; c=relaxed/simple;
 	bh=RLwCISjjvpDqQh9UjZYzjmyBIri8qVFiBn6s2EBVp2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MjxPcrddZM/UsBELJJ0JT9pvCbIBEgMqQ7vCjlDpLHDczTBYn2bB3XT127QM8OeiIWDPB2HwE8iqg/CX1W01xm3xkv+krzeQ0TmNFw0mvzOhe/mTnNcD1G9hwP/LftROAuUXU9T24cq2B9YERryaC0UfbNyGzIsRoTUlDptJy6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=EUS3K6sp; arc=none smtp.client-ip=211.125.140.164
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KfD++kbcMnecJkdH04eT3jydJoqLknjFUauWyRpl2Lox6n2bz7XzAlQT8TZfMOxW7W3F+RP8O61dXr6AgJqScGLqlXzGHbSrjcw3FiOONZf3P9w3UG16Z0Z1rba8+33FAFT/2SP3eCdXdegBDZbJpxkWC7RhTRjJnTIvIxsOA90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=jE19mFoY; arc=none smtp.client-ip=211.125.140.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1763703942; x=1795239942;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
+  d=sony.com; s=s1jp; t=1763704045; x=1795240045;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
   bh=DBtBlG1mjzSamjRRUM5N4U8hMEoNzzFk6VpHupteZVk=;
-  b=EUS3K6spPn0INBZXPg+4dQmzKR2BlJ4UAMH5DCdAT0gxHPpTFw/2/x71
-   IpXnorMTHK3XLMsJr6nSZjFOIWDrtXZr65GuPqKhox0XCybvDff7nErhr
-   1/RTvfV2RqT3xdQfOMIvw/AmvHkuxiG1KzHmrzM5zFox+buTI35DuQA18
-   NI7Xwtrw2FeYDqQh1CJEG6MYAigu75F+tel7ivJSeFi41AKYBgGsLbPRZ
-   8dvldyeax3wa8jb9XVXeZE4bWQb3+t+ry4GRGRLe+/teGruaLUAOybXVK
-   G9lfHyZIc5IyE7fWATnrDfhQJQ2J3VcilcwDZUKWu8IaA0XXl15UxUuAe
-   w==;
-Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
-  by jpms-ob01.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 14:45:34 +0900
+  b=jE19mFoYEPVve7DRAmDq5o8AsI4Bm+4MCSZrbkP+QK+vhaG42vVe6bcC
+   nvP0D43jpMTaJwNIB90GYaCksNtC6NGIk8nCjC9/telt2S9WQd0sW3al8
+   yQaWnWIIY4/7K8KO3ck/GO/95PorAo9Gkwp5f5YtO0rE6W7urgKsYKbfT
+   yJXynpCe1doxhyFJu31ek3wcvD8FyNBhlzXaWVacRsr2Q3BXWVCAa/0dg
+   zEFv0Cj63XRVRVE8h+lu3x2fkeYzcYqmTsWkZnroFgulnqDUCXgWpbjXs
+   XRDfRCmABq+ZnQHtjCfMqQv6uzfdrneLXBpya50P6JGwRGf9UzYkqHvlb
+   A==;
+Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 14:47:17 +0900
 X-IronPort-AV: E=Sophos;i="6.20,227,1758553200"; 
-   d="scan'208";a="581475090"
+   d="scan'208";a="550932021"
 Received: from unknown (HELO Sukrit-OptiPlex-7080..) ([IPv6:2001:cf8:1:573:0:dddd:79c9:5652])
-  by jpmta-ob1.noc.sony.co.jp with ESMTP; 21 Nov 2025 14:45:33 +0900
+  by jpmta-ob02.noc.sony.co.jp with ESMTP; 21 Nov 2025 14:47:17 +0900
 From: Sukrit Bhatnagar <Sukrit.Bhatnagar@sony.com>
-To: sukrit.bhatnagar@sony.com
-Cc: stable@vger.kernel.org,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
+To: stable@vger.kernel.org,
+	sukrit.bhatnagar@sony.com
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
 	Sean Christopherson <seanjc@google.com>
 Subject: [PATCH 6.12.y] KVM: VMX: Fix check for valid GVA on an EPT violation
-Date: Fri, 21 Nov 2025 14:52:09 +0900
-Message-ID: <20251121055209.66918-1-Sukrit.Bhatnagar@sony.com>
+Date: Fri, 21 Nov 2025 14:53:52 +0900
+Message-ID: <20251121055352.67577-1-Sukrit.Bhatnagar@sony.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025112016-chatter-plutonium-baf8@gregkh>
+References: <2025112016-chatter-plutonium-baf8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
