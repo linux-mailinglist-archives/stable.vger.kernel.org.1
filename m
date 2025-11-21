@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-196235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DC4C79CDE
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:56:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115A7C79305
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2B6E4F066F
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:52:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 274BE2D351
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D81130EF7F;
-	Fri, 21 Nov 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85F346FC6;
+	Fri, 21 Nov 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCAJWVY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZXlJJn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB3E33C526;
-	Fri, 21 Nov 2025 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F16346E46;
+	Fri, 21 Nov 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732939; cv=none; b=mgbbEoXrl7b8AM3hazVghsmMpLxWGCKJA+YV1DeHU291cdjyEXGoZk+84U5mkxo5CXWQba0d7JVeCP4hODVKQqppwCFeIUWKcQ/95L5Pohmx0K2kVbSdkqpf/JGFAGGYZOccRFG247iShBj56cfut8NahlbtbV+xjVwTAmxMgW4=
+	t=1763731055; cv=none; b=Q7gJh5mm79Aem2EiNvjFVx0V1m0LNlfl2D56bVeCLxLxD5oF9UR0ud4prhgOjnuk5ttM5q81pMptZdaScJbb+OJl/iCByzGOZe1/cFtVX7kaakLzUei0Hd0uJae3dC10uIBZO4yzv1bKaxaHYC5gPR24c/qypn3qDBTEtB9b2/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732939; c=relaxed/simple;
-	bh=VhGdg3U9sumP4Ki+NAI7VtwcV83U/JHbnZHZgXdAozQ=;
+	s=arc-20240116; t=1763731055; c=relaxed/simple;
+	bh=Oeit348/hU5826Xe4ST+vB+1fNIPlLXkGgA8UiaJsIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMYk5QoID+5Y49NyIxp1OwxsbgcjEgzypJFNucUm2absu3WdXdjlx+wNuG33ppiKFsWeAL3KH0Ljxo8CNssgHqZt2qAT3+x2CaPA74KR2A+w8gMJ2oz36eJgRGc3D4C/N/dPuo7En+L2U+9k3Wqj5ANwt76ga6nH+E2PGODlh/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCAJWVY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6934C4CEF1;
-	Fri, 21 Nov 2025 13:48:57 +0000 (UTC)
+	 MIME-Version; b=gkemZK06iH8KUhtmB+0KVRa1kDSWsvkCH9PyF17/qWjP3A3X5+RDIBmnHZPReNz/dbIDych0qrWdmdZnWmGmsIpeRDKSgb5wc8qTgKwHm4cRN+I20JiGnPLA1rCjvaDDi8pe66lJre5GsprGv0gHHnBkiLXBmawMS6cH9NsrJPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZXlJJn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74998C4CEFB;
+	Fri, 21 Nov 2025 13:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732938;
-	bh=VhGdg3U9sumP4Ki+NAI7VtwcV83U/JHbnZHZgXdAozQ=;
+	s=korg; t=1763731054;
+	bh=Oeit348/hU5826Xe4ST+vB+1fNIPlLXkGgA8UiaJsIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCAJWVY+nCydgoayDIC6+Pa50Jx/H11cv/klW/DXP78m5ho192pL0ghQ6HmSSLVcB
-	 SjjbcQwgTqtXB+un/zK1JiAPvo1mSbvkMpdrL1kpHK52+XbTaT0ukuiy+AIEtv4hTI
-	 ogkmJ0oFHTK6ezcCLdJr3RVlxcSMyD9tBysI7YV0=
+	b=NZXlJJn/DOqrDJ+b3pM2iEr7/2OMluZyj99+Cefrft+8qZ3/v+K20Z8izModpRSEo
+	 9Qd3yTLpjLZKEMu20Tjt5I0FmlYqoqNAQLHtGa51ivqo8rJY8oBb1wbAPQXy1trFtP
+	 DvpQJUqOkkUjza54zajgkDXLzAtBM/b0PHs60tR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Robert Morris <rtm@csail.mit.edu>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/529] ksmbd: use sock_create_kern interface to create kernel socket
+Subject: [PATCH 6.17 047/247] erofs: avoid infinite loop due to incomplete zstd-compressed data
 Date: Fri, 21 Nov 2025 14:09:54 +0100
-Message-ID: <20251121130241.524400317@linuxfoundation.org>
+Message-ID: <20251121130156.290880520@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
+References: <20251121130154.587656062@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
+[ Upstream commit f2a12cc3b97f062186568a7b94ddb7aa2ef68140 ]
 
-we should use sock_create_kern() if the socket resides in kernel space.
+Currently, the decompression logic incorrectly spins if compressed
+data is truncated in crafted (deliberately corrupted) images.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 7c35de4df105 ("erofs: Zstandard compression support")
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/r/50958.1761605413@localhost
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_tcp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/erofs/decompressor_zstd.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 665d21d40e7a1..279a61d0dcc6b 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -476,12 +476,13 @@ static int create_socket(struct interface *iface)
- 	struct socket *ksmbd_socket;
- 	bool ipv4 = false;
+diff --git a/fs/erofs/decompressor_zstd.c b/fs/erofs/decompressor_zstd.c
+index b4bfe14229f9f..e38d93bb21048 100644
+--- a/fs/erofs/decompressor_zstd.c
++++ b/fs/erofs/decompressor_zstd.c
+@@ -172,7 +172,6 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
+ 	dctx.bounce = strm->bounce;
  
--	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
-+	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
-+			IPPROTO_TCP, &ksmbd_socket);
- 	if (ret) {
- 		if (ret != -EAFNOSUPPORT)
- 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
--		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
--				  &ksmbd_socket);
-+		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
-+				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
- 		if (ret) {
- 			pr_err("Can't create socket for ipv4: %d\n", ret);
- 			goto out_clear;
+ 	do {
+-		dctx.avail_out = out_buf.size - out_buf.pos;
+ 		dctx.inbuf_sz = in_buf.size;
+ 		dctx.inbuf_pos = in_buf.pos;
+ 		err = z_erofs_stream_switch_bufs(&dctx, &out_buf.dst,
+@@ -188,14 +187,18 @@ static int z_erofs_zstd_decompress(struct z_erofs_decompress_req *rq,
+ 		in_buf.pos = dctx.inbuf_pos;
+ 
+ 		zerr = zstd_decompress_stream(stream, &out_buf, &in_buf);
+-		if (zstd_is_error(zerr) || (!zerr && rq->outputsize)) {
++		dctx.avail_out = out_buf.size - out_buf.pos;
++		if (zstd_is_error(zerr) ||
++		    ((rq->outputsize + dctx.avail_out) && (!zerr || (zerr > 0 &&
++				!(rq->inputsize + in_buf.size - in_buf.pos))))) {
+ 			erofs_err(sb, "failed to decompress in[%u] out[%u]: %s",
+ 				  rq->inputsize, rq->outputsize,
+-				  zerr ? zstd_get_error_name(zerr) : "unexpected end of stream");
++				  zstd_is_error(zerr) ? zstd_get_error_name(zerr) :
++					"unexpected end of stream");
+ 			err = -EFSCORRUPTED;
+ 			break;
+ 		}
+-	} while (rq->outputsize || out_buf.pos < out_buf.size);
++	} while (rq->outputsize + dctx.avail_out);
+ 
+ 	if (dctx.kout)
+ 		kunmap_local(dctx.kout);
 -- 
 2.51.0
 
