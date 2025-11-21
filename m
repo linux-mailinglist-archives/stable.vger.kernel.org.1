@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C63C79478
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:24:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CE0C79690
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 16AEC2A1DB
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:23:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id EC06A2DAD0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BCD2FF64E;
-	Fri, 21 Nov 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1D93F9D2;
+	Fri, 21 Nov 2025 13:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="groP2DA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIK3cP4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2316A26CE33;
-	Fri, 21 Nov 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D56199939;
+	Fri, 21 Nov 2025 13:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731416; cv=none; b=GoqOGBZa01uODpve2IcUoLcKfovaMN8igse118NPJ/8DNTSfcnaJlNbbhQ14kmLHTWv8PDWIqUDTTPdGNPYFFQeUtd+l/FeNftxg8VipribnIETUesp8RroN7qWXrkFZQBQNxWWYfUa1MAcOWK0oPx5TiOlcVWOCxDUOpEY9qbw=
+	t=1763731923; cv=none; b=U18DwS4Z0D8zP1IskHtj3WrHvbJvLvhdGFtduxWwMyjYHQHGtFVNK85wLqMYBulxkO5tPn83L9EdzEavcW/AKs4wCmAI+0u94qmMiSk+R2ENvJDA3+J9kqgWZcdelupZSUIXQ8X0VTMOE3Nw0prWqmBe0smOkSQXaHhMrMouag0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731416; c=relaxed/simple;
-	bh=tjm3DaLjYUbKpmgMhaV3kXhl/13gLiuVpsxze0mvTb4=;
+	s=arc-20240116; t=1763731923; c=relaxed/simple;
+	bh=3y26b1m9bojBxeO1P3yZwfturPTwsVG3vFTN9PTdaoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqiL08RROUvfEtCtg2/F/EAugjDpnkUBIbfIXBNJhecd8pKQxZCv/1A2EPuBgoibqx+VQz6iBun8p9DwI4lAG4WKidXvz2y7HdcSleAta+A3NXkMuYkYKDVd+ze0vo4ujAgdqtH/XMcKTFSjxIGaE1Pw1VYAOOYCR0Tm5VDfgng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=groP2DA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E35CC4CEFB;
-	Fri, 21 Nov 2025 13:23:35 +0000 (UTC)
+	 MIME-Version; b=sVqAfdBGx70kZhn6um9hLiKC4FnQhvwQ6+iKlF6AUotXLJdqnPrG3Z71/nlTxxkWakdnZ3plTMzYcbiF5QZi9YPzZLDILGYF6eQVbJHzguGe6KNDowvqA5BB0blqLtJN0T6+2DIlO+rsWCVZNjfNOwF2yeRkN2h0g8mLb3Fv9zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIK3cP4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45393C4CEF1;
+	Fri, 21 Nov 2025 13:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731416;
-	bh=tjm3DaLjYUbKpmgMhaV3kXhl/13gLiuVpsxze0mvTb4=;
+	s=korg; t=1763731923;
+	bh=3y26b1m9bojBxeO1P3yZwfturPTwsVG3vFTN9PTdaoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=groP2DA8juXctpjAnct+Ni11oWX1fwJACRLNlA2jlDmiie9DivnGUhqVakwIOzMgN
-	 tQP4bFMBaoo/b6ivEhupAoEhP5pPhDCw8lBOY4Fh/fnxFqOcpU/p3/WrBuOAK0cT6m
-	 e+3Fc5waWOyiKzJ3a3YTwrZMBaibRV/s2wlbCwwU=
+	b=VIK3cP4MgE8SuAH4M0gn+XV+OJojOlWjMoKLcafRc2SzHbZpWh3D+DduYTeJyAQ1s
+	 E1rfAtn6L2Rzd16Rqa8Eu0ij8ksRwSY6NWxljRz083s829RLgCLjlEzDSzCs97SiJl
+	 YTZ2Zs2sB8dWkbPYkhw8sYXJMd6xLqRvgLJJ7BZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 201/247] spi: Try to get ACPI GPIO IRQ earlier
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 121/185] nilfs2: avoid having an active sc_timer before freeing sci
 Date: Fri, 21 Nov 2025 14:12:28 +0100
-Message-ID: <20251121130201.938806416@linuxfoundation.org>
+Message-ID: <20251121130148.241441716@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+commit 9a6b60cb147d53968753a34805211d2e5e08c027 upstream.
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+Because kthread_stop did not stop sc_task properly and returned -EINTR,
+the sc_timer was not properly closed, ultimately causing the problem [1]
+reported by syzbot when freeing sci due to the sc_timer not being closed.
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Because the thread sc_task main function nilfs_segctor_thread() returns 0
+when it succeeds, when the return value of kthread_stop() is not 0 in
+nilfs_segctor_destroy(), we believe that it has not properly closed
+sc_timer.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
+We use timer_shutdown_sync() to sync wait for sc_timer to shutdown, and
+set the value of sc_task to NULL under the protection of lock
+sc_state_lock, so as to avoid the issue caused by sc_timer not being
+properly shutdowned.
 
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1]
+ODEBUG: free active (active state 0) object: 00000000dacb411a object type: timer_list hint: nilfs_construction_timeout
+Call trace:
+ nilfs_segctor_destroy fs/nilfs2/segment.c:2811 [inline]
+ nilfs_detach_log_writer+0x668/0x8cc fs/nilfs2/segment.c:2877
+ nilfs_put_super+0x4c/0x12c fs/nilfs2/super.c:509
+
+Link: https://lkml.kernel.org/r/20251029225226.16044-1-konishi.ryusuke@gmail.com
+Fixes: 3f66cc261ccb ("nilfs2: use kthread_create and kthread_stop for the log writer thread")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=24d8b70f039151f65590
+Tested-by: syzbot+24d8b70f039151f65590@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Cc: <stable@vger.kernel.org>	[6.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/nilfs2/segment.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2866,6 +2866,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2787,7 +2787,12 @@ static void nilfs_segctor_destroy(struct
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+
- 	acpi_device_set_enumerated(adev);
+ 	if (sci->sc_task) {
+ 		wake_up(&sci->sc_wait_daemon);
+-		kthread_stop(sci->sc_task);
++		if (kthread_stop(sci->sc_task)) {
++			spin_lock(&sci->sc_state_lock);
++			sci->sc_task = NULL;
++			timer_shutdown_sync(&sci->sc_timer);
++			spin_unlock(&sci->sc_state_lock);
++		}
+ 	}
  
- 	adev->power.flags.ignore_parent = true;
+ 	spin_lock(&sci->sc_state_lock);
 
 
 
