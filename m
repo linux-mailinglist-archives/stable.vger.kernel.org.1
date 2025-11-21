@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C438C79362
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CD0C7A0B6
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 95D5D2DB1B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id A04583502E
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF51F09AC;
-	Fri, 21 Nov 2025 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D034A3CD;
+	Fri, 21 Nov 2025 13:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMTtg983"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBxHMmOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761FD2F360C;
-	Fri, 21 Nov 2025 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE7E266584;
+	Fri, 21 Nov 2025 13:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731170; cv=none; b=ID/2aj8Rr/xNaHErNJQBc5J8uNsFvSQqBwjf8jPRs9tzQKSj2TQJjswMI1voHr+sdCwmvQaDRYEHT7pQsWXz/TM+77vUkW9GCtoe41iF6Tr2WS0bm9o8T6Ck+uEdLbEmHNlTFIjrbjNph1t/lRYqPNAeu7gOMw+NR4CTPOK0SVE=
+	t=1763733126; cv=none; b=gKSCErEfvp+dkpPid1/77qSbzDz9l8KhCQblLoFf/DrB2X3CSOeRADgkejimuUUB5NKCNMGacPW24OGkKw5o3y0SwkVPXMcf1ojVXmc5ZF3NZBW7Qf9b/2wm3+4pdodrfkKED4fUPgUwfpryEidphGQ65tes4D4NQnX5imfRCb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731170; c=relaxed/simple;
-	bh=VmCcJ+a3extd72GdlIWYPYqvoBKg84fV8h+BQoYCcBo=;
+	s=arc-20240116; t=1763733126; c=relaxed/simple;
+	bh=tQtizmxJCW21F2zJesTQwAQSkkru1oRW/DjoFaq3LkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jb4l5ZqJ0m8Bla8a5Apx1GFhezgO1sU3mNtAws0NOxcN8HpZ9R17imKlDghhOt4NErQL73WayJXFgq1U9Oo4iVO20MFPGLPuLNinddmgsiKXhN5dNVdabb8dHoeVkHKWYIw6EVieP/8hlBknbljO9hVmzqKl7CFjL8EigLHOK/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMTtg983; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8116C4CEF1;
-	Fri, 21 Nov 2025 13:19:29 +0000 (UTC)
+	 MIME-Version; b=MmQABAQxgYJJTIFJsT/SMdsvk/Kj5GjI9sTB6GyEwUKPnOqpH2NTfbuDP2L+noxq6CQBOhHWtu8hTNDxQwYU9JYcqzeOeEdMUJTcMA99TMivTibpOuzf17JpgFzRnDzzk8fbLqfAKDgBDZn3cYxgicU8+KVQEdwFQxazn/mAPns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBxHMmOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0381C116C6;
+	Fri, 21 Nov 2025 13:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731170;
-	bh=VmCcJ+a3extd72GdlIWYPYqvoBKg84fV8h+BQoYCcBo=;
+	s=korg; t=1763733126;
+	bh=tQtizmxJCW21F2zJesTQwAQSkkru1oRW/DjoFaq3LkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMTtg983qXY3vmq6pWvhc45F7Vg6jpZ2uBHpf2raZ85iweitLZfoKNvfOKzaghsK8
-	 A/BIYu1pGznSnQu+zAj52Zh/djdk/JH2KSgGhP4lqK52EzLb9RaliqGd4liiIA4xqa
-	 HKNyBXo1E1CA5Tq3/d1A1jZR844Ixlmj/Tr0lsdI=
+	b=sBxHMmObpFcnTjXlNR0jXpvknQnt+gyhxD84hmavLvfbe+HDe5/tOsCisrNKR02cG
+	 MQsuvOlXzu0DNaDzC+08zTes9JpuBDqx1WjjiIlCK5MpV6wMCmRCpwucOYbXdQ5O0I
+	 zX/pS81rT17xvwNGruqxl+p4NL05flw/cJju+/5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haein Lee <lhi0729@kaist.ac.kr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 113/247] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
+Subject: [PATCH 6.6 361/529] tracing: Fix memory leaks in create_field_var()
 Date: Fri, 21 Nov 2025 14:11:00 +0100
-Message-ID: <20251121130158.639182720@linuxfoundation.org>
+Message-ID: <20251121130243.872100194@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haein Lee <lhi0729@kaist.ac.kr>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
+[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
 
-In snd_usb_create_streams(), for UAC version 3 devices, the Interface
-Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
-call fails, a fallback routine attempts to obtain the IAD from the next
-interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
-assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
-without performing a NULL check. This can lead to a NULL pointer
-dereference when usb_ifnum_to_if() fails to find the interface descriptor.
+The function create_field_var() allocates memory for 'val' through
+create_hist_field() inside parse_atom(), and for 'var' through
+create_var(), which in turn allocates var->type and var->var.name
+internally. Simply calling kfree() to release these structures will
+result in memory leaks.
 
-This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
-snd_usb_mixer_controls_badd() to prevent the dereference.
+Use destroy_hist_field() to properly free 'val', and explicitly release
+the memory of var->type and var->var.name before freeing 'var' itself.
 
-This issue was discovered by syzkaller, which triggered the bug by sending
-a crafted USB device descriptor.
-
-Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
-Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
-Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace_events_hist.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index cf296decefefc..f2058eb71fc8d 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -3080,6 +3080,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
- 	int i;
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 88985aefb71ff..e6d2f2a94235f 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3258,14 +3258,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val->size, val->type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
+ 	}
  
- 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
-+	if (!assoc)
-+		return -EINVAL;
- 
- 	/* Detect BADD capture/playback channels from AS EP descriptors */
- 	for (i = 0; i < assoc->bInterfaceCount; i++) {
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var->type);
++		kfree(var->var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;
 -- 
 2.51.0
 
