@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-195642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A37C794D2
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:25:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57960C79F79
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D11C4EBE3B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:20:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 204C14F1F3A
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732D2765FF;
-	Fri, 21 Nov 2025 13:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2023E350D6F;
+	Fri, 21 Nov 2025 13:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neDEMXvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ou/2n5sm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438861F09AC;
-	Fri, 21 Nov 2025 13:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A558C350D79;
+	Fri, 21 Nov 2025 13:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731253; cv=none; b=tLqlWUnru963rXOfI+hdmO7Mcs+65sY8whHhZib/EXf+FMCJ1BaRBkPEE72X9IEQdiSdJBScNhs/i403UpvtEZfXmMIOBOUwmoRq47bmIdlxn52LQjGDZglZphZrKZpWwSTJLgIwKLSc1iWsUIBuaYfPcYKmRnPmsu5fAXOtDTA=
+	t=1763733311; cv=none; b=M9lVLQqFYcipJ889Ql74TbVvZNtTNk5dEcM3mO+EthhSO9jgzeCLHT+/6Nrow+Ax+Ytln+Tz/PXNJ0Fs1jaBdKlWinaImcaroqo02ABMvlI0RVfvD39zTlr7tym0MLc/Nmv6ORBv0YDG6jm3bgvaxc2T1kDKPNONdcTXReNpsNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731253; c=relaxed/simple;
-	bh=9OK1+JIJWDgUtqsaqDoFm9OS3Cb8bV+Cl4w6jZpIp80=;
+	s=arc-20240116; t=1763733311; c=relaxed/simple;
+	bh=9He8KDO5cVVeSvcQiUoZ0uQdljDw5yePQDGHZ2nVp5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hvqs/MXqkMa+xu8+7bT3PtAmB65nLRZY9hpzRfkHI7ZW0PonASiwMIbiTjGIZVi5rslpxfPYog0WOO30Mnp2OEKtuheKzMa937TZLMzJ9813pHh7/TevITa0GmbGrYaQz5TDLslc53lop5b6AH8are5MXavK6E9Mri1V0qdij44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neDEMXvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB0DC4CEF1;
-	Fri, 21 Nov 2025 13:20:52 +0000 (UTC)
+	 MIME-Version; b=PHJT14FPR5vMURGa0YMPLnJPFNNHllwW/0EZ+4rKcmaiKu4Bmao/hs+nRELdaml6EoX1fRSGdB8wjEPsO+CWOzXRugFCmky4j7vsTbZPzlKxWpe36XW81i+xajbAxV/C0yPBBvn33E0Wx0Ko+ZOKwxW2w5/ufqCaQh51pWyTiGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ou/2n5sm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A453C4CEF1;
+	Fri, 21 Nov 2025 13:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731253;
-	bh=9OK1+JIJWDgUtqsaqDoFm9OS3Cb8bV+Cl4w6jZpIp80=;
+	s=korg; t=1763733309;
+	bh=9He8KDO5cVVeSvcQiUoZ0uQdljDw5yePQDGHZ2nVp5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neDEMXvy1gKUtVFUr2y5bhR4MSdmlzALGSggCMnd3S/vfgBK9xH1yko7tuKFSYQB4
-	 f6NOTD/FfWXumsHjQjAY1/wG7vSfYD86H2a4P2Nljpda9LIwGXIZ2HVCB1gSq+Vaui
-	 ocLpqbutC8sTzyLwRT3XBzm6G+ZIleJkNdo5Inig=
+	b=ou/2n5smnIF7ZmyVKGnJH/PJ0vgJjnYLTGFuT3U+UlTs5XOl6mCSYkWAIeMgC5eDT
+	 vSbYOrx4VzuhXQSvkCwdka/XM4syltEw7MsjnfiUwrCO/Gse9clcihLFtOvcBFbbaD
+	 9AovLK3bkiowsfucqL+VgHxp3C2nyLw/LBDpWLoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	ZhangGuoDong <zhangguodong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 143/247] ARM: dts: BCM53573: Fix address of Luxul XAP-1440s Ethernet PHY
+Subject: [PATCH 6.6 391/529] smb/server: fix possible memory leak in smb2_read()
 Date: Fri, 21 Nov 2025 14:11:30 +0100
-Message-ID: <20251121130159.856847079@linuxfoundation.org>
+Message-ID: <20251121130244.935160494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: ZhangGuoDong <zhangguodong@kylinos.cn>
 
-[ Upstream commit 3d1c795bdef43363ed1ff71e3f476d86c22e059b ]
+[ Upstream commit 6fced056d2cc8d01b326e6fcfabaacb9850b71a4 ]
 
-Luxul XAP-1440 has BCM54210E PHY at address 25.
+Memory leak occurs when ksmbd_vfs_read() fails.
+Fix this by adding the missing kvfree().
 
-Fixes: 44ad82078069 ("ARM: dts: BCM53573: Fix Ethernet info for Luxul devices")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20251002194852.13929-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-index ac44c745bdf8e..a39a021a39107 100644
---- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
-@@ -55,8 +55,8 @@
- 	mdio {
- 		/delete-node/ switch@1e;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 9a58c5a6f9866..b3fa983a522fb 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6772,6 +6772,7 @@ int smb2_read(struct ksmbd_work *work)
  
--		bcm54210e: ethernet-phy@0 {
--			reg = <0>;
-+		bcm54210e: ethernet-phy@25 {
-+			reg = <25>;
- 		};
- 	};
- };
+ 	nbytes = ksmbd_vfs_read(work, fp, length, &offset, aux_payload_buf);
+ 	if (nbytes < 0) {
++		kvfree(aux_payload_buf);
+ 		err = nbytes;
+ 		goto out;
+ 	}
 -- 
 2.51.0
 
