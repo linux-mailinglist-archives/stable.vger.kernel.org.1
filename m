@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-195842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66869C7984A
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:39:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596D8C79F39
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id B38F232A40
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:30:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EAC634EEDF2
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F03A31B124;
-	Fri, 21 Nov 2025 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A95335558;
+	Fri, 21 Nov 2025 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKRf5jR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdvJmJ+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEB621ABB9;
-	Fri, 21 Nov 2025 13:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881EF1B4244;
+	Fri, 21 Nov 2025 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731821; cv=none; b=fPLSyYNvX30EtPZDQBr45oK4A/GHOXplX+/GTuBKKH+TmRaowXYIvYhitNwHjd29zoXRH99KhmBRUMrI10hNzA9WaiB9HCepXhLn469cGmAZ8izmJmBE2zkN+a6Ykm8F30h63/dWXeqqfFg+tAUKGqRGvjQkkCZXopkyK4w2lRM=
+	t=1763733281; cv=none; b=VU60uDATl9UtDghZvC4qu5iA7V3QwvueuM9OByxbWi9xmhj1BuJ1lv9ySc3DCcO9XWuiuOQtSrWb+0lG+zGUkF2rmjbMlbBHwyjSEKclSsNdhvw2YUHHXW/4TCVbyGA8TY9+1KxAlWVu/aOGQ2D/n0d6w3y2xsjDgFHZWVlUAkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731821; c=relaxed/simple;
-	bh=Eo13NM/ZC80aSrOmbnSkQf6oKpXAXoMeijCUtT5NJf8=;
+	s=arc-20240116; t=1763733281; c=relaxed/simple;
+	bh=DJsLrheTfTGyXqAWSIttUjx60zpQNETWY7cRy6hl1lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAheWVNzlORuxvkRKAurXVSFKLBiOThgoZbk1hXW9P741qEfqpOz2sGTr0H0usn+ErfHNump0wEtXViZF8QW974E6Y6knPmcw4gu1xrdGigGg4AvwL5zp8Z99apmaOXvh57NAGMTYIK33jIRDGPFsoX/LoQP16rsJhqO1toezZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKRf5jR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763D6C4CEF1;
-	Fri, 21 Nov 2025 13:30:20 +0000 (UTC)
+	 MIME-Version; b=TW8CnB8dtKg5xbX97tM4HO0qf7CKYeEWPIxY/CrCDxvugj4OQihj95TpG4XKDs6025ksLt6tXBBIGBVlMVqc0/Hg/kAzWHEfbFYVMcEFs6tgbnAGTAz0Lfy2X8m/cpw9G1u2LPBMaVmRfFf1cXm2qE/hKGRBTyQdHWRgk1aUeQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdvJmJ+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B589EC4CEF1;
+	Fri, 21 Nov 2025 13:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731820;
-	bh=Eo13NM/ZC80aSrOmbnSkQf6oKpXAXoMeijCUtT5NJf8=;
+	s=korg; t=1763733281;
+	bh=DJsLrheTfTGyXqAWSIttUjx60zpQNETWY7cRy6hl1lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKRf5jR30c8iF/qz7Zgnpy7ih0Mc3VrO9Lwzz2mF7lEwnkXQnf8O8zre4d+JxkN/K
-	 zJJMZYqtpRCb5ueX+c7O3JnK5gkxiYumzsGYdTJ74R/De+yhXRraiGyrdUPLEfgMNq
-	 KoOgc5Bgp+dTEOBdgzEk3PThfxXK2sE5M1okAje0=
+	b=bdvJmJ+wl7hKPghdZ4Sz/4nuuYWti0em5abVeRWtNSWDabCySWUuRaN/S3M6LmNAZ
+	 Mv93K1bfVWwKvMjRMN+Bovx78u0rz88PVj5Td6vrNyEJ8p51kNG/PhU3Lfn0R1a58L
+	 lL025CZR52D/v+i7kbkKPP73VVpfsN7e817yeNjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Wenshan Lan <jetlan9@163.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/185] wifi: ath11k: Clear affinity hint before calling ath11k_pcic_free_irq() in error path
+Subject: [PATCH 6.6 413/529] net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps
 Date: Fri, 21 Nov 2025 14:11:52 +0100
-Message-ID: <20251121130146.935642618@linuxfoundation.org>
+Message-ID: <20251121130245.713810782@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 68410c5bd381a81bcc92b808e7dc4e6b9ed25d11 ]
+[ Upstream commit 43b27d1bd88a4bce34ec2437d103acfae9655f9e ]
 
-If a shared IRQ is used by the driver due to platform limitation, then the
-IRQ affinity hint is set right after the allocation of IRQ vectors in
-ath11k_pci_alloc_msi(). This does no harm unless one of the functions
-requesting the IRQ fails and attempt to free the IRQ. This results in the
-below warning:
+Add validation to reject rates exceeding 255 Gbps that would overflow
+the 8 bits max bandwidth field.
 
-WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
-Call trace:
- free_irq+0x278/0x29c
- ath11k_pcic_free_irq+0x70/0x10c [ath11k]
- ath11k_pci_probe+0x800/0x820 [ath11k_pci]
- local_pci_probe+0x40/0xbc
-
-The warning is due to not clearing the affinity hint before freeing the
-IRQs.
-
-So to fix this issue, clear the IRQ affinity hint before calling
-ath11k_pcic_free_irq() in the error path. The affinity will be cleared once
-again further down the error path due to code organization, but that does
-no harm.
-
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
-
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>
-Fixes: 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250225053447.16824-2-manivannan.sadhasivam@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 6ebfa5d02e2e5..c1d576ff77faa 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -936,6 +936,8 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 5e388cd518be9..ca096d8bcca60 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -588,11 +588,13 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+ 	__u64 upper_limit_mbps;
++	__u64 upper_limit_gbps;
+ 	int i;
  
- err_free_irq:
-+	/* __free_irq() expects the caller to have cleared the affinity hint */
-+	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
- 	ath11k_pcic_free_irq(ab);
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+ 	upper_limit_mbps = 255 * MLX5E_100MB;
++	upper_limit_gbps = 255 * MLX5E_1GB;
  
- err_ce_free:
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+@@ -604,10 +606,16 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
+ 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
+-		} else {
++		} else if (max_bw_value[i] <= upper_limit_gbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_1GB);
+ 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
++		} else {
++			netdev_err(netdev,
++				   "tc_%d maxrate %llu Kbps exceeds limit %llu\n",
++				   i, maxrate->tc_maxrate[i],
++				   upper_limit_gbps);
++			return -EINVAL;
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
