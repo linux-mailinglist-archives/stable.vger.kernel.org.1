@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-195727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A72C7963D
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E96C7964C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 26F0F3539E3
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 7527128D1C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F005340DA1;
-	Fri, 21 Nov 2025 13:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3412F33FE03;
+	Fri, 21 Nov 2025 13:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAHXIFCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCVx97EO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC72345751;
-	Fri, 21 Nov 2025 13:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E299E1F03D7;
+	Fri, 21 Nov 2025 13:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731492; cv=none; b=CHNrU7eBqECFCOEciI8BONr0p7H/dtyfyVrDfTZvmD07JjidY4loUYYZbtzuNQshKRx3FYlUSA7liej63a4jxcX0CVmv4mzKvjMcT7iP/7wgkcx0HmP7nY+t+wYOEqhcXrm8TIEO3P+8ChXB9H0aslxQ1WA/+PZSkIWEMYaQSGk=
+	t=1763731878; cv=none; b=rhlRAW0HS2BW4E5Ivo+DcpfVQaLjyM+/4A4bBqLfGOfuGpArBGGUXwz02g3qxzKjRZB0NoCHrQOdR1xiq5/2aoC2qvdv4Xs4vkmCs2wTYIOsT4C3z8tXEUZpSO/1CFgADDO0CQjq1/aIfOD+gadT35PEyauFF8ZHMNqxEQjzT4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731492; c=relaxed/simple;
-	bh=cV0GF4AALj0NxuOEJSy3qim0AjhrB3gCv4aL/IVqVo8=;
+	s=arc-20240116; t=1763731878; c=relaxed/simple;
+	bh=vlGGIl9E1w5UrcAtjrg7JYfgOuMYBZ/yRzJLvooOZVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2RhLqEMFUIYi9MYXoa45Q9J2EIULgucAS5IqjjwaS0lTwJRvIIcd3jCfNFNOF0MRy5XCIjykncrvbBv/S5YxLeCbtypY/ebhkiDDt0SsZcAS0nt3dw3+Yr+7Hs+KiKWmdesv7pegg3fKXJ7rSwW9csKmiFaEYsWaoaIMc3IHxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAHXIFCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1DAC116C6;
-	Fri, 21 Nov 2025 13:24:51 +0000 (UTC)
+	 MIME-Version; b=kE25nZGpJIvlfOmYuNl6yRf4h/S7IS0UR8skvRj8DUTonN+OQCyT2ZHJCGwVhauflbkT8qxBBCiUskDyd4P4VwIXvcdwafIhLdPd3dRd4rWeObh+SqE7HA4ky2iB9Pl7Xz0i1vm2sUNuEkcOhAsvSZpQmWFFvnugOD8Z6rWOWsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCVx97EO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED4C4CEF1;
+	Fri, 21 Nov 2025 13:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731491;
-	bh=cV0GF4AALj0NxuOEJSy3qim0AjhrB3gCv4aL/IVqVo8=;
+	s=korg; t=1763731877;
+	bh=vlGGIl9E1w5UrcAtjrg7JYfgOuMYBZ/yRzJLvooOZVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAHXIFCXNqUcpCAInNnhIMHfor0bbHmvP0eBCUkxSVQft3gwKpJqt5CuCw3u6venO
-	 vHYktEYO+JZ3UwYcuaskbpa++PTVPlxbzKdFuBn9X71sTogYfpCVg5suSkFCDOfQxG
-	 JreTjZSd6L6gRbfXAva1mgi48h4IgKSx9ujrGoY0=
+	b=DCVx97EOHbCKu2srnovP0O5eePm0D4DagFi5BoIa9KG08dXgPC8vitOJKIGyix0Lc
+	 WOXOaUuMCDKcPAyIghzW3gETQb/OQM6zV+nrZpqVcPpxnJlK9f7rFXy03uE1geU12X
+	 ia+r7F5zLkBwLbbXVOaPVSrmKCvW+CTYPhyTyNmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 192/247] mmc: dw_mmc-rockchip: Fix wrong internal phase calculate
+	rtm@csail.mit.edu,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 112/185] NFSD: free copynotify stateid in nfs4_free_ol_stateid()
 Date: Fri, 21 Nov 2025 14:12:19 +0100
-Message-ID: <20251121130201.614918883@linuxfoundation.org>
+Message-ID: <20251121130147.916274960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-commit 739f04f4a46237536aff07ff223c231da53ed8ce upstream.
+commit 4aa17144d5abc3c756883e3a010246f0dba8b468 upstream.
 
-ciu clock is 2 times of io clock, but the sample clk used is
-derived from io clock provided to the card. So we should use
-io clock to calculate the phase.
+Typically copynotify stateid is freed either when parent's stateid
+is being close/freed or in nfsd4_laundromat if the stateid hasn't
+been used in a lease period.
 
-Fixes: 59903441f5e4 ("mmc: dw_mmc-rockchip: Add internal phase support")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+However, in case when the server got an OPEN (which created
+a parent stateid), followed by a COPY_NOTIFY using that stateid,
+followed by a client reboot. New client instance while doing
+CREATE_SESSION would force expire previous state of this client.
+It leads to the open state being freed thru release_openowner->
+nfs4_free_ol_stateid() and it finds that it still has copynotify
+stateid associated with it. We currently print a warning and is
+triggerred
+
+WARNING: CPU: 1 PID: 8858 at fs/nfsd/nfs4state.c:1550 nfs4_free_ol_stateid+0xb0/0x100 [nfsd]
+
+This patch, instead, frees the associated copynotify stateid here.
+
+If the parent stateid is freed (without freeing the copynotify
+stateids associated with it), it leads to the list corruption
+when laundromat ends up freeing the copynotify state later.
+
+[ 1626.839430] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[ 1626.842828] Modules linked in: nfnetlink_queue nfnetlink_log bluetooth cfg80211 rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd nfs_acl lockd grace nfs_localio ext4 crc16 mbcache jbd2 overlay uinput snd_seq_dummy snd_hrtimer qrtr rfkill vfat fat uvcvideo snd_hda_codec_generic videobuf2_vmalloc videobuf2_memops snd_hda_intel uvc snd_intel_dspcfg videobuf2_v4l2 videobuf2_common snd_hda_codec snd_hda_core videodev snd_hwdep snd_seq mc snd_seq_device snd_pcm snd_timer snd soundcore sg loop auth_rpcgss vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs 8021q garp stp llc mrp nvme ghash_ce e1000e nvme_core sr_mod nvme_keyring nvme_auth cdrom vmwgfx drm_ttm_helper ttm sunrpc dm_mirror dm_region_hash dm_log iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse dm_multipath dm_mod nfnetlink
+[ 1626.855594] CPU: 2 UID: 0 PID: 199 Comm: kworker/u24:33 Kdump: loaded Tainted: G    B   W           6.17.0-rc7+ #22 PREEMPT(voluntary)
+[ 1626.857075] Tainted: [B]=BAD_PAGE, [W]=WARN
+[ 1626.857573] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
+[ 1626.858724] Workqueue: nfsd4 laundromat_main [nfsd]
+[ 1626.859304] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[ 1626.860010] pc : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.860601] lr : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.861182] sp : ffff8000881d7a40
+[ 1626.861521] x29: ffff8000881d7a40 x28: 0000000000000018 x27: ffff0000c2a98200
+[ 1626.862260] x26: 0000000000000600 x25: 0000000000000000 x24: ffff8000881d7b20
+[ 1626.862986] x23: ffff0000c2a981e8 x22: 1fffe00012410e7d x21: ffff0000920873e8
+[ 1626.863701] x20: ffff0000920873e8 x19: ffff000086f22998 x18: 0000000000000000
+[ 1626.864421] x17: 20747562202c3839 x16: 3932326636383030 x15: 3030666666662065
+[ 1626.865092] x14: 6220646c756f6873 x13: 0000000000000001 x12: ffff60004fd9e4a3
+[ 1626.865713] x11: 1fffe0004fd9e4a2 x10: ffff60004fd9e4a2 x9 : dfff800000000000
+[ 1626.866320] x8 : 00009fffb0261b5e x7 : ffff00027ecf2513 x6 : 0000000000000001
+[ 1626.866938] x5 : ffff00027ecf2510 x4 : ffff60004fd9e4a3 x3 : 0000000000000000
+[ 1626.867553] x2 : 0000000000000000 x1 : ffff000096069640 x0 : 000000000000006d
+[ 1626.868167] Call trace:
+[ 1626.868382]  __list_del_entry_valid_or_report+0x148/0x200 (P)
+[ 1626.868876]  _free_cpntf_state_locked+0xd0/0x268 [nfsd]
+[ 1626.869368]  nfs4_laundromat+0x6f8/0x1058 [nfsd]
+[ 1626.869813]  laundromat_main+0x24/0x60 [nfsd]
+[ 1626.870231]  process_one_work+0x584/0x1050
+[ 1626.870595]  worker_thread+0x4c4/0xc60
+[ 1626.870893]  kthread+0x2f8/0x398
+[ 1626.871146]  ret_from_fork+0x10/0x20
+[ 1626.871422] Code: aa1303e1 aa1403e3 910e8000 97bc55d7 (d4210000)
+[ 1626.871892] SMP: stopping secondary CPUs
+
+Reported-by: rtm@csail.mit.edu
+Closes: https://lore.kernel.org/linux-nfs/d8f064c1-a26f-4eed-b4f0-1f7f608f415f@oracle.com/T/#t
+Fixes: 624322f1adc5 ("NFSD add COPY_NOTIFY operation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/dw_mmc-rockchip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/dw_mmc-rockchip.c
-+++ b/drivers/mmc/host/dw_mmc-rockchip.c
-@@ -43,7 +43,7 @@ struct dw_mci_rockchip_priv_data {
-  */
- static int rockchip_mmc_get_internal_phase(struct dw_mci *host, bool sample)
- {
--	unsigned long rate = clk_get_rate(host->ciu_clk);
-+	unsigned long rate = clk_get_rate(host->ciu_clk) / RK3288_CLKGEN_DIV;
- 	u32 raw_value;
- 	u16 degrees;
- 	u32 delay_num = 0;
-@@ -86,7 +86,7 @@ static int rockchip_mmc_get_phase(struct
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1528,7 +1528,8 @@ static void nfs4_free_ol_stateid(struct
+ 	release_all_access(stp);
+ 	if (stp->st_stateowner)
+ 		nfs4_put_stateowner(stp->st_stateowner);
+-	WARN_ON(!list_empty(&stid->sc_cp_list));
++	if (!list_empty(&stid->sc_cp_list))
++		nfs4_free_cpntf_statelist(stid->sc_client->net, stid);
+ 	kmem_cache_free(stateid_slab, stid);
+ }
  
- static int rockchip_mmc_set_internal_phase(struct dw_mci *host, bool sample, int degrees)
- {
--	unsigned long rate = clk_get_rate(host->ciu_clk);
-+	unsigned long rate = clk_get_rate(host->ciu_clk) / RK3288_CLKGEN_DIV;
- 	u8 nineties, remainder;
- 	u8 delay_num;
- 	u32 raw_value;
 
 
 
