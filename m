@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-195609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EC1C79359
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:19:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941A3C796B8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id A75932DADF
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:19:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 09D34363E74
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BFC30E823;
-	Fri, 21 Nov 2025 13:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D5631578E;
+	Fri, 21 Nov 2025 13:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqMrnTN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eJs6eoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCD927147D;
-	Fri, 21 Nov 2025 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F312B2F656A;
+	Fri, 21 Nov 2025 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731162; cv=none; b=eR5Wl1+1XXSsQY1so1GvA7giAe05ReVk7YeoqL4zn4Cdw/bj2Oc4lyBxOJ94SVvMKmHLiQO3rUUYz06PI6LG40ea19Lwq4jE2T++cBS9mGiTGwCcoZ1FQkcAobgUydffQaJLsVdsP9/mtaCHXDIJr0IAGfSQP28u4mXXUcJs55g=
+	t=1763731639; cv=none; b=quRCFrFR9HWWs9I0bdWNmwqqbA1GrnwTT+lTV4oajw5Hu3K7CClGakiZ0FzQzoW+55yA8cW1lxbqoY/z9RMgYfiKYL8z0u0FXDh7T7HWL1Zi2w/9TxdCSoFxknn5frNGTUNk5CcyTjMYy/IhAa2Cab3L1kJMtdVNzUWgn3+CI2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731162; c=relaxed/simple;
-	bh=cDtgWVzAIVW/TbYAOSk4sY2WgH3zogH6fifiHxNX8Xo=;
+	s=arc-20240116; t=1763731639; c=relaxed/simple;
+	bh=xmdu9U8Vd+Xm4X1hdQ5/t8DeuHVVjLO6Ug67fWWu+hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaVYF8KBHH9rg472vaYEDYtnrpYGnqjncAudblOSsHOYXm4N551k/hDduoJYlhQtJykX9vCrbTZ+1PnPDrfrXu+qX1mRPmdy0HsTuABd7xbKweYr2mc1eF/KbipQeaAfmtZOPwuFx7xur0A9wwD0UBmpVREgRBsQB4D9LHvS1kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqMrnTN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8E7C4CEF1;
-	Fri, 21 Nov 2025 13:19:21 +0000 (UTC)
+	 MIME-Version; b=HYh03cby65zrcJdumoXQE1ppfc6Jltg6IPvY6AtrkxSQ+S/AXyr7/IxA0+je2gCBnV3hb/Xl6ZAFFPG0M93BnUwaw4atpb9mGXLvr72qsR53RL69IsuDy3tMOMaoVu/9vsg/3mdVXWH3lFLM+O0Y3/s0SmTJhDHbiHKnzjCMJD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eJs6eoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B07C4CEF1;
+	Fri, 21 Nov 2025 13:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731161;
-	bh=cDtgWVzAIVW/TbYAOSk4sY2WgH3zogH6fifiHxNX8Xo=;
+	s=korg; t=1763731638;
+	bh=xmdu9U8Vd+Xm4X1hdQ5/t8DeuHVVjLO6Ug67fWWu+hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqMrnTN91t5FKzSzvm8DO40buY2aCeuF6Vtt9MGKswWivkQFr1ZESW0UxB9f6apHU
-	 jSeXgxmTqv4eh5irTHL/wcBnBmwDN+b0ehbzv62sqsi2dS+27F+lRW9F41ua6Je2Mk
-	 UiPB3t3vutk9Bw3D2saKT6zdE5uTk274vYCwv+e0=
+	b=2eJs6eoQM+scDaD/2iOwVFkN5BnjSK9z3MmEKEKVXK9wYhuQh2RrGIw6fijzw5E06
+	 ZiZws5AC9KpEHo9gzjBkJNpz9mQCZcswEZf1liIeX85AMiTNopBDnAe3oivpb5laPv
+	 W8B41WG9+Z5aZ0mKeapjkb/QeVTWUmYRXu1K17+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>,
-	Benjamin Coddington <ben.coddington@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 110/247] NFS: sysfs: fix leak when nfs_client kobject add fails
+Subject: [PATCH 6.12 030/185] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
 Date: Fri, 21 Nov 2025 14:10:57 +0100
-Message-ID: <20251121130158.532974742@linuxfoundation.org>
+Message-ID: <20251121130144.962219516@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 7a7a3456520b309a0bffa1d9d62bd6c9dcab89b3 ]
+[ Upstream commit 9065b968752334f972e0d48e50c4463a172fc2a7 ]
 
-If adding the second kobject fails, drop both references to avoid sysfs
-residue and memory leak.
+When reporting tx completion using ieee80211_tx_status_xxx() family of
+functions, the status part of the struct ieee80211_tx_info nested in the
+skb is used to report things like transmit rates & retry count to mac80211
 
-Fixes: e96f9268eea6 ("NFS: Make all of /sys/fs/nfs network-namespace unique")
+On the TX data path, this is correctly memset to 0 before calling
+ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
 
-Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
-Reviewed-by: Benjamin Coddington <ben.coddington@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+This leads to mac80211 treating garbage values as valid transmit counters
+(like tx retries for example) and accounting them as real statistics that
+makes their way to userland via station dump.
+
+The same issue was resolved in ath12k by commit 9903c0986f78 ("wifi:
+ath12k: Add memset and update default rate value in wmi tx completion")
+
+Tested-on: QCN9074 PCI WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251104083957.717825-1-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index 545148d42dcc9..ea6e6168092b2 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -189,6 +189,7 @@ static struct nfs_netns_client *nfs_netns_client_alloc(struct kobject *parent,
- 			return p;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 98811726d33bf..bfca9d3639810 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5961,6 +5961,9 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
- 		kobject_put(&p->kobject);
-+		kobject_put(&p->nfs_net_kobj);
- 	}
- 	return NULL;
- }
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
++	info->status.rates[0].idx = -1;
++
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) &&
+ 	    !tx_compl_param->status) {
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
 -- 
 2.51.0
 
