@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199EDC7971E
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1047AC79E34
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id AC7D62F2D5
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:27:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 790853803D3
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D97B2737FC;
-	Fri, 21 Nov 2025 13:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F98734C81D;
+	Fri, 21 Nov 2025 13:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms45BKcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMkl4SIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A200190477;
-	Fri, 21 Nov 2025 13:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C7334C98F;
+	Fri, 21 Nov 2025 13:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731665; cv=none; b=Ph64PCJqyoRF/ag+ykY0/mXiYsUDHz1SiD2I/pu61hKEzBszOZCOcPHLzQJ9BGXDMKqWhtLqaSNnSwuuTge88Y1sl+dXoRJDM1iZ4kyNsElgAnPvwrgOzk7MWrP+z19SVz0ukNQAMl3RK9G3Q/wisk7kegJPpP3Xjv7FFD0fRJg=
+	t=1763733140; cv=none; b=VqPzNLTSPotAANfA+Q/YK180TI0Ep6gQi9zEIbUPpX+1GacS0UljoItW12XQlGokPVjQPyfdNIgIFAgcgcrtkqqwUISKXTlqJRi+A8unZ8JCR9Rhf4G1IBNY/6Y1KOYZbuONSpUc4XWeAkccyoxIJuPBnzX4hTfEUX21zlj9UwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731665; c=relaxed/simple;
-	bh=sHaASRuJz3jerCzTL1RkCRv6L9O/6J3yxHI2NWNmhRc=;
+	s=arc-20240116; t=1763733140; c=relaxed/simple;
+	bh=f/EF6eQRIdl4JSvzy1c3wKN64EqupkMRa+S7e48YbqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5r7FYuc2RxjsOY0Lzi9zYFT8Fafe6dqQydPG5moizEHlJhqK1tV6sgmhKg6l38e0T2SPecGswGV/4Cy78ZzCm/pTQbvDStwYuDbypbz+LK6xCL7pvA1U+gSMfRz/Bu6lMDEIz4CS65NajHaG88+I602+TbihRPwinJzDDEcSpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ms45BKcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6CEC4CEF1;
-	Fri, 21 Nov 2025 13:27:44 +0000 (UTC)
+	 MIME-Version; b=ZwFLkQdBD5nixWWeE/AWH3MupBUsiPgzfK1m3XgsDBgFHnTUSjHAZvI2JeulyczpEFWE35ftgJfE5le7AN2BmweVdXTxxcI+Va4QuRkPfSUMhcH3/KjcMCTsQ1jwcABWf4ba4zhjLaPVJkd+ptrnb+npP0NffTudJkxReNzPoKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMkl4SIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE3DC4CEF1;
+	Fri, 21 Nov 2025 13:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731664;
-	bh=sHaASRuJz3jerCzTL1RkCRv6L9O/6J3yxHI2NWNmhRc=;
+	s=korg; t=1763733140;
+	bh=f/EF6eQRIdl4JSvzy1c3wKN64EqupkMRa+S7e48YbqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ms45BKcYpxBRTtV5xQEHKF50JJfeN8Hyu9ZjdvRh7Fu+j6m0uaop10rJm3DsDAOMx
-	 t4+juFRTvR9gCGsJ8A6hNH8eubG9nNKd7Nm56hk6Zk3H6QcDcHHJ+y3hSea3SiHT5i
-	 bNKx6s8gRsI8tqIErhXnhoYuHMlGLzlqMhhKo44M=
+	b=OMkl4SInqeLB7oCeMvkGaIs8dKtctzV0aoJ3S1Ib7jdboE7hwpQpnQIL6fFVzdsQ2
+	 87ZdqJdOo9a1ZD0yR4X57gn5ZBcsuY8umsT84z+xsYhr/zx8tsgAlt2cZ7nhZ8h51h
+	 HiMxFWtDYHMiTeWCSkvctXk8G4fMKWmrzUjJc1Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rtm@csail.mit.edu,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/185] NFSD: Skip close replay processing if XDR encoding fails
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 366/529] x86/microcode/AMD: Add more known models to entry sign checking
 Date: Fri, 21 Nov 2025 14:11:05 +0100
-Message-ID: <20251121130145.254116677@linuxfoundation.org>
+Message-ID: <20251121130244.051336012@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
-References: <20251121130143.857798067@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit ff8141e49cf70d2d093a5228f5299ce188de6142 ]
+commit d23550efc6800841b4d1639784afaebdea946ae0 upstream.
 
-The replay logic added by commit 9411b1d4c7df ("nfsd4: cleanup
-handling of nfsv4.0 closed stateid's") cannot be done if encoding
-failed due to a short send buffer; there's no guarantee that the
-operation encoder has actually encoded the data that is being copied
-to the replay cache.
+Two Zen5 systems are missing from need_sha_check(). Add them.
 
-Reported-by: rtm@csail.mit.edu
-Closes: https://lore.kernel.org/linux-nfs/c3628d57-94ae-48cf-8c9e-49087a28cec9@oracle.com/T/#t
-Fixes: 9411b1d4c7df ("nfsd4: cleanup handling of nfsv4.0 closed stateid's")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20251106182904.4143757-1-superm1@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 66383eeeed15a..e6b000a4a31aa 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5800,8 +5800,7 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
- 		 */
- 		warn_on_nonidempotent_op(op);
- 		xdr_truncate_encode(xdr, op_status_offset + XDR_UNIT);
--	}
--	if (so) {
-+	} else if (so) {
- 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
- 
- 		so->so_replay.rp_status = op->status;
--- 
-2.51.0
-
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -210,10 +210,12 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xaa001: return cur_rev <= 0xaa00116; break;
+ 	case 0xaa002: return cur_rev <= 0xaa00218; break;
+ 	case 0xb0021: return cur_rev <= 0xb002146; break;
++	case 0xb0081: return cur_rev <= 0xb008111; break;
+ 	case 0xb1010: return cur_rev <= 0xb101046; break;
+ 	case 0xb2040: return cur_rev <= 0xb204031; break;
+ 	case 0xb4040: return cur_rev <= 0xb404031; break;
+ 	case 0xb6000: return cur_rev <= 0xb600031; break;
++	case 0xb6080: return cur_rev <= 0xb608031; break;
+ 	case 0xb7000: return cur_rev <= 0xb700031; break;
+ 	default: break;
+ 	}
 
 
 
