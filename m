@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-195524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236F7C792CD
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:17:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D739DC79C30
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EC7BD345564
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:15:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 761862E510
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B953330B19;
-	Fri, 21 Nov 2025 13:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C4242D7D;
+	Fri, 21 Nov 2025 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhIVNjBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8c43AxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03D82989A2;
-	Fri, 21 Nov 2025 13:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362785CDF1;
+	Fri, 21 Nov 2025 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730916; cv=none; b=sp1O6/sDncKVg6paye04fmDvlYMPbQPBmwvIn/NATh5f7ayhH6l4+MbxWUQQ8q+eg+iOhz3a2q5WGjD8TpNcvjzzi81L0PXKgJ9yaZjrn8y1jSObyDlq7ISRlGcAVkYylvxiSEMBS0h07Z9xEkP0E9J7/I+qrn3tHibu5WV7ggw=
+	t=1763733007; cv=none; b=nXhL7zzPKzDVWyqswaV45OqL77zL/7AAuxGs8yDw3cWpSZ2ovt3tGsz6zjxXRjr9+VypdwWDg0JpDw2cYkr4iJaaTunC0dcy8GPMQAvyx+f3t+x6iCPY9+GxRAONEPfdz/hm7YXGGznEyBORBjtl/9G6i6lsWWY/riFIWN5prHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730916; c=relaxed/simple;
-	bh=WfPc+S4EWYIBQhZ17M33wGFOm2vMjgTCgUMV0CU/1w4=;
+	s=arc-20240116; t=1763733007; c=relaxed/simple;
+	bh=tShpCri8rMd+CK0lwWf0ephLyEuHU+OskiJ+BBaGBr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDDssi1oRZHXMdYh0ENj7uW7IE5e+zTdCO+yvUPCWkiZo6DTZWu02dWgEJeuLtt7di0QroG14gm9KsEusdMVDb3eSsk9AL2zj2a8naumrQypCW6HqlgPcsrpIBo7OpMsvhGMORlRMD/E0W/tZR4w2gHaylRceIfJqD2WZxCwHjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhIVNjBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F2CC4CEFB;
-	Fri, 21 Nov 2025 13:15:15 +0000 (UTC)
+	 MIME-Version; b=VbgyducyzkIpBgBAXOOQ7p1JDwp3t2O7GB3PytMvXSwnhVq+ntCBp+lZVQRAUK3OdX3uMiZqmbBbfqCTtOgtQm7PNqOBQ/U/i2r0YfAZcgZdIluZJtngihXaHKnLvpRuWEjRqgAMO9wHa6XwkfbVBYEXdwJauB6PkHwQk8jykRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8c43AxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC59FC4CEF1;
+	Fri, 21 Nov 2025 13:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763730916;
-	bh=WfPc+S4EWYIBQhZ17M33wGFOm2vMjgTCgUMV0CU/1w4=;
+	s=korg; t=1763733007;
+	bh=tShpCri8rMd+CK0lwWf0ephLyEuHU+OskiJ+BBaGBr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhIVNjBFN1jEqVSlkjB/YObqEIqGvFbkQFgVH1oVfBl7moIplm/YYgtENNKkeLQMZ
-	 z8tqpLHCV66vmeElIqBA8Iv9JpCCUlABcJR4rINWP1DKM5jK5JZlFjDYYr+uBdxAKH
-	 kZMdW1tuNV436P0NaDLfSeJI17vg3fKvG8w1vdw8=
+	b=z8c43AxBWfZyrImincMXX3xEv2uyRJzaghVPN5thBufvuxHSN0uhb/IqhI933AGB6
+	 Gw6MS8oufG4CZw5UMDaimAK9W26nuTkK+R8kVjL395zbpucPQX+QYf5zL/C9JncAuA
+	 ZTZuTLWik+wSC23QcfbROUvApn1ZjPwXSKxYPjX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 027/247] drm/amdgpu: hide VRAM sysfs attributes on GPUs without VRAM
+Subject: [PATCH 6.6 275/529] scsi: mpt3sas: Add support for 22.5 Gbps SAS link rate
 Date: Fri, 21 Nov 2025 14:09:34 +0100
-Message-ID: <20251121130155.579249466@linuxfoundation.org>
+Message-ID: <20251121130240.816241014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 33cc891b56b93cad1a83263eaf2e417436f70c82 ]
+[ Upstream commit 4be7599d6b27bade41bfccca42901b917c01c30c ]
 
-Otherwise accessing them can cause a crash.
+Add handling for MPI26_SAS_NEG_LINK_RATE_22_5 in
+_transport_convert_phy_link_rate(). This maps the new 22.5 Gbps
+negotiated rate to SAS_LINK_RATE_22_5_GBPS, to get correct PHY link
+speeds.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Tested-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Message-Id: <20250922095113.281484-4-ranjan.kumar@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 3 +++
+ drivers/scsi/mpt3sas/mpt3sas_transport.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 78f9e86ccc099..832ab87eb3451 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -234,6 +234,9 @@ static umode_t amdgpu_vram_attrs_is_visible(struct kobject *kobj,
- 	    !adev->gmc.vram_vendor)
- 		return 0;
- 
-+	if (!ttm_resource_manager_used(&adev->mman.vram_mgr.manager))
-+		return 0;
-+
- 	return attr->mode;
- }
- 
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
+index 7d6e4fe31ceed..02c970575464c 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
+@@ -166,6 +166,9 @@ _transport_convert_phy_link_rate(u8 link_rate)
+ 	case MPI25_SAS_NEG_LINK_RATE_12_0:
+ 		rc = SAS_LINK_RATE_12_0_GBPS;
+ 		break;
++	case MPI26_SAS_NEG_LINK_RATE_22_5:
++		rc = SAS_LINK_RATE_22_5_GBPS;
++		break;
+ 	case MPI2_SAS_NEG_LINK_RATE_PHY_DISABLED:
+ 		rc = SAS_PHY_DISABLED;
+ 		break;
 -- 
 2.51.0
 
