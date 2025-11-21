@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-195749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F63C79682
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:31:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904A4C7A0A4
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 5811A2D509
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:25:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF3474F3146
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543DD2765FF;
-	Fri, 21 Nov 2025 13:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECFB34EF1F;
+	Fri, 21 Nov 2025 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNfYRa5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOH0uLaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48A190477;
-	Fri, 21 Nov 2025 13:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DE034EF19;
+	Fri, 21 Nov 2025 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731555; cv=none; b=ZkgOkdmzZgpI9ayiCwQPzeGxqL6o0b7UvhWlozP4aBQ0wuhRMBb7stlqmUNj65jakEFDiKzQwzc8tyh8wb4oJ3Rrzae0SAAnIUqcawQ51grVSZngnS5lX5Xusf/y/obWcYVePmTm91BNXR9tVP6N26YyFOFNGgCU0E1VBM0errs=
+	t=1763733460; cv=none; b=S/iZ3hodZRgq+VtJkG1/h3YLENIQ+lr0WPiO0b6AjizwRb2nt8/Yzm4LYvD0/se4EKuwaG054Lu6CyYwgD5MYkr7GshCWQjwRUCgg1NLT3Vh7WZlRFoKz0qqO4WJuC4ndMQyDBaxzRhSlKwblPii2XJQNT3zM89OqYo1NvHbQPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731555; c=relaxed/simple;
-	bh=n7k00I3nzAs1usam1SzcjExMLn9nPHDCsdVZHg/klEo=;
+	s=arc-20240116; t=1763733460; c=relaxed/simple;
+	bh=fGjtVKYdMVSJ9m2uOdsqUzojBymU2XBofCz6UmECXCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaT92aKQQ7OlGzqvvbgJlZGGNEcebXsJbwYniIECG9i3ACIB40xFuIeSMVw2z2dQ8tZsZ2UF+pe/1GtdWmhvYzy1VZry5TPUif69dzIyZi3eOoScCtoW1bMFAI5QrHxEI6Ew1rWPdpLRD9qAlZgn6xHUGC16w2hXoDwrWZu4OSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNfYRa5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF9DC4CEF1;
-	Fri, 21 Nov 2025 13:25:54 +0000 (UTC)
+	 MIME-Version; b=iyPSmEVwawvFTVytjH8ahTCtJ8EZZLyB+hZeqZQ4wU0bfLaq26Ri2gxdgyFF63+aXWxKhhEBOkg+47cAuP/aO4qy3yGx3QesQXlS2niGH0MOkDiQIZDNipvaSJzr9iyz36EVEP1mKedimoWJhkrRVPqWzmeFaYfFBEsEufVGe7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOH0uLaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AD0C4CEF1;
+	Fri, 21 Nov 2025 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731554;
-	bh=n7k00I3nzAs1usam1SzcjExMLn9nPHDCsdVZHg/klEo=;
+	s=korg; t=1763733460;
+	bh=fGjtVKYdMVSJ9m2uOdsqUzojBymU2XBofCz6UmECXCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNfYRa5qut9m86U9yBk6epO0+utYNZcNRiPJ69C/DiM/FxxhGUWZTomc2dyc0IArB
-	 BIoXD1wrFJ1hr01h6Io46bszWWtqVngaD9RcyKXezQQuOAfgE3KBCIsxoGaxTZiPWy
-	 h6gu1rfXa1vmDa0bTcbUM/UopR0s6BwiE6jUC64I=
+	b=sOH0uLaZToXCzMpiayfPO7qlJGujAsgGnvaRqQYBSEYK+dTxoAj9JTk7nmJftQUNC
+	 Bo1h4slA93HZF66F7oGQUE2p31K+XrrInSj3GnaaVKRQ0UecllozV+l7fWT2uogXSV
+	 ocMbdb7pja/li4aCvcOzsC80Vz+C+UWn2wAqt3xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Hugh Cole-Baker <sigmaris@gmail.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 227/247] pmdomain: imx: Fix reference count leak in imx_gpc_remove
+Subject: [PATCH 6.6 475/529] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to 0x4
 Date: Fri, 21 Nov 2025 14:12:54 +0100
-Message-ID: <20251121130202.882101241@linuxfoundation.org>
+Message-ID: <20251121130247.911464708@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 upstream.
+commit a28352cf2d2f8380e7aca8cb61682396dca7a991 upstream.
 
-of_get_child_by_name() returns a node pointer with refcount incremented, we
-should use of_node_put() on it when not needed anymore. Add the missing
-of_node_put() to avoid refcount leak.
+strbin signal delay under 0x8 configuration is not stable after massive
+test. The recommandation of it should be 0x4.
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Tested-by: Alexey Charkov <alchark@gmail.com>
+Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
+Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/gpc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -537,6 +537,8 @@ static void imx_gpc_remove(struct platfo
- 			return;
- 		}
- 	}
-+
-+	of_node_put(pgc_node);
- }
- 
- static struct platform_driver imx_gpc_driver = {
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -54,7 +54,7 @@
+ #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
+ #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
+ #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
+-#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
++#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
+ #define DLL_STRBIN_TAPNUM_FROM_SW	BIT(24)
+ #define DLL_STRBIN_DELAY_NUM_SEL	BIT(26)
+ #define DLL_STRBIN_DELAY_NUM_OFFSET	16
 
 
 
