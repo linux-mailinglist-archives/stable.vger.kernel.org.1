@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-196316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B59BC79E52
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:02:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FA7C7973C
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48A74343D34
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:56:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id B5E0A348E0
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EBF267AF2;
-	Fri, 21 Nov 2025 13:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6908730E823;
+	Fri, 21 Nov 2025 13:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOCQ2PQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qy5m7mJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1686332EA3;
-	Fri, 21 Nov 2025 13:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C3B2F656A;
+	Fri, 21 Nov 2025 13:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733161; cv=none; b=cjLMuHmpNPJdoi4LDYN9GogKAvWZNhuyIK9VRrBHIiNGRAphZibV0kh+jfESoo8Eet1/wxxEYcmFA1qF0bwxLy7Who2ihmo9MQ1thRfhspMAtw3BFysTSII2wTNVgbgsOLS8tgUKyPR8GliJcrqaPVi5hrZLd2sgoH6evc3mXdk=
+	t=1763731688; cv=none; b=bgKmkwrqVeKvQDRrdi18ZFHs2y+crBYTNPVVfUgrXhqssEmkfR1b119JTIhCL9WGDzpaRgx0RSZOnsTO3GcDquZoYChqMcmHrfMGSfqegaEdoARAgTVTrN3IehoPKjjwbtOd0QPmFom/05FY//BDwOo7Y4J4+9/8SVZQ2zB+mzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733161; c=relaxed/simple;
-	bh=cn/dQGCV1G9al0Dwri6liqBIfQOwqnSnXoJCsKjzpE4=;
+	s=arc-20240116; t=1763731688; c=relaxed/simple;
+	bh=6BPL69heS1vrD+ksl3Bpkr0t8cH/+N977zGKgdVeORA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcF6Q9knT+9EKgvS22UeF0f21aIJH1lhSejXh37Fod+Em59Iuo+gvg+IToz99MaibmHbEZCbNXJEh/wWXBGmgd1mkARFtJmNaYmHwfKQS/9hvm+oUaw2UhETJw47b6QLMEYhNtI5I3LYb2J/FyZkFrXoZENcWumHKSnxXcCfpwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOCQ2PQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642A6C4CEF1;
-	Fri, 21 Nov 2025 13:52:40 +0000 (UTC)
+	 MIME-Version; b=aPfyO5sFrY4YGqqVOFIXpmF5yUScwayAsIwAcREWcOk/guya9PNBwFJc+YVzVhC4f+mNgv9rC3iGRK5W4e6GVY/ZZf+j5GzfMq+q0iGD4tm8/neo8p1vvG207JzYAeSJ7LvCdjWLMT5DtshhwyjjtDeg1a4pPT55TbS0OFvQs5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qy5m7mJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40250C4CEF1;
+	Fri, 21 Nov 2025 13:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763733160;
-	bh=cn/dQGCV1G9al0Dwri6liqBIfQOwqnSnXoJCsKjzpE4=;
+	s=korg; t=1763731684;
+	bh=6BPL69heS1vrD+ksl3Bpkr0t8cH/+N977zGKgdVeORA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOCQ2PQGRjpHec+0y0ggoRBEhTqJ1fTcKQS0bUVLNcKPUqWRKF9AW+AEngCmTJ+07
-	 4cbwKYJwInkTEHw+C25ZeullDCn7HwBDTyIabMYZEuvszC+GtJG3c5Blpt5NzBtFno
-	 73h+YhImyzVBCZj+JcZbG3+unXNO5I7MhV1pSsUU=
+	b=Qy5m7mJo7O4zfzMMIiMjiFHz+aFlJwQ+JZX8/Ab5yGfuk9Biq0RrYSaT8gsubXNE9
+	 jvBEir//KZ08lx80o3D2oHudPEwsk2SDfbcByKp5YuXiUhNRvdbMzhEjlhw9BEJg4l
+	 FIkbYmg7xduoMQdKVKD7AWlGYLJAMh08OGG8B6no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 6.6 372/529] extcon: adc-jack: Cleanup wakeup source only if it was enabled
+	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/185] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
 Date: Fri, 21 Nov 2025 14:11:11 +0100
-Message-ID: <20251121130244.263031839@linuxfoundation.org>
+Message-ID: <20251121130145.470624481@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-References: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+References: <20251121130143.857798067@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 92bac7d4de9c07933f6b76d8f1c7f8240f911f4f upstream.
+[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
 
-Driver in the probe enables wakeup source conditionally, so the cleanup
-path should do the same - do not release the wakeup source memory if it
-was not allocated.
+syzbot reported a possible shift-out-of-bounds [1]
 
-Link: https://lore.kernel.org/lkml/20250509071703.39442-2-krzysztof.kozlowski@linaro.org/
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/r/22aaebb7-553b-4571-8a43-58a523241082@wanadoo.fr/
-Fixes: 78b6a991eb6c ("extcon: adc-jack: Fix wakeup source leaks on device unbind")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
+
+It is unclear if some sctp users are setting very large rto_alpha
+and/or rto_beta.
+
+In order to prevent user regression, perform the test at run time.
+
+Also add READ_ONCE() annotations as sysctl values can change under us.
+
+[1]
+
+UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
+shift exponent 64 is too large for 32-bit type 'unsigned int'
+CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+  ubsan_epilogue lib/ubsan.c:233 [inline]
+  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
+  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
+  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
+  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
+  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
+  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
+
+Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
+Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon-adc-jack.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sctp/transport.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/extcon/extcon-adc-jack.c
-+++ b/drivers/extcon/extcon-adc-jack.c
-@@ -162,7 +162,8 @@ static int adc_jack_remove(struct platfo
- {
- 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+index 31eca29b6cfbf..abb44c0ac1a0b 100644
+--- a/net/sctp/transport.c
++++ b/net/sctp/transport.c
+@@ -495,6 +495,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
  
--	device_init_wakeup(&pdev->dev, false);
-+	if (data->wakeup_source)
-+		device_init_wakeup(&pdev->dev, false);
- 	free_irq(data->irq, data);
- 	cancel_work_sync(&data->handler.work);
- 
+ 	if (tp->rttvar || tp->srtt) {
+ 		struct net *net = tp->asoc->base.net;
++		unsigned int rto_beta, rto_alpha;
+ 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
+ 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
+ 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
+@@ -506,10 +507,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+ 		 * For example, assuming the default value of RTO.Alpha of
+ 		 * 1/8, rto_alpha would be expressed as 3.
+ 		 */
+-		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
+-			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
+-		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
+-			+ (rtt >> net->sctp.rto_alpha);
++		rto_beta = READ_ONCE(net->sctp.rto_beta);
++		if (rto_beta < 32)
++			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
++				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
++		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
++		if (rto_alpha < 32)
++			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
++				+ (rtt >> rto_alpha);
+ 	} else {
+ 		/* 6.3.1 C2) When the first RTT measurement R is made, set
+ 		 * SRTT <- R, RTTVAR <- R/2.
+-- 
+2.51.0
+
 
 
 
