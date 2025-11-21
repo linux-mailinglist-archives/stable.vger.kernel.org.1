@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-195703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C650C7956B
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:27:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FC5C79DF8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 15:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BEB644E7E82
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:24:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 460C42DC98
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE8C345743;
-	Fri, 21 Nov 2025 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E5D34DB4E;
+	Fri, 21 Nov 2025 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSkK7sAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7cSK6G/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0960C332904;
-	Fri, 21 Nov 2025 13:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDCC34D4DC;
+	Fri, 21 Nov 2025 13:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763731425; cv=none; b=nQDKg2uoWmtFqEP0nXpY0siZQ++yvXoyCAf+jXig4mT1wC1lvMMGZXa44xX3GqFKn/XXp8koonxhoPjmyYhyE8S20Vo1LjklJDr+4c4fSC7Nl9ZIaLyIM/K0l+NI9Pm8fUiJdjgXyWDeT8241/t76fWzw1I/yoCg4z1YRLK6Tp0=
+	t=1763733398; cv=none; b=f57C/TobdVAIIky+mNBPnQj4dUU/+6PU/zPjJ5Eje8wfeI+QnBlPDnDRCctcpRZnoTata1MNtDnO6ryFiJkoERp3Rdl5MgbXSN+pK0u4L/iGR+wSQ75ZSTHZOuABwqmtSSahpzbbLfClO4ZrqSGvVOc2HzCvxireJR6SCfpwm2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763731425; c=relaxed/simple;
-	bh=T2OTFISfSblVGjO95Zm+s0JHCYadv5KdXYds6FZ9tNM=;
+	s=arc-20240116; t=1763733398; c=relaxed/simple;
+	bh=j03O68I7Sb/tLpMrZoVqoSR55gdeKN6HFcDJMn10g20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQj/Q6mDXISBdjWWZrdKBIx4UwygeDnlZ14Wk5kpZfmIGD/SE7UHErUZxjJaZuWkI7SnARaPu6bdPNvDxMpQ8pphtoNMlAtuHyaCPWPQdKfJ6L3hn/wKduOdhb7Vv63itsKnGqfnminUz+g3W/2Li7xTt87iptcHhIAWe4nPdWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSkK7sAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B944C4CEFB;
-	Fri, 21 Nov 2025 13:23:44 +0000 (UTC)
+	 MIME-Version; b=SAAVCQoMUngBJM6GQf5TOVFpSs8BJN6fF8ankp6m1gkOfMZh+CstkstRsnWVEJCDCgxHo3h+I6Z8i8HrTOfstu3Q6RfONITLjYyxIZj81mDhMt7c+sp6Z9ZY7T0DiGwXPoBUA8tTZrShJ34dDQ2Q8V+Gc+btaAFbODJT1C7syCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7cSK6G/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE05C4CEF1;
+	Fri, 21 Nov 2025 13:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763731424;
-	bh=T2OTFISfSblVGjO95Zm+s0JHCYadv5KdXYds6FZ9tNM=;
+	s=korg; t=1763733397;
+	bh=j03O68I7Sb/tLpMrZoVqoSR55gdeKN6HFcDJMn10g20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSkK7sAzulJN6UgbPkgE31juxSE0aXn+t/+hAAR4/arqRYZmv+SQ7pN5A/hzREF1h
-	 rJrTNq76SWhjc8mq+amsCk1n/i8voV1puKYYKXd2OKfrRESOkVrz5ybcQKX5d2kSJ1
-	 SWbo/GS9vKdDJDiIXqq/kpzHzfz/e7VUMxQKW58k=
+	b=z7cSK6G/gPvgXAn/7ohxE8gaxhgTNoB4gc2iyuXH2yEhjQS/q4ZlLLH0rxloQy7v/
+	 JyY/3k+Ujf53BB41xJbK7KGdiBTA6xTbUz6aELg/5A2C8h7RQ6fqVtp95VlTel1mbL
+	 9kUq4NFFC0QF1NU6Ic2/YjgUq77PXbqcH9EJUTZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	sunliming <sunliming@kylinos.cn>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 204/247] selftests/user_events: fix type cast for write_index packed member in perf_test
-Date: Fri, 21 Nov 2025 14:12:31 +0100
-Message-ID: <20251121130202.046413676@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 453/529] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
+Date: Fri, 21 Nov 2025 14:12:32 +0100
+Message-ID: <20251121130247.127272873@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251121130154.587656062@linuxfoundation.org>
-References: <20251121130154.587656062@linuxfoundation.org>
+In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+References: <20251121130230.985163914@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 216158f063fe24fb003bd7da0cd92cd6e2c4d48b upstream.
+commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
 
-Accessing 'reg.write_index' directly triggers a -Waddress-of-packed-member
-warning due to potential unaligned pointer access:
+On big endian arm kernels, the arm optimized Curve25519 code produces
+incorrect outputs and fails the Curve25519 test.  This has been true
+ever since this code was added.
 
-perf_test.c:239:38: warning: taking address of packed member 'write_index'
-of class or structure 'user_reg' may result in an unaligned pointer value
-[-Waddress-of-packed-member]
-  239 |         ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-      |                                             ^~~~~~~~~~~~~~~
+It seems that hardly anyone (or even no one?) actually uses big endian
+arm kernels.  But as long as they're ostensibly supported, we should
+disable this code on them so that it's not accidentally used.
 
-Since write(2) works with any alignment. Casting '&reg.write_index'
-explicitly to 'void *' to suppress this warning.
+Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
+CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
+get removed in the future if big endian support gets dropped.
 
-Link: https://lkml.kernel.org/r/20251106095532.15185-1-ankitkhushwaha.linux@gmail.com
-Fixes: 42187bdc3ca4 ("selftests/user_events: Add perf self-test for empty arguments events")
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Cc: Beau Belgrave <beaub@linux.microsoft.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: sunliming <sunliming@kylinos.cn>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/user_events/perf_test.c |    2 +-
+ arch/arm/crypto/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/user_events/perf_test.c
-+++ b/tools/testing/selftests/user_events/perf_test.c
-@@ -236,7 +236,7 @@ TEST_F(user, perf_empty_events) {
- 	ASSERT_EQ(1 << reg.enable_bit, self->check);
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index 847b7a0033569..1f684e29cff2e 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -4,7 +4,7 @@ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
  
- 	/* Ensure write shows up at correct offset */
--	ASSERT_NE(-1, write(self->data_fd, &reg.write_index,
-+	ASSERT_NE(-1, write(self->data_fd, (void *)&reg.write_index,
- 					sizeof(reg.write_index)));
- 	val = (void *)(((char *)perf_page) + perf_page->data_offset);
- 	ASSERT_EQ(PERF_RECORD_SAMPLE, *val);
+ config CRYPTO_CURVE25519_NEON
+ 	tristate "Public key crypto: Curve25519 (NEON)"
+-	depends on KERNEL_MODE_NEON
++	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	help
+-- 
+2.51.0
+
 
 
 
