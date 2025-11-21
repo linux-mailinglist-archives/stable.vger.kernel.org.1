@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-196148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FEBC79B06
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:51:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5372EC799F8
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 14:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76E124EE7C0
-	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:48:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id E70E1292DF
+	for <lists+stable@lfdr.de>; Fri, 21 Nov 2025 13:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7159D34E779;
-	Fri, 21 Nov 2025 13:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872A334C123;
+	Fri, 21 Nov 2025 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v93iiVxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf62wrVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2059434D3AE;
-	Fri, 21 Nov 2025 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B200351FCF;
+	Fri, 21 Nov 2025 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763732693; cv=none; b=gN5ko9//h+F6C3+acW7em3fDhC7seJVE35+2GiRBU/a/EXdg1tfBLJN57+DAL31a0vvfxnP+ktKzG/e3KRNKVKohPsDkywKY2h9u/b2J1d88GbEyUmUn6KIDS61Txl0kkf0OA6BMmqpUlK/Cnk3Z/P7vuegFrsH5772cio2d8+8=
+	t=1763732590; cv=none; b=SMJkzikAUozEtxYBXuHYp++AeWncduPoJKVivslkGPFlY4HXSfJLfG+0HyyIVjoXX1VYqzcSzr8R/IEdaexaB+faV/N7bPAi6dByCDcrzgpX2xoZ7mvig8kZHuVKOKgqNy5Emx7c9cCTILUtHi8eFYFe6ELsP5rmTjpEWG/rU3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763732693; c=relaxed/simple;
-	bh=/+u39v5QHUWVXXyU0+63PykGbdEdyq/cY0wfycmmzJE=;
+	s=arc-20240116; t=1763732590; c=relaxed/simple;
+	bh=yTEOROQthZyKIw0e3VQ7+WqghfqcBJikus6hc8/eInA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arY3O/bLr326TTLGbx1c57CuINh42YyHrcCuFtZTQA67/vbi+fjeZrClbL+md/JsNsM4q4NPk2kHpBF/3RMgJhYNz/QNfjNJxdjAi4TJ5ZUGuI5Da5KIe171yFmfkLJM+HPAyvofp2pjTGLdzUqycJwUYbR8TVFkvCZWTAO1d38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v93iiVxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5117FC4CEFB;
-	Fri, 21 Nov 2025 13:44:52 +0000 (UTC)
+	 MIME-Version; b=WI+EHqeQe3jw7qjLiXEnD+pHJw7pTKzkpenfuKHG4qZst6QPfS7ELX/g7cpfAzjfWxDN3yCh2CZ1DEBYOlkOYsfXY1jNSMxGr8nPVyHmS07CNbIur5JlDutvi+cPQESxMQxMQqm2pDvoKOr5V7TOG5WoKrawO8/Y1qJtmEc8eNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf62wrVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B740EC4CEF1;
+	Fri, 21 Nov 2025 13:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763732692;
-	bh=/+u39v5QHUWVXXyU0+63PykGbdEdyq/cY0wfycmmzJE=;
+	s=korg; t=1763732590;
+	bh=yTEOROQthZyKIw0e3VQ7+WqghfqcBJikus6hc8/eInA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v93iiVxqkXadtrGXSw3Meu5d4rq6kB6y0Gj7TUpmbqZOsvS82/HSgw9Ud/yIi2UYN
-	 JX56mfJqQpwh/o3+3KYuWYmHEGK9a5uNNAQv5FsQk0YXlfyDRwDAsb5Ics79Prtu/f
-	 xYNXb9LNxN5oNXstwwGN9pQpN9DGd5Xkn5FadxDw=
+	b=cf62wrVo/61SrwXurfpXxiJSx6F5Lkp5v34QAA0u3iwlW7Oc1hJZzC1wsNuPGDbQY
+	 yyi1FcOebRk0w7tT3GuRHQSo/HGoq7Tl8IncUymA52C+eqtxpeU8iJNopgFiWOuhD1
+	 Ud6JkHVuafD9M5ihfaZ8uMZEVL3I5TDMlIpTOhf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/529] fuse: zero initialize inode private data
-Date: Fri, 21 Nov 2025 14:07:45 +0100
-Message-ID: <20251121130236.926500642@linuxfoundation.org>
+Subject: [PATCH 6.6 167/529] drm/amdkfd: fix vram allocation failure for a special case
+Date: Fri, 21 Nov 2025 14:07:46 +0100
+Message-ID: <20251121130236.961329799@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
 References: <20251121130230.985163914@linuxfoundation.org>
@@ -66,44 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-[ Upstream commit 3ca1b311181072415b6432a169de765ac2034e5a ]
+[ Upstream commit 93aa919ca05bec544b17ee9a1bfe394ce6c94bd8 ]
 
-This is slightly tricky, since the VFS uses non-zeroing allocation to
-preserve some fields that are left in a consistent state.
+When it only allocates vram without va, which is 0, and a
+SVM range allocated stays in this range, the vram allocation
+returns failure. It should be skipped for this case from
+SVM usage check.
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250818083224.229-1-luochunsheng@ustc.edu/
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 735abf426a064..96050028d91b0 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -94,14 +94,11 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
- 	if (!fi)
- 		return NULL;
- 
--	fi->i_time = 0;
-+	/* Initialize private data (i.e. everything except fi->inode) */
-+	BUILD_BUG_ON(offsetof(struct fuse_inode, inode) != 0);
-+	memset((void *) fi + sizeof(fi->inode), 0, sizeof(*fi) - sizeof(fi->inode));
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index f77324a5e9584..76196ab75475e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1085,7 +1085,12 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
+ 	svm_range_list_lock_and_flush_work(&p->svms, current->mm);
+ 	mutex_lock(&p->svms.lock);
+ 	mmap_write_unlock(current->mm);
+-	if (interval_tree_iter_first(&p->svms.objects,
 +
- 	fi->inval_mask = ~0;
--	fi->nodeid = 0;
--	fi->nlookup = 0;
--	fi->attr_version = 0;
--	fi->orig_ino = 0;
--	fi->state = 0;
--	fi->submount_lookup = NULL;
- 	mutex_init(&fi->mutex);
- 	spin_lock_init(&fi->lock);
- 	fi->forget = fuse_alloc_forget();
++	/* Skip a special case that allocates VRAM without VA,
++	 * VA will be invalid of 0.
++	 */
++	if (!(!args->va_addr && (flags & KFD_IOC_ALLOC_MEM_FLAGS_VRAM)) &&
++	    interval_tree_iter_first(&p->svms.objects,
+ 				     args->va_addr >> PAGE_SHIFT,
+ 				     (args->va_addr + args->size - 1) >> PAGE_SHIFT)) {
+ 		pr_err("Address: 0x%llx already allocated by SVM\n",
 -- 
 2.51.0
 
