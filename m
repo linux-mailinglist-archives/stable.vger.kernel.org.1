@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-196581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83ACEC7C6F5
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:52:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EBCC7C6F8
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650723A75E9
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 04:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE5C43A7661
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 04:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D5D287505;
-	Sat, 22 Nov 2025 04:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F035A285CA8;
+	Sat, 22 Nov 2025 04:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBpx3TK8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ng7Fz73o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A163A285CB8
-	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 04:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A466E24677D
+	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 04:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763787147; cv=none; b=CvXNAkI9P8GKSXRdKtzEt45ksBRXMLyxWmbUKwlT/7jD21LXeEXw85Nbfc4DogBqZwTLpyu0FVvSgcThXEToSExlqIAvJAFnuX0dMawxcvMthd5g/NPhuCuc6GhHMnv/aJNkrsTgSQqa+wQwchsFa4g4wnG5jKf4p91XDYBCfyQ=
+	t=1763787149; cv=none; b=Udxn6LU1qqHSGzpFjxfrUT2q61KCrpX5blOU8yZcnWaTBggyzon2xCuXI0jolSLhCDhjR7ML6WwbCSzMKGtufjHWpmO7kX+/uQ7GNMIirdq7oAPRfiR7vzVb6ZxfBB0lP7VuYn1if+vEu+GmKxuh7h0fwihQ1omB2MPMmwhKWXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763787147; c=relaxed/simple;
-	bh=xd87TCspGQchPzJYQUoQoUp4DGDLQJaAeNOKmREkgvU=;
+	s=arc-20240116; t=1763787149; c=relaxed/simple;
+	bh=mWpuRONY4yuSlK/u5EsduRU2Vu73XpaMMdqaaRtFWrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WP0zi6QzrNfgmMgAqzk7DXbwhu+knjuVBrpEdpJjsSIv/xY1c7MzmQooHHN9ILo54VAs1plDuD8xBgP6kgQiGSdoNV+df8Vs9O6Gm4yluwwHndcAPVBPzQPz5McvMCOwJeS6sPflT/Zo9G0ARLyG5tzh/oujeVtV0xiuOjvXMjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBpx3TK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA71C16AAE;
-	Sat, 22 Nov 2025 04:52:25 +0000 (UTC)
+	 MIME-Version; b=fxDKYfxJAff8odV7gOFCdY//EvikJguuCxJrhD1FFUfM1rQph8D+/j3lepSmVzOGMNknT+gI3XPeaLJJQGKo9SD6FnwjWrfgsnbikl8AfDpJ+DGITSJK607RcLTtxnp/NwKQGQlgfDj+zLt7yXeiUFvFhjVXN1pYuefuHTCrkdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ng7Fz73o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C115C4CEF5;
+	Sat, 22 Nov 2025 04:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763787147;
-	bh=xd87TCspGQchPzJYQUoQoUp4DGDLQJaAeNOKmREkgvU=;
+	s=k20201202; t=1763787149;
+	bh=mWpuRONY4yuSlK/u5EsduRU2Vu73XpaMMdqaaRtFWrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBpx3TK8jBzs5OkNl33lQCjZMolSNPhpDRAl4p2vekhUsd7fRW/0oZCLKYel+kEIb
-	 QfwhcMPmG9bifGQrwm9jC9IkY510jNxj5D7VzSsbjazsHy/8Mz/Yw7xZcCSvYpMdzr
-	 +qOhTkKTrMW/B3ODqLt56h+rCd+Yt868kbYS+txCC4Ffa8BOoHw9UipdVgMLNOdHWS
-	 W52mY6qeYXG2jr0WxJrdoBa9JkiouEg3SuJ1nB/LzZjReJOV8Cq6WSyVvDf7Q87N30
-	 oQsgE4ZZZK1adNPs7KhApmEPBMEzkP7IGielUAHQ/yhTdsV+DohHEya+ogLqAidhnt
-	 AibEJ7hjJ3Ynw==
+	b=ng7Fz73opGjmylpGneOpRPmiXUszM+bNpDiEOzl94vVtX4tfCfCJewYyCqk8CxuG/
+	 aB5Giw72C1h4CctxUW6kqvZn18XRx/t/6aVawRvMw/Fdu8MNiK+7LpKjroeNOQOluX
+	 S/c8qkM0IDZz2XCLGLhBNpDMf+h7i+bZHkFiziD4Tam0x8yekYcXWaVRzzqoYcmTuk
+	 Cyu+6Z4D0ejVJ3H/XzG+U9DrK/w3RBbpSMtCvbVSas3YRTSbrmilD4DByNwOoVGewG
+	 NWJW3dF7tm+YK5GRJpppRE6Pb+YiyQV9lw+8gM7eHVZvcqS8X0WaHhchkOqSv1drtJ
+	 HHrgWIc0ZoPuA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Alexander Graf <graf@amazon.com>,
 	Christian Brauner <brauner@kernel.org>,
@@ -58,9 +58,9 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Tejun Heo <tj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 2/4] kho: warn and fail on metadata or preserved memory in scratch area
-Date: Fri, 21 Nov 2025 23:52:20 -0500
-Message-ID: <20251122045222.2798582-2-sashal@kernel.org>
+Subject: [PATCH 6.17.y 3/4] kho: increase metadata bitmap size to PAGE_SIZE
+Date: Fri, 21 Nov 2025 23:52:21 -0500
+Message-ID: <20251122045222.2798582-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251122045222.2798582-1-sashal@kernel.org>
 References: <2025112149-ahoy-manliness-1554@gregkh>
@@ -75,60 +75,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-[ Upstream commit e38f65d317df1fd2dcafe614d9c537475ecf9992 ]
+[ Upstream commit a2fff99f92dae9c0eaf0d75de3def70ec68dad92 ]
 
-Patch series "KHO: kfence + KHO memory corruption fix", v3.
+KHO memory preservation metadata is preserved in 512 byte chunks which
+requires their allocation from slab allocator.  Slabs are not safe to be
+used with KHO because of kfence, and because partial slabs may lead leaks
+to the next kernel.  Change the size to be PAGE_SIZE.
 
-This series fixes a memory corruption bug in KHO that occurs when KFENCE
-is enabled.
+The kfence specifically may cause memory corruption, where it randomly
+provides slab objects that can be within the scratch area.  The reason for
+that is that kfence allocates its objects prior to KHO scratch is marked
+as CMA region.
 
-The root cause is that KHO metadata, allocated via kzalloc(), can be
-randomly serviced by kfence_alloc().  When a kernel boots via KHO, the
-early memblock allocator is restricted to a "scratch area".  This forces
-the KFENCE pool to be allocated within this scratch area, creating a
-conflict.  If KHO metadata is subsequently placed in this pool, it gets
-corrupted during the next kexec operation.
+While this change could potentially increase metadata overhead on systems
+with sparsely preserved memory, this is being mitigated by ongoing work to
+reduce sparseness during preservation via 1G guest pages.  Furthermore,
+this change aligns with future work on a stateless KHO, which will also
+use page-sized bitmaps for its radix tree metadata.
 
-Google is using KHO and have had obscure crashes due to this memory
-corruption, with stacks all over the place.  I would prefer this fix to be
-properly backported to stable so we can also automatically consume it once
-we switch to the upstream KHO.
-
-Patch 1/3 introduces a debug-only feature (CONFIG_KEXEC_HANDOVER_DEBUG)
-that adds checks to detect and fail any operation that attempts to place
-KHO metadata or preserved memory within the scratch area.  This serves as
-a validation and diagnostic tool to confirm the problem without affecting
-production builds.
-
-Patch 2/3 Increases bitmap to PAGE_SIZE, so buddy allocator can be used.
-
-Patch 3/3 Provides the fix by modifying KHO to allocate its metadata
-directly from the buddy allocator instead of slab.  This bypasses the
-KFENCE interception entirely.
-
-This patch (of 3):
-
-It is invalid for KHO metadata or preserved memory regions to be located
-within the KHO scratch area, as this area is overwritten when the next
-kernel is loaded, and used early in boot by the next kernel.  This can
-lead to memory corruption.
-
-Add checks to kho_preserve_* and KHO's internal metadata allocators
-(xa_load_or_alloc, new_chunk) to verify that the physical address of the
-memory does not overlap with any defined scratch region.  If an overlap is
-detected, the operation will fail and a WARN_ON is triggered.  To avoid
-performance overhead in production kernels, these checks are enabled only
-when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
-
-[rppt@kernel.org: fix KEXEC_HANDOVER_DEBUG Kconfig dependency]
-  Link: https://lkml.kernel.org/r/aQHUyyFtiNZhx8jo@kernel.org
-[pasha.tatashin@soleen.com: build fix]
-  Link: https://lkml.kernel.org/r/CA+CK2bBnorfsTymKtv4rKvqGBHs=y=MjEMMRg_tE-RME6n-zUw@mail.gmail.com
-Link: https://lkml.kernel.org/r/20251021000852.2924827-1-pasha.tatashin@soleen.com
-Link: https://lkml.kernel.org/r/20251021000852.2924827-2-pasha.tatashin@soleen.com
+Link: https://lkml.kernel.org/r/20251021000852.2924827-3-pasha.tatashin@soleen.com
 Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 Cc: Alexander Graf <graf@amazon.com>
@@ -146,258 +113,77 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: fa759cd75bce ("kho: allocate metadata directly from the buddy allocator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/Kconfig.kexec             |  9 +++++
- kernel/Makefile                  |  1 +
- kernel/kexec_handover.c          | 57 +++++++++++++++++++++-----------
- kernel/kexec_handover_debug.c    | 25 ++++++++++++++
- kernel/kexec_handover_internal.h | 20 +++++++++++
- 5 files changed, 93 insertions(+), 19 deletions(-)
- create mode 100644 kernel/kexec_handover_debug.c
- create mode 100644 kernel/kexec_handover_internal.h
+ kernel/kexec_handover.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index 1224dd937df0c..e60225e3b40c1 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -109,6 +109,15 @@ config KEXEC_HANDOVER
- 	  to keep data or state alive across the kexec. For this to work,
- 	  both source and target kernels need to have this option enabled.
- 
-+config KEXEC_HANDOVER_DEBUG
-+	bool "Enable Kexec Handover debug checks"
-+	depends on KEXEC_HANDOVER
-+	help
-+	  This option enables extra sanity checks for the Kexec Handover
-+	  subsystem. Since, KHO performance is crucial in live update
-+	  scenarios and the extra code might be adding overhead it is
-+	  only optionally enabled.
-+
- config CRASH_DUMP
- 	bool "kernel crash dumps"
- 	default ARCH_DEFAULT_CRASH_DUMP
-diff --git a/kernel/Makefile b/kernel/Makefile
-index c60623448235f..bfca6dfe335a4 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -82,6 +82,7 @@ obj-$(CONFIG_KEXEC) += kexec.o
- obj-$(CONFIG_KEXEC_FILE) += kexec_file.o
- obj-$(CONFIG_KEXEC_ELF) += kexec_elf.o
- obj-$(CONFIG_KEXEC_HANDOVER) += kexec_handover.o
-+obj-$(CONFIG_KEXEC_HANDOVER_DEBUG) += kexec_handover_debug.o
- obj-$(CONFIG_BACKTRACE_SELF_TEST) += backtracetest.o
- obj-$(CONFIG_COMPAT) += compat.o
- obj-$(CONFIG_CGROUPS) += cgroup/
 diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 4e5774a6f0738..492e40b6b8023 100644
+index 492e40b6b8023..040cfeb1d3fab 100644
 --- a/kernel/kexec_handover.c
 +++ b/kernel/kexec_handover.c
-@@ -8,6 +8,7 @@
+@@ -52,10 +52,10 @@ early_param("kho", kho_parse_enable);
+  * Keep track of memory that is to be preserved across KHO.
+  *
+  * The serializing side uses two levels of xarrays to manage chunks of per-order
+- * 512 byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order of a
+- * 1TB system would fit inside a single 512 byte bitmap. For order 0 allocations
+- * each bitmap will cover 16M of address space. Thus, for 16G of memory at most
+- * 512K of bitmap memory will be needed for order 0.
++ * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
++ * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
++ * allocations each bitmap will cover 128M of address space. Thus, for 16G of
++ * memory at most 512K of bitmap memory will be needed for order 0.
+  *
+  * This approach is fully incremental, as the serialization progresses folios
+  * can continue be aggregated to the tracker. The final step, immediately prior
+@@ -63,12 +63,14 @@ early_param("kho", kho_parse_enable);
+  * successor kernel to parse.
+  */
  
- #define pr_fmt(fmt) "KHO: " fmt
+-#define PRESERVE_BITS (512 * 8)
++#define PRESERVE_BITS (PAGE_SIZE * 8)
  
-+#include <linux/cleanup.h>
- #include <linux/cma.h>
- #include <linux/count_zeros.h>
- #include <linux/debugfs.h>
-@@ -21,6 +22,7 @@
+ struct kho_mem_phys_bits {
+ 	DECLARE_BITMAP(preserve, PRESERVE_BITS);
+ };
  
- #include <asm/early_ioremap.h>
- 
-+#include "kexec_handover_internal.h"
- /*
-  * KHO is tightly coupled with mm init and needs access to some of mm
-  * internal APIs.
-@@ -116,26 +118,26 @@ static struct kho_out kho_out = {
- 
- static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
- {
--	void *elm, *res;
-+	void *res = xa_load(xa, index);
- 
--	elm = xa_load(xa, index);
--	if (elm)
--		return elm;
-+	if (res)
-+		return res;
++static_assert(sizeof(struct kho_mem_phys_bits) == PAGE_SIZE);
 +
-+	void *elm __free(kfree) = kzalloc(sz, GFP_KERNEL);
+ struct kho_mem_phys {
+ 	/*
+ 	 * Points to kho_mem_phys_bits, a sparse bitmap array. Each bit is sized
+@@ -116,19 +118,19 @@ static struct kho_out kho_out = {
+ 	.finalized = false,
+ };
  
--	elm = kzalloc(sz, GFP_KERNEL);
+-static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
++static void *xa_load_or_alloc(struct xarray *xa, unsigned long index)
+ {
+ 	void *res = xa_load(xa, index);
+ 
+ 	if (res)
+ 		return res;
+ 
+-	void *elm __free(kfree) = kzalloc(sz, GFP_KERNEL);
++	void *elm __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 
  	if (!elm)
  		return ERR_PTR(-ENOMEM);
  
-+	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz)))
-+		return ERR_PTR(-EINVAL);
-+
+-	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz)))
++	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), PAGE_SIZE)))
+ 		return ERR_PTR(-EINVAL);
+ 
  	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
- 	if (xa_is_err(res))
--		res = ERR_PTR(xa_err(res));
--
--	if (res) {
--		kfree(elm);
-+		return ERR_PTR(xa_err(res));
-+	else if (res)
- 		return res;
--	}
+@@ -201,8 +203,7 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ 		}
+ 	}
  
--	return elm;
-+	return no_free_ptr(elm);
- }
+-	bits = xa_load_or_alloc(&physxa->phys_bits, pfn_high / PRESERVE_BITS,
+-				sizeof(*bits));
++	bits = xa_load_or_alloc(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+ 	if (IS_ERR(bits))
+ 		return PTR_ERR(bits);
  
- static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
-@@ -289,15 +291,19 @@ static_assert(sizeof(struct khoser_mem_chunk) == PAGE_SIZE);
- static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
- 					  unsigned long order)
- {
--	struct khoser_mem_chunk *chunk;
-+	struct khoser_mem_chunk *chunk __free(kfree) = NULL;
- 
- 	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!chunk)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
-+
-+	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE)))
-+		return ERR_PTR(-EINVAL);
-+
- 	chunk->hdr.order = order;
- 	if (cur_chunk)
- 		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
--	return chunk;
-+	return no_free_ptr(chunk);
- }
- 
- static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
-@@ -318,14 +324,17 @@ static int kho_mem_serialize(struct kho_serialization *ser)
- 	struct khoser_mem_chunk *chunk = NULL;
- 	struct kho_mem_phys *physxa;
- 	unsigned long order;
-+	int err = -ENOMEM;
- 
- 	xa_for_each(&ser->track.orders, order, physxa) {
- 		struct kho_mem_phys_bits *bits;
- 		unsigned long phys;
- 
- 		chunk = new_chunk(chunk, order);
--		if (!chunk)
-+		if (IS_ERR(chunk)) {
-+			err = PTR_ERR(chunk);
- 			goto err_free;
-+		}
- 
- 		if (!first_chunk)
- 			first_chunk = chunk;
-@@ -335,8 +344,10 @@ static int kho_mem_serialize(struct kho_serialization *ser)
- 
- 			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
- 				chunk = new_chunk(chunk, order);
--				if (!chunk)
-+				if (IS_ERR(chunk)) {
-+					err = PTR_ERR(chunk);
- 					goto err_free;
-+				}
- 			}
- 
- 			elm = &chunk->bitmaps[chunk->hdr.num_elms];
-@@ -353,7 +364,7 @@ static int kho_mem_serialize(struct kho_serialization *ser)
- 
- err_free:
- 	kho_mem_ser_free(first_chunk);
--	return -ENOMEM;
-+	return err;
- }
- 
- static void __init deserialize_bitmap(unsigned int order,
-@@ -406,8 +417,8 @@ static void __init kho_mem_deserialize(const void *fdt)
-  * area for early allocations that happen before page allocator is
-  * initialized.
-  */
--static struct kho_scratch *kho_scratch;
--static unsigned int kho_scratch_cnt;
-+struct kho_scratch *kho_scratch;
-+unsigned int kho_scratch_cnt;
- 
- /*
-  * The scratch areas are scaled by default as percent of memory allocated from
-@@ -684,6 +695,9 @@ int kho_preserve_folio(struct folio *folio)
- 	const unsigned int order = folio_order(folio);
- 	struct kho_mem_track *track = &kho_out.ser.track;
- 
-+	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-+		return -EINVAL;
-+
- 	return __kho_preserve_order(track, pfn, order);
- }
- EXPORT_SYMBOL_GPL(kho_preserve_folio);
-@@ -710,6 +724,11 @@ int kho_preserve_phys(phys_addr_t phys, size_t size)
- 	if (!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(size))
- 		return -EINVAL;
- 
-+	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
-+					nr_pages << PAGE_SHIFT))) {
-+		return -EINVAL;
-+	}
-+
- 	while (pfn < end_pfn) {
- 		const unsigned int order =
- 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-diff --git a/kernel/kexec_handover_debug.c b/kernel/kexec_handover_debug.c
-new file mode 100644
-index 0000000000000..6efb696f54261
---- /dev/null
-+++ b/kernel/kexec_handover_debug.c
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * kexec_handover_debug.c - kexec handover optional debug functionality
-+ * Copyright (C) 2025 Google LLC, Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+#define pr_fmt(fmt) "KHO: " fmt
-+
-+#include "kexec_handover_internal.h"
-+
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	phys_addr_t scratch_start, scratch_end;
-+	unsigned int i;
-+
-+	for (i = 0; i < kho_scratch_cnt; i++) {
-+		scratch_start = kho_scratch[i].addr;
-+		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
-+
-+		if (phys < scratch_end && (phys + size) > scratch_start)
-+			return true;
-+	}
-+
-+	return false;
-+}
-diff --git a/kernel/kexec_handover_internal.h b/kernel/kexec_handover_internal.h
-new file mode 100644
-index 0000000000000..3c3c7148ceed4
---- /dev/null
-+++ b/kernel/kexec_handover_internal.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef LINUX_KEXEC_HANDOVER_INTERNAL_H
-+#define LINUX_KEXEC_HANDOVER_INTERNAL_H
-+
-+#include <linux/kexec_handover.h>
-+#include <linux/types.h>
-+
-+extern struct kho_scratch *kho_scratch;
-+extern unsigned int kho_scratch_cnt;
-+
-+#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size);
-+#else
-+static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
-+
-+#endif /* LINUX_KEXEC_HANDOVER_INTERNAL_H */
 -- 
 2.51.0
 
