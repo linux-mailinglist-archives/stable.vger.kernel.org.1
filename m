@@ -1,93 +1,108 @@
-Return-Path: <stable+bounces-196588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A85EC7C8CD
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 07:47:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EDCC7C8EE
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 07:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14BDC4E1B13
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 06:47:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27C614E032E
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 06:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FEC217722;
-	Sat, 22 Nov 2025 06:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234DC2C026F;
+	Sat, 22 Nov 2025 06:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5vCQTLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OB7qVBZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF80417E4;
-	Sat, 22 Nov 2025 06:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B994C24677B;
+	Sat, 22 Nov 2025 06:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763794028; cv=none; b=XkO2I0asTep3szf/T0Vi1pAa50bJ2E/XACMrabUEAkEfRFlRwe4sAZAnagAAGg+jq51iGPZC6T+FmXmvKWTaPxht4ZvAzmGSgRwFEn4LVclaPVXI4PAdmACNjpApbAKQLy1C+ecDLLurD62zsVCm4RuX+GUt1bmr6zcoojBUMHQ=
+	t=1763794614; cv=none; b=dSDNb+KmZGtiQ3YI+aUxF9A1FxidKWNUq1izLz/s3K5AE4Mr0zWCngsawcRP2pWbU0pBBZmAHT22k0/7NXRAZA8sZrqUNyRAWPO1WIhGfDLO9LpW+F1342hi3vW3lP/tVXEIdSE38q2CvT2kX8f+vAweuCwlpB0Xg9N9sqdGQok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763794028; c=relaxed/simple;
-	bh=5go9l/9D1n9oWJDFXgXAk53nECOliW6QxvhpU8lqXnc=;
+	s=arc-20240116; t=1763794614; c=relaxed/simple;
+	bh=zrf9TflH3fL64W47svYyJNEAOfWM2Bs9XK7YUATtbWc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A+hCFL/dG3/vQU2OF7ClLvW1yNyyDpxtYlei+p2/jilA/aZDq4IhN+vQGrpjQuTnLFGRtXsCEq2U1BrhLRUxoy9HFZ2echmqW4pWM+X9AlE+KBnbXyYW59geiOZm2HKuSZBlI5cwS5QcyzI2d/f7iTlDouiwNZxsF5tHkBQQ9aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5vCQTLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E3BC4CEF5;
-	Sat, 22 Nov 2025 06:47:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uo7hg+tV6COOrVfQvzF8mizoON4GzpSZ8ql4adVafpdAZ2g2d+CTGFHIFRX6k44ZL3ddwsoOZEc0IR/27+6Xw987JRTLr9QWu8vxPl6sm7rBvlGMTCw2xF4MgvGxHZO5KWOFjjdJJx0xjiZ6POy+sNVYgUu4Z0IJuDV+abOHljg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OB7qVBZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD98C4CEF5;
+	Sat, 22 Nov 2025 06:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763794028;
-	bh=5go9l/9D1n9oWJDFXgXAk53nECOliW6QxvhpU8lqXnc=;
+	s=korg; t=1763794614;
+	bh=zrf9TflH3fL64W47svYyJNEAOfWM2Bs9XK7YUATtbWc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j5vCQTLRW80QF9F/wW5gV4TiqOuPY+muMhy/mUp0lo0Ri/Gxc86RLhSOUisNz83zX
-	 mGUYSg8DeHDWMeL6uqgzMo3+kRF34wkgkFhWpxZEgnyPa8kPFVzK9Pg7CUxr+pEVYO
-	 WUQPuOt8vhfbf0NOcGynwU8FLC/bxnHkLlBERNE4=
-Date: Sat, 22 Nov 2025 07:47:04 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/185] 6.12.59-rc1 review
-Message-ID: <2025112248-sprout-chapped-149a@gregkh>
-References: <20251121130143.857798067@linuxfoundation.org>
- <CA+G9fYvyiLxwGFN-3QuK4PR2nAmFSp8whe6yfTMXB+FoKHhjrw@mail.gmail.com>
+	b=OB7qVBZWPuyxJ5/3ZKdTwfsgJoQPcuR1/KFC3TqpQLwdlWqD4h2ytBv4m0j5E+U2K
+	 A/uGxA+XauxuHO3bOAEYPoDrTKe7yQ2+f3dIQJc/Xti7q4a960C7hYMjDO4vqrkkzG
+	 qMOm0w0C+e+aWIOM+pSYRtfHbSCFu0Xkxa01Plq0=
+Date: Sat, 22 Nov 2025 07:56:51 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Ahmed, Aaron" <aarnahmd@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"trondmy@kernel.org" <trondmy@kernel.org>,
+	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>
+Subject: Re: [REGRESSION] nfs: Large amounts of GETATTR calls after file
+ renaming on v5.10.241
+Message-ID: <2025112203-paddle-unweave-c0a2@gregkh>
+References: <F84F6626-B709-4083-9512-5F48FE370977@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CA+G9fYvyiLxwGFN-3QuK4PR2nAmFSp8whe6yfTMXB+FoKHhjrw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <F84F6626-B709-4083-9512-5F48FE370977@amazon.com>
 
-On Sat, Nov 22, 2025 at 10:16:09AM +0530, Naresh Kamboju wrote:
-> On Fri, 21 Nov 2025 at 18:56, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.59 release.
-> > There are 185 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.59-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On Fri, Nov 21, 2025 at 06:56:31PM +0000, Ahmed, Aaron wrote:
+> Hi,
 > 
-> The LTP syscalls listmount04 failures noticed across the 6.18.0-rc6,
+> We have had customers report a regression on kernels versions 5.10.241 and above in which file renaming causes large amounts of GETATTR calls to made due to inode revalidation. This regression was pinpointed via bisected to commit 7378c7adf31d ("NFS: Don't set NFS_INO_REVAL_PAGECACHE in the inode cache validity") which is a backport of 36a9346c2252 (“NFS: Don't set NFS_INO_REVAL_PAGECACHE in the inode cache validity”). 
+> 
+> We were able to reproduce It with this script:
+> REPRO_PATH=/mnt/efs/repro
+> do_read()
+> {
+>     for x in {1..50}
+>     do
+>         cat $1 > /dev/null
+>     done
+>     grep GETATTR /proc/self/mountstats
+> }
+> 
+> echo foo > $REPRO_PATH/bar
+> echo "After create, before read:"
+> grep GETATTR /proc/self/mountstats
+> 
+> echo "First read:"
+> do_read $REPRO_PATH/bar
+> 
+> echo "Sleeping 5s, reading again (should look the same):"
+> sleep 5
+> do_read $REPRO_PATH/bar
+> 
+> mv $REPRO_PATH/bar $REPRO_PATH/baz
+> echo "Moved file, reading again:"
+> do_read $REPRO_PATH/baz
+> 
+> echo "Immediately performing another set of reads:"
+> do_read $REPRO_PATH/baz
+> 
+> echo "Cleanup, removing test file"
+> rm $REPRO_PATH/baz
+> which performs a few read/writes. On kernels without the regression the number of GETATTR calls remains the same while on affected kernels the amount increases after reading renamed file. 
+> 
+> This original commit comes from a series of patches providing attribute revalidation updates [1].  However, many of these patches are missing in v.5.10.241+. Specifically, 13c0b082b6a9 (“NFS: Replace use of NFS_INO_REVAL_PAGECACHE when checking cache validity”) seems like a prerequisite patch and would help remedy the regression.
 
-So this is upstream, has it been bisected and reported there?
+Can you please send the needed backports to resolve this issue as you
+can test and verify that this resolves the problem?
 
 thanks,
 
