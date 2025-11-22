@@ -1,281 +1,177 @@
-Return-Path: <stable+bounces-196606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B35BC7D71D
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 21:27:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52FCC7D84B
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 22:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4E2F3A8D91
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 20:27:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2869234710E
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 21:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4084D2C11ED;
-	Sat, 22 Nov 2025 20:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F4227CCE2;
+	Sat, 22 Nov 2025 21:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KKSXGt+n"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tEDhDwsU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="koxvInjL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260B2C026E;
-	Sat, 22 Nov 2025 20:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB97123D7C8;
+	Sat, 22 Nov 2025 21:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763843250; cv=none; b=R6kL8h65r4c80b5Ds6i7hxgifzvjO2CewnicMaWKPW6L+tGLAKSEwXvDygHWJijwJpjHApHbAeCujZSROLiAElbyuJ3w+yBZqxiVB5vfvxW1LddmyuMRvRA2Wt6aNj04/eqES+NjPGNZghjWAEY/PPabEhCD6RaUtATzRP6R8+c=
+	t=1763848625; cv=none; b=YZUKa3DMYfvaNr/uo5rty9HxIywZOj6X1yuxj2Mul6/os8lUepz5FFoeDLFLTUSzapByPvG8xcPdmP1fx33H4dipy3GXRnDb4wryZHygPz6wSJkBPrum3ojy4ZAcLnK+5gW8Dhrk/jagjH6L2rObhS8AwtUqCBbU1pS0VLIbixQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763843250; c=relaxed/simple;
-	bh=ObiTUSwbFQULS2XDHsAkyys5us0yTnnbDv+Hij4t7MM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jnTswr/ysBRHQwfdn7RSV5C7jjzOJf2CxTzhYw9vB7+GsN74yiT16Po3wHllXuHHVk2AcUB4PzfRMUMZOni83FXJjZ2+Ws1PjXOxeraVrqNKXvFtrYgnfeguHeRzWeG9ikO1r1GQ9YhrQcLRNbZm12k8OMJVS2MD/6AY+hzdDPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KKSXGt+n; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763843247; x=1795379247;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ObiTUSwbFQULS2XDHsAkyys5us0yTnnbDv+Hij4t7MM=;
-  b=KKSXGt+nrXDtTrdWoIr9pzopKHCpmehLRRMEpYqb9rY1Dsm/kRt/Ts1P
-   0mynVrnadpfODGj7ZpItRKLRBc/Lk31XgSWsGR1wtBLBrCB75nQw9JMCX
-   4WVHRM0uE3HarMeYehUrSXrGeURleqzr5KoDmr0foNQ18CJiNbpHZpR+5
-   pVbHTVpo9l3jG5lZ/5UV7LNp2pf27QnfFdrXgnbETfhxSTrFy/ciUqidY
-   TagJptzMiOjIIW40ApuGW6DqTG030FLkfjFYt0txqbw0XHZ7JELPTsbVj
-   3CMYuvmJ5Rx9sUUgals5GfRaOWeXKmQ3hu/PsBlnDdtgZIz+z02ilvqGg
-   w==;
-X-CSE-ConnectionGUID: uzwFgxO2QDWyqeg7XoVG/Q==
-X-CSE-MsgGUID: SZ+xFV0ZRGWANBdaGohfZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11621"; a="83292228"
-X-IronPort-AV: E=Sophos;i="6.20,219,1758610800"; 
-   d="scan'208";a="83292228"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2025 12:27:27 -0800
-X-CSE-ConnectionGUID: sO25ePunS2m/nGj4gEKxeA==
-X-CSE-MsgGUID: lCKu+usDRVaKpezRRsP4/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,219,1758610800"; 
-   d="scan'208";a="196267371"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 22 Nov 2025 12:27:22 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMuCW-0007oL-2h;
-	Sat, 22 Nov 2025 20:27:20 +0000
-Date: Sun, 23 Nov 2025 04:26:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ludovic Desroches <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH REGRESSION] drm/panel: simple: restore connector_type
- fallback
-Message-ID: <202511230354.nHRvfjDz-lkp@intel.com>
-References: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
+	s=arc-20240116; t=1763848625; c=relaxed/simple;
+	bh=J+7JAnSP9bUprgQRaynkO3NFdNfvKEVHYXFm9zEit+0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=U/6vUkOg9WfnAi3/4CZFV2G4cstx752HwGOMD4k+Pm0H1p1q8+kM4+9IOJ63TJ7oiZEdHN+GYWLSXZBQA2cRs3X37knWebkRLEsm/gNS7YgcD5ssHbbs46onVSoKDoP4Z3XbNoGYV55WZ+rttu8XLf910Eg6HR7dvNV8ZuZHmaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tEDhDwsU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=koxvInjL; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 22 Nov 2025 21:57:00 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763848621;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VBmFtYG+iLUHGHF5V6Busfs0QrMJ/FoTRd7IbKgT/i0=;
+	b=tEDhDwsUdq00NialL4CdtPmCS3cbVl5B27lKnzBGLjs/QXPc9pRCTF6f5Y/N68UeRV6LCu
+	CchwfVF3CZOUETjevVBXg74PIKimIZyatgo5EKEHLZXrFAmWiiYyhN3HVCmim6SSibNK4Y
+	zYI0NAYNSXDWMGL2O09tOox6eEUXMrGlQxRPKWxK2+zqSffuNXrbLOdUXFIMqtyac6U755
+	st/YahWU6tiFMd0U8xBS2ijs2lcPNrEQJBzAq43PdeQLhbOABdl772TyUk9bbEu6krjr/1
+	cXceDikhYpSWqQIVGHbNx7oHL1TYDg+9Bh493VNdxTuyiy8D4+vnYgFQAXI5YA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763848621;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VBmFtYG+iLUHGHF5V6Busfs0QrMJ/FoTRd7IbKgT/i0=;
+	b=koxvInjLlZnGdqPfIfObsmFyoeXO3+VTe24kxGu7Wv5qdd5m5aTvEtHWIRjQhojbELZBTV
+	MJMxDPBkDKM2GKBw==
+From: "tip-bot2 for Yipeng Zou" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] timers: Fix NULL function pointer race in
+ timer_shutdown_sync()
+Cc: Yipeng Zou <zouyipeng@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251122093942.301559-1-zouyipeng@huawei.com>
+References: <20251122093942.301559-1-zouyipeng@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com>
+Message-ID: <176384862016.498.10720277913756598678.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ludovic,
+The following commit has been merged into the timers/urgent branch of tip:
 
-kernel test robot noticed the following build warnings:
+Commit-ID:     20739af07383e6eb1ec59dcd70b72ebfa9ac362c
+Gitweb:        https://git.kernel.org/tip/20739af07383e6eb1ec59dcd70b72ebfa9a=
+c362c
+Author:        Yipeng Zou <zouyipeng@huawei.com>
+AuthorDate:    Sat, 22 Nov 2025 09:39:42=20
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 22 Nov 2025 22:55:26 +01:00
 
-[auto build test WARNING on 88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b]
+timers: Fix NULL function pointer race in timer_shutdown_sync()
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ludovic-Desroches/drm-panel-simple-restore-connector_type-fallback/20251121-212613
-base:   88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
-patch link:    https://lore.kernel.org/r/20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4%40microchip.com
-patch subject: [PATCH REGRESSION] drm/panel: simple: restore connector_type fallback
-config: arm-randconfig-002-20251123 (https://download.01.org/0day-ci/archive/20251123/202511230354.nHRvfjDz-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251123/202511230354.nHRvfjDz-lkp@intel.com/reproduce)
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511230354.nHRvfjDz-lkp@intel.com/
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
 
-All warnings (new ones prefixed by >>):
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer =3D timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer !=3D timer)
+	ret =3D detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function =3D NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer =3D NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer !=3D timer)
+	ret =3D detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function =3D NULL;
+unlock_timer_base()
 
->> drivers/gpu/drm/panel/panel-simple.c:648:7: warning: variable 'panel' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
-     648 |         case DRM_MODE_CONNECTOR_eDP:
-         |              ^~~~~~~~~~~~~~~~~~~~~~
-   include/uapi/drm/drm_mode.h:417:33: note: expanded from macro 'DRM_MODE_CONNECTOR_eDP'
-     417 | #define DRM_MODE_CONNECTOR_eDP          14
-         |                                         ^~
-   drivers/gpu/drm/panel/panel-simple.c:749:6: note: uninitialized use occurs here
-     749 |         if (panel->ddc)
-         |             ^~~~~
-   drivers/gpu/drm/panel/panel-simple.c:615:28: note: initialize the variable 'panel' to silence this warning
-     615 |         struct panel_simple *panel;
-         |                                   ^
-         |                                    = NULL
-   1 warning generated.
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
 
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
 
-vim +/panel +648 drivers/gpu/drm/panel/panel-simple.c
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal function=
+s")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+---
+ kernel/time/timer.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-47c08262f34e1c Maxime Ripard     2025-06-26  611  
-47c08262f34e1c Maxime Ripard     2025-06-26  612  static struct panel_simple *panel_simple_probe(struct device *dev)
-280921de7241ee Thierry Reding    2013-08-30  613  {
-47c08262f34e1c Maxime Ripard     2025-06-26  614  	const struct panel_desc *desc;
-280921de7241ee Thierry Reding    2013-08-30  615  	struct panel_simple *panel;
-b8a2948fa2b3a5 Sean Paul         2019-07-11  616  	struct display_timing dt;
-0fe1564bd61642 Sam Ravnborg      2019-12-07  617  	struct device_node *ddc;
-9f069c6fbc7266 Sam Ravnborg      2020-07-26  618  	int connector_type;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  619  	u32 bus_flags;
-280921de7241ee Thierry Reding    2013-08-30  620  	int err;
-280921de7241ee Thierry Reding    2013-08-30  621  
-47c08262f34e1c Maxime Ripard     2025-06-26  622  	desc = panel_simple_get_desc(dev);
-47c08262f34e1c Maxime Ripard     2025-06-26  623  	if (IS_ERR(desc))
-47c08262f34e1c Maxime Ripard     2025-06-26  624  		return ERR_CAST(desc);
-47c08262f34e1c Maxime Ripard     2025-06-26  625  
-9f069c6fbc7266 Sam Ravnborg      2020-07-26  626  	connector_type = desc->connector_type;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  627  	/* Catch common mistakes for panels. */
-9f069c6fbc7266 Sam Ravnborg      2020-07-26  628  	switch (connector_type) {
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  629  	case 0:
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  630  		dev_warn(dev, "Specify missing connector_type\n");
-9f069c6fbc7266 Sam Ravnborg      2020-07-26  631  		connector_type = DRM_MODE_CONNECTOR_DPI;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  632  		break;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  633  	case DRM_MODE_CONNECTOR_LVDS:
-c4715837b02393 Laurent Pinchart  2020-06-30  634  		WARN_ON(desc->bus_flags &
-c4715837b02393 Laurent Pinchart  2020-06-30  635  			~(DRM_BUS_FLAG_DE_LOW |
-c4715837b02393 Laurent Pinchart  2020-06-30  636  			  DRM_BUS_FLAG_DE_HIGH |
-c4715837b02393 Laurent Pinchart  2020-06-30  637  			  DRM_BUS_FLAG_DATA_MSB_TO_LSB |
-c4715837b02393 Laurent Pinchart  2020-06-30  638  			  DRM_BUS_FLAG_DATA_LSB_TO_MSB));
-1185c406f11a49 Laurent Pinchart  2020-06-30  639  		WARN_ON(desc->bus_format != MEDIA_BUS_FMT_RGB666_1X7X3_SPWG &&
-1185c406f11a49 Laurent Pinchart  2020-06-30  640  			desc->bus_format != MEDIA_BUS_FMT_RGB888_1X7X4_SPWG &&
-1185c406f11a49 Laurent Pinchart  2020-06-30  641  			desc->bus_format != MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA);
-1185c406f11a49 Laurent Pinchart  2020-06-30  642  		WARN_ON(desc->bus_format == MEDIA_BUS_FMT_RGB666_1X7X3_SPWG &&
-1185c406f11a49 Laurent Pinchart  2020-06-30  643  			desc->bpc != 6);
-1185c406f11a49 Laurent Pinchart  2020-06-30  644  		WARN_ON((desc->bus_format == MEDIA_BUS_FMT_RGB888_1X7X4_SPWG ||
-1185c406f11a49 Laurent Pinchart  2020-06-30  645  			 desc->bus_format == MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA) &&
-1185c406f11a49 Laurent Pinchart  2020-06-30  646  			desc->bpc != 8);
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  647  		break;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26 @648  	case DRM_MODE_CONNECTOR_eDP:
-5f04e7ce392db9 Douglas Anderson  2021-09-14  649  		dev_warn(dev, "eDP panels moved to panel-edp\n");
-5f04e7ce392db9 Douglas Anderson  2021-09-14  650  		err = -EINVAL;
-5f04e7ce392db9 Douglas Anderson  2021-09-14  651  		goto free_ddc;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  652  	case DRM_MODE_CONNECTOR_DSI:
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  653  		if (desc->bpc != 6 && desc->bpc != 8)
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  654  			dev_warn(dev, "Expected bpc in {6,8} but got: %u\n", desc->bpc);
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  655  		break;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  656  	case DRM_MODE_CONNECTOR_DPI:
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  657  		bus_flags = DRM_BUS_FLAG_DE_LOW |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  658  			    DRM_BUS_FLAG_DE_HIGH |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  659  			    DRM_BUS_FLAG_PIXDATA_SAMPLE_POSEDGE |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  660  			    DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  661  			    DRM_BUS_FLAG_DATA_MSB_TO_LSB |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  662  			    DRM_BUS_FLAG_DATA_LSB_TO_MSB |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  663  			    DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE |
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  664  			    DRM_BUS_FLAG_SYNC_SAMPLE_NEGEDGE;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  665  		if (desc->bus_flags & ~bus_flags)
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  666  			dev_warn(dev, "Unexpected bus_flags(%d)\n", desc->bus_flags & ~bus_flags);
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  667  		if (!(desc->bus_flags & bus_flags))
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  668  			dev_warn(dev, "Specify missing bus_flags\n");
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  669  		if (desc->bus_format == 0)
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  670  			dev_warn(dev, "Specify missing bus_format\n");
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  671  		if (desc->bpc != 6 && desc->bpc != 8)
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  672  			dev_warn(dev, "Expected bpc in {6,8} but got: %u\n", desc->bpc);
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  673  		break;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  674  	default:
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  675  		dev_warn(dev, "Specify a valid connector_type: %d\n", desc->connector_type);
-9f069c6fbc7266 Sam Ravnborg      2020-07-26  676  		connector_type = DRM_MODE_CONNECTOR_DPI;
-ddb8e853dc8507 Sam Ravnborg      2020-07-26  677  		break;
-1185c406f11a49 Laurent Pinchart  2020-06-30  678  	}
-c4715837b02393 Laurent Pinchart  2020-06-30  679  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  680  	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  681  				     &panel_simple_funcs, connector_type);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  682  	if (IS_ERR(panel))
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  683  		return ERR_CAST(panel);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  684  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  685  	panel->desc = desc;
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  686  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  687  	panel->supply = devm_regulator_get(dev, "power");
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  688  	if (IS_ERR(panel->supply))
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  689  		return ERR_CAST(panel->supply);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  690  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  691  	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  692  						     GPIOD_OUT_LOW);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  693  	if (IS_ERR(panel->enable_gpio))
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  694  		return dev_err_cast_probe(dev, panel->enable_gpio,
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  695  					  "failed to request GPIO\n");
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  696  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  697  	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  698  	if (err) {
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  699  		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  700  		return ERR_PTR(err);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  701  	}
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  702  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  703  	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  704  	if (ddc) {
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  705  		panel->ddc = of_find_i2c_adapter_by_node(ddc);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  706  		of_node_put(ddc);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  707  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  708  		if (!panel->ddc)
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  709  			return ERR_PTR(-EPROBE_DEFER);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  710  	}
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  711  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  712  	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  713  	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  714  		panel_simple_parse_panel_timing_node(dev, panel, &dt);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  715  
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  716  	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  717  		/* Optional data-mapping property for overriding bus format */
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  718  		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  719  		if (err)
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  720  			goto free_ddc;
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  721  	}
-2803eb4aeb2702 Ludovic Desroches 2025-11-21  722  
-3235b0f20a0a41 Douglas Anderson  2021-04-16  723  	dev_set_drvdata(dev, panel);
-3235b0f20a0a41 Douglas Anderson  2021-04-16  724  
-3235b0f20a0a41 Douglas Anderson  2021-04-16  725  	/*
-3235b0f20a0a41 Douglas Anderson  2021-04-16  726  	 * We use runtime PM for prepare / unprepare since those power the panel
-3235b0f20a0a41 Douglas Anderson  2021-04-16  727  	 * on and off and those can be very slow operations. This is important
-3235b0f20a0a41 Douglas Anderson  2021-04-16  728  	 * to optimize powering the panel on briefly to read the EDID before
-3235b0f20a0a41 Douglas Anderson  2021-04-16  729  	 * fully enabling the panel.
-3235b0f20a0a41 Douglas Anderson  2021-04-16  730  	 */
-3235b0f20a0a41 Douglas Anderson  2021-04-16  731  	pm_runtime_enable(dev);
-3235b0f20a0a41 Douglas Anderson  2021-04-16  732  	pm_runtime_set_autosuspend_delay(dev, 1000);
-3235b0f20a0a41 Douglas Anderson  2021-04-16  733  	pm_runtime_use_autosuspend(dev);
-3235b0f20a0a41 Douglas Anderson  2021-04-16  734  
-0fe1564bd61642 Sam Ravnborg      2019-12-07  735  	err = drm_panel_of_backlight(&panel->base);
-d9e74da2f1fc42 Alexander Stein   2022-06-21  736  	if (err) {
-d9e74da2f1fc42 Alexander Stein   2022-06-21  737  		dev_err_probe(dev, err, "Could not find backlight\n");
-70e12560126685 Douglas Anderson  2021-04-23  738  		goto disable_pm_runtime;
-d9e74da2f1fc42 Alexander Stein   2022-06-21  739  	}
-0fe1564bd61642 Sam Ravnborg      2019-12-07  740  
-c3ee8c65f63799 Bernard Zhao      2020-08-01  741  	drm_panel_add(&panel->base);
-280921de7241ee Thierry Reding    2013-08-30  742  
-921c41e509746a Maxime Ripard     2025-06-26  743  	return panel;
-280921de7241ee Thierry Reding    2013-08-30  744  
-70e12560126685 Douglas Anderson  2021-04-23  745  disable_pm_runtime:
-a596fcd9cbc781 Douglas Anderson  2021-05-17  746  	pm_runtime_dont_use_autosuspend(dev);
-70e12560126685 Douglas Anderson  2021-04-23  747  	pm_runtime_disable(dev);
-280921de7241ee Thierry Reding    2013-08-30  748  free_ddc:
-5f04e7ce392db9 Douglas Anderson  2021-09-14  749  	if (panel->ddc)
-280921de7241ee Thierry Reding    2013-08-30  750  		put_device(&panel->ddc->dev);
-280921de7241ee Thierry Reding    2013-08-30  751  
-921c41e509746a Maxime Ripard     2025-06-26  752  	return ERR_PTR(err);
-280921de7241ee Thierry Reding    2013-08-30  753  }
-280921de7241ee Thierry Reding    2013-08-30  754  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 553fa46..d5ebb1d 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1458,10 +1458,11 @@ static int __try_to_del_timer_sync(struct timer_list =
+*timer, bool shutdown)
+=20
+ 	base =3D lock_timer_base(timer, &flags);
+=20
+-	if (base->running_timer !=3D timer)
++	if (base->running_timer !=3D timer) {
+ 		ret =3D detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function =3D NULL;
++		if (shutdown)
++			timer->function =3D NULL;
++	}
+=20
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+=20
 
