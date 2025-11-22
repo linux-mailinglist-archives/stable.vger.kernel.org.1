@@ -1,168 +1,100 @@
-Return-Path: <stable+bounces-196583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00107C7C6FB
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:52:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB20C7C7F7
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 06:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4EA93A76A6
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 04:52:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C83D54E202D
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AD82868BD;
-	Sat, 22 Nov 2025 04:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A31B298CB2;
+	Sat, 22 Nov 2025 05:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GE18GyUO"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="cMJWU5Rk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7468248C
-	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 04:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E50B72622;
+	Sat, 22 Nov 2025 05:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763787151; cv=none; b=c06Txa4b3IkQtZyD6fLg8q+r83SaJuktL4L/ZMBczWfFTk02N6PHu5R4jyIn/Tcr0BvopViMRwWzAQO2JWEndbtaAST2BfuZFmW30Kyq0gAKbNKbZWrgWdriOAMhxU/rW3GgZtp59ya4omT9iWYcCxpdKoNv9NOd6fQJIYI+XyE=
+	t=1763789353; cv=none; b=nNCYNwOK5kBwk4lm9JJx7HjwTA6ZqfEW6xg3sIPPLhh22Q2t0TWEUklSu24sQG70Hi13f6gWX168Ralk2cweqEO//yAf1FGp1Ys+V7CvC6OpU6wYqn+xMhSV4NLdU7gzl/Sim/qpr8S3VKWTAFqwdcUgxRxcZxefwGAfDvxfO0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763787151; c=relaxed/simple;
-	bh=FWLl64j3OG27t2fEX87ru8O4T/Nkn3nKaztfaTaQhFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jefVJq+zOglf9JNWSkeHMY2TncwdOxyJt9Um4YjeAAujGfjnBFQZEUx3S2tZyr1ijxx+1et/zaEkYKkVvh2RR1r9n2v552QFvZJCuQ9GVNsO03hFqn334fD3oQPN7bsCFxaS1A8oqIxJ1j9wXO7Ecwf22D7sDEzIC2VIYXap1jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GE18GyUO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6797FC113D0;
-	Sat, 22 Nov 2025 04:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763787151;
-	bh=FWLl64j3OG27t2fEX87ru8O4T/Nkn3nKaztfaTaQhFc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GE18GyUOISXotTELnXjM3bNp6/u4SqqM/Jrgb8E3cN5W8U5RicYHcX11k0vt6NJfg
-	 tr4o8Kba+X8bKqXrCrvGaXrrVZzhFZhWmcsiqgplxdA4B8IKrD8WlnUwMwuPqly/70
-	 xFoHZJDWyFyWMHgfRfkFwmEsFIOD73UDaJfoh+9fp8HnbvapVmEDDCC3mdueU5HPhj
-	 /hw7R1J9j/OUHXi5cuxVITCv08dPIzCyFY7ftqAQSrnw9Mijz6I1XkyvtzgJsAikU8
-	 AAAXiYi050kk73e0qr+/x0sr2ojD6+zcCaDFhntHFr0jKVEm8Uvyj1T4kzAtgJTTdG
-	 2jUJygsTY1U6w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 4/4] kho: allocate metadata directly from the buddy allocator
-Date: Fri, 21 Nov 2025 23:52:22 -0500
-Message-ID: <20251122045222.2798582-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251122045222.2798582-1-sashal@kernel.org>
-References: <2025112149-ahoy-manliness-1554@gregkh>
- <20251122045222.2798582-1-sashal@kernel.org>
+	s=arc-20240116; t=1763789353; c=relaxed/simple;
+	bh=JHnyGanJdKBv1lmhk4hIYwjzvp2kyvgpJi8HlRz6v2Y=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=bqE5Mo62U6T4TLgTJPk4sw9AfquWFOGRR187vNqh1sBmpYhHT4h8jDdrz+QiNPwF5aEK7s9zs3wSt+SmFsmsHLk1BgbnoHX6uDWmP03g7MlJlWPdAv5Jq1dKPR3mynHi6ev150eag6VOHImzki+HU46DbWi0ZXBSo8y1aXvIkZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=cMJWU5Rk; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1763789321;
+	bh=JHnyGanJdKBv1lmhk4hIYwjzvp2kyvgpJi8HlRz6v2Y=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=cMJWU5RkGLf0plkIKPH4/h+ByIUQLDefy8efiejdDvFhptEC4FOu2PbxnPTWpTi2V
+	 +k2krCCUWRG5N0tHUs127XZ/eM4FpdamLun8jD+6b2iZxFqTaNCpSHZqJhThKxtbDV
+	 UJDI1MUIU6q091dGHGoIYzsVHZkuny5k64zRm+38=
+EX-QQ-RecipientCnt: 8
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqRRDMu1q775QruR7Y790WuywJEQvw7b5Zs=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: XRNTu+GrJrUl+I074H3im/c2i3Qkw1iaOTJPGAJuieo=
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1763789296t14bfa025
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?Tmlrb2xvdmEsIFRhdHlhbmEgRQ==?=" <tatyana.e.nikolova@intel.com>, "=?utf-8?B?bGVvbkBrZXJuZWwub3Jn?=" <leon@kernel.org>
+Cc: "=?utf-8?B?c2hpcmF6LnNhbGVlbUBpbnRlbC5jb20=?=" <shiraz.saleem@intel.com>, "=?utf-8?B?bGludXgtcmRtYUB2Z2VyLmtlcm5lbC5vcmc=?=" <linux-rdma@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?5Y2g5L+K?=" <zhanjun@uniontech.com>, "=?utf-8?B?6IGC6K+a?=" <niecheng1@uniontech.com>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Subject: Re:RE: [PATCH] RDMA/irdma: fix Kconfig dependency
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Sat, 22 Nov 2025 13:28:16 +0800
+X-Priority: 3
+Message-ID: <tencent_25349C931FCC96137880D01F@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20251117120551.1672104-1-guanwentao@uniontech.com>
+	<IA1PR11MB7727692DE0ECFE84E9B52F02CBD5A@IA1PR11MB7727.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB7727692DE0ECFE84E9B52F02CBD5A@IA1PR11MB7727.namprd11.prod.outlook.com>
+X-QQ-ReplyHash: 2448271237
+X-BIZMAIL-ID: 2146458608414262690
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Sat, 22 Nov 2025 13:28:17 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NImvdRhE6fHp1TYj7/vl3op8hweCcOZ/X2DvZlIfM0MTL12szw/EwRre
+	gWPfN2LH6wwRcHZj8YCApHrF+6SfeYoTzI5EwRjcnTFZhUuDHtrnwyX9wACl4snY2HHuCmm
+	0OWcXyHOHRjGTkac4roYMy6G1cLZySjvVWggtqNE1JD2dMHPC30dn7S5yP0HolQspWChrn0
+	UyRwUa563xYjIIdaD5pRO9/2ObFSato7yRaSW/vAbEHHaUjPMQZne3t9PGxMgH2awc+30v8
+	YVAhRDye+7QIG3oEja0z/pJu9fQOm8xSrjHdM0kL1k6huHrMz9y8uu2d0Uf99sSdzoGJGta
+	VVOIR9h5auRODwbDOYK2lWvHYKE07hCZK9H6vOCpVWdyA+EG9A2xGzM8WSXRhYbuhK2+aR7
+	jGSC1uxeOU3AMElroMNS6AyAAgiHvv9K6JeeD7Me+HooTqGru4ERyT22PxFsRfQ+zyGRUiY
+	7WG7zHN3LdIPcUyQXQy++kH6/qfDjeVYU7uroPD3iZnwpvU6GxZOMS63LC9HlpW0LQRb465
+	OxP5m9sSGdnuV8fHcpaP2CIWUw3ZZj6tHq5ZjwpOgALp5Fzk8h+ooTvivATf9eMOfpFqIZx
+	1Xkzx4LaVD5eX/ABU8m7x1E2bs30YqUmC0mM+FZmOtexz1xxyEi/JSQ886xLJa+HZ4xhts5
+	5hQqLG9eiUsIwBTIAqAkc1IE4IF74uPsMYxDUbn6p3Dab46E8hPHocbGJJGqRtodRypl7N0
+	x8K2qLKT3cJzRXG7XIRUPEAz/wj424/sDv7yFpFcuS+S+Bg/qRPaYkn5bTDNFrwgys0pVcJ
+	Oi9nyHdbo2nnEi3YC6fvtSVmtfAqqWnSAE2dcKswYokUX4e+7O3GeF4m6SdxyBE4GEakoe6
+	+HoAIqpLL1GuLX+FBLwkrjdbu7NJoVeJR8SIKXnQxjLOfE99IB/3qPO5HMl5E8Qo+hZ9kMV
+	WD9BPu7T3lDRGAItsGYfG/hzBaG01QAn/xRkMh9WwvohBB8Rc9DyNoLACrb0UKZyzFlg42E
+	ad79U0EwYjk8g6e0rTMtfTIbhlni+0Ij9sY1w8Eg==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-
-[ Upstream commit fa759cd75bce5489eed34596daa53f721849a86f ]
-
-KHO allocates metadata for its preserved memory map using the slab
-allocator via kzalloc().  This metadata is temporary and is used by the
-next kernel during early boot to find preserved memory.
-
-A problem arises when KFENCE is enabled.  kzalloc() calls can be randomly
-intercepted by kfence_alloc(), which services the allocation from a
-dedicated KFENCE memory pool.  This pool is allocated early in boot via
-memblock.
-
-When booting via KHO, the memblock allocator is restricted to a "scratch
-area", forcing the KFENCE pool to be allocated within it.  This creates a
-conflict, as the scratch area is expected to be ephemeral and
-overwriteable by a subsequent kexec.  If KHO metadata is placed in this
-KFENCE pool, it leads to memory corruption when the next kernel is loaded.
-
-To fix this, modify KHO to allocate its metadata directly from the buddy
-allocator instead of slab.
-
-Link: https://lkml.kernel.org/r/20251021000852.2924827-4-pasha.tatashin@soleen.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Matlack <dmatlack@google.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Samiullah Khawaja <skhawaja@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/gfp.h     | 3 +++
- kernel/kexec_handover.c | 6 +++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 5ebf26fcdcfa3..1c599cf9b4af7 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -7,6 +7,7 @@
- #include <linux/mmzone.h>
- #include <linux/topology.h>
- #include <linux/alloc_tag.h>
-+#include <linux/cleanup.h>
- #include <linux/sched.h>
- 
- struct vm_area_struct;
-@@ -463,4 +464,6 @@ static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
- /* This should be paired with folio_put() rather than free_contig_range(). */
- #define folio_alloc_gigantic(...) alloc_hooks(folio_alloc_gigantic_noprof(__VA_ARGS__))
- 
-+DEFINE_FREE(free_page, void *, free_page((unsigned long)_T))
-+
- #endif /* __LINUX_GFP_H */
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 040cfeb1d3fab..d23855283faa4 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -125,7 +125,7 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index)
- 	if (res)
- 		return res;
- 
--	void *elm __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	void *elm __free(free_page) = (void *)get_zeroed_page(GFP_KERNEL);
- 
- 	if (!elm)
- 		return ERR_PTR(-ENOMEM);
-@@ -292,9 +292,9 @@ static_assert(sizeof(struct khoser_mem_chunk) == PAGE_SIZE);
- static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
- 					  unsigned long order)
- {
--	struct khoser_mem_chunk *chunk __free(kfree) = NULL;
-+	struct khoser_mem_chunk *chunk __free(free_page) = NULL;
- 
--	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	chunk = (void *)get_zeroed_page(GFP_KERNEL);
- 	if (!chunk)
- 		return ERR_PTR(-ENOMEM);
- 
--- 
-2.51.0
+RmluZSwgdGhhbmtzLg0KDQpCUnMNCldlbnRhbyBHdWFu
 
 
