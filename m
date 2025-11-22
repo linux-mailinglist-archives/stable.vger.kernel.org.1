@@ -1,131 +1,153 @@
-Return-Path: <stable+bounces-196599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2CCC7CE13
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 12:17:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9115C7D33E
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 16:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81B33A98BC
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 11:17:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8417A34E4FE
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 15:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176E41DFE12;
-	Sat, 22 Nov 2025 11:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CAC296BA8;
+	Sat, 22 Nov 2025 15:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="hGZxLI8G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y7tfDbBW"
 X-Original-To: stable@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BFE219EB
-	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 11:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5A0136672;
+	Sat, 22 Nov 2025 15:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763810259; cv=none; b=T1ryKhxULbKZ0U3u8Y+ttxjthqc63u4IIvaDkwRIfIp1ueeSBSY4sNcjvBe7mTQDXqluUPTJV0XnWNCOaSQlN7x+pD2+GAP9HTCkoSZOMDcavu0YQXViHoFNQ/oXpTESPwC3psgMLhpTcV5YryHC0eDgrbPuOTq+YmmvldHVZTo=
+	t=1763826211; cv=none; b=EbyMPc0FAMliDsY6XI/lnU4w0fWXhoc1J2eWqITGxwdJO8sTuDZjeiZSW64NG1BVsAFOxpt85/OY7BJYlTX+YQWHqDcGxwmkYTIJbS2Lkmiq82cxQyK1ZrUy3Kc4WpLCM6jGz3OUIxRUwH2+ecU7SrbtdPIsRwaxVKeACRyTayY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763810259; c=relaxed/simple;
-	bh=QufHtPrb6st8QqstczUo6OVv2b1JGZv7SZ2qmAP9/3Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jTjzMnns9klfLOkLJ2jL58GoErH0cr4avyWFoeQXuVQ2C8ta+wKr7TDilC6gMG3gZwVY736sG2SYW4mGj6vT2PjFjbx08Iy55Ex9tzupZlxvKddOIi8DS4q1KjqrlpO7PtVDc+oc4g3RPtIwkaF5MTP+DhGAMbp2Y4pActam1kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=hGZxLI8G; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6005b.ext.cloudfilter.net ([10.0.30.162])
-	by cmsmtp with ESMTPS
-	id MYu3vf2cqv724MlcRvcwZo; Sat, 22 Nov 2025 11:17:31 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id MlcRveCvkHSQMMlcRvRpXA; Sat, 22 Nov 2025 11:17:31 +0000
-X-Authority-Analysis: v=2.4 cv=GIQIEvNK c=1 sm=1 tr=0 ts=69219bcb
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=wslb3YrD4XxGTB1xvDIA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4TyPN5w1xJsLz33ocIqa7aFXOOziTWqVf4fXzULp1d8=; b=hGZxLI8GzsWJ2NYjqhLRRMStFC
-	X5JZRZGuVK+R0gOp9qGF8gumegzUdGJgFeSHVj/OhzMTM003aLpiyLNuZNIvoTgWjaL7OgKSv/pZA
-	zm8ti+2JLhAcGfkvMKlp2hnh7sGah08IGLghLRDa47IjpGBNaUFhJNxpuMMlUpwFZNGb/H53TVhkr
-	5ymE6l6xGvLuBTkgrvP2xG0ncHO3mksHSrZUuXFY56KI54dHLPw13loSoupD02UHFc3NJX71RmDT3
-	sbZ/rXwxZiKCQ6FOOlD4gEqW7aZU4yj5AKJIyf6lipTBMPMgckkzjkZvKegirJ5ST4EjetfnNXV4y
-	76qBr0nw==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:57046 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vMlcQ-00000001JmH-31rG;
-	Sat, 22 Nov 2025 04:17:30 -0700
-Message-ID: <682299e2-be28-4065-ae9a-3a90940deb3f@w6rz.net>
-Date: Sat, 22 Nov 2025 03:17:29 -0800
+	s=arc-20240116; t=1763826211; c=relaxed/simple;
+	bh=TdFJ8BpALh/11PCovxqPkoECL5VlIs5MHHYqAmc5QF0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=klBhfUgw2r1Y9ab5zdre5oFb570E0W71vy2R5yLsl21IUrGTr6uAYEtlPMqwwdIpCVV7p/PYzHET8mA4uXKLhofJeC8usG8HKgb4O044su4+3NLGlR9Cjn1mZuXAUmCREUZfis0mgK+penqialMvSytEfJHFFX6l1tk0sUEmriE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y7tfDbBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CCFC4CEF5;
+	Sat, 22 Nov 2025 15:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763826210;
+	bh=TdFJ8BpALh/11PCovxqPkoECL5VlIs5MHHYqAmc5QF0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Y7tfDbBWKz2muymuAlyQqXKIhcptxgwlg+rmr6VBLUxvMzE7fHLUY+nCRaduL5kl5
+	 ri4OPzULyu0bDZbIbxL0MaoSFlqm4jUvpPdKbekba6Fg+7B3pI5B8qRD2JhDoqGdNR
+	 aiyNXlSWRCi0mfs9QlWd2bZK8wIWaWdK2takDdj81e4qt0QhvVUvn/v+2c0px3Lt8Y
+	 9FsPjvESTCL724RLE5CW6eTtUD4nZoTnA57C8fAv8LQc3+EAUMt8JktFeEGe09b9Ri
+	 fE/G7NlSikywK+2E4yNV3zWThIt6Z+I6fxZvdD2h0MrNCd3p5t/P6KGTquqsZCSPaY
+	 yg3Q+obTqcJvw==
+Message-ID: <8090316eab1a1b973ab81a8f3c088caa7052d89d.camel@kernel.org>
+Subject: Re: [REGRESSION] nfs: Large amounts of GETATTR calls after file
+ renaming on v5.10.241
+From: Trond Myklebust <trondmy@kernel.org>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "Ahmed,
+ Aaron"	 <aarnahmd@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+ "regressions@lists.linux.dev"
+	 <regressions@lists.linux.dev>, "linux-nfs@vger.kernel.org"
+	 <linux-nfs@vger.kernel.org>, "sashal@kernel.org" <sashal@kernel.org>
+Date: Sat, 22 Nov 2025 10:43:29 -0500
+In-Reply-To: <2025112203-paddle-unweave-c0a2@gregkh>
+References: <F84F6626-B709-4083-9512-5F48FE370977@amazon.com>
+	 <2025112203-paddle-unweave-c0a2@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/529] 6.6.117-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251121130230.985163914@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vMlcQ-00000001JmH-31rG
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:57046
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOHmSk3t6RkUD1YFxQSt6CNJAsIMlMhP7RL+civ5TnXiaeRboOI3NKUeGrouB4A2RBRDswIl+0CxjxDQbB+NuwmWIKVq4STB007zcJUrgMUH0OHH9WBx
- 2ZHmpxUgyZn5P0ix+peYAmMsVQojWWY1LGSQB10rEXKjYEic+hg1zwvFjXcd5GKK8rQJxZKMaGjSsg==
 
-On 11/21/25 05:04, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.117 release.
-> There are 529 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.117-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
+On Sat, 2025-11-22 at 07:56 +0100, gregkh@linuxfoundation.org wrote:
+> On Fri, Nov 21, 2025 at 06:56:31PM +0000, Ahmed, Aaron wrote:
+> > Hi,
+> >=20
+> > We have had customers report a regression on kernels versions
+> > 5.10.241 and above in which file renaming causes large amounts of
+> > GETATTR calls to made due to inode revalidation. This regression
+> > was pinpointed via bisected to commit 7378c7adf31d ("NFS: Don't set
+> > NFS_INO_REVAL_PAGECACHE in the inode cache validity") which is a
+> > backport of 36a9346c2252 (=E2=80=9CNFS: Don't set NFS_INO_REVAL_PAGECAC=
+HE
+> > in the inode cache validity=E2=80=9D).=20
+> >=20
+> > We were able to reproduce It with this script:
+> > REPRO_PATH=3D/mnt/efs/repro
+> > do_read()
+> > {
+> > =C2=A0=C2=A0=C2=A0 for x in {1..50}
+> > =C2=A0=C2=A0=C2=A0 do
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat $1 > /dev/null
+> > =C2=A0=C2=A0=C2=A0 done
+> > =C2=A0=C2=A0=C2=A0 grep GETATTR /proc/self/mountstats
+> > }
+> >=20
+> > echo foo > $REPRO_PATH/bar
+> > echo "After create, before read:"
+> > grep GETATTR /proc/self/mountstats
+> >=20
+> > echo "First read:"
+> > do_read $REPRO_PATH/bar
+> >=20
+> > echo "Sleeping 5s, reading again (should look the same):"
+> > sleep 5
+> > do_read $REPRO_PATH/bar
+> >=20
+> > mv $REPRO_PATH/bar $REPRO_PATH/baz
+> > echo "Moved file, reading again:"
+> > do_read $REPRO_PATH/baz
+> >=20
+> > echo "Immediately performing another set of reads:"
+> > do_read $REPRO_PATH/baz
+> >=20
+> > echo "Cleanup, removing test file"
+> > rm $REPRO_PATH/baz
+> > which performs a few read/writes. On kernels without the regression
+> > the number of GETATTR calls remains the same while on affected
+> > kernels the amount increases after reading renamed file.=20
+> >=20
+> > This original commit comes from a series of patches providing
+> > attribute revalidation updates [1]. =C2=A0However, many of these patche=
+s
+> > are missing in v.5.10.241+. Specifically, 13c0b082b6a9 (=E2=80=9CNFS:
+> > Replace use of NFS_INO_REVAL_PAGECACHE when checking cache
+> > validity=E2=80=9D) seems like a prerequisite patch and would help remed=
+y
+> > the regression.
+>=20
+> Can you please send the needed backports to resolve this issue as you
+> can test and verify that this resolves the problem?
+>=20
 > thanks,
->
+>=20
 > greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Ah... If I'm correctly reading the changelog
+in=C2=A0https://cdn.kernel.org/pub/linux/kernel/v5.x/ChangeLog-5.10.241, it
+looks as if commit 36a9346c2252 got pulled in by the stable patch
+automation as a dependency for commit b01f21cacde9 ("NFS: Fix the
+setting of capabilities when automounting a new filesystem").
 
-Tested-by: Ron Economos <re@w6rz.net>
+I do agree with Aaron's assessment that patch does depend on the rest
+of the series that was merged into Linux 5.13. It cannot be cherry-
+picked on its own.
 
+However what exactly was the dependency that caused it to be pulled
+into 5.10.241 in the first place? Was that logged anywhere?
+I just checked out v5.10.241 and applied "git revert --signoff
+36a9346c2252", and that appears to work just fine, and I don't see any
+other obvious code dependency there, so I'm curious about what
+happened.
+
+--=20
+Trond Myklebust
+Linux NFS client maintainer, Hammerspace
+trondmy@kernel.org, trond.myklebust@hammerspace.com
 
