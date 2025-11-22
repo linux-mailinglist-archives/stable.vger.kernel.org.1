@@ -1,158 +1,107 @@
-Return-Path: <stable+bounces-196591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6F8C7C96E
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 08:28:21 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E6AC7CAF1
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 09:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 908964E33DF
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 07:28:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C963335659F
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 08:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3E92D9792;
-	Sat, 22 Nov 2025 07:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED39721FF35;
+	Sat, 22 Nov 2025 08:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="dAHlYLJg"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="d6Tzomv8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10699.protonmail.ch (mail-10699.protonmail.ch [79.135.106.99])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6065A1CEACB;
-	Sat, 22 Nov 2025 07:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDE41F09AC;
+	Sat, 22 Nov 2025 08:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763796494; cv=none; b=M+bvb1NkGseG8/o0YM2yB5HmuyqAb53GzjTxZtB0G01Tlif9DVabUt4WSqZ+h+esxepVcI4VUbSW7/gXsab1ktKiWJnK2OYansQeTwQ83LauPNM1IofrWoeFDj94LnVehnAsXYgzZSwPs5f6JK8d9NWOzKTk65TChcozyEcFFr8=
+	t=1763801498; cv=none; b=cNN/s0CHjjxfYiQdzwV/fpa7KQ7iguiZowSIFQvP6PWIDgLHbzu9NqgPkG7AzL8yY9EJeojBCKNI6FklnWFQdIAc9GBKQznRkdlcZUSNaBzAxoSRilan0fLywjCCowNzp2iDfAxC1WyrpudY+wIgWi7tjX+sow2ZyPURk++37gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763796494; c=relaxed/simple;
-	bh=ZiLM535fdW0mj5f4j73tf3z6TcZbJKBNv8W+D9/B/38=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oLe8Ayhat/3qOXo0BcUKLXDWPy3g4YywDlHnmNItvBfz52HqpZ9M3K2hlkYvKY3YN7QY6gZOaEJbNyJU8n6SvdsBRKSs6HNBEf6fe2jJlSA/F6PpijoKTpyPE9GrtF3iP6pxxnbD9aIZZQd2N0tzoK12slAxf9j2Vchs7CtqhL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=dAHlYLJg; arc=none smtp.client-ip=79.135.106.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1763796484; x=1764055684;
-	bh=+0Bxvudg5Br2MnIOJAd8LB0y2PKGjUacR/K9QqX9ee8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dAHlYLJgwRfRfwf8vKh7iOnOLo07xu0wkpUaqj/zOkZ44X9CC0SnNqt6OGUaJXLF8
-	 2kboQNRsWNjunBJkEcWR9wuhotx4eASDb5Pp5pXblVL7yHYxhwY93l2onJqlJ1LDzj
-	 MDB89hFMPxe8K81FVJJsJIsWJEJu7Q3/4Xy+iy9h3ZM0LKECkxYQtiUaWvQBBMQL9E
-	 z6x0trSeTsEO2xIhNyCsJ2+Rm+9rgQWaJnk0gBEf/A3l8H2YRM8Bri8dzoWI934Fo9
-	 RjJcJJG5BVbQRsV7GGahGSKTsXpLKbABMKEuZJJan/wFSmDdHtNxVn1mWNmO/EyFxv
-	 ZERwy+WBFf+ag==
-Date: Sat, 22 Nov 2025 07:28:00 +0000
+	s=arc-20240116; t=1763801498; c=relaxed/simple;
+	bh=X8+JR7O5KXx8fLy47r0+hlC+cJiz5P16mOHBuY4LyM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uJtUOiQxu4lJZ7ko0tds30poYSbOeBU+XKrPql5wGv80p6xLJP5YfW0Bp2LIGXH8k/Jc87xDLmVPjrmblP1lfZ04Oqb7LmBbx5NL4ASS1lCbJB+FufSqNveHVpYD4Y+fLNq1tPQgA6LHEIhqDSFQ9fBV1yRcuUL3qXXcMzInDuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=d6Tzomv8; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF77B1007D768;
+	Sat, 22 Nov 2025 09:51:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1763801481; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=9WJ2lpUdvAmwb2FICTgAUQQPGJQLW/ttnQSWgGHJTFo=;
+	b=d6Tzomv8xRKI1IrCuebDmXuNhPQ7doIJ6CUNzlSCVxKx5DdAEnAxH/a8zt13HMdPcwTKT7
+	9GED4TgIPDbG7ZGoJxMzL/b/ElGz7jNbRGQRhhsjYjEjh2bj//xRmr/i/v+Vej9iNHs7t0
+	qtsuwZQ1xFA8S1AUKndS5FzPlI/Bk63CdJOUG4FpNHxbX6E4pzUom21e3yuUdzyUO2ALvl
+	T+nyJolWkQAtse568vj273/Q14Xt6g5OLbD6phsyZcQZNOSVLwXuPLk3kIaBIBA9/F7Drl
+	PnS1f2fGy6vF7ZsGIjzbgay+xdKYcop+EbjcirCe3LhUIvUGm1K7Lt+Cmpot5Q==
+Date: Sat, 22 Nov 2025 09:51:14 +0100
+From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Jari Ruusu <jariruusu@protonmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Zizhi Wo <wozizhi@huaweicloud.com>
-Subject: Re: [PATCH 6.12 000/565] 6.12.58-rc1 review
-Message-ID: <8mT8aJsAQPfUnmI5mmsgbUweQAptUFDu5XqhrxPPI1DgJr7GPpbwrpQQW22Nj7fsBc5M5YKG8g0EceNQ_b3d-RPhk6RSQgGCqvaVzzWSIQw=@protonmail.com>
-In-Reply-To: <2025112145-cobbler-reattach-8fb2@gregkh>
-References: <zuLBWV-yhJXc0iM4l5T-O63M-kKmI2FlUSVgZl6B3WubvFEHRbBYQyhKsRcK4YyKk_iePF4STJihe7hx5H3KCU2KblG32oXwsxn9tzpTm5w=@protonmail.com> <2025112145-cobbler-reattach-8fb2@gregkh>
-Feedback-ID: 22639318:user:proton
-X-Pm-Message-ID: 6ffe701a4e5da2eb57ec9e1395c3b8ec2af3d175
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/185] 6.12.59-rc1 review
+Message-ID: <aSF5gt4RNLG29eWn@duo.ucw.cz>
+References: <20251121130143.857798067@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Gsp4cJv8LWfzt6IK"
+Content-Disposition: inline
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+
+
+--Gsp4cJv8LWfzt6IK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Friday, November 21st, 2025 at 11:36, Greg Kroah-Hartman <gregkh@linuxfo=
-undation.org> wrote:
-> On Tue, Nov 11, 2025 at 06:38:21AM +0000, Jari Ruusu wrote:
-> > Backporting upstream fixes that use guard() locking to older stable
-> > branches that use old-school locking need "extra sports".
-> >=20
-> > Please consider dropping or fixing above mentioned patch.
->=20
-> Can you provide a fixed up patch?
+Hi!
 
-Below is small test program to poke /dev/console using
-ioctl(VT_RESIZE) with deliberately bad parameters that
-should trigger failed return status. Opening /dev/console
-needs appropriate privileges.
+> This is the start of the stable review cycle for the 6.12.59 release.
+> There are 185 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <linux/vt.h>
-#include <sys/ioctl.h>
-int main(int argc, char **argv)
-{
-  int f, x, r;
-  struct vt_sizes s =3D { 40000, 40000, 0 };
-  if((f =3D open("/dev/console", O_RDONLY)) < 0) {
-    printf("open() failed\n");
-    exit(1);
-  }
-  for(x =3D 1; x <=3D 3; x++) {
-    printf("Starting ioctl(VT_RESIZE), try %d\n", x);
-    r =3D ioctl(f, VT_RESIZE, &s);
-    printf(" got status %d (expected -1)\n", r);
-  }
-  close(f);
-  exit(0);
-}
+CIP testing did not find any problems here:
 
-On kernels that return proper failed status,
-it plays like this:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.12.y
 
-| Starting ioctl(VT_RESIZE), try 1
-|  got status -1 (expected -1)
-| Starting ioctl(VT_RESIZE), try 2
-|  got status -1 (expected -1)
-| Starting ioctl(VT_RESIZE), try 3
-|  got status -1 (expected -1)
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-On kernels that return "incorrect success" status,
-it plays like this:
+Best regards,
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-| Starting ioctl(VT_RESIZE), try 1
-|  got status 0 (expected -1)
-| Starting ioctl(VT_RESIZE), try 2
-|  got status 0 (expected -1)
-| Starting ioctl(VT_RESIZE), try 3
-|  got status 0 (expected -1)
-  =20
-On kernels that return proper failed status but with
-messed up console locking in error handling code path,
-it locks up like this:
+--Gsp4cJv8LWfzt6IK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-| Starting ioctl(VT_RESIZE), try 1
-|  got status -1 (expected -1)
-| Starting ioctl(VT_RESIZE), try 2
+-----BEGIN PGP SIGNATURE-----
 
-After that, the console is FUBAR.
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSF5ggAKCRAw5/Bqldv6
+8hyPAJ9AfA4J+7a4lpfBPwUseGudj8l+9wCggG2gnbZ1aoD1/OLadQZFfPVUDrY=
+=MCOz
+-----END PGP SIGNATURE-----
 
-Below is a patch for 6.12.58+ and 6.17.8+ stable branches only.
-Upstream does not need this.
-Signed-off-by: Jari Ruusu <jariruusu@protonmail.com>
-Fixes: da7e8b382396 ("tty/vt: Add missing return value for VT_RESIZE in vt_=
-ioctl()")
-
---- a/drivers/tty/vt/vt_ioctl.c
-+++ b/drivers/tty/vt/vt_ioctl.c
-@@ -924,8 +924,10 @@
- =09=09=09if (vc) {
- =09=09=09=09/* FIXME: review v tty lock */
- =09=09=09=09ret =3D __vc_resize(vc_cons[i].d, cc, ll, true);
--=09=09=09=09if (ret)
-+=09=09=09=09if (ret) {
-+=09=09=09=09=09console_unlock();
- =09=09=09=09=09return ret;
-+=09=09=09=09}
- =09=09=09}
- =09=09}
- =09=09console_unlock();
-
---
-Jari Ruusu=C2=A0 4096R/8132F189 12D6 4C3A DCDA 0AA4 27BD=C2=A0 ACDF F073 3C=
-80 8132 F189
-
+--Gsp4cJv8LWfzt6IK--
 
