@@ -1,239 +1,211 @@
-Return-Path: <stable+bounces-196579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B232C7C6E0
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:51:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2941C7C6EF
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 05:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E09F63A75FC
-	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 04:51:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCAEF4E2DF7
+	for <lists+stable@lfdr.de>; Sat, 22 Nov 2025 04:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D18E285CB3;
-	Sat, 22 Nov 2025 04:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E432868BD;
+	Sat, 22 Nov 2025 04:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WIhTr9Zi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puv2CBX6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F94328489B
-	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 04:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA31D28488D
+	for <stable@vger.kernel.org>; Sat, 22 Nov 2025 04:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763787084; cv=none; b=Zv8wzY0dCgTO8l3yli7asOTh3jWtNHB+vLcDcXxhxNRm/BaOWGYnqeMBP6H4B8duN6kLyrC3LT6Gb4AVYM3OE/mQoizvfBeo54VDGe0rHzzCtEWbL8jVu8GvD4DMikPwVkjHY0kfcApLtXbVeELzwED4OAwj5EHbNuB4dsTfHPw=
+	t=1763787145; cv=none; b=Ech0493iPgfJ7SOniF3a1vpmHwWcSZdzr1SiTXkG4HYtoi0KFHZHG973g2xqn+ka6CiuxI9TKv0d/1gTuUKZD1ani6mNrn45GGLpJ8f4gHyBN/wuF2gFimJQfjFKV3tbItd6osNsOxp7fKGZwkA3lBYyQJT4HHE2iafukYQLaAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763787084; c=relaxed/simple;
-	bh=TUEua0/wAoOAjKQrGKFZvy18WHinTe1oqQGXmuicXKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ow0OXVXEBEMgsYRcx3NTO4DCuS4DJeUgvFHbIL3hitjebLk8CWtgtGaSPFbn72lMSvq6kzAH/f+p+pTFb6RU5epjN8qmWhtzgIp5f5plldI1p3j8JXEMs9p8jYtvf5CvqKq6zAVCxd7DPP/oPWCCVIGgGozjryeDQopqWgRnH10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WIhTr9Zi; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2a45877bd5eso3839547eec.0
-        for <stable@vger.kernel.org>; Fri, 21 Nov 2025 20:51:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763787082; x=1764391882; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=asI63flty4mvoIqkQyV2Ch4O/PBYBX7tCTS9ueMUh2E=;
-        b=WIhTr9ZijnZ+cQMZEe+H8AyfCBI5xWh8H9d55LfJrboEk+nZ1Mf63VJ3JSa0iBwxdA
-         RIE+03rfnSR9lYylzoN6ogov4cemYkw3lmENFRH92sK2klzqg6hfe6MUXcKMxi4JK9kN
-         izh7PHahsluiObOqlxGVQtyEb3Ig1NCAkLigRYiI4jJVnqkcOM+XJmxcedbj+3M8Wovp
-         ht1JgFrAljapIAk4W3tv9ENpxmcQHF2wdegP7+QubHH3D6WRt3UTo7MCNoZMiEH8M+zD
-         qL9r1GqzOrxuETPqa2OSfUt7n56RVRPlXRzFa6V7IdHX+PhkCz7H+54iEbPYAguJjjI5
-         yKmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763787082; x=1764391882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=asI63flty4mvoIqkQyV2Ch4O/PBYBX7tCTS9ueMUh2E=;
-        b=vfCRttihc03sFwKUUxwzm4y+Q6QLh3Fnj0wxU+glMpITK3Nb4M/y1AYEfsQ0Jjb94w
-         uXkFLr3/XiqS7kJAzhfCWIIKyUPWhBgKPharP0p1VTLsk9X7XVUQD0AhMBlPgju2lxiN
-         GMzLXK8TZQSaX+7lMLTq+GAOYHGzknHcy2a9uJTwfvVnG8pLU8lHuJx0oaYHCEikzajS
-         L+Vur2xxnv+2Ilyq2MXLWT1FDf0YSTimm9fgJGVCi257Yk6KVny5PqT0A5eVqlPGZTTG
-         crTQkVAqnk61X+VEtVy233vsDmNpDCdXFWNA5EOeJALsOfhyJeg6CHzQfbXXLC/b3Fau
-         wYyA==
-X-Gm-Message-State: AOJu0YzBdwWeg2xhE7tTV0/poZU6lwkJWWl07UOEqpq6RSVjn7Jip/2Y
-	MTxHY62dUjgFGbTg7XQh4POvmKJri6rsZlmlkbR7wyuLugf75Hr2YZHu+Sl6CYXI1nAonemnHXR
-	rsvvfegt0NddSbtPMddCXyjw9gX9P+1VX6YUuyNAQvg==
-X-Gm-Gg: ASbGnctkXiYSELjVWWc9h/o4SrX0FlTsPQRGlgTGoJIt12vpmDqPLeDtzKJwMHGfFRD
-	XQq6VrD1O0OOm6OOpIyflHn/twWKuc0Iin+HJCXIDwNnN1FaDquT7aAzlO/we/FnNo6uggBYJpB
-	yG0dqSEXoUqtNNSLjqFvfi6Pdo8klKgBocMr1S+2Wn/cKxVrd/ZOtqci0/KdS8CqhSa6uPgK85s
-	5UsxYMSrFkFqsxcNWDEuQc1l/g++mELFgK5lImmub3CUd4DeXEqj2eL/T1nMkMu5a69Yy4i0bCx
-	ShX9T9sa5Ch0Ij560aS9DQcCJme8
-X-Google-Smtp-Source: AGHT+IHwmVvlAyIIo+U94q9DXDgPlcT96xbKFJ78wizY3cIfoXa0JvtGu4A1hwwjgcpTk3Cfc1Utcro6JanCnEenBbU=
-X-Received: by 2002:a05:7300:a2ca:b0:2a6:a306:efdb with SMTP id
- 5a478bee46e88-2a718576e14mr2236705eec.3.1763787082112; Fri, 21 Nov 2025
- 20:51:22 -0800 (PST)
+	s=arc-20240116; t=1763787145; c=relaxed/simple;
+	bh=77xntEV16+WP6hWsNfG7kp0p7Th5EvKJpDePuxr/x+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hLBIgkHTt1Lth4kXUMGB1qGOeH39ZcjM74GogNKmC1JkXoetd/h6nX5fLFIy9aiC9Opbt+OQswwuvxtRj93sr+E6OBJ42695jHUPuGJBChzi62Jlvcdf2r5jq6GTXU3DYVZWqHLdDtbcvww0rldwqKZ2qm8iVb0WHeF87sze72Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puv2CBX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEEDC4CEF5;
+	Sat, 22 Nov 2025 04:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763787145;
+	bh=77xntEV16+WP6hWsNfG7kp0p7Th5EvKJpDePuxr/x+Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=puv2CBX6gOHZE0svWJXK0GIK5bY/igx1P+w32UsjqiggaVfMrrBVog3ox9WL+3Cui
+	 lz38WdMRtnHsoNnI1UcJvtjYFYRZCLKkFur7a/s0ZPs/1C09l8UqqyUYD2Fz5OlHDo
+	 zk1lXqzCUnzHNGR0utLxz+yIZOt1XLZQjJeiZM7QUlyMxRunPXInqO985DOJmkfMIt
+	 LvePFafNi1NgrL5WuZasCVkf4Qgf+qBEHUkWEA9AjkW62b98Qae1xx52n1+zP5f/c8
+	 Et5GnVCjpnLMSqER122343YxyPXn9itOBAfm5GA2sPjdE9gzeo9BOZVJjczDCR1nx5
+	 AxL1xQoD1xnfQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/4] kho: check if kho is finalized in __kho_preserve_order()
+Date: Fri, 21 Nov 2025 23:52:19 -0500
+Message-ID: <20251122045222.2798582-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112149-ahoy-manliness-1554@gregkh>
+References: <2025112149-ahoy-manliness-1554@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251121130230.985163914@linuxfoundation.org>
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Sat, 22 Nov 2025 10:21:10 +0530
-X-Gm-Features: AWmQ_bl9aP_dXviGSF9smM5QiMhfrYH0QvLhLHd01n5dELXq-9_2NCdrAo_s_JM
-Message-ID: <CA+G9fYt1RAW++XEOaFMSd-ieMJR2Ltj-6MgeRGV05SmTYBmavg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/529] 6.6.117-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 21 Nov 2025 at 19:06, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.117 release.
-> There are 529 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 23 Nov 2025 13:01:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.117-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
+[ Upstream commit 469661d0d3a55a7ba1e7cb847c26baf78cace086 ]
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Patch series "kho: add support for preserving vmalloc allocations", v5.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Following the discussion about preservation of memfd with LUO [1] these
+patches add support for preserving vmalloc allocations.
 
-## Build
-* kernel: 6.6.117-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 69eeb522a1e229275a2a2a4ac61032a65b6785c7
-* git describe: v6.6.115-563-g69eeb522a1e2
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
-15-563-g69eeb522a1e2
+Any KHO uses case presumes that there's a data structure that lists
+physical addresses of preserved folios (and potentially some additional
+metadata).  Allowing vmalloc preservations with KHO allows scalable
+preservation of such data structures.
 
-## Test Regressions (compared to v6.6.115-33-g2c2875b5e101)
+For instance, instead of allocating array describing preserved folios in
+the fdt, memfd preservation can use vmalloc:
 
-## Metric Regressions (compared to v6.6.115-33-g2c2875b5e101)
+        preserved_folios = vmalloc_array(nr_folios, sizeof(*preserved_folios));
+        memfd_luo_preserve_folios(preserved_folios, folios, nr_folios);
+        kho_preserve_vmalloc(preserved_folios, &folios_info);
 
-## Test Fixes (compared to v6.6.115-33-g2c2875b5e101)
+This patch (of 4):
 
-## Metric Fixes (compared to v6.6.115-33-g2c2875b5e101)
+Instead of checking if kho is finalized in each caller of
+__kho_preserve_order(), do it in the core function itself.
 
-## Test result summary
-total: 101411, pass: 85745, fail: 2822, skip: 12615, xfail: 229
+Link: https://lkml.kernel.org/r/20250921054458.4043761-1-rppt@kernel.org
+Link: https://lkml.kernel.org/r/20250921054458.4043761-2-rppt@kernel.org
+Link: https://lore.kernel.org/all/20250807014442.3829950-30-pasha.tatashin@soleen.com [1]
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Changyuan Lyu <changyuanl@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: fa759cd75bce ("kho: allocate metadata directly from the buddy allocator")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/kexec_handover.c | 55 +++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 29 deletions(-)
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 129 total, 128 passed, 1 failed
-* arm64: 44 total, 40 passed, 4 failed
-* i386: 23 total, 23 passed, 0 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 15 total, 14 passed, 1 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 37 total, 34 passed, 3 failed
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index c58afd23a241f..4e5774a6f0738 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -91,6 +91,29 @@ struct kho_serialization {
+ 	struct khoser_mem_chunk *preserved_mem_map;
+ };
+ 
++struct kho_out {
++	struct blocking_notifier_head chain_head;
++
++	struct dentry *dir;
++
++	struct mutex lock; /* protects KHO FDT finalization */
++
++	struct kho_serialization ser;
++	bool finalized;
++};
++
++static struct kho_out kho_out = {
++	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
++	.lock = __MUTEX_INITIALIZER(kho_out.lock),
++	.ser = {
++		.fdt_list = LIST_HEAD_INIT(kho_out.ser.fdt_list),
++		.track = {
++			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
++		},
++	},
++	.finalized = false,
++};
++
+ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+ {
+ 	void *elm, *res;
+@@ -149,6 +172,9 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ 
+ 	might_sleep();
+ 
++	if (kho_out.finalized)
++		return -EBUSY;
++
+ 	physxa = xa_load(&track->orders, order);
+ 	if (!physxa) {
+ 		int err;
+@@ -631,29 +657,6 @@ int kho_add_subtree(struct kho_serialization *ser, const char *name, void *fdt)
+ }
+ EXPORT_SYMBOL_GPL(kho_add_subtree);
+ 
+-struct kho_out {
+-	struct blocking_notifier_head chain_head;
+-
+-	struct dentry *dir;
+-
+-	struct mutex lock; /* protects KHO FDT finalization */
+-
+-	struct kho_serialization ser;
+-	bool finalized;
+-};
+-
+-static struct kho_out kho_out = {
+-	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
+-	.lock = __MUTEX_INITIALIZER(kho_out.lock),
+-	.ser = {
+-		.fdt_list = LIST_HEAD_INIT(kho_out.ser.fdt_list),
+-		.track = {
+-			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
+-		},
+-	},
+-	.finalized = false,
+-};
+-
+ int register_kho_notifier(struct notifier_block *nb)
+ {
+ 	return blocking_notifier_chain_register(&kho_out.chain_head, nb);
+@@ -681,9 +684,6 @@ int kho_preserve_folio(struct folio *folio)
+ 	const unsigned int order = folio_order(folio);
+ 	struct kho_mem_track *track = &kho_out.ser.track;
+ 
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	return __kho_preserve_order(track, pfn, order);
+ }
+ EXPORT_SYMBOL_GPL(kho_preserve_folio);
+@@ -707,9 +707,6 @@ int kho_preserve_phys(phys_addr_t phys, size_t size)
+ 	int err = 0;
+ 	struct kho_mem_track *track = &kho_out.ser.track;
+ 
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	if (!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(size))
+ 		return -EINVAL;
+ 
+-- 
+2.51.0
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
