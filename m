@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-196622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92427C7E082
-	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 12:54:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0931C7E182
+	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 14:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AAC4F4E1880
-	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 11:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D5543AC4E8
+	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 13:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3902D663E;
-	Sun, 23 Nov 2025 11:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57330213E9C;
+	Sun, 23 Nov 2025 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKCXKeLw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuTBiygi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF002D5A13;
-	Sun, 23 Nov 2025 11:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C4D12F5A5;
+	Sun, 23 Nov 2025 13:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763898883; cv=none; b=XJgFAqMt2ej/1w4DVeYEuJKu/lHSf89x4Ec1uaNoAibrABgQz9b5V+ew0y+XY3D3UO3193Jd9MWCIb5LBOs8Xbnwvp/YaoPbBuHcDgs4uGscrdLrm4w5xLecOVPRMZXJE/BQf4UwGpacF3zpjplWksoG8CLJqhjK8AwnAYtPjyM=
+	t=1763905809; cv=none; b=QXaXL209CSVVDYYzkzo0LqLdKUl54Y2weg1RgRu1EknfkW0IqxC5GaSNf+HT1hFzAbQb9Ea6lAPsOUZA5l90yyBjg2G3ReKyKt5tHGJoDshLcSHEJkxJ355kEV29KncCmnVqbZ2rSU8eFq4YIj0L2EP14mAnL7UG6lavejUCB2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763898883; c=relaxed/simple;
-	bh=cjza/eop6Wzzox2vdQYw69T5vIjHaOuRrj9qLihfCTs=;
+	s=arc-20240116; t=1763905809; c=relaxed/simple;
+	bh=ZL+RgcMLsSKNdLTtT60kCDHhXm7tIpVLS9UID5G6Js4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ETKhl+l9OCuolBqFYsee5rXZf/tYSMLVscBHp2io8gxjVLE3Q0M1HvdZcXnba3olsClxGMkUDjZhmh4PNE71Z1tUj5U8dMW9Tg3bF6N4gZzmkF/EdEh+tg0PNqXgxqF5KdZVv09ddRgq+29GP+brQYTmAZcmgxD4enmHVBRIPKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKCXKeLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C83FC113D0;
-	Sun, 23 Nov 2025 11:54:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=mkNOtVxZEIG5ie1Ut++HLVx2etN1EE7fjdS6J/nDmb2yLzveDiJPA5528TeKeSWQ2xBw0IQ/41YKPajhzSCaUBCzWI57fjNY9BP974oaq8RmR6UiVW5DoexuqXAok247febUTZqiU5SiuoXTF5MO7KF1qzKh2zncZ4/of29Fl3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuTBiygi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEC0C113D0;
+	Sun, 23 Nov 2025 13:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763898882;
-	bh=cjza/eop6Wzzox2vdQYw69T5vIjHaOuRrj9qLihfCTs=;
+	s=k20201202; t=1763905805;
+	bh=ZL+RgcMLsSKNdLTtT60kCDHhXm7tIpVLS9UID5G6Js4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UKCXKeLwkUpXTjy2GDZkRA8rCObQcuel0786wUN6IoCGlEZCJJ0sSxX4SG8hj3zkR
-	 hyi6DHSatnjtvYsYEKvM8cBgGRFGSmjPdJxrJbmcVcJ/2rn+UKAL2AQiS0CjNwgMkL
-	 7IEA3Sr7sdiiTA6ojv89kGoZ2ImMeYUHFg6lxuNo3SHnzsdYr026jMs882mKGvXUk7
-	 HpXT2gjfmVt80pCFoLTWq8HBr4UZB+ECna+rJ9wIG4EBvjn60r5Bz6Olny+2LTMeNA
-	 NBTIAZHvLlIgVdN+9op4fJPd/DeTLNsxalm5xefPYZfKqxOBjOV6QuUK1bwkwW72Ij
-	 xRImQpz422tvA==
+	b=LuTBiygieg4YuuDij7/ToJT3tAZHx7t8VaZ+opZd8Hi5L0CfxYY9xrvyVIbjU5CFb
+	 lNdyxCEKYH5sbrfZnDKAJ0A3cnar0Vl1CYApH/bQ1PFEMPlTTby5n6YAQba2Otq7ll
+	 D27IZGB+Y5xnlB7Nii+WtRWz0M8xtdU4kro9YeDQUHJ6beQEIZUda2XxO+hBD47Oye
+	 XCIjbGh95ia7vuELborLRiW+SeXW4gSm21qsUqJYeztmBjU2oDGEsdh4IwW//GNgD/
+	 1a2kNTquDGDW0DPqGvU/usHK0I4uTAQDwdxcJcnPhhxxV+B7Y/fw4QeCyxpfVGPfDU
+	 yVAKE+yYEw3UQ==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id AE33C1ACCCAB; Sun, 23 Nov 2025 11:54:39 +0000 (GMT)
-Date: Sun, 23 Nov 2025 11:54:39 +0000
+	id 95E391ACCCAB; Sun, 23 Nov 2025 13:50:02 +0000 (GMT)
+Date: Sun, 23 Nov 2025 13:50:02 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -53,9 +53,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/529] 6.6.117-rc1 review
-Message-ID: <aSL1_-mLj7x_gON_@sirena.co.uk>
-References: <20251121130230.985163914@linuxfoundation.org>
+Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
+Message-ID: <aSMRCtECYoQL7ldv@sirena.co.uk>
+References: <20251121160640.254872094@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,38 +63,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zkc8tkjvzcUUl+l3"
+	protocol="application/pgp-signature"; boundary="VR1+TAkp30PNznjK"
 Content-Disposition: inline
-In-Reply-To: <20251121130230.985163914@linuxfoundation.org>
+In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
 X-Cookie: It's clever, but is it art?
 
 
---zkc8tkjvzcUUl+l3
+--VR1+TAkp30PNznjK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Nov 21, 2025 at 02:04:59PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.117 release.
-> There are 529 patches in this series, all will be posted as a response
+On Fri, Nov 21, 2025 at 05:07:19PM +0100, Greg Kroah-Hartman wrote:
+
+> This is the start of the stable review cycle for the 6.17.9 release.
+> There are 244 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+I'm also seeing the listmount04 thing Naresh reported here, otherwise
+it looks good.  I didn't see a report for it upstream so I sent one, but
+I'm not convinced it isn't just an overly sensitive test.
 
---zkc8tkjvzcUUl+l3
+--VR1+TAkp30PNznjK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmki9f4ACgkQJNaLcl1U
-h9CI7wf9FG28UObf52pMFjGE8AVxCKDoqVnFjQtNRx1KhJaF/QyFVSLbsrtrBD/j
-WDvMZ17/eKObTM1eC8Ld5smHpqqBOvUIyTkfm/xeVY8W0AU75N2ev0JUINQDzErc
-Q+cX5iz2T9PQl05wMmyr6krolphRctBwvU+THMnGv4vFpnHadsia9tYzVQA73ZVm
-O+CX0+0FG97iRCCOfTNL6+ch907SEH4FE1yjHqbiGGAvO+PZUgJg0OOSzGltCrFY
-AbdgWPhw29lrC0tX2qciwciIzoyQ6i/DGMavG62r8GdIMoREE8/MxiidjVuBe0k0
-36Fi1NiCoq/SboNrT+fq/W0mpgZWjg==
-=kzu1
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkjEQkACgkQJNaLcl1U
+h9BeaAf+LtzJq3nXHq2pbw4sJZ6CF7O0r54bFprX6GXaIm8sr5xq3GGKujh7wgCF
+xQ8EkyvCPBjuIJeoXiC2cx5ATEF2HVVYrqWjwRXwVZLAkyp4g7adYhUokr2vmSci
+bADLoc4tiWoCBzxIHGLkpgK9ioajl4Gn/t0J4CVur2utNsbugHNTsCXK3oLyipZL
+f8WSaNsM7d0r/Id6QKmOSepD2/smbAWPPLHWHeW3947tO3pKOU8oGTJMy5jIjWT5
+VPJ02tVpEcodojc0Jluy/lOyMT2ncGo1QOHiX/DfqGYYYj9KcN5XahGhUxzQry+q
+vvGmHldmSwUWP03yNAgUi5ulpCBxtw==
+=9bFx
 -----END PGP SIGNATURE-----
 
---zkc8tkjvzcUUl+l3--
+--VR1+TAkp30PNznjK--
 
