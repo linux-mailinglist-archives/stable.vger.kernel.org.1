@@ -1,103 +1,138 @@
-Return-Path: <stable+bounces-196623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0931C7E182
-	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 14:50:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C98C7E477
+	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 17:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D5543AC4E8
-	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 13:50:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6AC4F343A71
+	for <lists+stable@lfdr.de>; Sun, 23 Nov 2025 16:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57330213E9C;
-	Sun, 23 Nov 2025 13:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58A71F2B88;
+	Sun, 23 Nov 2025 16:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuTBiygi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1EWC0Li"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C4D12F5A5;
-	Sun, 23 Nov 2025 13:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A491819F40A
+	for <stable@vger.kernel.org>; Sun, 23 Nov 2025 16:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763905809; cv=none; b=QXaXL209CSVVDYYzkzo0LqLdKUl54Y2weg1RgRu1EknfkW0IqxC5GaSNf+HT1hFzAbQb9Ea6lAPsOUZA5l90yyBjg2G3ReKyKt5tHGJoDshLcSHEJkxJ355kEV29KncCmnVqbZ2rSU8eFq4YIj0L2EP14mAnL7UG6lavejUCB2g=
+	t=1763916960; cv=none; b=nF0z3RF9ALj1bNvvimPNJkAY0ueaKQhWhx5GEcD0tyEbOnwZqwbBm/UzpJoWSHMALS4/NyVt6dWBbklbYpPUKl+2l0BhlCxZI9X1iEiA1yaMUXpme4DvWbMr9AgxtthuqFaBI9Wb7k6CC12u3cWDWOrg9rwnDOrTUz1VE8OnQCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763905809; c=relaxed/simple;
-	bh=ZL+RgcMLsSKNdLTtT60kCDHhXm7tIpVLS9UID5G6Js4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mkNOtVxZEIG5ie1Ut++HLVx2etN1EE7fjdS6J/nDmb2yLzveDiJPA5528TeKeSWQ2xBw0IQ/41YKPajhzSCaUBCzWI57fjNY9BP974oaq8RmR6UiVW5DoexuqXAok247febUTZqiU5SiuoXTF5MO7KF1qzKh2zncZ4/of29Fl3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuTBiygi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEC0C113D0;
-	Sun, 23 Nov 2025 13:50:05 +0000 (UTC)
+	s=arc-20240116; t=1763916960; c=relaxed/simple;
+	bh=bDrWytvlzBJfN6DbHeRyPAnoNNtMjYwXfqfOCuZTtQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DepbM8OxU6ONQzQxhFT1yDoqe5IzqlFc/KFOFqWaKalsgsxV+mXNjpEfHZ/orPqBHxXYQ1LBCCYrfiMk1kCq4DtlScjr+IKM8WZl+fRPT52TOLye1a/FUn8a4ta8k5+fi6X656xUQPInD0Ubu7L3IilxGfajHdk4N46EI9DT8G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1EWC0Li; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CEBC113D0;
+	Sun, 23 Nov 2025 16:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763905805;
-	bh=ZL+RgcMLsSKNdLTtT60kCDHhXm7tIpVLS9UID5G6Js4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LuTBiygieg4YuuDij7/ToJT3tAZHx7t8VaZ+opZd8Hi5L0CfxYY9xrvyVIbjU5CFb
-	 lNdyxCEKYH5sbrfZnDKAJ0A3cnar0Vl1CYApH/bQ1PFEMPlTTby5n6YAQba2Otq7ll
-	 D27IZGB+Y5xnlB7Nii+WtRWz0M8xtdU4kro9YeDQUHJ6beQEIZUda2XxO+hBD47Oye
-	 XCIjbGh95ia7vuELborLRiW+SeXW4gSm21qsUqJYeztmBjU2oDGEsdh4IwW//GNgD/
-	 1a2kNTquDGDW0DPqGvU/usHK0I4uTAQDwdxcJcnPhhxxV+B7Y/fw4QeCyxpfVGPfDU
-	 yVAKE+yYEw3UQ==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 95E391ACCCAB; Sun, 23 Nov 2025 13:50:02 +0000 (GMT)
-Date: Sun, 23 Nov 2025 13:50:02 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
-Message-ID: <aSMRCtECYoQL7ldv@sirena.co.uk>
-References: <20251121160640.254872094@linuxfoundation.org>
+	s=k20201202; t=1763916960;
+	bh=bDrWytvlzBJfN6DbHeRyPAnoNNtMjYwXfqfOCuZTtQE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p1EWC0Liri05dXO5GNlOjObY3HECKS4m+ajB/Y/rijmhKcsKDB4mRPAUWYOCNR6VQ
+	 kYkSkP8T0WXxTl2XJ6ts0y5f0nrUobV8K7uY7ByLeOvvILCxomeU7DIAXl6IG83hBD
+	 eqi6TKu0h0+MDMe6SKi2LN/KKkqRGdk6F9jzJm/DfjFa2EM55oCIUI3ompcQ6Qm8XK
+	 ZSZXi67UGa0kS+cLiConBoTyTr8SDQacHEy0KkuccPkwZEMZoRbXUUCDB3sjV1Yqgi
+	 4TpTXEtjnwN3KgGNNwFEFrt9QsXST+MUi3Uk9qUDDur3dVy6QXALQGWUBupX1NUgEZ
+	 jeUuQiaPIn77g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] selftests: mptcp: join: endpoints: longer transfer
+Date: Sun, 23 Nov 2025 11:55:57 -0500
+Message-ID: <20251123165557.3491636-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112027-clench-amazingly-fc3f@gregkh>
+References: <2025112027-clench-amazingly-fc3f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VR1+TAkp30PNznjK"
-Content-Disposition: inline
-In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
-X-Cookie: It's clever, but is it art?
+Content-Transfer-Encoding: 8bit
 
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
---VR1+TAkp30PNznjK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[ Upstream commit 6457595db9870298ee30b6d75287b8548e33fe19 ]
 
-On Fri, Nov 21, 2025 at 05:07:19PM +0100, Greg Kroah-Hartman wrote:
+In rare cases, when the test environment is very slow, some userspace
+tests can fail because some expected events have not been seen.
 
-> This is the start of the stable review cycle for the 6.17.9 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to make the
+connection longer. This connection will be killed at the end, after the
+verifications, so making it longer doesn't change anything, apart from
+avoid it to end before the end of the verifications
 
-I'm also seeing the listmount04 thing Naresh reported here, otherwise
-it looks good.  I didn't see a report for it upstream so I sent one, but
-I'm not convinced it isn't just an overly sensitive test.
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now sharing a longer file (128KB) at slow speed.
 
---VR1+TAkp30PNznjK
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
+Cc: stable@vger.kernel.org
+Fixes: e274f7154008 ("selftests: mptcp: add subflow limits test-cases")
+Fixes: b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-3-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ removed curly braces and stderr redirection ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index b9cc3d51dc285..3b10432fa6be0 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3741,7 +3741,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		speed=slow \
++		test_linkfail=128 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 
+@@ -3768,7 +3768,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		test_linkfail=4 speed=5 \
++		test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 
+@@ -3845,7 +3845,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		test_linkfail=4 speed=5 \
++		test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 
+@@ -3917,7 +3917,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		test_linkfail=4 speed=20 \
++		test_linkfail=128 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 
+-- 
+2.51.0
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkjEQkACgkQJNaLcl1U
-h9BeaAf+LtzJq3nXHq2pbw4sJZ6CF7O0r54bFprX6GXaIm8sr5xq3GGKujh7wgCF
-xQ8EkyvCPBjuIJeoXiC2cx5ATEF2HVVYrqWjwRXwVZLAkyp4g7adYhUokr2vmSci
-bADLoc4tiWoCBzxIHGLkpgK9ioajl4Gn/t0J4CVur2utNsbugHNTsCXK3oLyipZL
-f8WSaNsM7d0r/Id6QKmOSepD2/smbAWPPLHWHeW3947tO3pKOU8oGTJMy5jIjWT5
-VPJ02tVpEcodojc0Jluy/lOyMT2ncGo1QOHiX/DfqGYYYj9KcN5XahGhUxzQry+q
-vvGmHldmSwUWP03yNAgUi5ulpCBxtw==
-=9bFx
------END PGP SIGNATURE-----
-
---VR1+TAkp30PNznjK--
 
