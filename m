@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-196811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D46C82906
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:43:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9104C82903
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C0BF3AEB07
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:43:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C3D34E365B
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB1132ED41;
-	Mon, 24 Nov 2025 21:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AA132ED30;
+	Mon, 24 Nov 2025 21:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQx2+Okg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idTDCT4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F9332E6BE
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 21:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C582432ED24
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 21:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764020616; cv=none; b=uQseujcHZ5wdjvVzHMUAY2I2tF4f4gFFdLFe9fi/v8u+UvFHsUcGNZQFPUWbkfD2l304Yhj9HTC6pbRrIwq8sZPM8VMIPzc6FlKbXK61of5kpf4N9YtqAePZAAJUuLBY/6lkkDc8XBliIG+6Tpcdf1GSh79b6BGSnNnaPj2qS0E=
+	t=1764020617; cv=none; b=b9tT3NglKDQuwqRy6qenoBJa5p4ByUKT6b0DYPLflBR8IGw96oydcUpXU3nJF8Iqbmdwy6006prWAl8z219nOHnnuWQNAYZciiDWo94Sl9KvyG+a63IWExY7cxhKFUOtZ0CyhhRlW8/05dX07QELLG+7b4SJ+KuX3vcpw7Imw/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764020616; c=relaxed/simple;
-	bh=TPMLa8SgG3qXNLOxSZG3E4o46uE532DZy+ftd6LFtQc=;
+	s=arc-20240116; t=1764020617; c=relaxed/simple;
+	bh=rXIl2SMgpV/J6pNGeXeEkqnA8EYjcNSYcbL8wuSYy7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClCx4J2v8zC4WnElnUatbzS8NewtFdN8r7GMsEII6wcpkkInfIdms3GO8xWtiL+n03yuk8z4rtqrB6Wprm72v1oPfGM3kqKJHezFSFc5udH+pSFIouBT6xtbVGzpBZmPzddf7xgzCdlvVavvw9hShcL6HDMtzkx9hj2khRmiuNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQx2+Okg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6666C4CEF1;
-	Mon, 24 Nov 2025 21:43:35 +0000 (UTC)
+	 MIME-Version; b=ipRMRfqpciOhnSmpAvHwbfeY/a0gMoPiWosUv/KgyPNfG5y0po/gA0DB50G5yzhkh2WLdPbvssiUraX2aVj3H2pBHyY2Z+Mds7rggFzzS5TJv9Dhty2CngHK2YA9dL/fVlitRpF0ALcprUmAE3PdzMTuMyqq782TpHX3MuGdjcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idTDCT4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC185C4CEFB;
+	Mon, 24 Nov 2025 21:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764020616;
-	bh=TPMLa8SgG3qXNLOxSZG3E4o46uE532DZy+ftd6LFtQc=;
+	s=k20201202; t=1764020617;
+	bh=rXIl2SMgpV/J6pNGeXeEkqnA8EYjcNSYcbL8wuSYy7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQx2+OkgYOUFUXrZyVv3lZw+srrRZxl42kMGXAl9hUXyTKLIgAemxGfDyrTQ/fS70
-	 vh+xry7fdsmEF4lfdLOyjkvuamuVjmoWc/JIsWprisqyGgKKZ1P6Qwl4+3px76+6x1
-	 q/WUR4Biov3S1S/ueJu6vYLVAJUDgXLJRR1nlu7JyP6myWlF3lcgeRSTrwhZY+tfak
-	 zs9sUfQYjvdXj8Ga7NMlk0WOseqwLHLYlOv06xBVCS+0PA8ZGnVNBUACYYZNQ3uxGG
-	 iJYl1N/WgsrwNC6OhbrT+OOpz9mHP7RyAwrkf1FeDgwWwy4KhpIxIep0IxYZSpiXY9
-	 8Jz6b9PQX01gA==
+	b=idTDCT4msF38OUYAJatiWD31w0uhQy1euQPr+4pAC2CpqMD/JJVp6+EXBUCoqHynA
+	 ynP0v3NsnegH9xgckQpxjozSa4CnpOimdj9YOF0++MvN86qFSCufwieSQFktBMPC9T
+	 AOTEHIH3yeXtJkaHHkb2HmlfoHTHs2X9BZmJ5zZnhSLSJuU8hopG9sxUI/alDl5Cpt
+	 9c48k2ls2Ub/JI+3PUy5sd1Y5nIbTHyiIi5aScVS+EKmWdNh3VKYmRuMlJGkSlUx3Y
+	 fKfzqEnodg/MNDOz2rMFhoeAGAODfGcPE5DqvaLS4eEBl3Sgna7Pzh6G/5UqKOs6PB
+	 3Z23du5AOOQTg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	kernel test robot <oliver.sang@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 1/2] mm/mempool: replace kmap_atomic() with kmap_local_page()
-Date: Mon, 24 Nov 2025 16:43:33 -0500
-Message-ID: <20251124214334.44494-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y 2/2] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+Date: Mon, 24 Nov 2025 16:43:34 -0500
+Message-ID: <20251124214334.44494-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112438-stoppable-bribe-71e6@gregkh>
+In-Reply-To: <20251124214334.44494-1-sashal@kernel.org>
 References: <2025112438-stoppable-bribe-71e6@gregkh>
+ <20251124214334.44494-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,67 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit f2bcc99a5e901a13b754648d1dbab60f4adf9375 ]
+[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
 
-kmap_atomic() has been deprecated in favor of kmap_local_page().
+The kernel test has reported:
 
-Therefore, replace kmap_atomic() with kmap_local_page().
+  BUG: unable to handle page fault for address: fffba000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  *pde = 03171067 *pte = 00000000
+  Oops: Oops: 0002 [#1]
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
+  Tainted: [T]=RANDSTRUCT
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
+  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
+  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
+  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
+  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
+  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
+  Call Trace:
+   poison_element (mm/mempool.c:83 mm/mempool.c:102)
+   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
+   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   do_one_initcall (init/main.c:1283)
 
-kmap_atomic() is implemented like a kmap_local_page() which also disables
-page-faults and preemption (the latter only in !PREEMPT_RT kernels).  The
-kernel virtual addresses returned by these two API are only valid in the
-context of the callers (i.e., they cannot be handed to other threads).
+Christoph found out this is due to the poisoning code not dealing
+properly with CONFIG_HIGHMEM because only the first page is mapped but
+then the whole potentially high-order page is accessed.
 
-With kmap_local_page() the mappings are per thread and CPU local like in
-kmap_atomic(); however, they can handle page-faults and can be called from
-any context (including interrupts).  The tasks that call kmap_local_page()
-can be preempted and, when they are scheduled to run again, the kernel
-virtual addresses are restored and are still valid.
+We could give up on HIGHMEM here, but it's straightforward to fix this
+with a loop that's mapping, poisoning or checking and unmapping
+individual pages.
 
-The code blocks between the mappings and un-mappings don't rely on the
-above-mentioned side effects of kmap_atomic(), so that mere replacements
-of the old API with the new one is all that they require (i.e., there is
-no need to explicitly call pagefault_disable() and/or preempt_disable()).
-
-Link: https://lkml.kernel.org/r/20231120142640.7077-1-fabio.maria.de.francesco@linux.intel.com
-Signed-off-by: Fabio M. De Francesco <fabio.maria.de.francesco@linux.intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ec33b59542d9 ("mm/mempool: fix poisoning order>0 pages with HIGHMEM")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
+Analyzed-by: Christoph Hellwig <hch@lst.de>
+Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
+Cc: stable@vger.kernel.org
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mempool.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/mempool.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/mm/mempool.c b/mm/mempool.c
-index 85efab3da7204..f9f2afe42b92a 100644
+index f9f2afe42b92a..92dc2df8e400b 100644
 --- a/mm/mempool.c
 +++ b/mm/mempool.c
-@@ -64,10 +64,10 @@ static void check_element(mempool_t *pool, void *element)
+@@ -64,10 +64,20 @@ static void check_element(mempool_t *pool, void *element)
  	/* Mempools backed by page allocator */
  	if (pool->free == mempool_free_pages) {
  		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_atomic((struct page *)element);
-+		void *addr = kmap_local_page((struct page *)element);
+-		void *addr = kmap_local_page((struct page *)element);
  
- 		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_atomic(addr);
-+		kunmap_local(addr);
+-		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__check_element(pool, addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__check_element(pool, addr, PAGE_SIZE << order);
++#endif
  	}
  }
  
-@@ -88,10 +88,10 @@ static void poison_element(mempool_t *pool, void *element)
+@@ -88,10 +98,20 @@ static void poison_element(mempool_t *pool, void *element)
  	/* Mempools backed by page allocator */
  	if (pool->alloc == mempool_alloc_pages) {
  		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_atomic((struct page *)element);
-+		void *addr = kmap_local_page((struct page *)element);
+-		void *addr = kmap_local_page((struct page *)element);
  
- 		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_atomic(addr);
-+		kunmap_local(addr);
+-		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__poison_element(addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__poison_element(addr, PAGE_SIZE << order);
++#endif
  	}
  }
  #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
