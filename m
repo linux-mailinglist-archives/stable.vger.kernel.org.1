@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-196781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E269DC821FE
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:38:21 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0159C82205
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0A57234A5D4
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:38:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AB03434A666
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F513176FD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A8131A04F;
 	Mon, 24 Nov 2025 18:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aq/bq1+S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJjDaYH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA7C31985C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DE831985C
 	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764009482; cv=none; b=cSuAWXcyb2m2HOR9q+umP+M8PsmyKhcIPRCsf21avvNwbt9L/zFSYuhhzz0jYamteKoa0ADT60Pl3HD5dDqMuMNd0UMnWmwXqapqjZPI4KQZmfKqzsMN1gyDNE9AcFjtp2l7Ud1BDDr9doH+vrkiLKL1lSt4KmjRuqZ/UOBMSbk=
+	t=1764009483; cv=none; b=YNIFyyr6izP2CD/OlqqSBD1j+yAQZkKUZBSzIdnHTaxlN9wax6Y+BT40dvE6sVWADBdU2qj1nTOJfw1biBzdDuE16p1QRnaiHXVE671ktjqPsxQFSdHCPKydPPw7G9B1Fe8SU8s+N88AKnPP2DKF9y7trN7WS+sBvMMJXUXy2Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764009482; c=relaxed/simple;
-	bh=4szzftfNVajYa8yjXj5A2aucsirmbAT0lUgcthDm568=;
+	s=arc-20240116; t=1764009483; c=relaxed/simple;
+	bh=d9PYYdTG3FEmQXCVKWqT+YYZcI9KCd8i14UrKrQBe04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFH682/ID9syIDOvEx/VXDRnkHk89yyqhwMtRReKpE72BBouQxpodWxx9/eufmTPYfvZg0vBwTCMxbJZ/GNCobA9LRixe97LisXv6pKeQeAaNnGKOZXYdkdFDqM0oFWTq4BeqpK1fQ0fVKkOcTnO/3PaDtaibB3GdY9tP/fmqbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aq/bq1+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D17CC116C6;
-	Mon, 24 Nov 2025 18:38:01 +0000 (UTC)
+	 MIME-Version; b=OVJuZvQ8thBUxsRBzM99B7Y4yizadlLF13SnZ4GKkxm/WSmklfvF0JOBkgGY1AoctWB+xSLXpJcJBDOm5zGbIJLseZAu69o3nKdf++H+t5gs+3p8bggx+BQ3KZ2Mzr4uTEh3QK2U2m5gIHVSdyp4a1WDE361IJI1zeeV5sMbKzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJjDaYH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B00C19422;
+	Mon, 24 Nov 2025 18:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764009482;
-	bh=4szzftfNVajYa8yjXj5A2aucsirmbAT0lUgcthDm568=;
+	bh=d9PYYdTG3FEmQXCVKWqT+YYZcI9KCd8i14UrKrQBe04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aq/bq1+SGHpslmmUIM4Da8PbYPK6I7aM4/Lcb6w3RYCJjpoEC931NSfkZGOhfUihH
-	 BEZxIcVZFMc00ordtMrWypw7WrAu9nv0Up3F/bWHR9zUnouhBiOoONRiqCjJZa44Cf
-	 qM9IziGiVJAKK/WnT+89IZ+XSqy7UMdY8mXGncC5V6Ta4mK9uOUaovXE8y6lHpThe7
-	 0SyLcYE/jo9CmXCkqdXtaRTM/maCll3eUBpjVzhfRe53N+RFx70B6FurNAOnJQpBp6
-	 3+K8rxNXhfSFqt3+lQC8cpvtCWThqpexw3w0IXRF5bsHrxT3M35zrGUJZyWerk9nB4
-	 RpDdAEwEVdVHw==
+	b=rJjDaYH0n0dCXP3qL3flTrvuB0WaSRXMkeG3e0b5zyQtm/d2AsesyKQYHdJZEciHY
+	 8lugjSF+qU52kWOQQvDQmmSJMgv94tF03gUiLRI1sSRprrDCeKyCD5qo0XswNIXb58
+	 7kWVe67SvNG0JVCmreh1T+x6nm+cQtKVnyotnBLSTOKIMiS5Drno0RjDHzsNMYFv5y
+	 nqrm1R1eo2ElZjCEguwnEcF2h1B7tsqMXBFqLjSs3dfZvscmksz5tGa9e04y4p8Auf
+	 B2qDKaL4A5cZpwucsEQEJ2+MO5+5PHRf+jN1jAj//oxuZEZCHyO5E5E8kZrZXhgiXw
+	 PQukFlPb2s+3g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Ville Syrjala <syrjala@sci.fi>,
+Cc: Seungjin Bae <eeodqql09@gmail.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Henk Vergonet <Henk.Vergonet@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/3] Input: remove third argument of usb_maxpacket()
-Date: Mon, 24 Nov 2025 13:37:57 -0500
-Message-ID: <20251124183758.4187087-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 3/3] Input: pegasus-notetaker - fix potential out-of-bounds access
+Date: Mon, 24 Nov 2025 13:37:58 -0500
+Message-ID: <20251124183758.4187087-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251124183758.4187087-1-sashal@kernel.org>
 References: <2025112419-scariness-motive-d737@gregkh>
@@ -64,112 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 948bf187694fc1f4c20cf972fa18b1a6fb3d7603 ]
+[ Upstream commit 69aeb507312306f73495598a055293fa749d454e ]
 
-The third argument of usb_maxpacket(): in_out has been deprecated
-because it could be derived from the second argument (e.g. using
-usb_pipeout(pipe)).
+In the pegasus_notetaker driver, the pegasus_probe() function allocates
+the URB transfer buffer using the wMaxPacketSize value from
+the endpoint descriptor. An attacker can use a malicious USB descriptor
+to force the allocation of a very small buffer.
 
-N.B. function usb_maxpacket() was made variadic to accommodate the
-transition from the old prototype with three arguments to the new one
-with only two arguments (so that no renaming is needed). The variadic
-argument is to be removed once all users of usb_maxpacket() get
-migrated.
+Subsequently, if the device sends an interrupt packet with a specific
+pattern (e.g., where the first byte is 0x80 or 0x42),
+the pegasus_parse_packet() function parses the packet without checking
+the allocated buffer size. This leads to an out-of-bounds memory access.
 
-CC: Ville Syrjala <syrjala@sci.fi>
-CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC: Henk Vergonet <Henk.Vergonet@gmail.com>
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/r/20220317035514.6378-4-mailhol.vincent@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
+Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/ati_remote2.c         | 2 +-
- drivers/input/misc/cm109.c               | 2 +-
- drivers/input/misc/powermate.c           | 2 +-
- drivers/input/misc/yealink.c             | 2 +-
- drivers/input/tablet/acecad.c            | 2 +-
- drivers/input/tablet/pegasus_notetaker.c | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/input/tablet/pegasus_notetaker.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/input/misc/ati_remote2.c b/drivers/input/misc/ati_remote2.c
-index 8a36d78fed63a..946bf75aa1061 100644
---- a/drivers/input/misc/ati_remote2.c
-+++ b/drivers/input/misc/ati_remote2.c
-@@ -639,7 +639,7 @@ static int ati_remote2_urb_init(struct ati_remote2 *ar2)
- 			return -ENOMEM;
- 
- 		pipe = usb_rcvintpipe(udev, ar2->ep[i]->bEndpointAddress);
--		maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+		maxp = usb_maxpacket(udev, pipe);
- 		maxp = maxp > 4 ? 4 : maxp;
- 
- 		usb_fill_int_urb(ar2->urb[i], udev, pipe, ar2->buf[i], maxp,
-diff --git a/drivers/input/misc/cm109.c b/drivers/input/misc/cm109.c
-index f515fae465c35..728325a2d574a 100644
---- a/drivers/input/misc/cm109.c
-+++ b/drivers/input/misc/cm109.c
-@@ -745,7 +745,7 @@ static int cm109_usb_probe(struct usb_interface *intf,
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	ret = usb_maxpacket(udev, pipe);
- 	if (ret != USB_PKT_LEN)
- 		dev_err(&intf->dev, "invalid payload size %d, expected %d\n",
- 			ret, USB_PKT_LEN);
-diff --git a/drivers/input/misc/powermate.c b/drivers/input/misc/powermate.c
-index 6b1b95d58e6b5..db2ba89adaefa 100644
---- a/drivers/input/misc/powermate.c
-+++ b/drivers/input/misc/powermate.c
-@@ -374,7 +374,7 @@ static int powermate_probe(struct usb_interface *intf, const struct usb_device_i
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	maxp = usb_maxpacket(udev, pipe);
- 
- 	if (maxp < POWERMATE_PAYLOAD_SIZE_MIN || maxp > POWERMATE_PAYLOAD_SIZE_MAX) {
- 		printk(KERN_WARNING "powermate: Expected payload of %d--%d bytes, found %d bytes!\n",
-diff --git a/drivers/input/misc/yealink.c b/drivers/input/misc/yealink.c
-index 8ab01c7601b12..69420781db300 100644
---- a/drivers/input/misc/yealink.c
-+++ b/drivers/input/misc/yealink.c
-@@ -905,7 +905,7 @@ static int usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	ret = usb_maxpacket(udev, pipe);
- 	if (ret != USB_PKT_LEN)
- 		dev_err(&intf->dev, "invalid payload size %d, expected %zd\n",
- 			ret, USB_PKT_LEN);
-diff --git a/drivers/input/tablet/acecad.c b/drivers/input/tablet/acecad.c
-index a38d1fe973340..56c7e471ac32e 100644
---- a/drivers/input/tablet/acecad.c
-+++ b/drivers/input/tablet/acecad.c
-@@ -130,7 +130,7 @@ static int usb_acecad_probe(struct usb_interface *intf, const struct usb_device_
- 		return -ENODEV;
- 
- 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
--	maxp = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
-+	maxp = usb_maxpacket(dev, pipe);
- 
- 	acecad = kzalloc(sizeof(struct usb_acecad), GFP_KERNEL);
- 	input_dev = input_allocate_device();
 diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
-index 749edbdb7ffa4..c608ac505d1ba 100644
+index c608ac505d1ba..b2be4b87bfbe9 100644
 --- a/drivers/input/tablet/pegasus_notetaker.c
 +++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -296,7 +296,7 @@ static int pegasus_probe(struct usb_interface *intf,
- 	pegasus->intf = intf;
+@@ -63,6 +63,9 @@
+ #define BUTTON_PRESSED			0xb5
+ #define COMMAND_VERSION			0xa9
+ 
++/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
++#define NOTETAKER_PACKET_SIZE		6
++
+ /* in xy data packet */
+ #define BATTERY_NO_REPORT		0x40
+ #define BATTERY_LOW			0x41
+@@ -297,6 +300,12 @@ static int pegasus_probe(struct usb_interface *intf,
  
  	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
--	pegasus->data_len = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
-+	pegasus->data_len = usb_maxpacket(dev, pipe);
+ 	pegasus->data_len = usb_maxpacket(dev, pipe);
++	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
++		dev_err(&intf->dev, "packet size is too small (%d)\n",
++			pegasus->data_len);
++		error = -EINVAL;
++		goto err_free_mem;
++	}
  
  	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
  					   &pegasus->data_dma);
