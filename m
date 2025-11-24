@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-196698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D1EC80BAF
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:24:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3D0C80C15
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961C33A8CFB
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B2323A4191
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68541D8DFB;
-	Mon, 24 Nov 2025 13:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C693016EE;
+	Mon, 24 Nov 2025 13:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFrx3Ak8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkhRRq4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A991A9FAF
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D323230149D
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763990578; cv=none; b=UZWldQo1zy8bh86D9RKpYJ+1uqabQPwrkpKx4DAuwBk3I3790stFtaYMGJ3Gsx9eU5zmZgZwPZ4wHIXYennATN6TkJyeq9rfWsHC/4oJlOAm0Ww1a2496F62P0cJfM32sCJW2XuTLUViX1EzQDP47Y3OADqpBLbcz2K5fShQ1kE=
+	t=1763990631; cv=none; b=IwqNXWvdfVOd4NaQrd6FpiSFOFGtF6KXjxxv9pPniu/8fzWLXJAXbAvMnJafnI1bRlRrbpNR2NMQuwYexvFb53WmnA00HgUpeNfB4RddA0h3jXSWfqVWTSvojit1oLISh9OAuqaIssgEhl1MC82AHBdfwhpU0JufmUCNu4xuDDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763990578; c=relaxed/simple;
-	bh=HdUFXLh134/eS6u4h1HRIJQy4oITtkkNA5T7YZYXUYI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Q+wjGEA0Uu1c/Rht+cT+46H2d3I+RRIJZJHmMaEln1aYXbE7CoMKhrqrtI2CwVR3DnZbq7rrx61hgvmO5D4jBjVwPZcZWJKf6nw787V1PRIFhB/D43SIQlOuJ72qFJvBCcmmKJLl0Lk8HUh+5QcfzfwetUCVRXBLa66fzDYwBR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFrx3Ak8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DDEC19421;
-	Mon, 24 Nov 2025 13:22:57 +0000 (UTC)
+	s=arc-20240116; t=1763990631; c=relaxed/simple;
+	bh=xOBxRPueu4UPx4tEkliTVzbIaWmqNdZdma9MbihIG2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pbq0TNdALzm77bx/mfq2vu//hd3m8pwkTgUYDfKOaG4KI8KOsDeD6TU8VVcMs0sJYKG3Zeb2qbgsQEhtc+hgQQizMn94sjtJ0iWGeD/ZzOIhh/iJmtrrDVWHzwfXNZKJkYzi8GPVwmKxmYg/aWvX/8Q9ffTL5XgQ5/O8pcW2mZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkhRRq4D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEA1C116D0;
+	Mon, 24 Nov 2025 13:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763990577;
-	bh=HdUFXLh134/eS6u4h1HRIJQy4oITtkkNA5T7YZYXUYI=;
+	s=korg; t=1763990631;
+	bh=xOBxRPueu4UPx4tEkliTVzbIaWmqNdZdma9MbihIG2s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XFrx3Ak8XadazV1eGivK7VDAtNS60wOE1rQbgj3Y4d23cMTs7s0cHWYCbZ7pIsQxV
-	 Sl2UJNu5uNONEECxTtQDEMk/3dBZ8NToH2Wtixd7j/sekA4c2j+Teaml+kw9dF5jWm
-	 dAJq/i27EnfA1Bl7wkaeVkh8A0iTT629epZdi0VU=
-Subject: FAILED: patch "[PATCH] mptcp: Fix proto fallback detection with BPF" failed to apply to 5.10-stable tree
-To: jiayuan.chen@linux.dev,jakub@cloudflare.com,martin.lau@kernel.org,matttbe@kernel.org,stable@vger.kernel.org
+	b=jkhRRq4D+PGg6wZc6DKT2lFhB76f1ZYq/0FzEjITj7vOKLtJ6MFQe/U1AmdlubV0m
+	 SIo1YB8ULgJWbqiJZmKm/YZ+Sn2NwjW8Ne+PB7YRKfuzz18j+K+X9LipGZTo7jZc3Q
+	 my4F6w7Ojtl30qUuz42CZRA2UhdiDaTfCUqjbiAI=
+Subject: FAILED: patch "[PATCH] ata: libata-scsi: Fix system suspend for a security locked" failed to apply to 6.1-stable tree
+To: cassel@kernel.org,dlemoal@kernel.org,hare@suse.de,martin.petersen@oracle.com,qwelias@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:22:55 +0100
-Message-ID: <2025112454-comic-external-4ced@gregkh>
+Date: Mon, 24 Nov 2025 14:23:48 +0100
+Message-ID: <2025112448-speller-puritan-f075@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x c77b3b79a92e3345aa1ee296180d1af4e7031f8f
+git cherry-pick -x b11890683380a36b8488229f818d5e76e8204587
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112454-comic-external-4ced@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112448-speller-puritan-f075@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,91 +77,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c77b3b79a92e3345aa1ee296180d1af4e7031f8f Mon Sep 17 00:00:00 2001
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-Date: Tue, 11 Nov 2025 14:02:51 +0800
-Subject: [PATCH] mptcp: Fix proto fallback detection with BPF
+From b11890683380a36b8488229f818d5e76e8204587 Mon Sep 17 00:00:00 2001
+From: Niklas Cassel <cassel@kernel.org>
+Date: Wed, 19 Nov 2025 15:13:14 +0100
+Subject: [PATCH] ata: libata-scsi: Fix system suspend for a security locked
+ drive
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
 
-This fix uses the more generic sk_family for the comparison instead.
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
 
-Additionally, this also prevents a WARNING from occurring:
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
 
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
 
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
+Cc: stable@vger.kernel.org
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 2d6b8de35c44..90b4aeca2596 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -61,11 +61,13 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 3fb84f690644..434774e71fe6 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -992,6 +992,13 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 		return;
+ 	}
  
- static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
- {
-+	unsigned short family = READ_ONCE(sk->sk_family);
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
++	}
 +
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	if (sk->sk_prot == &tcpv6_prot)
-+	if (family == AF_INET6)
- 		return &inet6_stream_ops;
- #endif
--	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
-+	WARN_ON_ONCE(family != AF_INET);
- 	return &inet_stream_ops;
- }
- 
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+ 			    "Missing result TF: reporting aborted command\n");
+diff --git a/include/linux/ata.h b/include/linux/ata.h
+index 792e10a09787..c9013e472aa3 100644
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -566,6 +566,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 
 
