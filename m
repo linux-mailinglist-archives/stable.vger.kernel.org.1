@@ -1,171 +1,116 @@
-Return-Path: <stable+bounces-196812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9104C82903
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:43:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C4EC829EA
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C3D34E365B
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637993AD5EB
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AA132ED30;
-	Mon, 24 Nov 2025 21:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BF0334C36;
+	Mon, 24 Nov 2025 22:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idTDCT4m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4GPNWlQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C582432ED24
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E92D6E66;
+	Mon, 24 Nov 2025 22:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764020617; cv=none; b=b9tT3NglKDQuwqRy6qenoBJa5p4ByUKT6b0DYPLflBR8IGw96oydcUpXU3nJF8Iqbmdwy6006prWAl8z219nOHnnuWQNAYZciiDWo94Sl9KvyG+a63IWExY7cxhKFUOtZ0CyhhRlW8/05dX07QELLG+7b4SJ+KuX3vcpw7Imw/Q=
+	t=1764021851; cv=none; b=XxShjOnKX+GLL1AbanrLyXoZHdhih4lloAyzCmKArAStpMGs5fcGaUJbWHP+kkhckdOKCoiM/4Wt45iPG0UlDjV5IOFntpENFeWUIrWwuJceY8UtKIORU4f/0aQcIzXMClkCvHttVLrCiqmRr10kXN/whuqEXAGzUPsOzhhklZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764020617; c=relaxed/simple;
-	bh=rXIl2SMgpV/J6pNGeXeEkqnA8EYjcNSYcbL8wuSYy7k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipRMRfqpciOhnSmpAvHwbfeY/a0gMoPiWosUv/KgyPNfG5y0po/gA0DB50G5yzhkh2WLdPbvssiUraX2aVj3H2pBHyY2Z+Mds7rggFzzS5TJv9Dhty2CngHK2YA9dL/fVlitRpF0ALcprUmAE3PdzMTuMyqq782TpHX3MuGdjcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idTDCT4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC185C4CEFB;
-	Mon, 24 Nov 2025 21:43:36 +0000 (UTC)
+	s=arc-20240116; t=1764021851; c=relaxed/simple;
+	bh=wceX8zBzs3TQ32cO+3gxNzC/X5/pmJ/YVHXZ4xod3NQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TpGY7y+w9xrIuWcsUrqR3Kyy0xLGY6zxdxe/SimDZg6mrY4oNX66ZGXnz0u/CnAC2QbOy5OnQokvN89R/9gHJyX7RS/eOpT5DGpRLZG5FN1fPB3A1C9X0vq6BBfijsHg7wY4WnmpCPiRJnrUBmFch/Q7Eb9qVWBJx/I+CqxerlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4GPNWlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098C9C4CEF1;
+	Mon, 24 Nov 2025 22:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764020617;
-	bh=rXIl2SMgpV/J6pNGeXeEkqnA8EYjcNSYcbL8wuSYy7k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idTDCT4msF38OUYAJatiWD31w0uhQy1euQPr+4pAC2CpqMD/JJVp6+EXBUCoqHynA
-	 ynP0v3NsnegH9xgckQpxjozSa4CnpOimdj9YOF0++MvN86qFSCufwieSQFktBMPC9T
-	 AOTEHIH3yeXtJkaHHkb2HmlfoHTHs2X9BZmJ5zZnhSLSJuU8hopG9sxUI/alDl5Cpt
-	 9c48k2ls2Ub/JI+3PUy5sd1Y5nIbTHyiIi5aScVS+EKmWdNh3VKYmRuMlJGkSlUx3Y
-	 fKfzqEnodg/MNDOz2rMFhoeAGAODfGcPE5DqvaLS4eEBl3Sgna7Pzh6G/5UqKOs6PB
-	 3Z23du5AOOQTg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	kernel test robot <oliver.sang@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] mm/mempool: fix poisoning order>0 pages with HIGHMEM
-Date: Mon, 24 Nov 2025 16:43:34 -0500
-Message-ID: <20251124214334.44494-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251124214334.44494-1-sashal@kernel.org>
-References: <2025112438-stoppable-bribe-71e6@gregkh>
- <20251124214334.44494-1-sashal@kernel.org>
+	s=k20201202; t=1764021848;
+	bh=wceX8zBzs3TQ32cO+3gxNzC/X5/pmJ/YVHXZ4xod3NQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b4GPNWlQcUb5ZNl8052dlx40gyVXArwJsylp2aOr4zu3JmjsLEF2agqtAlEZenNbY
+	 HA4pWvkpzTfz1ZOsjxwcNtPoGunft0qb8qNsbUbvXHii2wJD9mfvminw9TneZSD15b
+	 oJMbnvDJhmt5tGlNILoGJyOLe1BfcxXGnGfLLHXeG/ZBQpIu2jlfg1zsw+gVv4kKpj
+	 6ArqqenmyYm+v24p6ZNQkqIzFULsyDOEzmqwGqwMg7ENCbb6BwF9/N17h3HqQOdQO7
+	 X7wFGWlDLEWsgdFCalcxcq+qEl5kcbjIUCLiKZMhA/DouO/bez7aTmM+6sytzoz+Zr
+	 4S8lX5dfsMp/w==
+Date: Mon, 24 Nov 2025 15:04:04 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io, gus@collabora.com, stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-staging@lists.linux.dev
+Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
+ uninitialized when passed as a const pointer arg...
+Message-ID: <20251124220404.GA2853001@ax162>
+References: <176398914850.89.13888454130518102455@f771fd7c9232>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <176398914850.89.13888454130518102455@f771fd7c9232>
 
-From: Vlastimil Babka <vbabka@suse.cz>
+On Mon, Nov 24, 2025 at 12:59:08PM -0000, KernelCI bot wrote:
+> Hello,
+> 
+> New build issue found on stable-rc/linux-6.12.y:
+> 
+> ---
+>  variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/rtl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild.compiler.error]
+> ---
+> 
+> - dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> - commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
+> - tags: v6.12.59
+> 
+> 
+> Log excerpt:
+> =====================================================
+> drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>   148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
+>       |                                          ^~~
+> 1 error generated.
 
-[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
+This comes from a new subwarning of -Wuninitialized introduced in
+clang-21:
 
-The kernel test has reported:
+  https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e
 
-  BUG: unable to handle page fault for address: fffba000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pde = 03171067 *pte = 00000000
-  Oops: Oops: 0002 [#1]
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
-  Tainted: [T]=RANDSTRUCT
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
-  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
-  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
-  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
-  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
-  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
-  Call Trace:
-   poison_element (mm/mempool.c:83 mm/mempool.c:102)
-   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
-   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   do_one_initcall (init/main.c:1283)
+This driver was removed upstream in commit 41e883c137eb ("staging:
+rtl8712: Remove driver using deprecated API wext") in 6.13 so this only
+impacts stable.
 
-Christoph found out this is due to the poisoning code not dealing
-properly with CONFIG_HIGHMEM because only the first page is mapped but
-then the whole potentially high-order page is accessed.
+This certainly does look broken...
 
-We could give up on HIGHMEM here, but it's straightforward to fix this
-with a loop that's mapping, poisoning or checking and unmapping
-individual pages.
+  static u8 read_rfreg_hdl(struct _adapter *padapter, u8 *pbuf)
+  {
+      u32 val;
+      void (*pcmd_callback)(struct _adapter *dev, struct cmd_obj *pcmd);
+      struct cmd_obj *pcmd  = (struct cmd_obj *)pbuf;
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
-Analyzed-by: Christoph Hellwig <hch@lst.de>
-Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
-Cc: stable@vger.kernel.org
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/mempool.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+      if (pcmd->rsp && pcmd->rspsz > 0)
+          memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
 
-diff --git a/mm/mempool.c b/mm/mempool.c
-index f9f2afe42b92a..92dc2df8e400b 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -64,10 +64,20 @@ static void check_element(mempool_t *pool, void *element)
- 	/* Mempools backed by page allocator */
- 	if (pool->free == mempool_free_pages) {
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__check_element(pool, addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__check_element(pool, addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- 
-@@ -88,10 +98,20 @@ static void poison_element(mempool_t *pool, void *element)
- 	/* Mempools backed by page allocator */
- 	if (pool->alloc == mempool_alloc_pages) {
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__poison_element(addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__poison_element(addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
--- 
-2.51.0
+Presumably this is never actually hit? It is rather hard to follow the
+indirection in this driver but it does not seem like _Read_RFREG is ever
+set as a cmdcode? Unfortunately, the only maintainer I see listed for
+this file is Florian Schilhabel but a glance at lore shows no recent
+activity so that probably won't be too much help. At the very least, we
+could just zero initialize val, it cannot be any worse than what it is
+currently doing and copying stack garbage?
 
+Cheers,
+Nathan
 
