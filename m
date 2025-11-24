@@ -1,125 +1,125 @@
-Return-Path: <stable+bounces-196761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB85C8169D
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 16:47:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DAC8170C
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 16:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EE47F343C3A
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28DC93AA300
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1036295D90;
-	Mon, 24 Nov 2025 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB19F314A87;
+	Mon, 24 Nov 2025 15:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2O28snd1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhXr94fF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E074225C838
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 15:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788CB2D59F7
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 15:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763999224; cv=none; b=adnPXrv7Drjw0D1qltZ/8hfiTk3usw7wH/Hh1epGk+elMXrug5rS3f/FaU8XpJZChzMRWrdXWdDgpG8YtZgikemMXvjYasPY67Yx/eguxr/ejqHSkmWZFWFUMrPE3f+lxQV+PeduIuEywHd3XuavpHhp4r5Xw7tFmHf6hlQXMIg=
+	t=1763999780; cv=none; b=YvOneWOvXUviHa+AjGA0g26hOsKNSmEjwAwsVcn6Ch17u61RKrLrRV9q8tmq+ivYuAyJZXtqIgvp4NMBFmoc+v9x3NNMwTk26rGm0ByrvaWzUP1fUGVWr4+ovMOkdEX5dvZLqyN1+jVqvzzV0tQGemJt3k3psT+gHzGDCEbbyLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763999224; c=relaxed/simple;
-	bh=y5fWLWO05yj01xf5arPCCPVKFRW07yJwIUlUf7AG9XE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LskN9Vw5VS5QPlBzwypvdiBDxTHf5Ezf5PnrBMgTQmNol/6L2C5rFL63TdCWAwZkUfIJyFM9OWVXLYMohWOob8iCOJiXwlA/O6pou1qgr9e0zurvpzEUoUhRzNemI5ouzgVWGD7m0oqriLSi4/OQ3bFTlljKaJQS5OcI7+F5QkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2O28snd1; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3438744f11bso10987000a91.2
-        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 07:47:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763999222; x=1764604022; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R3pw4iRfFqotQRBkODd6b4yzBMBFxkJIN/wR40XoVY4=;
-        b=2O28snd1umb7mYbT9TyjFEBOGU1yLRZs/jW7OuIMNlGmkLE3AktceFJUnosti6EyxQ
-         mcZIoYjZj96/kVTScmgnrq2n/8/mwsjG091edenYYK8HkARthLhENBQ9Cxr0seGtJ0BU
-         oxXBR2Re51IkdL/ARNj/OpZmrJwwXwgNQED1YP7uyEpDbtanzfXuWlt7Po2aoAvWYl8B
-         fTQM/wc3DUdNJN3G/ziNry3Omk4eGExQPadWOFF+J1jgQw4Yk3YP0tKqFEjcRP/YmkaQ
-         ffKj7ZlE8GPTrVmI6aFEuZ8v6iFkolieM/chk6ocMAvBw+ycd83X5e1z7Dl9iaitDIWU
-         6INg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763999222; x=1764604022;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R3pw4iRfFqotQRBkODd6b4yzBMBFxkJIN/wR40XoVY4=;
-        b=NUMyy6hb4OtvSkoJWsIkPeOe16LM6q4rrvvSQfhlRkKEJrAmMxPsbaKQRmo/qg9o5e
-         DlfJvUMPOWhcAmo67hSW1Ei+a3HWEp9NZmXRSex9Smte++MGcTmzpkYm5kA2pJM/C6YX
-         6G8gn6gAR89l4EBV8fCtcKu+J+WyAnMDqe0ydXtxUMPzJotGp1mBG35hbl1s/3PqDJA3
-         CRpj2yI3Esvr/+aozYdj4oYJKdBeHze8fVRGB8ugQKH9kW14XRSp8XXBDzJyuyKir7j+
-         3lvs786+XH78sC1sR0wgpDNs1/UnBl2lUTv7OFGRWa+l+Yr+2YDMn72emwoXjmrLRUKa
-         PXOg==
-X-Gm-Message-State: AOJu0YxUmaJMBCYcHvq1cxsVZsCIJi4Ot8mk4hk3I+uFVeLUF32ebEm5
-	/gv4jMHALrYCHaBm4zkVJQyzgj2Rd2BDiK4fNNZdF4QeNZoYQSaNp0aFlNfiy06eU+tFjIITRWt
-	lZ2Wkag==
-X-Google-Smtp-Source: AGHT+IHSd3gSKA/XbMVnGqnUDMkcwOjxMBudpFulHjFii1YLA8mJ6BNUbA3ZWSfVHhRc/YFcZqC0qNUOj/A=
-X-Received: from pjty8.prod.google.com ([2002:a17:90a:ca88:b0:340:c06f:96e7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:53c3:b0:340:d511:e167
- with SMTP id 98e67ed59e1d1-34733d506d9mr9573956a91.0.1763999222151; Mon, 24
- Nov 2025 07:47:02 -0800 (PST)
-Date: Mon, 24 Nov 2025 07:47:00 -0800
-In-Reply-To: <TY7PR01MB1503836F91731DC7C6D4A3E12F6D3A@TY7PR01MB15038.jpnprd01.prod.outlook.com>
+	s=arc-20240116; t=1763999780; c=relaxed/simple;
+	bh=hTnv90f/cN59jjS3vHljAHfvNkLmqsFolx7YZt41ypo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lfYQK5P9qLxcf0iXXtGj7sFgxdMIwypEZ9fSaeUkeZAu71CfXhpcVryOjZI4aAfdsS3Nj3+rgtm7If99x3jXBtlGEXNnJ9j+oksqwsjSG60seR34Y6771uV7ixd3LLMkpeUnqz4pybEgqJlt1LGNOBiufsi03ro0gir3kn3PjyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhXr94fF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFA2C4CEF1;
+	Mon, 24 Nov 2025 15:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763999780;
+	bh=hTnv90f/cN59jjS3vHljAHfvNkLmqsFolx7YZt41ypo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qhXr94fFKIvhAu9GvghotYfcnaAS34Vmv4Fii/1xNOzsx5Ff8mCaNAiF2/xAQWMHy
+	 G+TlpRx8Mxv2zLkmMmhKPiUf7kS1m5sYYGmGbGsn4EHQxhoKi2/lNypTBr+UIY3VeJ
+	 VnNg59zywhiaBkeED5pQJerUe4DFTxn5YL1FUjfU=
+Date: Mon, 24 Nov 2025 16:56:17 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sebastian Ene <sebastianene@google.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH 6.6.y] KVM: arm64: Check the untrusted offset in FF-A
+ memory share
+Message-ID: <2025112450-dinghy-trousers-e398@gregkh>
+References: <2025112429-pasture-geometry-591b@gregkh>
+ <20251124141134.4098048-1-sashal@kernel.org>
+ <2025112405-campus-flatworm-25a5@gregkh>
+ <aSRy8LqAopE82ZPs@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251121055209.66918-1-Sukrit.Bhatnagar@sony.com>
- <aSCrRoe3fcBgLo8W@google.com> <TY7PR01MB1503836F91731DC7C6D4A3E12F6D3A@TY7PR01MB15038.jpnprd01.prod.outlook.com>
-Message-ID: <aSR99JOY-BjAKapl@google.com>
-Subject: Re: [PATCH 6.12.y] KVM: VMX: Fix check for valid GVA on an EPT violation
-From: Sean Christopherson <seanjc@google.com>
-To: "Sukrit.Bhatnagar@sony.com" <Sukrit.Bhatnagar@sony.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSRy8LqAopE82ZPs@google.com>
 
-On Sun, Nov 23, 2025, Sukrit.Bhatnagar@sony.com wrote:
-> On 2025-11-22 03:11, Sean Christopherson wrote:
-> >=20
-> > No need for the manual "backport", commits that are tagged for stable@ =
-are
-> > automically pulled into LTS kernels so long as they apply cleanly (and =
-obviously
-> > don't cause problems).
-> =C2=A0
->=20
-> This commit did not apply cleanly to the 6.12-stable tree,
-> as notified earlier by Greg's mail. 6.17-stable seemed to
-> have no issues.
->=20
-> The function handle_ept_violation got some changes in v6.16
->   c8563d1b6998 ("KVM: VMX: Split out guts of EPT violation to common/expo=
-sed function")
-> which moved the code from vmx/vmx.c to vmx/common.h.
-> So, v6.16+ is ok, but not the earlier ones.
->=20
-> I think this manual backport commit is needed.
-> Please let me know if my understanding is not correct.
+On Mon, Nov 24, 2025 at 03:00:00PM +0000, Sebastian Ene wrote:
+> On Mon, Nov 24, 2025 at 03:50:45PM +0100, Greg KH wrote:
+> > On Mon, Nov 24, 2025 at 09:11:34AM -0500, Sasha Levin wrote:
+> > > From: Sebastian Ene <sebastianene@google.com>
+> > > 
+> > > [ Upstream commit 103e17aac09cdd358133f9e00998b75d6c1f1518 ]
+> > > 
+> > > Verify the offset to prevent OOB access in the hypervisor
+> > > FF-A buffer in case an untrusted large enough value
+> > > [U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
+> > > is set from the host kernel.
+> > > 
+> > > Signed-off-by: Sebastian Ene <sebastianene@google.com>
+> > > Acked-by: Will Deacon <will@kernel.org>
+> > > Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
+> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > ---
+> > >  arch/arm64/kvm/hyp/nvhe/ffa.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > > index 8d21ab904f1a9..eacf4ba1d88e9 100644
+> > > --- a/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > > +++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > > @@ -425,7 +425,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+> > >  	DECLARE_REG(u32, npages_mbz, ctxt, 4);
+> > >  	struct ffa_composite_mem_region *reg;
+> > >  	struct ffa_mem_region *buf;
+> > > -	u32 offset, nr_ranges;
+> > > +	u32 offset, nr_ranges, checked_offset;
+> > >  	int ret = 0;
+> > >  
+> > >  	if (addr_mbz || npages_mbz || fraglen > len ||
+> > > @@ -460,7 +460,12 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+> > >  		goto out_unlock;
+> > >  	}
+> > >  
+> > > -	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
+> > > +	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
+> > > +		ret = FFA_RET_INVALID_PARAMETERS;
+> > > +		goto out_unlock;
+> > > +	}
+> 
+> hello Greg,
+> 
+> > 
+> > I was told that a "straight" backport like this was not correct, so we
+> > need a "better" one :(
+> > 
+> > Sebastian, can you provide the correct backport for 6.6.y please?
+> > 
+> 
+> I think Sasha's patch is doing the right thing. Sasha thanks for
+> posting it so fast.
 
-Ah, your understanding is correct.  I saw that the commit was queue for 6.1=
-2 (and
-landed in 6.12 as commit 3010739f53438) and assumed it was a clean backport=
-.  But
-I missed Sasha's Stable-dep-of magic intervention[2].
+Then why is the backport that is in the android 6.6.y kernel branches
+different from this one?  Which one is "correct"?
 
-So this backport is _now_ unnecessary, but was necessary when you sent the =
-patch.
+thanks,
 
-Thanks for the backport and follow-up, much appreciated even though Sasha-b=
-ot
-stole your thunder :-)
-
-[1] https://lore.kernel.org/all/20251121130150.019304053@linuxfoundation.or=
-g
-[2] https://lore.kernel.org/all/20251120181940.1924069-1-sashal@kernel.org
+greg k-h
 
