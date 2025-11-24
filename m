@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-196693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97614C80B59
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8527EC80B58
 	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F6EF3A6FD3
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:22:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40DA54E3D3B
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9F54502F;
-	Mon, 24 Nov 2025 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037E44AEE2;
+	Mon, 24 Nov 2025 13:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfXAeWHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guS/axBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868021A275
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B137C1A275
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763990526; cv=none; b=dwO2xLq+k9/n/3JHqkvcXVVdD+Qfi1cngHN+wakbzj/dcT149PDiLba/nZNd1K+udDIz9hFQl3O5stDnj8VHyIPhXcTrx+/VHYWRZPyE31aKOGooNlzsBx+OUfNHk9feBj6xyNZNgxbMzlBShRZLS9nfMMtf0yw7ECgINdl5p94=
+	t=1763990541; cv=none; b=DwYFHD0vrM+4x0xjwK4+Lm1DNpY76UJMYguCouxlSpYi0r4euBCXGnohQUABYlZzUh1UIKX+/vO4DIKvrceVWWUSagU7Gs4Gn8ppKVr9fSGtzurDGNKNBOgfMQiOmHxrXru5T+m20D2yKY8bXJfMrWbC0rYhlfVk70Gg/yZahTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763990526; c=relaxed/simple;
-	bh=ViKLMzG2hQStBTcVtt4is8C5of9h+nbAR5Jo8bSgCEA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FlNxmTezSs8N/C7dpDM0eYE15n17bz6qowRTDj3401djqnERhXEd1LPOk8D3VGbY/RIE22EyLMddQ5o+Z/TBOQA5t0UQZtlToRB1itqscvWwb/fZEY3F3Ig+IJfCTtIXzUAtDH0mEgUKKF7CganVTuHeNPITdZvbvLGtNL4BpSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfXAeWHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F96EC116D0;
-	Mon, 24 Nov 2025 13:22:05 +0000 (UTC)
+	s=arc-20240116; t=1763990541; c=relaxed/simple;
+	bh=QVdnnhP1IQSEevA3AFg1EMsJ76hseFpah694sh+Cth0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z02g8quQ+lIBi+c/0UYpwLP1Gd03JKgTsPkkWNquEAEzYRu7fk8E3q8SA8peBBS8JJXu283J9fFXj/ztOJd3J6RlpQ+YXaUwN6YIkz/+n1M/ZVGb6KxYf2WAxwcT6QZoTpRo2ib2hCJfHGC8Gj5G+oMJrrAz6v14d07UXhby/4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guS/axBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E258FC4CEF1;
+	Mon, 24 Nov 2025 13:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763990526;
-	bh=ViKLMzG2hQStBTcVtt4is8C5of9h+nbAR5Jo8bSgCEA=;
+	s=korg; t=1763990541;
+	bh=QVdnnhP1IQSEevA3AFg1EMsJ76hseFpah694sh+Cth0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VfXAeWHzLKC8C08p3NPsHkHw6hOnU7WM4mwHgIQeLEFJCZsPUken7r8ptEB+qzs++
-	 kBBuJZgtNg2dic6ed8AFYEFGOw67jBAjpdLuNWrGw6zbbBfaA3u82/edSnlZyS4RDl
-	 KhyG0JZynsBms5CSZaUISqudFquyC6AFMrlQzJms=
-Subject: FAILED: patch "[PATCH] mptcp: Disallow MPTCP subflows from sockmap" failed to apply to 5.10-stable tree
-To: jiayuan.chen@linux.dev,martin.lau@kernel.org,matttbe@kernel.org,stable@vger.kernel.org
+	b=guS/axButqbsLI/jVh4bnxSaaakIm1b6NvbGOX+dZfpXU0cBEbvk95ehuzAqjjnW7
+	 Eo1UR8jB5wwQO5R+IfgmoC33PiskorYb+0vQNWPtDrMd8xoMNUJB9DsDCrfN2EIksx
+	 e09JgVgvGfcBmT8tFG53P6yiHZcJZaS5ldefusvQ=
+Subject: FAILED: patch "[PATCH] s390/mm: Fix __ptep_rdp() inline assembly" failed to apply to 6.12-stable tree
+To: hca@linux.ibm.com,gerald.schaefer@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:21:55 +0100
-Message-ID: <2025112455-daughter-unsealed-699a@gregkh>
+Date: Mon, 24 Nov 2025 14:22:18 +0100
+Message-ID: <2025112418-impish-remix-d936@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x fbade4bd08ba52cbc74a71c4e86e736f059f99f7
+git cherry-pick -x 31475b88110c4725b4f9a79c3a0d9bbf97e69e1c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112455-daughter-unsealed-699a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112418-impish-remix-d936@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,79 +77,80 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fbade4bd08ba52cbc74a71c4e86e736f059f99f7 Mon Sep 17 00:00:00 2001
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-Date: Tue, 11 Nov 2025 14:02:50 +0800
-Subject: [PATCH] mptcp: Disallow MPTCP subflows from sockmap
+From 31475b88110c4725b4f9a79c3a0d9bbf97e69e1c Mon Sep 17 00:00:00 2001
+From: Heiko Carstens <hca@linux.ibm.com>
+Date: Thu, 13 Nov 2025 13:21:47 +0100
+Subject: [PATCH] s390/mm: Fix __ptep_rdp() inline assembly
 
-The sockmap feature allows bpf syscall from userspace, or based on bpf
-sockops, replacing the sk_prot of sockets during protocol stack processing
-with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
-Consider two scenarios:
+When a zero ASCE is passed to the __ptep_rdp() inline assembly, the
+generated instruction should have the R3 field of the instruction set to
+zero. However the inline assembly is written incorrectly: for such cases a
+zero is loaded into a register allocated by the compiler and this register
+is then used by the instruction.
 
-1. When the server has MPTCP enabled and the client also requests MPTCP,
-   the sk passed to the BPF program is a subflow sk. Since subflows only
-   handle partial data, replacing their sk_prot is meaningless and will
-   cause traffic disruption.
+This means that selected TLB entries may not be flushed since the specified
+ASCE does not match the one which was used when the selected TLB entries
+were created.
 
-2. When the server has MPTCP enabled but the client sends a TCP SYN
-   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-   '''
-   subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-   '''
-   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
-   converts the subflow to plain TCP.
+Fix this by removing the asce and opt parameters of __ptep_rdp(), since
+all callers always pass zero, and use a hard-coded register zero for
+the R3 field.
 
-For the first case, we should prevent it from being combined with sockmap
-by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
-sockmap's own flow.
+Fixes: 0807b856521f ("s390/mm: add support for RDP (Reset DAT-Protection)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 
-For the second case, since subflow_syn_recv_sock() has already restored
-sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
-
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index e8325890a322..af707ce0f624 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2144,6 +2144,10 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
- 	tcp_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcp_prot_override.psock_update_sk_prot = NULL;
-+#endif
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index b7100c6a4054..6663f1619abb 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1154,17 +1154,15 @@ static inline pte_t pte_mkhuge(pte_t pte)
+ #define IPTE_NODAT	0x400
+ #define IPTE_GUEST_ASCE	0x800
  
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -2180,6 +2184,10 @@ void __init mptcp_subflow_init(void)
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
- 	tcpv6_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcpv6_prot_override.psock_update_sk_prot = NULL;
-+#endif
- #endif
+-static __always_inline void __ptep_rdp(unsigned long addr, pte_t *ptep,
+-				       unsigned long opt, unsigned long asce,
+-				       int local)
++static __always_inline void __ptep_rdp(unsigned long addr, pte_t *ptep, int local)
+ {
+ 	unsigned long pto;
  
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+ 	pto = __pa(ptep) & ~(PTRS_PER_PTE * sizeof(pte_t) - 1);
+-	asm volatile(".insn rrf,0xb98b0000,%[r1],%[r2],%[asce],%[m4]"
++	asm volatile(".insn	rrf,0xb98b0000,%[r1],%[r2],%%r0,%[m4]"
+ 		     : "+m" (*ptep)
+-		     : [r1] "a" (pto), [r2] "a" ((addr & PAGE_MASK) | opt),
+-		       [asce] "a" (asce), [m4] "i" (local));
++		     : [r1] "a" (pto), [r2] "a" (addr & PAGE_MASK),
++		       [m4] "i" (local));
+ }
+ 
+ static __always_inline void __ptep_ipte(unsigned long address, pte_t *ptep,
+@@ -1348,7 +1346,7 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+ 	 * A local RDP can be used to do the flush.
+ 	 */
+ 	if (cpu_has_rdp() && !(pte_val(*ptep) & _PAGE_PROTECT))
+-		__ptep_rdp(address, ptep, 0, 0, 1);
++		__ptep_rdp(address, ptep, 1);
+ }
+ #define flush_tlb_fix_spurious_fault flush_tlb_fix_spurious_fault
+ 
+diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
+index 0fde20bbc50b..05974304d622 100644
+--- a/arch/s390/mm/pgtable.c
++++ b/arch/s390/mm/pgtable.c
+@@ -274,9 +274,9 @@ void ptep_reset_dat_prot(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 	preempt_disable();
+ 	atomic_inc(&mm->context.flush_count);
+ 	if (cpumask_equal(mm_cpumask(mm), cpumask_of(smp_processor_id())))
+-		__ptep_rdp(addr, ptep, 0, 0, 1);
++		__ptep_rdp(addr, ptep, 1);
+ 	else
+-		__ptep_rdp(addr, ptep, 0, 0, 0);
++		__ptep_rdp(addr, ptep, 0);
+ 	/*
+ 	 * PTE is not invalidated by RDP, only _PAGE_PROTECT is cleared. That
+ 	 * means it is still valid and active, and must not be changed according
 
 
