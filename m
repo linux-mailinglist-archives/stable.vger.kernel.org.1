@@ -1,167 +1,260 @@
-Return-Path: <stable+bounces-196822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8166C82B65
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:42:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A518FC82B2C
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7735E3ACEAD
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:42:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2C084E5950
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8563451AA;
-	Mon, 24 Nov 2025 22:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756B51419A9;
+	Mon, 24 Nov 2025 22:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rjS+27sM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFS7A2od"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4B73446A9
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 22:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302E9F50F
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 22:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764023739; cv=none; b=S2OMuukFg3Y2YhE/GGvjteAPWCmOW2lC2ncAgUe6eg7/UMk6LFZVEFolEHtd9ek+xPE7TInVPG1h1LFIwPu/TGcB9GSJZYnJwM1BJEhanagtbxrwMJWUl26csUwslWNXnz43/USkjw+sp9vMhDWUdTw7PW8YfTNL0cF5tjIRBeo=
+	t=1764023929; cv=none; b=olj6F8k/OLZw/1rW6ZuDsFhi2C9ZuFqh3N2QBMT2Xt6PV9t3qyOEWKIvum2S2KUgFgUcZ/b8yozzekx74YXTuqnTcETNGyqQFPPqzmaLH/CKBb4GPE9yH7DwXbV84H+wNo7U671mPxbSHqx2RSDlc9wGG6sqgUz0THPlG5plB3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764023739; c=relaxed/simple;
-	bh=wwn3C6SmwXX7qD1vR5eRR/72OXtljhMYw/HHmwjIllA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tw4CLvFA26p1YDC7d+/efFUamuco6AXOXsJgw93UZFm21AtZAYhuJ948jgTO40xSHUI8QWs1+9EM22Ds+b/HBOPf4jetjo68s8cr7zFYiL8G1gM5SXHdtGTP6zqmfe18e9hC8TGFxuwXbr3wqsiPNh7CW/tECNPtooVXv6VquVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rjS+27sM; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2980343d9d1so33085ad.1
-        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 14:35:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764023737; x=1764628537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0rm7sHRT2eanco6NQl01CJ9NC4dDuPgnR1DJ0V4Elc4=;
-        b=rjS+27sMFWiTYM9Eb9w+M4Onv2sj2pI9vqKruw72DlG7UgyOmXNe/TbvPGltykwrST
-         xtJuxhJYzfWgXYe3gY+y73mJXoe58AE7aPUybe+5MVaiLY1St3bgOYZ5b1DXKpf0jMM9
-         oCmkmXnaI8YOETPV5EGblaxTxLE+dtf4d6NCMbbC7kd1DNpHKcOVjqJ0/I0cnMp71+0A
-         89gMns67Qw15/xZSHTs7OXZE8OCe4z819w4U4/46y1tYImbxvAZt9G91FhDIdqFKKT5b
-         DDplfTCTF8istliS3RZ38bHyrOVxr9c8EMGs32yHAJtTKSKUnNjWwu9YmLX8Xz0hRgag
-         xBLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764023737; x=1764628537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0rm7sHRT2eanco6NQl01CJ9NC4dDuPgnR1DJ0V4Elc4=;
-        b=UtCO2neR3ZgCQ29GnSXNM8pdd7V0fMtjfmHVJRHaZxcShLsU2m0yS90R4wp3mhHQA7
-         A3NJ9SL3eVmG24lI9QvWNlk2DAsJ1nYJWJGknPEiTB0hNrVYTzW/jJbkOGpQ1s3B+mB2
-         6rr8g2cFbNrXKObkIvXflyuRyMPcKnB1u5DOXh2lM5z2044BN4EKmGy1yrWoZ/biuJHj
-         vmNj7D0QUnnLnTx/sDWD3TvX85eTd1Ui95B+A9TbjY5URisBsFE4VZkPVDrh6DZgrfuU
-         13QiJpTcigM1mQMkyiGK3KmqwoUvglMQkpDG5fxLE0vUtl2pkripmshVgHVgiIkaQjvV
-         jR3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUhWM15WO8qfgUEUuCo0O/sZqbnm0EfchFnI99W4Eiq75Bd9DjYBkc5/ozzzG1QZYEg8daSbkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yztxzv6IVvcSy5rxpTlFX0d5FnE+tG7kw5VuwqlR2K4X9/cvtsu
-	lONQpj/aKovBbw1cF++rp47G9p+BWWRyqdGqUimymi6LqYodLse9Iasj5Btlr4r00wA6tpn2ODy
-	4wjm3YmZbu0n8b6LJvCKnQIqS2kXeWhkvE9ewtoOK
-X-Gm-Gg: ASbGncu4fa4sO+vi8APB0m2uR0CYIKh/ci4zSQzA7Vd0fWv5j43DAI31ccOdLf/K7jd
-	i3iGSL+5UAsm5ByXE6/mG/OQTTRcayGF3AYhs1nBppDF5+q38R7EfRdLpinEYw/HZFUJ2qxrLAy
-	y/y4ZWzvOAGz9aXbF1r8NbabNLnPV4Kj3DKL+BEeaWuirPszRZVAH1xDxxCQ3RBj2kqxTlwr5qo
-	fwtib9o1uGjk8VNliewTtRYhNUPH/BPjxI6kZk3fZEjxAhCYziXSawHYBk57T4yIrdTwjS9Bo1e
-	YeoWVTG2V2wCeEZhObKizqgFXWaQ
-X-Google-Smtp-Source: AGHT+IEvA8d/tes341pYVwfvG5w7JYfrKXszTFNpK95gXKemJVaDaZml8nzLkZsHA7yM8KvhAf2HiKyxbQ9t/OMpykg=
-X-Received: by 2002:a17:902:dac1:b0:271:9873:80d9 with SMTP id
- d9443c01a7336-29bac26a085mr212105ad.7.1764023737246; Mon, 24 Nov 2025
- 14:35:37 -0800 (PST)
+	s=arc-20240116; t=1764023929; c=relaxed/simple;
+	bh=SXXlmJ3IkO/MCUCG3bKtiNaF9I0jKuHuFcWL0s13yps=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l2eSCBvsErpVcc2SzwzN/SSKTPccceRgqKlDvMP8gR6yChx8eyqYYDdr1iZWWj8PODPwxyz3eTB4uUxKjraqzNd/3JstrHpS2WWd7B04SetRdEGyi/3BiAW77KlX4TNV90meRHUdhMXVXQHfNT8Iqh2vEyYbVuLCyfYSpnnqM/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFS7A2od; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0831EC4CEF1;
+	Mon, 24 Nov 2025 22:38:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764023927;
+	bh=SXXlmJ3IkO/MCUCG3bKtiNaF9I0jKuHuFcWL0s13yps=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jFS7A2odFjJIFjFhfldBYl22t/tZrhr4QUv7AYeJ23Bu0OLkwiqoME56TaqyJjgW0
+	 PkZYSn5+rkMlFrQwmgpLKjQeWqwRHSqUtjIwrGvaY0ncncwaKk/JROSDv8kkREYiwn
+	 rovj6osPaEOu926IrHA6ffPnmWhhAf2EtqNbwvAOr3kzmObc2l5V1Y1lqzw8CjgJaX
+	 gDgmcJgagaOiu5CPpEwPqLtcSB+r/0IGFMCxKA/n/ytrFjUquDGvSB/FDveb3RoAnz
+	 HiHvKCLiR1wwIs/lwniYQICZG0ULuF1XC9kUu1/HDe6cRoQ9uG7cBUWNoDxrV7qwsv
+	 ubM2qKOzhBTXQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: fix a race in mptcp_pm_del_add_timer()
+Date: Mon, 24 Nov 2025 17:38:44 -0500
+Message-ID: <20251124223844.74497-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112431-pentagon-posture-3ba1@gregkh>
+References: <2025112431-pentagon-posture-3ba1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <176398914850.89.13888454130518102455@f771fd7c9232> <20251124220404.GA2853001@ax162>
-In-Reply-To: <20251124220404.GA2853001@ax162>
-From: Guenter Roeck <groeck@google.com>
-Date: Mon, 24 Nov 2025 14:35:26 -0800
-X-Gm-Features: AWmQ_bkxc4I8qhn5g5WZJ0gfV7C1dK0WPhgr9qMe0bfuYOJKDNVyUvJJdliHFtE
-Message-ID: <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
-Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
- uninitialized when passed as a const pointer arg...
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: kernelci@lists.linux.dev, kernelci-results@groups.io, gus@collabora.com, 
-	stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-staging@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 24, 2025 at 2:04=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
->
-> On Mon, Nov 24, 2025 at 12:59:08PM -0000, KernelCI bot wrote:
-> > Hello,
-> >
-> > New build issue found on stable-rc/linux-6.12.y:
-> >
-> > ---
-> >  variable 'val' is uninitialized when passed as a const pointer argumen=
-t here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/r=
-tl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild=
-.compiler.error]
-> > ---
-> >
-> > - dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb=
-3079a2d7d74e154
-> > - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
-stable-rc.git
-> > - commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
-> > - tags: v6.12.59
-> >
-> >
-> > Log excerpt:
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is =
-uninitialized when passed as a const pointer argument here [-Werror,-Wunini=
-tialized-const-pointer]
-> >   148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-> >       |                                          ^~~
-> > 1 error generated.
->
-> This comes from a new subwarning of -Wuninitialized introduced in
-> clang-21:
->
->   https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd09=
-1d441f19b319e
->
-> This driver was removed upstream in commit 41e883c137eb ("staging:
-> rtl8712: Remove driver using deprecated API wext") in 6.13 so this only
-> impacts stable.
->
-> This certainly does look broken...
->
->   static u8 read_rfreg_hdl(struct _adapter *padapter, u8 *pbuf)
->   {
->       u32 val;
->       void (*pcmd_callback)(struct _adapter *dev, struct cmd_obj *pcmd);
->       struct cmd_obj *pcmd  =3D (struct cmd_obj *)pbuf;
->
->       if (pcmd->rsp && pcmd->rspsz > 0)
->           memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
->
-> Presumably this is never actually hit? It is rather hard to follow the
-> indirection in this driver but it does not seem like _Read_RFREG is ever
-> set as a cmdcode? Unfortunately, the only maintainer I see listed for
-> this file is Florian Schilhabel but a glance at lore shows no recent
-> activity so that probably won't be too much help. At the very least, we
-> could just zero initialize val, it cannot be any worse than what it is
-> currently doing and copying stack garbage?
->
+From: Eric Dumazet <edumazet@google.com>
 
-Or backport the patch removing the driver ? It is in staging, after
-all, so I don't know if there is value in trying to keep it alive in
-6.12.y.
+[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
 
-Guenter
+mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
+while another might have free entry already, as reported by syzbot.
 
-> Cheers,
-> Nathan
->
+Add RCU protection to fix this issue.
+
+Also change confusing add_timer variable with stop_timer boolean.
+
+syzbot report:
+
+BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
+Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
+
+CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Workqueue: events mptcp_worker
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
+  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
+  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
+  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
+  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
+  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
+  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
+  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
+  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
+  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
+  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
+  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
+  process_backlog+0x31e/0x900 net/core/dev.c:6544
+  __napi_poll+0xb6/0x540 net/core/dev.c:7594
+  napi_poll net/core/dev.c:7657 [inline]
+  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
+  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
+ mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
+  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
+  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
+  process_one_work kernel/workqueue.c:3263 [inline]
+  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+Allocated by task 44:
+  kasan_save_stack mm/kasan/common.c:56 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
+  kasan_kmalloc include/linux/kasan.h:262 [inline]
+  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
+  kmalloc_noprof include/linux/slab.h:957 [inline]
+  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
+  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
+  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
+  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
+  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
+  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
+  process_one_work kernel/workqueue.c:3263 [inline]
+  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 6630:
+  kasan_save_stack mm/kasan/common.c:56 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
+  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+  poison_slab_object mm/kasan/common.c:252 [inline]
+  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+  kasan_slab_free include/linux/kasan.h:234 [inline]
+  slab_free_hook mm/slub.c:2523 [inline]
+  slab_free mm/slub.c:6611 [inline]
+  kfree+0x197/0x950 mm/slub.c:6818
+  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
+  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
+  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
+  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
+  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
+  __sys_sendmsg net/socket.c:2716 [inline]
+  __do_sys_sendmsg net/socket.c:2721 [inline]
+  __se_sys_sendmsg net/socket.c:2719 [inline]
+  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Cc: stable@vger.kernel.org
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 4d9a5c8f3b2f0..42329ae21c464 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -24,6 +24,7 @@ struct mptcp_pm_add_entry {
+ 	u8			retrans_times;
+ 	struct timer_list	add_timer;
+ 	struct mptcp_sock	*sock;
++	struct rcu_head		rcu;
+ };
+ 
+ struct pm_nl_pernet {
+@@ -343,22 +344,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 	struct sock *sk = (struct sock *)msk;
+-	struct timer_list *add_timer = NULL;
++	bool stop_timer = false;
++
++	rcu_read_lock();
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+ 	if (entry && (!check_id || entry->addr.id == addr->id)) {
+ 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
+-		add_timer = &entry->add_timer;
++		stop_timer = true;
+ 	}
+ 	if (!check_id && entry)
+ 		list_del(&entry->list);
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+-	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
+-	if (add_timer)
+-		sk_stop_timer_sync(sk, add_timer);
++	/* Note: entry might have been removed by another thread.
++	 * We hold rcu_read_lock() to ensure it is not freed under us.
++	 */
++	if (stop_timer)
++		sk_stop_timer_sync(sk, &entry->add_timer);
+ 
++	rcu_read_unlock();
+ 	return entry;
+ }
+ 
+@@ -414,7 +420,7 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
+ 
+ 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
+ 		sk_stop_timer_sync(sk, &entry->add_timer);
+-		kfree(entry);
++		kfree_rcu(entry, rcu);
+ 	}
+ }
+ 
+@@ -1525,7 +1531,7 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
+ 
+ 	entry = mptcp_pm_del_add_timer(msk, addr, false);
+ 	if (entry) {
+-		kfree(entry);
++		kfree_rcu(entry, rcu);
+ 		return true;
+ 	}
+ 
+-- 
+2.51.0
+
 
