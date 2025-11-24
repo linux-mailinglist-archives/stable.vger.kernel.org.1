@@ -1,153 +1,186 @@
-Return-Path: <stable+bounces-196797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B06C82738
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B55FC8275C
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 380FF4E1596
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:55:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2FF94E1EEC
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A534D2E9ECA;
-	Mon, 24 Nov 2025 20:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668952E62D9;
+	Mon, 24 Nov 2025 20:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWhQ9t07"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCo2XmbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6F525B311;
-	Mon, 24 Nov 2025 20:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F222E2840
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 20:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764017708; cv=none; b=J6zL9NwRnq0/7vobqZfRFOcHnhnXnGZt2d5zCcuxPRw79Yvl3tomARjC8zavBpludMvhQ+Dqgvp7fyCQ7uQ9i7YQuhG+i7q8b9E8JkQqp14SsZA3lx2euqoP+8Dl5fZLsDAGEjIs2BbnM7+0w17I1GKr5Zay0b7Gfpt02fe83w4=
+	t=1764017960; cv=none; b=bnvzakVFKOI0t1TtkZjNBehibdSUwYZ9ydPOigWyzqwf1H0nvxpL0YneGiSAUjl1SfJ1LXxtHKo7UDG4tdMiFY8+baaaCb87p7ZKI0XrBvJqfUQB3jMEvpdA/rVTpkEgSebQirzvtcVgeJE6nkCBfwwO07w59+vo4f19vSfQD04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764017708; c=relaxed/simple;
-	bh=PRNa9x1odFaBXlcSUnHQYYPhLcAMF+az4jN4dBzNRmw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R9i+avNJeUWDT9SgL6RXNkSaGwau9Q2L5NwZh109TmyC9Cq8upHmykHPg9dJw2EwKz0en4LpoU9h77/9YiUJ0GNLqUvHtff/Y1iKPisxP3MvEUNPLRRVczrsKgVtmn3vJXwzMj28g1FTztRrUNqCGVlH0nduEzS5RpubNZ1OoC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWhQ9t07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F630C4CEF1;
-	Mon, 24 Nov 2025 20:55:02 +0000 (UTC)
+	s=arc-20240116; t=1764017960; c=relaxed/simple;
+	bh=0s2u8vGCFGQHz+mo+io0+6vxauG60CsL/Em7GW1KeD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AUPKISrxjfG2VBKS/n1t1jA3v22DIKjQZPTutrl8ygToZR+gLJXSgMyGgc4cmpC30FhHN3tNrXbOIn/ri2iZxyytOtjju4YC8tSP4zDFgAq2Nw72dI5RBv+vhewJzbddG/ALx9Kq9yrwGyu2PxU9qdp0iR68h1u/824mTXOOmmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCo2XmbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B264C4CEF1;
+	Mon, 24 Nov 2025 20:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764017705;
-	bh=PRNa9x1odFaBXlcSUnHQYYPhLcAMF+az4jN4dBzNRmw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FWhQ9t07bpaMhIM4WWPDOvIe6sIkF0p1P4g9vtYg/lxrVOrdUEL9gO1uablH4W61o
-	 1vG2y+8XrZjUwI6uaw5z745ch7U44JSvW3Um+0PvNKXGtlpLBn1GMjcoDOBYbh+S/M
-	 11iYuPNnxqUGw/XHfsl+WnqjhOBy2kJcGzgzILFMGFzmg3WfOfQyqvpOed8cUl3Jt1
-	 atFknCpM0r3GhQ0UxJTLGIXkjUEGX9C5UsXNNBvoOqeVSdMnnxIyesBd+q1D4gFL+f
-	 1KTsJaC6ln2rIccGQtSvFh8zMYRssS5HIOm/Lp6haPyN6KQeaWKTroCtl622rx+eFo
-	 9KO6kgoq+Xe6A==
-Message-ID: <bbe07dc1-f77d-4dbd-9cd2-5efe8464f43b@kernel.org>
-Date: Mon, 24 Nov 2025 21:55:00 +0100
+	s=k20201202; t=1764017959;
+	bh=0s2u8vGCFGQHz+mo+io0+6vxauG60CsL/Em7GW1KeD4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XCo2XmbY3GRI+qXov2bQOJ4hJ7mfkOipvq1I0zalRdl/yrekHXhTS1MpCIv4o56wX
+	 h5Gvi0na0/uro+bQc4hpHaxGo5rWF9TmJfzCencAvR2mK1Af6YWPh54j6H0pOPciSI
+	 vZFKQ4TY+1fwOZdCh0BlknqIOFyarIpw8E20X/hXhPZLPIrM+yO+vh/9RR7UyCGDXT
+	 /8ghjywNdhEuzTnqmWM2QRcA/xEdeJwXdkOWym/x/QXKdh3dyaRor7CyCX8KQLLMe2
+	 x6NRanKZ3Mp6qNOzSrs/tawlF+2/XYd9RT79VvfhSdWynxIomib7fyZGPbAEfFTdjw
+	 0pwbiggagLlrQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] mptcp: introduce mptcp_schedule_work
+Date: Mon, 24 Nov 2025 15:59:16 -0500
+Message-ID: <20251124205917.27437-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112402-confiding-slideshow-217f@gregkh>
+References: <2025112402-confiding-slideshow-217f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: samsung: exynos-clkout: Assign .num before accessing
- .hws
-To: Nathan Chancellor <nathan@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
- linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, stable@vger.kernel.org,
- Jochen Sprickerhof <jochen@sprickerhof.de>
-References: <20251124-exynos-clkout-fix-ubsan-bounds-error-v1-1-224a5282514b@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251124-exynos-clkout-fix-ubsan-bounds-error-v1-1-224a5282514b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 24/11/2025 20:11, Nathan Chancellor wrote:
-> Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-> __counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
-> with __counted_by, which informs the bounds sanitizer (UBSAN_BOUNDS)
-> about the number of elements in .hws[], so that it can warn when .hws[]
-> is accessed out of bounds. As noted in that change, the __counted_by
-> member must be initialized with the number of elements before the first
-> array access happens, otherwise there will be a warning from each access
-> prior to the initialization because the number of elements is zero. This
-> occurs in exynos_clkout_probe() due to .num being assigned after .hws[]
-> has been accessed:
-> 
->   UBSAN: array-index-out-of-bounds in drivers/clk/samsung/clk-exynos-clkout.c:178:18
->   index 0 is out of range for type 'clk_hw *[*]'
-> 
-> Move the .num initialization to before the first access of .hws[],
-> clearing up the warning.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-> Reported-by: Jochen Sprickerhof <jochen@sprickerhof.de>
-> Closes: https://lore.kernel.org/aSIYDN5eyKFKoXKL@eldamar.lan/
-> Tested-by: Jochen Sprickerhof <jochen@sprickerhof.de>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-@Stephen,
+[ Upstream commit ba8f48f7a4d79352b764ace585b5f602ef940be0 ]
 
-Can you take this directly? You already pulled from me for next cycle,
-so that way might be easier.
+remove some of code duplications an allow preventing
+rescheduling on close.
 
-The fixed commit is from 2023, so does not really fit criteria for late
-RC fixes, thus I propose for next release.
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 035bca3f017e ("mptcp: fix race condition in mptcp_schedule_work()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm.c       |  3 +--
+ net/mptcp/protocol.c | 36 ++++++++++++++++++++++--------------
+ net/mptcp/protocol.h |  1 +
+ 3 files changed, 24 insertions(+), 16 deletions(-)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index a8c26f4179004..7b9177503bd53 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -89,8 +89,7 @@ static bool mptcp_pm_schedule_work(struct mptcp_sock *msk,
+ 		return false;
+ 
+ 	msk->pm.status |= BIT(new_status);
+-	if (schedule_work(&msk->work))
+-		sock_hold((struct sock *)msk);
++	mptcp_schedule_work((struct sock *)msk);
+ 	return true;
+ }
+ 
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 1342c31df0c40..591882cf86453 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -641,9 +641,8 @@ static bool move_skbs_to_msk(struct mptcp_sock *msk, struct sock *ssk)
+ 		 * this is not a good place to change state. Let the workqueue
+ 		 * do it.
+ 		 */
+-		if (mptcp_pending_data_fin(sk, NULL) &&
+-		    schedule_work(&msk->work))
+-			sock_hold(sk);
++		if (mptcp_pending_data_fin(sk, NULL))
++			mptcp_schedule_work(sk);
+ 	}
+ 
+ 	spin_unlock_bh(&sk->sk_lock.slock);
+@@ -715,23 +714,32 @@ static void mptcp_reset_timer(struct sock *sk)
+ 	sk_reset_timer(sk, &icsk->icsk_retransmit_timer, jiffies + tout);
+ }
+ 
++bool mptcp_schedule_work(struct sock *sk)
++{
++	if (inet_sk_state_load(sk) != TCP_CLOSE &&
++	    schedule_work(&mptcp_sk(sk)->work)) {
++		/* each subflow already holds a reference to the sk, and the
++		 * workqueue is invoked by a subflow, so sk can't go away here.
++		 */
++		sock_hold(sk);
++		return true;
++	}
++	return false;
++}
++
+ void mptcp_data_acked(struct sock *sk)
+ {
+ 	mptcp_reset_timer(sk);
+ 
+ 	if ((!test_bit(MPTCP_SEND_SPACE, &mptcp_sk(sk)->flags) ||
+-	     (inet_sk_state_load(sk) != TCP_ESTABLISHED)) &&
+-	    schedule_work(&mptcp_sk(sk)->work))
+-		sock_hold(sk);
++	     (inet_sk_state_load(sk) != TCP_ESTABLISHED)))
++		mptcp_schedule_work(sk);
+ }
+ 
+ void mptcp_subflow_eof(struct sock *sk)
+ {
+-	struct mptcp_sock *msk = mptcp_sk(sk);
+-
+-	if (!test_and_set_bit(MPTCP_WORK_EOF, &msk->flags) &&
+-	    schedule_work(&msk->work))
+-		sock_hold(sk);
++	if (!test_and_set_bit(MPTCP_WORK_EOF, &mptcp_sk(sk)->flags))
++		mptcp_schedule_work(sk);
+ }
+ 
+ static void mptcp_check_for_eof(struct mptcp_sock *msk)
+@@ -1643,8 +1651,7 @@ static void mptcp_retransmit_handler(struct sock *sk)
+ 		mptcp_stop_timer(sk);
+ 	} else {
+ 		set_bit(MPTCP_WORK_RTX, &msk->flags);
+-		if (schedule_work(&msk->work))
+-			sock_hold(sk);
++		mptcp_schedule_work(sk);
+ 	}
+ }
+ 
+@@ -2503,7 +2510,8 @@ static void mptcp_release_cb(struct sock *sk)
+ 		struct sock *ssk;
+ 
+ 		ssk = mptcp_subflow_recv_lookup(msk);
+-		if (!ssk || !schedule_work(&msk->work))
++		if (!ssk || sk->sk_state == TCP_CLOSE ||
++		    !schedule_work(&msk->work))
+ 			__sock_put(sk);
+ 	}
+ 
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index f5aeb3061408a..313c8898b3b2c 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -410,6 +410,7 @@ static inline bool mptcp_is_fully_established(struct sock *sk)
+ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk);
+ void mptcp_data_ready(struct sock *sk, struct sock *ssk);
+ bool mptcp_finish_join(struct sock *sk);
++bool mptcp_schedule_work(struct sock *sk);
+ void mptcp_data_acked(struct sock *sk);
+ void mptcp_subflow_eof(struct sock *sk);
+ bool mptcp_update_rcv_data_fin(struct mptcp_sock *msk, u64 data_fin_seq, bool use_64bit);
+-- 
+2.51.0
 
-Best regards,
-Krzysztof
 
