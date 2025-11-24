@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-196779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99883C821CA
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:31:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B197AC821FD
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76A444E57D7
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:31:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB243A9A8A
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEAC4315D26;
-	Mon, 24 Nov 2025 18:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD9E31A04E;
+	Mon, 24 Nov 2025 18:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JqDe2nvb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0C6HtT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFEC2BEC57
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 18:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAC2BDC05
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 18:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764009103; cv=none; b=lg0imFw27Hh7IwqBlt9akWsgqc9+3TBuv9OlxKPP/YkZB+uWev0t8AzfL4TSuJ438mTfDYxFT3q1hbt1V0o/2BAIPoDx4T/8VHQEiR48NrBkbQjpJzQiuQffd9fSGL2500jaE27NHZIL20QwaVm2qILcIhGnq/QQyG2movg/uCk=
+	t=1764009481; cv=none; b=N90NgmYbCxKme8q9br7AGrJxfq6Nwo/IUBuIOFmuU/rrFmzhiSzg4tTfnSYtAScgUjXp1IqEk6PiJ8coAXUeIzTxsVFsuQkcluGx/mqoHN24ON9ilny4IArgL3JXAR2TvLict5WF9Vn1WvOg0Owekg29zK1mU9/AI5Ej2t6gLXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764009103; c=relaxed/simple;
-	bh=AV2DIaGKqqctutAG23Ad7/Z4o1Jh7D2JnIYEEvg1RWU=;
+	s=arc-20240116; t=1764009481; c=relaxed/simple;
+	bh=Y/hS10CAGHEAEVWghgM+pZ0fkHnMC9dkJ6iAvRUDzb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXGrk8psyjmLq+hnFjOSbF4tcvS2nu0J/dZeU6wYUzHVj0efUTPGWzUOC3BP0KcXJlQE0XTxj7MnB0AWLRPmmWzOWiEvXY6GK6jwQUleb1rbSamkRtF/WqcLLVOpHNa9OkZ8jC4mFAjx4lIMn6v2h5pG9B4mbvsQ482Nk4Cv5eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JqDe2nvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDC3C4CEF1;
-	Mon, 24 Nov 2025 18:31:42 +0000 (UTC)
+	 MIME-Version; b=kJvobUNGO7UjnuJ2QtXYeR9TiKeLPq/WPJpCgSrg+3FucuP3r+iOaIXm+kTRKL0gg9VK1UT5NCB+LoTPR62GN6+ahHmM4DYnD3d4g0kwVLri6LT/6/blUmtUnmZPJatdxEAfe5YFyHtxm6MENRdedoVn8YwYp+hzy9cD4gfUUNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0C6HtT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A784C4CEF1;
+	Mon, 24 Nov 2025 18:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764009103;
-	bh=AV2DIaGKqqctutAG23Ad7/Z4o1Jh7D2JnIYEEvg1RWU=;
+	s=k20201202; t=1764009481;
+	bh=Y/hS10CAGHEAEVWghgM+pZ0fkHnMC9dkJ6iAvRUDzb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JqDe2nvbtbpHrn2O4k76BGwI8iMd+bwPjXm9RUwyyf0jMwzL8n4wD8m32IQjyIMpE
-	 BOFjdoc1mKNcn3cvUsS7B76wjsCeatul1yTKsbNW5cnaLjOGQ03wHU6Kpe/icJ9rg8
-	 sp1Ke/UEoAvPMD0GZp9NJJNXS69reUF86XddZ1uz4O6+cR881HPFaMglq698RzGZ1W
-	 2AdT6O/b3tdnRcxOoT+wigHnsbwmDplyEpS0YaCfx25ZA0c1e5ahhgr1hi0OGsIWlD
-	 ON6tkU7FYF8w8jmiduCt7XbbeHAQlnmoUGS459fyI0L27g2S+9PyDfpkgx7o1TMjSB
-	 dBrs747S7GxOA==
+	b=T0C6HtT4pL6sYjEtCNy4QSupw6Vjlm+fwcRVrm84uUSMRwHSGIWIA0yt/aE09TKV/
+	 ru9YRvylnIWMLw8I6ybXY/tRPthucGqRG+uyG2XHSxC5x7WexLC1R2llAMqrN9P1Hz
+	 FNDSo8vJEPbRBZZMO694E3eqodZ41yuZr+AFGcIFjPecygBHPjgmvOVm2j+PmvIq2o
+	 OGLmIOqFVkOYQNVit1jaAsrBcwenhOnzvkWNAu875U0FAWQjuuwEAmGybIGBWltARF
+	 Wx+8WEONH6lTRtP4QjxFYWYPMPrDonPcR+cd2z78S9FwXBdAMQZY1XrFlTbuyYUQOk
+	 OK3lkw1VEoeVg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	Ilia Baryshnikov <qwelias@gmail.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] ata: libata-scsi: Fix system suspend for a security locked drive
-Date: Mon, 24 Nov 2025 13:31:40 -0500
-Message-ID: <20251124183140.4185297-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] usb: deprecate the third argument of usb_maxpacket()
+Date: Mon, 24 Nov 2025 13:37:56 -0500
+Message-ID: <20251124183758.4187087-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112448-speller-puritan-f075@gregkh>
-References: <2025112448-speller-puritan-f075@gregkh>
+In-Reply-To: <2025112419-scariness-motive-d737@gregkh>
+References: <2025112419-scariness-motive-d737@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,83 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
+[ Upstream commit 0f08c2e7458e25c967d844170f8ad1aac3b57a02 ]
 
-Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
-handling") fixed ata_to_sense_error() to properly generate sense key
-ABORTED COMMAND (without any additional sense code), instead of the
-previous bogus sense key ILLEGAL REQUEST with the additional sense code
-UNALIGNED WRITE COMMAND, for a failed command.
+This is a transitional patch with the ultimate goal of changing the
+prototype of usb_maxpacket() from:
+| static inline __u16
+| usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
 
-However, this broke suspend for Security locked drives (drives that have
-Security enabled, and have not been Security unlocked by boot firmware).
+into:
+| static inline u16 usb_maxpacket(struct usb_device *udev, int pipe)
 
-The reason for this is that the SCSI disk driver, for the Synchronize
-Cache command only, treats any sense data with sense key ILLEGAL REQUEST
-as a successful command (regardless of ASC / ASCQ).
+The third argument of usb_maxpacket(): is_out gets removed because it
+can be derived from its second argument: pipe using
+usb_pipeout(pipe). Furthermore, in the current version,
+ubs_pipeout(pipe) is called regardless in order to sanitize the is_out
+parameter.
 
-After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
-status handling") the code that treats any sense data with sense key
-ILLEGAL REQUEST as a successful command is no longer applicable, so the
-command fails, which causes the system suspend to be aborted:
+In order to make a smooth change, we first deprecate the is_out
+parameter by simply ignoring it (using a variadic function) and will
+remove it later, once all the callers get updated.
 
-  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
-  sd 1:0:0:0: PM: failed to suspend async: error -5
-  PM: Some devices failed to suspend, or early wake event detected
+The body of the function is reworked accordingly and is_out is
+replaced by usb_pipeout(pipe). The WARN_ON() calls become unnecessary
+and get removed.
 
-To make suspend work once again, for a Security locked device only,
-return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
-data which a real SCSI device would have returned if locked.
-The SCSI disk driver treats this sense data as a successful command.
+Finally, the return type is changed from __u16 to u16 because this is
+not a UAPI function.
 
-Cc: stable@vger.kernel.org
-Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
-Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-[ Adjust context ]
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/r/20220317035514.6378-2-mailhol.vincent@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 8 ++++++++
- include/linux/ata.h       | 1 +
- 2 files changed, 9 insertions(+)
+ include/linux/usb.h | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 7d2910659515c..0ee18a2358dbc 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -996,6 +996,14 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
- 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
- 		return;
- 	}
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index 15247a1cc65c6..671d8845bd46e 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1987,21 +1987,17 @@ usb_pipe_endpoint(struct usb_device *dev, unsigned int pipe)
+ 	return eps[usb_pipeendpoint(pipe)];
+ }
+ 
+-/*-------------------------------------------------------------------------*/
+-
+-static inline __u16
+-usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
++static inline u16 usb_maxpacket(struct usb_device *udev, int pipe,
++				/* int is_out deprecated */ ...)
+ {
+ 	struct usb_host_endpoint	*ep;
+ 	unsigned			epnum = usb_pipeendpoint(pipe);
+ 
+-	if (is_out) {
+-		WARN_ON(usb_pipein(pipe));
++	if (usb_pipeout(pipe))
+ 		ep = udev->ep_out[epnum];
+-	} else {
+-		WARN_ON(usb_pipeout(pipe));
++	else
+ 		ep = udev->ep_in[epnum];
+-	}
 +
-+	if (ata_id_is_locked(dev->id)) {
-+		/* Security locked */
-+		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
-+		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
-+		return;
-+	}
-+
- 	/* Use ata_to_sense_error() to map status register bits
- 	 * onto sense key, asc & ascq.
- 	 */
-diff --git a/include/linux/ata.h b/include/linux/ata.h
-index e3050e153a716..ad14cac9b934c 100644
---- a/include/linux/ata.h
-+++ b/include/linux/ata.h
-@@ -558,6 +558,7 @@ struct ata_bmdma_prd {
- #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
- #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
- #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
-+#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
- #define ata_id_has_atapi_AN(id)	\
- 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
- 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
+ 	if (!ep)
+ 		return 0;
+ 
+@@ -2009,8 +2005,6 @@ usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
+ 	return usb_endpoint_maxp(&ep->desc);
+ }
+ 
+-/* ----------------------------------------------------------------------- */
+-
+ /* translate USB error codes to codes user space understands */
+ static inline int usb_translate_errors(int error_code)
+ {
 -- 
 2.51.0
 
