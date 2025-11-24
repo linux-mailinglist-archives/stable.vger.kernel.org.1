@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-196786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A36C8235D
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:01:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755EFC82390
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 240293AD9C3
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:00:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 352683A8BBD
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B852431A578;
-	Mon, 24 Nov 2025 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B771A27FD76;
+	Mon, 24 Nov 2025 19:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/cX9XdH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSaE7aoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74ECF31A54C
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C0C23D7D0
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 19:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764010643; cv=none; b=bXN7chm1cFBBoOsgUUp7Cz58xS8G+RBFEXkI2OHl+ePC1gPA2f5lJGddjelkIdhIl8QpbvRD5tchwmuDkfQJg3nQSIsN41dGPLjpeMzxu4ZWRF7Z0CZu7DZceVeYOuCDIA1nOhCddWuMl4d6I4A+tKB4N3reSwfBJJkBk2DwW7o=
+	t=1764011102; cv=none; b=InUplWgOgBJP4/PEwGKDdEBBLu0uZCvwWA5yJX19R8qNMjFYiks19r+77vsQNvJ9lkZNUSFVNGvVI33ROjtCddz+zhIMXywDI9u1bDc9lMo2H/wLdEV40Q5qjnVZ39hnxuFW67KmHBQOcNfM4LQuIEeSnDJBnCXLU1/boHwv21c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764010643; c=relaxed/simple;
-	bh=d9PYYdTG3FEmQXCVKWqT+YYZcI9KCd8i14UrKrQBe04=;
+	s=arc-20240116; t=1764011102; c=relaxed/simple;
+	bh=yTD0X3Meg5W+XDiWbCtXwHPw2JrdVNrtdJXSXzt4QyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYKW3iZ5WKK6FhInY69y8n9amQA44QGit8Ih2kj5OskmweWGXWAffl1/zuST3mBzM7xJCXiJdg88kcWIr1OayEvg+XGBUHLwXZ/vyJ8N5Q9MDBOUMBbHPvPxkw+Nmw9l4sSPnGlhUctLkIG2UAvvyaL+RAsLdO7jmcA+Q98ay7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/cX9XdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1BBC4AF49;
-	Mon, 24 Nov 2025 18:57:22 +0000 (UTC)
+	 MIME-Version; b=mcM8FTiWBbMg5zryv+zmiG0kf9kkNOtvJ7mIQ3dKNJnxMt21uqd7cNRkbN7ZfTYdlMGMLFOFBMwZwTBxdgGjaPNj0qOhY8QEeseOcAWxLWjBGRUQASu/MViFB5afabIjgSiTxObYJ/GM8jP+CcoC/mTU3vL+p9iQzax7/TZ8DzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSaE7aoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F77C4CEF1;
+	Mon, 24 Nov 2025 19:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764010643;
-	bh=d9PYYdTG3FEmQXCVKWqT+YYZcI9KCd8i14UrKrQBe04=;
+	s=k20201202; t=1764011101;
+	bh=yTD0X3Meg5W+XDiWbCtXwHPw2JrdVNrtdJXSXzt4QyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/cX9XdHyMicnezP+JddtZCroaLE8d8OXX3q3hvt6WA7d7JcS4m2K0Cw5hylIudjj
-	 kjSX6mlilAyALdpT+HRhLWKcHfwzbCb+p7sZsvhqfGth+EXATIiQVe3pAK1mefy03p
-	 rfBsrTdRQj5Nof62CjIOXNeTNGTqVQufUD7MAgPcBNXakBNDgrzU+q6S1xMduoUCWQ
-	 5wh2mr7IWE98JglYqD39clophLxo4J2eGw/CuT7BYgEU6Z89QgijgIczUPaoIpzvWd
-	 kfgYvhuRYvhFWPs8OJlRAIY7i0Y9HEJYiWPZBGky4WJxMQyFrlsJX3ATFs8n1e0Irw
-	 HE8JBevlrvnAA==
+	b=HSaE7aoy4vDXgUa2krC7bPLNvFaFTAORc/QqD91Zzf816yT/EglwB26ThYmGoGT77
+	 yw2Q0cCjp4oGz1hK9LrSWmKio5ergGoX4GNa0Qd/dIx0FdvCU8IJgJS7IuBdNjxlgz
+	 Gv3qacGMLs/I8zUkuRIIThBDxJZVNBfM2ps4hUuwpWIuAI5vs6zqkPWEVIt4/ajOxf
+	 XiRBwn7V7acgVXA+no4BIWCyDb0torCKnd9sKoj4lj+IiJGPAHZI5OvpLhAPe12yPn
+	 IEecEgyawP45mPuG84Zdj5k8mCP3q/DBLum2zAxJ916Her9S8OZmnG8drWIEQJof1y
+	 JIS0txN57tE1A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Seungjin Bae <eeodqql09@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/3] Input: pegasus-notetaker - fix potential out-of-bounds access
-Date: Mon, 24 Nov 2025 13:57:18 -0500
-Message-ID: <20251124185718.4192041-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y] ata: libata-scsi: Fix system suspend for a security locked drive
+Date: Mon, 24 Nov 2025 14:04:57 -0500
+Message-ID: <20251124190457.4193878-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251124185718.4192041-1-sashal@kernel.org>
-References: <2025112420-cleaver-backlight-0d73@gregkh>
- <20251124185718.4192041-1-sashal@kernel.org>
+In-Reply-To: <2025112458-uncharted-juggling-eb88@gregkh>
+References: <2025112458-uncharted-juggling-eb88@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,57 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 69aeb507312306f73495598a055293fa749d454e ]
+[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
 
-In the pegasus_notetaker driver, the pegasus_probe() function allocates
-the URB transfer buffer using the wMaxPacketSize value from
-the endpoint descriptor. An attacker can use a malicious USB descriptor
-to force the allocation of a very small buffer.
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
-Subsequently, if the device sends an interrupt packet with a specific
-pattern (e.g., where the first byte is 0x80 or 0x42),
-the pegasus_parse_packet() function parses the packet without checking
-the allocated buffer size. This leads to an out-of-bounds memory access.
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
-Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
+
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
+
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
+
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/tablet/pegasus_notetaker.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/ata/libata-scsi.c | 8 ++++++++
+ include/linux/ata.h       | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
-index c608ac505d1ba..b2be4b87bfbe9 100644
---- a/drivers/input/tablet/pegasus_notetaker.c
-+++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -63,6 +63,9 @@
- #define BUTTON_PRESSED			0xb5
- #define COMMAND_VERSION			0xa9
- 
-+/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
-+#define NOTETAKER_PACKET_SIZE		6
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 23f158601c8cb..655be7e96dfcb 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -961,6 +961,14 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
+ 		return;
+ 	}
 +
- /* in xy data packet */
- #define BATTERY_NO_REPORT		0x40
- #define BATTERY_LOW			0x41
-@@ -297,6 +300,12 @@ static int pegasus_probe(struct usb_interface *intf,
- 
- 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
- 	pegasus->data_len = usb_maxpacket(dev, pipe);
-+	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
-+		dev_err(&intf->dev, "packet size is too small (%d)\n",
-+			pegasus->data_len);
-+		error = -EINVAL;
-+		goto err_free_mem;
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
 +	}
- 
- 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
- 					   &pegasus->data_dma);
++
+ 	/* Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+ 	 */
+diff --git a/include/linux/ata.h b/include/linux/ata.h
+index 6d2d31b03b4de..7e8d690df254b 100644
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -557,6 +557,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 -- 
 2.51.0
 
