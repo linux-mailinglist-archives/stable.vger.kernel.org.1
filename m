@@ -1,223 +1,126 @@
-Return-Path: <stable+bounces-196656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457F4C7F5A1
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C59AC7F5EC
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC50F3A6965
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 08:08:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 157593A55D2
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 08:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF292EC0B3;
-	Mon, 24 Nov 2025 08:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CD02222D1;
+	Mon, 24 Nov 2025 08:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckG6HYOS"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fVe0z++A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087952EB847;
-	Mon, 24 Nov 2025 08:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02088BE5E;
+	Mon, 24 Nov 2025 08:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763971643; cv=none; b=j6tLAk3Ht1ouNikc9JwTwgxU6Uduom1zoNLdaYi8orQvqFAheylJiPg/0Nd9CPN4JdbuKWcM54cymquZVHpSxdInwkvWEqW6D/Zj5m2nWWKL4snRslOHYL2wm4K2X4dWSzdSqJXS0tjPE190yCscpny1MAA8HyyLt9EezLd8QFU=
+	t=1763972200; cv=none; b=Dzm/MK06+kJoNsoU880t8QgQsL358HP9enu0QcSpmDfn25ma0/6H30VOrxNVuzC7cOYKFOGnDzy8Z3Mp40qeSPAv5ctGOzCFVJamdRy5drN7EMO8AHOAWvD+aKReUPKcafiBXeRphGHurCjjUx4WY7g9qZ0Li61CJH/NpYyiOgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763971643; c=relaxed/simple;
-	bh=Xas3JP4IADJMP8+4+q5VvnvwuatgWitTieRvkxIecEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjC3eN/vGdvgYLOZSR1TcGIU4LaqYuJ4IFSYtmeE+oYHKTgct4kY7lErx0Wi+XImSux5aCtXI8FmIvOugLgdV8+dTVrWhdsFQ4rrWMZk2xkLxpno7lNht6rlG3RiQJJWgVqO7j6N8MgI5BkjR/MFEqSnu1KoroJ7aVk4dPDzJZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckG6HYOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C5FC116D0;
-	Mon, 24 Nov 2025 08:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763971642;
-	bh=Xas3JP4IADJMP8+4+q5VvnvwuatgWitTieRvkxIecEY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckG6HYOSDJ9cNjclZiGAHx9/cX7G+hE9BENhsTN4Knf919jog1+dHsq1plRHD2mRH
-	 nPkYSY4jVTHtRt8jh2y5rKD7d0I3goUEw6dfJEk3uI3Z+E7V8SuCck6QZG2BvrCpvN
-	 /v32H2qGIFmlFBHh/dsxobWSyRv4EKTqvuJ/qm/GQH5tyBB3XpBSHd6bsaqlZ5NA+D
-	 Ghu0j4IFVeiVpcBgT+OdR9D72LgXkB+8WRzqIfeGb23SxbhFDNyDziC7ppvnvoD5c7
-	 dtwu9fw34InkCzN2xvFrJorIYqCGhWbe0Eq4uxEnURLMIBrDYop9Lva7y2IjEcJpzB
-	 XdXbRlQTz09pg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Tigran Aivazian <aivazian.tigran@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.17-5.4] bfs: Reconstruct file type when loading from disk
-Date: Mon, 24 Nov 2025 03:06:35 -0500
-Message-ID: <20251124080644.3871678-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251124080644.3871678-1-sashal@kernel.org>
-References: <20251124080644.3871678-1-sashal@kernel.org>
+	s=arc-20240116; t=1763972200; c=relaxed/simple;
+	bh=gFD2MJ6Tbiv/oDeIRZs61P+OFMH3WapwilJzwE0qfDY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ddVMnmxDraARI5q76oPTzP0B0MXvI57p/8Ype4Yg2G4AeqBwqpIaZyAmiMwX+d5cy3pSRjfsPUQ+ztREFNYns7w0qMJYXfydfQjSg4e8t1CEabe0hbuKntFi5XPsXV2BmRGL/MueGzcCMxVkOpg/+yA81VegJ1Jlfy3DtSxCcQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fVe0z++A; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AO8GT5p8595945, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1763972189; bh=gFD2MJ6Tbiv/oDeIRZs61P+OFMH3WapwilJzwE0qfDY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=fVe0z++AyrEeFt6sfaMfFl44MeF7ePPF6AhXJG4qepKiKdMKvhEdojpW8tuo5zX+r
+	 zFimCWtyAGgMz6S6zVwAmlOcDe9uTNzN088mKBfcmDf53hwIUTiz+51OvmIFlEGpoq
+	 oUW+g/MCppBrXiBxt98zrOCGlS+lTnCHVi0YK+oakUFt1Apv40d2J2PDiD6O/AzUTQ
+	 Ng1Tz4n85OXy7aOu8FDZaY4362Qk4y8Eyxor/rnqaxXrE43T2b16yngw/9IaAXbgxi
+	 4xAdKgzIwGdctLodBOrcVxLVyI1gr1lKXWjx1WYW7hfOXZu5LZYiCVGFCwL1jv5+QB
+	 BleXvCYOTOpcA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AO8GT5p8595945
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Nov 2025 16:16:29 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 24 Nov 2025 16:16:29 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Mon, 24 Nov 2025 16:16:29 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "piotr.oniszczuk@gmail.com" <piotr.oniszczuk@gmail.com>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+        "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>,
+        Martin Blumenstingl
+	<martin.blumenstingl@googlemail.com>
+Subject: RE: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device
+ registers before power-on
+Thread-Topic: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device
+ registers before power-on
+Thread-Index: AQHb/DS8S6Z9LuNHSkqUfz4BHLn6GLT/I7SAgAL+B7A=
+Date: Mon, 24 Nov 2025 08:16:29 +0000
+Message-ID: <4562797ed9514344b562f7a8e58e6988@realtek.com>
+References: <20250724004815.7043-1-pkshih@realtek.com>
+ <aSHrhbt29k6GJB8e@skv.local>
+In-Reply-To: <aSHrhbt29k6GJB8e@skv.local>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.8
-Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-
-[ Upstream commit 34ab4c75588c07cca12884f2bf6b0347c7a13872 ]
-
-syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
-the S_IFMT bits of the 32bits "mode" field loaded from disk are corrupted
-or when the 32bits "attributes" field loaded from disk are corrupted.
-
-A documentation says that BFS uses only lower 9 bits of the "mode" field.
-But I can't find an explicit explanation that the unused upper 23 bits
-(especially, the S_IFMT bits) are initialized with 0.
-
-Therefore, ignore the S_IFMT bits of the "mode" field loaded from disk.
-Also, verify that the value of the "attributes" field loaded from disk is
-either BFS_VREG or BFS_VDIR (because BFS supports only regular files and
-the root directory).
-
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://patch.msgid.link/fabce673-d5b9-4038-8287-0fd65d80203b@I-love.SAKURA.ne.jp
-Reviewed-by: Tigran Aivazian <aivazian.tigran@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-1. **COMMIT MESSAGE ANALYSIS**
-   - **Problem:** A syzbot report identified a bug where `inode->i_mode`
-     could contain bogus `S_IFMT` (file type) bits. This occurs because
-     the kernel was trusting the upper bits of the 32-bit on-disk `mode`
-     field. If these bits contained garbage (which is possible as BFS
-     historically only utilized the lower 9 bits), they would conflict
-     with the actual file type determined by the `i_vtype` attribute.
-   - **Fix:** The patch ignores the `S_IFMT` bits from the on-disk
-     `mode` by narrowing the mask from `0xFFFF` to `0x0FFF`. It then
-     reconstructs the correct file type solely from `di->i_vtype` and
-     adds validation to ensure `i_vtype` is a known type (`BFS_VREG` or
-     `BFS_VDIR`).
-   - **Stable Signals:** Fixes a reported bug (syzbot), handles
-     corrupted input (security hardening), small surgical fix.
-   - **Missing Signals:** No `Cc: stable` or `Fixes` tag, but the commit
-     addresses a vulnerability found by fuzzing, which typically
-     qualifies for stable backporting.
-
-2. **DEEP CODE RESEARCH**
-   - **File:** `fs/bfs/inode.c`, function `bfs_iget`.
-   - **Root Cause:**
-     The original code used a mask of `0x0000FFFF`:
-     ```c
-     inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
-     if (le32_to_cpu(di->i_vtype) == BFS_VDIR)
-     inode->i_mode |= S_IFDIR;
-     ```
-     The `S_IFMT` mask in Linux corresponds to the bits `0xF000` (octal
-     `0170000`). By preserving these bits from the disk and then ORing
-     in the type (`S_IFDIR`), the code could result in a mixed, invalid
-     file type if the disk data was not clean (e.g., `S_IFLNK |
-     S_IFDIR`).
-   - **The Fix:**
-     The new code uses a mask of `0x00000FFF`:
-     ```c
-     inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
-     ```
-     This strictly clears the file type bits before setting them based
-     on the authoritative `i_vtype`. It also adds necessary error
-     handling:
-     ```c
-     } else {
-     brelse(bh);
-     printf("Unknown vtype=%u...\n", ...);
-     goto error;
-     }
-     ```
-     This ensures that if the authoritative type is unknown, the
-     operation fails safely rather than proceeding with an invalid
-     inode.
-
-3. **STABLE KERNEL RULES ALIGNMENT**
-   - **Obviously correct:** Yes. It applies standard input sanitization
-     to untrusted disk data.
-   - **Fixes real bug:** Yes. Prevents type confusion and potential
-     crashes when mounting corrupted or malicious filesystem images
-     (syzbot report).
-   - **Important:** Yes. While BFS is a legacy filesystem, handling
-     corrupted images gracefully is a standard security requirement for
-     the kernel.
-   - **Small and contained:** Yes. The change is isolated to ~20 lines
-     in a single function in `fs/bfs/inode.c`.
-   - **No new features:** Yes. This is purely a robustness fix.
-
-4. **RISK VS BENEFIT**
-   - **Benefit:** Prevents undefined behavior, crashes, or security
-     issues arising from type confusion in the VFS layer.
-   - **Risk:** Negligible. Valid BFS images will have correct `i_vtype`
-     values and will work exactly as before. The change only affects how
-     the kernel interprets potentially garbage data in unused bits.
-   - **Dependencies:** None. The fix is self-contained and uses existing
-     constants (`BFS_VDIR`, `BFS_VREG`).
-
-5. **CONCLUSION**
-  This commit is a classic input validation fix for a filesystem driver.
-  It resolves a bug found by automated fuzzing (syzbot) where untrusted
-  disk data was allowed to corrupt in-memory kernel structures
-  (`inode->i_mode`). Even though BFS is a niche filesystem, preventing
-  data corruption and crashes upon mount is a requirement for stable
-  kernels. The fix is small, low-risk, and obviously correct.
-
-**YES**
-
- fs/bfs/inode.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
-index 1d41ce477df58..984b365df0460 100644
---- a/fs/bfs/inode.c
-+++ b/fs/bfs/inode.c
-@@ -61,7 +61,19 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 	off = (ino - BFS_ROOT_INO) % BFS_INODES_PER_BLOCK;
- 	di = (struct bfs_inode *)bh->b_data + off;
- 
--	inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
-+	/*
-+	 * https://martin.hinner.info/fs/bfs/bfs-structure.html explains that
-+	 * BFS in SCO UnixWare environment used only lower 9 bits of di->i_mode
-+	 * value. This means that, although bfs_write_inode() saves whole
-+	 * inode->i_mode bits (which include S_IFMT bits and S_IS{UID,GID,VTX}
-+	 * bits), middle 7 bits of di->i_mode value can be garbage when these
-+	 * bits were not saved by bfs_write_inode().
-+	 * Since we can't tell whether middle 7 bits are garbage, use only
-+	 * lower 12 bits (i.e. tolerate S_IS{UID,GID,VTX} bits possibly being
-+	 * garbage) and reconstruct S_IFMT bits for Linux environment from
-+	 * di->i_vtype value.
-+	 */
-+	inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
- 	if (le32_to_cpu(di->i_vtype) == BFS_VDIR) {
- 		inode->i_mode |= S_IFDIR;
- 		inode->i_op = &bfs_dir_inops;
-@@ -71,6 +83,11 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 		inode->i_op = &bfs_file_inops;
- 		inode->i_fop = &bfs_file_operations;
- 		inode->i_mapping->a_ops = &bfs_aops;
-+	} else {
-+		brelse(bh);
-+		printf("Unknown vtype=%u %s:%08lx\n",
-+		       le32_to_cpu(di->i_vtype), inode->i_sb->s_id, ino);
-+		goto error;
- 	}
- 
- 	BFS_I(inode)->i_sblock =  le32_to_cpu(di->i_sblock);
--- 
-2.51.0
-
+QW5kcmV5IFNrdm9ydHNvdiA8YW5kcmVqLnNrdm9ydHpvdkBnbWFpbC5jb20+IHdyb3RlOg0KPiBI
+aSwNCj4gDQo+IFRoaXMgcGF0Y2ggd2FzIHJlY2VudGx5IGJhY2twb3J0ZWQgdG8gc3RhYmxlIGtl
+cm5lbHMgKHY2LjEyLjU4KSBhbmQgaXQgYnJva2UNCj4gd2xhbiBvbiBQaW5lUGhvbmUsIHRoYXQg
+dXNlcyA4NzIzY3MgU0RJTyBjaGlwLiBUaGUgc2FtZSBwcm9ibGVtDQo+IGFwcGVhcnMgb2YgY291
+cnNlIG9uIGxhdGVzdCA2LjE4LXJjNi4gUmV2ZXJ0aW5nIHRoaXMgY2hhbmdlIHJlc29sdmVzDQo+
+IHRoZSBwcm9ibGVtLg0KPiANCj4gYGBgDQo+ICQgc3VkbyBkbWVzZyB8IGdyZXAgLWkgcnR3ODgN
+Cj4gWyAgIDI0Ljk0MDU1MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBXT1cgRmlybXdhcmUg
+dmVyc2lvbiAxMS4wLjAsIEgyQyB2ZXJzaW9uIDANCj4gWyAgIDI0Ljk1MzA4NV0gcnR3ODhfODcy
+M2NzIG1tYzE6MDAwMToxOiBGaXJtd2FyZSB2ZXJzaW9uIDExLjAuMCwgSDJDIHZlcnNpb24gMA0K
+PiBbICAgMjQuOTU1ODkyXSBydHc4OF84NzIzY3MgbW1jMTowMDAxOjE6IHNkaW8gcmVhZDMyIGZh
+aWxlZCAoMHhmMCk6IC0xMTANCj4gWyAgIDI0Ljk3MzEzNV0gcnR3ODhfODcyM2NzIG1tYzE6MDAw
+MToxOiBzZGlvIHdyaXRlOCBmYWlsZWQgKDB4MWMpOiAtMTEwDQo+IFsgICAyNC45ODA2NzNdIHJ0
+dzg4Xzg3MjNjcyBtbWMxOjAwMDE6MTogc2RpbyByZWFkMzIgZmFpbGVkICgweGYwKTogLTExMA0K
+PiAuLi4NCj4gWyAgIDI1LjQ0NjY5MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBzZGlvIHJl
+YWQ4IGZhaWxlZCAoMHgxMDApOiAtMTEwDQo+IFsgICAyNS40NTM1NjldIHJ0dzg4Xzg3MjNjcyBt
+bWMxOjAwMDE6MTogbWFjIHBvd2VyIG9uIGZhaWxlZA0KPiBbICAgMjUuNDU5MDc3XSBydHc4OF84
+NzIzY3MgbW1jMTowMDAxOjE6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMNCj4gWyAgIDI1LjQ2NDg0
+MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBmYWlsZWQgdG8gc2V0dXAgY2hpcCBlZnVzZSBp
+bmZvDQo+IFsgICAyNS40NjQ4NTZdIHJ0dzg4Xzg3MjNjcyBtbWMxOjAwMDE6MTogZmFpbGVkIHRv
+IHNldHVwIGNoaXAgaW5mb3JtYXRpb24NCj4gWyAgIDI1LjQ3ODM0MV0gcnR3ODhfODcyM2NzIG1t
+YzE6MDAwMToxOiBwcm9iZSB3aXRoIGRyaXZlciBydHc4OF84NzIzY3MgZmFpbGVkIHdpdGggZXJy
+b3IgLTExNA0KPiBgYGANCj4gDQoNCkNoZWNrIG9yaWdpbmFsIGxpbmsgb2YgdGhpcyBwYXRjaCBb
+MV0gdGhhdCA4ODIyY3MgcmVhZCBpbmNvcnJlY3QgZnJvbSAweGYwDQpyZXN1bHRpbmcgaW4gInJ0
+dzg4Xzg4MjJjcyBtbWMxOjAwMDE6MTogdW5zdXBwb3J0ZWQgcmYgcGF0aCAoMSkiLg0KDQpJIHdv
+bmRlciBpZiB3ZSBjYW4gYWRkIGFkZGl0aW9uYWwgY2hlY2tpbmcgcnVsZSBvZiBjaGlwIElELCBs
+aWtlOg0KDQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3NkaW8uYw0K
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9zZGlvLmMNCkBAIC0xNDQs
+OCArMTQ0LDEwIEBAIHN0YXRpYyB1MzIgcnR3X3NkaW9fdG9faW9fYWRkcmVzcyhzdHJ1Y3QgcnR3
+X2RldiAqcnR3ZGV2LCB1MzIgYWRkciwNCg0KIHN0YXRpYyBib29sIHJ0d19zZGlvX3VzZV9kaXJl
+Y3RfaW8oc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTMyIGFkZHIpDQogew0KKyAgICAgICBib29s
+IG1pZ2h0X2luZGlyZWN0X3VuZGVyX3Bvd2VyX29mZiA9IHJ0d2Rldi0+Y2hpcC0+aWQgIT0gUlRX
+X0NISVBfVFlQRV84NzAzQjsNCisNCiAgICAgICAgaWYgKCF0ZXN0X2JpdChSVFdfRkxBR19QT1dF
+Uk9OLCBydHdkZXYtPmZsYWdzKSAmJg0KLSAgICAgICAgICAgIXJ0d19zZGlvX2lzX2J1c19hZGRy
+KGFkZHIpKQ0KKyAgICAgICAgICAgIXJ0d19zZGlvX2lzX2J1c19hZGRyKGFkZHIpICYmIG1pZ2h0
+X2luZGlyZWN0X3VuZGVyX3Bvd2VyX29mZikNCiAgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7
+DQoNCiAgICAgICAgcmV0dXJuICFydHdfc2Rpb19pc19zZGlvMzBfc3VwcG9ydGVkKHJ0d2Rldikg
+fHwNCg0KWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzLzY5OUMyMkI0
+LUEzRTMtNDIwNi05N0QwLTIyQUIzMzQ4RUJGNkBnbWFpbC5jb20vVC8jdA0KDQo=
 
