@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-196660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C00C7F637
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD474C7F7C7
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 10:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 908834E2DF0
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 08:30:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A39C84E3C61
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1874024677B;
-	Mon, 24 Nov 2025 08:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124242F4A00;
+	Mon, 24 Nov 2025 09:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYErwbzr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVkteaxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93922AD2C;
-	Mon, 24 Nov 2025 08:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2A923184A;
+	Mon, 24 Nov 2025 09:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763973017; cv=none; b=hbYLjHQeQUPIwDfe3Qz3kXclzkoTwJvpbQ1QLWEpaGH5N5hAhYcgz+6jJDGqw4qLbvm+gQhbV8pLpxlnjUucKKMtaCYK9S3zFNy1zbZAtq7OzQY9VZoPsvNtnKN+kazkkiShRwDmIMyLTgQeFVVLAHcEVnmc3nlxM9YicGsCKgA=
+	t=1763975467; cv=none; b=K3iqrTEgVOp82+NqSrQLQTzlEZYK13eiDpDXGkmzQM1ky0gqvE9O8r8Szusv5+bBi4d0Hf+VxyivnSE2CDnl7Be9E7TovbyP30NeGzAqpbep6HIkEIziJkM78O96i4MNSvS5Z/bbfPCfbtHW//F3y60L6C/uTJbQvasS9lPYAi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763973017; c=relaxed/simple;
-	bh=bg4OCJoS/Sw+A/y7cBvEecuwcG7LWVdliImHvZLiGWA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=sC8dVZTfUORNd+VMg+DwIztcsn7eypGe5wBe114C74CJeX5jaQ8PYuIj7izs6t/Je5FTwCXugxmFMI5klztF/pcPr7jTYU+dTWdQAZQo5Mzwk1LpzGwZtA0AvivX0Hcp+OFAWrS3TEu5yfRJo8luCLf8CtYD6wjS1mJeZsOG+2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYErwbzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2E4C4CEF1;
-	Mon, 24 Nov 2025 08:30:13 +0000 (UTC)
+	s=arc-20240116; t=1763975467; c=relaxed/simple;
+	bh=h3g4JxPmkSuzn4A+hRY+XWm3wVyIpSZX3Sy+tuWzeq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gS6iT77BlJ/KtOTcXxFP7Unx8ucoSUxmLOX6aaygSXwWTnKGgCm58rGEY/FO3R2EjNuK3EWyIbMeFtSNczhW2cfeNunIfonhsJQ+e4EskGG92mTDm+h8piwk3GL/ax24fUAQ5nSbd1bR3w2XkgqT7lCWAFBI4j66XsRPwlZKo1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVkteaxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1531FC4CEF1;
+	Mon, 24 Nov 2025 09:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763973017;
-	bh=bg4OCJoS/Sw+A/y7cBvEecuwcG7LWVdliImHvZLiGWA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=DYErwbzrqjocx5yXtax18c8UJzRSOEdAocUwOC+UjQ1/ksJmCwpN7xk2j0kypJ8qf
-	 JXqZMIvwLBSHUdOHtkplxApkAby65/e3nBPC9ztrCqBtEA75nbihtCJ54ChfPemNd/
-	 fmxR4TLd0ijNyJIgLO3sIYFJrM+/pHgFsbJ1x/T+R2QGcuHdETl1cjO5/TsEnk7OR9
-	 afy3g/X7SUjPGdTuLErVLIaJHcOjHuY0JxLTc7SfiHcbqNq3LTuPEf3oE+n9j83FTy
-	 D/nOiEa0M49Vib73CKDzPysrHGoLH04wiYs+TkCuHBqHAJloydqvVuKnmOwIklgX8y
-	 3Fo7QRhAAsCuw==
-Message-ID: <7557d32c-c5e1-4e73-aefe-23ebf4bea708@kernel.org>
-Date: Mon, 24 Nov 2025 09:30:12 +0100
+	s=k20201202; t=1763975467;
+	bh=h3g4JxPmkSuzn4A+hRY+XWm3wVyIpSZX3Sy+tuWzeq8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LVkteaxMddX1M3aC0bEsLu2/1lTKkED0KlkuA1s2zE6iuTreTG8vZt0FBYp0N2k/V
+	 5Vj54xI6VQFpZ9u9voQPuctK9Ao+GrKD/+4O+c0ObWLrGZ0NhirnhOGqHujK4i8VOT
+	 aRtG7cGdzl4bCnl0kDA65ePANeMZJt4gL2VhpCjvtFsEOMRMv3/7lfzi7ZKB8FJHFh
+	 NFFCMPxr+amRLOchiWuNBT1Ykl1gZ/h8t7u22XR47X/mGudytA68lN0HEfEgp1+L+2
+	 y6m5A/Oq2RmtPK9iZdrd+w+F7SdOtMeLV4zVTNwnlYQLmZXckTJV8t7e1WsbBlTkX3
+	 CGSNnxT+iVuDA==
+Message-ID: <e7ebc1da-1a94-4465-bc79-de9ad8ba1cb6@kernel.org>
+Date: Mon, 24 Nov 2025 10:11:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,115 +50,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] NFC: Fix error handling in nfc_genl_dump_targets
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linville@tuxdriver.com, aloisio.almeida@openbossa.org,
- johannes@sipsolutions.net, lauro.venancio@openbossa.org,
- sameo@linux.intel.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, stable@vger.kernel.org
-References: <20251121022728.3661-1-make24@iscas.ac.cn>
- <3c0b6a08-cbaa-4e7e-8689-1fa716dd1525@kernel.org>
+Subject: Re: [PATCH v2] xhci: dbgtty: fix device unregister
+To: Mathias Nyman <mathias.nyman@linux.intel.com>,
+ =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20251119212910.1245694-1-ukaszb@google.com>
+ <2f05eedd-f152-4a4a-bf6c-09ca1ab7da40@kernel.org>
+ <6171754f-1b84-47e0-a4da-0d045ea7546e@linux.intel.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <3c0b6a08-cbaa-4e7e-8689-1fa716dd1525@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <6171754f-1b84-47e0-a4da-0d045ea7546e@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 24/11/2025 09:24, Krzysztof Kozlowski wrote:
-> On 21/11/2025 03:27, Ma Ke wrote:
->> nfc_genl_dump_targets() increments the device reference count via
-> 
-> Only in some cases, but you drop it unconditionally.
-> 
->> nfc_get_device() but fails to decrement it properly. nfc_get_device()
->> calls class_find_device() which internally calls get_device() to
->> increment the reference count. No corresponding put_device() is made
->> to decrement the reference count.
+On 24. 11. 25, 8:48, Mathias Nyman wrote:
+> On 11/24/25 08:42, Jiri Slaby wrote:
+>> Hmm, CCing TTY MAINTAINERS entry would not hurt.
 >>
->> Add proper reference count decrementing using nfc_put_device() when
->> the dump operation completes or encounters an error, ensuring balanced
->> reference counting.
+>> On 19. 11. 25, 22:29, Łukasz Bartosik wrote:
+>>> From: Łukasz Bartosik <ukaszb@chromium.org>
+>>>
+>>> When DbC is disconnected then xhci_dbc_tty_unregister_device()
+>>> is called. However if there is any user space process blocked
+>>> on write to DbC terminal device then it will never be signalled
+>>> and thus stay blocked indifinitely.
 >>
->> Found by code review.
-> 
-> Drop, there is no point nor need to say that humans did the work. This
-> actually rather suggests you used LLM and disguise your finding as "code
-> review".
-> 
-> No, LLM is not code review.
-
-Looks like LLM.
-
-> 
+>> indefinitely
 >>
->> Cc: stable@vger.kernel.org
->> Fixes: 4d12b8b129f1 ("NFC: add nfc generic netlink interface")
->> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
->> ---
->>  net/nfc/netlink.c | 5 +++++
->>  1 file changed, 5 insertions(+)
+>>> This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+>>> The tty_vhangup() wakes up any blocked writers and causes subsequent
+>>> write attempts to DbC terminal device to fail.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+>>> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+>>> ---
+>>> Changes in v2:
+>>> - Replaced tty_hangup() with tty_vhangup()
 >>
->> diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
->> index a18e2c503da6..9ae138ee91dd 100644
->> --- a/net/nfc/netlink.c
->> +++ b/net/nfc/netlink.c
->> @@ -159,6 +159,11 @@ static int nfc_genl_dump_targets(struct sk_buff *skb,
->>  
->>  	cb->args[0] = i;
->>  
->> +	if (rc < 0 || i >= dev->n_targets) {
->> +		nfc_put_device(dev);
->> +		cb->args[1] = 0;
+>> Why exactly?
 > 
-> Did you test it?
+> I recommended using tty_vhangup(), well actually tty_port_tty_vhangup() 
+> to solve
+> issue '2' you pointed out.
+> To me it looks like tty_vhangup() is synchronous so it won't schedule 
+> hangup work
+> and should be safe to call right before we destroy the port.
 
-I am pretty sure this is double put and thus bug. There is put in done().
+Oops, right, my cscope DB was old and lead me to tty_hangup() instead 
+(that schedules).
 
-Best regards,
-Krzysztof
+>> 2) you schedule a tty hangup work and destroy the port right after:
+>>>       tty_unregister_device(dbc_tty_driver, port->minor);
+>>>       xhci_dbc_tty_exit_port(port);
+>>>       port->registered = false;
+>> You should to elaborate how this is supposed to work?
+> 
+> Does tty_port_tty_vhangup() work here? it
+> 1. checks if tty is NULL
+> 2. is synchronous and should be safe to call before tty_unregister_device()
+
+Yes, this works for me.
+
+thanks,
+-- 
+js
+suse labs
 
