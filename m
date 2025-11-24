@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-196777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A083AC81FCE
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:56:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99883C821CA
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 796694E6A7F
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:56:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76A444E57D7
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724C02D23B8;
-	Mon, 24 Nov 2025 17:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEAC4315D26;
+	Mon, 24 Nov 2025 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJW+F9q4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JqDe2nvb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322102BD5BB
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFEC2BEC57
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764006970; cv=none; b=TVN9RrNbTBlEKr0nj/TXMu23Whj9Ihw13JkmGuRfqQiAkb/00uQKdoVB/TfBChh6lfCKGX6wJQVZV5l7fXDz9btxAFM7zCxhpR3Va0K7mNnKkPOdszIzu6mCqxVdbxxkBBG1XNeq5bAYrT3ABzVubAy18VR3+rwGReUGKP2FzHY=
+	t=1764009103; cv=none; b=lg0imFw27Hh7IwqBlt9akWsgqc9+3TBuv9OlxKPP/YkZB+uWev0t8AzfL4TSuJ438mTfDYxFT3q1hbt1V0o/2BAIPoDx4T/8VHQEiR48NrBkbQjpJzQiuQffd9fSGL2500jaE27NHZIL20QwaVm2qILcIhGnq/QQyG2movg/uCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764006970; c=relaxed/simple;
-	bh=AZXGTBa5OulODmd/k3ldh9ieppBt0TpxXDhl6Iofa3U=;
+	s=arc-20240116; t=1764009103; c=relaxed/simple;
+	bh=AV2DIaGKqqctutAG23Ad7/Z4o1Jh7D2JnIYEEvg1RWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnVWfr5cBbLxkYIMl8NJK8U1rXw05B0OJW45QLNlhDx6BfyXwtMD3CDaxKF2CqwUqnfZw956Gf0y3hLKok9mxt7ZNAfhAJDkrtPUOuI1q02FOLpAIU9rodi/LdocLuPar3cPtmFYr6C+SypxrN56EcS85ID6OiHeQ+gqgJOJUoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJW+F9q4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324DDC16AAE;
-	Mon, 24 Nov 2025 17:56:09 +0000 (UTC)
+	 MIME-Version; b=kXGrk8psyjmLq+hnFjOSbF4tcvS2nu0J/dZeU6wYUzHVj0efUTPGWzUOC3BP0KcXJlQE0XTxj7MnB0AWLRPmmWzOWiEvXY6GK6jwQUleb1rbSamkRtF/WqcLLVOpHNa9OkZ8jC4mFAjx4lIMn6v2h5pG9B4mbvsQ482Nk4Cv5eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JqDe2nvb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDC3C4CEF1;
+	Mon, 24 Nov 2025 18:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764006969;
-	bh=AZXGTBa5OulODmd/k3ldh9ieppBt0TpxXDhl6Iofa3U=;
+	s=k20201202; t=1764009103;
+	bh=AV2DIaGKqqctutAG23Ad7/Z4o1Jh7D2JnIYEEvg1RWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJW+F9q4WooIr1UpiA/Yedj1tYJhYgNwABVU4vs2lIz8pYN4KkI8aFaPPPTrhBIxq
-	 POUnzAUNDFNB+xetjySVjUFHegjanGSeYWSmUX4kNo2WcYXYp356oLHluG3BkyD9JH
-	 KwiM8fMFtev2rS4wHlTg08oy7bkfT3bGbPN1PRztwEIA9JoXUJBkMrutq0q8Lp6Nu7
-	 57XpgQfQMciLE3uXjS+9kB4ei+OcymMZe65Ip+3ldUTiiQox3WRi1BOL1il0E7IInb
-	 uv7YtT61Zb2VVpKff6Gw3w3qp/mzNG8UnIWBBwgu5NKqOsqhT/VHjiPrRaX8rBmMw1
-	 +d4noVF45XB6Q==
+	b=JqDe2nvbtbpHrn2O4k76BGwI8iMd+bwPjXm9RUwyyf0jMwzL8n4wD8m32IQjyIMpE
+	 BOFjdoc1mKNcn3cvUsS7B76wjsCeatul1yTKsbNW5cnaLjOGQ03wHU6Kpe/icJ9rg8
+	 sp1Ke/UEoAvPMD0GZp9NJJNXS69reUF86XddZ1uz4O6+cR881HPFaMglq698RzGZ1W
+	 2AdT6O/b3tdnRcxOoT+wigHnsbwmDplyEpS0YaCfx25ZA0c1e5ahhgr1hi0OGsIWlD
+	 ON6tkU7FYF8w8jmiduCt7XbbeHAQlnmoUGS459fyI0L27g2S+9PyDfpkgx7o1TMjSB
+	 dBrs747S7GxOA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] xfs: fix out of bounds memory read error in symlink repair
-Date: Mon, 24 Nov 2025 12:56:06 -0500
-Message-ID: <20251124175606.4173445-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ata: libata-scsi: Fix system suspend for a security locked drive
+Date: Mon, 24 Nov 2025 13:31:40 -0500
+Message-ID: <20251124183140.4185297-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251124175606.4173445-1-sashal@kernel.org>
-References: <2025112403-evaluate-bogged-d093@gregkh>
- <20251124175606.4173445-1-sashal@kernel.org>
+In-Reply-To: <2025112448-speller-puritan-f075@gregkh>
+References: <2025112448-speller-puritan-f075@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,91 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 678e1cc2f482e0985a0613ab4a5bf89c497e5acc ]
+[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
 
-xfs/286 produced this report on my test fleet:
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
- ==================================================================
- BUG: KFENCE: out-of-bounds read in memcpy_orig+0x54/0x110
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
- Out-of-bounds read at 0xffff88843fe9e038 (184B right of kfence-#184):
-  memcpy_orig+0x54/0x110
-  xrep_symlink_salvage_inline+0xb3/0xf0 [xfs]
-  xrep_symlink_salvage+0x100/0x110 [xfs]
-  xrep_symlink+0x2e/0x80 [xfs]
-  xrep_attempt+0x61/0x1f0 [xfs]
-  xfs_scrub_metadata+0x34f/0x5c0 [xfs]
-  xfs_ioc_scrubv_metadata+0x387/0x560 [xfs]
-  xfs_file_ioctl+0xe23/0x10e0 [xfs]
-  __x64_sys_ioctl+0x76/0xc0
-  do_syscall_64+0x4e/0x1e0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
 
- kfence-#184: 0xffff88843fe9df80-0xffff88843fe9dfea, size=107, cache=kmalloc-128
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
 
- allocated by task 3470 on cpu 1 at 263329.131592s (192823.508886s ago):
-  xfs_init_local_fork+0x79/0xe0 [xfs]
-  xfs_iformat_local+0xa4/0x170 [xfs]
-  xfs_iformat_data_fork+0x148/0x180 [xfs]
-  xfs_inode_from_disk+0x2cd/0x480 [xfs]
-  xfs_iget+0x450/0xd60 [xfs]
-  xfs_bulkstat_one_int+0x6b/0x510 [xfs]
-  xfs_bulkstat_iwalk+0x1e/0x30 [xfs]
-  xfs_iwalk_ag_recs+0xdf/0x150 [xfs]
-  xfs_iwalk_run_callbacks+0xb9/0x190 [xfs]
-  xfs_iwalk_ag+0x1dc/0x2f0 [xfs]
-  xfs_iwalk_args.constprop.0+0x6a/0x120 [xfs]
-  xfs_iwalk+0xa4/0xd0 [xfs]
-  xfs_bulkstat+0xfa/0x170 [xfs]
-  xfs_ioc_fsbulkstat.isra.0+0x13a/0x230 [xfs]
-  xfs_file_ioctl+0xbf2/0x10e0 [xfs]
-  __x64_sys_ioctl+0x76/0xc0
-  do_syscall_64+0x4e/0x1e0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
 
- CPU: 1 UID: 0 PID: 1300113 Comm: xfs_scrub Not tainted 6.18.0-rc4-djwx #rc4 PREEMPT(lazy)  3d744dd94e92690f00a04398d2bd8631dcef1954
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-4.module+el8.8.0+21164+ed375313 04/01/2014
- ==================================================================
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
 
-On further analysis, I realized that the second parameter to min() is
-not correct.  xfs_ifork::if_bytes is the size of the xfs_ifork::if_data
-buffer.  if_bytes can be smaller than the data fork size because:
-
-(a) the forkoff code tries to keep the data area as large as possible
-(b) for symbolic links, if_bytes is the ondisk file size + 1
-(c) forkoff is always a multiple of 8.
-
-Case in point: for a single-byte symlink target, forkoff will be
-8 but the buffer will only be 2 bytes long.
-
-In other words, the logic here is wrong and we walk off the end of the
-incore buffer.  Fix that.
-
-Cc: stable@vger.kernel.org # v6.10
-Fixes: 2651923d8d8db0 ("xfs: online repair of symbolic links")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/symlink_repair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c | 8 ++++++++
+ include/linux/ata.h       | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/fs/xfs/scrub/symlink_repair.c b/fs/xfs/scrub/symlink_repair.c
-index 5902398185a89..df629892462fe 100644
---- a/fs/xfs/scrub/symlink_repair.c
-+++ b/fs/xfs/scrub/symlink_repair.c
-@@ -184,7 +184,7 @@ xrep_symlink_salvage_inline(
- 	    sc->ip->i_disk_size == 1 && old_target[0] == '?')
- 		return 0;
- 
--	nr = min(XFS_SYMLINK_MAXLEN, xfs_inode_data_fork_size(ip));
-+	nr = min(XFS_SYMLINK_MAXLEN, ifp->if_bytes);
- 	memcpy(target_buf, ifp->if_data, nr);
- 	return nr;
- }
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 7d2910659515c..0ee18a2358dbc 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -996,6 +996,14 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
+ 		return;
+ 	}
++
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
++	}
++
+ 	/* Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+ 	 */
+diff --git a/include/linux/ata.h b/include/linux/ata.h
+index e3050e153a716..ad14cac9b934c 100644
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -558,6 +558,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 -- 
 2.51.0
 
