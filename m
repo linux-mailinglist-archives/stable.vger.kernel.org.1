@@ -1,147 +1,207 @@
-Return-Path: <stable+bounces-196745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32F1C80DF2
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:56:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE19C80E07
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 102AB34245B
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:56:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43BAF4E2F30
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2719E30BB82;
-	Mon, 24 Nov 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E428930BF68;
+	Mon, 24 Nov 2025 13:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA/t2tvJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDIpPF/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D933E30B533
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F8730BF67
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992596; cv=none; b=UME9fAdTSibNiDbsO75x+WURX8yUNes+iNazvIzXmqQWScl7zRwUg3elFf0EKZC13cVDw9ZPBIBtyQjcKxRpxd6ziU+BOo5j/vwc1m33nk/VE27vrV6uxykGyWXHIAH3QuKfbeGYlH1knaB8jc4KS0uP0laP1GgzoGn6vYvQrd0=
+	t=1763992688; cv=none; b=vB2kBSRy3/ruypZQ5PaPkVmXR6rN3bBTKNAn6AgafEONCm64+nFICUKdaHupCUGsPNWBRh2RduHPcGa1P+B2kMwq6moN+09mAzy4NoHLvhwHLwzpDAGi5eHsRfUNghLZhw67esaji6bax71LRuJc2ePx/L+jX2FGWVjW3I+cBJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992596; c=relaxed/simple;
-	bh=6abxCqMV3RTijRa4odLtSXZrub2R2YsRgbUQFHRyzH4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lcmIBhsS0HWCPdAxCrPaSgve0MyakRzH6jbBKT69NxCwmZwL5xETjxS/eExtrDDrE0lOu9Ar6pLhyUFFumKwXct5wc2+3+hgjrwFDlF2V+XIf1IvJetzj6mtjHwE60/iJ2k09NPmH24g/nLAGvnorYOpCAsVo59TAUVLkD376IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA/t2tvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243E5C4CEF1;
-	Mon, 24 Nov 2025 13:56:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763992596;
-	bh=6abxCqMV3RTijRa4odLtSXZrub2R2YsRgbUQFHRyzH4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=XA/t2tvJxBSTW520KduZX3OxShmEvAh6Jg2cl019koyYWUyrjnKmWomMOfGpCXB75
-	 x3rU7qoCDDlTPTtc2hmu4HKf4dr46ZjZq6OfubkloQOWR2j/1qxhdimI+gET2WugXO
-	 /jWsH2JMwvCjEIg5O0VPHjT2UGoLVvWX3Fd5w30I=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Prevent Gating DTBCLK before It Is Properly" failed to apply to 6.12-stable tree
-To: Jerry.Zuo@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,charlene.liu@amd.com,daniel.wheeler@amd.com,roman.li@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:56:25 +0100
-Message-ID: <2025112425-aspirin-conduit-e44b@gregkh>
+	s=arc-20240116; t=1763992688; c=relaxed/simple;
+	bh=jH2AxFvj9FK1wwbRSCm+4BWILbLVHHZ1oPWZAimqbi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eLMHkeuH/s+y5TPgGwHqsi8X0M8LeL9O2Nob/M2x8MXOJ5ZxDXH9b/Uf9V4FNq+3p8eiGVZHOTNo/ogcn2Vvkth+kkwUs6gVRBowy5Nz447QKLg3S3k/xOQsrbCl9lzpYZF/d0jeF0QAsX9UzZfsBx9+AFpTX8X7r9uL6GdjxZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDIpPF/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC4C4CEF1;
+	Mon, 24 Nov 2025 13:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763992687;
+	bh=jH2AxFvj9FK1wwbRSCm+4BWILbLVHHZ1oPWZAimqbi0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WDIpPF/jSgYmeTCYWbDH96GOkZoH4aHDi9ZHJdRTIms9WCI4RAwHdEacNBVWkDfFu
+	 ivVgSfYkPwfo08jrEXObIqWrerwrryN0F/Q4T4EWDx6DUgJ//ScZNH5o3S20HqCQnf
+	 sNC18iXSU+i6ush87zA5Ai2FbGDBiRhNmBmO9oIhGMNc3ieYsTMgB4fl/KVhZtZokR
+	 +xoVaj/XtY/K0hStlQxhMqKnnsNZCZrlDBc87Drp8cCf5VC2UniBLvlmHMVjieGY9U
+	 MleuU0mNtfJxN2RFctHFTqEOrkBfFzUK9Y8hCbZtcZSpeu9ENTIa63JNs1yGGmB1td
+	 FAkHnxIK9IEIQ==
+Message-ID: <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org>
+Date: Mon, 24 Nov 2025 14:58:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
+ hang in wait_sb_inodes()
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev,
+ athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-3-joannelkoong@gmail.com>
+ <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
+ <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 11/20/25 22:20, Joanne Koong wrote:
+> On Thu, Nov 20, 2025 at 12:23 PM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+>>
+>> On 11/20/25 19:42, Joanne Koong wrote:
+>>> During superblock writeback waiting, skip inodes where writeback may
+>>> take an indefinite amount of time or hang, as denoted by the
+>>> AS_WRITEBACK_MAY_HANG mapping flag.
+>>>
+>>> Currently, fuse is the only filesystem with this flag set. For a
+>>> properly functioning fuse server, writeback requests are completed and
+>>> there is no issue. However, if there is a bug in the fuse server and it
+>>> hangs on writeback, then without this change, wait_sb_inodes() will wait
+>>> forever.
+>>>
+>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+>>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+>>> ---
+>>>    fs/fs-writeback.c | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+>>> index 2b35e80037fe..eb246e9fbf3d 100644
+>>> --- a/fs/fs-writeback.c
+>>> +++ b/fs/fs-writeback.c
+>>> @@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *sb)
+>>>                if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+>>>                        continue;
+>>>
+>>> +             if (mapping_writeback_may_hang(mapping))
+>>> +                     continue;
+>>
+>> I think I raised it in the past, but simply because it could happen, why
+>> would we unconditionally want to do that for all fuse mounts? That just
+>> seems wrong :(
+> 
+> I think it's considered a userspace regression if we don't revert the
+> program behavior back to its previous version, even if it is from the
+> program being incorrectly written, as per the conversation in [1].
+> 
+> [1] https://lore.kernel.org/regressions/CAJnrk1Yh4GtF-wxWo_2ffbr90R44u0WDmMAEn9vr9pFgU0Nc6w@mail.gmail.com/T/#m73cf4b4828d51553caad3209a5ac92bca78e15d2
+> 
+>>
+>> To phrase it in a different way, if any writeback could theoretically
+>> hang, why are we even waiting on writeback in the first place?
+>>
+> 
+> I think it's because on other filesystems, something has to go
+> seriously wrong for writeback to hang, but on fuse a server can easily
+> make writeback hang and as it turns out, there are already existing
+> userspace programs that do this accidentally.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Sorry, I only found the time to reply now. I wanted to reply in more 
+detail why what you propose here does not make sense to me.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x cfa0904a35fd0231f4d05da0190f0a22ed881cce
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112425-aspirin-conduit-e44b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
+I understand that it might make one of the weird fuse scenarios (buggy 
+fuse server) work again, but it sounds like we are adding more hacks on 
+top of broken semantics. If we want to tackle the writeback problem, we 
+should find a proper way to deal with that for good.
 
 
+(1) AS_WRITEBACK_MAY_HANG semantics
 
-thanks,
+As discussed in the past, writeeback of pretty much any filesystem might 
+hang forever on I/O errors.
 
-greg k-h
+On network filesystems apparently as well fairly easily.
 
------------------- original commit in Linus's tree ------------------
+It's completely unclear when to set AS_WRITEBACK_MAY_HANG.
 
-From cfa0904a35fd0231f4d05da0190f0a22ed881cce Mon Sep 17 00:00:00 2001
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Date: Thu, 18 Sep 2025 16:25:45 -0400
-Subject: [PATCH] drm/amd/display: Prevent Gating DTBCLK before It Is Properly
- Latched
+So as writeback on any filesystem may hang, AS_WRITEBACK_MAY_HANG would 
+theoretically have to be set on any mapping out there.
 
-[why]
-1. With allow_0_dtb_clk enabled, the time required to latch DTBCLK to 600 MHz
-depends on the SMU. If DTBCLK is not latched to 600 MHz before set_mode completes,
-gating DTBCLK causes the DP2 sink to lose its clock source.
+The semantics don't make sense to me, unfortuantely.
 
-2. The existing DTBCLK gating sequence ungates DTBCLK based on both pix_clk and ref_dtbclk,
-but gates DTBCLK when either pix_clk or ref_dtbclk is zero.
-pix_clk can be zero outside the set_mode sequence before DTBCLK is properly latched,
-which can lead to DTBCLK being gated by mistake.
 
-[how]
-Consider both pixel_clk and ref_dtbclk when determining when it is safe to gate DTBCLK;
-this is more accurate.
+(2) AS_WRITEBACK_MAY_HANG usage
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4701
-Fixes: 5949e7c4890c ("drm/amd/display: Enable Dynamic DTBCLK Switch")
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d04eb0c402780ca037b62a6aecf23b863545ebca)
-Cc: stable@vger.kernel.org
+It's unclear in which scenarios we would not want to wait for writeback, 
+and what the effects of that are.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index b11383fba35f..1eb04772f5da 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -394,6 +394,8 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 	display_count = dcn35_get_active_display_cnt_wa(dc, context, &all_active_disps);
- 	if (new_clocks->dtbclk_en && !new_clocks->ref_dtbclk_khz)
- 		new_clocks->ref_dtbclk_khz = 600000;
-+	else if (!new_clocks->dtbclk_en && new_clocks->ref_dtbclk_khz > 590000)
-+		new_clocks->ref_dtbclk_khz = 0;
- 
- 	/*
- 	 * if it is safe to lower, but we are already in the lower state, we don't have to do anything
-@@ -435,7 +437,7 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 
- 			actual_dtbclk = REG_READ(CLK1_CLK4_CURRENT_CNT);
- 
--			if (actual_dtbclk) {
-+			if (actual_dtbclk > 590000) {
- 				clk_mgr_base->clks.ref_dtbclk_khz = new_clocks->ref_dtbclk_khz;
- 				clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
- 			}
-diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index de6d62401362..c899c09ea31b 100644
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -1411,7 +1411,7 @@ static void dccg35_set_dtbclk_dto(
- 				__func__, params->otg_inst, params->pixclk_khz,
- 				params->ref_dtbclk_khz, req_dtbclk_khz, phase, modulo);
- 
--	} else {
-+	} else if (!params->ref_dtbclk_khz && !req_dtbclk_khz) {
- 		switch (params->otg_inst) {
- 		case 0:
- 			REG_UPDATE(DCCG_GATE_DISABLE_CNTL5, DTBCLK_P0_GATE_DISABLE, 0);
+For example, wait_sb_inodes() documents "Data integrity sync. Must wait 
+for all pages under writeback, because there may have been pages dirtied 
+before our sync call ...".
 
+It's completely unclear why it might be okay to skip that simply because 
+a mapping indicated that waiting for writeback is maybe more sketchy 
+than on other filesystems.
+
+But what concerns me more is what we do about other 
+folio_wait_writeback() callers. Throwing in AS_WRITEBACK_MAY_HANG 
+wherever somebody reproduced a hang is not a good approach.
+
+We need something more robust where we can just not break the kernel in 
+weird ways because user space is buggy or malicious.
+
+
+(3) Other operations
+
+If my memory serves me right, there are similar issues on readahead. It 
+wouldn't surprise me if there are yet other operations where fuse Et al 
+can trick the kernel into hanging forever.
+
+So I'm wondering if there is more to this than just "writeback may hang".
+
+
+
+Obviously, getting the kernel to hang, controlled by user space that 
+easily, is extremely unpleasant and probably the thing that I really 
+dislike about fuse. Amir mentioned that maybe the iomap changes from 
+Darrick might improve the situation in the long run, I would hope it 
+would allow for de-nastifying fuse in that sense, at least in some 
+scenarios.
+
+
+I cannot really say what would be better here (maybe aborting writeback 
+after a short timeout), but AS_WRITEBACK_MAY_HANG to then just skip 
+selected waits for writeback is certainly something that does not make 
+sense to me.
+
+
+Regarding the patch here, is there a good reason why fuse does not have 
+to wait for the "Data integrity sync. Must wait for all pages under 
+writeback ..."?
+
+IOW, is the documented "must" not a "must" for fuse? In that case, 
+having a flag that states something like that that 
+"AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we would want 
+to add to avoid waiting for writeback with clear semantics why it is ok 
+in that specific scenario.
+
+Hope that helps, and happy to be convinced why AS_WRITEBACK_MAY_HANG is 
+the right thing to do in this way proposed here.
+
+-- 
+Cheers
+
+David
 
