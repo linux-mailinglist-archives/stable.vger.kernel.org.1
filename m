@@ -1,163 +1,219 @@
-Return-Path: <stable+bounces-196704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0067C80C2D
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:29:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AA2C80C33
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E6B29349BAE
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6213A7F6B
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193A91D63D1;
-	Mon, 24 Nov 2025 13:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727671DF738;
+	Mon, 24 Nov 2025 13:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCwb3P1U"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="aozZyIQG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9A31991B6
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763990766; cv=none; b=gfS501Vqk253xFWnS2Ux/8NqNAEufWD1oSwNt4EFeJ8GWnMFD0Vo1Tj2gkVNZjOryGd5DhQYHb6Uxm4UV0jSZPjad4Vz9A3SBIjqPlJ+fj23TSf80VFndTkv9Vzi+hAu8duGDYIq+SbxyKw0OzGGr1WJeT1ZcqzUC6YxmO/X/MM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763990766; c=relaxed/simple;
-	bh=AUHvkPq6WHLgufEu+1CbQLXZNjZ9jo4CeCvQCxXFFZQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BpgW1Fgquqx9jsSUPaDURy/C+tNeIIVAXd+fAv5dn0yGjInGE7dYyVMda4DcrCK+N+dlvUAQ9knu3sBQrZCp1oWQ62tCZYdzuop/sPBKfEnIegdCdhTSHcNucytj5/3T8ynJdri197hB0SUPzCpHPpOrpwzgHhSNQUVKOrKZxqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCwb3P1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21396C4CEF1;
-	Mon, 24 Nov 2025 13:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763990766;
-	bh=AUHvkPq6WHLgufEu+1CbQLXZNjZ9jo4CeCvQCxXFFZQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=zCwb3P1UObJhJ0K/BnEQ4gyUyCsTdeWBQCeHdEHvQ3EIpiEq/6GJbtbZlCJbk029O
-	 EAwKKImp2mS5j26H5Sx8bOPBIRbPKWGawL7H+NhTYZQoSgogTUkVrVlllJNIZbSvzG
-	 +PMxGlTYXqiHg5VPXxkrMAMmgh7QM69avwZ9InSM=
-Subject: FAILED: patch "[PATCH] xfs: fix out of bounds memory read error in symlink repair" failed to apply to 6.12-stable tree
-To: djwong@kernel.org,cem@kernel.org,hch@lst.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:26:03 +0100
-Message-ID: <2025112403-evaluate-bogged-d093@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACAD1E5018;
+	Mon, 24 Nov 2025 13:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=91.207.212.93
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763990864; cv=fail; b=ZxbvwsADxY1X5jD24Igmha9s6Srh2dGybOIYodCf03sl4eRNpoTeJ8JjQ7dXSoHuA+yp7OJyeu+bzswGxJP+Sa8JRMBO0rEcCYx/oNS4rhm8ce87+Cf1d42ZHizGzrsDxct9FhM3ySrr+Q+1pJbnW2t0b+EoXRZFXRd8ZZwIhIk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763990864; c=relaxed/simple;
+	bh=Sy1wSDJ17F5UdMVlAqJM0vhddhub7FYW0VEZbF/MHj8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O6JTZgypbn4lwLxHiZwbaSWuHDSaccrFAylX+OzuDX1/hfAl/H5Li+NSbntzeeLC5jn+xutE39S3P8q4sWZCnlD80YTffr8/E62gef/9k9k3IYhin8a6fWQ98r0KtwzAxp0d4gYRHwIl+z6Mv9J5YOO5uR+g46dFCVTBYPVwFcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=aozZyIQG; arc=fail smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AODKSAN2553085;
+	Mon, 24 Nov 2025 14:27:11 +0100
+Received: from mrwpr03cu001.outbound.protection.outlook.com (mail-francesouthazon11011009.outbound.protection.outlook.com [40.107.130.9])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 4ampp18msk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 24 Nov 2025 14:27:11 +0100 (CET)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vLQDTnUIlCWXsQjZFIPlx0OsEswR30XqeSw3ySpE6EaI6/nWzAoBk6dQvlAhk+uHB0kjyB/bjMVoVKsR6EEcSQWEiIu7A90Tw8V0g0pj1Q6kh7HAlFhYMd/yVPZV4+Aq5Nm2/48EI8FUdOX18HC5YrKWRbJTf9+2gQcIFrZQqnwe2OjLAajVxGSwX57qJgyfOXn+1D1pikIZWBVmb9jCcyrwv6gpXziPXwARJRwZSE/9EqLN2B2M3Avef9jIpw5kCIGwWqZ5PYoe23KagFimKs8vdJrD1+v3ojkroTsFcD0HgHgNjn9WnLz/l352EzecSbLwOKMhYCTOPahI6cO3bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5L4d7/TBGvAVMuWwDKaNwuans4sDa0Ub8dXOEkOpSZc=;
+ b=Z7PcMmsZgFTu0sgxvrbPzlyd1b7ibauaZ0zLqMFIX8cK4QExzL/j1Xv4ZCe9loofq8VDvXGZAi2Ebf3Cde53UK0UBoAE/iOSCQtj7Cl0N4n7gt4Q/lhxmbuUELuVENVqLvsn+RN0LxC5m6ykY5E1iW6ZNKhQ4Gr0DPQ1QuPRMKdNhZdmzQ6qvg+JUPVsTsILdMSxfbzobeINr63QMo6e8Eog3tmgBtbkjT8rO7hrpl42tfFC1WcxJoR2zVVG8S6tYcJMS59TS7wZH174ta+5SG3koKMdni1pk5BSajocmht6KrjaRbDIXZt35P+wJkoIRUJY36aLBhPS4EiNzrd4hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=gmail.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5L4d7/TBGvAVMuWwDKaNwuans4sDa0Ub8dXOEkOpSZc=;
+ b=aozZyIQGuKvhuMbx18Jtqt839VucKsDCCaY9OPe36glep+dUULDCA8aNtKYxPWqQjNgQlIYWvcHbjr46So2k6+CbdW4t9IyqNmznDfknyc3zsbJxKk7B16bdC3L2nYhNWb8+dN33A5BoAtmOCFCt7wkQwgcPDQbhtAI+bwB8FB2Sdcht2Gxrk4zHl4GTYdavI8Y7xiEzwWSZlxEQARg8YFdtI3qdF1PvSjEnk6xbrG33U4Uiy8WxnE7KW53togTjiPJHMx9rNrifl4eebDc4/xJxfXKMH93tXeR17PlLYqabOnCMS2hbl4pxUnSHiizxLqanuu8t2c+6eA0VeZK27g==
+Received: from AS4P192CA0012.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5da::20)
+ by AS1PR10MB5650.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:479::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
+ 2025 13:27:08 +0000
+Received: from AMS0EPF000001A4.eurprd05.prod.outlook.com
+ (2603:10a6:20b:5da:cafe::8e) by AS4P192CA0012.outlook.office365.com
+ (2603:10a6:20b:5da::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.17 via Frontend Transport; Mon,
+ 24 Nov 2025 13:27:04 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AMS0EPF000001A4.mail.protection.outlook.com (10.167.16.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.7 via Frontend Transport; Mon, 24 Nov 2025 13:27:07 +0000
+Received: from STKDAG1NODE1.st.com (10.75.128.132) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 24 Nov
+ 2025 14:27:39 +0100
+Received: from localhost (10.252.8.120) by STKDAG1NODE1.st.com (10.75.128.132)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 24 Nov
+ 2025 14:27:07 +0100
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+To: Alain Volmat <alain.volmat@foss.st.com>,
+        Raphael Gallais-Pou
+	<rgallaispou@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+CC: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
+Date: Mon, 24 Nov 2025 14:27:04 +0100
+Message-ID: <176399066927.969838.15946277530835988104.b4-ty@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250922122012.27407-1-johan@kernel.org>
+References: <20250922122012.27407-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE1.st.com
+ (10.75.128.132)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A4:EE_|AS1PR10MB5650:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29d8aa69-958b-45a1-a674-08de2b5d2a9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cFVxbnpNTE9aSFF4dHhCREVWdEs0aEFzVndIVldrZWRRaTF5MXV6TE9CSTVx?=
+ =?utf-8?B?NE02a1ZGemRUZU1qaU9DWnEzcStOTlNBaDlNWFJkeU9kYlFodUFIUlF3Vjh3?=
+ =?utf-8?B?SW4wcHY4Z0dHSUl0b04vNE0wWEVFaGlhSnBtb3hvMjBSQzgwVFpDL0lYbGVU?=
+ =?utf-8?B?dWFvbWliSVhMZWg2K3hZUHRJalFVKy9FaGw2dWFRVVpzVVJCREo1aFFuUUdu?=
+ =?utf-8?B?amh0NVIwQ2dubFpidTRDWjk1UENQTGhKdE9odjNEeVZPU2JncHJwYWhpM0Vh?=
+ =?utf-8?B?TnB2ZmJCL1l3ZHJwbWgwQUc1bnNOQ2RINUN0RWNRM3M5dFpySEdMVE0zU3E5?=
+ =?utf-8?B?TXdCeDIvRjZaTzI5bWI2TWlIWUZyTEwxcDVERS9BUithMUc2ekt0bE9rdVpY?=
+ =?utf-8?B?cXdSQU1ONjJFNkp1MzRSRk05Yko3ZFlhLzZ4OHl1VzA5bzFTK2c5NlJVUjdk?=
+ =?utf-8?B?Y2UzaE1Jcm9SNTg0bTc4Y0FFUWVKa0tPdjROWmRIYWxtN1ZWbUt0cGk5eVEy?=
+ =?utf-8?B?RHFTMENTQUFza0N3OUUvRWMyZUZRMWJWOExGZDQ2Uk5tYllvRkdRbzJ2VWlU?=
+ =?utf-8?B?N0tJVGlqZjNNdVVxVkk2SHA1d1ovbWFjZllzc1o2eXl5UmR4Z0gyYTBwRjR4?=
+ =?utf-8?B?TEpJbHZTd2JNekNJQUFTQ0d6VWd6NzFGTlhubzVmeWNYVmEyZ1ROUE05UktX?=
+ =?utf-8?B?VGd1T3FvUUp2WEJNU0tPQlJGUCtVK0xSaURsVHBraThsVlcwNTVoOFhPKzZm?=
+ =?utf-8?B?RXZ5ZDV0cjNrMjIvSzNadVVzbjZDOVU5MmNkWjlORytmaTBRZ0FDN3loNzBP?=
+ =?utf-8?B?ZWZ3V1lPQjNsRk9ObWxKdnhSNG5hWCtIdHQvaFZianlVcmpYWFpiWHA3OTM2?=
+ =?utf-8?B?amo0dG1yUjlqNnBEazBiYTBOZ0JJcjVxVkl5ajNPcjIrdXE0Yk9ONTUzc0hi?=
+ =?utf-8?B?OGd6WDMrUzBFYmxjRlhKYlBndjhLQk5OcHN6bFVXOWh1OGQ2VG1jSURSaGVZ?=
+ =?utf-8?B?cHdLdWUvaUcrdGhRajhLTGx1VE9oTzRXd3Z5bHowcWVQdS82bEdCMjFXZGhp?=
+ =?utf-8?B?aWNQZ0huL25xL29wbE82ZFhQaUhNV1A3RFpBNlg0VGFBZzVVdkxURHNaQ0dX?=
+ =?utf-8?B?K2E5WEMrKzFYRmJPSXB2bUZtMXVkekJac3gxdUZWUVBNcHloVTh6UUFEcEVr?=
+ =?utf-8?B?QmdSMFM3elA1UVB1MlY4d2cvbWtwa1RSSVdNeGRLNWlocU83aUtXRXhudldm?=
+ =?utf-8?B?Z3F6TWVVTjJrRnptNjZhUTRZU0MyTDJ6cWNHSk9wdERLamY0RHZxdENla3VH?=
+ =?utf-8?B?RDBOQWh6SkFKRVE2YTRmMjdwV29scTJLKzl5TmFkTXJOTHRWQjI3RFBXL1Zv?=
+ =?utf-8?B?bXhVKzVsNGQzN3ZhbnhYdFV1ZFJubVNPQ3pDektrUGZPWWxrRE1vQ1U3WWZh?=
+ =?utf-8?B?V3U1d1ZOeERJRFpsbWo4akNxdE9GYU9aRXFGaG9NbE9kT2t0S3cvSGRwb2RL?=
+ =?utf-8?B?ZW10WE9vSmw0aVdEdGtMeDhTeE4vb2hqRU52SUlsenNObUViNVFEdFpqUTk4?=
+ =?utf-8?B?Tk9ybGZYMVdvbjREQllKUUQ0bTA2UnFBU0dkNUtrZzJBTHJMQ1h6enRMN2ZF?=
+ =?utf-8?B?UWt1Zmd0ZWlNcnpSY1ZrK1JSY01xNkUvWmJvWkZMaTEyMjUvWFl4a0FzZ2NI?=
+ =?utf-8?B?VTlFeTRlcXhXRXdQelhWZTFHVkxxWjluY0dHUUo1YmdJVUJIaEZiNSttVDh6?=
+ =?utf-8?B?QmNUUHIyQVgvRGJOZ0NsSngwUnlPSkhhSlRsYW5CMG9WbGo1Sjk0RU41dmJI?=
+ =?utf-8?B?d2dueWtGbDZic0hoZ3R0SkJBUFdPenNaYTE1dmY3THV5NjJEL3ByM2laSDRD?=
+ =?utf-8?B?ZURJeGJrWUNudVQ1TmV3Zzk0dmttNktocHMrYTNmSFRmclhWaU9JbHZIUEZJ?=
+ =?utf-8?B?UXBrT01Va0JkMU9NdXdLOHl4L2ZxaEZrVFN5c2NtWUUvSVF2VTBrSFJBU28x?=
+ =?utf-8?B?NlRmVEl2Z2V0UzRQa0pCL3RBeFZPMjI4T29uaEhvaW1DWEFZMVMxajFoRGdI?=
+ =?utf-8?B?bnFQdGxPVnN5c2VqemhQRk9qc1FFN08vYXlEdFE5cXIyejJBc1dKTXRXVFFR?=
+ =?utf-8?Q?zRwE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 13:27:07.9075
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29d8aa69-958b-45a1-a674-08de2b5d2a9a
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A4.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR10MB5650
+X-Proofpoint-ORIG-GUID: ydihW6bPtM8pbWFNtkKIeRN4ccCTx8vF
+X-Authority-Analysis: v=2.4 cv=Oc2VzxTY c=1 sm=1 tr=0 ts=69245d2f cx=c_pps
+ a=xxdOaL8irGPQW3NhSCKIyQ==:117 a=uCuRqK4WZKO1kjFMGfU4lQ==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=anivtgf3n30A:10 a=IkcTkHD0fZMA:10
+ a=6UeiqGixMTsA:10 a=s63m1ICgrNkA:10 a=KrXZwBdWH7kA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=8b9GpE9nAAAA:8 a=Z349-iRFxQ8NQG26efYA:9
+ a=QEXdDO2ut3YA:10 a=T3LWEMljR5ZiDmsYVIUa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDExOCBTYWx0ZWRfX71SCYcgwAHiK
+ cjehK8Y7y/r8OGNn92IhuxNDGZGC4ZlWBqxWFPeP2D4W6DX1btPM3uKcavJVtJjexO9FFjo/3zs
+ 4a3PmtCCpit+ACumk+PsC8ovOmXtvbGqAL/OQmUxEWiaB+IZjFUjYf/2C69Dd2Elk3Caq3OMOJR
+ ehGNtTfdMMQ2nsBBZv8kZE1Tk5oHrn4FOugaKljjjDDStxcllZ1giB/s6dk+Lr2jmCa9S+cmh6E
+ kxUaR+BLdLkfT7ZIws2HZ10O9OP8+cELdcuBbiD1/8WZ+j6xuc2DFNRUed4NOCQh9I0j9TQq9Xt
+ vI9TD9OFXJjXk9qjx/PoJsnGjftLXw9mq5QhOWuc/uttnTn/dmou2BtYynvZ3+A160YA+mzgsqx
+ AsSD83REy3cDXasKZQz19rUjrNSudg==
+X-Proofpoint-GUID: ydihW6bPtM8pbWFNtkKIeRN4ccCTx8vF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-24_05,2025-11-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 clxscore=1011 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511240118
 
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Mon, 22 Sep 2025 14:20:12 +0200, Johan Hovold wrote:
+> Make sure to drop the references taken to the vtg devices by
+> of_find_device_by_node() when looking up their driver data during
+> component probe.
+> 
+> Note that holding a reference to a platform device does not prevent its
+> driver data from going away so there is no point in keeping the
+> reference after the lookup helper returns.
+> 
+> [...]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi Johan,
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 678e1cc2f482e0985a0613ab4a5bf89c497e5acc
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112403-evaluate-bogged-d093@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Applied, thanks!
 
-Possible dependencies:
+[1/1] drm: sti: fix device leaks at component probe
+      commit: 620a8f131154250f6a64a07d049a4f235d6451a5
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 678e1cc2f482e0985a0613ab4a5bf89c497e5acc Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Wed, 12 Nov 2025 08:35:18 -0800
-Subject: [PATCH] xfs: fix out of bounds memory read error in symlink repair
-
-xfs/286 produced this report on my test fleet:
-
- ==================================================================
- BUG: KFENCE: out-of-bounds read in memcpy_orig+0x54/0x110
-
- Out-of-bounds read at 0xffff88843fe9e038 (184B right of kfence-#184):
-  memcpy_orig+0x54/0x110
-  xrep_symlink_salvage_inline+0xb3/0xf0 [xfs]
-  xrep_symlink_salvage+0x100/0x110 [xfs]
-  xrep_symlink+0x2e/0x80 [xfs]
-  xrep_attempt+0x61/0x1f0 [xfs]
-  xfs_scrub_metadata+0x34f/0x5c0 [xfs]
-  xfs_ioc_scrubv_metadata+0x387/0x560 [xfs]
-  xfs_file_ioctl+0xe23/0x10e0 [xfs]
-  __x64_sys_ioctl+0x76/0xc0
-  do_syscall_64+0x4e/0x1e0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- kfence-#184: 0xffff88843fe9df80-0xffff88843fe9dfea, size=107, cache=kmalloc-128
-
- allocated by task 3470 on cpu 1 at 263329.131592s (192823.508886s ago):
-  xfs_init_local_fork+0x79/0xe0 [xfs]
-  xfs_iformat_local+0xa4/0x170 [xfs]
-  xfs_iformat_data_fork+0x148/0x180 [xfs]
-  xfs_inode_from_disk+0x2cd/0x480 [xfs]
-  xfs_iget+0x450/0xd60 [xfs]
-  xfs_bulkstat_one_int+0x6b/0x510 [xfs]
-  xfs_bulkstat_iwalk+0x1e/0x30 [xfs]
-  xfs_iwalk_ag_recs+0xdf/0x150 [xfs]
-  xfs_iwalk_run_callbacks+0xb9/0x190 [xfs]
-  xfs_iwalk_ag+0x1dc/0x2f0 [xfs]
-  xfs_iwalk_args.constprop.0+0x6a/0x120 [xfs]
-  xfs_iwalk+0xa4/0xd0 [xfs]
-  xfs_bulkstat+0xfa/0x170 [xfs]
-  xfs_ioc_fsbulkstat.isra.0+0x13a/0x230 [xfs]
-  xfs_file_ioctl+0xbf2/0x10e0 [xfs]
-  __x64_sys_ioctl+0x76/0xc0
-  do_syscall_64+0x4e/0x1e0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- CPU: 1 UID: 0 PID: 1300113 Comm: xfs_scrub Not tainted 6.18.0-rc4-djwx #rc4 PREEMPT(lazy)  3d744dd94e92690f00a04398d2bd8631dcef1954
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-4.module+el8.8.0+21164+ed375313 04/01/2014
- ==================================================================
-
-On further analysis, I realized that the second parameter to min() is
-not correct.  xfs_ifork::if_bytes is the size of the xfs_ifork::if_data
-buffer.  if_bytes can be smaller than the data fork size because:
-
-(a) the forkoff code tries to keep the data area as large as possible
-(b) for symbolic links, if_bytes is the ondisk file size + 1
-(c) forkoff is always a multiple of 8.
-
-Case in point: for a single-byte symlink target, forkoff will be
-8 but the buffer will only be 2 bytes long.
-
-In other words, the logic here is wrong and we walk off the end of the
-incore buffer.  Fix that.
-
-Cc: stable@vger.kernel.org # v6.10
-Fixes: 2651923d8d8db0 ("xfs: online repair of symbolic links")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-diff --git a/fs/xfs/scrub/symlink_repair.c b/fs/xfs/scrub/symlink_repair.c
-index 5902398185a8..df629892462f 100644
---- a/fs/xfs/scrub/symlink_repair.c
-+++ b/fs/xfs/scrub/symlink_repair.c
-@@ -184,7 +184,7 @@ xrep_symlink_salvage_inline(
- 	    sc->ip->i_disk_size == 1 && old_target[0] == '?')
- 		return 0;
- 
--	nr = min(XFS_SYMLINK_MAXLEN, xfs_inode_data_fork_size(ip));
-+	nr = min(XFS_SYMLINK_MAXLEN, ifp->if_bytes);
- 	memcpy(target_buf, ifp->if_data, nr);
- 	return nr;
- }
-
+Best regards,
+-- 
+Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 
