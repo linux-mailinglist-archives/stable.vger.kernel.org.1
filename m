@@ -1,157 +1,154 @@
-Return-Path: <stable+bounces-196687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A456C80853
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:43:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97671C809DD
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:59:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE04F3A6A0D
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 12:43:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2D084E4BA9
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 12:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262913002DE;
-	Mon, 24 Nov 2025 12:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F131301473;
+	Mon, 24 Nov 2025 12:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="JPkcjyMb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g/1/rsti"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Yqz87Az1"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888DD2FFFAC;
-	Mon, 24 Nov 2025 12:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92960285C8B
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 12:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763988187; cv=none; b=MFh2L95UYdYDMbWNXyBHdVnM4bSY0LTfiY0Ld5PbMXI3npCGNbKHWpERHsc0v09b+qXavX3e3lq6DkMPveO0CBuHYbNXj3sKxwX81WhJFTOLEWJGi0syTpF4pBTVXigJMlCgfrPlY4D109MlDrhZXo71RpQj4S9zk8O81wUP5o4=
+	t=1763989152; cv=none; b=FI2/1fv1GrBInveehs8Zx/2rra2arMd/w62l1DLgZtmXE6udBCWVGtEy8EPAYamv1nFYmRsvy04HnQC9MH3i8aKKpTjycU4vQb8Y+S3cBznzhnF9/nigBKwRkUMPKJWhoYlmttBtzFtbXLA9tGdiAT8TUIAbYYwgbxsyUvSaOC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763988187; c=relaxed/simple;
-	bh=cZyOZOJZSvIf+VhsUz5jNXcpXRYig7R9ZoC+XLlJu9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E3SI2rSk4EqjQtdZ6/Daqp9eu8tOw5EJ2h+XmuXN/HWEJ/mlNKYk1qubuO7rrcS/kcfZkUvzH3/0OVdhmRMl7PpcigrAv+CmtrJzRhwQd3rMRhrKDWWLJuNnUeka8bThmRS/Pjks4HckdM7uiJrwdgGrvECYF2UkswrIU6TjM8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is; spf=pass smtp.mailfrom=alyssa.is; dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b=JPkcjyMb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g/1/rsti; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alyssa.is
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 350CB7A0056;
-	Mon, 24 Nov 2025 07:43:03 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 24 Nov 2025 07:43:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1763988183; x=1764074583; bh=mmoBQzwvGE
-	b2PH+mGYV/p7dJAQNsJjas2weBraCbKiI=; b=JPkcjyMb3oY2c8ilphTZoVWtC+
-	bMDnO0U6H/QqbY8EUl215WYjWPM4SlMx2rXf5Y8+N+R5YyhyM8hybtrNzsGdfMHr
-	OVU5mVDnUutttOTjWmdJKYDJjwsMqygPNAoK3iWwj71gretMZMMC2NwWKvvUiq70
-	5FhWJMhNFNGpnV5aZy2e05QxFy9xeqZvn+hrw+KwIJxvTaACbtlgEDTZYg27ukug
-	oKJL3FXowfDnFL+OncA3S0pK7ZOp10NdiTT7kmM/bxPBVxcxGtaVyQzSTqBxQCon
-	DqwDGUNV8FmGOZoTUDck2Wl4KWKbqLU3CcTofv/Uz0XMHd9Y0pn6W+jUV37A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1763988183; x=1764074583; bh=mmoBQzwvGEb2PH+mGYV/p7dJAQNsJjas2we
-	BraCbKiI=; b=g/1/rstiKw0s2YXehObKW9pvuIJmCQSw8PjW4kKXGwYUygO28fv
-	iUC6Ja/3OdXooXK1Rbcc1RoVPtckxt8S2P1TQklho7vi8h51eOZV+KXOMs5wKcue
-	+2Gr7iNj0CgHooQiwcZNgIpZ2o6TMN7zVB1wFlFh1djgUa8cTydNMu9mBCuvoPF1
-	cUtREvWV5DYOmxdYMdmcCJg3GSgtcIR2mz1ZFjti+aCS8LuI2Ap/t2G9aKMtiFIs
-	UsdGq6JiIldRIkecBEuMNWguDN9OP2AAUFZTPYc1p3rW846QctYbixDmR9xcRhg0
-	c8uwRrX5GtLM5vKOUN170F4ue8ZZZ/Mna9Q==
-X-ME-Sender: <xms:1VIkaUX8JVxpzXRL5mAt4No8Swxira4dFsCRsMuC_5-KEmxQ_WJc_w>
-    <xme:1VIkaUe2cZ5ivmiXNwWKPUBWZN-wVBNkNXDITBSOaH8ZCCqmJz5c8RRYJQ1E3VDly
-    Mzfr4h-v5Yy7zqxs9dUL1gEo6AmRm0G7S37-Z2jUn-PEdEsmfyoNg>
-X-ME-Received: <xmr:1VIkaT5NtkQsFMKsQfknQAeDasFD6Ibyr-88K6mBmKCjHwSKhqxv4c4QlrFcitkqZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfeekieefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesghdtsfertddtvdenucfhrhhomheptehlhihsshgr
-    ucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepudfgie
-    euhfehfeffhedujeffjeekjedvhefhtedtgeffgefgtdfhueehteeuvedunecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhishdpnhgspghrtghpthhtohepvddt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrtghhihhllhesrggthhhilhhlrd
-    horhhgpdhrtghpthhtohepphgrvhgvlhesuggvnhigrdguvgdprhgtphhtthhopehfrdhf
-    rghinhgvlhhlihesghhmrghilhdrtghomhdprhgtphhtthhopehsuhguihhpmhdrmhhukh
-    hhvghrjhgvvgesghhmrghilhdrtghomhdprhgtphhtthhopehrfigrrhhsohifsehgmhig
-    rdguvgdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegtohhnohhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhhurghhsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
-X-ME-Proxy: <xmx:1VIkaXSBn1cUb4X9EoQTQ_eS3-wPkjyHVQ179ZI10rcKk8vj8iOGmQ>
-    <xmx:1VIkaWcPlAeTLCuXk-yynXUejlG67WEWmESXLYH4FSlnhhLY9jxLDA>
-    <xmx:1VIkaXSvMIXq1jIPqGxHHqW5DRYRUoC5QgagJpJaKQ0HStFBQg53Xw>
-    <xmx:1VIkafMNF9RN_3PgDn4cU2rV5GXqrVIetSR-dwYM5853goMd-RgKFQ>
-    <xmx:11IkaV3mrbw7LUf8VKCOrMf9ZxTwEQjWDWCu_daYoXPd6ajCIpvtOEMB>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Nov 2025 07:43:01 -0500 (EST)
-Received: by fw12.qyliss.net (Postfix, from userid 1000)
-	id 541C623D0DD7; Mon, 24 Nov 2025 13:42:45 +0100 (CET)
-Date: Mon, 24 Nov 2025 13:42:45 +0100
-From: Alyssa Ross <hi@alyssa.is>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
-Message-ID: <3tcx6726usvheymmskqlukl4te2zf5slctcgeofuvmv7x2sepw@m7mz34o6zqh5>
-References: <20251121160640.254872094@linuxfoundation.org>
+	s=arc-20240116; t=1763989152; c=relaxed/simple;
+	bh=ZS+oc1EH2l66FaqOGhjgJX6MBnmHcCb61TSeWXPVjfU=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=gTqVOJHnWZyJ67pJmAW4w4YtH1DvIYI+J8cKcd2kHrwYddSTpF5+Y1N30qJrbLwZ1w2h6FX+csWUdH0UWU9/zKzp7k/ORoG1+DjPLeSGaxMBg124lHamV6+sVxCCkpgt9ob6CSlJgl21iKPg9iI6c5bhMmyLZPjZYqKTHYrO6aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Yqz87Az1; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b996c8db896so4627361a12.3
+        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 04:59:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1763989150; x=1764593950; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jkT1VvD7QvpWCucq/0jTel+dWmYxPo5YKZhT+XsjcuI=;
+        b=Yqz87Az1KLVxgX+ePvn54TmOPSbiZCDSL291crFqLP8lFNTM2mh8IWRwsTzqS+j1/m
+         KwP+VOSX2PpPo3Da/e0IH8yLwySDALwbOrKI8uKFKTYwfhb/QUjfbKlFD5XY+ef/+nxC
+         vh5w8zge15EGjENP8YLaXWBISw2IR6ySQ313eSsaHJmR44jcCBNVBngit4b/3rWihOyy
+         vI/5Pex3oerr4lcIruuid1gdZUknCkcYLcbcVeWo5YeWUzRNxduXPi3BpLjNiYOC+Kbv
+         J96ArPKw8GGqN2EnkAMqr++Z31yCvb0NJ23IdXxjsdcRs/Whoo5yGAMCZpdwnIkXVRxj
+         YtFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763989150; x=1764593950;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jkT1VvD7QvpWCucq/0jTel+dWmYxPo5YKZhT+XsjcuI=;
+        b=jR4pclSPiTRyYYdtPeaeda5pvSkXb3yGxNHtuTPHb/aNF6m29R+w7zUY5lLIBD1rzs
+         YIrz5noLPCKCU/6O0aUR8x2Z07O90/qVtNzeuLJ4hSfZSHiLCTP3QJYPwcfKaCqXSKCz
+         iLrV+KSr660m6tIvr6602U8jUuE6cMVJxTBaFfe0Da5IlRbOaygabXnFaI6RRSev4YYG
+         MAPgmzPRzJbjU0kvMTUSzGsUpkBE7gsMVxbj/k4iEbDO4RUgW2ZlKl2XDHHdDrpg2vkR
+         dPqQp4N60te/SzRSb28dqi+g+cx+M83GzCNtjV3OlmDr5CqiatoD8EfyKmBBGO5ZjwBX
+         1kFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCAcxWyW62M+gMmoaMlNIXGtbboOXKSNNQXjv3IpWgLz0dD/kaEUhX4pp+3R8U9X0nYvTgX7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/2TaHQWQ5BP3I90UWJ1QF9cDXT2/uX7Y032u6v/0clJO+MpOJ
+	Wl59jsdRIpekb/uhTZ/eiC7gGdVg+IL2sIHQqVETXZIO2nYLLJ7GcWRljFkO71Cmpvk=
+X-Gm-Gg: ASbGncvwstHo+7mzCoDus757zahWQ/KViSdaqvKr83yFrOMtXeQirUxrJjBOCizSkq7
+	eNciN8wYUOF8wzYkgktFBHfltvyNYVNjDek+o7UZ166VNb3v8Ook0bOXBjy4bYrUhGosFozwwjD
+	y8Q1/xAjkG/z86zD4q4uvRtJoLGFsOfksxPH1hKuYJhzsJwPIXek1x9Wup3uqb9wDO/tL0yIUpQ
+	lXgdtZcPFCh9VsYE2tqBWILOXEX7XHSgocxn4D8sz7Bx9rpP3uEqvfowuSEwGvznWSOqC9QxsZo
+	xM1nSy+MRRJU4Y9U4JnAKFKiFSjhmn48Stwsor9k8VFmHfo742/6alH33WZLTBGOP4IHQ53PPTu
+	836f4K8LgK1RJUWz8egw7Sx1XuGmw6bqwRPFqOaTtnHD4c6mciT4wLcLvD+v2vNlY5g7Ay12KYx
+	C5AzWiDZDtTjoy6N0=
+X-Google-Smtp-Source: AGHT+IEDyKHq2yljVWDuHDrt2oXDhepA1O0Qoc597pw7+11wst+kEZ4D6ObFGVQqtnoFNZj+4+SxDw==
+X-Received: by 2002:a05:7301:168e:b0:2a4:5154:b346 with SMTP id 5a478bee46e88-2a7192e071cmr7948075eec.35.1763989149723;
+        Mon, 24 Nov 2025 04:59:09 -0800 (PST)
+Received: from f771fd7c9232 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a6fc38a66bsm51275168eec.1.2025.11.24.04.59.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 04:59:09 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="33tp4lknzr2a4gtk"
-Content-Disposition: inline
-In-Reply-To: <20251121160640.254872094@linuxfoundation.org>
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
+ uninitialized
+ when passed as a const pointer arg...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Mon, 24 Nov 2025 12:59:08 -0000
+Message-ID: <176398914850.89.13888454130518102455@f771fd7c9232>
 
 
---33tp4lknzr2a4gtk
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH 6.17 000/244] 6.17.9-rc2 review
-MIME-Version: 1.0
 
-On Fri, Nov 21, 2025 at 05:07:19PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.9 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 23 Nov 2025 16:05:54 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.9-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Confirmed the virtio-net fix works as intended and the rest of my tests
-pass on aarch64.
 
-Tested-by: Alyssa Ross <hi@alyssa.is>
+Hello,
 
---33tp4lknzr2a4gtk
-Content-Type: application/pgp-signature; name="signature.asc"
+New build issue found on stable-rc/linux-6.12.y:
 
------BEGIN PGP SIGNATURE-----
+---
+ variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/rtl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-iHUEABYKAB0WIQQGoGac7QfI+H5ZtFCZddwkt31pFQUCaSRSwQAKCRCZddwkt31p
-FXHNAQD4cxLMcV3tguG+gHm8k3KrRab7P7ap0TyBzWnyIlDCSQD8D1xe2q6vUPXh
-PTBAnUF6khb4v1GJBksIrmacsB4iEQY=
-=1iqj
------END PGP SIGNATURE-----
+- dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
+- tags: v6.12.59
 
---33tp4lknzr2a4gtk--
+
+Log excerpt:
+=====================================================
+drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+  148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
+      |                                          ^~~
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm64-allmodconfig-6924331af5b8743b1f5e538f/.config
+- dashboard: https://d.kernelci.org/build/maestro:6924331af5b8743b1f5e538f
+
+## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69243317f5b8743b1f5e538c/.config
+- dashboard: https://d.kernelci.org/build/maestro:69243317f5b8743b1f5e538c
+
+## i386_defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (i386):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-69243353f5b8743b1f5e53bf/.config
+- dashboard: https://d.kernelci.org/build/maestro:69243353f5b8743b1f5e53bf
+
+## x86_64_defconfig+allmodconfig on (x86_64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-x86-allmodconfig-69243323f5b8743b1f5e5395/.config
+- dashboard: https://d.kernelci.org/build/maestro:69243323f5b8743b1f5e5395
+
+
+#kernelci issue maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
