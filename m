@@ -1,162 +1,203 @@
-Return-Path: <stable+bounces-196772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8F5C81E15
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:24:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DFDC81EEA
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F6C3348815
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:24:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5114E347C4F
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E87B233149;
-	Mon, 24 Nov 2025 17:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F502BEC57;
+	Mon, 24 Nov 2025 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otyv2CZx"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ubUPd37M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD45231829
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8EE2749D9
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764005069; cv=none; b=VElowrpbmucifACcgMQQD/Mv7xwWc70R2HYnYCNUbB7lV2FhYWixKcAKlmASk8a8B/TWreUEu5duzc6qGFQrxiNhN05bb1LjmxQ+2Z4/swIN0eYtfUooKkQsAq76q0z6hZ6mhDVS+tn53wtlhJfSExJTS1BS0zpLwj5yenhaaLQ=
+	t=1764005871; cv=none; b=BcfnK5cyqsHK6QbhH3rbgpfSLx+xjzFk5QzEcYfCAQBd6XdrrsYMtJBsR2lBZd3PqKlje/Em6bgPZg0QhhmvKNjPAmansXaZ3ETkOqPaBN9DvQ7fFMt1/y3JysNkMnSCaI5DrC0cTlJrJRpEkyZeLlxspCGCvu8Dcp3Mqg5gKoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764005069; c=relaxed/simple;
-	bh=tPkTnfZS7Hac+82FJ0OmB6lJ7pbjCvYwz8Sld7pxtrU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JulK1kQzSu1Ain9uUKUX0oc1E+liCqPIzEuyAOCyyZDGVCbnMEOkTlX99/zty3divnoFOxWcAWk2aR64WgVEUPQvJHFyymRmhLjlVDdVbPu5I7RcZZI7S5X1U62VLelRB+nB07mYEDZpc1V4YaEK5BelOQDesQC+Qhj+KljssAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otyv2CZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC85C4CEF1;
-	Mon, 24 Nov 2025 17:24:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764005068;
-	bh=tPkTnfZS7Hac+82FJ0OmB6lJ7pbjCvYwz8Sld7pxtrU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otyv2CZxMWZnCeAWgiF1chR6EJULysOJmuSJCLrM63V7LgDXfMZxLsz9VNPC1tpzK
-	 ufhJW9GVpyertmjq6hY6R7aLK82JkM1XXS9k0GP3NzuMAfiYkyzOxnxiWS+df/YEHi
-	 LmNjM5VokIB0yLEPsG2t6Jr1RD5TnTitSk5PPy0vYr1q06P70bl+2y9pbJGxJoaFbc
-	 Hujx2rYqcBBhGI51zK9nG9HC2vbSxzVAUGBC4Jr7A/KrA3f2cfwSP/KRpIl7xTMyA8
-	 Q7ddCnz/GX93jZiLB6FXpe4XgPlE2+o0OruofqsareVcMXrda4SnYNzWxYTckuZ85j
-	 GpvPb6YCJj7Pw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: Fix proto fallback detection with BPF
-Date: Mon, 24 Nov 2025 12:24:26 -0500
-Message-ID: <20251124172426.4160679-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112449-untaxed-cola-39b4@gregkh>
-References: <2025112449-untaxed-cola-39b4@gregkh>
+	s=arc-20240116; t=1764005871; c=relaxed/simple;
+	bh=2+a9r/KAmOZLoDpWQIBmfIdI6N1D7M/P3D8jTvfNORs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=sB9ggiq819GHH/f7XH/wDd7d5OUYSzy26JF9kUJklk1hb0GuFgv5/vRq/zSHp4E+GGTMgjG2QT/W3zjITuWPKBpv6B8K4QqShMN4JkDgKIqpApbAU9w+Ip9u03W7dVbuErXc/VhG2fjzuqr0vdv1u5Hb/hW6aD071x6fcV3JJes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ubUPd37M; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C07A44E4189F;
+	Mon, 24 Nov 2025 17:37:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 942EA606FC;
+	Mon, 24 Nov 2025 17:37:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4583F10370C40;
+	Mon, 24 Nov 2025 18:37:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764005864; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=IT1k2H6nrgHdtTlroFgbSFcgluBiGKWIfAWb5Ws5984=;
+	b=ubUPd37M6gqGwXbG3ZXcDx3/9vSdW9lcF8F4LpNK4RQE6RVEUXJg7MnjaDbln140VyXmu3
+	hQKzrnfwtKXQBiM4x73nEcn0Dz5XoX9uR5ey1yoAGc0hYzQxqUJ/oqtHx/t+fdopicSCjB
+	kCKKlQ8Z/NVNPi5MSa1LGnMluQp1hmGWStzzh9ONmUtbultpcQxjg7v84HMTwvUKG7TGRa
+	7AgDQBZo5tH0+CoWC/7VU3eKD/M2FPf6001Y5ect548hs5wnWXoH7EyPyoATSILVROKyGA
+	BPmbgTAAwdTx5C7tvbpNTXn76y4lJdpFRgszvD4jzf82h+9sZVQlvyttA1i4ig==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Nov 2025 18:37:39 +0100
+Message-Id: <DEH3W0I9EBRB.16EYRXFT7K0ZS@bootlin.com>
+Subject: Re: [PATCH v3] drm/tilcdc: Fix removal actions in case of failed
+ probe
+Cc: "Maxime Ripard" <mripard@kernel.org>, "Douglas Anderson"
+ <dianders@chromium.org>, "Tomi Valkeinen"
+ <tomi.valkeinen@ideasonboard.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, "Bajjuri Praneeth" <praneeth@ti.com>,
+ "Louis Chauvet" <louis.chauvet@bootlin.com>, <stable@vger.kernel.org>,
+ <thomas.petazzoni@bootlin.com>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>
+To: "Kory Maincent" <kory.maincent@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251118133850.125561-1-kory.maincent@bootlin.com>
+ <DECU85YFDJFQ.51DNK1JF0CQ4@bootlin.com>
+ <20251121112450.070fe238@kmaincent-XPS-13-7390>
+In-Reply-To: <20251121112450.070fe238@kmaincent-XPS-13-7390>
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Hi K=C3=B6ry,
 
-[ Upstream commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f ]
+On Fri Nov 21, 2025 at 11:24 AM CET, Kory Maincent wrote:
+> On Wed, 19 Nov 2025 18:12:40 +0100
+> "Luca Ceresoli" <luca.ceresoli@bootlin.com> wrote:
+>
+>> Hello K=C3=B6ry,
+>>
+>> On Tue Nov 18, 2025 at 2:38 PM CET, Kory Maincent wrote:
+>> > From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+>> >
+>> > The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helper=
+s
+>> > should only be called when the device has been successfully registered=
+.
+>> > Currently, these functions are called unconditionally in tilcdc_fini()=
+,
+>> > which causes warnings during probe deferral scenarios.
+>> >
+>> > [    7.972317] WARNING: CPU: 0 PID: 23 at
+>> > drivers/gpu/drm/drm_atomic_state_helper.c:175
+>> > drm_atomic_helper_crtc_duplicate_state+0x60/0x68 ... [    8.005820]
+>> > drm_atomic_helper_crtc_duplicate_state from
+>> > drm_atomic_get_crtc_state+0x68/0x108 [    8.005858]
+>> > drm_atomic_get_crtc_state from drm_atomic_helper_disable_all+0x90/0x1c=
+8 [
+>> >  8.005885]  drm_atomic_helper_disable_all from
+>> > drm_atomic_helper_shutdown+0x90/0x144 [    8.005911]
+>> > drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [tilcdc] [
+>> > 8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [til=
+cdc]
+>> >
+>> > Fix this by rewriting the failed probe cleanup path using the standard
+>> > goto error handling pattern, which ensures that cleanup functions are
+>> > only called on successfully initialized resources. Additionally, remov=
+e
+>> > the now-unnecessary is_registered flag.
+>> >
+>> > Cc: stable@vger.kernel.org
+>> > Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at
+>> > shutdown/remove time for misc drivers") Signed-off-by: Kory Maincent
+>> > (TI.com) <kory.maincent@bootlin.com>
+>>
+>> Except for the bug reported by the kernel test robot, this patch looks
+>> good to me. Just a couple thoughts, below.
+>>
+>> > @@ -372,16 +371,34 @@ static int tilcdc_init(const struct drm_driver *=
+ddrv,
+>> > struct device *dev)
+>> >
+>> >  	ret =3D drm_dev_register(ddev, 0);
+>> >  	if (ret)
+>> > -		goto init_failed;
+>> > -	priv->is_registered =3D true;
+>> > +		goto stop_poll;
+>> >
+>> >  	drm_client_setup_with_color_mode(ddev, bpp);
+>> >
+>> >  	return 0;
+>> >
+>> > -init_failed:
+>> > -	tilcdc_fini(ddev);
+>> > +stop_poll:
+>> > +	drm_kms_helper_poll_fini(ddev);
+>> > +	tilcdc_irq_uninstall(ddev);
+>> > +unbind_component:
+>> > +	if (priv->is_componentized)
+>> > +		component_unbind_all(dev, ddev);
+>> > +unregister_cpufreq_notif:
+>> > +#ifdef CONFIG_CPU_FREQ
+>> > +	cpufreq_unregister_notifier(&priv->freq_transition,
+>> > +				    CPUFREQ_TRANSITION_NOTIFIER);
+>> > +#endif
+>> > +destroy_crtc:
+>> > +	tilcdc_crtc_destroy(priv->crtc);
+>> > +disable_pm:
+>> > +	pm_runtime_disable(dev);
+>> > +	clk_put(priv->clk);
+>> > +free_wq:
+>> > +	destroy_workqueue(priv->wq);
+>> > +put_drm:
+>> >  	platform_set_drvdata(pdev, NULL);
+>>
+>> I'm not 100% sure this is needed, but perhaps it is because of the
+>> component framework being used.
+>
+> Yes not sure either but as it was already present I let it here.
+> Do you think I should remove it?
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+At a quick look at the component framework, it does not seem to
+care. However you are fixing a bug, so it's fine if you leave
+platform_set_drvdata() untouched out of caution.
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+>> If it is needed, then shouldn't it be present in tilcdc_fini() as well?
+>>
+>> > +	ddev->dev_private =3D NULL;
+>> > +	drm_dev_put(ddev);
+>> >
+>> >  	return ret;
+>> >  }
+>>
+>> About tilcdc_fini(), I think it can be itself cleaned up a lot (in anoth=
+er
+>> patch). Basically it should do the same thing (almost) that are here bel=
+ow
+>> the 'return 0' line, and in the same order. Now the list of actions is a=
+uite
+>> different and the order is very different.
+>
+> Yes indeed, but this won't be a fix as there is no real issue in the remo=
+ve
+> AFAIK.
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
+Sure! Cleaning up tilcdc_fini() would be a cleanup, not a bugfix, so you
+can do it in a separate series without affecting this bugfix patch.
 
-This fix uses the more generic sk_family for the comparison instead.
+Luca
 
-Additionally, this also prevents a WARNING from occurring:
-
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
-[ applied fix to mptcp_is_tcpsk() instead of mptcp_fallback_tcp_ops() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mptcp/protocol.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 490fd8b188894..f758fde0565a2 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -77,8 +77,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
- static bool mptcp_is_tcpsk(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
-+	unsigned short family = READ_ONCE(sk->sk_family);
- 
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
-+	if (unlikely(family == AF_INET)) {
- 		/* we are being invoked after mptcp_accept() has
- 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
- 		 * not an mptcp one.
-@@ -89,7 +90,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
- 		sock->ops = &inet_stream_ops;
- 		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-+	} else if (unlikely(family == AF_INET6)) {
- 		sock->ops = &inet6_stream_ops;
- 		return true;
- #endif
--- 
-2.51.0
-
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
