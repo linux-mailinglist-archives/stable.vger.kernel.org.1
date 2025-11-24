@@ -1,126 +1,158 @@
-Return-Path: <stable+bounces-196657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C59AC7F5EC
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:16:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB3CC7F60D
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 157593A55D2
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 08:16:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 078544E3203
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 08:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CD02222D1;
-	Mon, 24 Nov 2025 08:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78337248F7C;
+	Mon, 24 Nov 2025 08:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fVe0z++A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k0KqdDx6"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02088BE5E;
-	Mon, 24 Nov 2025 08:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275EA1D5154;
+	Mon, 24 Nov 2025 08:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763972200; cv=none; b=Dzm/MK06+kJoNsoU880t8QgQsL358HP9enu0QcSpmDfn25ma0/6H30VOrxNVuzC7cOYKFOGnDzy8Z3Mp40qeSPAv5ctGOzCFVJamdRy5drN7EMO8AHOAWvD+aKReUPKcafiBXeRphGHurCjjUx4WY7g9qZ0Li61CJH/NpYyiOgY=
+	t=1763972648; cv=none; b=VQi8juPftdLU9agFOjZc/aTHY/FNxw6cEljnMei77VgxeFHJQ3ed6tEoURfnmU939230wrbknP0mfgJjPoZux+uxJ1lhXB42Ucd3wO5BN651cRw9OpxqDQnoNkdYSeDYuLTDEGgFjUB7N+d56885hVh2phWZ0Q1iUuDn+iFSG/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763972200; c=relaxed/simple;
-	bh=gFD2MJ6Tbiv/oDeIRZs61P+OFMH3WapwilJzwE0qfDY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ddVMnmxDraARI5q76oPTzP0B0MXvI57p/8Ype4Yg2G4AeqBwqpIaZyAmiMwX+d5cy3pSRjfsPUQ+ztREFNYns7w0qMJYXfydfQjSg4e8t1CEabe0hbuKntFi5XPsXV2BmRGL/MueGzcCMxVkOpg/+yA81VegJ1Jlfy3DtSxCcQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fVe0z++A; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AO8GT5p8595945, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763972189; bh=gFD2MJ6Tbiv/oDeIRZs61P+OFMH3WapwilJzwE0qfDY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=fVe0z++AyrEeFt6sfaMfFl44MeF7ePPF6AhXJG4qepKiKdMKvhEdojpW8tuo5zX+r
-	 zFimCWtyAGgMz6S6zVwAmlOcDe9uTNzN088mKBfcmDf53hwIUTiz+51OvmIFlEGpoq
-	 oUW+g/MCppBrXiBxt98zrOCGlS+lTnCHVi0YK+oakUFt1Apv40d2J2PDiD6O/AzUTQ
-	 Ng1Tz4n85OXy7aOu8FDZaY4362Qk4y8Eyxor/rnqaxXrE43T2b16yngw/9IaAXbgxi
-	 4xAdKgzIwGdctLodBOrcVxLVyI1gr1lKXWjx1WYW7hfOXZu5LZYiCVGFCwL1jv5+QB
-	 BleXvCYOTOpcA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AO8GT5p8595945
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Nov 2025 16:16:29 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 24 Nov 2025 16:16:29 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Mon, 24 Nov 2025 16:16:29 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "piotr.oniszczuk@gmail.com" <piotr.oniszczuk@gmail.com>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        "regressions@lists.linux.dev"
-	<regressions@lists.linux.dev>,
-        Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>
-Subject: RE: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device
- registers before power-on
-Thread-Topic: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device
- registers before power-on
-Thread-Index: AQHb/DS8S6Z9LuNHSkqUfz4BHLn6GLT/I7SAgAL+B7A=
-Date: Mon, 24 Nov 2025 08:16:29 +0000
-Message-ID: <4562797ed9514344b562f7a8e58e6988@realtek.com>
-References: <20250724004815.7043-1-pkshih@realtek.com>
- <aSHrhbt29k6GJB8e@skv.local>
-In-Reply-To: <aSHrhbt29k6GJB8e@skv.local>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1763972648; c=relaxed/simple;
+	bh=LWWvz/tKHYilW0cODRmKKakB2XhLbxzEbefYmV8CrFQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eVH2RwF+xeKRUIc8QwwJqR700tAG9pERUiTVKFkQRcvNZhrWOamrrzlaUOdwvoTCmNG69g0uEGXrYxNgGskXTKcUJHL3WSvcEPNNUkaYUs1x2QCh0bQUgm0pqowM0e+zA9sxYHz6G/+cYNYFVjMBIkLevsd14MfmJX3xXU1YRgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0KqdDx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2F4C4CEF1;
+	Mon, 24 Nov 2025 08:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763972647;
+	bh=LWWvz/tKHYilW0cODRmKKakB2XhLbxzEbefYmV8CrFQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k0KqdDx6zJ8z+iw3eNDjo+ZvYfuPc9tJjoqfCt7ko5hHJGoXTc3C9/rhtu1qshFmN
+	 vPwocs/3Jj9ueqDct8unYbHiADzyxViAhIgsJnM4dYR5B9OzfameQ3FHJIBsa9IMht
+	 L/3RRnaVO3C/WePd1yeGfi9Jmg1JzwJ/tb+3rfWgXew+HazB4Xs8kXX7/Bw9k0LUQh
+	 uFWcMmw3Mt69eLSlh8DIry8zPRy846tXnC/lc6WsnGqHE0byYqyfbbKstYdYVBlZzP
+	 iVJ2XD25O2/VD91Mn86x1cvJikRKiwL7ztEzImOj5YqCpv/lYDOPeAvtCArkgQuPFX
+	 kxXUwYwUjeLmg==
+Message-ID: <3c0b6a08-cbaa-4e7e-8689-1fa716dd1525@kernel.org>
+Date: Mon, 24 Nov 2025 09:24:02 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] NFC: Fix error handling in nfc_genl_dump_targets
+To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linville@tuxdriver.com, aloisio.almeida@openbossa.org,
+ johannes@sipsolutions.net, lauro.venancio@openbossa.org,
+ sameo@linux.intel.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
+References: <20251121022728.3661-1-make24@iscas.ac.cn>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251121022728.3661-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-QW5kcmV5IFNrdm9ydHNvdiA8YW5kcmVqLnNrdm9ydHpvdkBnbWFpbC5jb20+IHdyb3RlOg0KPiBI
-aSwNCj4gDQo+IFRoaXMgcGF0Y2ggd2FzIHJlY2VudGx5IGJhY2twb3J0ZWQgdG8gc3RhYmxlIGtl
-cm5lbHMgKHY2LjEyLjU4KSBhbmQgaXQgYnJva2UNCj4gd2xhbiBvbiBQaW5lUGhvbmUsIHRoYXQg
-dXNlcyA4NzIzY3MgU0RJTyBjaGlwLiBUaGUgc2FtZSBwcm9ibGVtDQo+IGFwcGVhcnMgb2YgY291
-cnNlIG9uIGxhdGVzdCA2LjE4LXJjNi4gUmV2ZXJ0aW5nIHRoaXMgY2hhbmdlIHJlc29sdmVzDQo+
-IHRoZSBwcm9ibGVtLg0KPiANCj4gYGBgDQo+ICQgc3VkbyBkbWVzZyB8IGdyZXAgLWkgcnR3ODgN
-Cj4gWyAgIDI0Ljk0MDU1MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBXT1cgRmlybXdhcmUg
-dmVyc2lvbiAxMS4wLjAsIEgyQyB2ZXJzaW9uIDANCj4gWyAgIDI0Ljk1MzA4NV0gcnR3ODhfODcy
-M2NzIG1tYzE6MDAwMToxOiBGaXJtd2FyZSB2ZXJzaW9uIDExLjAuMCwgSDJDIHZlcnNpb24gMA0K
-PiBbICAgMjQuOTU1ODkyXSBydHc4OF84NzIzY3MgbW1jMTowMDAxOjE6IHNkaW8gcmVhZDMyIGZh
-aWxlZCAoMHhmMCk6IC0xMTANCj4gWyAgIDI0Ljk3MzEzNV0gcnR3ODhfODcyM2NzIG1tYzE6MDAw
-MToxOiBzZGlvIHdyaXRlOCBmYWlsZWQgKDB4MWMpOiAtMTEwDQo+IFsgICAyNC45ODA2NzNdIHJ0
-dzg4Xzg3MjNjcyBtbWMxOjAwMDE6MTogc2RpbyByZWFkMzIgZmFpbGVkICgweGYwKTogLTExMA0K
-PiAuLi4NCj4gWyAgIDI1LjQ0NjY5MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBzZGlvIHJl
-YWQ4IGZhaWxlZCAoMHgxMDApOiAtMTEwDQo+IFsgICAyNS40NTM1NjldIHJ0dzg4Xzg3MjNjcyBt
-bWMxOjAwMDE6MTogbWFjIHBvd2VyIG9uIGZhaWxlZA0KPiBbICAgMjUuNDU5MDc3XSBydHc4OF84
-NzIzY3MgbW1jMTowMDAxOjE6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMNCj4gWyAgIDI1LjQ2NDg0
-MV0gcnR3ODhfODcyM2NzIG1tYzE6MDAwMToxOiBmYWlsZWQgdG8gc2V0dXAgY2hpcCBlZnVzZSBp
-bmZvDQo+IFsgICAyNS40NjQ4NTZdIHJ0dzg4Xzg3MjNjcyBtbWMxOjAwMDE6MTogZmFpbGVkIHRv
-IHNldHVwIGNoaXAgaW5mb3JtYXRpb24NCj4gWyAgIDI1LjQ3ODM0MV0gcnR3ODhfODcyM2NzIG1t
-YzE6MDAwMToxOiBwcm9iZSB3aXRoIGRyaXZlciBydHc4OF84NzIzY3MgZmFpbGVkIHdpdGggZXJy
-b3IgLTExNA0KPiBgYGANCj4gDQoNCkNoZWNrIG9yaWdpbmFsIGxpbmsgb2YgdGhpcyBwYXRjaCBb
-MV0gdGhhdCA4ODIyY3MgcmVhZCBpbmNvcnJlY3QgZnJvbSAweGYwDQpyZXN1bHRpbmcgaW4gInJ0
-dzg4Xzg4MjJjcyBtbWMxOjAwMDE6MTogdW5zdXBwb3J0ZWQgcmYgcGF0aCAoMSkiLg0KDQpJIHdv
-bmRlciBpZiB3ZSBjYW4gYWRkIGFkZGl0aW9uYWwgY2hlY2tpbmcgcnVsZSBvZiBjaGlwIElELCBs
-aWtlOg0KDQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3NkaW8uYw0K
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9zZGlvLmMNCkBAIC0xNDQs
-OCArMTQ0LDEwIEBAIHN0YXRpYyB1MzIgcnR3X3NkaW9fdG9faW9fYWRkcmVzcyhzdHJ1Y3QgcnR3
-X2RldiAqcnR3ZGV2LCB1MzIgYWRkciwNCg0KIHN0YXRpYyBib29sIHJ0d19zZGlvX3VzZV9kaXJl
-Y3RfaW8oc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTMyIGFkZHIpDQogew0KKyAgICAgICBib29s
-IG1pZ2h0X2luZGlyZWN0X3VuZGVyX3Bvd2VyX29mZiA9IHJ0d2Rldi0+Y2hpcC0+aWQgIT0gUlRX
-X0NISVBfVFlQRV84NzAzQjsNCisNCiAgICAgICAgaWYgKCF0ZXN0X2JpdChSVFdfRkxBR19QT1dF
-Uk9OLCBydHdkZXYtPmZsYWdzKSAmJg0KLSAgICAgICAgICAgIXJ0d19zZGlvX2lzX2J1c19hZGRy
-KGFkZHIpKQ0KKyAgICAgICAgICAgIXJ0d19zZGlvX2lzX2J1c19hZGRyKGFkZHIpICYmIG1pZ2h0
-X2luZGlyZWN0X3VuZGVyX3Bvd2VyX29mZikNCiAgICAgICAgICAgICAgICByZXR1cm4gZmFsc2U7
-DQoNCiAgICAgICAgcmV0dXJuICFydHdfc2Rpb19pc19zZGlvMzBfc3VwcG9ydGVkKHJ0d2Rldikg
-fHwNCg0KWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzLzY5OUMyMkI0
-LUEzRTMtNDIwNi05N0QwLTIyQUIzMzQ4RUJGNkBnbWFpbC5jb20vVC8jdA0KDQo=
+On 21/11/2025 03:27, Ma Ke wrote:
+> nfc_genl_dump_targets() increments the device reference count via
+
+Only in some cases, but you drop it unconditionally.
+
+> nfc_get_device() but fails to decrement it properly. nfc_get_device()
+> calls class_find_device() which internally calls get_device() to
+> increment the reference count. No corresponding put_device() is made
+> to decrement the reference count.
+> 
+> Add proper reference count decrementing using nfc_put_device() when
+> the dump operation completes or encounters an error, ensuring balanced
+> reference counting.
+> 
+> Found by code review.
+
+Drop, there is no point nor need to say that humans did the work. This
+actually rather suggests you used LLM and disguise your finding as "code
+review".
+
+No, LLM is not code review.
+
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 4d12b8b129f1 ("NFC: add nfc generic netlink interface")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  net/nfc/netlink.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
+> index a18e2c503da6..9ae138ee91dd 100644
+> --- a/net/nfc/netlink.c
+> +++ b/net/nfc/netlink.c
+> @@ -159,6 +159,11 @@ static int nfc_genl_dump_targets(struct sk_buff *skb,
+>  
+>  	cb->args[0] = i;
+>  
+> +	if (rc < 0 || i >= dev->n_targets) {
+> +		nfc_put_device(dev);
+> +		cb->args[1] = 0;
+
+Did you test it?
+
+
+Best regards,
+Krzysztof
 
