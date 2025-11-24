@@ -1,215 +1,123 @@
-Return-Path: <stable+bounces-196675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2004AC7FFCD
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 11:49:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230E2C7FFF7
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 11:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47D793A8163
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 10:49:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E71744E3E63
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 10:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5432F9DA0;
-	Mon, 24 Nov 2025 10:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B732F9987;
+	Mon, 24 Nov 2025 10:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK5ATOf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAZ8+znS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2145B27702D;
-	Mon, 24 Nov 2025 10:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0C32F9C39
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 10:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763981368; cv=none; b=eR9OFP1z0wMsBFDGHja+5AMDCqZXE8ZTnoV66v0tnuif7neKmzam+R/nmSJyO2Ls1TSA7QUUmIJ56ahGW6udtVO0WIhimYCY9fwHlOiuE5X/ZCXZpAZ4N/XrtR+dW0UfTd3lnAnSU1C4FcrThTXyS+rCAXiX4poqC5V4XHmGYKc=
+	t=1763981553; cv=none; b=umUid1C1w9v1/vo3dANKTu0qE/2tZG8Is+rCgosUws3jIk5hdd4ni0hKuOWjXa/G8+ENFEkgxXlNLD9NHSQo66PISyBuLhCfJ3FMiT+Luvoa4q5phSPUotr9OBxBA30XZvfwT6rdaxHWOYvKe2EESFYybDKxuhCq/MBf4Chta34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763981368; c=relaxed/simple;
-	bh=5iSe2rv+mleqW+6rQz8jqeld4WFOCbzH4sbioHRhi8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApvtugieJUyOl/dSFl7oD50goGSuI1aYeG5FfQ2oT7sV+eRlah2KuUUZHtD4IFC+106FcDrkwDnq8pwb/uDGK7GcMVpGZhkc9N4FvqMwtSRhuYJZ4+isoGCx/MArDZ4+mVwWO8MSELVbF60uYBzNxKx0oKMyp2KpJj2vNkd5Qwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK5ATOf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE988C19424;
-	Mon, 24 Nov 2025 10:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763981368;
-	bh=5iSe2rv+mleqW+6rQz8jqeld4WFOCbzH4sbioHRhi8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZK5ATOf4yawGCL9nxPY6SfowDcnHOh3/6szfxbC7j/ZUP3i2U0RBiYxmUrhMA+CQd
-	 j3UJD4eU+WO0qU26V5yw6Oc4KeFFys+T8CIsQ1ZSJq8G/kz80Uay8jDH8s6kZYQnlM
-	 wEAfSqbrf3wqOnX8kSx89Qcb1rjMlYOdgK75Mtrwmel7SJ6uZEbo4/h1rzKY4Mdp4t
-	 65ODLHnLgnyk+4Izoyz/M5lwTz9NfD2Pl2tf36XW2OPDM5RSk2Oup+fMAyZ33c8GUP
-	 LPS1ldbel0vSfw8HRfmlhLkhGPgqpz4AopY3zri5bfnL6v+nXPNhXPjsqRXA6fVVGO
-	 mx+0+i3vPBOiA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vNU8N-0000000046j-1tep;
-	Mon, 24 Nov 2025 11:49:27 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Olivier Moysan <olivier.moysan@foss.st.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	Olivier Moysan <olivier.moysan@st.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/4] ASoC: stm32: sai: fix OF node leak on probe
-Date: Mon, 24 Nov 2025 11:49:07 +0100
-Message-ID: <20251124104908.15754-4-johan@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251124104908.15754-1-johan@kernel.org>
-References: <20251124104908.15754-1-johan@kernel.org>
+	s=arc-20240116; t=1763981553; c=relaxed/simple;
+	bh=8YDOnosauv6o4O0/0WB5ivXqL60NYEUbzMq6DZ/D6Uc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MUQArr3r1z94812Ti90gTu4t4QSwwXWOf+sZ/w/kl9Ha891yNa0waIRLoTkG1/g1HQ/BG7efBG8VJvv13Q9a40yX2GAjZJSMp0JWPqmfDSB676nJKIIBHXJhwzRyawHIyUkAJq7zkvFbunyvTbnz80ewPzXRDU71hQoBFs5vvKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAZ8+znS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6643C4CEF1;
+	Mon, 24 Nov 2025 10:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763981553;
+	bh=8YDOnosauv6o4O0/0WB5ivXqL60NYEUbzMq6DZ/D6Uc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=hAZ8+znSDPPtZeIquxNOiG2RjmuTf0iBwC7AhU9wFClQHcx9MByRQDwfDVJKvctop
+	 k/ZyPaVB8ffkvxSeGF/oq0jR7zxbkuwUgsYUGQ1rBssQgwR12ro6Vzzp0mWJCkpeqi
+	 1t1NqUPzQHR2E+R3Zs9kqqdy5c0fVoJLYPj6s7QQ=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Check the untrusted offset in FF-A memory share" failed to apply to 6.6-stable tree
+To: sebastianene@google.com,maz@kernel.org,will@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Nov 2025 11:52:29 +0100
+Message-ID: <2025112429-pasture-geometry-591b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-The reference taken to the sync provider OF node when probing the
-platform device is currently only dropped if the set_sync() callback
-fails during DAI probe.
 
-Make sure to drop the reference on platform probe failures (e.g. probe
-deferral) and on driver unbind.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This also avoids a potential use-after-free in case the DAI is ever
-reprobed without first rebinding the platform driver.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 5914d285f6b7 ("ASoC: stm32: sai: Add synchronization support")
-Fixes: d4180b4c02e7 ("ASoC: stm32: sai: fix set_sync service")
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Cc: stable@vger.kernel.org      # 4.16: d4180b4c02e7
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- sound/soc/stm/stm32_sai.c     | 12 +++---------
- sound/soc/stm/stm32_sai_sub.c | 23 ++++++++++++++++-------
- 2 files changed, 19 insertions(+), 16 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 103e17aac09cdd358133f9e00998b75d6c1f1518
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112429-pasture-geometry-591b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/sound/soc/stm/stm32_sai.c b/sound/soc/stm/stm32_sai.c
-index 7065aeb0e524..00cf24ceca2d 100644
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -138,7 +138,6 @@ static int stm32_sai_set_sync(struct stm32_sai_data *sai_client,
- 	if (!pdev) {
- 		dev_err(&sai_client->pdev->dev,
- 			"Device not found for node %pOFn\n", np_provider);
--		of_node_put(np_provider);
- 		return -ENODEV;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 103e17aac09cdd358133f9e00998b75d6c1f1518 Mon Sep 17 00:00:00 2001
+From: Sebastian Ene <sebastianene@google.com>
+Date: Fri, 17 Oct 2025 07:57:10 +0000
+Subject: [PATCH] KVM: arm64: Check the untrusted offset in FF-A memory share
+
+Verify the offset to prevent OOB access in the hypervisor
+FF-A buffer in case an untrusted large enough value
+[U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
+is set from the host kernel.
+
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+
+diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
+index 4e16f9b96f63..58b7d0c477d7 100644
+--- a/arch/arm64/kvm/hyp/nvhe/ffa.c
++++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+@@ -479,7 +479,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+ 	struct ffa_mem_region_attributes *ep_mem_access;
+ 	struct ffa_composite_mem_region *reg;
+ 	struct ffa_mem_region *buf;
+-	u32 offset, nr_ranges;
++	u32 offset, nr_ranges, checked_offset;
+ 	int ret = 0;
+ 
+ 	if (addr_mbz || npages_mbz || fraglen > len ||
+@@ -516,7 +516,12 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+ 		goto out_unlock;
  	}
  
-@@ -147,21 +146,16 @@ static int stm32_sai_set_sync(struct stm32_sai_data *sai_client,
- 	if (!sai_provider) {
- 		dev_err(&sai_client->pdev->dev,
- 			"SAI sync provider data not found\n");
--		ret = -EINVAL;
--		goto error;
-+		return -EINVAL;
- 	}
- 
- 	/* Configure sync client */
- 	ret = stm32_sai_sync_conf_client(sai_client, synci);
- 	if (ret < 0)
--		goto error;
-+		return ret;
- 
- 	/* Configure sync provider */
--	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
--
--error:
--	of_node_put(np_provider);
--	return ret;
-+	return stm32_sai_sync_conf_provider(sai_provider, synco);
- }
- 
- static int stm32_sai_get_parent_clk(struct stm32_sai_data *sai)
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 7a005b4ad304..5ae4d2577f28 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1586,7 +1586,8 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 				dev_err(&pdev->dev,
- 					"External synchro not supported\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 			sai->sync = SAI_SYNC_EXTERNAL;
- 
-@@ -1595,7 +1596,8 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 			    (sai->synci > (SAI_GCR_SYNCIN_MAX + 1))) {
- 				dev_err(&pdev->dev, "Wrong SAI index\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 
- 			if (of_property_match_string(args.np, "compatible",
-@@ -1609,7 +1611,8 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 			if (!sai->synco) {
- 				dev_err(&pdev->dev, "Unknown SAI sub-block\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 		}
- 
-@@ -1619,13 +1622,15 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 
- 	of_node_put(args.np);
- 	sai->sai_ck = devm_clk_get(&pdev->dev, "sai_ck");
--	if (IS_ERR(sai->sai_ck))
--		return dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
--				     "Missing kernel clock sai_ck\n");
-+	if (IS_ERR(sai->sai_ck)) {
-+		ret = dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
-+				    "Missing kernel clock sai_ck\n");
-+		goto err_put_sync_provider;
+-	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
++	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
++		ret = FFA_RET_INVALID_PARAMETERS;
++		goto out_unlock;
 +	}
- 
- 	ret = clk_prepare(sai->pdata->pclk);
- 	if (ret < 0)
--		return ret;
-+		goto err_put_sync_provider;
- 
- 	if (STM_SAI_IS_F4(sai->pdata))
- 		return 0;
-@@ -1647,6 +1652,8 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+err_put_sync_provider:
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1720,6 +1727,7 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1732,6 +1740,7 @@ static void stm32_sai_sub_remove(struct platform_device *pdev)
- 	snd_dmaengine_pcm_unregister(&pdev->dev);
- 	snd_soc_unregister_component(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	of_node_put(sai->np_sync_provider);
- }
- 
- static int stm32_sai_sub_suspend(struct device *dev)
--- 
-2.51.2
++
++	if (fraglen < checked_offset) {
+ 		ret = FFA_RET_INVALID_PARAMETERS;
+ 		goto out_unlock;
+ 	}
 
 
