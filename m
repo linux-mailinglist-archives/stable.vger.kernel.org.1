@@ -1,138 +1,149 @@
-Return-Path: <stable+bounces-196720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F6C80CE1
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:38:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CFDC80D0B
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAD674E585B
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45C6F3A6D22
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45807306B3E;
-	Mon, 24 Nov 2025 13:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1464307AE4;
+	Mon, 24 Nov 2025 13:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIIdrSb7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GtlS8s/y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF417306B2C
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD90A306495;
+	Mon, 24 Nov 2025 13:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763991499; cv=none; b=L0EBHh9zcU2c1htI+oR4U+y2Xysu36MCeP3RkUTWb33JWym6ZyzYOi6qfkl+SL6Bma914X02bmRkitRRBh2SWvMYXGW7mYLtHFhMccNfyFheNLciBPKfP546aC34uweVUAAMkvcvWTPafaRVfqU5CHOhVghVVtgSr2eDMdwZQ58=
+	t=1763991578; cv=none; b=mOrTsvtTy753MlbBjzyOL+5MDE7VfD7pfJEewg79nxFdYgnkF583GJ3MUsWODMtOx8+029jbQtDZJ5R1WWIsD0lVIvUFjH6Zk9cXExsucpStqDWUdpNb0qS83tXClXhFozFl8aH2+Eb3SjYkzRSWAR1dkvn9emM5We8daSmmsIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763991499; c=relaxed/simple;
-	bh=RCPhjLTnnrcKRTDpbr6tftgaJRtTX3ctHVdMtzC6Lvc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=syv4HiA/XUjjBkTm2hKyBS4rsf+zMfNa2i0a45ZJchG0hSv0ftyR/WI6dftrr9+89/Qwl5X42p5iwDVn4gGy3KC25wKbIIQaOY73ICZIYxybCPLigC1iun0MOFmdm5W9sRRKlZ6QWXgjS+vxB7vYZQEFgogkkjhmO1T/SCpztDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIIdrSb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEE2C4CEF1;
-	Mon, 24 Nov 2025 13:38:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763991498;
-	bh=RCPhjLTnnrcKRTDpbr6tftgaJRtTX3ctHVdMtzC6Lvc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=XIIdrSb7jS7XY/5btAysgDZMw22v96uMC0f0vi7EjcqEt+htSsE9KqAZalaSLYciY
-	 6g8gA5lbGvNt82sw5Rc0qxes+PWODSQZkUNPLr7Llrcw2ojbsY4fmO71GJbvYKj7f0
-	 3afIF+JEd1E3asK7z2oa5TxAQ5T5SgFKosIlWrzs=
-Subject: FAILED: patch "[PATCH] dt-bindings: pinctrl: toshiba,visconti: Fix number of items" failed to apply to 5.10-stable tree
-To: krzk@kernel.org,conor.dooley@microchip.com,krzysztof.kozlowski@linaro.org,linus.walleij@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:38:05 +0100
-Message-ID: <2025112405-vixen-monogamy-fb80@gregkh>
+	s=arc-20240116; t=1763991578; c=relaxed/simple;
+	bh=N3yvsqVm0PJlZusMyFsk+KcUCnmo4tz7hXnLuS8Lf1Q=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=oeoJRc0RyHBBAKO4MU1h2VZhTMIUUDN/LVAFWJw7RD2kmmumc+RJk6pCBQ7kC27hZ2+lQByZJpQK8+bOtv508CZIrtbfv9U8BejoWnHJ6hBnPV2znOMPmCgJlHScYywFjPGQUhOUZG6QRR4SgpPaEDqb03nrGzdw0NHoiVnYbOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GtlS8s/y; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763991577; x=1795527577;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=N3yvsqVm0PJlZusMyFsk+KcUCnmo4tz7hXnLuS8Lf1Q=;
+  b=GtlS8s/y7VHu33LaLA+jOfn3xzYVzflslJauEYiFmgpo1XuOxTAu5x5x
+   bXwB9Pbj/cpfdl4fOamxXJLxVIa+ShBqtu+v+bIen3Znajb8fzr91shsd
+   hmeFKyR4pdsfwJnPt11UMGAoODq070E9dTQpFIeXMbt/ycQGCFMENGD5Y
+   enT2IHp1hqM1ROCtx77k5njHwsx4VJ/7u4fDXj9L1ABBxh13fQ9Xa9HZ6
+   8IoXndXsd8XpYBYouRFz1TuqnDoZg/i6a5gOwkPhkmLmd8TjPnCbeoOz0
+   OK9lmmVZMUMpZ8rEVoiCGDivQP75tXuO3YXpgmUTcahNtu69JNeAhWSqf
+   Q==;
+X-CSE-ConnectionGUID: ycr+2d0kS4yxCAySaF3UvA==
+X-CSE-MsgGUID: sy+CvR5YTqWTtg5cquv0Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="83379575"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="83379575"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 05:39:36 -0800
+X-CSE-ConnectionGUID: sqr3meneRlWX2YnoQ/LVzQ==
+X-CSE-MsgGUID: KFq1qs2oR1KFeBa69NSZyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="192142889"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.97])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 05:39:31 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 24 Nov 2025 15:39:28 +0200 (EET)
+To: yongxin.liu@windriver.com
+cc: LKML <linux-kernel@vger.kernel.org>, Netdev <netdev@vger.kernel.org>, 
+    david.e.box@linux.intel.com, chao.qin@intel.com, 
+    yong.liang.choong@linux.intel.com, kuba@kernel.org, 
+    platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] platform/x86: intel_pmc_ipc: fix ACPI buffer memory
+ leak
+In-Reply-To: <20251124075748.3028295-1-yongxin.liu@windriver.com>
+Message-ID: <f1124090-a8e4-6220-093a-47c449c98436@linux.intel.com>
+References: <20251124075748.3028295-1-yongxin.liu@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
+On Mon, 24 Nov 2025, yongxin.liu@windriver.com wrote:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> From: Yongxin Liu <yongxin.liu@windriver.com>
+> 
+> The intel_pmc_ipc() function uses ACPI_ALLOCATE_BUFFER to allocate memory
+> for the ACPI evaluation result but never frees it, causing a 192-byte
+> memory leak on each call.
+> 
+> This leak is triggered during network interface initialization when the
+> stmmac driver calls intel_mac_finish() -> intel_pmc_ipc().
+> 
+>   unreferenced object 0xffff96a848d6ea80 (size 192):
+>     comm "dhcpcd", pid 541, jiffies 4294684345
+>     hex dump (first 32 bytes):
+>       04 00 00 00 05 00 00 00 98 ea d6 48 a8 96 ff ff  ...........H....
+>       00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+>     backtrace (crc b1564374):
+>       kmemleak_alloc+0x2d/0x40
+>       __kmalloc_noprof+0x2fa/0x730
+>       acpi_ut_initialize_buffer+0x83/0xc0
+>       acpi_evaluate_object+0x29a/0x2f0
+>       intel_pmc_ipc+0xfd/0x170
+>       intel_mac_finish+0x168/0x230
+>       stmmac_mac_finish+0x3d/0x50
+>       phylink_major_config+0x22b/0x5b0
+>       phylink_mac_initial_config.constprop.0+0xf1/0x1b0
+>       phylink_start+0x8e/0x210
+>       __stmmac_open+0x12c/0x2b0
+>       stmmac_open+0x23c/0x380
+>       __dev_open+0x11d/0x2c0
+>       __dev_change_flags+0x1d2/0x250
+>       netif_change_flags+0x2b/0x70
+>       dev_change_flags+0x40/0xb0
+> 
+> Add kfree() to properly release the allocated buffer.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7e2f7e25f6ff ("arch: x86: add IPC mailbox accessor function and add SoC register access")
+> Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
+> ---
+>  include/linux/platform_data/x86/intel_pmc_ipc.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/linux/platform_data/x86/intel_pmc_ipc.h b/include/linux/platform_data/x86/intel_pmc_ipc.h
+> index 1d34435b7001..2fd5e684ce26 100644
+> --- a/include/linux/platform_data/x86/intel_pmc_ipc.h
+> +++ b/include/linux/platform_data/x86/intel_pmc_ipc.h
+> @@ -89,6 +89,7 @@ static inline int intel_pmc_ipc(struct pmc_ipc_cmd *ipc_cmd, struct pmc_ipc_rbuf
+>  		return -EINVAL;
+>  	}
+>  
+> +	kfree (obj);
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Good catch but this fix doesn't address all possible paths. So please use 
+cleanup.h instead:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 316e361b5d2cdeb8d778983794a1c6eadcb26814
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112405-vixen-monogamy-fb80@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+	union acpi_object *obj __free(kfree) = buffer.pointer;
 
-Possible dependencies:
+And don't forget to add the #include.
 
+>  	return 0;
+>  #else
+>  	return -ENODEV;
+> 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 316e361b5d2cdeb8d778983794a1c6eadcb26814 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Wed, 22 Oct 2025 15:34:26 +0200
-Subject: [PATCH] dt-bindings: pinctrl: toshiba,visconti: Fix number of items
- in groups
-
-The "groups" property can hold multiple entries (e.g.
-toshiba/tmpv7708-rm-mbrc.dts file), so allow that by dropping incorrect
-type (pinmux-node.yaml schema already defines that as string-array) and
-adding constraints for items.  This fixes dtbs_check warnings like:
-
-  toshiba/tmpv7708-rm-mbrc.dtb: pinctrl@24190000 (toshiba,tmpv7708-pinctrl):
-    pwm-pins:groups: ['pwm0_gpio16_grp', 'pwm1_gpio17_grp', 'pwm2_gpio18_grp', 'pwm3_gpio19_grp'] is too long
-
-Fixes: 1825c1fe0057 ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-
-diff --git a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-index 19d47fd414bc..ce04d2eadec9 100644
---- a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-@@ -50,18 +50,20 @@ patternProperties:
-       groups:
-         description:
-           Name of the pin group to use for the functions.
--        $ref: /schemas/types.yaml#/definitions/string
--        enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
--               i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
--               spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
--               spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
--               uart0_grp, uart1_grp, uart2_grp, uart3_grp,
--               pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
--               pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
--               pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
--               pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
--               pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
--               pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        items:
-+          enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
-+                 i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
-+                 spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
-+                 spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
-+                 uart0_grp, uart1_grp, uart2_grp, uart3_grp,
-+                 pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
-+                 pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
-+                 pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
-+                 pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
-+                 pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
-+                 pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        minItems: 1
-+        maxItems: 8
- 
-       drive-strength:
-         enum: [2, 4, 6, 8, 16, 24, 32]
+-- 
+ i.
 
 
