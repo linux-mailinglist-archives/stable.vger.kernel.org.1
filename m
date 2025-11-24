@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-196818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8A5C82A4E
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:26:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E7EC82A51
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3D784E2804
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:26:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 59FF234ADC3
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE49266B46;
-	Mon, 24 Nov 2025 22:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489972F658D;
+	Mon, 24 Nov 2025 22:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NbBNYaBl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eErOaWF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85138D;
-	Mon, 24 Nov 2025 22:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1CA38D;
+	Mon, 24 Nov 2025 22:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764023162; cv=none; b=McjKKQ3lQI6s9rvLChIq40ylbfhmx+Pu7tkiuQzH84HQvbWYlOZsv9Q0tn53fMtwdGuqT27v5X8As79UE1gUeMaukTTVD1N7vJxhSF7ipFC4HX487B8lqPaR0XeAGQ9o26jlVrsqgjlQ2NUnGWGsI9Gl/L4XNYenwbtJhi6xT0k=
+	t=1764023164; cv=none; b=ug+Ks+51RG/zzWiR2KaiyQ9wHE+dVxDt2ZnlW5nsC/MWC2m6hnSb28KhUyRNaZIOMh9/Wlbri5eiYSXlrr8IHI6uBGTFf7yhrJyXlESkH+ypGcYyJVB1Z4/BnmuF/9g1UUto2AcVIG6OeClQ5DPvwOjpBUXiR+PFSWVTuicAIuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764023162; c=relaxed/simple;
-	bh=J0wQVM5lahOTehgc2QNxq+Hs9yS6Pubq22HXtX0inkE=;
-	h=Date:To:From:Subject:Message-Id; b=p+jrS/q2HZNz6HEvFZNPtSBEgd1FdkYaYD7yUE6gBI3l2SZK1xteNq1GaPTgJMsSMcN7N9hJcxRTKi3NaRK01X6S2X6vdIwCiO6fbCUCJ2OrXuwKSPsRpnjHmb4EmcqVyuNuf/2DyftaEgL98cVxZ3Urei+Tnkdw6COcgqmdlHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NbBNYaBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF5BC4CEF1;
-	Mon, 24 Nov 2025 22:26:01 +0000 (UTC)
+	s=arc-20240116; t=1764023164; c=relaxed/simple;
+	bh=hN6Na+teHAJQmu25990HSzwDs2ddJM+IlRDJCR9BADo=;
+	h=Date:To:From:Subject:Message-Id; b=A1NoXUAydH0goTWb8pci4V+8HP2RwUq3CeWaV3DW2GnCixEPci+wBchZAjTmi3Fll5DWORA4G44SP+y+4/MfUP49PqwtfRyUk3Euy3WjVQW/OKfmPIvxUpujeI+gOfRJfoxOaQhGEs1ReZhgvzbOe6ed823x2fb7u6C4YlDwXFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eErOaWF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B066BC4CEF1;
+	Mon, 24 Nov 2025 22:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764023161;
-	bh=J0wQVM5lahOTehgc2QNxq+Hs9yS6Pubq22HXtX0inkE=;
+	s=korg; t=1764023163;
+	bh=hN6Na+teHAJQmu25990HSzwDs2ddJM+IlRDJCR9BADo=;
 	h=Date:To:From:Subject:From;
-	b=NbBNYaBl6a0Bco+XOc7XgHqUJWii1sA6/ytELv4v84F9IYbSMa3zUaPAj3XS91yw9
-	 V0yjrZLRK2E691/b34xxsHiIyVOLCdOVBmURai5VkDQ8i6+B0zsXgcaOPSD+RHSqBP
-	 6p3bfWc9YFkzdsnBhT4vTjg70yLYlUdRH4AUR2P0=
-Date: Mon, 24 Nov 2025 14:26:00 -0800
-To: mm-commits@vger.kernel.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,osalvador@suse.de,kraxel@redhat.com,jgg@nvidia.com,hughd@google.com,hch@lst.de,david@redhat.com,david@kernel.org,airlied@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
+	b=eErOaWF8TVcf0t0YKvFvuuBC39Br+FKx1a8R4j032nutnO/UNDuRH4CW8pjMgyFRn
+	 /TjgzGPBJKqSNavNbPJLRJQ5rNCRM84bsu7g+dRymu99+cm+Q0+wrM6Od2cldstj4o
+	 iJz5OyvbWs/hMLSUEMhADFbOn2yqKLbTvhXBx0lE=
+Date: Mon, 24 Nov 2025 14:26:03 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,ujwal.kundur@gmail.com,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jackmanb@google.com,david@kernel.org,cmllamas@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memfd-fix-information-leak-in-hugetlb-folios.patch removed from -mm tree
-Message-Id: <20251124222601.8EF5BC4CEF1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch removed from -mm tree
+Message-Id: <20251124222603.B066BC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,106 +50,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/memfd: fix information leak in hugetlb folios
+     Subject: selftests/mm: fix division-by-zero in uffd-unit-tests
 has been removed from the -mm tree.  Its filename was
-     mm-memfd-fix-information-leak-in-hugetlb-folios.patch
+     selftests-mm-fix-division-by-zero-in-uffd-unit-tests.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/memfd: fix information leak in hugetlb folios
-Date: Wed, 12 Nov 2025 20:20:34 +0530
+From: Carlos Llamas <cmllamas@google.com>
+Subject: selftests/mm: fix division-by-zero in uffd-unit-tests
+Date: Thu, 13 Nov 2025 03:46:22 +0000
 
-When allocating hugetlb folios for memfd, three initialization steps are
-missing:
+Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+vars into struct") moved some of the operations previously implemented in
+uffd_setup_environment() earlier in the main test loop.
 
-1. Folios are not zeroed, leading to kernel memory disclosure to userspace
-2. Folios are not marked uptodate before adding to page cache
-3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
+The calculation of nr_pages, which involves a division by page_size, now
+occurs before checking that default_huge_page_size() returns a non-zero
+This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
 
-The memfd allocation path bypasses the normal page fault handler
-(hugetlb_no_page) which would handle all of these initialization steps. 
-This is problematic especially for udmabuf use cases where folios are
-pinned and directly accessed by userspace via DMA.
+Fix this by relocating the non-zero page_size check before the nr_pages
+calculation, as it was originally implemented.
 
-Fix by matching the initialization pattern used in hugetlb_no_page():
-- Zero the folio using folio_zero_user() which is optimized for huge pages
-- Mark it uptodate with folio_mark_uptodate()
-- Take hugetlb_fault_mutex before adding to page cache to prevent races
-
-The folio_zero_user() change also fixes a potential security issue where
-uninitialized kernel memory could be disclosed to userspace through read()
-or mmap() operations on the memfd.
-
-Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
-Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
-Suggested-by: Oscar Salvador <osalvador@suse.de>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Link: https://lkml.kernel.org/r/20251113034623.3127012-1-cmllamas@google.com
+Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
-Cc: Christoph Hellwig <hch@lst.de> (v6)
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memfd.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tools/testing/selftests/mm/uffd-unit-tests.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/mm/memfd.c~mm-memfd-fix-information-leak-in-hugetlb-folios
-+++ a/mm/memfd.c
-@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct f
- 						    NULL,
- 						    gfp_mask);
- 		if (folio) {
-+			u32 hash;
-+
-+			/*
-+			 * Zero the folio to prevent information leaks to userspace.
-+			 * Use folio_zero_user() which is optimized for huge/gigantic
-+			 * pages. Pass 0 as addr_hint since this is not a faulting path
-+			 *  and we don't have a user virtual address yet.
-+			 */
-+			folio_zero_user(folio, 0);
-+
-+			/*
-+			 * Mark the folio uptodate before adding to page cache,
-+			 * as required by filemap.c and other hugetlb paths.
-+			 */
-+			__folio_mark_uptodate(folio);
-+
-+			/*
-+			 * Serialize hugepage allocation and instantiation to prevent
-+			 * races with concurrent allocations, as required by all other
-+			 * callers of hugetlb_add_to_page_cache().
-+			 */
-+			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
-+			mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
- 							idx);
-+
-+			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+
- 			if (err) {
- 				folio_put(folio);
- 				goto err_unresv;
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-fix-division-by-zero-in-uffd-unit-tests
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1758,10 +1758,15 @@ int main(int argc, char *argv[])
+ 			uffd_test_ops = mem_type->mem_ops;
+ 			uffd_test_case_ops = test->test_case_ops;
+ 
+-			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB))
++			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
+ 				gopts.page_size = default_huge_page_size();
+-			else
++				if (gopts.page_size == 0) {
++					uffd_test_skip("huge page size is 0, feature missing?");
++					continue;
++				}
++			} else {
+ 				gopts.page_size = psize();
++			}
+ 
+ 			/* Ensure we have at least 2 pages */
+ 			gopts.nr_pages = MAX(UFFD_TEST_MEM_SIZE, gopts.page_size * 2)
+@@ -1776,12 +1781,6 @@ int main(int argc, char *argv[])
+ 				continue;
+ 
+ 			uffd_test_start("%s on %s", test->name, mem_type->name);
+-			if ((mem_type->mem_flag == MEM_HUGETLB ||
+-			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
+-			    (default_huge_page_size() == 0)) {
+-				uffd_test_skip("huge page size is 0, feature missing?");
+-				continue;
+-			}
+ 			if (!uffd_feature_supported(test)) {
+ 				uffd_test_skip("feature missing");
+ 				continue;
 _
 
-Patches currently in -mm which might be from kartikey406@gmail.com are
+Patches currently in -mm which might be from cmllamas@google.com are
 
 
 
