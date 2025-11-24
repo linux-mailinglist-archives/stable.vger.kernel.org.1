@@ -1,102 +1,146 @@
-Return-Path: <stable+bounces-196789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2890BC823F6
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:15:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C8C82493
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 20:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E753AB74E
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:15:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 31B3E341DFA
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 19:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0414F2D7393;
-	Mon, 24 Nov 2025 19:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481482D8375;
+	Mon, 24 Nov 2025 19:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBqozLPm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sr1eEru1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E62523EAAB;
-	Mon, 24 Nov 2025 19:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C1C2D94A3
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 19:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764011713; cv=none; b=imicSH5OFIq/gjgfO6O3+7Qkamby5sh7fmRCIRzXQ/2/Qf82seyBeGSN9jZWObBQf6LZKwMtxzE7XEME/CZTFxPIKrL4svswCWCQyowAogrocBUs5GeKyu1f+36L5Do05juZ9KvpErAagA41QR5SQp2MqV3qz8/oM7izXb6w1Pg=
+	t=1764012037; cv=none; b=iAkT2GphZyIkzftTgsc0XBgDpTPVCow+LE4IDXO+YGykrVM1oxPE4fQbL9/QkcNZ+gCku3IHZtrXNPHQGNfL9x94RCH+R2EWmVYwan+bkd2RhZk5nHzd1p6xZvlBZ8hvyALE4tbnwFbc4ScjuOQNyyXVNcp71KpGZXGIUI4aZXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764011713; c=relaxed/simple;
-	bh=z2i6xOwTgPt675KWrdd6Uyxx4S+UvK5AI+S6QNfhulw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fGwEfqm0p+CeqpPBPNh+uu9DrVnEIUX5ByM9ZEWKF/j5bxyk4IE7fRjEXA5hRu1x61miEC9VqaWtCQavDAezk4QXaKcbZKdsAzIRiLVutgHRE5CzMp5oNOxbqBcDWyA6lusdhuG12cUvnzRw44S4dwL1HH4m6U/fh4Ahos7wNSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBqozLPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBBAC4CEF1;
-	Mon, 24 Nov 2025 19:15:13 +0000 (UTC)
+	s=arc-20240116; t=1764012037; c=relaxed/simple;
+	bh=bcRhmBqJk0QPOV/Virkas3sFf7oI1S+BQy4HYpPfn9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d0PGzvrTa+glClcfcVPVYOfLTrd9+PK0LidaTmbmJ9JTiPHCJ5X6w/OEZeLXjWVs7nEKHsQAKS+L9WlZB0Aw7QLu5xnf9Oik+gvyitXWlviOu9JvZo+mb+OU/+p7sryQiTIRUhK39Mt9T7ca1gTbOxrPnwz02xxQVpCC5Y4z3wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sr1eEru1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAABAC4CEF1;
+	Mon, 24 Nov 2025 19:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764011713;
-	bh=z2i6xOwTgPt675KWrdd6Uyxx4S+UvK5AI+S6QNfhulw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kBqozLPmxlmrLmLwoHPmIeJbzBT1W42aAhoz8uVQkL8oDZCTg8kuX8yPWXV3FTG0r
-	 PgyoXBXIdHvDdMDXM+AhptN29OVavW+JwDuvM0UpUC3r6pA3GmAEgNIx2Y2iPZvI+A
-	 IYPPI1qMf6hZkzpO27NHwDae9GOCtM/sJngfkQ5/zst9jd1br2E3eA7Tuik6uVAUDW
-	 LU+yb148QsISx2EaNbL5pHY9cz3kPg436m5CKY5Di2g82F9CuL298oREj0j/Cz382Q
-	 roqgZAHpcOufueqJD6uXZbERw14S3G8nVUwMzHYEjRVjECcLZ38vpBqgJlW1MQYQID
-	 gCMg5kwMJl2ig==
-Date: Mon, 24 Nov 2025 11:15:12 -0800
-From: Kees Cook <kees@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, stable@vger.kernel.org,
-	Jochen Sprickerhof <jochen@sprickerhof.de>
-Subject: Re: [PATCH] clk: samsung: exynos-clkout: Assign .num before
- accessing .hws
-Message-ID: <202511241115.0E974A2C@keescook>
-References: <20251124-exynos-clkout-fix-ubsan-bounds-error-v1-1-224a5282514b@kernel.org>
+	s=k20201202; t=1764012036;
+	bh=bcRhmBqJk0QPOV/Virkas3sFf7oI1S+BQy4HYpPfn9c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sr1eEru1HyEejNoc4tPNrRfYfqZa+12mvmwJng4pkFQdYWUB1ZsAqB5GY3PUUjKpI
+	 ntllpTlbCkkKyqqZoIS8qscCD0Xjql5dCzz+44zuwO7xKdlaactZKRKqCZdfIKtewV
+	 wS++EQjc4+LJCp10hqGmJdNybi6Da4hWjZ87NnNs+pQ3zn7wAruZMrLq5dPqBwdqB+
+	 b25iungziQSpCuztU+o5Y+tP8wjx2ph8thgAgKgB4JvPwiL0K6c12GPxKedRnDqUYa
+	 dIzTdZVd5KK7bH+O3flU6knV+g/6racmpGx0aaWhL+vsopqenTBSdAKFgr1QB6eDFt
+	 Ogx2wUIk74l8Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] ata: libata-scsi: Fix system suspend for a security locked drive
+Date: Mon, 24 Nov 2025 14:20:34 -0500
+Message-ID: <20251124192034.3511-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112403-stalemate-unbuckled-dda5@gregkh>
+References: <2025112403-stalemate-unbuckled-dda5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251124-exynos-clkout-fix-ubsan-bounds-error-v1-1-224a5282514b@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 24, 2025 at 12:11:06PM -0700, Nathan Chancellor wrote:
-> Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-> __counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
-> with __counted_by, which informs the bounds sanitizer (UBSAN_BOUNDS)
-> about the number of elements in .hws[], so that it can warn when .hws[]
-> is accessed out of bounds. As noted in that change, the __counted_by
-> member must be initialized with the number of elements before the first
-> array access happens, otherwise there will be a warning from each access
-> prior to the initialization because the number of elements is zero. This
-> occurs in exynos_clkout_probe() due to .num being assigned after .hws[]
-> has been accessed:
-> 
->   UBSAN: array-index-out-of-bounds in drivers/clk/samsung/clk-exynos-clkout.c:178:18
->   index 0 is out of range for type 'clk_hw *[*]'
-> 
-> Move the .num initialization to before the first access of .hws[],
-> clearing up the warning.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-> Reported-by: Jochen Sprickerhof <jochen@sprickerhof.de>
-> Closes: https://lore.kernel.org/aSIYDN5eyKFKoXKL@eldamar.lan/
-> Tested-by: Jochen Sprickerhof <jochen@sprickerhof.de>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
 
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
+
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
+
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
+
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
+
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
+
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
+
+Cc: stable@vger.kernel.org
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ata/libata-scsi.c | 8 ++++++++
+ include/linux/ata.h       | 1 +
+ 2 files changed, 9 insertions(+)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 35c87e7e4ddf8..c0a22c74472d9 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1179,6 +1179,14 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
+ 		return;
+ 	}
++
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
++	}
++
+ 	/* Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+ 	 */
+diff --git a/include/linux/ata.h b/include/linux/ata.h
+index 6d2d31b03b4de..7e8d690df254b 100644
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -557,6 +557,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 -- 
-Kees Cook
+2.51.0
+
 
