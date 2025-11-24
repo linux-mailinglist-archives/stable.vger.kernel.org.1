@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-196762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DAC8170C
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 16:56:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF27C817AB
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28DC93AA300
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:56:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 298004E69A8
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 16:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB19F314A87;
-	Mon, 24 Nov 2025 15:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D81314D07;
+	Mon, 24 Nov 2025 16:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhXr94fF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/i0SHw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788CB2D59F7
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 15:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09037314A91;
+	Mon, 24 Nov 2025 16:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763999780; cv=none; b=YvOneWOvXUviHa+AjGA0g26hOsKNSmEjwAwsVcn6Ch17u61RKrLrRV9q8tmq+ivYuAyJZXtqIgvp4NMBFmoc+v9x3NNMwTk26rGm0ByrvaWzUP1fUGVWr4+ovMOkdEX5dvZLqyN1+jVqvzzV0tQGemJt3k3psT+gHzGDCEbbyLQ=
+	t=1764000214; cv=none; b=FRzddqEsb1K5dQysAAy0NEW3FhjkFto1dN3hBo9zzpA3yLyePbIPzd1v3TnGeTdKjvcb6FwbtKkf1ZxUNfjnYJMNx52SYbx7Psw5gFsZbMaMkaDKeHcWHi7aaL6kH6N39nHqoKSUN39Zuc8wE/LyKtECsU8LrifsXdu6RTnZcJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763999780; c=relaxed/simple;
-	bh=hTnv90f/cN59jjS3vHljAHfvNkLmqsFolx7YZt41ypo=;
+	s=arc-20240116; t=1764000214; c=relaxed/simple;
+	bh=yUh5KaTdq5W1Roh6URVREXeDwSR9uly626hKfFll1uU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lfYQK5P9qLxcf0iXXtGj7sFgxdMIwypEZ9fSaeUkeZAu71CfXhpcVryOjZI4aAfdsS3Nj3+rgtm7If99x3jXBtlGEXNnJ9j+oksqwsjSG60seR34Y6771uV7ixd3LLMkpeUnqz4pybEgqJlt1LGNOBiufsi03ro0gir3kn3PjyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhXr94fF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFA2C4CEF1;
-	Mon, 24 Nov 2025 15:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763999780;
-	bh=hTnv90f/cN59jjS3vHljAHfvNkLmqsFolx7YZt41ypo=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=M70RXts/L8IIKOPHYmVX+wvb+yBENPMxR39BaSLn5zkueL86zArLyYmoCWXGRDCUgVgOkACMqEh/zuK5AVrjXbkjKsOY9YA73Or1mzOe/xi41bnrwp/jWnRzc55V6UGqb+5zYiySg7GkhH1Zu8dDDwt+2PcY7RBofF43WpgTz4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/i0SHw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14142C4CEF1;
+	Mon, 24 Nov 2025 16:03:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764000213;
+	bh=yUh5KaTdq5W1Roh6URVREXeDwSR9uly626hKfFll1uU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qhXr94fFKIvhAu9GvghotYfcnaAS34Vmv4Fii/1xNOzsx5Ff8mCaNAiF2/xAQWMHy
-	 G+TlpRx8Mxv2zLkmMmhKPiUf7kS1m5sYYGmGbGsn4EHQxhoKi2/lNypTBr+UIY3VeJ
-	 VnNg59zywhiaBkeED5pQJerUe4DFTxn5YL1FUjfU=
-Date: Mon, 24 Nov 2025 16:56:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sebastian Ene <sebastianene@google.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH 6.6.y] KVM: arm64: Check the untrusted offset in FF-A
- memory share
-Message-ID: <2025112450-dinghy-trousers-e398@gregkh>
-References: <2025112429-pasture-geometry-591b@gregkh>
- <20251124141134.4098048-1-sashal@kernel.org>
- <2025112405-campus-flatworm-25a5@gregkh>
- <aSRy8LqAopE82ZPs@google.com>
+	b=E/i0SHw7qNZPsvERbIZO3I2hWSSgKtZ+pFRxppX11/yLM5vbztxnJG8noE2gV2s9V
+	 3DCLsi8M7tsnfWEeNRT9zGj31sW0BVBgoZL6CajuW/3Dxpr4Ufd/IEyuS/xizqfxgU
+	 INBxcMyKRU4XMUYemmBB0a3pDeFxKj5wSda4onBreH2DmioRBfIKVqHskYdqg02yiP
+	 iIDM4vbfqYYy13j6+ZcD7dTdzj3wCpyQP7yDUe5UH+ArjEcvAcF1EWZJHRs24/3a47
+	 LNG1pHdy3fNa6ryr8ugKORuoi02iWpXbgydKNW1v4N/ApL4y1vDdvLw2Yv5zlUTBHs
+	 ocGZ2nJLTN8zw==
+Date: Mon, 24 Nov 2025 16:03:29 +0000
+From: Will Deacon <will@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Besar Wicaksono <bwicaksono@nvidia.com>
+Subject: Re: [PATCH] perf/arm_cspmu: fix device leaks on module unload
+Message-ID: <aSSB0foqqbOl3fC3@willie-the-truck>
+References: <20251121115213.8481-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,68 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aSRy8LqAopE82ZPs@google.com>
+In-Reply-To: <20251121115213.8481-1-johan@kernel.org>
 
-On Mon, Nov 24, 2025 at 03:00:00PM +0000, Sebastian Ene wrote:
-> On Mon, Nov 24, 2025 at 03:50:45PM +0100, Greg KH wrote:
-> > On Mon, Nov 24, 2025 at 09:11:34AM -0500, Sasha Levin wrote:
-> > > From: Sebastian Ene <sebastianene@google.com>
-> > > 
-> > > [ Upstream commit 103e17aac09cdd358133f9e00998b75d6c1f1518 ]
-> > > 
-> > > Verify the offset to prevent OOB access in the hypervisor
-> > > FF-A buffer in case an untrusted large enough value
-> > > [U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
-> > > is set from the host kernel.
-> > > 
-> > > Signed-off-by: Sebastian Ene <sebastianene@google.com>
-> > > Acked-by: Will Deacon <will@kernel.org>
-> > > Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >  arch/arm64/kvm/hyp/nvhe/ffa.c | 9 +++++++--
-> > >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
-> > > index 8d21ab904f1a9..eacf4ba1d88e9 100644
-> > > --- a/arch/arm64/kvm/hyp/nvhe/ffa.c
-> > > +++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
-> > > @@ -425,7 +425,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
-> > >  	DECLARE_REG(u32, npages_mbz, ctxt, 4);
-> > >  	struct ffa_composite_mem_region *reg;
-> > >  	struct ffa_mem_region *buf;
-> > > -	u32 offset, nr_ranges;
-> > > +	u32 offset, nr_ranges, checked_offset;
-> > >  	int ret = 0;
-> > >  
-> > >  	if (addr_mbz || npages_mbz || fraglen > len ||
-> > > @@ -460,7 +460,12 @@ static void __do_ffa_mem_xfer(const u64 func_id,
-> > >  		goto out_unlock;
-> > >  	}
-> > >  
-> > > -	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
-> > > +	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
-> > > +		ret = FFA_RET_INVALID_PARAMETERS;
-> > > +		goto out_unlock;
-> > > +	}
+On Fri, Nov 21, 2025 at 12:52:13PM +0100, Johan Hovold wrote:
+> Make sure to drop the references taken when looking up the backend
+> devices during vendor module unload.
 > 
-> hello Greg,
+> Fixes: bfc653aa89cb ("perf: arm_cspmu: Separate Arm and vendor module")
+> Cc: stable@vger.kernel.org	# 6.7
+> Cc: Besar Wicaksono <bwicaksono@nvidia.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/perf/arm_cspmu/arm_cspmu.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> > 
-> > I was told that a "straight" backport like this was not correct, so we
-> > need a "better" one :(
-> > 
-> > Sebastian, can you provide the correct backport for 6.6.y please?
-> > 
-> 
-> I think Sasha's patch is doing the right thing. Sasha thanks for
-> posting it so fast.
+> diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
+> index efa9b229e701..e0d4293f06f9 100644
+> --- a/drivers/perf/arm_cspmu/arm_cspmu.c
+> +++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+> @@ -1365,8 +1365,10 @@ void arm_cspmu_impl_unregister(const struct arm_cspmu_impl_match *impl_match)
+>  
+>  	/* Unbind the driver from all matching backend devices. */
+>  	while ((dev = driver_find_device(&arm_cspmu_driver.driver, NULL,
+> -			match, arm_cspmu_match_device)))
+> +			match, arm_cspmu_match_device))) {
+>  		device_release_driver(dev);
+> +		put_device(dev);
+> +	}
 
-Then why is the backport that is in the android 6.6.y kernel branches
-different from this one?  Which one is "correct"?
+There's already a fix queued for this; please take a look:
 
-thanks,
+https://git.kernel.org/pub/scm/linux/kernel/git/will/linux.git/commit/?h=for-next/perf&id=970e1e41805f0bd49dc234330a9390f4708d097d
 
-greg k-h
+Wil
 
