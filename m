@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-196823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A518FC82B2C
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:40:30 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05561C82B14
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2C084E5950
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:38:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A58D5343C00
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756B51419A9;
-	Mon, 24 Nov 2025 22:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93876218AAF;
+	Mon, 24 Nov 2025 22:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFS7A2od"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luF4Lg6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302E9F50F
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 22:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FB92264A7
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 22:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764023929; cv=none; b=olj6F8k/OLZw/1rW6ZuDsFhi2C9ZuFqh3N2QBMT2Xt6PV9t3qyOEWKIvum2S2KUgFgUcZ/b8yozzekx74YXTuqnTcETNGyqQFPPqzmaLH/CKBb4GPE9yH7DwXbV84H+wNo7U671mPxbSHqx2RSDlc9wGG6sqgUz0THPlG5plB3Q=
+	t=1764023981; cv=none; b=IfxLyF4dkmrj3P3jrsnqe47ns/XBsE1+kPiSRF/zS5ISlME0X6S9uX/oLGwPDdWSoV5ItgXCza2doeFLzZNYqqYMIDFNPm05jC+0pF/cX1mjyJ1jK1Y8r1J1c9mc6XJgO5O0+qHvq82arPDBd8EizXublRQJZJOQBa6O7bASadE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764023929; c=relaxed/simple;
-	bh=SXXlmJ3IkO/MCUCG3bKtiNaF9I0jKuHuFcWL0s13yps=;
+	s=arc-20240116; t=1764023981; c=relaxed/simple;
+	bh=A1Zz6AAfrWut3n6gsdsrm82jUG16jnauv8KvJMHfJlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2eSCBvsErpVcc2SzwzN/SSKTPccceRgqKlDvMP8gR6yChx8eyqYYDdr1iZWWj8PODPwxyz3eTB4uUxKjraqzNd/3JstrHpS2WWd7B04SetRdEGyi/3BiAW77KlX4TNV90meRHUdhMXVXQHfNT8Iqh2vEyYbVuLCyfYSpnnqM/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFS7A2od; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0831EC4CEF1;
-	Mon, 24 Nov 2025 22:38:46 +0000 (UTC)
+	 MIME-Version; b=O4+IUTxK1XFdRkkUyAI9m5rryeyf1ciTRXe0g7gpLBGfGsG3tZhEQou+4hYWQLaPMdBWazEyTSHzqhMIjM33Varw5pR5bVvM9UUZCGawxzaCU6Z9h3lkOLHsrPiF/PoICMHlmNKav/81RJmVKYIye4RnSP4MqA3xzvUDJCY4vYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luF4Lg6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3066FC4CEF1;
+	Mon, 24 Nov 2025 22:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764023927;
-	bh=SXXlmJ3IkO/MCUCG3bKtiNaF9I0jKuHuFcWL0s13yps=;
+	s=k20201202; t=1764023980;
+	bh=A1Zz6AAfrWut3n6gsdsrm82jUG16jnauv8KvJMHfJlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFS7A2odFjJIFjFhfldBYl22t/tZrhr4QUv7AYeJ23Bu0OLkwiqoME56TaqyJjgW0
-	 PkZYSn5+rkMlFrQwmgpLKjQeWqwRHSqUtjIwrGvaY0ncncwaKk/JROSDv8kkREYiwn
-	 rovj6osPaEOu926IrHA6ffPnmWhhAf2EtqNbwvAOr3kzmObc2l5V1Y1lqzw8CjgJaX
-	 gDgmcJgagaOiu5CPpEwPqLtcSB+r/0IGFMCxKA/n/ytrFjUquDGvSB/FDveb3RoAnz
-	 HiHvKCLiR1wwIs/lwniYQICZG0ULuF1XC9kUu1/HDe6cRoQ9uG7cBUWNoDxrV7qwsv
-	 ubM2qKOzhBTXQ==
+	b=luF4Lg6JSOAWTwhEQ5IkzRqfCBCyOJXXJfXGT7IWjrNU3aasRWH2k+jU+EXrqLfts
+	 rW48PBJapvTmU+rMKlYeqnVHgOIiuwRtZFggcemzNh5BdGL2oAqNH61dALeioHQDBg
+	 We4m02JYR/M5ev54oqRcqbY47/OhyufTmjT9VTnq5wRTH3GbR7tBzEy96f8/ZbJMiV
+	 4Xuef6rpl7LpQIvBBww8hMmREAgG1zGdJj0yUUbn7z+b/D2l53Txv4vvDlCA/8X700
+	 QM2mzHja4l8bWtElffSyKSdA4MErYSj91XecEnR9biTDC4zuU+XXMk09do7/VAb6uD
+	 Vglte8oYb4fnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
+Cc: Paolo Abeni <pabeni@redhat.com>,
 	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: fix a race in mptcp_pm_del_add_timer()
-Date: Mon, 24 Nov 2025 17:38:44 -0500
-Message-ID: <20251124223844.74497-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: fix ack generation for fallback msk
+Date: Mon, 24 Nov 2025 17:39:38 -0500
+Message-ID: <20251124223938.74969-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112431-pentagon-posture-3ba1@gregkh>
-References: <2025112431-pentagon-posture-3ba1@gregkh>
+In-Reply-To: <2025112448-naming-survey-424d@gregkh>
+References: <2025112448-naming-survey-424d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,197 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
+[ Upstream commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b ]
 
-mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
-while another might have free entry already, as reported by syzbot.
+mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
+rcv_wnd sent, and such information is tracked into the msk->old_wspace
+field, updated at ack transmission time by mptcp_write_options().
 
-Add RCU protection to fix this issue.
+Fallback socket do not add any mptcp options, such helper is never
+invoked, and msk->old_wspace value remain stale. That in turn makes
+ack generation at recvmsg() time quite random.
 
-Also change confusing add_timer variable with stop_timer boolean.
+Address the issue ensuring mptcp_write_options() is invoked even for
+fallback sockets, and just update the needed info in such a case.
 
-syzbot report:
+The issue went unnoticed for a long time, as mptcp currently overshots
+the fallback socket receive buffer autotune significantly. It is going
+to change in the near future.
 
-BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
-
-CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: events mptcp_worker
-Call Trace:
- <TASK>
-  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
-  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
-  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
-  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
-  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
-  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
-  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
-  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
-  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
-  process_backlog+0x31e/0x900 net/core/dev.c:6544
-  __napi_poll+0xb6/0x540 net/core/dev.c:7594
-  napi_poll net/core/dev.c:7657 [inline]
-  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
-  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
- mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
-  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 44:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
-  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
-  kasan_kmalloc include/linux/kasan.h:262 [inline]
-  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
-  kmalloc_noprof include/linux/slab.h:957 [inline]
-  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
-  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
-  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
-  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
-  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 6630:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
-  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
-  poison_slab_object mm/kasan/common.c:252 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
-  kasan_slab_free include/linux/kasan.h:234 [inline]
-  slab_free_hook mm/slub.c:2523 [inline]
-  slab_free mm/slub.c:6611 [inline]
-  kfree+0x197/0x950 mm/slub.c:6818
-  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
-  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
-  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
-  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
-  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
-  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
-  __sys_sendmsg net/socket.c:2716 [inline]
-  __do_sys_sendmsg net/socket.c:2721 [inline]
-  __se_sys_sendmsg net/socket.c:2719 [inline]
-  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
 Cc: stable@vger.kernel.org
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Geliang Tang <geliang@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/mptcp/options.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 4d9a5c8f3b2f0..42329ae21c464 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -24,6 +24,7 @@ struct mptcp_pm_add_entry {
- 	u8			retrans_times;
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
-+	struct rcu_head		rcu;
- };
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index a71ef6de8c682..b4237e50e23fd 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -810,8 +810,11 @@ bool mptcp_established_options(struct sock *sk, struct sk_buff *skb,
  
- struct pm_nl_pernet {
-@@ -343,22 +344,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
--	struct timer_list *add_timer = NULL;
-+	bool stop_timer = false;
-+
-+	rcu_read_lock();
+ 	opts->suboptions = 0;
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
- 	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
--		add_timer = &entry->add_timer;
-+		stop_timer = true;
- 	}
- 	if (!check_id && entry)
- 		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
- 
--	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
--	if (add_timer)
--		sk_stop_timer_sync(sk, add_timer);
-+	/* Note: entry might have been removed by another thread.
-+	 * We hold rcu_read_lock() to ensure it is not freed under us.
++	/* Force later mptcp_write_options(), but do not use any actual
++	 * option space.
 +	 */
-+	if (stop_timer)
-+		sk_stop_timer_sync(sk, &entry->add_timer);
+ 	if (unlikely(__mptcp_check_fallback(msk)))
+-		return false;
++		return true;
  
-+	rcu_read_unlock();
- 	return entry;
+ 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
+ 		if (mptcp_established_options_mp_fail(sk, &opt_size, remaining, opts)) {
+@@ -1222,6 +1225,20 @@ static void mptcp_set_rwin(const struct tcp_sock *tp)
+ 		WRITE_ONCE(msk->rcv_wnd_sent, ack_seq);
  }
  
-@@ -414,7 +420,7 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
- 
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
- 		sk_stop_timer_sync(sk, &entry->add_timer);
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
++static void mptcp_track_rwin(const struct tcp_sock *tp)
++{
++	const struct sock *ssk = (const struct sock *)tp;
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk;
++
++	if (!ssk)
++		return;
++
++	subflow = mptcp_subflow_ctx(ssk);
++	msk = mptcp_sk(subflow->conn);
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++}
++
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
+ {
+ 	struct csum_pseudo_header header;
+@@ -1283,6 +1300,12 @@ void mptcp_write_options(__be32 *ptr, const struct tcp_sock *tp,
+ 		return;
  	}
- }
  
-@@ -1525,7 +1531,7 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
- 
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 		return true;
- 	}
- 
++	/* Fallback to TCP */
++	if (unlikely(!opts->suboptions)) {
++		mptcp_track_rwin(tp);
++		return;
++	}
++
+ 	/* DSS, MPC, MPJ and ADD_ADDR are mutually exclusive, see
+ 	 * mptcp_established_options*()
+ 	 */
 -- 
 2.51.0
 
