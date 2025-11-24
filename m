@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-196734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1F8C80D8C
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:50:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B7FC80D8F
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F128F3A6194
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6E83A5C89
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C490130B539;
-	Mon, 24 Nov 2025 13:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F85830B515;
+	Mon, 24 Nov 2025 13:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcyPkRM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEwPyfug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E0930B525
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBF226FDB2
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992228; cv=none; b=b3e52+7Ojydw9U3EUB5WWFijw5IExZRqJhAVcTzc3P6GDNahdwP2xtq/79PPypf3hK1xAKOSlCgER1WBu57z7kC3diwxbwPXXJFhKqmWBwxMPzcI/jO7x/WO9O9VfIkkMgnCM8pT5UYcJAXgLdZL0zAxGcmaDAw+Nv9QvEGJCmE=
+	t=1763992237; cv=none; b=dAfdAa42r1Ty1nolDPoYg8l86u2r6nG6DOPOujWZ/1pvH2z2c2FfsvxdS6eaIGQsVynaKaanlENaa/rujkp+/b4r1G03rw+t251bXqUrexPYdEIVTmg4r3zgtYXoBCXLqFTprtPIC67ZjaNrz5Tfaixn4eebUvYX/18NKIrdE7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992228; c=relaxed/simple;
-	bh=G91fBBFcovU9n244U+t5TdpeJaS2oS8Kp4XNaffsHNM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ryvJslWRNMcQ/wLHvlI3WLm60rYmhpMK3QbZp3gcQKKPbOVk0hFtVWof3MjuHPs11Kn57XU6OmN79gbYTt0OZOvd+kyR/0ly82CHEh8GOHDXc6pmmx+gvXQhNBUTWQCab99/M5naNbe3EdSJ+GASY0avVVnKzGMco0RRncTRZL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcyPkRM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B49DC4CEF1;
-	Mon, 24 Nov 2025 13:50:27 +0000 (UTC)
+	s=arc-20240116; t=1763992237; c=relaxed/simple;
+	bh=RdLDosm1ats0FUgMD9JiBGCnwY3aFw63HChcMJadLRo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nDsqfWD+sLKCuNiaUdQJhXTG3QIRBoN06g12ojbUbw2/U+vTcXscJY8ZX/evubZhvwykYyktEnqEBpkEkeP0P+cAu2WEVPtk7Hp9hj8PDCqoPHwqk8+gSSvik/Lq6d3NF/ak19uEgcF8avx5vEtDyCzATp9J+pbRA8w7glwe+/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEwPyfug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC2DC4CEF1;
+	Mon, 24 Nov 2025 13:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763992228;
-	bh=G91fBBFcovU9n244U+t5TdpeJaS2oS8Kp4XNaffsHNM=;
+	s=korg; t=1763992237;
+	bh=RdLDosm1ats0FUgMD9JiBGCnwY3aFw63HChcMJadLRo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CcyPkRM7VM24vMN8STBAR8TD1dDRx0cJ+HY/L2YEl+a28feyDTCXiQieaAO5sw1Lb
-	 zV0LO/73GnjgVXWmuHYNe7Msv2DLM/icf/IqNfeaTqhpvonGpEewIvmGcmApSJ0txG
-	 JY1bGbCUW49N8RR2SwSlNS1wvQUKCLnpo4Oxt0vc=
-Subject: FAILED: patch "[PATCH] mptcp: do not fallback when OoO is present" failed to apply to 5.15-stable tree
+	b=JEwPyfugKu7/5B4B0ptNWWbV+RE7xGunDvKWmp1JQQUvMk58KVXZE3UJ7L86pLewL
+	 MhxW941EGyeJvUgNIf7Nh72Khar/BL0XC4gj1lfAsU0f6d04+kfMoJSOe76ef4kz3F
+	 IIWVPhErHxKiCI3u+3BvxWgkBwhKmSLBIgxJI59E=
+Subject: FAILED: patch "[PATCH] mptcp: do not fallback when OoO is present" failed to apply to 5.10-stable tree
 To: pabeni@redhat.com,kuba@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Nov 2025 14:50:25 +0100
-Message-ID: <2025112425-math-lasso-c3b8@gregkh>
+Date: Mon, 24 Nov 2025 14:50:26 +0100
+Message-ID: <2025112426-backroom-negate-d125@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1bba3f219c5e8c29e63afa3c1fc24f875ebec119
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112425-math-lasso-c3b8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112426-backroom-negate-d125@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
