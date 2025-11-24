@@ -1,154 +1,114 @@
-Return-Path: <stable+bounces-196688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97671C809DD
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:59:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634D3C80B3D
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2D084E4BA9
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 12:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20B323A6D56
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F131301473;
-	Mon, 24 Nov 2025 12:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0032F84F;
+	Mon, 24 Nov 2025 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Yqz87Az1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1Tinxyi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92960285C8B
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 12:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC57B1A275
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763989152; cv=none; b=FI2/1fv1GrBInveehs8Zx/2rra2arMd/w62l1DLgZtmXE6udBCWVGtEy8EPAYamv1nFYmRsvy04HnQC9MH3i8aKKpTjycU4vQb8Y+S3cBznzhnF9/nigBKwRkUMPKJWhoYlmttBtzFtbXLA9tGdiAT8TUIAbYYwgbxsyUvSaOC0=
+	t=1763990357; cv=none; b=FbUk7FDwpf9+85iCHu01h+V4FzojxU87xMtkMkBaUf8uoXjbGygGqwO/6NB9F/hhBBqaoMDX4FsV5OIF5hsdILniz6b6RGeo/GNJp2bF+4x9u6ZfJun3NfxvN2EgDNAj6Pmp2ghnRSx6aoWJVTnAqQP/r/C1IGM+3OiR6egHVKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763989152; c=relaxed/simple;
-	bh=ZS+oc1EH2l66FaqOGhjgJX6MBnmHcCb61TSeWXPVjfU=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=gTqVOJHnWZyJ67pJmAW4w4YtH1DvIYI+J8cKcd2kHrwYddSTpF5+Y1N30qJrbLwZ1w2h6FX+csWUdH0UWU9/zKzp7k/ORoG1+DjPLeSGaxMBg124lHamV6+sVxCCkpgt9ob6CSlJgl21iKPg9iI6c5bhMmyLZPjZYqKTHYrO6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Yqz87Az1; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b996c8db896so4627361a12.3
-        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 04:59:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1763989150; x=1764593950; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jkT1VvD7QvpWCucq/0jTel+dWmYxPo5YKZhT+XsjcuI=;
-        b=Yqz87Az1KLVxgX+ePvn54TmOPSbiZCDSL291crFqLP8lFNTM2mh8IWRwsTzqS+j1/m
-         KwP+VOSX2PpPo3Da/e0IH8yLwySDALwbOrKI8uKFKTYwfhb/QUjfbKlFD5XY+ef/+nxC
-         vh5w8zge15EGjENP8YLaXWBISw2IR6ySQ313eSsaHJmR44jcCBNVBngit4b/3rWihOyy
-         vI/5Pex3oerr4lcIruuid1gdZUknCkcYLcbcVeWo5YeWUzRNxduXPi3BpLjNiYOC+Kbv
-         J96ArPKw8GGqN2EnkAMqr++Z31yCvb0NJ23IdXxjsdcRs/Whoo5yGAMCZpdwnIkXVRxj
-         YtFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763989150; x=1764593950;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jkT1VvD7QvpWCucq/0jTel+dWmYxPo5YKZhT+XsjcuI=;
-        b=jR4pclSPiTRyYYdtPeaeda5pvSkXb3yGxNHtuTPHb/aNF6m29R+w7zUY5lLIBD1rzs
-         YIrz5noLPCKCU/6O0aUR8x2Z07O90/qVtNzeuLJ4hSfZSHiLCTP3QJYPwcfKaCqXSKCz
-         iLrV+KSr660m6tIvr6602U8jUuE6cMVJxTBaFfe0Da5IlRbOaygabXnFaI6RRSev4YYG
-         MAPgmzPRzJbjU0kvMTUSzGsUpkBE7gsMVxbj/k4iEbDO4RUgW2ZlKl2XDHHdDrpg2vkR
-         dPqQp4N60te/SzRSb28dqi+g+cx+M83GzCNtjV3OlmDr5CqiatoD8EfyKmBBGO5ZjwBX
-         1kFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCAcxWyW62M+gMmoaMlNIXGtbboOXKSNNQXjv3IpWgLz0dD/kaEUhX4pp+3R8U9X0nYvTgX7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/2TaHQWQ5BP3I90UWJ1QF9cDXT2/uX7Y032u6v/0clJO+MpOJ
-	Wl59jsdRIpekb/uhTZ/eiC7gGdVg+IL2sIHQqVETXZIO2nYLLJ7GcWRljFkO71Cmpvk=
-X-Gm-Gg: ASbGncvwstHo+7mzCoDus757zahWQ/KViSdaqvKr83yFrOMtXeQirUxrJjBOCizSkq7
-	eNciN8wYUOF8wzYkgktFBHfltvyNYVNjDek+o7UZ166VNb3v8Ook0bOXBjy4bYrUhGosFozwwjD
-	y8Q1/xAjkG/z86zD4q4uvRtJoLGFsOfksxPH1hKuYJhzsJwPIXek1x9Wup3uqb9wDO/tL0yIUpQ
-	lXgdtZcPFCh9VsYE2tqBWILOXEX7XHSgocxn4D8sz7Bx9rpP3uEqvfowuSEwGvznWSOqC9QxsZo
-	xM1nSy+MRRJU4Y9U4JnAKFKiFSjhmn48Stwsor9k8VFmHfo742/6alH33WZLTBGOP4IHQ53PPTu
-	836f4K8LgK1RJUWz8egw7Sx1XuGmw6bqwRPFqOaTtnHD4c6mciT4wLcLvD+v2vNlY5g7Ay12KYx
-	C5AzWiDZDtTjoy6N0=
-X-Google-Smtp-Source: AGHT+IEDyKHq2yljVWDuHDrt2oXDhepA1O0Qoc597pw7+11wst+kEZ4D6ObFGVQqtnoFNZj+4+SxDw==
-X-Received: by 2002:a05:7301:168e:b0:2a4:5154:b346 with SMTP id 5a478bee46e88-2a7192e071cmr7948075eec.35.1763989149723;
-        Mon, 24 Nov 2025 04:59:09 -0800 (PST)
-Received: from f771fd7c9232 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a6fc38a66bsm51275168eec.1.2025.11.24.04.59.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 04:59:09 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1763990357; c=relaxed/simple;
+	bh=IZvllBSJq9F8VtImLleNZ6e/nR8JZvrduxaRum2rlEM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N3RR2qX79LD0FBN39vlCwFL3RtYN1rV0mUftgTZmfeCupOwsDXwIuJ0jaFndQEJMreOq1DtIMw+T19jMsu7wVpRtblf48cDrcmJ6vn3wxyJd+VjSCndk5WJaDNN24+pKhDDxE/FQATJYC8jhZLX5UcC4G04dFualJQULpV/oj5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1Tinxyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D511EC4CEF1;
+	Mon, 24 Nov 2025 13:19:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763990357;
+	bh=IZvllBSJq9F8VtImLleNZ6e/nR8JZvrduxaRum2rlEM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=k1Tinxyi4hLc9S6VJvRuUJfDZmgQgGun69PppuYE74ywwtIKJD8jHT6ENBWxJo8sa
+	 1wWw0j4G4cazmKJQYdQL4c4vq3G9Xw4/DUXNjtCV3TKaf4EW7sEa57ug3ObTczwob9
+	 hjkbZ0PXFfYVrYmloXZz4/nSjBO7mjrgdIEsutxY=
+Subject: FAILED: patch "[PATCH] HID: amd_sfh: Stop sensor before starting" failed to apply to 6.1-stable tree
+To: superm1@kernel.org,jkosina@suse.com,novatitas366@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Nov 2025 14:19:05 +0100
+Message-ID: <2025112405-dispense-dealing-3eec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
- uninitialized
- when passed as a const pointer arg...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 24 Nov 2025 12:59:08 -0000
-Message-ID: <176398914850.89.13888454130518102455@f771fd7c9232>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+
+
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4d3a13afa8b64dc49293b3eab3e7beac11072c12
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025112405-dispense-dealing-3eec@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
 
 
 
+thanks,
 
+greg k-h
 
-Hello,
+------------------ original commit in Linus's tree ------------------
 
-New build issue found on stable-rc/linux-6.12.y:
+From 4d3a13afa8b64dc49293b3eab3e7beac11072c12 Mon Sep 17 00:00:00 2001
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+Date: Mon, 20 Oct 2025 10:50:42 -0500
+Subject: [PATCH] HID: amd_sfh: Stop sensor before starting
 
----
- variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/rtl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild.compiler.error]
----
+Titas reports that the accelerometer sensor on their laptop only
+works after a warm boot or unloading/reloading the amd-sfh kernel
+module.
 
-- dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
-- tags: v6.12.59
+Presumably the sensor is in a bad state on cold boot and failing to
+start, so explicitly stop it before starting.
 
+Cc: stable@vger.kernel.org
+Fixes: 93ce5e0231d79 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Reported-by: Titas <novatitas366@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220670
+Tested-by: Titas <novatitas366@gmail.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 
-Log excerpt:
-=====================================================
-drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-  148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-      |                                          ^~~
-1 error generated.
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index 0a9b44ce4904..b0bab2a1ddcc 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -194,6 +194,8 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 		if (rc)
+ 			goto cleanup;
+ 
++		mp2_ops->stop(privdata, cl_data->sensor_idx[i]);
++		amd_sfh_wait_for_response(privdata, cl_data->sensor_idx[i], DISABLE_SENSOR);
+ 		writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
+ 		mp2_ops->start(privdata, info);
+ 		status = amd_sfh_wait_for_response
 
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig on (arm64):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm64-allmodconfig-6924331af5b8743b1f5e538f/.config
-- dashboard: https://d.kernelci.org/build/maestro:6924331af5b8743b1f5e538f
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69243317f5b8743b1f5e538c/.config
-- dashboard: https://d.kernelci.org/build/maestro:69243317f5b8743b1f5e538c
-
-## i386_defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (i386):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-69243353f5b8743b1f5e53bf/.config
-- dashboard: https://d.kernelci.org/build/maestro:69243353f5b8743b1f5e53bf
-
-## x86_64_defconfig+allmodconfig on (x86_64):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-x86-allmodconfig-69243323f5b8743b1f5e5395/.config
-- dashboard: https://d.kernelci.org/build/maestro:69243323f5b8743b1f5e5395
-
-
-#kernelci issue maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
