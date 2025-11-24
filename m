@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-196669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8630AC7FBBE
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 10:54:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BA6C7FCCC
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 11:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F3474E48FA
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 09:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2993A2FE5
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 10:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E532F7468;
-	Mon, 24 Nov 2025 09:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F19226CE17;
+	Mon, 24 Nov 2025 10:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="pXwSPfTR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bi2RSZIh"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DCB2F657F;
-	Mon, 24 Nov 2025 09:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A8B2459EA;
+	Mon, 24 Nov 2025 10:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763977910; cv=none; b=dB8lnUo4ZcHizL7nlkYDN/1C9Nzv9rdwLW7STvmNQcL+H4XXmPfHtwCyNg8Nghrjg5VN7oCAviUWA9IFwGDJI9d6QatQmKIo4/LX8GT46Ugr7gvUhZWc9Qv0IfTD9AAfWlQ4Ht9YbCn2L1k3dHy2FYflCVTZhBmryS1dG2a4gkk=
+	t=1763978613; cv=none; b=g/v8nmVLx4xb2/ouau8gIPELqEWerF9py7lePi5WzFfdkonENhohzlt/VuCwNR5gERZBRO+Kx92HodOfrQtLE7f/OakmBwJMG8yfsaLH9HP4O9mwoEhMnL1qHqu7W7DOURHROSGjLqHdU9FmI7wukPt23WiiWqKV5YjMqSE/S+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763977910; c=relaxed/simple;
-	bh=OGzTKu3RaZeeTGEWvF4tKdcUIcFU07ZsNy6xTODec/Y=;
+	s=arc-20240116; t=1763978613; c=relaxed/simple;
+	bh=3OFtNIJlB5pb83NXaUCm1QhQaxVx50ZAfl+2hNDkg0w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RtYU+BEXCdwf6xDob3MFCDLxiz8tTck+fEI4nkm0skK0zP/oC7ntSDk6nCMSv+Kv8+PxIikFTN5EEcoZG/eN8R7c8pp8CC4Iu4danBGvgPUc023WGLPX2zNwoptI5c5+PuAl1yd80ImVFWbABEQOD8F/4iJjRleYxDcUjXcTHjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=pXwSPfTR; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=c7fgjhnceewX9WTWgDcP3o+c+gym320PIXC+PmkRQmA=; 
-	b=pXwSPfTRUQddVnMEepT8vWwygw8SsPTms8qX3o3U/1pzrAPtjcsteAJo4tddMzGVd+C147hOqwY
-	Mg36ouK0aYcilU7sOEStIo/yKGBj1mJvfrTGmVZzun5p5HL7WjpMWqfMM2zm2qNsGhYVWs9NMJPx+
-	qYWCnqzaoRVR4H9W8LH++5j7ZqLw0hy4qRFDhAl+OYGMC6GAIL4XedXcyBCUuWWJi6ur0GIF66wBT
-	fyEdkdSHd+otFOc0npyv6KwngLfkuIk9gE/OPbNnEa+DbGtYTLMOEeguZC9aLpS7U9h3pQJY49ikt
-	t9L8zsaMddJGFJynbO1T5ZdnKTnzaD9ZQh+w==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vNTEV-005XP3-2v;
-	Mon, 24 Nov 2025 17:51:45 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 24 Nov 2025 17:51:43 +0800
-Date: Mon, 24 Nov 2025 17:51:43 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
-	stable@vger.kernel.org,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Subject: Re: [PATCH] crypto: zstd - fix double-free in per-CPU stream cleanup
-Message-ID: <aSQqr9wKzfNP_As8@gondor.apana.org.au>
-References: <20251120162619.28686-2-giovanni.cabiddu@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RcrW4CvyXpl5QjjGu0l4B/bL3ec6SK+iC4OhhA1nDP1g4WBSX7GMpilMslZRxvTgEkoFqqCj6VQUEXRNLDTTTHZRhnPBMx7mxdRGccecKp3oakpYFlPtmO/WxiULcvXFM4pALbT5YDABVt4I3mcEefhAxUfxOf9eDyGNJCO0tNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bi2RSZIh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AD2C116D0;
+	Mon, 24 Nov 2025 10:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763978613;
+	bh=3OFtNIJlB5pb83NXaUCm1QhQaxVx50ZAfl+2hNDkg0w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bi2RSZIhIrMeP9lQ7E6Lmm9GslpS3QdXywuDs9Fna/5l1DPEkZkA/RedhcXdqoZdD
+	 1utTkzWvZrIn1dFLitOdHpNORhel1fHvMHmVBd3JgQ6icLqYTo5m6nS9ZD+IGQQl4t
+	 BNa6eSjaJj0x0RjIUtxTPQ6isX7nQxOGoUvsqaz54aLB8So6aXI4d6dcRfzw9Sv+gk
+	 BsE5tMwq60c9kDu6ArZZUCjQ0uCNx8Zv6XJOW+rFhrSsfcgYjwBg+tbby5yE7hafcM
+	 Lus0cO5JsPfxtypi0XoMIp9JD9CYTEqK6+1Xrucbf1V7kFnUOU6puou0/bJOzXQaj2
+	 CMaT59c1woIqQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vNTPw-0000000025T-2FTh;
+	Mon, 24 Nov 2025 11:03:32 +0100
+Date: Mon, 24 Nov 2025 11:03:32 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Dmitry Osipenko <digetx@gmail.com>
+Subject: Re: [PATCH] drm/tegra: fix device leak on probe()
+Message-ID: <aSQtdG3MiSq9YJAP@hovoldconsulting.com>
+References: <20251121112432.32456-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,55 +64,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120162619.28686-2-giovanni.cabiddu@intel.com>
+In-Reply-To: <20251121112432.32456-1-johan@kernel.org>
 
-On Thu, Nov 20, 2025 at 04:26:09PM +0000, Giovanni Cabiddu wrote:
-> The crypto/zstd module has a double-free bug that occurs when multiple
-> tfms are allocated and freed.
+On Fri, Nov 21, 2025 at 12:24:32PM +0100, Johan Hovold wrote:
+> Make sure to drop the reference taken when looking up the companion
+> device during probe().
 > 
-> The issue happens because zstd_streams (per-CPU contexts) are freed in
-> zstd_exit() during every tfm destruction, rather than being managed at
-> the module level.  When multiple tfms exist, each tfm exit attempts to
-> free the same shared per-CPU streams, resulting in a double-free.
+> Note that holding a reference to a device does not prevent its driver
+> data from going away so there is no point in keeping the reference.
 > 
-> This leads to a stack trace similar to:
-> 
->   BUG: Bad page state in process kworker/u16:1  pfn:106fd93
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106fd93
->   flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
->   page_type: 0xffffffff()
->   raw: 0017ffffc0000000 dead000000000100 dead000000000122 0000000000000000
->   raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
->   page dumped because: nonzero entire_mapcount
->   Modules linked in: ...
->   CPU: 3 UID: 0 PID: 2506 Comm: kworker/u16:1 Kdump: loaded Tainted: G    B
->   Hardware name: ...
->   Workqueue: btrfs-delalloc btrfs_work_helper
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x5d/0x80
->    bad_page+0x71/0xd0
->    free_unref_page_prepare+0x24e/0x490
->    free_unref_page+0x60/0x170
->    crypto_acomp_free_streams+0x5d/0xc0
->    crypto_acomp_exit_tfm+0x23/0x50
->    crypto_destroy_tfm+0x60/0xc0
->    ...
-> 
-> Change the lifecycle management of zstd_streams to free the streams only
-> once during module cleanup.
-> 
-> Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> Reviewed-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+> Fixes: f68ba6912bd2 ("drm/tegra: dc: Link DC1 to DC0 on Tegra20")
+> Cc: stable@vger.kernel.org	# 4.16
+> Cc: Dmitry Osipenko <digetx@gmail.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 > ---
->  crypto/zstd.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+>  drivers/gpu/drm/tegra/dc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+> index 59d5c1ba145a..7a6b30df6a89 100644
+> --- a/drivers/gpu/drm/tegra/dc.c
+> +++ b/drivers/gpu/drm/tegra/dc.c
+> @@ -3148,6 +3148,8 @@ static int tegra_dc_couple(struct tegra_dc *dc)
+>  		dc->client.parent = &parent->client;
+>  
+>  		dev_dbg(dc->dev, "coupled to %s\n", dev_name(companion));
+> +
+> +		put_device(companion);
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I noticed that this has been fixed in rc7 when rebasing so please
+disregard this one.
+
+Johan
 
