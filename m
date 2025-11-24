@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-196771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BDCC81DD4
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:18:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8F5C81E15
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DA297348241
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:18:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F6C3348815
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAFD1E51E1;
-	Mon, 24 Nov 2025 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E87B233149;
+	Mon, 24 Nov 2025 17:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRstjhsg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otyv2CZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF45188596
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD45231829
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764004688; cv=none; b=J9i0qAlJfF6wEGSqEafU1vDpyKBIXzfaBHaXJaTqOYbRbwCo/Hu8s5Q+dJR1UNViPEqCUK750z6J6N3lzX3pw9vZFUUkDWvVyDEG0G3fN8VPVRoueSwjIgywGt4RYHOPeWzgyfct+0xIk2SsyLbQazB4uDogmjIqFJjBQYrrSOg=
+	t=1764005069; cv=none; b=VElowrpbmucifACcgMQQD/Mv7xwWc70R2HYnYCNUbB7lV2FhYWixKcAKlmASk8a8B/TWreUEu5duzc6qGFQrxiNhN05bb1LjmxQ+2Z4/swIN0eYtfUooKkQsAq76q0z6hZ6mhDVS+tn53wtlhJfSExJTS1BS0zpLwj5yenhaaLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764004688; c=relaxed/simple;
-	bh=9m9TQsG9+Hk0oAvU5vJSsjOrOc7n1UeV4A/Pio4Ff1E=;
+	s=arc-20240116; t=1764005069; c=relaxed/simple;
+	bh=tPkTnfZS7Hac+82FJ0OmB6lJ7pbjCvYwz8Sld7pxtrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJqXsb5rOfNxEximVSou603pySP6mCrgua+OvtwtUFdYHVcXDX1nGqFDd9ysso6A/ot7BdO+mQXZJL7IyGnvFCP1IvNHUlq7R00HuCfnigUMe9rWpyKWAaaV+OA7fshNN98JrUAoKjRTv/fq3z9ul6YJe+KgvhS3ZrnyT7uA+Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRstjhsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812C9C4CEF1;
-	Mon, 24 Nov 2025 17:18:05 +0000 (UTC)
+	 MIME-Version; b=JulK1kQzSu1Ain9uUKUX0oc1E+liCqPIzEuyAOCyyZDGVCbnMEOkTlX99/zty3divnoFOxWcAWk2aR64WgVEUPQvJHFyymRmhLjlVDdVbPu5I7RcZZI7S5X1U62VLelRB+nB07mYEDZpc1V4YaEK5BelOQDesQC+Qhj+KljssAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otyv2CZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC85C4CEF1;
+	Mon, 24 Nov 2025 17:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764004686;
-	bh=9m9TQsG9+Hk0oAvU5vJSsjOrOc7n1UeV4A/Pio4Ff1E=;
+	s=k20201202; t=1764005068;
+	bh=tPkTnfZS7Hac+82FJ0OmB6lJ7pbjCvYwz8Sld7pxtrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRstjhsg0t9O0XinRIvlT8OrwauSUSnCn/Su1vMihjTvQJB6Gvzzmlz7ONaCn17DQ
-	 K9kRVmGs/QXNn0RyLMZTvGb3fg9PiYqxZAT3ehZ6Ty+Q7UBm8q+LIDqpQlnU6FrMwF
-	 pzMIwp78k8kwOYqIFNtQkDG7XHxP5CcIDmq0q/2DBEOcYjCZjyFKeWE5O/dh5jADQg
-	 uLTjssB7vD8LVumluDm+8lH5saYAYO3BsboqHYFwNq3hT05zZgxe7AHREyn7GK9jnL
-	 mUj37DZl/kwJy49R3rhNFuGwHVosbe3e2JG1q15mbMGOfoKCAZS1q/pfcpqBtghrGg
-	 e/C7fTpSpsNiA==
+	b=otyv2CZxMWZnCeAWgiF1chR6EJULysOJmuSJCLrM63V7LgDXfMZxLsz9VNPC1tpzK
+	 ufhJW9GVpyertmjq6hY6R7aLK82JkM1XXS9k0GP3NzuMAfiYkyzOxnxiWS+df/YEHi
+	 LmNjM5VokIB0yLEPsG2t6Jr1RD5TnTitSk5PPy0vYr1q06P70bl+2y9pbJGxJoaFbc
+	 Hujx2rYqcBBhGI51zK9nG9HC2vbSxzVAUGBC4Jr7A/KrA3f2cfwSP/KRpIl7xTMyA8
+	 Q7ddCnz/GX93jZiLB6FXpe4XgPlE2+o0OruofqsareVcMXrda4SnYNzWxYTckuZ85j
+	 GpvPb6YCJj7Pw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
@@ -48,12 +48,12 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Jakub Sitnicki <jakub@cloudflare.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: Fix proto fallback detection with BPF
-Date: Mon, 24 Nov 2025 12:18:02 -0500
-Message-ID: <20251124171802.4158681-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: Fix proto fallback detection with BPF
+Date: Mon, 24 Nov 2025 12:24:26 -0500
+Message-ID: <20251124172426.4160679-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112444-entangled-winking-ac86@gregkh>
-References: <2025112444-entangled-winking-ac86@gregkh>
+In-Reply-To: <2025112449-untaxed-cola-39b4@gregkh>
+References: <2025112449-untaxed-cola-39b4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -133,10 +133,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ea715a1282425..9d5981e5754b7 100644
+index 490fd8b188894..f758fde0565a2 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -79,8 +79,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+@@ -77,8 +77,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
  static bool mptcp_is_tcpsk(struct sock *sk)
  {
  	struct socket *sock = sk->sk_socket;
@@ -147,7 +147,7 @@ index ea715a1282425..9d5981e5754b7 100644
  		/* we are being invoked after mptcp_accept() has
  		 * accepted a non-mp-capable flow: sk is a tcp_sk,
  		 * not an mptcp one.
-@@ -91,7 +92,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
+@@ -89,7 +90,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
  		sock->ops = &inet_stream_ops;
  		return true;
  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
