@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-196774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56252C81EF9
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:38:30 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51770C81F59
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 18:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 03DC73488C9
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:38:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F1B293490CE
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 17:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B712C08C8;
-	Mon, 24 Nov 2025 17:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9317D2C0F91;
+	Mon, 24 Nov 2025 17:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mCmDw6xs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sFycThkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C472C0287
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B12C3770
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764005904; cv=none; b=jea00DYWi//1FEHjnbWOd0Q6Iqg+iFpktvvWNn3MurD+BteheKT2DeDAptUY8jJxJWW5voENFOtArO8TIc1qVL+iCLZAVh0wJBYU0+8cn0437x8yV7ud4r/MJQrJjdbRwJ6t7mGbift+jLG9EsumT7CYl6xvfKucRpfivzeyaZ4=
+	t=1764006308; cv=none; b=UktNXztgbs/HVKxmqUgEhP7NapfHjBdrdkuOA2raVtz8aXPHFnISreQpppBE2OjEopfzRUyBlJrGFwPfihRSLe2SCR59UugXod8AXfyOYBcxxyFFW2kVnLDQNmY74fZVwyMgSGq3xzLZ/g55MuZtFdktQZpdK9GhGsEVYBk2stE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764005904; c=relaxed/simple;
-	bh=yVP2S0I2nQiZ4TmD9NJzUt7vaaMgrCxub/1xieTOqho=;
+	s=arc-20240116; t=1764006308; c=relaxed/simple;
+	bh=RTiXMRbYvF9Qka4oYV3R9/MZFOwCgGadKAdJrIqjOek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cc1xcY0gmWsSKdV7jEP5QeeNCsak1MG4ojPlw/WcBAXyxuaRXQtBZprKUiq87jpcNyKHRQNT2PBcNkHqE6pSIIPFQBhJpmgL+6jKpqU4tpwFIQ2wcAbDFFXzpPQtAP9vjcRxKwsQU3Oni+qag9DeOmUPY+0bb9+G6n9ayzEb07M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mCmDw6xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E1DC116C6;
-	Mon, 24 Nov 2025 17:38:22 +0000 (UTC)
+	 MIME-Version; b=MNbAzpTQAbyF5u49MraLaBbHTDkTQN2glYbJ1HQZbByKqCbg667bAXP1SeoR2wAShCoecVeoz859QUIfml0zkHMK0N7Txejj37VnwQGOo5f+VQg9XyKol8Wd8UqQXihhqRlGNIImGbH483IxMUsBJcPpKMLnSACmhNCNOvFrI9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sFycThkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E939C116C6;
+	Mon, 24 Nov 2025 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764005903;
-	bh=yVP2S0I2nQiZ4TmD9NJzUt7vaaMgrCxub/1xieTOqho=;
+	s=k20201202; t=1764006306;
+	bh=RTiXMRbYvF9Qka4oYV3R9/MZFOwCgGadKAdJrIqjOek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCmDw6xsDCwFP0pijvln4FCsWUMTGs4W9V+gT63Q7eUsEHwRs34YIk5Cwkv+0kA+q
-	 O//Z4ELe2oYUd6OODqxNzgEwe+yyCY3bIvlAtoi8YLtitfA6NCe603sQhaSO3/g5bY
-	 I9od9NBxaKql7TBL0xyu56GodVcSxykpxNPIpjh25JkNpJgiIRrohkcksUA2uCl6Iy
-	 kpNmNEjuyF99Wsohlgs5LUh0s/h3CLosJdZkzny0CqbwbeTw3zp1nJApmFODcX2xcT
-	 +Kte15HSc1hyqEq4KpGNW6CTWuFcNfp7BEyGd0P9s67w3ZQQ0Fk3shaVXc2HqxLT/0
-	 IlPcJ1YD1vOHQ==
+	b=sFycThktaEvBRGMct3BmcCMVXHDxK1A4uJgAy13wQv5yCDaIcpV0jGHOr0RPN6j/7
+	 UDS57eDHYg8U2sopRU8VTypZgf4GaYtZR96x0OXpoWs+wfBM8fRkR3XLM/99ycMjid
+	 Hk3NUqaEY+90g/u29aPuk0KEIL7tYW41GaIu5fh6/oNFBzCs5j7YH/fi1//6uXTVf7
+	 8uhOu4FmaT9/MvIqKFReLxQNLbfNUj6z8/X4Fllny2/3fTPV4EkeCoTngzVI3V2ZJZ
+	 M8uEHIdxZ7MLtf8cmgVfONnJwiWBJX9SBevCxLmgXz7G568EFwToXDpRinMJ9mRmR0
+	 VtWLE3XZu8FDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: Marcelo Moreira <marcelomoreira1905@gmail.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] mptcp: Fix proto fallback detection with BPF
-Date: Mon, 24 Nov 2025 12:38:21 -0500
-Message-ID: <20251124173821.4165452-1-sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/2] xfs: Replace strncpy with memcpy
+Date: Mon, 24 Nov 2025 12:45:02 -0500
+Message-ID: <20251124174503.4167383-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112454-comic-external-4ced@gregkh>
-References: <2025112454-comic-external-4ced@gregkh>
+In-Reply-To: <2025112457-shining-trough-db05@gregkh>
+References: <2025112457-shining-trough-db05@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,100 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
 
-[ Upstream commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f ]
+[ Upstream commit 33ddc796ecbd50cd6211aa9e9eddbf4567038b49 ]
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+The changes modernizes the code by aligning it with current kernel best
+practices. It improves code clarity and consistency, as strncpy is deprecated
+as explained in Documentation/process/deprecated.rst. This change does
+not alter the functionality or introduce any behavioral changes.
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
-
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
-
-This fix uses the more generic sk_family for the comparison instead.
-
-Additionally, this also prevents a WARNING from occurring:
-
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
-[ applied fix to mptcp_is_tcpsk() instead of mptcp_fallback_tcp_ops() ]
+Suggested-by: Dave Chinner <david@fromorbit.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: 678e1cc2f482 ("xfs: fix out of bounds memory read error in symlink repair")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/symlink_repair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 1342c31df0c40..59abf636a2e43 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -56,8 +56,9 @@ static struct socket *__mptcp_nmpc_socket(const struct mptcp_sock *msk)
- static bool mptcp_is_tcpsk(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
-+	unsigned short family = READ_ONCE(sk->sk_family);
+diff --git a/fs/xfs/scrub/symlink_repair.c b/fs/xfs/scrub/symlink_repair.c
+index 953ce7be78dc2..5902398185a89 100644
+--- a/fs/xfs/scrub/symlink_repair.c
++++ b/fs/xfs/scrub/symlink_repair.c
+@@ -185,7 +185,7 @@ xrep_symlink_salvage_inline(
+ 		return 0;
  
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
-+	if (unlikely(family == AF_INET)) {
- 		/* we are being invoked after mptcp_accept() has
- 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
- 		 * not an mptcp one.
-@@ -68,7 +69,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
- 		sock->ops = &inet_stream_ops;
- 		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-+	} else if (unlikely(family == AF_INET6)) {
- 		sock->ops = &inet6_stream_ops;
- 		return true;
- #endif
+ 	nr = min(XFS_SYMLINK_MAXLEN, xfs_inode_data_fork_size(ip));
+-	strncpy(target_buf, ifp->if_data, nr);
++	memcpy(target_buf, ifp->if_data, nr);
+ 	return nr;
+ }
+ 
 -- 
 2.51.0
 
