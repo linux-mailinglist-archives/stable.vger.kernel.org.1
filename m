@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-196627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9489CC7EC7B
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 02:55:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F82C7EC9F
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 03:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39D7B4E0356
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 01:55:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E1CE54E12DC
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 02:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974BA239E9A;
-	Mon, 24 Nov 2025 01:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF5C1F75A6;
+	Mon, 24 Nov 2025 02:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cax5l+gS"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fO3NIb4z"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF0919E839
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 01:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A232773E5
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 02:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763949334; cv=none; b=EjSNF3axRtG0OvY4iQvUkkWnQor3bqSpr6ztjAJZ5zKs6iuwWVFTAxoxxqIrlyURaH4CIgQKm3awn3exWOGdWlK6ftC8JR5okVjaJDV6BOEFjZjLMJitDm6qzaPRYEVjyBbqljipAfMPmxtSl1EslIN3mp1Up6m+Yjcx4DN2eZE=
+	t=1763949688; cv=none; b=EIpIKG5bl/X/G+VkGp8gXAt4EW+8F158nQPuaZOD+qxN4v5RIBdlf8j8nLEuxMRAufA0yG0wBU7EWqqBEY5vsTXay6T4rni1q9HMa5+gCJUPhZvPYQL++Rm1/vdveljXT7GvFEh4+L0W6aNSp+8yQ1dRFiy1dmMGTvpb6fNDwh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763949334; c=relaxed/simple;
+	s=arc-20240116; t=1763949688; c=relaxed/simple;
 	bh=ePPHzttxtik95F3nS4r4z9ClMa/6fywbOWwr2h2l3xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gb9jpZuKVuHVHomJDaDNSAzkk0IrwEQkPHcFs2LPLFaVbOrb1m1xs2Q+yVCKVVFojqy4Up2wK0rQHclLj0AracoHCJTSCaPgcfxjpy9gLQaE4jwiXLxxQCUutpkyON1JEZUWqUKbOGLmE2DsiHw0wOs7jm54Edyd2KZ1PvL9NYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cax5l+gS; arc=none smtp.client-ip=117.135.210.2
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Bq/nOIyyGsRGznzyY7f5uQbjFYIV9K7lV/HEoByWokHSYkiIkZpxDBgJPbY3ACDrw8b0hw7lYf4ZRK2M5IYA6y6kJll9i8sM8AHqcfFtZjUUB3WiNFTuGAEZ20g0+WgYh6seAqV9AiBerW7nOOjB7PTqME8z+RUK2MyIm8lKfuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fO3NIb4z; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=R/
-	JDXUTpQvMZDqeGofu0opaBpaPUW/UFCx5k7xDJb88=; b=cax5l+gSiS62+C5LCU
-	27cyPOE0L7dUxvo093tmBTTIZpPwhWeJ9QftmKiwrhipQ3ZHqtEnS4gX9BtzJwMN
-	lwbrHvuleXaHBxGDsgjdHfjQ1/0IHLizWQi4l1vnhx42k3MGTDcJzXYSXW82uFni
-	oYYyLRT82RmPATL4j7QFDOX0A=
+	JDXUTpQvMZDqeGofu0opaBpaPUW/UFCx5k7xDJb88=; b=fO3NIb4zre8zEwIdv5
+	/ePCEdY1/q7G7Q7lHaFtv8EsOdtPxXUtU/ppuxN35UOUVMHB7OA8UavO+U+KqduI
+	FuDaxbXZWSw+YixjbRPZv67RTXvJhCKPEEac+HrT3gF2SrkSB4wLQ/n7GcThiEZs
+	TjMXiduhoRVjSCUlFkL/nrh+M=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3n37fuiNp34qFCQ--.1413S2;
-	Mon, 24 Nov 2025 09:54:40 +0800 (CST)
+	by gzsmtp4 (Coremail) with SMTP id PygvCgAHLsVQvCNp21jrEw--.57363S2;
+	Mon, 24 Nov 2025 10:00:50 +0800 (CST)
 From: albin_yang@163.com
-To: albin_yang@163.com
+To: stable@vger.kernel.org
 Cc: Wei Yang <albinwyang@tencent.com>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
 	wangzijie <wangzijie1@honor.com>,
 	Alexey Dobriyan <adobriyan@gmail.com>,
-	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>
 Subject: [PATCH 5.4.y] fs/proc: fix uaf in proc_readdir_de()
-Date: Mon, 24 Nov 2025 09:54:32 +0800
-Message-ID: <20251124015432.1692016-1-albin_yang@163.com>
+Date: Mon, 24 Nov 2025 10:00:27 +0800
+Message-ID: <20251124020027.1695168-1-albin_yang@163.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <2025112019-mantra-unwind-1db7@gregkh>
+References: <2025112019-mantra-unwind-1db7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +61,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n37fuiNp34qFCQ--.1413S2
+X-CM-TRANSID:PygvCgAHLsVQvCNp21jrEw--.57363S2
 X-Coremail-Antispam: 1Uf129KBjvJXoWxJw1UCFWxCw1xuw13Xr43KFg_yoW5ZFW5pF
 	Wa9rW3Gr48WFn8Grn3tr1UCF18uF15Aayakr47Cw4SyrsxZryxJF4SqFySgFy7AFy8Ga4a
 	qr4jg3srArykA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pMKZG-UUUUU=
-X-CM-SenderInfo: pdoex0xb1d0wi6rwjhhfrp/1tbiYBkQomkjuKtPhAAAsZ
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7Z2-UUUUU=
+X-CM-SenderInfo: pdoex0xb1d0wi6rwjhhfrp/xtbCzRNmCWkjvFO+PwAA3V
 
 From: Wei Yang <albinwyang@tencent.com>
 
