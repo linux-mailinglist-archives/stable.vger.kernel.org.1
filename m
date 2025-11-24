@@ -1,140 +1,141 @@
-Return-Path: <stable+bounces-196820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94373C82A54
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:26:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186CFC82B9E
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 23:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB673AE0E9
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:26:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C7654EA64F
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E082561A7;
-	Mon, 24 Nov 2025 22:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3266233A018;
+	Mon, 24 Nov 2025 22:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BTVvDtMA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tuhpqw+r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD74938D;
-	Mon, 24 Nov 2025 22:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13955339B52
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 22:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764023166; cv=none; b=G9sn/zF3PDjKT9nWhr+oHkj4Rjiuf1tIaq9X2887kFhpjQ6Bqr9MArVQLHZbxxtVr57Z2ym+tNx3Qxds1nI4wdCYtE2HblUSSj1KV9U7qTU4FE/euOkvGjdQBI5954mr1xYrhHsxDRuBWy1jw9HJS+h9Mq0V24+z2knbNOfhAwM=
+	t=1764023468; cv=none; b=oXg65Xc6cc+iFK9npFdaFsbCKEuSIZGJK2gZdIHDlddf0PlcguI72jeJM+ck9/Mxsh94Y9NpfR/+/L9cgR/etzIVKjMhoB9d07KxCveIf26oSgnKkltwEWyt1rt/ka1EK2tpZbF4x5/4U/aoV9Ve3XmkUEsES7lFK9cWbQZQ/WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764023166; c=relaxed/simple;
-	bh=To/vzHh+1qqeWteYZ2ek7LMdf07fu3XalIcDP4wGZs0=;
-	h=Date:To:From:Subject:Message-Id; b=hneZ/ASynRhlAcpH9imoSqn6LRwx+iPyduFbTSyJjhS3D5D5zzZM/RDuBiIQc4kdv+ZtTzUPabhWi4mjL0Q1rKKEEpX0EMdFiq1GGlbfTBvX2DTrSrxFcGrZhQhCqTc46qOTNwDQ8rOcTM3kQQ8ACpr/uKxAa+zsgWI+feawhgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BTVvDtMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A089EC16AAE;
-	Mon, 24 Nov 2025 22:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764023166;
-	bh=To/vzHh+1qqeWteYZ2ek7LMdf07fu3XalIcDP4wGZs0=;
-	h=Date:To:From:Subject:From;
-	b=BTVvDtMAgDY5yslP4usSWa1l0QEday3A5IWuPHBkxUNFx3XAKgDTBAYJt2yvxK6OB
-	 4V/SgWHiLcXlbxHnN5S+gp0h7SgdWCLMC3nUBrME0kuwFHBxRgxi3mX8A+Ky+ahhZ+
-	 gi4cgyQub+aCFuta35taeSwIpan+GJYLI2562m2Y=
-Date: Mon, 24 Nov 2025 14:26:06 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,david@kernel.org,baolin.wang@linux.alibaba.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-huge_memory-fix-null-pointer-deference-when-splitting-folio.patch removed from -mm tree
-Message-Id: <20251124222606.A089EC16AAE@smtp.kernel.org>
+	s=arc-20240116; t=1764023468; c=relaxed/simple;
+	bh=IuR6ngsJ34tq7+cbBSzAiZ3Tns5PdX4qxd/iDTRdLH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Cf2EKp49wOpTQ+gHSyZ0/wspjEYgrPq2VAeAGRrRoMmFwnXJCNgjSHp7nALRDfVIkjRxc8dlhIqkHGKpfBnbvrpzOLUlDnYHXdLEa7E93ki24ppRjaIDmK1Tbgi8F2oWL+L09IppGtXAIFCfpMF3m0pf3uDV3iQm1+Bvqh0162E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tuhpqw+r; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764023463; x=1795559463;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IuR6ngsJ34tq7+cbBSzAiZ3Tns5PdX4qxd/iDTRdLH0=;
+  b=Tuhpqw+rY8yv7LuFnO1/in6zgGC1/Ijq32rms7jRVDCHO5ZSPqYqVS8v
+   mfJz/+E7XCTj0rKp9+KbtdCW0xQJktXkpVGHNNlUbIDItxBUOTlWfyDAL
+   8cvZTl3TyNDVz4Frk9WEG/u0RFxrNadWCchCKN/d5mf9TTeUwHBv44tAC
+   znEXAi2YRHXazj9OtfTJmX4yxdcCcenp+Tm4SiQRYyr9yOr8AJQkCZCU2
+   vEj5AsDbYUdrEgUyk4qS0Oebff2CRJKb9IXVGeH1/+DO3WT5cQh5EFvjq
+   Otz/TEAumrTwBRBSGmtO3XfU4V1oSKALlPvggCrTjvFMV4lgEbGVVkHXN
+   g==;
+X-CSE-ConnectionGUID: aHgzjLFcRLeglBvN8XpTsw==
+X-CSE-MsgGUID: OloyvCGhSeStNNyDjjraSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="69890177"
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="69890177"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 14:31:02 -0800
+X-CSE-ConnectionGUID: tBIqG2h8TG2CrSz0dW2xyg==
+X-CSE-MsgGUID: 5FZfFwonSmGDoMwe7nHNaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="215804590"
+Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
+  by fmviesa002.fm.intel.com with ESMTP; 24 Nov 2025 14:31:01 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: stable@vger.kernel.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	Koen Koning <koen.koning@intel.com>,
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.12.y] drm/xe: Prevent BIT() overflow when handling invalid prefetch region
+Date: Mon, 24 Nov 2025 22:28:28 +0000
+Message-ID: <20251124222827.901507-2-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025112408-crunching-july-9814@gregkh>
+References: <2025112408-crunching-july-9814@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+If user provides a large value (such as 0x80) for parameter
+prefetch_mem_region_instance in vm_bind ioctl, it will cause
+BIT(prefetch_region) overflow as below:
+"
+ ------------[ cut here ]------------
+ UBSAN: shift-out-of-bounds in drivers/gpu/drm/xe/xe_vm.c:3414:7
+ shift exponent 128 is too large for 64-bit type 'long unsigned int'
+ CPU: 8 UID: 0 PID: 53120 Comm: xe_exec_system_ Tainted: G        W           6.18.0-rc1-lgci-xe-kernel+ #200 PREEMPT(voluntary)
+ Tainted: [W]=WARN
+ Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0xa0/0xc0
+  dump_stack+0x10/0x20
+  ubsan_epilogue+0x9/0x40
+  __ubsan_handle_shift_out_of_bounds+0x10e/0x170
+  ? mutex_unlock+0x12/0x20
+  xe_vm_bind_ioctl.cold+0x20/0x3c [xe]
+ ...
+"
+Fix it by validating prefetch_region before the BIT() usage.
 
-The quilt patch titled
-     Subject: mm/huge_memory: fix NULL pointer deference when splitting folio
-has been removed from the -mm tree.  Its filename was
-     mm-huge_memory-fix-null-pointer-deference-when-splitting-folio.patch
+v2: Add Closes and Cc stable kernels. (Matt)
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Wei Yang <richard.weiyang@gmail.com>
-Subject: mm/huge_memory: fix NULL pointer deference when splitting folio
-Date: Wed, 19 Nov 2025 23:53:02 +0000
-
-Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
-introduced an early check on the folio's order via mapping->flags before
-proceeding with the split work.
-
-This check introduced a bug: for shmem folios in the swap cache and
-truncated folios, the mapping pointer can be NULL.  Accessing
-mapping->flags in this state leads directly to a NULL pointer dereference.
-
-This commit fixes the issue by moving the check for mapping != NULL before
-any attempt to access mapping->flags.
-
-Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Koen Koning <koen.koning@intel.com>
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6478
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20251112181005.2120521-2-shuicheng.lin@intel.com
+(cherry picked from commit 8f565bdd14eec5611cc041dba4650e42ccdf71d9)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit d52dea485cd3c98cfeeb474cf66cf95df2ab142f)
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
+ drivers/gpu/drm/xe/xe_vm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/huge_memory.c |   22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
-
---- a/mm/huge_memory.c~mm-huge_memory-fix-null-pointer-deference-when-splitting-folio
-+++ a/mm/huge_memory.c
-@@ -3619,6 +3619,16 @@ static int __folio_split(struct folio *f
- 	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
- 		return -EINVAL;
- 
-+	/*
-+	 * Folios that just got truncated cannot get split. Signal to the
-+	 * caller that there was a race.
-+	 *
-+	 * TODO: this will also currently refuse shmem folios that are in the
-+	 * swapcache.
-+	 */
-+	if (!is_anon && !folio->mapping)
-+		return -EBUSY;
-+
- 	if (new_order >= folio_order(folio))
- 		return -EINVAL;
- 
-@@ -3659,18 +3669,6 @@ static int __folio_split(struct folio *f
- 		gfp_t gfp;
- 
- 		mapping = folio->mapping;
--
--		/* Truncated ? */
--		/*
--		 * TODO: add support for large shmem folio in swap cache.
--		 * When shmem is in swap cache, mapping is NULL and
--		 * folio_test_swapcache() is true.
--		 */
--		if (!mapping) {
--			ret = -EBUSY;
--			goto out;
--		}
--
- 		min_order = mapping_min_folio_order(folio->mapping);
- 		if (new_order < min_order) {
- 			ret = -EINVAL;
-_
-
-Patches currently in -mm which might be from richard.weiyang@gmail.com are
-
-mm-huge_memory-add-pmd-folio-to-ds_queue-in-do_huge_zero_wp_pmd.patch
-mm-khugepaged-unify-pmd-folio-installation-with-map_anon_folio_pmd.patch
-mm-huge_memory-only-get-folio_order-once-during-__folio_split.patch
-mm-huge_memory-introduce-enum-split_type-for-clarity.patch
-mm-huge_memory-merge-uniform_split_supported-and-non_uniform_split_supported.patch
-mm-khugepaged-remove-redundant-clearing-of-struct-collapse_control.patch
-mm-khugepaged-continue-to-collapse-on-scan_pmd_none.patch
-mm-khugepaged-unify-scan_pmd_none-and-scan_pmd_null-into-scan_no_pte_table.patch
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index fc5f0e135193..30625ce691fa 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2903,8 +2903,8 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe,
+ 				 op == DRM_XE_VM_BIND_OP_PREFETCH) ||
+ 		    XE_IOCTL_DBG(xe, prefetch_region &&
+ 				 op != DRM_XE_VM_BIND_OP_PREFETCH) ||
+-		    XE_IOCTL_DBG(xe, !(BIT(prefetch_region) &
+-				       xe->info.mem_region_mask)) ||
++		    XE_IOCTL_DBG(xe, prefetch_region >= (sizeof(xe->info.mem_region_mask) * 8) ||
++				 !(BIT(prefetch_region) & xe->info.mem_region_mask)) ||
+ 		    XE_IOCTL_DBG(xe, obj &&
+ 				 op == DRM_XE_VM_BIND_OP_UNMAP)) {
+ 			err = -EINVAL;
+-- 
+2.49.0
 
 
