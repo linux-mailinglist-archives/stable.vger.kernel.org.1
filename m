@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-196631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA97C7F172
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 07:36:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326B2C7F1B4
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 07:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9B33A713D
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 06:34:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 10B1A4E1E30
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 06:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190142E54BD;
-	Mon, 24 Nov 2025 06:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9616E2DC322;
+	Mon, 24 Nov 2025 06:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJLiM/DM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLsqK4/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEA52DE1E0;
-	Mon, 24 Nov 2025 06:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E48622A4D8;
+	Mon, 24 Nov 2025 06:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763965954; cv=none; b=A99kCebFYJLtEIyhs0ITi+jYhHltchkUw4OmmPsUzHiyuuVHm9HMdBJp4F/WRQUWYChjjyRRfHicIGV/8SeWHUUSAKVXSAQ2DqqRfOMqKZ/7PmQGVDourVE4JwwOuU8j4pKUMmeFRo1aHrM3WM9i17gzyAKkNk1zOwBgdOlA5XU=
+	t=1763966556; cv=none; b=uiuD9DB5jH/loUCyCyLB45We2BQmSiLKvTGMbAcV3W4lxTygE1qRR5Ww/YhJAC66uwJRItdhOG6b11rr1kxbxMTOYZWW2cVhpqmJLNn3GzsYUHqVpjjOyl/QaGlRm3wx1xMybTVzLktrr1oVtWwW+Ch98ls4go+pmj8ujVHNmK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763965954; c=relaxed/simple;
-	bh=dQhFFmxCAv9wePm5UTyKuZcvM90mHOb7S4OnHayx2cU=;
+	s=arc-20240116; t=1763966556; c=relaxed/simple;
+	bh=gdaLGvODZQdrZyK9ThG+pLJ54lyDF2aOUSKuCtRgnSY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q2miwcHs8Ugr1sJRvMdeZFBd7W9uZsUdm8K4MU4UZw1LquY0Xa2v7TswN+JwK57S0wzHqW2UbwXFHWkbqekKUPvz/60hR/SoyUq4p0Nr5+Yeef687qB5JFcY2hg44P73vp+pcXReAPDXdy8hE1xpiKCy+5eeFec6M7U+fZjczNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJLiM/DM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43A5C4CEF1;
-	Mon, 24 Nov 2025 06:32:32 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=pBzAFXO22MtUnWc0la5LhO8bkjxV3AYqea2AgyqIeVLlxrtXDlNwTH4gEgv/VLjiNvsZcvEU9uct+8kvsI7OqjotFsG/45nTQ4JYu9JBhl7lZQbTP3kmmXA/XZqQUed1kADrcYtw8tj3UW3w5c6HVAZiwJdmtlykGPWQJ7HwiOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLsqK4/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A346C4CEF1;
+	Mon, 24 Nov 2025 06:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763965954;
-	bh=dQhFFmxCAv9wePm5UTyKuZcvM90mHOb7S4OnHayx2cU=;
+	s=k20201202; t=1763966555;
+	bh=gdaLGvODZQdrZyK9ThG+pLJ54lyDF2aOUSKuCtRgnSY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WJLiM/DMy915oshg+2HUSW4MGBU+VvNl0+bMkL95/io5LNpqKKC8WhzkqRv8vHExm
-	 u0Gqv649C1t/EZmsYEq7HHGAucUDrVW8QSvggNE656Y2Jq6ylNc8hAVvqRgVMAY8JW
-	 fOGlDzLm55NYyRcpOwBZGDPDysEVlquKu6rqw/FX6SyNWCbTaH8GnXSb57JwtqKsgE
-	 Y5h416oHBEp5oPw7gqTXoxIkffO5lEYOhuzkBcjZ0GA5uZMs7SuSIhWZzu/A2liEi1
-	 nrSN503tWSb8v9nKxMS7eh5RvVoJOET6NakjIRtQhdWQG5OT+iFe5cH1B1OwKjVfUO
-	 r/fvjaZnxePgw==
-Message-ID: <6251f6df-d4ac-4681-8e8b-6df2514e655b@kernel.org>
-Date: Mon, 24 Nov 2025 07:32:30 +0100
+	b=sLsqK4/2wr4MaVvTZSUeqyCNFQ+oITIrtCO0Rzy5tzjOvubzt2wEl83DQPIdc6NNT
+	 NbkFQPAUwQ6LbfGgUBVdjA5zgnS2NlzmQZRWF6era/1Tz4vL/a0BcAjylgWfiFdUwY
+	 zv3gtAgk2PRBhWR40tlgGAXqTS0NE0YJ3DlYppI2HiepzeSf45DrJzrGLPopx09CyP
+	 Vefh+/g7T79qSxx4hfdIchVPe5PUC5RRYUzjTMlj9PTZADYcfMn+nMwO8UqNVHTGAL
+	 fgTcdp4cCq1v27gkHQIfmezKI8gveUlq7G9mVn/hYaPRvkyER/hg0voQfp39ukuEri
+	 AjGDYIvJdfunw==
+Message-ID: <2f05eedd-f152-4a4a-bf6c-09ca1ab7da40@kernel.org>
+Date: Mon, 24 Nov 2025 07:42:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] HID: memory leak in dualshock4_get_calibration_data
-To: Eslam Khafagy <eslam.medhat1993@gmail.com>,
- roderick.colenbrander@sony.com, jikos@kernel.org, bentiss@kernel.org,
- max@enpas.org
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20251122173712.76397-1-eslam.medhat1993@gmail.com>
+Subject: Re: [PATCH v2] xhci: dbgtty: fix device unregister
+To: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20251119212910.1245694-1-ukaszb@google.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -101,73 +100,56 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20251122173712.76397-1-eslam.medhat1993@gmail.com>
+In-Reply-To: <20251119212910.1245694-1-ukaszb@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 22. 11. 25, 18:37, Eslam Khafagy wrote:
-> Function dualshock4_get_calibration_data allocates memory to pointer
-> buf .However, the function may exit prematurely due to transfer_failure
-> in this case it does not handle freeing memory.
+Hmm, CCing TTY MAINTAINERS entry would not hurt.
+
+On 19. 11. 25, 22:29, Łukasz Bartosik wrote:
+> From: Łukasz Bartosik <ukaszb@chromium.org>
 > 
-> This patch handles memory deallocation at exit.
+> When DbC is disconnected then xhci_dbc_tty_unregister_device()
+> is called. However if there is any user space process blocked
+> on write to DbC terminal device then it will never be signalled
+> and thus stay blocked indifinitely.
 
-Isn't this fixed already by:
-commit 8513c154f8ad7097653dd9bf43d6155e5aad4ab3
-Author: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Date:   Mon Nov 10 22:45:50 2025 +0530
+indefinitely
 
-     HID: playstation: Fix memory leak in dualshock4_get_calibration_data()
-?
-
-Anyway, this is a typical use-case for __free(). Why not to use that?
-
-> Reported-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/691560c4.a70a0220.3124cb.0019.GAE@google.com/T/
-> Tested-by: syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com
-> Fixes: 947992c7fa9e0 ("HID: playstation: DS4: Fix calibration workaround for clone devices")
+> This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+> The tty_vhangup() wakes up any blocked writers and causes subsequent
+> write attempts to DbC terminal device to fail.
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Eslam Khafagy <eslam.medhat1993@gmail.com>
+> Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
 > ---
-> v3:
-> * Address issues reported by checkpatch and re-format commit message
-> for better readability
-> * kfree() is safe so no need to check for NULL pointer
-> 
-> v2: https://lore.kernel.org/all/20251116022723.29857-1-eslam.medhat1993@gmail.com/
-> * Adding tag "Cc: stable@vger.kernel.org"
-> 
-> v1: https://lore.kernel.org/all/20251115022323.1395726-1-eslam.medhat1993@gmail.com/
->   
-> 
->   drivers/hid/hid-playstation.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-> index 128aa6abd10b..05a8522ace4f 100644
-> --- a/drivers/hid/hid-playstation.c
-> +++ b/drivers/hid/hid-playstation.c
-> @@ -1994,9 +1994,6 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
->   	acc_z_plus       = get_unaligned_le16(&buf[31]);
->   	acc_z_minus      = get_unaligned_le16(&buf[33]);
->   
-> -	/* Done parsing the buffer, so let's free it. */
-> -	kfree(buf);
-> -
->   	/*
->   	 * Set gyroscope calibration and normalization parameters.
->   	 * Data values will be normalized to 1/DS4_GYRO_RES_PER_DEG_S degree/s.
-> @@ -2043,6 +2040,9 @@ static int dualshock4_get_calibration_data(struct dualshock4 *ds4)
->   	ds4->accel_calib_data[2].sens_denom = range_2g;
->   
->   transfer_failed:
-> +	/* First free buf if still allocated */
-> +	kfree(buf);
-> +
->   	/*
->   	 * Sanity check gyro calibration data. This is needed to prevent crashes
->   	 * during report handling of virtual, clone or broken devices not implementing
+> Changes in v2:
+> - Replaced tty_hangup() with tty_vhangup()
 
+Why exactly?
+
+> --- a/drivers/usb/host/xhci-dbgtty.c
+> +++ b/drivers/usb/host/xhci-dbgtty.c
+> @@ -535,6 +535,12 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+>   
+>   	if (!port->registered)
+>   		return;
+> +	/*
+> +	 * Hang up the TTY. This wakes up any blocked
+> +	 * writers and causes subsequent writes to fail.
+> +	 */
+> +	tty_vhangup(port->port.tty);
+
+This is wrong IMO:
+1) what if there is no tty currently open? Ie. tty is NULL.
+2) you schedule a tty hangup work and destroy the port right after:
+>   	tty_unregister_device(dbc_tty_driver, port->minor);
+>   	xhci_dbc_tty_exit_port(port);
+>   	port->registered = false;
+You should to elaborate how this is supposed to work?
+
+thanks,
 -- 
 js
 suse labs
