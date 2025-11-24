@@ -1,165 +1,162 @@
-Return-Path: <stable+bounces-196755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99659C81342
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:59:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACC9C81346
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 16:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8E1B4E6BC0
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:59:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC6C9347A0A
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FACA3126B7;
-	Mon, 24 Nov 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1439E3128CB;
+	Mon, 24 Nov 2025 15:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lmc8TUCw"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z6ZmUclK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7830E83A
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 14:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E531D28000F
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 15:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763996351; cv=none; b=daN61adUgPeO96bdWtkjxXhfmsdn0f2EVBKMctzCOhwkUHUDeM20IjyxICIwBlz3Df22ygbfKTA/vwDTZ7/p848zj8wJds2HycGkfHFtZe+oH0IxZmHRxjnBv9382TxZPB21ndCm0zlADWjwKzb4OoThDqQlYKk0Air+WSvNgqc=
+	t=1763996408; cv=none; b=K2Eo84TnIg2CmtPKJYQGgO78JAouQMvMUPki/+3c9So9bfSGdsTpTj+Y8OfD/o++D5QFh0EDC6EtReY7+rXo6QVMcw8n47Z+A2voksRH5YeG/BSg6HwnHoneTVSQeoc3jlQExtpfqARz2GErtPSln2dWayuBuo/Mmqxw11MXbMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763996351; c=relaxed/simple;
-	bh=2alUDv8rvceCb5R0lAIMpgim+otu2LkDkNJp3n4GNU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y8l5+VV/vi1xM1+m1uNkhGK090H0Gyi4Hg2UjkVKR3lLJJZyjmqwnLh9E5A+Fmx5x8KeqAn3TE+S42mBb8m7WAzNUq3I91yWfTBVC0biBQtxubZ7WEtYmI85yn1j2GAt7fvWK4KFQO0EmRTwNtfvLiT91jGKFBXrK0ObiCg7rMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lmc8TUCw; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-343ff854297so6302341a91.1
-        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 06:59:08 -0800 (PST)
+	s=arc-20240116; t=1763996408; c=relaxed/simple;
+	bh=Zv6sZZVH5Tg4MU1n4DAASvy4CJN2qOGUIe+LdrAYHCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TTOSU3TZuRs99X6Fn4oe+CiRGruDTxG/PtR3Er6qDoTWRZFKDdcrfgcIiqwUF2RObSHe6lQRTNHVKfRFgEJhKo2YhzBKpq87aig8iDO1Jf90jQg8H53c7J1udwcYHFLUYqhVi3815K9brr3N7z3wS2lkmWMtTXmeCjDz1/cwv9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z6ZmUclK; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4779a4fb9bfso104015e9.0
+        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 07:00:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763996348; x=1764601148; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xb/VAa48jm4ZVOyqZFMVfLn47WQAUiV4skOomqo7/fk=;
-        b=Lmc8TUCw8zEh6pp+UGkQZWgl82kzg8HJn2UB51yJmScKIE0aIfF0xJAqDOQT4A7A6B
-         P6gyhruyc5g+ivirXeFkEmGfB6xwgJyeD1ET07kG9Hmfx0Z7/OUTsO8Ifwp62TAiwCFu
-         1QCLHPE8tAC5k0Te6GDRmC415MWI6KNI5t4hzpdIYRLmNrTMb99Xn3z5E5QmfhcmVjUm
-         1VngG8OKEzn/QeE0bygIQOCDnvwE+Qmo8Kgf05SGSD4M59hdVXlS+anuCROX8WiUkba0
-         Bv0kimkeKH0eKJwEbVcj1/1QFJ0LUDK6rNkyg/qI3a+sNdV37ejw1sieQqAEXi5ZJ4Jq
-         rDAw==
+        d=google.com; s=20230601; t=1763996405; x=1764601205; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FpSrGiwlZ+0hOk9rap7cArtCHHFycXoPfn0OkIXK2uo=;
+        b=z6ZmUclKxd/7Jxb10gjD28/bByzs4VavHOcj6sQYpWUcgom92UiNpOP2bRBYJvIHLQ
+         P86Dwxo8Tac1v9PoCFFv2LH+D5MU/aYS9IyIHEAFLEPexMiWeu+2UpaDl6NVw4AhkQMP
+         lHePkodNRmUQlS3Gou+Lml6deKq/vr9TpJ4NLSiSk6XdPJh3YBnBIlz1newT7yCVq9eD
+         alGqZ9Ykt1/PFJc/eeeHwWkkQYJDJdZKwvxI/1uKY1tH+Jz6ng6To86pE3QmuixCahU6
+         +R565UcjJ10+qjmwBVYcP3Z//Q70DfXqMRI6buI63UCTZcAOmpRQMJLF70A0+go3GTbx
+         L1yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763996348; x=1764601148;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xb/VAa48jm4ZVOyqZFMVfLn47WQAUiV4skOomqo7/fk=;
-        b=pCBtG2KlcBClfo7Fk5GesmVDUccd8U0NPaA6hfPJHd1MQC95EgmwgiP2e+pvqZ9GEI
-         vVfdA7Lv4aVZFz+ONfwql7luRkSBo7t74DZwFKFkoNJX580e8PKwKV1Ege415UzBrIIK
-         12P5q8wytbVNpoYW8dMLs0PvhGTMdYXu5UHo2xQWwTXpDX4baquvkt1FxkV08FJr76RB
-         rqFoaxJcpC0zMyMqv3GBaMC+gKKBh4Mgohf8hLBlVr3b/MGV1kyJSIou1T9kjBNM8WBE
-         Mn8OoYz6lClSoZeUxDkLrfIWA902uMhLV9/FrBSssNjmtITZ6kEwy9P6lARrN9OPJc79
-         vEgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGGNJtxU3ydOR5fD0oLuDwtt5+gQtSWO05PvTAM7ECc021K/Ec9MYmuaKCfxdXUx5bIouz/yI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFTdMiMLffi0+oaVjkE82HDRqF2/MmlYitt+WtuqG+qo1YwIDq
-	J+qSX2aX4gb8Is/Kl0RWA58YI0DWtV4dgt6tZyTTRRMPZttp14xv6D3u
-X-Gm-Gg: ASbGnctnyemy3LJYbX1WMbX0/FVAkgwfM6wVBOjPKQ4me7e89kPqJUWtji+W6kp8N40
-	+ocm8C8/zUU6VY+0S3QFrvUfRBHttgwTekOLjyCxB5b4VtH4OgFBg6MzEIMMbsgJ7GMRWOZ7sNk
-	YQ0nawLajb77gS6rO6A3b3BJOBPcEOOhOV65YfN7dSAo3lg7FcETxUsqqVoq6Yd+5B2CzzgkbZ4
-	0C1u1mbAy6iqtcDfUm3k8DHm2d8JV+GUwJBvod5TlB8cUYxb4Imf5rtzvNg9mYgu0PnHyAWvHVw
-	km7FGkA80aqXIAIiwmiTRsehrrX6KlUJs/rWJYwMhvvgtQyHdOenbzKpEL/mzr5mApASwwdW9G5
-	5qsHGeFkZ5vQiS3BTaqvvoLnr3UFHD6KQnqQ0ycIxUlmNSIuudX1kme0xjbZMG3OL2+RoGeFBwB
-	ttR3eYeZ9AX1s=
-X-Google-Smtp-Source: AGHT+IF47tZPA1s/sNz5ZKhfOqmGjsFMQe6TdOQJCoWicSrdNNBoEVVUABWVfRIaFbBPxSsULWLDjw==
-X-Received: by 2002:a17:90b:48c5:b0:345:badf:f1b7 with SMTP id 98e67ed59e1d1-34733f3eb64mr11950422a91.28.1763996348107;
-        Mon, 24 Nov 2025 06:59:08 -0800 (PST)
-Received: from lgs.. ([2408:843c:3010:c65:73e9:29e7:cb49:995d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f175275asm14937606b3a.69.2025.11.24.06.59.00
+        d=1e100.net; s=20230601; t=1763996405; x=1764601205;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FpSrGiwlZ+0hOk9rap7cArtCHHFycXoPfn0OkIXK2uo=;
+        b=RNjzRugqPo6j6qoGEAktkcOvJfE5PqkjGQPOYRw6ILVBP3VeOqAzyyl9NAZQvPzuWW
+         rsQCVBcvFMGrgZ+BYx5gObsDPxmNeHQysQorP0Z4Qe9OVzDfy4KWn8gVqQZYfZwldKOL
+         YIWEvNo6mbYyeawz3Xg7EcibpYtR4WcVqMTEf25qJfkSzppcqGdMVh+wIwTgfTdMyPyt
+         vWyARmb8eI6nDAx/sx9xJbCmI7y8VqLj7UiKJKm+GST8xAuyPzHxwykBJVSudR7GiJFM
+         xek8fVr5LC3pi7LQFZQIwZJ4NUSlMV2OOD76sEoMFQYW8SG8tBnDztAZ+e5ukoDIlaR5
+         J6wA==
+X-Forwarded-Encrypted: i=1; AJvYcCW4+vHLe34r3Mny2CVJBBfUrFwNBlfXxDqKI5xzv/ystLdeAXR+3D0rySfZKPkJs/GYPOksNEs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC3wApK5m2PQ17HYBxtUYHRfrQFPxMgkCAPrRnKp2tfj5p6WPU
+	jEF2/T7Glhj3xta5aIIs/+rGEEVsQF9k6a2b0Xxyw9+1lOG6+MHLuutg/du/1iFPzA==
+X-Gm-Gg: ASbGnctPq2y9cKcHdnhdHqMe6lBzFyOaeC7zyFm9oLegJU2GjejRqOYnouRlnsrzQkE
+	+DvLz77JKvJ3HDQsB4ldyeW28h4PHGXatzSyBqOZW3J9VDnGa62MKqjgffsDivk5RgjSeE3LSvD
+	Awbw0+cBgdXIZYHro2zNhmvrRJQ+3vsRSK5yp3vi6XLsr4yht4a/J8q+jSryS6YPpP+WRWNbBpZ
+	ReZRVmeOKq7yYKHaoZPp6MTSowVHuNRbwr+85YPyarwQMOqL103lXFvc4qIqA1LXxY+yTvuaUX5
+	Fn2K+D5pfzGWqJ6dTrPxP+Hl0F6zyFfyZUWMo7CwECnE6rUHmV88El4gmnPJn0DdlmJkBC5+cQw
+	ukbyvaEecHZfGezbNjR/LtgyKSEQMf+vitxagEoAWXTp3pHpsIud4AqF1zlv28waReCdREnAZBW
+	p7rt+JamfSreUyVY2cZ6t1xnjkRMFA2N715mpoXlDp8CgxdW0QYNd1
+X-Google-Smtp-Source: AGHT+IEowmPkwaXSngBNWXI9uD0Sb2K0kOKk+Bb6hjf5hTeLo7Q1tIsM4KprZntxj4zH6Ac+aAy0PQ==
+X-Received: by 2002:a05:600c:c114:b0:477:86fd:fb18 with SMTP id 5b1f17b1804b1-477c5e09081mr1897855e9.8.1763996404899;
+        Mon, 24 Nov 2025 07:00:04 -0800 (PST)
+Received: from google.com (153.28.78.34.bc.googleusercontent.com. [34.78.28.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf1e86b3sm236223395e9.6.2025.11.24.07.00.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 06:59:07 -0800 (PST)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: HighPoint Linux Team <linux@highpoint-tech.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] [SCSI] hptiop: Add inbound queue offset bounds check in iop_get_config_itl
-Date: Mon, 24 Nov 2025 22:58:48 +0800
-Message-ID: <20251124145848.45687-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 24 Nov 2025 07:00:04 -0800 (PST)
+Date: Mon, 24 Nov 2025 15:00:00 +0000
+From: Sebastian Ene <sebastianene@google.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH 6.6.y] KVM: arm64: Check the untrusted offset in FF-A
+ memory share
+Message-ID: <aSRy8LqAopE82ZPs@google.com>
+References: <2025112429-pasture-geometry-591b@gregkh>
+ <20251124141134.4098048-1-sashal@kernel.org>
+ <2025112405-campus-flatworm-25a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025112405-campus-flatworm-25a5@gregkh>
 
-In the driver code for the MV‑based queue variant (struct hpt_iopmu_mv of the
-hptiop driver), the field "inbound_head" is read from the hardware register
-and used as an index into the array "inbound_q[MVIOP_QUEUE_LEN]". For example:
+On Mon, Nov 24, 2025 at 03:50:45PM +0100, Greg KH wrote:
+> On Mon, Nov 24, 2025 at 09:11:34AM -0500, Sasha Levin wrote:
+> > From: Sebastian Ene <sebastianene@google.com>
+> > 
+> > [ Upstream commit 103e17aac09cdd358133f9e00998b75d6c1f1518 ]
+> > 
+> > Verify the offset to prevent OOB access in the hypervisor
+> > FF-A buffer in case an untrusted large enough value
+> > [U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
+> > is set from the host kernel.
+> > 
+> > Signed-off-by: Sebastian Ene <sebastianene@google.com>
+> > Acked-by: Will Deacon <will@kernel.org>
+> > Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  arch/arm64/kvm/hyp/nvhe/ffa.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > index 8d21ab904f1a9..eacf4ba1d88e9 100644
+> > --- a/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > +++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> > @@ -425,7 +425,7 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+> >  	DECLARE_REG(u32, npages_mbz, ctxt, 4);
+> >  	struct ffa_composite_mem_region *reg;
+> >  	struct ffa_mem_region *buf;
+> > -	u32 offset, nr_ranges;
+> > +	u32 offset, nr_ranges, checked_offset;
+> >  	int ret = 0;
+> >  
+> >  	if (addr_mbz || npages_mbz || fraglen > len ||
+> > @@ -460,7 +460,12 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+> >  		goto out_unlock;
+> >  	}
+> >  
+> > -	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
+> > +	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
+> > +		ret = FFA_RET_INVALID_PARAMETERS;
+> > +		goto out_unlock;
+> > +	}
 
-    u32 inbound_head = readl(&hba->u.mv.mu->inbound_head);
-    /* ... */
-    memcpy_toio(&hba->u.mv.mu->inbound_q[inbound_head], &p, 8);
+hello Greg,
 
-The code then increments head and wraps it to zero when it equals MVIOP_QUEUE_LEN.
-However, the driver does *not* check that the initial value of "inbound_head"
-is strictly less than "MVIOP_QUEUE_LEN". If the hardware (or attacker‑controlled
-firmware/hardware device) writes a malicious value into the inbound_head register
-(which could be ≥ MVIOP_QUEUE_LEN), then subsequent "memcpy_toio" will write
-past the end of "inbound_q", leading to an out‑of‑bounds write condition.
+> 
+> I was told that a "straight" backport like this was not correct, so we
+> need a "better" one :(
+> 
+> Sebastian, can you provide the correct backport for 6.6.y please?
+> 
 
-Since inbound_q is allocated with exactly MVIOP_QUEUE_LEN entries (see:
+I think Sasha's patch is doing the right thing. Sasha thanks for
+posting it so fast.
 
-    __le64 inbound_q[MVIOP_QUEUE_LEN];  /* MVIOP_QUEUE_LEN == 512 */
+I looked up the other faild patches on stable and the reason why the patch doesn't
+apply is because we don't have the FF-A proxy inthe following versions:
+ - 5.4, 5.10, 5.15, 6.1
 
-), indexing at e.g. "inbound_head == 512" or greater results in undefined memory access
-and potential corruption of adjacent fields or memory regions.
+> thanks,
+> 
+> greg k-h
 
-This issue is particularly concerning in scenarios where an attacker has control
-or influence over the hardware/firmware on the adapter card (for example a malicious
-or compromised controller), because they could deliberately set "inbound_head" to
-a value outside the expected [0, MVIOP_QUEUE_LEN‑1] range, thus forcing the driver
-to write arbitrary data beyond the queue bounds.
-
-To mitigate this issue, we add a check to validate the value of "inbound_head"
-before it is used as an index. If "inbound_head" is found to be out of bounds (≥ MVIOP_QUEUE_LEN),
-the head will be reset to 0, and "head" will be set to 1 to ensure that a valid entry is written to
-the queue. The resetting of "inbound_head" to 0 ensures that the queue processing can continue
-safely and predictably, while the adjustment of "head = 1" ensures that the next valid index is used
-for subsequent writes.
-
-This prevents any out-of-bounds writes and ensures that the queue continues to operate safely
-even if the hardware is compromised.
-
-Fixes: 00f5970193e22 ("[SCSI] hptiop: add more adapter models and other fixes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/scsi/hptiop.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/scsi/hptiop.c b/drivers/scsi/hptiop.c
-index c01370893a81..a1a3840e6ea8 100644
---- a/drivers/scsi/hptiop.c
-+++ b/drivers/scsi/hptiop.c
-@@ -166,6 +166,14 @@ static void mv_inbound_write(u64 p, struct hptiop_hba *hba)
- 	if (head == MVIOP_QUEUE_LEN)
- 		head = 0;
- 
-+	if (inbound_head >= MVIOP_QUEUE_LEN) {
-+		dev_err(&hba->pdev->dev,
-+			"hptiop: inbound_head out of range (%u)\n",
-+			inbound_head);
-+		inbound_head = 0;
-+		head = 1;
-+	}
-+
- 	memcpy_toio(&hba->u.mv.mu->inbound_q[inbound_head], &p, 8);
- 	writel(head, &hba->u.mv.mu->inbound_head);
- 	writel(MVIOP_MU_INBOUND_INT_POSTQUEUE,
--- 
-2.43.0
-
+thanks,
+Sebastian
 
