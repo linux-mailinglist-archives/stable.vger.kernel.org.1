@@ -1,48 +1,39 @@
-Return-Path: <stable+bounces-196746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE19C80E07
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:58:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DA4C80E9C
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 15:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43BAF4E2F30
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 13:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F413AC8E5
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E428930BF68;
-	Mon, 24 Nov 2025 13:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDIpPF/j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BFB30DEBE;
+	Mon, 24 Nov 2025 14:06:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.enpas.org (lighthouse.enpas.org [46.38.232.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F8730BF67
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 13:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2D41A9F8C;
+	Mon, 24 Nov 2025 14:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.38.232.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992688; cv=none; b=vB2kBSRy3/ruypZQ5PaPkVmXR6rN3bBTKNAn6AgafEONCm64+nFICUKdaHupCUGsPNWBRh2RduHPcGa1P+B2kMwq6moN+09mAzy4NoHLvhwHLwzpDAGi5eHsRfUNghLZhw67esaji6bax71LRuJc2ePx/L+jX2FGWVjW3I+cBJk=
+	t=1763993212; cv=none; b=Ftz00KxEczAajG032l2mKex5auqNsZKk3HwLItAMhA+HLt45D38IK3ROcivhyw19XB2WeJM9Oi25UMIot1pFTSh8k3Fyv2nKyc+XyMt/yBRq6bQFxzY6XBYPs4Du0MhLhvdCfIGTSevKkhlG2f3lFOmDac+AwRHDwuAZ0hpwgF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992688; c=relaxed/simple;
-	bh=jH2AxFvj9FK1wwbRSCm+4BWILbLVHHZ1oPWZAimqbi0=;
+	s=arc-20240116; t=1763993212; c=relaxed/simple;
+	bh=asYYgSgDrLSW6a3py31OtB8R0yZkQcsuQGr3kWlmtdk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eLMHkeuH/s+y5TPgGwHqsi8X0M8LeL9O2Nob/M2x8MXOJ5ZxDXH9b/Uf9V4FNq+3p8eiGVZHOTNo/ogcn2Vvkth+kkwUs6gVRBowy5Nz447QKLg3S3k/xOQsrbCl9lzpYZF/d0jeF0QAsX9UzZfsBx9+AFpTX8X7r9uL6GdjxZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDIpPF/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC4C4CEF1;
-	Mon, 24 Nov 2025 13:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763992687;
-	bh=jH2AxFvj9FK1wwbRSCm+4BWILbLVHHZ1oPWZAimqbi0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WDIpPF/jSgYmeTCYWbDH96GOkZoH4aHDi9ZHJdRTIms9WCI4RAwHdEacNBVWkDfFu
-	 ivVgSfYkPwfo08jrEXObIqWrerwrryN0F/Q4T4EWDx6DUgJ//ScZNH5o3S20HqCQnf
-	 sNC18iXSU+i6ush87zA5Ai2FbGDBiRhNmBmO9oIhGMNc3ieYsTMgB4fl/KVhZtZokR
-	 +xoVaj/XtY/K0hStlQxhMqKnnsNZCZrlDBc87Drp8cCf5VC2UniBLvlmHMVjieGY9U
-	 MleuU0mNtfJxN2RFctHFTqEOrkBfFzUK9Y8hCbZtcZSpeu9ENTIa63JNs1yGGmB1td
-	 FAkHnxIK9IEIQ==
-Message-ID: <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org>
-Date: Mon, 24 Nov 2025 14:58:03 +0100
+	 In-Reply-To:Content-Type; b=Dxn29xPfLUlToYoDd6xKN0HtsKiMEBvR0CL9IZHeWzf+6an+SQe3IXGQuYnKWR06PoCr4jmDazMlxqFoL+88f2YSumhXEnRTBWPP/B2LeN/dj7uLqcgtblsQ3k9TiheNvazKdQHNA+CSJuJBgFwZEaIP6LMWQlpiauTp0BZAPY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org; spf=pass smtp.mailfrom=enpas.org; arc=none smtp.client-ip=46.38.232.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enpas.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mail.enpas.org (Postfix) with ESMTPSA id DBBC410403A;
+	Mon, 24 Nov 2025 14:06:37 +0000 (UTC)
+Message-ID: <44eb6401-e021-4c69-96af-0554f4f31e57@enpas.org>
+Date: Mon, 24 Nov 2025 23:06:33 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,158 +41,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
- hang in wait_sb_inodes()
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev,
- athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-3-joannelkoong@gmail.com>
- <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
- <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v3] HID: memory leak in dualshock4_get_calibration_data
+To: Jiri Slaby <jirislaby@kernel.org>,
+ Eslam Khafagy <eslam.medhat1993@gmail.com>, roderick.colenbrander@sony.com,
+ jikos@kernel.org, bentiss@kernel.org
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20251122173712.76397-1-eslam.medhat1993@gmail.com>
+ <6251f6df-d4ac-4681-8e8b-6df2514e655b@kernel.org>
 Content-Language: en-US
-In-Reply-To: <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+From: Max Staudt <max@enpas.org>
+Autocrypt: addr=max@enpas.org; keydata=
+ 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
+ 1Nk4wgjdif6n69chAwuDQyOfWdz/dQ==
+In-Reply-To: <6251f6df-d4ac-4681-8e8b-6df2514e655b@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11/20/25 22:20, Joanne Koong wrote:
-> On Thu, Nov 20, 2025 at 12:23 PM David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
->>
->> On 11/20/25 19:42, Joanne Koong wrote:
->>> During superblock writeback waiting, skip inodes where writeback may
->>> take an indefinite amount of time or hang, as denoted by the
->>> AS_WRITEBACK_MAY_HANG mapping flag.
->>>
->>> Currently, fuse is the only filesystem with this flag set. For a
->>> properly functioning fuse server, writeback requests are completed and
->>> there is no issue. However, if there is a bug in the fuse server and it
->>> hangs on writeback, then without this change, wait_sb_inodes() will wait
->>> forever.
->>>
->>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
->>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
->>> ---
->>>    fs/fs-writeback.c | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
->>> index 2b35e80037fe..eb246e9fbf3d 100644
->>> --- a/fs/fs-writeback.c
->>> +++ b/fs/fs-writeback.c
->>> @@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *sb)
->>>                if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
->>>                        continue;
->>>
->>> +             if (mapping_writeback_may_hang(mapping))
->>> +                     continue;
->>
->> I think I raised it in the past, but simply because it could happen, why
->> would we unconditionally want to do that for all fuse mounts? That just
->> seems wrong :(
+On 11/24/25 3:32 PM, Jiri Slaby wrote:
+> Isn't this fixed already by:
+> commit 8513c154f8ad7097653dd9bf43d6155e5aad4ab3
+> Author: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+> Date:   Mon Nov 10 22:45:50 2025 +0530
 > 
-> I think it's considered a userspace regression if we don't revert the
-> program behavior back to its previous version, even if it is from the
-> program being incorrectly written, as per the conversation in [1].
-> 
-> [1] https://lore.kernel.org/regressions/CAJnrk1Yh4GtF-wxWo_2ffbr90R44u0WDmMAEn9vr9pFgU0Nc6w@mail.gmail.com/T/#m73cf4b4828d51553caad3209a5ac92bca78e15d2
-> 
->>
->> To phrase it in a different way, if any writeback could theoretically
->> hang, why are we even waiting on writeback in the first place?
->>
-> 
-> I think it's because on other filesystems, something has to go
-> seriously wrong for writeback to hang, but on fuse a server can easily
-> make writeback hang and as it turns out, there are already existing
-> userspace programs that do this accidentally.
+>      HID: playstation: Fix memory leak in dualshock4_get_calibration_data()
+> ?
 
-Sorry, I only found the time to reply now. I wanted to reply in more 
-detail why what you propose here does not make sense to me.
+As far as I can see, that patch does indeed fix the same issue, and it 
+is already upstream.
 
-I understand that it might make one of the weird fuse scenarios (buggy 
-fuse server) work again, but it sounds like we are adding more hacks on 
-top of broken semantics. If we want to tackle the writeback problem, we 
-should find a proper way to deal with that for good.
+Thanks for the hint - Abdun's patch has been upstreamed quite recently, 
+hence I guess Eslam missed it by accident. But maybe I'm wrong and Eslam 
+can chime in himself?
 
 
-(1) AS_WRITEBACK_MAY_HANG semantics
+> Anyway, this is a typical use-case for __free(). Why not to use that?
 
-As discussed in the past, writeeback of pretty much any filesystem might 
-hang forever on I/O errors.
-
-On network filesystems apparently as well fairly easily.
-
-It's completely unclear when to set AS_WRITEBACK_MAY_HANG.
-
-So as writeback on any filesystem may hang, AS_WRITEBACK_MAY_HANG would 
-theoretically have to be set on any mapping out there.
-
-The semantics don't make sense to me, unfortuantely.
+Wow, there's been a lot of interesting stuff happening around cleanup.h. 
+I've been out of the kernel for too long, this looks like fun. Thanks 
+for pointing it out :)
 
 
-(2) AS_WRITEBACK_MAY_HANG usage
+Max
 
-It's unclear in which scenarios we would not want to wait for writeback, 
-and what the effects of that are.
-
-For example, wait_sb_inodes() documents "Data integrity sync. Must wait 
-for all pages under writeback, because there may have been pages dirtied 
-before our sync call ...".
-
-It's completely unclear why it might be okay to skip that simply because 
-a mapping indicated that waiting for writeback is maybe more sketchy 
-than on other filesystems.
-
-But what concerns me more is what we do about other 
-folio_wait_writeback() callers. Throwing in AS_WRITEBACK_MAY_HANG 
-wherever somebody reproduced a hang is not a good approach.
-
-We need something more robust where we can just not break the kernel in 
-weird ways because user space is buggy or malicious.
-
-
-(3) Other operations
-
-If my memory serves me right, there are similar issues on readahead. It 
-wouldn't surprise me if there are yet other operations where fuse Et al 
-can trick the kernel into hanging forever.
-
-So I'm wondering if there is more to this than just "writeback may hang".
-
-
-
-Obviously, getting the kernel to hang, controlled by user space that 
-easily, is extremely unpleasant and probably the thing that I really 
-dislike about fuse. Amir mentioned that maybe the iomap changes from 
-Darrick might improve the situation in the long run, I would hope it 
-would allow for de-nastifying fuse in that sense, at least in some 
-scenarios.
-
-
-I cannot really say what would be better here (maybe aborting writeback 
-after a short timeout), but AS_WRITEBACK_MAY_HANG to then just skip 
-selected waits for writeback is certainly something that does not make 
-sense to me.
-
-
-Regarding the patch here, is there a good reason why fuse does not have 
-to wait for the "Data integrity sync. Must wait for all pages under 
-writeback ..."?
-
-IOW, is the documented "must" not a "must" for fuse? In that case, 
-having a flag that states something like that that 
-"AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we would want 
-to add to avoid waiting for writeback with clear semantics why it is ok 
-in that specific scenario.
-
-Hope that helps, and happy to be convinced why AS_WRITEBACK_MAY_HANG is 
-the right thing to do in this way proposed here.
-
--- 
-Cheers
-
-David
 
