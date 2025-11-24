@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-196805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBC7C8280A
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:18:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA03C828B5
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 22:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0DB304E35C9
-	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07FC43AC90B
+	for <lists+stable@lfdr.de>; Mon, 24 Nov 2025 21:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB2732E686;
-	Mon, 24 Nov 2025 21:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446092E9730;
+	Mon, 24 Nov 2025 21:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ec8XHBN0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEFwFznj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02C832E74B
-	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 21:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004D0269AEE
+	for <stable@vger.kernel.org>; Mon, 24 Nov 2025 21:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764019091; cv=none; b=MBc2WpkYyfOXavt/1xIf9ExqTyQmvbR9x3NUJ+fFIEcvqqEafJjvbpbjwD2HeRNkd58rGSk90ZWhsDBICGmHXNW519op6+fZK6vjg3N8sgEJbtWdeacvwn7JUOQcnJD3aGBCzidYQvsIOE1j5/gSuegQ5OZy2ysG9NAEf/q+wlk=
+	t=1764020010; cv=none; b=rk3aT8PM5slEEcAMYK5PaO8RkY5myMx9GyFhpd6X+xBI6PWiykTpKd61KMWNUwPJadIgXNMgtwkgDDPdD4Y/kN8O2B4Mf0BFaUuSDbdJmUPLJi2gijSYvi3bY+Lc7hlKgiL6+Mhgw9ehgqukZtHKj6WstrCiPvLCUCSC2iWMg5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764019091; c=relaxed/simple;
+	s=arc-20240116; t=1764020010; c=relaxed/simple;
 	bh=RXe7jUaZtC98c8vMxH/DVbzoX1Iohuw9n5pXxJcOiDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=legF2wX21l0e+DUeteuakVeykdQuu5oRUe54hfjWW1QHxhzQH3HtwtQCUCim6F06gI1XHAKIs+o+pSsJmG347BUviBCKQQeyxK3DTsDjdigGaS8NcO/mdHNCFW8OqzAIn/UH6FIq3ZS6asiO06fFMBi9OOK0sqKLlSXaJA6yBWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ec8XHBN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB45DC16AAE;
-	Mon, 24 Nov 2025 21:18:07 +0000 (UTC)
+	 MIME-Version; b=M0w6NiOABZy+VzvnAsg8nbqdsNb3eHTcdgCkGQVF84eT6fiAqiJC6BvUy9ElrvNPH9E+3CfXIWk3C0AkgqZp76H6hNnoYRE7WTMQgV0KTD3tdnjk+4Q1tzh2bJqNnp2Rqx+BgHKvSrKTSIiFiv92M5kMqOi+QxzwqDxmRDWPf4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEFwFznj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF01C4CEF1;
+	Mon, 24 Nov 2025 21:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764019088;
+	s=k20201202; t=1764020009;
 	bh=RXe7jUaZtC98c8vMxH/DVbzoX1Iohuw9n5pXxJcOiDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ec8XHBN01HyBdk9xa1Y9/At3rZWHQ+H8VVSFg8Qm7TS2cFc7vf4ZbD4b4vl/S72ps
-	 djFwJK+bUGD+5NOkbMyt3LPJ2WuqjmHvoRLYrh6ZslM/QJi+wReHqEARvuMXA6/VGX
-	 h842bOJ1/KLSVCGl7k+pDhuwJZTdQcQmYtRUpgDGum2I1ylUs8qCQhOW9IbYKC4j6w
-	 nvg84TFFLS0Qr93v3xnZd2JwNylLPOe0UUo63SGES7aQXG+UH7OZhkIqa8vn1t4qu3
-	 NSJjvUGZFVfjm7EGf8CeSx0WN6d+V6dU+ASUJofwU6jHAiFHO2rRKxdFfE3BVrJSTL
-	 GM7QPaQLlfD0Q==
+	b=KEFwFznj7ZoaAz21Prt2rqUu0SiRsIM2OJjrU0BSouSnfEICg0AXqBr3M0aEBe2ft
+	 TZQ1E4op/Z4Z5leRf5x4QX20Yrgy7e+osVLde5f4Ez58irERFskOT+X/roCWunMhdW
+	 loboEMHIHRYNjv4krBnjSu4rcBOjojzcOm9Mun/Z46iw2hdqYz45gRGiFR2g9rtkWO
+	 /NrMvD+t68piDPhqLZ9TZPZbuT6VV9cOfQXmfxHrIKtKmFaCbOxub71+ImhGwF12i+
+	 nl7ZUa6vzLOige2MgvFu666gqzpBXWIEJ6uy8vr42/Iv+YZ3pbQuMufcpyl7JUeqGD
+	 73S8R+dpHxi6g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Conor Dooley <conor.dooley@microchip.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
-Date: Mon, 24 Nov 2025 16:18:06 -0500
-Message-ID: <20251124211806.34641-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
+Date: Mon, 24 Nov 2025 16:33:27 -0500
+Message-ID: <20251124213327.39691-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112404-radial-yoyo-25b9@gregkh>
-References: <2025112404-radial-yoyo-25b9@gregkh>
+In-Reply-To: <2025112405-vixen-monogamy-fb80@gregkh>
+References: <2025112405-vixen-monogamy-fb80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
