@@ -1,165 +1,126 @@
-Return-Path: <stable+bounces-196920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431FCC85D7F
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 16:54:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D7CC85F2B
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 17:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 186E634FD06
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 15:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78D7F3B4859
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476E81CAA6C;
-	Tue, 25 Nov 2025 15:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B578423A566;
+	Tue, 25 Nov 2025 16:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqKoTVR6"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="m8pqydK0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077A233EC
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 15:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B3235045
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 16:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764086072; cv=none; b=tEP9rCen64f27UBTVaRdN+x/WNruvy6G62BkJuu1OevBxAP/dueBJ6a0aJikMi6zf3XAomRR+IdV0Vo/eXIbvycepB0OI03P4fICorVxADMiMKZNpWE2WSkv+U0vjg2uXqlg/f6gd672gmiQ3TS31gIfrmRYoFNWNVu+FdrAYPs=
+	t=1764087638; cv=none; b=P7y0i6WzF2Bahlu7CarDeCctfh93iaeRhbV3T8PuD+rkzg2dBDJDgiazI1YU+uMokqtXo+daB51KhZK3mEUyb+EgA+dIxPNQtz7Zid+h2NLX05FcWuebTFkcWaK5GmqXqoPdSs85DtGr9l1ky+y3zShC+2V3wlaQS2IN979GP9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764086072; c=relaxed/simple;
-	bh=AwRGPTfDdIKnMP6YBZU4dzQMQ9mLsyJiU+5Ro5bzW+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSVZLl0Qbt9QEUWfik7cZbUr/kLd0JXvHed7i3WaCyvTtuvTfIPDk5+im1Lb3UwhrK6ndPAtPV5LTNuXXCVsfPFUefD3hByDdSESrYJpYwdbTFTYuDSsuLcxd+660cEsNW9aXRVyaXxpk9jHB+8LRZ/LQudZAAgkcu64TbKPxq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqKoTVR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B8DC4CEF1;
-	Tue, 25 Nov 2025 15:54:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764086071;
-	bh=AwRGPTfDdIKnMP6YBZU4dzQMQ9mLsyJiU+5Ro5bzW+A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqKoTVR6fmNbGZ+VRm/YBoiH4DNyOL+aPyNG6/lgNVe37qAuGQCnP2p14nJC4UOEv
-	 M5AzPL6VZCTOHlsLrpD4m2kPhmqQpaflpo7sMwo1qbrifByP7LyiZApe908CSwoRzm
-	 znj4KRvWEJS/UmOjoTYYt9PDxFM+EtcT/4RfIIC9i8NqXyUgRgniu/cwmauGJ869zv
-	 3h4evRZRaU/eAzp5OADMCUjppQtq1Z9ix7NnizHGIGDQ6/HGzMFn6XE7l2Ob51r2jO
-	 LizrjBPvM+XmVOWBOAKLZt3wkyWUEF5ZwE3ca72RyQOC33pF5eXSuDNJSvtFCVwYNP
-	 70qxqUpItsVhA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: decouple mptcp fastclose from tcp close
-Date: Tue, 25 Nov 2025 10:54:29 -0500
-Message-ID: <20251125155429.693062-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112412-trough-caloric-1503@gregkh>
-References: <2025112412-trough-caloric-1503@gregkh>
+	s=arc-20240116; t=1764087638; c=relaxed/simple;
+	bh=eJ/IMjGulEI8QmjGtE/6iZTat616jmFMM5GjWfzZprc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gSfT7EdpaobOJ5fiPSWOhwWJqs9bipHa19KioVcCp5KX7+7S9dkS/BXBVYf12wcz2KeTDUGKfli0yzcSJoLnJVH9m/FAIc8OXQJKcYNhEAPtvI/XGuGqWmijJ9T/dR7IUMF7vJvhaV27flZD1GEmRxlI0Vy2hkE2JUwlzb3fMwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=m8pqydK0; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-bc09b3d3afeso3111503a12.0
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 08:20:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1764087636; x=1764692436; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZ1eFsM5Tf65QYOWpuLGzqCys5d89vyL8hwXtzNFx0s=;
+        b=m8pqydK0/1LM6RTMUJvo+Lm3LHPrxyJXdiNi3oFhWUuWyOlgAAnHbngCi1KaFd9Qcv
+         QyzDY9yCXkm6dRagxrM8eAkx5/kaVPhSIpYdAkO9Uw/Pi3uo7I7Me1h/HGkXaTGGp2z6
+         byf69FIKY5rw7CVMKl5Kze6fR4g5A+tcMHXIE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764087636; x=1764692436;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qZ1eFsM5Tf65QYOWpuLGzqCys5d89vyL8hwXtzNFx0s=;
+        b=fVkeIZ6wK2nuWkK+LQPFx7HdWVRj+H3pXxa/CB/nfMdDiBdeK0BOUTiFew3fWWqs7P
+         N0aJ52oR5ZyZj9N/uLGwMUhPlFUzbpDeghk6WNEq0WCJ36QUsC8cdEgiFmDp5XVbQUM0
+         goYuN8jMiTPBiswuvElOW+vL8Pa09MLXtPyqwQXSm2EvXmvRdWe6q+qKdanN7yUqtfEk
+         wAH2J3WISSF5gz4C3I7CrKoF3lPx0RhCT1esDJFi/v6R9T4iS8anFgiUeQGfdSjis8GH
+         gN/XpDlc2qQOZKRzrkv/vHBjEu5cmDlaO2Uy4tHkWwt/zlU8jHFiZJXXrx21RaYfw/AL
+         YzLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCaQ/mnJTTWnhObFyUvoXsfgxEKkjdubSY7BFeL9jY/JPR/bdaOzbapMg0EX1cz3FpnC4HeyQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygR2WK4GEOqTaU7vANLHMDqL13RX6b1bX42e9P+XTRIUoKPAwJ
+	w+324CtdE4OWLSeciP2QFXoz+ZU89Qn28TboYnfLjo/D9fkwsqf4Qh0pWnqJ9Xkp+w==
+X-Gm-Gg: ASbGncsH91SR8ugjiRke5h6eZMlU7Yscvck5TX/4xTlYaGU5/1rmn6fH/1gy55czNzR
+	kQEM6PB9JE544t9i8Uuv1CTzV4n77Tz4ae5MZ/lE5Aat+4CprrctnrJwb9QXJCdZHXHGoQTXPnZ
+	/SnKDIMJItNP7W/G1NrPRzMrpFqrlCZDHS8BzsyxijTM7zGaTC4kNrGIQLAcIgJPLzBP9tvRsZ5
+	rTCkKNY7yDezLt6sNs4KZQC8KaocGOn97TZNLBLys8dx814wYusAXcSzBLsF+vHHYb8KunThjEx
+	/SwmUi6WToBv1lX572WvZpMkwPY7J5qQ3TQ1RvvnLaFkdql4eKG6CTJGxG3fQ64ajLB7kiwa0Mo
+	VVlvWLQJ7r5U/vQgFM2Zxrf9T6GCa5ldM5OAfCSQzRPVbLlFzBJX6p5025ozE3GjFZ1JlbhBQs/
+	UaZCpvlysVO1GShVcIEWgDsvGA/Zlc80VaxMF+LNXS0A2ARRDkXA==
+X-Google-Smtp-Source: AGHT+IHbxub078qD6r8lEEf/qWg01tDyiVQO7hyfzM7kwN7R7kHugcJNQAoH42YI5h55+GaIaK5kUQ==
+X-Received: by 2002:a05:693c:600f:b0:2a4:7352:dab1 with SMTP id 5a478bee46e88-2a71a127485mr10175866eec.36.1764087635917;
+        Tue, 25 Nov 2025 08:20:35 -0800 (PST)
+Received: from localhost ([2a00:79e0:2e7c:8:62e0:9ddd:dee9:122b])
+        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-2a93c5562b2sm13362986eec.3.2025.11.25.08.20.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 08:20:35 -0800 (PST)
+Date: Tue, 25 Nov 2025 08:20:34 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
+Message-ID: <aSXXUmfy77ZAiShd@google.com>
+References: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
+> From: Brian Norris <briannorris@google.com>
+> 
+> When transitioning to D3cold, __pci_set_power_state() will first
+> transition a device to D3hot. If the device was already in D3hot, this
+> will add excess work:
+> (a) read/modify/write PMCSR; and
+> (b) excess delay (pci_dev_d3_sleep()).
+> 
+> For (b), we already performed the necessary delay on the previous D3hot
+> entry; this was extra noticeable when evaluating runtime PM transition
+> latency.
+> 
+> Check whether we're already in the target state before continuing.
+> 
+> Note that __pci_set_power_state() already does this same check for other
+> state transitions, but D3cold is special because __pci_set_power_state()
+> converts it to D3hot for the purposes of PMCSR.
+> 
+> This seems to be an oversight in commit 0aacdc957401 ("PCI/PM: Clean up
+> pci_set_low_power_state()").
+> 
+> Fixes: 0aacdc957401 ("PCI/PM: Clean up pci_set_low_power_state()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Brian Norris <briannorris@google.com>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit fff0c87996672816a84c3386797a5e69751c5888 ]
+I'd like to know the status of this patch, with the merge window
+approaching. It sounds like people agreed it fixes a confirmed
+regression. I also don't think the request to remove all power state
+management from all drivers was a reasonable one.
 
-With the current fastclose implementation, the mptcp_do_fastclose()
-helper is in charge of two distinct actions: send the fastclose reset
-and cleanup the subflows.
-
-Formally decouple the two steps, ensuring that mptcp explicitly closes
-all the subflows after the mentioned helper.
-
-This will make the upcoming fix simpler, and allows dropping the 2nd
-argument from mptcp_destroy_common(). The Fixes tag is then the same as
-in the next commit to help with the backports.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mptcp/protocol.c | 13 +++++++++----
- net/mptcp/protocol.h |  2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ea715a1282425..a4d2dd2bc9eac 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2810,8 +2810,12 @@ static void mptcp_worker(struct work_struct *work)
- 		__mptcp_close_subflow(sk);
- 
- 	if (mptcp_close_tout_expired(sk)) {
-+		struct mptcp_subflow_context *subflow, *tmp;
-+
- 		inet_sk_state_store(sk, TCP_CLOSE);
- 		mptcp_do_fastclose(sk);
-+		mptcp_for_each_subflow_safe(msk, subflow, tmp)
-+			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
- 		mptcp_close_wake_up(sk);
- 	}
- 
-@@ -3217,7 +3221,8 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	/* msk->subflow is still intact, the following will not free the first
- 	 * subflow
- 	 */
--	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
-+	mptcp_do_fastclose(sk);
-+	mptcp_destroy_common(msk);
- 	msk->last_snd = NULL;
- 
- 	/* The first subflow is already in TCP_CLOSE status, the following
-@@ -3440,7 +3445,7 @@ static struct sock *mptcp_accept(struct sock *sk, int flags, int *err,
- 	return newsk;
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-+void mptcp_destroy_common(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct sock *sk = (struct sock *)msk;
-@@ -3449,7 +3454,7 @@ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
- 
- 	/* join list will be eventually flushed (with rst) at sock lock release time */
- 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
-+		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
- 
- 	/* move to sk_receive_queue, sk_stream_kill_queues will purge it */
- 	mptcp_data_lock(sk);
-@@ -3476,7 +3481,7 @@ static void mptcp_destroy(struct sock *sk)
- 
- 	/* allow the following to close even the initial subflow */
- 	msk->free_first = 1;
--	mptcp_destroy_common(msk, 0);
-+	mptcp_destroy_common(msk);
- 	sk_sockets_allocated_dec(sk);
- }
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 81507419c465e..fc84c9a3f0a35 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -761,7 +761,7 @@ static inline void mptcp_write_space(struct sock *sk)
- 	}
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
-+void mptcp_destroy_common(struct mptcp_sock *msk);
- 
- #define MPTCP_TOKEN_MAX_RETRIES	4
- 
--- 
-2.51.0
-
+Brian
 
