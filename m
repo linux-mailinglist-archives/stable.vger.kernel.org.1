@@ -1,302 +1,205 @@
-Return-Path: <stable+bounces-196876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94D3C84236
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:06:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17FBC84497
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:45:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CAA63AAF2C
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 09:06:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4828A343542
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 09:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177D62FDC26;
-	Tue, 25 Nov 2025 09:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GtNHZDjy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49DE2DCC1B;
+	Tue, 25 Nov 2025 09:45:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED350296BBA;
-	Tue, 25 Nov 2025 09:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA037256D;
+	Tue, 25 Nov 2025 09:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764061570; cv=none; b=I+1xtGa/m/7lIH05i5Cn5CwnVLysbljG+rnS9Bw+kGInxKvH2985jYuEwCyqS/J9SBLLL0SpGMnnjHXH30uK9LQCV7GwTXMNMaD6aXzZdyftDSLK5LxG/aqXUEsJyXKVoyJtS03jvN8z7SWEcD3n4+tnY4ti+AXz1IoyT17aM8E=
+	t=1764063939; cv=none; b=ESJeLBQr2RzYpAsOU14ekiGPuHQSkcwi7SLZTjealRh+xhnE3+mV5b79c9m7SKg9uVSWC8Y0rXUa7/OPrxHa5OS6GVtntPb0PvBHvEljHXQ2EEQpShH8ZwaNviKGhfA9y1kpHy15h5Rw73tsN6dqkgpxnXVI2FS1ZiyBlBCMJPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764061570; c=relaxed/simple;
-	bh=RIDASrut4MLaYIYmCaxCQsOX0rmWlQ43uP2CXFqtMPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBYmCtxS3p6Jx3LfP0JxQnVrClcaLQZcZzaYg2AQEPcIvQu1nmSpF/gTAF0YBAsRBENJBIKrbrrXftxZbo4ZpOrBRwqhnJXKDr+mpibGR/Z3mbvn0GiaZsYYeOjKCr5HbE33Aci96l7sz7NYLLm7227xGZ7rwqqGkgrYqLDsfos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GtNHZDjy; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 35B5E1A1D30;
-	Tue, 25 Nov 2025 09:05:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0690660705;
-	Tue, 25 Nov 2025 09:05:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D323A10371616;
-	Tue, 25 Nov 2025 10:05:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764061555; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=EnzzFaoxZT2moKRMTZsQDsdt2u8wjYq4N0N97zM8DBg=;
-	b=GtNHZDjyEMK9SYW8TzeBNrhCQkE+Xyk+fCtvTs+Mf0Ey1TbK+IXutOS3EM6jDTSM85qRf4
-	WQMywkVBEwYTs7Sf7cjhf9H2/BoqC+egvCX5f2PWTx+iyqZPpSzkvkdKJLtmrXy7CFc05W
-	Y/+KYbls7GD56om3QY5tRdvQITenHI+6psgW+wKb2vRRVEGfu5EZ0GwJlkJFBLsTcY96qu
-	plpMDrNIK2XctZtXXWl/Jyl0NAoqApc4wdc051RTGnLha82QSf9UQ2m8ZWeIfVnJ2WD8uF
-	JWh8Ktnai/2qnOS+xHasUCknyl/emsB8rGEIjPgQjdlSHyfHiDZxGUGdgd+R3g==
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Bajjuri Praneeth <praneeth@ti.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	"Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	stable@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Subject: [PATCH v4] drm/tilcdc: Fix removal actions in case of failed probe
-Date: Tue, 25 Nov 2025 10:05:44 +0100
-Message-ID: <20251125090546.137193-1-kory.maincent@bootlin.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764063939; c=relaxed/simple;
+	bh=a48C5T6ENsbSBoimwDvD/ho55hLflc0rsQZk/dIQaYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s1Ge+uPSpwpCKilDolg4lwOt7QRYAe59PQvqE0wGwbTD6h1pWE7hIdQSMBfnyZapujcOxuTS9rlLuwevEoG3BYL/r8evzcOBMXsuvA+/ekZZpomWXewoSRooLZYVpSxoFi7RE3OP5c87b1yPhxtDa9waQQSi9zv3GYM8pWIjvqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DFA11477;
+	Tue, 25 Nov 2025 01:45:28 -0800 (PST)
+Received: from [10.57.40.104] (unknown [10.57.40.104])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D727D3F66E;
+	Tue, 25 Nov 2025 01:45:33 -0800 (PST)
+Message-ID: <2be3bf24-a707-48df-b224-22b5ab290006@arm.com>
+Date: Tue, 25 Nov 2025 09:46:21 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
+ performance estimation' causes a regression
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>,
+ Christian Loehle <christian.loehle@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yu-Che Cheng <giver@google.com>, Tomasz Figa <tfiga@chromium.org>,
+ stable@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dietmar Eggemann <dietmar.eggemann@arm.com>
+References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
+ <86d759a5-9a96-49ff-9f75-8b56e2626d65@arm.com>
+ <2ktr5znjidilpxm2ycixunqlmhu253xwov4tpnb2qablrsqmbv@ysacm5nbcjw7>
+Content-Language: en-US
+From: Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <2ktr5znjidilpxm2ycixunqlmhu253xwov4tpnb2qablrsqmbv@ysacm5nbcjw7>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Hi Sergey,
 
-The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
-should only be called when the device has been successfully registered.
-Currently, these functions are called unconditionally in tilcdc_fini(),
-which causes warnings during probe deferral scenarios.
+On 11/21/25 03:55, Sergey Senozhatsky wrote:
+> Hi Christian,
+> 
+> On (25/11/20 10:15), Christian Loehle wrote:
+>> On 11/20/25 04:45, Sergey Senozhatsky wrote:
+>>> Hi,
+>>>
+>>> We are observing a performance regression on one of our arm64 boards.
+>>> We tracked it down to the linux-6.6.y commit ada8d7fa0ad4 ("sched/cpufreq:
+>>> Rework schedutil governor performance estimation").
+>>>
+>>> UI speedometer benchmark:
+>>> w/commit:	395  +/-38
+>>> w/o commit:	439  +/-14
+>>>
+>>
+>> Hi Sergey,
+>> Would be nice to get some details. What board?
+> 
+> It's an MT8196 chromebook.
+> 
+>> What do the OPPs look like?
+> 
+> How do I find that out?
+> 
+>> Does this system use uclamp during the benchmark? How?
+> 
+> How do I find that out?
+> 
+>> Given how large the stddev given by speedometer (version 3?) itself is, can we get the
+>> stats of a few runs?
+> 
+> v2.1
+> 
+> w/o patch     w/ patch
+> 440 +/-30     406 +/-11
+> 440 +/-14     413 +/-16
+> 444 +/-12     403 +/-14
+> 442 +/-12     412 +/-15
+> 
+>> Maybe traces of cpu_frequency for both w/ and w/o?
+> 
+> trace-cmd record -e power:cpu_frequency attached.
+> 
+> "base" is with ada8d7fa0ad4
+> "revert" is ada8d7fa0ad4 reverted.
 
-[    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_state_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
-...
-[    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_get_crtc_state+0x68/0x108
-[    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_all+0x90/0x1c8
-[    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shutdown+0x90/0x144
-[    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [tilcdc]
-[    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [tilcdc]
 
-Fix this by rewriting the failed probe cleanup path using the standard
-goto error handling pattern, which ensures that cleanup functions are
-only called on successfully initialized resources. Additionally, remove
-the now-unnecessary is_registered flag.
+I did some analysis based on your trace files.
+I have been playing some time ago with speedometer performance
+issues so that's why I'm curious about your report here.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
-Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
----
+I've filtered your trace purely based on cpu7 (the single biggest cpu).
+Then I have cut the data from the 'warm-up' phase in both traces, to
+have similar start point (I think).
 
-I'm working on removing the usage of deprecated functions as well as
-general improvements to this driver, but it will take some time so for
-now this is a simple fix to a functional bug.
+It looks like the 2 traces can show similar 'pattern' of that benchmark
+which is good for analysis. If you align the timestamp:
+176.051s and 972.465s then both plots (frequency changes in time) look
+similar.
 
-Change in v4:
-- Fix an unused label warning reported by the kernel test robot.
+There are some differences, though:
+1. there are more deeps in the freq in time, so more often you would
+    pay extra penalty for the ramp-up again
+2. some of the ramp-up phases are a bit longer ~100ms instead of ~80ms
+    going from 2GHz to 3.6GHz
+3.
 
-Change in v3:
-- Rewrite the failed probe clean up path using goto
-- Remove the is_registered flag
 
-Change in v2:
-- Add missing cc: stable tag
-- Add Swamil reviewed-by
----
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c |  2 +-
- drivers/gpu/drm/tilcdc/tilcdc_drv.c  | 53 ++++++++++++++++++----------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 +-
- 3 files changed, 37 insertions(+), 20 deletions(-)
+There are idle phases missing in the trace, so we have to be careful
+when e.g. comparing avg frequency, because that might not be the real
+indication of the delivered computation and not indicate the gap in the 
+score.
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index 5718d9d83a49f..52c95131af5af 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -586,7 +586,7 @@ static void tilcdc_crtc_recover_work(struct work_struct *work)
- 	drm_modeset_unlock(&crtc->mutex);
- }
- 
--static void tilcdc_crtc_destroy(struct drm_crtc *crtc)
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc)
- {
- 	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
- 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 7caec4d38ddf0..3dcbec312bacb 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -172,8 +172,7 @@ static void tilcdc_fini(struct drm_device *dev)
- 	if (priv->crtc)
- 		tilcdc_crtc_shutdown(priv->crtc);
- 
--	if (priv->is_registered)
--		drm_dev_unregister(dev);
-+	drm_dev_unregister(dev);
- 
- 	drm_kms_helper_poll_fini(dev);
- 	drm_atomic_helper_shutdown(dev);
-@@ -220,21 +219,21 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	priv->wq = alloc_ordered_workqueue("tilcdc", 0);
- 	if (!priv->wq) {
- 		ret = -ENOMEM;
--		goto init_failed;
-+		goto put_drm;
- 	}
- 
- 	priv->mmio = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->mmio)) {
- 		dev_err(dev, "failed to request / ioremap\n");
- 		ret = PTR_ERR(priv->mmio);
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	priv->clk = clk_get(dev, "fck");
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(dev, "failed to get functional clock\n");
- 		ret = -ENODEV;
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	pm_runtime_enable(dev);
-@@ -313,7 +312,7 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	ret = tilcdc_crtc_create(ddev);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to create crtc\n");
--		goto init_failed;
-+		goto disable_pm;
- 	}
- 	modeset_init(ddev);
- 
-@@ -324,46 +323,46 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	if (ret) {
- 		dev_err(dev, "failed to register cpufreq notifier\n");
- 		priv->freq_transition.notifier_call = NULL;
--		goto init_failed;
-+		goto destroy_crtc;
- 	}
- #endif
- 
- 	if (priv->is_componentized) {
- 		ret = component_bind_all(dev, ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 
- 		ret = tilcdc_add_component_encoder(ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unbind_component;
- 	} else {
- 		ret = tilcdc_attach_external_device(ddev);
- 		if (ret)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 	}
- 
- 	if (!priv->external_connector &&
- 	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
- 		dev_err(dev, "no encoders/connectors found\n");
- 		ret = -EPROBE_DEFER;
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = drm_vblank_init(ddev, 1);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to initialize vblank\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto init_failed;
-+		goto unbind_component;
- 	priv->irq = ret;
- 
- 	ret = tilcdc_irq_install(ddev, priv->irq);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to install IRQ handler\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	drm_mode_config_reset(ddev);
-@@ -372,16 +371,34 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto init_failed;
--	priv->is_registered = true;
-+		goto stop_poll;
- 
- 	drm_client_setup_with_color_mode(ddev, bpp);
- 
- 	return 0;
- 
--init_failed:
--	tilcdc_fini(ddev);
-+stop_poll:
-+	drm_kms_helper_poll_fini(ddev);
-+	tilcdc_irq_uninstall(ddev);
-+unbind_component:
-+	if (priv->is_componentized)
-+		component_unbind_all(dev, ddev);
-+unregister_cpufreq_notif:
-+#ifdef CONFIG_CPU_FREQ
-+	cpufreq_unregister_notifier(&priv->freq_transition,
-+				    CPUFREQ_TRANSITION_NOTIFIER);
-+destroy_crtc:
-+#endif
-+	tilcdc_crtc_destroy(priv->crtc);
-+disable_pm:
-+	pm_runtime_disable(dev);
-+	clk_put(priv->clk);
-+free_wq:
-+	destroy_workqueue(priv->wq);
-+put_drm:
- 	platform_set_drvdata(pdev, NULL);
-+	ddev->dev_private = NULL;
-+	drm_dev_put(ddev);
- 
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index b818448c83f61..58b276f82a669 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -82,7 +82,6 @@ struct tilcdc_drm_private {
- 	struct drm_encoder *external_encoder;
- 	struct drm_connector *external_connector;
- 
--	bool is_registered;
- 	bool is_componentized;
- 	bool irq_enabled;
- };
-@@ -164,6 +163,7 @@ void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
- void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
- 					bool simulate_vesa_sync);
- void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc);
- int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
- 		struct drm_framebuffer *fb,
- 		struct drm_pending_vblank_event *event);
--- 
-2.43.0
+Here are the stats:
+1. revert:
+frequency
+count  1.318000e+03
+mean   2.932240e+06
+std    5.434045e+05
+min    2.000000e+06
+50%    3.000000e+06
+85%    3.600000e+06
+90%    3.626000e+06
+95%    3.626000e+06
+99%    3.626000e+06
+max    3.626000e+06
 
+2. base:
+           frequency
+count  1.551000e+03
+mean   2.809391e+06
+std    5.369750e+05
+min    2.000000e+06
+50%    2.800000e+06
+85%    3.500000e+06
+90%    3.600000e+06
+95%    3.626000e+06
+99%    3.626000e+06
+max    3.626000e+06
+
+
+A better indication in this case would be comparison of the frequency
+residency in time, especially for the max freq:
+1. revert: 11.92s
+2. base: 9.11s
+
+So there is 2.8s longer residency for that fmax (while we even have
+longer period for finishing that Speedometer 2 test on 'base').
+
+Here is some detail about that run*:
++---------------+---------------------+---------------+----------------+
+| Trace         | Total Trace         | Time at Max   | % of Total     |
+|               | Duration (s)        | Freq (s)      | Time           |
++---------------+---------------------+---------------+----------------+
+| Base Trace    | 24.72               | 9.11          | 36.9%          |
+| Revert Trace  | 22.88               | 11.92         | 52.1%          |
++---------------+---------------------+---------------+----------------+
+
+*We don't know the idle periods which might happen for those frequencies
+
+
+I wonder if you had a fix patch for the util_est in your kernel...
+That fix has been recently backported to 6.6 stable [1].
+
+You might want to try that patch as well, w/ or w/o this revert.
+IMHO it might be worth to have it on top. It might help
+the main Chrome task ('CrRendererMain') to stay longer on the biggest
+cpu, since the util_est would be higher. You can read the discussion
+that I had back then with PeterZ and VincentG [2].
+
+Regards,
+Lukasz
+
+[1] 
+https://lore.kernel.org/stable/20251121130232.828187990@linuxfoundation.org/
+[2] 
+https://lore.kernel.org/lkml/20230912142821.GA22166@noisy.programming.kicks-ass.net/
 
