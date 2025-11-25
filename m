@@ -1,62 +1,94 @@
-Return-Path: <stable+bounces-196917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D1AC858F2
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 15:51:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF59C85BFB
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 16:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 07A1F3511B6
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4907B3AF9D8
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 15:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31428326930;
-	Tue, 25 Nov 2025 14:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B67328251;
+	Tue, 25 Nov 2025 15:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmNNhdOD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMUzYo5e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCF3246F0
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 14:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFCB327C1A
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 15:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764082298; cv=none; b=oRPkpJGZ+/2c2qUztp2h5wDAH1zjYPhApckOUUuJz1nDbXERPghRMt8X49KeooXtknc2bLI0DDhYQCXAI2H2QNMZ7G0I2xoHgSHvOb7jdOVsCRN5x6cZt6bP4eWty0LSlbEHSDMEOjCLkvWq3hQRDVRJrXMj+0WDehtfJVzy0TY=
+	t=1764084198; cv=none; b=EQEVOjCU+dIXEb4Nb9u2xjV3W5YmOkTEuRc7MLIg8mU2SoW6r041UslIzBMLWUrGpwk4R6UWk4DtvfJxYnYv5+xRrZEj8ikEVec9i6bY+xRrjUtLmMmmuTcagnw7nxGmDKPqDJr5s9yid9Wq/tcEUg9YxUchgmJP5xZuHlkNnZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764082298; c=relaxed/simple;
-	bh=bVXKL/C4QEH3rcm6urfUG4mftxdrTmiFp1jdT/r/YlY=;
+	s=arc-20240116; t=1764084198; c=relaxed/simple;
+	bh=HKUuU+leqsVudzeFU3VFYRNamAHxyt8yy2yHJzQ8iLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toPam0OE186eJSa0K+13jJfZlZM8XlD/XBiyEKCXtgWr5ukztIqknBEP9SbdylroIjFhpGYm4k5GTD3cp0ZCrYuwweiGWeHeeJogEP5Xk/QSN9tOZQKGG5UukkKd78qWCzv6h8gK3HaveuVMGpt8ltFkEzQWfahJlxIgtNT/YpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmNNhdOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9152FC116C6;
-	Tue, 25 Nov 2025 14:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764082297;
-	bh=bVXKL/C4QEH3rcm6urfUG4mftxdrTmiFp1jdT/r/YlY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmNNhdODQfl3iYjlunMav16B9SyxApiHjtYEavdJKPWPMmW9C+x8U2eAWxt5Kqbyo
-	 h1KKhaWEuuTuvA8jOYSi5HzkSYlYR27aGooJwym8yJ4VLgh6ZF5cZSXZWyYj4j8xOQ
-	 xWR9rTh/4KerEkzDqM5yzNd7iPcpb47hTDxf5hQ9JDb79Y+aspkNS61XiURpfIQs85
-	 9Y/qX9d2HH9Vh3DuBysFTY82OAq0M3Mnt6iM6Di6Jqp9hpYN9NpFvuM9khm7VskdGy
-	 34ZkCOXMx1g60nhef8Ou2YG1/HtAT3HHdYRirKYCtyl6OBdU+5YCjfKuDvCXIslwMm
-	 D+FVXRSuPK0Ng==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/4] drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched
-Date: Tue, 25 Nov 2025 09:51:31 -0500
-Message-ID: <20251125145131.660280-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251125145131.660280-1-sashal@kernel.org>
-References: <2025112425-aspirin-conduit-e44b@gregkh>
- <20251125145131.660280-1-sashal@kernel.org>
+	 MIME-Version; b=gWedNHvrQQ0PU25w/fMPTkU7e2xQ2ti1bQJ4MDDPsBcTAHnIe2eYOUKgbsLwkUZS4LSPOUcWXTnW012CcChERdcZaRom6Xh0cNsIdYA5CSerjZi/Vyw5LwOdQgLAplrWwysDq9yss7e+KZaU23tK6XKkghuu63oaXcx71kNwbJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMUzYo5e; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-429c7869704so4740877f8f.2
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 07:23:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764084194; x=1764688994; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TX7n82CXAITT0MrjRDw7p4gxGQsnPKQT76h2mkMbJMw=;
+        b=lMUzYo5e8I0acM4xjTBSXwU/EHENKbgwquq3HmsVMdpy5gECgJTPB/muK4INoSMItW
+         bcxGwKk65M9RVltCud78u0w/LH3hNRB7IbueFUzVOjsQ1SCNf3qyuJv+FMpZ9t2b5OLx
+         4wH9kLIK8MF2NZ38lkL83DKQD03s6qxteiuZoeCj59DQtUe6VaNdkIeA4n37OgaQaDlh
+         X2bz6z+LQcFMANXivR0lG4jNst223t9rhaW2HkIiBQTR/K4jxlmAtm0yCmCKgsvRhW+s
+         3xsO41wpJPcuLlYbFNfNuO+VoOvtKfSOQA6WmtFaW8puzlJ8F/ussMC4g/q50rWWVK+/
+         H/mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764084194; x=1764688994;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TX7n82CXAITT0MrjRDw7p4gxGQsnPKQT76h2mkMbJMw=;
+        b=fVSKa9JgPtpxFl8hj+xjdML7m9oGvr+XU49lk6AXPDhuiotQOZkgZ702Ap9Ud2yRXy
+         OMFoLyOTyYAVFNpK4SfMo3+0b+UJVtMCwaupGkpZ6fG0TTOBgSLsYIRNOWj5C5kDhqOF
+         a4ezTh9ilezVNSTgEw/p4hu9UUNk/X6moULoos9r27aT2TlwFVDK0vtKlPixvz5zkmpV
+         oEPzh4ttjrzAr6ZgYbVBVn9p5N1fgCvMy86sj7S5alvod0JpuTt4TuS3jWVUBEkywLLM
+         ffAatlP3zHmX7vIPohz1+0axO7rrsL5sF8PeJ6S8fLBdeieZizKU7cAb9CHQiYgbmzF0
+         nrwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjo+ZPLRa/b9FwRw57Fsug3oGBd5PsRuyddmFffs78Td/LZ1dM85kJPa4LTy8oI3latbVnXhM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO+sP6ZmSpgKvU42jDuzi1DVd+mo6G3ACQi1rje1fcQUiNJqdy
+	HYvgabjiv9nXHdyQhQC3vSxmrGORgWQdJOZqMHnWZSixUVa+VY1kpRMS
+X-Gm-Gg: ASbGncsmQgBo4kOxhrb2xyQpZVm0rsNMSdopdcLKc3bVd8jzoxWuyqtrme1w00LEYQA
+	M76PobpzJO+mhlelx1qUuMYDu5/LNTFI8iEWVTH/2UI17GLHpBk1HfLkOx7f3DvqeJmblBQroVO
+	rHvXcyc+gTP56DPsMzLRa2fls1zxVC0bEfVDqk2poOHy2pvegZeZ7omrXlaoLrlNsZFfmUNB4Oe
+	1+3QzVvGrj4ihGbeEHYq6Nq/7eP+lqbggATFVZA1aguW5VYirpXEfR6I4C67jM216VASgZoHB3H
+	m/t5s3DM9bPgGo0OB79inYVNAliiiw0wRQzsJaXoymEzV5qb5vZRX3lU7SKEtODrUHfd+rvnjLT
+	BGP/ZgSpyzUXK58oBxidW2hQj+Qg3b++enER2qxp4fMvpVgF4G2lSLx1OrL3J9uT4OVKDEU85lf
+	32UOHXP92kd7zcD3QDlpyNpgVNPNUHUJt6vw0CmFpk2umvKimcFdawvL+6a2DC1bRfxNSRUiJ9V
+	uW3kCsFNP+RHrxE
+X-Google-Smtp-Source: AGHT+IFXA3qVhii3HjcFe+XIGNd+u9teq4CV8hAleQ1XsRKil5xBAkHJxKVhrQynFv+TMPu0obMr4Q==
+X-Received: by 2002:a05:6000:1a8b:b0:427:23a:c339 with SMTP id ffacd0b85a97d-42e0f20434cmr3649980f8f.14.1764084193959;
+        Tue, 25 Nov 2025 07:23:13 -0800 (PST)
+Received: from labdl-itc-sw06.tmt.telital.com ([2a01:7d0:4800:a:8eec:4bff:febd:98b9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd8d97sm34397911f8f.42.2025.11.25.07.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 07:23:13 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Fabio Porcedda <Fabio.Porcedda@telit.com>,
+	stable@vger.kernel.org,
+	Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: [PATCH 1/2] USB: serial: option: add Telit Cinterion FE910C04 new compositions
+Date: Tue, 25 Nov 2025 16:22:36 +0100
+Message-ID: <bd3d3e3922e792b339c147717dc3473d92c4de40.1764083851.git.fabio.porcedda@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1764083851.git.fabio.porcedda@gmail.com>
+References: <cover.1764083851.git.fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,76 +97,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Fabio Porcedda <Fabio.Porcedda@telit.com>
 
-[ Upstream commit cfa0904a35fd0231f4d05da0190f0a22ed881cce ]
+Add the following Telit Cinterion new compositions:
 
-[why]
-1. With allow_0_dtb_clk enabled, the time required to latch DTBCLK to 600 MHz
-depends on the SMU. If DTBCLK is not latched to 600 MHz before set_mode completes,
-gating DTBCLK causes the DP2 sink to lose its clock source.
+0x10c1: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-2. The existing DTBCLK gating sequence ungates DTBCLK based on both pix_clk and ref_dtbclk,
-but gates DTBCLK when either pix_clk or ref_dtbclk is zero.
-pix_clk can be zero outside the set_mode sequence before DTBCLK is properly latched,
-which can lead to DTBCLK being gated by mistake.
+0x10c2: MBIM + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c2 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-[how]
-Consider both pixel_clk and ref_dtbclk when determining when it is safe to gate DTBCLK;
-this is more accurate.
+0x10c3: ECM + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c3 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4701
-Fixes: 5949e7c4890c ("drm/amd/display: Enable Dynamic DTBCLK Switch")
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d04eb0c402780ca037b62a6aecf23b863545ebca)
+0x10c5: RNDIS + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c5 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10c6: MBIM + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 11 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c6 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10c9: MBIM + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c9 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 6 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10cb: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
+T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480 MxCh=16
+D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1d6b ProdID=0002 Rev=06.18
+S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
+S:  Product=xHCI Host Controller
+S:  SerialNumber=0000:00:14.0
+C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+
+T:  Bus=01 Lev=01 Prnt=01 Port=11 Cnt=01 Dev#=  7 Spd=1.5 MxCh= 0
+D:  Ver= 1.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
+P:  Vendor=413c ProdID=2003 Rev=03.01
+S:  Manufacturer=Dell
+S:  Product=Dell USB Keyboard
+C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=70mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=01 Driver=usbhid
+E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=24ms
+
+T:  Bus=02 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=10000 MxCh=10
+D:  Ver= 3.10 Cls=09(hub  ) Sub=00 Prot=03 MxPS= 9 #Cfgs=  1
+P:  Vendor=1d6b ProdID=0003 Rev=06.18
+S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
+S:  Product=xHCI Host Controller
+S:  SerialNumber=0000:00:14.0
+C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
+E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 4 +++-
- drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c       | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 3114b3fae9eff..6e9d6090b10ff 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -377,6 +377,8 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 	display_count = dcn35_get_active_display_cnt_wa(dc, context, &all_active_disps);
- 	if (new_clocks->dtbclk_en && !new_clocks->ref_dtbclk_khz)
- 		new_clocks->ref_dtbclk_khz = 600000;
-+	else if (!new_clocks->dtbclk_en && new_clocks->ref_dtbclk_khz > 590000)
-+		new_clocks->ref_dtbclk_khz = 0;
- 
- 	/*
- 	 * if it is safe to lower, but we are already in the lower state, we don't have to do anything
-@@ -418,7 +420,7 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 
- 			actual_dtbclk = REG_READ(CLK1_CLK4_CURRENT_CNT);
- 
--			if (actual_dtbclk) {
-+			if (actual_dtbclk > 590000) {
- 				clk_mgr_base->clks.ref_dtbclk_khz = new_clocks->ref_dtbclk_khz;
- 				clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
- 			}
-diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index a841eaafbaaa8..57202ef3fd985 100644
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -1405,7 +1405,7 @@ static void dccg35_set_dtbclk_dto(
- 				__func__, params->otg_inst, params->pixclk_khz,
- 				params->ref_dtbclk_khz, req_dtbclk_khz, phase, modulo);
- 
--	} else {
-+	} else if (!params->ref_dtbclk_khz && !req_dtbclk_khz) {
- 		switch (params->otg_inst) {
- 		case 0:
- 			REG_UPDATE(DCCG_GATE_DISABLE_CNTL5, DTBCLK_P0_GATE_DISABLE, 0);
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index e9400727ad36..b9983e6f5eff 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1433,10 +1433,24 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b3, 0xff, 0xff, 0x60) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c0, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c1, 0xff),	/* Telit FE910C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c2, 0xff),	/* Telit FE910C04 (MBIM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c3, 0xff),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c4, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c5, 0xff),	/* Telit FE910C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c6, 0xff),	/* Telit FE910C04 (MBIM) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c9, 0xff),	/* Telit FE910C04 (MBIM) */
++	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10cb, 0xff),	/* Telit FE910C04 (RNDIS) */
++	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
 -- 
-2.51.0
+2.52.0
 
 
