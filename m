@@ -1,33 +1,33 @@
-Return-Path: <stable+bounces-196873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CCBC83F84
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 09:26:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745A7C83F93
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 09:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 437CB34B9B0
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 08:26:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD5804E7BC4
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 08:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C016A2D8776;
-	Tue, 25 Nov 2025 08:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAE72DA765;
+	Tue, 25 Nov 2025 08:26:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A32A2D0C72;
-	Tue, 25 Nov 2025 08:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1782D9EE8;
+	Tue, 25 Nov 2025 08:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764059178; cv=none; b=IuTM9vQToYjnPraMrYgTV+JdVvEKAQeXQp8O8Q5Vs8uGQstcKHzpGkJKv/GbKZRcsw5G00W/mLz3fDgqoLbjAfxlmiIUjGHpOAdbujmiLZWp4UFeBKp/g2/efBOKqXqcOZvnayirw7LcdL8+rsq9mBYKReFLIXiXnYaZdgsf1F8=
+	t=1764059208; cv=none; b=DPo8Lri8QZZOcZoNskj5Zc+i+VAmC/xpiblY+A4kMiQCYKydff3sMrChqlPwRFocEhtcbxmaXX7EcN+HVPqjt5/v440Skp0rOji+MVk15clIwfmsBkOsKgMkUX/CFhNOJL5Cj+/kATkQ88zNM9d+vR8xNsij/1xsZrmSbZHxSB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764059178; c=relaxed/simple;
-	bh=A8USku3cF+CtOrBNc8ByQNPSjsw8wSqV1XtkyoQUkvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SZp6wEQKDXNVM/twj8cInJ8MHvTT1E0gRhMx2aAEHHzRm6JNU86X83vQxuUsWORqlkRcTUgGLh8KjnW6uWs2IL5fUUiLkG1AmneBdzeOaH/S5PJaHqo7VzbrzuGazXFQr/7wEE29wUl0T32p3CB8JNXtIqZxFgoPgTEaWGXiwRY=
+	s=arc-20240116; t=1764059208; c=relaxed/simple;
+	bh=ecxCHmGwiiY5VMszSlYW87sm5MGKGQPMIPd/roYBEkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DT73qm3sVkkuNNsOgW/Xoy641AHZyFJPHJmSw2XITqgpOfwxNxOtHm5mezFVg6vWpDrUpaQU8fJ6F8FuhtiVGq2gLxAzJ+il2h006bPiON9kUvAf3TaB45ANibEYr9DeMkOui86hsEYbGf78pfRIUatMAOveaAT1d9T1FrCTX0Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1E4C4CEF1;
-	Tue, 25 Nov 2025 08:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D368FC4CEF1;
+	Tue, 25 Nov 2025 08:26:44 +0000 (UTC)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: loongarch@lists.linux.dev,
@@ -38,11 +38,10 @@ Cc: loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Rui Wang <wangrui@loongson.cn>
-Subject: [PATCH] LoongArch: Fix build errors for CONFIG_RANDSTRUCT
-Date: Tue, 25 Nov 2025 16:25:59 +0800
-Message-ID: <20251125082559.488612-1-chenhuacai@loongson.cn>
+	Tianrui Zhao <zhaotianrui@loongson.cn>
+Subject: [PATCH] LoongArch: Add new PCI ID for pci_fixup_vgadev()
+Date: Tue, 25 Nov 2025 16:26:21 +0800
+Message-ID: <20251125082621.488633-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,36 +51,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When CONFIG_RANDSTRUCT enabled, members of task_struct are randomized.
-There is a chance that TASK_STACK_CANARY be out of 12bit immediate's
-range and causes build errors. TASK_STACK_CANARY is naturally aligned,
-so fix it by replacing ld.d/st.d with ldptr.d/stptr.d which have 14bit
-immediates.
+Loongson-2K3000 has a new PCI ID (0x7a46) for its display controller,
+Add it for pci_fixup_vgadev() since we prefer a discrete graphics card
+as default boot device if present.
 
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202511240656.0NaPcJs1-lkp@intel.com/
-Suggested-by: Rui Wang <wangrui@loongson.cn>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/kernel/switch.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/pci/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/kernel/switch.S b/arch/loongarch/kernel/switch.S
-index 9c23cb7e432f..3007e909e0d8 100644
---- a/arch/loongarch/kernel/switch.S
-+++ b/arch/loongarch/kernel/switch.S
-@@ -25,8 +25,8 @@ SYM_FUNC_START(__switch_to)
- 	stptr.d a4, a0, THREAD_SCHED_CFA
- #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
- 	la	t7, __stack_chk_guard
--	LONG_L	t8, a1, TASK_STACK_CANARY
--	LONG_S	t8, t7, 0
-+	ldptr.d	t8, a1, TASK_STACK_CANARY
-+	stptr.d	t8, t7, 0
- #endif
- 	move	tp, a2
- 	cpu_restore_nonscratch a1
+diff --git a/arch/loongarch/pci/pci.c b/arch/loongarch/pci/pci.c
+index d9fc5d520b37..d923295ab8c6 100644
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -14,6 +14,7 @@
+ #define PCI_DEVICE_ID_LOONGSON_HOST     0x7a00
+ #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
+ #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
++#define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
+ 
+ int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
+ 						int reg, int len, u32 *val)
+@@ -97,3 +98,4 @@ static void pci_fixup_vgadev(struct pci_dev *pdev)
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
 -- 
 2.47.3
 
