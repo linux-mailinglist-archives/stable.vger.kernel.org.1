@@ -1,125 +1,100 @@
-Return-Path: <stable+bounces-196930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5283C86A93
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:37:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71945C86ADB
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 394DA34688A
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7A083B4329
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6049F3321CB;
-	Tue, 25 Nov 2025 18:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD65333752;
+	Tue, 25 Nov 2025 18:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="Ud7xH5uZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="knhvuw1k"
 X-Original-To: stable@vger.kernel.org
-Received: from forward202b.mail.yandex.net (forward202b.mail.yandex.net [178.154.239.155])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B691C3314D2;
-	Tue, 25 Nov 2025 18:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8692D73B8
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 18:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764095824; cv=none; b=s5LR9X7QmwD7j+Eo2mw9S42+NMbjX//ta4hosearCElCEZsdQH5uoCMktNae5qSn9Ptl/hil0PeogBccm9z1uI8dmnDrM9TYFid52L8Cpj3h5t6mnWoeCM84Zmqwx3RsH4SsQx0HJdF0zWZpDSJAvZA7f+hRaBxpLXjugZhcLF4=
+	t=1764095952; cv=none; b=cUtVClK78tYYBBakfbvdrPtkB7cYWMfvT/gdVzlKfVjyTUBdfpHrYxkgk+enz0+4d1Iw+f7D5aZdT2c491p9oJo3dIrQLTtqJOe9li3HVWgmf3x5WQX785zzrTkGn6S6HmJjnCla3kwGiBOtJOJytQ2XmdoK89ZRvhPT2ifTdT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764095824; c=relaxed/simple;
-	bh=B0BBEYut7RIJlNGta6URCghTht5K6Ylx4CfM49OtJcI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bP1q9J0qwSo815OlCexKprUXa5KLfQ5F7GvPnI48EjBn2URIvJAGL2JiTnrA38nJNjLB3O84wsOYKkrJ61nHCsFSfae1QN+LMr+1IzhcJJJmoKGCPyHeRV4Vrs+Gm5T8qqhW74n/9wToB0cDzxPYTi3GcngynQDJ5gOtyS6zjac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=Ud7xH5uZ; arc=none smtp.client-ip=178.154.239.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
-	by forward202b.mail.yandex.net (Yandex) with ESMTPS id 09E55C3763;
-	Tue, 25 Nov 2025 21:31:25 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:21b4:0:640:bc6c:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 18C0DC00E0;
-	Tue, 25 Nov 2025 21:31:15 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CVhIZ91LUGk0-DtaOzvLb;
-	Tue, 25 Nov 2025 21:31:14 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1764095474; bh=2FdZrhnoWupSb9f/5xpKxyzrRF/l3tMNY1G5OKa5HCY=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=Ud7xH5uZupD9I9n9Ua98CKElrKFDjYjLlNdJ//k9cKN+x9U0zHCagOakuBE3jUNYT
-	 h0U8UbyWi/2r0Ie7odPJSv8ADO6+Eut8vLijE9fl48wH3jdJ4gLtiNPEKNTejpF3e+
-	 YizKmN87JLlTie4AoCGEg0fxzCSTwWGe35kQf6OI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Alexei Safin <a.safin@rosa.ru>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: a.safin@rosa.ru,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on enable/disable
-Date: Tue, 25 Nov 2025 21:31:08 +0300
-Message-ID: <20251125183110.80525-1-a.safin@rosa.ru>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1764095952; c=relaxed/simple;
+	bh=SwMh+bOv9VKkCEiXi8kk/hn8YQ6tuDRU9ra8uwee5tE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LDlWKDo6cq76PWX50WB9XQp3vmwjghALny/eY+UCrq1Uh7yntvll2zOCZaJTyKlylpu/+8VJyWFYI/G+B4s/xbFSusTH0dTZvTSg8D8rXrZijT9u2M1DjRewyLND4u9rLLYU2sjKzoT7IViJ3pVheuVFpxyrhZdOMPNWcgWArGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=knhvuw1k; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764095950; x=1795631950;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=SwMh+bOv9VKkCEiXi8kk/hn8YQ6tuDRU9ra8uwee5tE=;
+  b=knhvuw1koDrtbsIgpIRsBr1fSJlqpEXm0K5LxsJF2+DS7pW6pICPNroY
+   i9TOFayfVaiQmTLl5t/h6qQM8vklSaYBgaOCsgroBsh/WrWGKPn/aYLu6
+   Gt4/fwBg9sOOSJp/WxbnAW1FsE+57sBlGt53h4a/bW3+snUymkiqHW0r5
+   rPwBgRba+x9SSkSFYCnuA5RdZxvIDgXunyi/AahT+RrvpTttE+3SW+N6R
+   DtfZ9fB7ZFkV3E4/ZGdbDnEoaQM34zc36H4h3keB02eF/vTmeICvK/Rkg
+   ySOPbNUmKneWXPnEKkxOD7Nfy0CFzS7esrDVGVMviI+wYY/bJyfCOLQYj
+   w==;
+X-CSE-ConnectionGUID: 1EhUPYv/RI6Uf+4MG+kcBA==
+X-CSE-MsgGUID: gc8JSXm+RJyk2QhjwScOIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="65833322"
+X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
+   d="scan'208";a="65833322"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 10:39:09 -0800
+X-CSE-ConnectionGUID: hpozAfpmRNGuZ44rYeIurA==
+X-CSE-MsgGUID: NNtZ3MAdSVOlWrrn6wn6tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
+   d="scan'208";a="192719081"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 25 Nov 2025 10:39:08 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vNxwP-0000000029F-4C29;
+	Tue, 25 Nov 2025 18:39:06 +0000
+Date: Wed, 26 Nov 2025 02:38:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexei Safin <a.safin@rosa.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on
+ enable/disable
+Message-ID: <aSX3klrjsRrlyCS2@4e95d9e973af>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251125183110.80525-1-a.safin@rosa.ru>
 
-media_pad_remote_pad_first() may return NULL when the media link is absent
-or disabled. The code dereferenced remote_pad->entity unconditionally,
-leading to a possible NULL dereference.
+Hi,
 
-On the disable path, always shut down the local stream when the remote pad
-or subdev is missing and then return 0, preserving local shutdown semantics
-and avoiding a crash.
+Thanks for your patch.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
-Signed-off-by: Alexei Safin <a.safin@rosa.ru>
----
- drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-index 08148bfc2b4b..4a75b0b6c525 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-@@ -358,7 +358,12 @@ static int ipu6_isys_csi2_enable_streams(struct v4l2_subdev *sd,
- 	int ret;
- 
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
-+	if (!remote_pad)
-+		return -ENOLINK;
-+
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
-+	if (!remote_sd)
-+		return -ENODEV;
- 
- 	sink_streams =
- 		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
-@@ -395,7 +400,16 @@ static int ipu6_isys_csi2_disable_streams(struct v4l2_subdev *sd,
- 						&streams_mask);
- 
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
-+	if (!remote_pad) {
-+		ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
-+		return 0;
-+	}
-+
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
-+	if (!remote_sd) {
-+		ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
-+		return 0;
-+	}
- 
- 	ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
- 
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on enable/disable
+Link: https://lore.kernel.org/stable/20251125183110.80525-1-a.safin%40rosa.ru
+
 -- 
-2.50.1 (Apple Git-155)
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
