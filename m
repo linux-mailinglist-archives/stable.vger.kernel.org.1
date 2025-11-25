@@ -1,286 +1,205 @@
-Return-Path: <stable+bounces-196898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038C2C8512F
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:03:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D999C85135
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:03:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 855ED4E8407
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:02:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B9E64EA0F5
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9656430E83D;
-	Tue, 25 Nov 2025 13:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EDB322C65;
+	Tue, 25 Nov 2025 13:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Jj3mOwhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRAjMXYA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C833931A81F
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 13:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241A631A81F;
+	Tue, 25 Nov 2025 13:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764075733; cv=none; b=i3nZX5s0yropgIPWa0UAooM29er2E8Wyv2vShNVaCz+0dHAokR4oT+MmWGjn9uIlbg8isK2HuWgK/byLdj37ozJaTNvQAhfI1Sg33hVUT/FrqxvW9Fu2Ut8FscubmxSNTavJTy47a63YrcSnxzKBN8/eAj8wI6YNv3bLg8H6Hg4=
+	t=1764075750; cv=none; b=jB7TSmvpBxtQGe2gUsL68L+NpwI+9RzQtaJ7Dg8CxJvoOM25cM3WQ8s9oioquSt3hc0WjPpuauan9AEMFJ5xGYc7q9xadCr3CrQjf32VaHJ5YUjFA3RQBXgW5PxjNkl+nMBFeGi7ZJgsl817+odI7Ag4C13kPnzw12Bz3uB912k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764075733; c=relaxed/simple;
-	bh=TigqVkS6DQDndoYNbK0oWMBbwRulRVW/005MhYv1R2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SD2yaFCX3aafXLcOoIUXT5FXZBTz64Af1VIQ6tw4Hpmir9/Sr/6rWE9RcjodVA/uzPif7NmnXaEweOnGdRvowvBOo4Zs4KJzj45U3QH2wp3VzC5arGVK9wlcdnu3huNHNXnAO/GHuH7I8TVqqaY8MnM5FPdmwmcmIDj5DDqZ17I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Jj3mOwhp; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29ba9249e9dso12185135ad.3
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 05:02:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1764075731; x=1764680531; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KFo2hKIzH9XpgOYPVJKvzh8kRjtMBOJ9wnX7O+zKcGI=;
-        b=Jj3mOwhp2tfMnGj/UmhBwmldBszh+6+EL5UlzWg4u/nUn8gyer1SW8Qy/CIjru7fQH
-         nBEYcnmMI6oDFW3p/5SGGrD6JYRIah6VIZMH7jZTt3Vz0SuqPeKQ5dI6ij6KGXpMwjr3
-         rz0F6xbijSl//FA4bhN36ZOdIt5txjRhu64sI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764075731; x=1764680531;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KFo2hKIzH9XpgOYPVJKvzh8kRjtMBOJ9wnX7O+zKcGI=;
-        b=DkJpTZ3vphehaZujm8/wx4oBZHR7D9GbuAdNEyqiVQ7VpPKbZ37lErtDNXuLcbp9Jw
-         qhuicqUBr8gkPMt4468s9TFNj/xIOdoXE7Sk8US4qSa+8ETojnZb+7LqGY3j/r0BzJ3O
-         48ihJA7h1gBP5N6QIRj/ZeZ04x2sYwEKKYGZ+eWnBoLKi8+DS3fK+XJyN4vHcZM1dBH9
-         eDy/9boyVPwNohylddQ5rRuig47Rxc7HShQfgWOGT2GHcq2p2xoiN2XI8Z77aq1pOCj/
-         kkrHE25J87z2yYdsdSGhvgFU3Wz6Aew+1qSzz5rnt7gUMVY2V1RTC/Glk12RQH/DFmre
-         /Ctw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0TprSTrJyL46r5kHKXtFYvufxkh/j2yPcvfdOExofMfee+GJIYWB+cCtWx0c93MWea9BTYi8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWNhVBNFI3XLipLw8U7uyy+ypNdKE/ED/6YCRxBM07ThYXBLsd
-	NeCUoQ3sBEXhe391mIzV/tMVeKlwDQnENlmQL2d3Fr/gSHo1L89zhkz2AUsGr8nPu63OBAnEThQ
-	/6co=
-X-Gm-Gg: ASbGnctkKb7bOboj057Q7cNlbSyKpENhQMRQcr/XOyMoDDZH8yZzp4a1cBUd5Xybio6
-	HzQzQtvUELPPE251oWZghoJ41BK5i1RUwn4Tv5W5A22man9INkNxp1lS7MuczWn7eQ8agCuldp6
-	U5LKXrVRA+BwdzYdQOi1/71hgv5lolaO3/QRUe31R4ngI3oHFutRRsoopVR7iObC9IvEkgyHDtE
-	uxWbSr2INFEUoEpzbB3qDHzQQL3RrjC2I8KfyVESLJthmlegehxEEcAMQapLP0hP/LWO0Xfecc+
-	iSO25WRaDZ+WgNhsDs/kojqLoh8xEKesZoTaTR4Iv2wAozRODrSLo3UMLs1lEXhnLvomRxplVzm
-	0lRgFn/PzKLaMVpjgQSYPxEm5luLg5b3KEEBMekAHOB8qSoY1iUr5/5hi2FYzbX9b34lzNj3k+Z
-	fP/Pd+Se8q/xXM+NuMFw//ZW99WgFgtcY0/XT4Sbr1UESjWL3SIPrLQoXAfqGE
-X-Google-Smtp-Source: AGHT+IGwqMR5kk4Getlgkte+wN4QzuSS17MeqzFqzoLIewz2mtVEWujEWyleSy25sN87L732HdlPGQ==
-X-Received: by 2002:a17:903:2f8d:b0:298:52a9:31d4 with SMTP id d9443c01a7336-29b6c6b87c7mr198896165ad.54.1764075730021;
-        Tue, 25 Nov 2025 05:02:10 -0800 (PST)
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com. [209.85.210.173])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b29b37fsm165298895ad.79.2025.11.25.05.02.08
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Nov 2025 05:02:08 -0800 (PST)
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so5125855b3a.1
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 05:02:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUgnLFX2vAAL4TgAeDYwJ9tY8zhTNUuuzmchyO8ij0RfKNlxs3chMFLp4fFb7MdQNy3ii8EJ5w=@vger.kernel.org
-X-Received: by 2002:a05:7022:69a8:b0:11b:65e:f40 with SMTP id
- a92af1059eb24-11c9d709f69mr10782115c88.5.1764075726726; Tue, 25 Nov 2025
- 05:02:06 -0800 (PST)
+	s=arc-20240116; t=1764075750; c=relaxed/simple;
+	bh=i1uRlGASr84LrYT53TbtK3t31fxg7BFux2SIjo5Babk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e8FgP6FKI44KNxXD1O4l7d3PmrpKMj2CufejGy4GDWeWGqZd2s9ttIZQCBu1QDWvPwabIQ2Ux0x2VY/0ewF0mS1B6A7NbTHgeBjvrbQHCf3jHBAUNgfNmqqVefO7p1exTyuvyRp3RHfjPs/ZjadAlz6y5y/jQ9eJkzJsmVf71Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRAjMXYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D90C4CEF1;
+	Tue, 25 Nov 2025 13:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764075749;
+	bh=i1uRlGASr84LrYT53TbtK3t31fxg7BFux2SIjo5Babk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zRAjMXYApHc9nsPjaiNfRojCav8ZbfA3Sb4vsEX/0aeouFtUgaHOlKPuVswFs0AzZ
+	 GoyaD7/hbiB9L00MYytDW0PZoKmvyzdtPWyAqBu/TpUJn6QQzS10MuqsRMnmujLY9H
+	 +TofonQtCrwHF0SjVFb3GmRgmJNropzVAIWAQEns=
+Date: Tue, 25 Nov 2025 14:02:25 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: duoming@zju.edu.cn
+Cc: linux-usb@vger.kernel.org, heikki.krogerus@linux.intel.com,
+	mitltlatltl@gmail.com, linux-kernel@vger.kernel.org,
+	sergei.shtylyov@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] usb: typec: ucsi: fix use-after-free caused by
+ uec->work
+Message-ID: <2025112500-deuce-jasmine-cf8c@gregkh>
+References: <cover.1764065838.git.duoming@zju.edu.cn>
+ <cc31e12ef9ffbf86676585b02233165fd33f0d8e.1764065838.git.duoming@zju.edu.cn>
+ <2025112555-widow-ravage-ddb8@gregkh>
+ <13afcc92.325cd.19abae4fdec.Coremail.duoming@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <q2dp7jlblofwkmkufjdysgu2ggv6g4cvhkah3trr5wamxymngm@p2mn4r7vyo77>
- <86d759a5-9a96-49ff-9f75-8b56e2626d65@arm.com> <2ktr5znjidilpxm2ycixunqlmhu253xwov4tpnb2qablrsqmbv@ysacm5nbcjw7>
- <2be3bf24-a707-48df-b224-22b5ab290006@arm.com>
-In-Reply-To: <2be3bf24-a707-48df-b224-22b5ab290006@arm.com>
-From: Yu-Che Cheng <giver@chromium.org>
-Date: Tue, 25 Nov 2025 21:01:30 +0800
-X-Gmail-Original-Message-ID: <CAKchOA31NGBWMdeSjky7MwOjU=dYmHVLbE7uUQHUXSZOzUHUeA@mail.gmail.com>
-X-Gm-Features: AWmQ_bnGYnYvwZToS4iWnE0aV11bZtTOD6v7k6eS2rurzDMYiMJOuxPFEYEZqpA
-Message-ID: <CAKchOA31NGBWMdeSjky7MwOjU=dYmHVLbE7uUQHUXSZOzUHUeA@mail.gmail.com>
-Subject: Re: stable 6.6: commit "sched/cpufreq: Rework schedutil governor
- performance estimation' causes a regression
-To: Lukasz Luba <lukasz.luba@arm.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Christian Loehle <christian.loehle@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dietmar Eggemann <dietmar.eggemann@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <13afcc92.325cd.19abae4fdec.Coremail.duoming@zju.edu.cn>
 
-Hi Lukasz,
+On Tue, Nov 25, 2025 at 08:02:40PM +0800, duoming@zju.edu.cn wrote:
+> On Tue, 25 Nov 2025 12:44:02 +0100, Greg KH wrote:
+> > > The delayed work uec->work is scheduled in gaokun_ucsi_probe()
+> > > but never properly canceled in gaokun_ucsi_remove(). This creates
+> > > use-after-free scenarios where the ucsi and gaokun_ucsi structure
+> > > are freed after ucsi_destroy() completes execution, while the
+> > > gaokun_ucsi_register_worker() might be either currently executing
+> > > or still pending in the work queue. The already-freed gaokun_ucsi
+> > > or ucsi structure may then be accessed.
+> > > 
+> > > Furthermore, the race window is 3 seconds, which is sufficiently
+> > > long to make this bug easily reproducible. The following is the
+> > > trace captured by KASAN:
+> > > 
+> > > ==================================================================
+> > > BUG: KASAN: slab-use-after-free in __run_timers+0x5ec/0x630
+> > > Write of size 8 at addr ffff00000ec28cc8 by task swapper/0/0
+> > > ...
+> > > Call trace:
+> > >  show_stack+0x18/0x24 (C)
+> > >  dump_stack_lvl+0x78/0x90
+> > >  print_report+0x114/0x580
+> > >  kasan_report+0xa4/0xf0
+> > >  __asan_report_store8_noabort+0x20/0x2c
+> > >  __run_timers+0x5ec/0x630
+> > >  run_timer_softirq+0xe8/0x1cc
+> > >  handle_softirqs+0x294/0x720
+> > >  __do_softirq+0x14/0x20
+> > >  ____do_softirq+0x10/0x1c
+> > >  call_on_irq_stack+0x30/0x48
+> > >  do_softirq_own_stack+0x1c/0x28
+> > >  __irq_exit_rcu+0x27c/0x364
+> > >  irq_exit_rcu+0x10/0x1c
+> > >  el1_interrupt+0x40/0x60
+> > >  el1h_64_irq_handler+0x18/0x24
+> > >  el1h_64_irq+0x6c/0x70
+> > >  arch_local_irq_enable+0x4/0x8 (P)
+> > >  do_idle+0x334/0x458
+> > >  cpu_startup_entry+0x60/0x70
+> > >  rest_init+0x158/0x174
+> > >  start_kernel+0x2f8/0x394
+> > >  __primary_switched+0x8c/0x94
+> > > 
+> > > Allocated by task 72 on cpu 0 at 27.510341s:
+> > >  kasan_save_stack+0x2c/0x54
+> > >  kasan_save_track+0x24/0x5c
+> > >  kasan_save_alloc_info+0x40/0x54
+> > >  __kasan_kmalloc+0xa0/0xb8
+> > >  __kmalloc_node_track_caller_noprof+0x1c0/0x588
+> > >  devm_kmalloc+0x7c/0x1c8
+> > >  gaokun_ucsi_probe+0xa0/0x840  auxiliary_bus_probe+0x94/0xf8
+> > >  really_probe+0x17c/0x5b8
+> > >  __driver_probe_device+0x158/0x2c4
+> > >  driver_probe_device+0x10c/0x264
+> > >  __device_attach_driver+0x168/0x2d0
+> > >  bus_for_each_drv+0x100/0x188
+> > >  __device_attach+0x174/0x368
+> > >  device_initial_probe+0x14/0x20
+> > >  bus_probe_device+0x120/0x150
+> > >  device_add+0xb3c/0x10fc
+> > >  __auxiliary_device_add+0x88/0x130
+> > > ...
+> > > 
+> > > Freed by task 73 on cpu 1 at 28.910627s:
+> > >  kasan_save_stack+0x2c/0x54
+> > >  kasan_save_track+0x24/0x5c
+> > >  __kasan_save_free_info+0x4c/0x74
+> > >  __kasan_slab_free+0x60/0x8c
+> > >  kfree+0xd4/0x410
+> > >  devres_release_all+0x140/0x1f0
+> > >  device_unbind_cleanup+0x20/0x190
+> > >  device_release_driver_internal+0x344/0x460
+> > >  device_release_driver+0x18/0x24
+> > >  bus_remove_device+0x198/0x274
+> > >  device_del+0x310/0xa84
+> > > ...
+> > > 
+> > > The buggy address belongs to the object at ffff00000ec28c00
+> > >  which belongs to the cache kmalloc-512 of size 512
+> > > The buggy address is located 200 bytes inside of
+> > >  freed 512-byte region
+> > > The buggy address belongs to the physical page:
+> > > page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ec28
+> > > head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> > > flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
+> > > page_type: f5(slab)
+> > > raw: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
+> > > raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
+> > > head: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
+> > > head: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
+> > > head: 03fffe0000000002 fffffdffc03b0a01 00000000ffffffff 00000000ffffffff
+> > > head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
+> > > page dumped because: kasan: bad access detected
+> > > 
+> > > Memory state around the buggy address:
+> > >  ffff00000ec28b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> > >  ffff00000ec28c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > > >ffff00000ec28c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > >                                               ^
+> > >  ffff00000ec28d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > >  ffff00000ec28d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > > ==================================================================
+> > > 
+> > > Add disable_delayed_work_sync() in gaokun_ucsi_remove() to ensure
+> > > that uec->work is properly canceled and prevented from executing
+> > > after the ucsi and gaokun_ucsi structure have been deallocated.
+> > > 
+> > > Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+> > > ---
+> > >  drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+> > > index 8401ab414bd..c5965656bab 100644
+> > > --- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+> > > +++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+> > > @@ -503,6 +503,7 @@ static void gaokun_ucsi_remove(struct auxiliary_device *adev)
+> > >  {
+> > >  	struct gaokun_ucsi *uec = auxiliary_get_drvdata(adev);
+> > >  
+> > > +	disable_delayed_work_sync(&uec->work);
+> > >  	gaokun_ec_unregister_notify(uec->ec, &uec->nb);
+> > >  	ucsi_unregister(uec->ucsi);
+> > >  	ucsi_destroy(uec->ucsi);
+> > > -- 
+> > > 2.34.1
+> > > 
+> > > 
+> > 
+> > What changed from v1?
+> 
+> The original patch[1] only fixes the probe failure in 
+> gaokun_ucsi_probe(). This new version is a patch series 
+> that also addresses the use-after-free issue.
+> 
+> [1] https://lore.kernel.org/lkml/20251125082505.52249-1-duoming@zju.edu.cn/
 
-On Tue, Nov 25, 2025 at 5:45=E2=80=AFPM Lukasz Luba <lukasz.luba@arm.com> w=
-rote:
->
-> Hi Sergey,
->
-> On 11/21/25 03:55, Sergey Senozhatsky wrote:
-> > Hi Christian,
-> >
-> > On (25/11/20 10:15), Christian Loehle wrote:
-> >> On 11/20/25 04:45, Sergey Senozhatsky wrote:
-> >>> Hi,
-> >>>
-> >>> We are observing a performance regression on one of our arm64 boards.
-> >>> We tracked it down to the linux-6.6.y commit ada8d7fa0ad4 ("sched/cpu=
-freq:
-> >>> Rework schedutil governor performance estimation").
-> >>>
-> >>> UI speedometer benchmark:
-> >>> w/commit:   395  +/-38
-> >>> w/o commit: 439  +/-14
-> >>>
-> >>
-> >> Hi Sergey,
-> >> Would be nice to get some details. What board?
-> >
-> > It's an MT8196 chromebook.
-> >
-> >> What do the OPPs look like?
-> >
-> > How do I find that out?
-> >
-> >> Does this system use uclamp during the benchmark? How?
-> >
-> > How do I find that out?
-> >
-> >> Given how large the stddev given by speedometer (version 3?) itself is=
-, can we get the
-> >> stats of a few runs?
-> >
-> > v2.1
-> >
-> > w/o patch     w/ patch
-> > 440 +/-30     406 +/-11
-> > 440 +/-14     413 +/-16
-> > 444 +/-12     403 +/-14
-> > 442 +/-12     412 +/-15
-> >
-> >> Maybe traces of cpu_frequency for both w/ and w/o?
-> >
-> > trace-cmd record -e power:cpu_frequency attached.
-> >
-> > "base" is with ada8d7fa0ad4
-> > "revert" is ada8d7fa0ad4 reverted.
->
->
-> I did some analysis based on your trace files.
-> I have been playing some time ago with speedometer performance
-> issues so that's why I'm curious about your report here.
->
-> I've filtered your trace purely based on cpu7 (the single biggest cpu).
-> Then I have cut the data from the 'warm-up' phase in both traces, to
-> have similar start point (I think).
->
-> It looks like the 2 traces can show similar 'pattern' of that benchmark
-> which is good for analysis. If you align the timestamp:
-> 176.051s and 972.465s then both plots (frequency changes in time) look
-> similar.
->
-> There are some differences, though:
-> 1. there are more deeps in the freq in time, so more often you would
->     pay extra penalty for the ramp-up again
-> 2. some of the ramp-up phases are a bit longer ~100ms instead of ~80ms
->     going from 2GHz to 3.6GHz
-
-Agree. From the visualized frequency changes in the Perfetto traces,
-it's more obvious that the ramp-up from 2GHz to 3.6GHz becomes much
-slower and a bit unstable in v6.6.99, and it's also easier to go down
-to a low frequency after a short idle.
-
-> 3.
->
->
-> There are idle phases missing in the trace, so we have to be careful
-> when e.g. comparing avg frequency, because that might not be the real
-> indication of the delivered computation and not indicate the gap in the
-> score.
->
-> Here are the stats:
-> 1. revert:
-> frequency
-> count  1.318000e+03
-> mean   2.932240e+06
-> std    5.434045e+05
-> min    2.000000e+06
-> 50%    3.000000e+06
-> 85%    3.600000e+06
-> 90%    3.626000e+06
-> 95%    3.626000e+06
-> 99%    3.626000e+06
-> max    3.626000e+06
->
-> 2. base:
->            frequency
-> count  1.551000e+03
-> mean   2.809391e+06
-> std    5.369750e+05
-> min    2.000000e+06
-> 50%    2.800000e+06
-> 85%    3.500000e+06
-> 90%    3.600000e+06
-> 95%    3.626000e+06
-> 99%    3.626000e+06
-> max    3.626000e+06
->
->
-> A better indication in this case would be comparison of the frequency
-> residency in time, especially for the max freq:
-> 1. revert: 11.92s
-> 2. base: 9.11s
->
-> So there is 2.8s longer residency for that fmax (while we even have
-> longer period for finishing that Speedometer 2 test on 'base').
->
-> Here is some detail about that run*:
-> +---------------+---------------------+---------------+----------------+
-> | Trace         | Total Trace         | Time at Max   | % of Total     |
-> |               | Duration (s)        | Freq (s)      | Time           |
-> +---------------+---------------------+---------------+----------------+
-> | Base Trace    | 24.72               | 9.11          | 36.9%          |
-> | Revert Trace  | 22.88               | 11.92         | 52.1%          |
-> +---------------+---------------------+---------------+----------------+
->
-> *We don't know the idle periods which might happen for those frequencies
->
->
-> I wonder if you had a fix patch for the util_est in your kernel...
-> That fix has been recently backported to 6.6 stable [1].
->
-> You might want to try that patch as well, w/ or w/o this revert.
-> IMHO it might be worth to have it on top. It might help
-> the main Chrome task ('CrRendererMain') to stay longer on the biggest
-> cpu, since the util_est would be higher. You can read the discussion
-> that I had back then with PeterZ and VincentG [2].
-
-No, the util_est fix isn't in our kernel yet.
-It looks like after cherry-picking the fix, without the revert, the
-Speedometer 2.0 score becomes even slightly higher than that on
-v6.6.88 (450 ~ 460 vs 435 ~ 440).
-On the other hand, with both the fix and the revert, the Speedometer
-score becomes about 475 ~ 480, which is almost the same as using the
-performance governor (i.e. pinning at the maximum frequency).
-It looks like more tasks that originally run on the little cores are
-migrated to the middle and big cores more often, which also makes CPU7
-more likely to stay at a higher frequency during some short idle in
-the main thread.
-
-Also attach the Perfetto trace for both of them:
-
-fix without revert:
-https://ui.perfetto.dev/#!/?s=3Dff4d10bd58982555eada61648786adf6f7187ac3
-fix with revert:
-https://ui.perfetto.dev/#!/?s=3D05da3cedfb3851ad694f523ef59d3cd1092d74ae
-
->
-> Regards,
-> Lukasz
->
-> [1]
-> https://lore.kernel.org/stable/20251121130232.828187990@linuxfoundation.o=
-rg/
-> [2]
-> https://lore.kernel.org/lkml/20230912142821.GA22166@noisy.programming.kic=
-ks-ass.net/
-
-Best regards,
-Yu-Che
+Always document this in the future please.
 
