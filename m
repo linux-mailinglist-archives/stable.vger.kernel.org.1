@@ -1,286 +1,157 @@
-Return-Path: <stable+bounces-196865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A65C8384B
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 07:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20512C83991
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 08:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A75234A067
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 06:43:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BD89534739C
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 07:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BD529A9FE;
-	Tue, 25 Nov 2025 06:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B3D2874F5;
+	Tue, 25 Nov 2025 07:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="n0mbqrV6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CPeL5OC4"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DF829A322
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 06:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4119E13D891;
+	Tue, 25 Nov 2025 07:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764053034; cv=none; b=J/KQMuPzWE66JklQCKvbwjuiHdx1d9jxyl0lAFeOUXP/MsLcRpTlSL8TZLZoGvgRAwCcjN+ny1M7u3TVot81R8upZNCB+ZSiFtL0p4TxG+l+Pl1KSzH/YoBDqV+PFVkwxNWiY9C5Ql8TqroKUko9FSif4veLFSvDQcpRrG9BIb4=
+	t=1764054020; cv=none; b=FQMdNvcGnMaMHEqc6qYCN03Wjo+c5CPL6uuy43Meswkq+IPML/n8E4slxM2yeEI4pNi3zqEpTMDLZt7r26wmT+bhsqK4rO673YLwgxwKngKH1RNtkTU3TJ6EIq2ktwBL+eiD9sh5VMZ8ww7r0Qi2PYfZx2+QQEE42VYvuE0Rmys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764053034; c=relaxed/simple;
-	bh=vdE38W0BzC1L/sc8ABj48kfzbkBcNU5PTC/EL9dXIGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2dQ928eYo86ZwknX+r06i5psy6quXPqkPHwl2jb5fY4QazsS6fyiDXXCVHxhzlnS9erSvAUuQcScPmRz0/QPOeRvN5dybDsMPH6VIEssEWySJxj5iRjaohQpFslbi1gv/ZQQezpXJlXhktX4juZpHg2g1lDXg+tHIa7QHrO0uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=n0mbqrV6; arc=none smtp.client-ip=120.232.169.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=n0mbqrV6eLKJkXjZe6ByAmFiNa7L3x//kRJ3kM1snCVcwe0lrBHCjmBXOxdgRBNOFQyUj/cqbjjUi
-	 AOeDi/j4XaXxSTBDHjcCXTPEhfhlNm7715w02LFRdaiMuWHqQTj6HdLARF+VDwmYNn1yUFI1clpTSs
-	 ln/3QDL8DKjvCm4M=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[2409:8A00:DD3:9760:BE5:1C94:7DAF:B08E])
-	by rmsmtp-lg-appmail-43-12057 (RichMail) with SMTP id 2f1969254f5df31-6f150;
-	Tue, 25 Nov 2025 14:40:37 +0800 (CST)
-X-RM-TRANSID:2f1969254f5df31-6f150
-From: lanbincn@139.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Baocong Liu <baocong.liu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.6.y 2/2] f2fs: compress: fix UAF of f2fs_inode_info in f2fs_free_dic
-Date: Tue, 25 Nov 2025 06:40:28 +0000
-Message-ID: <20251125064028.3295-2-lanbincn@139.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251125064028.3295-1-lanbincn@139.com>
-References: <20251125064028.3295-1-lanbincn@139.com>
+	s=arc-20240116; t=1764054020; c=relaxed/simple;
+	bh=OMcXJ2dkVm7jKJ9rum+8R9nzWkBHh1MYXvp80cM24SA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nsYj5QbKRltpW7VBT3BzBc2TFy42zNoFp1fkrxU9I9CwrOtmXELnPSpkQQzxljR/GRNTZ0wHHYGP3aXkzHKYvcPEFvVvR7amcKBWSLLRRQCikTQ7BxdbnAEsxr48oNWTZbRI9mho1dqqVd7gjxF+OLE4zyJAs3xYVtjahrOYlHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CPeL5OC4; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764054020; x=1795590020;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OMcXJ2dkVm7jKJ9rum+8R9nzWkBHh1MYXvp80cM24SA=;
+  b=CPeL5OC4E+lOy4V3dEOS1qL/DNjwxq+OkTi0AtBi+dxKpNQojSO2uB0l
+   oEDQ7uN6NUxqRIoH7vARQ0nghVv+nJDuXnuf9cxKu0WA66UPW72IAPWXV
+   6XcXAzoJZ6Ric5VHFJ0kJ+q4F8R6/30WJc/09b4iCVrCrhVEkZSB1JSNB
+   vSYkYrGnwgG1PVg7EsHQMzxGXFy3L2Z+GBj+T4ZvUuK7C9Y/e88xY+t8D
+   qr3b6bH+YU2Soj22VRDpX6a10YGi3kXhRRVLyl4fwMxNndDvJzU34CKR4
+   7aay5vyLWkcS7jgwJsVulrPwyW0o6rDlI8qfxK4dY+i3sAwzH4U+OpARj
+   Q==;
+X-CSE-ConnectionGUID: VLD0+oB4R5Cp7Wn9m4J+Ng==
+X-CSE-MsgGUID: x1mMYEN8Semi7MqS6nRbpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65952038"
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="65952038"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 23:00:16 -0800
+X-CSE-ConnectionGUID: znWy9/oWQbi+RJXZ3xcLbA==
+X-CSE-MsgGUID: svTfXJE4S8+gb+Ng3MRsKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
+   d="scan'208";a="192631933"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 24 Nov 2025 23:00:11 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vNn21-000000001Rx-2WBZ;
+	Tue, 25 Nov 2025 07:00:09 +0000
+Date: Tue, 25 Nov 2025 14:59:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+	HighPoint Linux Team <linux@highpoint-tech.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] [SCSI] hptiop: Add inbound queue offset bounds check in
+ iop_get_config_itl
+Message-ID: <202511251457.AUHUgeyl-lkp@intel.com>
+References: <20251124145848.45687-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124145848.45687-1-lgs201920130244@gmail.com>
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Hi Guangshuo,
 
-[ Upstream commit 39868685c2a94a70762bc6d77dc81d781d05bff5 ]
+kernel test robot noticed the following build errors:
 
-The decompress_io_ctx may be released asynchronously after
-I/O completion. If this file is deleted immediately after read,
-and the kworker of processing post_read_wq has not been executed yet
-due to high workloads, It is possible that the inode(f2fs_inode_info)
-is evicted and freed before it is used f2fs_free_dic.
+[auto build test ERROR on mkp-scsi/for-next]
+[also build test ERROR on jejb-scsi/for-next akpm-mm/mm-everything linus/master v6.18-rc7 next-20251124]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-    The UAF case as below:
-    Thread A                                      Thread B
-    - f2fs_decompress_end_io
-     - f2fs_put_dic
-      - queue_work
-        add free_dic work to post_read_wq
-                                                   - do_unlink
-                                                    - iput
-                                                     - evict
-                                                      - call_rcu
-    This file is deleted after read.
+url:    https://github.com/intel-lab-lkp/linux/commits/Guangshuo-Li/hptiop-Add-inbound-queue-offset-bounds-check-in-iop_get_config_itl/20251124-230112
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git for-next
+patch link:    https://lore.kernel.org/r/20251124145848.45687-1-lgs201920130244%40gmail.com
+patch subject: [PATCH] [SCSI] hptiop: Add inbound queue offset bounds check in iop_get_config_itl
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251125/202511251457.AUHUgeyl-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511251457.AUHUgeyl-lkp@intel.com/reproduce)
 
-    Thread C                                 kworker to process post_read_wq
-    - rcu_do_batch
-     - f2fs_free_inode
-      - kmem_cache_free
-     inode is freed by rcu
-                                             - process_scheduled_works
-                                              - f2fs_late_free_dic
-                                               - f2fs_free_dic
-                                                - f2fs_release_decomp_mem
-                                      read (dic->inode)->i_compress_algorithm
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511251457.AUHUgeyl-lkp@intel.com/
 
-This patch store compress_algorithm and sbi in dic to avoid inode UAF.
+All errors (new ones prefixed by >>):
 
-In addition, the previous solution is deprecated in [1] may cause system hang.
-[1] https://lore.kernel.org/all/c36ab955-c8db-4a8b-a9d0-f07b5f426c3f@kernel.org
+>> drivers/scsi/hptiop.c:170:17: error: no member named 'pdev' in 'struct hptiop_hba'
+     170 |                 dev_err(&hba->pdev->dev,
+         |                          ~~~  ^
+   include/linux/dev_printk.h:154:44: note: expanded from macro 'dev_err'
+     154 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                   ^~~
+   include/linux/dev_printk.h:110:11: note: expanded from macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                         ^~~
+   1 error generated.
 
-Cc: Daeho Jeong <daehojeong@google.com>
-Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ In Linux 6.6.y, the f2fs_vmalloc() function parameters are not
-  related to the f2fs_sb_info structure, the code changes for 
-  f2fs_vmalloc() have not been backported. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
----
- fs/f2fs/compress.c | 38 +++++++++++++++++++-------------------
- fs/f2fs/f2fs.h     |  2 ++
- 2 files changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 3a0d0adc4736..c06bbc12109a 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -209,13 +209,13 @@ static int lzo_decompress_pages(struct decompress_io_ctx *dic)
- 	ret = lzo1x_decompress_safe(dic->cbuf->cdata, dic->clen,
- 						dic->rbuf, &dic->rlen);
- 	if (ret != LZO_E_OK) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lzo decompress failed, ret:%d", ret);
- 		return -EIO;
- 	}
- 
- 	if (dic->rlen != PAGE_SIZE << dic->log_cluster_size) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lzo invalid rlen:%zu, expected:%lu",
- 				dic->rlen, PAGE_SIZE << dic->log_cluster_size);
- 		return -EIO;
-@@ -289,13 +289,13 @@ static int lz4_decompress_pages(struct decompress_io_ctx *dic)
- 	ret = LZ4_decompress_safe(dic->cbuf->cdata, dic->rbuf,
- 						dic->clen, dic->rlen);
- 	if (ret < 0) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lz4 decompress failed, ret:%d", ret);
- 		return -EIO;
- 	}
- 
- 	if (ret != PAGE_SIZE << dic->log_cluster_size) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lz4 invalid ret:%d, expected:%lu",
- 				ret, PAGE_SIZE << dic->log_cluster_size);
- 		return -EIO;
-@@ -423,7 +423,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- 	stream = zstd_init_dstream(max_window_size, workspace, workspace_size);
- 	if (!stream) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s zstd_init_dstream failed", __func__);
- 		vfree(workspace);
- 		return -EIO;
-@@ -459,14 +459,14 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
- 
- 	ret = zstd_decompress_stream(stream, &outbuf, &inbuf);
- 	if (zstd_is_error(ret)) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s zstd_decompress_stream failed, ret: %d",
- 				__func__, zstd_get_error_code(ret));
- 		return -EIO;
- 	}
- 
- 	if (dic->rlen != outbuf.pos) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s ZSTD invalid rlen:%zu, expected:%lu",
- 				__func__, dic->rlen,
- 				PAGE_SIZE << dic->log_cluster_size);
-@@ -726,7 +726,7 @@ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
- 
- void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 	struct f2fs_inode_info *fi = F2FS_I(dic->inode);
- 	const struct f2fs_compress_ops *cops =
- 			f2fs_cops[fi->i_compress_algorithm];
-@@ -799,7 +799,7 @@ void f2fs_end_read_compressed_page(struct page *page, bool failed,
- {
- 	struct decompress_io_ctx *dic =
- 			(struct decompress_io_ctx *)page_private(page);
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 
- 	dec_page_count(sbi, F2FS_RD_DATA);
- 
-@@ -1579,14 +1579,13 @@ static inline bool allow_memalloc_for_decomp(struct f2fs_sb_info *sbi,
- static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
- 		bool pre_alloc)
- {
--	const struct f2fs_compress_ops *cops =
--		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
-+	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
- 	int i;
- 
--	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
-+	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
- 		return 0;
- 
--	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
-+	dic->tpages = page_array_alloc(dic->sbi, dic->cluster_size);
- 	if (!dic->tpages)
- 		return -ENOMEM;
- 
-@@ -1616,10 +1615,9 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
- static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
- 		bool bypass_destroy_callback, bool pre_alloc)
- {
--	const struct f2fs_compress_ops *cops =
--		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
-+	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
- 
--	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
-+	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
- 		return;
- 
- 	if (!bypass_destroy_callback && cops->destroy_decompress_ctx)
-@@ -1654,6 +1652,8 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
- 
- 	dic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
- 	dic->inode = cc->inode;
-+	dic->sbi = sbi;
-+	dic->compress_algorithm = F2FS_I(cc->inode)->i_compress_algorithm;
- 	atomic_set(&dic->remaining_pages, cc->nr_cpages);
- 	dic->cluster_idx = cc->cluster_idx;
- 	dic->cluster_size = cc->cluster_size;
-@@ -1697,7 +1697,8 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
- 		bool bypass_destroy_callback)
- {
- 	int i;
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	/* use sbi in dic to avoid UFA of dic->inode*/
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 
- 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
- 
-@@ -1740,8 +1741,7 @@ static void f2fs_put_dic(struct decompress_io_ctx *dic, bool in_task)
- 			f2fs_free_dic(dic, false);
- 		} else {
- 			INIT_WORK(&dic->free_work, f2fs_late_free_dic);
--			queue_work(F2FS_I_SB(dic->inode)->post_read_wq,
--					&dic->free_work);
-+			queue_work(dic->sbi->post_read_wq, &dic->free_work);
- 		}
- 	}
- }
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index ab2ddd09d813..406243395b94 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1493,6 +1493,7 @@ struct compress_io_ctx {
- struct decompress_io_ctx {
- 	u32 magic;			/* magic number to indicate page is compressed */
- 	struct inode *inode;		/* inode the context belong to */
-+	struct f2fs_sb_info *sbi;	/* f2fs_sb_info pointer */
- 	pgoff_t cluster_idx;		/* cluster index number */
- 	unsigned int cluster_size;	/* page count in cluster */
- 	unsigned int log_cluster_size;	/* log of cluster size */
-@@ -1533,6 +1534,7 @@ struct decompress_io_ctx {
- 
- 	bool failed;			/* IO error occurred before decompression? */
- 	bool need_verity;		/* need fs-verity verification after decompression? */
-+	unsigned char compress_algorithm;	/* backup algorithm type */
- 	void *private;			/* payload buffer for specified decompression algorithm */
- 	void *private2;			/* extra payload buffer */
- 	struct work_struct verity_work;	/* work to verify the decompressed pages */
+vim +170 drivers/scsi/hptiop.c
+
+   160	
+   161	static void mv_inbound_write(u64 p, struct hptiop_hba *hba)
+   162	{
+   163		u32 inbound_head = readl(&hba->u.mv.mu->inbound_head);
+   164		u32 head = inbound_head + 1;
+   165	
+   166		if (head == MVIOP_QUEUE_LEN)
+   167			head = 0;
+   168	
+   169		if (inbound_head >= MVIOP_QUEUE_LEN) {
+ > 170			dev_err(&hba->pdev->dev,
+   171				"hptiop: inbound_head out of range (%u)\n",
+   172				inbound_head);
+   173			inbound_head = 0;
+   174			head = 1;
+   175		}
+   176	
+   177		memcpy_toio(&hba->u.mv.mu->inbound_q[inbound_head], &p, 8);
+   178		writel(head, &hba->u.mv.mu->inbound_head);
+   179		writel(MVIOP_MU_INBOUND_INT_POSTQUEUE,
+   180				&hba->u.mv.regs->inbound_doorbell);
+   181	}
+   182	
+
 -- 
-2.43.0
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
