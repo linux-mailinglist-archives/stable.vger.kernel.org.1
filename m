@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-196915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059F2C858EF
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 15:51:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671E9C85923
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 15:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 20DE3350FF5
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05E583AE261
 	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D103132692E;
-	Tue, 25 Nov 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F186C31618F;
+	Tue, 25 Nov 2025 14:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4ySYZMd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEJzU0U5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9125E3254AD
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22391C84BD
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 14:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764082295; cv=none; b=Uf+V8fgtgk8jdlNMbTdDtvwEH4XkNUwNYr1IB8hrKRnxxtmUZaoWLZTSNe132ggOBckeEBx+lrVN52z+oe1Cptwqn9unbJB7LTTfnq2nWmMPRoQBbTE1HRhyozOpU5ibcqKnJsdDSM1VYQHJaqTDuWhKmcI+Ni++NPhs9it3ROw=
+	t=1764082296; cv=none; b=GFz+IXHFPyH5Gcrj/pPpT2xXqMdR9HyVd1FFsDk8v916SgSOHc5WJ8vb3FyV39h0uwa1wIVPqTZd/RZ16oui5DpXm2081cALgmhNjhBHFSZGYgU3d74ehHB3RS9DqAaBDTSDfGHCCN+e48GkyfQ9LzJxOgfh0O6YS9zPL6+SQ+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764082295; c=relaxed/simple;
-	bh=Ui08JAXzzR/pLXMMD6ilCit+yYEy83t0pBX44s0BXao=;
+	s=arc-20240116; t=1764082296; c=relaxed/simple;
+	bh=IaSmwr9HabyDBMut3f2vhcmw1eRmxAS7egXbfuDkcoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFdhO35zQVz69AFqRB9HYfs6zqv3QjiizwzlnjPgNe8bauF6tfRMwVELJf6x2hbRmeuBrXo7xTzqjacppIIyQJ+L8YZ58m0kaNf6bONkb7KA5rpECSZ3iHS6hOG79oeRqo6eO3S5R/75jmy85AAySja9KdMn5h+otb/MVfhay/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4ySYZMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E8DC116C6;
-	Tue, 25 Nov 2025 14:51:34 +0000 (UTC)
+	 MIME-Version; b=CJDOWc5sO3OTkB5DkvrT232MzVh9iW/l+D/rQEZAAbL4AzUwZW5+FIgFJ/5h6L6/Mm5qZEGLY7smy029q9ckoNawFEt4J/d8Ol2h6u/7N7blPnvjIysDWQUdsvmpT/jUfgK+EttyTuDc3MeT9W6jYzhuizceXIPgiLAg8K/QxD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEJzU0U5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E81C4CEF1;
+	Tue, 25 Nov 2025 14:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764082295;
-	bh=Ui08JAXzzR/pLXMMD6ilCit+yYEy83t0pBX44s0BXao=;
+	s=k20201202; t=1764082296;
+	bh=IaSmwr9HabyDBMut3f2vhcmw1eRmxAS7egXbfuDkcoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4ySYZMd0I9orcas5PEoEqqQLBnbn+9Jw9QQnjwQIevSR/g09NvCDth+Degxk9DQm
-	 mmdoQIcWM3CmgUltliXS1AYXhZJoBex/XhjgcGi+sHIALt4k/ThY0wejeiz+r+bYve
-	 tfhx4WcwL4cuI1Hl/1WjauUUt/FiqcvPVoujRV2dMhhbh+DVs1GZ+USy04tH5B+e82
-	 6IU4V5sV2SRLq0vQDVOeBj0ExrhSyUTIcOqOt1oxMCt8jAmCh/vfdEFjKcPZWM4NMt
-	 uPAXis65mQTeQFOJwI1t1FbfK5fVJ7Cww3osH7A19lyCj+uypoCdlGcW2dtv1w+ekd
-	 y5aQN8XnpQTdQ==
+	b=CEJzU0U52JBaMMf9zHta0NEEu0l8I6OIvGf3vUbHD6HcNIymvJJXlNbBO7AW2KFRb
+	 aUD+qQ6psdU9EI03IVyHDDz2YeGwaeQw/f1ydlofRDfde/JpCrfKwPvvLlcb8oAgZ8
+	 wkILvGSyholjI2EPNqgJpNEMX+yjbHQFn2fqLf9vDf+P7qsb48q0S30XiG6fFmTojx
+	 PN2VaWPjf/Se6D49Cb4BCadMIzVLLMDMnh+bmecd0BLsDL7IHqdy6HZzIzqCrqSG2F
+	 wcMtQwdVCnylIUG1D44XXxO4+XO/o02bYozzfuoL2X81XMDlrCCC/LharVWv4n8UFv
+	 nO+qcUcUuEOfg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Charlene Liu <Charlene.Liu@amd.com>,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	"Ovidiu (Ovi) Bunea" <ovidiu.bunea@amd.com>,
+	Yihan Zhu <yihan.zhu@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/4] drm/amd/display: disable DPP RCG before DPP CLK enable
-Date: Tue, 25 Nov 2025 09:51:29 -0500
-Message-ID: <20251125145131.660280-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/4] drm/amd/display: Insert dccg log for easy debug
+Date: Tue, 25 Nov 2025 09:51:30 -0500
+Message-ID: <20251125145131.660280-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251125145131.660280-1-sashal@kernel.org>
 References: <2025112425-aspirin-conduit-e44b@gregkh>
@@ -66,242 +67,142 @@ Content-Transfer-Encoding: 8bit
 
 From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 1bcd679209420305a86833bc357d50021909edaf ]
+[ Upstream commit 35bcc9168f3ce6416cbf3f776758be0937f84cb3 ]
 
 [why]
-DPP CLK enable needs to disable DPPCLK RCG first.
-The DPPCLK_en in dccg should always be enabled when the corresponding
-pipe is enabled.
+Log for sequence tracking
 
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
+Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
+Reviewed-by: Yihan Zhu <yihan.zhu@amd.com>
 Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Stable-dep-of: cfa0904a35fd ("drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    | 38 ++++++++++++-------
- .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 21 ++++++----
- 2 files changed, 38 insertions(+), 21 deletions(-)
+ .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index b363f5360818d..ad910065f463f 100644
+index ad910065f463f..a841eaafbaaa8 100644
 --- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
 +++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -391,6 +391,7 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
+@@ -39,6 +39,7 @@
  
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
+ #define CTX \
+ 	dccg_dcn->base.ctx
++#include "logger_types.h"
+ #define DC_LOGGER \
+ 	dccg->ctx->logger
  
-+
- 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
- 		return;
- 
-@@ -411,6 +412,8 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
- 	BREAK_TO_DEBUGGER();
- 		break;
- 	}
-+	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
-+
- }
- 
- static void dccg35_set_dpstreamclk_rcg(
-@@ -1112,30 +1115,24 @@ static void dcn35_set_dppclk_enable(struct dccg *dccg,
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
-+
- 	switch (dpp_inst) {
- 	case 0:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK0_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 1:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK1_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 2:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK2_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 3:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK3_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
- 		break;
+@@ -1132,7 +1133,7 @@ static void dcn35_set_dppclk_enable(struct dccg *dccg,
  	default:
  		break;
  	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
+-	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
++	DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
  
  }
  
-@@ -1163,14 +1160,18 @@ static void dccg35_update_dpp_dto(struct dccg *dccg, int dpp_inst,
- 			ASSERT(false);
- 			phase = 0xff;
- 		}
-+		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
- 
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
- 				DPPCLK0_DTO_PHASE, phase,
- 				DPPCLK0_DTO_MODULO, modulo);
- 
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, true);
--	} else
-+	} else {
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, false);
-+		/*we have this in hwss: disable_plane*/
-+		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
-+	}
- 	dccg->pipe_dppclk_khz[dpp_inst] = req_dppclk;
- }
- 
-@@ -1182,6 +1183,7 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
- 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
- 		return;
- 
+@@ -1400,6 +1401,10 @@ static void dccg35_set_dtbclk_dto(
+ 		 * PIPEx_DTO_SRC_SEL should not be programmed during DTBCLK update since OTG may still be on, and the
+ 		 * programming is handled in program_pix_clk() regardless, so it can be removed from here.
+ 		 */
++		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO enabled: pixclk_khz=%d, ref_dtbclk_khz=%d, req_dtbclk_khz=%d, phase=%d, modulo=%d\n",
++				__func__, params->otg_inst, params->pixclk_khz,
++				params->ref_dtbclk_khz, req_dtbclk_khz, phase, modulo);
 +
- 	switch (dpp_inst) {
- 	case 0:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
-@@ -1198,6 +1200,8 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
- 	default:
- 		break;
+ 	} else {
+ 		switch (params->otg_inst) {
+ 		case 0:
+@@ -1425,6 +1430,8 @@ static void dccg35_set_dtbclk_dto(
+ 
+ 		REG_WRITE(DTBCLK_DTO_MODULO[params->otg_inst], 0);
+ 		REG_WRITE(DTBCLK_DTO_PHASE[params->otg_inst], 0);
++
++		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO disabled\n", __func__, params->otg_inst);
  	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
-+
  }
  
- static void dccg35_get_pixel_rate_div(
-@@ -1521,28 +1525,30 @@ static void dccg35_set_physymclk_root_clock_gating(
- 	switch (phy_inst) {
- 	case 0:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 1:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 2:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 3:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 4:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	default:
+@@ -1469,6 +1476,8 @@ static void dccg35_set_dpstreamclk(
  		BREAK_TO_DEBUGGER();
  		return;
  	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
-+
++	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_EN = %d, DPSTREAMCLK_SRC_SEL = %d\n",
++			__func__, dp_hpo_inst, (src == REFCLK) ? 0 : 1, otg_inst);
  }
  
- static void dccg35_set_physymclk(
-@@ -1643,6 +1649,8 @@ static void dccg35_dpp_root_clock_control(
- 		return;
  
- 	if (clock_on) {
-+		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
-+
- 		/* turn off the DTO and leave phase/modulo at max */
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, 1);
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
-@@ -1654,6 +1662,8 @@ static void dccg35_dpp_root_clock_control(
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
- 			  DPPCLK0_DTO_PHASE, 0,
- 			  DPPCLK0_DTO_MODULO, 1);
-+		/*we have this in hwss: disable_plane*/
-+		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
+@@ -1508,6 +1517,8 @@ static void dccg35_set_dpstreamclk_root_clock_gating(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_ROOT_GATE_DISABLE = %d\n",
++			__func__, dp_hpo_inst, enable ? 1 : 0);
+ }
+ 
+ 
+@@ -1547,7 +1558,7 @@ static void dccg35_set_physymclk_root_clock_gating(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
+-	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
++	DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE: %d\n", __func__, phy_inst, enable ? 0 : 1);
+ 
+ }
+ 
+@@ -1620,6 +1631,8 @@ static void dccg35_set_physymclk(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	DC_LOG_DEBUG("%s: phy_inst(%d) PHYxSYMCLK_EN = %d, PHYxSYMCLK_SRC_SEL = %d\n",
++			__func__, phy_inst, force_enable ? 1 : 0, clk_src);
+ }
+ 
+ static void dccg35_set_valid_pixel_rate(
+@@ -1667,6 +1680,7 @@ static void dccg35_dpp_root_clock_control(
  	}
  
  	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index 21aff7fa6375d..c739e5b2c5595 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -241,11 +241,6 @@ void dcn35_init_hw(struct dc *dc)
- 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
- 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
++	DC_LOG_DEBUG("%s: dpp_inst(%d) clock_on = %d\n", __func__, dpp_inst, clock_on);
+ }
+ 
+ static void dccg35_disable_symclk32_se(
+@@ -1725,6 +1739,7 @@ static void dccg35_disable_symclk32_se(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
  	}
--	if (res_pool->dccg->funcs->dccg_root_gate_disable_control) {
--		for (i = 0; i < res_pool->pipe_count; i++)
--			res_pool->dccg->funcs->dccg_root_gate_disable_control(res_pool->dccg, i, 0);
--	}
--
- 	for (i = 0; i < res_pool->audio_count; i++) {
- 		struct audio *audio = res_pool->audios[i];
- 
-@@ -885,12 +880,18 @@ void dcn35_init_pipes(struct dc *dc, struct dc_state *context)
- void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
- 			       struct dc_state *context)
- {
-+	struct dpp *dpp = pipe_ctx->plane_res.dpp;
-+	struct dccg *dccg = dc->res_pool->dccg;
-+
-+
- 	/* enable DCFCLK current DCHUB */
- 	pipe_ctx->plane_res.hubp->funcs->hubp_clk_cntl(pipe_ctx->plane_res.hubp, true);
- 
- 	/* initialize HUBP on power up */
- 	pipe_ctx->plane_res.hubp->funcs->hubp_init(pipe_ctx->plane_res.hubp);
--
-+	/*make sure DPPCLK is on*/
-+	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, true);
-+	dpp->funcs->dpp_dppclk_control(dpp, false, true);
- 	/* make sure OPP_PIPE_CLOCK_EN = 1 */
- 	pipe_ctx->stream_res.opp->funcs->opp_pipe_clock_control(
- 			pipe_ctx->stream_res.opp,
-@@ -907,6 +908,7 @@ void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
- 		// Program system aperture settings
- 		pipe_ctx->plane_res.hubp->funcs->hubp_set_vm_system_aperture_settings(pipe_ctx->plane_res.hubp, &apt);
- 	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) =\n", __func__, dpp->inst);
- 
- 	if (!pipe_ctx->top_pipe
- 		&& pipe_ctx->plane_state
-@@ -922,6 +924,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- {
- 	struct hubp *hubp = pipe_ctx->plane_res.hubp;
- 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
-+	struct dccg *dccg = dc->res_pool->dccg;
-+
- 
- 	dc->hwss.wait_for_mpcc_disconnect(dc, dc->res_pool, pipe_ctx);
- 
-@@ -939,7 +943,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	hubp->funcs->hubp_clk_cntl(hubp, false);
- 
- 	dpp->funcs->dpp_dppclk_control(dpp, false, false);
--/*to do, need to support both case*/
-+	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, false);
-+
- 	hubp->power_gated = true;
- 
- 	hubp->funcs->hubp_reset(hubp);
-@@ -951,6 +956,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	pipe_ctx->top_pipe = NULL;
- 	pipe_ctx->bottom_pipe = NULL;
- 	pipe_ctx->plane_state = NULL;
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d)=\n", __func__, dpp->inst);
 +
  }
  
- void dcn35_disable_plane(struct dc *dc, struct dc_state *state, struct pipe_ctx *pipe_ctx)
+ static void dccg35_init_cb(struct dccg *dccg)
+@@ -1732,7 +1747,6 @@ static void dccg35_init_cb(struct dccg *dccg)
+ 	(void)dccg;
+ 	/* Any RCG should be done when driver enter low power mode*/
+ }
+-
+ void dccg35_init(struct dccg *dccg)
+ {
+ 	int otg_inst;
+@@ -1747,6 +1761,8 @@ void dccg35_init(struct dccg *dccg)
+ 		for (otg_inst = 0; otg_inst < 2; otg_inst++) {
+ 			dccg31_disable_symclk32_le(dccg, otg_inst);
+ 			dccg31_set_symclk32_le_root_clock_gating(dccg, otg_inst, false);
++			DC_LOG_DEBUG("%s: OTG%d SYMCLK32_LE disabled and root clock gating disabled\n",
++					__func__, otg_inst);
+ 		}
+ 
+ //	if (dccg->ctx->dc->debug.root_clock_optimization.bits.symclk32_se)
+@@ -1759,6 +1775,8 @@ void dccg35_init(struct dccg *dccg)
+ 			dccg35_set_dpstreamclk(dccg, REFCLK, otg_inst,
+ 						otg_inst);
+ 			dccg35_set_dpstreamclk_root_clock_gating(dccg, otg_inst, false);
++			DC_LOG_DEBUG("%s: OTG%d DPSTREAMCLK disabled and root clock gating disabled\n",
++					__func__, otg_inst);
+ 		}
+ 
+ /*
 -- 
 2.51.0
 
