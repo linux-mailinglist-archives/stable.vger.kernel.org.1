@@ -1,277 +1,261 @@
-Return-Path: <stable+bounces-196838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A56C831D6
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 03:37:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004C6C831E6
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 03:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4D65C34A15C
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 02:37:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F6F93475EC
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 02:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0391DF246;
-	Tue, 25 Nov 2025 02:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A25186284;
+	Tue, 25 Nov 2025 02:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="NvNbaTSr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iKi84uTi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D084E1D7995;
-	Tue, 25 Nov 2025 02:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764038235; cv=fail; b=e1PSyIhDcf7iaPPcqDVKLHarKq8Ffn5+NKOwL9DptWR7WfyijoDvs9k9cIY3pC8VBN+KJMq7ZgiKdR4sSif14atAYB0BqTgXuzoxy3A8XLrKayMylXtiZWuuLZQVNcrFZ52Bv0cQN4BYLqqFC1OWsUG8H+nqVhmsy3g+qQgeyaQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764038235; c=relaxed/simple;
-	bh=zCwcurHs+b/swRkA8gGwBNYjNarevu7trsLT/Cb9Js0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=U4ANNj9TMSkHxSNUWfFMAbDYCkwPGa6Kk/iO47kG2JqmGWaXiMTDICHSOHWWkCASfIMmlEffDn9BqMos3zKLqzFIxMsM56YSQ4RPodfCHTkgu26nPR5bCsSuBWKZU2uAn8AhjxsBm1CReMHIuFICfBWkWbtI6jRYVqnwJ1ayIV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=NvNbaTSr; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP1ooD33152590;
-	Mon, 24 Nov 2025 18:37:01 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=UoV9Mav8Y
-	jqhVZNRb9Q1D2bcIREewitT4nrv/4TlEl0=; b=NvNbaTSr0pB9APSB6kqgvUb3M
-	pfRV6NneG8/kPVHp2q7ndezCC15pRlEakdFSVWcj/Pk5fCOGtjnPnptRqTKrdFsK
-	i/KW/JOzoc0yZJJ8aoIMp7CioDjHkV2JSOlL7kd3KXy/liXdmY3am74sDOge8wck
-	BTHKKXPrLMXdcXep5aOiE9Lr2I/P1GxL83eed6TIsTXobiYIDtVW1v3oUd+5+pZV
-	lJkl1JoNY54N1usmEHH1/3gk1lhJi7hdSk7HMYTjtkCwvt+X+juUOxjXvgaAgqpe
-	LTJv9yMmeQ71iPpDOH9AEkkZqjao/0ckRl/Wf9g0uCCObpk8bh3mUdY5AWZ4g==
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013019.outbound.protection.outlook.com [40.107.201.19])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4ak9b5aecq-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 24 Nov 2025 18:37:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nAYlsBQbfcU+bXm1KPapK7IFy5jdUjtiuyaE+xG6kj7H7PIPIQomSitH00Mst6Uo8YUQpiEgGQT/rQ8SzENb+avuKw4nzqd8b9PjRNIBFfCG+mWllJYX+e0E68GW8Y0kvpapSOPHY3KNBq2aazut7/Q7SDnnmajTBWnNEnkD5tz6tWjCvXJtpqOOZreZPSlTtFzOi0YU24wvMK/JzkaTPnQSMfubm0/15gHj7WTSMYmURFi0Q0hQbc8G9yZ0yP9Ycd+kia8w+TdFC3aaFTJo7GYBoFxKIehf0SukBQOoSy4b/MFBaer/1X1nALF1QK0wyJIU/eJpbEDcw/+I2l+orQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UoV9Mav8YjqhVZNRb9Q1D2bcIREewitT4nrv/4TlEl0=;
- b=Ux5uDpLhEHcCxWxEzIw3v7cUcq17GUrl3ipklbSMWQ7IAIV+VG/kRtRSeLi3vbuuW2WBgZFbRNSc/yG7ZJoFvikQ61Cs4EdgF5pX7KoQqntZtBbOack01IdpebkYifMIjVvvb76uzLUVy6GLYype80OZ7u0bliM67H/SkjrHWuf3i1sPy+LewPT18hX9k4/kNdWZ9wh6vAiHrrxK7uAqUCB6dumPkaFnDkXpRY4EEu6++yoOmqyC1q/PXFt7U3REcw/R5pqQPfM1jb5kZ4yEG6TwIVmrdR/8D8G6pUwqWsvcPV+PpkvTf7iMJHVMy/aH54vUUcJMRGuarpoCVjPZvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from SJ0PR11MB5072.namprd11.prod.outlook.com (2603:10b6:a03:2db::18)
- by IA3PR11MB9037.namprd11.prod.outlook.com (2603:10b6:208:580::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
- 2025 02:36:58 +0000
-Received: from SJ0PR11MB5072.namprd11.prod.outlook.com
- ([fe80::a14a:e00c:58fc:e4f8]) by SJ0PR11MB5072.namprd11.prod.outlook.com
- ([fe80::a14a:e00c:58fc:e4f8%5]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
- 02:36:58 +0000
-From: yongxin.liu@windriver.com
-To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        david.e.box@linux.intel.com
-Cc: ilpo.jarvinen@linux.intel.com, andrew@lunn.ch, kuba@kernel.org,
-        platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH net v2] platform/x86: intel_pmc_ipc: fix ACPI buffer memory leak
-Date: Tue, 25 Nov 2025 10:29:53 +0800
-Message-ID: <20251125022952.1748173-2-yongxin.liu@windriver.com>
-X-Mailer: git-send-email 2.46.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0152.apcprd04.prod.outlook.com (2603:1096:4::14)
- To SJ0PR11MB5072.namprd11.prod.outlook.com (2603:10b6:a03:2db::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0039153598
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 02:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764038354; cv=none; b=hZBVToBUrLtHbaWWPXkPrsKADJ5u46hhXcSBiR0OiQ2EXxJxxBJ+HS56INrqplecia83bRLqMuHwQDGuBw0u4E5TYDJqo5ZEL4W9qO5Dci3aFmrEbAePCqndg/3iQPtJ2AZtkoPfBSOpBCQqngb2JCjytl9SchtPXfk5aG77D/M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764038354; c=relaxed/simple;
+	bh=aANtrI4pj/05o0QyUmxO2O8ZYZlaO02WODpR+lS8Nn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rwoinUClz5aW/LDvb2GrjwEhsGCynXriiuK5V4Bv2KcFAFdqk413HqGagLnsjVVrwMH2VReSmPw8arILwjifQmnFltfWmaHm4bIxHgKTfZEt4DY8KfzSgX15NFccZdQR82ZiIyV+4IgK0W2DqijuZDmuAK25b2H3TmMQ+3Tkj2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iKi84uTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945F3C4CEF1;
+	Tue, 25 Nov 2025 02:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764038353;
+	bh=aANtrI4pj/05o0QyUmxO2O8ZYZlaO02WODpR+lS8Nn8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iKi84uTixdEmmufQKTZyZPfZxJy2wOUYf9UtCcA79UQ8dTvt//YFCXsSSXzy2QEi3
+	 Nz/bWoiUeisVXG+XkH0jKgjEuSQsczPzRZqaARMcrXfT3ucpQvyXck2FexBHpgSVjp
+	 NS/JdQv2KCAFX16ZQJ4OqCIpsO/ghNFev7OaQQJlHC7i58ZofOh2EbxoY5bcOeUa9g
+	 N60wCjWp9gzOE8B9akRBDLB3/v+6xOlgz3SvShnLuMWAk+W+fVNkRHaLfbkX2CFhAC
+	 DiS8nQCw4dhP+4NJkD4QjMBvXBq0bIPNsevuQ3g5QYsgddo+6J13JlklHGfd1BXMZ0
+	 dE2OLhuKmKrXQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: fix a race in mptcp_pm_del_add_timer()
+Date: Mon, 24 Nov 2025 21:39:10 -0500
+Message-ID: <20251125023910.292706-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112435-maimed-muskiness-bb78@gregkh>
+References: <2025112435-maimed-muskiness-bb78@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5072:EE_|IA3PR11MB9037:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d140023-5a79-420a-cf7f-08de2bcad661
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?x25nT4SufMsKKWqE9c+HSg8MncRHWtgnA85k0xTT+13VXDJLZPc2+yJA0npH?=
- =?us-ascii?Q?rB7aZG4Qj7jn+lI5cYWy3izYZKJwpNTNa5SVkIKsFtVdXpXK5L5XB6ZaETxj?=
- =?us-ascii?Q?JH3l/oNBjFtJTJTX37iAquh6eduuer+3KnscHI9GNAyOJUmIyVQojzw0/s5p?=
- =?us-ascii?Q?O8WEArYx3Q7y1yHe6rSLKra1Mymjqg2/7YuwYmQer6XkUyPXCSBanfGVFBo2?=
- =?us-ascii?Q?OHNXnscL0IR1q1YA1e4HBb0N0/nwz/kkkOpKI9eV6Bc3zA7OrrivlMRsHhRj?=
- =?us-ascii?Q?HliK+CYSOWjdXPwzjaR4eDc1QIkFsFQ2TwtLPMscoUDPRPMcJBCyqMJhCAAs?=
- =?us-ascii?Q?0bw2AI8pctAn7IugKJBc8FA3/cYHUTlJA9Kt6AZIDDa9runI59w12hmpiNWf?=
- =?us-ascii?Q?uVVtu1qpHdMSCFaZNlObI7jNv05Q0gwFDokGgMQvIRmPoLJTxQ77CKCGAM3N?=
- =?us-ascii?Q?suVFSzv33b24QwslxXbPWxIhV9fNq30bgkRttbUfvgfi1NVQhxFURXHo0R/J?=
- =?us-ascii?Q?5uHJM4Hs/cyZAQQPdIC09R2jG7HUBpOK1Q2RP78hICeEPNQswGIp54y32tza?=
- =?us-ascii?Q?dXQUfV1NQjuhX95SrRvvOUO1pIAp6t+2xuADZAd8QXtTnl4KBiZgRMTOxEZm?=
- =?us-ascii?Q?HkepoKLVrBIJrjXU9pGJDNtwUBXL/X19FEbHMLdqJLpY6wWJUgRZd9zj4KF7?=
- =?us-ascii?Q?KWfwUrAzH+e6XWRkj5qO/b7NmJxEJSNau5XLMf8DGqVH2SIhnMzIYtcuJKK5?=
- =?us-ascii?Q?eWYEQb0kKAqPXNK38Gcr9UXxNNWB/DjHGbUn/rvJkbcMRWh7luECxTNhFA9C?=
- =?us-ascii?Q?l6rNhV9q3qG0x1cOMOEZJtd7zFOVD44ZK7k8yhdlxw3j27D0kZ4MKypDomxp?=
- =?us-ascii?Q?lnxelWniOa/NTWq1/2wA7LHGHUsVdJrAUnyB4Y2dRanmvJXbEhpm4ClnqCfx?=
- =?us-ascii?Q?XEc1qbapuvNQCJf4aribcjLyfkIeIOtGMe4H9IggNOmVMDcA/As8mf4qGZ4N?=
- =?us-ascii?Q?4aSkvIBf6FluaQ+MISsvHa7Xizg/BDbOhNcHfDkhOY/sc01aXI/Qh875LneO?=
- =?us-ascii?Q?zkhgnAWd/I3kwQgmY9xAF0X9ifN4Fgc20Wi9QawGNGWEMzVvLGYLCD3rk9Ri?=
- =?us-ascii?Q?/vMMJ7KNH9R/NI2VJG8B35uBdZg9w9N5YcVFYJeZAgYZaSLPfnD3M/75zjTE?=
- =?us-ascii?Q?QoECuRd9JTwVWVvpTRrwgBbCUqKaX3S3v05Mn4fRHF/E35DaWeGrqTKoWqnu?=
- =?us-ascii?Q?rCwPMHDbPXsvOWo40KZ9uKGTWHFYIRhr4k9nr0BPoPl2legDtK3Y9fqU2Vxf?=
- =?us-ascii?Q?OQjG3VjgG4AYEE1ixAocgglAue8BwOrxNCFLGPZG2wTMAg5K2Jh6FP2dtc74?=
- =?us-ascii?Q?CJEj9dVzDljDtf8hVHrx6oSfpJUJ3xo91Eb9/ug5j27e/JlYVlYwRmGZfbgP?=
- =?us-ascii?Q?UIw1DIgL81p7E6+BriJyMhzsKheaK099N3ZGM+fn13OFoYc0ZRdCplBMQl9n?=
- =?us-ascii?Q?mBfM4fh9kA3u2zOy1LjM54SdXoFeaYu7CUl4?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5072.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a1ogLQvQ2zbPPGdEJFkYdliWT7IsLeojfVc1M2+EfgF2ctHsSAwLPe4WdeNe?=
- =?us-ascii?Q?3NyK/exMvZ0ds2t+MA3ylqDomYIxYGcga0hD07KAzJde6qU1ddRykvuubLIe?=
- =?us-ascii?Q?PNUnqp2CKx80FNs7UDOJFGKe/rjJmcHZq2uFcegpPX5ezjIzEA/gHJmMos0r?=
- =?us-ascii?Q?D/+HKcWtBSPglf5UgoU838S81wi5gFI6wIPbD90mUMufirMq7eYGVJkCOAXx?=
- =?us-ascii?Q?m049aUwbOLKNvTcAc2A0zhlX7fNn9JqpgYNMuNBdr9LtbHPpcewyqnCw7FYs?=
- =?us-ascii?Q?VCBJXBA453D7Aff7Etr9Qb7FlP+6bOxjY2PsHC3KS+VEFjz2Fmiafe9gR1Gc?=
- =?us-ascii?Q?xaMNZt4tV2bgTwY767NdDIwvIfqTXcJZAt/VS44bsg4tYFKc5Nm9FI3Fnsdw?=
- =?us-ascii?Q?VXbKrErLoNr+E+DP3oL8JIRO50hlV1IRye/vR1rGfAbd5/RM+Se9T8eGCsv+?=
- =?us-ascii?Q?dZ2wM+Ia0zwxf8tJ4OxExgb25y0R0LLdCSEqfCm10qLI8amIkNibJo7CYtp6?=
- =?us-ascii?Q?IE4HNl6zZP+tD39g9jaxlpcBJr2EvgI2rGbABPIjI3Rvd0u8HznbdzmAuYnV?=
- =?us-ascii?Q?XrM7pMo8IiB7odgMkYe1IsfoTXKZaWUet31qPeExhpMxxqwSohOG4OnovwKC?=
- =?us-ascii?Q?BpF8XgZvY/oUVNaOurBKQyYNfrW2EjOt6I8FTFsApT+LOgZZXTbSfFIw8dcG?=
- =?us-ascii?Q?E0qhg3Ds//apShv9VWxHH0JY5qU+1wkTB346gOyDtcyC8UPKCsSzoU0tDf2C?=
- =?us-ascii?Q?ZFiKB2Pp37YBGb6aFSf+nB95jRv2AloQOP3Wr5AYizRKurJsS9XPW+tnMiBz?=
- =?us-ascii?Q?Ob9xXCOU9YEWhwVS2HZxTvM/Gs0xFuwOIu1f3fGxmCbxbniFr6xlWLrihexZ?=
- =?us-ascii?Q?Vdl7Ccac1w/3U+zZFB3rAnaUD8UY3OyRRDTt1yiEe+INqCuRj23QQoEy8i9P?=
- =?us-ascii?Q?MwP7s0Pud6TjeUCFfQ9VMUEhvaq4NFgikDqhyWSraar+wx/jxHrRgyQXsQVR?=
- =?us-ascii?Q?cfzJO61eR7wpYXlNR0JPtQwI5Qyget4qcFT4AZYgjlkeLNQruT1Q8WB71OV6?=
- =?us-ascii?Q?uVodUVVxZuOLH1TDWzn8cXmlGHRMq3WyvCdkbMvWaNP+UaRKY8h5XxYczPwj?=
- =?us-ascii?Q?R9UEecIjVYD3h3X0AHG40sfyEfGcpa9QYYzI+mDex8PDr7xpWL9bE66DJlSL?=
- =?us-ascii?Q?4N+cHEBDY4BmfpTvEiREn+c/Mk1cvGAt+lM+MG4He/klOZIPTQ5EZtrgvWzy?=
- =?us-ascii?Q?cRIQx7Dh578SzukosvB1lCTTQfAkEJbIW7Z7VuZKpSoGBTDNbawCAr/Q0BKL?=
- =?us-ascii?Q?Nk+aQihSxx26qzDzp3ZjdhsD0lnB9ahoXhvISti0EDDA7N5y45UpdwuzVQV9?=
- =?us-ascii?Q?SXBjPqiwqMuQQC6m+ftsPoalrGYJgxcbvv3f32xwwR6E7f6/QMhYlNsHP28P?=
- =?us-ascii?Q?y7vHBJHbHxDQIJ7Te9kbQvG5VyOId7BcDhkRkE8Ro4J5SZEBmByvpELn4h5x?=
- =?us-ascii?Q?VhdeOysEOLat0Fs6cE7BTGWtSzWJ/htAkhHeK32zEZEgmhiEiFDNSN9Tjlyr?=
- =?us-ascii?Q?boJkbGabbuwrONECLexOHvivQKIGJxJM96HH+nb9QJIH+Y9Utk/CUG0/IYEv?=
- =?us-ascii?Q?lw=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d140023-5a79-420a-cf7f-08de2bcad661
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5072.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 02:36:58.7712
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SnwJqwfxoS9uQj82pTGxN3BO4fsTO59bYm3PvARvK9sY4vrRxIkPVJKFfL2zj4jMx7rftxddJxSqbci1eQBAMBOTp/JKcgi84IJPIUUN7vY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9037
-X-Authority-Analysis: v=2.4 cv=fozRpV4f c=1 sm=1 tr=0 ts=6925164d cx=c_pps
- a=UA+Ybm6NSixuq697YtHT5A==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=t7CeM3EgAAAA:8 a=VwQbUJbxAAAA:8 a=GLtnJ_i9NkFmi9gY_58A:9
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDAyMCBTYWx0ZWRfX12IGUHHRWXlA
- uW/3TSEMHyP2WfzqoantqlvI6QJYveuo3kh9yclK94szg76jHkSx5cd8yZnBDd7bUKHVuf5YDEq
- 1Q/VT+DtbOTLBcrF4EfE9O5SVSAPIyiPc+FXcB068hlN+WmtnKa7U0OLDnjvOwVbZaOIAZpaLad
- pKzoJryuFA4iUN/+nzWH9g9cM6AFhfqvHzhAq2ma786vqtrbuGdlD4x/JM87srJbAlndaP+OXzL
- mCdfDFbOaQjrt4Z3wv3KJ3bwN4eeNKkW7VCJ2RGrOwMV5aolp1c3Cgw3FkoXGU8hMHAFmf0B5vl
- J4Y+5rVFIrtnuCJez5vqNxtg8KIr8H5ZIrFk7JTminQKDYzpdU2EWB5FnDHzK3dCamBYAO/cIX4
- oK7ktKgiHxyaUojGRFlCtSKCZk6kyw==
-X-Proofpoint-GUID: LbXaXo6yNPPmfuQQn9vY6u_mHoxJw8Uf
-X-Proofpoint-ORIG-GUID: LbXaXo6yNPPmfuQQn9vY6u_mHoxJw8Uf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_01,2025-11-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
- spamscore=0 impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511250020
+Content-Transfer-Encoding: 8bit
 
-From: Yongxin Liu <yongxin.liu@windriver.com>
+From: Eric Dumazet <edumazet@google.com>
 
-The intel_pmc_ipc() function uses ACPI_ALLOCATE_BUFFER to allocate memory
-for the ACPI evaluation result but never frees it, causing a 192-byte
-memory leak on each call.
+[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
 
-This leak is triggered during network interface initialization when the
-stmmac driver calls intel_mac_finish() -> intel_pmc_ipc().
+mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
+while another might have free entry already, as reported by syzbot.
 
-  unreferenced object 0xffff96a848d6ea80 (size 192):
-    comm "dhcpcd", pid 541, jiffies 4294684345
-    hex dump (first 32 bytes):
-      04 00 00 00 05 00 00 00 98 ea d6 48 a8 96 ff ff  ...........H....
-      00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
-    backtrace (crc b1564374):
-      kmemleak_alloc+0x2d/0x40
-      __kmalloc_noprof+0x2fa/0x730
-      acpi_ut_initialize_buffer+0x83/0xc0
-      acpi_evaluate_object+0x29a/0x2f0
-      intel_pmc_ipc+0xfd/0x170
-      intel_mac_finish+0x168/0x230
-      stmmac_mac_finish+0x3d/0x50
-      phylink_major_config+0x22b/0x5b0
-      phylink_mac_initial_config.constprop.0+0xf1/0x1b0
-      phylink_start+0x8e/0x210
-      __stmmac_open+0x12c/0x2b0
-      stmmac_open+0x23c/0x380
-      __dev_open+0x11d/0x2c0
-      __dev_change_flags+0x1d2/0x250
-      netif_change_flags+0x2b/0x70
-      dev_change_flags+0x40/0xb0
+Add RCU protection to fix this issue.
 
-Add kfree() to properly release the allocated buffer.
+Also change confusing add_timer variable with stop_timer boolean.
+
+syzbot report:
+
+BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
+Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
+
+CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Workqueue: events mptcp_worker
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
+  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
+  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
+  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
+  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
+  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
+  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
+  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
+  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
+  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
+  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
+  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
+  process_backlog+0x31e/0x900 net/core/dev.c:6544
+  __napi_poll+0xb6/0x540 net/core/dev.c:7594
+  napi_poll net/core/dev.c:7657 [inline]
+  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
+  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
+ mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
+  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
+  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
+  process_one_work kernel/workqueue.c:3263 [inline]
+  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+Allocated by task 44:
+  kasan_save_stack mm/kasan/common.c:56 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
+  kasan_kmalloc include/linux/kasan.h:262 [inline]
+  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
+  kmalloc_noprof include/linux/slab.h:957 [inline]
+  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
+  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
+  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
+  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
+  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
+  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
+  process_one_work kernel/workqueue.c:3263 [inline]
+  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 6630:
+  kasan_save_stack mm/kasan/common.c:56 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
+  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+  poison_slab_object mm/kasan/common.c:252 [inline]
+  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+  kasan_slab_free include/linux/kasan.h:234 [inline]
+  slab_free_hook mm/slub.c:2523 [inline]
+  slab_free mm/slub.c:6611 [inline]
+  kfree+0x197/0x950 mm/slub.c:6818
+  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
+  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
+  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
+  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
+  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
+  __sys_sendmsg net/socket.c:2716 [inline]
+  __do_sys_sendmsg net/socket.c:2721 [inline]
+  __se_sys_sendmsg net/socket.c:2719 [inline]
+  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
 Cc: stable@vger.kernel.org
-Fixes: 7e2f7e25f6ff ("arch: x86: add IPC mailbox accessor function and add SoC register access")
-Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied changes to pm_netlink.c instead of pm.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-V1->V2:
+ net/mptcp/pm_netlink.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-Cover all potential paths for kfree();
-
----
- include/linux/platform_data/x86/intel_pmc_ipc.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/platform_data/x86/intel_pmc_ipc.h b/include/linux/platform_data/x86/intel_pmc_ipc.h
-index 1d34435b7001..b65193b1e043 100644
---- a/include/linux/platform_data/x86/intel_pmc_ipc.h
-+++ b/include/linux/platform_data/x86/intel_pmc_ipc.h
-@@ -49,7 +49,7 @@ static inline int intel_pmc_ipc(struct pmc_ipc_cmd *ipc_cmd, struct pmc_ipc_rbuf
- 	};
- 	struct acpi_object_list arg_list = { PMC_IPCS_PARAM_COUNT, params };
- 	union acpi_object *obj;
--	int status;
-+	int status, ret = 0;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index df46ca14ce234..8b13639ddc0ed 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -36,6 +36,7 @@ struct mptcp_pm_add_entry {
+ 	struct timer_list	add_timer;
+ 	struct mptcp_sock	*sock;
+ 	u8			retrans_times;
++	struct rcu_head		rcu;
+ };
  
- 	if (!ipc_cmd || !rbuf)
- 		return -EINVAL;
-@@ -78,18 +78,22 @@ static inline int intel_pmc_ipc(struct pmc_ipc_cmd *ipc_cmd, struct pmc_ipc_rbuf
- 	    obj->package.count == VALID_IPC_RESPONSE) {
- 		const union acpi_object *objs = obj->package.elements;
+ /* max value of mptcp_addr_info.id */
+@@ -366,22 +367,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 	struct sock *sk = (struct sock *)msk;
+-	struct timer_list *add_timer = NULL;
++	bool stop_timer = false;
++
++	rcu_read_lock();
  
--		if ((u8)objs[0].integer.value != 0)
--			return -EINVAL;
-+		if ((u8)objs[0].integer.value != 0) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
+ 	spin_lock_bh(&msk->pm.lock);
+ 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+ 	if (entry && (!check_id || entry->addr.id == addr->id)) {
+ 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
+-		add_timer = &entry->add_timer;
++		stop_timer = true;
+ 	}
+ 	if (!check_id && entry)
+ 		list_del(&entry->list);
+ 	spin_unlock_bh(&msk->pm.lock);
  
- 		rbuf->buf[0] = objs[1].integer.value;
- 		rbuf->buf[1] = objs[2].integer.value;
- 		rbuf->buf[2] = objs[3].integer.value;
- 		rbuf->buf[3] = objs[4].integer.value;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
+-	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
+-	if (add_timer)
+-		sk_stop_timer_sync(sk, add_timer);
++	/* Note: entry might have been removed by another thread.
++	 * We hold rcu_read_lock() to ensure it is not freed under us.
++	 */
++	if (stop_timer)
++		sk_stop_timer_sync(sk, &entry->add_timer);
+ 
++	rcu_read_unlock();
+ 	return entry;
+ }
+ 
+@@ -430,7 +436,7 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
+ 
+ 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
+ 		sk_stop_timer_sync(sk, &entry->add_timer);
+-		kfree(entry);
++		kfree_rcu(entry, rcu);
+ 	}
+ }
+ 
+@@ -1419,7 +1425,7 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
+ 
+ 	entry = mptcp_pm_del_add_timer(msk, addr, false);
+ 	if (entry) {
+-		kfree(entry);
++		kfree_rcu(entry, rcu);
+ 		return true;
  	}
  
--	return 0;
-+out:
-+	kfree(buffer.pointer);
-+	return ret;
- #else
- 	return -ENODEV;
- #endif /* CONFIG_ACPI */
 -- 
-2.46.2
+2.51.0
 
 
