@@ -1,125 +1,150 @@
-Return-Path: <stable+bounces-196832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49084C82F45
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 01:48:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B01EC82F6F
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 01:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A9614E1CDA
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 00:48:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE26D3ADD3A
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 00:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFA61465B4;
-	Tue, 25 Nov 2025 00:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF801EB5FD;
+	Tue, 25 Nov 2025 00:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MDOsBw7q"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Fan+I/AL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8CD72631
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 00:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27121B4F1F
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 00:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764031699; cv=none; b=a3AO6Agk86ByBbqatMjfI9GKeZzBRDGNUVuTxbRcAsRCI8ECwRzePbLK2vMwCKU3S+m1b+u4VbdjTdvXCrd8kmUQDIid9V6tG1Pz7AVFQ+LTy9viKErxXmVeSbvmn7TDVBeNY3itADZCN6D1N6jp9+lFFfteKdxoToYPaL1Gua4=
+	t=1764032350; cv=none; b=TMmbWTsS6d2qax0tATq9tcl7NYr8+v6IoXP3CKbhoHlt3q8JCbk2vG0bI94djLa1NOASyO86bShsM7d1hLlI86dlXkvt8RiJq2RkQg8CxKChf4zRZhqAI1TgHJUfeJejo86bjXkZl4RdIeVdid6qLOAvjJaZPDSc9uWGKaerLiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764031699; c=relaxed/simple;
-	bh=XrSJc1aGzZH+hn4BI0XP1cSCW6nBdyHDsYiZh35PrLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlxzKlr4uNDcpHpon70m45146Cr7t4KkJpgHZWeCwhjCyQNwliCC1kBilokBpf6q6m03oBeUEK7fPlGfvnMenx6BUQxT1+ZngcknmtJzL/QJOcWhXpAs3NgKlXmU/B6BwsBQr/3LvS7Spjm5hT2eOrSkIYaYAQNPW4lZX2PoJoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MDOsBw7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AA0C4CEF1;
-	Tue, 25 Nov 2025 00:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764031698;
-	bh=XrSJc1aGzZH+hn4BI0XP1cSCW6nBdyHDsYiZh35PrLs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDOsBw7q9DA6oxjEYGJnxQMZEtueBrbc4G953XpRdImP2FRxcsF6ZVtPenBDsZtpi
-	 +8xBmw4ip1pTiCnQuBYeY0CbeI6drJWQzKw8DH4xQvK+/5+VnYSjpkKbzXWuhS1DOb
-	 hyoCo/OEoWUUHHwhO6ctlXetH5tWfxJVWDlO7GW9dcsRAWeAfuAinb470OReEBxPNj
-	 pIIeWTuch0t7nvJDzAy39Rvm6LWYIf0xlfytkHp8hffyv7/btn4l+97Wc+Pb+l3KwN
-	 P0HJKhn4oqNS1e/RzZ4ELM2sdBNYbIgSgTT1XxsgvcxO/bhb3WjwcAFA+hO8MuLhPu
-	 nyV34ntZLMSMA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: fix premature close in case of fallback
-Date: Mon, 24 Nov 2025 19:48:16 -0500
-Message-ID: <20251125004816.192030-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112424-drift-duffel-a7f9@gregkh>
-References: <2025112424-drift-duffel-a7f9@gregkh>
+	s=arc-20240116; t=1764032350; c=relaxed/simple;
+	bh=53CRrf0jGuwB03yFltWzcJNvnk1rJ0WvgrMeNLTu698=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Fw6wOExlt+YGVvsos1gvhpgM4BEGNxx1v4hnOkS4wCqqSvqx6ARLItdcpFAD1cuKj7HHwkfpnGD4kNNgP1k06cs3MlKpiW086GRJtW0v1r83hL+cGopEgBGYUgjOIeFdJIzeRrU47X5g7o2JaUCCuoSi9UHDtp4uU0YWOz3fLwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Fan+I/AL; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7ad1cd0db3bso4209041b3a.1
+        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 16:59:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764032348; x=1764637148; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j2i98mUbwvJZAUStTDatdB+yA+uOoCAUJ/CdcxmChEQ=;
+        b=Fan+I/AL6FfwCKbUxnGUXdvPmkyQLjXL5nalWlXm/pwMxHkB3iwFQwor+nRiq00gxZ
+         RwxpbY81zGo3zF8djeRO1ffACaeeSq6TD1cbClDcP9dGS4R8cNaFCJUrLARt8qk1KwdC
+         noGVTcuvudGWjm2mYKUv0369qcT4+Pdps5EEeaohGmbxaLRfqvVGWtsj6aePH2bhrkm1
+         Rik99HfiVblKfStbqMtGiTyp5HYFaF6Ae6xLGzyDaj4cnvVM8qXhSJQ26uD3sfj0F8Uk
+         KRmS03cZwgs/rv+eAh8tGUsy/f+FHVDWnLOVcXhffKjL8H2jW1DUbZQ/Sc4Y5KzBkeQ1
+         ydOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764032348; x=1764637148;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j2i98mUbwvJZAUStTDatdB+yA+uOoCAUJ/CdcxmChEQ=;
+        b=dugN8R80lg9HvaxndEcsGkULA1grX5WTERSBBaGitLCdr0k8PbG2ea43h9u2kCLrYh
+         f8ahAsorKIxsPctoFCTus4YJQ0qEnqngQdoyeebdo+MWxhyvWZ05fMsvez2aSN3XMXeW
+         DkKfoMOboHL/1djI5G7VC41sdrmJuvoFSF+BnxAIRIAkbJPyNEKHG9Uecq/pSZXE/Fd+
+         vF1lDKkioo5yOH7A/XDqH0zvqq4NekY3Ua+CrV57GJDANeITJuk5mKim/PFwSwlJb4um
+         zVOdQLLeq/5y1WA1QkBLDi/v6aBShTn1z98LOQjtXA84OPdqAyp5l+Z3REC6VCyw/dfV
+         okCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWS83iQzruuHSXBEBg2GfxRiLVxP8NfVLx9ta0FxyVTYa+3b8T41YX4aM69ewulBU1c+QtXr7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPIyZW0pFnh6dPcxynCDeHlJIEl3cq4+ru+p2ZZmjX5ZIkGqPn
+	RqFb3OcaXCjDPcZ4MmjUPoGGOCcStOmXvR9UzEmWlUCxspD4Mh+766kLNtNsrMbKrc4=
+X-Gm-Gg: ASbGncvr48Paue3CnjuYFmvowndrz2TWLA/m2u4tlgQ5tVnwYXjWpibRb7FRneu6s/R
+	RNqJNGDJaUTJ99VcqcRIRsn3WtEz3FQ4BHq4sqp+FDrMbpVhH3I9JXblm36qU3OTPMKWO1uhqKJ
+	XRjzEFmA5T29iY35vjjA5RioUud/R5fWAQ//kVmJJruaZh660p7gzYCVaiMYpz132GcfEcRE5IA
+	8+TERh7O4fEBzJTZ7ehFUZTYPpvJ3GNpqKACUW27Pv0DPQs9kIoM5xsA6IgtnxjL7lxzN7ezKLK
+	TDHX9SnBbh+dmNR8IRg9N6SjVBru4F+0jz6Gtghta/ploIjdA8CF/VQU6w9XsN/q8dNQSfSIHox
+	nFbg6zneHXb4PedwiU05KZ50k3mC82gta28hfap4+IkKPRTBFpWUmjSzafyfSmzXL82lfzY14wE
+	/2m7M4
+X-Google-Smtp-Source: AGHT+IGzRx4kNA5iRNrLNjPSjNdzq5SADsaSIfE2dFmJzbipA95JuCbF+EduvAdShgNLUFmy1CSreg==
+X-Received: by 2002:a05:7022:4191:b0:119:fb9c:4ebb with SMTP id a92af1059eb24-11cbba47b12mr733774c88.30.1764032347994;
+        Mon, 24 Nov 2025 16:59:07 -0800 (PST)
+Received: from f771fd7c9232 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93e3e784sm55373479c88.5.2025.11.24.16.59.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 16:59:06 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.7.y: (build) default initialization of
+ an
+ object of type 'struct kernel_param' ...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 25 Nov 2025 00:59:06 -0000
+Message-ID: <176403234572.318.6770836871469885793@f771fd7c9232>
 
-From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 ]
 
-I'm observing very frequent self-tests failures in case of fallback when
-running on a CONFIG_PREEMPT kernel.
 
-The root cause is that subflow_sched_work_if_closed() closes any subflow
-as soon as it is half-closed and has no incoming data pending.
 
-That works well for regular subflows - MPTCP needs bi-directional
-connectivity to operate on a given subflow - but for fallback socket is
-race prone.
+Hello,
 
-When TCP peer closes the connection before the MPTCP one,
-subflow_sched_work_if_closed() will schedule the MPTCP worker to
-gracefully close the subflow, and shortly after will do another schedule
-to inject and process a dummy incoming DATA_FIN.
+New build issue found on stable-rc/linux-6.7.y:
 
-On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
-fallback subflow before subflow_sched_work_if_closed() is able to create
-the dummy DATA_FIN, unexpectedly interrupting the transfer.
-
-Address the issue explicitly avoiding closing fallback subflows on when
-the peer is only half-closed.
-
-Note that, when the subflow is able to create the DATA_FIN before the
-worker invocation, the worker will change the msk state before trying to
-close the subflow and will skip the latter operation as the msk will not
-match anymore the precondition in __mptcp_close_subflow().
-
-Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ sk -> ssk ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ default initialization of an object of type 'struct kernel_param' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe] in kernel/params.o (kernel/params.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 490fd8b188894..bc7e66cdc77f3 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2401,7 +2401,8 @@ static void __mptcp_close_subflow(struct mptcp_sock *msk)
- 
- 		if (ssk_state != TCP_CLOSE &&
- 		    (ssk_state != TCP_CLOSE_WAIT ||
--		     inet_sk_state_load((struct sock *)ssk) != TCP_ESTABLISHED))
-+		     inet_sk_state_load((struct sock *)ssk) != TCP_ESTABLISHED ||
-+		     __mptcp_check_fallback(msk)))
- 			continue;
- 
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
--- 
-2.51.0
+- dashboard: https://d.kernelci.org/i/maestro:b49cc34e36d28dfb446fecde078c599d5e502b0f
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  dacf7e83da42bd9d3978560e41869a784c24d912
+- tags: v6.7.12
 
+
+Log excerpt:
+=====================================================
+kernel/params.c:368:22: error: default initialization of an object of type 'struct kernel_param' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+  368 |         struct kernel_param dummy;
+      |                             ^
+./include/linux/moduleparam.h:73:12: note: member 'perm' declared 'const' here
+   73 |         const u16 perm;
+      |                   ^
+kernel/params.c:424:22: error: default initialization of an object of type 'struct kernel_param' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+  424 |         struct kernel_param kp;
+      |                             ^
+./include/linux/moduleparam.h:73:12: note: member 'perm' declared 'const' here
+   73 |         co  CC      arch/x86/xen/setup.o
+nst u16 perm;
+      |                   ^
+  HDRTEST usr/include/linux/net_namespace.h
+2 errors generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## x86_64_defconfig+allmodconfig on (x86_64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-x86-allmodconfig-6924fd8bf5b8743b1f5fa868/.config
+- dashboard: https://d.kernelci.org/build/maestro:6924fd8bf5b8743b1f5fa868
+
+
+#kernelci issue maestro:b49cc34e36d28dfb446fecde078c599d5e502b0f
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
