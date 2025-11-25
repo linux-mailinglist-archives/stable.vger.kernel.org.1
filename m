@@ -1,128 +1,125 @@
-Return-Path: <stable+bounces-196929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E123C86955
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:23:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5283C86A93
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C083B2AF8
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:23:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 394DA34688A
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED8132B9A6;
-	Tue, 25 Nov 2025 18:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6049F3321CB;
+	Tue, 25 Nov 2025 18:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8d/52dm"
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="Ud7xH5uZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward202b.mail.yandex.net (forward202b.mail.yandex.net [178.154.239.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D375D32938F
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 18:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B691C3314D2;
+	Tue, 25 Nov 2025 18:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764095033; cv=none; b=mLgeXBEvXOet8+gItvnJFPYmFT2QRbGmwHy9/zTHsLD48VMK4rCfG0xHegZhHIC7dfziQvYXj4FbT86Z81Dlo6PlTV2GAitfPMqZFswUDHE9kqTMnWWeFi0hwTcpibzR7GIrSssKsBMy84S6OlDqu6O1w5F2tpye/3Qa4TVeku8=
+	t=1764095824; cv=none; b=s5LR9X7QmwD7j+Eo2mw9S42+NMbjX//ta4hosearCElCEZsdQH5uoCMktNae5qSn9Ptl/hil0PeogBccm9z1uI8dmnDrM9TYFid52L8Cpj3h5t6mnWoeCM84Zmqwx3RsH4SsQx0HJdF0zWZpDSJAvZA7f+hRaBxpLXjugZhcLF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764095033; c=relaxed/simple;
-	bh=jbgXOzCR/GZ217muZed1zRMD+l402zZKC7omM22Etb8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kcj2Vbe/A6oW7yKBKzoGUJrv3eX5ZfZ+7V4mw3bAdmw4skTUfPXMd8+5s286LnwO3GZIwd5hxAaNup+K1fdn1ZLgQtST0Dabw5aAp7VD5aNmiNu0Z/VjL0bU3myt/lIKjTJGfHRxWjoAO7YwDvwpvxK5GxS9XMtnllEu+tFBlw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8d/52dm; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8826b83e405so84073386d6.0
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 10:23:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764095031; x=1764699831; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T3tydmKvXCBQ5thZMPZm88UpOyDOUvzTtCssow991EE=;
-        b=Q8d/52dmVh/bep2VHxLzSChABQGx2St6fjOdrIjjZLNUKpUc9py5ka05v8sLidxoUs
-         D+Acfo0zNfe+AhB4wTxpM3WOJkTqhP2Md1SqJWGWuHOGpJ5u31tXdVsEKQbN5g2nWa2C
-         DHhR0YLmEyGPNLSIzyyA8GMxeU3zgen3/F7Q1aFG5QBfKNrSdPIX6Vr+dIskqpuXhcFS
-         K8WkmSEGqY7Z8D58h7OGfywY5kd2ZH6uZDiCFm7FFDtS7aWEgp1czdCoKq9J8O6WTtcc
-         4TXKcyQNwyNFajzkP7MNaoegso8eSN04v4+pvkvA6w/aUt8bTY+/o7dj1Gayn6T/IElb
-         qfsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764095031; x=1764699831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T3tydmKvXCBQ5thZMPZm88UpOyDOUvzTtCssow991EE=;
-        b=Qwdb5/Fqzl5wBo1UpTPFyEGhyb5L8k9WGF5A2t62uNpieW6BFkIpYXoQ2KTL4p8NOD
-         GKXgjKdNuamxn2SMaQdX01on+eFqPbJlthmahW66jTOTdLOYHrtgdTu7PqeXoOtX0BBE
-         naJokHgbqLs75vCaIgAQcuSzAUfP3mUsL9XizRS+BLdYP8HXK4eh1cA1Z/TNiGgXxWSt
-         Bbfpk0qmQKMs3ksfu96Dl8L0gaFgkfqyJ8ciynVeDPjNvo2VWYHBzwFD3cnsGoxhQXVa
-         BmVMwcRy2WYgIck7/R2UuVvOr/2Y32rZABrUmesdGe1j4nHiCoSaGx1vgNWz+V9T25M3
-         rh0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWL4QirodGuMXtRYygCRHIeJr6608uF6FzOGVzT8YQdH/e9BUORXBR/nNlQN96ixKe8UYO7pmw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT1jf4AQ3NEtm0f+ayC9aQjJuBwdKHacqwF+rLt80jrwF8ID/t
-	+k+TnRI7nHR8l6wVPk2pthc+jjHP0JvwuIUHOezn90LAtbaOhGzMGNHnLCGuwWBoApOThhDwwRK
-	isYVto6A3m8X3wcWwU1HdUMw9sLdgjcw=
-X-Gm-Gg: ASbGncucQsOt7PEDqC9Kq3DixefI/PX0UOcrEb33GUaU/OBW1FA2aD1N/giFKcSa7H4
-	qG5EKw1uIJn5MMIWo8WP7q/+AWxh3kk69959ySshvU+diHQUgSRxMWiSMpdO+BsV7W0jJ78T+ZE
-	C3IJp6ml3Zh/Tui3qt4SPThgca2GLFM37Eplg/f8i4pzadFSEC5ecF0/YH1OpQKijQUPRLnn5RR
-	gOGEDyxtWJCdaU9zUocYA0x47kHJqCtht64N5URzSGakZykDBjM9EnOhgVDpLoFPxAPyQ==
-X-Google-Smtp-Source: AGHT+IHH0/yc8vNLiTt4QwUBaRrKiAt2SaoPTELn+GAa9bZbtTZ9/A/quWX5m1L/0e5r+OgdHFfixxHNNWzg+xdnI6Y=
-X-Received: by 2002:a05:622a:294:b0:4ee:19f2:9f1b with SMTP id
- d75a77b69052e-4ee58a79321mr256090841cf.37.1764095030614; Tue, 25 Nov 2025
- 10:23:50 -0800 (PST)
+	s=arc-20240116; t=1764095824; c=relaxed/simple;
+	bh=B0BBEYut7RIJlNGta6URCghTht5K6Ylx4CfM49OtJcI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bP1q9J0qwSo815OlCexKprUXa5KLfQ5F7GvPnI48EjBn2URIvJAGL2JiTnrA38nJNjLB3O84wsOYKkrJ61nHCsFSfae1QN+LMr+1IzhcJJJmoKGCPyHeRV4Vrs+Gm5T8qqhW74n/9wToB0cDzxPYTi3GcngynQDJ5gOtyS6zjac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=Ud7xH5uZ; arc=none smtp.client-ip=178.154.239.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward202b.mail.yandex.net (Yandex) with ESMTPS id 09E55C3763;
+	Tue, 25 Nov 2025 21:31:25 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:21b4:0:640:bc6c:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 18C0DC00E0;
+	Tue, 25 Nov 2025 21:31:15 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CVhIZ91LUGk0-DtaOzvLb;
+	Tue, 25 Nov 2025 21:31:14 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1764095474; bh=2FdZrhnoWupSb9f/5xpKxyzrRF/l3tMNY1G5OKa5HCY=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Ud7xH5uZupD9I9n9Ua98CKElrKFDjYjLlNdJ//k9cKN+x9U0zHCagOakuBE3jUNYT
+	 h0U8UbyWi/2r0Ie7odPJSv8ADO6+Eut8vLijE9fl48wH3jdJ4gLtiNPEKNTejpF3e+
+	 YizKmN87JLlTie4AoCGEg0fxzCSTwWGe35kQf6OI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-70.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Alexei Safin <a.safin@rosa.ru>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: a.safin@rosa.ru,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on enable/disable
+Date: Tue, 25 Nov 2025 21:31:08 +0300
+Message-ID: <20251125183110.80525-1-a.safin@rosa.ru>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251125181347.667883-1-joannelkoong@gmail.com>
-In-Reply-To: <20251125181347.667883-1-joannelkoong@gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 25 Nov 2025 10:23:39 -0800
-X-Gm-Features: AWmQ_bkl5VDcemWfDtAk01TEc0j7nfDf_U_h9ZIrS3LFUcMxE4C9Y4oxt9ol7j0
-Message-ID: <CAJnrk1Y+QR8OfRBkZDe6a4R56m62-Evsu2cbRoKHHnK1JB+i1w@mail.gmail.com>
-Subject: Re: [PATCH] fuse: fix io-uring list corruption for terminated
- non-committed requests
-To: miklos@szeredi.hu
-Cc: bernd@bsbernd.com, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 25, 2025 at 10:15=E2=80=AFAM Joanne Koong <joannelkoong@gmail.c=
-om> wrote:
->
-> When a request is terminated before it has been committed, the request
-> is not removed from the queue's list. This leaves a dangling list entry
-> that leads to list corruption and use-after-free issues.
->
-> Remove the request from the queue's list for terminated non-committed
-> requests.
->
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Fixes: c090c8abae4b ("fuse: Add io-uring sqe commit and fetch support")
+media_pad_remote_pad_first() may return NULL when the media link is absent
+or disabled. The code dereferenced remote_pad->entity unconditionally,
+leading to a possible NULL dereference.
 
-Sorry, forgot to add the stable tag. There should be this line:
+On the disable path, always shut down the local stream when the remote pad
+or subdev is missing and then return 0, preserving local shutdown semantics
+and avoiding a crash.
 
-Cc: stable@vger.kernel.org
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> ---
->  fs/fuse/dev_uring.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index 0066c9c0a5d5..7760fe4e1f9e 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -86,6 +86,7 @@ static void fuse_uring_req_end(struct fuse_ring_ent *en=
-t, struct fuse_req *req,
->         lockdep_assert_not_held(&queue->lock);
->         spin_lock(&queue->lock);
->         ent->fuse_req =3D NULL;
-> +       list_del_init(&req->list);
->         if (test_bit(FR_BACKGROUND, &req->flags)) {
->                 queue->active_background--;
->                 spin_lock(&fc->bg_lock);
-> --
-> 2.47.3
->
+Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
+Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+---
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+index 08148bfc2b4b..4a75b0b6c525 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -358,7 +358,12 @@ static int ipu6_isys_csi2_enable_streams(struct v4l2_subdev *sd,
+ 	int ret;
+ 
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
++	if (!remote_pad)
++		return -ENOLINK;
++
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
++	if (!remote_sd)
++		return -ENODEV;
+ 
+ 	sink_streams =
+ 		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
+@@ -395,7 +400,16 @@ static int ipu6_isys_csi2_disable_streams(struct v4l2_subdev *sd,
+ 						&streams_mask);
+ 
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
++	if (!remote_pad) {
++		ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
++		return 0;
++	}
++
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
++	if (!remote_sd) {
++		ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
++		return 0;
++	}
+ 
+ 	ipu6_isys_csi2_set_stream(sd, NULL, 0, false);
+ 
+-- 
+2.50.1 (Apple Git-155)
+
 
