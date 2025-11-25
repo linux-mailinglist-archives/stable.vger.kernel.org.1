@@ -1,193 +1,235 @@
-Return-Path: <stable+bounces-196890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3A9C84C85
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 12:44:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14670C84CD4
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 12:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 17AB8343770
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:44:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 579EC34CD1B
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B79C30F7F3;
-	Tue, 25 Nov 2025 11:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D49314A89;
+	Tue, 25 Nov 2025 11:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZOt1yAU"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="DlHIOqxl";
+	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="EcFbmDDw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B234E27702D;
-	Tue, 25 Nov 2025 11:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764071047; cv=none; b=ReRKAUTLpyJt2JiTXqgLuscsanPcky5cqMTFliRym/9QE4YRcr5oLlsJZpGhcH5VKTw4xguri7cqxeRs5edEJun8f3+8AZMgDKDTYRh/dqSOYzfw+M/86BJkJjXCZJAJ2qAZP43DGbfvXqm6mTjEfEbq7dZRxOQQiy6d3Ju+2rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764071047; c=relaxed/simple;
-	bh=vVTFuivXVVctfsxXgI95eotLhEdM3LpDtVT4ZG3SnVU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB38431691E
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 11:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.168
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764071377; cv=fail; b=thS6T12VYqEshgylOSzXLSpV53Bn/7zb+yQK1hIaOS78bM1yBlZA3xambSrK8mYrCsgzmv+LKAeyhlWkzEO8zaOE1HV4Q78czcdVjr8+6g+k/dAkoGrrPiYvqRXU24yW+IQMuu0JWBysW9DFT9xQZCnQ0NpZ73zd7W6LOxqB2S4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764071377; c=relaxed/simple;
+	bh=QQ18z8kcSojU3liuPlXOSx5QZkxDR8uSMxDDOwl/1Vk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LnqgTYucGdeKpEIQl2CxaE1wf9DGJ/dAbWI/tffKE526froPrYF471cSkhHVh9755czJwsly9OUvQa0+9BPPxW0G2AFpovnuRtssWHgKqCucoT1q2s0CgFhoe7RbEbw6Wlplxj9y4mVrJCoEgMD1SbxeFRq6NIIUmHotmZL84e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZOt1yAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E9EC4CEF1;
-	Tue, 25 Nov 2025 11:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764071045;
-	bh=vVTFuivXVVctfsxXgI95eotLhEdM3LpDtVT4ZG3SnVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0ZOt1yAUoIB65heIefAUBfd/kT9DfOAEnCjfJK/VREOPyUEF+izK859G5eTANfPS6
-	 09bsaCuCtlA7qUYcv3iapc71p40VKDcY+QHSWWXTcIMdFw7r6qtN6g0YXEAuAZo9Pb
-	 W2ui0g0BFu1eIcPHbgPHYZEYxcWkkVz60A2lKO8k=
-Date: Tue, 25 Nov 2025 12:44:02 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Duoming Zhou <duoming@zju.edu.cn>
-Cc: linux-usb@vger.kernel.org, heikki.krogerus@linux.intel.com,
-	mitltlatltl@gmail.com, linux-kernel@vger.kernel.org,
-	sergei.shtylyov@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] usb: typec: ucsi: fix use-after-free caused by
- uec->work
-Message-ID: <2025112555-widow-ravage-ddb8@gregkh>
-References: <cover.1764065838.git.duoming@zju.edu.cn>
- <cc31e12ef9ffbf86676585b02233165fd33f0d8e.1764065838.git.duoming@zju.edu.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NJlq9uHzHZq76CS2rBHnd8+ohNKtR3XUOfzYb9y8yJTxhHs3Eebq9TSd/d+1MwsLOAHXRG0Vc2K7GeBQrAUh8LgvycTftZKBEZJH4ihP08u3bMbRbY/Zdy3Hyik/MRA5v2/JB6NOmdpgW5e62w6P56KipE7fyxYeU8CBaPPqgwg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=DlHIOqxl; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=EcFbmDDw; arc=fail smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP4jkG03667332;
+	Tue, 25 Nov 2025 05:49:26 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=Nsc1lnivjaNf/sHVXQTttb2QypCuTVZfoD1jrIetJyA=; b=
+	DlHIOqxlweT1iwE+OZOI224Ah/ax807MUVCNaDbHFuVslK1Zv+Vlzen2JmKSi1HJ
+	88qUFifBvbSu63b8L66K/OnPdJNmLg0EfUJkQXeySrIMZCA38R/gu/+F2RiLWEK9
+	M//YmLdDgZG0KhCQGeQb+t7kngyGWrAbJHxB5Warv8/AXFH18zx2qg9+7oiEszY1
+	imfVyyRBAz3EdZwfoKcuiaSNkDlauJJzuCbrMnKr9fY1HG2VUJXfbxJ3chkzmncJ
+	cvH24o6pXyxh43wuYUAcX3baP03+RxLnllkJKlK0DqOuolIaTGwlE6CXEIKGwado
+	kuFT9D0GGmyeeHDkGgYCUQ==
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11020096.outbound.protection.outlook.com [52.101.85.96])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4akafkaxe1-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 25 Nov 2025 05:49:25 -0600 (CST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GbI5vjsBbxYnpZrOXk7ONWV3k4TO9LrO5OuIAbF2UFzHwyYjjdHH3+3T3aIkdDrlo0A0MLnhYdSTQshMdnZOu1bISwYviVectWfde2A49kXrDHXbF7/72r4dykqdu+2zBDZXG72xWGej5Dt4qU0s1zAHUUxfMVXqGe0z+03f7aezTt4JjRPFDLz04XfZg2Vz83huTUtjH5KNDoFQi+FJkG3pNerhyxphddHmEJUwh0AGDhtBztVFBzItxgBQ99IFn7CAUPfXciH/SKIEMv+2EAalKRQnrt6W1f6VYOi2CYeB+UW5yOgN1S5G9JeVW4ACkaPtxplXGRmk/KZ8nNOMnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nsc1lnivjaNf/sHVXQTttb2QypCuTVZfoD1jrIetJyA=;
+ b=BL83dpRsoVadDGgaRkjuJHunWbZGyzNIwZwf0AzHso4eP4LDMiNcr/HFi1MO+jr1eLnG76yE6kVLejmwnYF1Ct2Z5rWpNDjkDefalCwUvgabOFZGfHMM60P/h6dpOWGuuKytAo9aDg57uu0LxcUcTvRdOsx0XwzRlplu2U9d7Syb+PHr0RcUZgPGgKbj+K1C6zk55RnXsPPB0m7uVS8oTGuBM4fGyy0FUuZ1hmEolkFQ06wLejXgXxB6rJ7afYJW6WAqHhnEdqKxEAUPcw61HstiGXyD4ykLuGRo+plfIJ1xhCFJr5HcZ08Jeh7kYt2YvP2SHbdQqvoj7csgBuyWag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 84.19.233.75) smtp.rcpttodomain=bgdev.pl smtp.mailfrom=opensource.cirrus.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=opensource.cirrus.com; dkim=none (message not signed); arc=none
+ (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Nsc1lnivjaNf/sHVXQTttb2QypCuTVZfoD1jrIetJyA=;
+ b=EcFbmDDwTieVhL1+0Hg/gIzsYTF+49BiVZaGkU3MVIVehA63VBJUUH4OheLliVN7wzax6MO0pAxQmJBQt49iw+2JODWTr8Xnh4pOjRfiCgEWl4c6dw/3SgR5DqXmLUeunVm2cC2yEik0hnjmab/im8DakoGpcsTb95yNkoi8FKg=
+Received: from BYAPR06CA0025.namprd06.prod.outlook.com (2603:10b6:a03:d4::38)
+ by CH4PR19MB8682.namprd19.prod.outlook.com (2603:10b6:610:232::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.18; Tue, 25 Nov
+ 2025 11:48:06 +0000
+Received: from SJ5PEPF000001E8.namprd05.prod.outlook.com
+ (2603:10b6:a03:d4:cafe::5c) by BYAPR06CA0025.outlook.office365.com
+ (2603:10b6:a03:d4::38) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.12 via Frontend Transport; Tue,
+ 25 Nov 2025 11:48:06 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
+ does not designate 84.19.233.75 as permitted sender)
+ receiver=protection.outlook.com; client-ip=84.19.233.75;
+ helo=edirelay1.ad.cirrus.com;
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ SJ5PEPF000001E8.mail.protection.outlook.com (10.167.242.196) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.7
+ via Frontend Transport; Tue, 25 Nov 2025 11:48:05 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 86BB3406540;
+	Tue, 25 Nov 2025 11:48:03 +0000 (UTC)
+Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 660E482024D;
+	Tue, 25 Nov 2025 11:48:03 +0000 (UTC)
+Date: Tue, 25 Nov 2025 11:48:02 +0000
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, stable@vger.kernel.org,
+        linus.walleij@linaro.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH] Revert "gpio: swnode: don't use the swnode's name as the
+ key for GPIO lookup"
+Message-ID: <aSWXcml8rkX99MEy@opensource.cirrus.com>
+References: <20251125102924.3612459-1-ckeepax@opensource.cirrus.com>
+ <CAMRc=MfoycdnEFXU3yDUp4eJwDfkChNhXDQ-aoyoBcLxw_tmpQ@mail.gmail.com>
+ <2025112531-glance-majorette-40b0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cc31e12ef9ffbf86676585b02233165fd33f0d8e.1764065838.git.duoming@zju.edu.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025112531-glance-majorette-40b0@gregkh>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E8:EE_|CH4PR19MB8682:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cb0a0ea-f960-45f7-e56c-08de2c187f2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|61400799027|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aDhQWHhBT2s2aXh6SEpybXdWWXdQdWh0OVg1WTZReXpWd2orRFl4RCtqYjdT?=
+ =?utf-8?B?L3hhQmUrbzlFZUFCWHZUY2prbFk1MENUcFZiWG1sZzNod0RZdGpWcVB2dTRU?=
+ =?utf-8?B?b2hqakV6QW9UTHpVNnJaUENCNXIrU21PWHpVdUdZWm9MVHMzTmxJN0U4b0E3?=
+ =?utf-8?B?aGNyenJOQ1lsMWNUOFNpZTRRRzIrQzFLSzRLU0x2dktQT2REbFMrUUZaUStr?=
+ =?utf-8?B?cjBRVVRTQW8yUmxvVDZpTzBOQTl3WmVBalg4Qkk1SzE2WlpGcFl6WFo5QzR1?=
+ =?utf-8?B?NzdvNmpJeHVPMWQydTRuREdvcG9HcC9HSTZsY0trNWgwQ1Qza3dvQ2UwUzBl?=
+ =?utf-8?B?RjJrNkVYd0RqU2RXOXlGd1dVUW1xWitZQmhSZjdiMndLRWF0SFFOS2hUV0tL?=
+ =?utf-8?B?OHUzbjJCd2EyQ3BqZTFFY2pOcS9MQXdhS3I1b1oxamdQeXExRDZ0UGpJYjZo?=
+ =?utf-8?B?UGF4WlFPdXpIeEwvT2tMbjJwaDgvZGc1SkdGL2Uzc3JmYkFCM2JTdW1jMUFT?=
+ =?utf-8?B?REVMMmdPNXZ2VDRUMExudVpjaWd0NW9XZDFtSVBoNVlwSTZVNDRpWWQ0NzR5?=
+ =?utf-8?B?T1BLa3N1Mlk0T1A2UkJBcnFtcC9lSWNPcHdOSlhCWFZnSUxjU1pGVlRYaWFN?=
+ =?utf-8?B?ZFp3NWtKd2M0S3M0cFVQbU4ycVM3b2txejJMRFp5S3VjaFVmMEdEV3hKc0p3?=
+ =?utf-8?B?NExtSHBUVVF6ajFyY21qUzk2MXhJS0RBbFpTUXBtbEhscFJxbkcwUnpMaXFU?=
+ =?utf-8?B?dHp2V2tTSElJbEdTcjNlQWdiTkJNZUFhWk9TVEJpLzZyU0xOenA3aXlVQ1l2?=
+ =?utf-8?B?dXdoekY1T2liaU50N1hja1Fyam5FQW1OSmx3WlU0VVRUNlQ0NEpTdUZIY0tk?=
+ =?utf-8?B?RDcwOWxrYy9Bdmp3TWlCWnlneVRaUEJTcEV5eFZnZmpsSjVwb2h6VVRDWWN1?=
+ =?utf-8?B?aUtEaWRRSkNVVDkvMjd3d0t4VDJ4NkFteGVNOUt6bFVwK3FadXE3WmRwSVFx?=
+ =?utf-8?B?MTFVc1hLN3FTMElqc0c5RU1scTg1ZWozNmtMN1RJVTRpQjlpakgyN0llT1h1?=
+ =?utf-8?B?RVM5TTgzRkZ0Um1BSG5vSFRJYWxlaEtQQU5kV0gwbDNNQU8rdlIzTGsxNTFh?=
+ =?utf-8?B?L043NFlqV3hvaTZUY3NPTUhoN3pnWE9MU1p1dkhkWjBzdTdJcUhKMSt2SDVE?=
+ =?utf-8?B?Z3pDQ21LM3NocWl5N3BiQi9HcWFRUXpXSmM1S2NJUWY1VGhzQmJxL0RudUpV?=
+ =?utf-8?B?bENDaWFsTFpzRFJUTzNRTU16b0tVYkEzdW4zNVpjM202REJUUnZ3dmJNUWdk?=
+ =?utf-8?B?bkdRT252QlhSZUNtTUJOOTlrQWRsc2hkYldKYmM1bjZGN3dlcm9qMW9qS20v?=
+ =?utf-8?B?YkFDZjlNNWxWUnd6NjJqaVpSS1hOR3UySGNXWjNiY1VGVktUSi9IZlp5Uk1y?=
+ =?utf-8?B?c0hHNzdiQ0Q0NmExcXpLQ0dZQmc0OFQ1WGYvRlhXUFdzV0Rna3pERXFlSy9E?=
+ =?utf-8?B?anFXYVZ5WTNmSEVpdkdYazFyRFcwT3AzWU5SQ2RqcEZXcDgvYnQ1NjlHZFRj?=
+ =?utf-8?B?T2JGcGJHb3pGeDRlZXVtL2pXQWN6ajR3SlRIa1MvWUYzN0JINkZXbGdXK284?=
+ =?utf-8?B?bk92NS9kdTl6RjROdUo4NUxPZ2dkUVB6SFY1M2ZRa0pLbklyWUNFaDFNemRZ?=
+ =?utf-8?B?SWZ2Y3dYMGRTeXd5Mm1JZzI1Q1p2SytvMFZ4MUwwd2hTQzV3TUl4Wk9CKzJn?=
+ =?utf-8?B?emRtT1QxVXdydm9HUTc1akdBMkhmL0lyalVPaGw0akRhZkNwWjBlNmtzYytI?=
+ =?utf-8?B?TnhkazhVRUlvOEJlOHdJL3hCUEFDYTNxUUxQQ1dZeTI5Q25tNS8zWjdBOWND?=
+ =?utf-8?B?UkNkWHhHNkFianVZUW43Mit3YTVqWk5sR0RGMkFvL0pVOGNaWk1sN3JIVEw2?=
+ =?utf-8?B?d0l6eUFSSDZWNHFsbElYSkw4SkNZc1FybTNQVHVtekczUVZNQloxcVE2aFhL?=
+ =?utf-8?B?YlZsdjN6eVV1V0Zhblo5dXpkaWxTcldJVHhXSzNrbTluUEVjVUxFa3Z2WHhO?=
+ =?utf-8?B?dkU0alBVdi80T0Vjdnc2VDl4S1RZcHJtaFFWZnYvejE2UHR2WU5vRHlDS25M?=
+ =?utf-8?Q?IqpU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(376014)(61400799027)(36860700013)(13003099007);DIR:OUT;SFP:1102;
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 11:48:05.4566
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cb0a0ea-f960-45f7-e56c-08de2c187f2f
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-SJ5PEPF000001E8.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH4PR19MB8682
+X-Proofpoint-ORIG-GUID: 0p5yR3XE4S29BlmG2h44lyJdIpjE8rMp
+X-Proofpoint-GUID: 0p5yR3XE4S29BlmG2h44lyJdIpjE8rMp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA5NyBTYWx0ZWRfX+cht6e+cToH8
+ qY0OHZOp6q+5W32aIWs9I0cBjLZMBn8JrYJohlJwWfBIyjqQnt+cT9zMwbDiAFKsLA6KnBoD9EB
+ PhgH6vI9TBHCf1kqZGUQmEr8S4YAEa9IqjdLYI7cNUG78M6vpcLA0VInUCC8403NUXnM0C4lnBw
+ kiUu0RKj2rU1T1ofLnyJ+0vfzdMDm99Nv6GzQfOZi/AJp/OK25+c+AijG9Y6yZY5OgNkbH38UuD
+ vx5EAWUUWfOrtSq7JCo51PrJyrliKwg+XO7QBms1gGwYnrbJM3XWX30Qao1SWgN3iRqoAZ9kU+S
+ acMxW4lhyfajBf/iN7eA2zcpZgO83Kz5+ZVFTKvO6i1RWC1geJxqfLQkgTQxaRJOOcBw1DmSvsR
+ 8RVJseMHkwNmbUYf1hCAuT7Zm3oFzg==
+X-Authority-Analysis: v=2.4 cv=Dacaa/tW c=1 sm=1 tr=0 ts=692597c5 cx=c_pps
+ a=wyQZsu7YS+H2q1uHh87QeQ==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=O_mYIUxG9PxvoMOS:21 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=NEAV23lmAAAA:8
+ a=w1d2syhTAAAA:8 a=B8rR2PiwNwbCYtC2KzQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Reason: safe
 
-On Tue, Nov 25, 2025 at 06:36:27PM +0800, Duoming Zhou wrote:
-> The delayed work uec->work is scheduled in gaokun_ucsi_probe()
-> but never properly canceled in gaokun_ucsi_remove(). This creates
-> use-after-free scenarios where the ucsi and gaokun_ucsi structure
-> are freed after ucsi_destroy() completes execution, while the
-> gaokun_ucsi_register_worker() might be either currently executing
-> or still pending in the work queue. The already-freed gaokun_ucsi
-> or ucsi structure may then be accessed.
+On Tue, Nov 25, 2025 at 12:43:16PM +0100, Greg KH wrote:
+> On Tue, Nov 25, 2025 at 11:31:56AM +0100, Bartosz Golaszewski wrote:
+> > On Tue, Nov 25, 2025 at 11:29 AM Charles Keepax
+> > <ckeepax@opensource.cirrus.com> wrote:
+> > >
+> > > This reverts commit 25decf0469d4c91d90aa2e28d996aed276bfc622.
+> > >
+> > > This software node change doesn't actually fix any current issues
+> > > with the kernel, it is an improvement to the lookup process rather
+> > > than fixing a live bug. It also causes a couple of regressions with
+> > > shipping laptops, which relied on the label based lookup.
+> > >
+> > > There is a fix for the regressions in mainline, the first 5 patches
+> > > of [1]. However, those patches are fairly substantial changes and
+> > > given the patch causing the regression doesn't actually fix a bug
+> > > it seems better to just revert it in stable.
+> > >
+> > > CC: stable@vger.kernel.org # 6.12, 6.17
+> > > Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org/ [1]
+> > > Closes: https://github.com/thesofproject/linux/issues/5599
+> > > Closes: https://github.com/thesofproject/linux/issues/5603
+> > > Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > > ---
+> > >
+> > > I wasn't exactly sure of the proceedure for reverting a patch that was
+> > > cherry-picked to stable, so apologies if I have made any mistakes here
+> > > but happy to update if necessary.
+> > >
+> > 
+> > Yes, I'd like to stress the fact that this MUST NOT be reverted in
+> > mainline, only in v6.12 and v6.17 stable branches.
 > 
-> Furthermore, the race window is 3 seconds, which is sufficiently
-> long to make this bug easily reproducible. The following is the
-> trace captured by KASAN:
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in __run_timers+0x5ec/0x630
-> Write of size 8 at addr ffff00000ec28cc8 by task swapper/0/0
-> ...
-> Call trace:
->  show_stack+0x18/0x24 (C)
->  dump_stack_lvl+0x78/0x90
->  print_report+0x114/0x580
->  kasan_report+0xa4/0xf0
->  __asan_report_store8_noabort+0x20/0x2c
->  __run_timers+0x5ec/0x630
->  run_timer_softirq+0xe8/0x1cc
->  handle_softirqs+0x294/0x720
->  __do_softirq+0x14/0x20
->  ____do_softirq+0x10/0x1c
->  call_on_irq_stack+0x30/0x48
->  do_softirq_own_stack+0x1c/0x28
->  __irq_exit_rcu+0x27c/0x364
->  irq_exit_rcu+0x10/0x1c
->  el1_interrupt+0x40/0x60
->  el1h_64_irq_handler+0x18/0x24
->  el1h_64_irq+0x6c/0x70
->  arch_local_irq_enable+0x4/0x8 (P)
->  do_idle+0x334/0x458
->  cpu_startup_entry+0x60/0x70
->  rest_init+0x158/0x174
->  start_kernel+0x2f8/0x394
->  __primary_switched+0x8c/0x94
-> 
-> Allocated by task 72 on cpu 0 at 27.510341s:
->  kasan_save_stack+0x2c/0x54
->  kasan_save_track+0x24/0x5c
->  kasan_save_alloc_info+0x40/0x54
->  __kasan_kmalloc+0xa0/0xb8
->  __kmalloc_node_track_caller_noprof+0x1c0/0x588
->  devm_kmalloc+0x7c/0x1c8
->  gaokun_ucsi_probe+0xa0/0x840  auxiliary_bus_probe+0x94/0xf8
->  really_probe+0x17c/0x5b8
->  __driver_probe_device+0x158/0x2c4
->  driver_probe_device+0x10c/0x264
->  __device_attach_driver+0x168/0x2d0
->  bus_for_each_drv+0x100/0x188
->  __device_attach+0x174/0x368
->  device_initial_probe+0x14/0x20
->  bus_probe_device+0x120/0x150
->  device_add+0xb3c/0x10fc
->  __auxiliary_device_add+0x88/0x130
-> ...
-> 
-> Freed by task 73 on cpu 1 at 28.910627s:
->  kasan_save_stack+0x2c/0x54
->  kasan_save_track+0x24/0x5c
->  __kasan_save_free_info+0x4c/0x74
->  __kasan_slab_free+0x60/0x8c
->  kfree+0xd4/0x410
->  devres_release_all+0x140/0x1f0
->  device_unbind_cleanup+0x20/0x190
->  device_release_driver_internal+0x344/0x460
->  device_release_driver+0x18/0x24
->  bus_remove_device+0x198/0x274
->  device_del+0x310/0xa84
-> ...
-> 
-> The buggy address belongs to the object at ffff00000ec28c00
->  which belongs to the cache kmalloc-512 of size 512
-> The buggy address is located 200 bytes inside of
->  freed 512-byte region
-> The buggy address belongs to the physical page:
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ec28
-> head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
-> page_type: f5(slab)
-> raw: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
-> raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
-> head: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
-> head: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
-> head: 03fffe0000000002 fffffdffc03b0a01 00000000ffffffff 00000000ffffffff
-> head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
-> page dumped because: kasan: bad access detected
-> 
-> Memory state around the buggy address:
->  ffff00000ec28b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->  ffff00000ec28c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ffff00000ec28c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                                               ^
->  ffff00000ec28d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->  ffff00000ec28d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ==================================================================
-> 
-> Add disable_delayed_work_sync() in gaokun_ucsi_remove() to ensure
-> that uec->work is properly canceled and prevented from executing
-> after the ucsi and gaokun_ucsi structure have been deallocated.
-> 
-> Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> ---
->  drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> index 8401ab414bd..c5965656bab 100644
-> --- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> +++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> @@ -503,6 +503,7 @@ static void gaokun_ucsi_remove(struct auxiliary_device *adev)
->  {
->  	struct gaokun_ucsi *uec = auxiliary_get_drvdata(adev);
->  
-> +	disable_delayed_work_sync(&uec->work);
->  	gaokun_ec_unregister_notify(uec->ec, &uec->nb);
->  	ucsi_unregister(uec->ucsi);
->  	ucsi_destroy(uec->ucsi);
-> -- 
-> 2.34.1
-> 
-> 
+> But why?  Why not take the upstream changes instead?  We would much
+> rather do that as it reduces the divergance.  5 patches is trivial for
+> us to take.
 
-What changed from v1?
+My thinking was that they are a bit invasive for backports, as
+noted in the commit message. But if that is the preferred option
+I can do a series with those instead?
+
+Thanks,
+Charles
 
