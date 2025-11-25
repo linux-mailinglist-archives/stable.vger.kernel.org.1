@@ -1,222 +1,142 @@
-Return-Path: <stable+bounces-196926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5546BC86718
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAA0C868E9
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C8CB134E942
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:06:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 37989350E70
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2408318152;
-	Tue, 25 Nov 2025 18:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A8632B98C;
+	Tue, 25 Nov 2025 18:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HEEWVRi7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJjL6Tfk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FF3279918
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 18:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AAE27FD7C
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 18:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764094000; cv=none; b=PKsrdaVZnZkMGaKQXJWEnr4j6E7QByCkvF4S6+VgRsnjucztg03EBtDukixlWzIv1N2UfoTBFtWLJQ2M3frjD9DjkzLdyf1of6v6yQvDr5qydxtSpaUpQHWk6iQjHf20r8u3PMNJIs6L+fGxco6cbbMoMRmPDmPnw9c128YwtUQ=
+	t=1764094765; cv=none; b=AvlCQ4QBjLsMro3lU1KCGcp11guN8NDL4dyabvaMMgGAX6qtGYI9+BzMDYlwIgBLEk6uQgiePEg6VxkGXoxqD8G5yVt7+H1mNMsvzVXk/ISkyfMJ60U+/AEjgfmh2eGnUqJVuoxMgq3P8S5GeO+a0KePfZ9aGtN3uajLxt2UvNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764094000; c=relaxed/simple;
-	bh=e6gOZivKWucoCj4SX5VPtfDdPYEAoM9J/B4ywwRF/fs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r/rHde0ChNfFsv6Dji+WqL7mr1jdwnJlfZvu9AF6MldOfd19g54uBCuL058QVJSKQifUnWkpNwvXAphIoYT7aSrzHVRlf/aNk6VC/kP8FhzxIxzViCYIVdGO1XZ82vTPDD7H4MdP7qbIFHH/4VrLskItweEOuEIj56K5yZKsLmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HEEWVRi7; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764093999; x=1795629999;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=e6gOZivKWucoCj4SX5VPtfDdPYEAoM9J/B4ywwRF/fs=;
-  b=HEEWVRi7oDnM2lEmKcZ+v/usAOOZJVTdc1NfjDB53A7BovA9Sgs3JJ4v
-   yW5XBH5mT38twx74s6pj2ybIW3+FHNBCzzvDhBgATtSAKpjfE3peo8Bp3
-   uUy3bJcjAxakvEYxGTWPl5kGg1xS8yodWDZJrtoUOyKFLZ0mZ8+C1L01u
-   GuU4w84GnkZwGShlPMFvNEwgBnMlM/VEOletCA+NP+QryjCPhZnzfBpxQ
-   3z8kvxbyP4l5gz0Mwp5fdMakdGWAgCMOv04YpO35xUcWr1gX3jNDpeTFb
-   TnIdqDmcPlbaY+2VWGXMy6lO4SrJyvCihDOk+p2fSB8KUOJAY8ZjbL3fh
-   g==;
-X-CSE-ConnectionGUID: /zKOU4AJSwevN+N8j3cHSg==
-X-CSE-MsgGUID: DzGQn4ZuRyCyVleM2Fa9Xg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="69982995"
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="69982995"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 10:06:38 -0800
-X-CSE-ConnectionGUID: 0IAr0RdlSAeCXu18E32uLQ==
-X-CSE-MsgGUID: VwRigk5CS0SKMoPFEeXEiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="223672756"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.217])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 10:06:34 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: stable@vger.kernel.org, =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
- Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>
-Subject:
- Re: [PATCH] drm/i915/gem: NULL-initialize the eb->vma[].vma pointers in
- gem_do_execbuffer
-Date: Tue, 25 Nov 2025 19:06:32 +0100
-Message-ID: <4423188.Fh7cpCN91P@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20251125133337.26483-2-krzysztof.niemiec@intel.com>
-References: <20251125133337.26483-2-krzysztof.niemiec@intel.com>
+	s=arc-20240116; t=1764094765; c=relaxed/simple;
+	bh=3FhC+kXH3B5AzVMbeuWeYDSaWr81HEASC/43OOHPKHc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MiljUj2RljV/iEkEPfenRScpuIo6JFjqQXokKjDd7joJFZMWd4DRu2JMf10o95usorJihqg4t8i+jCj0VrSRyoOUcuJcOGQFrBTOB+u8wCr3u5aS2+xfJqHOojXUGMehGY6GbvgURDNXHxHfsf7aTsADmFiDPw+0RcJq6yXmI80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJjL6Tfk; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42b3377aaf2so3418223f8f.2
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 10:19:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764094762; x=1764699562; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QD1CCAPcssLzpZsS6Mj5rvSwQ5nCelYbF5aDvpoGo1o=;
+        b=dJjL6TfkgDfu7E+COhTjOmcA3NmQLyspkdKwIyuxvH6JigElOF5NSq2zlxWbFLrdTk
+         sE3TeLNCgYAcJjFAGqXK5ltydlWoDM281bH81EwcYq28hXcM5TrP5qjnf/xIxqMmGZtj
+         cTjUuC+h/MuCq5JWGGb3lSlz/04TO3GCl0yJnQGtF34FBTjFJdaF2+UqRLS9IyKmh3Xu
+         AjeFBkjVJE7L7jxT1zvMabsEH+w15ij7FfZ6GcY1UnlfMWEF+bRMFmHsTCdo5A1fMPu7
+         ucdS/F6xvcmWaBl8bzSb/sgZxRdloFSv9QLPzT1q5Teee1rQCZXAXNQg9gqU5cVH6xpW
+         Hwxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764094762; x=1764699562;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QD1CCAPcssLzpZsS6Mj5rvSwQ5nCelYbF5aDvpoGo1o=;
+        b=RoMQjwtWp3XIeIy4zj6X87JCGGC16On2wR4qCx2NXHX7CiQeyYM+FCuWnRQecdudgS
+         vwthkbLpKCY61Muhp3JumDIhf1MA8J+8323umpJmZxqRUK7Es0cHhqfi3DAprU+7BLWg
+         iy/8GS5VpbFdmG+scnBnzred/Lo79f2SAPcQ/iDv7ysloOCx5k5Na+BdMRndJvFvvDRn
+         1lXevzvw941TWJClpDkZmEwPuXPelyLQWO2fGZz2YjvyC/xg3uH1TntDwZ4DI2VgPE1R
+         Ve6OIikFvYgFCGGu4GojcOgU4w0Tx2yi2FExV0GswqVr9UnpsE5NsXM7G0Pfz3ekaWB7
+         3ZsA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3sfa4iTvgjR54hV/oZ2444yvQqNZc89ZOkSFrbHTDr0XcQNFnDJe0/VS5gb7pfF7hM17pOMw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyT16fcq9zANUyY6G6gbWAwUZ0YJBVX1cDZnunudNQ+muH0Lov
+	ECw3TOMLtjxB2IkBs+sWk90H5dCGAHn5/IKQbSqC/at7NypjXDNYqm1f
+X-Gm-Gg: ASbGncu9OLjrzpDoH37r5tS1TYszvfvjcJedlTKkJVliuoy/522/CTYPkpGRHwlpjo+
+	u3JcPB1EplVW7upGHzqHt0jiSgkooMqcCRLeC7dnaxGX0L3maAVhh35NRdyJ0j7gvmxwnTUk+u7
+	WVKUlu0ohfRxEKLC/xGWp4TRIdXG+995pE1oCxxITvN859edT+xujUxx/LRRkbdVvxsktGS31y8
+	lT/UWfoC7u/k/kekRd81FAQGQb6ocHCE9Tia2RSJaB43Sf0EXDU1sOrSPzwAB1kNx1fxZiQ8kDc
+	geJ3pffb/jr7W7kvVO67eA8t6JJi+3CVr3cklbn5AjXSwYQWTIru7tVrkxZLckDOwdackuv6E+n
+	pUSxqD3la+3lZukFwfqBvmTSWeqlD/V8z8S3goC8lTwORC4EbjFwmnqPF6dsN6TOfp12aKZkGhv
+	KJVH0HHQg=
+X-Google-Smtp-Source: AGHT+IFHbDwkp2CaWm16Z6NarVIxFHbx8YbHfm4wnApcclc+Vfg/xfl2pHmCg5MNHh57zJw7P8OF0Q==
+X-Received: by 2002:a5d:5f44:0:b0:42b:41dc:1b58 with SMTP id ffacd0b85a97d-42cc1d19957mr16662352f8f.45.1764094762096;
+        Tue, 25 Nov 2025 10:19:22 -0800 (PST)
+Received: from [192.168.1.12] ([41.34.101.194])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd8c47sm37081312f8f.38.2025.11.25.10.19.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 10:19:21 -0800 (PST)
+Message-ID: <f67a5702-4b44-41bb-9538-19063bc28b41@gmail.com>
+Date: Tue, 25 Nov 2025 20:19:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-
-Re-sending because of my response unintentionally HTML formatted, with correct 
-email address of Tvrtko by the way.
-
-
-Hi Krzysztof,
-
-On Tuesday, 25 November 2025 14:33:38 CET Krzysztof Niemiec wrote:
-> Initialize eb->vma[].vma pointers to NULL when the eb structure is first
-> set up.
-> 
-> During the execution of eb_lookup_vmas(), the eb->vma array is
-> successively filled up with struct eb_vma objects. This process includes
-> calling eb_add_vma(), which might fail; however, even in the event of
-> failure, eb->vma[i].vma is set for the currently processed buffer.
-> 
-> If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-> prompts a call to eb_release_vmas() to clean up the mess. Since
-> eb_lookup_vmas() might fail during processing any (possibly not first)
-> buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-> at what point did the lookup function fail.
-> 
-> In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-> function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-> set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-> current one needs to be cleaned up by eb_release_vmas() at this point,
-> so the next one is set. If eb_add_vma() fails, neither the current nor
-> the next vma is nullified, which is a source of a NULL deref bug
-> described in [1].
-> 
-> When entering eb_lookup_vmas(), the vma pointers are set to the slab
-> poison value, instead of NULL. 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] HID: memory leak in dualshock4_get_calibration_data
+To: Max Staudt <max@enpas.org>, Jiri Slaby <jirislaby@kernel.org>,
+ roderick.colenbrander@sony.com, jikos@kernel.org, bentiss@kernel.org
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+4f5f81e1456a1f645bf8@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20251122173712.76397-1-eslam.medhat1993@gmail.com>
+ <6251f6df-d4ac-4681-8e8b-6df2514e655b@kernel.org>
+ <44eb6401-e021-4c69-96af-0554f4f31e57@enpas.org>
+Content-Language: en-US
+From: Eslam Khafagy <eslam.medhat1993@gmail.com>
+In-Reply-To: <44eb6401-e021-4c69-96af-0554f4f31e57@enpas.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Your commit description still doesn't answer my question why the whole memory 
-area allocated to the table of VMAs is not initialized to 0 on allocation, 
-only left populated with poison values.
-
-Thanks,
-Janusz
-
-> This doesn't matter for the actual
-> lookup, since it gets overwritten anyway, however the eb_release_vmas()
-> function only recognizes NULL as the stopping value, hence the pointers
-> are being nullified as they go in case of intermediate failure. This
-> patch changes the approach to filling them all with NULL at the start
-> instead, rather than handling that manually during failure.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-> Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-> Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-> Cc: <stable@vger.kernel.org> # 5.16.x
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-> ---
->  .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 27 ++++++-------------
->  1 file changed, 8 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> index b057c2fa03a4..02120203af55 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> @@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
->  		vma = eb_lookup_vma(eb, eb->exec[i].handle);
->  		if (IS_ERR(vma)) {
->  			err = PTR_ERR(vma);
-> -			goto err;
-> +			return err;
->  		}
->  
->  		err = eb_validate_vma(eb, &eb->exec[i], vma);
->  		if (unlikely(err)) {
->  			i915_vma_put(vma);
-> -			goto err;
-> +			return err;
->  		}
->  
->  		err = eb_add_vma(eb, &current_batch, i, vma);
-> @@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
->  
->  		if (i915_gem_object_is_userptr(vma->obj)) {
->  			err = i915_gem_object_userptr_submit_init(vma->obj);
-> -			if (err) {
-> -				if (i + 1 < eb->buffer_count) {
-> -					/*
-> -					 * Execbuffer code expects last vma entry to be NULL,
-> -					 * since we already initialized this entry,
-> -					 * set the next value to NULL or we mess up
-> -					 * cleanup handling.
-> -					 */
-> -					eb->vma[i + 1].vma = NULL;
-> -				}
-> -
-> +			if (err)
->  				return err;
-> -			}
->  
->  			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
->  			eb->args->flags |= __EXEC_USERPTR_USED;
-> @@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
->  	}
->  
->  	return 0;
-> -
-> -err:
-> -	eb->vma[i].vma = NULL;
-> -	return err;
->  }
->  
->  static int eb_lock_vmas(struct i915_execbuffer *eb)
-> @@ -3362,6 +3347,7 @@ i915_gem_do_execbuffer(struct drm_device *dev,
->  	struct sync_file *out_fence = NULL;
->  	int out_fence_fd = -1;
->  	int err;
-> +	int i;
->  
->  	BUILD_BUG_ON(__EXEC_INTERNAL_FLAGS & ~__I915_EXEC_ILLEGAL_FLAGS);
->  	BUILD_BUG_ON(__EXEC_OBJECT_INTERNAL_FLAGS &
-> @@ -3375,7 +3361,10 @@ i915_gem_do_execbuffer(struct drm_device *dev,
->  
->  	eb.exec = exec;
->  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
-> -	eb.vma[0].vma = NULL;
-> +
-> +	for (i = 0; i < args->buffer_count; i++)
-> +		eb.vma[i].vma = NULL;
-> +
->  	eb.batch_pool = NULL;
->  
->  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-> 
-
+On 11/24/25 16:06, Max Staudt wrote:
+> On 11/24/25 3:32 PM, Jiri Slaby wrote:
+>> Isn't this fixed already by:
+>> commit 8513c154f8ad7097653dd9bf43d6155e5aad4ab3
+>> Author: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+>> Date:   Mon Nov 10 22:45:50 2025 +0530
+>>
+>>      HID: playstation: Fix memory leak in 
+>> dualshock4_get_calibration_data()
+>> ?
+>
+> As far as I can see, that patch does indeed fix the same issue, and it 
+> is already upstream.
+>
+> Thanks for the hint - Abdun's patch has been upstreamed quite 
+> recently, hence I guess Eslam missed it by accident. But maybe I'm 
+> wrong and Eslam can chime in himself?
+Thank's Max & Jiri,
+sorry i was sick the past couple of days i missed your replies.
+yes. that patch fixes it. I guess i missed it because it wasn't merged 
+yet when i submitted v1.
+So please ignore this patch.
+>
+>
+>> Anyway, this is a typical use-case for __free(). Why not to use that?
+>
+> Wow, there's been a lot of interesting stuff happening around 
+> cleanup.h. I've been out of the kernel for too long, this looks like 
+> fun. Thanks for pointing it out :)
+>
+>
+> Max 
+Lastly, One question to max,
+at the beginning of the function  dualshock4_get_calibration_data
+buf = kzalloc(DS4_FEATURE_REPORT_CALIBRATION_SIZE, GFP_KERNEL); if 
+(!buf) { ret = -ENOMEM; goto transfer_failed; }
+if the allocation fails. can't we just return here . or do we need to go 
+the the end of the function and do sanity checks at the end?
 
 
 
