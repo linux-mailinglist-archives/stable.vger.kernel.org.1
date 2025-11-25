@@ -1,205 +1,116 @@
-Return-Path: <stable+bounces-196899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D999C85135
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:03:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA716C8527D
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B9E64EA0F5
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D6CB3AEEF2
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EDB322C65;
-	Tue, 25 Nov 2025 13:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A984B3242CD;
+	Tue, 25 Nov 2025 13:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRAjMXYA"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Xs7rU1SA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241A631A81F;
-	Tue, 25 Nov 2025 13:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DA13246ED;
+	Tue, 25 Nov 2025 13:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764075750; cv=none; b=jB7TSmvpBxtQGe2gUsL68L+NpwI+9RzQtaJ7Dg8CxJvoOM25cM3WQ8s9oioquSt3hc0WjPpuauan9AEMFJ5xGYc7q9xadCr3CrQjf32VaHJ5YUjFA3RQBXgW5PxjNkl+nMBFeGi7ZJgsl817+odI7Ag4C13kPnzw12Bz3uB912k=
+	t=1764076844; cv=none; b=BoIAepqsVSGMKjfAXgImiSrAtTJ+dcYRGwwHi9dje2yzieSg6OgwSeGl/n4cVUMirAZajXoyo2QTIF6YP7uNHKN0n2AMGRPjmVlycoYuAcuJqNlRRrCl2swPuyjp28iRiIVdGE1IyqE57cH6W0YqDUMDqrRqeylhcT3s56RaEW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764075750; c=relaxed/simple;
-	bh=i1uRlGASr84LrYT53TbtK3t31fxg7BFux2SIjo5Babk=;
+	s=arc-20240116; t=1764076844; c=relaxed/simple;
+	bh=twqlslUrYoCmY+2WtlEMXXaqRmdbRmVpNIa/L4qkL68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e8FgP6FKI44KNxXD1O4l7d3PmrpKMj2CufejGy4GDWeWGqZd2s9ttIZQCBu1QDWvPwabIQ2Ux0x2VY/0ewF0mS1B6A7NbTHgeBjvrbQHCf3jHBAUNgfNmqqVefO7p1exTyuvyRp3RHfjPs/ZjadAlz6y5y/jQ9eJkzJsmVf71Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRAjMXYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D90C4CEF1;
-	Tue, 25 Nov 2025 13:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764075749;
-	bh=i1uRlGASr84LrYT53TbtK3t31fxg7BFux2SIjo5Babk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zRAjMXYApHc9nsPjaiNfRojCav8ZbfA3Sb4vsEX/0aeouFtUgaHOlKPuVswFs0AzZ
-	 GoyaD7/hbiB9L00MYytDW0PZoKmvyzdtPWyAqBu/TpUJn6QQzS10MuqsRMnmujLY9H
-	 +TofonQtCrwHF0SjVFb3GmRgmJNropzVAIWAQEns=
-Date: Tue, 25 Nov 2025 14:02:25 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: duoming@zju.edu.cn
-Cc: linux-usb@vger.kernel.org, heikki.krogerus@linux.intel.com,
-	mitltlatltl@gmail.com, linux-kernel@vger.kernel.org,
-	sergei.shtylyov@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] usb: typec: ucsi: fix use-after-free caused by
- uec->work
-Message-ID: <2025112500-deuce-jasmine-cf8c@gregkh>
-References: <cover.1764065838.git.duoming@zju.edu.cn>
- <cc31e12ef9ffbf86676585b02233165fd33f0d8e.1764065838.git.duoming@zju.edu.cn>
- <2025112555-widow-ravage-ddb8@gregkh>
- <13afcc92.325cd.19abae4fdec.Coremail.duoming@zju.edu.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kilN8IVcDrEfk8UPl6ebGZsucgIIEg72cXEeK2k4gYZUsLwDn6OF2Kias9PGWnGQf9vhN94UsSUZY3oaq5KZlTqM1UqjkCu7/b7iQ7QM7pIveyKA14mfWTwk+eTigQg22kxNmfTFWO+EjjHh5cFwpoopBYzrwkIv00zotwnDzSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Xs7rU1SA; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27098103D145C;
+	Tue, 25 Nov 2025 14:20:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1764076839; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=WgSUZ1unwTielDIi2BbroLxSn72iCkBtktFczi48oKE=;
+	b=Xs7rU1SAnxUnLSJcrRvYZmtNfsTQeKbB7ixPkRm5S7cjK3XoVWLEQ/HJ80KGdDKm5YqDGP
+	pbTaewuSkLvdtNgjgQIliB8ewdyibGE4CoiZP4HhW6fYOr3d9okzIqa25+uEa3qazyJYRu
+	NpN0+bkf1vbBjW8uQWsxXethTgRHUeDsDrpJZ52pT3orPzlY/aLZ67akiuEml79dcVywXj
+	nqQZOXU5XXioVfQRYi0tqjEQ4Pk3z5EK02n9ZVglaWjyOASNAfImnEuoVcMelmfrfrj/TW
+	teEFYg3zLRPRSW8FCtNQ3E7j7LfvQoBVj+iDKO1k2EABq5PbHH5tzoIiCsyTGQ==
+Date: Tue, 25 Nov 2025 14:20:31 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, tiwai@suse.de
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/185] 6.12.59-rc1 review
+Message-ID: <aSWtH0AZH5+aeb+a@duo.ucw.cz>
+References: <20251121130143.857798067@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="yPwJKJgdeFw8ZpS5"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <13afcc92.325cd.19abae4fdec.Coremail.duoming@zju.edu.cn>
+In-Reply-To: <20251121130143.857798067@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Nov 25, 2025 at 08:02:40PM +0800, duoming@zju.edu.cn wrote:
-> On Tue, 25 Nov 2025 12:44:02 +0100, Greg KH wrote:
-> > > The delayed work uec->work is scheduled in gaokun_ucsi_probe()
-> > > but never properly canceled in gaokun_ucsi_remove(). This creates
-> > > use-after-free scenarios where the ucsi and gaokun_ucsi structure
-> > > are freed after ucsi_destroy() completes execution, while the
-> > > gaokun_ucsi_register_worker() might be either currently executing
-> > > or still pending in the work queue. The already-freed gaokun_ucsi
-> > > or ucsi structure may then be accessed.
-> > > 
-> > > Furthermore, the race window is 3 seconds, which is sufficiently
-> > > long to make this bug easily reproducible. The following is the
-> > > trace captured by KASAN:
-> > > 
-> > > ==================================================================
-> > > BUG: KASAN: slab-use-after-free in __run_timers+0x5ec/0x630
-> > > Write of size 8 at addr ffff00000ec28cc8 by task swapper/0/0
-> > > ...
-> > > Call trace:
-> > >  show_stack+0x18/0x24 (C)
-> > >  dump_stack_lvl+0x78/0x90
-> > >  print_report+0x114/0x580
-> > >  kasan_report+0xa4/0xf0
-> > >  __asan_report_store8_noabort+0x20/0x2c
-> > >  __run_timers+0x5ec/0x630
-> > >  run_timer_softirq+0xe8/0x1cc
-> > >  handle_softirqs+0x294/0x720
-> > >  __do_softirq+0x14/0x20
-> > >  ____do_softirq+0x10/0x1c
-> > >  call_on_irq_stack+0x30/0x48
-> > >  do_softirq_own_stack+0x1c/0x28
-> > >  __irq_exit_rcu+0x27c/0x364
-> > >  irq_exit_rcu+0x10/0x1c
-> > >  el1_interrupt+0x40/0x60
-> > >  el1h_64_irq_handler+0x18/0x24
-> > >  el1h_64_irq+0x6c/0x70
-> > >  arch_local_irq_enable+0x4/0x8 (P)
-> > >  do_idle+0x334/0x458
-> > >  cpu_startup_entry+0x60/0x70
-> > >  rest_init+0x158/0x174
-> > >  start_kernel+0x2f8/0x394
-> > >  __primary_switched+0x8c/0x94
-> > > 
-> > > Allocated by task 72 on cpu 0 at 27.510341s:
-> > >  kasan_save_stack+0x2c/0x54
-> > >  kasan_save_track+0x24/0x5c
-> > >  kasan_save_alloc_info+0x40/0x54
-> > >  __kasan_kmalloc+0xa0/0xb8
-> > >  __kmalloc_node_track_caller_noprof+0x1c0/0x588
-> > >  devm_kmalloc+0x7c/0x1c8
-> > >  gaokun_ucsi_probe+0xa0/0x840  auxiliary_bus_probe+0x94/0xf8
-> > >  really_probe+0x17c/0x5b8
-> > >  __driver_probe_device+0x158/0x2c4
-> > >  driver_probe_device+0x10c/0x264
-> > >  __device_attach_driver+0x168/0x2d0
-> > >  bus_for_each_drv+0x100/0x188
-> > >  __device_attach+0x174/0x368
-> > >  device_initial_probe+0x14/0x20
-> > >  bus_probe_device+0x120/0x150
-> > >  device_add+0xb3c/0x10fc
-> > >  __auxiliary_device_add+0x88/0x130
-> > > ...
-> > > 
-> > > Freed by task 73 on cpu 1 at 28.910627s:
-> > >  kasan_save_stack+0x2c/0x54
-> > >  kasan_save_track+0x24/0x5c
-> > >  __kasan_save_free_info+0x4c/0x74
-> > >  __kasan_slab_free+0x60/0x8c
-> > >  kfree+0xd4/0x410
-> > >  devres_release_all+0x140/0x1f0
-> > >  device_unbind_cleanup+0x20/0x190
-> > >  device_release_driver_internal+0x344/0x460
-> > >  device_release_driver+0x18/0x24
-> > >  bus_remove_device+0x198/0x274
-> > >  device_del+0x310/0xa84
-> > > ...
-> > > 
-> > > The buggy address belongs to the object at ffff00000ec28c00
-> > >  which belongs to the cache kmalloc-512 of size 512
-> > > The buggy address is located 200 bytes inside of
-> > >  freed 512-byte region
-> > > The buggy address belongs to the physical page:
-> > > page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ec28
-> > > head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> > > flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
-> > > page_type: f5(slab)
-> > > raw: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
-> > > raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
-> > > head: 03fffe0000000040 ffff000008801c80 dead000000000122 0000000000000000
-> > > head: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
-> > > head: 03fffe0000000002 fffffdffc03b0a01 00000000ffffffff 00000000ffffffff
-> > > head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
-> > > page dumped because: kasan: bad access detected
-> > > 
-> > > Memory state around the buggy address:
-> > >  ffff00000ec28b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> > >  ffff00000ec28c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > > >ffff00000ec28c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > >                                               ^
-> > >  ffff00000ec28d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > >  ffff00000ec28d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > > ==================================================================
-> > > 
-> > > Add disable_delayed_work_sync() in gaokun_ucsi_remove() to ensure
-> > > that uec->work is properly canceled and prevented from executing
-> > > after the ucsi and gaokun_ucsi structure have been deallocated.
-> > > 
-> > > Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> > > ---
-> > >  drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> > > index 8401ab414bd..c5965656bab 100644
-> > > --- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> > > +++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
-> > > @@ -503,6 +503,7 @@ static void gaokun_ucsi_remove(struct auxiliary_device *adev)
-> > >  {
-> > >  	struct gaokun_ucsi *uec = auxiliary_get_drvdata(adev);
-> > >  
-> > > +	disable_delayed_work_sync(&uec->work);
-> > >  	gaokun_ec_unregister_notify(uec->ec, &uec->nb);
-> > >  	ucsi_unregister(uec->ucsi);
-> > >  	ucsi_destroy(uec->ucsi);
-> > > -- 
-> > > 2.34.1
-> > > 
-> > > 
-> > 
-> > What changed from v1?
-> 
-> The original patch[1] only fixes the probe failure in 
-> gaokun_ucsi_probe(). This new version is a patch series 
-> that also addresses the use-after-free issue.
-> 
-> [1] https://lore.kernel.org/lkml/20251125082505.52249-1-duoming@zju.edu.cn/
 
-Always document this in the future please.
+--yPwJKJgdeFw8ZpS5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri 2025-11-21 14:10:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.59 release.
+> There are 185 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+
+> Takashi Iwai <tiwai@suse.de>
+>     ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
+
+This one is wrong for at least 6.12 and older.
+
++       if (ep->packsize[1] > ep->maxpacksize) {
++               usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u /=
+ pps %u\n",
++                             ep->maxpacksize, ep->cur_rate, ep->pps);
++               return -EINVAL;
++       }
+=20
+Needs to be err =3D -EINVAL; goto unlock;.
+
+(Or cherry pick guard() handling from newer kernels).
+
+Best regards,
+								Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--yPwJKJgdeFw8ZpS5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSWtHwAKCRAw5/Bqldv6
+8k9TAJ9XP7IRiEY3Z+bpDrR6TLOMXU8GcwCffZnmx3ER2uW6Rg0fmaGTwboVeRc=
+=EnLy
+-----END PGP SIGNATURE-----
+
+--yPwJKJgdeFw8ZpS5--
 
