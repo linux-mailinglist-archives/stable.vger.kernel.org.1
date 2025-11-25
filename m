@@ -1,105 +1,101 @@
-Return-Path: <stable+bounces-196888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751C9C84C5E
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 12:41:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2CAC84C7C
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 12:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6A23B1AEF
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:41:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7615534CE34
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234BB31A552;
-	Tue, 25 Nov 2025 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F8A303C83;
+	Tue, 25 Nov 2025 11:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIFXXtmT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAiy+kdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C906F315776;
-	Tue, 25 Nov 2025 11:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B32EF646
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 11:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764070850; cv=none; b=h1YKTxNY7QtiaE57ZklRdjVgYaliXdtM8VnC8YpRe6CKvkqyHmBKhGMKHxxi+G6R83ENVB0wwi6UXa/q+g5OK7U0o6j1uGGTWanW/N6c0x6qXQvnemT+2tcNtaR56MEcn23079HkXeYZRET41MOdotN6hGeWewURtM09hc08BWk=
+	t=1764071000; cv=none; b=IaEfZRhgHq/PM1Nx/r+9JQW2H31EzYCMalzH/RW4zRMDITuKBqIHQrMsgGxhUdVyJiQlWINEx+pQwR2W7duABko4dkgjpaQAu2+3N8/hV8+uQUw8eemt4JF9g1lo/zXI0YfaD6NZn6j0nGYQS9uEIJf5QZ9FtqG6oD+xSF4Hjb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764070850; c=relaxed/simple;
-	bh=hxfa3Wz6MKpJejE1ht5kl3ss5kF2RMA0erJFOXnjR5Y=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=e8cauNu0xBbgwUpeNfygsB+Nznxw3fQj+xAv2TuzDT1gx+OPllh/Nz4wUnTLFEmrmVfXKQY9V7et6C8/UX15pV24U2AeGMH8Y/MGrdW8+Qa29phTIeN8+u6gxIRAAQefg77lyxSjvE/mqCWe0yvS8LIiMA7kZ6Vd5w30q8yGapA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIFXXtmT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6788CC116D0;
-	Tue, 25 Nov 2025 11:40:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764070850;
-	bh=hxfa3Wz6MKpJejE1ht5kl3ss5kF2RMA0erJFOXnjR5Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RIFXXtmTc6/pRspX/ULbnOvwl3iIS4VnuPVft8CeeayY3P1i0aKLOo5cDUEXmZfM2
-	 Jd1UvHwyoL6ZzoTX/Ht6L04O9vAMeQGCDonT2bgToHih8bcUHkeuKpPsIEJ0i4w9mr
-	 AtBwdCV7SYXlpd2MH7f39Z9DBlxhUNEmfjHo+mHjOVc3c1fcyRNkG200e1eUjmA8TF
-	 0OHYyhpiISeq9ouM2KodmxXo8Y2zVPD9WpMGExzxiA9iAhAMzy3aU5gOR1qhoT5cV8
-	 kJshCAvqe056xHoRTDBPVDCwXqF+PgVF9Z35ltrZZTv9Gb8TB8WW67mAKuXOpVzliB
-	 cD4eDeJ0ySZTg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CDA3A8D14D;
-	Tue, 25 Nov 2025 11:40:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1764071000; c=relaxed/simple;
+	bh=yPmtGdDX0VB1pwxUW9xhO/YHcnpxWA67gK06UeDK04c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnUvWdVCHawPi0HaVaw4VYsHVM6LxeDHi9Bam+EL5PSBSGEMg6LPpAR6/exddGTj7Y9v/UDN3zJ+cXaa+eQsdTtfwj6bB1vvEHvRkOzWcTWTad2QKcSJ0X4qSONSIWVGDFoDwchb4weg5sSIuO34O5XMwEiw8z1xZNshzFPGYhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAiy+kdK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8326C4CEF1;
+	Tue, 25 Nov 2025 11:43:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764071000;
+	bh=yPmtGdDX0VB1pwxUW9xhO/YHcnpxWA67gK06UeDK04c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qAiy+kdKW3VLqRk3esUmaPeXSBwGbyMka3FRzZhNiTj9gJCVSRIdAWHDbv8GRgF9C
+	 LjXXGiv8HptyovZMuzpaZeeyNmQ4ieL3rKDXyRe8KSh0vx21k7+0WKd5OId/D6GhBY
+	 AbbmZ9w7TxTmnohBHfEJu+FqIH9mNS6xMeFlU2RI=
+Date: Tue, 25 Nov 2025 12:43:16 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>, stable@vger.kernel.org,
+	linus.walleij@linaro.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH] Revert "gpio: swnode: don't use the swnode's name as the
+ key for GPIO lookup"
+Message-ID: <2025112531-glance-majorette-40b0@gregkh>
+References: <20251125102924.3612459-1-ckeepax@opensource.cirrus.com>
+ <CAMRc=MfoycdnEFXU3yDUp4eJwDfkChNhXDQ-aoyoBcLxw_tmpQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6 0/5] net: dsa: microchip: Fix resource releases in
- error path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176407081300.696372.2913522306370415132.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Nov 2025 11:40:13 +0000
-References: <20251120-ksz-fix-v6-0-891f80ae7f8f@bootlin.com>
-In-Reply-To: <20251120-ksz-fix-v6-0-891f80ae7f8f@bootlin.com>
-To: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, arun.ramadoss@microchip.com,
- pascal.eberhard@se.com, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <CAMRc=MfoycdnEFXU3yDUp4eJwDfkChNhXDQ-aoyoBcLxw_tmpQ@mail.gmail.com>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Thu, 20 Nov 2025 10:11:59 +0100 you wrote:
-> Hi all,
+On Tue, Nov 25, 2025 at 11:31:56AM +0100, Bartosz Golaszewski wrote:
+> On Tue, Nov 25, 2025 at 11:29 AM Charles Keepax
+> <ckeepax@opensource.cirrus.com> wrote:
+> >
+> > This reverts commit 25decf0469d4c91d90aa2e28d996aed276bfc622.
+> >
+> > This software node change doesn't actually fix any current issues
+> > with the kernel, it is an improvement to the lookup process rather
+> > than fixing a live bug. It also causes a couple of regressions with
+> > shipping laptops, which relied on the label based lookup.
+> >
+> > There is a fix for the regressions in mainline, the first 5 patches
+> > of [1]. However, those patches are fairly substantial changes and
+> > given the patch causing the regression doesn't actually fix a bug
+> > it seems better to just revert it in stable.
+> >
+> > CC: stable@vger.kernel.org # 6.12, 6.17
+> > Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org/ [1]
+> > Closes: https://github.com/thesofproject/linux/issues/5599
+> > Closes: https://github.com/thesofproject/linux/issues/5603
+> > Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> > ---
+> >
+> > I wasn't exactly sure of the proceedure for reverting a patch that was
+> > cherry-picked to stable, so apologies if I have made any mistakes here
+> > but happy to update if necessary.
+> >
 > 
-> I worked on adding PTP support for the KSZ8463. While doing so, I ran
-> into a few bugs in the resource release process that occur when things go
-> wrong arount IRQ initialization.
-> 
-> This small series fixes those bugs.
-> 
-> [...]
+> Yes, I'd like to stress the fact that this MUST NOT be reverted in
+> mainline, only in v6.12 and v6.17 stable branches.
 
-Here is the summary with links:
-  - [net,v6,1/5] net: dsa: microchip: common: Fix checks on irq_find_mapping()
-    https://git.kernel.org/netdev/net/c/7b3c09e16679
-  - [net,v6,2/5] net: dsa: microchip: ptp: Fix checks on irq_find_mapping()
-    https://git.kernel.org/netdev/net/c/9e059305be41
-  - [net,v6,3/5] net: dsa: microchip: Don't free uninitialized ksz_irq
-    https://git.kernel.org/netdev/net/c/25b62cc5b22c
-  - [net,v6,4/5] net: dsa: microchip: Free previously initialized ports on init failures
-    https://git.kernel.org/netdev/net/c/0f80e21bf622
-  - [net,v6,5/5] net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()
-    https://git.kernel.org/netdev/net/c/d0b8fec8ae50
+But why?  Why not take the upstream changes instead?  We would much
+rather do that as it reduces the divergance.  5 patches is trivial for
+us to take.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+thanks,
 
-
+greg k-h
 
