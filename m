@@ -1,151 +1,118 @@
-Return-Path: <stable+bounces-196880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B3DC84807
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:32:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BCCC8481F
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9223A6748
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:32:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 139D434D061
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FEA30F80D;
-	Tue, 25 Nov 2025 10:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="uYNvcXXD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A600B30FC3C;
+	Tue, 25 Nov 2025 10:36:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BA32F39B1
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 10:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971542DE71A;
+	Tue, 25 Nov 2025 10:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764066734; cv=none; b=TcnYdbb2k/X8/vYdPasVrY+p26imez1UqrcJ2dwfs4JK5bmA7QkR+wfHMfnsFhPIedb4nNji2i+YuHS1ftG/KzC5tgOkeORZRdrooGjEbtwggQoDPYUfcx+MWsmmrZ2BcaQlMxA2X0JQbonKw5JkpsCIFECJw+q3U9VFro8jdu8=
+	t=1764067015; cv=none; b=VIwvG++5ohXCagEDiYLfMWnxW8EK+mj2rM4f8Hp11tYWtCtk6YKSTrtlG3wv05QC0xHYrRvH79aU1nLuBDna6ZmcKinYHgQ1D/zH4tvi+h1jw/TZHh2FqUdFNdKkeIzitNe5+TNfapHMKcublJy3rPirjK0q+5USA93fKVJMPak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764066734; c=relaxed/simple;
-	bh=CHVSZit9SUMun8fGEW0adw9nKXYVZ+SL6ZnGxBteZVY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XnNGotYR2Cn6Uiv5pi8X0G8Hq44WGeKtSxJbKkKn1g2rUkNB8hdl7ZwpkQIZ7QzWwhjcCs2a8Pdv5/IlOo9K/DQYWGdmGe3TQgdDasTcepuXq/Ruo8Fw81f+rgG9ZTteglAbM9r2aBU1KBfisN3OaG1iSydG6Sb1Q5mNF914LFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=uYNvcXXD; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37a5bc6b491so14496031fa.0
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 02:32:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1764066729; x=1764671529; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zehYaNAnUSl426pZXagIpMUwtpRwJK7xk4vMutwtYD8=;
-        b=uYNvcXXD7MvDFG6p5+nLzfLou1iXcMGeXsDZX4BmGi8dAIKPNpKY8zvh2KjCrDhKi2
-         DjeLDeaSEa0Np5rSL8YANg+zAeNlMqh7oG6D4yuKIiuAQDU32L4kKZn5OQhCGhTCbrf2
-         DMIf7eSCCvqPp0UYvznuhquXQH7E2/WBTpaYNBNMk+gNiDATepwo9k4CRsayikWZmxfB
-         BJLrNLf/5r7rLtzMgaW+UhoUaLuM6j1d2VbhQ7GjXiSve8I+1A2HYzJifLUJDNDOjXa3
-         qwSbjogOvm0sfFW7jKkMeYW5i6Kj9mULZRE3ANoYQn5xiPCCSQfX0Bzt0t0ftUmXQDIO
-         2U9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764066729; x=1764671529;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zehYaNAnUSl426pZXagIpMUwtpRwJK7xk4vMutwtYD8=;
-        b=EkoPl9+LXMfAIfuegtzwFYRsnhVU72xegcaOKHclgvodmbpEVa2xua03WMkYcncBI+
-         zq77m9KPl0zWt5gRoiqjhE6I0tGgmDBByFeS+IfUS7sBu5TcSIb3gJ1X71Y/WqPrCtfW
-         LVgU5Cq24CPNEqRImXZ8HjRs5/RbbNEX9uPyqypwfwPnYL+YZAo+mJsdz5Q3g7tL9ebL
-         +gfsEc3SjN1tD3NVUfxjlxF4K/wF0LSgeiMkdbKLKzPROh0P6gHj/xQE3OzM3ryHvM+U
-         W3JTu5ZRqr2/8o1MW3g9Va6Jp3iLVPqqNIN+unMvoQ1I/cntCm3ECamFqoKokXivMMOR
-         AsQw==
-X-Gm-Message-State: AOJu0Yxq71vRFMyUmzgZ9BnvB5UXf3gECXWetskc16UnYiTkF3hMEVzN
-	uEcIipK6MnGpEFlw0caPitZ74WFiZIbdXqolTUO4Vbsoj/EO1lqBPh0hjGnTYVuieAowFsc0Y94
-	vhfCCPbrWyEBxncNhuSlCV/DvY6fEz79Sg0bm1JsiFQ==
-X-Gm-Gg: ASbGnctCymTDvsBResGflnjsI+szct4F3273S0J4oM0LUuDhPumggDuOKm9VVChvzfW
-	V+JHW/i4i9Rbl5KQDx2amJI5Q2JOqD23o9G4lgLjn1xisDCvzXKKxwimDLqtZ97ikd/sjCUYOQa
-	G61PkhabbIvN74hbzFoIRj53zBViQgHV/nNqe+Dk6NMBuWXA80ZbU5eq13e6SsncSJjp2hKpbau
-	/asDqiqm+oKh5u5DN+vKCq4yHkPZEgVLuv6CBcoAvnN+dt+4qwDkpDFs6HRG9JIWQtAAZFOUlpg
-	o2gykdkh+s0sT5WcWEgTAGkAfPo=
-X-Google-Smtp-Source: AGHT+IHxwwtlOP+Szny8/rr8JsPkVBhPh1CctPN/t2JWJcU0swSHGXRPjQqKrbk+Rb5Tlz5LWvca7f/QA7qfs72lwt8=
-X-Received: by 2002:a2e:9094:0:b0:37b:9a34:176b with SMTP id
- 38308e7fff4ca-37cd9243776mr33410721fa.30.1764066728892; Tue, 25 Nov 2025
- 02:32:08 -0800 (PST)
+	s=arc-20240116; t=1764067015; c=relaxed/simple;
+	bh=l7UjLiJFEUvjyW1TAyq6Iqgt4hIjRpPRwN7VpwyUJy0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=feiS2XZXhFYRgVGPYQ+VkjUhubSD1oJ3VA8gqS+iW69JOczI8+Xl4g36fmnuT5U7HnZuiCpI5RYJ25ey4R70yqUZMdU2yA3ysVVNmU5cI7m358DtbGe2Myf6eID4MtPZawFRySoC1upI/56diadnLT0iAwbTp/xaHETVAV0692k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=209.97.182.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [218.12.18.214])
+	by mtasvr (Coremail) with SMTP id _____wAn1FW4hiVphVExAA--.8854S3;
+	Tue, 25 Nov 2025 18:36:40 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [218.12.18.214])
+	by mail-app4 (Coremail) with SMTP id zi_KCgCXeH+uhiVp0zl8Aw--.52409S3;
+	Tue, 25 Nov 2025 18:36:39 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
+To: linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	heikki.krogerus@linux.intel.com,
+	mitltlatltl@gmail.com,
+	linux-kernel@vger.kernel.org,
+	sergei.shtylyov@gmail.com,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] usb: typec: ucsi: fix probe failure in gaokun_ucsi_probe()
+Date: Tue, 25 Nov 2025 18:36:26 +0800
+Message-Id: <4d077d6439d728be68646bb8c8678436a3a0885e.1764065838.git.duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1764065838.git.duoming@zju.edu.cn>
+References: <cover.1764065838.git.duoming@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251125102924.3612459-1-ckeepax@opensource.cirrus.com>
-In-Reply-To: <20251125102924.3612459-1-ckeepax@opensource.cirrus.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 25 Nov 2025 11:31:56 +0100
-X-Gm-Features: AWmQ_bkMwJ2DpdbKJktFl-k3-FNaee5-nmxwuFacAbGbSGDtOYgEL02a8wt8B64
-Message-ID: <CAMRc=MfoycdnEFXU3yDUp4eJwDfkChNhXDQ-aoyoBcLxw_tmpQ@mail.gmail.com>
-Subject: Re: [PATCH] Revert "gpio: swnode: don't use the swnode's name as the
- key for GPIO lookup"
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: stable@vger.kernel.org, linus.walleij@linaro.org, 
-	patches@opensource.cirrus.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zi_KCgCXeH+uhiVp0zl8Aw--.52409S3
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwIBAWkktQELkwAIso
+X-CM-DELIVERINFO: =?B?K/QmOwXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR18YlAikpI5poxpx6509tfGtZhNDJlVfA4q6nm4NlyYKDvHEE8KkwG2V9S8VKaY2LnAMK
+	1nSaSV4ci93tEAf+x+usa4vHYcAbvr5/yJ0bf8ECTdyMtp6K9PmLIeuR9pZKKA==
+X-Coremail-Antispam: 1Uk129KBj93XoW7Wry7tFWfGr17WrWrWr4DGFX_yoW8WrWfpr
+	Wq9w40yr15Gr4a93Z8WFn3Aa1IqwnrXryUKF47X34F9rZ7ta4fZry8t3yFgF92gw1UtF1Y
+	vF1qywnxXrWDKabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvmb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZE
+	Xa7IU1yrW5UUUUU==
 
-On Tue, Nov 25, 2025 at 11:29=E2=80=AFAM Charles Keepax
-<ckeepax@opensource.cirrus.com> wrote:
->
-> This reverts commit 25decf0469d4c91d90aa2e28d996aed276bfc622.
->
-> This software node change doesn't actually fix any current issues
-> with the kernel, it is an improvement to the lookup process rather
-> than fixing a live bug. It also causes a couple of regressions with
-> shipping laptops, which relied on the label based lookup.
->
-> There is a fix for the regressions in mainline, the first 5 patches
-> of [1]. However, those patches are fairly substantial changes and
-> given the patch causing the regression doesn't actually fix a bug
-> it seems better to just revert it in stable.
->
-> CC: stable@vger.kernel.org # 6.12, 6.17
-> Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7=
--0-a100493a0f4b@linaro.org/ [1]
-> Closes: https://github.com/thesofproject/linux/issues/5599
-> Closes: https://github.com/thesofproject/linux/issues/5603
-> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> ---
->
-> I wasn't exactly sure of the proceedure for reverting a patch that was
-> cherry-picked to stable, so apologies if I have made any mistakes here
-> but happy to update if necessary.
->
+The gaokun_ucsi_probe() uses ucsi_create() to allocate a UCSI instance.
+The ucsi_create() validates whether ops->poll_cci is defined, and if not,
+it directly returns -EINVAL. However, the gaokun_ucsi_ops structure does
+not define the poll_cci, causing ucsi_create() always fail with -EINVAL.
+This issue can be observed in the kernel log with the following error:
 
-Yes, I'd like to stress the fact that this MUST NOT be reverted in
-mainline, only in v6.12 and v6.17 stable branches.
+ucsi_huawei_gaokun.ucsi huawei_gaokun_ec.ucsi.0: probe with driver
+ucsi_huawei_gaokun.ucsi failed with error -22
 
-Thanks,
-Bartosz
+Fix the issue by adding the missing poll_cci callback to gaokun_ucsi_ops.
 
-> Thanks,
-> Charles
->
->  drivers/gpio/gpiolib-swnode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.=
-c
-> index e3806db1c0e07..f21dbc28cf2c8 100644
-> --- a/drivers/gpio/gpiolib-swnode.c
-> +++ b/drivers/gpio/gpiolib-swnode.c
-> @@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gpio_device(struc=
-t fwnode_handle *fwnode)
->             !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
->                 return ERR_PTR(-ENOENT);
->
-> -       gdev =3D gpio_device_find_by_fwnode(fwnode);
-> +       gdev =3D gpio_device_find_by_label(gdev_node->name);
->         return gdev ?: ERR_PTR(-EPROBE_DEFER);
->  }
->
-> --
-> 2.47.3
->
+Fixes: 00327d7f2c8c ("usb: typec: ucsi: add Huawei Matebook E Go ucsi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+---
+Changes in v2:
+  - Add cc: stable.
+  - Correct spelling mistake.
+
+ drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+index 7b5222081bb..8401ab414bd 100644
+--- a/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
++++ b/drivers/usb/typec/ucsi/ucsi_huawei_gaokun.c
+@@ -196,6 +196,7 @@ static void gaokun_ucsi_connector_status(struct ucsi_connector *con)
+ const struct ucsi_operations gaokun_ucsi_ops = {
+ 	.read_version = gaokun_ucsi_read_version,
+ 	.read_cci = gaokun_ucsi_read_cci,
++	.poll_cci = gaokun_ucsi_read_cci,
+ 	.read_message_in = gaokun_ucsi_read_message_in,
+ 	.sync_control = ucsi_sync_control_common,
+ 	.async_control = gaokun_ucsi_async_control,
+-- 
+2.34.1
+
 
