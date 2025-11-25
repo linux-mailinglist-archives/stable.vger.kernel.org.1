@@ -1,302 +1,258 @@
-Return-Path: <stable+bounces-196834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53391C82FD6
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 02:11:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41A7C83004
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 02:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E12B34BCBE
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 01:11:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1912F3AE61A
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 01:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9DB1E834E;
-	Tue, 25 Nov 2025 01:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C452727E3;
+	Tue, 25 Nov 2025 01:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DPoiGAmj"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="Ky6dhg0t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F7E191484
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 01:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764033056; cv=none; b=ECDhh8/r9sTq8FUYgFAL+8Ki+fwn1zwlxFCmFI19kf3XTgQY7QUbgwpNM7uOvGuTuXVKQ8HsvZWevVgLI9prj+TUAkpt8OIuPlV391bEQEa7atezvv/Pe9mfIvAhldyNv981WZyxLLqQFkkI/JVMXCVYmA3bAHTPS3PMow4tD94=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764033056; c=relaxed/simple;
-	bh=gg2LWcJmlQnDKVI253sVC6rFkfFxBkJ9WkBHYjcuBdc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UsEQITEUSxx8lGlbOUR0PrMau2iwVeJmpo1HNp5aVDHJeaO/Q8Z6rd4oHBGMbHErG5TvQCXn4q/KN8yVHgd2p7BhuZdvfD/iBFP56g5lfAR2t2IBcyayGxrgar/frvbq8QxS311ZVgOg/FcJZVRVZHiJQih8GGZ59tVxrwPyZsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DPoiGAmj; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso49534131cf.1
-        for <stable@vger.kernel.org>; Mon, 24 Nov 2025 17:10:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764033053; x=1764637853; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NsgChq6O0wKjJChpqYW4kr3HbE1+hmbVANep3Kkz0K8=;
-        b=DPoiGAmjVroR8ALggnWLocJFp6TDSUyIKFr7Q2jwVMnGTPfhArdOWeHxI+8k0C2iHc
-         BGfGQpHE3Gfquc7X6S1sOW99kp5XZZdMdAwKZkcuyWkJtXZ2URLXIXSjE2iVpE2IJilj
-         uCduxEjNdxFsLIGNGg0FEHHJCK0n75//unZE7kHeMwIsU6RKIPyIFbg2Xzi26bWuRSMB
-         2oiacAb6mwUCg2KYObTnJxgW3HMXDIaf2kNuHHKiV+FGRX4IxCP9wQzNTNpyPlqylrvg
-         WcP8vzBd9T4sSpLSJ92fxABtsmCBapOeItVcBg0k+craGba7ugNWT5XIW2xxyvs1PJYy
-         SqJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764033053; x=1764637853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NsgChq6O0wKjJChpqYW4kr3HbE1+hmbVANep3Kkz0K8=;
-        b=SaXAi5H04v9Q0Z1iUBz+xyUt2lDcWBW2Qrh0yDPj3fZEmZRc1tqrLh2937HeinRA+n
-         Uz6Z8SMZqUzzlqn/p7uDtMs3Q+4kOvO8sJmniYGjHpXd6n95F/73tTLR7pZ8K/Rx5whE
-         LPlWusoYmIK3AInSuZ3F4mT9Rdl8LEqBCADZ0ufSwJVSgtu2oJXnuDmgcp5oPWK7+Tcb
-         DvwknST9Q+VclUk6WtiCbGKsfsqEmN3YXWeJdk1zyvGwwDMXhhvghJqjBvkGD7IKlpcO
-         bsYRCVWEObYfJQMh3BCKHLq5ayW+DLwmXqgbId/1juC/koK6t3mBPh/qGTMzHQp3lSCu
-         DgIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWL3Z04hYqXD4gAkSEVBqhJjLXsNov/DgXB1AI0lNA10UwETD79srCVRZF2SvL0nowzDVmCcRM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIOx72ukdyufXyBBKNLqGQFXwQv1AHFuk8QD5DOkCFQyASdIRd
-	Q1mcQgd9a+Ifa4NQcKxZPIKbjwRrUeboLLtDFib1IUtk//Kj2HYfn4PEQ8XHrEO1VWktgyGh9Gw
-	e9ohFoSgIDOpJZzKcnl/mBBIwzIVrKS1kHVORlNw=
-X-Gm-Gg: ASbGnctgPClMFMVoJwLphfboNYVvD5gV/j+RFSOynIWYtH3Zn/jhSjCPeUQrW7zeixQ
-	daKtX+MNqw3jblZPdneojfTDhbipvcIEWYVr3LVM8quDF7xAXtpL5URpyWg8T2R8HGtDqb6NchA
-	44mN6Pvj+U7qJG2h/3dUuWyFP0J6NCiEzheez05PpCqn+KKHoXp+5Q00RbV4mVSj2VsiKnyl8/z
-	sdiDqXw8rq2Oac6xhuNYjp4FQxtYZzQobLBgSVT7GRJvFBdPYpjKIDGbhVib5E8fW6tjg==
-X-Google-Smtp-Source: AGHT+IGZVKMiOfKr+qR5oAOuuoGjPw3a99Gd8R5iy/goYmjUN3mlBPM3amn8zp6bIqVzLx2vLsce3VFkRzsep0Dwiqs=
-X-Received: by 2002:ac8:5790:0:b0:4e8:92ff:753 with SMTP id
- d75a77b69052e-4ee58821e17mr176484991cf.24.1764033053038; Mon, 24 Nov 2025
- 17:10:53 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECCF19D8A8;
+	Tue, 25 Nov 2025 01:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764033973; cv=fail; b=IgKHpMxZRUWgjnBO79iMrCXjtxOHL8KeoUvPeeUThBaKuDVreqMLnXeWFGtAwec2cGfFEkUSCrXMI3AasLByNWCOgu//0JKtfGYrRBHiHQ/JV/TOur/NWt0/ZfDiEd2HxfrhWx3dihd1RPieca6vTX7hv1XzDu5jtzwnm1prDQs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764033973; c=relaxed/simple;
+	bh=3HGwpZbdpRu3JGAQp9plyhQEyYTxtKTVACLrFM9bxwg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=s3taHg/3eEimUTVrSrfsmS2kGybm1nAsA/WocRaRPRo/ZEMwBuZa7K493UfZroG9h7n0D6F4ktJZdpUHWLkDNdQcfSaE6bgw/FhUvUgh1XWsWbTXemiW8x8Yn2QpW+pwP4h9InH0Q2W8WUcBzkr2I6HpPSqW6zwDwdqBNaPHFqY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=Ky6dhg0t; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP0mpHO3051843;
+	Mon, 24 Nov 2025 17:25:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	PPS06212021; bh=+Z44vH3scg0Qoyg4Cecyfc23xEeGFvor4RjsdTyuU9I=; b=
+	Ky6dhg0tqesQi6ugXb7XPH+OOUbo9joAVltp98MMyx5gi4m9rM6u86eJzA3Nnxm+
+	6uXEThem2uD+GWmQGPaP3IGkkTz2QUOQryCrxwvnBMVb2szY58WPPWcTGZ0gazO5
+	2vwEupPdGBT7Xv2sFYzqyDnVf3kpCj1eB/mGdIONxcvKtRReVJq0F0ALqkat2GOj
+	Fxa0TFH2MOWKhyVhAf0PmoiH71iy0WhTIT8XSqmIN8j4Zo/E1/A1Lmh68+W+eIUu
+	2KRXYKU8Z8JetPEaU0vXyqA85Ol6/XH2QfjHcow7S+/yyNbwoYRRPv5dM1m4MZfj
+	YcP/ztMfBBWKLORsiLqwRA==
+Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012030.outbound.protection.outlook.com [52.101.53.30])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4ak9b5acub-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 24 Nov 2025 17:25:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XzvGbToI4kbWlPWWJEEfydSGt/GXSKHAvNms9zAiOvJjE54HhOfZ3rym8d2L8sR5vIJGPZOXJi/050f3DN+At6xxIBCbMVkyLxGiZFY5GKfS0/2/q0/b8h/fE+smY07qnPkTSvklri9CYP2X66I/bTvclT7MkFJT5DUkRLTUqZacgGTMgnqCra33iNr5G/RAXJ0iGVpzvgp4c5yPUwsd4WXgQzRuhxu/noKfQ/dicZiwC7ZiSny8naJNA/NnsxL/z2QdGVPavyjGY/coxwgpWrFnndGILiZNzJ230pyTAukCmWaGtdOWd3xxMh5V87n/Hy+PGmPLu35SDkVnWn8gxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+Z44vH3scg0Qoyg4Cecyfc23xEeGFvor4RjsdTyuU9I=;
+ b=LYMEyj2aiF8zLZNzCC0yCyASR4s0xuufWZzJJ/coix133ai5tssQ9V+QQP+lHEqmSJsX8UHp0T7Vpb6FXhkCliRr605jbVBZakXMVFzZFJm+KHbd7qoKWFJBy+9wRfYdCatuqL9EKfOHCdz3ksEKCt+vbBILBZvZtJ7rJHgywmQVyPivqLqZA7XXPgsMt3AM+RpXYfKphy/mUnfgP0iAuy094QkSwxsOX/ut2ZhLJ3cvuv9SE0cwck9O1IJAcL/r766jnq5Z/VSaQl6W5LBNAXNIw6YKdMr5kqkupVDd6tDHSg2n6mQkG67FSUIUxor8c6hpVZmqNdkybXX9ncL0ag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from SJ0PR11MB5072.namprd11.prod.outlook.com (2603:10b6:a03:2db::18)
+ by LV8PR11MB8679.namprd11.prod.outlook.com (2603:10b6:408:1f9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
+ 2025 01:25:31 +0000
+Received: from SJ0PR11MB5072.namprd11.prod.outlook.com
+ ([fe80::a14a:e00c:58fc:e4f8]) by SJ0PR11MB5072.namprd11.prod.outlook.com
+ ([fe80::a14a:e00c:58fc:e4f8%5]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 01:25:31 +0000
+From: "Liu, Yongxin" <Yongxin.Liu@windriver.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+        =?iso-8859-1?Q?Ilpo_J=E4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>
+CC: LKML <linux-kernel@vger.kernel.org>, Netdev <netdev@vger.kernel.org>,
+        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
+        "chao.qin@intel.com" <chao.qin@intel.com>,
+        "yong.liang.choong@linux.intel.com" <yong.liang.choong@linux.intel.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "platform-driver-x86@vger.kernel.org"
+	<platform-driver-x86@vger.kernel.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH net] platform/x86: intel_pmc_ipc: fix ACPI buffer memory
+ leak
+Thread-Topic: [PATCH net] platform/x86: intel_pmc_ipc: fix ACPI buffer memory
+ leak
+Thread-Index: AQHcXRgZt5iFTWlg00+JeevYpjNEPLUB1VIAgAC1oYCAAA8kYA==
+Date: Tue, 25 Nov 2025 01:25:31 +0000
+Message-ID:
+ <SJ0PR11MB507228758576C4474EC14EC2E5D1A@SJ0PR11MB5072.namprd11.prod.outlook.com>
+References: <20251124075748.3028295-1-yongxin.liu@windriver.com>
+ <f1124090-a8e4-6220-093a-47c449c98436@linux.intel.com>
+ <72fcaebe-afb6-49ef-a6fd-69aa0f8c7a39@lunn.ch>
+In-Reply-To: <72fcaebe-afb6-49ef-a6fd-69aa0f8c7a39@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_ActionId=dc188eef-6aa0-4c82-831f-03c264b4b1e0;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_ContentBits=0;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_Enabled=true;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_Method=Standard;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_Name=INTERNAL;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_SetDate=2025-11-25T01:23:44Z;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_SiteId=8ddb2873-a1ad-4a18-ae4e-4644631433be;MSIP_Label_3ea094ce-8c76-406f-84c8-0af1663f74b7_Tag=10,
+ 3, 0, 1;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB5072:EE_|LV8PR11MB8679:EE_
+x-ms-office365-filtering-correlation-id: d9fc5da0-abc7-48ba-36b4-08de2bc18679
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?7UcDB7PrekWt9sQkb6zD7p8JeoIme5aGN+yI53NAGlUFZpyf7K5GBKYsv3?=
+ =?iso-8859-1?Q?BK/zwmI1NWam8+CVVJmIBayhmibk7Vku4zNfHzVUhWD3eOcg89K/azcZzY?=
+ =?iso-8859-1?Q?EEwcH4z5YtdHQrFH9ahSxvVJ6TLqKNy1Zb0K0UhoUIqgWpgdEXDfdxYfB3?=
+ =?iso-8859-1?Q?w1NYi0uU4b7wvy8gU1imVdK16IXliguJGbU+hEayKM4Z6HUKivrbflpanN?=
+ =?iso-8859-1?Q?TvHZg12mDouCs6dGJLkvJ0ySVkYpAwAkbBOof0aj8TQe/0TtgppDgIq6RX?=
+ =?iso-8859-1?Q?JPCh9oADaNnnWbGslIjmbVzjwN88PCDS2qBt6g5k98a6AR0p60qhIO5QYp?=
+ =?iso-8859-1?Q?K52c8VRqKvi+w/MX3Mk+oafYdBSp5Duj40/ONolTxryfVCdh70SOQJ0/EH?=
+ =?iso-8859-1?Q?X5UXbo7FY151gTcbLH5w1S4bKE2SceIaVnrFy/l7MWBiUzUNonHIhBjJAg?=
+ =?iso-8859-1?Q?S+VTxqAYHBRvI8ol5E42FomYDLOzMPDYhbsGDEf0EbMj+v+nGWreHguDgT?=
+ =?iso-8859-1?Q?SI6iE8t1Y8WsJSCs8TzGa2UqVxlhN3VBtxkrtl6E9jkkMRc5iDt4IYrTPm?=
+ =?iso-8859-1?Q?JsccpnD7vMkFnR91D8sZLu4WIYxtS21gaWrOExi6qW4v45IouI7/EexHZm?=
+ =?iso-8859-1?Q?GR7TygfFn+FecRq32oT+oLrFxFFJjXZyEkh9t63m0o+3O+gproDU1Vb1Sn?=
+ =?iso-8859-1?Q?vyQakVG0DxtduZ1VUBpxlGKPlkuY1cVeRcGlu6JIXjuj9gUzDMp+ZoIx0j?=
+ =?iso-8859-1?Q?uwGGc5jKVYR1vo0vTC7QnmVaBso4mYSBLq+pP71I9zx3AM7XXas0lYC7fn?=
+ =?iso-8859-1?Q?bGOqbsB2pujuSDY3QYnTYVnn+jgqvYqbEC4rMf0B+6PlZ71UbPA0snH7JX?=
+ =?iso-8859-1?Q?PQ+iqVZQJ+BFFQpMtQqcY8VLsl/6Te9pcoEhpcVXYdgtruCPFJgO/5Dvdf?=
+ =?iso-8859-1?Q?6XzM81FWeCoP44vMoi0cfzx3K2Gq2UXQp1NiIrWX5yfdmReByl/QEwbQ++?=
+ =?iso-8859-1?Q?hDDzXLf1PiEcClq/MrCCdb3j7U/g3uCyPpZYYMBGQtlBOC6LiUF3jcvz3p?=
+ =?iso-8859-1?Q?AhNA8RQEU4NTw45FI1z+HfsNMxDTm4myl0LTIet1XikynlfIpOolO2KgNg?=
+ =?iso-8859-1?Q?GIuH+NxHU2xir5Dkwwy1IbfJ7H/eGzdLyIppidl3h9SUeRn5ZnhG4EHZoV?=
+ =?iso-8859-1?Q?5G+jc/o+CMRYPC/HKHAOWph8sLx7h+vzAKj1vD9T3rPqmiauvsS5GdwRD9?=
+ =?iso-8859-1?Q?8zPPwMxI4HAbXpad6au3hTrLmrnbqBhypAsf0QXjqL9NO8RaCEU7QsQzr1?=
+ =?iso-8859-1?Q?492Qsq3WBenvu8bSmaOKECNmYe0IULUEgQBj5dyTnGWxeyhfOjua+8sliF?=
+ =?iso-8859-1?Q?YF8Cjb7Eb9ja0f3AMQjPpfbTS4nSNRG5LAOJG9MtUFmn2bf3mAYvm0A6Uh?=
+ =?iso-8859-1?Q?KxE5MMt+gJhgtVYNkY7Br452yXiHTGMsOWeVTKhR5NNxxKcL9D0flXXOJ4?=
+ =?iso-8859-1?Q?VbBSoKbUhtZ/A3myLYcQR8x/FcgVgDfNEvkPMBfe5mOhQHTEKDwDriSt0S?=
+ =?iso-8859-1?Q?EpizPj/bQrU3fzJh+YN04afYLWMk?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5072.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?U/D1aA++ukeWGniH7oYNRbAcWM6dn+L/wnZ83SaqYoDB16wG5SLrtPsg+m?=
+ =?iso-8859-1?Q?bsVLo8a/7wGkl5vTyRLuOnYSFWhsRHfUEkBVUQARW2boZ7SLD5QvY18KW0?=
+ =?iso-8859-1?Q?lypKCiUPiwzgwVRXBHhxlFsJQsU9usQbLwW3xcjvOyMZBInR8FCpLSlFRN?=
+ =?iso-8859-1?Q?GT2l+1XKYSqJivkrlXjArzgm7QxfQRinCYTUDnlyv0iYdV1QiV4MyVS4BL?=
+ =?iso-8859-1?Q?Jm9mbN5zl3VkGszNfP65C2t5p427GtoVlQfwxqWfFIRbVx9DvB5bKfDSqB?=
+ =?iso-8859-1?Q?JI9VQMcZJgzD0Y55aSyrVHpWm/HDY95WXG4AJzPzM1DVwROAbjZefVp40D?=
+ =?iso-8859-1?Q?ZUwNg8JSfGUT6VBC14qJjq3oNI2EXiVnHkxYR9AXHlQ0TnfV1f/OWG8V1K?=
+ =?iso-8859-1?Q?VT5uqiMMzDsiZ2MPE7rXpgfT9a9oop2QG9HCiVW+OwKUdi9bY3RPe2xfL9?=
+ =?iso-8859-1?Q?+e/LN4+lmbApcMXsb6vwNc1509XmxuYR1jtHhVGjnIk7FgLfvuQ5Ik02/E?=
+ =?iso-8859-1?Q?VV60V62TJzsEkqtverKjbTsj93kj1JFJ7gxyNUxg6IR0DYi9jV+/IvocRA?=
+ =?iso-8859-1?Q?dVSetFZoFA88ML0HrqDFWF4lDU25WGOqCtPiv1sqZA3zWZtj9bSeCEGirK?=
+ =?iso-8859-1?Q?bbOA7+jQ5f7fWBJm4rDzFh2P9L1DHkX5I41oYqqcWNHe45PsIBVNyzu0f3?=
+ =?iso-8859-1?Q?AOGfQbFpw3CTXWfSQ1GSr0qz+KK6GWVUMAxpPAmK7wyrLeln5rTGD4ac5X?=
+ =?iso-8859-1?Q?3zLDq+b6QFQXEXxS5wat068uCQsLh4s5K8ojo+rec63Ir9T5oNaIzu5JzF?=
+ =?iso-8859-1?Q?8MEcGlk9X2ivcIxMCLk6tYL/L6+Zb6MoCwRRonnHAfxm+zCRlbWDSwfd2z?=
+ =?iso-8859-1?Q?WxuzS3lDeyzkGTsg17A5IwAsgynz9t6EmNYRhZsgKlQb+l+1eK6xE6PHK9?=
+ =?iso-8859-1?Q?2iozet57kfKiwhX/VjNYI6dlC0ivDceUVI0WKcXeVoJFJdUz4bd4cSe4Fj?=
+ =?iso-8859-1?Q?lRKsbvD/LbwGRrAgw9kQXeiQRI51S0l6lZnqtF/P208yhOigls0f74RBWi?=
+ =?iso-8859-1?Q?S0TZdO9QmpUy2zCzDqrcBlcZEyJAkJ5gWpyiXdgLX6XSpz8ikEFGUCE/xY?=
+ =?iso-8859-1?Q?D5UKC5jXkdGLrFqnkqx3XBhDPrgxWoXRZaTdWpP+4pcU/6at/AFKN0KmuN?=
+ =?iso-8859-1?Q?oORXRYQeHmBi+MESg0aa/CMzYx++VgqpSxSAEMVvwCB6zHRdXiaBOFHorF?=
+ =?iso-8859-1?Q?6CumFcOsk2xl2YDPy7Jary5j7NZ9qbf5k8CWYuZMnGJkx7zKArlZV0zonO?=
+ =?iso-8859-1?Q?SeN2od3tZCMOCcZOAUCLbxdMhCK/6k/ouek9TlhWTxz1V6b3TqkqBacKeG?=
+ =?iso-8859-1?Q?XtodCs2Z06fGnZIiosE4dXgAk9njYTtg530XUBBru2TRwhapecHawNEHkv?=
+ =?iso-8859-1?Q?TGTkvgFfZm2oNs7pJV4Uc74MXcA9gKwsWOKW2R73e7BfaAV1aEtu9snVK0?=
+ =?iso-8859-1?Q?oK7uRnQVAxe9MGSrhxFYEPpVYZjIjM1Wm/Ah/lfhNZaZLTdJjYdiCLIuWw?=
+ =?iso-8859-1?Q?rEMkoteWVebuSJVSTJvxb51CMpd0HLZmQd38yDcuFadr+J0tDlwXitxFWC?=
+ =?iso-8859-1?Q?bPpqN2PnTtQlprEorOeDStEVBXmi7yYcvK?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
- <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com> <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org>
-In-Reply-To: <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 24 Nov 2025 17:10:42 -0800
-X-Gm-Features: AWmQ_bmmIvZ3_5WG3LWnwaKKEddKemGd4go_OocJaMHW8jVM0bwo8vf-i-aMZng
-Message-ID: <CAJnrk1aJeNmQLd99PuzWVp8EycBBNBf1NZEE+sM6BY_gS64DCw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
- hang in wait_sb_inodes()
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev, 
-	athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5072.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9fc5da0-abc7-48ba-36b4-08de2bc18679
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Nov 2025 01:25:31.7655
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LKp7bY630a7/fyS5OktWAyWQUSlaTHy0N1CWcfyyyBbzZB9BPCFMAH1LZcrGuReySsDITJOYwZCmJauNdt4S8/Mgkn9Pm9tyr3tIcyfH3Vs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8679
+X-Authority-Analysis: v=2.4 cv=fozRpV4f c=1 sm=1 tr=0 ts=6925059a cx=c_pps
+ a=bYEXqv4PBJnnT5HxTb2zpg==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
+ a=t7CeM3EgAAAA:8 a=Sdn8QdLaxc-jMy_MRa8A:9 a=wPNLvfGTeEIA:10 a=sCYvTA3s4OUA:10
+ a=5imOhvl-4yYA:10 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDAwOSBTYWx0ZWRfXzzNT+MSREe66
+ H/5Y3fhk/PrWgqBFp/axcslEMZIiZ/MSuyU5Ooizggg9JCNCLw3YNRdBUWMb15IC14obali5g7T
+ B2KKq6SHCV8485tJo6yQITgJ1FKm6LTo1kuRU5NWGJe3OtApKGV+HDim1jCx2WhdiTf5xfbRd9f
+ +gbpGIt2hK3yvnVh4R8ktlcnS0gw8RA06+oy6Wway8jgJa2bTbaRlR/B7s2FfNC0Okd7EhDvLEv
+ Wg3k+lynuoQCZa957EYT0Aup9ArMlgxz7qVhe/5gLYD0j5c89aZLj1EtJIGEvHfVLFw+C62aUbS
+ piwjR32BJJ1lzXpTtyeJ2A2BBM+lMwYTHbCjoamy6MGEE6fXxuJSUv+FTNZXUvsRuav3wST0/UI
+ ShqwvZlt+GwVt+dZZqTvobJsiJM+HA==
+X-Proofpoint-GUID: WeNvr-jynqUNwUHSIKqviIE3mcxM3Bbm
+X-Proofpoint-ORIG-GUID: WeNvr-jynqUNwUHSIKqviIE3mcxM3Bbm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_01,2025-11-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511250009
 
-On Mon, Nov 24, 2025 at 5:58=E2=80=AFAM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 11/20/25 22:20, Joanne Koong wrote:
-> > On Thu, Nov 20, 2025 at 12:23=E2=80=AFPM David Hildenbrand (Red Hat)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 11/20/25 19:42, Joanne Koong wrote:
-> >>> During superblock writeback waiting, skip inodes where writeback may
-> >>> take an indefinite amount of time or hang, as denoted by the
-> >>> AS_WRITEBACK_MAY_HANG mapping flag.
-> >>>
-> >>> Currently, fuse is the only filesystem with this flag set. For a
-> >>> properly functioning fuse server, writeback requests are completed an=
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Tuesday, November 25, 2025 8:30
+> To: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: Liu, Yongxin <Yongxin.Liu@windriver.com>; LKML <linux-
+> kernel@vger.kernel.org>; Netdev <netdev@vger.kernel.org>;
+> david.e.box@linux.intel.com; chao.qin@intel.com;
+> yong.liang.choong@linux.intel.com; kuba@kernel.org; platform-driver-
+> x86@vger.kernel.org; stable@vger.kernel.org
+> Subject: Re: [PATCH net] platform/x86: intel_pmc_ipc: fix ACPI buffer
+> memory leak
+>=20
+> CAUTION: This email comes from a non Wind River email account!
+> Do not click links or open attachments unless you recognize the sender an=
 d
-> >>> there is no issue. However, if there is a bug in the fuse server and =
-it
-> >>> hangs on writeback, then without this change, wait_sb_inodes() will w=
-ait
-> >>> forever.
-> >>>
-> >>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> >>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and inter=
-nal rb tree")
-> >>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> >>> ---
-> >>>    fs/fs-writeback.c | 3 +++
-> >>>    1 file changed, 3 insertions(+)
-> >>>
-> >>> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> >>> index 2b35e80037fe..eb246e9fbf3d 100644
-> >>> --- a/fs/fs-writeback.c
-> >>> +++ b/fs/fs-writeback.c
-> >>> @@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *=
-sb)
-> >>>                if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> >>>                        continue;
-> >>>
-> >>> +             if (mapping_writeback_may_hang(mapping))
-> >>> +                     continue;
-> >>
-> >> I think I raised it in the past, but simply because it could happen, w=
-hy
-> >> would we unconditionally want to do that for all fuse mounts? That jus=
-t
-> >> seems wrong :(
+> know the content is safe.
+>=20
+> > Good catch but this fix doesn't address all possible paths. So please
+> > use cleanup.h instead:
 > >
-> > I think it's considered a userspace regression if we don't revert the
-> > program behavior back to its previous version, even if it is from the
-> > program being incorrectly written, as per the conversation in [1].
+> >       union acpi_object *obj __free(kfree) =3D buffer.pointer;
 > >
-> > [1] https://lore.kernel.org/regressions/CAJnrk1Yh4GtF-wxWo_2ffbr90R44u0=
-WDmMAEn9vr9pFgU0Nc6w@mail.gmail.com/T/#m73cf4b4828d51553caad3209a5ac92bca78=
-e15d2
-> >
-> >>
-> >> To phrase it in a different way, if any writeback could theoretically
-> >> hang, why are we even waiting on writeback in the first place?
-> >>
-> >
-> > I think it's because on other filesystems, something has to go
-> > seriously wrong for writeback to hang, but on fuse a server can easily
-> > make writeback hang and as it turns out, there are already existing
-> > userspace programs that do this accidentally.
->
-> Sorry, I only found the time to reply now. I wanted to reply in more
-> detail why what you propose here does not make sense to me.
+> > And don't forget to add the #include.
+>=20
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+>=20
+>   1.6.5. Using device-managed and cleanup.h constructs=B6
+>=20
+>   Low level cleanup constructs (such as __free()) can be used when
+>   building APIs and helpers, especially scoped iterators. However,
+>   direct use of __free() within networking core and drivers is
+>   discouraged. Similar guidance applies to declaring variables
+>   mid-function.
+>=20
+>     Andrew
 
-No worries at all, thank you for taking the time to write out your thoughts=
-.
+Thank you Ilpo and Andrew for your valuable review.
+I will send a V2 to cover all possible paths.
 
->
-> I understand that it might make one of the weird fuse scenarios (buggy
-> fuse server) work again, but it sounds like we are adding more hacks on
-> top of broken semantics. If we want to tackle the writeback problem, we
-> should find a proper way to deal with that for good.
 
-I agree that this doesn't solve the underlying problem that folios
-belonging to a malfunctioning fuse server may be stuck in writeback
-state forever. To properly and comprehensively address that and the
-other issues (which you alluded to a bit in section 3 below) would I
-think be a much larger effort, but as I understand it, a userspace
-regression needs to be resolved more immediately. I wasn't aware that
-if the regression is caused by a faulty userspace program, that rule
-still holds, but I was made aware of that. Even though there are other
-ways that sync could be held up by a faulty/malicious userspace
-program prior to the changes that were added in commit 0c58a97f919c
-("fuse: remove tmp folio for writebacks and internal rb tree"), I
-think the issue is that that commit gives malfunctioning servers
-another way, which may be a way that some well-intended but buggy
-servers could trigger, which is considered a regression. If it's
-acceptable to delay addressing this until the actual solution that
-addresses the entire problem, then I agree that this patchset is
-unnecessary and we should just wait for the more comprehensive
-solution.
+Thanks,
+Yongxin
 
->
->
-> (1) AS_WRITEBACK_MAY_HANG semantics
->
-> As discussed in the past, writeeback of pretty much any filesystem might
-> hang forever on I/O errors.
->
-> On network filesystems apparently as well fairly easily.
->
-> It's completely unclear when to set AS_WRITEBACK_MAY_HANG.
->
-> So as writeback on any filesystem may hang, AS_WRITEBACK_MAY_HANG would
-> theoretically have to be set on any mapping out there.
->
-> The semantics don't make sense to me, unfortuantely.
-
-I'm not sure what a better name here would be unfortunately. I
-considered AS_WRITEBACK_UNRELIABLE and AS_WRITEBACK_UNSTABLE but I
-think those run into the same issue where that could technically be
-true of any filesystem (eg the block layer may fail the writeback, so
-it's not completely reliable/stable).
-
->
->
-> (2) AS_WRITEBACK_MAY_HANG usage
->
-> It's unclear in which scenarios we would not want to wait for writeback,
-> and what the effects of that are.
->
-> For example, wait_sb_inodes() documents "Data integrity sync. Must wait
-> for all pages under writeback, because there may have been pages dirtied
-> before our sync call ...".
->
-> It's completely unclear why it might be okay to skip that simply because
-> a mapping indicated that waiting for writeback is maybe more sketchy
-> than on other filesystems.
->
-> But what concerns me more is what we do about other
-> folio_wait_writeback() callers. Throwing in AS_WRITEBACK_MAY_HANG
-> wherever somebody reproduced a hang is not a good approach.
-
-If I'm recalling this correctly (I'm looking back at this patchset [1]
-to trigger my memory), there were 3 cases where folio_wait_writeback()
-callers run into issues: reclaim, sync, and migration. The reclaim
-issue is addressed. For the migration case, I don't think this results
-in any user-visible regressions. Not that the migration case is not a
-big issue, I think we should find a proper fix for it, but the
-migration stall is already easily caused by a server indefinitely
-holding a folio lock, so the writeback case didn't add this stall as a
-new side effect.
-
-[1] https://lore.kernel.org/linux-fsdevel/20241122232359.429647-1-joannelko=
-ong@gmail.com/
->
-> We need something more robust where we can just not break the kernel in
-> weird ways because user space is buggy or malicious.
->
->
-> (3) Other operations
->
-> If my memory serves me right, there are similar issues on readahead. It
-> wouldn't surprise me if there are yet other operations where fuse Et al
-> can trick the kernel into hanging forever.
->
-> So I'm wondering if there is more to this than just "writeback may hang".
->
->
->
-> Obviously, getting the kernel to hang, controlled by user space that
-> easily, is extremely unpleasant and probably the thing that I really
-> dislike about fuse. Amir mentioned that maybe the iomap changes from
-> Darrick might improve the situation in the long run, I would hope it
-> would allow for de-nastifying fuse in that sense, at least in some
-> scenarios.
->
->
-> I cannot really say what would be better here (maybe aborting writeback
-> after a short timeout), but AS_WRITEBACK_MAY_HANG to then just skip
-> selected waits for writeback is certainly something that does not make
-> sense to me.
->
->
-> Regarding the patch here, is there a good reason why fuse does not have
-> to wait for the "Data integrity sync. Must wait for all pages under
-> writeback ..."?
->
-> IOW, is the documented "must" not a "must" for fuse? In that case,
-
-Prior to the changes added in commit 0c58a97f919c ("fuse: remove tmp
-folio for writebacks and internal rb tree"), fuse didn't ensure that
-data was written back for sync. The folio was marked as not under
-writeback anymore, even if it was still under writeback.
-
-> having a flag that states something like that that
-> "AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we would want
-> to add to avoid waiting for writeback with clear semantics why it is ok
-> in that specific scenario.
-
-Having a separate AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC mapping flag
-sounds reasonable to me and I agree is more clearer semantically.
-
->
-> Hope that helps, and happy to be convinced why AS_WRITEBACK_MAY_HANG is
-> the right thing to do in this way proposed here.
-
-This was helpful, thanks for your thoughts!
-
->
-> --
-> Cheers
->
-> David
+>=20
+> ---
+> pw-bot: cr
 
