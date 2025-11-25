@@ -1,106 +1,146 @@
-Return-Path: <stable+bounces-196922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7DDC85F82
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 17:26:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089B9C86268
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D6194E1B86
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 16:26:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 81A2334B50F
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 17:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B3425A321;
-	Tue, 25 Nov 2025 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2842D329C73;
+	Tue, 25 Nov 2025 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ciH82Bhm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmZHWh34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D04C238176;
-	Tue, 25 Nov 2025 16:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EBE273805;
+	Tue, 25 Nov 2025 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764087959; cv=none; b=DKw6lwjvlUrcRVVcgRVd5GpjGWESq+ftfyPabFED3odfI4qFvnBGT5br5g6SFy5Wz16s3aY7ON1x680Je6d3i1wtHsnVTfmGwD3Rs5vtpYUooCxthkuyv5Wqo1JjIbC0rtksjHCVY8CuG+BIRwWGx63Bv7r5qXcj1WUI81/8qsc=
+	t=1764090669; cv=none; b=JXMQDpAahhdfaCRFOfM/5EYXXPPIKpWwp4oAQIYtPCIUJl4xZtKwai+eHiTndDiAHtQLekTdm/hvfJHSqGHR6csrKpl5DKJ+WtQLTEASyLpfJEE6pd4WZaDHGXs5XN4JK0CIrSXzCWwCNAsDjSU18uOGkwDHRJu7GxbcLc9Fm7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764087959; c=relaxed/simple;
-	bh=uMec6g1JFYeX09IAIUXFgg9sclzlNEbw6PBIPA7cTuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rXh9kER3jitxwc+DI4arRV6xHVRiRUxsUnY9QA18IK3Mr+QziP4QiTOQw+g1dJugGRISoutv09FGb2J1xhja6Zzi6PITwcNg8sx4oy80Y8Np7qM/O2lHmXvY4j9f2XS2f9RUC9BMNuYuyUvbCf09eka9kXZ/JlgU62dvvfiaIdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ciH82Bhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F35C4CEF1;
-	Tue, 25 Nov 2025 16:25:57 +0000 (UTC)
+	s=arc-20240116; t=1764090669; c=relaxed/simple;
+	bh=xZR8pJbbTDC36ucMzn1ejVJnyZlat8zJQi3cfsqTE/Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ygbn2Mmn8Arm1c/bjvE7LWdJHJA7hA0jtIa32xbq/FInHN5KFfWYIKUKJeFkPRqnklqw8gLUv4OTvVHSl0Md9xKHZv9FTiccr8aSzpAIPYmDVj6hayB0qGKOsKoLi244zo5viKH8A6S5vIyD3iTTKPtLkaI+GDEIuYLB9ONEgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmZHWh34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E85C4CEF1;
+	Tue, 25 Nov 2025 17:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764087957;
-	bh=uMec6g1JFYeX09IAIUXFgg9sclzlNEbw6PBIPA7cTuo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ciH82Bhmw65HQ27oGQcKleAsRya4o2CHUwALkhIg8ITpL9z3cdXfEfqwKXVduwZUL
-	 fiEnGA/xzRAkf/JFidRD86QKLChzMcabNQISllIHjwx5xl/fuvfYkY1ivT6Dcr2S8W
-	 s+awbE3lDipZ4s15yZy8ctdDz+pM/zookQN0Wz3eO6l9DOVw8aNqGQFTsbAd4GvvWj
-	 54AFxboUQ4uCXYCYoRnubuOabtYpN/chn/CtjVSXN/tKoVE78JoTcyb7+1YncmF3tl
-	 NnMGx0aHwUiA18EaSVBHeFS1x8usbQzCzIV3z/aGYwfG9Q90AYhGRJfLsm5yQJR4Jo
-	 ThX9fEzR+Kbtw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vNvra-000000003s2-2cxa;
-	Tue, 25 Nov 2025 17:25:58 +0100
-Date: Tue, 25 Nov 2025 17:25:58 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] USB: serial: option: add Telit Cinterion FE910C04
- new compositions
-Message-ID: <aSXYlqai4Q7CQCT5@hovoldconsulting.com>
-References: <cover.1764084304.git.fabio.porcedda@gmail.com>
- <3ef9bdaa5f76595d0a39b8fc1b1cebe29f69709c.1764084304.git.fabio.porcedda@gmail.com>
+	s=k20201202; t=1764090669;
+	bh=xZR8pJbbTDC36ucMzn1ejVJnyZlat8zJQi3cfsqTE/Y=;
+	h=From:Date:Subject:To:Cc:From;
+	b=RmZHWh345UtOHdBBl2skqpaSIDD3vOfTkuKHrc3GGu+S/PZHOefZZ9aFDnhOEPF/5
+	 KfOHwaFc9xV6vyRZqK09ZPKnLIaNCAnB+nZ+CLNwEhwjCGjLYaanz1lWrQhrnnXWIq
+	 xIcQogKdUf0uOoYZkNA5KUiuJlc2z3MLLuDPC9H9Q4ND52fsH/+y1C5Dyi3wl3ngU0
+	 D6r8HTHyBaRlk7TcH1recUlaFxFUeHiOoE4LfuZJRSJMg9v8biKwiTiHZams2W11Co
+	 wisPQ08/UP1SMAUeEmEDGoEPuglhQuWcfbUu6liPCutxVkcq0jOIPefAWdu4vurgci
+	 2AOaj0JdL68hA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 25 Nov 2025 17:59:11 +0100
+Subject: [PATCH net] mptcp: clear scheduled subflows on retransmit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3ef9bdaa5f76595d0a39b8fc1b1cebe29f69709c.1764084304.git.fabio.porcedda@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAF7gJWkC/x3MQQrDIBBG4auEWXcgSiTQq4QurP5NBhojo5SA5
+ O6RLt/ie40KVFDoOTRS/KTIkXqYx0Bh82kFS+xNdrTOGOs4ofKea8gcvvDKJWyIrPVkP+HtZ0z
+ RwVD3WfGR8/9eqDN6XdcNiPIel3AAAAA=
+X-Change-ID: 20251125-net-mptcp-clear-sched-rtx-a4eba7e4d5e1
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Filip Pokryvka <fpokryvk@redhat.com>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2175; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=2hBOccHTvC3Ma2AnCdnY4gSmYbZkET0gScOy1lgMpdU=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJVH2tx7+2+kDdB/rDzuUJnn3UB871CJ53mZp763vUwn
+ /TVR32zOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACZip87wv7CKcZsJf8kC9/K9
+ E34dVys5mHNv2ubG/d78guGcpUrvhBkZZh53vi63+WBUhEvWpflPNLQazmho2kQd7juWq/qNccp
+ 8RgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Tue, Nov 25, 2025 at 04:27:33PM +0100, Fabio Porcedda wrote:
-> Add the following Telit Cinterion new compositions:
+From: Paolo Abeni <pabeni@redhat.com>
+
+When __mptcp_retrans() kicks-in, it schedules one or more subflows for
+retransmission, but such subflows could be actually left alone if there
+is no more data to retransmit and/or in case of concurrent fallback.
+
+Scheduled subflows could be processed much later in time, i.e. when new
+data will be transmitted, leading to bad subflow selection.
+
+Explicitly clear all scheduled subflows before leaving the
+retransmission function.
+
+Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
+Cc: stable@vger.kernel.org
+Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 33b5dce431c2..8abb425d8b5f 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2665,7 +2665,7 @@ static void __mptcp_retrans(struct sock *sk)
+ 		}
  
-> 0x10cb: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
-> T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480 MxCh=16
-> D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
-> P:  Vendor=1d6b ProdID=0002 Rev=06.18
-> S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
-> S:  Product=xHCI Host Controller
-> S:  SerialNumber=0000:00:14.0
-> C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
-> I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
-> E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
-> 
-> T:  Bus=01 Lev=01 Prnt=01 Port=11 Cnt=01 Dev#=  7 Spd=1.5 MxCh= 0
-> D:  Ver= 1.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
-> P:  Vendor=413c ProdID=2003 Rev=03.01
-> S:  Manufacturer=Dell
-> S:  Product=Dell USB Keyboard
-> C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=70mA
-> I:  If#= 0 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=01 Driver=usbhid
-> E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=24ms
-> 
-> T:  Bus=02 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=10000 MxCh=10
-> D:  Ver= 3.10 Cls=09(hub  ) Sub=00 Prot=03 MxPS= 9 #Cfgs=  1
-> P:  Vendor=1d6b ProdID=0003 Rev=06.18
-> S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
-> S:  Product=xHCI Host Controller
-> S:  SerialNumber=0000:00:14.0
-> C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
-> I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
-> E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+ 		if (!mptcp_send_head(sk))
+-			return;
++			goto clear_scheduled;
+ 
+ 		goto reset_timer;
+ 	}
+@@ -2696,7 +2696,7 @@ static void __mptcp_retrans(struct sock *sk)
+ 			if (__mptcp_check_fallback(msk)) {
+ 				spin_unlock_bh(&msk->fallback_lock);
+ 				release_sock(ssk);
+-				return;
++				goto clear_scheduled;
+ 			}
+ 
+ 			while (info.sent < info.limit) {
+@@ -2728,6 +2728,15 @@ static void __mptcp_retrans(struct sock *sk)
+ 
+ 	if (!mptcp_rtx_timer_pending(sk))
+ 		mptcp_reset_rtx_timer(sk);
++
++clear_scheduled:
++	/* If no rtx data was available or in case of fallback, there
++	 * could be left-over scheduled subflows; clear them all
++	 * or later xmit could use bad ones
++	 */
++	mptcp_for_each_subflow(msk, subflow)
++		if (READ_ONCE(subflow->scheduled))
++			mptcp_subflow_set_scheduled(subflow, false);
+ }
+ 
+ /* schedule the timeout timer for the relevant event: either close timeout
 
-Looks like something went wrong when you generated the usb-devices
-output for the above composition.
+---
+base-commit: 4fe5a00ec70717a7f1002d8913ec6143582b3c8e
+change-id: 20251125-net-mptcp-clear-sched-rtx-a4eba7e4d5e1
 
-Johan
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
