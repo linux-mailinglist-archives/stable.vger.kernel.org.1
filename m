@@ -1,100 +1,95 @@
-Return-Path: <stable+bounces-196931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71945C86ADB
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:40:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50183C86BBA
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 20:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7A083B4329
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 18:39:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ED3783530FA
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 19:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD65333752;
-	Tue, 25 Nov 2025 18:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253FB2773F4;
+	Tue, 25 Nov 2025 19:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="knhvuw1k"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Xyhd4zGS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kWYpqVqO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8692D73B8
-	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 18:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E1918BBAE;
+	Tue, 25 Nov 2025 19:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764095952; cv=none; b=cUtVClK78tYYBBakfbvdrPtkB7cYWMfvT/gdVzlKfVjyTUBdfpHrYxkgk+enz0+4d1Iw+f7D5aZdT2c491p9oJo3dIrQLTtqJOe9li3HVWgmf3x5WQX785zzrTkGn6S6HmJjnCla3kwGiBOtJOJytQ2XmdoK89ZRvhPT2ifTdT8=
+	t=1764097475; cv=none; b=NEVK4mVdOLRx67GdZGZ65DC/dtgoCZIJKT+stMUgbNEkEMjpIecnEhsiVkVAKbv4E8Z3HLqXBhDuI8W0qrciVFXYdNiWYTQY+s5DwvgaQ2N6Y3I1rSUFxS8RfdSR8oPHrB0mRLBXXhon2/KmXiS5eQLxSlEj5sRA+wBlprkouTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764095952; c=relaxed/simple;
-	bh=SwMh+bOv9VKkCEiXi8kk/hn8YQ6tuDRU9ra8uwee5tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=LDlWKDo6cq76PWX50WB9XQp3vmwjghALny/eY+UCrq1Uh7yntvll2zOCZaJTyKlylpu/+8VJyWFYI/G+B4s/xbFSusTH0dTZvTSg8D8rXrZijT9u2M1DjRewyLND4u9rLLYU2sjKzoT7IViJ3pVheuVFpxyrhZdOMPNWcgWArGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=knhvuw1k; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764095950; x=1795631950;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=SwMh+bOv9VKkCEiXi8kk/hn8YQ6tuDRU9ra8uwee5tE=;
-  b=knhvuw1koDrtbsIgpIRsBr1fSJlqpEXm0K5LxsJF2+DS7pW6pICPNroY
-   i9TOFayfVaiQmTLl5t/h6qQM8vklSaYBgaOCsgroBsh/WrWGKPn/aYLu6
-   Gt4/fwBg9sOOSJp/WxbnAW1FsE+57sBlGt53h4a/bW3+snUymkiqHW0r5
-   rPwBgRba+x9SSkSFYCnuA5RdZxvIDgXunyi/AahT+RrvpTttE+3SW+N6R
-   DtfZ9fB7ZFkV3E4/ZGdbDnEoaQM34zc36H4h3keB02eF/vTmeICvK/Rkg
-   ySOPbNUmKneWXPnEKkxOD7Nfy0CFzS7esrDVGVMviI+wYY/bJyfCOLQYj
-   w==;
-X-CSE-ConnectionGUID: 1EhUPYv/RI6Uf+4MG+kcBA==
-X-CSE-MsgGUID: gc8JSXm+RJyk2QhjwScOIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="65833322"
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="65833322"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 10:39:09 -0800
-X-CSE-ConnectionGUID: hpozAfpmRNGuZ44rYeIurA==
-X-CSE-MsgGUID: NNtZ3MAdSVOlWrrn6wn6tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="192719081"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 25 Nov 2025 10:39:08 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vNxwP-0000000029F-4C29;
-	Tue, 25 Nov 2025 18:39:06 +0000
-Date: Wed, 26 Nov 2025 02:38:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexei Safin <a.safin@rosa.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on
- enable/disable
-Message-ID: <aSX3klrjsRrlyCS2@4e95d9e973af>
+	s=arc-20240116; t=1764097475; c=relaxed/simple;
+	bh=ohOlxESVUS5GWta7bMITCRe9Q8q5s8Xw6nLN+Y+p9v8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mSUzd3JGd8+3tiwi9DBtsMN3zR5n9cxrjYVY5KwLG1VwKFImbXUjjz0cocbk0WlQiotT3rMyvHxop9UqRyimWoeK+Ph5UJEehN3dZaEwjvFcHw/JpX4yVOXZpQQbDqxri96LyR/aEHGiAV8bNw2im9OK3UQ1TWBOJ213b2d+RXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Xyhd4zGS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kWYpqVqO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764097472;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UoGHYDHwZQQrMcaSIQuTum0d3CDmwrfoU7AaJG27DpI=;
+	b=Xyhd4zGSpk2YthZrTiDfaXBNQHuvNqYg2oKJEpKnl2a9+IaKQhCVytVHBfrbSZOc5UNVdt
+	w1Hp+r+3TMChKtEOe7ZBheF8e0ajR/pfyGCv6xS+LabTtkWrF0WTdGdxklgfjRI9U0bc3g
+	l+s+zBxODv3LTPYPK0pJtAf++IjuXAnbPDKDHLclCeyNAn1UBSrmU4wTywbBMw4gj1VMB6
+	yP0DWATdGflfmJXD8SbbXStNK6ZSQzp8+4LriNk0GcUMAr4viGLVyIxfkFJi0q+MrAmq0c
+	gwc8emA6AF8GTJJxsGxj2Y83lOgky7oSqU7OYP8treadaQb3pPz8PARNnYtxDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764097472;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UoGHYDHwZQQrMcaSIQuTum0d3CDmwrfoU7AaJG27DpI=;
+	b=kWYpqVqOOOeG44/5ESzHmjCOIT0/1+E6Xwk4rHPo72nuBG+g/nPyHLfLlvpcQPvBNgP7vT
+	ecrOGNuno3Or8gCw==
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+ stable@vger.kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel
+ <joro@8bytes.org>
+Subject: Re: [patch 1/3] x86/msi: Make irq_retrigger() functional for posted
+ MSI
+In-Reply-To: <CAMOZA0LB1UEEib1WWpUW0X-5+LKx28Ko9eGLi5ZSvU8d2yXkBQ@mail.gmail.com>
+References: <20251125101912.564125647@linutronix.de>
+ <20251125102000.636453530@linutronix.de>
+ <CAMOZA0LB1UEEib1WWpUW0X-5+LKx28Ko9eGLi5ZSvU8d2yXkBQ@mail.gmail.com>
+Date: Tue, 25 Nov 2025 20:04:31 +0100
+Message-ID: <87ldjugchs.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125183110.80525-1-a.safin@rosa.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Nov 25 2025 at 18:54, Luigi Rizzo wrote:
+> On Tue, Nov 25, 2025 at 11:20=E2=80=AFAM Thomas Gleixner <tglx@linutronix=
+.de> wrote:
+>>
+>> Luigi reported that retriggering a posted MSI interrupt does not work
+>> correctly.
+>> [...]
+>>
+>> So instead of playing games with the PIR, this can be actually solved
+>> for both cases by:
+>>
+>>  1) Keeping track of the posted interrupt vector handler state
+>
+> Tangential comment, but I see that this patch uses this_cpu_read()/write()
+> whereas the rest of the file uses __this_cpu_read()/write()
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] media: ipu6: isys: csi2: guard NULL remote pad/subdev on enable/disable
-Link: https://lore.kernel.org/stable/20251125183110.80525-1-a.safin%40rosa.ru
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+You're right. I've missed that. Let me redo it.
 
