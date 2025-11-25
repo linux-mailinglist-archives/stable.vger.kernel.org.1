@@ -1,131 +1,208 @@
-Return-Path: <stable+bounces-196905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D70AC853E2
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:49:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB4EC85412
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 14:51:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EACB53B18E9
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9434F3B279E
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 13:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B289723817D;
-	Tue, 25 Nov 2025 13:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BA123817D;
+	Tue, 25 Nov 2025 13:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="CB5FluiM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e0QIjbBa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fodp/36H"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AE722D9ED;
-	Tue, 25 Nov 2025 13:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B2ACA5A
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 13:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764078586; cv=none; b=nAYiSRpO9Sdgw+tQXkDnh6SJ+Yphx6exMDctlWoD/0QTDLnXJHi6Bb3DH1f/EIAKDykzQv3Db5vBbAYlmZUUme83c6tBzzez/1jeVbzTT3K+5awjOnB4q7Dh0jXk47vaXMpU4VxD7+WVh64n7VwOg1znfq/Y47Vvxz7cbL5X5Do=
+	t=1764078675; cv=none; b=hPdnXCofo7+NiiuQCfpCNXtgPAz9Jir68GsmHnUlCzNVLT+cfLmX3cfwi26kHDrwzUJi7frBD2lEosqmIRSxcY6N/KaiUPRjOEUQT77XM1cAGvI9oHzdHf1rDMHc6jPZtQ4iX1H5zLLBASNLPGdYAF8Cl9hPdccXLVofVMhSayM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764078586; c=relaxed/simple;
-	bh=ntC8L8bzslhLIg3qF+wfGwwLw6rXBs0Pz+3oaMKdDno=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=kNbWxcS+iwzm8eMLNXvTHmweopJ5CxCMwTsf38WuWQjqr8K0Vth3cAos7B1AODqaAgE89nbCaDzB979E72D+AQXm6/uMBXvwGbhdxOgm0LpKe20gpyh9PLP1yDcKXSNa/xlbcFM0iZLkkvK0ZP/iU+U/C7yE6RD6SMeyxQ8tjxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=CB5FluiM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e0QIjbBa; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6F5861D00255;
-	Tue, 25 Nov 2025 08:49:43 -0500 (EST)
-Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-03.internal (MEProxy); Tue, 25 Nov 2025 08:49:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1764078583;
-	 x=1764164983; bh=ntC8L8bzslhLIg3qF+wfGwwLw6rXBs0Pz+3oaMKdDno=; b=
-	CB5FluiMmqInWbRVdKpHDUf8T74lf8goWOKSbvi3WN7XRHscFjubuN2/pFKN2o2N
-	sgn+4NN9NPvmYGs5bOLrQLi/MT7l0ZcU2XXxmDgUKLg26Ty6411dHbQLBByf+03g
-	+8uhKjgzOb2zUmxqnAOSDk0zxUBxmxolmmvxcWY+zfD4Iow3RGUgQXDmC8cS+RZh
-	6qS4My3MrdlPEBPUhI2xQJIaDTrvg+ipWCv+ma9uIDviijGH6xsXy/S2ySZLSp/V
-	rXWAk0WUzc3gpd5/e8Ud8arSlPe+CUlTWkKehLCjae1+N0BEWo/HALI6sdXXyuzu
-	IsDCPMy3tjI/nDCpE5usuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1764078583; x=
-	1764164983; bh=ntC8L8bzslhLIg3qF+wfGwwLw6rXBs0Pz+3oaMKdDno=; b=e
-	0QIjbBaE4VaSblDA9prVEuYyAgSgVfcoBOCuoUIHRc0wd2Vpc4X8Xfn6p4qCIaWg
-	BlAK3N35nTN9DWnvUXxGZ78RVHhcqGSoIgwnWxRaFTU03w2K3wfyAB/ooIiOXLJr
-	mx2aiNMIJeSEI1u5mVrc6a5qsDY82qAdGrxSsoWag67Lmcu7vfHUD+50JRUVl+Xj
-	TDb/vU210VLFzesnsTzgV73wJX0QczC5x1T7HyFZxNt4zir0VXQpQhB2iUNmk5J/
-	wtn25ztIsNyxn2LwdZ9GuHj66F4v93gOf485fQs7YMgM17UCovG6lI1Lua21oZFM
-	FIgMDYSU5Hhg2e50yvs8g==
-X-ME-Sender: <xms:9rMlaWNtdj6LLu11gdOoQzasf2q5bDNDGevaydoG5a0P8M8Ope682A>
-    <xme:9rMlafxYhovnHgsgmTZZt1gcpmGwfmsiwJgqd04dvMAuRom9FqxV7gjF3TZtqIoou
-    ydkVHES1uleN0TVYUZMOebILaXvnUXqPjHmMizwLxGrwMnxeZZ5NMU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeduieefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedflfhirgig
-    uhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhephfethfdutdeigeelueeitddtheehudevffejtedtkedvueei
-    tddujeefieejieefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghp
-    thhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlkhhpsehinhhtvg
-    hlrdgtohhmpdhrtghpthhtoheptghhvghnhhhurggtrghisehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehguhhorhgvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhooh
-    hnghgrrhgthheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegthhgvnhhh
-    uhgrtggriheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehlihiguhgvfhgvnhhgse
-    hlohhonhhgshhonhdrtghnpdhrtghpthhtohepfigrnhhgrhhuiheslhhoohhnghhsohhn
-    rdgtnhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:9rMlacwLdL2xMPWJ_yGzh_9CB8qZGThH0no9fCCFpbh0X8LvR2PTzg>
-    <xmx:9rMlaYdehHecAdLA1g07z1RPVZcKVWn80mHScXhwdmvA6YfqYoUIgA>
-    <xmx:9rMlaZ5LOJA5XEP1ISrzLLpxKtwuJ43eY4bsVnaqIfPjbBMfR2ta1w>
-    <xmx:9rMlaVKsCBjIdGTQs6VTLrFwjXpIIToBwe4_2GfxpH3lnRd5L9SF7g>
-    <xmx:97MlaaJBay1Zv_jCWeuTAlYBELwv5bypqiS4iybgOgqxub-0vzEJvIfX>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 941FD1EA0066; Tue, 25 Nov 2025 08:49:42 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1764078675; c=relaxed/simple;
+	bh=gQQUq15/5O7zMwEp5yo0ECZ2VS0pen039cgkhD0dos0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HEpHwswp+6MFmTphbGV+UIc6VpGoMBmc/vo4LX8GE1WN1t4SXN/EGK9jPBfvQ00jKHRR+IlvvBu8OcucgVgJWlp2P3L0aqJDriwVpe3/l79IALFwLofyBclTtVNHdhI5OxCNz2nkaIzuflVwuzfrw0zzAujMomZS0yUxATMTf94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fodp/36H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9336C19422;
+	Tue, 25 Nov 2025 13:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764078674;
+	bh=gQQUq15/5O7zMwEp5yo0ECZ2VS0pen039cgkhD0dos0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Fodp/36HTx8fPpRasNjoiDZ4ix9M3twDXpdEtPCdxxWoirLj2bZ8T0dbg8ZSo3rBN
+	 E1hoUFlJ66IsLMW3WCPj5BSTRtAZr0MOr6p+6Mf0XDxIyByUnLST1exRcB4Qc0ncm4
+	 wuCCuJ7oCtgvcUD+dlNCwDBBc0g1RuA+plQutNjpRAzyZ6iA7PZTsfREERSUGfHgDb
+	 7fA2YgHi0JJCBNgwES/YRjNNastbPeHHbO83/HrhXqcAOvZv/vN63NHch436njYfnD
+	 1WzqZQiV9KNWoz0sNftTgsm68MrvB+YPa5tqStquhfClw2ZcSj0kAZ20LzCDf/iLGs
+	 T8P6in/+JMBqA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Charlene Liu <Charlene.Liu@amd.com>,
+	"Ovidiu (Ovi) Bunea" <ovidiu.bunea@amd.com>,
+	Yihan Zhu <yihan.zhu@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/2] drm/amd/display: Insert dccg log for easy debug
+Date: Tue, 25 Nov 2025 08:51:11 -0500
+Message-ID: <20251125135112.591587-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112424-handball-smolder-0f15@gregkh>
+References: <2025112424-handball-smolder-0f15@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 25 Nov 2025 21:49:22 +0800
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Huacai Chen" <chenhuacai@loongson.cn>,
- "Huacai Chen" <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev, "Xuefeng Li" <lixuefeng@loongson.cn>,
- "Guo Ren" <guoren@kernel.org>, "Xuerui Wang" <kernel@xen0n.name>,
- linux-kernel@vger.kernel.org,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "kernel test robot" <lkp@intel.com>, "Rui Wang" <wangrui@loongson.cn>
-Message-Id: <9c732952-2ff6-4672-ab9a-76ac8590bf88@app.fastmail.com>
-In-Reply-To: <20251125082559.488612-1-chenhuacai@loongson.cn>
-References: <20251125082559.488612-1-chenhuacai@loongson.cn>
-Subject: Re: [PATCH] LoongArch: Fix build errors for CONFIG_RANDSTRUCT
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Charlene Liu <Charlene.Liu@amd.com>
 
+[ Upstream commit 35bcc9168f3ce6416cbf3f776758be0937f84cb3 ]
 
-On Tue, 25 Nov 2025, at 4:25 PM, Huacai Chen wrote:
-> When CONFIG_RANDSTRUCT enabled, members of task_struct are randomized.
-> There is a chance that TASK_STACK_CANARY be out of 12bit immediate's
-> range and causes build errors. TASK_STACK_CANARY is naturally aligned,
-> so fix it by replacing ld.d/st.d with ldptr.d/stptr.d which have 14bit
-> immediates.
+[why]
+Log for sequence tracking
 
-Hi Huacai,
+Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
+Reviewed-by: Yihan Zhu <yihan.zhu@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cfa0904a35fd ("drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-What about 32bit build in this case?
+diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+index 0ce9489ac6b72..de6d62401362e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+@@ -39,6 +39,7 @@
+ 
+ #define CTX \
+ 	dccg_dcn->base.ctx
++#include "logger_types.h"
+ #define DC_LOGGER \
+ 	dccg->ctx->logger
+ 
+@@ -1136,7 +1137,7 @@ static void dcn35_set_dppclk_enable(struct dccg *dccg,
+ 	default:
+ 		break;
+ 	}
+-	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
++	DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
+ 
+ }
+ 
+@@ -1406,6 +1407,10 @@ static void dccg35_set_dtbclk_dto(
+ 		 * PIPEx_DTO_SRC_SEL should not be programmed during DTBCLK update since OTG may still be on, and the
+ 		 * programming is handled in program_pix_clk() regardless, so it can be removed from here.
+ 		 */
++		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO enabled: pixclk_khz=%d, ref_dtbclk_khz=%d, req_dtbclk_khz=%d, phase=%d, modulo=%d\n",
++				__func__, params->otg_inst, params->pixclk_khz,
++				params->ref_dtbclk_khz, req_dtbclk_khz, phase, modulo);
++
+ 	} else {
+ 		switch (params->otg_inst) {
+ 		case 0:
+@@ -1431,6 +1436,8 @@ static void dccg35_set_dtbclk_dto(
+ 
+ 		REG_WRITE(DTBCLK_DTO_MODULO[params->otg_inst], 0);
+ 		REG_WRITE(DTBCLK_DTO_PHASE[params->otg_inst], 0);
++
++		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO disabled\n", __func__, params->otg_inst);
+ 	}
+ }
+ 
+@@ -1475,6 +1482,8 @@ static void dccg35_set_dpstreamclk(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_EN = %d, DPSTREAMCLK_SRC_SEL = %d\n",
++			__func__, dp_hpo_inst, (src == REFCLK) ? 0 : 1, otg_inst);
+ }
+ 
+ 
+@@ -1514,6 +1523,8 @@ static void dccg35_set_dpstreamclk_root_clock_gating(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_ROOT_GATE_DISABLE = %d\n",
++			__func__, dp_hpo_inst, enable ? 1 : 0);
+ }
+ 
+ 
+@@ -1553,7 +1564,7 @@ static void dccg35_set_physymclk_root_clock_gating(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
+-	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
++	DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE: %d\n", __func__, phy_inst, enable ? 0 : 1);
+ 
+ }
+ 
+@@ -1626,6 +1637,8 @@ static void dccg35_set_physymclk(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	DC_LOG_DEBUG("%s: phy_inst(%d) PHYxSYMCLK_EN = %d, PHYxSYMCLK_SRC_SEL = %d\n",
++			__func__, phy_inst, force_enable ? 1 : 0, clk_src);
+ }
+ 
+ static void dccg35_set_valid_pixel_rate(
+@@ -1673,6 +1686,7 @@ static void dccg35_dpp_root_clock_control(
+ 	}
+ 
+ 	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
++	DC_LOG_DEBUG("%s: dpp_inst(%d) clock_on = %d\n", __func__, dpp_inst, clock_on);
+ }
+ 
+ static void dccg35_disable_symclk32_se(
+@@ -1731,6 +1745,7 @@ static void dccg35_disable_symclk32_se(
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++
+ }
+ 
+ static void dccg35_init_cb(struct dccg *dccg)
+@@ -1738,7 +1753,6 @@ static void dccg35_init_cb(struct dccg *dccg)
+ 	(void)dccg;
+ 	/* Any RCG should be done when driver enter low power mode*/
+ }
+-
+ void dccg35_init(struct dccg *dccg)
+ {
+ 	int otg_inst;
+@@ -1753,6 +1767,8 @@ void dccg35_init(struct dccg *dccg)
+ 		for (otg_inst = 0; otg_inst < 2; otg_inst++) {
+ 			dccg31_disable_symclk32_le(dccg, otg_inst);
+ 			dccg31_set_symclk32_le_root_clock_gating(dccg, otg_inst, false);
++			DC_LOG_DEBUG("%s: OTG%d SYMCLK32_LE disabled and root clock gating disabled\n",
++					__func__, otg_inst);
+ 		}
+ 
+ //	if (dccg->ctx->dc->debug.root_clock_optimization.bits.symclk32_se)
+@@ -1765,6 +1781,8 @@ void dccg35_init(struct dccg *dccg)
+ 			dccg35_set_dpstreamclk(dccg, REFCLK, otg_inst,
+ 						otg_inst);
+ 			dccg35_set_dpstreamclk_root_clock_gating(dccg, otg_inst, false);
++			DC_LOG_DEBUG("%s: OTG%d DPSTREAMCLK disabled and root clock gating disabled\n",
++					__func__, otg_inst);
+ 		}
+ 
+ /*
+-- 
+2.51.0
 
-Thanks
-Jiaxun
-
->
 
