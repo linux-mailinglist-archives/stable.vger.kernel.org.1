@@ -1,328 +1,158 @@
-Return-Path: <stable+bounces-196883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AEFC84858
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:39:37 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64F2C8487C
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 11:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAACC4E1084
-	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:39:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 571BA34DAEB
+	for <lists+stable@lfdr.de>; Tue, 25 Nov 2025 10:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A1E2DAFBB;
-	Tue, 25 Nov 2025 10:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA092E265A;
+	Tue, 25 Nov 2025 10:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="HzPOTm9S"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Eve7g18+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB04CD271;
-	Tue, 25 Nov 2025 10:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FD5D271
+	for <stable@vger.kernel.org>; Tue, 25 Nov 2025 10:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764067172; cv=none; b=UeSsWJvjEuFkHDHR1WWnGkRS4KyfH7AmT1BbRIp5ap9KSav5hpPiOV1AMdWnzyTO9lONDtwMThC8817zANuWp90MpNaXrps4UfYeF7l7rGKt04IY/w0FpNklFK2y+KdiPwrK8R8TjTz7FvRIwjYCctNM72kYova2OCvYPLJYYx0=
+	t=1764067325; cv=none; b=AIRQZZWUMgt5E+Ii92W+vkwVGjLT63lgbE9h1qlDjMxgyQz+FYHhQjFyXTvjfH28AKxoFuSahE7oPnWrBJNJzPf6huKdbVSaisV6VuygATOYJrx5h2vgqNfPt+9gCZYWcJ4ijkW1QKqa9dF8G9qGxURcvimO6y4kwA6YuVptuyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764067172; c=relaxed/simple;
-	bh=kv8Xnva7ByKpiO+1lduq97pc2DlyJl9XVo7XE1SGHcA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e8hreVXXlknkMA3atZcKaHSzGbOCln0vbxfy1Iq8sUYVsREkJVZa0VIv3wEcG0L2IFkUyurDW6zsq39phRMNkHMJXnib99TnjLMbTu2Fzyty3QA14nqTUCtKhITKRvdCBPC05KpzTFT3laxcE7Ixv+xF74iKaMR7I5Czz7xC8iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=HzPOTm9S; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id A6DFD1F952;
-	Tue, 25 Nov 2025 11:39:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1764067166;
-	bh=vYuwI8WDetzMM4568jAfg1o1xdUI8mBWi2pDRajww1A=; h=From:To:Subject;
-	b=HzPOTm9Sem8M85fl0eKDNHSecJT7JY6o6k6N7yl3UI+ugDliQNS9KGJNActv3+lNs
-	 g7oYfZFOwocPxWZifrVtK3UYNC0SBnRdVQLUX1CjhHe9EKsion2ROZ/Z1x/wyspeTO
-	 RozDEvd28f7QCHbBO5e8ufQBRdPFE2huhkCEYkqxVgIAVKd3O9WrQM3qVjVeNiD+h5
-	 qYoG16YIdLP+9wtA4ryqi6hY4Jcjojimd3OAfVsgCrJqCm02CocDet9B+HbIHw9CGk
-	 oIpPsaxKh2/qM7JUYuechrBhxJVWY9PbFk8pk9Fjh3xPyf7c5aeqE1ET0nEqZKiG8m
-	 V8YoOyURqaGOQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	stable@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Subject: [PATCH v1] Revert "drm: bridge: ti-sn65dsi83: Add error recovery mechanism"
-Date: Tue, 25 Nov 2025 11:38:58 +0100
-Message-ID: <20251125103900.31750-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1764067325; c=relaxed/simple;
+	bh=6Nydaetgb9U+tMxAvPw0lf0b8N3OD98FyZy2NZ2uJ4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hjb2gbTluuqyb87HXb7hak2PbW8dFnerBqm9oJriNuwSpWnBOuFQQxdCrB+/4I2f2ASxaOjUkpS5ec9vhYOLwIEMEG8JQkBakHGajhJdYjSXsTCLtsta1ZyEUpvNgUIEOJfm8eM+Ml59DKZeMj8ahgKAbIzOtO1inxTRJ/nGMGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Eve7g18+; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP3FYmw005955;
+	Tue, 25 Nov 2025 10:41:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=1tiKEbSp/YYbYaLDV7P35JMwtzcsyl
+	Czaj1O67Xz3s4=; b=Eve7g18+ej2l5mk76Q2ilp4pkqC+QOHybUCedcj5sWizbs
+	rHjN3Nkw3b25fLOSiz7JFLyrF2mpMynZPKly1x4SPkyMZmTufSP4oe/31JPkbuC9
+	9tnBZLhkDKGVRMafsUobADCHTU1/xP2cOAbDsTtbV0QLfxl0L21EnogAJrGVSPY3
+	OXjgpJLj5E9QGt6iqpJSXTbpgvsAmNM2XXIjNNl60JWdI/2wVP8IhMUZsNQthfT8
+	Qg4pux09dRVZ//9IUmWwLQ8FpD0vJsqtbKRkoKV9q+v6NIgdKxTFGdTxwcnXw4/P
+	NbZXJixsb0iUg96IfiZ9lfhe7WAT9H4MR2DlMb/g==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9csp4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Nov 2025 10:41:55 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP93VHO000882;
+	Tue, 25 Nov 2025 10:41:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4akqvxu922-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Nov 2025 10:41:53 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5APAfoOL31326702
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Nov 2025 10:41:50 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF7BA20049;
+	Tue, 25 Nov 2025 10:41:49 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BAC0120040;
+	Tue, 25 Nov 2025 10:41:49 +0000 (GMT)
+Received: from osiris (unknown [9.155.211.25])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 25 Nov 2025 10:41:49 +0000 (GMT)
+Date: Tue, 25 Nov 2025 11:41:48 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Subject: Re: [PATCH 6.12.y 3/3] s390/mm: Fix __ptep_rdp() inline assembly
+Message-ID: <20251125104148.10410E98-hca@linux.ibm.com>
+References: <2025112418-impish-remix-d936@gregkh>
+ <20251124171719.4158053-1-sashal@kernel.org>
+ <20251124171719.4158053-3-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124171719.4158053-3-sashal@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfX6aaJ525ci6Bk
+ +sv8PkEN8MaaoyiHwJ+hNEN4LL3GBWM7FhicklGlXy9gHafztUPr6oPZtNuvvoA0eIaTlHdhRWC
+ hAldjRpZoQApnFJBPwG1Nii5Ys7oeDsSeBPXJQZUaAV59gQrRBt4U8ccTWir6p/Hklplsw6Dvpt
+ UdABF0zJymxmZWCpxLd9ViKSpSwpxRl5046USNeuISRn6+BH6887WAyGcd0AZYkZnAm+1phks5L
+ P0mIjY9aGRYPUXiBQ6iHzi7u40lOAT7rEOZOVMx41tpRvAEisukSyqlge1YQxSI/7GcsUEDXkOQ
+ tH9BDDry9Bw5aK+1sxtOxGlNeD1aEd/BE/FMR0Mfw3NZ/mrggpAxeaG1tu4ZDDduidmDdV5iEKV
+ PumlKCON4FJN0xaBAq7f0jOnEqGoZg==
+X-Proofpoint-ORIG-GUID: kOU2dQlJvFhlfYl55filu2w4WfENazUo
+X-Proofpoint-GUID: kOU2dQlJvFhlfYl55filu2w4WfENazUo
+X-Authority-Analysis: v=2.4 cv=TMJIilla c=1 sm=1 tr=0 ts=692587f3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=IovQu9Nc8JwbWXVCFKAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 clxscore=1011
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511220021
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Mon, Nov 24, 2025 at 12:17:19PM -0500, Sasha Levin wrote:
+> From: Heiko Carstens <hca@linux.ibm.com>
+> 
+> [ Upstream commit 31475b88110c4725b4f9a79c3a0d9bbf97e69e1c ]
+> 
+> When a zero ASCE is passed to the __ptep_rdp() inline assembly, the
+> generated instruction should have the R3 field of the instruction set to
+> zero. However the inline assembly is written incorrectly: for such cases a
+> zero is loaded into a register allocated by the compiler and this register
+> is then used by the instruction.
+> 
+> This means that selected TLB entries may not be flushed since the specified
+> ASCE does not match the one which was used when the selected TLB entries
+> were created.
+> 
+> Fix this by removing the asce and opt parameters of __ptep_rdp(), since
+> all callers always pass zero, and use a hard-coded register zero for
+> the R3 field.
+> 
+> Fixes: 0807b856521f ("s390/mm: add support for RDP (Reset DAT-Protection)")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+> Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/s390/include/asm/pgtable.h | 12 +++++-------
+>  arch/s390/mm/pgtable.c          |  4 ++--
+>  2 files changed, 7 insertions(+), 9 deletions(-)
 
-This reverts commit ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error
-recovery mechanism").
+...
 
-The reverted commit introduces a regression on Verdin AM62, and
-potentially on more devices, not being able to generate a clock
-that the TI SN65DSI83 PLL can lock to, with the display periodically
-blinking.
+> @@ -1304,7 +1302,7 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+>  	 * A local RDP can be used to do the flush.
+>  	 */
+>  	if (cpu_has_rdp() && !(pte_val(*ptep) & _PAGE_PROTECT))
+> -		__ptep_rdp(address, ptep, 0, 0, 1);
+> +		__ptep_rdp(address, ptep, 1);
+>  }
 
-Verdin AM62 SoM has a Toshiba TC358778 DPI to DSI bridge, that can be
-connected to an LVDS display over a TI SN65DSI83 bridge. Before this
-change despite the TI SN65DSI83 reporting with a debug print a PLL
-locking error the display was working fine with no visible glitches.
+I don't think it makes too much sense to backport only two of the many
+cpu_has_xxx() conversion patches just to avoid the minimal difference
+in context for this patch. From my point of view this puts the stable
+branch into an inconsistent state wrt s390 and cpu features - old and
+new interfaces are mixed.
 
-The reasons for this issue was investigated without getting to a final
-conclusion:
-
- - the DPI clock was measure and it is stable/accurate
- - the DSI clock was not possible to measure, but this setup is used
-   with other display/bridges with no known issues
- - the DSI clock is configured in continuous mode
- - the actual DSI clock generated from the TC358778 is generate with a
-   PLL from a 25MHz reference clock
- - it's not clear why some frequencies are working and some are not, for
-   example 50000000, 68750000, 72750000, 75000000 frequencies are fine,
-   while 69750000, 71100000, 72500000 are not
-
-Given that the safest approach is to just revert the commit, till a
-proper solution for error recovery that is not introducing regression
-is figured out.
-
-Reported-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-Closes: https://lore.kernel.org/all/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6ltcwexnrsjsdx@mgkdf6ztow42/
-Fixes: ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery mechanism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-Cc: Herve Codina <herve.codina@bootlin.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
----
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 136 --------------------------
- 1 file changed, 136 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 033c44326552..cf627aff569b 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -35,12 +35,9 @@
- #include <linux/of_graph.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
--#include <linux/timer.h>
--#include <linux/workqueue.h>
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
--#include <drm/drm_bridge_helper.h>
- #include <drm/drm_mipi_dsi.h>
- #include <drm/drm_of.h>
- #include <drm/drm_print.h>
-@@ -161,9 +158,6 @@ struct sn65dsi83 {
- 	bool				lvds_dual_link_even_odd_swap;
- 	int				lvds_vod_swing_conf[2];
- 	int				lvds_term_conf[2];
--	int				irq;
--	struct delayed_work		monitor_work;
--	struct work_struct		reset_work;
- };
- 
- static const struct regmap_range sn65dsi83_readable_ranges[] = {
-@@ -369,100 +363,6 @@ static u8 sn65dsi83_get_dsi_div(struct sn65dsi83 *ctx)
- 	return dsi_div - 1;
- }
- 
--static int sn65dsi83_reset_pipe(struct sn65dsi83 *sn65dsi83)
--{
--	struct drm_modeset_acquire_ctx ctx;
--	int err;
--
--	/*
--	 * Reset active outputs of the related CRTC.
--	 *
--	 * This way, drm core will reconfigure each components in the CRTC
--	 * outputs path. In our case, this will force the previous component to
--	 * go back in LP11 mode and so allow the reconfiguration of SN65DSI83
--	 * bridge.
--	 *
--	 * Keep the lock during the whole operation to be atomic.
--	 */
--
--	drm_modeset_acquire_init(&ctx, 0);
--
--	dev_warn(sn65dsi83->dev, "reset the pipe\n");
--
--retry:
--	err = drm_bridge_helper_reset_crtc(&sn65dsi83->bridge, &ctx);
--	if (err == -EDEADLK) {
--		drm_modeset_backoff(&ctx);
--		goto retry;
--	}
--
--	drm_modeset_drop_locks(&ctx);
--	drm_modeset_acquire_fini(&ctx);
--
--	return 0;
--}
--
--static void sn65dsi83_reset_work(struct work_struct *ws)
--{
--	struct sn65dsi83 *ctx = container_of(ws, struct sn65dsi83, reset_work);
--	int ret;
--
--	/* Reset the pipe */
--	ret = sn65dsi83_reset_pipe(ctx);
--	if (ret) {
--		dev_err(ctx->dev, "reset pipe failed %pe\n", ERR_PTR(ret));
--		return;
--	}
--	if (ctx->irq)
--		enable_irq(ctx->irq);
--}
--
--static void sn65dsi83_handle_errors(struct sn65dsi83 *ctx)
--{
--	unsigned int irq_stat;
--	int ret;
--
--	/*
--	 * Schedule a reset in case of:
--	 *  - the bridge doesn't answer
--	 *  - the bridge signals an error
--	 */
--
--	ret = regmap_read(ctx->regmap, REG_IRQ_STAT, &irq_stat);
--	if (ret || irq_stat) {
--		/*
--		 * IRQ acknowledged is not always possible (the bridge can be in
--		 * a state where it doesn't answer anymore). To prevent an
--		 * interrupt storm, disable interrupt. The interrupt will be
--		 * after the reset.
--		 */
--		if (ctx->irq)
--			disable_irq_nosync(ctx->irq);
--
--		schedule_work(&ctx->reset_work);
--	}
--}
--
--static void sn65dsi83_monitor_work(struct work_struct *work)
--{
--	struct sn65dsi83 *ctx = container_of(to_delayed_work(work),
--					     struct sn65dsi83, monitor_work);
--
--	sn65dsi83_handle_errors(ctx);
--
--	schedule_delayed_work(&ctx->monitor_work, msecs_to_jiffies(1000));
--}
--
--static void sn65dsi83_monitor_start(struct sn65dsi83 *ctx)
--{
--	schedule_delayed_work(&ctx->monitor_work, msecs_to_jiffies(1000));
--}
--
--static void sn65dsi83_monitor_stop(struct sn65dsi83 *ctx)
--{
--	cancel_delayed_work_sync(&ctx->monitor_work);
--}
--
- static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 					struct drm_atomic_state *state)
- {
-@@ -650,15 +550,6 @@ static void sn65dsi83_atomic_enable(struct drm_bridge *bridge,
- 	regmap_read(ctx->regmap, REG_IRQ_STAT, &pval);
- 	if (pval)
- 		dev_err(ctx->dev, "Unexpected link status 0x%02x\n", pval);
--
--	if (ctx->irq) {
--		/* Enable irq to detect errors */
--		regmap_write(ctx->regmap, REG_IRQ_GLOBAL, REG_IRQ_GLOBAL_IRQ_EN);
--		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff);
--	} else {
--		/* Use the polling task */
--		sn65dsi83_monitor_start(ctx);
--	}
- }
- 
- static void sn65dsi83_atomic_disable(struct drm_bridge *bridge,
-@@ -667,15 +558,6 @@ static void sn65dsi83_atomic_disable(struct drm_bridge *bridge,
- 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
- 	int ret;
- 
--	if (ctx->irq) {
--		/* Disable irq */
--		regmap_write(ctx->regmap, REG_IRQ_EN, 0x0);
--		regmap_write(ctx->regmap, REG_IRQ_GLOBAL, 0x0);
--	} else {
--		/* Stop the polling task */
--		sn65dsi83_monitor_stop(ctx);
--	}
--
- 	/* Put the chip in reset, pull EN line low, and assure 10ms reset low timing. */
- 	gpiod_set_value_cansleep(ctx->enable_gpio, 0);
- 	usleep_range(10000, 11000);
-@@ -925,14 +807,6 @@ static int sn65dsi83_host_attach(struct sn65dsi83 *ctx)
- 	return 0;
- }
- 
--static irqreturn_t sn65dsi83_irq(int irq, void *data)
--{
--	struct sn65dsi83 *ctx = data;
--
--	sn65dsi83_handle_errors(ctx);
--	return IRQ_HANDLED;
--}
--
- static int sn65dsi83_probe(struct i2c_client *client)
- {
- 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-@@ -946,8 +820,6 @@ static int sn65dsi83_probe(struct i2c_client *client)
- 		return PTR_ERR(ctx);
- 
- 	ctx->dev = dev;
--	INIT_WORK(&ctx->reset_work, sn65dsi83_reset_work);
--	INIT_DELAYED_WORK(&ctx->monitor_work, sn65dsi83_monitor_work);
- 
- 	if (dev->of_node) {
- 		model = (enum sn65dsi83_model)(uintptr_t)
-@@ -972,14 +844,6 @@ static int sn65dsi83_probe(struct i2c_client *client)
- 	if (IS_ERR(ctx->regmap))
- 		return dev_err_probe(dev, PTR_ERR(ctx->regmap), "failed to get regmap\n");
- 
--	if (client->irq) {
--		ctx->irq = client->irq;
--		ret = devm_request_threaded_irq(ctx->dev, ctx->irq, NULL, sn65dsi83_irq,
--						IRQF_ONESHOT, dev_name(ctx->dev), ctx);
--		if (ret)
--			return dev_err_probe(dev, ret, "failed to request irq\n");
--	}
--
- 	dev_set_drvdata(dev, ctx);
- 	i2c_set_clientdata(client, ctx);
- 
--- 
-2.47.3
-
+I will provide a different stable backport patch which addresses only
+the context diff. Then you can decide.
 
