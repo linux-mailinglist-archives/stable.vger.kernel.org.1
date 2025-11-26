@@ -1,161 +1,188 @@
-Return-Path: <stable+bounces-197026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76601C8A5C5
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:35:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53323C8A649
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:41:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 999133A4409
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:35:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDC8135837A
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C552302CB2;
-	Wed, 26 Nov 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E8306B25;
+	Wed, 26 Nov 2025 14:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgLDZ5Mk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0PlbHt0X";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MeKU58dz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA2C2FDC43;
-	Wed, 26 Nov 2025 14:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374343054FE;
+	Wed, 26 Nov 2025 14:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764167704; cv=none; b=bNpeCsIt7mWPMyIMoo7esS8IAvrzkt49zbXpqmWZNF2iUVIYXP83s05IJs5N4KsLo9bsRau4lC1dJ62hIB2LmhltpYDveCbZeVwxj/9SJ97eqnMZKQVGwMfgWIoNV4aS6a2QdUuxcx6qGnR23HYjT4zZHk1UBMl283UYJ6w7K2Y=
+	t=1764168047; cv=none; b=VDDRj+aH3uClZ7Yrhb94NFsrHRLVaLgBwcpim0I8k7GsJEpDrwIOF4TTdmchJOBKIbridp8n8v7FaGNyyxUpij++npFY3nfYQRfQdJF8v6Pao37ZAJDfgHwZ2P2lY5TsvSM6/jPsYiLPBNDqouJfXWLQOxj2U0xtrwgr0Ss06gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764167704; c=relaxed/simple;
-	bh=RJcquqx5TPhtK36n5JrIEPjAh0q7mdDtf12rAVAa08s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cBDpDKJXiRUhPzLMLCS8r24h4pRm9g8OTukZrChSEju7CPsvBhYofBuxdgkEzZ+CC8jr4ZayeonkjGFzQNQ7Px1NW0m9jtsh7OSDveeK8Nk+VP4HIzhZO1W8qkPa5CwcbdUaV//0cc/5GmOsQB+P9pM19L5sJypQgs4BDt8r8DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgLDZ5Mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70599C4CEF7;
-	Wed, 26 Nov 2025 14:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764167704;
-	bh=RJcquqx5TPhtK36n5JrIEPjAh0q7mdDtf12rAVAa08s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OgLDZ5MkDXLJOUofojAvxH6u1vKqfS60KgDL3p9sdko1BT1jxi+Ydoph3mdXtH8q1
-	 mSYRijK/A+4KZKugzD5aDygmEsGNubWUSkYZePsEHTlLrtm/GJuAmDYsBRd+wv0VS1
-	 k1XMiSSnRwShwjuVkA2I8y3h8SS4Hp70o40ON5M12xfU4DzmVw4D+9au+0Pqi1vSMg
-	 LxPEW5xpSR5tXO3NrIxm/MUagHSl2jpUtC+sYYVVJxat+RqRGoqeX9P82XEWA6Oni9
-	 SjI7yrTnyAVS8V5O/rVpZo3+Rv3pSY25gapDQ02Va7pix89G1QlRUMPqycIXJzU1Mv
-	 435PGlC7tuy6Q==
-Date: Wed, 26 Nov 2025 08:40:33 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	stable@vger.kernel.org, Val Packett <val@packett.cool>
-Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as
- sleeping
-Message-ID: <gy6ycgcld2moccjjl7x7h72riwfm4ymhnkhlgau53fl4eu3e6q@qp5lrwx57jin>
-References: <20251126122219.25729-1-brgl@bgdev.pl>
+	s=arc-20240116; t=1764168047; c=relaxed/simple;
+	bh=NzBdlCRgfSjrjDvboRdGEfSsOavaguFv7rWV71gf1ik=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=VvteEmg95/meawnNRU5vc3jCf4+SGTsA2wqvOuD4VrzfeSmK6L+yW77/hJH0XmxF2uubCrHFN//68mQmZd2Nz3kKr2dOkBGExfKvONPGw6zwTIf5k3qU3aCCcv3lx/v3UHgMWNwBUKYuXPd1w1zUfPrGtIryH9cCvxVd1QIDil0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0PlbHt0X; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MeKU58dz; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 26 Nov 2025 14:40:42 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764168043;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1CvF5y+5X+O/E3EWQ2F2V+F40TihEJQU6I5+eunHGow=;
+	b=0PlbHt0X/Yl/7bgn+noVWliQB0m5L9aoeGUF9EDpfgk25Uw1MqDVboiw84bnSlqrRPHpPq
+	DpSKFGS1uFKC/qJanOalrafEjrpzuBdkVpnBpVWQZZPBiQiekMn1n715XO/AZPn1PJUo66
+	jBTPQx6phvDI911qmq2MnL78FMC09brHjErWPwT4x9z7W5tKtGmFvnPazM51/1B8O3mUQL
+	m+Xd8iuFUuB9MXEWtuDdfW/+PuB24AFNAJEqtCkDpsK+AYQ2ZnspNK5jPQuox7Sbnkc1D3
+	z7oxOqhdyO/+EPF5wU/HENjujPlFuwOXoyWehUCr2O8JjLHeAMXErqcPAB8HRA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764168043;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1CvF5y+5X+O/E3EWQ2F2V+F40TihEJQU6I5+eunHGow=;
+	b=MeKU58dzX65JtDqRjVNMYsmJr2JDXFecBcQ66G6vR63SM9i9IB071Zj7rj2i9hczGF670h
+	vrp+6HNlHZefhQDw==
+From: "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: timers/clocksource] clocksource/drivers/nxp-stm: Fix section mismatches
+Cc: Johan Hovold <johan@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>, stable@vger.kernel.org,
+	#@tip-bot2.tec.linutronix.de, 6.16@tip-bot2.tec.linutronix.de,
+	x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251017054943.7195-1-johan@kernel.org>
+References: <20251017054943.7195-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251126122219.25729-1-brgl@bgdev.pl>
+Message-ID: <176416804241.498.1076034337490505591.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 26, 2025 at 01:22:19PM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> The gpio_chip settings in this driver say the controller can't sleep
-> but it actually uses a mutex for synchronization. This triggers the
-> following BUG():
-> 
-> [    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
-> [    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
-> [    9.233669] preempt_count: 1, expected: 0
-> [    9.233673] RCU nest depth: 0, expected: 0
-> [    9.233688] Tainted: [W]=WARN
-> [    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
-> [    9.233694] Call trace:
-> [    9.233696]  show_stack+0x24/0x38 (C)
-> [    9.233709]  dump_stack_lvl+0x40/0x88
-> [    9.233716]  dump_stack+0x18/0x24
-> [    9.233722]  __might_resched+0x148/0x160
-> [    9.233731]  __might_sleep+0x38/0x98
-> [    9.233736]  mutex_lock+0x30/0xd8
+The following commit has been merged into the timers/clocksource branch of ti=
+p:
 
-As far as I can see, this mutex only protects mmio accesses.
+Commit-ID:     b452d2c97eeccbf9c7ac5b3d2d9e80bf6d8a23db
+Gitweb:        https://git.kernel.org/tip/b452d2c97eeccbf9c7ac5b3d2d9e80bf6d8=
+a23db
+Author:        Johan Hovold <johan@kernel.org>
+AuthorDate:    Fri, 17 Oct 2025 07:49:43 +02:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Wed, 26 Nov 2025 11:24:44 +01:00
 
-Is it preferable to mark the gpio chip can_sleep over replacing the
-mutex with a non-sleep lock?
+clocksource/drivers/nxp-stm: Fix section mismatches
 
-> [    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
-> [    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
-> [    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
-> [    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
-> [    9.233779]  gpiod_direction_output+0x38/0xd0
-> [    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
-> [    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
-> [    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
-> [    9.233806]  gpiod_configure_flags+0x2c0/0x580
-> [    9.233812]  gpiod_find_and_request+0x358/0x4f8
-> [    9.233819]  gpiod_get_index+0x7c/0x98
-> [    9.233826]  devm_gpiod_get+0x34/0xb0
-> [    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
-> [    9.233836]  auxiliary_bus_probe+0xb0/0xf0
-> [    9.233845]  really_probe+0x14c/0x450
-> [    9.233853]  __driver_probe_device+0xb0/0x188
-> [    9.233858]  driver_probe_device+0x4c/0x250
-> [    9.233863]  __driver_attach+0xf8/0x2a0
-> [    9.233868]  bus_for_each_dev+0xf8/0x158
-> [    9.233872]  driver_attach+0x30/0x48
-> [    9.233876]  bus_add_driver+0x158/0x2b8
-> [    9.233880]  driver_register+0x74/0x118
-> [    9.233886]  __auxiliary_driver_register+0x94/0xe8
-> [    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
-> [    9.233898]  do_one_initcall+0xec/0x300
-> [    9.233903]  do_init_module+0x64/0x260
-> [    9.233910]  load_module+0x16c4/0x1900
-> [    9.233915]  __arm64_sys_finit_module+0x24c/0x378
-> [    9.233919]  invoke_syscall+0x4c/0xe8
-> [    9.233925]  el0_svc_common+0x8c/0xf0
-> [    9.233929]  do_el0_svc+0x28/0x40
-> [    9.233934]  el0_svc+0x38/0x100
-> [    9.233938]  el0t_64_sync_handler+0x84/0x130
-> [    9.233943]  el0t_64_sync+0x17c/0x180
-> 
-> Mark the controller as sleeping.
-> 
-> Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-> Cc: stable@vger.kernel.org
-> Reported-by: Val Packett <val@packett.cool>
-> Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init. Device managed resource actions
+similarly cannot be discarded.
 
-If we stick to the mutex, the patch LGTM 
+The "_probe" suffix of the driver structure name prevents modpost from
+warning about this so replace it to catch any similar future issues.
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Mod=
+ule for the s32gx platforms")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: stable@vger.kernel.org	# 6.16
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20251017054943.7195-1-johan@kernel.org
+---
+ drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-Regards,
-Bjorn
-
-> ---
->  drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-> index 1c97ec44aa5ff..78212f9928430 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-> @@ -498,7 +498,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
->  	pctrl->chip.base = -1;
->  	pctrl->chip.ngpio = data->npins;
->  	pctrl->chip.label = dev_name(dev);
-> -	pctrl->chip.can_sleep = false;
-> +	pctrl->chip.can_sleep = true;
->  
->  	mutex_init(&pctrl->lock);
->  
-> -- 
-> 2.51.0
-> 
+diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-=
+nxp-stm.c
+index 16d5216..c320d76 100644
+--- a/drivers/clocksource/timer-nxp-stm.c
++++ b/drivers/clocksource/timer-nxp-stm.c
+@@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksour=
+ce *cs)
+ 	nxp_stm_clocksource_enable(cs);
+ }
+=20
+-static void __init devm_clocksource_unregister(void *data)
++static void devm_clocksource_unregister(void *data)
+ {
+ 	struct stm_timer *stm_timer =3D data;
+=20
+ 	clocksource_unregister(&stm_timer->cs);
+ }
+=20
+-static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_ti=
+mer *stm_timer,
+-					   const char *name, void __iomem *base, struct clk *clk)
++static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *st=
+m_timer,
++				    const char *name, void __iomem *base, struct clk *clk)
+ {
+ 	int ret;
+=20
+@@ -296,9 +296,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_=
+device *ced)
+ 	nxp_stm_module_get(stm_timer);
+ }
+=20
+-static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct=
+ stm_timer *stm_timer,
+-						  const char *name, void __iomem *base, int irq,
+-						  struct clk *clk, int cpu)
++static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_ti=
+mer *stm_timer,
++					   const char *name, void __iomem *base, int irq,
++					   struct clk *clk, int cpu)
+ {
+ 	stm_timer->base =3D base;
+ 	stm_timer->rate =3D clk_get_rate(clk);
+@@ -386,7 +386,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void=
+ *dev_id)
+ 	return IRQ_HANDLED;
+ }
+=20
+-static int __init nxp_stm_timer_probe(struct platform_device *pdev)
++static int nxp_stm_timer_probe(struct platform_device *pdev)
+ {
+ 	struct stm_timer *stm_timer;
+ 	struct device *dev =3D &pdev->dev;
+@@ -482,14 +482,14 @@ static const struct of_device_id nxp_stm_of_match[] =3D=
+ {
+ };
+ MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
+=20
+-static struct platform_driver nxp_stm_probe =3D {
++static struct platform_driver nxp_stm_driver =3D {
+ 	.probe	=3D nxp_stm_timer_probe,
+ 	.driver	=3D {
+ 		.name		=3D "nxp-stm",
+ 		.of_match_table	=3D nxp_stm_of_match,
+ 	},
+ };
+-module_platform_driver(nxp_stm_probe);
++module_platform_driver(nxp_stm_driver);
+=20
+ MODULE_DESCRIPTION("NXP System Timer Module driver");
+ MODULE_LICENSE("GPL");
 
