@@ -1,146 +1,99 @@
-Return-Path: <stable+bounces-197051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB96C8C08D
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 22:32:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9880DC8C09C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 22:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8F534E2C39
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 21:32:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2344F35A380
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 21:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DAA2F362D;
-	Wed, 26 Nov 2025 21:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7682D9463;
+	Wed, 26 Nov 2025 21:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhjKowlb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJtp4nEa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E951F584C
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E12288C25
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764192732; cv=none; b=d8J85mxWRwa3hkhrFCgQCcPsGjIgzflLkET4JIdOgIu2yvoPTahqc1xmeiug7AHrddwkKtGZlNTh7OfUewqT3sHO9iMrB+uNS41A4Ph0+vT6AHhcJj0f3rq8d3eOa5HEHY1c3CW+m6Jl44RaloJ5Rl4kg2whl01U7divcNftjuo=
+	t=1764192866; cv=none; b=BU8C9TIX2mVQF0Owp8vIyqc0pb7fwbq0fu9JBREarNnBlO9OzHgwIN3bXrRrHOaAkvxmlIgT5C29PDl7ibDNgqJVcA6bzqAg6c/V0lqdfszlbw2Fg5OwAo9+vQdkZcvCnUewJtniD98ekZIkPGdt+9SvPwLTW+cyV0mjCgEvYj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764192732; c=relaxed/simple;
-	bh=LilEzDhcWjY57veICYfWfLCwFQ8k3uO5J7lq6Uiq/yQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EXQ0T1iwyBlZrXgoE+w3ejLy1XtIRoVRJGxIh52rdfaBmAwU9cVunomIMpTucVw5O5WqdtWzlL+p/77/qGadYCphTIznMealnuIy8sCrkSCaKb8QdASRaxEWy8C7OSwGe0iIHfDk2H6rxALBxsy/0KBbaYrifP+OVMw1ImgAxLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhjKowlb; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b728a43e410so47095766b.1
-        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 13:32:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764192728; x=1764797528; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K/IjEkSbir+5iDrD+cjTkZjSpdltDA21ZlX4G/dyJhg=;
-        b=OhjKowlbkl+eBdWdhM0y0fbipEpp8Uh4w4Eq+BrS1/KoplnQA01HcoUTEqshA4qfKr
-         eorF4hLGEQNAvkpOtBeRUTKtXSD6nfGX161yZhWLqyDYsZEoMVuxbYeCPBv/gCYLtP42
-         G+yOq04jFLs+jwld2tO5iq7aUMPCamLlfjbLtkSupCxDxJDVkl9Sr5RJPXx125/aHzZy
-         QfRcWuRrt149fpUsKEnP/kuBf8iNJP49In3SPz0ze2f2b5LHBeflzbdaJyim8UulxUnl
-         TDlYp05qbZEfORgR0VXOqCyHQaue1ePlPPz59GUyKYAO38jGV4FhMNRbMVtSSBbvXe3x
-         oMkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764192728; x=1764797528;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K/IjEkSbir+5iDrD+cjTkZjSpdltDA21ZlX4G/dyJhg=;
-        b=ggkRzKzlFU7A2lEXVKJWPFBsxygPjV+XpkdwBGZFn1jS3YdU8kAsS9bBWblsya2fSM
-         p9TB1IBaSoLYrJS5P4Hr6SizcdLO5WznlmyV61c2I9sUN4zLxiuFfkO5Cx7L3Aj1aepd
-         9yiBTYx9OHaC0Q7qEXvDuYChUw/yAE/JVs2OFlf3IrJNtRQqDKXc4vlJNlar68aY72Jm
-         SymB6Se6vnZoNvpBmWllgt0hm4bRB/KoO9w70QflTjuR6G6rprIs9BSdjiTOBJH/E3R+
-         hoCF7sxMpibQm2HKlYtNxNrLp2628BJYO6ccQtYY3CY4LLjmFt2s/NLzEGUAlT/EB9ze
-         Ul4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUFt5Ty0WM7KM/A8t4+GD+ZQc56tw/VmUAfhlu6MLtLaSCX2gQPwPE7aWpCjk7zOiLEIlorZjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+rSZNLAbDN/Y2bMu/8iPxRBRsVwGol8qBIJDh5QinyviEVafc
-	TIdGWxyweiDo9QPvEV7jhaPSi84LeSrTJySRFREbtlHv1ssBTGiOXhA=
-X-Gm-Gg: ASbGnctoK13Qc9PDdkWPCFPfgyUAfIpXuJ/nAZTuOFGVnbmL5kjYpjRbn6vq6bzsnm7
-	OIsmpXjwUs172ZdGrTZ/XA3OSNJ1Ii2LD0sTteXbTYbbx2n4Xfm9TWRQunBcrv4YbdFOKqUUcIh
-	kSKLyHpEHLLw4L8J1rIlbl3wY+ejcTVJCluUvRbTAcGY+qQ8t0PurZ+29MFgNSmPYGJxlSCrJy6
-	6/c2+AP4zrcPiuUbhodBHmOF9/han9BIUi5D/YeEYQ/rd2FJohKJAb0NdTmxNHHqO1u07613+8t
-	LaUV6+yTIJMpJrX6IOSOOKfCB254WYgI2l3auALXF+fUej8DLF3MVbPcdiKa5Fj8bgTIFcz6/nn
-	NQNMgYnlZZgxf9pGy20gqhH2pYrScu345ghb4BKXGMGdxvBw+xRyIt4XTwpxNAxWHyfMMDEXLuQ
-	2PUDX+QLuN629TFXnltst+8VKsC5uCALnPo+31Km8OGpsJPbtN8DU5OQiDTKZdrP9P9RCHBLom6
-	w==
-X-Google-Smtp-Source: AGHT+IGvpQiDa98vuZ+r2RJ8KvDkUmhL1X9QjLRFojlbAheA3iOOln2ak/2qbylZFWsWbYzCZDCEow==
-X-Received: by 2002:a17:906:50e:b0:b76:bb8e:9291 with SMTP id a640c23a62f3a-b76bb8e9627mr777562366b.0.1764192727897;
-        Wed, 26 Nov 2025 13:32:07 -0800 (PST)
-Received: from [192.168.1.17] (host-87-16-172-206.retail.telecomitalia.it. [87.16.172.206])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654ce15e7sm2007828266b.8.2025.11.26.13.32.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 13:32:07 -0800 (PST)
-From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-Date: Wed, 26 Nov 2025 22:31:30 +0100
-Subject: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
+	s=arc-20240116; t=1764192866; c=relaxed/simple;
+	bh=F64OBwa5RU2WG8KkfNNwsDePPJZTGuJD5Jkc30EX+tA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=a3N8EsY86V8qNvxhi/PvR8uHZB/sJa2V9kDCGNR56vQ+6+xCmM9iFWJ9jgxHxpc4G3s/16BFNVgo8NIyjedJP2hRaaexP2AA0VIUiblKkmXXSljL4IaeFWOcOlf4fZVd2+X94HMuaKd0cB9tQ0IdG/3O/NVGKhJdDfxHlOm3aQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJtp4nEa; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764192865; x=1795728865;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=F64OBwa5RU2WG8KkfNNwsDePPJZTGuJD5Jkc30EX+tA=;
+  b=oJtp4nEa6mx8RYeK/sKBtOL/81FN+N5dnKTDgvIcBRvLd5MMmaehRbiO
+   CJbVGDGVVYlq4fvEmkeuOUc+TGQoJkPHMlbDIHU4cxnMTUmUPj9pkWm3t
+   1T1UnXUX+aYpkZL3r6d1qCokxGxfrwW0ruSuDiILH85xBSq82XbxpYDaq
+   TM5f1WFqzAmlCjfRynPoZpK4fiKIRSW0SUZOHq2ith61BMewZME9oTztY
+   6NDCvsAKuckJaUWmTW/jshGvVyRvCW+V1lAgeqVkWQuB/Va2uK0wjJ541
+   e+fenwQzKxN35nsjFV2cDlUZcNlKEKTXuhvdl9cZJaN/iL/JHbTwgIWfr
+   g==;
+X-CSE-ConnectionGUID: NmYcGoH8TsCjRqfo7mLsag==
+X-CSE-MsgGUID: w/rItTO4SIORY5aCg5xcyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77603069"
+X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
+   d="scan'208";a="77603069"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 13:34:24 -0800
+X-CSE-ConnectionGUID: qM+bQ7BgQnqE0w6F8ZGpGA==
+X-CSE-MsgGUID: PaJhUTVoSuCTZ6W0XIaOGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
+   d="scan'208";a="192957747"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 26 Nov 2025 13:34:23 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vON9Z-000000003Np-0OxM;
+	Wed, 26 Nov 2025 21:34:21 +0000
+Date: Thu, 27 Nov 2025 05:34:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
+Message-ID: <aSdySKtZeIcsxaxP@c2e5bee1bcda>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251126-ifpc_counters-v2-1-b798bc433eff@gmail.com>
-X-B4-Tracking: v=1; b=H4sIALFxJ2kC/3XMQQrCMBCF4auUWRtpJkaLK+8hRUIyaQdsU5Ial
- JK7G7t3+T943waJIlOCa7NBpMyJw1wDDw3Y0cwDCXa1AVvUUuJZsF/sw4bXvFJMgjqnlTcKNRL
- UzxLJ83v37n3tkdMa4mfns/yt/6QshRQenaZLe+pahbdhMvw82jBBX0r5AjpbfQqqAAAA
-X-Change-ID: 20251126-ifpc_counters-e8d53fa3252e
-To: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Akhil P Oommen <akhilpo@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Anna Maniscalco <anna.maniscalco2000@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764192726; l=1193;
- i=anna.maniscalco2000@gmail.com; s=20240815; h=from:subject:message-id;
- bh=LilEzDhcWjY57veICYfWfLCwFQ8k3uO5J7lq6Uiq/yQ=;
- b=M/RIo1ohGCP4894QLZEeWHawQG421ypp8IgRCofThp6HqeZ3mrMcKYA3M691q+HNdFzOqT7b3
- o0RZiLYLO6xBaRZQ2hYP5JFmJVxtFFr5EaW/d1sVYGhM2cJld5cxQgQ
-X-Developer-Key: i=anna.maniscalco2000@gmail.com; a=ed25519;
- pk=0zicFb38tVla+iHRo4kWpOMsmtUrpGBEa7LkFF81lyY=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126-ifpc_counters-v2-1-b798bc433eff@gmail.com>
 
-Previously this register would become 0 after IFPC took place which
-broke all usages of counters.
+Hi,
 
-Fixes: a6a0157cc68e ("drm/msm/a6xx: Enable IFPC on Adreno X1-85")
-Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
----
-Changes in v2:
-- Added Fixes tag
-- Link to v1: https://lore.kernel.org/r/20251126-ifpc_counters-v1-1-f2d5e7048032@gmail.com
----
- drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for your patch.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-index 29107b362346..b731491dc522 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
-@@ -1392,6 +1392,7 @@ static const u32 a750_ifpc_reglist_regs[] = {
- 	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(2),
- 	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(3),
- 	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(4),
-+	REG_A6XX_RBBM_PERFCTR_CNTL,
- 	REG_A6XX_TPL1_NC_MODE_CNTL,
- 	REG_A6XX_SP_NC_MODE_CNTL,
- 	REG_A6XX_CP_DBG_ECO_CNTL,
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
----
-base-commit: 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
-change-id: 20251126-ifpc_counters-e8d53fa3252e
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Best regards,
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
+Link: https://lore.kernel.org/stable/20251126-ifpc_counters-v2-1-b798bc433eff%40gmail.com
+
 -- 
-Anna Maniscalco <anna.maniscalco2000@gmail.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
