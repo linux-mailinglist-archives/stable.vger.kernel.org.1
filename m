@@ -1,101 +1,142 @@
-Return-Path: <stable+bounces-196983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18877C89154
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 10:49:50 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E6CC8916C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 10:50:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9156C4E44D3
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 09:49:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 39A25356674
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 09:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF3A2F1FE2;
-	Wed, 26 Nov 2025 09:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B88320CCB;
+	Wed, 26 Nov 2025 09:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vuoUUpqh"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="LCChGlIo"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B2828DB76;
-	Wed, 26 Nov 2025 09:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A263090C6;
+	Wed, 26 Nov 2025 09:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764150432; cv=none; b=s8HREYzYl7Aw2+ENoZLhkBcQS9nVe6RqeZzqmPn4zN6Y/evQtjuHoOTEEG51CTBCR+50DF2L647L7exQcQH0aUtNRFLL03WlceJ8dGCvAobWzHTGxqJvopjy729u3yuzBrUETzxgL6HcNgKlUEvJwiL8clNdRwC6hYWB7OJecGs=
+	t=1764150403; cv=none; b=hxgaWZGKw3imXznNSBBhxKnE/tE4iVZCpyotGO2U/TmjcrenBs5CqmK9I3yEqHuqOLPkETTxyCnlv5FPurR4l7vIDhiDUyiCJAGBylryQ49qnFkFQWlvEjTcg/2IU3S0qgVTkgF2MCPNSESNW5eJlG473I5AxaO8vZcureQ5W9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764150432; c=relaxed/simple;
-	bh=D8jihN4OFo3/AxsG+ckzMEMKh/2sCg0idCqrn9iSy9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u94fSv+BMT7BEo+DikZq+L+/+Vy0kXtS22c1N2bOPeFo7+06dAUiQSKuoqLLZbRe8KYpnAMuNqbM4imEegoQinXRFQulPXQx0Scojsr15YnjM9Qs0u9GXVqfkYwGQNEjFPp0FIn7iG/tDlFGE63GlQFj6zsC/JvA+7Sr5FZJpAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vuoUUpqh; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764150425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5KipOE7hgG8ZU8e64DnissczJCgqW99X/fGlWhtZnJc=;
-	b=vuoUUpqhYCTPvLr4Hn2AVuPyKhwRRzgX/Ku8Im0xfJkIloi2/tIvgSzO53iqKfeJO+NC4l
-	WkAx2CWgk6dRxqxbABW1ynV65JUsgLIlbKFay4SrjS/Y/HwKV1nNYtDDaCrSDiA2vmhoPl
-	vuauDdUF5eOw1f8/3IXM+srNvWYCjHM=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Lukasz Bartosik <lbartosik@marvell.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: octeontx: Fix length check to avoid truncation in ucode_load_store
-Date: Wed, 26 Nov 2025 10:46:13 +0100
-Message-ID: <20251126094616.40932-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1764150403; c=relaxed/simple;
+	bh=AfDBkPaSHEH12W0txSPu3aX4L9071oFXlQtzgNtVWQE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NlcVi9bsfhdpzU1oRJwchpaL8u5lXHCEt2qOFa8sZQiAhbcIQzkm+9Uvl47QAlLP1nN5VntFNhHQtxLBKRUL6zXxzsu/KTM/dfrFIB7Zaos/La+lqBSsWtnxluZUswH1ZkDilryzK5feAw2jbw6pcLMFQt9XRq8F2yNggvFq1qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=LCChGlIo; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=kX18TokZJrRxzuxjDzOD7jkR62kfpAqVIr+hp9PYCqU=; t=1764150400;
+	x=1764755200; b=LCChGlIokez1125S1qRl5f/gDC6NKvnh84wv7gm0onfv9mKftyBilrprjiDzJ
+	Q7yC0L5cGUQu9aRCGBYFXJVhSZ4ICijWmrIkeYnoFbIDO7IgSrlZXvR8ejOxrfsPp7xyNy7+kasZ1
+	LdZaswV1Hh71jU1cpzrwkVtknnkwi1ZnF8YFD+crtUnKngF2vX20erJ++osxKrnrIaACTrsdDHbPw
+	9+IfIaMqNzjtF2L+nO7BGVgcpduXUUyobOWo4wLbBr4HUWxFzP5j/Urn80aO6SvcpaopBrMulpeaO
+	ugb6/licB78BSIdzNxEe9UFOHd48MLGmmT0isJShHZkc/CooKQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1vOC6g-00000003j2F-1Bur; Wed, 26 Nov 2025 10:46:38 +0100
+Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1vOC6g-00000001zCX-0BlY; Wed, 26 Nov 2025 10:46:38 +0100
+Message-ID: <f60b787529422eb2b3655b92aa8a7377b838baf4.camel@physik.fu-berlin.de>
+Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-rtc@vger.kernel.org
+Cc: Esben Haabendal <esben@geanix.com>, stable@vger.kernel.org, 
+	sparclinux@vger.kernel.org, regressions <regressions@lists.linux.dev>
+Date: Wed, 26 Nov 2025 10:46:37 +0100
+In-Reply-To: <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
+References: 
+	<krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
+	 <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-OTX_CPT_UCODE_NAME_LENGTH limits the microcode name to 64 bytes. If a
-user writes a string of exactly 64 characters, the original code used
-'strlen(buf) > 64' to check the length, but then strscpy() copies only
-63 characters before adding a NUL terminator, silently truncating the
-copied string.
+Hi Nick,
 
-Fix this off-by-one error by using 'count' directly for the length check
-to ensure long names are rejected early and copied without truncation.
+I have not used the regression tracker before, so let's give it a try:
 
-Cc: stable@vger.kernel.org
-Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+#regzbot ^introduced: 795cda8338eab036013314dbc0b04aae728880ab
 
-diff --git a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-index 9f5601c0280b..417a48f41350 100644
---- a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-@@ -1326,7 +1326,7 @@ static ssize_t ucode_load_store(struct device *dev,
- 	int del_grp_idx = -1;
- 	int ucode_idx = 0;
- 
--	if (strlen(buf) > OTX_CPT_UCODE_NAME_LENGTH)
-+	if (count >= OTX_CPT_UCODE_NAME_LENGTH)
- 		return -EINVAL;
- 
- 	eng_grps = container_of(attr, struct otx_cpt_eng_grps, ucode_load_attr);
--- 
-Thorsten Blum <thorsten.blum@linux.dev>
-GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+Adrian
 
+On Tue, 2025-11-25 at 22:18 -0500, Nick Bowler wrote:
+> Any thoughts?
+>=20
+> The problem is still present in 6.18-rc7 and reverting the commit
+> indicated below still fixes it.
+>=20
+> I am also seeing the same failure on a totally different system with
+> Dallas DS1286 RTC, which is also fixed by reverting this commit.
+>=20
+> Since the initial report this regression has been further backported
+> to all the remaining longterm kernel series.
+>=20
+> Thanks,
+>   Nick
+>=20
+> On Thu, Oct 23, 2025 at 12:45:13AM -0400, Nick Bowler wrote:
+> > Hi,
+> >=20
+> > After a stable kernel update, the hwclock command seems no longer
+> > functional on my SPARC system with an ST M48T59Y-70PC1 RTC:
+> >=20
+> >   # hwclock
+> >   [...long delay...]
+> >   hwclock: select() to /dev/rtc0 to wait for clock tick timed out
+> >=20
+> > On prior kernels, there is no problem:
+> >=20
+> >   # hwclock
+> >   2025-10-22 22:21:04.806992-04:00
+> >=20
+> > I reproduced the same failure on 6.18-rc2 and bisected to this commit:
+> >=20
+> >   commit 795cda8338eab036013314dbc0b04aae728880ab
+> >   Author: Esben Haabendal <esben@geanix.com>
+> >   Date:   Fri May 16 09:23:35 2025 +0200
+> >  =20
+> >       rtc: interface: Fix long-standing race when setting alarm
+> >=20
+> > This commit was backported to all current 6.x stable branches,
+> > as well as 5.15.x, so they all have the same regression.
+> >=20
+> > Reverting this commit on top of 6.18-rc2 corrects the problem.
+> >=20
+> > Let me know if you need any more info!
+> >=20
+> > Thanks,
+> >   Nick
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
