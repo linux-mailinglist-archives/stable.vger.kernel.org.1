@@ -1,72 +1,101 @@
-Return-Path: <stable+bounces-197010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE874C89B9B
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:20:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D9EC89BBF
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1C61034F8D7
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:20:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 738703AA700
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04FB320A31;
-	Wed, 26 Nov 2025 12:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0677320A31;
+	Wed, 26 Nov 2025 12:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ofXjVZA6"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="OAU8LzGY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10697.protonmail.ch (mail-10697.protonmail.ch [79.135.106.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0A314F125
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 12:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ACA14F125;
+	Wed, 26 Nov 2025 12:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764159590; cv=none; b=H6uHASyU4ahAsVnymmumOZdcnwLpemN3gfa09Kyz0oLu2Ttnxrvh52stU7r3yqw5wWITxqefhe94DMFwqo4jsxKKMuGTjOkJ5B40qVDnuenbEuLti7IdeDAK7XXnizAUOiXEVJr3KELY8N/A9TGsuMb88nzw/Xw6WW7twXLKr/Y=
+	t=1764159707; cv=none; b=uAuVPEJ2xrjGmjxPxEXLeHrsos4IBNsmkQ9rkGKghxRkvoCs9V8yFWVHDK+b4506iZ/FkIbeh4mfhm1WWlPwxksbx1m10lNiISGAGsPTgPJIwQo/88zYroX/3C/pPXMOw30hfMHpH+Y3JNre2QvZuWiAKkc6+IzgPSDgPj7BYIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764159590; c=relaxed/simple;
-	bh=nZLUh38m8l+uQ11+lRPxhjuqt1CSrhCDtQdj+FjiK10=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McrekObEqih8fxSO0IRuO0OVyFq//hWJgIvcq30v5Y3JogF4LEk7mALuOehWW+ahTu8ZuItQFkys2B8iUoNoJm0U+C6RjEfYhC7cZcdHFOCS0A47sM6wZ/AS4ZJypEDWVbuiS/etI3xp/Or7Q6flBYFiv+IqgMGoZCdqIVyHs8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ofXjVZA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC0BC113D0;
-	Wed, 26 Nov 2025 12:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764159590;
-	bh=nZLUh38m8l+uQ11+lRPxhjuqt1CSrhCDtQdj+FjiK10=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofXjVZA6aoz0wP2zHN3tWd0AqiJUz7HG4RbgtKea1YwUQFRz0uJCkY+yUMrrAANNT
-	 4K1nIyjQ36EG5HoSbg2y3YMj7xFOv+N+z6NyUwfxT7zfECD3j4X/2iikzWFmYFHqK4
-	 EHnF6y4iyDODz1JGJVxjqkeCnGRGnGXoow1thZ/2kp8Np/0q029IYnp5R5cm1NRZVC
-	 LnVAKAOhgOjpulcYXjQj0p888rh5OTn4a7zygqAGvho2KuXH2wJeVTT5E/gtW0qy1s
-	 M8rSwl9ARemeOX35BgTDiERH13MU0bnhUTsapPTkIpZotlcnGQ9V9JYbgy/lsF5Eth
-	 iToBNI3TlqkFA==
-From: Sasha Levin <sashal@kernel.org>
-To: lanbincn@139.com
-Cc: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Baocong Liu <baocong.liu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: Re: [PATCH 6.6.y 1/2] f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
-Date: Wed, 26 Nov 2025 07:19:48 -0500
-Message-ID: <20251126121948.1361036-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251125064028.3295-1-lanbincn@139.com>
-References: <20251125064028.3295-1-lanbincn@139.com>
+	s=arc-20240116; t=1764159707; c=relaxed/simple;
+	bh=80u4QxQYyXLo3vdGbNAAZV3e9b2yLQhx7oEAqnzqlDM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=rfpNdLCh9FEfcTU+ywZvm7SbnJIzq2WTp8oYTGrF49krfQ6PJO9v6r/i1N/tEzf7SZ3OF1tyZfxrsY3CQdm8gM0l8ALrceRUjqnxkmFefSYdkIOZWr+egY3h2p0qYDRcCz41Q15D/8UU2eeTq3e83DcTwUaaaX7x7+Iq2jJTBLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=OAU8LzGY; arc=none smtp.client-ip=79.135.106.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1764159695; x=1764418895;
+	bh=VZKBadD2hAHsYnRY1HCmufcZEoZ0UsobNfUbHsBhVr0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=OAU8LzGY6qlcd/2iQi9XbbEnecVBjqlhU4tRvTDhKeG9E7FJ1l1wLa17WWboIpK2b
+	 J5fsg4l/mSjA8jAigySMWNjL8l1nbtdKmY98H+aFClNRhnFj0qkGoNOJn9s549mcgG
+	 Bb67H+Po52Jib3ty35V46P7KZwzWrkdUDgyZawR9+lZOyU66KHZMoITEe6T5G2PuSu
+	 S+uH0i2FKfvCTJPjaEa264FsK3XENhvt3xBIPwmF5TMcfUr00HFdrOjj6023utp8Xy
+	 0cHgdUXc+h6+msLNAQ8QPk6ozirZN5BKujMo7EmCoL6y44gEAQpKO0NfW2e0V33TCR
+	 p+vXACsg0Q5yA==
+Date: Wed, 26 Nov 2025 12:21:30 +0000
+To: Pavel Machek <pavel@denx.de>
+From: Jari Ruusu <jariruusu@protonmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "wozizhi@huaweicloud.com" <wozizhi@huaweicloud.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux@roeck-us.net" <linux@roeck-us.net>, "shuah@kernel.org" <shuah@kernel.org>, "patches@kernelci.org" <patches@kernelci.org>, "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>, "jonathanh@nvidia.com" <jonathanh@nvidia.com>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, "sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>, "rwarsow@gmx.de" <rwarsow@gmx.de>, "conor@kernel.org" <conor@kernel.org>, "hargar@microsoft.com" <hargar@microsoft.com>, "broonie@kernel.org" <broonie@kernel.org>, "achill@achill.org" <achill@achill.org>, "sr@sladewatkins.com" <sr@sladewatkins.com>
+Subject: Re: [PATCH 6.12 000/565] 6.12.58-rc1 review
+Message-ID: <0J4wVn9EZlfvRPNqx8nSODm77O0ErR5JMPhZe35m07lKoJoh9BQHAyH167l2S-cYMQDDGLsRM9IKtY9YEwPvqfXduwmg12aaW591N2f9iT0=@protonmail.com>
+Feedback-ID: 22639318:user:proton
+X-Pm-Message-ID: 9f995b9be460101f297d9431f92a995d0ad597fd
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-This patch has been queued up for the 6.6 stable tree.
+Pavel Machek <pavel@denx.de> wrote:
+> > Zizhi Wo <wozizhi@huaweicloud.com>
+> >     tty/vt: Add missing return value for VT_RESIZE in vt_ioctl()
+>=20
+> This one was backported wrongly to 6.12:
+>=20
+> +++ b/drivers/tty/vt/vt_ioctl.c
+> @@ -923,7 +923,9 @@ int vt_ioctl(struct tty_struct *tty,
+> =20
+>                         if (vc) {
+>                                 /* FIXME: review v tty lock */
+> -                               __vc_resize(vc_cons[i].d, cc, ll, true);
+> +                               ret =3D __vc_resize(vc_cons[i].d, cc, ll,=
+ true);
+> +                               if (ret)
+> +                                       return ret;
+>                         }
+>                 }
+>                 console_unlock();
+>=20
+> It needs to do console_unlock() before returning.
 
-Subject: f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
-Queue: 6.6
+I have already sent 2 emails about this, but Greg's to-do
+list seems to be very long, or something like that.
 
-Thanks for the backport!
+https://lore.kernel.org/lkml/zuLBWV-yhJXc0iM4l5T-O63M-kKmI2FlUSVgZl6B3WubvF=
+EHRbBYQyhKsRcK4YyKk_iePF4STJihe7hx5H3KCU2KblG32oXwsxn9tzpTm5w=3D@protonmail=
+.com/
+
+https://lore.kernel.org/lkml/8mT8aJsAQPfUnmI5mmsgbUweQAptUFDu5XqhrxPPI1DgJr=
+7GPpbwrpQQW22Nj7fsBc5M5YKG8g0EceNQ_b3d-RPhk6RSQgGCqvaVzzWSIQw=3D@protonmail=
+.com/
+
+That second email has a small test program to demo the
+problem and a patch to fix it for 6.12.58+ and 6.17.8+
+
+--
+Jari Ruusu=C2=A0 4096R/8132F189 12D6 4C3A DCDA 0AA4 27BD=C2=A0 ACDF F073 3C=
+80 8132 F189
+
 
