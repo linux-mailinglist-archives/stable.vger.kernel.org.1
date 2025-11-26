@@ -1,142 +1,148 @@
-Return-Path: <stable+bounces-197025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA03C8A565
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA0DC8A5F2
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACD33A96EF
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:30:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97063A8A7C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00573019A5;
-	Wed, 26 Nov 2025 14:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0153303A08;
+	Wed, 26 Nov 2025 14:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g7i3MhBg"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Tf/JRJNR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73F63016E5
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14CC302170
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764167409; cv=none; b=mPSChvz/3rHHJ4LdDrVUVHPcJxxxwdOgUYAfsTZYndB2IF4J2vuwD19YNcczVtDtblbV7M1Wot/8w/M1dLGpwzd+b++HBXRA5z955dXhSHWRcqpVq9BH5cUavvGqeLYlONHkaZ+eTq3VeXBwwUChiXc31/AGBt1kaEzq6QSa7EI=
+	t=1764167948; cv=none; b=sxAu9Px36pHKlhMlLgOp+TZxc9tRUaNEIAgmz1+3/29lFPxGbHj+ZU/R7Latqcw/BdvDk1J/H0AoYmAlMXIRY7U9/twA6HeL4+FrQoSiAByrcJZpYO4rsrN1wguXFRXqtNv8tn9mkJUvkjpNG94+nig+J6K5j9j5nBQuxoji9Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764167409; c=relaxed/simple;
-	bh=2pJ8SnmV70c+TMFli5Ai5Or6jf+BdtWDQjxtNl+Bhik=;
+	s=arc-20240116; t=1764167948; c=relaxed/simple;
+	bh=yacBvBYaVY4CpdxU2ivpOumvrEreuCR9cSgT0Y23MFk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mas1kQyyZPPEiz8+05nn5iNW9y16yEhPS/ITHaKq+ePh/rvajJi+P5MHO6EeLROTRyLtqrDbIMBqLKaIBHpofwJtMMJsf12Cf8d+xoSFZb19h4QE6lzu0XE4+Z0N2kbw9c409YDRoqaA/LDceV58pFO+AA1hR7tPHPBR4O7WY8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g7i3MhBg; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-4330ef18d8aso27961895ab.0
-        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:30:07 -0800 (PST)
+	 To:Cc:Content-Type; b=te/u3HBtQcvawqaKbVNcvpux46Mw/5oLIySUbhpH+QL7VnytcowcNVqX0Iai77beWAIYbgxTezPmIZ4VxkVt2U3iCv8BCXjG3qRjJc9M0rAlcemC6q+2ZGIo91kPRtCCZBhYJozd3HSXfKvCEzMwtjKfgQlBGhXqDdxF6YfhEIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Tf/JRJNR; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5958931c9c7so8545567e87.2
+        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:39:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764167407; x=1764772207; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=seO8yROLj7+TZ5tQvNyKxgoZe2H0UiNB/Mluvl0b8gg=;
-        b=g7i3MhBg2psGfy9kveSSJjSwAcmPCaQS2+0faaif/frBkylT4xcSCeJ0mUl/tMHUAI
-         MVnsU1gjwNUmWPUnfr5KxlXPS/cSEE5fUDLb+WIYXTI9CcTldOkATKulWKxhODjMFikL
-         3oxDlmP4sh3I9g5Bsi6GuDTXT9LulpI32D0TTD3/nPRXVwU1D5EP7rUb6kigEXlXYVws
-         3abvOxhFX9lKMaj/b+G8XArKrWSTsoZRmWz/BlNlwR5Wv7m0OBxfLxJGIYh48DigYfxw
-         2XvCqLzR/8YUIqt+oXUI81eyvWavCdKTNcLtw1fXXKoyy8xf0RMqkDBtChntPIPd7sYq
-         4qyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764167407; x=1764772207;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1764167945; x=1764772745; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=seO8yROLj7+TZ5tQvNyKxgoZe2H0UiNB/Mluvl0b8gg=;
-        b=CpKFwrC/wyUBr+qFMv6WZtEcJEtzFqTLyVw1uwGnh3IwXxYoYWf7+cafIBD68ViLiq
-         jsDxm/FOf1MOv4KaYCjGF531xtoQ/lzjH3p4HwC2+W+LvT6fdSG6ixC+IZYX4ope+uun
-         C2eBtCV2mU604C5n75fHnW7zJL1zvDzqe//9yNdg6TM0RP2AaMsD12PYrOu4Tw04+B/1
-         6VAe4a1YsatH+NHyXujR3KbQDLO3xvBCNVNXaTMwskoY5rz2E4mRFnIJWbKSO2s6IXmT
-         jF7e1TwYNWcuZTExwjx+TcThnve0BwAbQIsn+hzBcRZcOZPJrk0mZBGrZKAjYfQ7U4/W
-         PMyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJinmpAcHEhxzF8fMVGrQUADFq4oAl1+GJh+SmQD02qweDgkLmDxhKl5hq+40DQq0LzzCNBFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFfWVKJJNUGRVJLg+E8S8+ytxaEPad2TRGDthI4foG4sB62/hL
-	IUsrJY5rfNKn1QWsBIlJBzEZZDlUWRnj5jB19+e2JozzLfE61my4QZ3Nv7da8vq2PTqUwm/Hl2s
-	j8/gJyskEV0eihBTV+Q29kzN0+7bHEOQ=
-X-Gm-Gg: ASbGncsAbMEmG4UWreYcwXpb0QCqf9sxHMI7dO3zHW6qgI4YWPMIgVmHYkq9ML2IAxq
-	FkNqRHqKcAQI8RWMtBUUr0mVaVBxNCjgJGU3VgT2h6PIv9hQfJKL30nYMPEqabxpKhilRnW4pI9
-	3LYl5RoDBpxYBnLx4zRSGW2QoO6MhH05ZAFzRwkEMDJ/r73NTYW4H+JyTEP/khjUS53UphWASsN
-	XAG+csEdFAJif7OXa9tU5T63Zol1qbs6RR7UMWJbNvXTFQYnnjyOjLMUa7DRD/Sv5Fm8nwexDh+
-	9hrpM8fxFUD6kk4plD5/1h4f6I9i5Oq5hQeDXPuik8LbNYicVis7cBDe4fatN9KXZPuv3JlOr60
-	gAVCiI2tIbw==
-X-Google-Smtp-Source: AGHT+IHI+ciJMg8aOEmbinYOstECuLA/3e/GbhhxuQDC0jNUfW/cZYRBveEzZd49KPLKgKjlVCV1OzfTn5p9FH9IaHE=
-X-Received: by 2002:a05:6e02:339d:b0:434:96ea:ff63 with SMTP id
- e9e14a558f8ab-435b8e8d1a5mr135813675ab.36.1764167406387; Wed, 26 Nov 2025
- 06:30:06 -0800 (PST)
+        bh=msBAMbzCaK4P9BYCopufCeh+uY8BrlUveStybrFmxj8=;
+        b=Tf/JRJNRdXPW5HiFOnFMm9tk6W6KiDV+cubTpuySsP8E2lbH+kuF9Oh+Sihe0gvciX
+         Wxc4PGj8WRr3gtQ2yhu7Ie5k1rzi9etojhLNEmqeWZIlZnReZnozgcVnRuDggAaBr10i
+         uUy/YVScj6RO89kxye1qyGWHuDQNvfe/ZB7VAkkZO40P/bqoUiHtorzaRMsBaIbtVssR
+         cLbiWyEYhOy1bnmlGCe/70lVNhl8RfAnHnCmuOl+K8ld4WZpbBbLkCwwJ1mw+dzJNFnY
+         VEqMjDEstTB4B2+tmt0sUZ/HJWjQLBSEF+zBRV1wPI3Euagn0STQz5BaBF6XTwJLSdrs
+         rAkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764167945; x=1764772745;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=msBAMbzCaK4P9BYCopufCeh+uY8BrlUveStybrFmxj8=;
+        b=hOGVl4ZtEyAtLZfNoL9oj9EuHYgyaFjF9j8G7w4eCje1q4XaR2ftgwTURukeraz3y4
+         r/mZyL0qOsdHGz+8PK0CmStzF1Bhafu9vq6BTWOJewtyAnQyvuPV/E/Ux6dnsLBK/Au7
+         1RBqJBNSJN7wTOKzLLSndSUH/I6Ehq/T3QCX7zP82cUXjPM4SDgEs85lAeUMDGAKcEdW
+         ZnSu70uJVSUhyjNDSDVAOky4kSMO9d6vpiljuxJ1nunDksJEVRjMVhZumx2i4SqzN8+4
+         HZcPC7zmid3M0Tc6EgzerizIRIEAgHrceBBM9Gqfd5QBcq89xy7Ue4aGT+NlkOoBvBDK
+         A9fg==
+X-Forwarded-Encrypted: i=1; AJvYcCXs+swLjDwCvAnS6D+b2XuHa8Mgvq0ecGz7m8jMUdIdIQ05dKYSWrw8k70hGRQC8ET1r7CfOaI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8SPz01M9KV4F/BhlyPI3dMvohx0GA6zJpSvaNlWAqa79pW7UI
+	ovs2LDlYJb0CyR1zsgiSyUMRkg/5G2dRJHvXA3YRNKrEYNWaU90kNOpnnz1jGM8Pt/sYBhWpyu3
+	zGGVbuWmsg/Jc0peQ4lXBf0PDnb4P4p7GMgxjkXMFMg==
+X-Gm-Gg: ASbGncuRG53pb3Mh6zmerlr0J9OydGwLzkb+966gyul0Q0oRFcsS3CnQEmT0lvgXLYK
+	EesmyYr56HI81bS1aINdZ+OmcJ77Oqy8+FHLRUcNIIt1lZuxMxBDxjQb+1ECBTryFrbsA/Gbfxs
+	d9wVPO4T1gB4m4Mw7DjesZhStEUJDKctvR7g82529Agjxe3ZnzubwVmQnzj1Zz0G40Qo4fTGd5l
+	9amRlOdT0xGHxrZ+t5FUDZ4f8N4kyFeYqhzgkk0ccND8F7VIc0YPwFR96uJtKu+q8Z/21DeEnlX
+	wqT+O9HoEzNq2xcUxL3VGm0KsfI=
+X-Google-Smtp-Source: AGHT+IFDxRVt50Oa/O/Cj0BOmm4XYwCMA0ik9gwSJjdf5XFhmE6eJiaVMJCla8GLSwR5pSXLEUBXG1Du99AsBWpILQY=
+X-Received: by 2002:a05:6512:304e:b0:595:8052:110f with SMTP id
+ 2adb3069b0e04-596b4e529b0mr2876479e87.6.1764167945036; Wed, 26 Nov 2025
+ 06:39:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1764084304.git.fabio.porcedda@gmail.com>
- <3ef9bdaa5f76595d0a39b8fc1b1cebe29f69709c.1764084304.git.fabio.porcedda@gmail.com>
- <aSXYlqai4Q7CQCT5@hovoldconsulting.com>
-In-Reply-To: <aSXYlqai4Q7CQCT5@hovoldconsulting.com>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Wed, 26 Nov 2025 15:29:29 +0100
-X-Gm-Features: AWmQ_blNhKP_6sO0bZW5lfxCRF6g4woCI0YryHrKyhNpFuDdmIMbwQ5pq7XOigs
-Message-ID: <CAHkwnC-Hurh1gp2_apb2yMGMQopBPsPt_-Pc+0eKS3QeXGWQMw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] USB: serial: option: add Telit Cinterion FE910C04
- new compositions
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
-	Daniele Palmas <dnlplm@gmail.com>, stable@vger.kernel.org
+References: <20251126122219.25729-1-brgl@bgdev.pl> <gy6ycgcld2moccjjl7x7h72riwfm4ymhnkhlgau53fl4eu3e6q@qp5lrwx57jin>
+In-Reply-To: <gy6ycgcld2moccjjl7x7h72riwfm4ymhnkhlgau53fl4eu3e6q@qp5lrwx57jin>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 26 Nov 2025 15:38:53 +0100
+X-Gm-Features: AWmQ_blncx36kZC3fH6WyyuMqAepzKDyy1dWzU4Yz0s9JWV27nROSI0p6FrG_AU
+Message-ID: <CAMRc=MdXXNaMVK5q+yNSZcLjjoQLwPmDnMW90gGK+uk77F+3ZQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Srinivas Kandagatla <srini@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Val Packett <val@packett.cool>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Il giorno mar 25 nov 2025 alle ore 17:25 Johan Hovold
-<johan@kernel.org> ha scritto:
+On Wed, Nov 26, 2025 at 3:35=E2=80=AFPM Bjorn Andersson <andersson@kernel.o=
+rg> wrote:
 >
-> On Tue, Nov 25, 2025 at 04:27:33PM +0100, Fabio Porcedda wrote:
-> > Add the following Telit Cinterion new compositions:
->
-> > 0x10cb: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
-> > T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=480 MxCh=16
-> > D:  Ver= 2.00 Cls=09(hub  ) Sub=00 Prot=01 MxPS=64 #Cfgs=  1
-> > P:  Vendor=1d6b ProdID=0002 Rev=06.18
-> > S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
-> > S:  Product=xHCI Host Controller
-> > S:  SerialNumber=0000:00:14.0
-> > C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
-> > I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
-> > E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+> On Wed, Nov 26, 2025 at 01:22:19PM +0100, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > >
-> > T:  Bus=01 Lev=01 Prnt=01 Port=11 Cnt=01 Dev#=  7 Spd=1.5 MxCh= 0
-> > D:  Ver= 1.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 8 #Cfgs=  1
-> > P:  Vendor=413c ProdID=2003 Rev=03.01
-> > S:  Manufacturer=Dell
-> > S:  Product=Dell USB Keyboard
-> > C:  #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=70mA
-> > I:  If#= 0 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=01 Driver=usbhid
-> > E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=24ms
+> > The gpio_chip settings in this driver say the controller can't sleep
+> > but it actually uses a mutex for synchronization. This triggers the
+> > following BUG():
 > >
-> > T:  Bus=02 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=10000 MxCh=10
-> > D:  Ver= 3.10 Cls=09(hub  ) Sub=00 Prot=03 MxPS= 9 #Cfgs=  1
-> > P:  Vendor=1d6b ProdID=0003 Rev=06.18
-> > S:  Manufacturer=Linux 6.18.0-rc3-usb+ xhci-hcd
-> > S:  Product=xHCI Host Controller
-> > S:  SerialNumber=0000:00:14.0
-> > C:  #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=0mA
-> > I:  If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 Driver=hub
-> > E:  Ad=81(I) Atr=03(Int.) MxPS=   4 Ivl=256ms
+> > [    9.233659] BUG: sleeping function called from invalid context at ke=
+rnel/locking/mutex.c:281
+> > [    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 5=
+54, name: (udev-worker)
+> > [    9.233669] preempt_count: 1, expected: 0
+> > [    9.233673] RCU nest depth: 0, expected: 0
+> > [    9.233688] Tainted: [W]=3DWARN
+> > [    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10=
+.1 05/20/2025
+> > [    9.233694] Call trace:
+> > [    9.233696]  show_stack+0x24/0x38 (C)
+> > [    9.233709]  dump_stack_lvl+0x40/0x88
+> > [    9.233716]  dump_stack+0x18/0x24
+> > [    9.233722]  __might_resched+0x148/0x160
+> > [    9.233731]  __might_sleep+0x38/0x98
+> > [    9.233736]  mutex_lock+0x30/0xd8
 >
-> Looks like something went wrong when you generated the usb-devices
-> output for the above composition.
+> As far as I can see, this mutex only protects mmio accesses.
+>
+> Is it preferable to mark the gpio chip can_sleep over replacing the
+> mutex with a non-sleep lock?
+>
 
-I've sent an updated one.
+I'd say let's do this as a fix and convert the driver to non-sleeping
+with a spinlock next cycle?
 
-Thanks
+Bart
 
-> Johan
-
-Best regards
--- 
-Fabio Porcedda
+> >
+> > Mark the controller as sleeping.
+> >
+> > Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl drive=
+r")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Val Packett <val@packett.cool>
+> > Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011c=
+a@packett.cool/
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> If we stick to the mutex, the patch LGTM
+>
+> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+>
 
