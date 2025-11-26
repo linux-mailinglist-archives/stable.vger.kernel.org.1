@@ -1,73 +1,256 @@
-Return-Path: <stable+bounces-197015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBC5C89DF6
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:55:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DF8C89E1A
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF81F4E3197
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B671D3A953C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA4D32826E;
-	Wed, 26 Nov 2025 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FB232863F;
+	Wed, 26 Nov 2025 12:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJRcgHCP"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CjtlR8BK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B55C3203A1
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 12:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236EF2E2DD2;
+	Wed, 26 Nov 2025 12:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764161706; cv=none; b=nuZboJsaDpohw3hvctGRLVel+SCxiqOZ9Peiz5fGJiLAX3NC3LX7voadNLNnwlBVUJfZe4bV+nqFzR8/cJZWTNY13nEsHRyygasrKEhMEFOBz9NP2w1e14eNbYWhDMqO6cvtypICYsOYZGuZykGLXYCDl0Tb8F3kbLpcCKcmmns=
+	t=1764161813; cv=none; b=X19KE3WC7UScwd/eoopsQc31I/J/MaeJer57OWtkQdmbJSohdRzeq8sxBwkD+2WIACTM2/flgBKuU9LBgLgX7QRgfPyyCjU3kcugrurVG94rbsl1EeZVesvDyj3uj4jCxGUUIGt8aJw8kyl0up+dvdvJ4Rc4KItVy7BMt3efqAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764161706; c=relaxed/simple;
-	bh=sCV4NWFa1f/JwzNxZ0kJSIyA74cZ+FuOOeYxqYRaUU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPTQHU6tHGInRJvgzaau8QgTGczEMzP6gYtmSkzLaX+7xBQ/j6vIGDQLlx7JpcXks5FwJrTC9EV84EPsVHJXoXiWC5CWx6taehQwk/VCWZJ+7rHGQiMa0pWpU4qpvYYr2l/FdmOvozoIsDG6aMSVu7tUP9GEUoRZW6nWKZhtiQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJRcgHCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038EDC113D0;
-	Wed, 26 Nov 2025 12:55:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764161704;
-	bh=sCV4NWFa1f/JwzNxZ0kJSIyA74cZ+FuOOeYxqYRaUU8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJRcgHCPiQM8B9FIvOj9hIBSAw1vYOBUtVcuFQ/sJ/CU9YOVLdQZ3ppGsAWXeBwrJ
-	 ghBLT7yTbqXcSTA7H5GRIfb0MlFACD9u6kZuegiiY9yR8tQuc4PHtsLkjh/nJ3XDXB
-	 jOX/UXGNKhTw3zSTM6elAf8+NfGzr4+6LYvz+3wqlFCbjiIIJGf8PQOeeSrcKqJs45
-	 aoI3rOYuTQShCMY4cta8KoSZtLlMM/HOlWFZx28lYuXu3sgLnV/z4pdKE467UcQeCL
-	 2ItDRr8NGbiafiqkuRcwNcSJ0g/No98fYjkJF1gxfK9DpJ1dfWGRAUfYuCvyBPFbBB
-	 IdfSCbHjEqWUA==
-From: Sasha Levin <sashal@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>,
-	Google Big Sleep <big-sleep-vuln-reports@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.1.y] mm/secretmem: fix use-after-free race in fault handler
-Date: Wed, 26 Nov 2025 07:55:01 -0500
-Message-ID: <20251126125501.1368796-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251120191547.2344004-1-rppt@kernel.org>
-References: <20251120191547.2344004-1-rppt@kernel.org>
+	s=arc-20240116; t=1764161813; c=relaxed/simple;
+	bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=KKDA8Z5h+8hK+OTl3WiU33FmOjrBuT1F5BSzzhxKfwKrr9IYqFzCo01rAVfO1XkkrVxD5edaUI8sjzASi3fuuftUUa8w1y+5zkKXRAGquRsOnVqsTHIfwJe/RIeWP7hXgdSnDuIHHhPZ73nOMzZUhGY5lnL/VoUTVOkvfAbKNyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CjtlR8BK; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1764161812; x=1795697812;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
+  b=CjtlR8BKWbdwDqk7u6hn+p1YLPhMuOxn1kw6pHdn8EfJXEOHnBiRLFQl
+   THQtgW4vLofkVrqn+WpPkrTQ0OjCD6FB7Sy6yuMUj56TdgZA0iIcEIiaN
+   hkrCV1SEe8ZlqS319sH0jMjtk2iNiLKB2jfLJvNhuMU7Vqb8MZDmp9Afg
+   uEukykZAjDz4Twxqd7qsAhCJ061sc2uV9qVGkyNCVzcplYIROtw2K+1vV
+   otmfA6vMEgfZylb4aiNr56MjaacuTgfotfYBZAGLxOc2a1ZU0RpgD8ipt
+   318O15yDWPp9DoKp77fqDTQKuXWzLEcXxOJ9zDXEtvPx9IJfc/rbHmRA+
+   A==;
+X-CSE-ConnectionGUID: SwmzKxapS2aFRuX/oZVhGA==
+X-CSE-MsgGUID: bxIwf3JrSS2Gzn+igB42PA==
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="217045314"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 05:56:51 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Wed, 26 Nov 2025 05:56:31 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Wed, 26 Nov 2025 05:56:27 -0700
+From: Ludovic Desroches <ludovic.desroches@microchip.com>
+Date: Wed, 26 Nov 2025 13:56:02 +0100
+Subject: [PATCH REGRESSION v2] drm/panel: simple: restore connector_type
+ fallback
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251126-lcd_panel_connector_type_fix-v2-1-c15835d1f7cb@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAOH4JmkC/42NTQqDMBCFr1Jm3RQTrYWuupHSTQu6LCIxTuqAJ
+ iERqYh3b/AEXb6/760Q0BMGuB5W8DhTIGuiEMcDqF6aDzLqogaRiDPngrNBdY2TBodGWWNQTdY
+ 30+Kw0fRlOkk0ppc8l5mAiHAeo73j31AW97KoqsfrCXXMegpxu+zPM98b/53MnHGmu7ZFnWaSy
+ +w2kvJW9eROyo5Qb9v2AxUpWJrYAAAA
+X-Change-ID: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
+To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
+	<jesszhan0024@gmail.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Anusha Srivatsa <asrivats@redhat.com>, "Luca
+ Ceresoli" <luca.ceresoli@bootlin.com>, Jessica Zhang
+	<jessica.zhang@oss.qualcomm.com>
+CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5388;
+ i=ludovic.desroches@microchip.com; h=from:subject:message-id;
+ bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
+ b=owEBbQKS/ZANAwAKAT455hP3e2QtAcsmYgBpJvj92rPOhVt9UO9uwwYwkIJQKVyyC0RGRQRX5
+ ZeAA2XAsTGJAjMEAAEKAB0WIQQAMEvJiWmsW41tNU0+OeYT93tkLQUCaSb4/QAKCRA+OeYT93tk
+ LRiiEACtzBEkshsLEah620fkv2jOEfPa0uM8aaRLm4oKdA1pN9MAW1SRmGMQEZRRQ9hctvq5dhq
+ xAYnFiTueUk9JaaP0B73i7aQLOeSfua5RNJukLVS7Nb2EPm8FjHB4j+E6onWSJ4o9+LJVeP2Lcb
+ MSRkme3Yj1fBZ2NtlvEsVIG51YI8IRjxdOOjk/ui+Qw0cV3ErP17zanVjaHjA9Tp42Auvc0gTTD
+ aM5LBo0GANFd6J3I2YCCfK051tWBKWOHNWWk5xxXnY69vJhiUt0Bt/xyWPRk8diRmhU5L9v2+KZ
+ Fz1BClu3NXu09dau8gFxdpfAHhedqAu2QwaWTfnETpdd1AUKhavIzxHq1xbkOwcRi6+BFTOqNbM
+ TFLzxLt+KwMcKCoAwjahcLyRCVcHhR+srPIDLpwCemXBAhGexqUW/H1f0h+yro2+vaMXSZ++vrx
+ wrdv0aPzv80C7TH6PspZNhYhsqQ+gx25I8jz7ioqc7VrxpMkCQCOChoa1xIspoCsgqoxhUXcqZO
+ Tvuan3B5W++QruDjjR5yrACweJMtvRok8gL5VkFacpeZxbY6f5hCujSZVHXqfL7ALeGGpgaSrV0
+ SSMKrTRzVlA8/j51+nm0gRB4NIhY9DfqSTV17N+dkKSn8DuA0iGAFmWTaSaU/6sdqDPMCGFUCVi
+ ER+B3MAK+BXd08A==
+X-Developer-Key: i=ludovic.desroches@microchip.com; a=openpgp;
+ fpr=665BAA7297BE089A28B77696E332995F09DCC11A
 
-This patch has been queued up for the 6.1 stable tree.
+The switch from devm_kzalloc() + drm_panel_init() to
+devm_drm_panel_alloc() introduced a regression.
 
-Subject: mm/secretmem: fix use-after-free race in fault handler
-Queue: 6.1
+Several panel descriptors do not set connector_type. For those panels,
+panel_simple_probe() used to compute a connector type (currently DPI as a
+fallback) and pass that value to drm_panel_init(). After the conversion
+to devm_drm_panel_alloc(), the call unconditionally used
+desc->connector_type instead, ignoring the computed fallback and
+potentially passing DRM_MODE_CONNECTOR_Unknown, which
+drm_panel_bridge_add() does not allow.
 
-Thanks for the backport!
+Move the connector_type validation / fallback logic before the
+devm_drm_panel_alloc() call and pass the computed connector_type to
+devm_drm_panel_alloc(), so panels without an explicit connector_type
+once again get the DPI default.
+
+Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
+Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
+---
+Changes in v2:
+- Fix a warning introduced by the code move. There is no need to jump to
+  free_ddc, we can directly return from the function.
+- Link to v1: https://lore.kernel.org/r/20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com
+---
+ drivers/gpu/drm/panel/panel-simple.c | 89 ++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 0019de93be1b663f55b04160606363cd043ab38b..5fd75b3939c635ca3e5b293ea37a759f479fa3f8 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -623,49 +623,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 	if (IS_ERR(desc))
+ 		return ERR_CAST(desc);
+ 
+-	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
+-				     &panel_simple_funcs, desc->connector_type);
+-	if (IS_ERR(panel))
+-		return ERR_CAST(panel);
+-
+-	panel->desc = desc;
+-
+-	panel->supply = devm_regulator_get(dev, "power");
+-	if (IS_ERR(panel->supply))
+-		return ERR_CAST(panel->supply);
+-
+-	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+-						     GPIOD_OUT_LOW);
+-	if (IS_ERR(panel->enable_gpio))
+-		return dev_err_cast_probe(dev, panel->enable_gpio,
+-					  "failed to request GPIO\n");
+-
+-	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
+-	if (err) {
+-		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
+-		return ERR_PTR(err);
+-	}
+-
+-	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
+-	if (ddc) {
+-		panel->ddc = of_find_i2c_adapter_by_node(ddc);
+-		of_node_put(ddc);
+-
+-		if (!panel->ddc)
+-			return ERR_PTR(-EPROBE_DEFER);
+-	}
+-
+-	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
+-	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
+-		panel_simple_parse_panel_timing_node(dev, panel, &dt);
+-
+-	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
+-		/* Optional data-mapping property for overriding bus format */
+-		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
+-		if (err)
+-			goto free_ddc;
+-	}
+-
+ 	connector_type = desc->connector_type;
+ 	/* Catch common mistakes for panels. */
+ 	switch (connector_type) {
+@@ -690,8 +647,7 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 		break;
+ 	case DRM_MODE_CONNECTOR_eDP:
+ 		dev_warn(dev, "eDP panels moved to panel-edp\n");
+-		err = -EINVAL;
+-		goto free_ddc;
++		return ERR_PTR(-EINVAL);
+ 	case DRM_MODE_CONNECTOR_DSI:
+ 		if (desc->bpc != 6 && desc->bpc != 8)
+ 			dev_warn(dev, "Expected bpc in {6,8} but got: %u\n", desc->bpc);
+@@ -720,6 +676,49 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
+ 		break;
+ 	}
+ 
++	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
++				     &panel_simple_funcs, connector_type);
++	if (IS_ERR(panel))
++		return ERR_CAST(panel);
++
++	panel->desc = desc;
++
++	panel->supply = devm_regulator_get(dev, "power");
++	if (IS_ERR(panel->supply))
++		return ERR_CAST(panel->supply);
++
++	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
++						     GPIOD_OUT_LOW);
++	if (IS_ERR(panel->enable_gpio))
++		return dev_err_cast_probe(dev, panel->enable_gpio,
++					  "failed to request GPIO\n");
++
++	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
++	if (err) {
++		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
++		return ERR_PTR(err);
++	}
++
++	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
++	if (ddc) {
++		panel->ddc = of_find_i2c_adapter_by_node(ddc);
++		of_node_put(ddc);
++
++		if (!panel->ddc)
++			return ERR_PTR(-EPROBE_DEFER);
++	}
++
++	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
++	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
++		panel_simple_parse_panel_timing_node(dev, panel, &dt);
++
++	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
++		/* Optional data-mapping property for overriding bus format */
++		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
++		if (err)
++			goto free_ddc;
++	}
++
+ 	dev_set_drvdata(dev, panel);
+ 
+ 	/*
+
+---
+base-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+change-id: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
+
+Best regards,
+-- 
+Ludovic Desroches <ludovic.desroches@microchip.com>
+
 
