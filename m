@@ -1,148 +1,164 @@
-Return-Path: <stable+bounces-197027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA0DC8A5F2
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:39:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FEEC8A5FB
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97063A8A7C
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:39:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 49A7934E385
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0153303A08;
-	Wed, 26 Nov 2025 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2B1302CDF;
+	Wed, 26 Nov 2025 14:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Tf/JRJNR"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="g8XM1HgE";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DtXJM0AJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14CC302170
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA9303A09
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764167948; cv=none; b=sxAu9Px36pHKlhMlLgOp+TZxc9tRUaNEIAgmz1+3/29lFPxGbHj+ZU/R7Latqcw/BdvDk1J/H0AoYmAlMXIRY7U9/twA6HeL4+FrQoSiAByrcJZpYO4rsrN1wguXFRXqtNv8tn9mkJUvkjpNG94+nig+J6K5j9j5nBQuxoji9Ao=
+	t=1764167950; cv=none; b=BSfNl/36dAXblsJB29bhLlqOeEwYsRI+fT+WaqiBoEVFVlrihUSv3zgCFw2dXCuyAgEkoQQlW7qqbQIKf/uAmI2yuyFti9bZTNz7bSu5CVVpah4AP0TqqGWmpK9vmHUuxWXs4PJeQXL7xobPUVHoVYJaT3oYH4w7+nCBF3Tm9OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764167948; c=relaxed/simple;
-	bh=yacBvBYaVY4CpdxU2ivpOumvrEreuCR9cSgT0Y23MFk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=te/u3HBtQcvawqaKbVNcvpux46Mw/5oLIySUbhpH+QL7VnytcowcNVqX0Iai77beWAIYbgxTezPmIZ4VxkVt2U3iCv8BCXjG3qRjJc9M0rAlcemC6q+2ZGIo91kPRtCCZBhYJozd3HSXfKvCEzMwtjKfgQlBGhXqDdxF6YfhEIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Tf/JRJNR; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5958931c9c7so8545567e87.2
-        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:39:06 -0800 (PST)
+	s=arc-20240116; t=1764167950; c=relaxed/simple;
+	bh=ozg/zky7pZYYhf21hDQgiq4F0XigtmY4Wqju6wrAWUQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=omaLNwekCaNL8UU1Jxh3bna62Vi9Ced7sLmfEumhH/1Eyb04RVAfywNzNt1xBagIrPwiLmkPVKypuqxXfvXlF7fMIFoT/+ZTVcykjx2ERg8i7p2d5f9Bth8wdOSpmQbY3Z4hdFhBLI7N1qxh40yj04q2Y2jaSDrfvo1lAkcY9sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g8XM1HgE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DtXJM0AJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQBNpcS1849469
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:39:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=ih06yL3zICl3oBGO2wVm0aPZ
+	B8b204IAvwsOOEb1LJ8=; b=g8XM1HgEHr1K8W8uAY4QNjDYAIOkKFvJk85GA6Z+
+	niusaakNCF8kODCZI6RH14JVBEAY5/u97AWP1AYg3IHQKxBpR08intEbjYDYur1B
+	hm9TIRXjdvgO+CSGt5tXU39B2n42OvR2a1ugoCrFDGULWpIhOdZ97PNSMpcSc31g
+	7W+wnrw4RlcYaF3Uesq2cgBkMJSkQ7NEgNO6KGciLSnDtAHHNwzuIEV5VNND8raV
+	hWQeCbkxzHGD0E2EVG3rwGL1hEWKQZSgTSK909AajpP4hOROng+NA9Tp244wr2LW
+	+s5Sg/60PB+Wp5SDNROizl2evcDVCk8emY/vNWqD8lM89Q==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ap0msrfu1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 14:39:07 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b234bae2a7so1806420485a.3
+        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:39:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1764167945; x=1764772745; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=msBAMbzCaK4P9BYCopufCeh+uY8BrlUveStybrFmxj8=;
-        b=Tf/JRJNRdXPW5HiFOnFMm9tk6W6KiDV+cubTpuySsP8E2lbH+kuF9Oh+Sihe0gvciX
-         Wxc4PGj8WRr3gtQ2yhu7Ie5k1rzi9etojhLNEmqeWZIlZnReZnozgcVnRuDggAaBr10i
-         uUy/YVScj6RO89kxye1qyGWHuDQNvfe/ZB7VAkkZO40P/bqoUiHtorzaRMsBaIbtVssR
-         cLbiWyEYhOy1bnmlGCe/70lVNhl8RfAnHnCmuOl+K8ld4WZpbBbLkCwwJ1mw+dzJNFnY
-         VEqMjDEstTB4B2+tmt0sUZ/HJWjQLBSEF+zBRV1wPI3Euagn0STQz5BaBF6XTwJLSdrs
-         rAkQ==
+        d=oss.qualcomm.com; s=google; t=1764167946; x=1764772746; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ih06yL3zICl3oBGO2wVm0aPZB8b204IAvwsOOEb1LJ8=;
+        b=DtXJM0AJ75fF36lL+oEnLExKCC1hB5E2uzOLQ9mKLy3aK5cVRO99jpDUA8XiEvIAR5
+         aV3P/4+9iPS0QJ03KteVz4bORnaHZN2zxxahLQ7EaDlGJ3djtZvRDS08EVs/zfqTo+Nx
+         lxAb6jL11iwZEA2kTDXm+7HAVfCUrH2LGmebVyahivluapbg3xg+XnyNHPw2RCzAv6oi
+         qZpEyPEpWjI8JCv7a9YBMsnMPIPVs8O8VKIK23NcxaryOLdAne6piSn+5S2+kZu19stA
+         R6isd1ooCroGICN8Z2c+XSnWbfCRD+CiCjc5hWv9jLWFHRHBcElr/1XhThlyvP9Q9YNh
+         Qb8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764167945; x=1764772745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=msBAMbzCaK4P9BYCopufCeh+uY8BrlUveStybrFmxj8=;
-        b=hOGVl4ZtEyAtLZfNoL9oj9EuHYgyaFjF9j8G7w4eCje1q4XaR2ftgwTURukeraz3y4
-         r/mZyL0qOsdHGz+8PK0CmStzF1Bhafu9vq6BTWOJewtyAnQyvuPV/E/Ux6dnsLBK/Au7
-         1RBqJBNSJN7wTOKzLLSndSUH/I6Ehq/T3QCX7zP82cUXjPM4SDgEs85lAeUMDGAKcEdW
-         ZnSu70uJVSUhyjNDSDVAOky4kSMO9d6vpiljuxJ1nunDksJEVRjMVhZumx2i4SqzN8+4
-         HZcPC7zmid3M0Tc6EgzerizIRIEAgHrceBBM9Gqfd5QBcq89xy7Ue4aGT+NlkOoBvBDK
-         A9fg==
-X-Forwarded-Encrypted: i=1; AJvYcCXs+swLjDwCvAnS6D+b2XuHa8Mgvq0ecGz7m8jMUdIdIQ05dKYSWrw8k70hGRQC8ET1r7CfOaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8SPz01M9KV4F/BhlyPI3dMvohx0GA6zJpSvaNlWAqa79pW7UI
-	ovs2LDlYJb0CyR1zsgiSyUMRkg/5G2dRJHvXA3YRNKrEYNWaU90kNOpnnz1jGM8Pt/sYBhWpyu3
-	zGGVbuWmsg/Jc0peQ4lXBf0PDnb4P4p7GMgxjkXMFMg==
-X-Gm-Gg: ASbGncuRG53pb3Mh6zmerlr0J9OydGwLzkb+966gyul0Q0oRFcsS3CnQEmT0lvgXLYK
-	EesmyYr56HI81bS1aINdZ+OmcJ77Oqy8+FHLRUcNIIt1lZuxMxBDxjQb+1ECBTryFrbsA/Gbfxs
-	d9wVPO4T1gB4m4Mw7DjesZhStEUJDKctvR7g82529Agjxe3ZnzubwVmQnzj1Zz0G40Qo4fTGd5l
-	9amRlOdT0xGHxrZ+t5FUDZ4f8N4kyFeYqhzgkk0ccND8F7VIc0YPwFR96uJtKu+q8Z/21DeEnlX
-	wqT+O9HoEzNq2xcUxL3VGm0KsfI=
-X-Google-Smtp-Source: AGHT+IFDxRVt50Oa/O/Cj0BOmm4XYwCMA0ik9gwSJjdf5XFhmE6eJiaVMJCla8GLSwR5pSXLEUBXG1Du99AsBWpILQY=
-X-Received: by 2002:a05:6512:304e:b0:595:8052:110f with SMTP id
- 2adb3069b0e04-596b4e529b0mr2876479e87.6.1764167945036; Wed, 26 Nov 2025
- 06:39:05 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764167946; x=1764772746;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ih06yL3zICl3oBGO2wVm0aPZB8b204IAvwsOOEb1LJ8=;
+        b=girXiJbQKJ6GA5bIpv/nDf+DDZtpzVCvpEs/hvxKkd1KP7riGKQdFasWUYU6UVgdkY
+         aJ9rM0L67VvYcz4JF004AeFu3dL3DpJL/WRPp9yAqWl5gpFMXt0ZxGsi4WEIerjGDGxy
+         ZBvCQCn+C3pNa4g9U76Ah4GuWr35hMsRVZJXHGaoOXJw2PfkR2W9ZlYKNIPZwm0Yhi3N
+         6XIRPw43jBJnSjhodzRZMtktspdYMG1errtvemGvbroN3Ex7/2aDEIiyhHfvD7bXv/Jf
+         RMvZ3t/hMSJ+GazVkxkGah+9qu4XPl5em1Y3ZOauJlAZaVn3qf89RNB5g/30iQbImKgy
+         ZKrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWuf9EbcZPsJPtK6N1LTKDt1625XwpohnQsCOd8C2zVT208yPL1+tYcDSVAMk2vrL4tF5aEnXU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH35NLGBSXQP6ugb2LMnUIJhtOMQ8FtbxbGfZUp93MFO2N7gbY
+	qRXTLij/bFV4CD8X6w5I9YcA4y+reKC660NFbXRB+LTh37gw2MlThIV/7lIvRt3JGq1WvNh60ax
+	zvCFK8egPTLq80yhkdAKoOb2x/OeKCmTN/6YfKjfvhCSTIBjMwKxmTJUTU4RSA+0VgyM=
+X-Gm-Gg: ASbGncvEtAncW/8VkTerb+iuiUzdNVeukTKvCnImBytQh3JTwhJvWQlnM7uTLdRVfRO
+	UVEHSJJCmwPEzAcfqvfnB1Hp+ZvEOVGtYzwntuZqh8/9cEdGrDFg4kkIY1XeS4/vnyjIRg/bfH3
+	EsOSIFSrmKkIiR75KJbF+64wZqPBZIJXMK1/pcZHVs2DmTS5/yjRSdn3RJRgJfV/EkdMS7zBWRx
+	sVlSvqvtDBrlzti3yMEwSItHMiKSsc2jJjS2D0rCtILfz5hlIAgydmVf+d/gp/e6el+COcRRCsM
+	sNp7hP0wNRM9cV8OJ2q5sh3DDaxGX+vbd2V0CofsMPfy5SSKOARVtvIEu+egbtbxqvKDtV0ju0x
+	z2GNpPBMZaYY2qv+1BNZA5N3f4walB/CA834Y+gV+gDeWmteY0kB1Ivh+0I1cs7TGZO9PhAy6br
+	/A2FYG+VUY42U6uP8HXt3pUQM=
+X-Received: by 2002:a05:620a:1a04:b0:86e:21a4:4742 with SMTP id af79cd13be357-8b33d4808bdmr2719412685a.77.1764167946390;
+        Wed, 26 Nov 2025 06:39:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFuvwz9GZiR0vucNDwByTSixZwnlV3s+6YWSU/zh6BM6UYrhc+KLDg+561iMmnbTPrGqzYR6A==
+X-Received: by 2002:a05:620a:1a04:b0:86e:21a4:4742 with SMTP id af79cd13be357-8b33d4808bdmr2719404985a.77.1764167945752;
+        Wed, 26 Nov 2025 06:39:05 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbc5e07sm6013824e87.83.2025.11.26.06.39.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 06:39:05 -0800 (PST)
+Date: Wed, 26 Nov 2025 16:39:03 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>
+Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org,
+        manivannan.sadhasivam@oss.qualcomm.com, quic_sayalil@quicinc.com,
+        nitin.rawat@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH V1] arm64: dts: qcom: talos: Correct UFS clocks ordering
+Message-ID: <s3eeapfrmw2smh6j76mhegeanqfq4vwa5jz7ilt2d5bf3acxc7@t6hkp3c4jjsk>
+References: <20251126131146.16146-1-pradeep.pragallapati@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251126122219.25729-1-brgl@bgdev.pl> <gy6ycgcld2moccjjl7x7h72riwfm4ymhnkhlgau53fl4eu3e6q@qp5lrwx57jin>
-In-Reply-To: <gy6ycgcld2moccjjl7x7h72riwfm4ymhnkhlgau53fl4eu3e6q@qp5lrwx57jin>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 26 Nov 2025 15:38:53 +0100
-X-Gm-Features: AWmQ_blncx36kZC3fH6WyyuMqAepzKDyy1dWzU4Yz0s9JWV27nROSI0p6FrG_AU
-Message-ID: <CAMRc=MdXXNaMVK5q+yNSZcLjjoQLwPmDnMW90gGK+uk77F+3ZQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Srinivas Kandagatla <srini@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
-	Val Packett <val@packett.cool>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126131146.16146-1-pradeep.pragallapati@oss.qualcomm.com>
+X-Proofpoint-GUID: yFtfL43bJpPuA0dOFmmG6i2cF8r1TEoD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDEyMCBTYWx0ZWRfX7Zzn0lSctYnZ
+ Em+Vx8iVw/PkWA3+m0GYgzEAImLBX6jL1/Q9nmxS8ALdPKPbNxLBZklDXFoUrWGF7U+a0dRGCE2
+ o2zHVBsAM+3funYm0SVDIctZM7gK39tHUrd8hg4VFuR1XTiR1bNL5v14ogDizb5ZS/T/c3/7gFs
+ YJQ869oHupyU8Iax2nHVyQe7I/jmixA0vF8UKGwcYsMhzfHDrXLdlEGhWBmaujYvyQZpSG2aBjd
+ fUicBKkS5KqC/lNOZg7gnGjb1pbmFieHzR/7IwMaC4cMiaSMf7n10NFN7tWca5iST9W2/bzbi/g
+ wdolAQGqzGzc2nghkHjJopFElnYeE+7pD1u6RfgPg+MDgaGz9TQk9XHAKpA4KnRKE8dhGsc16sd
+ ux7+2rrhNmIRTryga5EMSEogGFMkpg==
+X-Authority-Analysis: v=2.4 cv=N5Qk1m9B c=1 sm=1 tr=0 ts=6927110b cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=M3Igi78ymzd9_o9g02sA:9 a=CjuIK1q_8ugA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-ORIG-GUID: yFtfL43bJpPuA0dOFmmG6i2cF8r1TEoD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511260120
 
-On Wed, Nov 26, 2025 at 3:35=E2=80=AFPM Bjorn Andersson <andersson@kernel.o=
-rg> wrote:
->
-> On Wed, Nov 26, 2025 at 01:22:19PM +0100, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > The gpio_chip settings in this driver say the controller can't sleep
-> > but it actually uses a mutex for synchronization. This triggers the
-> > following BUG():
-> >
-> > [    9.233659] BUG: sleeping function called from invalid context at ke=
-rnel/locking/mutex.c:281
-> > [    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 5=
-54, name: (udev-worker)
-> > [    9.233669] preempt_count: 1, expected: 0
-> > [    9.233673] RCU nest depth: 0, expected: 0
-> > [    9.233688] Tainted: [W]=3DWARN
-> > [    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10=
-.1 05/20/2025
-> > [    9.233694] Call trace:
-> > [    9.233696]  show_stack+0x24/0x38 (C)
-> > [    9.233709]  dump_stack_lvl+0x40/0x88
-> > [    9.233716]  dump_stack+0x18/0x24
-> > [    9.233722]  __might_resched+0x148/0x160
-> > [    9.233731]  __might_sleep+0x38/0x98
-> > [    9.233736]  mutex_lock+0x30/0xd8
->
-> As far as I can see, this mutex only protects mmio accesses.
->
-> Is it preferable to mark the gpio chip can_sleep over replacing the
-> mutex with a non-sleep lock?
->
+On Wed, Nov 26, 2025 at 06:41:46PM +0530, Pradeep P V K wrote:
+> The current UFS clocks does not align with their respective names,
+> causing the ref_clk to be set to an incorrect frequency as below,
+> which results in command timeouts.
+> 
+> ufshcd-qcom 1d84000.ufshc: invalid ref_clk setting = 300000000
+> 
+> This commit fixes the issue by properly reordering the UFS clocks to
+> match their names.
+> 
+> Fixes: ea172f61f4fd ("arm64: dts: qcom: qcs615: Fix up UFS clocks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>
+> ---
+>  arch/arm64/boot/dts/qcom/talos.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-I'd say let's do this as a fix and convert the driver to non-sleeping
-with a spinlock next cycle?
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Bart
 
-> >
-> > Mark the controller as sleeping.
-> >
-> > Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl drive=
-r")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Val Packett <val@packett.cool>
-> > Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011c=
-a@packett.cool/
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> If we stick to the mutex, the patch LGTM
->
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
->
+-- 
+With best wishes
+Dmitry
 
