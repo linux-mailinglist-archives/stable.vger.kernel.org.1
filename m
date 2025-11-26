@@ -1,70 +1,154 @@
-Return-Path: <stable+bounces-197040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66B6C8AD56
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:09:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0286C8B172
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B8244EBB1F
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:07:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D43F4358C91
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDCE33A719;
-	Wed, 26 Nov 2025 16:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grovtAUt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161E33F397;
+	Wed, 26 Nov 2025 16:56:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F13321A4
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 16:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564C333F398
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 16:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764173269; cv=none; b=tHhY/CgaSglrXUdKIdG6Z+TZxFlAN6ev3mkX69aoHET3+fdoXfjQ+V9DNHov1aN46P+zf/Y4sAOrS7RvlW/W9em5Mvh2meJJHlSoHFA6EP5Z7pj3Nbmo92kjEzyL45N9Vd3ZPBfSHXYmokk4IIdL3TBRXHBruae5Lbe59pOfVYk=
+	t=1764176180; cv=none; b=gA8+yJ4lbzM37xSwydhVS5xuFL5rjgMS/BiMwJVTDIqE7ANsZyfflUcl+6Gan/YPoZuHf9iQwWBZRStPYWvNzd7IQgGpUGpDQmoY2S6NJTWmVVMWqh1yzquAdalcYC0BUd1CFdPNYRV3PyyL/rQnYGueDOY8Mb5RsZSqryO0F78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764173269; c=relaxed/simple;
-	bh=0S2kMUIXOC8Tt+FBNCS+V6tcNeNpmKS71au6IjV2R7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swj784JrTMCScU2J77YY+s4X7mOMc56CfSV9qOvFnEbHvygcR08tjbSObof3+EdZvrz0WlS8dwriZegu/ShtR0vPtSGIXFbWzPoDSPyb7Ap3mZ8QAvNrx1DYiDbDJEhxw4E9Cp/fW7jKYOkldE4SGWgI8kYP5PrUc9ee5P7UIH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grovtAUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61469C4CEF7;
-	Wed, 26 Nov 2025 16:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764173269;
-	bh=0S2kMUIXOC8Tt+FBNCS+V6tcNeNpmKS71au6IjV2R7Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grovtAUtKSxobHLF7Kj4oHTgGdww+uTjto22cwZgcJmWY9we6PtowvomZF/N5K48a
-	 u9h0KDGiTW5I3IY0itT9iJFcYy3IFEK1U8/ZBQwXP4XCP3z35zhJwkW9ggryt82liO
-	 ZBemmv8pU/V1lp5J9GpSONr0u/9xUyVBI8inwY6sl2+Phk8zlsTaHvFuWdd3EKW0gl
-	 2u8kmzBgwm8XAtlO8g0wKoIKyxhPOLJ2xcHwytRwIAMg/nbUvglsDGKJhyI0s4Q+VR
-	 fbYCp/Pr9ilpG3ygK1csebAdnJO9fb0wH98+1NpjldBVWAcLjEx6xlY6cOFh6zfzfy
-	 6WovrVJsD2kmg==
-From: Sasha Levin <sashal@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: stable@vger.kernel.org,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5.10.y] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
-Date: Wed, 26 Nov 2025 11:07:47 -0500
-Message-ID: <20251126160747.1404704-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251120194041.2365029-1-rppt@kernel.org>
-References: <20251120194041.2365029-1-rppt@kernel.org>
+	s=arc-20240116; t=1764176180; c=relaxed/simple;
+	bh=++ZtB/K1Mk/I0zej5vRfG6UaoC4ZKRQ/u7W0qsollWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R5gH9YWkX2KiVtkRE6Ruw2VkPbvLq7e48Y8wDFxV3iIzEMYvXaPvWyuQ8Cvn5hf4MNNjrhswRBWMSjRn6OigwYXPhOYnI3VRYvH/4IS6U8HcPiuC+hpessaDKC31RmuVNZlR/hNf2b/WkmAFNeCxu/nVohw42FW7Bs+hqsSEYzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5552F168F;
+	Wed, 26 Nov 2025 08:56:10 -0800 (PST)
+Received: from [10.57.42.217] (unknown [10.57.42.217])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9ED9A3F66E;
+	Wed, 26 Nov 2025 08:56:16 -0800 (PST)
+Message-ID: <af62a882-1b14-4491-a456-5fd3040d02d6@arm.com>
+Date: Wed, 26 Nov 2025 16:57:04 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 051/529] sched/pelt: Avoid underestimation of task
+ utilization
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+ Vincent Guittot <vincent.guittot@linaro.org>, Ingo Molnar
+ <mingo@kernel.org>, John Stultz <jstultz@google.com>
+References: <20251121130230.985163914@linuxfoundation.org>
+ <20251121130232.828187990@linuxfoundation.org>
+Content-Language: en-US
+From: Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <20251121130232.828187990@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This patch has been queued up for the 5.10 stable tree.
+Hi Greg,
 
-Subject: mm/mm_init: fix hash table order logging in alloc_large_system_hash()
-Queue: 5.10
+On 11/21/25 13:05, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks for the backport!
+No objections, just for history linking...
+
+
+> 
+> ------------------
+> 
+> From: Vincent Guittot <vincent.guittot@linaro.org>
+> 
+> commit 50181c0cff31281b9f1071575ffba8a102375ece upstream.
+> 
+> Lukasz Luba reported that a thread's util_est can significantly decrease as
+> a result of sharing the CPU with other threads.
+> 
+> The use case can be easily reproduced with a periodic task TA that runs 1ms
+> and sleeps 100us. When the task is alone on the CPU, its max utilization and
+> its util_est is around 888. If another similar task starts to run on the
+> same CPU, TA will have to share the CPU runtime and its maximum utilization
+> will decrease around half the CPU capacity (512) then TA's util_est will
+> follow this new maximum trend which is only the result of sharing the CPU
+> with others tasks.
+> 
+> Such situation can be detected with runnable_avg wich is close or
+> equal to util_avg when TA is alone, but increases above util_avg when TA
+> shares the CPU with other threads and wait on the runqueue.
+> 
+> [ We prefer an util_est that overestimate rather than under estimate
+>    because in 1st case we will not provide enough performance to the
+>    task which will remain under-provisioned, whereas in the other case we
+>    will create some idle time which will enable to reduce contention and
+>    as a result reduces the util_est so the overestimate will be transient
+>    whereas the underestimate will remain. ]
+> 
+> [ mingo: Refined the changelog, added comments from the LKML discussion. ]
+> 
+> Reported-by: Lukasz Luba <lukasz.luba@arm.com>
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Link: https://lore.kernel.org/lkml/CAKfTPtDd-HhF-YiNTtL9i5k0PfJbF819Yxu4YquzfXgwi7voyw@mail.gmail.com/#t
+> Link: https://lore.kernel.org/r/20231122140119.472110-1-vincent.guittot@linaro.org
+> Cc: Hongyan Xia <hongyan.xia2@arm.com>
+> Cc: John Stultz <jstultz@google.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   kernel/sched/fair.c |   13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4836,6 +4836,11 @@ static inline unsigned long task_util(st
+>   	return READ_ONCE(p->se.avg.util_avg);
+>   }
+>   
+> +static inline unsigned long task_runnable(struct task_struct *p)
+> +{
+> +	return READ_ONCE(p->se.avg.runnable_avg);
+> +}
+> +
+>   static inline unsigned long _task_util_est(struct task_struct *p)
+>   {
+>   	struct util_est ue = READ_ONCE(p->se.avg.util_est);
+> @@ -4955,6 +4960,14 @@ static inline void util_est_update(struc
+>   		return;
+>   
+>   	/*
+> +	 * To avoid underestimate of task utilization, skip updates of EWMA if
+> +	 * we cannot grant that thread got all CPU time it wanted.
+> +	 */
+> +	if ((ue.enqueued + UTIL_EST_MARGIN) < task_runnable(p))
+> +		goto done;
+> +
+> +
+> +	/*
+>   	 * Update Task's estimated utilization
+>   	 *
+>   	 * When *p completes an activation we can consolidate another sample
+> 
+> 
+
+
+I've pointed ChromeOS folks to this patch backport. They have tested
+the patch in their 6.6 kernel and posted the results (speedometer 2.1)
+- which are really good [1].
+
+I thought it would be worth to link this here as well.
+
+Regards,
+Lukasz
+
+[1] 
+https://lore.kernel.org/lkml/CAKchOA31NGBWMdeSjky7MwOjU=dYmHVLbE7uUQHUXSZOzUHUeA@mail.gmail.com/
 
