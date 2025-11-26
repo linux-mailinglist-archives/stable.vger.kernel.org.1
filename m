@@ -1,154 +1,146 @@
-Return-Path: <stable+bounces-197041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0286C8B172
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EEEC8B296
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 18:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D43F4358C91
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:56:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DDF34357C2B
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161E33F397;
-	Wed, 26 Nov 2025 16:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C8B219A81;
+	Wed, 26 Nov 2025 17:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wmoze9Mi"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564C333F398
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 16:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBF6158538
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 17:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764176180; cv=none; b=gA8+yJ4lbzM37xSwydhVS5xuFL5rjgMS/BiMwJVTDIqE7ANsZyfflUcl+6Gan/YPoZuHf9iQwWBZRStPYWvNzd7IQgGpUGpDQmoY2S6NJTWmVVMWqh1yzquAdalcYC0BUd1CFdPNYRV3PyyL/rQnYGueDOY8Mb5RsZSqryO0F78=
+	t=1764177336; cv=none; b=BkdqUEZdjrGpsP3w2TtGoa3UvHqiMOagQT2MeDiNNnU+qFE0icRWD6/gVomvlClm81TsLAe41LW7Ty9zqJbLyp6dLIJs6ND4OE882Wrz34SKvoJcxO/+8GZCILmpkAOiM9+dZFTL9NthBCXIM6MRPg0A8GiFycuv9cks+8tzOUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764176180; c=relaxed/simple;
-	bh=++ZtB/K1Mk/I0zej5vRfG6UaoC4ZKRQ/u7W0qsollWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R5gH9YWkX2KiVtkRE6Ruw2VkPbvLq7e48Y8wDFxV3iIzEMYvXaPvWyuQ8Cvn5hf4MNNjrhswRBWMSjRn6OigwYXPhOYnI3VRYvH/4IS6U8HcPiuC+hpessaDKC31RmuVNZlR/hNf2b/WkmAFNeCxu/nVohw42FW7Bs+hqsSEYzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5552F168F;
-	Wed, 26 Nov 2025 08:56:10 -0800 (PST)
-Received: from [10.57.42.217] (unknown [10.57.42.217])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9ED9A3F66E;
-	Wed, 26 Nov 2025 08:56:16 -0800 (PST)
-Message-ID: <af62a882-1b14-4491-a456-5fd3040d02d6@arm.com>
-Date: Wed, 26 Nov 2025 16:57:04 +0000
+	s=arc-20240116; t=1764177336; c=relaxed/simple;
+	bh=6SHs66WoWGtjQH3L9Iq2Mny6L7Qlns6ivX9++VOuwbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VtiBf2jMnO41Qs0PtuCFHB1aZemo9GwQ73qV8JClcXh+qOjCBt7qGOnqdKkycAU63ZpnUXx5iYVvTpdKapKgzgbExTCQqwCNuui72zze7YfOL6LSmQrj6db50AifucVLUIyD0YDl9OarSnixzVIfqFY1+CZmj0KavqAlUYiAg+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wmoze9Mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A469C2BCAF
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 17:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764177336;
+	bh=6SHs66WoWGtjQH3L9Iq2Mny6L7Qlns6ivX9++VOuwbI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Wmoze9Mi0Vnp7inKtGSe7+8xdZVkSjmcxN7co9xZwh1frBeWLcoh5QnNVTxibFa0M
+	 lmSweWooHBs2h653K8u18HiHm49MnWwsFed/45XvHsTjbpFJpKF4vxcNhSkrIs76vS
+	 Y8PeFB44mzZP99XC5OKoF4o669mWR3ZNBs8kSeBO6S0zUh0zydJmOaMq2ONh0yyZxO
+	 dhwj1VH9wSfmpGZwP2pFGiaBjr04Hnxe88vaz0w9ZAkDWWPd0JBmeriSBKj4ug+NRG
+	 6Et/GhlVIBSrfh+iavRmNd9e4/sdh6pUFGR7H7Mkz4FnHV6cJogtsbS1dHncHFhxeE
+	 xHxBIj5UDUbtQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37902f130e1so200721fa.1
+        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 09:15:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW2ldbQoODk4dAccTrhgcTTNc8IckVx1UcMAt7HyeA62Sfasbp06TmIbvoYyT7dBazQqFpKUU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBTCAIpsFD8IJVlk0O9/gP86ulNFte1/2ekxKgxYSOrUopiMR9
+	mSLBnDzavxdqqEjqZJXHRt2M/gZoa4lBa2tY6OfRXAxuZfr0h649TmnlJ/HzgLNv+IBKpRItoAl
+	R2NW9Sf8/2BttupCRmkVaTnSJgi8/MwU=
+X-Google-Smtp-Source: AGHT+IHrrmzPVAFgQsvrRntuuZ9ayKDwDD7s4AL9NeupFWgcsn821aySl20O7AgRZrwewB+5f3lrU1vBbbvI8Usz7N0=
+X-Received: by 2002:a2e:9654:0:b0:37b:9b58:dcf7 with SMTP id
+ 38308e7fff4ca-37cd9202938mr51693681fa.23.1764177334607; Wed, 26 Nov 2025
+ 09:15:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 051/529] sched/pelt: Avoid underestimation of task
- utilization
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
- Vincent Guittot <vincent.guittot@linaro.org>, Ingo Molnar
- <mingo@kernel.org>, John Stultz <jstultz@google.com>
-References: <20251121130230.985163914@linuxfoundation.org>
- <20251121130232.828187990@linuxfoundation.org>
-Content-Language: en-US
-From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <20251121130232.828187990@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <bf6a29cfa16e31e5c2fc2956a294dd8ed97ebd26.1764138361.git.quan.zhou@mediatek.com>
+In-Reply-To: <bf6a29cfa16e31e5c2fc2956a294dd8ed97ebd26.1764138361.git.quan.zhou@mediatek.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Wed, 26 Nov 2025 11:15:22 -0600
+X-Gmail-Original-Message-ID: <CAGp9LzqH+xoxF_9LxtQ5WFrqRLob7Xv=M2BmETbW0950OuJpXg@mail.gmail.com>
+X-Gm-Features: AWmQ_bmLzOYeG7nxvWUli-MEBvOI5aoCbnBKmP5FcgziO0TVq1L7Jx7AHGKwGu8
+Message-ID: <CAGp9LzqH+xoxF_9LxtQ5WFrqRLob7Xv=M2BmETbW0950OuJpXg@mail.gmail.com>
+Subject: Re: [patch] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
+To: Quan Zhou <quan.zhou@mediatek.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@mediatek.com>, 
+	Deren Wu <Deren.Wu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Leon Yen <Leon.Yen@mediatek.com>, 
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, 
+	KM Lin <km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, 
+	Shengxi Xu <shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, 
+	CH Yeh <ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, 
+	linux-wireless <linux-wireless@vger.kernel.org>, 
+	linux-mediatek <linux-mediatek@lists.infradead.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+Hi, Quan
 
-On 11/21/25 13:05, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
-
-No objections, just for history linking...
-
-
-> 
-> ------------------
-> 
-> From: Vincent Guittot <vincent.guittot@linaro.org>
-> 
-> commit 50181c0cff31281b9f1071575ffba8a102375ece upstream.
-> 
-> Lukasz Luba reported that a thread's util_est can significantly decrease as
-> a result of sharing the CPU with other threads.
-> 
-> The use case can be easily reproduced with a periodic task TA that runs 1ms
-> and sleeps 100us. When the task is alone on the CPU, its max utilization and
-> its util_est is around 888. If another similar task starts to run on the
-> same CPU, TA will have to share the CPU runtime and its maximum utilization
-> will decrease around half the CPU capacity (512) then TA's util_est will
-> follow this new maximum trend which is only the result of sharing the CPU
-> with others tasks.
-> 
-> Such situation can be detected with runnable_avg wich is close or
-> equal to util_avg when TA is alone, but increases above util_avg when TA
-> shares the CPU with other threads and wait on the runqueue.
-> 
-> [ We prefer an util_est that overestimate rather than under estimate
->    because in 1st case we will not provide enough performance to the
->    task which will remain under-provisioned, whereas in the other case we
->    will create some idle time which will enable to reduce contention and
->    as a result reduces the util_est so the overestimate will be transient
->    whereas the underestimate will remain. ]
-> 
-> [ mingo: Refined the changelog, added comments from the LKML discussion. ]
-> 
-> Reported-by: Lukasz Luba <lukasz.luba@arm.com>
-> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> Link: https://lore.kernel.org/lkml/CAKfTPtDd-HhF-YiNTtL9i5k0PfJbF819Yxu4YquzfXgwi7voyw@mail.gmail.com/#t
-> Link: https://lore.kernel.org/r/20231122140119.472110-1-vincent.guittot@linaro.org
-> Cc: Hongyan Xia <hongyan.xia2@arm.com>
-> Cc: John Stultz <jstultz@google.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Wed, Nov 26, 2025 at 1:04=E2=80=AFAM Quan Zhou <quan.zhou@mediatek.com> =
+wrote:
+>
+> Previously, the AMPDU state bit for a given TID was set before attempting
+> to start a BA session, which could result in the AMPDU state being marked
+> active even if ieee80211_start_tx_ba_session() failed. This patch changes
+> the logic to only set the AMPDU state bit after successfully starting a B=
+A
+> session, ensuring proper synchronization between AMPDU state and BA sessi=
+on
+> status.
+>
+> This fixes potential issues with aggregation state tracking and improves
+> compatibility with mac80211 BA session management.
+>
+> Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txw=
+i_free")
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
 > ---
->   kernel/sched/fair.c |   13 +++++++++++++
->   1 file changed, 13 insertions(+)
-> 
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -4836,6 +4836,11 @@ static inline unsigned long task_util(st
->   	return READ_ONCE(p->se.avg.util_avg);
->   }
->   
-> +static inline unsigned long task_runnable(struct task_struct *p)
-> +{
-> +	return READ_ONCE(p->se.avg.runnable_avg);
-> +}
-> +
->   static inline unsigned long _task_util_est(struct task_struct *p)
->   {
->   	struct util_est ue = READ_ONCE(p->se.avg.util_est);
-> @@ -4955,6 +4960,14 @@ static inline void util_est_update(struc
->   		return;
->   
->   	/*
-> +	 * To avoid underestimate of task utilization, skip updates of EWMA if
-> +	 * we cannot grant that thread got all CPU time it wanted.
-> +	 */
-> +	if ((ue.enqueued + UTIL_EST_MARGIN) < task_runnable(p))
-> +		goto done;
-> +
-> +
-> +	/*
->   	 * Update Task's estimated utilization
->   	 *
->   	 * When *p completes an activation we can consolidate another sample
-> 
-> 
+>  drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/mac.c
+> index 871b67101976..80f1d738ec22 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> @@ -881,8 +881,9 @@ static void mt7925_tx_check_aggr(struct ieee80211_sta=
+ *sta, struct sk_buff *skb,
+>         else
+>                 mlink =3D &msta->deflink;
+>
+> -       if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
+> -               ieee80211_start_tx_ba_session(sta, tid, 0);
+> +       if (!test_bit(tid, &mlink->wcid.ampdu_state) &&
+> +           !ieee80211_start_tx_ba_session(sta, tid, 0))
+> +               set_bit(tid, &mlink->wcid.ampdu_state);
+>  }
 
+It is a nice catch. The change works today but switching from
+test_and_set_bit() to a separate test_bit() + set_bit() weakens the
+atomicity that this state transition was originally designed to have.
+It might not break right now, but it creates a subtle trap. Future
+code may assume the transition is atomic and accidentally reenter BA
+start path which can lead to hard to debug regression.
+To keep the logic solid and aligned with the current design, the safer
+approach is to use atomic acquire with a rollback.
 
-I've pointed ChromeOS folks to this patch backport. They have tested
-the patch in their 6.6 kernel and posted the results (speedometer 2.1)
-- which are really good [1].
+if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
+    if (ieee80211_start_tx_ba_session(sta, tid, 0))
+        clear_bit(tid, &mlink->wcid.ampdu_state);
+}
 
-I thought it would be worth to link this here as well.
+This keeps semantics clear and avoids future maintenance landmines.
 
-Regards,
-Lukasz
-
-[1] 
-https://lore.kernel.org/lkml/CAKchOA31NGBWMdeSjky7MwOjU=dYmHVLbE7uUQHUXSZOzUHUeA@mail.gmail.com/
+>
+>  static bool
+> --
+> 2.45.2
+>
+>
 
