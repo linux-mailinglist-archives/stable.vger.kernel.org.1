@@ -1,142 +1,272 @@
-Return-Path: <stable+bounces-196982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E6CC8916C
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 10:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A691DC891AE
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 10:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 39A25356674
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 09:49:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 27FBE356C43
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 09:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B88320CCB;
-	Wed, 26 Nov 2025 09:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9023009F1;
+	Wed, 26 Nov 2025 09:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="LCChGlIo"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dqfXcoAj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PIQVr1YZ"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A263090C6;
-	Wed, 26 Nov 2025 09:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462ED2FFDF3
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 09:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764150403; cv=none; b=hxgaWZGKw3imXznNSBBhxKnE/tE4iVZCpyotGO2U/TmjcrenBs5CqmK9I3yEqHuqOLPkETTxyCnlv5FPurR4l7vIDhiDUyiCJAGBylryQ49qnFkFQWlvEjTcg/2IU3S0qgVTkgF2MCPNSESNW5eJlG473I5AxaO8vZcureQ5W9A=
+	t=1764150549; cv=none; b=UMMFQBOuOMHPe/HhsQfqU/kQE1rOKdDHkCAaPdEUCZ3JKUkW2R8ep23/tGQ7slNtRSF2RGFvGYby4lrRqTeShAWFGFsocLMHKn4CEDn8fNDM6ipFo0UUY9PuldgC/l++IDNBpSI/VFU0TodV/tZccZuo7cGjP9JagFxm/BiCbpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764150403; c=relaxed/simple;
-	bh=AfDBkPaSHEH12W0txSPu3aX4L9071oFXlQtzgNtVWQE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NlcVi9bsfhdpzU1oRJwchpaL8u5lXHCEt2qOFa8sZQiAhbcIQzkm+9Uvl47QAlLP1nN5VntFNhHQtxLBKRUL6zXxzsu/KTM/dfrFIB7Zaos/La+lqBSsWtnxluZUswH1ZkDilryzK5feAw2jbw6pcLMFQt9XRq8F2yNggvFq1qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=LCChGlIo; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=kX18TokZJrRxzuxjDzOD7jkR62kfpAqVIr+hp9PYCqU=; t=1764150400;
-	x=1764755200; b=LCChGlIokez1125S1qRl5f/gDC6NKvnh84wv7gm0onfv9mKftyBilrprjiDzJ
-	Q7yC0L5cGUQu9aRCGBYFXJVhSZ4ICijWmrIkeYnoFbIDO7IgSrlZXvR8ejOxrfsPp7xyNy7+kasZ1
-	LdZaswV1Hh71jU1cpzrwkVtknnkwi1ZnF8YFD+crtUnKngF2vX20erJ++osxKrnrIaACTrsdDHbPw
-	9+IfIaMqNzjtF2L+nO7BGVgcpduXUUyobOWo4wLbBr4HUWxFzP5j/Urn80aO6SvcpaopBrMulpeaO
-	ugb6/licB78BSIdzNxEe9UFOHd48MLGmmT0isJShHZkc/CooKQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.99)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1vOC6g-00000003j2F-1Bur; Wed, 26 Nov 2025 10:46:38 +0100
-Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.99)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1vOC6g-00000001zCX-0BlY; Wed, 26 Nov 2025 10:46:38 +0100
-Message-ID: <f60b787529422eb2b3655b92aa8a7377b838baf4.camel@physik.fu-berlin.de>
-Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-rtc@vger.kernel.org
-Cc: Esben Haabendal <esben@geanix.com>, stable@vger.kernel.org, 
-	sparclinux@vger.kernel.org, regressions <regressions@lists.linux.dev>
-Date: Wed, 26 Nov 2025 10:46:37 +0100
-In-Reply-To: <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
-References: 
-	<krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
-	 <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	s=arc-20240116; t=1764150549; c=relaxed/simple;
+	bh=RrWGzLsOVYWtMHzZYByIJfPoEG0XlyOMqIT4XJQf9k8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UbfQFHbZ2I9tTaG3yIG3meqcE13sGL3kIhz8lEb3NVZwuf3pJYKxnoBjtZJ3Ub1dbtIbmb0LJUu8X7sp0A2COI9KqGiNQE9DY8EOSVaPwrBK7AHd9F86tZhPwDCgb478tBoZA9CMrBhAhpIcU1ciFTXxc1xT1h70W3X01kPhFKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dqfXcoAj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PIQVr1YZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQ6vAWl1458075
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 09:49:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AtsXINd6xpjA/rQCk1uW0V0mzBllHaDtYhio+xIIvfI=; b=dqfXcoAjRQWE+/AY
+	N+nyzYTyXp9JVN9vpsTXDFHgrN8BFnWHBJ6fLXrikHV06/kisL/O1Tg9LVCsbUTQ
+	7zjo9mcI0rh4MrEWWmNHzwN9bBDUmhVpAlV4Qo2sfbzcRNptSBjUCDutAdQYNgsZ
+	3mgB3BL7AZktGceDA7tUpOTC6R+VZPHbt6A8lo+V4ttXryRuJgwI+AGOMx0a2S5O
+	ElgaDtMrJuJ9n9y/pzz7AYkAns32KF7iIDh1RB+WWAvkA8jT5bknOspIW/hd0gPX
+	4Wjg4dcnJQmDbUlQxWZ5Zwz+uQjeRY95Vzr8GmItjAwgC78CDDSYBl7/VeuUeLba
+	o7A/BA==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4anvqvggtq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 09:49:06 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2954d676f9dso45765215ad.0
+        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:49:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764150545; x=1764755345; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AtsXINd6xpjA/rQCk1uW0V0mzBllHaDtYhio+xIIvfI=;
+        b=PIQVr1YZCKfsJnweTNuO0+ERL7Aoqcs28XHmdTnDFRAMy9+ESDuQgokrJFD3hpZOFJ
+         KZyZWznoVu4gL50t1zwY4PV0IsY+w+6zzjDdMboSuHbUHKcr6+EV2vXWMMizLjE/15t2
+         ckOqw2ws7yf0dquRdoHyRQlFENp5+RkhwvzuCmrrasLG+9SewPh3ha/tMvBFtyc0o68V
+         cq0d2uckvZLMVYzEb1jy/0AWZJ9t/Fm5/V4T57dOyTY/CgTHhD8cl3+tqzCe1bJIPhnk
+         k0WIZXzmoPVcv/WigXxO8NxiAvibWVot/yW6xddoNwUxNcQldsCYkcYWbwmaqfPG8RyJ
+         Vs5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764150545; x=1764755345;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AtsXINd6xpjA/rQCk1uW0V0mzBllHaDtYhio+xIIvfI=;
+        b=YxyBA6M7aPKxG07fSZ1gpc0++m/cvYi20ZMxTAo8WDQIKcz3pfAitUeAOxUbKFQh1t
+         HDMxs1zbMWQpgbITBXsWHrAeOX/Cp7H60o7CksbiTF6uhd+gpdFQyJ+mTIAnvE86GCnB
+         wIm8lVqZJ7672N7aI7EfJW1L9YUM/m293cfYM7ZAQJaiCrj+ZPdXSfTip+QeFZupzdUh
+         CEFDTtdxdzaxOmnRPRQCp0RmxnjKTUHe7JB+c0mA2Kpp4sR3D9EhCGSs2TSTP1BcRd2J
+         8h4KhMhcb93ygWf+CVCvD5STlqZY1WXKlw/k9YflN5COsSo/q5rp/H/XAXNPDKd3XXvO
+         jcDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsAH2SVfVzPXUT18SpjFeLJQziLXEtzwxnAVxI7erZ1W1DXwQW7POO+1gJRRf7E12KhuFgx4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAlr56cZCi8hTaqoyr89P05Mg1iH84AUXICbfINqdNcGqghGVc
+	dn7OZgj9bvpHDEH8JHdonTFAMp8pzYn0Gqaa53K16xk94Y0jFgN3yeNwIIvOj66zMRZg9nTXF8m
+	g2KGNcFs6gOw5uT9OG36PjKs84MKwJic/VkMX/FIdN781Okh1AtLptHTHnaI=
+X-Gm-Gg: ASbGnct3aOC0xzuhfGYK2iodnmUuRYZuSDwE2cn00ne5x0m05q3T+TjZE6srvtlH3zu
+	OMkpiqs0XhPBnDeU9K2qxi3yLYsz6wOO+6PfKG3v+Wy4u5ht/NkMmqnPviZfJkg6wC3ncob7XbW
+	io7F0glj54U/ANcQ3lK9IMNyESednJCyA30dAOpJc8rQ/Bq5UrJw9QBOtrIGOWUZUjh6SDBlDc6
+	aGcJKDbTr/uEjK7roPDqXneig1H0dKqKt/WwyQrND7z20xpWW4rwzHwCPv0AOqQsnRKOnYhjmwz
+	86VB4MLdgRg1Df2r+J7zdSJ2hgJfwhc6zcg8BFPUqyu1yoW9Bxmm21k9NYAma8tFdOFlBZUCr8B
+	UUugybvAslHM4MSJdqYbzRrkVafIIs6N7n8tTtAGkVA==
+X-Received: by 2002:a17:902:ef50:b0:298:34b:492c with SMTP id d9443c01a7336-29bab2de50amr68568675ad.54.1764150544995;
+        Wed, 26 Nov 2025 01:49:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECJaA6tw1taMhFN8p4Mm8c/a1cFBpcKMpzmn0A6w/0YsEfsk2WgZNXfYdsHaohN5Z2GVSXlg==
+X-Received: by 2002:a17:902:ef50:b0:298:34b:492c with SMTP id d9443c01a7336-29bab2de50amr68568375ad.54.1764150544473;
+        Wed, 26 Nov 2025 01:49:04 -0800 (PST)
+Received: from [10.0.0.3] ([106.222.230.111])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b1075c6sm193071335ad.17.2025.11.26.01.49.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 01:49:04 -0800 (PST)
+Message-ID: <74bcf345-06e5-413a-d8cf-d87ba769e886@oss.qualcomm.com>
+Date: Wed, 26 Nov 2025 15:18:59 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] media: venus: vdec: restrict EOS addr quirk to IRIS2
+ only
+Content-Language: en-US
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Mauro Carvalho Chehab
+ <mchehab@kernel.org>,
+        Viswanath Boma <quic_vboma@quicinc.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Mecid <mecid@mecomediagroup.de>,
+        Renjiang Han <renjiang.han@oss.qualcomm.com>
+References: <20251125-venus-vp9-fix-v2-1-8bfcea128b95@oss.qualcomm.com>
+ <wq7kaelokxqxkxxi5cvp7sz2az5hlam4nyyt4v55zrgei3jsyo@yyefysdsw3co>
+ <e2b33a10-819d-df49-0687-74f6db4c5a05@oss.qualcomm.com>
+ <CAO9ioeVKDjKMh3su2XVwXPxjfZNbVSan73d099C6_vkCqjkJmA@mail.gmail.com>
+From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+In-Reply-To: <CAO9ioeVKDjKMh3su2XVwXPxjfZNbVSan73d099C6_vkCqjkJmA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDA3OSBTYWx0ZWRfX4ZM4do/bwvjX
+ 1k7zZkwy7Lukc5JVztwiBcPqhv3wW9xxKMI3E64qylC684uRdU6wo0YqhXNKb9LCNgQVt5ixLkU
+ VqglppjRdUyV4csK8z/lTLd+lfP3pwwbheyDfZvUyMnYrl78eiUqVQZWdLe9btcAwqDR2mzY1lD
+ kJaz4cVaOzr0RcY+GZD3tKjwJvYliDjAc5aJPoRGgxU9/iIM6nzPhmxWnLoylrNNzXRMMEGFTgV
+ UJfM5JOg32yuqk7guzq0cCmIXjweqvvvUZyzI4Q7z2eyaKfAz0EQgh9M9ETi16jiclfyivJwiGz
+ gYWSTPjXdRox16vaQVab3wS/0Hvxgg7IDSMUPQ2cftB+APVmyc/3mBSYURDdbwTR755RuOmCzCe
+ GaZJzio0fmo9V5j2I6ZpD0wdB74ZDg==
+X-Proofpoint-GUID: OrMEHlU57wbDSg86cPwP-riCu6H8aHQJ
+X-Proofpoint-ORIG-GUID: OrMEHlU57wbDSg86cPwP-riCu6H8aHQJ
+X-Authority-Analysis: v=2.4 cv=feugCkQF c=1 sm=1 tr=0 ts=6926cd12 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=12FOtvgV4D2gsqRYbU+y8g==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=aT5F4DDHPNheKAiJ_O8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015
+ impostorscore=0 lowpriorityscore=0 phishscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511260079
 
-Hi Nick,
 
-I have not used the regression tracker before, so let's give it a try:
 
-#regzbot ^introduced: 795cda8338eab036013314dbc0b04aae728880ab
+On 11/26/2025 2:13 PM, Dmitry Baryshkov wrote:
+> On Wed, 26 Nov 2025 at 08:02, Dikshita Agarwal
+> <dikshita.agarwal@oss.qualcomm.com> wrote:
+>>
+>>
+>>
+>> On 11/26/2025 6:43 AM, Dmitry Baryshkov wrote:
+>>> On Tue, Nov 25, 2025 at 11:04:19AM +0530, Dikshita Agarwal wrote:
+>>>> On SM8250 (IRIS2) with firmware older than 1.0.087, the firmware could
+>>>
+>>> Hmm, interesting. In linux-firmware we have VIDEO.IR.1.0-00005-PROD-4
+>>> for SM8250 firmware. This version wouldn't be parsed at all for SM8250
+>>> (nor does it follow the format string). Why? Would you please fix
+>>> version parsing for this firmware?
+>>
+>> Right, Seems this firmware doesn't have the proper version string, I will
+>> upload a new binary with proper version string soon.
+> 
+> That's fine, but also we need to fix the driver to correctly work with
+> the firmware we currently have in linux-firmware.
+> 
 
-Adrian
+The current firmware with version string VIDEO.IR.1.0-00005-PROD-4 works
+correctly with this logic. Since VIDEO.IR.1.0-00005 is not a valid version,
+it is parsed as 0.0.0, so the condition is not met—which is expected for
+this firmware, as it supports EOS using a dummy address.
 
-On Tue, 2025-11-25 at 22:18 -0500, Nick Bowler wrote:
-> Any thoughts?
->=20
-> The problem is still present in 6.18-rc7 and reverting the commit
-> indicated below still fixes it.
->=20
-> I am also seeing the same failure on a totally different system with
-> Dallas DS1286 RTC, which is also fixed by reverting this commit.
->=20
-> Since the initial report this regression has been further backported
-> to all the remaining longterm kernel series.
->=20
-> Thanks,
->   Nick
->=20
-> On Thu, Oct 23, 2025 at 12:45:13AM -0400, Nick Bowler wrote:
-> > Hi,
-> >=20
-> > After a stable kernel update, the hwclock command seems no longer
-> > functional on my SPARC system with an ST M48T59Y-70PC1 RTC:
-> >=20
-> >   # hwclock
-> >   [...long delay...]
-> >   hwclock: select() to /dev/rtc0 to wait for clock tick timed out
-> >=20
-> > On prior kernels, there is no problem:
-> >=20
-> >   # hwclock
-> >   2025-10-22 22:21:04.806992-04:00
-> >=20
-> > I reproduced the same failure on 6.18-rc2 and bisected to this commit:
-> >=20
-> >   commit 795cda8338eab036013314dbc0b04aae728880ab
-> >   Author: Esben Haabendal <esben@geanix.com>
-> >   Date:   Fri May 16 09:23:35 2025 +0200
-> >  =20
-> >       rtc: interface: Fix long-standing race when setting alarm
-> >=20
-> > This commit was backported to all current 6.x stable branches,
-> > as well as 5.15.x, so they all have the same regression.
-> >=20
-> > Reverting this commit on top of 6.18-rc2 corrects the problem.
-> >=20
-> > Let me know if you need any more info!
-> >=20
-> > Thanks,
-> >   Nick
+>>
+>>>
+>>>> not handle a dummy device address for EOS buffers, so a NULL device
+>>>> address is sent instead. The existing check used IS_V6() alongside a
+>>>> firmware version gate:
+>>>>
+>>>>     if (IS_V6(core) && is_fw_rev_or_older(core, 1, 0, 87))
+>>>>         fdata.device_addr = 0;
+>>>>     else
+>>>>      fdata.device_addr = 0xdeadb000;
+>>>>
+>>>> However, SC7280 which is also V6, uses a firmware string of the form
+>>>> "1.0.<commit-hash>", which the version parser translates to 1.0.0. This
+>>>
+>>> I still think that using commit-hash is a mistake. It doesn't allow any
+>>> version checks.
+>>
+>> Agree, we had this discussion with firmware team sometime back and for all
+>> latest firmware they are having rel version in the firmware binary, but
+>> SC7280 firmware binary would still have commit hash in version string.
+> 
+> What prevents us from updating SC7280 firmware to also include :rel-NNN part?
+> 
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+We are working with firmware team on this, future firmware releases for
+SC7280 would have video.firmware.1.0-<rel_version_number>
+
+Thanks,
+Dikshita
+>>
+>> Thanks,
+>> Dikshita
+>>>
+>>>> unintentionally satisfies the `is_fw_rev_or_older(..., 1, 0, 87)`
+>>>> condition on SC7280. Combined with IS_V6() matching there as well, the
+>>>> quirk is incorrectly applied to SC7280, causing VP9 decode failures.
+>>>>
+>>>> Constrain the check to IRIS2 (SM8250) only, which is the only platform
+>>>> that needed this quirk, by replacing IS_V6() with IS_IRIS2(). This
+>>>> restores correct behavior on SC7280 (no forced NULL EOS buffer address).
+>>>>
+>>>> Fixes: 47f867cb1b63 ("media: venus: fix EOS handling in decoder stop command")
+>>>> Cc: stable@vger.kernel.org
+>>>> Reported-by: Mecid <mecid@mecomediagroup.de>
+>>>> Closes: https://github.com/qualcomm-linux/kernel-topics/issues/222
+>>>> Co-developed-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+>>>> Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+>>>> Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+>>>> ---
+>>>> Changes in v2:
+>>>> - Fixed email address for Mecid (Konrad)
+>>>> - Added inline comment for the quirk (Konrad)
+>>>> - Link to v1: https://lore.kernel.org/r/20251124-venus-vp9-fix-v1-1-2ff36d9f2374@oss.qualcomm.com
+>>>> ---
+>>>>  drivers/media/platform/qcom/venus/vdec.c | 8 +++++++-
+>>>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+>>>> index 4a6641fdffcf79705893be58c7ec5cf485e2fab9..6b3d5e59133e6902353d15c24c8bbaed4fcb6808 100644
+>>>> --- a/drivers/media/platform/qcom/venus/vdec.c
+>>>> +++ b/drivers/media/platform/qcom/venus/vdec.c
+>>>> @@ -565,7 +565,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
+>>>>
+>>>>              fdata.buffer_type = HFI_BUFFER_INPUT;
+>>>>              fdata.flags |= HFI_BUFFERFLAG_EOS;
+>>>> -            if (IS_V6(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
+>>>> +
+>>>> +            /* Send NULL EOS addr for only IRIS2 (SM8250),for firmware <= 1.0.87.
+>>>> +             * SC7280 also reports "1.0.<hash>" parsed as 1.0.0; restricting to IRIS2
+>>>> +             * avoids misapplying this quirk and breaking VP9 decode on SC7280.
+>>>> +             */
+>>>> +
+>>>> +            if (IS_IRIS2(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
+>>>>                      fdata.device_addr = 0;
+>>>>              else
+>>>>                      fdata.device_addr = 0xdeadb000;
+>>>>
+>>>> ---
+>>>> base-commit: 1f2353f5a1af995efbf7bea44341aa0d03460b28
+>>>> change-id: 20251121-venus-vp9-fix-1ff602724c02
+>>>>
+>>>> Best regards,
+>>>> --
+>>>> Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+>>>>
+>>>
+> 
+> 
+> 
 
