@@ -1,74 +1,114 @@
-Return-Path: <stable+bounces-196939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5760FC87A5F
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 02:10:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A02C87A8F
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 02:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D3847354BED
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 01:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A743B5541
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 01:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651592F49EC;
-	Wed, 26 Nov 2025 01:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF202F7444;
+	Wed, 26 Nov 2025 01:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cye+Hj+p"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NWo5DtQc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JbkifzY8"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F964207A
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CD32F6900
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764119423; cv=none; b=TYhQ1o6QBQDzXMp5ax+S0VxlPpUF0PUsfraUl9Vw74RPg6qomWlmUnGI+4DGhsANDvnRPezt90+0sI5bS9MfldeLIxBPTVkcrYoF2MAb42lPeqc4fslpKv6FDQhDMfCwfi/YoJFhHDEQ/WMEIMh3+hyCX8H1pBIHZ7B19nJS+Qs=
+	t=1764119590; cv=none; b=u+xJIji8UCaJyRBQHC/XuNjT52gH4ioBuItX+IyQIlyQktZiWqETd5e3Xg1Bt5NiSWPIwCVMFeGUJTnK5yNpBPNtHVXbQc//ZjPk6G2MLnzDKxfKQwXHF6OdC8y7ADVfJ2CcBKi+1jtnce7gUzNb9vih06gmOghAzSpsFD1Gy/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764119423; c=relaxed/simple;
-	bh=FwjrWVynhszeLkVKUdubxFuKiUAe9KnIxlpLh3tDKz4=;
+	s=arc-20240116; t=1764119590; c=relaxed/simple;
+	bh=PEUucwAbtlApOMeePyYfxIc/Dt2KhDGIy/f0I9xYmH4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=quCK378xrugxPuNkVZ88IauLX8YxWRjymEhqDoJwCQBJvZM5Qg8dTJbhQcd/ATOZYd72pOiELoArqqRFhyKpZVcUwCkou7MRYA0OELM6KBTYZIYOaMRqH2qPAZunbFMx0dGp5ZvlxP6UtBR25scAh5syrNeFS3ZoBnv9/nT8bVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cye+Hj+p; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764119419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hzm+eeZzgcsnE/gOv9L6JXds1Q2jTmEOBNLbU4qmTbs=;
-	b=cye+Hj+p14lDDN1HHPEdRB2pjj549ZPyAJiCNALAovIx+dC8VqbxCRjpSBpNVNDk59jk85
-	TKU6pb5KSVwUabNv8RtzqvZPiQkASPruDZx3NmmSJy8L0opNZZ1haEG2froFrfpGegd2O+
-	u5Vvyu6Oj08r9o4e4ZGXGtpJAefqF0o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392--QAGDOG-O1-2_cLe1tj78g-1; Tue,
- 25 Nov 2025 20:10:16 -0500
-X-MC-Unique: -QAGDOG-O1-2_cLe1tj78g-1
-X-Mimecast-MFC-AGG-ID: -QAGDOG-O1-2_cLe1tj78g_1764119414
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0EC5B19560B5;
-	Wed, 26 Nov 2025 01:10:14 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.35])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C4F1419560A2;
-	Wed, 26 Nov 2025 01:10:11 +0000 (UTC)
-Date: Wed, 26 Nov 2025 09:10:07 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Pingfan Liu <piliu@redhat.com>
-Cc: kexec@lists.infradead.org, linux-integrity@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Alexander Graf <graf@amazon.com>,
-	Steven Chen <chenste@linux.microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCHv2 1/2] kernel/kexec: Change the prototype of
- kimage_map_segment()
-Message-ID: <aSZTb1X26MjSZIzF@MiWiFi-R3L-srv>
-References: <20251106065904.10772-1-piliu@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HMazHwOftSHLGJwOC+TqySxW7FZ8vMkVfUvTDvh6j9MptToa9u2ojnBEPIdzG2xG58pEeXeaz8Z3HooKRRStUoeVJsPINypGr2BOrfTRMfFu+exGO7RizYDhGAgQ+4YlHY8md8+aPd1FyIBSsuppd8U7gTqzXoReMoXQoaj8wJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NWo5DtQc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JbkifzY8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5APJEI2s2651096
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=prAN8wjJmgsa83ldd4vAxryi
+	3yPKicYjvD8xCOJLEzg=; b=NWo5DtQcvf7jO/FQtnOTMwq1jTDPhycXUpYE5Tlv
+	0gdbj1+yxUtKpSYJNicZ0WS5aL0HEzX5Ic3m1zWvbYBIlCr8YXWyP0z63r3NdFuY
+	3FQE5ex6fCzCmcWmrjA3iZ0oOoHV1biCiCCwvK33eAVoTqCmutOARKil0ARFrmCK
+	MQ27lByvJmYbFjGwcCoaMRnVnJT7P4BTx9sxaaLNtcyB5fIVxHPKW6HUMYsE3780
+	e73K1oMeg5c6aJfRcwN+Vl1k6b5Xa2UbVj5dyuRQFM+rZBAZDgK96lDaIDlgfMUq
+	UePNyaH5gHEhoT9TlkZv2GA62k3UjnAA90frDk6Kpf9kXg==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4anaabtb5s-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b2e41884a0so1648813585a.1
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 17:13:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764119587; x=1764724387; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=prAN8wjJmgsa83ldd4vAxryi3yPKicYjvD8xCOJLEzg=;
+        b=JbkifzY8Gh58lzq2CMgRtZgw/FL58/NtmDqtamfyF6sLbDLswka+AHF+h9HxFj5CNl
+         SxdXtQ8cvTSQ6l/L+1TIsblp9GO7/nb+feW4wmLjrnxPGG3GPGfAnI+qORLOYmOfmGi5
+         gxrNXS7hWj425F0qlFHNTtwPXpFIwl4hYYm5M9azH19pN1qFYwR5AK2G2eLNH0qwQZoP
+         B+7qnIrjWPqyOiqSYgJssbozhW4opdxqhamf1MkhirT8o4KYnurFTUVKK6vzjMYlxgQ/
+         dNvhT9lc835rHRaqZvzb/qRH428ZXklR0U5fC3OXdB/NvgrWYVPhpbxO+Xxn7vlku6Ka
+         yBlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764119587; x=1764724387;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=prAN8wjJmgsa83ldd4vAxryi3yPKicYjvD8xCOJLEzg=;
+        b=N03/zUXiV/0i0GSUJtFLVjQOr27TU9f9qLwjhyvPD9CbUpvS57mWT2hqK9XrV6JNKi
+         pw0rXCyIuJaBxKdmGVR2ktQx6+vLooHV0Fzn76sgoIPxFf/Yxx0UZ+nYxrX/0pSHdqE5
+         JhtzWnaIhKFovk87NJ4ddYYJjdtnIYZaJ2QIliuASONoYA9+1bx3eR0i2LKR5hIqyfKi
+         tBU2Y/y3e5nlz0RoTkvohRYindqXs++Bmf6CZD5HIkVsdm+jbZ25fstZfD829BOGz9WI
+         zqFTiROy+NNqxpA9miUcIMbd92dEcJsViZ+/Q5iFFdp0KDwggACRV+lg9fy5MGmE37gz
+         s4cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXR8fRDT5+AjNKNIjHRPnoUiSeuI4Y1KoaIGP37GfPuZNlRkMGeF0hDC9ziiJC5h/QO/PHFXco=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRhZ9/MkUMfGuY5H/5Yl5fYFKWO1OZYOhn10UaN/7I3qMgocY1
+	vd2L9OyNqV+Q/t7p6Xva+FthkBFk5VCzV05C/FfjdHgsYesZ7sua5WfMQ1SU1PY8x0m1pORb+4Q
+	Yd1FVr8zfoojaOa8N0Ooht2BkpO38M2qtceaGnj5dJoBkKWWbCKg9/J2uve4=
+X-Gm-Gg: ASbGncukLdZA3P4ZflwiZHGyY9ATTG4ko+f3zR3donhoZcMcK1qIClRR+3b7nWF75Wp
+	kdn1SR0U16Zp6mzcAZmGXNWsRrQVVTG9PectTlMp3UbxOgDZIy2JP1Ot5Y4IWDP3KXMy1kI79SQ
+	VAtciufzg2GIPKg5zDvHrVWw3eqCan3dJ7bDPf5l7VUO7wpiLw+YlusTCUiAatgc+PO4WbziFlh
+	RR9zT1nis5R9+82ZTL2VWmWv2Ak8dyGhaQtQAZ4q5u0lbe/F4SdjWW+zu/5fdFDCXpT4tEtEgEl
+	rxuFWyPIXQ59opS4FEPmgPRceh2rlvQVDawdaZhAJsjSEzjlo5PUYfPZ6KobDSFXvhHEV0NLNRR
+	IxYPQsE/cReZF8D0kfMH72Yp1/WgpbGodq3KZayUBFERvN2efJn0lINZrLSY1yWaJOpFp/XQ2Us
+	DtGB7+rZBP4G2EQBQeNzxpOSc=
+X-Received: by 2002:a05:620a:4623:b0:8b1:ed55:e4f0 with SMTP id af79cd13be357-8b33d22542cmr2493019485a.39.1764119586897;
+        Tue, 25 Nov 2025 17:13:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH5UefQ4KVrSMEfqb4noheVestKPUsxTe5Q2DhkKkqIPcQCwSpdkGN4gJQlMEtZr17XVFC8Uw==
+X-Received: by 2002:a05:620a:4623:b0:8b1:ed55:e4f0 with SMTP id af79cd13be357-8b33d22542cmr2493016785a.39.1764119586436;
+        Tue, 25 Nov 2025 17:13:06 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbc597bsm5580314e87.69.2025.11.25.17.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 17:13:04 -0800 (PST)
+Date: Wed, 26 Nov 2025 03:13:00 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Viswanath Boma <quic_vboma@quicinc.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Mecid <mecid@mecomediagroup.de>,
+        Renjiang Han <renjiang.han@oss.qualcomm.com>
+Subject: Re: [PATCH v2] media: venus: vdec: restrict EOS addr quirk to IRIS2
+ only
+Message-ID: <wq7kaelokxqxkxxi5cvp7sz2az5hlam4nyyt4v55zrgei3jsyo@yyefysdsw3co>
+References: <20251125-venus-vp9-fix-v2-1-8bfcea128b95@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,205 +117,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106065904.10772-1-piliu@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <20251125-venus-vp9-fix-v2-1-8bfcea128b95@oss.qualcomm.com>
+X-Authority-Analysis: v=2.4 cv=Vd36/Vp9 c=1 sm=1 tr=0 ts=69265424 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vnrCTU9D9aip1Mwo_JEA:9
+ a=CjuIK1q_8ugA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: Zl353euI1yU45RNYtD0Rfb4irxpBFyyw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDAwNyBTYWx0ZWRfXyRUx4IXOOQMt
+ GqzYfE1ZlUR/Ski50VAPHxz9IOWPoiZ90O8RlrtRw4wgzYSgRQKSYaIzoF3NrymItIOpljuKM7H
+ YsRGvyGyglk3Mvq+iYHlPxIJDU1lkFiW967MOP6HUseHYVqh2oBJWfZbtG1/Ikj/7V9y7x7y5NJ
+ Z249Su3ttuMnkqXDMCdbl3ZAwTfJQUemWMnRGNEQhI8S3K/YZ29cNFFbX+a8RgY0OP2qWsxZgy6
+ SenTviPHH9hAtTVWYkzp4iBbcm6s7h89Z+pS0pCcR2uvnxNizYPiVszigrdjpZXssU4mLoxf0sj
+ 25xKiVHNETZUiTm9p5aSEHNXj7/EBVcFXYfOjJ3LrG2WIReHsZ0fRyxG1n2nzx7OfwIu4YMN7qj
+ gHucz7MW/R6Gh4Mv9unnnZn39Q2ijg==
+X-Proofpoint-GUID: Zl353euI1yU45RNYtD0Rfb4irxpBFyyw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 adultscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511260007
 
-Hi Pingfan,
+On Tue, Nov 25, 2025 at 11:04:19AM +0530, Dikshita Agarwal wrote:
+> On SM8250 (IRIS2) with firmware older than 1.0.087, the firmware could
 
-On 11/06/25 at 02:59pm, Pingfan Liu wrote:
-> The kexec segment index will be required to extract the corresponding
-> information for that segment in kimage_map_segment(). Additionally,
-> kexec_segment already holds the kexec relocation destination address and
-> size. Therefore, the prototype of kimage_map_segment() can be changed.
+Hmm, interesting. In linux-firmware we have VIDEO.IR.1.0-00005-PROD-4
+for SM8250 firmware. This version wouldn't be parsed at all for SM8250
+(nor does it follow the format string). Why? Would you please fix
+version parsing for this firmware?
 
-Because no cover letter, I just reply here.
-
-I am testing code of (tag: next-20251125, next/master) on arm64 system.
-I saw your two patches are already in there. When I used kexec reboot
-as below, I still got the warning message during ima_kexec_post_load()
-invocation. 
-
-====================
-kexec -d -l /boot/vmlinuz-6.18.0-rc7-next-20251125 --initrd /boot/initramfs-6.18.0-rc7-next-20251125.img --reuse-cmdline
-====================
-
-====================
-[34283.657670] kexec_file: kernel: 000000006cf71829 kernel_size: 0x48b0000
-[34283.657700] PEFILE: Unsigned PE binary
-[34283.676597] ima: kexec measurement buffer for the loaded kernel at 0xff206000.
-[34283.676621] kexec_file: Loaded initrd at 0x84cb0000 bufsz=0x25ec426 memsz=0x25ed000
-[34283.684646] kexec_file: Loaded dtb at 0xff400000 bufsz=0x39e memsz=0x1000
-[34283.684653] kexec_file(Image): Loaded kernel at 0x80400000 bufsz=0x48b0000 memsz=0x48b0000
-[34283.684663] kexec_file: nr_segments = 4
-[34283.684666] kexec_file: segment[0]: buf=0x0000000000000000 bufsz=0x0 mem=0xff206000 memsz=0x1000
-[34283.684674] kexec_file: segment[1]: buf=0x000000006cf71829 bufsz=0x48b0000 mem=0x80400000 memsz=0x48b0000
-[34283.725987] kexec_file: segment[2]: buf=0x00000000c7369de6 bufsz=0x25ec426 mem=0x84cb0000 memsz=0x25ed000
-[34283.747670] kexec_file: segmen
-** replaying previous printk message **
-[34283.747670] kexec_file: segment[3]: buf=0x00000000d83b530b bufsz=0x39e mem=0xff400000 memsz=0x1000
-[34283.747973] ------------[ cut here ]------------
-[34283.747976] WARNING: CPU: 33 PID: 16112 at kernel/kexec_core.c:1002 kimage_map_segment+0x138/0x190
-[34283.778574] Modules linked in: rfkill vfat fat ipmi_ssif igb acpi_ipmi ipmi_si ipmi_devintf mlx5_fwctl i2c_algo_bit ipmi_msghandler fwctl fuse loop nfnetlink zram lz4hc_compress lz4_compress xfs mlx5_ib macsec mlx5_core nvme nvme_core mlxfw psample tls nvme_keyring nvme_auth pci_hyperv_intf sbsa_gwdt rpcrdma sunrpc rdma_ucm ib_uverbs ib_srpt ib_isert iscsi_target_mod target_core_mod ib_iser i2c_dev ib_umad rdma_cm ib_ipoib iw_cm ib_cm libiscsi ib_core scsi_transport_iscsi aes_neon_bs
-[34283.824233] CPU: 33 UID: 0 PID: 16112 Comm: kexec Tainted: G        W           6.17.8-200.fc42.aarch64 #1 PREEMPT(voluntary) 
-[34283.836355] Tainted: [W]=WARN
-[34283.839684] Hardware name: CRAY CS500/CMUD        , BIOS 1.4.0 Jun 17 2020
-[34283.846903] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[34283.854243] pc : kimage_map_segment+0x138/0x190
-[34283.859120] lr : kimage_map_segment+0x4c/0x190
-[34283.863920] sp : ffff8000a0643a90
-[34283.867394] x29: ffff8000a0643a90 x28: ffff800083d0a000 x27: 0000000000000000
-[34283.874901] x26: 0000aaaad722d4b0 x25: 000000000000008f x24: ffff800083d0a000
-[34283.882608] x23: 0000000000000001 x22: 00000000ff206000 x21: 00000000ff207000
-[34283.890305] x20: ffff008fbd306980 x19: ffff008f895d6400 x18: 00000000fffffff9
-[34283.897815] x17: 303d6d656d206539 x16: 3378303d7a736675 x15: 646565732d676e72
-[34283.905516] x14: 00646565732d726c x13: 616d692c78756e69 x12: 6c00636578656b2d
-[34283.912999] x11: 007265666675622d x10: 636578656b2d616d x9 : ffff80008050b73c
-[34283.920691] x8 : 0001000000000000 x7 : 0000000000000000 x6 : 0000000080000000
-[34283.928197] x5 : 0000000084cb0000 x4 : ffff008fbd2306b0 x3 : ffff008fbd305000
-[34283.935898] x2 : fffffff7ff000000 x1 : 0000000000000004 x0 : ffff800082046000
-[34283.943603] Call trace:
-[34283.946039]  kimage_map_segment+0x138/0x190 (P)
-[34283.950935]  ima_kexec_post_load+0x58/0xc0
-[34283.955225]  __do_sys_kexec_file_load+0x2b8/0x398
-[34283.960279]  __arm64_sys_kexec_file_load+0x28/0x40
-[34283.965965]  invoke_syscall.constprop.0+0x64/0xe8
-[34283.971025]  el0_svc_common.constprop.0+0x40/0xe8
-[34283.975883]  do_el0_svc+0x24/0x38
-[34283.979361]  el0_svc+0x3c/0x168
-[34283.982833]  el0t_64_sync_handler+0xa0/0xf0
-[34283.987176]  el0t_64_sync+0x1b0/0x1b8
-[34283.991000] ---[ end trace 0000000000000000 ]---
-[34283.996060] ------------[ cut here ]------------
-[34283.996064] WARNING: CPU: 33 PID: 16112 at mm/vmalloc.c:538 vmap_pages_pte_range+0x2bc/0x3c0
-[34284.010006] Modules linked in: rfkill vfat fat ipmi_ssif igb acpi_ipmi ipmi_si ipmi_devintf mlx5_fwctl i2c_algo_bit ipmi_msghandler fwctl fuse loop nfnetlink zram lz4hc_compress lz4_compress xfs mlx5_ib macsec mlx5_core nvme nvme_core mlxfw psample tls nvme_keyring nvme_auth pci_hyperv_intf sbsa_gwdt rpcrdma sunrpc rdma_ucm ib_uverbs ib_srpt ib_isert iscsi_target_mod target_core_mod ib_iser i2c_dev ib_umad rdma_cm ib_ipoib iw_cm ib_cm libiscsi ib_core scsi_transport_iscsi aes_neon_bs
-[34284.055630] CPU: 33 UID: 0 PID: 16112 Comm: kexec Tainted: G        W           6.17.8-200.fc42.aarch64 #1 PREEMPT(voluntary) 
-[34284.067701] Tainted: [W]=WARN
-[34284.070833] Hardware name: CRAY CS500/CMUD        , BIOS 1.4.0 Jun 17 2020
-[34284.078238] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[34284.085546] pc : vmap_pages_pte_range+0x2bc/0x3c0
-[34284.090607] lr : vmap_small_pages_range_noflush+0x16c/0x298
-[34284.096528] sp : ffff8000a0643940
-[34284.100001] x29: ffff8000a0643940 x28: 0000000000000000 x27: ffff800084f76000
-[34284.107699] x26: fffffdffc0000000 x25: ffff8000a06439d0 x24: ffff800082046000
-[34284.115174] x23: ffff800084f75000 x22: ffff007f80337ba8 x21: 03ffffffffffffc0
-[34284.122821] x20: ffff008fbd306980 x19: ffff8000a06439d4 x18: 00000000fffffff9
-[34284.130331] x17: 303d6d656d206539 x16: 3378303d7a736675 x15: 646565732d676e72
-[34284.138032] x14: 0000000000004000 x13: ffff009781307130 x12: 0000000000002000
-[34284.145733] x11: 0000000000000000 x10: 0000000000000001 x9 : ffff8000804e197c
-[34284.153248] x8 : 0000000000000027 x7 : ffff800085175000 x6 : ffff8000a06439d4
-[34284.160944] x5 : ffff8000a06439d0 x4 : ffff008fbd306980 x3 : 0068000000000f03
-[34284.168449] x2 : ffff007f80337ba8 x1 : 0000000000000000 x0 : 0000000000000000
-[34284.176150] Call trace:
-[34284.178768]  vmap_pages_pte_range+0x2bc/0x3c0 (P)
-[34284.183665]  vmap_small_pages_range_noflush+0x16c/0x298
-[34284.189264]  vmap+0xb4/0x138
-[34284.192312]  kimage_map_segment+0xdc/0x190
-[34284.196794]  ima_kexec_post_load+0x58/0xc0
-[34284.201044]  __do_sys_kexec_file_load+0x2b8/0x398
-[34284.206107]  __arm64_sys_kexec_file_load+0x28/0x40
-[34284.211254]  invoke_syscall.constprop.0+0x64/0xe8
-[34284.216139]  el0_svc_common.constprop.0+0x40/0xe8
-[34284.221196]  do_el0_svc+0x24/0x38
-[34284.224678]  el0_svc+0x3c/0x168
-[34284.227983]  el0t_64_sync_handler+0xa0/0xf0
-[34284.232526]  el0t_64_sync+0x1b0/0x1b8
-[34284.236376] ---[ end trace 0000000000000000 ]---
-[34284.241412] kexec_core: Could not map ima buffer.
-[34284.241421] ima: Could not map measurements buffer.
-[34284.551336] machine_kexec_post_load:155:
-[34284.551354]   kexec kimage info:
-[34284.551366]     type:        0
-[34284.551373]     head:        90363f9002
-[34284.551377]     kern_reloc: 0x00000090363f7000
-[34284.551381]     el2_vectors: 0x0000000000000000
-[34284.551384] kexec_file: kexec_file_load: type:0, start:0x80400000 head:0x90363f9002 flags:0x8
-====================
-
+> not handle a dummy device address for EOS buffers, so a NULL device
+> address is sent instead. The existing check used IS_V6() alongside a
+> firmware version gate:
 > 
-> Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
-> Signed-off-by: Pingfan Liu <piliu@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-> Cc: Roberto Sassu <roberto.sassu@huawei.com>
-> Cc: Alexander Graf <graf@amazon.com>
-> Cc: Steven Chen <chenste@linux.microsoft.com>
-> Cc: <stable@vger.kernel.org>
-> To: kexec@lists.infradead.org
-> To: linux-integrity@vger.kernel.org
+>     if (IS_V6(core) && is_fw_rev_or_older(core, 1, 0, 87))
+>         fdata.device_addr = 0;
+>     else
+> 	fdata.device_addr = 0xdeadb000;
+> 
+> However, SC7280 which is also V6, uses a firmware string of the form
+> "1.0.<commit-hash>", which the version parser translates to 1.0.0. This
+
+I still think that using commit-hash is a mistake. It doesn't allow any
+version checks.
+
+> unintentionally satisfies the `is_fw_rev_or_older(..., 1, 0, 87)`
+> condition on SC7280. Combined with IS_V6() matching there as well, the
+> quirk is incorrectly applied to SC7280, causing VP9 decode failures.
+> 
+> Constrain the check to IRIS2 (SM8250) only, which is the only platform
+> that needed this quirk, by replacing IS_V6() with IS_IRIS2(). This
+> restores correct behavior on SC7280 (no forced NULL EOS buffer address).
+> 
+> Fixes: 47f867cb1b63 ("media: venus: fix EOS handling in decoder stop command")
+> Cc: stable@vger.kernel.org
+> Reported-by: Mecid <mecid@mecomediagroup.de>
+> Closes: https://github.com/qualcomm-linux/kernel-topics/issues/222
+> Co-developed-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+> Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
+> Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
 > ---
->  include/linux/kexec.h              | 4 ++--
->  kernel/kexec_core.c                | 9 ++++++---
->  security/integrity/ima/ima_kexec.c | 4 +---
->  3 files changed, 9 insertions(+), 8 deletions(-)
+> Changes in v2:
+> - Fixed email address for Mecid (Konrad)
+> - Added inline comment for the quirk (Konrad)
+> - Link to v1: https://lore.kernel.org/r/20251124-venus-vp9-fix-v1-1-2ff36d9f2374@oss.qualcomm.com
+> ---
+>  drivers/media/platform/qcom/venus/vdec.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-> index ff7e231b0485..8a22bc9b8c6c 100644
-> --- a/include/linux/kexec.h
-> +++ b/include/linux/kexec.h
-> @@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
->  #define kexec_dprintk(fmt, arg...) \
->          do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+> diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+> index 4a6641fdffcf79705893be58c7ec5cf485e2fab9..6b3d5e59133e6902353d15c24c8bbaed4fcb6808 100644
+> --- a/drivers/media/platform/qcom/venus/vdec.c
+> +++ b/drivers/media/platform/qcom/venus/vdec.c
+> @@ -565,7 +565,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
 >  
-> -extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
-> +extern void *kimage_map_segment(struct kimage *image, int idx);
->  extern void kimage_unmap_segment(void *buffer);
->  #else /* !CONFIG_KEXEC_CORE */
->  struct pt_regs;
-> @@ -540,7 +540,7 @@ static inline void __crash_kexec(struct pt_regs *regs) { }
->  static inline void crash_kexec(struct pt_regs *regs) { }
->  static inline int kexec_should_crash(struct task_struct *p) { return 0; }
->  static inline int kexec_crash_loaded(void) { return 0; }
-> -static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
-> +static inline void *kimage_map_segment(struct kimage *image, int idx)
->  { return NULL; }
->  static inline void kimage_unmap_segment(void *buffer) { }
->  #define kexec_in_progress false
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index fa00b239c5d9..9a1966207041 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -960,17 +960,20 @@ int kimage_load_segment(struct kimage *image, int idx)
->  	return result;
->  }
->  
-> -void *kimage_map_segment(struct kimage *image,
-> -			 unsigned long addr, unsigned long size)
-> +void *kimage_map_segment(struct kimage *image, int idx)
->  {
-> +	unsigned long addr, size, eaddr;
->  	unsigned long src_page_addr, dest_page_addr = 0;
-> -	unsigned long eaddr = addr + size;
->  	kimage_entry_t *ptr, entry;
->  	struct page **src_pages;
->  	unsigned int npages;
->  	void *vaddr = NULL;
->  	int i;
->  
-> +	addr = image->segment[idx].mem;
-> +	size = image->segment[idx].memsz;
-> +	eaddr = addr + size;
+>  		fdata.buffer_type = HFI_BUFFER_INPUT;
+>  		fdata.flags |= HFI_BUFFERFLAG_EOS;
+> -		if (IS_V6(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
 > +
->  	/*
->  	 * Collect the source pages and map them in a contiguous VA range.
->  	 */
-> diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-> index 7362f68f2d8b..5beb69edd12f 100644
-> --- a/security/integrity/ima/ima_kexec.c
-> +++ b/security/integrity/ima/ima_kexec.c
-> @@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *image)
->  	if (!image->ima_buffer_addr)
->  		return;
->  
-> -	ima_kexec_buffer = kimage_map_segment(image,
-> -					      image->ima_buffer_addr,
-> -					      image->ima_buffer_size);
-> +	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
->  	if (!ima_kexec_buffer) {
->  		pr_err("Could not map measurements buffer.\n");
->  		return;
+> +		/* Send NULL EOS addr for only IRIS2 (SM8250),for firmware <= 1.0.87.
+> +		 * SC7280 also reports "1.0.<hash>" parsed as 1.0.0; restricting to IRIS2
+> +		 * avoids misapplying this quirk and breaking VP9 decode on SC7280.
+> +		 */
+> +
+> +		if (IS_IRIS2(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
+>  			fdata.device_addr = 0;
+>  		else
+>  			fdata.device_addr = 0xdeadb000;
+> 
+> ---
+> base-commit: 1f2353f5a1af995efbf7bea44341aa0d03460b28
+> change-id: 20251121-venus-vp9-fix-1ff602724c02
+> 
+> Best regards,
 > -- 
-> 2.49.0
+> Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
 > 
 
+-- 
+With best wishes
+Dmitry
 
