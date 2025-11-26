@@ -1,84 +1,129 @@
-Return-Path: <stable+bounces-197033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D08C8A93C
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:17:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DABFC8AA2F
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 92632342229
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3B8C3B09FF
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2FA302CA3;
-	Wed, 26 Nov 2025 15:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRWR9PGy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DA33314B8;
+	Wed, 26 Nov 2025 15:27:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848FE3C1F;
-	Wed, 26 Nov 2025 15:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DD230AAD0
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 15:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764170238; cv=none; b=VI/Bj1TaIjETSDfonpXh/rv72o+0Yb82+0DqkM3lWePFtpS13O6NK3x2nNAgkJQNhD86FttX96X+onA7o1zghFxez0qS68nq1uasL+AuC+pikU7UPAwQBWhQ6KLm4AWcX4D5aKzuPux6H3AC3t6ETCTXliDE5gszChu8xuczWJg=
+	t=1764170870; cv=none; b=G7EahCO8wXpxG9TFzuerAuWHjzvLbzV4+IvNfTHCxHi+KcfOC5+12vq6w3XyfB5ULNVj70ZmNUTn8Vv9s8IRDsPAXcLHKoqX1Dniin4NHj+/1jmNyL37rVoFR+E8zg6BZ5O14mfX7SY8iP1P9WB2ycIs4I/WKp5oTJ8s2aTNAQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764170238; c=relaxed/simple;
-	bh=pKcW5I7K0zGZOvE1ik3CYlmSJnANH1AwhgsB7f3b5GY=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=huU/yBkpE+ggc5+cxMwlTtbpv43thoDBkolX0ot5itTYIFEoiFiGB7oBnID4ZHt9uQNt7NUQdrmaXIHn+WJUFzRJJ89nHM2cgGejvwJ7VD5hsmpZ7sqQ0ZXR49wv1KfOgVq8paf/LWpXnH7h/Elc0/cqho2UTzu2MOBPMlJ0qaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRWR9PGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAF6C4CEF7;
-	Wed, 26 Nov 2025 15:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764170238;
-	bh=pKcW5I7K0zGZOvE1ik3CYlmSJnANH1AwhgsB7f3b5GY=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=PRWR9PGyBnifSfpOTMf8DwIcczblTYAe2/4CkaJLZO0cW8Fd+8Id8i9asZ3E0V5jj
-	 xQamKJ0XvB0gR7okzWuNPcvFMIV/vUIxjAXxX5OsMgBM6Dcv0f32jl/Lu8tR6teCtQ
-	 5/XXyIFnPVXtIhmfp4P6QpY24+LtUsmGWFjD68JCzPyq8wCIs2bR5VdQTOwaO94yw4
-	 KZpHsrZrL3H3rX/W4LMlPXL67QvHae+cjS+datz2H/7X83qqet7k/bL3YrppQlQVm2
-	 2kUGJoRhO5+ykqNag8MrgGl/FLpksy+rRRwL3elpP6N2NuWuwdQNYtaPdtN+enK7dU
-	 f0XG2X820ps+A==
-Date: Wed, 26 Nov 2025 16:17:15 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-cc: =?ISO-8859-15?Q?Filipe_La=EDns?= <lains@riseup.net>, 
-    Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] HID: logitech-dj: Remove duplicate error logging
-In-Reply-To: <20251108210319.7125-1-johannes.goede@oss.qualcomm.com>
-Message-ID: <n1922q86-s28p-2211-p76n-o8q8snp29478@xreary.bet>
-References: <20251108210319.7125-1-johannes.goede@oss.qualcomm.com>
+	s=arc-20240116; t=1764170870; c=relaxed/simple;
+	bh=R77P5H+0napBHQF7WYxYhxSxunHs7tm0aIKrBHwZEOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qwj5Kz9SSEOpujRTUmL15SU9XyRTFBJk5gBYxBGs8oNfgpRMni3rM7Yu+h7OGx3KVdpXaDvXGb2CuUq8iEe4CAjnjbrvnLEonacZLkqcnxkdIit1UU5Qf11HBoILWiQf7SeSKk0R1Y1TgnKo0IaTmvHzjjJ2VnkkxDCQU68LCDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vOHQW-0003GK-KL; Wed, 26 Nov 2025 16:27:28 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vOHQV-002dCd-11;
+	Wed, 26 Nov 2025 16:27:27 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 02F794A8DE4;
+	Wed, 26 Nov 2025 15:27:27 +0000 (UTC)
+Date: Wed, 26 Nov 2025 16:27:26 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Biju <biju.das.au@gmail.com>
+Cc: Vincent Mailhol <mailhol@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Tranh Ha <tranh.ha.xb@renesas.com>, 
+	Duy Nguyen <duy.nguyen.rh@renesas.com>, linux-can@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] can: rcar_canfd: Fix CAN-FD mode as default
+Message-ID: <20251126-large-mongrel-from-jupiter-c96915-mkl@pengutronix.de>
+References: <20251118123926.193445-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3xbjhdh4g6anmg4s"
+Content-Disposition: inline
+In-Reply-To: <20251118123926.193445-1-biju.das.jz@bp.renesas.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Sat, 8 Nov 2025, Hans de Goede wrote:
 
-> logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
-> both have 2 callers which all log an error if the function fails. Move
-> the error logging to inside these 2 functions to remove the duplicated
-> error logging in the callers.
-> 
-> While at it also move the logi_dj_recv_send_report() call error handling
-> in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
-> only fails if the report cannot be found and in that case it does nothing,
-> so the msleep() is not necessary on failures.
-> 
-> Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+--3xbjhdh4g6anmg4s
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] can: rcar_canfd: Fix CAN-FD mode as default
+MIME-Version: 1.0
 
-Both applied to hid.git#for-6.18/upstream-fixes, thanks Hans.
+On 18.11.2025 12:39:25, Biju wrote:
+> From: Biju Das <biju.das.jz@bp.renesas.com>
+>
+> The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+> has aligned with the flow mentioned in the hardware manual for all SoCs
+> except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
+> the wrong logic in the commit[1] sets the default mode to FD-Only mode
+> instead of CAN-FD mode.
+>
+> This patch sets the CAN-FD mode as the default for all SoCs by dropping
+> the rcar_canfd_set_mode() as some SoC requires mode setting in global
+> reset mode, and the rest of the SoCs in channel reset mode and update the
+> rcar_canfd_reset_controller() to take care of these constraints. Moreover,
+> the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
+> R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
+> simplify the code later to support FD-only mode.
 
--- 
-Jiri Kosina
-SUSE Labs
+Applied to linux-can
 
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--3xbjhdh4g6anmg4s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmknHFsACgkQDHRl3/mQ
+kZwh8Qf+PLxcEuNKgC2msmGRIQsmXqOhjCQ6UhjoDSuMe8je8L8biMJwT01kClJa
+GwxXOUN6B0WxweFTsVqMjoP2kJXIBsDC+Ys0Xv4q951U8tBu0qJzH5R+j+uynyAK
+mWyfjU+pXHVmV79TLjRFh1fqky67CPQ3rBzPAEX3WO9XTFpvaJYFwP/M/9ovfl8t
+ao7/zwopZqaBa9xqeY2U3qtHEcW04hZxPJsmg2NO/2n7AcmUs4tZdiEqLwLQVyYx
+qM0wH6GvdoF5u7OsAR3y6OQLw/+Tq303FagLL5l/V18jHnmuNScC9/nWrpTvJ9g+
+8nEjBSRMLh2vKMur+HfwzMJiDERRcg==
+=PwmH
+-----END PGP SIGNATURE-----
+
+--3xbjhdh4g6anmg4s--
 
