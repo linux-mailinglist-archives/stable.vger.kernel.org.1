@@ -1,188 +1,118 @@
-Return-Path: <stable+bounces-197030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53323C8A649
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:41:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FACC8A7B4
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDC8135837A
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DE173A6F96
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 14:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E8306B25;
-	Wed, 26 Nov 2025 14:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6163309EE8;
+	Wed, 26 Nov 2025 14:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0PlbHt0X";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MeKU58dz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpGprtZf"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374343054FE;
-	Wed, 26 Nov 2025 14:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0CD305044;
+	Wed, 26 Nov 2025 14:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764168047; cv=none; b=VDDRj+aH3uClZ7Yrhb94NFsrHRLVaLgBwcpim0I8k7GsJEpDrwIOF4TTdmchJOBKIbridp8n8v7FaGNyyxUpij++npFY3nfYQRfQdJF8v6Pao37ZAJDfgHwZ2P2lY5TsvSM6/jPsYiLPBNDqouJfXWLQOxj2U0xtrwgr0Ss06gw=
+	t=1764168850; cv=none; b=NqPIT7Yb4p2rXXgkwVckMaPi+t6zPVY8hbhN499xEQv0RJ5TIo+6ndd/o4mAd6W7QnVKEPtNUVRnnxS/hGhS4zb6d9a0iHoLnlekI0iNKoQPPjxc8kHG1RFg7Hur8A8KTC9NeOemgrRPmakoF9f/9uOsEetlU6Gvo7pPQPb0OJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764168047; c=relaxed/simple;
-	bh=NzBdlCRgfSjrjDvboRdGEfSsOavaguFv7rWV71gf1ik=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VvteEmg95/meawnNRU5vc3jCf4+SGTsA2wqvOuD4VrzfeSmK6L+yW77/hJH0XmxF2uubCrHFN//68mQmZd2Nz3kKr2dOkBGExfKvONPGw6zwTIf5k3qU3aCCcv3lx/v3UHgMWNwBUKYuXPd1w1zUfPrGtIryH9cCvxVd1QIDil0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0PlbHt0X; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MeKU58dz; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Nov 2025 14:40:42 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764168043;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1CvF5y+5X+O/E3EWQ2F2V+F40TihEJQU6I5+eunHGow=;
-	b=0PlbHt0X/Yl/7bgn+noVWliQB0m5L9aoeGUF9EDpfgk25Uw1MqDVboiw84bnSlqrRPHpPq
-	DpSKFGS1uFKC/qJanOalrafEjrpzuBdkVpnBpVWQZZPBiQiekMn1n715XO/AZPn1PJUo66
-	jBTPQx6phvDI911qmq2MnL78FMC09brHjErWPwT4x9z7W5tKtGmFvnPazM51/1B8O3mUQL
-	m+Xd8iuFUuB9MXEWtuDdfW/+PuB24AFNAJEqtCkDpsK+AYQ2ZnspNK5jPQuox7Sbnkc1D3
-	z7oxOqhdyO/+EPF5wU/HENjujPlFuwOXoyWehUCr2O8JjLHeAMXErqcPAB8HRA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764168043;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1CvF5y+5X+O/E3EWQ2F2V+F40TihEJQU6I5+eunHGow=;
-	b=MeKU58dzX65JtDqRjVNMYsmJr2JDXFecBcQ66G6vR63SM9i9IB071Zj7rj2i9hczGF670h
-	vrp+6HNlHZefhQDw==
-From: "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: timers/clocksource] clocksource/drivers/nxp-stm: Fix section mismatches
-Cc: Johan Hovold <johan@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.16@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251017054943.7195-1-johan@kernel.org>
-References: <20251017054943.7195-1-johan@kernel.org>
+	s=arc-20240116; t=1764168850; c=relaxed/simple;
+	bh=/HqO8CnY5UMV9Gl7Pn58ZWgYc8wXVab/JhcP9CSjlqs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D9fWzbJS/KxOMTPUUPGt68G/VEkbkvv1Gq3nfJ63uzv6+fV7I9QWR2svIkQoUvJyJoadJqFrMfnqlb2pFVbaXu8QM8Yoqzb7v9WNXjRWTdLFdgsNaypXd/I+Xr1vBe7O+p/3/oVoKsdcFJ3jVzcpGm+37nqg/kwLR4ejlGVDC3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpGprtZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DD5C113D0;
+	Wed, 26 Nov 2025 14:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764168849;
+	bh=/HqO8CnY5UMV9Gl7Pn58ZWgYc8wXVab/JhcP9CSjlqs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rpGprtZftYmevyQTc8OzK4vDcRmBrZDkOItw+AF2LcSqO/5G5PGgBFfi2bhf+Ug90
+	 2Tai28k3+M/ff3OXnz9VkGAdvCow02vKGBpnsn2YuZIiXzRfvC4gLH2OqRvCkgWj93
+	 xIGgysnGZTIURdFDrKNat2a6/uaWFNE+H1kMnR69xlj78AVAbg7Emo8r7xQEsDyf/M
+	 9zQJa67Pn+iB1ZxIyeE/kn+7I/2/oRIJ2AnZX1nPxwzLNVlplmiGwSuPmIyKeUPlpt
+	 ka//p9xcNzhKmBvd99OqDvXysrVnw8Ui9prUgPXG3A7AyhYdp0JDFy2rnagkLl3Iji
+	 pTcHqFH/1vhFw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vOGuJ-000000001K0-1xsb;
+	Wed, 26 Nov 2025 15:54:11 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/6] slimbus: core: fix runtime PM imbalance on report present
+Date: Wed, 26 Nov 2025 15:53:25 +0100
+Message-ID: <20251126145329.5022-3-johan@kernel.org>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251126145329.5022-1-johan@kernel.org>
+References: <20251126145329.5022-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176416804241.498.1076034337490505591.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the timers/clocksource branch of ti=
-p:
+Make sure to balance the runtime PM usage count in case slimbus device
+or address allocation fails on report present, which would otherwise
+prevent the controller from suspending.
 
-Commit-ID:     b452d2c97eeccbf9c7ac5b3d2d9e80bf6d8a23db
-Gitweb:        https://git.kernel.org/tip/b452d2c97eeccbf9c7ac5b3d2d9e80bf6d8=
-a23db
-Author:        Johan Hovold <johan@kernel.org>
-AuthorDate:    Fri, 17 Oct 2025 07:49:43 +02:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Wed, 26 Nov 2025 11:24:44 +01:00
-
-clocksource/drivers/nxp-stm: Fix section mismatches
-
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init. Device managed resource actions
-similarly cannot be discarded.
-
-The "_probe" suffix of the driver structure name prevents modpost from
-warning about this so replace it to catch any similar future issues.
-
-Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Mod=
-ule for the s32gx platforms")
+Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
+Cc: stable@vger.kernel.org	# 4.16
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: stable@vger.kernel.org	# 6.16
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20251017054943.7195-1-johan@kernel.org
 ---
- drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/slimbus/core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-=
-nxp-stm.c
-index 16d5216..c320d76 100644
---- a/drivers/clocksource/timer-nxp-stm.c
-+++ b/drivers/clocksource/timer-nxp-stm.c
-@@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksour=
-ce *cs)
- 	nxp_stm_clocksource_enable(cs);
- }
-=20
--static void __init devm_clocksource_unregister(void *data)
-+static void devm_clocksource_unregister(void *data)
- {
- 	struct stm_timer *stm_timer =3D data;
-=20
- 	clocksource_unregister(&stm_timer->cs);
- }
-=20
--static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_ti=
-mer *stm_timer,
--					   const char *name, void __iomem *base, struct clk *clk)
-+static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *st=
-m_timer,
-+				    const char *name, void __iomem *base, struct clk *clk)
- {
- 	int ret;
-=20
-@@ -296,9 +296,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_=
-device *ced)
- 	nxp_stm_module_get(stm_timer);
- }
-=20
--static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct=
- stm_timer *stm_timer,
--						  const char *name, void __iomem *base, int irq,
--						  struct clk *clk, int cpu)
-+static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_ti=
-mer *stm_timer,
-+					   const char *name, void __iomem *base, int irq,
-+					   struct clk *clk, int cpu)
- {
- 	stm_timer->base =3D base;
- 	stm_timer->rate =3D clk_get_rate(clk);
-@@ -386,7 +386,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void=
- *dev_id)
- 	return IRQ_HANDLED;
- }
-=20
--static int __init nxp_stm_timer_probe(struct platform_device *pdev)
-+static int nxp_stm_timer_probe(struct platform_device *pdev)
- {
- 	struct stm_timer *stm_timer;
- 	struct device *dev =3D &pdev->dev;
-@@ -482,14 +482,14 @@ static const struct of_device_id nxp_stm_of_match[] =3D=
- {
- };
- MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
-=20
--static struct platform_driver nxp_stm_probe =3D {
-+static struct platform_driver nxp_stm_driver =3D {
- 	.probe	=3D nxp_stm_timer_probe,
- 	.driver	=3D {
- 		.name		=3D "nxp-stm",
- 		.of_match_table	=3D nxp_stm_of_match,
- 	},
- };
--module_platform_driver(nxp_stm_probe);
-+module_platform_driver(nxp_stm_driver);
-=20
- MODULE_DESCRIPTION("NXP System Timer Module driver");
- MODULE_LICENSE("GPL");
+diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
+index c808233692ee..9f85c4280171 100644
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -489,21 +489,23 @@ int slim_device_report_present(struct slim_controller *ctrl,
+ 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
+ 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
+ 				    ctrl->sched.clk_state, ret);
+-		goto slimbus_not_active;
++		goto out_put_rpm;
+ 	}
+ 
+ 	sbdev = slim_get_device(ctrl, e_addr);
+-	if (IS_ERR(sbdev))
+-		return -ENODEV;
++	if (IS_ERR(sbdev)) {
++		ret = -ENODEV;
++		goto out_put_rpm;
++	}
+ 
+ 	if (sbdev->is_laddr_valid) {
+ 		*laddr = sbdev->laddr;
+-		return 0;
++		ret = 0;
++	} else {
++		ret = slim_device_alloc_laddr(sbdev, true);
+ 	}
+ 
+-	ret = slim_device_alloc_laddr(sbdev, true);
+-
+-slimbus_not_active:
++out_put_rpm:
+ 	pm_runtime_mark_last_busy(ctrl->dev);
+ 	pm_runtime_put_autosuspend(ctrl->dev);
+ 	return ret;
+-- 
+2.51.2
+
 
