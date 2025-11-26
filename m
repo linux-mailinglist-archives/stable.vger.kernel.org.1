@@ -1,256 +1,100 @@
-Return-Path: <stable+bounces-197016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DF8C89E1A
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:56:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D761C89E2F
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 13:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B671D3A953C
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:56:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 14E51345C40
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 12:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FB232863F;
-	Wed, 26 Nov 2025 12:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A64328B41;
+	Wed, 26 Nov 2025 12:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CjtlR8BK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dEPLSR4L"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236EF2E2DD2;
-	Wed, 26 Nov 2025 12:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F622E2DD2
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 12:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764161813; cv=none; b=X19KE3WC7UScwd/eoopsQc31I/J/MaeJer57OWtkQdmbJSohdRzeq8sxBwkD+2WIACTM2/flgBKuU9LBgLgX7QRgfPyyCjU3kcugrurVG94rbsl1EeZVesvDyj3uj4jCxGUUIGt8aJw8kyl0up+dvdvJ4Rc4KItVy7BMt3efqAE=
+	t=1764161935; cv=none; b=bHAlpyCHQTo8OP0VRv+pUozeb2nmv7OXpJZbkh/uiuluvr72jSX87RPf1QiGRTybt2dqgY9vhITmP2TLP8OgCHhlQcXM+c07wNe8fev7CgIb0bHcCG8DbcqXMHOsSOduj1i98rrklj6Ifzsrc06HXdsuyMg9urs5hlpV9DMCHck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764161813; c=relaxed/simple;
-	bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=KKDA8Z5h+8hK+OTl3WiU33FmOjrBuT1F5BSzzhxKfwKrr9IYqFzCo01rAVfO1XkkrVxD5edaUI8sjzASi3fuuftUUa8w1y+5zkKXRAGquRsOnVqsTHIfwJe/RIeWP7hXgdSnDuIHHhPZ73nOMzZUhGY5lnL/VoUTVOkvfAbKNyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CjtlR8BK; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1764161935; c=relaxed/simple;
+	bh=3s/KbLtC2DkKRq+7tKx5zPeRJeZTNmrFx2DGWavhBv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=eBQcnrTuZIfMs3sq5sY7HaUXguRj3mnNzzXOjuf+5GmxC6WARzHFfScPK4qkDVGSd54qm6yXwhb4LpF4Ia+7ZoL14w7pfq7n6HykQKW832QF6eRHGEZFWhnrkhiRH4gZWMrcMC8HD3OmvdoY2czERL4dSJqJKY4Y0pbCUy65SoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dEPLSR4L; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1764161812; x=1795697812;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
-  b=CjtlR8BKWbdwDqk7u6hn+p1YLPhMuOxn1kw6pHdn8EfJXEOHnBiRLFQl
-   THQtgW4vLofkVrqn+WpPkrTQ0OjCD6FB7Sy6yuMUj56TdgZA0iIcEIiaN
-   hkrCV1SEe8ZlqS319sH0jMjtk2iNiLKB2jfLJvNhuMU7Vqb8MZDmp9Afg
-   uEukykZAjDz4Twxqd7qsAhCJ061sc2uV9qVGkyNCVzcplYIROtw2K+1vV
-   otmfA6vMEgfZylb4aiNr56MjaacuTgfotfYBZAGLxOc2a1ZU0RpgD8ipt
-   318O15yDWPp9DoKp77fqDTQKuXWzLEcXxOJ9zDXEtvPx9IJfc/rbHmRA+
-   A==;
-X-CSE-ConnectionGUID: SwmzKxapS2aFRuX/oZVhGA==
-X-CSE-MsgGUID: bxIwf3JrSS2Gzn+igB42PA==
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764161934; x=1795697934;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=3s/KbLtC2DkKRq+7tKx5zPeRJeZTNmrFx2DGWavhBv4=;
+  b=dEPLSR4LLsS0gGQBzpEtbgxObaKgculABXLKdoUTzDPNoa3+lUKq2aix
+   KQU48tdjzvYrKmzDmpF2eeOx0fzwgHebe1JLB4fojJJy9oR7f4EZS9RlV
+   IC1uokh3to0wTu0sGtJn56RmVYh3v/7Mi2xtcPaaGR0ysO8VxORUCnRAh
+   Yr1IF9xjmE0K8YoEMctAve0hAnvmAaREvVzzdvyYpG5AbFd58XZ4bNmcF
+   QIC8+Guklb3BksDwIRY0IFNeJ/84yi0q+7sbfHHgckAkafnbLzq8aqnY1
+   bIHO9nq3dgjwzHWNd82xNu6UlNXYUZhMBT/AQC7ptpz7SGweZPit4zwFv
+   g==;
+X-CSE-ConnectionGUID: i4pzIzbJQFSAMI1RF0WC4g==
+X-CSE-MsgGUID: CSW9IwhkT4y61pZUSpwnIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="66238577"
 X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
-   d="scan'208";a="217045314"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 05:56:51 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 26 Nov 2025 05:56:31 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 26 Nov 2025 05:56:27 -0700
-From: Ludovic Desroches <ludovic.desroches@microchip.com>
-Date: Wed, 26 Nov 2025 13:56:02 +0100
-Subject: [PATCH REGRESSION v2] drm/panel: simple: restore connector_type
+   d="scan'208";a="66238577"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 04:58:53 -0800
+X-CSE-ConnectionGUID: p3Ymd2OnQHmBWuLC3MgEdQ==
+X-CSE-MsgGUID: bRDb6YkYTVik77PvK0uGmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="192576383"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 26 Nov 2025 04:58:52 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vOF6g-000000002rl-2Kdr;
+	Wed, 26 Nov 2025 12:58:50 +0000
+Date: Wed, 26 Nov 2025 20:58:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH REGRESSION v2] drm/panel: simple: restore connector_type
  fallback
+Message-ID: <aSb5WUMfQ0h6iQu1@c1f05358b1d3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251126-lcd_panel_connector_type_fix-v2-1-c15835d1f7cb@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAOH4JmkC/42NTQqDMBCFr1Jm3RQTrYWuupHSTQu6LCIxTuqAJ
- iERqYh3b/AEXb6/760Q0BMGuB5W8DhTIGuiEMcDqF6aDzLqogaRiDPngrNBdY2TBodGWWNQTdY
- 30+Kw0fRlOkk0ppc8l5mAiHAeo73j31AW97KoqsfrCXXMegpxu+zPM98b/53MnHGmu7ZFnWaSy
- +w2kvJW9eROyo5Qb9v2AxUpWJrYAAAA
-X-Change-ID: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
-To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
-	<jesszhan0024@gmail.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Anusha Srivatsa <asrivats@redhat.com>, "Luca
- Ceresoli" <luca.ceresoli@bootlin.com>, Jessica Zhang
-	<jessica.zhang@oss.qualcomm.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5388;
- i=ludovic.desroches@microchip.com; h=from:subject:message-id;
- bh=mFc6PriI8q/y6PQmRvrLPCas+8lJvlxyqDjXK7teF6M=;
- b=owEBbQKS/ZANAwAKAT455hP3e2QtAcsmYgBpJvj92rPOhVt9UO9uwwYwkIJQKVyyC0RGRQRX5
- ZeAA2XAsTGJAjMEAAEKAB0WIQQAMEvJiWmsW41tNU0+OeYT93tkLQUCaSb4/QAKCRA+OeYT93tk
- LRiiEACtzBEkshsLEah620fkv2jOEfPa0uM8aaRLm4oKdA1pN9MAW1SRmGMQEZRRQ9hctvq5dhq
- xAYnFiTueUk9JaaP0B73i7aQLOeSfua5RNJukLVS7Nb2EPm8FjHB4j+E6onWSJ4o9+LJVeP2Lcb
- MSRkme3Yj1fBZ2NtlvEsVIG51YI8IRjxdOOjk/ui+Qw0cV3ErP17zanVjaHjA9Tp42Auvc0gTTD
- aM5LBo0GANFd6J3I2YCCfK051tWBKWOHNWWk5xxXnY69vJhiUt0Bt/xyWPRk8diRmhU5L9v2+KZ
- Fz1BClu3NXu09dau8gFxdpfAHhedqAu2QwaWTfnETpdd1AUKhavIzxHq1xbkOwcRi6+BFTOqNbM
- TFLzxLt+KwMcKCoAwjahcLyRCVcHhR+srPIDLpwCemXBAhGexqUW/H1f0h+yro2+vaMXSZ++vrx
- wrdv0aPzv80C7TH6PspZNhYhsqQ+gx25I8jz7ioqc7VrxpMkCQCOChoa1xIspoCsgqoxhUXcqZO
- Tvuan3B5W++QruDjjR5yrACweJMtvRok8gL5VkFacpeZxbY6f5hCujSZVHXqfL7ALeGGpgaSrV0
- SSMKrTRzVlA8/j51+nm0gRB4NIhY9DfqSTV17N+dkKSn8DuA0iGAFmWTaSaU/6sdqDPMCGFUCVi
- ER+B3MAK+BXd08A==
-X-Developer-Key: i=ludovic.desroches@microchip.com; a=openpgp;
- fpr=665BAA7297BE089A28B77696E332995F09DCC11A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126-lcd_panel_connector_type_fix-v2-1-c15835d1f7cb@microchip.com>
 
-The switch from devm_kzalloc() + drm_panel_init() to
-devm_drm_panel_alloc() introduced a regression.
+Hi,
 
-Several panel descriptors do not set connector_type. For those panels,
-panel_simple_probe() used to compute a connector type (currently DPI as a
-fallback) and pass that value to drm_panel_init(). After the conversion
-to devm_drm_panel_alloc(), the call unconditionally used
-desc->connector_type instead, ignoring the computed fallback and
-potentially passing DRM_MODE_CONNECTOR_Unknown, which
-drm_panel_bridge_add() does not allow.
+Thanks for your patch.
 
-Move the connector_type validation / fallback logic before the
-devm_drm_panel_alloc() call and pass the computed connector_type to
-devm_drm_panel_alloc(), so panels without an explicit connector_type
-once again get the DPI default.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Ludovic Desroches <ludovic.desroches@microchip.com>
-Fixes: de04bb0089a9 ("drm/panel/panel-simple: Use the new allocation in place of devm_kzalloc()")
----
-Changes in v2:
-- Fix a warning introduced by the code move. There is no need to jump to
-  free_ddc, we can directly return from the function.
-- Link to v1: https://lore.kernel.org/r/20251121-lcd_panel_connector_type_fix-v1-1-fdbbef34a1a4@microchip.com
----
- drivers/gpu/drm/panel/panel-simple.c | 89 ++++++++++++++++++------------------
- 1 file changed, 44 insertions(+), 45 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 0019de93be1b663f55b04160606363cd043ab38b..5fd75b3939c635ca3e5b293ea37a759f479fa3f8 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -623,49 +623,6 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
- 	if (IS_ERR(desc))
- 		return ERR_CAST(desc);
- 
--	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
--				     &panel_simple_funcs, desc->connector_type);
--	if (IS_ERR(panel))
--		return ERR_CAST(panel);
--
--	panel->desc = desc;
--
--	panel->supply = devm_regulator_get(dev, "power");
--	if (IS_ERR(panel->supply))
--		return ERR_CAST(panel->supply);
--
--	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
--						     GPIOD_OUT_LOW);
--	if (IS_ERR(panel->enable_gpio))
--		return dev_err_cast_probe(dev, panel->enable_gpio,
--					  "failed to request GPIO\n");
--
--	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
--	if (err) {
--		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
--		return ERR_PTR(err);
--	}
--
--	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
--	if (ddc) {
--		panel->ddc = of_find_i2c_adapter_by_node(ddc);
--		of_node_put(ddc);
--
--		if (!panel->ddc)
--			return ERR_PTR(-EPROBE_DEFER);
--	}
--
--	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
--	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
--		panel_simple_parse_panel_timing_node(dev, panel, &dt);
--
--	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
--		/* Optional data-mapping property for overriding bus format */
--		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
--		if (err)
--			goto free_ddc;
--	}
--
- 	connector_type = desc->connector_type;
- 	/* Catch common mistakes for panels. */
- 	switch (connector_type) {
-@@ -690,8 +647,7 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
- 		break;
- 	case DRM_MODE_CONNECTOR_eDP:
- 		dev_warn(dev, "eDP panels moved to panel-edp\n");
--		err = -EINVAL;
--		goto free_ddc;
-+		return ERR_PTR(-EINVAL);
- 	case DRM_MODE_CONNECTOR_DSI:
- 		if (desc->bpc != 6 && desc->bpc != 8)
- 			dev_warn(dev, "Expected bpc in {6,8} but got: %u\n", desc->bpc);
-@@ -720,6 +676,49 @@ static struct panel_simple *panel_simple_probe(struct device *dev)
- 		break;
- 	}
- 
-+	panel = devm_drm_panel_alloc(dev, struct panel_simple, base,
-+				     &panel_simple_funcs, connector_type);
-+	if (IS_ERR(panel))
-+		return ERR_CAST(panel);
-+
-+	panel->desc = desc;
-+
-+	panel->supply = devm_regulator_get(dev, "power");
-+	if (IS_ERR(panel->supply))
-+		return ERR_CAST(panel->supply);
-+
-+	panel->enable_gpio = devm_gpiod_get_optional(dev, "enable",
-+						     GPIOD_OUT_LOW);
-+	if (IS_ERR(panel->enable_gpio))
-+		return dev_err_cast_probe(dev, panel->enable_gpio,
-+					  "failed to request GPIO\n");
-+
-+	err = of_drm_get_panel_orientation(dev->of_node, &panel->orientation);
-+	if (err) {
-+		dev_err(dev, "%pOF: failed to get orientation %d\n", dev->of_node, err);
-+		return ERR_PTR(err);
-+	}
-+
-+	ddc = of_parse_phandle(dev->of_node, "ddc-i2c-bus", 0);
-+	if (ddc) {
-+		panel->ddc = of_find_i2c_adapter_by_node(ddc);
-+		of_node_put(ddc);
-+
-+		if (!panel->ddc)
-+			return ERR_PTR(-EPROBE_DEFER);
-+	}
-+
-+	if (!of_device_is_compatible(dev->of_node, "panel-dpi") &&
-+	    !of_get_display_timing(dev->of_node, "panel-timing", &dt))
-+		panel_simple_parse_panel_timing_node(dev, panel, &dt);
-+
-+	if (desc->connector_type == DRM_MODE_CONNECTOR_LVDS) {
-+		/* Optional data-mapping property for overriding bus format */
-+		err = panel_simple_override_nondefault_lvds_datamapping(dev, panel);
-+		if (err)
-+			goto free_ddc;
-+	}
-+
- 	dev_set_drvdata(dev, panel);
- 
- 	/*
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH REGRESSION v2] drm/panel: simple: restore connector_type fallback
+Link: https://lore.kernel.org/stable/20251126-lcd_panel_connector_type_fix-v2-1-c15835d1f7cb%40microchip.com
 
----
-base-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
-change-id: 20251121-lcd_panel_connector_type_fix-f00fe3766a42
-
-Best regards,
 -- 
-Ludovic Desroches <ludovic.desroches@microchip.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
