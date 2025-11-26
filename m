@@ -1,185 +1,148 @@
-Return-Path: <stable+bounces-196960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55383C88413
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:23:21 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EE2C8844C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDBDC4E25FD
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:23:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7A9E234E3AD
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D8C284B29;
-	Wed, 26 Nov 2025 06:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B883161A8;
+	Wed, 26 Nov 2025 06:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vRUSwL+z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OcuGuJyr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Laspvpj3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A69625
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3931E8337
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764138194; cv=none; b=Fyb28cuCFv12qanTFCPUOZpeEKUZtfLF2SZLbgAemSPZBG5jcqzfOEo+omUZ9HT0CJNFc7Yhn1fWy6zH6+4XvlvmHGrg4GEyF0s+ZcV3KFu2XJ3D7ax/T6L9ZwYRAZ3oAmbYXycrbXb9IzyWrQ+a0N0X/7gO2UbyvgRSYwrK8Lg=
+	t=1764138478; cv=none; b=a2ELfxzCGmg3X/Ij+n4+qYm/XIHZ1MwKLKUgMF8krqyZnNlVIWImaXXRQi59hocNymdlhVK0k3BKS2xyAvuSMiP/+0HyhDgkTiHcMEhUGFF6LJYosXELybB4tAQXIQ0zvGhWe4maeY6QGPReTOcT1hD1fP7bqUqikVzSfoG5hss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764138194; c=relaxed/simple;
-	bh=Q0pXdmyLv/HFl/v2RyEMPzZYl67ksLmMNqJ6/2sIDus=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jzJG6Z2POMjamvrJO/OIBsLESy0cTFACNfCBOJVwi6lYXFxJwv69KB4T5IPovZKeYaF/+FUUec18ww6B4rsILFkCGAhsG10AGJga33eAhzdp5bg6K++c/8+DkuUcRUeRik+kLwUE0A/osEzA7zGRgMs3HcVGYOwmGofcZXNhA5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vRUSwL+z; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7a998ab7f87so10338577b3a.3
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 22:23:12 -0800 (PST)
+	s=arc-20240116; t=1764138478; c=relaxed/simple;
+	bh=6GBox+U71wd52Kw2/PdLyqreoI+ktndyD42jWbX4uFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4c772oSPG3a8H4tMbXkwD+qN9+Dfjty4OJZD6oP2BeABVxKehZLNDkxaze48JFEnjWfw+XzflROZBxyF1PtIADIK1sbYn9iEEwXgNZral6z3YksNOo2yoMOGV30kBIoIq9SleNYeDjQ1Ufy6gjZL0hc2xs5EERpRYsPFMg0gvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OcuGuJyr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Laspvpj3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764138474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ARxIA8tdQWb99qoXW28PLnSr1NCprmRt1PGWJHnjSzg=;
+	b=OcuGuJyr91W1OUNQQkOx7IE8HIxXDAfld9TaMtqqp0Q1zE1ZVtppn3GPSezPPv407B3Sru
+	J7h3q7nQ2/1q+IncrqhVkivL91qOT3NcddnFZxOZueJutCUY9xhuskUBDfYMl7ocqh4+T7
+	tWFjUvqcISzLLirqEoa6sHaW7N4A320=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-542-T8fnPbFyNr2zyCUY83BVVQ-1; Wed, 26 Nov 2025 01:27:53 -0500
+X-MC-Unique: T8fnPbFyNr2zyCUY83BVVQ-1
+X-Mimecast-MFC-AGG-ID: T8fnPbFyNr2zyCUY83BVVQ_1764138472
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477563a0c75so33530255e9.1
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 22:27:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764138192; x=1764742992; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xZOiqnOu5b455b+cb+x4p1lTrQe4haMsZgH0ji8uoDo=;
-        b=vRUSwL+zroirVOHHZ8motxnGZj6U84PAMzURLYtetUw60CoB/xUbPoW+rd50MJz8Of
-         20EDq5Vq54esgBODnnE0DjFzdeehtaCRzbXq22q8Uj0nlj+kPo8um24a79dR6kfdzBjJ
-         8liR9hs8pFMjXLucVj0EF67zH+PFYaY8nw5LoCL46SabsukhaR0Ej2mtop02nLCD/sFF
-         vjsiZjG7fEFQhop6tvxqSfMcN/RiaqIyDmtMJEndfSEhil4wXRVh1faLKbCrk3kukL20
-         Dj0ncRQRwHwV1b5Lj7pBpgTSrVajvNjq4UUbWq65BazSEk8Mymu0d8D8npniW2Uv3XJg
-         SRjQ==
+        d=redhat.com; s=google; t=1764138472; x=1764743272; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ARxIA8tdQWb99qoXW28PLnSr1NCprmRt1PGWJHnjSzg=;
+        b=Laspvpj3X2vQMlf7eONaP0uEp8iI8cEklRxi9rYME1Ke09iAyhQFbFP85DLnUbkjTb
+         hYevtAYaQVPBAc271d9zgt64yK6LwKG9I42NrD/sQ3KRFJyiYRiYoifiS05RzMUizjiY
+         NeIEdBz96Eksy+9fO+yvK8HhzaRpbyZ0/DGz9oPG7YPXvljKkCZeyQYDb+5yG/7tbhQu
+         fPkjBLqEteKvW5UP5eSiAR2q6j66mMTzGPA3uva6MZVtNm7U8/ALB7Zb8nNuPG6x5HXP
+         XMs8cql4IO3EUQYQEu57ZdGY5YiA4qv/gxM4QyGBOktjbrid4DAcHn2rd+KL3Y8djLVE
+         tYtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764138192; x=1764742992;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xZOiqnOu5b455b+cb+x4p1lTrQe4haMsZgH0ji8uoDo=;
-        b=ttrTq52y0wCCo4t/XAdcaJbyYoJQ00jJyfEKtBgFWjlit0r+XcUhInb/6aJJvf91yq
-         BqTnXbxqNkS69OxWan/fqnqiETvSsTK542XyxNUB/+FrdDQ1TKk3CMmwx5zDAyvPwhdm
-         sGMfDR7+Riw/I0cUTvl6CNJKpPBlACI79RxPG+PDmVOmD4SbzgiOng/rEQBTBI2IjPUy
-         GP3tFkqszrKGMFecc76epv1YOby8f6EzvcV4Av6zZaejbELE91jLn6KZNkL58OQdtYTo
-         YwLNuKvYOKhazCF5KTPvIMIXwhu/YQoOhJ3gS7Rwr1XuSRG+ZBvbRKBYd9apaaOMIp4+
-         VPlw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2hbG+nkNFGh7Z47zVG6ZYUClpDPb/eoOGix0gO2mGjBiVSYFzVla2oNDv9yg+NNDOB/XEIFU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykw3QEfrRtwQbpZJJsQ7cCFD2Tyyjvr6z1uKyRtCaDhttGf5hZ
-	jMCf/SaTff0deIxAfpoqdekwLPkX86wAfC8SavT2QppvRuRKaoyAEYX+ZDp32DkxSR5kQz6k9Uo
-	za1qPN2T9RqqXFNz1aTAqeeclNA==
-X-Google-Smtp-Source: AGHT+IH9vjRZL8U+Jv8MQaygGYF05+chijEWXrtWm9JsC760HiVPZONCUU0e9FG6cb8eV19VffM49vujA7k5WB70zw==
-X-Received: from pfbfh7.prod.google.com ([2002:a05:6a00:3907:b0:7b0:bc2e:9592])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:88d1:0:b0:7a2:84df:23dc with SMTP id d2e1a72fcca58-7c58e604ffbmr19619687b3a.28.1764138191863;
- Tue, 25 Nov 2025 22:23:11 -0800 (PST)
-Date: Wed, 26 Nov 2025 06:22:50 +0000
+        d=1e100.net; s=20230601; t=1764138472; x=1764743272;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ARxIA8tdQWb99qoXW28PLnSr1NCprmRt1PGWJHnjSzg=;
+        b=hvQoxhCY6zrI9bvXLKcShPQAx6f91wf7uBPLB9PnGECVeLc1VUoDlURpTFSWOjnaY+
+         nYfDTaamh3ODWTGWObGadR/ilNkzt/aVnWHPVF/X93kvY5L8tE2M7mHN28N6uNvcG+/a
+         9ry1HxRPpGnz/Xoy6B3F0NC1Vxa4Pc0VDyA5qI6RTEcauw/yIBoN2UXg499sqB64uR9G
+         todTNnLwBBhfz8wyE0fu6G2Ai4MiNRCm2vuGmfcRCgAjEtJDlCkKFLK8JarIohnezsuh
+         8ikPZscTV0D8UQ/o47lir5tsq63UAFZplkZ2N0ZUB7umJE4rVcHQlrClAIGEElcn0WJx
+         RU9g==
+X-Forwarded-Encrypted: i=1; AJvYcCXhP/guJ5IQu5E5AmAltBEbHhY4NFLAEFXKFUaUWH88/5qMDpkcgM0/T///744w9IqYvSSDpvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvgSBLQFDpkMxgSjX+vm5Ksu9LnvYR+UMERndyikKRo7SCPJOd
+	n7evuDTfJXd1JGgLArqWPhA5xsuzE64ulUiGB6MR9J2LyKzk4zDUGi84Lp3HNWWMUfrkgVOyvbD
+	ltKDoIGYCjZIAc4Bu9PXGXNptkCrusUoWr00kzBWS53n0yLGetpxuKKJ+1g==
+X-Gm-Gg: ASbGncstokHm3Pj0xX9uKY4GxpM1Xs8+vt0B3gCQoGwQr9x2bzji/ds9CFUdJiYUj3A
+	Y0XtMgHKqtzQYhZL6twDkQLS5/3PEwORdR6OoUsIm9uJ0Q2IwTqpPZ6qcuQJ0QadHs2xKeH5ci+
+	LWVSHreeskFoltuFI/9ar/UHbdMVHwwwDye1i1djdR3AswTjQpUuHI/bo2GP0MoEsQntp8IvF2o
+	hJEOnpE9P5qeAI6+MpsY+BNTCe83XyDKxkI0GI6JETDZ3ot/E7lz9Rvzpx7CaQiMMJCCmjdSX8t
+	B88D4eLQgrHQjY1c5m6yMNg+/4YhHPQthbr8AVoy0ERDtsOP0muKhpu/SXm7qum8TnLgw3OyX2o
+	ohtJxLMmd4IbCqcN6+u01b9CsouIz7A==
+X-Received: by 2002:a05:600c:4443:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-47904b103e2mr53915405e9.18.1764138471839;
+        Tue, 25 Nov 2025 22:27:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0f1u0T3jzKYGdUCWINkcBdum6zqYD5lZ2uzy8Z3cJxh7vJamCVyKXR4UerdY4GLIpXEKe5g==
+X-Received: by 2002:a05:600c:4443:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-47904b103e2mr53915225e9.18.1764138471351;
+        Tue, 25 Nov 2025 22:27:51 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-39-63.inter.net.il. [80.230.39.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790adc601dsm26881835e9.1.2025.11.25.22.27.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 22:27:50 -0800 (PST)
+Date: Wed, 26 Nov 2025 01:27:48 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, eperezma@redhat.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net V2] vhost: rewind next_avail_head while discarding
+ descriptors
+Message-ID: <20251126012023-mutt-send-email-mst@kernel.org>
+References: <20251120022950.10117-1-jasowang@redhat.com>
+ <20251125194202.49e0eec7@kernel.org>
+ <CACGkMEuCgSVpshsdfeTwvRnMiY8WMEt8pT=gJ2A_=oiV188X0Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.487.g5c8c507ade-goog
-Message-ID: <20251126062250.2566655-1-joonwonkang@google.com>
-Subject: [PATCH v4] mailbox: Prevent out-of-bounds access in fw_mbox_index_xlate()
-From: Joonwon Kang <joonwonkang@google.com>
-To: jassisinghbrar@gmail.com, broonie@kernel.org
-Cc: peng.fan@oss.nxp.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	security@kernel.org, Joonwon Kang <joonwonkang@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACGkMEuCgSVpshsdfeTwvRnMiY8WMEt8pT=gJ2A_=oiV188X0Q@mail.gmail.com>
 
-Although it is guided that `#mbox-cells` must be at least 1, there are
-many instances of `#mbox-cells = <0>;` in the device tree. If that is
-the case and the corresponding mailbox controller does not provide
-`fw_xlate` and of_xlate` function pointers, `fw_mbox_index_xlate()` will
-be used by default and out-of-bounds accesses could occur due to lack of
-bounds check in that function.
+On Wed, Nov 26, 2025 at 02:18:25PM +0800, Jason Wang wrote:
+> On Wed, Nov 26, 2025 at 11:42 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > On Thu, 20 Nov 2025 10:29:50 +0800 Jason Wang wrote:
+> > > Subject: [PATCH net V2] vhost: rewind next_avail_head while discarding descriptors
+> >
+> > >  drivers/vhost/net.c   | 53 ++++++++++++++++++------------
+> > >  drivers/vhost/vhost.c | 76 +++++++++++++++++++++++++++++++++++--------
+> > >  drivers/vhost/vhost.h | 10 +++++-
+> >
+> > Hm, is this targeting net because Michael is not planning any more PRs
+> > for the 6.18 season?
+> 
+> Basically because it touches vhost-net. I need inputs for which tree
+> we should go for this and future modifications that touch both vhost
+> core and vhost-net.
+> 
+> Thanks
+> 
+> >
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
----
-V3 -> V4: Prevented access to sp->args[0] if sp->nargs < 1 and rebased
-          on the linux-next tree.
 
-For CVE review, below is a problematic control flow when
-`#mbox-cells = <0>;`:
+Well this change is mostly net, vhost changes are just moving code
+around.  net tree gets more testing and more eyes looking at it, so it's
+good for such cases.
 
-```
-static struct mbox_chan *
-fw_mbox_index_xlate(struct mbox_controller *mbox,
-                    const struct fwnode_reference_args *sp)
-{
-    int ind = sp->args[0];                                      // (4)
-
-    if (ind >= mbox->num_chans)                                 // (5)
-        return ERR_PTR(-EINVAL);
-
-    return &mbox->chans[ind];                                   // (6)
-}
-
-struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
-{
-    ...
-    struct fwnode_reference_args fwspec;                        // (1)
-    ...
-    ret = fwnode_property_get_reference_args(fwnode, "mboxes",  // (2)
-                                             "#mbox-cells", 0, index, &fwspec);
-    ...
-    scoped_guard(mutex, &con_mutex) {
-        ...
-        list_for_each_entry(mbox, &mbox_cons, node) {
-            if (device_match_fwnode(mbox->dev, fwspec.fwnode)) {
-                if (mbox->fw_xlate) {
-                    chan = mbox->fw_xlate(mbox, &fwspec);       // (3)
-                    if (!IS_ERR(chan))
-                        break;
-                }
-		...
-            }
-        }
-        ...
-        ret = __mbox_bind_client(chan, cl);                     // (7)
-        ...
-    }
-    ...
-}
-
-static int __mbox_bind_client(struct mbox_chan *chan,
-                              struct mbox_client *cl)
-{
-    if (chan->cl || ...) {                                      // (8)
-}
-```
-
-(1) `fwspec.args[]` is filled with arbitrary leftover values in the stack.
-    Let's say that `fwspec.args[0] == 0xffffffff`.
-(2) Since `#mbox-cells = <0>;`, `fwspec.nargs` is assigned 0 and
-    `fwspec.args[]` are untouched.
-(3) Since the controller has not provided `fw_xlate` and `of_xlate`,
-    `fw_mbox_index_xlate()` is used instead.
-(4) `idx` is assigned -1 due to the value of `fwspec.args[0]`.
-(5) Since `mbox->num_chans >= 0` and `idx == -1`, this condition does
-    not filter out this case.
-(6) Out-of-bounds address is returned. Depending on what was left in
-    `fwspec.args[0]`, it could be an arbitrary(but confined to a specific
-    range) address.
-(7) A function is called with the out-of-bounds address in `chan`.
-(8) The out-of-bounds address is accessed.
-
- drivers/mailbox/mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 2acc6ec229a4..617ba505691d 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -489,12 +489,10 @@ EXPORT_SYMBOL_GPL(mbox_free_channel);
- static struct mbox_chan *fw_mbox_index_xlate(struct mbox_controller *mbox,
- 					     const struct fwnode_reference_args *sp)
- {
--	int ind = sp->args[0];
--
--	if (ind >= mbox->num_chans)
-+	if (sp->nargs < 1 || sp->args[0] >= mbox->num_chans)
- 		return ERR_PTR(-EINVAL);
- 
--	return &mbox->chans[ind];
-+	return &mbox->chans[sp->args[0]];
- }
- 
- /**
 -- 
-2.52.0.487.g5c8c507ade-goog
+MST
 
 
