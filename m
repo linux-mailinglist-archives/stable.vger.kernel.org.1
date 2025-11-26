@@ -1,99 +1,186 @@
-Return-Path: <stable+bounces-197052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9880DC8C09C
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 22:34:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2BAC8C0A5
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 22:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2344F35A380
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 21:34:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C747E35A31B
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 21:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7682D9463;
-	Wed, 26 Nov 2025 21:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4A22E9729;
+	Wed, 26 Nov 2025 21:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJtp4nEa"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dxvIIT0D";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ldo5aCnn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E12288C25
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8F69463
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764192866; cv=none; b=BU8C9TIX2mVQF0Owp8vIyqc0pb7fwbq0fu9JBREarNnBlO9OzHgwIN3bXrRrHOaAkvxmlIgT5C29PDl7ibDNgqJVcA6bzqAg6c/V0lqdfszlbw2Fg5OwAo9+vQdkZcvCnUewJtniD98ekZIkPGdt+9SvPwLTW+cyV0mjCgEvYj4=
+	t=1764192891; cv=none; b=oUOkpSCly+8HLZ/TOcJdoRs5eWtq2DgnlYSd5+9BMSbcT/WcZYQu58iy5y4bXCEW5UwS2UyKcG6ckLMETXbc7jIYjRPzIhI/FtZn/F50ZsmG5L62yk8Gyo1QUMs02MYURJudxQnhFUKI01hAmUyKMnV1UFhA197S0MP5QECWC5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764192866; c=relaxed/simple;
-	bh=F64OBwa5RU2WG8KkfNNwsDePPJZTGuJD5Jkc30EX+tA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=a3N8EsY86V8qNvxhi/PvR8uHZB/sJa2V9kDCGNR56vQ+6+xCmM9iFWJ9jgxHxpc4G3s/16BFNVgo8NIyjedJP2hRaaexP2AA0VIUiblKkmXXSljL4IaeFWOcOlf4fZVd2+X94HMuaKd0cB9tQ0IdG/3O/NVGKhJdDfxHlOm3aQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJtp4nEa; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764192865; x=1795728865;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=F64OBwa5RU2WG8KkfNNwsDePPJZTGuJD5Jkc30EX+tA=;
-  b=oJtp4nEa6mx8RYeK/sKBtOL/81FN+N5dnKTDgvIcBRvLd5MMmaehRbiO
-   CJbVGDGVVYlq4fvEmkeuOUc+TGQoJkPHMlbDIHU4cxnMTUmUPj9pkWm3t
-   1T1UnXUX+aYpkZL3r6d1qCokxGxfrwW0ruSuDiILH85xBSq82XbxpYDaq
-   TM5f1WFqzAmlCjfRynPoZpK4fiKIRSW0SUZOHq2ith61BMewZME9oTztY
-   6NDCvsAKuckJaUWmTW/jshGvVyRvCW+V1lAgeqVkWQuB/Va2uK0wjJ541
-   e+fenwQzKxN35nsjFV2cDlUZcNlKEKTXuhvdl9cZJaN/iL/JHbTwgIWfr
-   g==;
-X-CSE-ConnectionGUID: NmYcGoH8TsCjRqfo7mLsag==
-X-CSE-MsgGUID: w/rItTO4SIORY5aCg5xcyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77603069"
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="77603069"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 13:34:24 -0800
-X-CSE-ConnectionGUID: qM+bQ7BgQnqE0w6F8ZGpGA==
-X-CSE-MsgGUID: PaJhUTVoSuCTZ6W0XIaOGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="192957747"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 26 Nov 2025 13:34:23 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vON9Z-000000003Np-0OxM;
-	Wed, 26 Nov 2025 21:34:21 +0000
-Date: Thu, 27 Nov 2025 05:34:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
-Message-ID: <aSdySKtZeIcsxaxP@c2e5bee1bcda>
+	s=arc-20240116; t=1764192891; c=relaxed/simple;
+	bh=eowOxoJihoVTg0geYe5ZEliongOwiYqGsqbWYdSFZEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mxwZdPKqximdIbLQm/FmKEx6TY5ODwZL+ClTbA1vUGPcAvI/7sqYIONoHHwbF862c8TpuSUn8n1a3nGd310gVmy+bwgNwyn1g+73VRwSVqcoA49Fl+7ktquZw+WeZsufB2y1R5+evKBFE4PtkUv2MbKH5lc7VC6C3jUxuIEkBS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dxvIIT0D; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ldo5aCnn; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQJMPxI2388046
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:34:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2NwkyEIbP7mfwEd4CBJ0OPJpWw2cL6nZtgf+1stJqQQ=; b=dxvIIT0D9F1y4XWL
+	b0Z8hg0g43gIyEzI1E1v5AHUGy4oE5JKE4XmhDBNbDe+oSJmf2a9CE/rvVnAO+bw
+	z46dAjQmBYYjINqPhYczsbyBXTEExVQEIiC1tDiqUtlZqmCFsNENeZC3rFCSNOR0
+	vShmG3qo9oyQe8vgIo9GEhuE8S8aK1kfUHEGFPPQDr8LTjGtmLSSqr7obZv8efzY
+	6imXw5v9eIl0eTOkzTZYL4ms2M+qUJgnlZPUFcroeKY8yth+j7o/AQJVc7nvTcf/
+	CtxcCHtCjrfeLHvu44xAYwbcuS3ErFIfVFi+I0/TuTFAkVeE3+lsvHc7jtkO8bCm
+	pfnUdw==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ap7n8g99f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 21:34:48 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7bad1cef9bcso247096b3a.1
+        for <stable@vger.kernel.org>; Wed, 26 Nov 2025 13:34:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764192888; x=1764797688; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2NwkyEIbP7mfwEd4CBJ0OPJpWw2cL6nZtgf+1stJqQQ=;
+        b=Ldo5aCnnhAQbWaock7nv/qaFO7AE1VjIA5oFOcNUIEWnRivtVsAw1yCu14SFzOHc1n
+         x7esF0x31SQ2jGWDpYSeCseluZdMtwAasaELiyNuGjW1RVV0f/aEeJVHrONjJAFNUA22
+         J/vVz4jg4pIuphfkgVZ7Frmy+VT8ZmdxFpOW2lp4xqjy7UCwA+KrPrsRwV+uZoKbo/1p
+         xhA4JpoJxkzqgEJUX/DCvC/xTTWWK3bpsGar34ogN5F1OUwwdvgSfOHfK6YvSgUqDrzq
+         wUnA2hHWc6pBmg+EF2T8h/gq9ZzStq5tUeTT0Al5Are/BAN1THOv9aZsxWqPt4Tup//r
+         27zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764192888; x=1764797688;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2NwkyEIbP7mfwEd4CBJ0OPJpWw2cL6nZtgf+1stJqQQ=;
+        b=RPIRiD9TTOBY7SA4nMD6dxo6tbet/taZbfJZ8hy7H3xk8iD/qRkhIFEdYUrgNibGZ0
+         rGzyBazm/jfOfLofojMLLv21BJ01dSDzPVoe4VkpUjN7f6LlvnkDVakIvXLzSB4DQEIa
+         mvk/v2gf9HBHGg4L22SAiU6e/jUXXXOrC91F/iDI+Lgrx6b8KplNtvE+f33DeV+hy3py
+         CT8KnOth7KeeQ8FzNhmkuZnFcTUIgZuO/TAS2l5gOBk+Rq1JWPFgEGjWb5lUaIox4pM0
+         yGatXRKsATM2EsTe9ShQw8zTZ8d2YVmywIzrS5WKtGWIZX8uaVh5JdGCkVqIorCAC0Cm
+         C5kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWE0qHGMbt8AGjp5HCZnKHMegnWXYHHPBX34aku/j6sCZIsnp5XUpyJ2Fe67ywYWQoYQEfQjzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJbvWQ2b4lF7ymFbO15L5etXc9LkU3V9kWHei6476d3xkaz/3/
+	r52xbHS6cORyPoVwhtHwbYOuxN3AsUIFOG85Qtxn5HoK3t5gnuwbfJ9u3Hf7L6UQpEsXvhAbC6k
+	1yt8A+E/K1/dKn9v+loTr2cUIggk/KZfxMFJezRnEG4i1k87+9OqqQdvA4qM=
+X-Gm-Gg: ASbGnctZKYEYffLxBMpvpve9e3N7wxCK/FsXUWzUCuYsF1P5gH856b+LWO2uTgKX4qb
+	YmSUklfTIleATOhXe8+JnrK7gFfVe4EKXnjOs+w77Q/XR0YcMn+gQ44RFQoZSi4yH4BROsRanEZ
+	bPZ07C6m3K77cwVeM0Awf7CenmoMy1YIhsDm6gH3OkHPiBcI6ZXHAgJzdQ/9wbxM5uqTEMd6ZfS
+	ICkpoozpe/eUJ+Tst5GtRMtWxdi/MtpyAsm32uFZH2hzAxLzDQauM+icuB+BMh8+HyDfRnyJU4u
+	Uzu3+g3ykduAKg3LH4xcQzR0ul+ylxiiMlN8nhzFGKRlXsCSOAUEh106y6WDX5+xBwLjuo9/uU/
+	trd3N9yCrzLyvC+nIKy5xSbJSn/sZixEd
+X-Received: by 2002:a05:6a00:845:b0:7ab:4fce:fa1c with SMTP id d2e1a72fcca58-7c58c2ab130mr21776567b3a.1.1764192888297;
+        Wed, 26 Nov 2025 13:34:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzCt9XSY3gyqFZT1HSKkLzlml71T9rXO2LDSzLEnensoelSRtYNU9rQu4G8n5l1LFmUCIzQw==
+X-Received: by 2002:a05:6a00:845:b0:7ab:4fce:fa1c with SMTP id d2e1a72fcca58-7c58c2ab130mr21776540b3a.1.1764192887864;
+        Wed, 26 Nov 2025 13:34:47 -0800 (PST)
+Received: from [172.20.10.3] ([106.216.204.28])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f0d55b71sm22707890b3a.55.2025.11.26.13.34.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 13:34:47 -0800 (PST)
+Message-ID: <7b6dff80-6e20-43f8-838b-3c5b02338714@oss.qualcomm.com>
+Date: Thu, 27 Nov 2025 03:04:40 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+        Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20251126-ifpc_counters-v2-1-b798bc433eff@gmail.com>
+Content-Language: en-US
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 In-Reply-To: <20251126-ifpc_counters-v2-1-b798bc433eff@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: cQ0mlAqbkTpxngxE7C9YFzJkscB2XWWK
+X-Authority-Analysis: v=2.4 cv=AufjHe9P c=1 sm=1 tr=0 ts=69277278 cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=RklEKUTwpnVNyatRsSmyOQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=GqK8k8GEXUDarboaZ6YA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-ORIG-GUID: cQ0mlAqbkTpxngxE7C9YFzJkscB2XWWK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDE3NSBTYWx0ZWRfX/ejDwNCqx1at
+ vQXiW5PEXlr1FVCmvie2PBwsRlDtKN8AtqaaRWIDeJ6DGzdAp+wMt/Ee+WH8pUk8m2gWYZNIpTI
+ 3OwGahmIlqPgsrxrM4/BJ2Kj7j0Ac0shlPgoUELQbl61ZyjxtTNa4VOPeUzUQrPBtF82H5PbKKZ
+ ewgbt0veHugLNpH+RRsT4bRopaZc2CnfDXekVWoGFUKGwUURKHdwKgiarnFog36DMKjX+UzM7qM
+ R56WYsNJhggIkrTV2kdTg3Q+9a23MeGpJYmGZ4D1DET9bhe6TgSFzoOTaJWAZ+7nedMVhiusZOc
+ OT6bpJhIf2jqqGlSuvsQDz+DDUSwnuFxNqj3iE8saqHmO185Pgl/PWCMSUlu7TIPL8wh/OaZeqc
+ aHlQP54jsaGBim5FDk232ecwrUK4gg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 suspectscore=0 adultscore=0
+ phishscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511260175
 
-Hi,
+On 11/27/2025 3:01 AM, Anna Maniscalco wrote:
+> Previously this register would become 0 after IFPC took place which
+> broke all usages of counters.
+> 
+> Fixes: a6a0157cc68e ("drm/msm/a6xx: Enable IFPC on Adreno X1-85")
+> Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
 
-Thanks for your patch.
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+-Akhil
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] drm/msm: add PERFCTR_CNTL to ifpc_reglist
-Link: https://lore.kernel.org/stable/20251126-ifpc_counters-v2-1-b798bc433eff%40gmail.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+> ---
+> Changes in v2:
+> - Added Fixes tag
+> - Link to v1: https://lore.kernel.org/r/20251126-ifpc_counters-v1-1-f2d5e7048032@gmail.com
+> ---
+>  drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> index 29107b362346..b731491dc522 100644
+> --- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> +++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> @@ -1392,6 +1392,7 @@ static const u32 a750_ifpc_reglist_regs[] = {
+>  	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(2),
+>  	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(3),
+>  	REG_A6XX_TPL1_BICUBIC_WEIGHTS_TABLE(4),
+> +	REG_A6XX_RBBM_PERFCTR_CNTL,
+>  	REG_A6XX_TPL1_NC_MODE_CNTL,
+>  	REG_A6XX_SP_NC_MODE_CNTL,
+>  	REG_A6XX_CP_DBG_ECO_CNTL,
+> 
+> ---
+> base-commit: 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
+> change-id: 20251126-ifpc_counters-e8d53fa3252e
+> 
+> Best regards,
 
 
