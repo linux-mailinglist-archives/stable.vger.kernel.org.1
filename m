@@ -1,124 +1,185 @@
-Return-Path: <stable+bounces-197045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FEBC8B578
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 18:52:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C10C8B5AB
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 18:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF69F3BAF50
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:46:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60F1534D6C2
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEC4343D74;
-	Wed, 26 Nov 2025 17:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5573630CDBD;
+	Wed, 26 Nov 2025 17:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JxUQJqf1"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eUElGZ4r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571C343D69;
-	Wed, 26 Nov 2025 17:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D057730BF67;
+	Wed, 26 Nov 2025 17:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764178873; cv=none; b=IuOkC9y6Zf4hw0svdhcro2Aui43Z0R68B3qujUuVMzaHNL/WFolPqzGcP/fYKDwAal/5osTf79fHpVyR/j2wSuYVE9Za6z63xTXoUdo0eKZLOOJpE9S6QiwkuS22rOelSHc2L/RHDouBnyOT9G364vrpyRGg9daB0ozWXUbGrFw=
+	t=1764179666; cv=none; b=hg/St1kJ+8YtCuVC5zP0jexnZdi3Fd5UK2JDnoy0Y/56mBt0UTvVIKpmkpHr+czO52loJUp9HN11jwlkKtrAYzmFj1BEbKXrOLxuZLy7s/PY5yGuGW0zim1FbF0hfvWjyaMzz4LMIJbikrYY266Crrj0rnRvR1fRMtVMhvDXCyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764178873; c=relaxed/simple;
-	bh=B5/NUsS1hRDbA3SQYs7Nk8W86dErGoNGiBq8L60RbMc=;
-	h=Date:To:From:Subject:Message-Id; b=C1jUhJNVU+WZ8XdWpNA0ooFcWP7BxrnXKxkP+U/Zy73SWjD9KPFHd/04jHKddhYpMlJyQChwqWdOsFCyzEywIC9jM5ioT99PHNR2x3LIcK7n6NAouRdPVA5CJm/3cvFYPXgVBwOGAUoMP4r3/9q9urioPAGctBE2MnHSxy8LF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JxUQJqf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53CCC4CEF7;
-	Wed, 26 Nov 2025 17:41:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764178872;
-	bh=B5/NUsS1hRDbA3SQYs7Nk8W86dErGoNGiBq8L60RbMc=;
-	h=Date:To:From:Subject:From;
-	b=JxUQJqf1/LECd2rWA0Deh/mOTaHaOR21hrathcc44DiHHDCbLPvSsXr+/v/woSwZo
-	 5KSw/NU837cMNnEwqAYbC6/pG7wtQSmxFKqnLUlD5woMllruoBWuqEskFCYMUV9bhN
-	 HNA3OPYM4eYX3a7GW8GGl4yslHsS07McfrMLYvTo=
-Date: Wed, 26 Nov 2025 09:41:12 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,npiggin@gmail.com,mpe@ellerman.id.au,maddy@linux.ibm.com,christophe.leroy@csgroup.eu,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + powerpc-pseries-cmm-adjust-balloon_migrate-when-migrating-pages.patch added to mm-new branch
-Message-Id: <20251126174112.D53CCC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1764179666; c=relaxed/simple;
+	bh=dMjEhUToX/GfF9HX/QyQPqqJTHUhzNbVUsr9/l+m5hQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QzT4MwQqszVy49R1VQjBp30FrEw4WZ4N70SWqzwjTO3vtwjsTs1LlZyoSRdIqdV/7W1LTshEasggLtCmmGCFY3mpwaYPquuTw4zyfGqutux4mkqpWRbZAWar/ZtMl5hidYWwlgskaxi2m50NkaOCfyfnbRt6mKcPPngUYAhZbCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eUElGZ4r; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQGGgtM2650892;
+	Wed, 26 Nov 2025 17:54:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=WJEg4cYbU8pt4FxzVRcRBVeTy3a6g
+	ZBr+sRQRYF+Kms=; b=eUElGZ4rSC1Cr7d29ZRxjp6hQnz6pa8aRGkhG+VaN17eO
+	i4sLJi2yVTBu6j/BRUQoXjg56A9c3KzSiH7B3alswVKtsC0ENoFhbntAy9bRg9yI
+	flY+Zm0XUceqC5G14b14LY/gaFR3IXksksu9uYcVZrwezbrTwlUs1HrfdZNE6fI5
+	zLlowe2vKzi1CYmJ3SOI5mbEErWR+wjVB1wGaPokq+XZFmLMV3AAqpKLbsFs1Jca
+	UMWn6f97yjcYnDF8KvqBlT9tbWU+QwcdR2fBi9Cebpw0r2APuCvG5EFAWuUfJ61o
+	zcKi5fko8Bp//VZ8vRP7uxPKZOeD3cHt5I3Wfh6/g==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak7yhvyhs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Nov 2025 17:54:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AQGQawM032704;
+	Wed, 26 Nov 2025 17:54:17 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mb9wyt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Nov 2025 17:54:17 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AQHsGi1028620;
+	Wed, 26 Nov 2025 17:54:16 GMT
+Received: from gms-bm-13185-1.osdevelopmeniad.oraclevcn.com (gms-bm-13185-1.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.252.35])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ak3mb9wxw-1;
+	Wed, 26 Nov 2025 17:54:16 +0000
+From: Gulam Mohamed <gulam.mohamed@oracle.com>
+To: linux-kernel@vger.kernel.org, hch@lst.de
+Cc: stable@vger.kernel.org, gulam.mohamed@oracle.com
+Subject: [PATCH V2 5.15.y 1/2] Revert "block: Move checking GENHD_FL_NO_PART to bdev_add_partition()"
+Date: Wed, 26 Nov 2025 17:54:14 +0000
+Message-ID: <20251126175415.259906-1-gulam.mohamed@oracle.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511260146
+X-Authority-Analysis: v=2.4 cv=L6AQguT8 c=1 sm=1 tr=0 ts=69273ecb cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=El8LTbAtAdtaEuyw91sA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDE0NiBTYWx0ZWRfX/+vjol9uc4KO
+ 2CofQ8KIrohRwSHZDdF3MPDvi5cs3+0s/MHgWQ5oOk16G1+WluI2RV7K8RsSC+lAuH0Ro2lIJnj
+ iYSHxWWoP32rKqb/KTPFZY0Yr8kKgh1dxFqyB5Z1Khgnbbr/b/5iS3wANMMKFBU8xUSwylr8sn0
+ VaOVeJVgUh7u8RN4XPmo9EmGV1Ogkxum1+GdOFmVPG5Pm9Vxvd+BcbcGBdNi5HflQfamOF405nn
+ Ws93f5uDIsRAl+Dm/YGdAYF/DEiSQ7QEUvuj9d/X2B/PVjToBQoPS2NpKADys4DSX0OyYCjH278
+ ijpck8aJ05rxqxP2V9LMWiUc6fnUev/Ex7F5ivExh17wRBtgdrjnp3tpOCuhUE9ZI5lIg1D5iUj
+ vRFGxNvtktLgxVZ32kOwP8EWcXOoMg==
+X-Proofpoint-ORIG-GUID: xSZVw82dZmXM_Xm26Ve3giUTiynAzSsA
+X-Proofpoint-GUID: xSZVw82dZmXM_Xm26Ve3giUTiynAzSsA
 
+This reverts commit 7777f47f2ea64efd1016262e7b59fab34adfb869.
 
-The patch titled
-     Subject: powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
-has been added to the -mm mm-new branch.  Its filename is
-     powerpc-pseries-cmm-adjust-balloon_migrate-when-migrating-pages.patch
+The commit 1a721de8489f ("block: don't add or resize partition on the disk
+with GENHD_FL_NO_PART") and the commit 7777f47f2ea6 ("block: Move checking
+GENHD_FL_NO_PART to bdev_add_partition()") used the flag GENHD_FL_NO_PART
+to prevent the add or resize of partitions in 5.15 stable kernels.But in
+these 5.15 kernels, this is giving an issue with the following error
+where the loop driver wants to create a partition when the partscan is
+disabled on the loop device:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/powerpc-pseries-cmm-adjust-balloon_migrate-when-migrating-pages.patch
+dd if=/dev/zero of=loopDisk.dsk bs=1M count=1 seek=10240;
+losetup -f loopDisk.dsk;parted -s /dev/loop0 -- mklabel gpt mkpart primary
+           2048s 4096s
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0016293 s, 644 MB/s
+""
+Error: Partition(s) 1 on /dev/loop0 have been written, but we have been
+unable to inform the kernel of the change, probably because it/they are
+in use.  As a result, the old partition(s) will remain in use.  You should
+reboot now before making further changes.
+""
+If the partition scan is not enabled on the loop device, this flag
+GENHD_FL_NO_PART is getting set and when partition creation is tried,
+it returns an error EINVAL thereby preventing the creation of partitions.
+So, there is no such distinction between disabling of partition scan and
+partition creation.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Later in 6.xxx kernels, the commit b9684a71fca7 ("block, loop: support
+partitions without scanning") a new flag GD_SUPPRESS_PART_SCAN was
+introduced that just disables the partition scan and uses GENHD_FL_NO_PART
+only to prevent creating partition scan. So, the partition creationg can
+proceed with even if partition scan is disabled.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+As the commit b9684a71fca7 ("block, loop: support partitions without
+scanning") is not available in 5.15 stable kernel, and since there is no
+distinction between disabling of "partition scan" and "partition
+creation", we need to revert the commits 1a721de8489f and 7777f47f2ea6
+from 5.15 stable kernel to allow partition creation when partscan is
+disabled.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
-Date: Tue, 21 Oct 2025 12:06:06 +0200
-
-Let's properly adjust BALLOON_MIGRATE like the other drivers.
-
-Note that the INFLATE/DEFLATE events are triggered from the core when
-enqueueing/dequeueing pages.
-
-This was found by code inspection.
-
-Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
-Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Gulam Mohamed <gulam.mohamed@oracle.com>
 ---
+Changes in V2:
+- Added,in the second patch, the reason for reverting the patch
+- Added the linux stable version 5.15.y to the subject line
+- Added the version V2 to the subject line
+Links to V1:
+	https://lore.kernel.org/all/20251117174315.367072-1-gulam.mohamed@oracle.com/
+	https://lore.kernel.org/all/20251117174315.367072-2-gulam.mohamed@oracle.com/
+---
+ block/ioctl.c           | 2 ++
+ block/partitions/core.c | 5 -----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
- arch/powerpc/platforms/pseries/cmm.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/powerpc/platforms/pseries/cmm.c~powerpc-pseries-cmm-adjust-balloon_migrate-when-migrating-pages
-+++ a/arch/powerpc/platforms/pseries/cmm.c
-@@ -532,6 +532,7 @@ static int cmm_migratepage(struct balloo
+diff --git a/block/ioctl.c b/block/ioctl.c
+index a260e39e56a4..d25b84441237 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	struct blkpg_partition p;
+ 	sector_t start, length;
  
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
-+	__count_vm_event(BALLOON_MIGRATE);
- 	b_dev_info->isolated_pages--;
- 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
++	if (disk->flags & GENHD_FL_NO_PART)
++		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+diff --git a/block/partitions/core.c b/block/partitions/core.c
+index 0d1fe2b42b85..7b5750db7eaf 100644
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -463,11 +463,6 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
+ 		goto out;
+ 	}
  
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-powerpc-pseries-cmm-call-balloon_devinfo_init-also-without-config_balloon_compaction.patch
-powerpc-pseries-cmm-adjust-balloon_migrate-when-migrating-pages.patch
+-	if (disk->flags & GENHD_FL_NO_PART) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (partition_overlaps(disk, start, length, -1)) {
+ 		ret = -EBUSY;
+ 		goto out;
+-- 
+2.47.3
 
 
