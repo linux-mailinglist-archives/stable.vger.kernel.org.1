@@ -1,133 +1,167 @@
-Return-Path: <stable+bounces-196957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ACDC883E6
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C22EC883F2
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:19:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6E83AC5CC
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF2C53ADBC7
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9B53164A9;
-	Wed, 26 Nov 2025 06:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BC0316197;
+	Wed, 26 Nov 2025 06:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WIUOQC/v";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="swFWGOBn"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BKPn2jOl"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1BF2877FC
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DB92877FC;
+	Wed, 26 Nov 2025 06:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764137927; cv=none; b=h/7Uz8NQUirnRoM46I5EuyCWx4meVqs5v/4JnLRTrGgnDnskIICMsRHNuILqzK1ZejJp746enUgg5wDrhiTvgfQrgML8vtS+9BxOhCjrsCX4bcU8aDYiEpvi6cLkoD17bCb0YFqRP2BN/qiCxx1v/DSRp/0rG8fILyW5PSn+35Y=
+	t=1764137964; cv=none; b=VyKjxslxOhr2Sqj0x5uTOcggSDNLpO5cnuMS6JujkyNQold0v5KyCTpRbJ/6jA8j47Qyah2e7uGazuOb0laFAhb849xd4rEntLI3UQBO7qPJi495gl5G/RryVRLVJcUoBWwiY2PST+y7ILjs+MeswXjhnbyRoCP8yO/MDVqyGTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764137927; c=relaxed/simple;
-	bh=9IyvSK4NGPHO4fuFRUIAoekh2Pyy3yq0MdSh3GgP3u4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JXvVtbVi8nIAjfsVrpQmvClK1hYHxFzMbeHiMdsriYRoJr0l17RRxDNKCjLqTDWCEUxyxz6IDnAJmNNk4o6LgxnjLtgPo9/c6u9KaU4U8JNWc3ZZA9FBQsA/j7bXhBOfySp59zjyc3j2Gbjm0+nDm1lGn1y6ninEbi++nlhGnjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WIUOQC/v; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=swFWGOBn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764137925;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k4EAaBQUbKXStRQ2aorpN5sb6DcjtPj0E0lOttGJD0E=;
-	b=WIUOQC/vFB47807mSy+X1o+vZeqDW3+aXpBhmw7YGixPEIxFrNoc4oP1sGoXSWwzy/fVYn
-	UKxsikl0HEA9RwEVv6DtMR5R08cH2SfcKdVWjpse4i5kLLmCjJ2PilvX3+vG/1ZjNgwIPE
-	8VNRbMNf2fqvLt/tJyvQQ3qXWvNVkh8=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-B8WKozpFPmO5mU4HvRBnEQ-1; Wed, 26 Nov 2025 01:18:40 -0500
-X-MC-Unique: B8WKozpFPmO5mU4HvRBnEQ-1
-X-Mimecast-MFC-AGG-ID: B8WKozpFPmO5mU4HvRBnEQ_1764137919
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-343daf0f488so6464781a91.1
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 22:18:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764137919; x=1764742719; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k4EAaBQUbKXStRQ2aorpN5sb6DcjtPj0E0lOttGJD0E=;
-        b=swFWGOBn3vVHCYFwL35fL63bcPfobOWfrFQUJOpORH8m+T09XEy87gHcD4eiN5C+0j
-         qf2ouvR56rldegVgXkc28VVQmPX7k1i74DXw3U8HhOjzWmRnrfYfjiRolKPvPjgIm1O5
-         KRwcOo57HxgA2W4ZKSRCrUh1GJOC5IJM7vd/IyUOn4z2hiBFbloOqXVon94yBg2qgefR
-         eFwns6zD+vbxwzwhYXyf/POCVrytjKyZxllaRvdJqw8o50aFTIouCPcZ0SXDY9epn0zy
-         dK617O4bOk+wfgn8FcMp7YD1C/RZLZWS+Sq9Q6YVVCvI9uVCpfpxIwwyMtTKfu6NnV4c
-         ztZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764137919; x=1764742719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k4EAaBQUbKXStRQ2aorpN5sb6DcjtPj0E0lOttGJD0E=;
-        b=ifcUrCuMg2qNbnPAtEcHHJ5CFaYKIhzCuEnwTMmNi4q7Ld3G/mJQ/YC5xUfhZhm6I6
-         w3MyHa9oPc8dmM13SFDcfTR/qkz4D2dTra6euuD8UTtcyVpHrPLTw8e67/DJfssWQMQ+
-         XwtTQ76P8vwebgy0UuKG471oy26xu6BmiXhgMRaLnN3mH/33kNcEvB7JXE3FM5JQZhlk
-         AZoxLcCUKZNX1ysG0sQcVuSXkuBVDpsZiZvLfKH6I6Fz9VkWJ3QgsHaQHNR1GIP2mX0z
-         KbQ7NviIu561eYD49otyE7z42utlBTVh6BcNsv7Rwm3EGCyLZAoHekbTyfNfMS3F2CnR
-         YAdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVP7DMf7lRHbQl7wftY77eNmrzWPo8P2fkfH023I1a6tFG/VbzsX6MVlzNWyI0OyTTnIz+db7s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTPm8Xn9revfwZeuXwwlJYCReiWVWDFQmbR9WooJaWAAb6gLz1
-	jl/mtb/XZGGJEcKtpxHRhcVrWyURVVGIeyAWK8iFkpFRpiIfiy6yBKSGG5wKUJuSBFMZ5maXC2r
-	/4A+ah5Y4VHTchliE+d4JmTTosXgXYqZJPPpWCSjSZ+rDEaGJgxRYmEeKGM0ooDK/dwQUUOYpgO
-	tXuGs48V8SlxCSZ0DqGK8mBXWEDZr41lGC
-X-Gm-Gg: ASbGnculrjG4EQE1PZNu3sMb0fAU8g983OWhRq3cqOsqBOCCX7SBlloa/oh1PjOEH6j
-	75oJ2/YVBpcepuMSwNe7nbDktcKdkj3q9i5ALWxp8WA64+1l3rT7FC1Go5zW1Wj3kQEbfe41owg
-	MlSAHRuw0/nAEOQ+xBmirEeoqaM53nv+bJ1Dbn/DBzXb5UT1vUNTcLP0U4WMXnx3mKRkY=
-X-Received: by 2002:a17:90b:280d:b0:32e:3829:a71c with SMTP id 98e67ed59e1d1-3475ec0f397mr5733498a91.16.1764137919251;
-        Tue, 25 Nov 2025 22:18:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhRJldpd1OviU1vEEpkzZI2Tkr6ToasHRbqSGmjMSAi+R/5zZDXEphzASNpDnCWhFCs+nIjE+SnB6J4DOjgAg=
-X-Received: by 2002:a17:90b:280d:b0:32e:3829:a71c with SMTP id
- 98e67ed59e1d1-3475ec0f397mr5733479a91.16.1764137918886; Tue, 25 Nov 2025
- 22:18:38 -0800 (PST)
+	s=arc-20240116; t=1764137964; c=relaxed/simple;
+	bh=XCRZGPkt5eGq27kInUuHRnLT0RrOdl1nc+CixkQ6y1c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F5vup7WNtwp6OAYlc/48if95u50XJBlw1xAWTGYQXUJvCErjLnob8EKxcxT2nIXp1d6sepoC75J077h2Sd+JTV3ECvU9QLd3jN/dcZVD3QUo+A9AlVfCBwyiGhXh6kOXYymwiBAUT9WFPQvSCHsGR8Rp1EOq7CBRkz5WLFisq+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=BKPn2jOl; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from CPC-namja-026ON.redmond.corp.microsoft.com (unknown [4.213.232.20])
+	by linux.microsoft.com (Postfix) with ESMTPSA id ACFA42120EB2;
+	Tue, 25 Nov 2025 22:19:18 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACFA42120EB2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1764137962;
+	bh=GnvKGusb0fsxTKpU3T/9X1Q964Z1EVEhjbq1Av65TSQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BKPn2jOljUmMQgYD4Zv6gajimH35ihV0pbkmxwZvN5iHVJOtIR8xFW2pHclJTFDby
+	 BcWSpgUsslTGmVnORIPEqMMj5/tsS6zNS/ktSlK8dr6qs3auKgy4s/cmFaNGoR26pX
+	 lKvkRjRSyqeqOyNeNykEj5MqNWeoo35odj/HDCac=
+From: Naman Jain <namjain@linux.microsoft.com>
+To: Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Cc: "K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Tianyu Lan <tiala@microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Peter Morrow <pdmorrow@gmail.com>
+Subject: [PATCH 5.4-6.6 v2] uio_hv_generic: Enable user space to manage interrupt_mask for subchannels
+Date: Wed, 26 Nov 2025 06:19:14 +0000
+Message-ID: <20251126061914.538760-1-namjain@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120022950.10117-1-jasowang@redhat.com> <20251125194202.49e0eec7@kernel.org>
-In-Reply-To: <20251125194202.49e0eec7@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 26 Nov 2025 14:18:25 +0800
-X-Gm-Features: AWmQ_bn5sM2oyO_hdA7aO1WikB4cbE8JxiHO9Gu_Ovx5iCRUVPSo0zJRLtZg_zg
-Message-ID: <CACGkMEuCgSVpshsdfeTwvRnMiY8WMEt8pT=gJ2A_=oiV188X0Q@mail.gmail.com>
-Subject: Re: [PATCH net V2] vhost: rewind next_avail_head while discarding descriptors
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: mst@redhat.com, eperezma@redhat.com, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 26, 2025 at 11:42=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Thu, 20 Nov 2025 10:29:50 +0800 Jason Wang wrote:
-> > Subject: [PATCH net V2] vhost: rewind next_avail_head while discarding =
-descriptors
->
-> >  drivers/vhost/net.c   | 53 ++++++++++++++++++------------
-> >  drivers/vhost/vhost.c | 76 +++++++++++++++++++++++++++++++++++--------
-> >  drivers/vhost/vhost.h | 10 +++++-
->
-> Hm, is this targeting net because Michael is not planning any more PRs
-> for the 6.18 season?
+From: Long Li <longli@microsoft.com>
 
-Basically because it touches vhost-net. I need inputs for which tree
-we should go for this and future modifications that touch both vhost
-core and vhost-net.
+Enable the user space to manage interrupt_mask for subchannels through
+irqcontrol interface for uio device. Also remove the memory barrier
+when monitor bit is enabled as it is not necessary.
 
-Thanks
+This is a backport of the upstream
+commit d062463edf17 ("uio_hv_generic: Set event for all channels on the device")
+with some modifications to resolve merge conflicts and take care of
+missing support for slow devices on older kernels.
+Original change was not a fix, but it needs to be backported to fix a
+NULL pointer crash resulting from missing interrupt mask setting.
 
->
+Commit b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
+removed the default setting of interrupt_mask for channels (including
+subchannels) in the uio_hv_generic driver, as it relies on the user space
+to take care of managing it. This approach works fine when user space
+can control this setting using the irqcontrol interface provided for uio
+devices. Support for setting the interrupt mask through this interface for
+subchannels came only after commit d062463edf17 ("uio_hv_generic: Set event
+for all channels on the device"). On older kernels, this change is not
+present. With uio_hv_generic no longer setting the interrupt_mask, and
+userspace not having the capability to set it, it remains unset,
+and interrupts can come for the subchannels, which can result in a crash
+in hv_uio_channel_cb. Backport the change to older kernels, where this
+change was not present, to allow userspace to set the interrupt mask
+properly for subchannels. Additionally, this patch also adds certain
+checks for primary vs subchannels in the hv_uio_channel_cb, which can
+gracefully handle these two cases and prevent the NULL pointer crashes.
+
+Signed-off-by: Long Li <longli@microsoft.com>
+Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
+Closes: https://bugs.debian.org/1120602
+Cc: stable@vger.kernel.org # all LTS kernels from 5.4 till 6.6
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+---
+Changes since v1:
+https://lore.kernel.org/all/20251115085937.2237-1-namjain@linux.microsoft.com/
+* Changed commit being fixed, to reflect upstream commit
+* Added stable kernel versions info in Stable tag and email subject.
+This needs to be ported to all the stable kernels, where the Fixes patch
+went in - 5.4.x, 5.10.x, 5.15.x, 6.1.x, 6.6.x.
+
+Previous notes:
+Remove reviewed-by tags since the original code has changed quite a bit
+while backporting.
+Backported change for 6.12 kernel is sent separately.
+---
+ drivers/uio/uio_hv_generic.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 137109f5f69b..95c1f08028a3 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info, s32 irq_state)
+ {
+ 	struct hv_uio_private_data *pdata = info->priv;
+ 	struct hv_device *dev = pdata->device;
++	struct vmbus_channel *primary, *sc;
+ 
+-	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
+-	virt_mb();
++	primary = dev->channel;
++	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
++
++	mutex_lock(&vmbus_connection.channel_mutex);
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
++	mutex_unlock(&vmbus_connection.channel_mutex);
+ 
+ 	return 0;
+ }
+@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info, s32 irq_state)
+ static void hv_uio_channel_cb(void *context)
+ {
+ 	struct vmbus_channel *chan = context;
+-	struct hv_device *hv_dev = chan->device_obj;
+-	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
++	struct hv_device *hv_dev;
++	struct hv_uio_private_data *pdata;
+ 
+ 	virt_mb();
+ 
++	/*
++	 * The callback may come from a subchannel, in which case look
++	 * for the hv device in the primary channel
++	 */
++	hv_dev = chan->primary_channel ?
++		 chan->primary_channel->device_obj : chan->device_obj;
++	pdata = hv_get_drvdata(hv_dev);
+ 	uio_event_notify(&pdata->info);
+ }
+ 
+-- 
+2.43.0
 
 
