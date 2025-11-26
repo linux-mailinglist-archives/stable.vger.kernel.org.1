@@ -1,141 +1,79 @@
-Return-Path: <stable+bounces-196944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAB0C87EBE
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 04:18:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E262AC87EDC
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 04:19:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F3F3B3F21
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 03:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 937593B417A
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 03:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB1530DD1D;
-	Wed, 26 Nov 2025 03:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350E330DEBE;
+	Wed, 26 Nov 2025 03:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="QZDePy1B"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DRh5rBXf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A630DD11
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 03:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BBB30C625
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 03:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764127095; cv=none; b=T+JgQnf4n9C/VFF4gDmGxNMLF5yZuHaXnk6mmi+D4mC9YrsI321eTWroaFDtMqCuk5efY1m7tePMACID3j6piyAGmtqXgLvlIjmgWQ3nRES0TuDPYhsVj56ifJlEjKiCixvdwPOtiE0Q9m/D+wp5rV6nq57ccujolciZ/rE7Yl4=
+	t=1764127147; cv=none; b=L3qG62OLIakD0jFbD/1KKMomD0gAahP/94AaZekpRtsz1dCYlQs/lHfkqkJri5hT55cC1u11PviF2CFEof9oMynrWA468GFEqAQoJ9WRnsvID7n9oAhnMpMPUDqqefRcS82ZFp7Kx78cytA+m+6s7TUeectOg7co9lGIKub/boY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764127095; c=relaxed/simple;
-	bh=MebXQ/i/4CXGFSpTUvGXKnO4bK1YiUe6DcpTQoQ/VGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ck/pNoi++hdFizA4vmkwKmnKHiuMjTQhXyAwV5ukCm+tjjakIBF2MS1isOShrAjheEkL7pi1Ev6OauYPlIm1B6DakpYDhQEl6Ge+uZrxUe5voP5S6tNsBQaLdyztOXjYTX2fMYgJTTO685K2UObFRMHIydj5zcVk+ys/9HKf1Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=QZDePy1B; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so52931401cf.1
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 19:18:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1764127093; x=1764731893; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cvs0VVC0mcv4NgOGijtzLsQWvxXXKQp640I94GmhkA8=;
-        b=QZDePy1BQK7nrhF5my/7UsIFIUbHAKuC1dIVqNpFMrlAlNKOf+8jqdINeehVA6sbhO
-         G4u5OeAiry1/XeS5XF9Fd+ARzW/ZbZUIn/7ev9ZZaNSOLiM5bc1cVetA49Luqt1vaPAQ
-         56v7mzD8Eaw6HZuJknAQj+uP2sh4hB3TG/RuUB29vDr8zZQkK7ZGa5Evs7voMPiWYd9J
-         knDDiD+QbtuiDTkN0OnlX8gQC1FwU3/b4bV+HWJZS6Kx04DXMnL99r5LqxiQfIBbvVBA
-         QSkX2N4xYpTckY+63WFdTR6YRja49EEtM7sGqfCrhdiPle7ZnxgE3XKbpSlPPE3l3ERE
-         R3PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764127093; x=1764731893;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cvs0VVC0mcv4NgOGijtzLsQWvxXXKQp640I94GmhkA8=;
-        b=eBz99Jhj4EJWbA1Y7OVaHmM8Fq4S8l1eXlrjbOJVlWl9e/1+G+7ggNWMtNJ0dA/G5G
-         ZFfjwB3q4sjVUOjx9onJh40knmDwwnFwrrve68becy+1wybMrhj88hXpD0bYea/vFxuH
-         Cz6hvGJVy7XEj92PnBmBeazvigN7KMe2zlj+d+1k2mN2f1B3sk0VnJvkUAN7ajiVAo5H
-         bN2Aw6F8EY0vmNLqydGL9/TNXbbISlmjbhWlku6cHEnd8ISESLZq5RMoFgL/A7DSoWfg
-         ++mF+dSurNI0WQO3BurBPZ52gwL0v8/k9YbCWl5EIVdYAvidTP5DgQOYe7qM0rgWMiaa
-         8OgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6ZJPVrJk3zr97FWE2UNBPdqxrPeH6+83S9zn1FL0vmgwUiNRAiAb8TnV0iK+K8tglINJg/MQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZW1iyp9zUwIeD7e+UkLob1EGR+eu0AUR+rIMCyL931UA0jkys
-	bgHleqN0H3IYaIE+xSg/wU+szRG1QBqzLuzSiNPV6MPSmJjVLvLJndo/5LmqwyXpPUc=
-X-Gm-Gg: ASbGncsLVOBC2+6Glieki49hveRWW8MwLJGNyhNznNtGSe49sOfIyJ8GY6OpAceGQFg
-	FMzvxAKox5RnAm78N0BIN7pch81i6WBeWd6hXDlYbmec2ayedF0XKhTUwpwT/qboyKmoMsAc5sv
-	Ik7LvFiuDOXeC9h9Lpodiv0sQLFudAtvp/gyculoQAMIzRDpQOlhzZTTY0fmR+g2YozpLX0Gku4
-	O/5qMTcQU8v8koYINQSG+lhDlDzKiSGxB1QS/MbX8Sd2VULL/U6gOOYHzhvwvzlQuGoYGoPBvpc
-	5NWpaBgXKLK8OOo6M8a93AB/z4qgdL7GdBV/CeJrzsS3qRCXoU8jQPqkNHxnIUuGCPw9lKHLtNQ
-	4I+enzZEIRfPpxltIF3tn39Y2tsQX86pQPwIQBgbjZPX7YL04Yw6N7L8eiNz8+hrFdNkK9PjrFS
-	ufm0NGhBK0SqXuDoja33UVcDMWTgTNMz6/izBAO/BewsvLHk2wZrM=
-X-Google-Smtp-Source: AGHT+IFVPZAvlFu8nDpWWVLI1C6FD2IyTsqdkG4yg1n+X5k0lKqQqgf0T0rJLMz2wOCW390Qqgh8pg==
-X-Received: by 2002:ac8:5f84:0:b0:4ee:2c3c:6e with SMTP id d75a77b69052e-4efbda49e09mr73391871cf.30.1764127092631;
-        Tue, 25 Nov 2025 19:18:12 -0800 (PST)
-Received: from localhost (ip-24-156-181-135.user.start.ca. [24.156.181.135])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4ee48d3a041sm115728681cf.1.2025.11.25.19.18.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 19:18:11 -0800 (PST)
-Date: Tue, 25 Nov 2025 22:18:10 -0500
-From: Nick Bowler <nbowler@draconx.ca>
-To: linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-rtc@vger.kernel.org
-Cc: Esben Haabendal <esben@geanix.com>, stable@vger.kernel.org, 
-	sparclinux@vger.kernel.org
-Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
-Message-ID: <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
-References: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
+	s=arc-20240116; t=1764127147; c=relaxed/simple;
+	bh=J7o8+a1I25gyMr2nCGcTd+8YhviSg5xpSP1kY5jJpYc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mx1lgUAt5yGtwfc0dWwklaSFu7nS4Hb9J6Y+nwHq9YnpEjk+zxHSkO8BZ8gUiArEPnXmEgq+B67SBPNSV2rzQ4ZU3GTCpFJOhcbmclKlHC0eFVtUDFvJmGh/NNz/TnqX072uUz/AlBckTXzQ6qe/DjTsxuPrONCQkUXqTOqoRWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=fail smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DRh5rBXf; arc=none smtp.client-ip=51.83.17.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1764127134; x=1764386334;
+	bh=J7o8+a1I25gyMr2nCGcTd+8YhviSg5xpSP1kY5jJpYc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=DRh5rBXfGFjvsGmNuNwefNFSRj0debIygHyCCwP8j8/TottpJs2+lxRgPJfQyzaX0
+	 XdTOtqjzG/afpZWYvYb3U515HXvTiYkVU2w+yvZ2sGgN3cYdg/2PsHn4OC+UaK9TBE
+	 dKR6Cr/92W4jsn+Z5d75c6kMtQQCSkH9JX2kW/dhAwJsgNHSerXXDBS8HiZY4KnCUR
+	 uRBXEnli8GCWoKpeVp0hTfaBKCDs2WhxDOEaQfJytO8tI7nlJD4P8vD9gYLz8z5yfh
+	 FYH2qhH8tZh+xgor54M4bqFJJ76GulDq9GuiyDpsYUTohK0le+1o0fnyTk3yDDfoHx
+	 EhCR7VJB0iANQ==
+Date: Wed, 26 Nov 2025 03:18:48 +0000
+To: patchwork-bot+bluetooth@kernel.org
+From: incogcyberpunk@proton.me
+Cc: Doug Anderson <dianders@chromium.org>, marcel@holtmann.org, luiz.dentz@gmail.com, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, regressions@leemhuis.info, regressions@lists.linux.dev, johan.hedberg@gmail.com, sean.wang@mediatek.com, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v3] Bluetooth: btusb: mediatek: Avoid btusb_mtk_claim_iso_intf() NULL deref
+Message-ID: <fcMPe6V9vMYxkXRMnKXiaeTnOwAMBNRTmF1mgLePTpz3Q4hPqpb0WVQ5aXZljqkOtZ2W_47PVL1Q4lnf7kZJhFS4aGwP8_4QiqJl2ScKSi4=@proton.me>
+In-Reply-To: <176366460701.1748676.511972373877694762.git-patchwork-notify@kernel.org>
+References: <20251120081227.v3.1.I1ae7aebc967e52c7c4be7aa65fbd81736649568a@changeid> <176366460701.1748676.511972373877694762.git-patchwork-notify@kernel.org>
+Feedback-ID: 139104781:user:proton
+X-Pm-Message-ID: f6d82a3f4af4a0c9485cbb7610dd235edea26b50
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Any thoughts?
+Hey,
 
-The problem is still present in 6.18-rc7 and reverting the commit
-indicated below still fixes it.
+It's been almost a week since the regression was reported and an patch was =
+provided to fix the issue, which has now been accepted in the linux-next tr=
+ee; but I see that despite being a patch for regression, a merge/pull reque=
+st was not made upstream for the latest -rc mainline release.=20
 
-I am also seeing the same failure on a totally different system with
-Dallas DS1286 RTC, which is also fixed by reverting this commit.
+Is there any way that I can track the updates for this patch to be onto the=
+ mainline release?=20
 
-Since the initial report this regression has been further backported
-to all the remaining longterm kernel series.
+Sorry, if I am missing anything.=20
 
-Thanks,
-  Nick
-
-On Thu, Oct 23, 2025 at 12:45:13AM -0400, Nick Bowler wrote:
-> Hi,
-> 
-> After a stable kernel update, the hwclock command seems no longer
-> functional on my SPARC system with an ST M48T59Y-70PC1 RTC:
-> 
->   # hwclock
->   [...long delay...]
->   hwclock: select() to /dev/rtc0 to wait for clock tick timed out
-> 
-> On prior kernels, there is no problem:
-> 
->   # hwclock
->   2025-10-22 22:21:04.806992-04:00
-> 
-> I reproduced the same failure on 6.18-rc2 and bisected to this commit:
-> 
->   commit 795cda8338eab036013314dbc0b04aae728880ab
->   Author: Esben Haabendal <esben@geanix.com>
->   Date:   Fri May 16 09:23:35 2025 +0200
->   
->       rtc: interface: Fix long-standing race when setting alarm
-> 
-> This commit was backported to all current 6.x stable branches,
-> as well as 5.15.x, so they all have the same regression.
-> 
-> Reverting this commit on top of 6.18-rc2 corrects the problem.
-> 
-> Let me know if you need any more info!
-> 
-> Thanks,
->   Nick
+Regards,=20
+IncogCyberpunk
 
