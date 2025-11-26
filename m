@@ -1,224 +1,185 @@
-Return-Path: <stable+bounces-196940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A02C87A8F
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 02:13:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8B9C87BFB
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 02:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A743B5541
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 01:13:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 300F34E2F23
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 01:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF202F7444;
-	Wed, 26 Nov 2025 01:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BF6305E2F;
+	Wed, 26 Nov 2025 01:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NWo5DtQc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JbkifzY8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jcQ5ODI+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CD32F6900
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91DA1A9B58
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764119590; cv=none; b=u+xJIji8UCaJyRBQHC/XuNjT52gH4ioBuItX+IyQIlyQktZiWqETd5e3Xg1Bt5NiSWPIwCVMFeGUJTnK5yNpBPNtHVXbQc//ZjPk6G2MLnzDKxfKQwXHF6OdC8y7ADVfJ2CcBKi+1jtnce7gUzNb9vih06gmOghAzSpsFD1Gy/4=
+	t=1764121792; cv=none; b=lG8wTVFM1GlV5+wwoNw4PtMxQ1I+Yf3FevycRD5DN5Keuj7MeICD/8nfQF684CORD8CYbs62kiVwe5dBKHECs+d78xgVKa4GAydZkLBQjfktxSROdXemIx5UyHTO5v+nzEFm++SuGB/RoJiRxZRfh0FOOy2KYUjM0bPRhDfnMQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764119590; c=relaxed/simple;
-	bh=PEUucwAbtlApOMeePyYfxIc/Dt2KhDGIy/f0I9xYmH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HMazHwOftSHLGJwOC+TqySxW7FZ8vMkVfUvTDvh6j9MptToa9u2ojnBEPIdzG2xG58pEeXeaz8Z3HooKRRStUoeVJsPINypGr2BOrfTRMfFu+exGO7RizYDhGAgQ+4YlHY8md8+aPd1FyIBSsuppd8U7gTqzXoReMoXQoaj8wJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NWo5DtQc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JbkifzY8; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5APJEI2s2651096
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=prAN8wjJmgsa83ldd4vAxryi
-	3yPKicYjvD8xCOJLEzg=; b=NWo5DtQcvf7jO/FQtnOTMwq1jTDPhycXUpYE5Tlv
-	0gdbj1+yxUtKpSYJNicZ0WS5aL0HEzX5Ic3m1zWvbYBIlCr8YXWyP0z63r3NdFuY
-	3FQE5ex6fCzCmcWmrjA3iZ0oOoHV1biCiCCwvK33eAVoTqCmutOARKil0ARFrmCK
-	MQ27lByvJmYbFjGwcCoaMRnVnJT7P4BTx9sxaaLNtcyB5fIVxHPKW6HUMYsE3780
-	e73K1oMeg5c6aJfRcwN+Vl1k6b5Xa2UbVj5dyuRQFM+rZBAZDgK96lDaIDlgfMUq
-	UePNyaH5gHEhoT9TlkZv2GA62k3UjnAA90frDk6Kpf9kXg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4anaabtb5s-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 01:13:08 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b2e41884a0so1648813585a.1
-        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 17:13:07 -0800 (PST)
+	s=arc-20240116; t=1764121792; c=relaxed/simple;
+	bh=pWKdAtmbcjOBC/rjEzN8Ynk6y/vXR4p9htT1qe9JR4k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Xs9IdcoBaiXUX2ZDpowI0N74QdGEkRZrpzZyYxhzUVdIYcy0Y/VwyoJwn8afXDLAzcksMPRug7pURLKjt5We962l1R6Y3cdUUae9EsEi21E8xQ9nCvQ2ScTWfAKqSoAc+36KgRkYirv/PFA30NWhq3cdhA5ZPcwvMO1vcDZRcNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jcQ5ODI+; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3436b2dbff6so920781a91.2
+        for <stable@vger.kernel.org>; Tue, 25 Nov 2025 17:49:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764119587; x=1764724387; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=prAN8wjJmgsa83ldd4vAxryi3yPKicYjvD8xCOJLEzg=;
-        b=JbkifzY8Gh58lzq2CMgRtZgw/FL58/NtmDqtamfyF6sLbDLswka+AHF+h9HxFj5CNl
-         SxdXtQ8cvTSQ6l/L+1TIsblp9GO7/nb+feW4wmLjrnxPGG3GPGfAnI+qORLOYmOfmGi5
-         gxrNXS7hWj425F0qlFHNTtwPXpFIwl4hYYm5M9azH19pN1qFYwR5AK2G2eLNH0qwQZoP
-         B+7qnIrjWPqyOiqSYgJssbozhW4opdxqhamf1MkhirT8o4KYnurFTUVKK6vzjMYlxgQ/
-         dNvhT9lc835rHRaqZvzb/qRH428ZXklR0U5fC3OXdB/NvgrWYVPhpbxO+Xxn7vlku6Ka
-         yBlA==
+        d=gmail.com; s=20230601; t=1764121790; x=1764726590; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c2JIwhg1M/+/Us4TNcrvjEWCQJJcUG3hiuOxKjzzsq8=;
+        b=jcQ5ODI+PFrMXzjVV/SSc+gsg6lDKiqqPtAwlNgmH5En1koBOf40KLSaLk8OrCppUl
+         qTnA4qNS7yI56q8cCfisfrKWzPJ+ceW+O4xYxUHloRZrdRR8oZvuW1zlmVWpFwotlrDt
+         RvzgcwW25xn8mIrOlL2S6Uy53z5lF9sll3cVAzs8Y0INZ9iMYBsRgnkFHStSYO5Rw8+N
+         2za0owNybyNhRcPMntkALozfH5ERHcOR0qXVceJhBpVpV98lkk4XJdjz5IBDfrx6mZhL
+         uqmA70mgFrMnYJYdsgcRp4/OqLQfZay/YEpZBNPG7RihRuQ762RCzAs6dsIz0b0ebM4L
+         Vm9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764119587; x=1764724387;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=prAN8wjJmgsa83ldd4vAxryi3yPKicYjvD8xCOJLEzg=;
-        b=N03/zUXiV/0i0GSUJtFLVjQOr27TU9f9qLwjhyvPD9CbUpvS57mWT2hqK9XrV6JNKi
-         pw0rXCyIuJaBxKdmGVR2ktQx6+vLooHV0Fzn76sgoIPxFf/Yxx0UZ+nYxrX/0pSHdqE5
-         JhtzWnaIhKFovk87NJ4ddYYJjdtnIYZaJ2QIliuASONoYA9+1bx3eR0i2LKR5hIqyfKi
-         tBU2Y/y3e5nlz0RoTkvohRYindqXs++Bmf6CZD5HIkVsdm+jbZ25fstZfD829BOGz9WI
-         zqFTiROy+NNqxpA9miUcIMbd92dEcJsViZ+/Q5iFFdp0KDwggACRV+lg9fy5MGmE37gz
-         s4cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXR8fRDT5+AjNKNIjHRPnoUiSeuI4Y1KoaIGP37GfPuZNlRkMGeF0hDC9ziiJC5h/QO/PHFXco=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRhZ9/MkUMfGuY5H/5Yl5fYFKWO1OZYOhn10UaN/7I3qMgocY1
-	vd2L9OyNqV+Q/t7p6Xva+FthkBFk5VCzV05C/FfjdHgsYesZ7sua5WfMQ1SU1PY8x0m1pORb+4Q
-	Yd1FVr8zfoojaOa8N0Ooht2BkpO38M2qtceaGnj5dJoBkKWWbCKg9/J2uve4=
-X-Gm-Gg: ASbGncukLdZA3P4ZflwiZHGyY9ATTG4ko+f3zR3donhoZcMcK1qIClRR+3b7nWF75Wp
-	kdn1SR0U16Zp6mzcAZmGXNWsRrQVVTG9PectTlMp3UbxOgDZIy2JP1Ot5Y4IWDP3KXMy1kI79SQ
-	VAtciufzg2GIPKg5zDvHrVWw3eqCan3dJ7bDPf5l7VUO7wpiLw+YlusTCUiAatgc+PO4WbziFlh
-	RR9zT1nis5R9+82ZTL2VWmWv2Ak8dyGhaQtQAZ4q5u0lbe/F4SdjWW+zu/5fdFDCXpT4tEtEgEl
-	rxuFWyPIXQ59opS4FEPmgPRceh2rlvQVDawdaZhAJsjSEzjlo5PUYfPZ6KobDSFXvhHEV0NLNRR
-	IxYPQsE/cReZF8D0kfMH72Yp1/WgpbGodq3KZayUBFERvN2efJn0lINZrLSY1yWaJOpFp/XQ2Us
-	DtGB7+rZBP4G2EQBQeNzxpOSc=
-X-Received: by 2002:a05:620a:4623:b0:8b1:ed55:e4f0 with SMTP id af79cd13be357-8b33d22542cmr2493019485a.39.1764119586897;
-        Tue, 25 Nov 2025 17:13:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5UefQ4KVrSMEfqb4noheVestKPUsxTe5Q2DhkKkqIPcQCwSpdkGN4gJQlMEtZr17XVFC8Uw==
-X-Received: by 2002:a05:620a:4623:b0:8b1:ed55:e4f0 with SMTP id af79cd13be357-8b33d22542cmr2493016785a.39.1764119586436;
-        Tue, 25 Nov 2025 17:13:06 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbc597bsm5580314e87.69.2025.11.25.17.13.02
+        d=1e100.net; s=20230601; t=1764121790; x=1764726590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c2JIwhg1M/+/Us4TNcrvjEWCQJJcUG3hiuOxKjzzsq8=;
+        b=jqj61T5bxxPEr2VK8mVSbrLtdO5LcAyE/vtk5qDe4EU5eeNRtn307Ga8mpm8Cdt7gs
+         GV+ayfYhVhJTvtqlJmPXKy0Cx3qSdioeLOlbgJ+IrdsDRC2Dq5OBGPwW7zxdrnrP36JQ
+         ujJBVgwZKUdsdP6gtP5WN4ZLrSJMrmd7t5CZSTiLwqokuipeOf0swZTK+4UrwucBrtQE
+         K89C5IxBr0kuUlIf++GnLicdzoNauWCpryyp6NyRH744PupO0Njt/Mek4gB0/PO4Uan4
+         UYwsBrqfw/SjByqNdfiMrwwFoBFCNlkdm32df6/bW9huPZ5K5I1hSjvaIBAFOpr9oVOV
+         4Drw==
+X-Forwarded-Encrypted: i=1; AJvYcCXq4g3ZwnuFVpHmrEMRfDcu/zK0Sl1LPXCeWPlGHLP+7g4HRVJ3VTYGoy971eYFT0VGbqWC2KU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLg3jU+XopoVGOJW07jxEfb+tFsciqY62duGJ/btlXQudwwICV
+	dI7FCukomDFCWgSF8JGW2QsJ7lK9mAhK9c2jR/51OV2nneUTXhE66Lnw
+X-Gm-Gg: ASbGncsL0aigq+bJ8zU8ILHI+WLSa7QOWEd33j3M5lgUqu8LH4QWboGfSUZLUoeeRsX
+	ylX1NMSTmrFSJFnP2ciZyiV0kYsLPoSmPdk+USoGk0PcXFWmQX788B6JicA7PiD+u/hkuidY/VZ
+	OgmA4G3KbyNbVOF+fXX0LsmbgY0yk72ytzSFi9W4wbtlpfOzjIEBAW4MmHzKbEwewr/430AvsZr
+	1BFgZQVNdmOtpZaUKFXiybMqeQm+0lLKXvOgqkOPBGKBJ4DoYBf/h+snR0ukf6IafJOk0W9MmA/
+	d0RbwpyzYJRfMwCl6u9/CtUNdUEloQiymgbS5SUv+PMs5H25X8UKVfoLIIAfNjIcNWAhH408KyG
+	vqGeVv0DiqbkKe4mkYUCljLneirne7A56ESTs4MLc00bOo/RMKk2zVXD1kP1vwk9txc/bpBgo8k
+	2XWyiVr6luL5roeBEtJj+24u2BIIjwzK/8UU/3WITi2/YkfL/KKjste5EOYH5I4daEbvmBVAgR
+X-Google-Smtp-Source: AGHT+IHrljL275fXtsXNqEjG58xd1IF8GPPmptkpdwAzH5JqK8ILh0LAGkZo45N/WI2fpgRCE5WxoQ==
+X-Received: by 2002:a17:903:1ae3:b0:290:c94a:f4c8 with SMTP id d9443c01a7336-29b6be83ec2mr109629045ad.1.1764121790102;
+        Tue, 25 Nov 2025 17:49:50 -0800 (PST)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm174994755ad.25.2025.11.25.17.49.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 17:13:04 -0800 (PST)
-Date: Wed, 26 Nov 2025 03:13:00 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Cc: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Bryan O'Donoghue <bod@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Viswanath Boma <quic_vboma@quicinc.com>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Mecid <mecid@mecomediagroup.de>,
-        Renjiang Han <renjiang.han@oss.qualcomm.com>
-Subject: Re: [PATCH v2] media: venus: vdec: restrict EOS addr quirk to IRIS2
- only
-Message-ID: <wq7kaelokxqxkxxi5cvp7sz2az5hlam4nyyt4v55zrgei3jsyo@yyefysdsw3co>
-References: <20251125-venus-vp9-fix-v2-1-8bfcea128b95@oss.qualcomm.com>
+        Tue, 25 Nov 2025 17:49:49 -0800 (PST)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>
+Cc: gregkh@linuxfoundation.org,
+	linux-cifs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+Date: Wed, 26 Nov 2025 10:49:33 +0900
+Message-Id: <20251126014933.10085-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAKYAXd8=buKQRve+pdBFp9ce+5MiR02ZnHtGHy-hYDfhGWn=pQ@mail.gmail.com>
+References: <CAKYAXd8=buKQRve+pdBFp9ce+5MiR02ZnHtGHy-hYDfhGWn=pQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125-venus-vp9-fix-v2-1-8bfcea128b95@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=Vd36/Vp9 c=1 sm=1 tr=0 ts=69265424 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vnrCTU9D9aip1Mwo_JEA:9
- a=CjuIK1q_8ugA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: Zl353euI1yU45RNYtD0Rfb4irxpBFyyw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDAwNyBTYWx0ZWRfXyRUx4IXOOQMt
- GqzYfE1ZlUR/Ski50VAPHxz9IOWPoiZ90O8RlrtRw4wgzYSgRQKSYaIzoF3NrymItIOpljuKM7H
- YsRGvyGyglk3Mvq+iYHlPxIJDU1lkFiW967MOP6HUseHYVqh2oBJWfZbtG1/Ikj/7V9y7x7y5NJ
- Z249Su3ttuMnkqXDMCdbl3ZAwTfJQUemWMnRGNEQhI8S3K/YZ29cNFFbX+a8RgY0OP2qWsxZgy6
- SenTviPHH9hAtTVWYkzp4iBbcm6s7h89Z+pS0pCcR2uvnxNizYPiVszigrdjpZXssU4mLoxf0sj
- 25xKiVHNETZUiTm9p5aSEHNXj7/EBVcFXYfOjJ3LrG2WIReHsZ0fRyxG1n2nzx7OfwIu4YMN7qj
- gHucz7MW/R6Gh4Mv9unnnZn39Q2ijg==
-X-Proofpoint-GUID: Zl353euI1yU45RNYtD0Rfb4irxpBFyyw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 adultscore=0 phishscore=0
- suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511260007
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 25, 2025 at 11:04:19AM +0530, Dikshita Agarwal wrote:
-> On SM8250 (IRIS2) with firmware older than 1.0.087, the firmware could
+ipc_msg_send_request() waits for a generic netlink reply using an
+ipc_msg_table_entry on the stack. The generic netlink handler
+(handle_generic_event()/handle_response()) fills entry->response under
+ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
+entry->response without holding the same lock.
 
-Hmm, interesting. In linux-firmware we have VIDEO.IR.1.0-00005-PROD-4
-for SM8250 firmware. This version wouldn't be parsed at all for SM8250
-(nor does it follow the format string). Why? Would you please fix
-version parsing for this firmware?
+Under high concurrency this allows a race where handle_response() is
+copying data into entry->response while ipc_msg_send_request() has just
+freed it, leading to a slab-use-after-free reported by KASAN in
+handle_generic_event():
 
-> not handle a dummy device address for EOS buffers, so a NULL device
-> address is sent instead. The existing check used IS_V6() alongside a
-> firmware version gate:
-> 
->     if (IS_V6(core) && is_fw_rev_or_older(core, 1, 0, 87))
->         fdata.device_addr = 0;
->     else
-> 	fdata.device_addr = 0xdeadb000;
-> 
-> However, SC7280 which is also V6, uses a firmware string of the form
-> "1.0.<commit-hash>", which the version parser translates to 1.0.0. This
+  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
+  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
+  ...
+  Freed by task:
+    kvfree
+    ipc_msg_send_request [ksmbd]
+    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
 
-I still think that using commit-hash is a mistake. It doesn't allow any
-version checks.
+Fix by:
+- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
+  entry->response, freeing it when invalid, and removing the entry from
+  ipc_msg_table.
+- Returning the final entry->response pointer to the caller only after
+  the hash entry is removed under the lock.
+- Returning NULL in the error path, preserving the original API
+  semantics.
 
-> unintentionally satisfies the `is_fw_rev_or_older(..., 1, 0, 87)`
-> condition on SC7280. Combined with IS_V6() matching there as well, the
-> quirk is incorrectly applied to SC7280, causing VP9 decode failures.
-> 
-> Constrain the check to IRIS2 (SM8250) only, which is the only platform
-> that needed this quirk, by replacing IS_V6() with IS_IRIS2(). This
-> restores correct behavior on SC7280 (no forced NULL EOS buffer address).
-> 
-> Fixes: 47f867cb1b63 ("media: venus: fix EOS handling in decoder stop command")
-> Cc: stable@vger.kernel.org
-> Reported-by: Mecid <mecid@mecomediagroup.de>
-> Closes: https://github.com/qualcomm-linux/kernel-topics/issues/222
-> Co-developed-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
-> Signed-off-by: Renjiang Han <renjiang.han@oss.qualcomm.com>
-> Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Fixed email address for Mecid (Konrad)
-> - Added inline comment for the quirk (Konrad)
-> - Link to v1: https://lore.kernel.org/r/20251124-venus-vp9-fix-v1-1-2ff36d9f2374@oss.qualcomm.com
-> ---
->  drivers/media/platform/qcom/venus/vdec.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-> index 4a6641fdffcf79705893be58c7ec5cf485e2fab9..6b3d5e59133e6902353d15c24c8bbaed4fcb6808 100644
-> --- a/drivers/media/platform/qcom/venus/vdec.c
-> +++ b/drivers/media/platform/qcom/venus/vdec.c
-> @@ -565,7 +565,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
->  
->  		fdata.buffer_type = HFI_BUFFER_INPUT;
->  		fdata.flags |= HFI_BUFFERFLAG_EOS;
-> -		if (IS_V6(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
-> +
-> +		/* Send NULL EOS addr for only IRIS2 (SM8250),for firmware <= 1.0.87.
-> +		 * SC7280 also reports "1.0.<hash>" parsed as 1.0.0; restricting to IRIS2
-> +		 * avoids misapplying this quirk and breaking VP9 decode on SC7280.
-> +		 */
-> +
-> +		if (IS_IRIS2(inst->core) && is_fw_rev_or_older(inst->core, 1, 0, 87))
->  			fdata.device_addr = 0;
->  		else
->  			fdata.device_addr = 0xdeadb000;
-> 
-> ---
-> base-commit: 1f2353f5a1af995efbf7bea44341aa0d03460b28
-> change-id: 20251121-venus-vp9-fix-1ff602724c02
-> 
-> Best regards,
-> -- 
-> Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-> 
+This makes all accesses to entry->response consistent with
+handle_response(), which already updates and fills the response buffer
+under ipc_msg_table_lock, and closes the race that allowed the UAF.
 
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+---
+ fs/smb/server/transport_ipc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 46f87fd1c..7b1a060da 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -532,6 +532,7 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
+ static void *ipc_msg_send_request(struct ksmbd_ipc_msg *msg, unsigned int handle)
+ {
+ 	struct ipc_msg_table_entry entry;
++	void *response = NULL;
+ 	int ret;
+ 
+ 	if ((int)handle < 0)
+@@ -553,6 +554,8 @@ static void *ipc_msg_send_request(struct ksmbd_ipc_msg *msg, unsigned int handle
+ 	ret = wait_event_interruptible_timeout(entry.wait,
+ 					       entry.response != NULL,
+ 					       IPC_WAIT_TIMEOUT);
++
++	down_write(&ipc_msg_table_lock);
+ 	if (entry.response) {
+ 		ret = ipc_validate_msg(&entry);
+ 		if (ret) {
+@@ -560,11 +563,19 @@ static void *ipc_msg_send_request(struct ksmbd_ipc_msg *msg, unsigned int handle
+ 			entry.response = NULL;
+ 		}
+ 	}
++
++	response = entry.response;
++	hash_del(&entry.ipc_table_hlist);
++	up_write(&ipc_msg_table_lock);
++
++	return response;
++
+ out:
+ 	down_write(&ipc_msg_table_lock);
+ 	hash_del(&entry.ipc_table_hlist);
+ 	up_write(&ipc_msg_table_lock);
+-	return entry.response;
++
++	return NULL;
+ }
+ 
+ static int ksmbd_ipc_heartbeat_request(void)
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 
