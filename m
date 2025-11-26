@@ -1,115 +1,185 @@
-Return-Path: <stable+bounces-196962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-196963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32A5C88491
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:35:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6DBC88512
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 07:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 946BB4E2408
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:35:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 257703B2F90
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 06:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434B930EF62;
-	Wed, 26 Nov 2025 06:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1CA2F7AB4;
+	Wed, 26 Nov 2025 06:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="UCtJqW78"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLnMQADe"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C795F2192EE
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 06:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76CA23EA81;
+	Wed, 26 Nov 2025 06:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764138943; cv=none; b=hSYfmCXIy1QVXQ1J1Qa2CVcrH4qHrQHDqSvkhuLXD5QPeNgdpzVlZpGIsB0zsNAORHKjPId/iHRLm8JSw2jImwJeDUmNQKtDB7qkDzgeRFnybg1dfggcsgQFIcZj9tg0vmckyptJr/ftgDQ+nWr9gwJDBefOI6DyOWt9R4dEzvE=
+	t=1764139655; cv=none; b=HZIm+IWJWaoC6dNFxVr1+7sblLFCnM4c1nSGmWwWGlhEQoGFz8QuNZiOAW6IU7bBquVeXuQRnsQWy0w8bpKt7k3JVzd07dNsunim5vv9HZgDcSEGQgll6ce7LLlpGV0o01m4/pXrCehhyU2bn0CyoqD+WNV9YjsT2+J9SQpPj0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764138943; c=relaxed/simple;
-	bh=n/TleG8NMo/yMDcgI8l/eb1LaTU01tWaRIBEs6/a5yM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fZUCvxQvvuxz4uOkGNg+fA5Qxq3jB4dafhomcEBoLnfHgi/Drn/K7Dl7ioIvUam6+lwZAMH/o8oHgZCtZGgZq2c9wMwnl/p1Z4o+ARlehGyzeF9T6WXjVht0JVGjNZyMvA3lbfVdAVwNBYNHpdu1nny8yhWk+Q5UmxANGoHXgCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=UCtJqW78; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 1d14a2c8ca9211f0b2bf0b349165d6e0-20251126
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=do/xVjECxk0XCq5r3dtJPN+k1ODOd0A4nEEuScFllus=;
-	b=UCtJqW78J+Ku4EOa9+NTNIlSSskgzGs3T9FMi00OJbYCaKXHgJ2Fo7e3xVlf3nuvIpo/HYRC++6ER8hf0K0+/hE00kFvdVg/99MV+VTM89adAyWPin+7HNJ+XjmWgN46SzLCCWAaQ5SSf6e8sUUxtQ+axGP4U3yt424WxErzD34=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:b38bfb1b-06bf-4db5-abfb-de23a0124cfc,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:a9d874c,CLOUDID:ad8636bb-0c02-41a0-92a3-94dc7dc7eeca,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1d14a2c8ca9211f0b2bf0b349165d6e0-20251126
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-	(envelope-from <quan.zhou@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 852544955; Wed, 26 Nov 2025 14:35:35 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 26 Nov 2025 14:35:33 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Wed, 26 Nov 2025 14:35:33 +0800
-From: Quan Zhou <quan.zhou@mediatek.com>
-To: Quan Zhou <quan.zhou@mediatek.com>
-CC: <stable@vger.kernel.org>
-Subject: [patch] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-Date: Wed, 26 Nov 2025 14:35:28 +0800
-Message-ID: <bf6a29cfa16e31e5c2fc2956a294dd8ed97ebd26.1764138361.git.quan.zhou@mediatek.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1764139655; c=relaxed/simple;
+	bh=qMtBn2TqqvtxevA70+FuFw0T73M4Vy4fDqxzLFN0CZE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xjaf/2oMbbPG/4IhET6/kEZtP/sO6iOwQ2CFCxYEh3kwqKt+xEPzVOGZaEU8QYeWazGHPkD5OC/ddQXjYrfoXgLJrkJ38oSlq/gUh/DYGnK/KXd3aseatz808KgXP5GW8fb5piySqpir4obcl0wHyxYpy8snHPiKd+nFmx+Za5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLnMQADe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A9BC113D0;
+	Wed, 26 Nov 2025 06:47:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764139655;
+	bh=qMtBn2TqqvtxevA70+FuFw0T73M4Vy4fDqxzLFN0CZE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OLnMQADeEWWHCE+AVmmv4AkNiqPu+DN60OpX1XXd5haKvWNvy4J0RYDCX+kBfDQ9k
+	 kztZmtjL4ijGKhMJjVtZj5DUi4FVaI3pd67t34yGtkJeqg+Xbk45O9f2Scck21p2gJ
+	 g/RucAHYUtOfXxIj7ynEVrWi0KHLyBrKbsc4hdxwup1MXPHdTPo/HuB/hhV6ceLrk3
+	 lwwrZC6K+faJFs/rJAsESXjyjHHs8SKSMUD05swgXys9yo37dkdlj1eVKIzJm87w9X
+	 vj+4zQpwkr50AKg7jjAzw+N5aimIM/+gX/Aa1IzureEsNoytKd0PzwAwL5FIhX8CDf
+	 Jy9V+TYBRYZ+A==
+Message-ID: <ed7d962e-b350-4986-ae92-14509306ea65@kernel.org>
+Date: Wed, 26 Nov 2025 07:47:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 817/849] smb: client: fix potential UAF in
+ smb2_close_cached_fid()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Jay Shin <jaeshin@redhat.com>,
+ "Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+ Henrique Carvalho <henrique.carvalho@suse.com>,
+ Steve French <stfrench@microsoft.com>
+References: <20251111004536.460310036@linuxfoundation.org>
+ <20251111004556.178148239@linuxfoundation.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20251111004556.178148239@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Previously, the AMPDU state bit for a given TID was set before attempting
-to start a BA session, which could result in the AMPDU state being marked
-active even if ieee80211_start_tx_ba_session() failed. This patch changes
-the logic to only set the AMPDU state bit after successfully starting a BA
-session, ensuring proper synchronization between AMPDU state and BA session
-status.
+On 11. 11. 25, 1:46, Greg Kroah-Hartman wrote:
+> 6.17-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Henrique Carvalho <henrique.carvalho@suse.com>
+> 
+> commit 734e99623c5b65bf2c03e35978a0b980ebc3c2f8 upstream.
+> 
+> find_or_create_cached_dir() could grab a new reference after kref_put()
+> had seen the refcount drop to zero but before cfid_list_lock is acquired
+> in smb2_close_cached_fid(), leading to use-after-free.
+> 
+> Switch to kref_put_lock() so cfid_release() is called with
+> cfid_list_lock held, closing that gap.
+> 
+> Fixes: ebe98f1447bb ("cifs: enable caching of directories for which a lease is held")
+> Cc: stable@vger.kernel.org
+> Reported-by: Jay Shin <jaeshin@redhat.com>
+> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+> Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   fs/smb/client/cached_dir.c |   16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> --- a/fs/smb/client/cached_dir.c
+> +++ b/fs/smb/client/cached_dir.c
+> @@ -389,11 +389,11 @@ out:
+>   			 * lease. Release one here, and the second below.
+>   			 */
+>   			cfid->has_lease = false;
+> -			kref_put(&cfid->refcount, smb2_close_cached_fid);
+> +			close_cached_dir(cfid);
+>   		}
+>   		spin_unlock(&cfids->cfid_list_lock);
+>   
+> -		kref_put(&cfid->refcount, smb2_close_cached_fid);
+> +		close_cached_dir(cfid);
+>   	} else {
+>   		*ret_cfid = cfid;
+>   		atomic_inc(&tcon->num_remote_opens);
+> @@ -434,12 +434,14 @@ int open_cached_dir_by_dentry(struct cif
+>   
+>   static void
+>   smb2_close_cached_fid(struct kref *ref)
+> +__releases(&cfid->cfids->cfid_list_lock)
+>   {
+>   	struct cached_fid *cfid = container_of(ref, struct cached_fid,
+>   					       refcount);
+>   	int rc;
+>   
+> -	spin_lock(&cfid->cfids->cfid_list_lock);
+> +	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
+> +
 
-This fixes potential issues with aggregation state tracking and improves
-compatibility with mac80211 BA session management.
+This _backport_ (of a 6.18-rc5 commit) omits to change 
+cfids_invalidation_worker() which was removed in 6.18-rc1 by:
+7ae6152b7831 smb: client: remove cfids_invalidation_worker
 
-Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txwi_free")
-Cc: stable@vger.kernel.org
+This likely causes:
+https://bugzilla.suse.com/show_bug.cgi?id=1254096
+BUG: workqueue leaked atomic, lock or RCU
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Because cfids_invalidation_worker() still does:
+                 kref_put(&cfid->refcount, smb2_close_cached_fid);
+instead of now required kref_put_lock() aka:
+                 close_cached_dir(cfid);
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index 871b67101976..80f1d738ec22 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -881,8 +881,9 @@ static void mt7925_tx_check_aggr(struct ieee80211_sta *sta, struct sk_buff *skb,
- 	else
- 		mlink = &msta->deflink;
- 
--	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
--		ieee80211_start_tx_ba_session(sta, tid, 0);
-+	if (!test_bit(tid, &mlink->wcid.ampdu_state) &&
-+	    !ieee80211_start_tx_ba_session(sta, tid, 0))
-+		set_bit(tid, &mlink->wcid.ampdu_state);
- }
- 
- static bool
+thanks,
 -- 
-2.45.2
+js
+suse labs
 
 
