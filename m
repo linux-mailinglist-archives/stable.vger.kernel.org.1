@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-197034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DABFC8AA2F
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:29:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58445C8AC6C
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 16:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3B8C3B09FF
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:28:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 01C504EDB28
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 15:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DA33314B8;
-	Wed, 26 Nov 2025 15:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A172633BBD5;
+	Wed, 26 Nov 2025 15:57:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DD230AAD0
-	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F274033D6FB
+	for <stable@vger.kernel.org>; Wed, 26 Nov 2025 15:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764170870; cv=none; b=G7EahCO8wXpxG9TFzuerAuWHjzvLbzV4+IvNfTHCxHi+KcfOC5+12vq6w3XyfB5ULNVj70ZmNUTn8Vv9s8IRDsPAXcLHKoqX1Dniin4NHj+/1jmNyL37rVoFR+E8zg6BZ5O14mfX7SY8iP1P9WB2ycIs4I/WKp5oTJ8s2aTNAQo=
+	t=1764172653; cv=none; b=ivsAJtv8YjmSsgegDjRaB/pW7AwtF+h+h4vi7a/pzyHlcqNvzRFRJlLh9f21uJGTmMUInOs3jTS+Eg06l+ta5p9ZgcQkw+X4+iy3QAcCyd6/oW6QTqYCvV3LWUjqvDjBUIBIxfMKwjjXLEzMOoJPldncrnl7lW8yj7CE6eBP78o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764170870; c=relaxed/simple;
-	bh=R77P5H+0napBHQF7WYxYhxSxunHs7tm0aIKrBHwZEOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qwj5Kz9SSEOpujRTUmL15SU9XyRTFBJk5gBYxBGs8oNfgpRMni3rM7Yu+h7OGx3KVdpXaDvXGb2CuUq8iEe4CAjnjbrvnLEonacZLkqcnxkdIit1UU5Qf11HBoILWiQf7SeSKk0R1Y1TgnKo0IaTmvHzjjJ2VnkkxDCQU68LCDY=
+	s=arc-20240116; t=1764172653; c=relaxed/simple;
+	bh=2ucNE8fa7lQi1c5DHPHvU2+JR3IPBRd36Kp9pqxu5VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F/V/avG4uxFWsdr+H0mPpfrvQC8scnUmvTtZ7L2zynM/M+bf0yUCYKgJo4mfk1I9zUrEM1Bx7hqGc7S0hXa71zyidcWoB5sZ4ZR9RNh4qe+NEhS9ex2Vc7jjw/D1X7FeV7NiLSKp08CRTFpfbI9CWGNKdNOLCMOg1+ymbm3roiE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,97 +33,86 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHQW-0003GK-KL; Wed, 26 Nov 2025 16:27:28 +0100
+	id 1vOHtP-000650-EK; Wed, 26 Nov 2025 16:57:19 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHQV-002dCd-11;
-	Wed, 26 Nov 2025 16:27:27 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	id 1vOHtN-002dLe-3A;
+	Wed, 26 Nov 2025 16:57:18 +0100
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 02F794A8DE4;
-	Wed, 26 Nov 2025 15:27:27 +0000 (UTC)
-Date: Wed, 26 Nov 2025 16:27:26 +0100
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A91D94A8E32;
+	Wed, 26 Nov 2025 15:57:17 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Biju <biju.das.au@gmail.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Tranh Ha <tranh.ha.xb@renesas.com>, 
-	Duy Nguyen <duy.nguyen.rh@renesas.com>, linux-can@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] can: rcar_canfd: Fix CAN-FD mode as default
-Message-ID: <20251126-large-mongrel-from-jupiter-c96915-mkl@pengutronix.de>
-References: <20251118123926.193445-1-biju.das.jz@bp.renesas.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	stable@vger.kernel.org,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 2/8] can: sja1000: fix max irq loop handling
+Date: Wed, 26 Nov 2025 16:41:12 +0100
+Message-ID: <20251126155713.217105-3-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251126155713.217105-1-mkl@pengutronix.de>
+References: <20251126155713.217105-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3xbjhdh4g6anmg4s"
-Content-Disposition: inline
-In-Reply-To: <20251118123926.193445-1-biju.das.jz@bp.renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
+From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 
---3xbjhdh4g6anmg4s
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] can: rcar_canfd: Fix CAN-FD mode as default
-MIME-Version: 1.0
+Reading the interrupt register `SJA1000_IR` causes all of its bits to be
+reset. If we ever reach the condition of handling more than
+`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop
+body.
 
-On 18.11.2025 12:39:25, Biju wrote:
-> From: Biju Das <biju.das.jz@bp.renesas.com>
->
-> The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-> has aligned with the flow mentioned in the hardware manual for all SoCs
-> except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
-> the wrong logic in the commit[1] sets the default mode to FD-Only mode
-> instead of CAN-FD mode.
->
-> This patch sets the CAN-FD mode as the default for all SoCs by dropping
-> the rcar_canfd_set_mode() as some SoC requires mode setting in global
-> reset mode, and the rest of the SoCs in channel reset mode and update the
-> rcar_canfd_reset_controller() to take care of these constraints. Moreover,
-> the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
-> R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
-> simplify the code later to support FD-only mode.
+This may, among other issues, cause us to never `netif_wake_queue()`
+again after a transmission interrupt.
 
-Applied to linux-can
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/sja1000/sja1000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-regards,
-Marc
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index 4d245857ef1c..83476af8adb5 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, void *dev_id)
+ 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
+ 		goto out;
+ 
+-	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
+-	       (n < SJA1000_MAX_IRQ)) {
++	while ((n < SJA1000_MAX_IRQ) &&
++	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
+ 
+ 		status = priv->read_reg(priv, SJA1000_SR);
+ 		/* check for absent controller due to hw unplug */
+-- 
+2.51.0
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---3xbjhdh4g6anmg4s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmknHFsACgkQDHRl3/mQ
-kZwh8Qf+PLxcEuNKgC2msmGRIQsmXqOhjCQ6UhjoDSuMe8je8L8biMJwT01kClJa
-GwxXOUN6B0WxweFTsVqMjoP2kJXIBsDC+Ys0Xv4q951U8tBu0qJzH5R+j+uynyAK
-mWyfjU+pXHVmV79TLjRFh1fqky67CPQ3rBzPAEX3WO9XTFpvaJYFwP/M/9ovfl8t
-ao7/zwopZqaBa9xqeY2U3qtHEcW04hZxPJsmg2NO/2n7AcmUs4tZdiEqLwLQVyYx
-qM0wH6GvdoF5u7OsAR3y6OQLw/+Tq303FagLL5l/V18jHnmuNScC9/nWrpTvJ9g+
-8nEjBSRMLh2vKMur+HfwzMJiDERRcg==
-=PwmH
------END PGP SIGNATURE-----
-
---3xbjhdh4g6anmg4s--
 
