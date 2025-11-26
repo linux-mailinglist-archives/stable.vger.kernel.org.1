@@ -1,71 +1,75 @@
-Return-Path: <stable+bounces-197046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C10C8B5AB
+	by mail.lfdr.de (Postfix) with ESMTPS id A25F6C8B5A8
 	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 18:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60F1534D6C2
-	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:54:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D81FE34D6FC
+	for <lists+stable@lfdr.de>; Wed, 26 Nov 2025 17:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5573630CDBD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F13F224891;
 	Wed, 26 Nov 2025 17:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eUElGZ4r"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="pCfpDLU5"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D057730BF67;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD0F212FB9;
 	Wed, 26 Nov 2025 17:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764179666; cv=none; b=hg/St1kJ+8YtCuVC5zP0jexnZdi3Fd5UK2JDnoy0Y/56mBt0UTvVIKpmkpHr+czO52loJUp9HN11jwlkKtrAYzmFj1BEbKXrOLxuZLy7s/PY5yGuGW0zim1FbF0hfvWjyaMzz4LMIJbikrYY266Crrj0rnRvR1fRMtVMhvDXCyo=
+	t=1764179666; cv=none; b=PNkL9DUJZKf31TXaz95PodANZG41Vdw1geeyAznt2GQmTzxgASzoJdg6Kid/s+MdnwQV9BgWUpg/2cK3Q/i/RvWa7D7t+Grr8UC2nx0osfhbM/2CCluaEwNYtiJdK9shk24eEHXRopRJjgqx6BOaFyK02kigTGeokFMx87JG4eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764179666; c=relaxed/simple;
-	bh=dMjEhUToX/GfF9HX/QyQPqqJTHUhzNbVUsr9/l+m5hQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QzT4MwQqszVy49R1VQjBp30FrEw4WZ4N70SWqzwjTO3vtwjsTs1LlZyoSRdIqdV/7W1LTshEasggLtCmmGCFY3mpwaYPquuTw4zyfGqutux4mkqpWRbZAWar/ZtMl5hidYWwlgskaxi2m50NkaOCfyfnbRt6mKcPPngUYAhZbCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eUElGZ4r; arc=none smtp.client-ip=205.220.165.32
+	bh=dPQrYAd0yaGmFpABNl0IGhRPgxDlv64yTFrSiGw4j4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TFKr7IsBtBKeTU4t8UHpAQZ+fkST2pwA1I4k9ibRGgqW1NZ38HW7VT4Dxo8i9pHxsyuFYyyysUoaZnjK7SsbiBDBiPTirZpS4jR0rXx84cA5iTVXKLvjZ8nMjqjGlZAe6LgoUQYiLNG3J/1OJqqxfcdq2Pn++LkOg1SAdMRUFd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=pCfpDLU5; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQGGgtM2650892;
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQGGeLN2650875;
 	Wed, 26 Nov 2025 17:54:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=WJEg4cYbU8pt4FxzVRcRBVeTy3a6g
-	ZBr+sRQRYF+Kms=; b=eUElGZ4rSC1Cr7d29ZRxjp6hQnz6pa8aRGkhG+VaN17eO
-	i4sLJi2yVTBu6j/BRUQoXjg56A9c3KzSiH7B3alswVKtsC0ENoFhbntAy9bRg9yI
-	flY+Zm0XUceqC5G14b14LY/gaFR3IXksksu9uYcVZrwezbrTwlUs1HrfdZNE6fI5
-	zLlowe2vKzi1CYmJ3SOI5mbEErWR+wjVB1wGaPokq+XZFmLMV3AAqpKLbsFs1Jca
-	UMWn6f97yjcYnDF8KvqBlT9tbWU+QwcdR2fBi9Cebpw0r2APuCvG5EFAWuUfJ61o
-	zcKi5fko8Bp//VZ8vRP7uxPKZOeD3cHt5I3Wfh6/g==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=4f+MY
+	tCuLUFz6+FVDmNHH1Y3y58PE9DAT+nWWrqODxo=; b=pCfpDLU5hoF2eA2BBUrlC
+	dMaMcvqXcBqBJSwI8jwrAyxYPa/C0Ft7hlzJ771yeZyhdx3oj7Og8NBY5VPbcQXE
+	mCi3HCKzLjBpgdWVJ856mS0omukHAVNgF8PQKlKhe0iJTvd/Pa2NwF2v9zA0A+lj
+	ZR9eYbpGeMuspuGqu+WgvVQboy5nsAZqcocGPbQJAghlMgNDzBYTh8faFw1dJKOe
+	eDOE2TRvhRO4Ku4iZcCkkGoRWmjCftwAIcO5BQgQwXFdL3i7VLQG9GiPkvBDHCbp
+	PHfqyklrIFH3eE8QO+2bklE8OwhvRW+4OYG1a0h1f2RfdTeJ5Ae/9h07FD6nh2Ie
+	w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak7yhvyhs-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak7yhvyhr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Wed, 26 Nov 2025 17:54:19 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AQGQawM032704;
-	Wed, 26 Nov 2025 17:54:17 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AQGJOUG033001;
+	Wed, 26 Nov 2025 17:54:18 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mb9wyt-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mb9x0h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Nov 2025 17:54:17 +0000
+	Wed, 26 Nov 2025 17:54:18 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AQHsGi1028620;
-	Wed, 26 Nov 2025 17:54:16 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AQHsGi3028620;
+	Wed, 26 Nov 2025 17:54:17 GMT
 Received: from gms-bm-13185-1.osdevelopmeniad.oraclevcn.com (gms-bm-13185-1.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.252.35])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ak3mb9wxw-1;
-	Wed, 26 Nov 2025 17:54:16 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ak3mb9wxw-2;
+	Wed, 26 Nov 2025 17:54:17 +0000
 From: Gulam Mohamed <gulam.mohamed@oracle.com>
 To: linux-kernel@vger.kernel.org, hch@lst.de
 Cc: stable@vger.kernel.org, gulam.mohamed@oracle.com
-Subject: [PATCH V2 5.15.y 1/2] Revert "block: Move checking GENHD_FL_NO_PART to bdev_add_partition()"
-Date: Wed, 26 Nov 2025 17:54:14 +0000
-Message-ID: <20251126175415.259906-1-gulam.mohamed@oracle.com>
+Subject: [PATCH V2 5.15.y 2/2] Revert "block: don't add or resize partition on the disk with GENHD_FL_NO_PART"
+Date: Wed, 26 Nov 2025 17:54:15 +0000
+Message-ID: <20251126175415.259906-2-gulam.mohamed@oracle.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251126175415.259906-1-gulam.mohamed@oracle.com>
+References: <20251126175415.259906-1-gulam.mohamed@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,18 +87,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxl
 X-Authority-Analysis: v=2.4 cv=L6AQguT8 c=1 sm=1 tr=0 ts=69273ecb cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=El8LTbAtAdtaEuyw91sA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDE0NiBTYWx0ZWRfX/+vjol9uc4KO
- 2CofQ8KIrohRwSHZDdF3MPDvi5cs3+0s/MHgWQ5oOk16G1+WluI2RV7K8RsSC+lAuH0Ro2lIJnj
- iYSHxWWoP32rKqb/KTPFZY0Yr8kKgh1dxFqyB5Z1Khgnbbr/b/5iS3wANMMKFBU8xUSwylr8sn0
- VaOVeJVgUh7u8RN4XPmo9EmGV1Ogkxum1+GdOFmVPG5Pm9Vxvd+BcbcGBdNi5HflQfamOF405nn
- Ws93f5uDIsRAl+Dm/YGdAYF/DEiSQ7QEUvuj9d/X2B/PVjToBQoPS2NpKADys4DSX0OyYCjH278
- ijpck8aJ05rxqxP2V9LMWiUc6fnUev/Ex7F5ivExh17wRBtgdrjnp3tpOCuhUE9ZI5lIg1D5iUj
- vRFGxNvtktLgxVZ32kOwP8EWcXOoMg==
-X-Proofpoint-ORIG-GUID: xSZVw82dZmXM_Xm26Ve3giUTiynAzSsA
-X-Proofpoint-GUID: xSZVw82dZmXM_Xm26Ve3giUTiynAzSsA
+ a=LbKDhlQmydB64s-nk6QA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDE0NiBTYWx0ZWRfX9p1yis5P43VK
+ HiLLheyI2A9teFMVZqThH9ZY7Oelp+KjO96dBgpNCye8eq7VJiP+MDWhK4dUw2cJ9IG9JfgS1YF
+ XbolWNkrQp2KSj4E29dDuFUDqLIKWl4kwnsnXxYAbTSeZh0t/xEW+TzmcDqrTwr3UQTl04fxPo8
+ KaVjrnhi8iM88UALrdSE0HBN/LtjBPfTdJF1kY4d3M/UjAs9gKgkdS2sIB5dtiQiwZT5USsaNvM
+ N8pIZsLT2ceQ+cS+rVB1Mj7kAfl3iHX4cv8lYnDfKdH6lgollz5JcWXUGFRPbPit0m9jxYw1Rhf
+ XJvCpSrAjWnarF8mWApO3pVA+p6zGdtkGRWTMHttG/AwU5I1fHrKM4bcWKca9fQxcLnsPUr/w7J
+ iUU4qZVcgL9/9YnH/pCzxabtdqFqbw==
+X-Proofpoint-ORIG-GUID: kF4GXjUUfVo5SRv_XX42hvE9_rjXP0HV
+X-Proofpoint-GUID: kF4GXjUUfVo5SRv_XX42hvE9_rjXP0HV
 
-This reverts commit 7777f47f2ea64efd1016262e7b59fab34adfb869.
+This reverts commit 1a721de8489fa559ff4471f73c58bb74ac5580d3.
 
 The commit 1a721de8489f ("block: don't add or resize partition on the disk
 with GENHD_FL_NO_PART") and the commit 7777f47f2ea6 ("block: Move checking
@@ -143,42 +147,25 @@ Changes in V2:
 - Added the linux stable version 5.15.y to the subject line
 - Added the version V2 to the subject line
 Links to V1:
-	https://lore.kernel.org/all/20251117174315.367072-1-gulam.mohamed@oracle.com/
-	https://lore.kernel.org/all/20251117174315.367072-2-gulam.mohamed@oracle.com/
+        https://lore.kernel.org/all/20251117174315.367072-1-gulam.mohamed@oracle.com/
+        https://lore.kernel.org/all/20251117174315.367072-2-gulam.mohamed@oracle.com/
 ---
- block/ioctl.c           | 2 ++
- block/partitions/core.c | 5 -----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ block/ioctl.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/block/ioctl.c b/block/ioctl.c
-index a260e39e56a4..d25b84441237 100644
+index d25b84441237..a260e39e56a4 100644
 --- a/block/ioctl.c
 +++ b/block/ioctl.c
-@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
  	struct blkpg_partition p;
  	sector_t start, length;
  
-+	if (disk->flags & GENHD_FL_NO_PART)
-+		return -EINVAL;
+-	if (disk->flags & GENHD_FL_NO_PART)
+-		return -EINVAL;
  	if (!capable(CAP_SYS_ADMIN))
  		return -EACCES;
  	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index 0d1fe2b42b85..7b5750db7eaf 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -463,11 +463,6 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
- 		goto out;
- 	}
- 
--	if (disk->flags & GENHD_FL_NO_PART) {
--		ret = -EINVAL;
--		goto out;
--	}
--
- 	if (partition_overlaps(disk, start, length, -1)) {
- 		ret = -EBUSY;
- 		goto out;
 -- 
 2.47.3
 
