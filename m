@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-197420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A17C8F2D1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6330CC8EDED
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC0A3BD415
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBCB3B05FE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831F32AAC4;
-	Thu, 27 Nov 2025 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A902429992A;
+	Thu, 27 Nov 2025 14:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjSTq/z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMM/6EDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3303A260585;
-	Thu, 27 Nov 2025 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6509C2949E0;
+	Thu, 27 Nov 2025 14:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255768; cv=none; b=KIok3t5oHkb83UBQPWmEoeCOI764s/4q9MNYKCi3GmYMR3OcyjAvJc0/MI4790V1jU3G58BTjeo5sNVzEw9Z+XuvfXXoX/L63q9vhKr2ql4EXXU74IQqt8hjk1GtkYiojAQa6C+rAshhmok2MCSWT0lR2lm1D384P+n2DZzq+CU=
+	t=1764254960; cv=none; b=nUTv/CqZyZQ/nx9wzQPPHoQtz+YKj9h9sLknYTFr/Ap8MfVECDk4jRCzgZxNqJ1OfVcCM/GlSirGJDGHiOXzXZD276XqIlywXd6ejeImHD7wcIctUP8IkfMxS+IH3FeDRIN1MZjjd75l62dTHn4atMKrdKic2s9vLzfAt9QQ8ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255768; c=relaxed/simple;
-	bh=OyG9mtwR96YM6dH54syyIqaTHrsxXuWdC4Q5mGm0FME=;
+	s=arc-20240116; t=1764254960; c=relaxed/simple;
+	bh=0paHPbB95k0gkjIVVTl46B5cdVegx2lD7d4wdr7s9dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7LbWBM9X6ItTViORzAkRn+LdBOuACBIA1BKbV3HTcn9wCPbpf1t6qyLFG8CpZlvqHJ+d+KHnA+vGtKfzx+7dfu8zWpjF9SuoVwO7aiB0+yge9houcK6hUye/zDB/VVRstQ7koapzFWxEnrfqDbpES6hID3DeKASAvyhsoD0Ge4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjSTq/z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15F9C4CEF8;
-	Thu, 27 Nov 2025 15:02:47 +0000 (UTC)
+	 MIME-Version; b=sCrbJFgr93IvkyOYlpMc2KKok9dELgxeGRCWprgvtaIpdJs6CHtI+R/NaTzbWXN9Ol/KMuTvAx2372akqsXUlMY5BF7gd7c4d6Yv2VLXD92mjEj5U99CxRc3lIZQ+zEbiouJc2t1+UPtocuwKCuzEBJ7ccnKKaOzesbRDmn0yRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMM/6EDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1078C16AAE;
+	Thu, 27 Nov 2025 14:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255768;
-	bh=OyG9mtwR96YM6dH54syyIqaTHrsxXuWdC4Q5mGm0FME=;
+	s=korg; t=1764254960;
+	bh=0paHPbB95k0gkjIVVTl46B5cdVegx2lD7d4wdr7s9dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjSTq/z/Hq1yZaGnXjuLpn/63YlLU+aI8B2zEi1hb5D9Tc3BDZ+UoLb7wMzrEX4T3
-	 Hm/taTRNjP5E5ourffy9QBm8Oy5CPBplV1HaMSLRCdO7O8JuptfM78ACS2cm5cAToW
-	 wVvMINtJopVObJlW1QGF1uWzNbwRVc70TI0S6324=
+	b=SMM/6EDjjhGFo3kBfmy6A2IdjmPCixrF5UOaYsmSQaN7ngYyCZp0oncAaW/BoP8Ib
+	 +jUWOcx8GVYEjNgRi61eIaf+eKalwgmVIEm5hAtzDVMKPyZPPDhXzQkh1r6hBujQqs
+	 1f2Bewm+xX4NQw++OkEiXz6NSSbGNjNctf6tLV5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Junvy Yang <zhuque@tencent.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 108/175] net: airoha: Add wlan flowtable TX offload
+Subject: [PATCH 6.6 45/86] net: openvswitch: remove never-working support for setting nsh fields
 Date: Thu, 27 Nov 2025 15:46:01 +0100
-Message-ID: <20251127144046.902257798@linuxfoundation.org>
+Message-ID: <20251127144029.476580852@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,215 +65,312 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit a8bdd935d1ddb7186358fb60ffe84253e85340c8 ]
+[ Upstream commit dfe28c4167a9259fc0c372d9f9473e1ac95cff67 ]
 
-Introduce support to offload the traffic received on the ethernet NIC
-and forwarded to the wireless one using HW Packet Processor Engine (PPE)
-capabilities.
+The validation of the set(nsh(...)) action is completely wrong.
+It runs through the nsh_key_put_from_nlattr() function that is the
+same function that validates NSH keys for the flow match and the
+push_nsh() action.  However, the set(nsh(...)) has a very different
+memory layout.  Nested attributes in there are doubled in size in
+case of the masked set().  That makes proper validation impossible.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250814-airoha-en7581-wlan-tx-offload-v1-1-72e0a312003e@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 8e0a754b0836 ("net: airoha: Do not loopback traffic to GDM2 if it is available on the device")
+There is also confusion in the code between the 'masked' flag, that
+says that the nested attributes are doubled in size containing both
+the value and the mask, and the 'is_mask' that says that the value
+we're parsing is the mask.  This is causing kernel crash on trying to
+write into mask part of the match with SW_FLOW_KEY_PUT() during
+validation, while validate_nsh() doesn't allocate any memory for it:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 1c2383067 P4D 1c2383067 PUD 20b703067 PMD 0
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  CPU: 8 UID: 0 Kdump: loaded Not tainted 6.17.0-rc4+ #107 PREEMPT(voluntary)
+  RIP: 0010:nsh_key_put_from_nlattr+0x19d/0x610 [openvswitch]
+  Call Trace:
+   <TASK>
+   validate_nsh+0x60/0x90 [openvswitch]
+   validate_set.constprop.0+0x270/0x3c0 [openvswitch]
+   __ovs_nla_copy_actions+0x477/0x860 [openvswitch]
+   ovs_nla_copy_actions+0x8d/0x100 [openvswitch]
+   ovs_packet_cmd_execute+0x1cc/0x310 [openvswitch]
+   genl_family_rcv_msg_doit+0xdb/0x130
+   genl_family_rcv_msg+0x14b/0x220
+   genl_rcv_msg+0x47/0xa0
+   netlink_rcv_skb+0x53/0x100
+   genl_rcv+0x24/0x40
+   netlink_unicast+0x280/0x3b0
+   netlink_sendmsg+0x1f7/0x430
+   ____sys_sendmsg+0x36b/0x3a0
+   ___sys_sendmsg+0x87/0xd0
+   __sys_sendmsg+0x6d/0xd0
+   do_syscall_64+0x7b/0x2c0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The third issue with this process is that while trying to convert
+the non-masked set into masked one, validate_set() copies and doubles
+the size of the OVS_KEY_ATTR_NSH as if it didn't have any nested
+attributes.  It should be copying each nested attribute and doubling
+them in size independently.  And the process must be properly reversed
+during the conversion back from masked to a non-masked variant during
+the flow dump.
+
+In the end, the only two outcomes of trying to use this action are
+either validation failure or a kernel crash.  And if somehow someone
+manages to install a flow with such an action, it will most definitely
+not do what it is supposed to, since all the keys and the masks are
+mixed up.
+
+Fixing all the issues is a complex task as it requires re-writing
+most of the validation code.
+
+Given that and the fact that this functionality never worked since
+introduction, let's just remove it altogether.  It's better to
+re-introduce it later with a proper implementation instead of trying
+to fix it in stable releases.
+
+Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
+Reported-by: Junvy Yang <zhuque@tencent.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251112112246.95064-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.h |  11 +++
- drivers/net/ethernet/airoha/airoha_ppe.c | 103 ++++++++++++++++-------
- 2 files changed, 85 insertions(+), 29 deletions(-)
+ net/openvswitch/actions.c      | 68 +---------------------------------
+ net/openvswitch/flow_netlink.c | 64 ++++----------------------------
+ net/openvswitch/flow_netlink.h |  2 -
+ 3 files changed, 9 insertions(+), 125 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index a970b789cf232..9f721e2b972f0 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -252,6 +252,10 @@ enum {
- #define AIROHA_FOE_MAC_SMAC_ID		GENMASK(20, 16)
- #define AIROHA_FOE_MAC_PPPOE_ID		GENMASK(15, 0)
- 
-+#define AIROHA_FOE_MAC_WDMA_QOS		GENMASK(15, 12)
-+#define AIROHA_FOE_MAC_WDMA_BAND	BIT(11)
-+#define AIROHA_FOE_MAC_WDMA_WCID	GENMASK(10, 0)
-+
- struct airoha_foe_mac_info_common {
- 	u16 vlan1;
- 	u16 etype;
-@@ -481,6 +485,13 @@ struct airoha_flow_table_entry {
- 	unsigned long cookie;
- };
- 
-+struct airoha_wdma_info {
-+	u8 idx;
-+	u8 queue;
-+	u16 wcid;
-+	u8 bss;
-+};
-+
- /* RX queue to IRQ mapping: BIT(q) in IRQ(n) */
- #define RX_IRQ0_BANK_PIN_MASK			0x839f
- #define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 88694b08afa1c..62e46a8d7e3c8 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -190,6 +190,31 @@ static int airoha_ppe_flow_mangle_ipv4(const struct flow_action_entry *act,
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 10c646b32b9d0..0ea4fc2a755bf 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -597,69 +597,6 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
  	return 0;
  }
  
-+static int airoha_ppe_get_wdma_info(struct net_device *dev, const u8 *addr,
-+				    struct airoha_wdma_info *info)
-+{
-+	struct net_device_path_stack stack;
-+	struct net_device_path *path;
-+	int err;
-+
-+	if (!dev)
-+		return -ENODEV;
-+
-+	err = dev_fill_forward_path(dev, addr, &stack);
-+	if (err)
-+		return err;
-+
-+	path = &stack.path[stack.num_paths - 1];
-+	if (path->type != DEV_PATH_MTK_WDMA)
-+		return -1;
-+
-+	info->idx = path->mtk_wdma.wdma_idx;
-+	info->bss = path->mtk_wdma.bss;
-+	info->wcid = path->mtk_wdma.wcid;
-+
-+	return 0;
-+}
-+
- static int airoha_get_dsa_port(struct net_device **dev)
- {
- #if IS_ENABLED(CONFIG_NET_DSA)
-@@ -220,9 +245,9 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
- 					struct airoha_flow_data *data,
- 					int l4proto)
- {
--	int dsa_port = airoha_get_dsa_port(&dev);
-+	u32 qdata = FIELD_PREP(AIROHA_FOE_SHAPER_ID, 0x7f), ports_pad, val;
-+	int wlan_etype = -EINVAL, dsa_port = airoha_get_dsa_port(&dev);
- 	struct airoha_foe_mac_info_common *l2;
--	u32 qdata, ports_pad, val;
- 	u8 smac_id = 0xf;
- 
- 	memset(hwe, 0, sizeof(*hwe));
-@@ -236,31 +261,47 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
- 	      AIROHA_FOE_IB1_BIND_TTL;
- 	hwe->ib1 = val;
- 
--	val = FIELD_PREP(AIROHA_FOE_IB2_PORT_AG, 0x1f) |
--	      AIROHA_FOE_IB2_PSE_QOS;
--	if (dsa_port >= 0)
--		val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ, dsa_port);
+-static int set_nsh(struct sk_buff *skb, struct sw_flow_key *flow_key,
+-		   const struct nlattr *a)
+-{
+-	struct nshhdr *nh;
+-	size_t length;
+-	int err;
+-	u8 flags;
+-	u8 ttl;
+-	int i;
 -
-+	val = FIELD_PREP(AIROHA_FOE_IB2_PORT_AG, 0x1f);
- 	if (dev) {
--		struct airoha_gdm_port *port = netdev_priv(dev);
--		u8 pse_port;
+-	struct ovs_key_nsh key;
+-	struct ovs_key_nsh mask;
 -
--		if (!airoha_is_valid_gdm_port(eth, port))
+-	err = nsh_key_from_nlattr(a, &key, &mask);
+-	if (err)
+-		return err;
+-
+-	/* Make sure the NSH base header is there */
+-	if (!pskb_may_pull(skb, skb_network_offset(skb) + NSH_BASE_HDR_LEN))
+-		return -ENOMEM;
+-
+-	nh = nsh_hdr(skb);
+-	length = nsh_hdr_len(nh);
+-
+-	/* Make sure the whole NSH header is there */
+-	err = skb_ensure_writable(skb, skb_network_offset(skb) +
+-				       length);
+-	if (unlikely(err))
+-		return err;
+-
+-	nh = nsh_hdr(skb);
+-	skb_postpull_rcsum(skb, nh, length);
+-	flags = nsh_get_flags(nh);
+-	flags = OVS_MASKED(flags, key.base.flags, mask.base.flags);
+-	flow_key->nsh.base.flags = flags;
+-	ttl = nsh_get_ttl(nh);
+-	ttl = OVS_MASKED(ttl, key.base.ttl, mask.base.ttl);
+-	flow_key->nsh.base.ttl = ttl;
+-	nsh_set_flags_and_ttl(nh, flags, ttl);
+-	nh->path_hdr = OVS_MASKED(nh->path_hdr, key.base.path_hdr,
+-				  mask.base.path_hdr);
+-	flow_key->nsh.base.path_hdr = nh->path_hdr;
+-	switch (nh->mdtype) {
+-	case NSH_M_TYPE1:
+-		for (i = 0; i < NSH_MD1_CONTEXT_SIZE; i++) {
+-			nh->md1.context[i] =
+-			    OVS_MASKED(nh->md1.context[i], key.context[i],
+-				       mask.context[i]);
+-		}
+-		memcpy(flow_key->nsh.context, nh->md1.context,
+-		       sizeof(nh->md1.context));
+-		break;
+-	case NSH_M_TYPE2:
+-		memset(flow_key->nsh.context, 0,
+-		       sizeof(flow_key->nsh.context));
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-	skb_postpush_rcsum(skb, nh, length);
+-	return 0;
+-}
+-
+ /* Must follow skb_ensure_writable() since that can move the skb data. */
+ static void set_tp_port(struct sk_buff *skb, __be16 *port,
+ 			__be16 new_port, __sum16 *check)
+@@ -1143,10 +1080,6 @@ static int execute_masked_set_action(struct sk_buff *skb,
+ 				   get_mask(a, struct ovs_key_ethernet *));
+ 		break;
+ 
+-	case OVS_KEY_ATTR_NSH:
+-		err = set_nsh(skb, flow_key, a);
+-		break;
+-
+ 	case OVS_KEY_ATTR_IPV4:
+ 		err = set_ipv4(skb, flow_key, nla_data(a),
+ 			       get_mask(a, struct ovs_key_ipv4 *));
+@@ -1183,6 +1116,7 @@ static int execute_masked_set_action(struct sk_buff *skb,
+ 	case OVS_KEY_ATTR_CT_LABELS:
+ 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV4:
+ 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV6:
++	case OVS_KEY_ATTR_NSH:
+ 		err = -EINVAL;
+ 		break;
+ 	}
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 089ab1826e1d5..836e8e705d40e 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -1292,6 +1292,11 @@ static int metadata_from_nlattrs(struct net *net, struct sw_flow_match *match,
+ 	return 0;
+ }
+ 
++/*
++ * Constructs NSH header 'nh' from attributes of OVS_ACTION_ATTR_PUSH_NSH,
++ * where 'nh' points to a memory block of 'size' bytes.  It's assumed that
++ * attributes were previously validated with validate_push_nsh().
++ */
+ int nsh_hdr_from_nlattr(const struct nlattr *attr,
+ 			struct nshhdr *nh, size_t size)
+ {
+@@ -1301,8 +1306,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
+ 	u8 ttl = 0;
+ 	int mdlen = 0;
+ 
+-	/* validate_nsh has check this, so we needn't do duplicate check here
+-	 */
+ 	if (size < NSH_BASE_HDR_LEN)
+ 		return -ENOBUFS;
+ 
+@@ -1346,46 +1349,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
+ 	return 0;
+ }
+ 
+-int nsh_key_from_nlattr(const struct nlattr *attr,
+-			struct ovs_key_nsh *nsh, struct ovs_key_nsh *nsh_mask)
+-{
+-	struct nlattr *a;
+-	int rem;
+-
+-	/* validate_nsh has check this, so we needn't do duplicate check here
+-	 */
+-	nla_for_each_nested(a, attr, rem) {
+-		int type = nla_type(a);
+-
+-		switch (type) {
+-		case OVS_NSH_KEY_ATTR_BASE: {
+-			const struct ovs_nsh_key_base *base = nla_data(a);
+-			const struct ovs_nsh_key_base *base_mask = base + 1;
+-
+-			nsh->base = *base;
+-			nsh_mask->base = *base_mask;
+-			break;
+-		}
+-		case OVS_NSH_KEY_ATTR_MD1: {
+-			const struct ovs_nsh_key_md1 *md1 = nla_data(a);
+-			const struct ovs_nsh_key_md1 *md1_mask = md1 + 1;
+-
+-			memcpy(nsh->context, md1->context, sizeof(*md1));
+-			memcpy(nsh_mask->context, md1_mask->context,
+-			       sizeof(*md1_mask));
+-			break;
+-		}
+-		case OVS_NSH_KEY_ATTR_MD2:
+-			/* Not supported yet */
+-			return -ENOTSUPP;
+-		default:
 -			return -EINVAL;
+-		}
+-	}
 -
--		if (dsa_port >= 0)
--			pse_port = port->id == 4 ? FE_PSE_PORT_GDM4 : port->id;
--		else
--			pse_port = 2; /* uplink relies on GDM2 loopback */
--		val |= FIELD_PREP(AIROHA_FOE_IB2_PSE_PORT, pse_port);
+-	return 0;
+-}
 -
--		/* For downlink traffic consume SRAM memory for hw forwarding
--		 * descriptors queue.
--		 */
--		if (airhoa_is_lan_gdm_port(port))
--			val |= AIROHA_FOE_IB2_FAST_PATH;
+ static int nsh_key_put_from_nlattr(const struct nlattr *attr,
+ 				   struct sw_flow_match *match, bool is_mask,
+ 				   bool is_push_nsh, bool log)
+@@ -2825,17 +2788,13 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
+ 	return err;
+ }
+ 
+-static bool validate_nsh(const struct nlattr *attr, bool is_mask,
+-			 bool is_push_nsh, bool log)
++static bool validate_push_nsh(const struct nlattr *attr, bool log)
+ {
+ 	struct sw_flow_match match;
+ 	struct sw_flow_key key;
+-	int ret = 0;
+ 
+ 	ovs_match_init(&match, &key, true, NULL);
+-	ret = nsh_key_put_from_nlattr(attr, &match, is_mask,
+-				      is_push_nsh, log);
+-	return !ret;
++	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
+ }
+ 
+ /* Return false if there are any non-masked bits set.
+@@ -2983,13 +2942,6 @@ static int validate_set(const struct nlattr *a,
+ 
+ 		break;
+ 
+-	case OVS_KEY_ATTR_NSH:
+-		if (eth_type != htons(ETH_P_NSH))
+-			return -EINVAL;
+-		if (!validate_nsh(nla_data(a), masked, false, log))
+-			return -EINVAL;
+-		break;
 -
--		smac_id = port->id;
-+		struct airoha_wdma_info info = {};
-+
-+		if (!airoha_ppe_get_wdma_info(dev, data->eth.h_dest, &info)) {
-+			val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ, info.idx) |
-+			       FIELD_PREP(AIROHA_FOE_IB2_PSE_PORT,
-+					  FE_PSE_PORT_CDM4);
-+			qdata |= FIELD_PREP(AIROHA_FOE_ACTDP, info.bss);
-+			wlan_etype = FIELD_PREP(AIROHA_FOE_MAC_WDMA_BAND,
-+						info.idx) |
-+				     FIELD_PREP(AIROHA_FOE_MAC_WDMA_WCID,
-+						info.wcid);
-+		} else {
-+			struct airoha_gdm_port *port = netdev_priv(dev);
-+			u8 pse_port;
-+
-+			if (!airoha_is_valid_gdm_port(eth, port))
-+				return -EINVAL;
-+
-+			if (dsa_port >= 0)
-+				pse_port = port->id == 4 ? FE_PSE_PORT_GDM4
-+							 : port->id;
-+			else
-+				pse_port = 2; /* uplink relies on GDM2
-+					       * loopback
-+					       */
-+
-+			val |= FIELD_PREP(AIROHA_FOE_IB2_PSE_PORT, pse_port) |
-+			       AIROHA_FOE_IB2_PSE_QOS;
-+			/* For downlink traffic consume SRAM memory for hw
-+			 * forwarding descriptors queue.
-+			 */
-+			if (airhoa_is_lan_gdm_port(port))
-+				val |= AIROHA_FOE_IB2_FAST_PATH;
-+			if (dsa_port >= 0)
-+				val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ,
-+						  dsa_port);
-+
-+			smac_id = port->id;
-+		}
+ 	default:
+ 		return -EINVAL;
  	}
+@@ -3399,7 +3351,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 					return -EINVAL;
+ 			}
+ 			mac_proto = MAC_PROTO_NONE;
+-			if (!validate_nsh(nla_data(a), false, true, true))
++			if (!validate_push_nsh(nla_data(a), log))
+ 				return -EINVAL;
+ 			break;
  
- 	if (is_multicast_ether_addr(data->eth.h_dest))
-@@ -272,7 +313,6 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
- 	if (type == PPE_PKT_TYPE_IPV6_ROUTE_3T)
- 		hwe->ipv6.ports = ports_pad;
+diff --git a/net/openvswitch/flow_netlink.h b/net/openvswitch/flow_netlink.h
+index fe7f77fc5f189..ff8cdecbe3465 100644
+--- a/net/openvswitch/flow_netlink.h
++++ b/net/openvswitch/flow_netlink.h
+@@ -65,8 +65,6 @@ int ovs_nla_put_actions(const struct nlattr *attr,
+ void ovs_nla_free_flow_actions(struct sw_flow_actions *);
+ void ovs_nla_free_flow_actions_rcu(struct sw_flow_actions *);
  
--	qdata = FIELD_PREP(AIROHA_FOE_SHAPER_ID, 0x7f);
- 	if (type == PPE_PKT_TYPE_BRIDGE) {
- 		airoha_ppe_foe_set_bridge_addrs(&hwe->bridge, &data->eth);
- 		hwe->bridge.data = qdata;
-@@ -313,7 +353,9 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
- 			l2->vlan2 = data->vlan.hdr[1].id;
- 	}
+-int nsh_key_from_nlattr(const struct nlattr *attr, struct ovs_key_nsh *nsh,
+-			struct ovs_key_nsh *nsh_mask);
+ int nsh_hdr_from_nlattr(const struct nlattr *attr, struct nshhdr *nh,
+ 			size_t size);
  
--	if (dsa_port >= 0) {
-+	if (wlan_etype >= 0) {
-+		l2->etype = wlan_etype;
-+	} else if (dsa_port >= 0) {
- 		l2->etype = BIT(dsa_port);
- 		l2->etype |= !data->vlan.num ? BIT(15) : 0;
- 	} else if (data->pppoe.num) {
-@@ -490,6 +532,10 @@ static void airoha_ppe_foe_flow_stats_update(struct airoha_ppe *ppe,
- 		meter = &hwe->ipv4.l2.meter;
- 	}
- 
-+	pse_port = FIELD_GET(AIROHA_FOE_IB2_PSE_PORT, *ib2);
-+	if (pse_port == FE_PSE_PORT_CDM4)
-+		return;
-+
- 	airoha_ppe_foe_flow_stat_entry_reset(ppe, npu, index);
- 
- 	val = FIELD_GET(AIROHA_FOE_CHANNEL | AIROHA_FOE_QID, *data);
-@@ -500,7 +546,6 @@ static void airoha_ppe_foe_flow_stats_update(struct airoha_ppe *ppe,
- 		      AIROHA_FOE_IB2_PSE_QOS | AIROHA_FOE_IB2_FAST_PATH);
- 	*meter |= FIELD_PREP(AIROHA_FOE_TUNNEL_MTU, val);
- 
--	pse_port = FIELD_GET(AIROHA_FOE_IB2_PSE_PORT, *ib2);
- 	nbq = pse_port == 1 ? 6 : 5;
- 	*ib2 &= ~(AIROHA_FOE_IB2_NBQ | AIROHA_FOE_IB2_PSE_PORT |
- 		  AIROHA_FOE_IB2_PSE_QOS);
 -- 
 2.51.0
 
