@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-197384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F541C8F289
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E6C8EE95
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF1633BF7A7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68F2034D748
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CB2334C24;
-	Thu, 27 Nov 2025 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B71028D8E8;
+	Thu, 27 Nov 2025 14:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW3YNAca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXV8mVaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C70D3346BA;
-	Thu, 27 Nov 2025 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EBB299943;
+	Thu, 27 Nov 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255667; cv=none; b=ujh2Q/RHHpn8oeNZ9Mb05Uydy5YVQTYJR3ZVz9SHE/DcRqO1sNQ6/uRbAVJYDS0oKx6GBRugyEEqmqv4xn1j3lg5lLN+cIas3gQo1RIltYrGKZta9Rc95QHuIXvS5QWhNRE6bz3/yrWNTdbQwDY0ZydjzZhw/b+k1J4IhiNHbio=
+	t=1764255269; cv=none; b=G6mfssdlpId8HGEVv4R2sYUpNXXkLhoiE9foVAWxQKvPY095epzt6ckNskcmLk7EDI0qFMf2HH2rVrNd5qUfeSBx1EDsLHhsbQE1yqZ3mWnvQF54ykMIGCSk5lN0lj5AnsswXLtdowZIRxm+gb7X6wgk6feXlabYRvfDOwaYiSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255667; c=relaxed/simple;
-	bh=O9oW7CgrZCsalvh2pf0aC15sO7a/DLOQ9WsJyn74aek=;
+	s=arc-20240116; t=1764255269; c=relaxed/simple;
+	bh=1T52qdx1r+8Y6ACirMPMbkVelhGgIQ6C2g1OzJswrv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0M4DGte0qZSE5aE2DPxciQA/2jMeZ+AM3ufmjstV96trlaorVP+ink5xOgQvRPycXQrcNU7VMdnA36u8flg04AAsSKMJFXrVqjmwg490uR+2jLYnWvKT0VkycyDMjdOtkDOtVY9e68qEdttlkiwmt6pVbURxcV1Q1Hk0KWkHsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW3YNAca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561B1C4CEF8;
-	Thu, 27 Nov 2025 15:01:04 +0000 (UTC)
+	 MIME-Version; b=OlHVO9LIevmMTDYLJTFUXWkHyRcR/fIBtyMgVZZiHP1AJqWzCcY5IQAXZxAdowIUGApgl+BTZ/tVHRb+i1oZAWNGHqb9Pyf8HUD/fhu5z6O4IjlZ2Szu0FPpWn6Cx8ZqBepY4wBRqp3gcopdgLwXhI6uNBLUweNoGpg1tllyrX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXV8mVaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DCEC4CEF8;
+	Thu, 27 Nov 2025 14:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255664;
-	bh=O9oW7CgrZCsalvh2pf0aC15sO7a/DLOQ9WsJyn74aek=;
+	s=korg; t=1764255269;
+	bh=1T52qdx1r+8Y6ACirMPMbkVelhGgIQ6C2g1OzJswrv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW3YNAcay9k83s/qdr4DhiQY1jNNG7qpjJ7oVO9nUPc/yThyeA8QtycQZSov+ydzL
-	 xPP+DZtQu+/SBJuJrdQuldun7fxE7EzzjfkU05yUh4I5ur7p9XIuclzMCaRHlLh7fl
-	 WQbSvX6xg5sTWokBWVAd9lIusoqUjNejTdpi7zXM=
+	b=xXV8mVaWtvIcScg/0qUvhDdv7xfpJ3slV1EamUDYMHViQIoQsFcmsBCD17//OEX6G
+	 QCAvSNz/46Mot3Ul6tqBPbedLPP6EUcZC0oHdYR02BkTRuJF8ZuRgZ9/o4S1ooGcQE
+	 fHJirXawdDM1FFdPpPpJIraqsWIp+2pB0m2qiS24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zha <Yifan.Zha@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 072/175] drm/amdgpu: Skip emit de meta data on gfx11 with rs64 enabled
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 023/112] Input: cros_ec_keyb - fix an invalid memory access
 Date: Thu, 27 Nov 2025 15:45:25 +0100
-Message-ID: <20251127144045.595939717@linuxfoundation.org>
+Message-ID: <20251127144033.623897543@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zha <Yifan.Zha@amd.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit 80d8a9ad1587b64c545d515ab6cb7ecb9908e1b3 upstream.
+commit e08969c4d65ac31297fcb4d31d4808c789152f68 upstream.
 
-[Why]
-Accoreding to CP updated to RS64 on gfx11,
-WRITE_DATA with PREEMPTION_META_MEMORY(dst_sel=8) is illegal for CP FW.
-That packet is used for MCBP on F32 based system.
-So it would lead to incorrect GRBM write and FW is not handling that
-extra case correctly.
+If cros_ec_keyb_register_matrix() isn't called (due to
+`buttons_switches_only`) in cros_ec_keyb_probe(), `ckdev->idev` remains
+NULL.  An invalid memory access is observed in cros_ec_keyb_process()
+when receiving an EC_MKBP_EVENT_KEY_MATRIX event in cros_ec_keyb_work()
+in such case.
 
-[How]
-With gfx11 rs64 enabled, skip emit de meta data.
+  Unable to handle kernel read from unreadable memory at virtual address 0000000000000028
+  ...
+  x3 : 0000000000000000 x2 : 0000000000000000
+  x1 : 0000000000000000 x0 : 0000000000000000
+  Call trace:
+  input_event
+  cros_ec_keyb_work
+  blocking_notifier_call_chain
+  ec_irq_thread
 
-Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8366cd442d226463e673bed5d199df916f4ecbcf)
+It's still unknown about why the kernel receives such malformed event,
+in any cases, the kernel shouldn't access `ckdev->idev` and friends if
+the driver doesn't intend to initialize them.
+
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://patch.msgid.link/20251104070310.3212712-1-tzungbi@kernel.org
 Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/keyboard/cros_ec_keyb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -5874,9 +5874,9 @@ static void gfx_v11_0_ring_emit_ib_gfx(s
- 		if (flags & AMDGPU_IB_PREEMPTED)
- 			control |= INDIRECT_BUFFER_PRE_RESUME(1);
+--- a/drivers/input/keyboard/cros_ec_keyb.c
++++ b/drivers/input/keyboard/cros_ec_keyb.c
+@@ -261,6 +261,12 @@ static int cros_ec_keyb_work(struct noti
+ 	case EC_MKBP_EVENT_KEY_MATRIX:
+ 		pm_wakeup_event(ckdev->dev, 0);
  
--		if (vmid)
-+		if (vmid && !ring->adev->gfx.rs64_enable)
- 			gfx_v11_0_ring_emit_de_meta(ring,
--				    (!amdgpu_sriov_vf(ring->adev) && flags & AMDGPU_IB_PREEMPTED) ? true : false);
-+				!amdgpu_sriov_vf(ring->adev) && (flags & AMDGPU_IB_PREEMPTED));
- 	}
- 
- 	amdgpu_ring_write(ring, header);
++		if (!ckdev->idev) {
++			dev_warn_once(ckdev->dev,
++				      "Unexpected key matrix event\n");
++			return NOTIFY_OK;
++		}
++
+ 		if (ckdev->ec->event_size != ckdev->cols) {
+ 			dev_err(ckdev->dev,
+ 				"Discarded incomplete key matrix event.\n");
 
 
 
