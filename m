@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-197429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB6AC8F101
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91045C8F0D9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 51EAF3525D9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D65FC3B7D41
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3608334385;
-	Thu, 27 Nov 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4265334363;
+	Thu, 27 Nov 2025 14:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7xgu/p/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLytJXRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDC128CF42;
-	Thu, 27 Nov 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA4B289811;
+	Thu, 27 Nov 2025 14:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255793; cv=none; b=gNyCOqrY4TZ2cHKWK3Gn3tUhyPtpz9y+J+ihRnIJSzMntroYYjB48d56zhhT1Bq42hOfg6THsjOUXKeZE5FXl9HScxlzlheCAmhBti9jyX7xIzyNeI0l/WFLLGBu3MIY437eyffNtUqbur+4MSo8988KiBGi+ektLWnrf7pQp84=
+	t=1764255421; cv=none; b=uEn3Q1e7DtHspxMpkwdCpk7pSwmf+U05Af4IsGQPqQajtqRKyRZTLUhFv1iFBO0LShK7PX8LH4vX1t0uf/pHsBH4967UNehtS1gSjjx7vMdx1hDshAauqj7nGbLn5WSecc/FNUH63IyN9tjuS/Akka0d1mlThc8cEp3dOnh2wpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255793; c=relaxed/simple;
-	bh=eM5ldj8Hv3txioUrylweYOndz0RObWAIWjxl7IFjBvQ=;
+	s=arc-20240116; t=1764255421; c=relaxed/simple;
+	bh=8kNgnz/lYUeR2hhDdSG7RacQ1ML7s8EM2kiPkDF4l94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/CZLm9S9s54L+9bDEs8qTziZWMqNtpGIOPW+u6jhPTfNpyXIPbmDzVjWkdJfTV1yxQVMXSKM7DULVidhJ0ECs0SVHKoxKqkEGGXQkgTrayU/KRrHbRUb0W/OmRxwp5hZvW5ZWGXoQALKB9izDbS0tVCc4ZS5PVZpqB0FsqVur0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7xgu/p/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39848C4CEF8;
-	Thu, 27 Nov 2025 15:03:13 +0000 (UTC)
+	 MIME-Version; b=fnatqnhSbN+kumA44dgRlqYMSYlxjuQL9PjQd/ScHt6/bu0t4Z4xxPnFBe7oC5Z51BRVPpbotryRuN4leAwmkLXSlW0X8Af9Cahq/0rAmo8zm09uwSfBCdN/pfb7/YPh5Qc1skT6FU/rX+0Exb5Pitt9Hbd633L/FJ1BsszVQwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLytJXRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099D7C4CEF8;
+	Thu, 27 Nov 2025 14:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255793;
-	bh=eM5ldj8Hv3txioUrylweYOndz0RObWAIWjxl7IFjBvQ=;
+	s=korg; t=1764255421;
+	bh=8kNgnz/lYUeR2hhDdSG7RacQ1ML7s8EM2kiPkDF4l94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7xgu/p/bm2CivoqcMGPcxsa7BX9RP2sgsdj0Kzf58OfVdjTsRmG+rcerXf5004KI
-	 PyeCmaxX4GPcaD7iSWhwBcPbACtlZUlDsFTaukRDmYwpNW+L7TGNp9EutLCbZom178
-	 /U0GN6aRTeaCWPhHh+ZsyvbYeL6IAywW1SXb0riQ=
+	b=pLytJXRsx0t9ll3sOmMKrG/+EmJqoFUd+3wzmQ0RNHeZU0mD9JugSddg1ST0Lww5r
+	 tq4KgzJ9Qcs5KfaBTmi9EfME+4GKHs8WvjSVe3yyE+Eduw8wWpMJIqUq0sm9wgfGpr
+	 LOyhEI7N9I0Lfl05M0+sUuokhuWY9152nGLl0VcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 116/175] drm/xe/kunit: Fix forcewake assertion in mocs test
+Subject: [PATCH 6.12 067/112] nvme-multipath: fix lockdep WARN due to partition scan work
 Date: Thu, 27 Nov 2025 15:46:09 +0100
-Message-ID: <20251127144047.196699802@linuxfoundation.org>
+Message-ID: <20251127144035.294735156@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 905a3468ec679293949438393de7e61310432662 ]
+[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
 
-The MOCS kunit test calls KUNIT_ASSERT_TRUE_MSG() with a condition of
-'true;' this prevents the assertion from ever failing.  Replace
-KUNIT_ASSERT_TRUE_MSG with KUNIT_FAIL_AND_ABORT to get the intended
-failure behavior in cases where forcewake was not acquired successfully.
+Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
+lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
+a deadlock can happen due to the dependency among disk->open_mutex,
+kblockd workqueue completion and partition_scan_work completion.
 
-Fixes: 51c0ee84e4dc ("drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs")
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patch.msgid.link/20251113234038.2256106-2-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 9be4f0f687048ba77428ceca11994676736507b7)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+To avoid the lockdep WARN and the potential deadlock, cut the dependency
+by running the partition_scan_work not by kblockd workqueue but by
+nvme_wq.
+
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
+Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
+Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/tests/xe_mocs.c | 2 +-
+ drivers/nvme/host/multipath.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/tests/xe_mocs.c b/drivers/gpu/drm/xe/tests/xe_mocs.c
-index 0e502feaca818..6bb278167aaf6 100644
---- a/drivers/gpu/drm/xe/tests/xe_mocs.c
-+++ b/drivers/gpu/drm/xe/tests/xe_mocs.c
-@@ -49,7 +49,7 @@ static void read_l3cc_table(struct xe_gt *gt,
- 	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
- 	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
- 		xe_force_wake_put(gt_to_fw(gt), fw_ref);
--		KUNIT_ASSERT_TRUE_MSG(test, true, "Forcewake Failed.\n");
-+		KUNIT_FAIL_AND_ABORT(test, "Forcewake Failed.\n");
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 24cff8b044923..4ec4a1b11bb2e 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -687,7 +687,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
+-		kblockd_schedule_work(&head->partition_scan_work);
++		queue_work(nvme_wq, &head->partition_scan_work);
  	}
  
- 	for (i = 0; i < info->num_mocs_regs; i++) {
+ 	mutex_lock(&head->lock);
 -- 
 2.51.0
 
