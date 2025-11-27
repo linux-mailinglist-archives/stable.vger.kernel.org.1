@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BB9C8F2D7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88745C8EE4A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01BB03B8FE4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 124CF4EBEB4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AB328CF42;
-	Thu, 27 Nov 2025 15:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8DF25BEE8;
+	Thu, 27 Nov 2025 14:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPtLjKqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGN1Peng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241C424E4A8;
-	Thu, 27 Nov 2025 15:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A9B288537;
+	Thu, 27 Nov 2025 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255952; cv=none; b=QpNEI4ZtWLWvDi3eiJJqkZrYCtCv0dUoqReCtycUhIXr4zAiZLQIDmVFXJBj6dbBiYIz4mUZBFbfd/yl+5GVhojSLrIjVZP3zun5F4TfCC/77eWWtIARseNjytzkRYKaoX8XrP+2rgIAx7VC4MXm5IlPrrPHKcjxD9RDJ6CLTrw=
+	t=1764255043; cv=none; b=TgBX8RPbqYQB4fyovANtNdkfwS2BsVJpyq0MjTGRundF6ErRVmuAiaxjr8CwSoo9NQgx7NQVbyJK34mKzsWaj9OK0DuRVqdqDNKyklUAtS8MDrYppqF83164IG6GzyeTC2rGBCDucglK94E9YxmVOHicdRSLMNQJ88M4wjA3Wcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255952; c=relaxed/simple;
-	bh=yxKf8QwdME+2Vfdy2C4BgYPInxg3lBU9PqyBprplpPw=;
+	s=arc-20240116; t=1764255043; c=relaxed/simple;
+	bh=xu7nNQUbzXvwZZbCydUBdCyUKWXUhZ4YzRKAkhu26XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/bXHKX9CaQHc39uAH7tcji0oj0n/BUsD3DV1x0lZWjwPDAbqvdA7ltjn6OGUNgFmDqT9epcr3/EcFd/2fkBI/4GtSbnC/dg4ZPF1wOr2ZVUFeEdn+nnpkZFN8haHpX+qssIuM9I1Y9qcYIWK4OzH3WY7BxSwyJuo/jUId4fEAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPtLjKqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35BFC4CEF8;
-	Thu, 27 Nov 2025 15:05:51 +0000 (UTC)
+	 MIME-Version; b=gqEMDN7rP1fJ9xT1XQkrnaCaqeH9tjOWGsagU4pQm4cksSqtUki/4ndlhhrI+ybxOuSRcazz5Vg1Vd0SmYtmu2rdbnueVN9z4C4vkJzL2HNUr3uGCknJfUVRq3BjdJtb1MgUBrLq+7QqoRKsbB2loBlRtu+W/ALygGOBM7FOUUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGN1Peng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5907CC113D0;
+	Thu, 27 Nov 2025 14:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255952;
-	bh=yxKf8QwdME+2Vfdy2C4BgYPInxg3lBU9PqyBprplpPw=;
+	s=korg; t=1764255043;
+	bh=xu7nNQUbzXvwZZbCydUBdCyUKWXUhZ4YzRKAkhu26XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPtLjKqG1kuwiwMGeLzNsQJgJb2AT3454iB6jLXpFDu5QkuNv1KWwGGkZxKPyiN8f
-	 fxAXDDdjrRwcJ+y/VRuUDitlLbfgihpg0NPRguw7/XkAHfm0AWC2Vyfdpsl1ryujsW
-	 hbvW45bMjzdNMlFL/kXUX1eFNtwCjsUWqZeXcvzI=
+	b=rGN1PengLfplnJI8cAD6ImmDc9D3sBwzzZb+KtSLJJrVjA4LlhL9c/JOmIacs6kmj
+	 MSG+3aGGXqqPC5HMOhA2uY/38SDQwZ4McfQ6UWc4n0QIyCGj3iPYT+GwvnBrJxdXRo
+	 2sJm5DnEGkSiIxzgBk55t0gowutm4TBumSxJxkbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 138/175] drm/msm: Fix pgtable prealloc error path
+	Martin Kaiser <martin@kaiser.cx>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 75/86] maple_tree: fix tracepoint string pointers
 Date: Thu, 27 Nov 2025 15:46:31 +0100
-Message-ID: <20251127144047.998945672@linuxfoundation.org>
+Message-ID: <20251127144030.569236179@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 830d68f2cb8ab6fb798bb9555016709a9e012af0 ]
+commit 91a54090026f84ceffaa12ac53c99b9f162946f6 upstream.
 
-The following splat was reported:
+maple_tree tracepoints contain pointers to function names. Such a pointer
+is saved when a tracepoint logs an event. There's no guarantee that it's
+still valid when the event is parsed later and the pointer is dereferenced.
 
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-    Mem abort info:
-      ESR = 0x0000000096000004
-      EC = 0x25: DABT (current EL), IL = 32 bits
-      SET = 0, FnV = 0
-      EA = 0, S1PTW = 0
-      FSC = 0x04: level 0 translation fault
-    Data abort info:
-      ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-    user pgtable: 4k pages, 48-bit VAs, pgdp=00000008d0fd8000
-    [0000000000000010] pgd=0000000000000000, p4d=0000000000000000
-    Internal error: Oops: 0000000096000004 [#1]  SMP
-    CPU: 5 UID: 1000 PID: 149076 Comm: Xwayland Tainted: G S                  6.16.0-rc2-00809-g0b6974bb4134-dirty #367 PREEMPT
-    Tainted: [S]=CPU_OUT_OF_SPEC
-    Hardware name: Qualcomm Technologies, Inc. SM8650 HDK (DT)
-    pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-    pc : build_detached_freelist+0x28/0x224
-    lr : kmem_cache_free_bulk.part.0+0x38/0x244
-    sp : ffff000a508c7a20
-    x29: ffff000a508c7a20 x28: ffff000a508c7d50 x27: ffffc4e49d16f350
-    x26: 0000000000000058 x25: 00000000fffffffc x24: 0000000000000000
-    x23: ffff00098c4e1450 x22: 00000000fffffffc x21: 0000000000000000
-    x20: ffff000a508c7af8 x19: 0000000000000002 x18: 00000000000003e8
-    x17: ffff000809523850 x16: ffff000809523820 x15: 0000000000401640
-    x14: ffff000809371140 x13: 0000000000000130 x12: ffff0008b5711e30
-    x11: 00000000001058fa x10: 0000000000000a80 x9 : ffff000a508c7940
-    x8 : ffff000809371ba0 x7 : 781fffe033087fff x6 : 0000000000000000
-    x5 : ffff0008003cd000 x4 : 781fffe033083fff x3 : ffff000a508c7af8
-    x2 : fffffdffc0000000 x1 : 0001000000000000 x0 : ffff0008001a6a00
-    Call trace:
-     build_detached_freelist+0x28/0x224 (P)
-     kmem_cache_free_bulk.part.0+0x38/0x244
-     kmem_cache_free_bulk+0x10/0x1c
-     msm_iommu_pagetable_prealloc_cleanup+0x3c/0xd0
-     msm_vma_job_free+0x30/0x240
-     msm_ioctl_vm_bind+0x1d0/0x9a0
-     drm_ioctl_kernel+0x84/0x104
-     drm_ioctl+0x358/0x4d4
-     __arm64_sys_ioctl+0x8c/0xe0
-     invoke_syscall+0x44/0x100
-     el0_svc_common.constprop.0+0x3c/0xe0
-     do_el0_svc+0x18/0x20
-     el0_svc+0x30/0x100
-     el0t_64_sync_handler+0x104/0x130
-     el0t_64_sync+0x170/0x174
-    Code: aa0203f5 b26287e2 f2dfbfe2 aa0303f4 (f8737ab6)
-    ---[ end trace 0000000000000000 ]---
+The kernel warns about these unsafe pointers.
 
-Since msm_vma_job_free() is called directly from the ioctl, this looks
-like an error path cleanup issue.  Which I think results from
-prealloc_cleanup() called without a preceding successful
-prealloc_allocate() call.  So handle that case better.
+	event 'ma_read' has unsafe pointer field 'fn'
+	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/678677/
-Message-ID: <20251006153542.419998-1-robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mark the function names as tracepoint_string() to fix the events.
+
+One case that doesn't work without my patch would be trace-cmd record
+to save the binary ringbuffer and trace-cmd report to parse it in
+userspace.  The address of __func__ can't be dereferenced from
+userspace but tracepoint_string will add an entry to
+/sys/kernel/tracing/printk_formats
+
+Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_iommu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/maple_tree.c |   32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-index 76cdd5ea06a02..10ef47ffb787a 100644
---- a/drivers/gpu/drm/msm/msm_iommu.c
-+++ b/drivers/gpu/drm/msm/msm_iommu.c
-@@ -338,6 +338,8 @@ msm_iommu_pagetable_prealloc_allocate(struct msm_mmu *mmu, struct msm_mmu_preall
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -62,6 +62,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/maple_tree.h>
  
- 	ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages);
- 	if (ret != p->count) {
-+		kfree(p->pages);
-+		p->pages = NULL;
- 		p->count = ret;
- 		return -ENOMEM;
- 	}
-@@ -351,6 +353,9 @@ msm_iommu_pagetable_prealloc_cleanup(struct msm_mmu *mmu, struct msm_mmu_preallo
- 	struct kmem_cache *pt_cache = get_pt_cache(mmu);
- 	uint32_t remaining_pt_count = p->count - p->ptr;
- 
-+	if (!p->pages)
-+		return;
++#define TP_FCT tracepoint_string(__func__)
 +
- 	if (p->count > 0)
- 		trace_msm_mmu_prealloc_cleanup(p->count, remaining_pt_count);
+ #define MA_ROOT_PARENT 1
  
--- 
-2.51.0
-
+ /*
+@@ -2990,7 +2992,7 @@ static inline int mas_rebalance(struct m
+ 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
+ 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
+ 
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 
+ 	/*
+ 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
+@@ -3365,7 +3367,7 @@ static int mas_split(struct ma_state *ma
+ 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
+ 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
+ 
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 	mas->depth = mas_mt_height(mas);
+ 	/* Allocation failures will happen early. */
+ 	mas_node_count(mas, 1 + mas->depth * 2);
+@@ -3598,7 +3600,7 @@ static bool mas_is_span_wr(struct ma_wr_
+ 			return false;
+ 	}
+ 
+-	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
++	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
+ 	return true;
+ }
+ 
+@@ -3845,7 +3847,7 @@ static inline int mas_wr_spanning_store(
+ 	 * of data may happen.
+ 	 */
+ 	mas = wr_mas->mas;
+-	trace_ma_op(__func__, mas);
++	trace_ma_op(TP_FCT, mas);
+ 
+ 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
+ 		return mas_new_root(mas, wr_mas->entry);
+@@ -3996,7 +3998,7 @@ done:
+ 	} else {
+ 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
+ 	}
+-	trace_ma_write(__func__, mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
+ 	mas_update_gap(mas);
+ 	return true;
+ }
+@@ -4042,7 +4044,7 @@ static inline bool mas_wr_slot_store(str
+ 		return false;
+ 	}
+ 
+-	trace_ma_write(__func__, mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
+ 	/*
+ 	 * Only update gap when the new entry is empty or there is an empty
+ 	 * entry in the original two ranges.
+@@ -4178,7 +4180,7 @@ static inline bool mas_wr_append(struct
+ 	if (!wr_mas->content || !wr_mas->entry)
+ 		mas_update_gap(mas);
+ 
+-	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
++	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
+ 	return  true;
+ }
+ 
+@@ -4192,7 +4194,7 @@ static void mas_wr_bnode(struct ma_wr_st
+ {
+ 	struct maple_big_node b_node;
+ 
+-	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
++	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
+ 	memset(&b_node, 0, sizeof(struct maple_big_node));
+ 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
+ 	mas_commit_b_node(wr_mas, &b_node, wr_mas->node_end);
+@@ -5395,7 +5397,7 @@ void *mas_store(struct ma_state *mas, vo
+ {
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 
+-	trace_ma_write(__func__, mas, 0, entry);
++	trace_ma_write(TP_FCT, mas, 0, entry);
+ #ifdef CONFIG_DEBUG_MAPLE_TREE
+ 	if (MAS_WARN_ON(mas, mas->index > mas->last))
+ 		pr_err("Error %lX > %lX %p\n", mas->index, mas->last, entry);
+@@ -5433,7 +5435,7 @@ int mas_store_gfp(struct ma_state *mas,
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 
+ 	mas_wr_store_setup(&wr_mas);
+-	trace_ma_write(__func__, mas, 0, entry);
++	trace_ma_write(TP_FCT, mas, 0, entry);
+ retry:
+ 	mas_wr_store_entry(&wr_mas);
+ 	if (unlikely(mas_nomem(mas, gfp)))
+@@ -5457,7 +5459,7 @@ void mas_store_prealloc(struct ma_state
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 
+ 	mas_wr_store_setup(&wr_mas);
+-	trace_ma_write(__func__, mas, 0, entry);
++	trace_ma_write(TP_FCT, mas, 0, entry);
+ 	mas_wr_store_entry(&wr_mas);
+ 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
+ 	mas_destroy(mas);
+@@ -6245,7 +6247,7 @@ void *mtree_load(struct maple_tree *mt,
+ 	MA_STATE(mas, mt, index, index);
+ 	void *entry;
+ 
+-	trace_ma_read(__func__, &mas);
++	trace_ma_read(TP_FCT, &mas);
+ 	rcu_read_lock();
+ retry:
+ 	entry = mas_start(&mas);
+@@ -6288,7 +6290,7 @@ int mtree_store_range(struct maple_tree
+ 	MA_STATE(mas, mt, index, last);
+ 	MA_WR_STATE(wr_mas, &mas, entry);
+ 
+-	trace_ma_write(__func__, &mas, 0, entry);
++	trace_ma_write(TP_FCT, &mas, 0, entry);
+ 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
+ 		return -EINVAL;
+ 
+@@ -6470,7 +6472,7 @@ void *mtree_erase(struct maple_tree *mt,
+ 	void *entry = NULL;
+ 
+ 	MA_STATE(mas, mt, index, index);
+-	trace_ma_op(__func__, &mas);
++	trace_ma_op(TP_FCT, &mas);
+ 
+ 	mtree_lock(mt);
+ 	entry = mas_erase(&mas);
+@@ -6536,7 +6538,7 @@ void *mt_find(struct maple_tree *mt, uns
+ 	unsigned long copy = *index;
+ #endif
+ 
+-	trace_ma_read(__func__, &mas);
++	trace_ma_read(TP_FCT, &mas);
+ 
+ 	if ((*index) > max)
+ 		return NULL;
 
 
 
