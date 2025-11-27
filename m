@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-197269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D308AC8EE98
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB0AC8EDE4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A03B1350191
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 075454EAEA3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A1130DED3;
-	Thu, 27 Nov 2025 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E2D333755;
+	Thu, 27 Nov 2025 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/0rZxkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFEdTn1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ACE299943;
-	Thu, 27 Nov 2025 14:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32825289E17;
+	Thu, 27 Nov 2025 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255272; cv=none; b=QfGXgGIIQhoYwTj77+T/VkYjow7dIq3frfPmhw3HYHagxb+b1bxaxoqcLHDio8UlbbBsr5hPKNK27LwnqxKsOxmkY00/pg/xhYOZW7RjBSulneUcX8/8OFnJur2ZLrvfTkicWPmZiBQ7Pl62cjkgmk8QdS0TjGASmJp3fG/twMc=
+	t=1764254963; cv=none; b=HXWUjm+KUtwbMSUtI7yY/n3RQ9paPUwaz8xJA6hIYJ3JvgoTFiLH/69gikJm68v7Mrbhx6WFBV/NK2qKKw/0WZ66uqtNHYyhcjP2MnOhH3b/ekR+JHdNFCt0GrqG8QZJ5X8kRoVzv9eU0IYzwJXalTi7D1FASF6Ti4XoXjI2JKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255272; c=relaxed/simple;
-	bh=6dqLq0aMl7iV8qUB0SfsNuhAazKfUZU9OzhLQ9c+QqY=;
+	s=arc-20240116; t=1764254963; c=relaxed/simple;
+	bh=dZo7htpguKCidEM6eKKKXidjVUwURrMQsmueHOaQ2TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aIkWOjlqeGJUuv+gZBYX8xPgkGypo2+Gw1Ubc5/O6ZW8hDtUSTM+02XCZHl/ZxmlJKuCwiyJxpU34R8u1hCcKBO+NQuoQt1zGtX4dpJ4YIy4ynzqh/b06ZpW3lNq/wchDYuvhRAfuYSxGdYBW6t/AcTDfjDxF9ieJOPpOG0Hma8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/0rZxkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFE4C4CEF8;
-	Thu, 27 Nov 2025 14:54:31 +0000 (UTC)
+	 MIME-Version; b=oU4EdqkevRENHRtNF7R+xUSEcFKJpmRsroHbFCHunpjeBL1kF0zTXUkh9V2Oq8DKA3ftvxv1Z8EcUN7uH1UPxjv216TIyQN3yq6JFQaxOaF9e8NIqV8dgFtssIpcAifzwqcov9Rs/Ec14ve+LxsDCr4lqGJK7H/8Qem03uB2Aa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFEdTn1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2045C113D0;
+	Thu, 27 Nov 2025 14:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255272;
-	bh=6dqLq0aMl7iV8qUB0SfsNuhAazKfUZU9OzhLQ9c+QqY=;
+	s=korg; t=1764254963;
+	bh=dZo7htpguKCidEM6eKKKXidjVUwURrMQsmueHOaQ2TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/0rZxkLqy9GNTiFvS5e7hTD0XN7sz9g/miT4lSTF1tQRvT6mdv+Yduwp4xLJEUZF
-	 FUahPKXXeLPg4IjS3W2OjeL0mVvFpKNWuYn7OWv6sZElgFb80xV4mDIrXxwC9hkzF6
-	 ktu5VoodNGr/XyXuLmjCHqx7BkU8MNsB9ymjL26Y=
+	b=cFEdTn1Td6kumRUkOkBe5ZJzP/kS9a9DxLLn5DTBcktnOxxDdhLzNC+ITuqbHuGuM
+	 cqQ73Bus7IrRsRBBd8cCTvYozfBZfA17+IAwu0Iy4PO9h6RoAdC6cniUnSfauxtS7B
+	 81rkSbH5aPsFVyd1AwFWN0yKgGWRzFE3WIVg9/e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/112] platform/x86: msi-wmi-platform: Fix typo in WMI GUID
+Subject: [PATCH 6.6 46/86] nvme-multipath: fix lockdep WARN due to partition scan work
 Date: Thu, 27 Nov 2025 15:46:02 +0100
-Message-ID: <20251127144035.036782444@linuxfoundation.org>
+Message-ID: <20251127144029.513345949@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 97b726eb1dc2b4a2532544eb3da72bb6acbd39a3 ]
+[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
 
-The WMI driver core only supports GUID strings containing only
-uppercase characters, however the GUID string used by the
-msi-wmi-platform driver contains a single lowercase character.
-This prevents the WMI driver core from matching said driver to
-its WMI device.
+Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
+lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
+a deadlock can happen due to the dependency among disk->open_mutex,
+kblockd workqueue completion and partition_scan_work completion.
 
-Fix this by turning the lowercase character into a uppercase
-character. Also update the WMI driver development guide to warn
-about this.
+To avoid the lockdep WARN and the potential deadlock, cut the dependency
+by running the partition_scan_work not by kblockd workqueue but by
+nvme_wq.
 
-Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-Fixes: 9c0beb6b29e7 ("platform/x86: wmi: Add MSI WMI Platform driver")
-Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251110111253.16204-3-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
+Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
+Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/wmi/driver-development-guide.rst | 1 +
- drivers/platform/x86/msi-wmi-platform.c        | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/wmi/driver-development-guide.rst b/Documentation/wmi/driver-development-guide.rst
-index 429137b2f6323..4c10159d5f6cd 100644
---- a/Documentation/wmi/driver-development-guide.rst
-+++ b/Documentation/wmi/driver-development-guide.rst
-@@ -50,6 +50,7 @@ to matching WMI devices using a struct wmi_device_id table:
- ::
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 57416bbf9344f..578f4f29eacfe 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -686,7 +686,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
+-		kblockd_schedule_work(&head->partition_scan_work);
++		queue_work(nvme_wq, &head->partition_scan_work);
+ 	}
  
-   static const struct wmi_device_id foo_id_table[] = {
-+         /* Only use uppercase letters! */
-          { "936DA01F-9ABD-4D9D-80C7-02AF85C822A8", NULL },
-          { }
-   };
-diff --git a/drivers/platform/x86/msi-wmi-platform.c b/drivers/platform/x86/msi-wmi-platform.c
-index bd2687828a2e6..e912fcc12d124 100644
---- a/drivers/platform/x86/msi-wmi-platform.c
-+++ b/drivers/platform/x86/msi-wmi-platform.c
-@@ -29,7 +29,7 @@
- 
- #define DRIVER_NAME	"msi-wmi-platform"
- 
--#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11d1-00A0-C90629100000"
-+#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11D1-00A0-C90629100000"
- 
- #define MSI_WMI_PLATFORM_INTERFACE_VERSION	2
- 
+ 	mutex_lock(&head->lock);
 -- 
 2.51.0
 
