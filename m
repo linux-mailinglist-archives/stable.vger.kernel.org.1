@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0185DC8EE6B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07757C8F076
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09D9D4EA50F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7090C3AF96E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EA228C5D9;
-	Thu, 27 Nov 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B56334397;
+	Thu, 27 Nov 2025 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YReW2CS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ex2R71Rq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66D232E130;
-	Thu, 27 Nov 2025 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1293335BBE;
+	Thu, 27 Nov 2025 14:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255095; cv=none; b=sF/0GxRy8UeKFqYkgJFQW7sW5G7uGF4tz+AVuM0jUieTh9ZgH65P5K5mZIuJt2GYylrOxpmbQ4U7IZFFdGRZZprV588Q5pYpgCZtRmJzJXOXafOeMJO8l8EwX4fvj2shI8n6AxUdz1IzQHQD5IlVz4xwb6QLN6OpUeLUnO8ID48=
+	t=1764255306; cv=none; b=eLoApLfAcwFD+syN2mp/8W8oAfz6jd8S38UKBaKR1oAapvR4JMbKBhzgjKy3ByGOE6nO9vqk/aR+XcF+HZQtzoJc2iTJeBN+wZNT9YoSOy/dTW5fKYxiBo7lPLe6g80O4WappcMITtR1T/rWm8RqzARzEvqRZp4AhwHI2L+ZLWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255095; c=relaxed/simple;
-	bh=/nC5nkTNmDGiQ5+FdGdE54TD7ql+hETFuOE+TkHyzQA=;
+	s=arc-20240116; t=1764255306; c=relaxed/simple;
+	bh=e7WUrwZZBTnmHRvQnd79V/UNd55JyIirUzdz1Q+Ut9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LgJcqrBwBVGuIuuuBH5Tef5JxBlnql1t4B5FTYIb0LBDgnVYpEjm6goDdoBqFR4sVrR+mN5Gp24usKbzLvqibS3NNvD7eNuyR/xA+bSA8t76hMYRWYeWl6wrrmtDfLsJDgMHJZWoK2yVl4thCP19LFqFOFMmzaJnyMJlhZvj7c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YReW2CS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3DCC16AAE;
-	Thu, 27 Nov 2025 14:51:34 +0000 (UTC)
+	 MIME-Version; b=XgvN/gUq37aAc5GpR8m0tX7jzTg3XeR2Pm0Oum+EFGMEs5a4YaiB72GqYgGy2vgp5zpJbPRa5Uj2lAENADRY6bEDR1S9Eun2z2NMwHbrcHQXU3UnQwD6gyR9c530R3/GYXgRsVDEQ9+Yz5H8w3A6bM6iP/vmPLK/5uitR+Rtta8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ex2R71Rq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF5BC4CEF8;
+	Thu, 27 Nov 2025 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255094;
-	bh=/nC5nkTNmDGiQ5+FdGdE54TD7ql+hETFuOE+TkHyzQA=;
+	s=korg; t=1764255306;
+	bh=e7WUrwZZBTnmHRvQnd79V/UNd55JyIirUzdz1Q+Ut9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YReW2CS43yGkBjaVvUUogNx1K5FNoGPro2dOjX5+FLQPBaEVl+GUUMPHiFFXKrmMK
-	 6h9YRDv86+YTGee3GeJoYLE9BJ2evossnZd+hc7+roe/Qq4+Py+W+2GSP20R4/4YY5
-	 o9sP3Dv/Nru6spiedkh5h9fqSkUchDSZDwQngzTE=
+	b=Ex2R71RqhJItK6W/f50w7guVfXp9TGlqlr9Krs0xIptdp4OPg+qf8i9a5crferKUT
+	 D4dJwXcU5nUDOn7/BS8WYwKaqbhWK5+RtOrY5z+gW5YG2szFrtwYzysrUvjuKVnk7l
+	 JZfJSeH7PTyZ05ST8gfDjwp4vfv+4E9BTxFoDh+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 65/86] kconfig/nconf: Initialize the default locale at startup
+Subject: [PATCH 6.12 079/112] af_unix: Read sk_peek_offset() again after sleeping in unix_stream_read_generic().
 Date: Thu, 27 Nov 2025 15:46:21 +0100
-Message-ID: <20251127144030.207799985@linuxfoundation.org>
+Message-ID: <20251127144035.733189967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 43c2931a95e6b295bfe9e3b90dbe0f7596933e91 ]
+[ Upstream commit 7bf3a476ce43833c49fceddbe94ff3472e04e9bc ]
 
-Fix bug where make nconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+Miao Wang reported a bug of SO_PEEK_OFF on AF_UNIX SOCK_STREAM
+socket.
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014144405.3975275-2-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+The unexpected behaviour is triggered when the peek offset is
+larger than the recv queue and the thread is unblocked by new
+data.
+
+Let's assume a socket which has "aaaa" in the recv queue and
+the peek offset is 4.
+
+First, unix_stream_read_generic() reads the offset 4 and skips
+the skb(s) of "aaaa" with the code below:
+
+	skip = max(sk_peek_offset(sk, flags), 0);	/* @skip is 4. */
+
+	do {
+	...
+		while (skip >= unix_skb_len(skb)) {
+			skip -= unix_skb_len(skb);
+		...
+			skb = skb_peek_next(skb, &sk->sk_receive_queue);
+			if (!skb)
+				goto again;		/* @skip is 0. */
+		}
+
+The thread jumps to the 'again' label and goes to sleep since
+new data has not arrived yet.
+
+Later, new data "bbbb" unblocks the thread, and the thread jumps
+to the 'redo:' label to restart the entire process from the first
+skb in the recv queue.
+
+	do {
+		...
+redo:
+		...
+		last = skb = skb_peek(&sk->sk_receive_queue);
+		...
+again:
+		if (skb == NULL) {
+			...
+			timeo = unix_stream_data_wait(sk, timeo, last,
+						      last_len, freezable);
+			...
+			goto redo;			/* @skip is 0 !! */
+
+However, the peek offset is not reset in the path.
+
+If the buffer size is 8, recv() will return "aaaabbbb" without
+skipping any data, and the final offset will be 12 (the original
+offset 4 + peeked skbs' length 8).
+
+After sleeping in unix_stream_read_generic(), we have to fetch the
+peek offset again.
+
+Let's move the redo label before mutex_lock(&u->iolock).
+
+Fixes: 9f389e35674f ("af_unix: return data from multiple SKBs on recv() with MSG_PEEK flag")
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Closes: https://lore.kernel.org/netdev/3B969F90-F51F-4B9D-AB1A-994D9A54D460@gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20251117174740.3684604-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/nconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/unix/af_unix.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 7a17c94a15941..a7cfa6813c63f 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -7,6 +7,7 @@
- #ifndef _GNU_SOURCE
- #define _GNU_SOURCE
- #endif
-+#include <locale.h>
- #include <string.h>
- #include <strings.h>
- #include <stdlib.h>
-@@ -1569,6 +1570,8 @@ int main(int ac, char **av)
- 	int lines, columns;
- 	char *mode;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 26d37a90b755d..59911ac719b19 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2805,6 +2805,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
  
-+	setlocale(LC_ALL, "");
-+
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		/* Silence conf_read() until the real callback is set up */
- 		conf_set_message_callback(NULL);
+ 	u = unix_sk(sk);
+ 
++redo:
+ 	/* Lock the socket to prevent queue disordering
+ 	 * while sleeps in memcpy_tomsg
+ 	 */
+@@ -2816,7 +2817,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		struct sk_buff *skb, *last;
+ 		int chunk;
+ 
+-redo:
+ 		unix_state_lock(sk);
+ 		if (sock_flag(sk, SOCK_DEAD)) {
+ 			err = -ECONNRESET;
+@@ -2866,7 +2866,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				goto out;
+ 			}
+ 
+-			mutex_lock(&u->iolock);
+ 			goto redo;
+ unlock:
+ 			unix_state_unlock(sk);
 -- 
 2.51.0
 
