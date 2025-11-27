@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D9EC8F25C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086EBC8F019
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:01:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E91164E91B7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90DAF4EAF04
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9BC33436D;
-	Thu, 27 Nov 2025 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF47933345E;
+	Thu, 27 Nov 2025 14:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wqqq4vJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sL8iVyO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB432882A7;
-	Thu, 27 Nov 2025 15:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E1930DED3;
+	Thu, 27 Nov 2025 14:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255866; cv=none; b=OYl54XdgxnEIB2P71HY8PxrOd1byVMLrW9yivZhVXwihMAw4y22R8kfBTbZg5mD9+6Ix7ppZultynnMjeud7VjoHzvqYJqMD5FEn2UMugSeZ92fcEoyMMCcx44kBoLIZGdycqylBG3la1LRzCMalTauDaoMu8uD0Pzv1jAwMhnY=
+	t=1764255404; cv=none; b=SPAEOdagcNz6bWlz8D0bFzMl7GYingdr6Hp+HH4UzKeWMtbsZFuyfho3jNCsTgeuRIaRQ6OYOflPEgppsubvzUzWh7Gp9OsdNimbY2FaEjp08uaIk16c0izhamDK0mGRpyu5M+B7/ywzrxmzkX9MrZxpNpIoGkdPI1Sc4TXyBIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255866; c=relaxed/simple;
-	bh=R0/meJ9xwPI75SeFybDK1JUgAN3wTI5PiBZnB+L/ps4=;
+	s=arc-20240116; t=1764255404; c=relaxed/simple;
+	bh=CXXKUlfUJWPTiISEGGip9ob9MPUR8iAfYVm3xS8yVbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqPM+hP20mFtES7PiTLHV6izxYtFf6EOKziGpCgVFiwn/z9v7gaQmVzkgNP/GkLK9vi1SCor2wxXcOP7NaS0pFKCenbAhsII3b4BuJ+ddUO+sMN4ornLUqn+4xmu6bIkXcLZLTUHZ4U5KYChVsF5LUPCH4sHzgwdGM2nM5E4rfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wqqq4vJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77601C4CEF8;
-	Thu, 27 Nov 2025 15:04:25 +0000 (UTC)
+	 MIME-Version; b=gFquwaHiinXnNgdRIXAC3vnt98QeNroqMg0WhkZbl8PAXnlfWqneYvBjg3UkbPJtGWF99G5zOcaiNvIt14N8Ei77Fd4zHkKIpt9BG/P79izhqLB1o+G5piA1fzT7nhgI3r6YnZQHwhxoOjZT31o33+hbryatCjCd85EWfvftS00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sL8iVyO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AD2C4CEF8;
+	Thu, 27 Nov 2025 14:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255865;
-	bh=R0/meJ9xwPI75SeFybDK1JUgAN3wTI5PiBZnB+L/ps4=;
+	s=korg; t=1764255404;
+	bh=CXXKUlfUJWPTiISEGGip9ob9MPUR8iAfYVm3xS8yVbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wqqq4vJsp+ID/aUXyktLiYnEd5MQwREgLcavIiF0I44O+D4FjGwVc41pLlmAHadbm
-	 aWpIzn/WJz9slw23EOurs569xPe8HP48XsEuTpZ0dkEH4Dd5DVaMJT0BIlUbdQ7rNI
-	 aDVKUycdTEJ6jz05M9PayP+NjFpstAcwDma4Rr2g=
+	b=sL8iVyO9TDCw7JRI1t4jAT7BYYMhCz7uAidKaI0kENTQQIIeMMcyactXuX4FANtc0
+	 GrEwvb2qZA//pOHpCK+BKj9gSO9/ipcUkhrsHHE9K6ocRp8yy8EkKLhr/GC7ExlGdC
+	 d4Jq4S3fyA2k/lTOkat+AG4v/ggqO0xrizrPPbP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eren Demir <eren.demir2479090@gmail.com>,
+	Pavel Machek <pavel@denx.de>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 142/175] ALSA: hda/realtek: Fix mute led for HP Victus 15-fa1xxx (MB 8C2D)
+Subject: [PATCH 6.12 093/112] ALSA: usb-audio: Fix missing unlock at error path of maxpacksize check
 Date: Thu, 27 Nov 2025 15:46:35 +0100
-Message-ID: <20251127144048.144141557@linuxfoundation.org>
+Message-ID: <20251127144036.245075625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eren Demir <eren.demir2479090@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 28935ee5e4789ad86c08ba9f2426edd6203d13fa ]
+The recent backport of the upstream commit 05a1fc5efdd8 ("ALSA:
+usb-audio: Fix potential overflow of PCM transfer buffer") on the
+older stable kernels like 6.12.y was broken since it doesn't consider
+the mutex unlock, where the upstream code manages with guard().
+In the older code, we still need an explicit unlock.
 
-The quirk for Victus 15-fa1xxx wasn't working on Victus 15-fa1031nt due to a different board id. This patch enables the existing quirk for the board id 8BC8.
+This is a fix that corrects the error path, applied only on old stable
+trees.
 
-Tested on HP Victus 15-fa1031nt (MB 8C2D). The LED behaviour works as intended.
-
-Signed-off-by: Eren Demir <eren.demir2479090@gmail.com>
-Link: https://patch.msgid.link/20251027110208.6481-1-eren.demir2479090@gmail.com
+Reported-by: Pavel Machek <pavel@denx.de>
+Closes: https://lore.kernel.org/aSWtH0AZH5+aeb+a@duo.ucw.cz
+Fixes: 98e9d5e33bda ("ALSA: usb-audio: Fix potential overflow of PCM transfer buffer")
+Reviewed-by: Pavel Machek <pavel@denx.de>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/endpoint.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 20f0ad43953f4..796f555dd381d 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6580,6 +6580,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8c16, "HP Spectre x360 2-in-1 Laptop 16-aa0xxx", ALC245_FIXUP_HP_SPECTRE_X360_16_AA0XXX),
- 	SND_PCI_QUIRK(0x103c, 0x8c17, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8c21, "HP Pavilion Plus Laptop 14-ey0XXX", ALC245_FIXUP_HP_X360_MUTE_LEDS),
-+	SND_PCI_QUIRK(0x103c, 0x8c2d, "HP Victus 15-fa1xxx (MB 8C2D)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8c30, "HP Victus 15-fb1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
+index 7238f65cbcfff..aa201e4744bf6 100644
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -1389,7 +1389,8 @@ int snd_usb_endpoint_set_params(struct snd_usb_audio *chip,
+ 	if (ep->packsize[1] > ep->maxpacksize) {
+ 		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
+ 			      ep->maxpacksize, ep->cur_rate, ep->pps);
+-		return -EINVAL;
++		err = -EINVAL;
++		goto unlock;
+ 	}
+ 
+ 	/* calculate the frequency in 16.16 format */
 -- 
 2.51.0
 
