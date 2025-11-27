@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDC7C8F0D6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454B5C8F280
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 962A43B7E74
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F38C4EDC70
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BA728D830;
-	Thu, 27 Nov 2025 14:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43DD33436D;
+	Thu, 27 Nov 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Dl+ALuN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx/oSPvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75343332900;
-	Thu, 27 Nov 2025 14:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBE428135D;
+	Thu, 27 Nov 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255433; cv=none; b=eiyWOOdpQfvxCwSqUjrE/KnjroT+Rt0pwuBlqZEG2EPQGcrUo+CtkH9GSzzsZ5JsQ5nwovLsYg0FEXdPpkNWJ9s6vhXa1Ym7gCP74t26yNZO0DlU8T1alQTVZ6KTTEbB4ao0m1LJ9tJdCWPKUHB+8IxTdQS1jSOxDtAqytnpV8Q=
+	t=1764255906; cv=none; b=gVfmzAUOMcusQlm4q9byPQu/UxT1EC5pPeZbAXrtsYU4Rrcxz3t6XPcBnK36pqTVfqipJyPXBG+mLTZFx+YK9m3MSgRRG7bnhJvsroHwh6F+YdgRVW6aY+3qDkIBulF9Z/7YENzqVzZLK2ZD0X4NDLvo+76wUB+vKRQV/R8YWr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255433; c=relaxed/simple;
-	bh=gryWYD/J8cLmQ1lMGOWycTuahuAhhf3eRiNv3Li4Lh8=;
+	s=arc-20240116; t=1764255906; c=relaxed/simple;
+	bh=q8F707h2itHh21ADG4bm+WfQ8Rrje5tiiTHAjfySpRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j6S6RXr9qqHFXoNpkcjLJqspIyJU6HMirUXtr07KCcf5nPlpAUMo77zmBfu7VyU0htLUNGNb8CDGtX1oIKBv1XUce8LLz1RApavYrlHR/QvOKhhR0+5YBwBSdVSRyggliMDBuH0CmKzE5h9j1yOqgfuKCUmprRsuadR+nNLbjcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Dl+ALuN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E71C4CEF8;
-	Thu, 27 Nov 2025 14:57:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AgEoo7TMW02jebMKVgGfCChOKleDsJlylHMkkwwXkPAd/KrIPl8eE3EVAj1B19UC3ASXN4AmqKGJ9YoaW3HC2uU9Gnf9pjMglsJ3ig4YNV7mCPr93WI0/qywa/jxUtRMTbURrIh2Z+2loHiCVYQGM1u6HTKbJvh8Id7gVcdWx9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx/oSPvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF24FC4CEF8;
+	Thu, 27 Nov 2025 15:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255433;
-	bh=gryWYD/J8cLmQ1lMGOWycTuahuAhhf3eRiNv3Li4Lh8=;
+	s=korg; t=1764255906;
+	bh=q8F707h2itHh21ADG4bm+WfQ8Rrje5tiiTHAjfySpRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Dl+ALuNiSl7J//DstmsIFA286CIiEV0z+ckYNuQ8hrBxc+Ef2kTrArlZz+eVGnzz
-	 duTryhh8eWeB5vJyYC5sKxjJMRnBi8PVqk3y9jfUw+IuWysNOTBnw1L8rMsmWOlW6H
-	 Z1j94K2bbpZgwL6yudNgnUAMZ7u9mCl5uknCuKSs=
+	b=Gx/oSPvj7hbaPU4UQ49BUMEET60TdtQYkHq5NKgA4ZGKC6ZPPKTWSUJaAFkjP4Kwy
+	 e5H8TJuPu3e38U6RWBll8fPGsUnFg1+c4XOYGN39NJYmTU0ah1L3RZ62eJe7GS3kdc
+	 9JqgYVaamFeRUi6GiHOrunPmKxLZr6iXwJEJJiWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/112] drm/i915/dp_mst: Disable Panel Replay
-Date: Thu, 27 Nov 2025 15:46:47 +0100
-Message-ID: <20251127144036.686372355@linuxfoundation.org>
+Subject: [PATCH 6.17 155/175] ALSA: usb-audio: fix uac2 clock source at terminal parser
+Date: Thu, 27 Nov 2025 15:46:48 +0100
+Message-ID: <20251127144048.615038164@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit f2687d3cc9f905505d7b510c50970176115066a2 ]
+[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
 
-Disable Panel Replay on MST links until it's properly implemented. For
-instance the required VSC SDP is not programmed on MST and FEC is not
-enabled if Panel Replay is enabled.
+Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
+UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
+bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
+Clean up check_input_term()") into parse_term_uac2_clock_source().
 
-Fixes: 3257e55d3ea7 ("drm/i915/panelreplay: enable/disable panel replay")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15174
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20251107124141.911895-1-imre.deak@intel.com
-(cherry picked from commit e109f644b871df8440c886a69cdce971ed533088)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ placed MST check at function start since DPCD read was moved to caller ]
+This breaks the clock source selection for at least my
+1397:0003 BEHRINGER International GmbH FCA610 Pro.
+
+Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
+
+Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
+Signed-off-by: René Rebe <rene@exactco.de>
+Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/mixer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -591,6 +591,10 @@ static void _panel_replay_init_dpcd(stru
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index f2058eb71fc8d..572ef02074538 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -930,7 +930,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
  {
- 	struct intel_display *display = to_intel_display(intel_dp);
+ 	struct uac_clock_source_descriptor *d = p1;
  
-+	/* TODO: Enable Panel Replay on MST once it's properly implemented. */
-+	if (intel_dp->mst_detect == DRM_DP_MST)
-+		return;
-+
- 	if (intel_dp_is_edp(intel_dp)) {
- 		if (!intel_alpm_aux_less_wake_supported(intel_dp)) {
- 			drm_dbg_kms(display->drm,
+-	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
++	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
+ 	term->id = id;
+ 	term->name = d->iClockSource;
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
