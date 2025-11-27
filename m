@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-197488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBC6C8F1C3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B049BC8F013
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 488FE344EB3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6515E4E92DB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222AE3115A6;
-	Thu, 27 Nov 2025 15:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C045333758;
+	Thu, 27 Nov 2025 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8T8msoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9C2HR8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D058628135D;
-	Thu, 27 Nov 2025 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5FD332EA0;
+	Thu, 27 Nov 2025 14:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255960; cv=none; b=pY+rtTDeuiU6jTn4DmO9nS8RWsMs7sRxjfL8mM3XzHypP02ii65VYdA8xTN3g+xFQXrxAACv34cbQ7eyq3iuoOKwKxUZjm6WURMuTzhf77N2H7xF2JtcEgHWRkD1zVHdE8bGAiYASzzmGM47V/XP8SOJt/SN9UFiL7rw1pBFgZI=
+	t=1764255401; cv=none; b=mf6ZNtxWfK6Mb0eE3HxrkbAGUD1m3c+JtLj0B1KgOEcDSmaG9KPOW8GyzBTGuLvdQsljVD2Eh0OqHJeLWcaSPIaS61TbXSYDYYyFEEvecYL0phuPFUNLboyg8LMUVVbjVg9oYg+q7WLS7Rfx1UnZY4nE749KRNVDsRNXPbe8Vko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255960; c=relaxed/simple;
-	bh=XTlXF857igtpeLE9nHQdlclj/M9hiqopLUmIRrXfh+4=;
+	s=arc-20240116; t=1764255401; c=relaxed/simple;
+	bh=+CKqqqYe7XBcamQ2WPpYmsHbtSv30Fd+KWF/TcGXmpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNn75a3vLnDjNQjwjIhl0JKK5p/4brtVZjo946A4TbIPdsK010w94xyYJ7aa4e2YYWzmS5Fgv+Hl1Av+149qJ1nD1wotQ2rSZIGq/yY8mlm3tr7W2GJVHvN/RYLJnBokWu+kkH35i0/D5gR31PJfCUlHX8NwHVwM7/hnlRywXp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8T8msoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256CEC4CEF8;
-	Thu, 27 Nov 2025 15:05:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UiUF/1ovS6rnRJPIpdfNok9q7yvhFSZEcsZFNdhteWQR6QWzJPiumzVGTZbqGpmDuQPsVYqdr1/ckg5wpHsJizKiCgs2FgHpGHQHN/UbY0aof6JWbjgnGPfqSS/27X2gq1IWD6QIgaFMF8QTKhfV9LeZuY0I2h34F1gBS9Lh4jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9C2HR8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6ADBC4CEF8;
+	Thu, 27 Nov 2025 14:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255960;
-	bh=XTlXF857igtpeLE9nHQdlclj/M9hiqopLUmIRrXfh+4=;
+	s=korg; t=1764255401;
+	bh=+CKqqqYe7XBcamQ2WPpYmsHbtSv30Fd+KWF/TcGXmpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8T8msoUb6cs/lT1rjZeIcaSKAtUKYNU2QzCDCeXrTga5bBVuLvLLXVA5B7noQ77L
-	 5T25TqwxuDyrTSJazeLzXKuLl9sYhlnMX+Yj9JP8a8Wx6Q/zDcTpTdUAGpMulXmHyt
-	 +N+Aq/C9LarEm23o/uVfkN7XN7iGA1aNryFWPk48=
+	b=V9C2HR8MG2VFyE6Zav2l0FIHG32tAzo4jFv3XZhwZsWalf1p6dlRkk0E5iHfJcLYe
+	 CduyVo8kiceWIbpxSUHXFDR3Wkcz6mefm6ddnTZzKmxt1Dd+R6HlUbCGelTfNoY3/1
+	 ukZfmhujMePJ8CIq/qqm2edO3MKZSqPG3v5fBTas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 141/175] scsi: core: Fix a regression triggered by scsi_host_busy()
+Subject: [PATCH 6.12 092/112] kconfig/nconf: Initialize the default locale at startup
 Date: Thu, 27 Nov 2025 15:46:34 +0100
-Message-ID: <20251127144048.107580959@linuxfoundation.org>
+Message-ID: <20251127144036.209143204@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jakub Horký <jakub.git@horky.net>
 
-[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
+[ Upstream commit 43c2931a95e6b295bfe9e3b90dbe0f7596933e91 ]
 
-Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
-iterators") introduced the following regression:
+Fix bug where make nconfig doesn't initialize the default locale, which
+causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
+UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
 
-Call trace:
- __srcu_read_lock+0x30/0x80 (P)
- blk_mq_tagset_busy_iter+0x44/0x300
- scsi_host_busy+0x38/0x70
- ufshcd_print_host_state+0x34/0x1bc
- ufshcd_link_startup.constprop.0+0xe4/0x2e0
- ufshcd_init+0x944/0xf80
- ufshcd_pltfrm_init+0x504/0x820
- ufs_rockchip_probe+0x2c/0x88
- platform_probe+0x5c/0xa4
- really_probe+0xc0/0x38c
- __driver_probe_device+0x7c/0x150
- driver_probe_device+0x40/0x120
- __driver_attach+0xc8/0x1e0
- bus_for_each_dev+0x7c/0xdc
- driver_attach+0x24/0x30
- bus_add_driver+0x110/0x230
- driver_register+0x68/0x130
- __platform_driver_register+0x20/0x2c
- ufs_rockchip_pltform_init+0x1c/0x28
- do_one_initcall+0x60/0x1e0
- kernel_init_freeable+0x248/0x2c4
- kernel_init+0x20/0x140
- ret_from_fork+0x10/0x20
-
-Fix this regression by making scsi_host_busy() check whether the SCSI
-host tag set has already been initialized. tag_set->ops is set by
-scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
-fix is based on the assumption that scsi_host_busy() and
-scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
-driver.
-
-Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jakub Horký <jakub.git@horky.net>
+Link: https://patch.msgid.link/20251014144405.3975275-2-jakub.git@horky.net
+[nathan: Alphabetize locale.h include]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ scripts/kconfig/nconf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index cc5d05dc395c4..17173239301e6 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -611,8 +611,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
- {
- 	int cnt = 0;
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index 5f484422278e1..cfe66aaf8bfe9 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -7,6 +7,7 @@
+ #ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
+ #endif
++#include <locale.h>
+ #include <string.h>
+ #include <strings.h>
+ #include <stdlib.h>
+@@ -1478,6 +1479,8 @@ int main(int ac, char **av)
+ 	int lines, columns;
+ 	char *mode;
  
--	blk_mq_tagset_busy_iter(&shost->tag_set,
--				scsi_host_check_in_flight, &cnt);
-+	if (shost->tag_set.ops)
-+		blk_mq_tagset_busy_iter(&shost->tag_set,
-+					scsi_host_check_in_flight, &cnt);
- 	return cnt;
- }
- EXPORT_SYMBOL(scsi_host_busy);
++	setlocale(LC_ALL, "");
++
+ 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
+ 		/* Silence conf_read() until the real callback is set up */
+ 		conf_set_message_callback(NULL);
 -- 
 2.51.0
 
