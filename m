@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613C8C8EF70
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48ABBC8F11E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2E4E9A45
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B3E72354A1A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE88334367;
-	Thu, 27 Nov 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598F3333456;
+	Thu, 27 Nov 2025 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWSACMPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfgB12j/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D55330B1F;
-	Thu, 27 Nov 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D633115A6;
+	Thu, 27 Nov 2025 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255281; cv=none; b=OfaQI+KRnoxJLxEMBAgW+42S7qx8bS0YmvCj2qSRegM38N1AA/SWgi1gzeVB5fYza5LZqMCMRDdK0SbkC6PAAahfD9oTucIpefdahLcuc6dd7Z10H68ca1weA6tjXrbj8qMNcXXt7horIk/Blz3IL8xdVyJbNEO/rPkLJFQzhF4=
+	t=1764255808; cv=none; b=G5Y8RJRaBHvgPk7j6/iBPl/D8n9oYPtFaFYP75npF6GEhQWI1k+qAXAmQaEUiUuHQ/ruTKwbrMPSaCrDkM+xQneRii0i1oyfI1IcYE99oIBK+zMSiz3l4GV1nphhSDA0kNTcil4F5n38k2xyZkRlCFTYKHHa2LJVbGDA95OkR10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255281; c=relaxed/simple;
-	bh=79kGmcv7C6HOM3P5EWJzLh81187A77+7IBFagM2MQMw=;
+	s=arc-20240116; t=1764255808; c=relaxed/simple;
+	bh=xYv6EgIX/omxZgtRDnzF7AvG9nNMITzmzNuouDY245s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3NSHsPtAnIpYWcDDpr1O8AKa7C0HJaBZQJ+danh9bLiK0QhLSJctoK0EHrXmx0du17lGzaJi7Ta/cR51Eu+zJbSV3lXSdrPfulcXK6ghrJOibDgNl5tHA/eTcgWBPl+Wy+pqaQA84o2Sx78ze8fnmTf6xSBe0HxfZLuf4Ob5H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWSACMPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88FFC4CEF8;
-	Thu, 27 Nov 2025 14:54:40 +0000 (UTC)
+	 MIME-Version; b=WZB4E8O3+zzzm/o1CyJbnmx7n+V5j5upMNOuY18HY1nVN5siGqSHLNpaBpsbyGAePhq6PQ9SFzakSkhr6XJdYf01/GDEa0krj8kM5EYCuRAutjMI5fD1KmW/z6ekkBlNLfEWPUBaZ16Ww/CxAHmkeKGB2Vbt0E3p1XIS/izgo6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfgB12j/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945C1C4CEF8;
+	Thu, 27 Nov 2025 15:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255281;
-	bh=79kGmcv7C6HOM3P5EWJzLh81187A77+7IBFagM2MQMw=;
+	s=korg; t=1764255808;
+	bh=xYv6EgIX/omxZgtRDnzF7AvG9nNMITzmzNuouDY245s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWSACMPpLp+MhHU15hLTe8YcRJwP/wSRvCpR7WEJnKySW4r4uKKEes6SpHSedXVX8
-	 w8ZhMD0nb1o1myguQVamOA2eJJggNO0tzz+LFWeXIeqy4PdwOa7ik55uWMz35MI+jl
-	 BrMTrcKgFFo1vhKI4DPL0b9Nzl3o9vLFuXzEbCOA=
+	b=GfgB12j/iOwC4MQKa0RuGRDogay0cerJ14aNGvcW5gPC3wikbRknssd7sLcWCjm/L
+	 aoMh00kcc8XVuOcX3FFzoFwbccpOQN556+CWMpLeAAG+xD8yt9K4HN1Pie2oeVx35+
+	 sdjnB1J6yvqoOn+hWVj48+3FfnhnIys+hshGHZ2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jared Kangas <jkangas@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/112] net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
-Date: Thu, 27 Nov 2025 15:46:13 +0100
-Message-ID: <20251127144035.439870743@linuxfoundation.org>
+Subject: [PATCH 6.17 121/175] pinctrl: s32cc: initialize gpio_pin_config::list after kmalloc()
+Date: Thu, 27 Nov 2025 15:46:14 +0100
+Message-ID: <20251127144047.379260272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit 896f1a2493b59beb2b5ccdf990503dbb16cb2256 ]
+[ Upstream commit 6010d4d8b55b5d3ae1efb5502c54312e15c14f21 ]
 
-The loops in 'qede_tpa_cont()' and 'qede_tpa_end()', iterate
-over 'cqe->len_list[]' using only a zero-length terminator as
-the stopping condition. If the terminator was missing or
-malformed, the loop could run past the end of the fixed-size array.
+s32_pmx_gpio_request_enable() does not initialize the newly-allocated
+gpio_pin_config::list before adding it to s32_pinctrl::gpio_configs.
+This could result in a linked list corruption.
 
-Add an explicit bound check using ARRAY_SIZE() in both loops to prevent
-a potential out-of-bounds access.
+Initialize the new list_head with INIT_LIST_HEAD() to fix this.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Link: https://patch.msgid.link/20251113112757.4166625-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-index 847fa62c80df8..e338bfc8b7b2f 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2019-2020 Marvell International Ltd.
-  */
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 51ecb8d0fb7e8..35511f83d0560 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -392,6 +392,7 @@ static int s32_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
  
-+#include <linux/array_size.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/skbuff.h>
-@@ -960,7 +961,7 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
- {
- 	int i;
+ 	gpio_pin->pin_id = offset;
+ 	gpio_pin->config = config;
++	INIT_LIST_HEAD(&gpio_pin->list);
  
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
- 
-@@ -985,7 +986,7 @@ static int qede_tpa_end(struct qede_dev *edev,
- 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
- 			       PAGE_SIZE, rxq->data_direction);
- 
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
- 	if (unlikely(i > 1))
+ 	spin_lock_irqsave(&ipctl->gpio_configs_lock, flags);
+ 	list_add(&gpio_pin->list, &ipctl->gpio_configs);
 -- 
 2.51.0
 
