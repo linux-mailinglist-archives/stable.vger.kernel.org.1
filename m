@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-197431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641F7C8F295
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4D4C8EFE6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 139163B0E44
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1913BC299
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8565233436D;
-	Thu, 27 Nov 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011CA333456;
+	Thu, 27 Nov 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xx9XHzCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2m3VCpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413AC332EA0;
-	Thu, 27 Nov 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3F29BD89;
+	Thu, 27 Nov 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255799; cv=none; b=olt2liydplsbpmnIzdDo60+mCymPOodwtd6KZbSu1PQqQ9T9Xpreh/bEILql+wGIHNbchaCxPVcH1bJbnJ88qxWH2cSfJvzzkqD43jdUWzDLfDwUmJCmkzNIeMajTZqv+DzjqGN1Vs1M3ZaJFLcqEZA+2Qve9IWlETzQem21iy8=
+	t=1764255275; cv=none; b=Wy3xYs5sZ0rsChHcUwDeO5hm+6x8Jrx8y7RmItNgLqvXSTaL0WXn/KNBpoW1LjiDI12yHrfNHGi3oTDXErlvn1s/Ul6QZhJAItrV9Fu92GaHOavJCWFd2nYchoZqwPTacn+o11r5f3gtdJ4/4hxLxkpqV3WDgO0CqOdi5OrZyQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255799; c=relaxed/simple;
-	bh=LOqvnwOXnH2B7GM6SZPcf8yN1FHfDWBOVq4JctB+uJY=;
+	s=arc-20240116; t=1764255275; c=relaxed/simple;
+	bh=hUdCD70F6GEE14GTcHqqvqsCcOmyW2jMKCfIn6ceNGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTONNRZLxMQ9cWyIlgEdPc36xcqT58q6NyWH0J634zqi/4mQ0fZ3itbzui/0kgMzMb11CNkhxTaBn/8ji2PHNtZ6V95oUAeeecE1T2YA5e+W/sKuQt7fQV0+Ohk1cAIvm0YsqGoDmS40st6Fy+5+b3q17/q3eijJ/NiFm7OMNGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xx9XHzCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0543C4CEF8;
-	Thu, 27 Nov 2025 15:03:18 +0000 (UTC)
+	 MIME-Version; b=D7Luu9MgJJWxRvQaYE2zekFN+/FqDvykRJl2Pdm0J6zWt4asd89abX84xTV6pyFdb4tg+olV6ktEXyR8aNSzvjpFeCS9Nv2MCLd5okoHsqJUWTdBPezIUSEKS2kn2xMsdSS075tJ6EVXa+VlwCYX5UKjJkFNFCMhVQZsNrsHE34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2m3VCpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2455AC4CEF8;
+	Thu, 27 Nov 2025 14:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255799;
-	bh=LOqvnwOXnH2B7GM6SZPcf8yN1FHfDWBOVq4JctB+uJY=;
+	s=korg; t=1764255275;
+	bh=hUdCD70F6GEE14GTcHqqvqsCcOmyW2jMKCfIn6ceNGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xx9XHzCkBur7Vr4/sB1LhiqfntPigTw1JgWs80GPkcoOgHIHekPcXZI/nz42QbBoN
-	 8WLKQngSZ5z0wOLXFmy4Qh1UnV4ezh1KMaHCN9Y6yC0iToTFifgzKRCvcS+vhSbbDG
-	 7Tw0QcM6tsxMupIzQsoR/odkHXOctLM7+D5nbl1M=
+	b=n2m3VCpXjbVYDO2bUtk54Uti0tP5vUfavqCM7b4jHgwpTeuo49JRf4fy1vnZ/J4Mc
+	 g838tZ7cH3Jq34zHGbzwke6kJq+sV7TydH0L1vbHEXVLXWQebNbS2IMhvshNSwk832
+	 G8Flmv1h846NbxPmSLXS3szOiHTRVO/Kx8MTRKI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Chittim Madhu <madhu.chittim@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 118/175] idpf: fix possible vport_config NULL pointer deref in remove
+Subject: [PATCH 6.12 069/112] selftests: net: lib: Do not overwrite error messages
 Date: Thu, 27 Nov 2025 15:46:11 +0100
-Message-ID: <20251127144047.269081531@linuxfoundation.org>
+Message-ID: <20251127144035.367286075@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 118082368c2b6ddefe6cb607efc312285148f044 ]
+[ Upstream commit bed22c7b90af732978715a1789bca1c3cfa245a6 ]
 
-Attempting to remove the driver will cause a crash in cases where
-the vport failed to initialize. Following trace is from an instance where
-the driver failed during an attempt to create a VF:
-[ 1661.543624] idpf 0000:84:00.7: Device HW Reset initiated
-[ 1722.923726] idpf 0000:84:00.7: Transaction timed-out (op:1 cookie:2900 vc_op:1 salt:29 timeout:60000ms)
-[ 1723.353263] BUG: kernel NULL pointer dereference, address: 0000000000000028
-...
-[ 1723.358472] RIP: 0010:idpf_remove+0x11c/0x200 [idpf]
-...
-[ 1723.364973] Call Trace:
-[ 1723.365475]  <TASK>
-[ 1723.365972]  pci_device_remove+0x42/0xb0
-[ 1723.366481]  device_release_driver_internal+0x1a9/0x210
-[ 1723.366987]  pci_stop_bus_device+0x6d/0x90
-[ 1723.367488]  pci_stop_and_remove_bus_device+0x12/0x20
-[ 1723.367971]  pci_iov_remove_virtfn+0xbd/0x120
-[ 1723.368309]  sriov_disable+0x34/0xe0
-[ 1723.368643]  idpf_sriov_configure+0x58/0x140 [idpf]
-[ 1723.368982]  sriov_numvfs_store+0xda/0x1c0
+ret_set_ksft_status() calls ksft_status_merge() with the current return
+status and the last one. It treats a non-zero return code from
+ksft_status_merge() as an indication that the return status was
+overwritten by the last one and therefore overwrites the return message
+with the last one.
 
-Avoid the NULL pointer dereference by adding NULL pointer check for
-vport_config[i], before freeing user_config.q_coalesce.
+Currently, ksft_status_merge() returns a non-zero return code even if
+the current return status and the last one are equal. This results in
+return messages being overwritten which is counter-productive since we
+are more interested in the first failure message and not the last one.
 
-Fixes: e1e3fec3e34b ("idpf: preserve coalescing settings across resets")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Chittim Madhu <madhu.chittim@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fix by changing ksft_status_merge() to only return a non-zero return
+code if the current return status was actually changed.
+
+Add a test case which checks that the first error message is not
+overwritten.
+
+Before:
+
+ # ./lib_sh_test.sh
+ [...]
+ TEST: RET tfail2 tfail -> fail                                      [FAIL]
+        retmsg=tfail expected tfail2
+ [...]
+ # echo $?
+ 1
+
+After:
+
+ # ./lib_sh_test.sh
+ [...]
+ TEST: RET tfail2 tfail -> fail                                      [ OK ]
+ [...]
+ # echo $?
+ 0
+
+Fixes: 596c8819cb78 ("selftests: forwarding: Have RET track kselftest framework constants")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251116081029.69112-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/forwarding/lib_sh_test.sh | 7 +++++++
+ tools/testing/selftests/net/lib.sh                    | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index dfe9126f1f4ab..1088cbbcf9487 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -62,6 +62,8 @@ static void idpf_remove(struct pci_dev *pdev)
- 	destroy_workqueue(adapter->vc_event_wq);
+diff --git a/tools/testing/selftests/net/forwarding/lib_sh_test.sh b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
+index ff2accccaf4d4..b4eda6c6199ed 100755
+--- a/tools/testing/selftests/net/forwarding/lib_sh_test.sh
++++ b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
+@@ -30,6 +30,11 @@ tfail()
+ 	do_test "tfail" false
+ }
  
- 	for (i = 0; i < adapter->max_vports; i++) {
-+		if (!adapter->vport_config[i])
-+			continue;
- 		kfree(adapter->vport_config[i]->user_config.q_coalesce);
- 		kfree(adapter->vport_config[i]);
- 		adapter->vport_config[i] = NULL;
++tfail2()
++{
++	do_test "tfail2" false
++}
++
+ txfail()
+ {
+ 	FAIL_TO_XFAIL=yes do_test "txfail" false
+@@ -132,6 +137,8 @@ test_ret()
+ 	ret_subtest $ksft_fail "tfail" txfail tfail
+ 
+ 	ret_subtest $ksft_xfail "txfail" txfail txfail
++
++	ret_subtest $ksft_fail "tfail2" tfail2 tfail
+ }
+ 
+ exit_status_tests_run()
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index bb4d2f8d50d67..501615d285300 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -40,7 +40,7 @@ __ksft_status_merge()
+ 		weights[$i]=$((weight++))
+ 	done
+ 
+-	if [[ ${weights[$a]} > ${weights[$b]} ]]; then
++	if [[ ${weights[$a]} -ge ${weights[$b]} ]]; then
+ 		echo "$a"
+ 		return 0
+ 	else
 -- 
 2.51.0
 
