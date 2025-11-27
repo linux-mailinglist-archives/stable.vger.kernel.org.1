@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-197127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4E9C8ED5D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E05C8EFD4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A6813AF0FB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00D203BBEBC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC026F2A7;
-	Thu, 27 Nov 2025 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FB2299943;
+	Thu, 27 Nov 2025 14:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gX5d9urx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOnpZDXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00491A9B58;
-	Thu, 27 Nov 2025 14:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB62432B988;
+	Thu, 27 Nov 2025 14:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254867; cv=none; b=hXqVfHWXZBj7AD6dZNBbYIplTMHnV20bMJ9Rs7yXQN/oFQ34OML31YyGoseLBkQjKd/bLcoNyNag+A/axu13WhICxHnZkyWY+F79LoADbJ2ZYUcQwFidF5KKvB3PHJNb5wScP4reTNQs5O16LSfW2WF3Zszkw88Z8jVL+eC1DYI=
+	t=1764255255; cv=none; b=QyNU82q26e+0NnLestFGV/GGLA6Ph8g+l3D5JvqNf9t2AXd6oQr5z5N0tK9A9D9nLlJieuZTGryTun/uXDiwoBOERF1xAdMvN0Dq82Ig+D0JB6mr/STBfGgT8BIdWDyCyV5B5GydotFC3uT/lKiqhFm2F4UAAwxYtE7OEgxaHIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254867; c=relaxed/simple;
-	bh=FOTx/gMebdaxGfn5j2LXiGTFnHtgMy/atZ7I/D7sBzo=;
+	s=arc-20240116; t=1764255255; c=relaxed/simple;
+	bh=waWsMW/hgUynWetibOLOI7vw1OdbFKmFjBo5LUn5Vtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACbZRhBXXBzTwptIX8JrDOVucz6OKwU0K4JsbHXRJsO2dx0O5uUiExdnhk5DNkDVgtOJANleQr7u/j54vetsDAh8wk60myiui4rGXz4bapkhwZnmsnhTkQqEvGhZMV4KeE+D7wyUmrvcZ4+f3elCYjJ1dpupmFm2WoKnh43mGCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gX5d9urx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F810C4CEF8;
-	Thu, 27 Nov 2025 14:47:47 +0000 (UTC)
+	 MIME-Version; b=Y31OoR2J/zW/2WaqQgOvElwk74l49t3urHXkN24QBT1xynMU9381BjbGXgn/lIRDioSYpHQDLrSVELSIe2NlbNR/yhnKcEmv2okaYPSiHCOgUEJCnM60iuZtex7KZgjFCjjnnZe7gGGQR89atqHZKz74bPrItRJetFiVz2N273c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOnpZDXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF44BC4CEF8;
+	Thu, 27 Nov 2025 14:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254867;
-	bh=FOTx/gMebdaxGfn5j2LXiGTFnHtgMy/atZ7I/D7sBzo=;
+	s=korg; t=1764255255;
+	bh=waWsMW/hgUynWetibOLOI7vw1OdbFKmFjBo5LUn5Vtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gX5d9urx2GbsjkYf/RjdFgqy53VWCH06Xg7PiOhdrQQv2NQwEs8xLkbk68rqHnJRw
-	 vt1P9Hfp7Y5JBfq22yQ4D5KEkBC5hF9YuIrd9jIlHLVTMHkDUkF1h+pHU7T4pa6vLx
-	 ZB/ZusGch57WM8TZsT0gBDBDLVVV8aBjQseIhJnk=
+	b=OOnpZDXR7TBjXcoEiXTDYTXOSQVgdMrwNfB+ZelShW2Fa5a51DlTm0lkxmS7+a9KH
+	 uOBcGBJygfu+UJ/oGwnpjiGzX6PMUPXqD2cxavjmrzJ+lC3kEP6srxdAKpMae34VAC
+	 VH3WmHOg1cQ3YnxGkijPkVK1CN+AYmknW2aVdbFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 14/86] net: dsa: microchip: lan937x: Fix RGMII delay tuning
+	Nam Cao <namcao@linutronix.de>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.12 028/112] nouveau/firmware: Add missing kfree() of nvkm_falcon_fw::boot
 Date: Thu, 27 Nov 2025 15:45:30 +0100
-Message-ID: <20251127144028.339434354@linuxfoundation.org>
+Message-ID: <20251127144033.869807192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 3ceb6ac2116ecda1c5d779bb73271479e70fccb4 upstream.
+commit 949f1fd2225baefbea2995afa807dba5cbdb6bd3 upstream.
 
-Correct RGMII delay application logic in lan937x_set_tune_adj().
+nvkm_falcon_fw::boot is allocated, but no one frees it. This causes a
+kmemleak warning.
 
-The function was missing `data16 &= ~PORT_TUNE_ADJ` before setting the
-new delay value. This caused the new value to be bitwise-OR'd with the
-existing PORT_TUNE_ADJ field instead of replacing it.
+Make sure this data is deallocated.
 
-For example, when setting the RGMII 2 TX delay on port 4, the
-intended TUNE_ADJUST value of 0 (RGMII_2_TX_DELAY_2NS) was
-incorrectly OR'd with the default 0x1B (from register value 0xDA3),
-leaving the delay at the wrong setting.
-
-This patch adds the missing mask to clear the field, ensuring the
-correct delay value is written. Physical measurements on the RGMII TX
-lines confirm the fix, showing the delay changing from ~1ns (before
-change) to ~2ns.
-
-While testing on i.MX 8MP showed this was within the platform's timing
-tolerance, it did not match the intended hardware-characterized value.
-
-Fixes: b19ac41faa3f ("net: dsa: microchip: apply rgmii tx and rx delay in phylink mac config")
+Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for ACR FWs")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20251114090951.4057261-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patch.msgid.link/20251117084231.2910561-1-namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/lan937x_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nvkm/falcon/fw.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/dsa/microchip/lan937x_main.c
-+++ b/drivers/net/dsa/microchip/lan937x_main.c
-@@ -336,6 +336,7 @@ static void lan937x_set_tune_adj(struct
- 	ksz_pread16(dev, port, reg, &data16);
+--- a/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
++++ b/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
+@@ -159,6 +159,8 @@ nvkm_falcon_fw_dtor(struct nvkm_falcon_f
+ 	nvkm_memory_unref(&fw->inst);
+ 	nvkm_falcon_fw_dtor_sigs(fw);
+ 	nvkm_firmware_dtor(&fw->fw);
++	kfree(fw->boot);
++	fw->boot = NULL;
+ }
  
- 	/* Update tune Adjust */
-+	data16 &= ~PORT_TUNE_ADJ;
- 	data16 |= FIELD_PREP(PORT_TUNE_ADJ, val);
- 	ksz_pwrite16(dev, port, reg, data16);
- 
+ static const struct nvkm_firmware_func
 
 
 
