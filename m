@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93BDC8ED92
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F100C8EFAF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BF6024EA581
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035C73B9C1B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D2F273816;
-	Thu, 27 Nov 2025 14:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0529931281E;
+	Thu, 27 Nov 2025 14:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/2t/b48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjOdyJmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDC274B3C;
-	Thu, 27 Nov 2025 14:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B435E299943;
+	Thu, 27 Nov 2025 14:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254937; cv=none; b=kCv8xOv83N3VwXVBQ393E2pntHVG7VE8as2qDbj5RRc3IZL8/zcldWNfYga/VLCYqjksrR0qSRPkUWtTcHi+Q/pcNq1qTbMO4hvHM3NpZAsSqhG8EnSHHsF6hP4ylaDPuTNtqXddVtvaat+dSXZZq64EW8BnBcLIFRliPnhac9o=
+	t=1764255235; cv=none; b=KUWclSCkD3wN/W7iwW5szlblHeEukIMN8TKA8DrNs2T1fsADbJhfFh9cj7rpWmNOQ9ReAoeqiL7WWOhuzhqk+bQ91zwxqJM9E3V0itbOnVctNj59POG9jrAjqp63ptf3yBsD2P78LToFxxz7NPtLTlGgyhF/r/GGUspPSNDEi0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254937; c=relaxed/simple;
-	bh=2LVhxogPkB8UbuDKK6xTe+2g94AHZhWSz+mRGrOB9Mw=;
+	s=arc-20240116; t=1764255235; c=relaxed/simple;
+	bh=4740ZerBnfUc4Yd6rQRhxg5Yv+0GPv2A10jWKTDlJoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLwq+AhY6Q/6Q447xNuH2HUXPf+RECmsR1NmOQVzI807pOwxqW88D45DY8QLnrZMneRPTskrlCoMZ52T7AWmzcM1B+ceI8f259jgsS/2wK016fnuQlJhq2J57x0Wm5CnWPOOPDemny5nGsWTi4XGjM1FxpzDxAk5/ILCSL3b56Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/2t/b48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2BCC4CEF8;
-	Thu, 27 Nov 2025 14:48:57 +0000 (UTC)
+	 MIME-Version; b=pybTqIStv8EteIuBBVVXHkL6cA/VcVRe6qJbt2gaBzdsYt/H10KO5THXPDaaoGrRDSqriO+JxeAEy/tP6YsR/V4bxfXMJJtKjGBBIrb8rByTlaQnM0DZLPlkBg3EbTVVnp049IOmwXlVWOfTuqOH0aanxXJ/6clRbVCKf9xXIi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjOdyJmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0214EC4CEF8;
+	Thu, 27 Nov 2025 14:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254937;
-	bh=2LVhxogPkB8UbuDKK6xTe+2g94AHZhWSz+mRGrOB9Mw=;
+	s=korg; t=1764255235;
+	bh=4740ZerBnfUc4Yd6rQRhxg5Yv+0GPv2A10jWKTDlJoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/2t/b48Eiw+Jb+ERbScn1v4wlwnUO43Qto3CrGU/IFqz8pS1jfrZI7dXKUGoGgIQ
-	 xaSL5YiKGc4KfLvnIDXV76O71YEx60IZt05DGP293xTfBQaZQgYCM6oJeDLp0aWbUR
-	 /SZPs20TV8S0yo7/0TvdF2KA+hj6dXCqVWiSeKxQ=
+	b=MjOdyJmW4YgRBcOcyGs3SLvvpmSve+vWhT9gJJbmwWTSdcd/dtlOyq4r35NFfAizt
+	 JMEHXLR2Y3BJhLKZFr/AKUFsgnHMiw8i9DpUEH+ZssjhCbGuP+9tJafSZ+fwl/b411
+	 fbd0qdNCZR/RRXYT3LJBoMtPLq9fhxMgP7/0uDzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 38/86] xfrm: Determine inner GSO type from packet inner protocol
-Date: Thu, 27 Nov 2025 15:45:54 +0100
-Message-ID: <20251127144029.218393539@linuxfoundation.org>
+Subject: [PATCH 6.12 053/112] xfrm: drop SA reference in xfrm_state_update if dir doesnt match
+Date: Thu, 27 Nov 2025 15:45:55 +0100
+Message-ID: <20251127144034.783357615@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
+[ Upstream commit 8d2a2a49c30f67a480fa9ed25e08436a446f057e ]
 
-The GSO segmentation functions for ESP tunnel mode
-(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
-determining the inner packet's L2 protocol type by checking the static
-x->inner_mode.family field from the xfrm state.
+We're not updating x1, but we still need to put() it.
 
-This is unreliable. In tunnel mode, the state's actual inner family
-could be defined by x->inner_mode.family or by
-x->inner_mode_iaf.family. Checking only the former can lead to a
-mismatch with the actual packet being processed, causing GSO to create
-segments with the wrong L2 header type.
-
-This patch fixes the bug by deriving the inner mode directly from the
-packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
-
-Instead of replicating the code, this patch modifies the
-xfrm_ip2inner_mode helper function. It now correctly returns
-&x->inner_mode if the selector family (x->sel.family) is already
-specified, thereby handling both specific and AF_UNSPEC cases
-appropriately.
-
-With this change, ESP GSO can use xfrm_ip2inner_mode to get the
-correct inner mode. It doesn't affect existing callers, as the updated
-logic now mirrors the checks they were already performing externally.
-
-Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: a4a87fa4e96c ("xfrm: Add Direction to the SA in or out")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h      | 3 ++-
- net/ipv4/esp4_offload.c | 6 ++++--
- net/ipv6/esp6_offload.c | 6 ++++--
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ net/xfrm/xfrm_state.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index fd550c0b56345..84a1c8c861d29 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -462,7 +462,8 @@ static inline int xfrm_af2proto(unsigned int family)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 1e2f5ecd63248..f8cb033f102ed 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2117,14 +2117,18 @@ int xfrm_state_update(struct xfrm_state *x)
+ 	}
  
- static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
- {
--	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
-+	if ((x->sel.family != AF_UNSPEC) ||
-+	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
- 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
- 		return &x->inner_mode;
- 	else
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index 10e96ed6c9e39..11e33a4312674 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -111,8 +111,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
- {
--	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
--						       : htons(ETH_P_IP);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
-+						     : htons(ETH_P_IP);
+ 	if (x1->km.state == XFRM_STATE_ACQ) {
+-		if (x->dir && x1->dir != x->dir)
++		if (x->dir && x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
  
- 	return skb_eth_gso_segment(skb, features, type);
- }
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index a189e08370a5e..438f9cbdca299 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -145,8 +145,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
- {
--	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
--						      : htons(ETH_P_IPV6);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
-+						    : htons(ETH_P_IPV6);
+ 		__xfrm_state_insert(x);
+ 		x = NULL;
+ 	} else {
+-		if (x1->dir != x->dir)
++		if (x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
+ 	}
+ 	err = 0;
  
- 	return skb_eth_gso_segment(skb, features, type);
- }
 -- 
 2.51.0
 
