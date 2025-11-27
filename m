@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-197278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62135C8EF0A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83004C8EEBF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E387A350B6A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66D63B6DC3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8CA3358A7;
-	Thu, 27 Nov 2025 14:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6381F288537;
+	Thu, 27 Nov 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QU8mg+Er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjJXUoOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8F9335579;
-	Thu, 27 Nov 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E542286416;
+	Thu, 27 Nov 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255298; cv=none; b=q7s74ACJgZierj9kDdkA6YsnDQekEb/UtxozKL7onLBix1odubkuujwmWGfU1W/yzFYgZcGDixrlbXuQxSji1t31gi4NAfhPiqDDCJu7WECY+r2GRo5zaFg9Mk/RRaKE368clAOWz4VdnWDEfvO85s6crCJPlc3//GtTK7TcNjg=
+	t=1764255092; cv=none; b=De76EiNvwDk3a0PEMTvAZqdzizGMFAwTKt7ZKV/zqJ3i0QDnaU04qeDo1LBqUaFTL91iz/2imXLTbG+c5HW/vvGaqdzxIyB/7ANCMIY3hxwPQ3uwBiQex3soufJsjbK3gRIeItIPpwk4eqN2V0UbQ+z+EILJH6eDRsdU0EmhjTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255298; c=relaxed/simple;
-	bh=8olHIzJ/lybJrHu6BYER/FSv9d8is2nyUOdK4bcdfo0=;
+	s=arc-20240116; t=1764255092; c=relaxed/simple;
+	bh=oq9hMvJYFoqMC0/5jd2bAWrmLN3QKz0U/GrZfAZ5sS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTwZyCJdrwRFKaZagKV13ReLSIYrScmnTCiRCqC2rF+SrtKhxoGdDG38VrgoBJoamMeWjaKOV2KTbxFqRt9zz9itwswqyOcr2OKJEur9ZXHBa7b1P0nIK5KKeom7EaRN90AukKTRoPaHhvOs4fXKTRWulyxA4TMkLD3i1IzCvSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QU8mg+Er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B84C4CEF8;
-	Thu, 27 Nov 2025 14:54:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XnZ6j1cMqzWmU9iqJI9C1dwldKi1CGwnF/L7WkJMfsOL6CULWV+eBy5RbBiWz9lArUrd7v/wEpaw30lTLBMLpp9yMjTKaXvpn0NV3MdIUcVQvtEi4Zoc6ADuFoBwBBaNk6Dpzxb258mVCYJ8SriupDio+FuFZ1e3lSdxkUsZ6Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjJXUoOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2B3C113D0;
+	Thu, 27 Nov 2025 14:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255298;
-	bh=8olHIzJ/lybJrHu6BYER/FSv9d8is2nyUOdK4bcdfo0=;
+	s=korg; t=1764255092;
+	bh=oq9hMvJYFoqMC0/5jd2bAWrmLN3QKz0U/GrZfAZ5sS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QU8mg+ErvgEfLAZ66tI/9y2UMHrPQwBVDU3vrNgeO6S0cpy249BzbSW5Y8KwczAFg
-	 sWa1JbVe/cfCgamxQ+AT2fGcChIDjzDrYnfCTQ4fUNakFh6i1e9W7P5hfTKuHtf3sL
-	 Y3LB+9gJCDth53E45F18HRA19b5Zu5SwOwCxQHbU=
+	b=tjJXUoOKLXHw/BHYmQqr+7w6Ly9orjjkU3MVJWgMOl07uSUDT3owU1AgHXxF/aIW+
+	 gmwaGRLOAx5wQK/jSeejfOs3jlDsQHbIGXQ90DGE5ilNRbuoOB1IRCECb8vB2QrSTz
+	 uShcEE8VeN0w0V3mVX5VxfZmuOCGJ0wmwSrcgLdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohith Kumar Thummaluru <mohith.k.kumar.thummaluru@oracle.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Pradyumn Rahar <pradyumn.rahar@oracle.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/112] net/mlx5: Clean up only new IRQ glue on request_irq() failure
-Date: Thu, 27 Nov 2025 15:46:19 +0100
-Message-ID: <20251127144035.660281630@linuxfoundation.org>
+Subject: [PATCH 6.6 64/86] kconfig/mconf: Initialize the default locale at startup
+Date: Thu, 27 Nov 2025 15:46:20 +0100
+Message-ID: <20251127144030.170568399@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pradyumn Rahar <pradyumn.rahar@oracle.com>
+From: Jakub Horký <jakub.git@horky.net>
 
-[ Upstream commit d47515af6cccd7484d8b0870376858c9848a18ec ]
+[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
 
-The mlx5_irq_alloc() function can inadvertently free the entire rmap
-and end up in a crash[1] when the other threads tries to access this,
-when request_irq() fails due to exhausted IRQ vectors. This commit
-modifies the cleanup to remove only the specific IRQ mapping that was
-just added.
+Fix bug where make menuconfig doesn't initialize the default locale, which
+causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
+UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
 
-This prevents removal of other valid mappings and ensures precise
-cleanup of the failed IRQ allocation's associated glue object.
-
-Note: This error is observed when both fwctl and rds configs are enabled.
-
-[1]
-mlx5_core 0000:05:00.0: Successfully registered panic handler for port 1
-mlx5_core 0000:05:00.0: mlx5_irq_alloc:293:(pid 66740): Failed to
-request irq. err = -28
-infiniband mlx5_0: mlx5_ib_test_wc:290:(pid 66740): Error -28 while
-trying to test write-combining support
-mlx5_core 0000:05:00.0: Successfully unregistered panic handler for port 1
-mlx5_core 0000:06:00.0: Successfully registered panic handler for port 1
-mlx5_core 0000:06:00.0: mlx5_irq_alloc:293:(pid 66740): Failed to
-request irq. err = -28
-infiniband mlx5_0: mlx5_ib_test_wc:290:(pid 66740): Error -28 while
-trying to test write-combining support
-mlx5_core 0000:06:00.0: Successfully unregistered panic handler for port 1
-mlx5_core 0000:03:00.0: mlx5_irq_alloc:293:(pid 28895): Failed to
-request irq. err = -28
-mlx5_core 0000:05:00.0: mlx5_irq_alloc:293:(pid 28895): Failed to
-request irq. err = -28
-general protection fault, probably for non-canonical address
-0xe277a58fde16f291: 0000 [#1] SMP NOPTI
-
-RIP: 0010:free_irq_cpu_rmap+0x23/0x7d
-Call Trace:
-   <TASK>
-   ? show_trace_log_lvl+0x1d6/0x2f9
-   ? show_trace_log_lvl+0x1d6/0x2f9
-   ? mlx5_irq_alloc.cold+0x5d/0xf3 [mlx5_core]
-   ? __die_body.cold+0x8/0xa
-   ? die_addr+0x39/0x53
-   ? exc_general_protection+0x1c4/0x3e9
-   ? dev_vprintk_emit+0x5f/0x90
-   ? asm_exc_general_protection+0x22/0x27
-   ? free_irq_cpu_rmap+0x23/0x7d
-   mlx5_irq_alloc.cold+0x5d/0xf3 [mlx5_core]
-   irq_pool_request_vector+0x7d/0x90 [mlx5_core]
-   mlx5_irq_request+0x2e/0xe0 [mlx5_core]
-   mlx5_irq_request_vector+0xad/0xf7 [mlx5_core]
-   comp_irq_request_pci+0x64/0xf0 [mlx5_core]
-   create_comp_eq+0x71/0x385 [mlx5_core]
-   ? mlx5e_open_xdpsq+0x11c/0x230 [mlx5_core]
-   mlx5_comp_eqn_get+0x72/0x90 [mlx5_core]
-   ? xas_load+0x8/0x91
-   mlx5_comp_irqn_get+0x40/0x90 [mlx5_core]
-   mlx5e_open_channel+0x7d/0x3c7 [mlx5_core]
-   mlx5e_open_channels+0xad/0x250 [mlx5_core]
-   mlx5e_open_locked+0x3e/0x110 [mlx5_core]
-   mlx5e_open+0x23/0x70 [mlx5_core]
-   __dev_open+0xf1/0x1a5
-   __dev_change_flags+0x1e1/0x249
-   dev_change_flags+0x21/0x5c
-   do_setlink+0x28b/0xcc4
-   ? __nla_parse+0x22/0x3d
-   ? inet6_validate_link_af+0x6b/0x108
-   ? cpumask_next+0x1f/0x35
-   ? __snmp6_fill_stats64.constprop.0+0x66/0x107
-   ? __nla_validate_parse+0x48/0x1e6
-   __rtnl_newlink+0x5ff/0xa57
-   ? kmem_cache_alloc_trace+0x164/0x2ce
-   rtnl_newlink+0x44/0x6e
-   rtnetlink_rcv_msg+0x2bb/0x362
-   ? __netlink_sendskb+0x4c/0x6c
-   ? netlink_unicast+0x28f/0x2ce
-   ? rtnl_calcit.isra.0+0x150/0x146
-   netlink_rcv_skb+0x5f/0x112
-   netlink_unicast+0x213/0x2ce
-   netlink_sendmsg+0x24f/0x4d9
-   __sock_sendmsg+0x65/0x6a
-   ____sys_sendmsg+0x28f/0x2c9
-   ? import_iovec+0x17/0x2b
-   ___sys_sendmsg+0x97/0xe0
-   __sys_sendmsg+0x81/0xd8
-   do_syscall_64+0x35/0x87
-   entry_SYSCALL_64_after_hwframe+0x6e/0x0
-RIP: 0033:0x7fc328603727
-Code: c3 66 90 41 54 41 89 d4 55 48 89 f5 53 89 fb 48 83 ec 10 e8 0b ed
-ff ff 44 89 e2 48 89 ee 89 df 41 89 c0 b8 2e 00 00 00 0f 05 <48> 3d 00
-f0 ff ff 77 35 44 89 c7 48 89 44 24 08 e8 44 ed ff ff 48
-RSP: 002b:00007ffe8eb3f1a0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 000000000000000d RCX: 00007fc328603727
-RDX: 0000000000000000 RSI: 00007ffe8eb3f1f0 RDI: 000000000000000d
-RBP: 00007ffe8eb3f1f0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007ffe8eb3f3c8 R15: 00007ffe8eb3f3bc
-   </TASK>
----[ end trace f43ce73c3c2b13a2 ]---
-RIP: 0010:free_irq_cpu_rmap+0x23/0x7d
-Code: 0f 1f 80 00 00 00 00 48 85 ff 74 6b 55 48 89 fd 53 66 83 7f 06 00
-74 24 31 db 48 8b 55 08 0f b7 c3 48 8b 04 c2 48 85 c0 74 09 <8b> 38 31
-f6 e8 c4 0a b8 ff 83 c3 01 66 3b 5d 06 72 de b8 ff ff ff
-RSP: 0018:ff384881640eaca0 EFLAGS: 00010282
-RAX: e277a58fde16f291 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ff2335e2e20b3600 RSI: 0000000000000000 RDI: ff2335e2e20b3400
-RBP: ff2335e2e20b3400 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 00000000ffffffe4 R12: ff384881640ead88
-R13: ff2335c3760751e0 R14: ff2335e2e1672200 R15: ff2335c3760751f8
-FS:  00007fc32ac22480(0000) GS:ff2335e2d6e00000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f651ab54000 CR3: 00000029f1206003 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x1dc00000 from 0xffffffff81000000 (relocation range:
-0xffffffff80000000-0xffffffffbfffffff)
-kvm-guest: disable async PF for cpu 0
-
-Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
-Signed-off-by: Mohith Kumar Thummaluru<mohith.k.kumar.thummaluru@oracle.com>
-Tested-by: Mohith Kumar Thummaluru<mohith.k.kumar.thummaluru@oracle.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Pradyumn Rahar <pradyumn.rahar@oracle.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1763381768-1234998-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jakub Horký <jakub.git@horky.net>
+Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
+[nathan: Alphabetize locale.h include]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ scripts/kconfig/mconf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index 2c5f850c31f68..0c6b5103a57c0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -324,10 +324,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
- 	free_irq(irq->map.virq, &irq->nh);
- err_req_irq:
- #ifdef CONFIG_RFS_ACCEL
--	if (i && rmap && *rmap) {
--		free_irq_cpu_rmap(*rmap);
--		*rmap = NULL;
--	}
-+	if (i && rmap && *rmap)
-+		irq_cpu_rmap_remove(*rmap, irq->map.virq);
- err_irq_rmap:
- #endif
- 	if (i && pci_msix_can_alloc_dyn(dev->pdev))
+diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
+index 3795c36a9181a..2364140596c5d 100644
+--- a/scripts/kconfig/mconf.c
++++ b/scripts/kconfig/mconf.c
+@@ -12,6 +12,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
++#include <locale.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -1015,6 +1016,8 @@ int main(int ac, char **av)
+ 
+ 	signal(SIGINT, sig_handler);
+ 
++	setlocale(LC_ALL, "");
++
+ 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
+ 		silent = 1;
+ 		/* Silence conf_read() until the real callback is set up */
 -- 
 2.51.0
 
