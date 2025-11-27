@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0C7C8EFF2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0861C8F160
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32D714EA19E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DABF7345944
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472C7334395;
-	Thu, 27 Nov 2025 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F583346AE;
+	Thu, 27 Nov 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJSIDR/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08LbbNRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DB430DED3;
-	Thu, 27 Nov 2025 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2AA28135D;
+	Thu, 27 Nov 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255321; cv=none; b=i0yo/g2w4HXYZ6E5t/IB96hXFPFUGPrRRfwjnwHzRSRfiP8yyflQfAgfwE+56SNQqwm6Xq1dx32SxfU2Voj8e1VJJBDiLCvgcX+HGNsmyTaSP/RnqJHyLAqcoERCk50RU51OwHR9sshrZt3ajAoJGJIEPQo5eyy544Xr0TGr5cs=
+	t=1764255863; cv=none; b=eikwizXRgUTLCeT9EFMZcLNwAdKkNKrwSTeEbbIBtGmmLkp5ymqf36aV8MeOsqq546XT8t4hdX/REwaZOkBBrYDXME5mLZ669HcmGR52idgLwRu7fNeq7l0h29+eZ8uiiB6NVngBZ+kA6vLeRQIjkZwqhQyhKi7gO7lRgdQZ7Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255321; c=relaxed/simple;
-	bh=IrMjpjnriwEZF1xQQnjvaTcEJ95uvStyvmlukuIgI+4=;
+	s=arc-20240116; t=1764255863; c=relaxed/simple;
+	bh=pLf7rwIyCXjCPmkehp5tK+vm78DPmgAUea281SicIdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S855t4vHPpOHQQoW67OUfBd5bxEUA8OWMLNN552GzFVwKJznuuxiXqz4//OakaC1OoQfPqcHVcjNjjHW6QUpVh9Gd3BnBRBHE0/ayxQY7gSb3l2VCK0SVjpncBi4K8KmqMwe8nX6ta71MO/ISRNUkeKGh9vHOovZZJi2DQnwPAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJSIDR/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF5BC4CEF8;
-	Thu, 27 Nov 2025 14:55:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eIumU+9LP9R9tz7VfHmTkaJfqeaZlSn4K2Wls4iSV7jvOzkn65hUcTISOdmp8NvSb/WK7Ai0WTc94IW1HHvOuImlfOVs5ZR3JXQ8PglTTOQ1gWJg2gkw+rNuoxjy2kbMNOiYLD0qgysBk2HWm0sDjzlQHvlK0Hi8cLu+kVkWf0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08LbbNRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36C3C4CEF8;
+	Thu, 27 Nov 2025 15:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255320;
-	bh=IrMjpjnriwEZF1xQQnjvaTcEJ95uvStyvmlukuIgI+4=;
+	s=korg; t=1764255863;
+	bh=pLf7rwIyCXjCPmkehp5tK+vm78DPmgAUea281SicIdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJSIDR/EaoAFy2AlbmotWhjra0IgHc4JQPQWkAJmaXGuyNgQzWvnD1c/QvX/TXCk1
-	 6nZgdLu8HXCQZZwyIx5d42VUAf5XM9Q9NEJxpY972nCm5RGZAvbzra05cvObSFEY/v
-	 GZgs1XWTyaGvppUfaU7+2XJH18fRMnghwsExrnz0=
+	b=08LbbNRQjnNNHz7u5bew8Fwc6dLQhSOqsEnx4f1Cg1uU+03yXQkuT9oAHk4UxPg8S
+	 66AD2u75uc1T3qPsUKgvU3Meddr7+V+rfkAuxn1EdIAktqDRwRGUmWqtoJwqho7ehE
+	 p2zaLEzv/rS9MqBTmHVZMnn2rG4p6/QxC9moR0lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Spear <speeddymon@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/112] cifs: fix typo in enable_gcm_256 module parameter
+Subject: [PATCH 6.17 133/175] MIPS: kernel: Fix random segmentation faults
 Date: Thu, 27 Nov 2025 15:46:26 +0100
-Message-ID: <20251127144035.916351138@linuxfoundation.org>
+Message-ID: <20251127144047.816234013@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-[ Upstream commit f765fdfcd8b5bce92c6aa1a517ff549529ddf590 ]
+[ Upstream commit 14b46ba92bf547508b4a49370c99aba76cb53b53 ]
 
-Fix typo in description of enable_gcm_256 module parameter
+Commit 69896119dc9d ("MIPS: vdso: Switch to generic storage
+implementation") switches to a generic vdso storage, which increases
+the number of data pages from 1 to 4. But there is only one page
+reserved, which causes segementation faults depending where the VDSO
+area is randomized to. To fix this use the same size of reservation
+and allocation of the VDSO data pages.
 
-Suggested-by: Thomas Spear <speeddymon@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 69896119dc9d ("MIPS: vdso: Switch to generic storage implementation")
+Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c | 2 +-
+ arch/mips/kernel/process.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 64dc7ec045d87..1187b0240a444 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -134,7 +134,7 @@ module_param(enable_oplocks, bool, 0644);
- MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 29191fa1801e2..a3101f2268c6c 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -692,7 +692,7 @@ unsigned long mips_stack_top(void)
+ 	/* Space for the VDSO, data page & GIC user page */
+ 	if (current->thread.abi) {
+ 		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
+-		top -= PAGE_SIZE;
++		top -= VDSO_NR_PAGES * PAGE_SIZE;
+ 		top -= mips_gic_present() ? PAGE_SIZE : 0;
  
- module_param(enable_gcm_256, bool, 0644);
--MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
-+MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/1");
- 
- module_param(require_gcm_256, bool, 0644);
- MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
+ 		/* Space to randomize the VDSO base */
 -- 
 2.51.0
 
