@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-197258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE243C8EFB5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42588C8F24E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9573B3B571D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D3A894EE4D4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED8529BD89;
-	Thu, 27 Nov 2025 14:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB41333437A;
+	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+lktcwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fgpa/Hc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9949130DED3;
-	Thu, 27 Nov 2025 14:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CF832AAC4;
+	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255242; cv=none; b=AMaxhlc9sMJ4lDYPX8faedrLkpksqgiS8qQBb/IaDqbxq9ah5mjQ4tm04t54DJciEuAhbV73Enc71FjRp48rkwLQvPAQtIvIPwcxs/CX8zRMaRzuYlV2D1jFqS2CBO/Mv/jAZYVhLGBxJ1ChTp9yZjqF5Q2Fw+G00eK9CVpOENU=
+	t=1764255854; cv=none; b=megqB/Cx60JCsVkkir6bD/V08l8poavFBYuexBJwEHKey5F+UhKG5ogoigQII2f2JPLwOip2DLNQ21tpCBhjf7mU4V7p2GfCHLrhPgrdqfOUhav/c1ZZO37li0DhWdYCrA5GFBqueN/+nNS+ijvz3gWhydes+I/4rzPKCPUkABA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255242; c=relaxed/simple;
-	bh=z03SE3HVYA9dA3pzRp9Qj0u19RyFZajJ/RkkgDWuUZA=;
+	s=arc-20240116; t=1764255854; c=relaxed/simple;
+	bh=ORJAD0e4asMRe8oxtcMO/1vauoA+5tPmU+Les8NXzUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ems1OozCY4AVeJUmrLhgOlXAVhQ3b8TuWFpeeqFYbYEemjwtJ8ni/YiMXckThqZUpNpPWPfVIXE9NETR2aMou6OzIMbdtFU/VDxgTXKm63dASWT5bm2JaK+Gs7m5Ae0n4oT4huB3Wgy1vYClo9mhbECy6QEVXZVp98973e090n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+lktcwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC3EC4CEF8;
-	Thu, 27 Nov 2025 14:54:00 +0000 (UTC)
+	 MIME-Version; b=ZnnFv8AYYZ2Lt9LZbBjPs2qR9BcwfGFhDnT6LUGHHD9qAtYgmfuI1g/Lgal6Xb0ba5Bt425K74ZXGvvqzfl+HPeL4nYAl8l1CnU2daAZ5H9nfVO8sWtDtd46daYD2gUZ+1qfMYGsnwET4tcTQgL+370HFZj8AP7Ov07EPt7njVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fgpa/Hc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B07C4CEF8;
+	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255241;
-	bh=z03SE3HVYA9dA3pzRp9Qj0u19RyFZajJ/RkkgDWuUZA=;
+	s=korg; t=1764255854;
+	bh=ORJAD0e4asMRe8oxtcMO/1vauoA+5tPmU+Les8NXzUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+lktcwYI8CbEy3PU5q1gG3placFvUV9yqBFUCl5qFh9aKqj/H41+5qk4LqDZe9Uv
-	 JZj64gwXRjJueH53yyv0tFMe3FhHNIHXxQTHjy1kqVxz4etViyxUJSFakDaflDT0sz
-	 Deju8aTz9XrQmk+TBv58nefY5RnRR4NebkpWWcSc=
+	b=Fgpa/Hc3sYcliHfT61F6IVGSlBIa3KGVkcb4Eb2SxnhjSSKJ88esLAnQnPdEe+CNr
+	 2xCsY/887naEURD1GER4TQBA1IziSn7MWPRK7mUTi7USf8fl0ceO9HqPrZrUwaQg0h
+	 8/g35iWtkB2XHnMHJff6uY2euE+4S6YsbUYKV3N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Chun Lin <eleanor.lin@realtek.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/112] pinctrl: realtek: Select REGMAP_MMIO for RTD driver
+Subject: [PATCH 6.17 104/175] nvme-multipath: fix lockdep WARN due to partition scan work
 Date: Thu, 27 Nov 2025 15:45:57 +0100
-Message-ID: <20251127144034.855799775@linuxfoundation.org>
+Message-ID: <20251127144046.757734260@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor.lin@realtek.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 369f772299821f93f872bf1b4d7d7ed2fc50243b ]
+[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
 
-The pinctrl-rtd driver uses 'devm_regmap_init_mmio', which requires
-'REGMAP_MMIO' to be enabled.
+Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
+lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
+a deadlock can happen due to the dependency among disk->open_mutex,
+kblockd workqueue completion and partition_scan_work completion.
 
-Without this selection, the build fails with an undefined reference:
-aarch64-none-linux-gnu-ld: drivers/pinctrl/realtek/pinctrl-rtd.o: in
-function rtd_pinctrl_probe': pinctrl-rtd.c:(.text+0x5a0): undefined
-reference to __devm_regmap_init_mmio_clk'
+To avoid the lockdep WARN and the potential deadlock, cut the dependency
+by running the partition_scan_work not by kblockd workqueue but by
+nvme_wq.
 
-Fix this by selecting 'REGMAP_MMIO' in the Kconfig.
-
-Fixes: e99ce78030db ("pinctrl: realtek: Add common pinctrl driver for Realtek DHC RTD SoCs")
-Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
+Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
+Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/realtek/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/realtek/Kconfig b/drivers/pinctrl/realtek/Kconfig
-index 0fc6bd4fcb7ec..400c9e5b16ada 100644
---- a/drivers/pinctrl/realtek/Kconfig
-+++ b/drivers/pinctrl/realtek/Kconfig
-@@ -6,6 +6,7 @@ config PINCTRL_RTD
- 	default y
- 	select PINMUX
- 	select GENERIC_PINCONF
-+	select REGMAP_MMIO
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 543e17aead12b..e35eccacee8c8 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -793,7 +793,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
+-		kblockd_schedule_work(&head->partition_scan_work);
++		queue_work(nvme_wq, &head->partition_scan_work);
+ 	}
  
- config PINCTRL_RTD1619B
- 	tristate "Realtek DHC 1619B pin controller driver"
+ 	nvme_mpath_add_sysfs_link(ns->head);
 -- 
 2.51.0
 
