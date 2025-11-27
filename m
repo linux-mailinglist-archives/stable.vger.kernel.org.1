@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-197317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6098AC8F06D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:47 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5847CC8F187
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A12304ECE7C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B435134F1FA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB39332EA0;
-	Thu, 27 Nov 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31658333456;
+	Thu, 27 Nov 2025 15:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDM88QA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYnBEf2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC58032C301;
-	Thu, 27 Nov 2025 14:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98F328135D;
+	Thu, 27 Nov 2025 15:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255470; cv=none; b=EU89IMBsbYaE8qkp3/GubOZDo3xL8e/AqscMbVuhNRK5OueQ+omqILBCZbOsAlGs3yF5VHe0lLmkyfJ8qHnqotDgIyNts7z9u7GCJ6Qo/FaeGDz4TJS+6Ul8QXBUQS4pP2sF6plXeif7Je79l6Emwg0KrffLZS6ucv9U0/XPQJE=
+	t=1764255897; cv=none; b=pfQcqXuDjHBELEpqA6gXtS97FcDhRCBf8r+VYgSZWZ5b0SYz4TvJ2n4sNB22ihXlSr08ZfKaqJkXIzFLE5xhKeyAcDozn4VlyEAialErUinXI1qh7O5WA4wDGPeiQNm1nV2DEttbj5SnQR0vOXY7SwyD7V0UpLhrhYOjiGrEiDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255470; c=relaxed/simple;
-	bh=2s4frs8t3SID9FYWLOFF74BgnIc72SaTy/7VZ1yFWmo=;
+	s=arc-20240116; t=1764255897; c=relaxed/simple;
+	bh=aGdT0x7sq2JZMZNiWlXgbPpfE/0vbfo/p6yDXTSu60o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxFdc8/oUvr7EzFeggsMhvePPFxq9OhFG3+7yUe0JkItBPj97ZjoN2Ez9PsLZv06zmqMiINCPpsgqMUBmvCuhuSKY0FixRmNx0bviKlUo0oNKQb+yF682yBShmSnhu//xN2ffKaxVxg1AhsHaIy9nuIfFS8XoVEIQIexhKgyhgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDM88QA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F467C4CEF8;
-	Thu, 27 Nov 2025 14:57:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ffljsqB/C6U/9fWEmzP8fL2oOMtMNSjiUYjXRTrbHYkOqWCUNUjSqfSD8/BRtHSW3wfAu5NxV/KSAr6NzlGLpm821JN/fGbfFjlqOQ+IGrl5cw16D3LwxBCentdVJQZKNPxFBe4LPOm2WoNa8TIa3xQ5hmHEe2eqr+lq5IYpCVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYnBEf2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63989C4CEF8;
+	Thu, 27 Nov 2025 15:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255470;
-	bh=2s4frs8t3SID9FYWLOFF74BgnIc72SaTy/7VZ1yFWmo=;
+	s=korg; t=1764255897;
+	bh=aGdT0x7sq2JZMZNiWlXgbPpfE/0vbfo/p6yDXTSu60o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDM88QA5Za7aJUEZe7aHNCxsfUV912GDmDYWfD01UNkSHyb6MADUgIb+c/+LBi4k0
-	 hazwlZzZrXsgW5m//JpxYdZYHauR4b8UEJhno5pHx0ZOrjD26XlRJ2ePRvX+v5bbpO
-	 ypVsL8noFIfb28H8bqDhwiqc7CS5PoulMnzLZ294=
+	b=JYnBEf2zOoLY7Uqu3t9mIYDMUNMuqHYzMi7APQMDbWStokOCjqysOFCdxxBpNRl75
+	 FVNIGd3HxEMOdFcQPPb0/4gWpgIOb0NZK3JBmXgHMHXImq3IsUEvbbwa28WXV4UR9A
+	 4WHRcE/Oy51wF7ZJmyqpfRdvjfrNoDbRO1aSkO0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>
-Subject: [PATCH 6.12 102/112] smb: client: fix incomplete backport in cfids_invalidation_worker()
-Date: Thu, 27 Nov 2025 15:46:44 +0100
-Message-ID: <20251127144036.574953666@linuxfoundation.org>
+	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 152/175] kconfig/mconf: Initialize the default locale at startup
+Date: Thu, 27 Nov 2025 15:46:45 +0100
+Message-ID: <20251127144048.504344445@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,37 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Jakub Horký <jakub.git@horky.net>
 
-The previous commit bdb596ceb4b7 ("smb: client: fix potential UAF in
-smb2_close_cached_fid()") was an incomplete backport and missed one
-kref_put() call in cfids_invalidation_worker() that should have been
-converted to close_cached_dir().
+[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
 
-Fixes: 065bd6241227 ("smb: client: fix potential UAF in smb2_close_cached_fid()")"
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix bug where make menuconfig doesn't initialize the default locale, which
+causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
+UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+
+Signed-off-by: Jakub Horký <jakub.git@horky.net>
+Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
+[nathan: Alphabetize locale.h include]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/mconf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -727,7 +727,7 @@ static void cfids_invalidation_worker(st
- 	list_for_each_entry_safe(cfid, q, &entry, entry) {
- 		list_del(&cfid->entry);
- 		/* Drop the ref-count acquired in invalidate_all_cached_dirs */
--		kref_put(&cfid->refcount, smb2_close_cached_fid);
-+		close_cached_dir(cfid);
- 	}
- }
+diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
+index 84ea9215c0a7e..b8b7bba84a651 100644
+--- a/scripts/kconfig/mconf.c
++++ b/scripts/kconfig/mconf.c
+@@ -12,6 +12,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
++#include <locale.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -931,6 +932,8 @@ int main(int ac, char **av)
  
+ 	signal(SIGINT, sig_handler);
+ 
++	setlocale(LC_ALL, "");
++
+ 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
+ 		silent = 1;
+ 		/* Silence conf_read() until the real callback is set up */
+-- 
+2.51.0
+
 
 
 
