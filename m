@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-197099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12465C8E722
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:23:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9318FC8E78E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031AE3B1333
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:23:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C86E54E8FF3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87096274B23;
-	Thu, 27 Nov 2025 13:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BF82765C3;
+	Thu, 27 Nov 2025 13:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hkjoh9+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLttpL+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A192144C7;
-	Thu, 27 Nov 2025 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D1B2750ED;
+	Thu, 27 Nov 2025 13:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764249775; cv=none; b=odATcemZrdecZpmAMSTrDZeazPUXWXIZeUajGoVQMjUkxL5QXD0EJ6nTKmfa4HUOD2CxwcyGpviqyXZINrzPSMDKKKhz8y10TLOL5p+lWSXdBw3ADMiT9y0KlrppdiPa5t3bGBeQ1kMCwOsE/dL3qMwyw92YV0mSoNDHr+0rgH0=
+	t=1764250231; cv=none; b=W2SdHI35L7Z8ybuQclYJJ4cAajWr4xpgyITkHxnfGlorHfT99kPQa5sSjplAYP3q9PMqDXmLQ8yq6wiH86WBtnXfMhsgHT+N1UtslQoT1dAb41lYMCJxJMr0HJ7fbko8JSPZKirWheK+QQS50Y1iPd27Apo7aaPPtqGSzZvsv1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764249775; c=relaxed/simple;
-	bh=fKnNQFz4tv55GMgNw8e8PjfVCK5DPLfPqiUHl0YKqFs=;
+	s=arc-20240116; t=1764250231; c=relaxed/simple;
+	bh=LuW33Qmw6b+FBxoiMZUsrTuCLWkTEsGgiIgp0uKhm3c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JCOe4ybyoGZ13iOaqhF6n0jha2kLmm9z49uZjKbKXloiad+DKDuShQADO9Mln+jHkRKLjKOXqVz5OP6U1NnT3uLADk26TM4J3Wyeey8v2sr/Bmi9+9KLkv+Mgsml2p1usR2SfrP3HFjyjlEA3Cfcx1vPFJka844T7VCTAi/TmFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hkjoh9+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4350BC4CEF8;
-	Thu, 27 Nov 2025 13:22:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPnkI/WEIcVWsH1hDDwErGMVNukOokLl2HSn+jTbpgVWlOaCiopE7ZcegkNDRrsK02jKxPeUoLZmrlA5OLSfxFbRR9G1vSgWHvj+v1ROuetU7QGy4PgMCShzs81ySTldKtKsWBEgl0YKP3bxOQmBeUaodZm/8ljJKZb4rEnFkH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLttpL+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1DBC4CEF8;
+	Thu, 27 Nov 2025 13:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764249774;
-	bh=fKnNQFz4tv55GMgNw8e8PjfVCK5DPLfPqiUHl0YKqFs=;
+	s=korg; t=1764250231;
+	bh=LuW33Qmw6b+FBxoiMZUsrTuCLWkTEsGgiIgp0uKhm3c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hkjoh9+aVPzj2eWkf42gDBRAGQL9KAsnSAuuXGTcfsofOOLRo1XgSIZRbjalHnAq3
-	 MFvS5RAtyYZ+gaOeRkAWCv2FXOiOHJQxIS3BD5SWf/nt2UXb9jEdlrYZLgpl4BXIWj
-	 9qzturn565vsCsi2r37iNtwix3Jc5QdTLQx7QLe0=
-Date: Thu, 27 Nov 2025 14:22:46 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Guenter Roeck <groeck@google.com>, kernelci@lists.linux.dev,
-	kernelci-results@groups.io, gus@collabora.com,
-	stable@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
- uninitialized when passed as a const pointer arg...
-Message-ID: <2025112730-sterilize-roaming-5c71@gregkh>
-References: <176398914850.89.13888454130518102455@f771fd7c9232>
- <20251124220404.GA2853001@ax162>
- <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
- <20251124224046.GA3142687@ax162>
+	b=hLttpL+fSi/4VGEdZbJXeBfo5lC65USaTdPOiDBNJuEFlBhC/rGbVORs8f/Rp8B+2
+	 09EtLwc5Mtx9Z3M0REc8V8xAVdo71b7TRTCiEx6ylelSVDwDRSmrkDNYkxiiTnN1L0
+	 D3RkJHvopkyo+bOmwr0KcXe6OrT2lOhTC/MjPGQA=
+Date: Thu, 27 Nov 2025 14:30:28 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Bharath SM <bharathsm.hsk@gmail.com>
+Cc: Henrique Carvalho <henrique.carvalho@suse.com>, stable@vger.kernel.org,
+	Shyam Prasad N <sprasad@microsoft.com>, apais@microsoft.com,
+	Bharath S M <bharathsm@microsoft.com>,
+	David Howells <dhowells@redhat.com>, smfrench@gmail.com,
+	linux-cifs@vger.kernel.org, Laura Kerner <laura.kerner@ichaus.de>
+Subject: Re: [PATCH 6.6.y] smb: client: support kvec iterators in async read
+ path
+Message-ID: <2025112707-pummel-film-6bd6@gregkh>
+References: <20250710165040.3525304-1-henrique.carvalho@suse.com>
+ <2944136.1752224518@warthog.procyon.org.uk>
+ <aHE0--yUyFJqK6lb@precision>
+ <CAGypqWyyA6nUfH-bGhQxLYD74O7EcE_6_W15=AB8jvi6yZiV_Q@mail.gmail.com>
+ <2025112112-icon-bunkmate-bfad@gregkh>
+ <CAGypqWy8=Oq6CC0YGFSr72L7kqrEDOytboSqJFJBxxV5tGQgFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,74 +64,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251124224046.GA3142687@ax162>
+In-Reply-To: <CAGypqWy8=Oq6CC0YGFSr72L7kqrEDOytboSqJFJBxxV5tGQgFA@mail.gmail.com>
 
-On Mon, Nov 24, 2025 at 03:40:46PM -0700, Nathan Chancellor wrote:
-> On Mon, Nov 24, 2025 at 02:35:26PM -0800, Guenter Roeck wrote:
-> > On Mon, Nov 24, 2025 at 2:04 PM Nathan Chancellor <nathan@kernel.org> wrote:
-> > >
-> > > On Mon, Nov 24, 2025 at 12:59:08PM -0000, KernelCI bot wrote:
-> > > > Hello,
+On Fri, Nov 21, 2025 at 02:31:20AM -0800, Bharath SM wrote:
+> On Fri, Nov 21, 2025 at 2:02 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Nov 06, 2025 at 06:02:39AM -0800, Bharath SM wrote:
+> > > On Fri, Jul 11, 2025 at 9:01 AM Henrique Carvalho
+> > > <henrique.carvalho@suse.com> wrote:
 > > > >
-> > > > New build issue found on stable-rc/linux-6.12.y:
+> > > > On Fri, Jul 11, 2025 at 10:01:58AM +0100, David Howells wrote:
+> > > > > Henrique Carvalho <henrique.carvalho@suse.com> wrote:
+> > > > >
+> > > > > > Add cifs_limit_kvec_subset() and select the appropriate limiter in
+> > > > > > cifs_send_async_read() to handle kvec iterators in async read path,
+> > > > > > fixing the EIO bug when running executables in cifs shares mounted
+> > > > > > with nolease.
+> > > > > >
+> > > > > > This patch -- or equivalent patch, does not exist upstream, as the
+> > > > > > upstream code has suffered considerable API changes. The affected path
+> > > > > > is currently handled by netfs lib and located under netfs/direct_read.c.
+> > > > >
+> > > > > Are you saying that you do see this upstream too?
+> > > > >
 > > > >
-> > > > ---
-> > > >  variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/rtl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild.compiler.error]
-> > > > ---
+> > > > No, the patch only targets the 6.6.y stable tree. Since version 6.8,
+> > > > this path has moved into the netfs layer, so the original bug no longer
+> > > > exists.
 > > > >
-> > > > - dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
-> > > > - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> > > > - commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
-> > > > - tags: v6.12.59
+> > > > The bug was fixed at least since the commit referred in the commit
+> > > > message -- 3ee1a1fc3981. In this commit, the call to cifs_user_readv()
+> > > > is replaced by a call to netfs_unbuffered_read_iter(), inside the
+> > > > function cifs_strict_readv().
 > > > >
+> > > > netfs_unbuffered_read_iter() itself was introduced in commit
+> > > > 016dc8516aec8, along with other netfs api changes, present in kernel
+> > > > versions 6.8+.
 > > > >
-> > > > Log excerpt:
-> > > > =====================================================
-> > > > drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-> > > >   148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-> > > >       |                                          ^~~
-> > > > 1 error generated.
+> > > > Backporting netfs directly would be non-trivial. Instead, I:
+> > > >
+> > > > - add cifs_limit_kvec_subset(), modeled on the existing
+> > > >   cifs_limit_bvec_subset()
+> > > > - choose between the kvec or bvec limiter function early in
+> > > >   cifs_write_from_iter().
+> > > >
+> > > > The Fixes tag references d08089f649a0c, which implements
+> > > > cifs_limit_bvec_subset() and uses it inside cifs_write_from_iter().
+> > > >
+> > > > > > Reproducer:
+> > > > > >
+> > > > > > $ mount.cifs //server/share /mnt -o nolease
+> > > > > > $ cat - > /mnt/test.sh <<EOL
+> > > > > > echo hallo
+> > > > > > EOL
+> > > > > > $ chmod +x /mnt/test.sh
+> > > > > > $ /mnt/test.sh
+> > > > > > bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-/Ausgabefehler
+> > > > > > $ rm -f /mnt/test.sh
+> > > > >
+> > > > > Is this what you are expecting to see when it works or when it fails?
+> > > > >
+> > > >
+> > > > This is the reproducer for the observed bug. In english it reads "Bad
+> > > > interpreter: Input/Output error".
+> > > >
+> > > > FYI: I tried to follow Option 3 of the stable-kernel rules for submission:
+> > > > <https://www.kernel.org/doc/html/v6.15/process/stable-kernel-rules.html>
+> > > > Please let me know if you'd prefer a different approach or any further
+> > > > changes.
+> > > Thanks Henrique.
 > > >
-> > > This comes from a new subwarning of -Wuninitialized introduced in
-> > > clang-21:
+> > > Hi Greg,
 > > >
-> > >   https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e
-> > >
-> > > This driver was removed upstream in commit 41e883c137eb ("staging:
-> > > rtl8712: Remove driver using deprecated API wext") in 6.13 so this only
-> > > impacts stable.
-> > >
-> > > This certainly does look broken...
-> > >
-> > >   static u8 read_rfreg_hdl(struct _adapter *padapter, u8 *pbuf)
-> > >   {
-> > >       u32 val;
-> > >       void (*pcmd_callback)(struct _adapter *dev, struct cmd_obj *pcmd);
-> > >       struct cmd_obj *pcmd  = (struct cmd_obj *)pbuf;
-> > >
-> > >       if (pcmd->rsp && pcmd->rspsz > 0)
-> > >           memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-> > >
-> > > Presumably this is never actually hit? It is rather hard to follow the
-> > > indirection in this driver but it does not seem like _Read_RFREG is ever
-> > > set as a cmdcode? Unfortunately, the only maintainer I see listed for
-> > > this file is Florian Schilhabel but a glance at lore shows no recent
-> > > activity so that probably won't be too much help. At the very least, we
-> > > could just zero initialize val, it cannot be any worse than what it is
-> > > currently doing and copying stack garbage?
-> > >
-> > 
-> > Or backport the patch removing the driver ? It is in staging, after
-> > all, so I don't know if there is value in trying to keep it alive in
-> > 6.12.y.
-> 
-> That would likely not be the end of the world for 6.12.y but this
-> warning appears all the way back to at least 5.15 (the point I start
-> caring about warnings because of CONFIG_WERROR).
+> > > We are observing the same issue with the 6.6 Kernel, Can you please
+> > > help include this patch in the 6.6 stable kernel.?
+> >
+> > Pleas provide a working backport and we will be glad to imclude it.
+> >
+> This fix is not needed now in the stable kernels as "[PATCH] cifs: Fix
+> uncached read into ITER_KVEC iterator" submitted
+> in email thread "Request to backport data corruption fix to stable"
+> fixes this issue.
 
-No objection from me to delete the driver from all of the stable trees :)
+I do not understand, what commit fixed this?  You attached a fix, but
+that's not needed?
 
-thanks,
+confused,
 
 greg k-h
+
 
