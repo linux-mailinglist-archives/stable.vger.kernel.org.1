@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B23C8F0F4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6165DC8F1F1
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4FE93351425
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 41097344A21
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD89298CAF;
-	Thu, 27 Nov 2025 15:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC8296BC2;
+	Thu, 27 Nov 2025 14:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weikM2Hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIq5C+zR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98972882A7;
-	Thu, 27 Nov 2025 15:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C70296BBC;
+	Thu, 27 Nov 2025 14:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255779; cv=none; b=CRlfFpUT2ejY/tfO88dsJejP3lo3d5o6J+VBwB7PUcz/NlAag6/O8qmEhhjizQoP1YoOj1JSq1BEtV2vpDXIeNbLCdqEiph7Nq5U857s6RcVh5UKEvTrcc8W+B0u4TNmH0sUwDuoS3baG+xXoUhvoSCik8FvlSmJugCHaeSx4J0=
+	t=1764255410; cv=none; b=W8VPrFcW0zsrREcW2Yz2nEXPqqGxl3zcN3C9z/OI4go7oems0A0J4odz05qvM2JGL1TRfkdgJ1xMdu5zLDumi265xiS5deL2nh8HnSqBfO66Inly+TpNRonKx3jih/TwdiouyhVwHaWItDmEiXE4OOlolc5e5g+/rCImRdjxmd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255779; c=relaxed/simple;
-	bh=37KV0j7aGOwco2m4bEsFO2inW0f7osP5PyfncTzZtd0=;
+	s=arc-20240116; t=1764255410; c=relaxed/simple;
+	bh=0TnkGjPiCqNXhz4wqyluCregbHRE13L2dNvLK4c5jRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reG0WG/Ccutj11GbKRTMQwJ7r+plwuiFFF9DjhA9tVDR6je603tYRuBGSqC9TEKcWkkcCQW0vx0/fuzp8+o1BI92vuUi0KG4LQESuAKc6yqdK2RQVKvEUfXyVdUwG2G5Rb/DwgJAxGbqaRZ4KNqVaxLvs4OQtSDS6UPTC9UncBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weikM2Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35268C113D0;
-	Thu, 27 Nov 2025 15:02:59 +0000 (UTC)
+	 MIME-Version; b=rXcazwoN7AKjHmvDVBWTcEL36fBWpUYEp41Dzoseo3LwBzbhjNREeI7WVKNu6unSUic4iSReif7H4bmJ6AponLBo+dpB80Tc9qDTML2242Rz9CpmWIVAdRwcCLBUYX9IbTQ4SyKB4EWK2UkR7IQTyJZR3hiLWYKapIJadTCWYa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIq5C+zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89697C4CEF8;
+	Thu, 27 Nov 2025 14:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255779;
-	bh=37KV0j7aGOwco2m4bEsFO2inW0f7osP5PyfncTzZtd0=;
+	s=korg; t=1764255409;
+	bh=0TnkGjPiCqNXhz4wqyluCregbHRE13L2dNvLK4c5jRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=weikM2HuyK8UWXtaEilcP3qFxsVXISoFd17PtkCvdxUekgI0gaf8zl8k7WyWHEOFL
-	 NYaNDhldIJZjGk02WqITkls49eSRebX5jlMpgH9Irudba9dK6HnEwLGugJItsMbDVA
-	 8HWTWMJBlPGK91caoQCP3AWIqGAEvHRRUzedQ3nk=
+	b=gIq5C+zR9lhM0bx8YA2pwDSMP/A+avFm0xvklA6vcMGQgvjd4NmAM1PwwgqWr2kUc
+	 RbToII8HYXKif8JKaSzZpA8yIlyozGK1yaqArP+02bOVx8yeSjYOEbH+mxnCvHK5im
+	 7UdEZuAckpW1WMjBILVrkc7TcLE6PjmnlWk9AiGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 112/175] net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
+Subject: [PATCH 6.12 063/112] net: dsa: hellcreek: fix missing error handling in LED registration
 Date: Thu, 27 Nov 2025 15:46:05 +0100
-Message-ID: <20251127144047.048444470@linuxfoundation.org>
+Message-ID: <20251127144035.145746282@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 896f1a2493b59beb2b5ccdf990503dbb16cb2256 ]
+[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
 
-The loops in 'qede_tpa_cont()' and 'qede_tpa_end()', iterate
-over 'cqe->len_list[]' using only a zero-length terminator as
-the stopping condition. If the terminator was missing or
-malformed, the loop could run past the end of the fixed-size array.
+The LED setup routine registered both led_sync_good
+and led_is_gm devices without checking the return
+values of led_classdev_register(). If either registration
+failed, the function continued silently, leaving the
+driver in a partially-initialized state and leaking
+a registered LED classdev.
 
-Add an explicit bound check using ARRAY_SIZE() in both loops to prevent
-a potential out-of-bounds access.
+Add proper error handling
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
+Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
 Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Link: https://patch.msgid.link/20251113112757.4166625-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
+Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-index 847fa62c80df8..e338bfc8b7b2f 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2019-2020 Marvell International Ltd.
-  */
+diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+index bfe21f9f7dcd3..cb23bea9c21b8 100644
+--- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
++++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+@@ -376,8 +376,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
+ 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
  
-+#include <linux/array_size.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/skbuff.h>
-@@ -960,7 +961,7 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
- {
- 	int i;
+ 	/* Register both leds */
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
++		goto out;
++	}
++
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
++		led_classdev_unregister(&hellcreek->led_sync_good);
++		goto out;
++	}
  
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
+ 	ret = 0;
  
-@@ -985,7 +986,7 @@ static int qede_tpa_end(struct qede_dev *edev,
- 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
- 			       PAGE_SIZE, rxq->data_direction);
- 
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
- 	if (unlikely(i > 1))
 -- 
 2.51.0
 
