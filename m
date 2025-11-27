@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6556C8EF58
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC96C8ED4E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA1093BB381
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 933CA3B1308
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE2932AADC;
-	Thu, 27 Nov 2025 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E90D27C162;
+	Thu, 27 Nov 2025 14:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxhjyeY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpIiYLdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB8228D8E8;
-	Thu, 27 Nov 2025 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D642765EA;
+	Thu, 27 Nov 2025 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255169; cv=none; b=pq+KHl2i1EqdoWg23mvQpRz7JKKGWHPSise7Tw6rFT0/0tjQ7d6Bth4lwfbzIS09uKHRremZpRf6JjGOf4lvRcgxfqU1Gdc8a/g7FT1iy7WFX/Av5IEM6YwSlteteUPWHwxD8c84NMGngoR/DVgu3irtkGsXM5ylsozQ5VmwDsQ=
+	t=1764254857; cv=none; b=g0PI8z71F3xfXIWp7T6AEC1a5X21uw/8iYzcCruF52hKEix3TxV11guteLcVdb4rL+0bUvIq3CDYjqMAj6JIsveKjh8pEB1KNagJZQkdNbdHZmR/bdltErl7LkdUm+ygE8r2r9nZKhOxdSTsbVX2ef/KHzH8mOW1AtZacoq9INo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255169; c=relaxed/simple;
-	bh=gdFf+LC2v9fYe9Jw5dM/chlpAYBFWX5ZhMhs829JFn4=;
+	s=arc-20240116; t=1764254857; c=relaxed/simple;
+	bh=9dIlhuXmO59Zp+/jn3NnhNXQtVScprOdeP3DV2bw4b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPBo6XynZV4kF9uZgLrgmJYQYPgpPsfzH55p+GjcZa7Xd9kV+MCcVLU+7V9Fme1nnJ/+dP95OTdHkoGS7kJaygAoSxA9+/DMc8AcEPXqCrN644jrSsLq1jBEIzHbdkDYAChfa+UHxvBPW9YDXWp6l2Jw3tMl1ikG8DMM9LqiCRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxhjyeY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F17C4CEF8;
-	Thu, 27 Nov 2025 14:52:48 +0000 (UTC)
+	 MIME-Version; b=hmDXm02UXzhKhAXUIeM27jr1k0zDav1ptwHt5dGiolznBj1FtJASPqkCbQZA48Rhj1sG9D598vN8I6NSptnKv/DwPW0vtE4jVXh++kwXuIyh00Nfz6RtdUtDrQ9C6giX8NsVGqxhSPaYLi6gJldBP/CjfTAZi5EhOczMLQMBPOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpIiYLdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D78C4CEF8;
+	Thu, 27 Nov 2025 14:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255169;
-	bh=gdFf+LC2v9fYe9Jw5dM/chlpAYBFWX5ZhMhs829JFn4=;
+	s=korg; t=1764254856;
+	bh=9dIlhuXmO59Zp+/jn3NnhNXQtVScprOdeP3DV2bw4b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxhjyeY4GjzdfTkcWrgaKFm7xwN5jV9Z5XLB4+7XxywpKjWCWMPfE0zVYspgrIy+U
-	 K0wnQHisCzFUWJ8JcVzGZ8J5h6GmwkpCjxfHAAJu5oOKHBhuDV45XJ9lY3wyZnOmBq
-	 utPQ/Qnx0/n0262ftAWQLOSMLZ1X7g8Pq++4SVAw=
+	b=mpIiYLdRCC6k/2fo8p/InM4HJZIrtvdGOQtt6odm0bLBZquoWXEzQ86Td3GTicjtH
+	 O9wZAGSs0qW/ZZwLypvQwPZtliF9AUQfJqLvhDqHWILJ3lmtlLdFFGlhTfKM2BVQHv
+	 JHfEW2VCehf8llCSv5+QO8N2QdRetZJqNiIJhnL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weikang Guo <guoweikang.kernel@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 024/112] Input: goodix - add support for ACPI ID GDIX1003
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 10/86] MIPS: mm: Prevent a TLB shutdown on initial uniquification
 Date: Thu, 27 Nov 2025 15:45:26 +0100
-Message-ID: <20251127144033.693455634@linuxfoundation.org>
+Message-ID: <20251127144028.191081287@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit c6d99e488117201c63efd747ce17b80687c3f5a9 upstream.
+commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
 
-Some newer devices use an ACPI hardware ID of GDIX1003 for their Goodix
-touchscreen controller, instead of GDIX1001 / GDIX1002. Add GDIX1003
-to the goodix_acpi_match[] table.
+Depending on the particular CPU implementation a TLB shutdown may occur
+if multiple matching entries are detected upon the execution of a TLBP
+or the TLBWI/TLBWR instructions.  Given that we don't know what entries
+we have been handed we need to be very careful with the initial TLB
+setup and avoid all these instructions.
 
-Reported-by: Weikang Guo <guoweikang.kernel@gmail.com>
-Closes: https://lore.kernel.org/linux-input/20250225024409.1467040-1-guoweikang.kernel@gmail.com/
-Tested-by: Weikang Guo <guoweikang.kernel@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20251013121022.44333-1-hansg@kernel.org
+Therefore read all the TLB entries one by one with the TLBR instruction,
+bypassing the content addressing logic, and truncate any large pages in
+place so as to avoid a case in the second step where an incoming entry
+for a large page at a lower address overlaps with a replacement entry
+chosen at another index.  Then preinitialize the TLB using addresses
+outside our usual unique range and avoiding clashes with any entries
+received, before making the usual call to local_flush_tlb_all().
+
+This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
+entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
+address).
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/goodix.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 64 insertions(+), 38 deletions(-)
 
---- a/drivers/input/touchscreen/goodix.c
-+++ b/drivers/input/touchscreen/goodix.c
-@@ -1519,6 +1519,7 @@ MODULE_DEVICE_TABLE(i2c, goodix_ts_id);
- static const struct acpi_device_id goodix_acpi_match[] = {
- 	{ "GDIX1001", 0 },
- 	{ "GDIX1002", 0 },
-+	{ "GDIX1003", 0 },
- 	{ "GDX9110", 0 },
- 	{ }
- };
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -15,6 +15,7 @@
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
++#include <linux/sort.h>
+ 
+ #include <asm/cpu.h>
+ #include <asm/cpu-type.h>
+@@ -506,55 +507,79 @@ static int __init set_ntlb(char *str)
+ 
+ __setup("ntlb=", set_ntlb);
+ 
+-/* Initialise all TLB entries with unique values */
++
++/* Comparison function for EntryHi VPN fields.  */
++static int r4k_vpn_cmp(const void *a, const void *b)
++{
++	long v = *(unsigned long *)a - *(unsigned long *)b;
++	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
++	return s ? (v != 0) | v >> s : v;
++}
++
++/*
++ * Initialise all TLB entries with unique values that do not clash with
++ * what we have been handed over and what we'll be using ourselves.
++ */
+ static void r4k_tlb_uniquify(void)
+ {
+-	int entry = num_wired_entries();
++	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
++	int tlbsize = current_cpu_data.tlbsize;
++	int start = num_wired_entries();
++	unsigned long vpn_mask;
++	int cnt, ent, idx, i;
++
++	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
++	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
+ 	htw_stop();
+-	write_c0_entrylo0(0);
+-	write_c0_entrylo1(0);
+ 
+-	while (entry < current_cpu_data.tlbsize) {
+-		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
+-		unsigned long asid = 0;
+-		int idx;
++	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
++		unsigned long vpn;
+ 
+-		/* Skip wired MMID to make ginvt_mmid work */
+-		if (cpu_has_mmid)
+-			asid = MMID_KERNEL_WIRED + 1;
++		write_c0_index(i);
++		mtc0_tlbr_hazard();
++		tlb_read();
++		tlb_read_hazard();
++		vpn = read_c0_entryhi();
++		vpn &= vpn_mask & PAGE_MASK;
++		tlb_vpns[cnt] = vpn;
+ 
+-		/* Check for match before using UNIQUE_ENTRYHI */
+-		do {
+-			if (cpu_has_mmid) {
+-				write_c0_memorymapid(asid);
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
+-			} else {
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
+-			}
+-			mtc0_tlbw_hazard();
+-			tlb_probe();
+-			tlb_probe_hazard();
+-			idx = read_c0_index();
+-			/* No match or match is on current entry */
+-			if (idx < 0 || idx == entry)
+-				break;
+-			/*
+-			 * If we hit a match, we need to try again with
+-			 * a different ASID.
+-			 */
+-			asid++;
+-		} while (asid < asid_mask);
+-
+-		if (idx >= 0 && idx != entry)
+-			panic("Unable to uniquify TLB entry %d", idx);
+-
+-		write_c0_index(entry);
++		/* Prevent any large pages from overlapping regular ones.  */
++		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
+ 		mtc0_tlbw_hazard();
+ 		tlb_write_indexed();
+-		entry++;
++		tlbw_use_hazard();
+ 	}
+ 
++	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
++
++	write_c0_pagemask(PM_DEFAULT_MASK);
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	idx = 0;
++	ent = tlbsize;
++	for (i = start; i < tlbsize; i++)
++		while (1) {
++			unsigned long entryhi, vpn;
++
++			entryhi = UNIQUE_ENTRYHI(ent);
++			vpn = entryhi & vpn_mask & PAGE_MASK;
++
++			if (idx >= cnt || vpn < tlb_vpns[idx]) {
++				write_c0_entryhi(entryhi);
++				write_c0_index(i);
++				mtc0_tlbw_hazard();
++				tlb_write_indexed();
++				ent++;
++				break;
++			} else if (vpn == tlb_vpns[idx]) {
++				ent++;
++			} else {
++				idx++;
++			}
++		}
++
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
+@@ -600,6 +625,7 @@ static void r4k_tlb_configure(void)
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+ 	r4k_tlb_uniquify();
++	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
