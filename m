@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F38C8F2FE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E4DC8EF9D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ADDD3B7D09
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5EC95350206
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF6032AAC4;
-	Thu, 27 Nov 2025 15:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B8B31281E;
+	Thu, 27 Nov 2025 14:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZv9e/Gh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFQ+9S8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8305628135D;
-	Thu, 27 Nov 2025 15:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDC928D8E8;
+	Thu, 27 Nov 2025 14:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255880; cv=none; b=siJSf1whl86uV3OF7mhNx1wSPeBQyx5pjSVTPX2HkuNbOVwiHZZ2pjznqwmcY3irAuppMTyUTgLPwZPyWk12cWNyhE6dx/7Zuo7HGDGfC5fr2BG64ZdrTFFMAEt2mx/vgJlBWO+pu8wrqxjSdTrM5j+lmX7ttOkYvhyO2wQCWzQ=
+	t=1764255459; cv=none; b=l42NeUpFNWkoYTd5Op3+OMzD5OtqlzH2AarwZOHhPcXlxbRMRtuuXNDrLU9FNueaD8njBVqEabNyq680SUrXixxBcF8AzmRLbSyOPoQa8uzXk6H6aaM5Ruy8p21j7oMcgPA+za+iCpvjKNBz9jGT3Kr/bny0RNP6lTs3yKKWzTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255880; c=relaxed/simple;
-	bh=hPY8s491yHgjWvkTGC/NLJPF8BfsVvzyTgAlz+l38hA=;
+	s=arc-20240116; t=1764255459; c=relaxed/simple;
+	bh=+UVHPNN+ea1zW76Y7GYJl93pcaioZcXaoGU+dS3AlII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc2DsM79Z5ZWMg9hOpi2jEz0oJP/EgX/RGYbvCE11TvObvPQDb4Bto319f8r3/SrWps4GJ3W66BfuwiHZ/RDT2x1oK8TcLTqRzSSSpEK91WHMMYe0vuj/wf/JZz8wFHgU5dnPda3i36W1U3gILeyVf3C/3b7j5QPWo1/ZApEtzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZv9e/Gh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E141C4CEF8;
-	Thu, 27 Nov 2025 15:04:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZlN+xTpTOdwqkyjeA3q7VwzJhFysEYhaO88BGfzLGH2AQTeGVTbfxkoIKU3Kh+qnjHmlgqjnamhABeks/F3Q5ZG/kk8q1UDsiUDC5J6sR+VsdC2+ufDbJqkv13llSZLSihNKg72Kcp30JPlqoODE+WNTo73ZdSTwa9mx3B1t5A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFQ+9S8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A9AC4CEF8;
+	Thu, 27 Nov 2025 14:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255880;
-	bh=hPY8s491yHgjWvkTGC/NLJPF8BfsVvzyTgAlz+l38hA=;
+	s=korg; t=1764255459;
+	bh=+UVHPNN+ea1zW76Y7GYJl93pcaioZcXaoGU+dS3AlII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZv9e/GhCzH+anevVDc5kjpKWGqDiuly0xwn5FFy9C52pv9bxWxYtV49WrjJP56EW
-	 hh+VMiY/k+GsFvKcSNmq5NJs7chmjiefy11A+INIIAIahRJAmErl8y6yKfu4lWsJK0
-	 UNFVYFkqkHfPtO/l6lCsMMWvBooR+BPIT1gl2l38=
+	b=WFQ+9S8V5xjXEBlK/KOtLFqo6YAPVN0nQjkJcjTZn1O7QGRfSWSAUx/oonv8M6+T3
+	 /NCgBhyGh9ACcc977jO04kEppDok8/e72XkhUg8op6Jl7nDbG2WQERocDNg4ikHygg
+	 Lqt7du4dRpiABMiiNnvV10bGwqfwDS8tsYn0AJHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edoardo Canepa <edoardo.canepa@canonical.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 147/175] selftests: net: use BASH for bareudp testing
+Subject: [PATCH 6.12 098/112] ALSA: usb-audio: fix uac2 clock source at terminal parser
 Date: Thu, 27 Nov 2025 15:46:40 +0100
-Message-ID: <20251127144048.323311459@linuxfoundation.org>
+Message-ID: <20251127144036.428458464@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 9311e9540a8b406d9f028aa87fb072a3819d4c82 ]
+[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
 
-In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
-BASH script at the very beginning.
+Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
+UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
+bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
+Clean up check_input_term()") into parse_term_uac2_clock_source().
 
-But on some operating systems like Ubuntu, /bin/sh is actually pointed to
-DASH, thus it will try to run BASH commands with DASH and consequently
-leads to syntax issues:
-  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
-  # ./bareudp.sh: 5: ./lib.sh: source: not found
-  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
+This breaks the clock source selection for at least my
+1397:0003 BEHRINGER International GmbH FCA610 Pro.
 
-Fix this by explicitly using BASH for bareudp.sh. This fixes test
-execution failures on systems where /bin/sh is not BASH.
+Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
 
-Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-Link: https://bugs.launchpad.net/bugs/2129812
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20251027095710.2036108-2-po-hsu.lin@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
+Signed-off-by: René Rebe <rene@exactco.de>
+Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/bareudp.sh | 2 +-
+ sound/usb/mixer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
-index 4046131e78882..d9e5b967f8151 100755
---- a/tools/testing/selftests/net/bareudp.sh
-+++ b/tools/testing/selftests/net/bareudp.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 4853336f0e6b5..7307e29c60b75 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -930,7 +930,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
+ {
+ 	struct uac_clock_source_descriptor *d = p1;
  
- # Test various bareudp tunnel configurations.
+-	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
++	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
+ 	term->id = id;
+ 	term->name = d->iClockSource;
+ 	return 0;
 -- 
 2.51.0
 
