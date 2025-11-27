@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-197273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB80CC8EEB3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32627C8EE32
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A6D2D34F52F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2B924EDC49
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C257332C301;
-	Thu, 27 Nov 2025 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60214286416;
+	Thu, 27 Nov 2025 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubN69VXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0f/Zel7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF28330B1F;
-	Thu, 27 Nov 2025 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC3D28D8E8;
+	Thu, 27 Nov 2025 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255284; cv=none; b=qi+dHI+xEMT9mQd4vqysrona6QvwzYNIV2WpZkGqMJ1ebRqbReCz2f16vqqLr/Ow5jhKQzRuFLcuXz30mOZFATgO2SmVQWmHkjzTypVJ+IqMO/ZFLCFjMaz70Fh29X9dy8E5B6aVC8/seRCgaB1XU76cFvW+nJ5OcfkS3klzL+I=
+	t=1764255018; cv=none; b=EUVHhAMYOb4GDurgXbObtPVaQzvnDoFluwzT2mwS2N3L94Ma8CGPQ5G7YOjSGkhoGfKnlCS1TkGEtXZal5TNxFI7st3pQnH2bGgb5SR3MzTN1U87Adawxc/g3Fz32sVYiFsJmNR6cbGTA3T36NCyFIr8PbxAhYvLM+72GijnDBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255284; c=relaxed/simple;
-	bh=uTcDtxkdck1ej0qoWtCRt2E/EzHIlTuTYXwV0SmmFP4=;
+	s=arc-20240116; t=1764255018; c=relaxed/simple;
+	bh=NipJ5OPeKjushSC6D7xGBZWhs85S7LvIx2YP5zt0A3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKZ+RJuQiHiVqj3LqftZAnnkZkFHGYqDAF80h93NYpeoxoZU5c6ABgaP4NBszqL9UKS1o6f5kXqtaHPzlU9451Ny28+f2T9dtgc7d+96OD9WlhrZY8U2EcEtr9BXYzuN3esdKVd1A0nCmCtQxu9Oi9f3WF7MS7K8Q0yLC85Djaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubN69VXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3243C116D0;
-	Thu, 27 Nov 2025 14:54:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q3IGpCBaDOff9abgsOM6uWXH/hHYZ7t4acBGmH4PqpqLodvVMyNGJrmz3uO4Y6e3XMjtgmECJKGieHFB2fFTUweJhPVOmzDO/1hII3jqJxa93qWDa6tZuJCfvP+z6mqkxW+E/CSdvDJao/aLui8ELtO/M/JxmVeGkdGwixh5tz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0f/Zel7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96856C4CEF8;
+	Thu, 27 Nov 2025 14:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255284;
-	bh=uTcDtxkdck1ej0qoWtCRt2E/EzHIlTuTYXwV0SmmFP4=;
+	s=korg; t=1764255018;
+	bh=NipJ5OPeKjushSC6D7xGBZWhs85S7LvIx2YP5zt0A3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubN69VXrQtxL35rFdChn7aNZG66kdaCmNzenT7AXnt/QpFKzx0+O/ZnyQCpdHSilp
-	 rzcgGSrA+MS+cxomUsvpnG/9aVtENlTTUFetBkj0o1mR+ZA0AyuZNVI8cuGRRoq84h
-	 5d5FZfsFO17Gh7BhoZ/tzAl8OAIqkeu1f/dfTOmQ=
+	b=s0f/Zel79O01S/eZ3l29ZsNS7GwDX7OxHm+m22K4qcZUYkpDqqrysNi3m45Um37jo
+	 uQ1eVy1UGPPPmFm+tuwQpMKa6yIDJjheeTaRlB4qjSaZUWt/MhegWNivt8T+r2xMiJ
+	 BuTh4jZUY8r09RMhL5h1N1Ph7JrVAiO0m3yla+44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Chittim Madhu <madhu.chittim@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/112] idpf: fix possible vport_config NULL pointer deref in remove
+Subject: [PATCH 6.6 58/86] bcma: dont register devices disabled in OF
 Date: Thu, 27 Nov 2025 15:46:14 +0100
-Message-ID: <20251127144035.475843975@linuxfoundation.org>
+Message-ID: <20251127144029.951485166@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 118082368c2b6ddefe6cb607efc312285148f044 ]
+[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
 
-Attempting to remove the driver will cause a crash in cases where
-the vport failed to initialize. Following trace is from an instance where
-the driver failed during an attempt to create a VF:
-[ 1661.543624] idpf 0000:84:00.7: Device HW Reset initiated
-[ 1722.923726] idpf 0000:84:00.7: Transaction timed-out (op:1 cookie:2900 vc_op:1 salt:29 timeout:60000ms)
-[ 1723.353263] BUG: kernel NULL pointer dereference, address: 0000000000000028
-...
-[ 1723.358472] RIP: 0010:idpf_remove+0x11c/0x200 [idpf]
-...
-[ 1723.364973] Call Trace:
-[ 1723.365475]  <TASK>
-[ 1723.365972]  pci_device_remove+0x42/0xb0
-[ 1723.366481]  device_release_driver_internal+0x1a9/0x210
-[ 1723.366987]  pci_stop_bus_device+0x6d/0x90
-[ 1723.367488]  pci_stop_and_remove_bus_device+0x12/0x20
-[ 1723.367971]  pci_iov_remove_virtfn+0xbd/0x120
-[ 1723.368309]  sriov_disable+0x34/0xe0
-[ 1723.368643]  idpf_sriov_configure+0x58/0x140 [idpf]
-[ 1723.368982]  sriov_numvfs_store+0xda/0x1c0
+Some bus devices can be marked as disabled for specific SoCs or models.
+Those should not be registered to avoid probing them.
 
-Avoid the NULL pointer dereference by adding NULL pointer check for
-vport_config[i], before freeing user_config.q_coalesce.
-
-Fixes: e1e3fec3e34b ("idpf: preserve coalescing settings across resets")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Chittim Madhu <madhu.chittim@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bcma/main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 4c48a1a6aab0d..d7a7b0c5f1b8d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -62,6 +62,8 @@ static void idpf_remove(struct pci_dev *pdev)
- 	destroy_workqueue(adapter->vc_event_wq);
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index 7061d3ee836a1..c69c05256b59f 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 	int err;
  
- 	for (i = 0; i < adapter->max_vports; i++) {
-+		if (!adapter->vport_config[i])
+ 	list_for_each_entry(core, &bus->cores, list) {
++		struct device_node *np;
++
+ 		/* We support that core ourselves */
+ 		switch (core->id.id) {
+ 		case BCMA_CORE_4706_CHIPCOMMON:
+@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 		if (bcma_is_core_needed_early(core->id.id))
+ 			continue;
+ 
++		np = core->dev.of_node;
++		if (np && !of_device_is_available(np))
 +			continue;
- 		kfree(adapter->vport_config[i]->user_config.q_coalesce);
- 		kfree(adapter->vport_config[i]);
- 		adapter->vport_config[i] = NULL;
++
+ 		/* Only first GMAC core on BCM4706 is connected and working */
+ 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
+ 		    core->core_unit > 0)
 -- 
 2.51.0
 
