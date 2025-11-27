@@ -1,173 +1,100 @@
-Return-Path: <stable+bounces-197540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8EAC90351
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 22:42:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331B9C903BA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 22:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 394D43515EB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 21:42:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F1ABF3448D9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 21:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EE1325485;
-	Thu, 27 Nov 2025 21:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1FE322A1F;
+	Thu, 27 Nov 2025 21:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pf8PzsY6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvPLJmbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C0E30AAB3;
-	Thu, 27 Nov 2025 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA60E31ED92;
+	Thu, 27 Nov 2025 21:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764279729; cv=none; b=HBw1LyrQSex2EATZYuy9jBSclLnq4pguzwkiswdzHhNS8FVQRoAbAzSl5AeVHpo0FABB9jQs2uiWcEWAU3z3Ho7u2gh/ettrjml0vDtP7ISAsNgZJmSoL7aURvjEu0PYmffKZRwWooXfZnUGzXY1AYn+hnUm8xzRbZlOYyuIzr0=
+	t=1764279801; cv=none; b=T0+nvQgeJ99+8+KKKXckuBh0s4MLMPNmXMsYCAfzA/WTO4Tj9o7CBDisYVVyLqymhRNuUG6Cplj+ODMXRFuqwwrWo6rMjkxw9GKBg/n1Y5DKxRc9hQDYMyoGt2VEk1kCn+2NxeldgipGHGC5sCfmY926ulda193wx+/UqN0/jpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764279729; c=relaxed/simple;
-	bh=3UUWKYLzGAg4A1KC8AbrL28qz9d8TSVwH0sjaBLkc8Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRu9ll8lwkS/fxPwp+cNxGlQuYo9+Oy9a+417Te55Nh+IXMkLO4GxT140txxilhOaIBqeT5z7lFgytkKOaaWJQPRBQ84sPrYwTxQ1EJ/t18NpyCLae3R0aufQVxAbuS/dDaOz/nhE2XNN3aKjygvSzqahLfEOwaXjwJ4C9fooGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pf8PzsY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB65C4CEF8;
-	Thu, 27 Nov 2025 21:42:05 +0000 (UTC)
+	s=arc-20240116; t=1764279801; c=relaxed/simple;
+	bh=YHxK3mc0tyRl3Vm9qPKwXMRT4F0/TVtmAZowbs3rSIY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=taMRL9GbcXoVgvQ/H2zrd9d3iymKT2OsSb7qQ9kaTjKEcgn/PmDcWVwqmlFg3cmgrnfDV8C2WPmRNPZGnOepGYbCjHmzYECwtre0u8x74BHLehoR67F9v4lI/4mRNNP4Y71npH8OTGud5qz8z2pvTAwPUmPAW0QMxvEtbo2mjmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvPLJmbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21338C4CEFB;
+	Thu, 27 Nov 2025 21:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764279726;
-	bh=3UUWKYLzGAg4A1KC8AbrL28qz9d8TSVwH0sjaBLkc8Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pf8PzsY6Uv6BnSy5+8GeGXPXjhD5Ui0JWYigF6jYiFrQTVVKG/bWus4FfiWGbVMUM
-	 GteNdncOzYh4EOlN1Vlq4jGN8KxvpHsHsZxV9NSVhbkm4rxcpVCvKoHE5b31Kj6kBb
-	 sLpwXDLUlEWEa00dgbjPMoCHAOz+6EZAbdHvlCGn8v5lLQmVKnHGlEaVAcsWcaMdEi
-	 myvh+kIl+2OWgAbt2UDnxwPafslwM63ZSJZRrESsN5zyyfgq2dWIGxpNyysDApS3GM
-	 2oPhrUIGpXb+dYg7D4tpO3GazGD7y/pE06r5Fc0cmHETiMbIUJETRcDA8wQAvu+V/5
-	 DlywMDfD6qXMQ==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: ross.philipson@oracle.com,
-	Jonathan McDowell <noodles@earth.li>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v8 04/11] KEYS: trusted: Fix memory leak in tpm2_load()
-Date: Thu, 27 Nov 2025 23:41:29 +0200
-Message-ID: <20251127214138.3760029-5-jarkko@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127214138.3760029-1-jarkko@kernel.org>
-References: <20251127214138.3760029-1-jarkko@kernel.org>
+	s=k20201202; t=1764279801;
+	bh=YHxK3mc0tyRl3Vm9qPKwXMRT4F0/TVtmAZowbs3rSIY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=mvPLJmbYyUCwhZyHTsND0v3QGL7GCcA6/zNmSBeqArQpDc6+UVWEsLwnS60nKOYl8
+	 ySqSEfhqt2tCjg2UhAi09GCis/MNe6uUsSFhWVvuTiFLSqcLc6DCcBmaPK4cbizRzc
+	 Ps6tJXsacuAZw4UOvOL9OAkVAF+ZM9jdXw3ajZLqHhhumP/xvXhm4woudo/Dfz4q03
+	 vDTb/+A4ez1oN8DjePB+DQAW+/VhrDBU6BDD+kgxp7q/gAcU4j77zUp6dAk1plsLlx
+	 w4JwK1X+xjeFSCm1uwBI7pV+WT++3BpEkr4r3RbZEBG9if0si6x4v0pWQcNsx6gyLb
+	 TMxQYkMGVL4oA==
+From: Mark Brown <broonie@kernel.org>
+To: cy_huang@richtek.com
+Cc: Liam Girdwood <lgirdwood@gmail.com>, 
+ Edward Kim <edward_kim@richtek.com>, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Yoon Dong Min <dm.youn@telechips.com>
+In-Reply-To: <8527ae02a72b754d89b7580a5fe7474d6f80f5c3.1764209258.git.cy_huang@richtek.com>
+References: <8527ae02a72b754d89b7580a5fe7474d6f80f5c3.1764209258.git.cy_huang@richtek.com>
+Subject: Re: [PATCH 1/2] regulator: rtq2208: Correct buck group2 phase
+ mapping logic
+Message-Id: <176427979987.171723.1183612758277430342.b4-ty@kernel.org>
+Date: Thu, 27 Nov 2025 21:43:19 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-88d78
 
-tpm2_load() allocates a blob indirectly via tpm2_key_decode() but it is
-not freed in all failure paths. Address this with a scope-based cleanup
-helper __free(). For legacy blobs, the implicit de-allocation is gets
-disable by no_free_ptr().
+On Thu, 27 Nov 2025 10:25:50 +0800, cy_huang@richtek.com wrote:
+> Correct buck group2 H and F mapping logic.
+> 
+> 
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v7:
-- Fix compiler warning.
-v6:
-- A new patch in this version.
----
- security/keys/trusted-keys/trusted_tpm2.c | 24 +++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+Applied to
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index edd7b9d7e4dc..36e20a9a94b4 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -98,9 +98,8 @@ struct tpm2_key_context {
- 	u32 priv_len;
- };
- 
--static int tpm2_key_decode(struct trusted_key_payload *payload,
--			   struct trusted_key_options *options,
--			   u8 **buf)
-+static void *tpm2_key_decode(struct trusted_key_payload *payload,
-+			     struct trusted_key_options *options)
- {
- 	int ret;
- 	struct tpm2_key_context ctx;
-@@ -111,16 +110,15 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
- 	ret = asn1_ber_decoder(&tpm2key_decoder, &ctx, payload->blob,
- 			       payload->blob_len);
- 	if (ret < 0)
--		return ret;
-+		return ERR_PTR(ret);
- 
- 	if (ctx.priv_len + ctx.pub_len > MAX_BLOB_SIZE)
--		return -EINVAL;
-+		return ERR_PTR(-EINVAL);
- 
- 	blob = kmalloc(ctx.priv_len + ctx.pub_len + 4, GFP_KERNEL);
- 	if (!blob)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
--	*buf = blob;
- 	options->keyhandle = ctx.parent;
- 
- 	memcpy(blob, ctx.priv, ctx.priv_len);
-@@ -128,7 +126,7 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
- 
- 	memcpy(blob, ctx.pub, ctx.pub_len);
- 
--	return 0;
-+	return blob;
- }
- 
- int tpm2_key_parent(void *context, size_t hdrlen,
-@@ -372,6 +370,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 			 struct trusted_key_options *options,
- 			 u32 *blob_handle)
- {
-+	u8 *blob_ref __free(kfree) = NULL;
- 	struct tpm_buf buf;
- 	unsigned int private_len;
- 	unsigned int public_len;
-@@ -380,11 +379,14 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 	int rc;
- 	u32 attrs;
- 
--	rc = tpm2_key_decode(payload, options, &blob);
--	if (rc) {
-+	blob = tpm2_key_decode(payload, options);
-+	if (IS_ERR(blob)) {
- 		/* old form */
- 		blob = payload->blob;
- 		payload->old_format = 1;
-+	} else {
-+		/* Bind to cleanup: */
-+		blob_ref = blob;
- 	}
- 
- 	/* new format carries keyhandle but old format doesn't */
-@@ -449,8 +451,6 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
- 
- out:
--	if (blob != payload->blob)
--		kfree(blob);
- 	tpm_buf_destroy(&buf);
- 
- 	if (rc > 0)
--- 
-2.52.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[1/2] regulator: rtq2208: Correct buck group2 phase mapping logic
+      commit: 45cc214152bc1f6b1cc135532cd7cdbe08716aaf
+[2/2] regulator: rtq2208: Correct LDO2 logic judgment bits
+      commit: 8684229e19c4185d53d6fb7004d733907c865a91
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
