@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041B4C8EF55
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2BDC8ED48
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2C854ED84B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 75F574E9D56
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B7B3126D7;
-	Thu, 27 Nov 2025 14:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35C82797B5;
+	Thu, 27 Nov 2025 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r25R6b0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVLfDRTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E944730EF64;
-	Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7860B273D6D;
+	Thu, 27 Nov 2025 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255267; cv=none; b=SdY3Cd4IYrf59DAFfUMIe/tofAE58Sd3CQsMAHw7AbFk/4uFydGWfbCCAVqJEOvxvprngMZnGJx50IKTMTb144LOSseM5bB6q5lVBPpgQsU5ikmBLcwh0pCYYJ5VD32hrMjUB+ck7XYYWOIZwJurk6FfQR4UHb1umuLaEJVmmtI=
+	t=1764254879; cv=none; b=MEa2wgTX2SK/OF55xA50RDFLkDDEtF5zfmTCUy0qg/7abgx7/06o1hkBgildJXK2/xsobKkeAlpzcsR1dLjx2do3x1BN2ZWmfnuu0jqCuUs1iQmOnLo9IcEwPjUeVXbb4jcL8nCD0AXxDqyjKM0jTdo4ywVtdE/0ArcX4QdqAsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255267; c=relaxed/simple;
-	bh=mgtgP5OuwcvEWYKpvsbo7b3CuIHDobxlC7ngcipLJRc=;
+	s=arc-20240116; t=1764254879; c=relaxed/simple;
+	bh=Pm6XcqSDAZBnhAHwOjENat10CcvzTh+YHNRL1iFFtUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiEk84276SDD9ykJwoh7z2CdPqBHnSuWT5aCDEducVlNPlG9mFMOoP5RI+hGG+/6TaUfVRFy4KvgqKf678ok+nehH3NnQ13y9ECZY5VY71cYw6gHT+Wb6g3ZUQ9TLYbs3ejZ7ZR+jDwiCodjI0ovSNYehrWS4fTsWCx6+HhFw0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r25R6b0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722A9C4CEF8;
-	Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
+	 MIME-Version; b=lZss+uRFVBhlKY7wwAyA711YJsk+IDsY6LmuMLLPP4iDM78ebF3lf8dW88TyvR5Xf6LawbwMuchnHHkfh7305HEiyC4nObRDZJaVre/aKLGfAywomXbL8iEULXXI4xTprC5sK/yj5s1avbY8FGBShBQf7W3o8qdCazhgaPIaEJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVLfDRTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D20C4CEF8;
+	Thu, 27 Nov 2025 14:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255266;
-	bh=mgtgP5OuwcvEWYKpvsbo7b3CuIHDobxlC7ngcipLJRc=;
+	s=korg; t=1764254879;
+	bh=Pm6XcqSDAZBnhAHwOjENat10CcvzTh+YHNRL1iFFtUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r25R6b0MdjPzK3IR+6pmKZlOPoY6MG7tn2loz3cp7RqgdgV5GQ1zBTyA5bxGJmVIq
-	 Hnm3Nr+SJ7V8V/TOyxNc264QLb0qMd+t+MyTCyxZ8/nXOsnzQmXw73h+cV2hLghGLl
-	 ZRCwdp7lCFB75b/ou+vKVpo2wrQNe+Uf4dUjqa3w=
+	b=hVLfDRTXyxhg3xAOIQQMgI3wA/eGHhHIWlhvOIy1IcgwRCI+EiIXFpsZ1ALQhhfHb
+	 61vWja+Otgk0dJTOnvtEK9dN3ABJ1irjd2X/tnodjfHuCYJYRqPzwMEzj6GTcxzhdc
+	 5Ox9PmutkJCvkD7z50zUqEhebDVR+Y9l1L4proag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 032/112] scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 18/86] Input: imx_sc_key - fix memory corruption on unload
 Date: Thu, 27 Nov 2025 15:45:34 +0100
-Message-ID: <20251127144034.014677721@linuxfoundation.org>
+Message-ID: <20251127144028.482129513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit e6965188f84a7883e6a0d3448e86b0cf29b24dfc upstream.
+commit d83f1512758f4ef6fc5e83219fe7eeeb6b428ea4 upstream.
 
-If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
-attempt to dereference it in tcm_loop_tpg_address_show() we will get a
-segfault, see below for an example. So, check tl_hba->sh before
-dereferencing it.
+This is supposed to be "priv" but we accidentally pass "&priv" which is
+an address in the stack and so it will lead to memory corruption when
+the imx_sc_key_action() function is called.  Remove the &.
 
-  Unable to allocate struct scsi_host
-  BUG: kernel NULL pointer dereference, address: 0000000000000194
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
-...
-  Call Trace:
-   <TASK>
-   configfs_read_iter+0x12d/0x1d0 [configfs]
-   vfs_read+0x1b5/0x300
-   ksys_read+0x6f/0xf0
-...
-
+Fixes: 768062fd1284 ("Input: imx_sc_key - use devm_add_action_or_reset() to handle all cleanups")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/aQYKR75r2VMFJutT@stanley.mountain
 Cc: stable@vger.kernel.org
-Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Allen Pais <apais@linux.microsoft.com>
-Link: https://patch.msgid.link/1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/loopback/tcm_loop.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/keyboard/imx_sc_key.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -893,6 +893,9 @@ static ssize_t tcm_loop_tpg_address_show
- 			struct tcm_loop_tpg, tl_se_tpg);
- 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
+--- a/drivers/input/keyboard/imx_sc_key.c
++++ b/drivers/input/keyboard/imx_sc_key.c
+@@ -158,7 +158,7 @@ static int imx_sc_key_probe(struct platf
+ 		return error;
+ 	}
  
-+	if (!tl_hba->sh)
-+		return -ENODEV;
-+
- 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
- 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
- }
+-	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, &priv);
++	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, priv);
+ 	if (error)
+ 		return error;
+ 
 
 
 
