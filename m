@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA14C8F196
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D9DC8F055
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 22B5B350FAA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A4AD4EC7BA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E124333456;
-	Thu, 27 Nov 2025 15:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF023128A6;
+	Thu, 27 Nov 2025 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJGCAuDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyCJy+y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F2D28135D;
-	Thu, 27 Nov 2025 15:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA25289E06;
+	Thu, 27 Nov 2025 14:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255912; cv=none; b=aCwWF3XjQlNCihMpdHot8LfoKeUCgEYQBCE/BvBBA45fFoPMnldD8pry4VQrIeWvI3ANXwJrZz89oQvx/FYuy1bj0H4BBOSWkyR1ZuVXINkgPc1snZbgDskB3vW6fhMUaXwR3P+P2xatRTPD6/H24YCZdbJyG+edhutYICN3v+k=
+	t=1764255441; cv=none; b=Wn+t70aSdQ6IHEG0EdMhWsQS+Jd/g+ZL0Ce+NlKefTLx+qT6NQnXIh+fJ/DzaDyGL4cPXjN+vTHP/XPdJuwgTiQRUtiRTVm0XaQh8xwc/CfkfoV4MxTUC7JkzjHTKia2CKYvIBoTRgHfPU6N6R8/XMOyPKWs8U7e5ttT3iPFzB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255912; c=relaxed/simple;
-	bh=3HPbS4i35/j7Z+wgMeEj3ard8/uzWPDihLaIOgwdbuQ=;
+	s=arc-20240116; t=1764255441; c=relaxed/simple;
+	bh=ljQaLviddVEM8HxLeCAuAbuStuNtA2GAFWsw0dXPUd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltKf+V2gaDu1KEHk/CLt5kqkv6lH2LeAEhGcMu/vwAPf5Bl94n+5AYiOP2LIr9Sj+3sIjNb8Q13uELm6n0JwqnqlTrmlevJV8zFBGE6t2BfcI/8f4Ou5tAxx7YhYlM/pNKkSrZ5uDefRZM0F82PJQjrdeSDEPLUn/2Q9gnuByhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJGCAuDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC29C4CEF8;
-	Thu, 27 Nov 2025 15:05:11 +0000 (UTC)
+	 MIME-Version; b=r41im3ev2cPstMaZSNRNj3iiDlyJPexN5i4wq4JfUIPEOS5sVTqR7uHWRcfiFYVKfCo0Rjrlr9WOso5YiFa4VweNH2OYnlm8OVi2jGXiCga/wTuW7VuSzYVnODspmtUCTdwTv4aGQSYAnP2rye8O6DUAQWeQR8Ppv96l9G6iiuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyCJy+y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43196C4CEF8;
+	Thu, 27 Nov 2025 14:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255912;
-	bh=3HPbS4i35/j7Z+wgMeEj3ard8/uzWPDihLaIOgwdbuQ=;
+	s=korg; t=1764255441;
+	bh=ljQaLviddVEM8HxLeCAuAbuStuNtA2GAFWsw0dXPUd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJGCAuDcd/3WA3aq2eXdcuXEi4jR2RlE5YDvlLRX8oJGn2ECWWUX8KfG2MoJ4g08Z
-	 Fmo+c+8nQVUoRu+DvvBEkLiblqTSQmHSMrXTxpU74o/Q3Kf5FjgEUBvP2A0dHCUp7p
-	 fGeI4wcOe43xWtuVVKYh4Gsl6XZ2ygrhlkPonnvU=
+	b=eyCJy+y5CXHmm3DkGYE/yLRrXOyeJDe1Ug0h2uXF9U6AKZguyDuiJEmM1oZp3UgA0
+	 U26LbJt22v5GynMC4cWh7KrQxMjHUsKPHolracDKlS9Gtewc7bl54h+H2mOUHL9xUZ
+	 z7C+PXUmmmknXojdyldX8nl6QoiVupElJmi0+FSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Nishanth Menon <nm@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 157/175] net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
+Subject: [PATCH 6.12 108/112] xfs: fix out of bounds memory read error in symlink repair
 Date: Thu, 27 Nov 2025 15:46:50 +0100
-Message-ID: <20251127144048.687074614@linuxfoundation.org>
+Message-ID: <20251127144036.801503359@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,172 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 90a88306eb874fe4bbdd860e6c9787f5bbc588b5 ]
+[ Upstream commit 678e1cc2f482e0985a0613ab4a5bf89c497e5acc ]
 
-Make knav_dma_open_channel consistently return NULL on error instead
-of ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h
-returns NULL when the driver is disabled, but the driver
-implementation does not even return NULL or ERR_PTR on failure,
-causing inconsistency in the users. This results in a crash in
-netcp_free_navigator_resources as followed (trimmed):
+xfs/286 produced this report on my test fleet:
 
-Unhandled fault: alignment exception (0x221) at 0xfffffff2
-[fffffff2] *pgd=80000800207003, *pmd=82ffda003, *pte=00000000
-Internal error: : 221 [#1] SMP ARM
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc7 #1 NONE
-Hardware name: Keystone
-PC is at knav_dma_close_channel+0x30/0x19c
-LR is at netcp_free_navigator_resources+0x2c/0x28c
+ ==================================================================
+ BUG: KFENCE: out-of-bounds read in memcpy_orig+0x54/0x110
 
-[... TRIM...]
+ Out-of-bounds read at 0xffff88843fe9e038 (184B right of kfence-#184):
+  memcpy_orig+0x54/0x110
+  xrep_symlink_salvage_inline+0xb3/0xf0 [xfs]
+  xrep_symlink_salvage+0x100/0x110 [xfs]
+  xrep_symlink+0x2e/0x80 [xfs]
+  xrep_attempt+0x61/0x1f0 [xfs]
+  xfs_scrub_metadata+0x34f/0x5c0 [xfs]
+  xfs_ioc_scrubv_metadata+0x387/0x560 [xfs]
+  xfs_file_ioctl+0xe23/0x10e0 [xfs]
+  __x64_sys_ioctl+0x76/0xc0
+  do_syscall_64+0x4e/0x1e0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Call trace:
- knav_dma_close_channel from netcp_free_navigator_resources+0x2c/0x28c
- netcp_free_navigator_resources from netcp_ndo_open+0x430/0x46c
- netcp_ndo_open from __dev_open+0x114/0x29c
- __dev_open from __dev_change_flags+0x190/0x208
- __dev_change_flags from netif_change_flags+0x1c/0x58
- netif_change_flags from dev_change_flags+0x38/0xa0
- dev_change_flags from ip_auto_config+0x2c4/0x11f0
- ip_auto_config from do_one_initcall+0x58/0x200
- do_one_initcall from kernel_init_freeable+0x1cc/0x238
- kernel_init_freeable from kernel_init+0x1c/0x12c
- kernel_init from ret_from_fork+0x14/0x38
-[... TRIM...]
+ kfence-#184: 0xffff88843fe9df80-0xffff88843fe9dfea, size=107, cache=kmalloc-128
 
-Standardize the error handling by making the function return NULL on
-all error conditions. The API is used in just the netcp_core.c so the
-impact is limited.
+ allocated by task 3470 on cpu 1 at 263329.131592s (192823.508886s ago):
+  xfs_init_local_fork+0x79/0xe0 [xfs]
+  xfs_iformat_local+0xa4/0x170 [xfs]
+  xfs_iformat_data_fork+0x148/0x180 [xfs]
+  xfs_inode_from_disk+0x2cd/0x480 [xfs]
+  xfs_iget+0x450/0xd60 [xfs]
+  xfs_bulkstat_one_int+0x6b/0x510 [xfs]
+  xfs_bulkstat_iwalk+0x1e/0x30 [xfs]
+  xfs_iwalk_ag_recs+0xdf/0x150 [xfs]
+  xfs_iwalk_run_callbacks+0xb9/0x190 [xfs]
+  xfs_iwalk_ag+0x1dc/0x2f0 [xfs]
+  xfs_iwalk_args.constprop.0+0x6a/0x120 [xfs]
+  xfs_iwalk+0xa4/0xd0 [xfs]
+  xfs_bulkstat+0xfa/0x170 [xfs]
+  xfs_ioc_fsbulkstat.isra.0+0x13a/0x230 [xfs]
+  xfs_file_ioctl+0xbf2/0x10e0 [xfs]
+  __x64_sys_ioctl+0x76/0xc0
+  do_syscall_64+0x4e/0x1e0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Note, this change, in effect reverts commit 5b6cb43b4d62 ("net:
-ethernet: ti: netcp_core: return error while dma channel open issue"),
-but provides a less error prone implementation.
+ CPU: 1 UID: 0 PID: 1300113 Comm: xfs_scrub Not tainted 6.18.0-rc4-djwx #rc4 PREEMPT(lazy)  3d744dd94e92690f00a04398d2bd8631dcef1954
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-4.module+el8.8.0+21164+ed375313 04/01/2014
+ ==================================================================
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251103162811.3730055-1-nm@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On further analysis, I realized that the second parameter to min() is
+not correct.  xfs_ifork::if_bytes is the size of the xfs_ifork::if_data
+buffer.  if_bytes can be smaller than the data fork size because:
+
+(a) the forkoff code tries to keep the data area as large as possible
+(b) for symbolic links, if_bytes is the ondisk file size + 1
+(c) forkoff is always a multiple of 8.
+
+Case in point: for a single-byte symlink target, forkoff will be
+8 but the buffer will only be 2 bytes long.
+
+In other words, the logic here is wrong and we walk off the end of the
+incore buffer.  Fix that.
+
+Cc: stable@vger.kernel.org # v6.10
+Fixes: 2651923d8d8db0 ("xfs: online repair of symbolic links")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/netcp_core.c | 10 +++++-----
- drivers/soc/ti/knav_dma.c            | 14 +++++++-------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ fs/xfs/scrub/symlink_repair.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
-index 857820657bac5..5ee13db568f08 100644
---- a/drivers/net/ethernet/ti/netcp_core.c
-+++ b/drivers/net/ethernet/ti/netcp_core.c
-@@ -1338,10 +1338,10 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+--- a/fs/xfs/scrub/symlink_repair.c
++++ b/fs/xfs/scrub/symlink_repair.c
+@@ -184,7 +184,7 @@ xrep_symlink_salvage_inline(
+ 	    sc->ip->i_disk_size == 1 && old_target[0] == '?')
+ 		return 0;
  
- 	tx_pipe->dma_channel = knav_dma_open_channel(dev,
- 				tx_pipe->dma_chan_name, &config);
--	if (IS_ERR(tx_pipe->dma_channel)) {
-+	if (!tx_pipe->dma_channel) {
- 		dev_err(dev, "failed opening tx chan(%s)\n",
- 			tx_pipe->dma_chan_name);
--		ret = PTR_ERR(tx_pipe->dma_channel);
-+		ret = -EINVAL;
- 		goto err;
- 	}
- 
-@@ -1359,7 +1359,7 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
- 	return 0;
- 
- err:
--	if (!IS_ERR_OR_NULL(tx_pipe->dma_channel))
-+	if (tx_pipe->dma_channel)
- 		knav_dma_close_channel(tx_pipe->dma_channel);
- 	tx_pipe->dma_channel = NULL;
- 	return ret;
-@@ -1678,10 +1678,10 @@ static int netcp_setup_navigator_resources(struct net_device *ndev)
- 
- 	netcp->rx_channel = knav_dma_open_channel(netcp->netcp_device->device,
- 					netcp->dma_chan_name, &config);
--	if (IS_ERR(netcp->rx_channel)) {
-+	if (!netcp->rx_channel) {
- 		dev_err(netcp->ndev_dev, "failed opening rx chan(%s\n",
- 			netcp->dma_chan_name);
--		ret = PTR_ERR(netcp->rx_channel);
-+		ret = -EINVAL;
- 		goto fail;
- 	}
- 
-diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
-index a25ebe6cd5030..553ae7ee20f16 100644
---- a/drivers/soc/ti/knav_dma.c
-+++ b/drivers/soc/ti/knav_dma.c
-@@ -402,7 +402,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
-  * @name:	slave channel name
-  * @config:	dma configuration parameters
-  *
-- * Returns pointer to appropriate DMA channel on success or error.
-+ * Return: Pointer to appropriate DMA channel on success or NULL on error.
-  */
- void *knav_dma_open_channel(struct device *dev, const char *name,
- 					struct knav_dma_cfg *config)
-@@ -414,13 +414,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 
- 	if (!kdev) {
- 		pr_err("keystone-navigator-dma driver not registered\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	chan_num = of_channel_match_helper(dev->of_node, name, &instance);
- 	if (chan_num < 0) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", name);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	dev_dbg(kdev->dev, "initializing %s channel %d from DMA %s\n",
-@@ -431,7 +431,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (config->direction != DMA_MEM_TO_DEV &&
- 	    config->direction != DMA_DEV_TO_MEM) {
- 		dev_err(kdev->dev, "bad direction\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma instance */
-@@ -443,7 +443,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	}
- 	if (!dma) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma channel from dma instance */
-@@ -463,14 +463,14 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (!chan) {
- 		dev_err(kdev->dev, "channel %d is not in DMA %s\n",
- 				chan_num, instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	if (atomic_read(&chan->ref_count) >= 1) {
- 		if (!check_config(chan, config)) {
- 			dev_err(kdev->dev, "channel %d config miss-match\n",
- 				chan_num);
--			return (void *)-EINVAL;
-+			return NULL;
- 		}
- 	}
- 
--- 
-2.51.0
-
+-	nr = min(XFS_SYMLINK_MAXLEN, xfs_inode_data_fork_size(ip));
++	nr = min(XFS_SYMLINK_MAXLEN, ifp->if_bytes);
+ 	memcpy(target_buf, ifp->if_data, nr);
+ 	return nr;
+ }
 
 
 
