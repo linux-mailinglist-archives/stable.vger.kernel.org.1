@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64D8C8EF1C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390D7C8EDC3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2FEE4EAC4F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 920093AFD0F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B08322DCB;
-	Thu, 27 Nov 2025 14:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3DF2882BB;
+	Thu, 27 Nov 2025 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4X+Oi+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnNTwVTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C528D8E8;
-	Thu, 27 Nov 2025 14:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC0C27F18B;
+	Thu, 27 Nov 2025 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255220; cv=none; b=IPnJYEpQESvWi0OetuOexVLQvWJmVtOqavPBMSN6bxzgvXYLcftNWziwhR/58a/ZnEH1+pnp8UsI26OMmAD0yW8BJBVD3Ul67brs4UFc34JydhSfgiBgdSsRov8lIhyvN/fMfGgas7tlKMEe506h0RVK+cSLdsxqQ8CfTqxLhTw=
+	t=1764254932; cv=none; b=srLxPa/pJ5tMspRL8hMoLbMhs7fTC9qzKopZKx1VQpFshgu9JIf2UVyP4BncYwftYWJVO+esb4ywl6+tjUzYzVs7iKFpbUDPH8PN+Dr61twkrsMm3dubc+KjxQlcxXY62wReaLAY7nwvcHnHMn9tKzNsVdBv+UAOBlrVNQEWSwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255220; c=relaxed/simple;
-	bh=CJRzWObSfedXo4QaxWgySKL1jz7L2auMhUjRoz9udTQ=;
+	s=arc-20240116; t=1764254932; c=relaxed/simple;
+	bh=Sd3ziFgB5jy8cYbmGsdoMVpYZKXeaiKUlxekLIiSOOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nrN1ZD5fKJfptFKqXvl+/N1pI9J4vKETjIE73hg3B6M1t0szV09SnA62rbUP8k0XPojBFskWQl1J9wHWd3K4+uhaRA2MNKxnnkCx+yKwrrkjzAWPxr0JJOMwaJV0SV9KsERSQDdl9uvsS0OpQk7J5lLWEv4MiwIlaJmESCzD0io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4X+Oi+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A37C4CEF8;
-	Thu, 27 Nov 2025 14:53:39 +0000 (UTC)
+	 MIME-Version; b=EDrOqC8OHHMUoKwR2Xweeq83nGM3feeq0SgAO2MsJQ+kT8iX0RsEUM+SCqWU33I2yWSRbEeCEdvsg5oOK64mbq2+ab7CFAQHB27w3b48rMz1CjASepmZvDTQOTJZJ4N5JiY44oflNU5J++O3iB6qoty4z2PXnyifnbkcfZXSzXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnNTwVTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA93C4CEF8;
+	Thu, 27 Nov 2025 14:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255220;
-	bh=CJRzWObSfedXo4QaxWgySKL1jz7L2auMhUjRoz9udTQ=;
+	s=korg; t=1764254931;
+	bh=Sd3ziFgB5jy8cYbmGsdoMVpYZKXeaiKUlxekLIiSOOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4X+Oi+Y7MhGQjhsZ7d7KzCCkfVRhFKwQXAdb4137QN96oIc8r7B6rXF8KUBeh1Ln
-	 qmvPs1KDeuGlJDss9SPs+M2rVfK29G3HRUmhK5rf1iNMF+++eOmk25IjuoLPIP7CvH
-	 jn3qAaJChDg+tKgEduOOowaePhXObR4MsOLltIok=
+	b=lnNTwVTOG3aVedF9+1eUbdq7E+rCkYR49ecAlIBTANjDXgMy8YjXdsGTQtZluUxfe
+	 9IvlfRNIwBaXzI6hNpuhv2Y5ml5ULK3LaUKHOhinEfYHEGRVFJmgzHIaxp+eDudLw5
+	 L8Oh09364zX4cQx2hYhNBjlziFQ3fvIQjAGV9QHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ivan Lipski <ivan.lipski@amd.com>,
 	Dan Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 049/112] drm/amd/display: Increase DPCD read retries
-Date: Thu, 27 Nov 2025 15:45:51 +0100
-Message-ID: <20251127144034.637323261@linuxfoundation.org>
+Subject: [PATCH 6.6 36/86] drm/amd/display: Increase DPCD read retries
+Date: Thu, 27 Nov 2025 15:45:52 +0100
+Message-ID: <20251127144029.144830463@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -95,7 +95,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
 +++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1587,7 +1587,7 @@ static bool retrieve_link_cap(struct dc_
+@@ -1552,7 +1552,7 @@ static bool retrieve_link_cap(struct dc_
  	union edp_configuration_cap edp_config_cap;
  	union dp_downstream_port_present ds_port = { 0 };
  	enum dc_status status = DC_ERROR_UNEXPECTED;
