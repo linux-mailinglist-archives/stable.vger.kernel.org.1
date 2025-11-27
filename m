@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-197447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1444C8F312
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93BDC8ED92
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56EB53BFC5A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BF6024EA581
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5E332AAC4;
-	Thu, 27 Nov 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D2F273816;
+	Thu, 27 Nov 2025 14:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQ54JMC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/2t/b48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDBF333456;
-	Thu, 27 Nov 2025 15:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDC274B3C;
+	Thu, 27 Nov 2025 14:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255846; cv=none; b=uKiJHEZmCW0aR6GLWBwFCIQGUlO7BKSCFiwrWHJ+urYULcftVaeiobhXbin2GfCu28eaHa8TC1MLoIN765+kaayrlC9M/c3OUj8ugGfhnGvZGg/XYc6+WPyEeOiAyn5r7prbyE28Bdm89gcMMn7gA+y8ro2jxq3xhBXo4qr5ajc=
+	t=1764254937; cv=none; b=kCv8xOv83N3VwXVBQ393E2pntHVG7VE8as2qDbj5RRc3IZL8/zcldWNfYga/VLCYqjksrR0qSRPkUWtTcHi+Q/pcNq1qTbMO4hvHM3NpZAsSqhG8EnSHHsF6hP4ylaDPuTNtqXddVtvaat+dSXZZq64EW8BnBcLIFRliPnhac9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255846; c=relaxed/simple;
-	bh=f/woZQc9FmeTOsmbxutSiTHlmC4/92yz7XdnBzKgCgg=;
+	s=arc-20240116; t=1764254937; c=relaxed/simple;
+	bh=2LVhxogPkB8UbuDKK6xTe+2g94AHZhWSz+mRGrOB9Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYnTZUCZtQ/Uwr3cYIBYq89S+zX+JpPftxgw+ExGT3BdT1FMH1WkGeMRpBP0Kf0OuHVWUqculmt4w6JGo5mMP15t0cdofbkCqyFMVN84Td5pFcUUmhZJeZVRTf+5Nds8mXlcNQTY6gaD6HrlMdwrB3TAnyx8PnAzyUXjmJYRBXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQ54JMC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773D9C4CEF8;
-	Thu, 27 Nov 2025 15:04:05 +0000 (UTC)
+	 MIME-Version; b=BLwq+AhY6Q/6Q447xNuH2HUXPf+RECmsR1NmOQVzI807pOwxqW88D45DY8QLnrZMneRPTskrlCoMZ52T7AWmzcM1B+ceI8f259jgsS/2wK016fnuQlJhq2J57x0Wm5CnWPOOPDemny5nGsWTi4XGjM1FxpzDxAk5/ILCSL3b56Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/2t/b48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2BCC4CEF8;
+	Thu, 27 Nov 2025 14:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255845;
-	bh=f/woZQc9FmeTOsmbxutSiTHlmC4/92yz7XdnBzKgCgg=;
+	s=korg; t=1764254937;
+	bh=2LVhxogPkB8UbuDKK6xTe+2g94AHZhWSz+mRGrOB9Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQ54JMC8ERlA1L1HdgmyvmGPnoJzbVvXtod4s+vyaYu01tBO3xBBWvK0//jUTjmaZ
-	 9od6PYt75ChmpN70i9kGsvJFIE6zh42oNwjJbuONcWpY/L5C03xrf2r/dXtodetqxK
-	 ES3b2u2DpvvQGpnU1rd35Y6hiY+aBI5ZC55kra4I=
+	b=z/2t/b48Eiw+Jb+ERbScn1v4wlwnUO43Qto3CrGU/IFqz8pS1jfrZI7dXKUGoGgIQ
+	 xaSL5YiKGc4KfLvnIDXV76O71YEx60IZt05DGP293xTfBQaZQgYCM6oJeDLp0aWbUR
+	 /SZPs20TV8S0yo7/0TvdF2KA+hj6dXCqVWiSeKxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Toshiaki Makita <toshiaki.makita1@gmail.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 101/175] veth: more robust handing of race to avoid txq getting stuck
+Subject: [PATCH 6.6 38/86] xfrm: Determine inner GSO type from packet inner protocol
 Date: Thu, 27 Nov 2025 15:45:54 +0100
-Message-ID: <20251127144046.648079336@linuxfoundation.org>
+Message-ID: <20251127144029.218393539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 5442a9da69789741bfda39f34ee7f69552bf0c56 ]
+[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
 
-Commit dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to
-reduce TX drops") introduced a race condition that can lead to a permanently
-stalled TXQ. This was observed in production on ARM64 systems (Ampere Altra
-Max).
+The GSO segmentation functions for ESP tunnel mode
+(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
+determining the inner packet's L2 protocol type by checking the static
+x->inner_mode.family field from the xfrm state.
 
-The race occurs in veth_xmit(). The producer observes a full ptr_ring and
-stops the queue (netif_tx_stop_queue()). The subsequent conditional logic,
-intended to re-wake the queue if the consumer had just emptied it (if
-(__ptr_ring_empty(...)) netif_tx_wake_queue()), can fail. This leads to a
-"lost wakeup" where the TXQ remains stopped (QUEUE_STATE_DRV_XOFF) and
-traffic halts.
+This is unreliable. In tunnel mode, the state's actual inner family
+could be defined by x->inner_mode.family or by
+x->inner_mode_iaf.family. Checking only the former can lead to a
+mismatch with the actual packet being processed, causing GSO to create
+segments with the wrong L2 header type.
 
-This failure is caused by an incorrect use of the __ptr_ring_empty() API
-from the producer side. As noted in kernel comments, this check is not
-guaranteed to be correct if a consumer is operating on another CPU. The
-empty test is based on ptr_ring->consumer_head, making it reliable only for
-the consumer. Using this check from the producer side is fundamentally racy.
+This patch fixes the bug by deriving the inner mode directly from the
+packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
 
-This patch fixes the race by adopting the more robust logic from an earlier
-version V4 of the patchset, which always flushed the peer:
+Instead of replicating the code, this patch modifies the
+xfrm_ip2inner_mode helper function. It now correctly returns
+&x->inner_mode if the selector family (x->sel.family) is already
+specified, thereby handling both specific and AF_UNSPEC cases
+appropriately.
 
-(1) In veth_xmit(), the racy conditional wake-up logic and its memory barrier
-are removed. Instead, after stopping the queue, we unconditionally call
-__veth_xdp_flush(rq). This guarantees that the NAPI consumer is scheduled,
-making it solely responsible for re-waking the TXQ.
-  This handles the race where veth_poll() consumes all packets and completes
-NAPI *before* veth_xmit() on the producer side has called netif_tx_stop_queue.
-The __veth_xdp_flush(rq) will observe rx_notify_masked is false and schedule
-NAPI.
+With this change, ESP GSO can use xfrm_ip2inner_mode to get the
+correct inner mode. It doesn't affect existing callers, as the updated
+logic now mirrors the checks they were already performing externally.
 
-(2) On the consumer side, the logic for waking the peer TXQ is moved out of
-veth_xdp_rcv() and placed at the end of the veth_poll() function. This
-placement is part of fixing the race, as the netif_tx_queue_stopped() check
-must occur after rx_notify_masked is potentially set to false during NAPI
-completion.
-  This handles the race where veth_poll() consumes all packets, but haven't
-finished (rx_notify_masked is still true). The producer veth_xmit() stops the
-TXQ and __veth_xdp_flush(rq) will observe rx_notify_masked is true, meaning
-not starting NAPI.  Then veth_poll() change rx_notify_masked to false and
-stops NAPI.  Before exiting veth_poll() will observe TXQ is stopped and wake
-it up.
-
-Fixes: dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops")
-Reviewed-by: Toshiaki Makita <toshiaki.makita1@gmail.com>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/176295323282.307447.14790015927673763094.stgit@firesoul
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/veth.c | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ include/net/xfrm.h      | 3 ++-
+ net/ipv4/esp4_offload.c | 6 ++++--
+ net/ipv6/esp6_offload.c | 6 ++++--
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index a3046142cb8e2..35dd89aff4a94 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -392,14 +392,12 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 		}
- 		/* Restore Eth hdr pulled by dev_forward_skb/eth_type_trans */
- 		__skb_push(skb, ETH_HLEN);
--		/* Depend on prior success packets started NAPI consumer via
--		 * __veth_xdp_flush(). Cancel TXQ stop if consumer stopped,
--		 * paired with empty check in veth_poll().
--		 */
- 		netif_tx_stop_queue(txq);
--		smp_mb__after_atomic();
--		if (unlikely(__ptr_ring_empty(&rq->xdp_ring)))
--			netif_tx_wake_queue(txq);
-+		/* Makes sure NAPI peer consumer runs. Consumer is responsible
-+		 * for starting txq again, until then ndo_start_xmit (this
-+		 * function) will not be invoked by the netstack again.
-+		 */
-+		__veth_xdp_flush(rq);
- 		break;
- 	case NET_RX_DROP: /* same as NET_XMIT_DROP */
- drop:
-@@ -900,17 +898,9 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
- 			struct veth_xdp_tx_bq *bq,
- 			struct veth_stats *stats)
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index fd550c0b56345..84a1c8c861d29 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -462,7 +462,8 @@ static inline int xfrm_af2proto(unsigned int family)
+ 
+ static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
  {
--	struct veth_priv *priv = netdev_priv(rq->dev);
--	int queue_idx = rq->xdp_rxq.queue_index;
--	struct netdev_queue *peer_txq;
--	struct net_device *peer_dev;
- 	int i, done = 0, n_xdpf = 0;
- 	void *xdpf[VETH_XDP_BATCH];
- 
--	/* NAPI functions as RCU section */
--	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
--	peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
--
- 	for (i = 0; i < budget; i++) {
- 		void *ptr = __ptr_ring_consume(&rq->xdp_ring);
- 
-@@ -959,9 +949,6 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
- 	rq->stats.vs.xdp_packets += done;
- 	u64_stats_update_end(&rq->stats.syncp);
- 
--	if (peer_txq && unlikely(netif_tx_queue_stopped(peer_txq)))
--		netif_tx_wake_queue(peer_txq);
--
- 	return done;
- }
- 
-@@ -969,12 +956,20 @@ static int veth_poll(struct napi_struct *napi, int budget)
+-	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
++	if ((x->sel.family != AF_UNSPEC) ||
++	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
+ 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
+ 		return &x->inner_mode;
+ 	else
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 10e96ed6c9e39..11e33a4312674 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -111,8 +111,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
  {
- 	struct veth_rq *rq =
- 		container_of(napi, struct veth_rq, xdp_napi);
-+	struct veth_priv *priv = netdev_priv(rq->dev);
-+	int queue_idx = rq->xdp_rxq.queue_index;
-+	struct netdev_queue *peer_txq;
- 	struct veth_stats stats = {};
-+	struct net_device *peer_dev;
- 	struct veth_xdp_tx_bq bq;
- 	int done;
+-	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
+-						       : htons(ETH_P_IP);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
++						     : htons(ETH_P_IP);
  
- 	bq.count = 0;
- 
-+	/* NAPI functions as RCU section */
-+	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
-+	peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
-+
- 	xdp_set_return_frame_no_direct();
- 	done = veth_xdp_rcv(rq, budget, &bq, &stats);
- 
-@@ -996,6 +991,13 @@ static int veth_poll(struct napi_struct *napi, int budget)
- 		veth_xdp_flush(rq, &bq);
- 	xdp_clear_return_frame_no_direct();
- 
-+	/* Release backpressure per NAPI poll */
-+	smp_rmb(); /* Paired with netif_tx_stop_queue set_bit */
-+	if (peer_txq && netif_tx_queue_stopped(peer_txq)) {
-+		txq_trans_cond_update(peer_txq);
-+		netif_tx_wake_queue(peer_txq);
-+	}
-+
- 	return done;
+ 	return skb_eth_gso_segment(skb, features, type);
  }
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index a189e08370a5e..438f9cbdca299 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -145,8 +145,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
+-						      : htons(ETH_P_IPV6);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
++						    : htons(ETH_P_IPV6);
  
+ 	return skb_eth_gso_segment(skb, features, type);
+ }
 -- 
 2.51.0
 
