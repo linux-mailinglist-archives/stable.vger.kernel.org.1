@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF30C8EF6A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5075CC8F2F5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAB754EDA13
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37A6A3BD71A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C92334361;
-	Thu, 27 Nov 2025 14:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FFB332EA0;
+	Thu, 27 Nov 2025 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEn/bIpb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkmYtvW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02DD333755;
-	Thu, 27 Nov 2025 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B02882A7;
+	Thu, 27 Nov 2025 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255278; cv=none; b=o2KYFYkxFitsRaJI0cRoo5z4Msp05ScA/QGS1JbTH2HPa4mIPX5MaNAZKybpTg/D4/wC93hOPWsC4XKvPwMHBps/Hg+Sf8bEKTQ6MOFEBKZFuHEerO860DMUjZd4Dz3BBgsQeZM20pv5IVEdFQBUKKKAxjaspyDqwbh3pSfrvEE=
+	t=1764255805; cv=none; b=Wo6CrO7JFeadk83Yi/PTxGCvPt7XaHjGuPYd1gW65h01lnEPu7WTx7oaCs4DzD30O0mqbJfEgeJl7MXG+kwNn4XEqx7ZCyJRhMzf+P8IyUjQlH31ttqtcCAbE9LyWFa5dHGMvzw4/v5+uHXYWoJNYA2+Krzmxi76CXIEDeOx62Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255278; c=relaxed/simple;
-	bh=C4xecJ3F+n2xr6bFOX3oOFRDDSL5GpYXmsLtdOshKEs=;
+	s=arc-20240116; t=1764255805; c=relaxed/simple;
+	bh=U9bNtPSZKIMZCF80FS71YLkDvH6FusK7XIrbLggi7pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LJzVJpNg0fcj9eAZsXCK3Js65rfqQdn6ZRPWzSAJ1h3RZp4FzmHIKp6p3KmNWAqrvzhOgUcIXGYAaxXa6dxA+w1f6pS9JEI/9dbFXNesWlBU12PHAnYppuey6uoIXxSxGJlakn2MIEWrnqWf3o8F0M4g0W4dzYuYk+BnYe8YMkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEn/bIpb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEADC113D0;
-	Thu, 27 Nov 2025 14:54:37 +0000 (UTC)
+	 MIME-Version; b=BhaX3g3yo2nkD2FhPc/LNedQ4TfEB8eYx7N4hPIZ4p+Uoq3U+05tTxDeuKdEDRJnqS/bgBimv7CokF9E0b9M3luIZVUu++zt+eZbevJwnZUxwaPpt1KYRmpZdJ4N7GnL+rcV60GmG9zHqie3/bRX8JaswV9toolKAoK4vM8v+Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkmYtvW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E62C4CEF8;
+	Thu, 27 Nov 2025 15:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255278;
-	bh=C4xecJ3F+n2xr6bFOX3oOFRDDSL5GpYXmsLtdOshKEs=;
+	s=korg; t=1764255805;
+	bh=U9bNtPSZKIMZCF80FS71YLkDvH6FusK7XIrbLggi7pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEn/bIpbuSzuwBvSqTYbkzlJuoZO6iltXC5bz/mUfb+PJZFWRVfW4avA0ttLDIwE0
-	 hH5HAH4pGhZP3wvYyQ9fQURZfto40rJTDoSYqA7QMY5xPYNKohgRfx/75P7zzDTcof
-	 Hy7D2uAzHoVVLLIvta8w+Mid/WmT40rNEVfLUzmA=
+	b=jkmYtvW8IG3uMlS1Z+Qb4lgZ61RFUWkzZ4BwOCHkwPcVb3raFU374W7hUgrK4tdZ4
+	 aVKF6Jg0k6NYfeSLMtr5YVx9AvOEzNbqXprhd7K4gNDRBKF63IHM1FwNWXO2yov1b1
+	 CSHBu9uOCsgmj4r+IbkyCoXQyQYcNqzgNLO0RGC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jared Kangas <jkangas@redhat.com>,
+	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/112] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
-Date: Thu, 27 Nov 2025 15:46:12 +0100
-Message-ID: <20251127144035.403740013@linuxfoundation.org>
+Subject: [PATCH 6.17 120/175] pinctrl: s32cc: fix uninitialized memory in s32_pinctrl_desc
+Date: Thu, 27 Nov 2025 15:46:13 +0100
+Message-ID: <20251127144047.343086303@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
+[ Upstream commit 97ea34defbb57bfaf71ce487b1b0865ffd186e81 ]
 
-isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is returned from the probe function as is but
-probe functions should return normal errnos. A proper implementation
-can be found in drivers/leds/leds-ss4200.c.
+s32_pinctrl_desc is allocated with devm_kmalloc(), but not all of its
+fields are initialized. Notably, num_custom_params is used in
+pinconf_generic_parse_dt_config(), resulting in intermittent allocation
+errors, such as the following splat when probing i2c-imx:
 
-Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
-normal errno before returning.
+        WARNING: CPU: 0 PID: 176 at mm/page_alloc.c:4795 __alloc_pages_noprof+0x290/0x300
+        [...]
+        Hardware name: NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3) (DT)
+        [...]
+        Call trace:
+         __alloc_pages_noprof+0x290/0x300 (P)
+         ___kmalloc_large_node+0x84/0x168
+         __kmalloc_large_node_noprof+0x34/0x120
+         __kmalloc_noprof+0x2ac/0x378
+         pinconf_generic_parse_dt_config+0x68/0x1a0
+         s32_dt_node_to_map+0x104/0x248
+         dt_to_map_one_config+0x154/0x1d8
+         pinctrl_dt_to_map+0x12c/0x280
+         create_pinctrl+0x6c/0x270
+         pinctrl_get+0xc0/0x170
+         devm_pinctrl_get+0x50/0xa0
+         pinctrl_bind_pins+0x60/0x2a0
+         really_probe+0x60/0x3a0
+        [...]
+         __platform_driver_register+0x2c/0x40
+         i2c_adap_imx_init+0x28/0xff8 [i2c_imx]
+        [...]
 
-Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This results in later parse failures that can cause issues in dependent
+drivers:
+
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        [...]
+        pca953x 0-0022: failed writing register: -6
+        i2c i2c-0: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        i2c i2c-1: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        i2c i2c-2: IMX I2C adapter registered
+
+Fix this by initializing s32_pinctrl_desc with devm_kzalloc() instead of
+devm_kmalloc() in s32_pinctrl_probe(), which sets the previously
+uninitialized fields to zero.
+
+Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Tested-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-index 3f4343147dadb..950ede5eab769 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-@@ -108,11 +108,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 501eb296c7605..51ecb8d0fb7e8 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -951,7 +951,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
+ 	spin_lock_init(&ipctl->gpio_configs_lock);
  
- 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+ 	s32_pinctrl_desc =
+-		devm_kmalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
++		devm_kzalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
+ 	if (!s32_pinctrl_desc)
+ 		return -ENOMEM;
  
- 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 
- 	pcu_base &= GENMASK(10, 0);
- 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
 -- 
 2.51.0
 
