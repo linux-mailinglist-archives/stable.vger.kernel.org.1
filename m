@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F100C8EFAF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B055FC8ED97
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035C73B9C1B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3616B4E864F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0529931281E;
-	Thu, 27 Nov 2025 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AAF283C9E;
+	Thu, 27 Nov 2025 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjOdyJmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKb/xTBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B435E299943;
-	Thu, 27 Nov 2025 14:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033DF280335;
+	Thu, 27 Nov 2025 14:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255235; cv=none; b=KUWclSCkD3wN/W7iwW5szlblHeEukIMN8TKA8DrNs2T1fsADbJhfFh9cj7rpWmNOQ9ReAoeqiL7WWOhuzhqk+bQ91zwxqJM9E3V0itbOnVctNj59POG9jrAjqp63ptf3yBsD2P78LToFxxz7NPtLTlGgyhF/r/GGUspPSNDEi0I=
+	t=1764254942; cv=none; b=NWgETxOHj0m4Lf+6lTiMz2sNZHeBfYZ+mcoRGl/l88FdC1XrCG3J5H/bC30eTvA9VD3sze1KmGykDCcl15pE3ez6NJHQkgWA9seHz9A4i1P7ikgQVyrMVvbHl9QaPwFbmGaesAEGzek25LpNUEcJyavERQqJyhRIshf//uWLnkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255235; c=relaxed/simple;
-	bh=4740ZerBnfUc4Yd6rQRhxg5Yv+0GPv2A10jWKTDlJoE=;
+	s=arc-20240116; t=1764254942; c=relaxed/simple;
+	bh=XtYAdB9frzZkskPriRryZQLiHLvn2xoL1sy8Cd+m4kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pybTqIStv8EteIuBBVVXHkL6cA/VcVRe6qJbt2gaBzdsYt/H10KO5THXPDaaoGrRDSqriO+JxeAEy/tP6YsR/V4bxfXMJJtKjGBBIrb8rByTlaQnM0DZLPlkBg3EbTVVnp049IOmwXlVWOfTuqOH0aanxXJ/6clRbVCKf9xXIi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjOdyJmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0214EC4CEF8;
-	Thu, 27 Nov 2025 14:53:54 +0000 (UTC)
+	 MIME-Version; b=mnTY1RZiAdqjpMUE6kBxKlg1kD8WLZwUJIPPAIKrK/uJnCWVdbFPX0RVepmxfMOJnQ44HQa44WC46BR+PdOycJhXNwb8wSBWpBD3s6dQIzsMAYGHD4yNQhHroadO7rf2F54+ZeGBMLtUrFaGXh7ekL0ex6ZdhOjMEUyGE+JvHuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKb/xTBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C593C4CEF8;
+	Thu, 27 Nov 2025 14:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255235;
-	bh=4740ZerBnfUc4Yd6rQRhxg5Yv+0GPv2A10jWKTDlJoE=;
+	s=korg; t=1764254940;
+	bh=XtYAdB9frzZkskPriRryZQLiHLvn2xoL1sy8Cd+m4kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjOdyJmW4YgRBcOcyGs3SLvvpmSve+vWhT9gJJbmwWTSdcd/dtlOyq4r35NFfAizt
-	 JMEHXLR2Y3BJhLKZFr/AKUFsgnHMiw8i9DpUEH+ZssjhCbGuP+9tJafSZ+fwl/b411
-	 fbd0qdNCZR/RRXYT3LJBoMtPLq9fhxMgP7/0uDzA=
+	b=uKb/xTBeWMeosk/lBtDLBV5ZMGL4DqzUr4ix4LoxGkhQKm0fQcBpdEgoxP0jCYDYM
+	 rJf9AyzWKLXlSW2Ghu576DTyaWswvx0WDpqJR02dCIAnTx9Fi9JPdNI2W3WOkVPGdI
+	 0tn0lf//kbSsnQN9EUSpDvBeUgWviex0oGB9PltA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/112] xfrm: drop SA reference in xfrm_state_update if dir doesnt match
+Subject: [PATCH 6.6 39/86] xfrm: Prevent locally generated packets from direct output in tunnel mode
 Date: Thu, 27 Nov 2025 15:45:55 +0100
-Message-ID: <20251127144034.783357615@linuxfoundation.org>
+Message-ID: <20251127144029.257117320@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 8d2a2a49c30f67a480fa9ed25e08436a446f057e ]
+[ Upstream commit 59630e2ccd728703cc826e3a3515d70f8c7a766c ]
 
-We're not updating x1, but we still need to put() it.
+Add a check to ensure locally generated packets (skb->sk != NULL) do
+not use direct output in tunnel mode, as these packets require proper
+L2 header setup that is handled by the normal XFRM processing path.
 
-Fixes: a4a87fa4e96c ("xfrm: Add Direction to the SA in or out")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_output.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 1e2f5ecd63248..f8cb033f102ed 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2117,14 +2117,18 @@ int xfrm_state_update(struct xfrm_state *x)
- 	}
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index a30538a980cc7..9277dd4ed541a 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -766,8 +766,12 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		/* Exclusive direct xmit for tunnel mode, as
+ 		 * some filtering or matching rules may apply
+ 		 * in transport mode.
++		 * Locally generated packets also require
++		 * the normal XFRM path for L2 header setup,
++		 * as the hardware needs the L2 header to match
++		 * for encryption, so skip direct output as well.
+ 		 */
+-		if (x->props.mode == XFRM_MODE_TUNNEL)
++		if (x->props.mode == XFRM_MODE_TUNNEL && !skb->sk)
+ 			return xfrm_dev_direct_output(sk, x, skb);
  
- 	if (x1->km.state == XFRM_STATE_ACQ) {
--		if (x->dir && x1->dir != x->dir)
-+		if (x->dir && x1->dir != x->dir) {
-+			to_put = x1;
- 			goto out;
-+		}
- 
- 		__xfrm_state_insert(x);
- 		x = NULL;
- 	} else {
--		if (x1->dir != x->dir)
-+		if (x1->dir != x->dir) {
-+			to_put = x1;
- 			goto out;
-+		}
- 	}
- 	err = 0;
- 
+ 		return xfrm_output_resume(sk, skb, 0);
 -- 
 2.51.0
 
