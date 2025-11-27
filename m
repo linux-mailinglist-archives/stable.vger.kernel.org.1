@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB98EC8EE29
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48654C8F29E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDA864EDBF5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB273BACB5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6222B33345D;
-	Thu, 27 Nov 2025 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBBE28135D;
+	Thu, 27 Nov 2025 15:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLaio3+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk0Lrhe+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B121D33030A;
-	Thu, 27 Nov 2025 14:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC54213254;
+	Thu, 27 Nov 2025 15:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255006; cv=none; b=FnuoP7upvGttXVdlyzn+FsmyZ84QcKQpqH44dcK9dyyqgBbgxKTgy86F0/aHOY2j+mURG3O0c7O/8GEhRHgCxUzEznAPV4EPff9O7lBns1Jt/6ltu3Jj1aSkU33rhbFxXBAo/c+twLUgrbb/H9pEv41oNibpm6iKRRsMVoHBzFs=
+	t=1764255725; cv=none; b=XTKfNeyOKtmIvf3OKsZpN5yuDE/Uv9Qs9sxAWkm092A9VaXktizG4UaVxymof8UEmIyOeGGuZyI3Jw2dBEd46y9SjP09v62R9x4dALRL101El6WHOvC02JWBsUvuPNXPQL3UaqJFHkXQFQUGSVtLtb7A4olpbzOIAU8ymZwDQL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255006; c=relaxed/simple;
-	bh=s2CPfsrnQvfyM7LA2o90XskKzXz20UktVl04QRtWlKE=;
+	s=arc-20240116; t=1764255725; c=relaxed/simple;
+	bh=bCRGyg2CifTtlB6VGDcTDQEkfwXcVHMzzR9q/RBKtoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbPqiIew6FyKNjTC2i9mpKNLrhRTbeZpgPlgIX2N4Ge625jU2WaOsh5LIUiz+ytRD3YBB6SNtAvjMLltZq/F5GDfROPSRaClQWO+CPDDLfe8F7m3kCmS9sIsgY785uytdKgiffvpltAkuOJXZ1HvU0iq5QfGTw9arVvpwH7Gnpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLaio3+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F1DC4CEF8;
-	Thu, 27 Nov 2025 14:50:05 +0000 (UTC)
+	 MIME-Version; b=K7fpCMHDMZzt/L03seGUywD0QkdvcAN8gHdXsnlAlmb6AFiEs/YojUKXUws93w3tGtUrNcVEsmyYRTc/M59STItXnK/KiZhjhOLGGCBk5g7xDG0dyqT8GCtpQGpUpRFfnUTGUt7aFzMMGkniorW1XWxyOHJMiEQQ4NrOAfB4EeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk0Lrhe+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1B6C113D0;
+	Thu, 27 Nov 2025 15:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255006;
-	bh=s2CPfsrnQvfyM7LA2o90XskKzXz20UktVl04QRtWlKE=;
+	s=korg; t=1764255725;
+	bh=bCRGyg2CifTtlB6VGDcTDQEkfwXcVHMzzR9q/RBKtoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLaio3+5TUbB+R3Gisbd28pFVV5rKY4usq2XjZCuCtdweqKVb1BQXQ9U7i8MDZ2N+
-	 ZfXH0T4JclFKwRgu2a3xTIu/tCFhBJOcA9k4P0t7Dvx4UdQ8aRswzyWBkmhIwH10jd
-	 PYrtn+f2iSPxVBq4HkEvWRIZYYBBHLHrGMcs/JNM=
+	b=rk0Lrhe+d+gvZs+cy0QTWBQuVki52Ai3budB71LtDElGu20l1oy25dTnaXLbed4JE
+	 g5W6EhVR85cisQ+Y6JFXv6sudhah+pHAHm5D2HDBI9cSHK8yImqrnX3M8bkmPNcywS
+	 bSzE4bbhfbdDQFOwmZxVdj6MRozEaCkR3+jsvsKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 28/86] mptcp: fix race condition in mptcp_schedule_work()
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 091/175] pinctrl: cirrus: Fix fwnode leak in cs42l43_pin_probe()
 Date: Thu, 27 Nov 2025 15:45:44 +0100
-Message-ID: <20251127144028.851198407@linuxfoundation.org>
+Message-ID: <20251127144046.285860985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
+[ Upstream commit 9b07cdf86a0b90556f5b68a6b20b35833b558df3 ]
 
-syzbot reported use-after-free in mptcp_schedule_work() [1]
+The driver calls fwnode_get_named_child_node() which takes a reference
+on the child node, but never releases it, which causes a reference leak.
 
-Issue here is that mptcp_schedule_work() schedules a work,
-then gets a refcount on sk->sk_refcnt if the work was scheduled.
-This refcount will be released by mptcp_worker().
+Fix by using devm_add_action_or_reset() to automatically release the
+reference when the device is removed.
 
-[A] if (schedule_work(...)) {
-[B]     sock_hold(sk);
-        return true;
-    }
-
-Problem is that mptcp_worker() can run immediately and complete before [B]
-
-We need instead :
-
-    sock_hold(sk);
-    if (schedule_work(...))
-        return true;
-    sock_put(sk);
-
-[1]
-refcount_t: addition on 0; use-after-free.
- WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:-1 [inline]
-  __refcount_inc include/linux/refcount.h:366 [inline]
-  refcount_inc include/linux/refcount.h:383 [inline]
-  sock_hold include/net/sock.h:816 [inline]
-  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
-  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Cc: stable@vger.kernel.org
-Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
-Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5282a539297 ("pinctrl: cs42l43: Add support for the cs42l43")
+Suggested-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -961,14 +961,19 @@ static void mptcp_reset_rtx_timer(struct
- 
- bool mptcp_schedule_work(struct sock *sk)
- {
--	if (inet_sk_state_load(sk) != TCP_CLOSE &&
--	    schedule_work(&mptcp_sk(sk)->work)) {
--		/* each subflow already holds a reference to the sk, and the
--		 * workqueue is invoked by a subflow, so sk can't go away here.
--		 */
--		sock_hold(sk);
-+	if (inet_sk_state_load(sk) == TCP_CLOSE)
-+		return false;
-+
-+	/* Get a reference on this socket, mptcp_worker() will release it.
-+	 * As mptcp_worker() might complete before us, we can not avoid
-+	 * a sock_hold()/sock_put() if schedule_work() returns false.
-+	 */
-+	sock_hold(sk);
-+
-+	if (schedule_work(&mptcp_sk(sk)->work))
- 		return true;
--	}
-+
-+	sock_put(sk);
- 	return false;
+diff --git a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+index 68abb6d6cecd8..a8f82104a3842 100644
+--- a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
++++ b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+@@ -532,6 +532,11 @@ static int cs42l43_gpio_add_pin_ranges(struct gpio_chip *chip)
+ 	return ret;
  }
  
++static void cs42l43_fwnode_put(void *data)
++{
++	fwnode_handle_put(data);
++}
++
+ static int cs42l43_pin_probe(struct platform_device *pdev)
+ {
+ 	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
+@@ -563,10 +568,20 @@ static int cs42l43_pin_probe(struct platform_device *pdev)
+ 	priv->gpio_chip.ngpio = CS42L43_NUM_GPIOS;
+ 
+ 	if (is_of_node(fwnode)) {
+-		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
+-
+-		if (fwnode && !fwnode->dev)
+-			fwnode->dev = priv->dev;
++		struct fwnode_handle *child;
++
++		child = fwnode_get_named_child_node(fwnode, "pinctrl");
++		if (child) {
++			ret = devm_add_action_or_reset(&pdev->dev,
++				cs42l43_fwnode_put, child);
++			if (ret) {
++				fwnode_handle_put(child);
++				return ret;
++			}
++			if (!child->dev)
++				child->dev = priv->dev;
++			fwnode = child;
++		}
+ 	}
+ 
+ 	priv->gpio_chip.fwnode = fwnode;
+-- 
+2.51.0
+
 
 
 
