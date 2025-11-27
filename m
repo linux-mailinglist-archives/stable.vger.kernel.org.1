@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6718BC8EDCC
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD0FC8EEF5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 478CE3B364E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BF9604EECCB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF40D28314B;
-	Thu, 27 Nov 2025 14:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02320299943;
+	Thu, 27 Nov 2025 14:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9UuqHgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYclitTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E4E273816;
-	Thu, 27 Nov 2025 14:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DD02882C9;
+	Thu, 27 Nov 2025 14:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254946; cv=none; b=eWrPReyxSsvo1m/p529j3TDYrlr2xgaVfavpMpp92NfxFuZML6PTosS8cr/ku6ZrLHMmTERuGi6UZoOXG/Gwf0SBTH0vpQYFpWDem2WlBqByUmkWQpGPbjk3K5J3pZQpaGJuRMJylGrDjTa5AwKw3XMMDuZynsx7aBL+TG8ZPmM=
+	t=1764255183; cv=none; b=n5+OfhtvwX4IYFQA+kpiBjaJ3H7Km0jLTHvp2TUwy5ejhpbhtC+GTgf9KVMKNIhK4mHiM5h7XnaBRYOCcRzWevaFEC7ce5A5QJ5qrCArSVnNgV6AJUrVhyeBjqz9I5GRxYTBJtlvhVLi7c81nTSFLSHPAI/SUPFhfnZdYifa1Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254946; c=relaxed/simple;
-	bh=CdHRKALhr8crO4nX9R1I5QyQQPMk9emGjTOywbtuBEI=;
+	s=arc-20240116; t=1764255183; c=relaxed/simple;
+	bh=IxgFrzW7t6O0doFMBb3gWQ2Vci29qYmY2dcxwFTVXsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwaKC+2rKhy89g6pidYQqb+lzfJ5AimzKGnH/X6Iy7mQuogLozphZ2SdsMeYTVYeShDepXJcQ57qMF5mqv5zMavm65AlqvcIyeemFGDty/gUpGnMJRVkwpomWn6aop43p/S9gZIBb37cLS671Ki7C0LSt7PFDKzCalP6LqyJaDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9UuqHgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC8DC4CEF8;
-	Thu, 27 Nov 2025 14:49:05 +0000 (UTC)
+	 MIME-Version; b=jYrqlaqBuci0kSMoglIoigAsZr/xydhuXsIk2IZnQAcS7OQ535dishVAogF7858rgwObvUtUFq89N6kGJoySVA+KFSlw0fOZHEhCuorgxh3zha1Jkg5C0gRDUSiYEKuX8gd/Dv5zLq+XIFT0swDXM7Gm3gJuMVZVd7V5MZKxmMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYclitTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F84AC4CEF8;
+	Thu, 27 Nov 2025 14:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254946;
-	bh=CdHRKALhr8crO4nX9R1I5QyQQPMk9emGjTOywbtuBEI=;
+	s=korg; t=1764255183;
+	bh=IxgFrzW7t6O0doFMBb3gWQ2Vci29qYmY2dcxwFTVXsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9UuqHguJ/KkaRCsLqWJcr9d59iXX48y7Z9B+joWkRloikmCtthRLFY5wBnIc59+c
-	 w6ubnQiV24fex+R8MKw6q+nJy5/T4w6xnARDfOCH2JDLgv1trOJUxK6mSQKvoDb43e
-	 Avt3//EaklS4t8uFSSdB5JbrrDD5GTPz1l+tltAw=
+	b=yYclitTMyw+FQW56OtANibO/O5fpMP+Y4GoAVxk8LZSSA0MsfCPtUFe0EOy9kZtIf
+	 vRG9xt/ZZL/eKtOoaVbmzvdA3DaS4ylw1GMOOBg/tutOLfrAIkVOUcbP+7QCI20bF5
+	 eeGnImQ3TXwevUbZhek/Bu9kq0fEStz8X4cvRH7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
-	Hannes Reinecke <hare@suse.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 23/86] scsi: sg: Do not sleep in atomic context
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 037/112] mptcp: fix ack generation for fallback msk
 Date: Thu, 27 Nov 2025 15:45:39 +0100
-Message-ID: <20251127144028.667557107@linuxfoundation.org>
+Message-ID: <20251127144034.198734129@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
+commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b upstream.
 
-sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
-sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
-of disabled.
+mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
+rcv_wnd sent, and such information is tracked into the msk->old_wspace
+field, updated at ack transmission time by mptcp_write_options().
 
-Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
-Cc: Hannes Reinecke <hare@suse.de>
+Fallback socket do not add any mptcp options, such helper is never
+invoked, and msk->old_wspace value remain stale. That in turn makes
+ack generation at recvmsg() time quite random.
+
+Address the issue ensuring mptcp_write_options() is invoked even for
+fallback sockets, and just update the needed info in such a case.
+
+The issue went unnoticed for a long time, as mptcp currently overshots
+the fallback socket receive buffer autotune significantly. It is going
+to change in the near future.
+
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
 Cc: stable@vger.kernel.org
-Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/mptcp/options.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2212,9 +2212,17 @@ sg_remove_sfp_usercontext(struct work_st
- 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	while (!list_empty(&sfp->rq_list)) {
- 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
--		sg_finish_rem_req(srp);
- 		list_del(&srp->entry);
-+		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
-+
-+		sg_finish_rem_req(srp);
-+		/*
-+		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
-+		 * srp->parentfp after blk_mq_free_request() has been called.
-+		 */
- 		srp->parentfp = NULL;
-+
-+		write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	}
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -839,8 +839,11 @@ bool mptcp_established_options(struct so
  
+ 	opts->suboptions = 0;
+ 
++	/* Force later mptcp_write_options(), but do not use any actual
++	 * option space.
++	 */
+ 	if (unlikely(__mptcp_check_fallback(msk) && !mptcp_check_infinite_map(skb)))
+-		return false;
++		return true;
+ 
+ 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
+ 		if (mptcp_established_options_fastclose(sk, &opt_size, remaining, opts) ||
+@@ -1319,6 +1322,20 @@ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
+ }
+ 
++static void mptcp_track_rwin(struct tcp_sock *tp)
++{
++	const struct sock *ssk = (const struct sock *)tp;
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk;
++
++	if (!ssk)
++		return;
++
++	subflow = mptcp_subflow_ctx(ssk);
++	msk = mptcp_sk(subflow->conn);
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++}
++
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
+ {
+ 	struct csum_pseudo_header header;
+@@ -1611,6 +1628,10 @@ mp_rst:
+ 				      opts->reset_transient,
+ 				      opts->reset_reason);
+ 		return;
++	} else if (unlikely(!opts->suboptions)) {
++		/* Fallback to TCP */
++		mptcp_track_rwin(tp);
++		return;
+ 	}
+ 
+ 	if (OPTION_MPTCP_PRIO & opts->suboptions) {
 
 
 
