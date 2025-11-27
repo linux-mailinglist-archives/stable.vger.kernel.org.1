@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-197172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F334C8EDB4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784BAC8F0A9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D634B941
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 29D64344D8B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4224731A065;
-	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FE5298CAF;
+	Thu, 27 Nov 2025 15:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGivUXTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYSt8fK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350FB3128D0;
-	Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E889260585;
+	Thu, 27 Nov 2025 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254999; cv=none; b=Dg0HmyyGAGiZne2lGCHT+55jy4C/StoEuxY3tCY5PYsQLkjHflmy80Cay6pUgLS37AefvAAjoY1P2NOon2U6xG7eutKNOJar5VzEocDcVfBungfJoWO3FCFfdPW29tphgcA312JPyWz9bsBwMK34AFXfms235daBbYGBhQ77b+w=
+	t=1764255714; cv=none; b=YHXjTrwkTne+JChHNqrzJSYWMbao/RZyENW0Ya3Gw0wTjaul9eRNi1AwhwjBBnXff4kAYqVhhUaLXr2CuEeK2ohgidGcJ48n+Rez5KIeYkwRtpeOGOyVYgYWB4LluByhaZX8RamLzMVOs1H5jwutAK067H6hAkIVDJXT6TcAlgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254999; c=relaxed/simple;
-	bh=sX4JdTQKo8yosdp5XJtgE2GI7PGzAr/nA7v8KnOpeBo=;
+	s=arc-20240116; t=1764255714; c=relaxed/simple;
+	bh=+Ixz5H7z2ORgme+FUeN6rTnTVAriZNP2jTkit5xXB68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DW893mmiTEqCyxMeJMWE+KBbONf+IGbuxpkJHOiwxGer8QQNhYWkYsifRzm4MG1e9dc8CMDx7wkd2p25evDmDnCCnfYPjP5ohpZBFyRrzdKoKLwWBiS8MPtdom1w5GzvfT+Irb01C74M9/VxBRzPa0vHvuAkkS5veqdCjteCR5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGivUXTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629A6C4CEF8;
-	Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
+	 MIME-Version; b=lSyyz3lPPeJGNuyEEFY++DxRs6vGisSK0TYlQO4iI/igaLrBHKPduL/fdHiANuRmgQfXjgWXOdskzgo+dC5809NxQ9TKztAwaz7dvfn8SYu0gc4AmLY1/dlU4bYlrtr4EGmoXTZcEEtrmgdmKCYR3CCT44v2Vbe1TVoSzw2dkhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYSt8fK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B69CC4CEF8;
+	Thu, 27 Nov 2025 15:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254997;
-	bh=sX4JdTQKo8yosdp5XJtgE2GI7PGzAr/nA7v8KnOpeBo=;
+	s=korg; t=1764255713;
+	bh=+Ixz5H7z2ORgme+FUeN6rTnTVAriZNP2jTkit5xXB68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGivUXTl3AhVyKfaHKa7z5lfZhLmzMoOn7ZVErWPvyV6NaZQVTNwq+UwD+RO+JOew
-	 OkgYvR4OpBAlq4P6W4yhNZu9FqueDoksy8r+JZz6+DSC1aiiSrhYkE3/YPk6XBoU0D
-	 kZOPQxVgM6T6CL7NPrch/7SH/n3rsfa9eymKx7Po=
+	b=kYSt8fK91WtbFyLgMD96Y/mY2wvlJj8fL+xiFoJdormHjL+7cDQxrMVlNqSK8FQKL
+	 A15GpnuecIEoYMOIIdDwObaT4RmfTXTnEKsmNA/AUr4gnF2P/i5iZr5y2/nE5YxAP1
+	 fmh97/urs3WrensHX10jNNKRRbRkBxF6pBos11FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 25/86] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 088/175] xfrm: Check inner packet family directly from skb_dst
 Date: Thu, 27 Nov 2025 15:45:41 +0100
-Message-ID: <20251127144028.741061553@linuxfoundation.org>
+Message-ID: <20251127144046.177838125@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
+[ Upstream commit 082ef944e55da8a9a8df92e3842ca82a626d359a ]
 
-Fix a regression that has caused accesses to the PCI MMIO window to
-complete unclaimed in non-EVA configurations with the SOC-it family of
-system controllers, preventing PCI devices from working that use MMIO.
+In the output path, xfrm_dev_offload_ok and xfrm_get_inner_ipproto
+need to determine the protocol family of the inner packet (skb) before
+it gets encapsulated.
 
-In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
-set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
-accordingly).  Consequently all addresses are matched for incoming DMA
-accesses from PCI.  This seems to confuse the system controller's logic
-and outgoing bus cycles targeting the PCI MMIO window seem not to make
-it to the intended devices.
+In xfrm_dev_offload_ok, the code checked x->inner_mode.family. This is
+unreliable because, for states handling both IPv4 and IPv6, the
+relevant inner family could be either x->inner_mode.family or
+x->inner_mode_iaf.family. Checking only the former can lead to a
+mismatch with the actual packet being processed.
 
-This happens as well when a wider mask is used with PCI_BAR0, such as
-0x80000000 or 0xe0000000, that makes addresses match that overlap with
-the PCI MMIO window, which starts at 0x10000000 in our configuration.
+In xfrm_get_inner_ipproto, the code checked x->outer_mode.family. This
+is also incorrect for tunnel mode, as the inner packet's family can be
+different from the outer header's family.
 
-Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
-non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
-to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
-PCI_BAR0 as required by the system controller's specification, and match
-PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
+At both of these call sites, the skb variable holds the original inner
+packet. The most direct and reliable source of truth for its protocol
+family is its destination entry. This patch fixes the issue by using
+skb_dst(skb)->ops->family to ensure protocol-specific headers are only
+accessed for the correct packet type.
 
-Verified with:
-
-Core board type/revision =      0x0d (Core74K) / 0x01
-System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
-Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
-
-for non-EVA and with:
-
-Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
-System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
-Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
-
-for EVA/non-EVA, fixing:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: Could not read adapter factory MAC address!
-
-vs:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
-0000:00:12.0: registered as fddi0
-
-for non-EVA and causing no change for EVA.
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
-Cc: stable@vger.kernel.org # v4.9+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91d8a53db219 ("xfrm: fix offloading of cross-family tunnels")
+Fixes: 45a98ef4922d ("net/xfrm: IPsec tunnel mode fix inner_ipproto setting in sec_path")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/xfrm/xfrm_device.c | 2 +-
+ net/xfrm/xfrm_output.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -241,16 +241,22 @@ mips_pci_controller:
- #endif
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 44b9de6e4e778..52ae0e034d29e 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -438,7 +438,7 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
  
- 		/*
--		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
--		 * in transparent addressing mode.
-+		 * Set up memory mapping in host bridge for PCI DMA masters,
-+		 * in transparent addressing mode.  For EVA use the Malta
-+		 * maximum of 2 GiB memory in the alias space at 0x80000000
-+		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
-+		 * the regular space, avoiding mapping the PCI MMIO window
-+		 * for DMA as it seems to confuse the system controller's
-+		 * logic, causing PCI MMIO to stop working.
- 		 */
--		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
--		MSC_WRITE(MSC01_PCI_BAR0, mask);
--		MSC_WRITE(MSC01_PCI_HEAD4, mask);
-+		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
-+		MSC_WRITE(MSC01_PCI_BAR0,
-+			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
-+		MSC_WRITE(MSC01_PCI_HEAD4,
-+			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
+ 	check_tunnel_size = x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
+ 			    x->props.mode == XFRM_MODE_TUNNEL;
+-	switch (x->inner_mode.family) {
++	switch (skb_dst(skb)->ops->family) {
+ 	case AF_INET:
+ 		/* Check for IPv4 options */
+ 		if (ip_hdr(skb)->ihl != 5)
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 9077730ff7d0e..a98b5bf55ac31 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -698,7 +698,7 @@ static void xfrm_get_inner_ipproto(struct sk_buff *skb, struct xfrm_state *x)
+ 		return;
  
--		mask &= MSC01_PCI_BAR0_SIZE_MSK;
- 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
--		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
- 
- 		/* Don't handle target retries indefinitely.  */
- 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
+ 	if (x->outer_mode.encap == XFRM_MODE_TUNNEL) {
+-		switch (x->outer_mode.family) {
++		switch (skb_dst(skb)->ops->family) {
+ 		case AF_INET:
+ 			xo->inner_ipproto = ip_hdr(skb)->protocol;
+ 			break;
+-- 
+2.51.0
+
 
 
 
