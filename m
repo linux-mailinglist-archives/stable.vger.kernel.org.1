@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-197222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E634FC8EEC2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DC8C8ED81
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DFEB24EE67F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7C183B0E8C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B56428C84D;
-	Thu, 27 Nov 2025 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6A27C162;
+	Thu, 27 Nov 2025 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aupoolqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ0HEC+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DB8299943;
-	Thu, 27 Nov 2025 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980027587C;
+	Thu, 27 Nov 2025 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255138; cv=none; b=KSI4KB88uK7waROXmUbtimB0y8Hs+GCC4WzXYkuuMe3dmcP4evJ/9YZcrxdxu0ah4Yts6sl1IQTiNCK5KwXyhDmmJQMLdzDBmyeJDae4QEXJWGXrth0HkQWsIf3wTOJFPP1yd+44w6zSmJofGpKq6PPPIzFKJ6q1Pgxj9z37juE=
+	t=1764254903; cv=none; b=bUkjZUidy24RRCoesEho4nef/lIk8GQmzpzjTMP8/eEdhvKtYI4vcgEF/4/Iown0JcmWHz3gh3rP0V1a8jJNWCgt0YPPF+Myz7vu5SiPuxe2yCvJtbgAWHbWxGVKtlvumICbGq4/eMDuRkSR8Bbjh6MdKQUAMXjmui5ICJ70NNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255138; c=relaxed/simple;
-	bh=31hygMVdKalDGdJIkxSPx3SILl1CKdp99BG7hamzP1Y=;
+	s=arc-20240116; t=1764254903; c=relaxed/simple;
+	bh=JpmWrk2Wzjoo6sb5zMEyhOfci3Vwxm9CBqDguBGFfgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6lPh09CcyB+SOyqa3TiHdM6E4qmebD7uAfAeqEhbqAg4wI0t5D5Q9ziC7DMkShi6xBO7Yd5cTCchBNpNNCAxLSCEx1YL15xCARHmzS5o13UlonsAN51ZRfdcTOqGJ3xmFWBlYbwogy8D5ijQmmwQhwicoRUgzW3DBqP5s686LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aupoolqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C824C113D0;
-	Thu, 27 Nov 2025 14:52:17 +0000 (UTC)
+	 MIME-Version; b=G/IQtbfZx0LWekZkOBWDKIgw3PLUcY7CyCZV/2qDEE4OnAW/Jte8lS4x02Y9HGGNSw/BaIgnTU2+lK+NTh4ENdDS6J8+OUpVvvT4R+/CAKg5y/LuJs4YPsNfVYh/w2W14C718qwqBlzpbFkn1k90SH3eCdmfgLGv/m3WLlYXQI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ0HEC+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997ADC4CEF8;
+	Thu, 27 Nov 2025 14:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255137;
-	bh=31hygMVdKalDGdJIkxSPx3SILl1CKdp99BG7hamzP1Y=;
+	s=korg; t=1764254903;
+	bh=JpmWrk2Wzjoo6sb5zMEyhOfci3Vwxm9CBqDguBGFfgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aupoolqjsf0C8goXFBmOdz1aeTV04l+kPSfdz3CfFEhvESHoxSvW7/C1b32wq/SNr
-	 ArXjOizVioRg590UiW/m1NjvQgWrfQXbXqxoUGbOAm6HkR/iFlK8jcygylXmGXjCwH
-	 iMzXXW7moz8dhD5q2PndjDbRXzKuLRdZx8Mitl3k=
+	b=bZ0HEC+fm95p4w5wtG4i5G+SxM8+8gPFrtZNymiRrBl9lbBFa9Lp8nrPo9PdWY/Vx
+	 0Rvjv/VnuA/YUQmG7JWxvhoay3q3TUUshhn1fpxZDewluyJNf8zcWssvXto3lBv/Li
+	 mWoN7GsCbLk1m1mX5eMFBc9D9Yj/pGs0PGDzKNEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 020/112] be2net: pass wrb_params in case of OS2BMC
-Date: Thu, 27 Nov 2025 15:45:22 +0100
-Message-ID: <20251127144033.473837564@linuxfoundation.org>
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6 07/86] mptcp: Disallow MPTCP subflows from sockmap
+Date: Thu, 27 Nov 2025 15:45:23 +0100
+Message-ID: <20251127144028.077969934@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 7d277a7a58578dd62fd546ddaef459ec24ccae36 upstream.
+commit fbade4bd08ba52cbc74a71c4e86e736f059f99f7 upstream.
 
-be_insert_vlan_in_pkt() is called with the wrb_params argument being NULL
-at be_send_pkt_to_bmc() call site.  This may lead to dereferencing a NULL
-pointer when processing a workaround for specific packet, as commit
-bc0c3405abbb ("be2net: fix a Tx stall bug caused by a specific ipv6
-packet") states.
+The sockmap feature allows bpf syscall from userspace, or based on bpf
+sockops, replacing the sk_prot of sockets during protocol stack processing
+with sockmap's custom read/write interfaces.
+'''
+tcp_rcv_state_process()
+  subflow_syn_recv_sock()
+    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+      bpf_skops_established       <== sockops
+        bpf_sock_map_update(sk)   <== call bpf helper
+          tcp_bpf_update_proto()  <== update sk_prot
+'''
+Consider two scenarios:
 
-The correct way would be to pass the wrb_params from be_xmit().
+1. When the server has MPTCP enabled and the client also requests MPTCP,
+   the sk passed to the BPF program is a subflow sk. Since subflows only
+   handle partial data, replacing their sk_prot is meaningless and will
+   cause traffic disruption.
 
-Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://patch.msgid.link/20251119105015.194501-1-a.vatoropin@crpt.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+2. When the server has MPTCP enabled but the client sends a TCP SYN
+   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
+   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
+   '''
+   subflow_ulp_fallback()
+    subflow_drop_ctx()
+      mptcp_subflow_ops_undo_override()
+   '''
+   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
+   converts the subflow to plain TCP.
+
+For the first case, we should prevent it from being combined with sockmap
+by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
+sockmap's own flow.
+
+For the second case, since subflow_syn_recv_sock() has already restored
+sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
+
+Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/mptcp/subflow.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1296,7 +1296,8 @@ static void be_xmit_flush(struct be_adap
- 		(adapter->bmc_filt_mask & BMC_FILT_MULTICAST)
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -2095,6 +2095,10 @@ void __init mptcp_subflow_init(void)
+ 	tcp_prot_override = tcp_prot;
+ 	tcp_prot_override.release_cb = tcp_release_cb_override;
+ 	tcp_prot_override.diag_destroy = tcp_abort_override;
++#ifdef CONFIG_BPF_SYSCALL
++	/* Disable sockmap processing for subflows */
++	tcp_prot_override.psock_update_sk_prot = NULL;
++#endif
  
- static bool be_send_pkt_to_bmc(struct be_adapter *adapter,
--			       struct sk_buff **skb)
-+			       struct sk_buff **skb,
-+			       struct be_wrb_params *wrb_params)
- {
- 	struct ethhdr *eh = (struct ethhdr *)(*skb)->data;
- 	bool os2bmc = false;
-@@ -1360,7 +1361,7 @@ done:
- 	 * to BMC, asic expects the vlan to be inline in the packet.
- 	 */
- 	if (os2bmc)
--		*skb = be_insert_vlan_in_pkt(adapter, *skb, NULL);
-+		*skb = be_insert_vlan_in_pkt(adapter, *skb, wrb_params);
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+ 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
+@@ -2132,6 +2136,10 @@ void __init mptcp_subflow_init(void)
+ 	tcpv6_prot_override = tcpv6_prot;
+ 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
+ 	tcpv6_prot_override.diag_destroy = tcp_abort_override;
++#ifdef CONFIG_BPF_SYSCALL
++	/* Disable sockmap processing for subflows */
++	tcpv6_prot_override.psock_update_sk_prot = NULL;
++#endif
+ #endif
  
- 	return os2bmc;
- }
-@@ -1387,7 +1388,7 @@ static netdev_tx_t be_xmit(struct sk_buf
- 	/* if os2bmc is enabled and if the pkt is destined to bmc,
- 	 * enqueue the pkt a 2nd time with mgmt bit set.
- 	 */
--	if (be_send_pkt_to_bmc(adapter, &skb)) {
-+	if (be_send_pkt_to_bmc(adapter, &skb, &wrb_params)) {
- 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
- 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
- 		if (unlikely(!wrb_cnt))
+ 	mptcp_diag_subflow_init(&subflow_ulp_ops);
 
 
 
