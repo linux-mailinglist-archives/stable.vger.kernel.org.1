@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6165DC8F1F1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E8FC8ED91
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 41097344A21
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C8FDF3453B3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC8296BC2;
-	Thu, 27 Nov 2025 14:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFC62949E0;
+	Thu, 27 Nov 2025 14:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIq5C+zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOE2OYgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C70296BBC;
-	Thu, 27 Nov 2025 14:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF39528851E;
+	Thu, 27 Nov 2025 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255410; cv=none; b=W8VPrFcW0zsrREcW2Yz2nEXPqqGxl3zcN3C9z/OI4go7oems0A0J4odz05qvM2JGL1TRfkdgJ1xMdu5zLDumi265xiS5deL2nh8HnSqBfO66Inly+TpNRonKx3jih/TwdiouyhVwHaWItDmEiXE4OOlolc5e5g+/rCImRdjxmd0=
+	t=1764254972; cv=none; b=CM7Z/VDK/z1SNAg4iRI+83EBG3LLlUygPAhuLreIfihWQWHHufyNSlAlOw1gFzCV+BTbFUL0rm6tbDTdPra7IjNDUhGO3XAoL9TIF9fMYTGX/fpzYhTi5tFmRIOmqcgLfgsuqSRpL2C7lgg7ln0t8Kaj4pT4GXMLgtFHN1cV9w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255410; c=relaxed/simple;
-	bh=0TnkGjPiCqNXhz4wqyluCregbHRE13L2dNvLK4c5jRQ=;
+	s=arc-20240116; t=1764254972; c=relaxed/simple;
+	bh=zfdPUZKEemQb1lEsB2aza+SBXlgEQb0cyMyG/R5gjEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXcazwoN7AKjHmvDVBWTcEL36fBWpUYEp41Dzoseo3LwBzbhjNREeI7WVKNu6unSUic4iSReif7H4bmJ6AponLBo+dpB80Tc9qDTML2242Rz9CpmWIVAdRwcCLBUYX9IbTQ4SyKB4EWK2UkR7IQTyJZR3hiLWYKapIJadTCWYa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIq5C+zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89697C4CEF8;
-	Thu, 27 Nov 2025 14:56:49 +0000 (UTC)
+	 MIME-Version; b=hXIlvQF0V/Shw3c6rrVhXwfXcDTO83FEzRp5+4cnYHdFOVk05yFInWG4FfctEclQXpIihp73Hy5kJSVjdUAj7jXrGsabgtow5I4EsJPpAnb/nF8ikE2ffcYXiql/RukeKh/wX2TtB8npT/y0ss9A/ibcqjdsh4OPn9sJHRt6pOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOE2OYgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72633C4CEF8;
+	Thu, 27 Nov 2025 14:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255409;
-	bh=0TnkGjPiCqNXhz4wqyluCregbHRE13L2dNvLK4c5jRQ=;
+	s=korg; t=1764254971;
+	bh=zfdPUZKEemQb1lEsB2aza+SBXlgEQb0cyMyG/R5gjEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIq5C+zR9lhM0bx8YA2pwDSMP/A+avFm0xvklA6vcMGQgvjd4NmAM1PwwgqWr2kUc
-	 RbToII8HYXKif8JKaSzZpA8yIlyozGK1yaqArP+02bOVx8yeSjYOEbH+mxnCvHK5im
-	 7UdEZuAckpW1WMjBILVrkc7TcLE6PjmnlWk9AiGI=
+	b=jOE2OYgxgrOogQ/l3a3cHkn6bBZK3kClx475M9QpWvBY7epA9V7Lzw4qCJwKZC9Xw
+	 3ZNJeKKO4U8p2vJdMujftevC3tlRrwgJlhzhMLMecZokbdOy/0caY09afegczrdPSe
+	 B8FrarKuToUXk0xJYvl6tV37bNSWNQspDaMrslaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alejandro Colomar <alx@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/112] net: dsa: hellcreek: fix missing error handling in LED registration
+Subject: [PATCH 6.6 49/86] kernel.h: Move ARRAY_SIZE() to a separate header
 Date: Thu, 27 Nov 2025 15:46:05 +0100
-Message-ID: <20251127144035.145746282@linuxfoundation.org>
+Message-ID: <20251127144029.621716831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Alejandro Colomar <alx@kernel.org>
 
-[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
+[ Upstream commit 3cd39bc3b11b8d34b7d7c961a35fdfd18b0ebf75 ]
 
-The LED setup routine registered both led_sync_good
-and led_is_gm devices without checking the return
-values of led_classdev_register(). If either registration
-failed, the function continued silently, leaving the
-driver in a partially-initialized state and leaking
-a registered LED classdev.
+Touching files so used for the kernel,
+forces 'make' to recompile most of the kernel.
 
-Add proper error handling
+Having those definitions in more granular files
+helps avoid recompiling so much of the kernel.
 
-Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
-Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230817143352.132583-2-lucas.segarra.fernandez@intel.com
+[andy: reduced to cover only string.h for now]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 896f1a2493b5 ("net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/linux/array_size.h | 13 +++++++++++++
+ include/linux/kernel.h     |  7 +------
+ include/linux/string.h     |  1 +
+ 3 files changed, 15 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/array_size.h
 
-diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-index bfe21f9f7dcd3..cb23bea9c21b8 100644
---- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-+++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-@@ -376,8 +376,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
- 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
- 
- 	/* Register both leds */
--	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
--	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
-+		goto out;
-+	}
+diff --git a/include/linux/array_size.h b/include/linux/array_size.h
+new file mode 100644
+index 0000000000000..06d7d83196ca3
+--- /dev/null
++++ b/include/linux/array_size.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_ARRAY_SIZE_H
++#define _LINUX_ARRAY_SIZE_H
 +
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
-+		led_classdev_unregister(&hellcreek->led_sync_good);
-+		goto out;
-+	}
++#include <linux/compiler.h>
++
++/**
++ * ARRAY_SIZE - get the number of elements in array @arr
++ * @arr: array to be sized
++ */
++#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
++
++#endif  /* _LINUX_ARRAY_SIZE_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index cee8fe87e9f4f..d9ad21058eed9 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -13,6 +13,7 @@
  
- 	ret = 0;
+ #include <linux/stdarg.h>
+ #include <linux/align.h>
++#include <linux/array_size.h>
+ #include <linux/limits.h>
+ #include <linux/linkage.h>
+ #include <linux/stddef.h>
+@@ -50,12 +51,6 @@
+ #define READ			0
+ #define WRITE			1
  
+-/**
+- * ARRAY_SIZE - get the number of elements in array @arr
+- * @arr: array to be sized
+- */
+-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+-
+ #define PTR_IF(cond, ptr)	((cond) ? (ptr) : NULL)
+ 
+ #define u64_to_user_ptr(x) (		\
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 5077776e995e0..ce137830a0b99 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_STRING_H_
+ #define _LINUX_STRING_H_
+ 
++#include <linux/array_size.h>
+ #include <linux/compiler.h>	/* for inline */
+ #include <linux/types.h>	/* for size_t */
+ #include <linux/stddef.h>	/* for NULL */
 -- 
 2.51.0
 
