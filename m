@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3586C8EF8B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91EDBC8ED36
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05083B984B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FA644EA1CA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C913299943;
-	Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDDB273D6D;
+	Thu, 27 Nov 2025 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7zld9PK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/upgOr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A042882C9;
-	Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786C026F2A7;
+	Thu, 27 Nov 2025 14:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255200; cv=none; b=HKN7L8jV4dBOLelYTpGNF7YaF5sNuZpqgrbH8SoFKlgXpIUU3nb2Pmg1FkXchkOVKIj9LeVDfI7dFwGP0cl1ejDGRptU8KOIxw6/8M3tNN8DML8YsXV4nWrSS2acwTAtWsZTyjIQEYG86VbMxIFM/tlXzw1atGcZw4jhPIom/4k=
+	t=1764254859; cv=none; b=fDlUxnD2fG9bCLow2xxa7/RgDcdaK33l210tv1iYP56gIFKt5KAFIn2Me8e6ULvhB/SkbGb4nwPakRsbQ3AIF06aGxfoDGmUPOkPvsKMUWwR4r7QEJYin3qZ66QC6YUm4ecfZEwzVhbIdEmeuiUh4Y1qcqt4BVfnpZDkKQV3AU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255200; c=relaxed/simple;
-	bh=O1YA3zk2Ry9cdskEn+kMjeM313H22u6w2Wszb1MpXEo=;
+	s=arc-20240116; t=1764254859; c=relaxed/simple;
+	bh=OdBKVo/P4Ugp242yJpDa+nfmMSMHBRD8wyhvqbHV/c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4KjEWVO2DTHg13t7K14ikLaoISPlBCjXZO4LSlrbwsPaPscpT4WExUJX3uCx1Kcu7qP8dSa7TVqVCgCfwpXsXbxd0kxUhSuszhfRm2l75a5yxy4qcrM9p08iyCw6rp7Li+az4qclB0jlSMc7MiBH0YIO2mFqNy5bNjyzZXo1W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7zld9PK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52DCC4CEF8;
-	Thu, 27 Nov 2025 14:53:19 +0000 (UTC)
+	 MIME-Version; b=Kl2LH475/lPOWrqV/9lGbVpBz0AHRX6WRZJxgayogP5biF3XK5/ZaOvly+Al50jjficzEXlpdMBi3HpaCPpsk0XVGId7aU+lOkxeLEWZDfEJ0p2QeCyH1lTBTFAOv4zNK8BcE+Cw3f50xM8det+5ZIPsAqtKWO4NHEpRkaythm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/upgOr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDA6C4CEF8;
+	Thu, 27 Nov 2025 14:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255200;
-	bh=O1YA3zk2Ry9cdskEn+kMjeM313H22u6w2Wszb1MpXEo=;
+	s=korg; t=1764254859;
+	bh=OdBKVo/P4Ugp242yJpDa+nfmMSMHBRD8wyhvqbHV/c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7zld9PKqEefCYWX7C7fZiFjNVoaPqRIUFgxo3fddArZzdhVp+2ozm9gNlpimLhS/
-	 4YzIqQm+gbO562HHtUKkalezub2dMBdTvnBRuq2ZEVzJb8weOV6uaS93Q/w/MVIN3Z
-	 X38c31/cw/vZHWnwKOKCfvedyBA5eUTsP4EQB+Gw=
+	b=O/upgOr+hvbNQD+AubGJE/bS5/viX7YtDy5aV2Zl5gsnRmd/vecVBxRDwo8L5d/Sb
+	 UDLHqo6zK3OmPzvCZuIeqEhedse8rtTa24aP1D+0K3GIi+ZFSRREZUce7lXRjBOy7K
+	 gUb0NFj1K6rMjZvB6gmzhBlu6RDDXnxbrkcSeRNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 025/112] Input: imx_sc_key - fix memory corruption on unload
+	David Howells <dhowells@redhat.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 11/86] smb: client: introduce close_cached_dir_locked()
 Date: Thu, 27 Nov 2025 15:45:27 +0100
-Message-ID: <20251127144033.760335705@linuxfoundation.org>
+Message-ID: <20251127144028.229212120@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit d83f1512758f4ef6fc5e83219fe7eeeb6b428ea4 upstream.
+commit a9d1f38df7ecd0e21233447c9cc6fa1799eddaf3 upstream.
 
-This is supposed to be "priv" but we accidentally pass "&priv" which is
-an address in the stack and so it will lead to memory corruption when
-the imx_sc_key_action() function is called.  Remove the &.
+Replace close_cached_dir() calls under cfid_list_lock with a new
+close_cached_dir_locked() variant that uses kref_put() instead of
+kref_put_lock() to avoid recursive locking when dropping references.
 
-Fixes: 768062fd1284 ("Input: imx_sc_key - use devm_add_action_or_reset() to handle all cleanups")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/aQYKR75r2VMFJutT@stanley.mountain
+While the existing code works if the refcount >= 2 invariant holds,
+this area has proven error-prone. Make deadlocks impossible and WARN
+on invariant violations.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/imx_sc_key.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/cached_dir.c |   41 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
---- a/drivers/input/keyboard/imx_sc_key.c
-+++ b/drivers/input/keyboard/imx_sc_key.c
-@@ -158,7 +158,7 @@ static int imx_sc_key_probe(struct platf
- 		return error;
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -16,6 +16,7 @@ static struct cached_fid *init_cached_di
+ static void free_cached_dir(struct cached_fid *cfid);
+ static void smb2_close_cached_fid(struct kref *ref);
+ static void cfids_laundromat_worker(struct work_struct *work);
++static void close_cached_dir_locked(struct cached_fid *cfid);
+ 
+ struct cached_dir_dentry {
+ 	struct list_head entry;
+@@ -362,7 +363,7 @@ out:
+ 			 * lease. Release one here, and the second below.
+ 			 */
+ 			cfid->has_lease = false;
+-			close_cached_dir(cfid);
++			close_cached_dir_locked(cfid);
+ 		}
+ 		spin_unlock(&cfids->cfid_list_lock);
+ 
+@@ -448,18 +449,52 @@ void drop_cached_dir_by_name(const unsig
+ 	spin_lock(&cfid->cfids->cfid_list_lock);
+ 	if (cfid->has_lease) {
+ 		cfid->has_lease = false;
+-		close_cached_dir(cfid);
++		close_cached_dir_locked(cfid);
  	}
+ 	spin_unlock(&cfid->cfids->cfid_list_lock);
+ 	close_cached_dir(cfid);
+ }
  
--	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, &priv);
-+	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, priv);
- 	if (error)
- 		return error;
+-
++/**
++ * close_cached_dir - drop a reference of a cached dir
++ *
++ * The release function will be called with cfid_list_lock held to remove the
++ * cached dirs from the list before any other thread can take another @cfid
++ * ref. Must not be called with cfid_list_lock held; use
++ * close_cached_dir_locked() called instead.
++ *
++ * @cfid: cached dir
++ */
+ void close_cached_dir(struct cached_fid *cfid)
+ {
++	lockdep_assert_not_held(&cfid->cfids->cfid_list_lock);
+ 	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
+ }
  
++/**
++ * close_cached_dir_locked - put a reference of a cached dir with
++ * cfid_list_lock held
++ *
++ * Calling close_cached_dir() with cfid_list_lock held has the potential effect
++ * of causing a deadlock if the invariant of refcount >= 2 is false.
++ *
++ * This function is used in paths that hold cfid_list_lock and expect at least
++ * two references. If that invariant is violated, WARNs and returns without
++ * dropping a reference; the final put must still go through
++ * close_cached_dir().
++ *
++ * @cfid: cached dir
++ */
++static void close_cached_dir_locked(struct cached_fid *cfid)
++{
++	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
++
++	if (WARN_ON(kref_read(&cfid->refcount) < 2))
++		return;
++
++	kref_put(&cfid->refcount, smb2_close_cached_fid);
++}
++
+ /*
+  * Called from cifs_kill_sb when we unmount a share
+  */
 
 
 
