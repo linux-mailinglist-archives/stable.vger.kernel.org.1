@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F10C8F08E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041B4C8EF55
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AF474356005
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2C854ED84B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20EF3321D0;
-	Thu, 27 Nov 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B7B3126D7;
+	Thu, 27 Nov 2025 14:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zERHhQkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r25R6b0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E968284B58;
-	Thu, 27 Nov 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E944730EF64;
+	Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255693; cv=none; b=dKPZpw3Wjch4Hh/ugzFjqB/7f4Jnx+I7gwVr3IvmvU2yuEv9BFKqjXuqz7mv9RR42EZdiCaPqC3mGpXlpLoALvW9iGTttcfELSBZ+M8aTfSA4BuN2O+k7m8IUNegNxjP4VV7CuabMAwErUJTF2i3SwUF4AipCkPMd0yYsDNG0d4=
+	t=1764255267; cv=none; b=SdY3Cd4IYrf59DAFfUMIe/tofAE58Sd3CQsMAHw7AbFk/4uFydGWfbCCAVqJEOvxvprngMZnGJx50IKTMTb144LOSseM5bB6q5lVBPpgQsU5ikmBLcwh0pCYYJ5VD32hrMjUB+ck7XYYWOIZwJurk6FfQR4UHb1umuLaEJVmmtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255693; c=relaxed/simple;
-	bh=/DmJPZPyKhQ0LbS693MupeAqDPWh+0UskPwtNdjP4zU=;
+	s=arc-20240116; t=1764255267; c=relaxed/simple;
+	bh=mgtgP5OuwcvEWYKpvsbo7b3CuIHDobxlC7ngcipLJRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trZCyAOntmDCWYB0ceqOEF47RoGorgc90aubWmq9lepdOP+CSPDM8FQbn43XxdMMqdhR1Qw7c1zNtTRtb3CYEES+li2c3Q5les9HDP8N8sBfm2omx5cLBiy2UKlSfOZFQ9tqmfnNZvZNStAMwgL0SqC0w4aHxHdlRlC9FAwxVUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zERHhQkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8291C4CEF8;
-	Thu, 27 Nov 2025 15:01:32 +0000 (UTC)
+	 MIME-Version; b=JiEk84276SDD9ykJwoh7z2CdPqBHnSuWT5aCDEducVlNPlG9mFMOoP5RI+hGG+/6TaUfVRFy4KvgqKf678ok+nehH3NnQ13y9ECZY5VY71cYw6gHT+Wb6g3ZUQ9TLYbs3ejZ7ZR+jDwiCodjI0ovSNYehrWS4fTsWCx6+HhFw0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r25R6b0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722A9C4CEF8;
+	Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255693;
-	bh=/DmJPZPyKhQ0LbS693MupeAqDPWh+0UskPwtNdjP4zU=;
+	s=korg; t=1764255266;
+	bh=mgtgP5OuwcvEWYKpvsbo7b3CuIHDobxlC7ngcipLJRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zERHhQkNDmCuOzRaS83vDwkHDHf/kCnmhoGDQ/VCMHbMWqJea13L4AizwIFEJmMkC
-	 6HNk09aSqBNdoPl5tbJ9WD10TdXWIdXa7yiM4Zc/yFwTF839NrmZIl/C9AEr6UMc2k
-	 /ul1idtCc8ZlFVC+ZIjpHfCe2iqhUkbsKYsAUuzI=
+	b=r25R6b0MdjPzK3IR+6pmKZlOPoY6MG7tn2loz3cp7RqgdgV5GQ1zBTyA5bxGJmVIq
+	 Hnm3Nr+SJ7V8V/TOyxNc264QLb0qMd+t+MyTCyxZ8/nXOsnzQmXw73h+cV2hLghGLl
+	 ZRCwdp7lCFB75b/ou+vKVpo2wrQNe+Uf4dUjqa3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 081/175] xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Allen Pais <apais@linux.microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 032/112] scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
 Date: Thu, 27 Nov 2025 15:45:34 +0100
-Message-ID: <20251127144045.924174711@linuxfoundation.org>
+Message-ID: <20251127144034.014677721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-[ Upstream commit 10deb69864840ccf96b00ac2ab3a2055c0c04721 ]
+commit e6965188f84a7883e6a0d3448e86b0cf29b24dfc upstream.
 
-In commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x"), I
-missed the case where state creation fails between full
-initialization (->init_state has been called) and being inserted on
-the lists.
+If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
+attempt to dereference it in tcm_loop_tpg_address_show() we will get a
+segfault, see below for an example. So, check tl_hba->sh before
+dereferencing it.
 
-In this situation, ->init_state has been called, so for IPcomp
-tunnels, the fallback tunnel has been created and added onto the
-lists, but the user state never gets added, because we fail before
-that. The user state doesn't go through __xfrm_state_delete, so we
-don't call xfrm_state_delete_tunnel for those states, and we end up
-leaking the FB tunnel.
+  Unable to allocate struct scsi_host
+  BUG: kernel NULL pointer dereference, address: 0000000000000194
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
+  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
+  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
+...
+  Call Trace:
+   <TASK>
+   configfs_read_iter+0x12d/0x1d0 [configfs]
+   vfs_read+0x1b5/0x300
+   ksys_read+0x6f/0xf0
+...
 
-There are several codepaths affected by this: the add/update paths, in
-both net/key and xfrm, and the migrate code (xfrm_migrate,
-xfrm_state_migrate). A "proper" rollback of the init_state work would
-probably be doable in the add/update code, but for migrate it gets
-more complicated as multiple states may be involved.
-
-At some point, the new (not-inserted) state will be destroyed, so call
-xfrm_state_delete_tunnel during xfrm_state_gc_destroy. Most states
-will have their fallback tunnel cleaned up during __xfrm_state_delete,
-which solves the issue that b441cf3f8c4b (and other patches before it)
-aimed at. All states (including FB tunnels) will be removed from the
-lists once xfrm_state_fini has called flush_work(&xfrm_state_gc_work).
-
-Reported-by: syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=999eb23467f83f9bf9bf
-Fixes: b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Allen Pais <apais@linux.microsoft.com>
+Link: https://patch.msgid.link/1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/loopback/tcm_loop.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index e4736d1ebb443..721ef0f409b51 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -592,6 +592,7 @@ void xfrm_state_free(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(xfrm_state_free);
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -893,6 +893,9 @@ static ssize_t tcm_loop_tpg_address_show
+ 			struct tcm_loop_tpg, tl_se_tpg);
+ 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
  
-+static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- static void xfrm_state_gc_destroy(struct xfrm_state *x)
- {
- 	if (x->mode_cbs && x->mode_cbs->destroy_state)
-@@ -607,6 +608,7 @@ static void xfrm_state_gc_destroy(struct xfrm_state *x)
- 	kfree(x->replay_esn);
- 	kfree(x->preplay_esn);
- 	xfrm_unset_type_offload(x);
-+	xfrm_state_delete_tunnel(x);
- 	if (x->type) {
- 		x->type->destructor(x);
- 		xfrm_put_type(x->type);
-@@ -806,7 +808,6 @@ void __xfrm_state_destroy(struct xfrm_state *x)
++	if (!tl_hba->sh)
++		return -ENODEV;
++
+ 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
+ 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
  }
- EXPORT_SYMBOL(__xfrm_state_destroy);
- 
--static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- int __xfrm_state_delete(struct xfrm_state *x)
- {
- 	struct net *net = xs_net(x);
--- 
-2.51.0
-
 
 
 
