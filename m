@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-197412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A51C8F2C8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A1FC8ED42
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E4E3B0AAF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C61234E4D8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947AA284B58;
-	Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E591B273D6D;
+	Thu, 27 Nov 2025 14:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/YvgAFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a02NKfr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D505260585;
-	Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F98E26F2A7;
+	Thu, 27 Nov 2025 14:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255745; cv=none; b=dG7icMY5HROJ+dZYwH8AOLPLGf+RgSUE4GNjMgrcX/Cu2LXRKEuj/BvsSFwtK45GSH+nflNduiJauNZ/9KCjBgJkbCp97U6h66n3hKVJcugHkjv6sGJDe1VBSfAPJMTDuW1FfFIg2Um8ls8hZEPNEOnQPrhDi3n8WLe/Gm61efw=
+	t=1764254891; cv=none; b=R0xea9m/bbeSLsVjXM2Run8tCibQb/6W+9rbfXrdGBiGnWj2Uju/IaYCNY5nQJZ4tJvUcB2YPbyqcwvV48UIKC1MQHuS4WkVkC/2t6m8kDSmbZ0ejTaCRWn39Xw0OY9DTdd9bW222y6gZH5pzrgkbnknbhFx4v/1XImW/r+jcpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255745; c=relaxed/simple;
-	bh=yAqQzi0vkUaT5HmIoD/VrMyhuD6Wr0Xtt8fgEgLE8mE=;
+	s=arc-20240116; t=1764254891; c=relaxed/simple;
+	bh=eeVjBxeO/iNBKme85sCP3RtYI9HBIIdYUX+uTf+wDdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTjd8xcESjVVkIci8s6389zTMdK66P/SokqXJ1JJAVw1/BpsQveyNmYJAMYLglQ/Wzygej3S1emdl2lXJoBGIEivfNGAFCsYPQgIh+7GsYnMNv/AkWNrOM9FQWVsNoRnwJr8foBHq5qyYDSYm0/8r3zZ+Cd8xzlLZ9tV7wvvsDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/YvgAFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF36FC4CEF8;
-	Thu, 27 Nov 2025 15:02:24 +0000 (UTC)
+	 MIME-Version; b=rd5MmRmPeyzI4hfy+aYBopjeRi8Il7NsZxD3MRPtuQqAGNYQYLX6dKMiLO8uUHl2KHUv0/VGJpTJB3Pte95pXc1FE15PSZJrOYuT4UKr8wMSekF3cEXdTQEZ5oN2eiquJd80/XHBwHx+PHgW0DOKWVzqL68LaExo0fGroCwXn1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a02NKfr7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8947C4CEF8;
+	Thu, 27 Nov 2025 14:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255745;
-	bh=yAqQzi0vkUaT5HmIoD/VrMyhuD6Wr0Xtt8fgEgLE8mE=;
+	s=korg; t=1764254891;
+	bh=eeVjBxeO/iNBKme85sCP3RtYI9HBIIdYUX+uTf+wDdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/YvgAFt05uTmHuquQBCEQvgpxjn2SdG9N9KjgvLHuygNTYiI2W7w27Jg1SIbul5p
-	 nIRFsGN3c50yXS1f3lZOv8oDe/uUGE1h05pVJL8M2XpmApi+W74PjQfLLxzFt/Z2z5
-	 J4UOGjqMQs5pQ5FuKR+oWL+b07/mW33njsyck+Rk=
+	b=a02NKfr7Iobe/UXh+YuBH1UXeumgiCvUzy6TLhNeIl9F82lTEkV8G4ARyanC0pcHC
+	 T8LlgVzyRQGtHoTeiCNQCrpNL+cZasN71bAWuao2yrO82evSuwUuEoWKqF5KXJS0d0
+	 7N8rZHJE+oF+oZ0ZvMKn3Quslk12wqcuA1wQTdrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 066/175] mptcp: decouple mptcp fastclose from tcp close
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 03/86] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
 Date: Thu, 27 Nov 2025 15:45:19 +0100
-Message-ID: <20251127144045.377899674@linuxfoundation.org>
+Message-ID: <20251127144027.931171201@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit fff0c87996672816a84c3386797a5e69751c5888 upstream.
+commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
 
-With the current fastclose implementation, the mptcp_do_fastclose()
-helper is in charge of two distinct actions: send the fastclose reset
-and cleanup the subflows.
+The DMA device pointer `dma_dev` was being dereferenced before ensuring
+that `cdns_ctrl->dmac` is properly initialized.
 
-Formally decouple the two steps, ensuring that mptcp explicitly closes
-all the subflows after the mentioned helper.
+Move the assignment of `dma_dev` after successfully acquiring the DMA
+channel to ensure the pointer is valid before use.
 
-This will make the upcoming fix simpler, and allows dropping the 2nd
-argument from mptcp_destroy_common(). The Fixes tag is then the same as
-in the next commit to help with the backports.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
+Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++----
- net/mptcp/protocol.h |    2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2785,7 +2785,11 @@ static void mptcp_worker(struct work_str
- 		__mptcp_close_subflow(sk);
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2876,7 +2876,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	dma_cap_mask_t mask;
+-	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
++	struct dma_device *dma_dev;
+ 	int ret;
  
- 	if (mptcp_close_tout_expired(sk)) {
-+		struct mptcp_subflow_context *subflow, *tmp;
-+
- 		mptcp_do_fastclose(sk);
-+		mptcp_for_each_subflow_safe(msk, subflow, tmp)
-+			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
- 		mptcp_close_wake_up(sk);
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2920,6 +2920,7 @@ static int cadence_nand_init(struct cdns
+ 		}
  	}
  
-@@ -3210,7 +3214,8 @@ static int mptcp_disconnect(struct sock
- 	/* msk->subflow is still intact, the following will not free the first
- 	 * subflow
- 	 */
--	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
-+	mptcp_do_fastclose(sk);
-+	mptcp_destroy_common(msk);
- 
- 	/* The first subflow is already in TCP_CLOSE status, the following
- 	 * can't overlap with a fallback anymore
-@@ -3389,7 +3394,7 @@ void mptcp_rcv_space_init(struct mptcp_s
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-+void mptcp_destroy_common(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct sock *sk = (struct sock *)msk;
-@@ -3398,7 +3403,7 @@ void mptcp_destroy_common(struct mptcp_s
- 
- 	/* join list will be eventually flushed (with rst) at sock lock release time */
- 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
-+		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
- 
- 	__skb_queue_purge(&sk->sk_receive_queue);
- 	skb_rbtree_purge(&msk->out_of_order_queue);
-@@ -3416,7 +3421,7 @@ static void mptcp_destroy(struct sock *s
- 
- 	/* allow the following to close even the initial subflow */
- 	msk->free_first = 1;
--	mptcp_destroy_common(msk, 0);
-+	mptcp_destroy_common(msk);
- 	sk_sockets_allocated_dec(sk);
- }
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -979,7 +979,7 @@ static inline void mptcp_propagate_sndbu
- 	local_bh_enable();
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
-+void mptcp_destroy_common(struct mptcp_sock *msk);
- 
- #define MPTCP_TOKEN_MAX_RETRIES	4
- 
++	dma_dev = cdns_ctrl->dmac->device;
+ 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
+ 						  cdns_ctrl->io.size,
+ 						  DMA_BIDIRECTIONAL, 0);
 
 
 
