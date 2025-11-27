@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54800C8EF16
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B428EC8F256
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 628894E9D3D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B51E4EDBD2
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5E33126C0;
-	Thu, 27 Nov 2025 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7784332EA0;
+	Thu, 27 Nov 2025 15:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjLWASYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3T1QV6y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997F52882C9;
-	Thu, 27 Nov 2025 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7336E28135D;
+	Thu, 27 Nov 2025 15:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255214; cv=none; b=uwXb1PHdrBwZNPNqH6Tw7Vt4H1DhADgLSjBnCFx3yMRY4W1bvy52tQ/nZiPgpH6C3sZJ1oM5De+kmzQhBrtYvVrDj4f/g7m95ntY/T63vE82Xqr+mGOZ9QTaoQLQIe/rWf94Gyr1skLUQRR8fxji3PYsR+kAk85hT8xl9jZPTvk=
+	t=1764255860; cv=none; b=Phz6bTDSnsTuHH0KVUHE7Z9jIjZf/32EcpvrwXvZhpL8gwbkXIM3xR379+wbYCQCNS8EgZaOpzuBJkAE9xTfuUCaDUdElwBEE50cUqMJtIXo0817l1jExJJaGHnDsWRMga71tZ725TQcHJkyOixhsDGEiJWJxY11GgHXc3Ool/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255214; c=relaxed/simple;
-	bh=J0urZKtwvFXI5U+KM6CtG0CCBUun85a9YhlylMDkHpM=;
+	s=arc-20240116; t=1764255860; c=relaxed/simple;
+	bh=xEYcQDAsjxtpEyuP5RyYeF6Lq7ieN7HKIWrOrQu6Tjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8o35xG7R0lPI44yP521j/OkThq7Dh7Ck5W9k4dGakV8SpiBltNFoYXAjjYFYzQBdPSArcsIRtdEsF46gwEoq9HfiIRIdF64tdnMnxU2dysigZMQH46BcDai87C7pVctCclTttKxCzFZYswKMQZDL4rmzSEeBiYax1mo7VmA4FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjLWASYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECF9C4CEF8;
-	Thu, 27 Nov 2025 14:53:33 +0000 (UTC)
+	 MIME-Version; b=MRnl6nzxCbEafdBxvbpjDBSyyZ+VgMP41QwYvZ7tEZ2903xyNjX0xCd8RbElVeVwSV7FIO6Qt+FU6i180ivP/1gCBBgakIWldFFWlEiACwQY2Mi5Er64DZa2rkFOz9zHx+nbmyojgZl1aAxQEAUplRdgqIh3OcoiiUlMqbx8vIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3T1QV6y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F16C4CEF8;
+	Thu, 27 Nov 2025 15:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255214;
-	bh=J0urZKtwvFXI5U+KM6CtG0CCBUun85a9YhlylMDkHpM=;
+	s=korg; t=1764255860;
+	bh=xEYcQDAsjxtpEyuP5RyYeF6Lq7ieN7HKIWrOrQu6Tjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjLWASYpoegoV+S2ejWHV+yyE73pid3spy/v2pxWAtccnAa7E2tnpuVWuAXBqnY8Y
-	 7rcmQwKZTgD+x1+9+y3fEjaaiBKZ/EIRIY6H930hbGHMCU/Ozxg0haSFKKUa4y3OL/
-	 bTw9I3/crdzlsMB1UhpjSFeeJXt42mGSF7RoP/iI=
+	b=i3T1QV6yN2Re3TeeiZPgJd6eGKnLY3d7w3h002KzZtHPmCOv2EsmIXviNwYH67EUD
+	 tboEb+OaPzFMz9fbz8HkjSGq9Lf/icZsVtvO/a+jRUwKVHC8/eIRBa+WFxOoTb2nM1
+	 0reEMi/QJgV7EViyyi6hQIOK2FQB9oQbd3Hf0TNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peyton.Lee@amd.com,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 047/112] drm/amd: Skip power ungate during suspend for VPE
+	Zilin Guan <zilin@seu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 096/175] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
 Date: Thu, 27 Nov 2025 15:45:49 +0100
-Message-ID: <20251127144034.563794926@linuxfoundation.org>
+Message-ID: <20251127144046.467085240@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 31ab31433c9bd2f255c48dc6cb9a99845c58b1e4 upstream.
+[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
 
-During the suspend sequence VPE is already going to be power gated
-as part of vpe_suspend().  It's unnecessary to call during calls to
-amdgpu_device_set_pg_state().
+The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
+obtain a ruleset reference. If the subsequent call to
+mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
+an error without releasing the ruleset reference, causing a memory leak.
 
-It actually can expose a race condition with the firmware if s0i3
-sequence starts as well.  Drop these calls.
+Fix this by using a goto to the existing error handling label, which
+calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
 
-Cc: Peyton.Lee@amd.com
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2a6c826cfeedd7714611ac115371a959ead55bda)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3090,10 +3090,11 @@ int amdgpu_device_set_pg_state(struct am
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
- 		     adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SDMA))
- 			continue;
--		/* skip CG for VCE/UVD, it's handled specially */
-+		/* skip CG for VCE/UVD/VPE, it's handled specially */
- 		if (adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_UVD &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCN &&
-+		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VPE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_JPEG &&
- 		    adev->ip_blocks[i].version->funcs->set_powergating_state) {
- 			/* enable powergating to save power */
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+index 6a4a81c63451c..353fd9ca89a68 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -830,8 +830,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
+ 		return -EINVAL;
+ 
+ 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
+-	if (!rule)
+-		return -EINVAL;
++	if (!rule) {
++		err = -EINVAL;
++		goto err_rule_get_stats;
++	}
+ 
+ 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
+ 					  &drops, &lastuse, &used_hw_stats);
+-- 
+2.51.0
+
 
 
 
