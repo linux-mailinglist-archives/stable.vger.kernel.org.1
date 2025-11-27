@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-197472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67890C8F28A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B83C8F0E2
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2D254EF19E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F593BB1D7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1E63115A6;
-	Thu, 27 Nov 2025 15:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C395332EA9;
+	Thu, 27 Nov 2025 14:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4vMeEEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8GrQU7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99FA28135D;
-	Thu, 27 Nov 2025 15:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC19C289811;
+	Thu, 27 Nov 2025 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255918; cv=none; b=EdRvcBzT8tmXgGEKe9A1VkxgPPf9XgpGnD8tP6OTCx8k5PyiKsTQjZMPa9nyQiuBeSpH5wOEe2XlukZmaPGc3Owa8uZCnB3ReRf8kdsqmb2h+woxu0f/7XCBhbeM++knD0q/YMpGDV9nWVf+HdMjOxfpBP2V8/rJ4BgSDwtkqIg=
+	t=1764255447; cv=none; b=k4/GIysSuPz3I6M1tDEBG3f8mHvqSs0bT8LP+W2wlbGRFdUwhuezL0AE5XeLlN+mh/vmyWRCcOc4eq0e+4FXS821zevre6r9KOuLBNvpXLUEUjU1+aAPhoLzuljjMETdITmbJkj3kuypZ+KoVXh1lgrahg0+NWT6Gev+a5+FFEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255918; c=relaxed/simple;
-	bh=vG3HDGHnAhZZ6HMJ2UzI5T89x7VzgNXnKesGaqivPeM=;
+	s=arc-20240116; t=1764255447; c=relaxed/simple;
+	bh=h4Vjgoc1CTHv9BJjQFfT0X03Vxr9Ne8qIt+PD3+zs9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro0scJFz3my53dL9z6rjpc8X9H26MCgnAM32SjEEfw3Q00cFno394yE+8Jbv8Kt/7hnnPjSl7db8rck1QkpWAdVoiKM+PfQVzQLOu1df5zuvfqZojiqAZFNMfX+2oEPuEuG2Zcw0JKDfSniWl0YR5rzJNyiqmTlSgZWJJaxq7q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4vMeEEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A438C4CEF8;
-	Thu, 27 Nov 2025 15:05:17 +0000 (UTC)
+	 MIME-Version; b=YEsDBpBnuNhyEd91ewI6GPMi8NtAQa4fiiRgrb9WDIaEQLjUUsFEWay0t6PWSjTm8s224xJRo03d8lrYbrLaN09pH034Mn/5bDeFHx3z/OrBU316Ue5COUDxNjAp1C4BKKZ9Hh27Hsi7Pqc1VN16HJbna+YwD5MekgAZbMcOuWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8GrQU7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB6BC113D0;
+	Thu, 27 Nov 2025 14:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255917;
-	bh=vG3HDGHnAhZZ6HMJ2UzI5T89x7VzgNXnKesGaqivPeM=;
+	s=korg; t=1764255447;
+	bh=h4Vjgoc1CTHv9BJjQFfT0X03Vxr9Ne8qIt+PD3+zs9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4vMeEEMSisUJm2WcvfQUBXbAOZMWtFirEvz5xhpXeeAP7dr1Wr8Q+HROm8RH97FR
-	 /IGrnveMwHGmhlt3Lf0/9tKtKSK1D10p89wABdQ5upMF+qeJPqO4M19v1WFzypwdtp
-	 bffBtNTO9WFrBD9PPjGB5MwcQwiamp/mDd2cdju4=
+	b=r8GrQU7QRtJyWSu/2jhnD23rRcF26WG8gZNly9FYDN5UWMFQI8NixrxCdwQkoVgkY
+	 3UDH0nKNzr/PUOQtGOHq9J12WySPhJfhpV2VLZlkx0gTpEEm9kOebPeVAB/P/UVJKy
+	 95egyWPOIjQJwGBwoXNRxO9E2bNXmNGFQP5oyQ5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Hansen Dsouza <hansen.dsouza@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 159/175] btrfs: set inode flag BTRFS_INODE_COPY_EVERYTHING when logging new name
+Subject: [PATCH 6.12 110/112] drm/amd/display: disable DPP RCG before DPP CLK enable
 Date: Thu, 27 Nov 2025 15:46:52 +0100
-Message-ID: <20251127144048.760253388@linuxfoundation.org>
+Message-ID: <20251127144036.878056262@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +65,245 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 953902e4fb4c373c81a977f78e40f9f93a79e20f ]
+[ Upstream commit 1bcd679209420305a86833bc357d50021909edaf ]
 
-If we are logging a new name make sure our inode has the runtime flag
-BTRFS_INODE_COPY_EVERYTHING set so that at btrfs_log_inode() we will find
-new inode refs/extrefs in the subvolume tree and copy them into the log
-tree.
+[why]
+DPP CLK enable needs to disable DPPCLK RCG first.
+The DPPCLK_en in dccg should always be enabled when the corresponding
+pipe is enabled.
 
-We are currently doing it when adding a new link but we are missing it
-when renaming.
-
-An example where this makes a new name not persisted:
-
-  1) create symlink with name foo in directory A
-  2) fsync directory A, which persists the symlink
-  3) rename the symlink from foo to bar
-  4) fsync directory A to persist the new symlink name
-
-Step 4 isn't working correctly as it's not logging the new name and also
-leaving the old inode ref in the log tree, so after a power failure the
-symlink still has the old name of "foo". This is because when we first
-fsync directoy A we log the symlink's inode (as it's a new entry) and at
-btrfs_log_inode() we set the log mode to LOG_INODE_ALL and then because
-we are using that mode and the inode has the runtime flag
-BTRFS_INODE_NEEDS_FULL_SYNC set, we clear that flag as well as the flag
-BTRFS_INODE_COPY_EVERYTHING. That means the next time we log the inode,
-during the rename through the call to btrfs_log_new_name() (calling
-btrfs_log_inode_parent() and then btrfs_log_inode()), we will not search
-the subvolume tree for new refs/extrefs and jump directory to the
-'log_extents' label.
-
-Fix this by making sure we set BTRFS_INODE_COPY_EVERYTHING on an inode
-when we are about to log a new name. A test case for fstests will follow
-soon.
-
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/ac949c74-90c2-4b9a-b7fd-1ffc5c3175c7@gmail.com/
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cfa0904a35fd ("drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c    | 1 -
- fs/btrfs/tree-log.c | 3 +++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c  |   38 ++++++++++------
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c |   21 +++++---
+ 2 files changed, 38 insertions(+), 21 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 68b2140c9fdb1..79a68f1871679 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6850,7 +6850,6 @@ static int btrfs_link(struct dentry *old_dentry, struct inode *dir,
- 	BTRFS_I(inode)->dir_index = 0ULL;
- 	inode_inc_iversion(inode);
- 	inode_set_ctime_current(inode);
--	set_bit(BTRFS_INODE_COPY_EVERYTHING, &BTRFS_I(inode)->runtime_flags);
+--- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+@@ -391,6 +391,7 @@ static void dccg35_set_dppclk_rcg(struct
  
- 	ret = btrfs_add_link(trans, BTRFS_I(dir), BTRFS_I(inode),
- 			     &fname.disk_name, 1, index);
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index dc0f3b5778b48..b203d8f2d2aaf 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -7608,6 +7608,9 @@ void btrfs_log_new_name(struct btrfs_trans_handle *trans,
- 	bool log_pinned = false;
- 	int ret;
+ 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
  
-+	/* The inode has a new name (ref/extref), so make sure we log it. */
-+	set_bit(BTRFS_INODE_COPY_EVERYTHING, &inode->runtime_flags);
 +
- 	btrfs_init_log_ctx(&ctx, inode);
- 	ctx.logging_new_name = true;
+ 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
+ 		return;
  
--- 
-2.51.0
-
+@@ -411,6 +412,8 @@ static void dccg35_set_dppclk_rcg(struct
+ 	BREAK_TO_DEBUGGER();
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
++
+ }
+ 
+ static void dccg35_set_dpstreamclk_rcg(
+@@ -1112,30 +1115,24 @@ static void dcn35_set_dppclk_enable(stru
+ {
+ 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
+ 
++
+ 	switch (dpp_inst) {
+ 	case 0:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK0_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 1:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK1_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 2:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK2_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 3:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK3_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	default:
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
+ 
+ }
+ 
+@@ -1163,14 +1160,18 @@ static void dccg35_update_dpp_dto(struct
+ 			ASSERT(false);
+ 			phase = 0xff;
+ 		}
++		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
+ 
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+ 				DPPCLK0_DTO_PHASE, phase,
+ 				DPPCLK0_DTO_MODULO, modulo);
+ 
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, true);
+-	} else
++	} else {
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, false);
++		/*we have this in hwss: disable_plane*/
++		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
++	}
+ 	dccg->pipe_dppclk_khz[dpp_inst] = req_dppclk;
+ }
+ 
+@@ -1182,6 +1183,7 @@ static void dccg35_set_dppclk_root_clock
+ 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+ 		return;
+ 
++
+ 	switch (dpp_inst) {
+ 	case 0:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
+@@ -1198,6 +1200,8 @@ static void dccg35_set_dppclk_root_clock
+ 	default:
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
++
+ }
+ 
+ static void dccg35_get_pixel_rate_div(
+@@ -1521,28 +1525,30 @@ static void dccg35_set_physymclk_root_cl
+ 	switch (phy_inst) {
+ 	case 0:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 1:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 2:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 3:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 4:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	default:
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
++
+ }
+ 
+ static void dccg35_set_physymclk(
+@@ -1643,6 +1649,8 @@ static void dccg35_dpp_root_clock_contro
+ 		return;
+ 
+ 	if (clock_on) {
++		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
++
+ 		/* turn off the DTO and leave phase/modulo at max */
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, 1);
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+@@ -1654,6 +1662,8 @@ static void dccg35_dpp_root_clock_contro
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+ 			  DPPCLK0_DTO_PHASE, 0,
+ 			  DPPCLK0_DTO_MODULO, 1);
++		/*we have this in hwss: disable_plane*/
++		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
+ 	}
+ 
+ 	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -241,11 +241,6 @@ void dcn35_init_hw(struct dc *dc)
+ 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
+ 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
+ 	}
+-	if (res_pool->dccg->funcs->dccg_root_gate_disable_control) {
+-		for (i = 0; i < res_pool->pipe_count; i++)
+-			res_pool->dccg->funcs->dccg_root_gate_disable_control(res_pool->dccg, i, 0);
+-	}
+-
+ 	for (i = 0; i < res_pool->audio_count; i++) {
+ 		struct audio *audio = res_pool->audios[i];
+ 
+@@ -885,12 +880,18 @@ void dcn35_init_pipes(struct dc *dc, str
+ void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
+ 			       struct dc_state *context)
+ {
++	struct dpp *dpp = pipe_ctx->plane_res.dpp;
++	struct dccg *dccg = dc->res_pool->dccg;
++
++
+ 	/* enable DCFCLK current DCHUB */
+ 	pipe_ctx->plane_res.hubp->funcs->hubp_clk_cntl(pipe_ctx->plane_res.hubp, true);
+ 
+ 	/* initialize HUBP on power up */
+ 	pipe_ctx->plane_res.hubp->funcs->hubp_init(pipe_ctx->plane_res.hubp);
+-
++	/*make sure DPPCLK is on*/
++	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, true);
++	dpp->funcs->dpp_dppclk_control(dpp, false, true);
+ 	/* make sure OPP_PIPE_CLOCK_EN = 1 */
+ 	pipe_ctx->stream_res.opp->funcs->opp_pipe_clock_control(
+ 			pipe_ctx->stream_res.opp,
+@@ -907,6 +908,7 @@ void dcn35_enable_plane(struct dc *dc, s
+ 		// Program system aperture settings
+ 		pipe_ctx->plane_res.hubp->funcs->hubp_set_vm_system_aperture_settings(pipe_ctx->plane_res.hubp, &apt);
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) =\n", __func__, dpp->inst);
+ 
+ 	if (!pipe_ctx->top_pipe
+ 		&& pipe_ctx->plane_state
+@@ -922,6 +924,8 @@ void dcn35_plane_atomic_disable(struct d
+ {
+ 	struct hubp *hubp = pipe_ctx->plane_res.hubp;
+ 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
++	struct dccg *dccg = dc->res_pool->dccg;
++
+ 
+ 	dc->hwss.wait_for_mpcc_disconnect(dc, dc->res_pool, pipe_ctx);
+ 
+@@ -939,7 +943,8 @@ void dcn35_plane_atomic_disable(struct d
+ 	hubp->funcs->hubp_clk_cntl(hubp, false);
+ 
+ 	dpp->funcs->dpp_dppclk_control(dpp, false, false);
+-/*to do, need to support both case*/
++	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, false);
++
+ 	hubp->power_gated = true;
+ 
+ 	hubp->funcs->hubp_reset(hubp);
+@@ -951,6 +956,8 @@ void dcn35_plane_atomic_disable(struct d
+ 	pipe_ctx->top_pipe = NULL;
+ 	pipe_ctx->bottom_pipe = NULL;
+ 	pipe_ctx->plane_state = NULL;
++	//DC_LOG_DEBUG("%s: dpp_inst(%d)=\n", __func__, dpp->inst);
++
+ }
+ 
+ void dcn35_disable_plane(struct dc *dc, struct dc_state *state, struct pipe_ctx *pipe_ctx)
 
 
 
