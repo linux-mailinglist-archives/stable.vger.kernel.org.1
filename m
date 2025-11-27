@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-197366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97025C8F061
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E916AC8F166
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B07E734B1A0
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8764D4EC348
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D09322578A;
-	Thu, 27 Nov 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB68B264F81;
+	Thu, 27 Nov 2025 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwSKe4vF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au739uWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C86334363;
-	Thu, 27 Nov 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A697A332EA0;
+	Thu, 27 Nov 2025 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255613; cv=none; b=td494LDAQNjg0W8RBoFEax76q225Qkdemvdx3kO/CLMtmwiKcvcrUFEfQ8NmBxtcXRg0ZJ/DXP/1FJBRI/l0j666PhYt1HNhcgrmLf+5c8EX5/gPRn+zncD4x0/P5jeswzqGLqQ4rcbl7lHU3v77cYaUjrnkN7QvKliUwSSVdug=
+	t=1764255618; cv=none; b=WLr5Y3w4m8zvk4no0gYqpAbVfcjwtMF+XUAsRnHpyCE+S2NKoZofFev9o+t9fiYpVM1ZsEZ6FouKkE7gBs21FNwGj3dVLl7TxJLz9MdFrKEtEc/ZvvDovFCnOTHUJw8QBiIZUaLUF0PD2tHYUsUkcyPh1+U/vMaRcnL1/pgy4BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255613; c=relaxed/simple;
-	bh=DUl2amK4oQOqo8julhTO32WvYse2KTjTKDnq8PM/oHU=;
+	s=arc-20240116; t=1764255618; c=relaxed/simple;
+	bh=HAnmJjy3CBZNtiApNbPcDGRKw7WiCGEg0j3ig2o50pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q7cTFy0tzJZzM0AI80IwYA/LJGyXhzjWkHS8QT6QWLWv0lugI5kzzMLMguhmAodqgL1wObxyrOzy2I32PzfcUOcclN8KWF3Zg8+BAQL/v74STHX0kZ8kATeSSLJTeuAcuxqJa01WS/HFcD5pTLgUdp7cHi99CR31e3iw5l6Nm1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwSKe4vF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BD8C4CEF8;
-	Thu, 27 Nov 2025 15:00:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I3iuDQRUz6viBqSIzN/gswlqiTXm+g7/X1MubmacF58Rv7M9nC5+8UnjBuH3TZS8um4dbInRUh8gCkyVOB4qhVZcUVUGbMmZir5GCN+lhIFtu4GR471y1b7emRK1BwWp26alQ2UhH3HJi/9rk882Bug4sHnSAZTf2z9swtXHlf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au739uWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317B6C4CEF8;
+	Thu, 27 Nov 2025 15:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255612;
-	bh=DUl2amK4oQOqo8julhTO32WvYse2KTjTKDnq8PM/oHU=;
+	s=korg; t=1764255618;
+	bh=HAnmJjy3CBZNtiApNbPcDGRKw7WiCGEg0j3ig2o50pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwSKe4vF18t+Kg3oWsFCH3IQpH+oZM32vY6coRMUaVp7QHN5y3BffmMMZyN6mDItR
-	 wz/FB79UCZGdUvJgIdHkdcPfxrG4UOcIpoM63QBMCyx6U9Jc5GzVVofBJCmD9ZCR3U
-	 MCe4dWmg9Hbu7h1luznVP9HbwG0BWe/E5HWHtpSs=
+	b=Au739uWs8ZiY7NfwdaXeRWp+bXIppV8ivpqREONytyaIlxKa+nifFsLGkREypT4k6
+	 6vRhLr6T/ny6A+f35XQPDQfJRNR8ACf2PTAa1k8bl5clp8twGbRJspRvzGDIomZB1t
+	 hAFXbMMyFqkDZK9IAbHhX4BJhrqCD5n/rpZXsRpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cihan Ozakca <cozakca@outlook.com>,
 	Kurt Borja <kuurtb@gmail.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.17 053/175] platform/x86: alienware-wmi-wmax: Fix "Alienware m16 R1 AMD" quirk order
-Date: Thu, 27 Nov 2025 15:45:06 +0100
-Message-ID: <20251127144044.901547016@linuxfoundation.org>
+Subject: [PATCH 6.17 054/175] platform/x86: alienware-wmi-wmax: Add support for the whole "M" family
+Date: Thu, 27 Nov 2025 15:45:07 +0100
+Message-ID: <20251127144044.938427463@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
 References: <20251127144042.945669935@linuxfoundation.org>
@@ -69,52 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Kurt Borja <kuurtb@gmail.com>
 
-commit bd4f9f113dda07293ed4002a17d14f62121d324f upstream.
+commit e8c3c875e1017c04c594f0e6127ba82095b1cb87 upstream.
 
-Quirks are matched using dmi_first_match(), therefore move the
-"Alienware m16 R1 AMD" entry above other m16 entries.
+Add support for the whole "Alienware M" laptop family.
 
-Reported-by: Cihan Ozakca <cozakca@outlook.com>
-Fixes: e2468dc70074 ("Revert "platform/x86: alienware-wmi-wmax: Add G-Mode support to Alienware m16 R1"")
 Cc: stable@vger.kernel.org
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://patch.msgid.link/20251103-family-supp-v1-1-a241075d1787@gmail.com
+Link: https://patch.msgid.link/20251103-family-supp-v1-3-a241075d1787@gmail.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/alienware-wmi-wmax.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |   20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
 --- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
 +++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -122,20 +122,20 @@ static const struct dmi_system_id awcc_d
+@@ -106,18 +106,10 @@ static const struct dmi_system_id awcc_d
  		.driver_data = &generic_quirks,
  	},
  	{
--		.ident = "Alienware m16 R1",
-+		.ident = "Alienware m16 R1 AMD",
+-		.ident = "Alienware m15 R5",
++		.ident = "Alienware m15",
  		.matches = {
  			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
- 		},
--		.driver_data = &g_series_quirks,
-+		.driver_data = &generic_quirks,
- 	},
- 	{
--		.ident = "Alienware m16 R1 AMD",
-+		.ident = "Alienware m16 R1",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
- 		},
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15 R5"),
+-		},
 -		.driver_data = &generic_quirks,
-+		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Alienware m15 R7",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15 R7"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15"),
+ 		},
+ 		.driver_data = &generic_quirks,
+ 	},
+@@ -146,18 +138,18 @@ static const struct dmi_system_id awcc_d
+ 		.driver_data = &generic_quirks,
  	},
  	{
- 		.ident = "Alienware m16 R2",
+-		.ident = "Alienware m17 R5",
++		.ident = "Alienware m17",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m17 R5 AMD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m17"),
+ 		},
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Alienware m18 R2",
++		.ident = "Alienware m18",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m18 R2"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m18"),
+ 		},
+ 		.driver_data = &generic_quirks,
+ 	},
 
 
 
