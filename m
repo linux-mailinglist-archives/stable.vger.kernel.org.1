@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442CBC8ED8F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BBFC8F0B8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42AA93463E4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDB13BDDC2
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EC3334366;
-	Thu, 27 Nov 2025 14:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505E1334376;
+	Thu, 27 Nov 2025 14:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILmc2QqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmiOb88J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E848A29993F;
-	Thu, 27 Nov 2025 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038C333345D;
+	Thu, 27 Nov 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254969; cv=none; b=bQHB6yIh73f475nT5EB78IRcQcMzS392+S3pxVs18PkJu8ueuDH+A0aC/OGasJnQMAT3P7PIKXJdUSmicVHYEuMzHAkPjhs95dFv5JJjNIp4EkpCu4Ib70/AXgtCHIucWsxxzBMPeZblxEw3yguTNc1mpY6YfTEm/9SxjCeerOU=
+	t=1764255385; cv=none; b=tL+SrRZol/t6D0x2n/R5J1aqSSbsJOdC8DOtpc4s70lhKKMAZddE5VqzrlFWoZNO29s5qmNiwOvVDqNKB5DzybwI17Go9KKQj0gbOFhqsTnehkJujMiM9qamsCtMiAeAHnlLPsiBJpORq6OSrJKCfPm6HJc8bX6uXmKp3jqpmoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254969; c=relaxed/simple;
-	bh=PMmJylXFB6BD1q/K6ChqrWlXfrkXL3dV7S9SquBabl0=;
+	s=arc-20240116; t=1764255385; c=relaxed/simple;
+	bh=g8cYd937uhAA0JKzaHE8i3GHzThD2Rv3IG7TSbpR6hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NsivqInUzYrQTALg3xawJqDI9sVwim1/L7oR+CFUWj3PpEEBTsjiOHSWLfPTShC0z3U8n9WHCn3GMjCPLbabit9cC/POk9eElifoObXkLO1ilIvgihaKF5JQsA7Xl3R7QB73f5NtSxAOszsV55nz5YA81e/fnGOVRwvrC7HeJ+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILmc2QqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75001C113D0;
-	Thu, 27 Nov 2025 14:49:28 +0000 (UTC)
+	 MIME-Version; b=FvDUoWtBiBN1wmzdq6m8njyVhChDt0sI0+qlrkmfrtUglZZJ5C2EQ2Z2oF9cO6/XXD41w0JzBJh1ABPU6AA+XSsbNoa4YAEQOdO3SVx7jX/RPDIN3PFSuJbnydnovYX+DXRF3FntGNGan3+gAkWBWgRtEzFyYtk7JTb3T/i0+KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmiOb88J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B47C4CEF8;
+	Thu, 27 Nov 2025 14:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254968;
-	bh=PMmJylXFB6BD1q/K6ChqrWlXfrkXL3dV7S9SquBabl0=;
+	s=korg; t=1764255384;
+	bh=g8cYd937uhAA0JKzaHE8i3GHzThD2Rv3IG7TSbpR6hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILmc2QqQxweclqJc/FXcYv8x54GSS6uWNVlOj56LvnOWBFS4uKZbSfWl8yrG4jKj5
-	 eXBz6PcqFgX5ub4crgsh0RDveKC0xh0QR0z/zUeC9gv14jbrpM5oAzwlZqQaGULtzL
-	 8UzOKiNuAwz633xbooK52KODNFghKezEie0foMZs=
+	b=gmiOb88Jdo6HO3AtcVDGK061KOdg4W/jwIzfqrCvbijnh+Hk9zUS2GmCLGK7uGAsj
+	 Ex5ugsWlcvvo8mMWAC3Eu4eK9ssjUQ0XOxGH3J9kqjwW1b6OrPthTavF+CSzj4/SDD
+	 0MOMRRokx3tLpDuq6/AVySzTf4BqAwsxuzjKaySE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Prateek Agarwal <praagarwal@nvidia.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 48/86] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
+Subject: [PATCH 6.12 062/112] drm/tegra: Add call to put_pid()
 Date: Thu, 27 Nov 2025 15:46:04 +0100
-Message-ID: <20251127144029.585565490@linuxfoundation.org>
+Message-ID: <20251127144035.109861542@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Prateek Agarwal <praagarwal@nvidia.com>
 
-[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
+[ Upstream commit 6cbab9f0da72b4dc3c3f9161197aa3b9daa1fa3a ]
 
-isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is returned from the probe function as is but
-probe functions should return normal errnos. A proper implementation
-can be found in drivers/leds/leds-ss4200.c.
+Add a call to put_pid() corresponding to get_task_pid().
+host1x_memory_context_alloc() does not take ownership of the PID so we
+need to free it here to avoid leaking.
 
-Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
-normal errno before returning.
-
-Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Prateek Agarwal <praagarwal@nvidia.com>
+Fixes: e09db97889ec ("drm/tegra: Support context isolation")
+[mperttunen@nvidia.com: reword commit message]
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20250919-host1x-put-pid-v1-1-19c2163dfa87@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tegra/uapi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-index ff49025ec0856..bb38e5f021a80 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-@@ -106,11 +106,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/gpu/drm/tegra/uapi.c b/drivers/gpu/drm/tegra/uapi.c
+index 5adab6b229164..d0b6a1fa6efad 100644
+--- a/drivers/gpu/drm/tegra/uapi.c
++++ b/drivers/gpu/drm/tegra/uapi.c
+@@ -114,9 +114,12 @@ int tegra_drm_ioctl_channel_open(struct drm_device *drm, void *data, struct drm_
+ 		if (err)
+ 			goto put_channel;
  
- 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+-		if (supported)
++		if (supported) {
++			struct pid *pid = get_task_pid(current, PIDTYPE_TGID);
+ 			context->memory_context = host1x_memory_context_alloc(
+-				host, client->base.dev, get_task_pid(current, PIDTYPE_TGID));
++				host, client->base.dev, pid);
++			put_pid(pid);
++		}
  
- 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 
- 	pcu_base &= GENMASK(10, 0);
- 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
+ 		if (IS_ERR(context->memory_context)) {
+ 			if (PTR_ERR(context->memory_context) != -EOPNOTSUPP) {
 -- 
 2.51.0
 
