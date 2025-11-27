@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EECC8EF28
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C37C8ED98
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40C5E4E9D4A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 093BE4EB2B1
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF82528D8E8;
-	Thu, 27 Nov 2025 14:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5359D28469B;
+	Thu, 27 Nov 2025 14:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m87HKWwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3DXYDa2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5603126C0;
-	Thu, 27 Nov 2025 14:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1003E27F18B;
+	Thu, 27 Nov 2025 14:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255238; cv=none; b=f7HYDqKSbwI76Qk4nVxdSR5gd+2AD1DQKB/RJW/4wPWwnxqwmyojPDWznKps21nXKhGJwJ2kjT2/Nd707lV7fM1vldrZhd7cthsyaVCZYQQ60IBcMPocHWU+FkSKFjGEyyP/z4iWbFs9FKIBzX0iXDaWI3zHeGDmaeZVFNnf69I=
+	t=1764254949; cv=none; b=EnL2CeSfDLTt+/6tNyH0cWyxQQmlDNF2v2d8Yeev4HexPS9cktlkNeDio0zgu1I/eAHfmW16Hsd6u311fBlP/0hb4ET5OCmq2EqGXHrm/3AdUpaKV9UPNjX9GU/8N1R+BWKA/uQcZQFFUCaGyooq5CN2FQ+ZD0mnchpAEmAA0RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255238; c=relaxed/simple;
-	bh=b3zVerin3E+gmKgcto8U+7G7rjRcxSXGfpANryebFlY=;
+	s=arc-20240116; t=1764254949; c=relaxed/simple;
+	bh=fmC3U9LGnWn+uMCAT+/NEDdpngdoksLFKXgCTX2usx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nss7tsSFXhU66U0jG+1F6m+ISmMEHSYpxUac0qS0IYdjR6qmp5co+azTHsqP6jMiXtnbX3rL6mlyQ/OfGaHGiUgMKyEh6KwhrtyHn7abYsZSd0x1qTGzi8TemcuZKah8A/h1HJi9sRI+NVGiqVKGdJNB8MBRRZrF4wxz3kMUXKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m87HKWwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD842C4CEF8;
-	Thu, 27 Nov 2025 14:53:57 +0000 (UTC)
+	 MIME-Version; b=XpSsgJ0FNtW4T88VZvVWnw/A++2AZypBRCxLqsMxirArRk6By1kSmi51javE9TajmlSgjAuX51M8wpfubd78iA9zShCHSoss1KeMKdj8d4F0jLDbvhaHn/uECq22294s1HdZfnRn/UjJFTcETH+7IBOsCRWVGYUqiJ1awmwWFg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3DXYDa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9231EC116C6;
+	Thu, 27 Nov 2025 14:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255238;
-	bh=b3zVerin3E+gmKgcto8U+7G7rjRcxSXGfpANryebFlY=;
+	s=korg; t=1764254948;
+	bh=fmC3U9LGnWn+uMCAT+/NEDdpngdoksLFKXgCTX2usx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m87HKWwVetZyQi39PzqbmjEv+4m29pk5eMYcddEU5F6qpkeZkcL5ZmmkgaRm9CZuv
-	 8Wsy910wERrerAgn8YvLiZ64v1HwJ+fVuJth4UimwELG5dO1Tj3CPNN9MzwM0Tf8Ba
-	 22JBFSIBHC1hwZTtuwhGhUA6UQAfmIl+FlMv+IyI=
+	b=q3DXYDa2rh5nhO0X9KsxOzgx73SEP3RsXsHWF/OgFtgwwAGniIxEKCF6PV2/zJV0a
+	 wG392qhBJerFurYr6VK81Vig4VRiuBVfW5JMq/rENGVsL0527p90SRqMf5LOiiGCv7
+	 MhZzzGwMm3f9gGv7mBM1i788+qUCo5Aps4NqeZp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/112] xfrm: set err and extack on failure to create pcpu SA
-Date: Thu, 27 Nov 2025 15:45:56 +0100
-Message-ID: <20251127144034.819527806@linuxfoundation.org>
+Subject: [PATCH 6.6 41/86] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
+Date: Thu, 27 Nov 2025 15:45:57 +0100
+Message-ID: <20251127144029.330185627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 1dcf617bec5cb85f68ca19969e7537ef6f6931d3 ]
+[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
 
-xfrm_state_construct can fail without setting an error if the
-requested pcpu_num value is too big. Set err and add an extack message
-to avoid confusing userspace.
+The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
+obtain a ruleset reference. If the subsequent call to
+mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
+an error without releasing the ruleset reference, causing a memory leak.
 
-Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fix this by using a goto to the existing error handling label, which
+calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
+
+Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d41e5642625e3..3d0fdeebaf3c8 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -893,8 +893,11 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+index 9fd1ca0792584..fba545938fd7d 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -816,8 +816,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
+ 		return -EINVAL;
  
- 	if (attrs[XFRMA_SA_PCPU]) {
- 		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
--		if (x->pcpu_num >= num_possible_cpus())
-+		if (x->pcpu_num >= num_possible_cpus()) {
-+			err = -ERANGE;
-+			NL_SET_ERR_MSG(extack, "pCPU number too big");
- 			goto error;
-+		}
- 	}
+ 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
+-	if (!rule)
+-		return -EINVAL;
++	if (!rule) {
++		err = -EINVAL;
++		goto err_rule_get_stats;
++	}
  
- 	err = __xfrm_init_state(x, false, attrs[XFRMA_OFFLOAD_DEV], extack);
+ 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
+ 					  &drops, &lastuse, &used_hw_stats);
 -- 
 2.51.0
 
