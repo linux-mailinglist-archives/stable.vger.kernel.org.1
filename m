@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320A3C8EF7F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F334C8EDB4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A01DB3B9492
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D634B941
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E36E2882C9;
-	Thu, 27 Nov 2025 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4224731A065;
+	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPunQAKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGivUXTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED02299943;
-	Thu, 27 Nov 2025 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350FB3128D0;
+	Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255189; cv=none; b=dMdDtyffMC1VlDEVqoN1WpUQKRht2sodAHTBX787rvsf37Z2YSFY7TiirdaadAF83gYUBcGpqL8oY+eLx6sc1dL7EdST3b2zOijmqhT4WOTIZ9CTSgW7KdQi7DgOrFV6ocV7DCcC/mJ4aSjYPjHsOth4rKzD5J/rpXmeW+JoOFo=
+	t=1764254999; cv=none; b=Dg0HmyyGAGiZne2lGCHT+55jy4C/StoEuxY3tCY5PYsQLkjHflmy80Cay6pUgLS37AefvAAjoY1P2NOon2U6xG7eutKNOJar5VzEocDcVfBungfJoWO3FCFfdPW29tphgcA312JPyWz9bsBwMK34AFXfms235daBbYGBhQ77b+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255189; c=relaxed/simple;
-	bh=qd2SHDIVnvCLxxasESOtKR7rsRqJH+G3lp+TtsxeeM0=;
+	s=arc-20240116; t=1764254999; c=relaxed/simple;
+	bh=sX4JdTQKo8yosdp5XJtgE2GI7PGzAr/nA7v8KnOpeBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r//C4wPveicPbSrRCtWIKQLR4fxzTzCFqLTZyILW1iYHi3Fcgz3nXBWMDfv4ZQLGyrxSWbZw6526Y25qcnOWTLy7IS9vmiKnC6QyJfMtGmLBKo5fn+CNXK2EE+FWA87xPnp6a3XJsxbkKcxzVb297N0In5StkAq3g1I6vgq7BoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPunQAKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED65C4CEF8;
-	Thu, 27 Nov 2025 14:53:08 +0000 (UTC)
+	 MIME-Version; b=DW893mmiTEqCyxMeJMWE+KBbONf+IGbuxpkJHOiwxGer8QQNhYWkYsifRzm4MG1e9dc8CMDx7wkd2p25evDmDnCCnfYPjP5ohpZBFyRrzdKoKLwWBiS8MPtdom1w5GzvfT+Irb01C74M9/VxBRzPa0vHvuAkkS5veqdCjteCR5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGivUXTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629A6C4CEF8;
+	Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255189;
-	bh=qd2SHDIVnvCLxxasESOtKR7rsRqJH+G3lp+TtsxeeM0=;
+	s=korg; t=1764254997;
+	bh=sX4JdTQKo8yosdp5XJtgE2GI7PGzAr/nA7v8KnOpeBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPunQAKtVLKV3peYKtTHqSxIEIw37UN7Q+CoIPlE0jhNWGnVxo0Wx0UkUey2TzWDm
-	 T6J7ZS9v2HeffzEvpJHcJBduLPGnTt8kRmPW05Pyhk2p0w0rmVSxItl1Mb5kuSAHck
-	 hzCpjsnsyJUxJEgDGHdv+7aRK0VWodABNi3M5Dxw=
+	b=eGivUXTl3AhVyKfaHKa7z5lfZhLmzMoOn7ZVErWPvyV6NaZQVTNwq+UwD+RO+JOew
+	 OkgYvR4OpBAlq4P6W4yhNZu9FqueDoksy8r+JZz6+DSC1aiiSrhYkE3/YPk6XBoU0D
+	 kZOPQxVgM6T6CL7NPrch/7SH/n3rsfa9eymKx7Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 039/112] mptcp: fix premature close in case of fallback
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 25/86] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
 Date: Thu, 27 Nov 2025 15:45:41 +0100
-Message-ID: <20251127144034.271955906@linuxfoundation.org>
+Message-ID: <20251127144028.741061553@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
+commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
 
-I'm observing very frequent self-tests failures in case of fallback when
-running on a CONFIG_PREEMPT kernel.
+Fix a regression that has caused accesses to the PCI MMIO window to
+complete unclaimed in non-EVA configurations with the SOC-it family of
+system controllers, preventing PCI devices from working that use MMIO.
 
-The root cause is that subflow_sched_work_if_closed() closes any subflow
-as soon as it is half-closed and has no incoming data pending.
+In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
+set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
+accordingly).  Consequently all addresses are matched for incoming DMA
+accesses from PCI.  This seems to confuse the system controller's logic
+and outgoing bus cycles targeting the PCI MMIO window seem not to make
+it to the intended devices.
 
-That works well for regular subflows - MPTCP needs bi-directional
-connectivity to operate on a given subflow - but for fallback socket is
-race prone.
+This happens as well when a wider mask is used with PCI_BAR0, such as
+0x80000000 or 0xe0000000, that makes addresses match that overlap with
+the PCI MMIO window, which starts at 0x10000000 in our configuration.
 
-When TCP peer closes the connection before the MPTCP one,
-subflow_sched_work_if_closed() will schedule the MPTCP worker to
-gracefully close the subflow, and shortly after will do another schedule
-to inject and process a dummy incoming DATA_FIN.
+Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
+non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
+to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
+PCI_BAR0 as required by the system controller's specification, and match
+PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
 
-On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
-fallback subflow before subflow_sched_work_if_closed() is able to create
-the dummy DATA_FIN, unexpectedly interrupting the transfer.
+Verified with:
 
-Address the issue explicitly avoiding closing fallback subflows on when
-the peer is only half-closed.
+Core board type/revision =      0x0d (Core74K) / 0x01
+System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
+Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
 
-Note that, when the subflow is able to create the DATA_FIN before the
-worker invocation, the worker will change the msk state before trying to
-close the subflow and will skip the latter operation as the msk will not
-match anymore the precondition in __mptcp_close_subflow().
+for non-EVA and with:
 
-Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
+System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
+Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
+
+for EVA/non-EVA, fixing:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: Could not read adapter factory MAC address!
+
+vs:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
+0000:00:12.0: registered as fddi0
+
+for non-EVA and causing no change for EVA.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2615,7 +2615,8 @@ static void __mptcp_close_subflow(struct
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -241,16 +241,22 @@ mips_pci_controller:
+ #endif
  
- 		if (ssk_state != TCP_CLOSE &&
- 		    (ssk_state != TCP_CLOSE_WAIT ||
--		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
-+		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
-+		     __mptcp_check_fallback(msk)))
- 			continue;
+ 		/*
+-		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
+-		 * in transparent addressing mode.
++		 * Set up memory mapping in host bridge for PCI DMA masters,
++		 * in transparent addressing mode.  For EVA use the Malta
++		 * maximum of 2 GiB memory in the alias space at 0x80000000
++		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
++		 * the regular space, avoiding mapping the PCI MMIO window
++		 * for DMA as it seems to confuse the system controller's
++		 * logic, causing PCI MMIO to stop working.
+ 		 */
+-		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
+-		MSC_WRITE(MSC01_PCI_BAR0, mask);
+-		MSC_WRITE(MSC01_PCI_HEAD4, mask);
++		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
++		MSC_WRITE(MSC01_PCI_BAR0,
++			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
++		MSC_WRITE(MSC01_PCI_HEAD4,
++			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
  
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
+-		mask &= MSC01_PCI_BAR0_SIZE_MSK;
+ 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
+-		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
++		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
+ 
+ 		/* Don't handle target retries indefinitely.  */
+ 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
 
 
 
