@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7567BC8F0FA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195B5C8EDFF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 80FDD352CD9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F34DE4ED532
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8901333456;
-	Thu, 27 Nov 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368B928980E;
+	Thu, 27 Nov 2025 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dXRL2/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHhrICPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A88728CF42;
-	Thu, 27 Nov 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6F3280335;
+	Thu, 27 Nov 2025 14:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255782; cv=none; b=uoKIwuFru8PQ9bpxGoJZuLCPA9CdYxG3Iqb/UoFjg6/Sekyn+2XYKfgt7tDYauKjMLlFRejLiZmMaLYre4m/4EL9JXDkdQYgVv0dGvIC49XX2j62yt1pA7HdmDrgslW6mDZVnJz3MKiJor57LcPSLQTzAfJbagf1t4cACpSYVDk=
+	t=1764254981; cv=none; b=hHjJ9y/pjmNsGLTVF04UQroQ8gOciehDtcIlhRFGt3mirTI52ej3f9Cy6wAN0uPrdgs9ycIEWLLMu1b+RaPG4jxcRQXv220lgAjBDxyiZ0Kt8CJAWB6DKskDYFzv63zNLI423e3apMm21yNahiVsPSDrJ3XhrHOxCAVQDT+whTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255782; c=relaxed/simple;
-	bh=JK0aR0y5rEi2FjmgzMH1ep31pPWAbOjzp/foDzLKGCs=;
+	s=arc-20240116; t=1764254981; c=relaxed/simple;
+	bh=1igD4rKvSb7178EVuyueHlMiE3xntS72AOeX569svcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfsb3Z758PWSrcQkJItTFT4IITVe2y1owb4RVO7OCVSIIDmqUWrTLOjVsTitkAZdi6A7lWPOPdWKQRheHZKFI2pOWHto23Ze/koyS8x+0oko4ux3+tsfOgbqXygFHb2IU9VTQskHJqvDnoS9sLzfzVrZE4/gvDLUjmEpWHGv5zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dXRL2/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCCEC4CEF8;
-	Thu, 27 Nov 2025 15:03:01 +0000 (UTC)
+	 MIME-Version; b=pPtJmwDZZYQ8GEgD7uiBe9Ms2C7QX0qdtlHILjrsV2Hl3GCQOG23ySbkVEzsN5LNdry181/TkskV+zzjdj5/cAbkiANMM9MCAQ6RJFk7JeBMF/hA4dLnCRlribW1N60Au4DXTJw9sJKHXAEYAd511U6ELhGkzWLfFA7Gxm1K2ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHhrICPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF873C4CEF8;
+	Thu, 27 Nov 2025 14:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255782;
-	bh=JK0aR0y5rEi2FjmgzMH1ep31pPWAbOjzp/foDzLKGCs=;
+	s=korg; t=1764254980;
+	bh=1igD4rKvSb7178EVuyueHlMiE3xntS72AOeX569svcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dXRL2/nQ7LnidxXV+NaMNRBW3L3eZDV5GxW5n8QGK9nQy4s3ot6Myor9FeOYVlJE
-	 wm1tseHh/a9omUX5fyQf4W2bdUAA3DK0MomGj7QigJjKVNuglAVoozIZQKfYQAW85J
-	 dpipaGwoyD65Fqg+gJAoka8V5DtfAjVvutjTQptg=
+	b=MHhrICPOXP3kgSzirz3JGs5BNhKfEa3oD8b9Nv5icrrLiK6ViNGhfmypyluecxP8m
+	 OoMFrnegK0uahUsvIVmy9Dcs1VE4YOQLu5OiTKjtkrooh/fOVUt/CxBs45d91X0Yk5
+	 ssJjy9X3ROsGKzzpGJD4UGzRHJIiHxZY2YU63CGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jared Kangas <jkangas@redhat.com>,
+	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 113/175] drm/pcids: Split PTL pciids group to make wcl subplatform
-Date: Thu, 27 Nov 2025 15:46:06 +0100
-Message-ID: <20251127144047.085478345@linuxfoundation.org>
+Subject: [PATCH 6.6 51/86] pinctrl: s32cc: fix uninitialized memory in s32_pinctrl_desc
+Date: Thu, 27 Nov 2025 15:46:07 +0100
+Message-ID: <20251127144029.694443390@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit 6eb2e056b0e418718fc5a3cfe79bdb41d9a2851d ]
+[ Upstream commit 97ea34defbb57bfaf71ce487b1b0865ffd186e81 ]
 
-To form the WCL platform as a subplatform of PTL in definition,
-WCL pci ids are splited into saparate group from PTL.
-So update the pciidlist struct to cover all the pci ids.
+s32_pinctrl_desc is allocated with devm_kmalloc(), but not all of its
+fields are initialized. Notably, num_custom_params is used in
+pinconf_generic_parse_dt_config(), resulting in intermittent allocation
+errors, such as the following splat when probing i2c-imx:
 
-v2:
-- Squash wcl description in single patch for display and xe.(jani,gustavo)
+        WARNING: CPU: 0 PID: 176 at mm/page_alloc.c:4795 __alloc_pages_noprof+0x290/0x300
+        [...]
+        Hardware name: NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3) (DT)
+        [...]
+        Call trace:
+         __alloc_pages_noprof+0x290/0x300 (P)
+         ___kmalloc_large_node+0x84/0x168
+         __kmalloc_large_node_noprof+0x34/0x120
+         __kmalloc_noprof+0x2ac/0x378
+         pinconf_generic_parse_dt_config+0x68/0x1a0
+         s32_dt_node_to_map+0x104/0x248
+         dt_to_map_one_config+0x154/0x1d8
+         pinctrl_dt_to_map+0x12c/0x280
+         create_pinctrl+0x6c/0x270
+         pinctrl_get+0xc0/0x170
+         devm_pinctrl_get+0x50/0xa0
+         pinctrl_bind_pins+0x60/0x2a0
+         really_probe+0x60/0x3a0
+        [...]
+         __platform_driver_register+0x2c/0x40
+         i2c_adap_imx_init+0x28/0xff8 [i2c_imx]
+        [...]
 
-Fixes: 3c0f211bc8fc ("drm/xe: Add Wildcat Lake device IDs to PTL list")
-Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://lore.kernel.org/r/20250922150317.2334680-2-dnyaneshwar.bhadane@intel.com
-(cherry picked from commit 32620e176443bf23ec81bfe8f177c6721a904864)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[Rodrigo added the Fixes tag when porting it to fixes]
+This results in later parse failures that can cause issues in dependent
+drivers:
+
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        [...]
+        pca953x 0-0022: failed writing register: -6
+        i2c i2c-0: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        i2c i2c-1: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        i2c i2c-2: IMX I2C adapter registered
+
+Fix this by initializing s32_pinctrl_desc with devm_kzalloc() instead of
+devm_kmalloc() in s32_pinctrl_probe(), which sets the previously
+uninitialized fields to zero.
+
+Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Tested-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_device.c | 1 +
- drivers/gpu/drm/xe/xe_pci.c                         | 1 +
- include/drm/intel/pciids.h                          | 5 ++++-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_device.c b/drivers/gpu/drm/i915/display/intel_display_device.c
-index 089cffabbad57..9023c15f3645d 100644
---- a/drivers/gpu/drm/i915/display/intel_display_device.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.c
-@@ -1469,6 +1469,7 @@ static const struct {
- 	INTEL_LNL_IDS(INTEL_DISPLAY_DEVICE, &lnl_desc),
- 	INTEL_BMG_IDS(INTEL_DISPLAY_DEVICE, &bmg_desc),
- 	INTEL_PTL_IDS(INTEL_DISPLAY_DEVICE, &ptl_desc),
-+	INTEL_WCL_IDS(INTEL_DISPLAY_DEVICE, &ptl_desc),
- };
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 08d80fb935b3a..9e97968e25fcd 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -943,7 +943,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
+ 	spin_lock_init(&ipctl->gpio_configs_lock);
  
- static const struct {
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index 6c2637fc8f1ab..47236457e6a3b 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -367,6 +367,7 @@ static const struct pci_device_id pciidlist[] = {
- 	INTEL_LNL_IDS(INTEL_VGA_DEVICE, &lnl_desc),
- 	INTEL_BMG_IDS(INTEL_VGA_DEVICE, &bmg_desc),
- 	INTEL_PTL_IDS(INTEL_VGA_DEVICE, &ptl_desc),
-+	INTEL_WCL_IDS(INTEL_VGA_DEVICE, &ptl_desc),
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, pciidlist);
-diff --git a/include/drm/intel/pciids.h b/include/drm/intel/pciids.h
-index 76f8d26f9cc9d..97fde8356fb23 100644
---- a/include/drm/intel/pciids.h
-+++ b/include/drm/intel/pciids.h
-@@ -872,7 +872,10 @@
- 	MACRO__(0xB08F, ## __VA_ARGS__), \
- 	MACRO__(0xB090, ## __VA_ARGS__), \
- 	MACRO__(0xB0A0, ## __VA_ARGS__), \
--	MACRO__(0xB0B0, ## __VA_ARGS__), \
-+	MACRO__(0xB0B0, ## __VA_ARGS__)
-+
-+/* WCL */
-+#define INTEL_WCL_IDS(MACRO__, ...) \
- 	MACRO__(0xFD80, ## __VA_ARGS__), \
- 	MACRO__(0xFD81, ## __VA_ARGS__)
+ 	s32_pinctrl_desc =
+-		devm_kmalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
++		devm_kzalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
+ 	if (!s32_pinctrl_desc)
+ 		return -ENOMEM;
  
 -- 
 2.51.0
