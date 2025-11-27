@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-197209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1C4C8EEDA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFA5C8EEB0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3AA03AFC2E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D7D14EA06B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D91628C5D9;
-	Thu, 27 Nov 2025 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCDF333753;
+	Thu, 27 Nov 2025 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQkz7OzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHao9l6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4870E25BEE8;
-	Thu, 27 Nov 2025 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C92332EA9;
+	Thu, 27 Nov 2025 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255103; cv=none; b=dWVuGwXeMI0EPUv270f40lcu0cU12bdB/aM9ZvrgzpGQbP7M5kXokmxsHIBvIiXvcDWW10o2xOB3TCFUWDpOe6SFAFlMW2zmOBAJR6cp2BVzR8ExQQzx8ji4wU6v/rK5J56Otyq+qAQoAIDAExL00i8wjPNtaJwvbyw6K6VnDFM=
+	t=1764255135; cv=none; b=uSI4Q/dwMuEQmO3AAjcHpjslLobEzzKZX4zi+s7WeRohsxVdTN9XfdyG/2KB0A3uXJJeuimYrgSTApMr4SMXNxWLojySfz1Q6+1ScQ7tgxJ6uGk/eaWUC4R2pPNZuRTkjiwu1QkqaAg4l+nBNOTvIJ7wMoi5AOM5e9JxW98o4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255103; c=relaxed/simple;
-	bh=ZuGltzw6uJOuiwZaTL35h17XTFzLk28SEPNS6zHpmoY=;
+	s=arc-20240116; t=1764255135; c=relaxed/simple;
+	bh=nzyauYb+Lwb1e/G97L7RAdZbPxQ0P2Y1yrb8gShYhMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTNY0lLee8oNx4KCGPaQBYVrKxdtUph2kUlEURL5O/4+LRF3BTlSeC2JIIYyqiEizKH5jL3TTXb5ZezxG3YhvVU3HcGG5B0Hh3+HsmA9qU1I3wkrF9f3fVpBnBLPcRq8wosxfCwwX7xyx5UW0f0CA60ngBbmmNt9+cTbajZjL0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQkz7OzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0D8C4CEF8;
-	Thu, 27 Nov 2025 14:51:42 +0000 (UTC)
+	 MIME-Version; b=sF7zrcyAMkWa2SsXRD6tiCHNiXiZFZZ58oLuSPaVLVFGuR2gLuSRlwKmRTos77tReCsnnnKmAsYiWw2qEGe7eBMZREeR5csI8wc1Ty0ZtLeVTHwR0LIRSygsvAlVdBFHpWfKNTlYPmnNPbmXvbOKyHkIEuCKs3dEIhCwWwIa/7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHao9l6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764EAC4CEF8;
+	Thu, 27 Nov 2025 14:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255103;
-	bh=ZuGltzw6uJOuiwZaTL35h17XTFzLk28SEPNS6zHpmoY=;
+	s=korg; t=1764255134;
+	bh=nzyauYb+Lwb1e/G97L7RAdZbPxQ0P2Y1yrb8gShYhMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQkz7OzChtSz8tBRoOB1v1+f+81QXy7lPFkqTTDsSp2tj9g/KN5hAbqGJ5YDQnU4g
-	 mgeS64hlxX/dEQw1bBLEIVkBDLhQMphk2bWlE4h2KLtn4dNokhdpwXgYCf/W46aAIO
-	 UOBWlBCctwE7c4fZQZB1rG05Z/h3Pp4gzBUz4n3U=
+	b=wHao9l6q46nq4W1Bli1yadk5vvQBSZbckeXrAvLZXip5RYdCtBlIibuH7Hx9eOEQC
+	 iPtHLvQzonm41FwDqeUECNzXfnZ69DC7q0sNOFyoQcxs6noKWW0IEEELzv38I74U6U
+	 oH4NP27kM2WGn5Dv9/rE6C1rBFpTxi7AZAYo+clc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 001/112] KVM: arm64: Check the untrusted offset in FF-A memory share
-Date: Thu, 27 Nov 2025 15:45:03 +0100
-Message-ID: <20251127144032.763524853@linuxfoundation.org>
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 002/112] timers: Fix NULL function pointer race in timer_shutdown_sync()
+Date: Thu, 27 Nov 2025 15:45:04 +0100
+Message-ID: <20251127144032.799945221@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
 References: <20251127144032.705323598@linuxfoundation.org>
@@ -66,49 +65,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Ene <sebastianene@google.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit 103e17aac09cdd358133f9e00998b75d6c1f1518 upstream.
+commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
 
-Verify the offset to prevent OOB access in the hypervisor
-FF-A buffer in case an untrusted large enough value
-[U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
-is set from the host kernel.
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-Signed-off-by: Sebastian Ene <sebastianene@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
+
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer = timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer = NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
+
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
+
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/nvhe/ffa.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/time/timer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/hyp/nvhe/ffa.c
-+++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
-@@ -437,7 +437,7 @@ static void __do_ffa_mem_xfer(const u64
- 	struct ffa_mem_region_attributes *ep_mem_access;
- 	struct ffa_composite_mem_region *reg;
- 	struct ffa_mem_region *buf;
--	u32 offset, nr_ranges;
-+	u32 offset, nr_ranges, checked_offset;
- 	int ret = 0;
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1505,10 +1505,11 @@ static int __try_to_del_timer_sync(struc
  
- 	if (addr_mbz || npages_mbz || fraglen > len ||
-@@ -474,7 +474,12 @@ static void __do_ffa_mem_xfer(const u64
- 		goto out_unlock;
- 	}
+ 	base = lock_timer_base(timer, &flags);
  
--	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
-+	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
-+		ret = FFA_RET_INVALID_PARAMETERS;
-+		goto out_unlock;
+-	if (base->running_timer != timer)
++	if (base->running_timer != timer) {
+ 		ret = detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function = NULL;
++		if (shutdown)
++			timer->function = NULL;
 +	}
-+
-+	if (fraglen < checked_offset) {
- 		ret = FFA_RET_INVALID_PARAMETERS;
- 		goto out_unlock;
- 	}
+ 
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+ 
 
 
 
