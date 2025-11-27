@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E361C8EF82
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175E5C8F202
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663C93B9723
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 242983B6FAD
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EF330EF64;
-	Thu, 27 Nov 2025 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F6D274652;
+	Thu, 27 Nov 2025 15:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep0WwNfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmgFojFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D7D288537;
-	Thu, 27 Nov 2025 14:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EA62882A7;
+	Thu, 27 Nov 2025 15:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255194; cv=none; b=CiIXw0itc45HUGsC9wzZnQFR9C2DDR4+Zs7tASES/B9liIyKo9aafBwaFPPNU0gL1FwV/gucRjkp3omO0oQkA9Ct+3cPaMGi5sSqkve5/v3gbU2D/22dpUHQbUd64/5yePisNOi8B/ceRjVsJ4SD5/FOw2SbK5uVNRES3RT+QXI=
+	t=1764255722; cv=none; b=ZfV6P5/WaXeXahkjx1EHeOWBh3I6LKL2Dvl8ulf7x8v7p0CXVQqGWWQgZ+K/7BLoq+paXENmWju/Gmks3jxsEspo/FzEcPhTrmctv9ztUTSLrOe09PlVrW6Q0bTYHztAnQ7JVLQaWfvHSr61NEeVerqKAEbKiwHCAogMj6MC51E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255194; c=relaxed/simple;
-	bh=a3K2qoV9T8Ba0/9X1WKIgxFATDGsx52/SPEQgY60g34=;
+	s=arc-20240116; t=1764255722; c=relaxed/simple;
+	bh=f04QJZ0UlL69kKVZyifNQ3mKql89jIr4MUU/p0f+H+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRonF417KS6kTrOwb8hBx7Lz2YmhXs9ltJ8sa6dd8Xekv/suDnWzVwcD4yVx71ej7zTFzo17mTwlOFqV0z9CK7giaO5Brs6+jH8se+jdWYhsIwm3/4UXtTQdBpfAG5RzTykkIHcbKi1oJRXbc2+tHwKLQXVxVDIsgqS66Kwf7Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep0WwNfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B583C4CEF8;
-	Thu, 27 Nov 2025 14:53:14 +0000 (UTC)
+	 MIME-Version; b=Ub4Pjhy4tqGIy4cGjFJJRKosNHmc0Ioh+IBfCADR79GIp7N0K5i9LsrbrvneI03mpVidgr4jqNN3Yumbu8s6OLCOXYWjzhcNzHDRcFc0n0i06DThqmOVaW6sZVjleAsTdTic4vgCdfr5MsyNRCagov51Ck7Cd0Ih2nAE/rryJdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmgFojFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08013C4CEF8;
+	Thu, 27 Nov 2025 15:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255194;
-	bh=a3K2qoV9T8Ba0/9X1WKIgxFATDGsx52/SPEQgY60g34=;
+	s=korg; t=1764255722;
+	bh=f04QJZ0UlL69kKVZyifNQ3mKql89jIr4MUU/p0f+H+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep0WwNfM/gosi2oOGb2Z7wciaPi/bLmqMB9i/earDHXCqvb4XJ/0GmZVCwTH2ffsF
-	 LnTBrat4gESrTUSRd40jfeS3VFps4DQfCqpKcV2f77jXUsDxHLk5nTM8k1WTFRCXpS
-	 l4iQUZ20Wamh0VtpXN4GyInWvCUDNOSy9MyiBp5o=
+	b=hmgFojFQeaDV34j+0hoVZPVKmWTamB3ydafGcvhcSCbj2Qi03vPbsVPEVFUgsxGsN
+	 lyKqJl5diEXTDB9cQDCSJ6gqt45jM15S2PUw7uspITVKTjmXTvhrHqMdPD2bGZvI0V
+	 01t0+z2/sRTUgOAK+M0CZc5UQxeZNXTrDGEiWpIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 041/112] selftests: mptcp: join: userspace: longer timeout
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 090/175] xfrm: Prevent locally generated packets from direct output in tunnel mode
 Date: Thu, 27 Nov 2025 15:45:43 +0100
-Message-ID: <20251127144034.344057996@linuxfoundation.org>
+Message-ID: <20251127144046.249801895@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit 0e4ec14dc1ee4b1ec347729c225c3ca950f2bcf6 upstream.
+[ Upstream commit 59630e2ccd728703cc826e3a3515d70f8c7a766c ]
 
-In rare cases, when the test environment is very slow, some userspace
-tests can fail because some expected events have not been seen.
+Add a check to ensure locally generated packets (skb->sk != NULL) do
+not use direct output in tunnel mode, as these packets require proper
+L2 header setup that is handled by the normal XFRM processing path.
 
-Because the tests are expecting a long on-going connection, and they are
-not waiting for the end of the transfer, it is fine to have a longer
-timeout, and even go over the default one. This connection will be
-killed at the end, after the verifications: increasing the timeout
-doesn't change anything, apart from avoiding it to end before the end of
-the verifications.
-
-To play it safe, all userspace tests not waiting for the end of the
-transfer are now having a longer timeout: 2 minutes.
-
-The Fixes commit was making the connection longer, but still, the
-default timeout would have stopped it after 1 minute, which might not be
-enough in very slow environments.
-
-Fixes: 290493078b96 ("selftests: mptcp: join: userspace: longer transfer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-9-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/xfrm/xfrm_output.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3591,7 +3591,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns1
- 		pm_nl_set_limits $ns2 2 2
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns1
-@@ -3624,7 +3624,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3652,7 +3652,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3673,7 +3673,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3697,7 +3697,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns1
- 		pm_nl_set_limits $ns2 1 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns1
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index a98b5bf55ac31..54222fcbd7fd8 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -772,8 +772,12 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		/* Exclusive direct xmit for tunnel mode, as
+ 		 * some filtering or matching rules may apply
+ 		 * in transport mode.
++		 * Locally generated packets also require
++		 * the normal XFRM path for L2 header setup,
++		 * as the hardware needs the L2 header to match
++		 * for encryption, so skip direct output as well.
+ 		 */
+-		if (x->props.mode == XFRM_MODE_TUNNEL)
++		if (x->props.mode == XFRM_MODE_TUNNEL && !skb->sk)
+ 			return xfrm_dev_direct_output(sk, x, skb);
+ 
+ 		return xfrm_output_resume(sk, skb, 0);
+-- 
+2.51.0
+
 
 
 
