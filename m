@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F6C8EFA0
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B23C8F274
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7059834B4F6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E5C14EA4FF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D841231A065;
-	Thu, 27 Nov 2025 14:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C6024E4A8;
+	Thu, 27 Nov 2025 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSIlZtL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTl0ORpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1E229BD89;
-	Thu, 27 Nov 2025 14:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913F628CF42;
+	Thu, 27 Nov 2025 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255465; cv=none; b=ORViVmSs2VVMaxC3Yjr39xSRd6BJ1W36MsAzbSubbeuqPGEzKhs1KDE3JdxiePTPHlVyvIO/Uyk2fqipoxj4LWqwfwBGy/S9EDgVc1LhmxJTQDQsHE0cOZHUcnYOCYS3VLZ25NOjgX/5Ikm3fZ+x9sYHNr5H2JEZWW4UBNlElFc=
+	t=1764255886; cv=none; b=tjPmBbcn2PJNVsLdmDaxS3H7vVVpqivquxqSUY4N8SYMN7zNyZuyIhoAd32tyYNWdUfsx0p8bpq6uA39TxFqi7VnJCAW6Pb/Ov/fIOUlsp7fn4ZYqOBDpLVRlP8TMX5IblQqS2YBmFbsGcxQqXPTP5ygolxzPBdhL6y+gGyqZ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255465; c=relaxed/simple;
-	bh=Eb8cj0U9NkTTY+Em3iwz3fJbyyGfiT6IFW5xPnmNDzo=;
+	s=arc-20240116; t=1764255886; c=relaxed/simple;
+	bh=6UTWROIxF9Qhr8zoGI69sQ4KGEXMDTrcNrqTCxvzH38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4MBpks86SVEkFFEq1A2MNiN5xD0qGAXQXBuIufaxHoSPQBAhlT4dfSXMQ+lAQu9gy4sKUyTjriUIWcy2B6mw7wLUaqiZpeafJHto9LxaF96gnCfyqUMB+7uH4ssNh+dkOZWDc1AvbQ9U2uLZs3waMlVXfAjZZSCcRGgTFBGJ00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSIlZtL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D0AC4CEF8;
-	Thu, 27 Nov 2025 14:57:44 +0000 (UTC)
+	 MIME-Version; b=XbKAEZcftszZ3RhTRW/lvMkvPytmCx97ie0p0gLB1I81GegSJOTbOfNwgWfltw90Yy3i6tO4Cii21gzCcIBrdr50TI32YOiaG8lS+vSTKZcRpJgP0Fv/mFs7FiWfCNKFRlrxFOTLcC3WcN6M4xeyfTyBV7r/6ztyiaqdJEYK7z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTl0ORpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC3C4CEF8;
+	Thu, 27 Nov 2025 15:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255465;
-	bh=Eb8cj0U9NkTTY+Em3iwz3fJbyyGfiT6IFW5xPnmNDzo=;
+	s=korg; t=1764255886;
+	bh=6UTWROIxF9Qhr8zoGI69sQ4KGEXMDTrcNrqTCxvzH38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSIlZtL/SDfbyO9kEdllRpHqkO7jKQhFUaz7QqjwoxBSZuuHAcpyqNn3VzcaQ6xMa
-	 1QvPgbqV4bv7ItioTkW6b8aHnUghGkd0zyHArJRZg9X0t9NcOynFCvqkXB9pXyIL/e
-	 c+rwKAP97V3ByUqIWF2dAlyZR4u8pH5XpnG0TmL0=
+	b=dTl0ORpKtrN1Ex1d2NbCt9GvchjJ8NCw8tzWDSdXRfcQrHuN0VvNIjRBft3pnbPKl
+	 PzZ4emHM+gPeue2QzQBShCMrQFMu8K6NKKNdMM2aZtXosdOH+BlHFWI7fKq9qUld7N
+	 ZeRFQY/BPFHX+7eYpn8PRx8vHfQGk9LnThLtMZn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Llamas <cmllamas@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/112] tracing/tools: Fix incorrcet short option in usage text for --threads
+Subject: [PATCH 6.17 149/175] blk-crypto: use BLK_STS_INVAL for alignment errors
 Date: Thu, 27 Nov 2025 15:46:42 +0100
-Message-ID: <20251127144036.501926839@linuxfoundation.org>
+Message-ID: <20251127144048.396118156@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 53afec2c8fb2a562222948cb1c2aac48598578c9 ]
+[ Upstream commit 0b39ca457241aeca07a613002512573e8804f93a ]
 
-The help message incorrectly listed '-t' as the short option for
---threads, but the actual getopt_long configuration uses '-e'.
-This mismatch can confuse users and lead to incorrect command-line
-usage. This patch updates the usage string to correctly show:
-	"-e, --threads NRTHR"
-to match the implementation.
+Make __blk_crypto_bio_prep() propagate BLK_STS_INVAL when IO segments
+fail the data unit alignment check.
 
-Note: checkpatch.pl reports a false-positive spelling warning on
-'Run', which is intentional.
+This was flagged by an LTP test that expects EINVAL when performing an
+O_DIRECT read with a misaligned buffer [1].
 
-Link: https://patch.msgid.link/20251106031040.1869-1-zhangchujun@cmss.chinamobile.com
-Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/all/aP-c5gPjrpsn0vJA@google.com/ [1]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/latency/latency-collector.c | 2 +-
+ block/blk-crypto.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
-index cf263fe9deaf4..ef97916e3873a 100644
---- a/tools/tracing/latency/latency-collector.c
-+++ b/tools/tracing/latency/latency-collector.c
-@@ -1725,7 +1725,7 @@ static void show_usage(void)
- "-n, --notrace\t\tIf latency is detected, do not print out the content of\n"
- "\t\t\tthe trace file to standard output\n\n"
+diff --git a/block/blk-crypto.c b/block/blk-crypto.c
+index 4b1ad84d1b5ab..3e7bf1974cbd8 100644
+--- a/block/blk-crypto.c
++++ b/block/blk-crypto.c
+@@ -292,7 +292,7 @@ bool __blk_crypto_bio_prep(struct bio **bio_ptr)
+ 	}
  
--"-t, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
-+"-e, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
+ 	if (!bio_crypt_check_alignment(bio)) {
+-		bio->bi_status = BLK_STS_IOERR;
++		bio->bi_status = BLK_STS_INVAL;
+ 		goto fail;
+ 	}
  
- "-r, --random\t\tArbitrarily sleep a certain amount of time, default\n"
- "\t\t\t%ld ms, before reading the trace file. The\n"
 -- 
 2.51.0
 
