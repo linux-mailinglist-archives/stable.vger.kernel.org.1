@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACF6C8ED8A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54800C8EF16
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82D794EA34F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 628894E9D3D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895A3285C98;
-	Thu, 27 Nov 2025 14:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5E33126C0;
+	Thu, 27 Nov 2025 14:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqdDKknT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjLWASYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3954527F010;
-	Thu, 27 Nov 2025 14:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997F52882C9;
+	Thu, 27 Nov 2025 14:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254920; cv=none; b=Vc8LuqMWALsoVtlArulbC3SYk6/osKtOU74TGHBIjdFm0HxKy+nj53wkrOIvXDFj1Qi1s7pZJJmQqKW+ZOgB6YQ1AVe1M/ZfF5rSTRHA6gvKu7nm5wrbsaXPojMni1iA5MJncP2aqCnXBVdmPiu9dwTHF/Lk8UnpRKsVfjytoe8=
+	t=1764255214; cv=none; b=uwXb1PHdrBwZNPNqH6Tw7Vt4H1DhADgLSjBnCFx3yMRY4W1bvy52tQ/nZiPgpH6C3sZJ1oM5De+kmzQhBrtYvVrDj4f/g7m95ntY/T63vE82Xqr+mGOZ9QTaoQLQIe/rWf94Gyr1skLUQRR8fxji3PYsR+kAk85hT8xl9jZPTvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254920; c=relaxed/simple;
-	bh=t/9BI1piF5HscR+CRFRLGuB7zyUC39v9Pdpbzr/Ij20=;
+	s=arc-20240116; t=1764255214; c=relaxed/simple;
+	bh=J0urZKtwvFXI5U+KM6CtG0CCBUun85a9YhlylMDkHpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCKVkX02TRX4vR4GR+sQUOOkOcCtaSxDsgttJQI/lV8cS0WN8NvVkokd1ZlnWwUO6kvhqDLiUJDNMGFLDEH6gQ0gtrTfzME/Y3R2r0SCRiFgddJrgmC89IdBnkmGNjnWDpopVzgUkXGPGtqjzxHv+ujApKNcP1hdhYEhceSxPMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqdDKknT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA37DC4CEF8;
-	Thu, 27 Nov 2025 14:48:39 +0000 (UTC)
+	 MIME-Version; b=d8o35xG7R0lPI44yP521j/OkThq7Dh7Ck5W9k4dGakV8SpiBltNFoYXAjjYFYzQBdPSArcsIRtdEsF46gwEoq9HfiIRIdF64tdnMnxU2dysigZMQH46BcDai87C7pVctCclTttKxCzFZYswKMQZDL4rmzSEeBiYax1mo7VmA4FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjLWASYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECF9C4CEF8;
+	Thu, 27 Nov 2025 14:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254920;
-	bh=t/9BI1piF5HscR+CRFRLGuB7zyUC39v9Pdpbzr/Ij20=;
+	s=korg; t=1764255214;
+	bh=J0urZKtwvFXI5U+KM6CtG0CCBUun85a9YhlylMDkHpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqdDKknT+26w7evkSfgEAaUDjajLgIsDn2rSOVKPQ+TZdXmF3CHLRNcyP+fW4AxSk
-	 xIvYhTUP1mEeHJ+N6gj8jDhjrpoPMzqtKKQQkIuSbyVa5OPinhXnKWZ/wY5y9ogdIz
-	 cMfowD/L6ag81xdv1eZpZk2AORTU+M78WG3nKXXM=
+	b=RjLWASYpoegoV+S2ejWHV+yyE73pid3spy/v2pxWAtccnAa7E2tnpuVWuAXBqnY8Y
+	 7rcmQwKZTgD+x1+9+y3fEjaaiBKZ/EIRIY6H930hbGHMCU/Ozxg0haSFKKUa4y3OL/
+	 bTw9I3/crdzlsMB1UhpjSFeeJXt42mGSF7RoP/iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 32/86] mptcp: decouple mptcp fastclose from tcp close
-Date: Thu, 27 Nov 2025 15:45:48 +0100
-Message-ID: <20251127144028.997443532@linuxfoundation.org>
+	Peyton.Lee@amd.com,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.12 047/112] drm/amd: Skip power ungate during suspend for VPE
+Date: Thu, 27 Nov 2025 15:45:49 +0100
+Message-ID: <20251127144034.563794926@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit fff0c87996672816a84c3386797a5e69751c5888 upstream.
+commit 31ab31433c9bd2f255c48dc6cb9a99845c58b1e4 upstream.
 
-With the current fastclose implementation, the mptcp_do_fastclose()
-helper is in charge of two distinct actions: send the fastclose reset
-and cleanup the subflows.
+During the suspend sequence VPE is already going to be power gated
+as part of vpe_suspend().  It's unnecessary to call during calls to
+amdgpu_device_set_pg_state().
 
-Formally decouple the two steps, ensuring that mptcp explicitly closes
-all the subflows after the mentioned helper.
+It actually can expose a race condition with the firmware if s0i3
+sequence starts as well.  Drop these calls.
 
-This will make the upcoming fix simpler, and allows dropping the 2nd
-argument from mptcp_destroy_common(). The Fixes tag is then the same as
-in the next commit to help with the backports.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
+Cc: Peyton.Lee@amd.com
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a6c826cfeedd7714611ac115371a959ead55bda)
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++----
- net/mptcp/protocol.h |    2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2822,7 +2822,11 @@ static void mptcp_worker(struct work_str
- 		__mptcp_close_subflow(sk);
- 
- 	if (mptcp_close_tout_expired(sk)) {
-+		struct mptcp_subflow_context *subflow, *tmp;
-+
- 		mptcp_do_fastclose(sk);
-+		mptcp_for_each_subflow_safe(msk, subflow, tmp)
-+			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
- 		mptcp_close_wake_up(sk);
- 	}
- 
-@@ -3250,7 +3254,8 @@ static int mptcp_disconnect(struct sock
- 	/* msk->subflow is still intact, the following will not free the first
- 	 * subflow
- 	 */
--	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
-+	mptcp_do_fastclose(sk);
-+	mptcp_destroy_common(msk);
- 
- 	/* The first subflow is already in TCP_CLOSE status, the following
- 	 * can't overlap with a fallback anymore
-@@ -3432,7 +3437,7 @@ void mptcp_rcv_space_init(struct mptcp_s
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-+void mptcp_destroy_common(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct sock *sk = (struct sock *)msk;
-@@ -3441,7 +3446,7 @@ void mptcp_destroy_common(struct mptcp_s
- 
- 	/* join list will be eventually flushed (with rst) at sock lock release time */
- 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
-+		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
- 
- 	/* move to sk_receive_queue, sk_stream_kill_queues will purge it */
- 	mptcp_data_lock(sk);
-@@ -3466,7 +3471,7 @@ static void mptcp_destroy(struct sock *s
- 
- 	/* allow the following to close even the initial subflow */
- 	msk->free_first = 1;
--	mptcp_destroy_common(msk, 0);
-+	mptcp_destroy_common(msk);
- 	sk_sockets_allocated_dec(sk);
- }
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -871,7 +871,7 @@ static inline void mptcp_propagate_sndbu
- 	local_bh_enable();
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
-+void mptcp_destroy_common(struct mptcp_sock *msk);
- 
- #define MPTCP_TOKEN_MAX_RETRIES	4
- 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3090,10 +3090,11 @@ int amdgpu_device_set_pg_state(struct am
+ 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
+ 		     adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SDMA))
+ 			continue;
+-		/* skip CG for VCE/UVD, it's handled specially */
++		/* skip CG for VCE/UVD/VPE, it's handled specially */
+ 		if (adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_UVD &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCE &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCN &&
++		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VPE &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_JPEG &&
+ 		    adev->ip_blocks[i].version->funcs->set_powergating_state) {
+ 			/* enable powergating to save power */
 
 
 
