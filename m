@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-197365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6B2C8F20B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2631FC8EE3B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798203BF1E2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3FC32350148
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8745B23D7C5;
-	Thu, 27 Nov 2025 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED48F2882C9;
+	Thu, 27 Nov 2025 14:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arXlxsjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc/I9Yxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436C5334684;
-	Thu, 27 Nov 2025 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7720312807;
+	Thu, 27 Nov 2025 14:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255610; cv=none; b=BmwLoPt/DjbPB0uso8GAHx66y1KCtlV9zI3f3YBtURX5KVPAJuiZ0RK67cc7V8h5lnZGN0iZZ54LUZwgf/X0oZytcpblz0PAAa2NHCZVtXEctI+ZJmyxfARelkrk0gh6crvm/0xvmAXjiLPMcWrdHmyHfeYT4r+2x4wffxKvjMM=
+	t=1764255146; cv=none; b=oREYLljtiQhp7hGC1Sbnq7lvF4hw0qj7ILSWt9HIbrj9QJwgMyAVL0i4rZQPOWcH3weB6lYrePz3d7ca2l19UwLBfffAIHBg2pc9B6CE/lPHWXKxJSXm7OEl0ZdBCnOXlNcyLqrv2yGGP/H0fIhVnJDBnsljrd4UNeUhawzR2cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255610; c=relaxed/simple;
-	bh=rFg2VIXQr21m/oj+26taJ2GNX4LOiaHUh71DUoELc3I=;
+	s=arc-20240116; t=1764255146; c=relaxed/simple;
+	bh=2fLNih6JhnpcV1568ZAgITrXeXH7533SZVMUhFiENAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkSswx1ONhpg7v84m9mgOKlwoDaxtwcmJt6/lHjkIJwT7JAK/HGMPH49r6atexCy+3oH23EAu3Ikwd8wj5f2yoDIzjCnnZEqiQilbptQxHdTyFGrBQwltsRb8YM+QvYjhEr2YmpRc3HQ2YshSgriu02uFTSr+FPgvKKlMQxXMps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arXlxsjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A8EC4CEF8;
-	Thu, 27 Nov 2025 15:00:09 +0000 (UTC)
+	 MIME-Version; b=CKcFYY8Y3nzqfccaoXkEJJwKEOzgX3+Zbq43VlmYLIkXyX1x0022gllf4GBzdyfWhn5MRKlbOePPTIoCtkDjxhRdY52hDqTGbkt9ntYL9xOoQgS51686M+CI08KZWme8lyS6nd/pf5jy1mxyVCwnwhffjzCgOwCOtgVLagj7/S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc/I9Yxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29101C16AAE;
+	Thu, 27 Nov 2025 14:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255610;
-	bh=rFg2VIXQr21m/oj+26taJ2GNX4LOiaHUh71DUoELc3I=;
+	s=korg; t=1764255146;
+	bh=2fLNih6JhnpcV1568ZAgITrXeXH7533SZVMUhFiENAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arXlxsjqUSaPuNUipMrbOu0SrliGjFvhOqSRg7Qj2HnIGfgSzak2ZULvYN/P2AZR2
-	 RMKlB+O1baEZ4yczYqYbyGuJgEBlfWZ0nb+avnZgjo80xo7szfxIglG1MY2LLK2mfT
-	 U+rqAAQZTDC2sLmIVl6ByC8gIh8IhBQQoEE9Hjho=
+	b=bc/I9Yxc0m2oKcxgxarEYTQJ/ymakphF2pjF7iGrceY1tdZHN4x8X0//CamgVXtbc
+	 MuTd9UcRzV43DUgsVjTkW7u7uM4yS975GqPYmkttWhoykkVy2gVp+j7F2tIpi6LaSR
+	 E+vKaexvP4PXKXgDTYytvjbukHNcrMPYBft/HUs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 052/175] LoongArch: Fix NUMA node parsing with numa_memblks
+	Titas <novatitas366@gmail.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 003/112] HID: amd_sfh: Stop sensor before starting
 Date: Thu, 27 Nov 2025 15:45:05 +0100
-Message-ID: <20251127144044.865597576@linuxfoundation.org>
+Message-ID: <20251127144032.836752330@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit acf5de1b23b0275eb69f235c8e9f2cef19fa39a1 upstream.
+commit 4d3a13afa8b64dc49293b3eab3e7beac11072c12 upstream.
 
-On physical machine, NUMA node id comes from high bit 44:48 of physical
-address. However it is not true on virt machine. With general method, it
-comes from ACPI SRAT table.
+Titas reports that the accelerometer sensor on their laptop only
+works after a warm boot or unloading/reloading the amd-sfh kernel
+module.
 
-Here the common function numa_memblks_init() is used to parse NUMA node
-information with numa_memblks.
+Presumably the sensor is in a bad state on cold boot and failing to
+start, so explicitly stop it before starting.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Fixes: 93ce5e0231d79 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Reported-by: Titas <novatitas366@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220670
+Tested-by: Titas <novatitas366@gmail.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/numa.c |   60 ++++++++++++-------------------------------
- 1 file changed, 18 insertions(+), 42 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/loongarch/kernel/numa.c
-+++ b/arch/loongarch/kernel/numa.c
-@@ -158,35 +158,9 @@ static void __init node_mem_init(unsigne
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -172,6 +172,8 @@ static int amd_sfh1_1_hid_client_init(st
+ 		if (rc)
+ 			goto cleanup;
  
- #ifdef CONFIG_ACPI_NUMA
- 
--/*
-- * add_numamem_region
-- *
-- * Add a uasable memory region described by BIOS. The
-- * routine gets each intersection between BIOS's region
-- * and node's region, and adds them into node's memblock
-- * pool.
-- *
-- */
--static void __init add_numamem_region(u64 start, u64 end, u32 type)
--{
--	u32 node = pa_to_nid(start);
--	u64 size = end - start;
--	static unsigned long num_physpages;
--
--	if (start >= end) {
--		pr_debug("Invalid region: %016llx-%016llx\n", start, end);
--		return;
--	}
--
--	num_physpages += (size >> PAGE_SHIFT);
--	pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx Bytes\n",
--		node, type, start, size);
--	pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
--		start >> PAGE_SHIFT, end >> PAGE_SHIFT, num_physpages);
--	memblock_set_node(start, size, &memblock.memory, node);
--}
-+static unsigned long num_physpages;
- 
--static void __init init_node_memblock(void)
-+static void __init info_node_memblock(void)
- {
- 	u32 mem_type;
- 	u64 mem_end, mem_start, mem_size;
-@@ -206,12 +180,20 @@ static void __init init_node_memblock(vo
- 		case EFI_BOOT_SERVICES_DATA:
- 		case EFI_PERSISTENT_MEMORY:
- 		case EFI_CONVENTIONAL_MEMORY:
--			add_numamem_region(mem_start, mem_end, mem_type);
-+			num_physpages += (mem_size >> PAGE_SHIFT);
-+			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx Bytes\n",
-+				(u32)pa_to_nid(mem_start), mem_type, mem_start, mem_size);
-+			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
-+				mem_start >> PAGE_SHIFT, mem_end >> PAGE_SHIFT, num_physpages);
- 			break;
- 		case EFI_PAL_CODE:
- 		case EFI_UNUSABLE_MEMORY:
- 		case EFI_ACPI_RECLAIM_MEMORY:
--			add_numamem_region(mem_start, mem_end, mem_type);
-+			num_physpages += (mem_size >> PAGE_SHIFT);
-+			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx Bytes\n",
-+				(u32)pa_to_nid(mem_start), mem_type, mem_start, mem_size);
-+			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
-+				mem_start >> PAGE_SHIFT, mem_end >> PAGE_SHIFT, num_physpages);
- 			fallthrough;
- 		case EFI_RESERVED_TYPE:
- 		case EFI_RUNTIME_SERVICES_CODE:
-@@ -249,22 +231,16 @@ int __init init_numa_memory(void)
- 	for (i = 0; i < NR_CPUS; i++)
- 		set_cpuid_to_node(i, NUMA_NO_NODE);
- 
--	numa_reset_distance();
--	nodes_clear(numa_nodes_parsed);
--	nodes_clear(node_possible_map);
--	nodes_clear(node_online_map);
--	WARN_ON(memblock_clear_hotplug(0, PHYS_ADDR_MAX));
--
- 	/* Parse SRAT and SLIT if provided by firmware. */
--	ret = acpi_disabled ? fake_numa_init() : acpi_numa_init();
-+	if (!acpi_disabled)
-+		ret = numa_memblks_init(acpi_numa_init, false);
-+	else
-+		ret = numa_memblks_init(fake_numa_init, false);
-+
- 	if (ret < 0)
- 		return ret;
- 
--	node_possible_map = numa_nodes_parsed;
--	if (WARN_ON(nodes_empty(node_possible_map)))
--		return -EINVAL;
--
--	init_node_memblock();
-+	info_node_memblock();
- 	if (!memblock_validate_numa_coverage(SZ_1M))
- 		return -EINVAL;
- 
++		mp2_ops->stop(privdata, cl_data->sensor_idx[i]);
++		amd_sfh_wait_for_response(privdata, cl_data->sensor_idx[i], DISABLE_SENSOR);
+ 		writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
+ 		mp2_ops->start(privdata, info);
+ 		status = amd_sfh_wait_for_response
 
 
 
