@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F62C8EF73
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78BDC8ED7E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB1F43BB866
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 959EE4EAA32
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C03732C301;
-	Thu, 27 Nov 2025 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3703928851E;
+	Thu, 27 Nov 2025 14:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPjUJmq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ViqIxS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4764E2882C9;
-	Thu, 27 Nov 2025 14:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D2527F010;
+	Thu, 27 Nov 2025 14:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255182; cv=none; b=LGeXiGOWa1NDADXuHUncB0jrTJqcTze6Y+goBHJ1DotW+NMW4KY4KbquoJfjOfyy2X31thvqkUOfRK8MmBNxEfSD50vNIxoIduNQrIwYq+/1YO9k4AOXDLPhiBfg3NgF5h/72lqDX2YD7FsIPJ/x3Mk1ts4Mbw2OjbpxpJEe8mg=
+	t=1764254914; cv=none; b=JyxIutdJmz1ZNBuPiQNQNfkI9w7rtLn+jeMj1Y2Kxtbejla3lrYedgLeTHGaeajABP3F+ioOXaAKDxV526SvN4Dv6qN3s18RZ5O3/iZFoJ7PI3Fh1D8TzRyHBOSzawQ5FJe0KoyZGuz5UO+D2LBf8U5epRin0GaD+2ybP6RQMV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255182; c=relaxed/simple;
-	bh=0OuZksfktDmlemZz4y8WyXSF3nYsGdTwk1JyHyjWn64=;
+	s=arc-20240116; t=1764254914; c=relaxed/simple;
+	bh=LLFYX0YlKbmhjO+tqhVYC/PZu9caxn9RL4KMC7tozrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYSbUMswM3NS2foX3Yyr3rNO0/cfIamNInCB/RQQsxaRanC5sCv5iV4AUuULovu8N+/a3NFgqB7Of0JD5abWp5GUMSKrnLGe48YlS3kMEdwROvag48GZkaFDPMosG6GxJuin5WkXbVWUsEWzB+0q8++UqaALGJtIT+rTRw0fWh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPjUJmq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ED1C4CEF8;
-	Thu, 27 Nov 2025 14:53:00 +0000 (UTC)
+	 MIME-Version; b=ul9trZo8nz8/54TTX0KHsHVMPwCM2UldAA2SW91EHAYdvVMyiox1IbKjjG+5o/+Aunb9zyyi3vW9kU9TmF20+aSipA1yGO+KeJJy23f9s5yk+xlzv2EHrBExo92P1D7dNIB0FONwk+/3h2+AhewdawJHDeXTgSrbF1N0QjDgQAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ViqIxS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA40AC113D0;
+	Thu, 27 Nov 2025 14:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255180;
-	bh=0OuZksfktDmlemZz4y8WyXSF3nYsGdTwk1JyHyjWn64=;
+	s=korg; t=1764254914;
+	bh=LLFYX0YlKbmhjO+tqhVYC/PZu9caxn9RL4KMC7tozrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPjUJmq9hwaU7V7PjC5jvfVQ891U2Y2TBhJ/O7rMMGWqzHmHdIgbUMuTUIpB1gkEb
-	 CL6QytLxylL3jH3QTDU35dqlhrL9o0WNybf2pysP4YzRs+zSO3a9PnH+CtCU/Eifjm
-	 OUJz/eArFCZxqHDcw9Egesk5gwJ2813AdkIcHyBk=
+	b=2ViqIxS/jeRrUty5T+2I+P3qRAloRuv1sxhaOLhA5WSP9iWhs90kRuyO9eTLlbJZO
+	 1kpzxjHlUlYa+765nQmrzglLWoKXqWLXQQO9in4XMRu+9HKrACM5GG+kgAqUZTt25x
+	 AexoyVm/6YrCsu5ydsOkE3i0mmTId5sVcv0PrOjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 036/112] mptcp: fix race condition in mptcp_schedule_work()
+	Marco Patalano <mpatalan@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.6 22/86] nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
 Date: Thu, 27 Nov 2025 15:45:38 +0100
-Message-ID: <20251127144034.162784458@linuxfoundation.org>
+Message-ID: <20251127144028.630161671@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ewan D. Milne <emilne@redhat.com>
 
-commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
+commit 0a2c5495b6d1ecb0fa18ef6631450f391a888256 upstream.
 
-syzbot reported use-after-free in mptcp_schedule_work() [1]
+nvme_fc_delete_assocation() waits for pending I/O to complete before
+returning, and an error can cause ->ioerr_work to be queued after
+cancel_work_sync() had been called.  Move the call to cancel_work_sync() to
+be after nvme_fc_delete_association() to ensure ->ioerr_work is not running
+when the nvme_fc_ctrl object is freed.  Otherwise the following can occur:
 
-Issue here is that mptcp_schedule_work() schedules a work,
-then gets a refcount on sk->sk_refcnt if the work was scheduled.
-This refcount will be released by mptcp_worker().
+[ 1135.911754] list_del corruption, ff2d24c8093f31f8->next is NULL
+[ 1135.917705] ------------[ cut here ]------------
+[ 1135.922336] kernel BUG at lib/list_debug.c:52!
+[ 1135.926784] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[ 1135.931851] CPU: 48 UID: 0 PID: 726 Comm: kworker/u449:23 Kdump: loaded Not tainted 6.12.0 #1 PREEMPT(voluntary)
+[ 1135.943490] Hardware name: Dell Inc. PowerEdge R660/0HGTK9, BIOS 2.5.4 01/16/2025
+[ 1135.950969] Workqueue:  0x0 (nvme-wq)
+[ 1135.954673] RIP: 0010:__list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1135.961041] Code: c7 c7 98 68 72 94 e8 26 45 fe ff 0f 0b 48 c7 c7 70 68 72 94 e8 18 45 fe ff 0f 0b 48 89 fe 48 c7 c7 80 69 72 94 e8 07 45 fe ff <0f> 0b 48 89 d1 48 c7 c7 a0 6a 72 94 48 89 c2 e8 f3 44 fe ff 0f 0b
+[ 1135.979788] RSP: 0018:ff579b19482d3e50 EFLAGS: 00010046
+[ 1135.985015] RAX: 0000000000000033 RBX: ff2d24c8093f31f0 RCX: 0000000000000000
+[ 1135.992148] RDX: 0000000000000000 RSI: ff2d24d6bfa1d0c0 RDI: ff2d24d6bfa1d0c0
+[ 1135.999278] RBP: ff2d24c8093f31f8 R08: 0000000000000000 R09: ffffffff951e2b08
+[ 1136.006413] R10: ffffffff95122ac8 R11: 0000000000000003 R12: ff2d24c78697c100
+[ 1136.013546] R13: fffffffffffffff8 R14: 0000000000000000 R15: ff2d24c78697c0c0
+[ 1136.020677] FS:  0000000000000000(0000) GS:ff2d24d6bfa00000(0000) knlGS:0000000000000000
+[ 1136.028765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1136.034510] CR2: 00007fd207f90b80 CR3: 000000163ea22003 CR4: 0000000000f73ef0
+[ 1136.041641] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 1136.048776] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[ 1136.055910] PKRU: 55555554
+[ 1136.058623] Call Trace:
+[ 1136.061074]  <TASK>
+[ 1136.063179]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.067540]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.071898]  ? move_linked_works+0x4a/0xa0
+[ 1136.075998]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.081744]  ? __die_body.cold+0x8/0x12
+[ 1136.085584]  ? die+0x2e/0x50
+[ 1136.088469]  ? do_trap+0xca/0x110
+[ 1136.091789]  ? do_error_trap+0x65/0x80
+[ 1136.095543]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.101289]  ? exc_invalid_op+0x50/0x70
+[ 1136.105127]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.110874]  ? asm_exc_invalid_op+0x1a/0x20
+[ 1136.115059]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.120806]  move_linked_works+0x4a/0xa0
+[ 1136.124733]  worker_thread+0x216/0x3a0
+[ 1136.128485]  ? __pfx_worker_thread+0x10/0x10
+[ 1136.132758]  kthread+0xfa/0x240
+[ 1136.135904]  ? __pfx_kthread+0x10/0x10
+[ 1136.139657]  ret_from_fork+0x31/0x50
+[ 1136.143236]  ? __pfx_kthread+0x10/0x10
+[ 1136.146988]  ret_from_fork_asm+0x1a/0x30
+[ 1136.150915]  </TASK>
 
-[A] if (schedule_work(...)) {
-[B]     sock_hold(sk);
-        return true;
-    }
-
-Problem is that mptcp_worker() can run immediately and complete before [B]
-
-We need instead :
-
-    sock_hold(sk);
-    if (schedule_work(...))
-        return true;
-    sock_put(sk);
-
-[1]
-refcount_t: addition on 0; use-after-free.
- WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:-1 [inline]
-  __refcount_inc include/linux/refcount.h:366 [inline]
-  refcount_inc include/linux/refcount.h:383 [inline]
-  sock_hold include/net/sock.h:816 [inline]
-  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
-  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
+Fixes: 19fce0470f05 ("nvme-fc: avoid calling _nvme_fc_abort_outstanding_ios from interrupt context")
 Cc: stable@vger.kernel.org
-Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
-Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Marco Patalano <mpatalan@redhat.com>
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/nvme/host/fc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -963,14 +963,19 @@ static void mptcp_reset_rtx_timer(struct
- 
- bool mptcp_schedule_work(struct sock *sk)
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3242,7 +3242,6 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
  {
--	if (inet_sk_state_load(sk) != TCP_CLOSE &&
--	    schedule_work(&mptcp_sk(sk)->work)) {
--		/* each subflow already holds a reference to the sk, and the
--		 * workqueue is invoked by a subflow, so sk can't go away here.
--		 */
--		sock_hold(sk);
-+	if (inet_sk_state_load(sk) == TCP_CLOSE)
-+		return false;
-+
-+	/* Get a reference on this socket, mptcp_worker() will release it.
-+	 * As mptcp_worker() might complete before us, we can not avoid
-+	 * a sock_hold()/sock_put() if schedule_work() returns false.
-+	 */
-+	sock_hold(sk);
-+
-+	if (schedule_work(&mptcp_sk(sk)->work))
- 		return true;
--	}
-+
-+	sock_put(sk);
- 	return false;
- }
+ 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
  
+-	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
+ 
+ 	/*
+@@ -3250,6 +3249,7 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
+ 	 * waiting for io to terminate
+ 	 */
+ 	nvme_fc_delete_association(ctrl);
++	cancel_work_sync(&ctrl->ioerr_work);
+ 
+ 	if (ctrl->ctrl.tagset)
+ 		nvme_remove_io_tag_set(&ctrl->ctrl);
 
 
 
