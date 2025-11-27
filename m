@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-197443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C30C8F151
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FA5C8EE71
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 141BB34A3C2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FFBC4ECC80
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0A4334680;
-	Thu, 27 Nov 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDAF28C84D;
+	Thu, 27 Nov 2025 14:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lePyBl2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLEOVL6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A8C28CF42;
-	Thu, 27 Nov 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECE2286416;
+	Thu, 27 Nov 2025 14:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255834; cv=none; b=kDri/WzXQnZOOwAR2CldnDTbawIFaU7k+gleoT8u2IdS8akZIC5MCUmtCKQ5+noikbFtLKIMlCiWksgl7cHkNOnIloBBN2Ycoew44+e52ucuM+4dgJr8NNZ3CCqX0sJZ0sOuYSc215gB6VvAs6nJsJ4u35gRJWodz2FU3bpts54=
+	t=1764255097; cv=none; b=oOgjbz0ufpB+VWR+BQ6Uo4E/8G0ftuyuvLUoYM7nmrWh/neSZHlBObEIcd6YLUl/3/9ivysE2mP/hRHdzaaE7DVSoxhk2E0ynuFe/U2T0iX0CjR8udniFfbYJa+DWrwB9oQR1N7fx4dBzqe8HAUvhcXbTsZnhyvihhNn5K1ELog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255834; c=relaxed/simple;
-	bh=u9NJK10RT0rj00azugw2L06yM324WrnRWai+aR2u2Cw=;
+	s=arc-20240116; t=1764255097; c=relaxed/simple;
+	bh=Jovg1P0K+pwsBQiWe6uPacVzwu9V6coCO3R41JvHUUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gotAR5wWhoguiVNYR1xobg6cW+Ehy+DffUz5hU3IpNJWbXuMZMf3uVTK/83uKzQDZruF5LJb3xxkPclbbNWwEnDQKWc4hobf0YuMW/cG9EWI3vxYKWqfSx1s93ZAU7X3kUtHj8q5JHJMaSmVK9kayueGJ8q6ONg+YH2tUUqR3r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lePyBl2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA66C4CEF8;
-	Thu, 27 Nov 2025 15:03:53 +0000 (UTC)
+	 MIME-Version; b=U5EeBZ7kvZXLB3nwmnPXqd4RJSY/5J9zV8cM/CHzONdLd4EzwjwxQIqHnCuIDiddtDaUBC8ZgEh5hAkcMr7scEvCM0lkjDYsgDWrjCCfvUbNJm3+OtSrB7JRaX4GY5JBoUkHAm2r8dW40CEwxwJ6fPv33sU7z8Blyo6uRKmZn4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLEOVL6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499E0C4CEF8;
+	Thu, 27 Nov 2025 14:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255834;
-	bh=u9NJK10RT0rj00azugw2L06yM324WrnRWai+aR2u2Cw=;
+	s=korg; t=1764255097;
+	bh=Jovg1P0K+pwsBQiWe6uPacVzwu9V6coCO3R41JvHUUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lePyBl2NOwH6NCEqIl+26orvjOo40DTONNVNYmIZl/LzxA14E7C+ogh/q6nIKoJFy
-	 3JAqrivFMqdHoJHkYq/Ap37yXV8YsN5uT2VOocBR2C82z0GuNuwJFkxyQEmhVEuav4
-	 hXXLtZqWsXi3jNfoPsOEP5Tng2sh4T94wqvKR32g=
+	b=jLEOVL6hJRD6a7DApcIvmgjj2aPSpz7CkdFf3HkzPoSRKEHm0PQgL/uokPKJ8tcio
+	 9AyEWma5bwzLs8wtS8PCr9TP/OkS4g5j5HHgyxRF1Oe6byND2F/O5jJHD05Fxa581b
+	 0EE54VSsq76+nkB8wAjfAQlz23yzLcEYJSU9jVB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+87be6809ed9bf6d718e3@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Steve French <stfrench@microsoft.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Baocong Liu <baocong.liu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 129/175] cifs: fix memory leak in smb3_fs_context_parse_param error path
+Subject: [PATCH 6.6 66/86] f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
 Date: Thu, 27 Nov 2025 15:46:22 +0100
-Message-ID: <20251127144047.669295863@linuxfoundation.org>
+Message-ID: <20251127144030.244182705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +65,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 7e4d9120cfa413dd34f4f434befc5dbe6c38b2e5 ]
+[ Upstream commit 8e2a9b656474d67c55010f2c003ea2cf889a19ff ]
 
-Add proper cleanup of ctx->source and fc->source to the
-cifs_parse_mount_err error handler. This ensures that memory allocated
-for the source strings is correctly freed on all error paths, matching
-the cleanup already performed in the success path by
-smb3_cleanup_fs_context_contents().
-Pointers are also set to NULL after freeing to prevent potential
-double-free issues.
+No logic changes, just cleanup and prepare for fixing the UAF issue
+in f2fs_free_dic.
 
-This change fixes a memory leak originally detected by syzbot. The
-leak occurred when processing Opt_source mount options if an error
-happened after ctx->source and fc->source were successfully
-allocated but before the function completed.
-
-The specific leak sequence was:
-1. ctx->source = smb3_fs_context_fullpath(ctx, '/') allocates memory
-2. fc->source = kstrdup(ctx->source, GFP_KERNEL) allocates more memory
-3. A subsequent error jumps to cifs_parse_mount_err
-4. The old error handler freed passwords but not the source strings,
-causing the memory to leak.
-
-This issue was not addressed by commit e8c73eb7db0a ("cifs: client:
-fix memory leak in smb3_fs_context_parse_param"), which only fixed
-leaks from repeated fsconfig() calls but not this error path.
-
-Patch updated with minor change suggested by kernel test robot
-
-Reported-by: syzbot+87be6809ed9bf6d718e3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=87be6809ed9bf6d718e3
-Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/f2fs/compress.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 55ea0ad894449..c9cd00b96cde1 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1829,6 +1829,10 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	ctx->password = NULL;
- 	kfree_sensitive(ctx->password2);
- 	ctx->password2 = NULL;
-+	kfree(ctx->source);
-+	ctx->source = NULL;
-+	kfree(fc->source);
-+	fc->source = NULL;
- 	return -EINVAL;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index c3b2f78ca4e3e..3bf7a6b40cbed 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -23,20 +23,18 @@
+ static struct kmem_cache *cic_entry_slab;
+ static struct kmem_cache *dic_entry_slab;
+ 
+-static void *page_array_alloc(struct inode *inode, int nr)
++static void *page_array_alloc(struct f2fs_sb_info *sbi, int nr)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (likely(size <= sbi->page_array_slab_size))
+ 		return f2fs_kmem_cache_alloc(sbi->page_array_slab,
+-					GFP_F2FS_ZERO, false, F2FS_I_SB(inode));
++					GFP_F2FS_ZERO, false, sbi);
+ 	return f2fs_kzalloc(sbi, size, GFP_NOFS);
+ }
+ 
+-static void page_array_free(struct inode *inode, void *pages, int nr)
++static void page_array_free(struct f2fs_sb_info *sbi, void *pages, int nr)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (!pages)
+@@ -145,13 +143,13 @@ int f2fs_init_compress_ctx(struct compress_ctx *cc)
+ 	if (cc->rpages)
+ 		return 0;
+ 
+-	cc->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cc->rpages = page_array_alloc(F2FS_I_SB(cc->inode), cc->cluster_size);
+ 	return cc->rpages ? 0 : -ENOMEM;
+ }
+ 
+ void f2fs_destroy_compress_ctx(struct compress_ctx *cc, bool reuse)
+ {
+-	page_array_free(cc->inode, cc->rpages, cc->cluster_size);
++	page_array_free(F2FS_I_SB(cc->inode), cc->rpages, cc->cluster_size);
+ 	cc->rpages = NULL;
+ 	cc->nr_rpages = 0;
+ 	cc->nr_cpages = 0;
+@@ -614,6 +612,7 @@ static void *f2fs_vmap(struct page **pages, unsigned int count)
+ 
+ static int f2fs_compress_pages(struct compress_ctx *cc)
+ {
++	struct f2fs_sb_info *sbi = F2FS_I_SB(cc->inode);
+ 	struct f2fs_inode_info *fi = F2FS_I(cc->inode);
+ 	const struct f2fs_compress_ops *cops =
+ 				f2fs_cops[fi->i_compress_algorithm];
+@@ -634,7 +633,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
+ 	cc->nr_cpages = DIV_ROUND_UP(max_len, PAGE_SIZE);
+ 	cc->valid_nr_cpages = cc->nr_cpages;
+ 
+-	cc->cpages = page_array_alloc(cc->inode, cc->nr_cpages);
++	cc->cpages = page_array_alloc(sbi, cc->nr_cpages);
+ 	if (!cc->cpages) {
+ 		ret = -ENOMEM;
+ 		goto destroy_compress_ctx;
+@@ -709,7 +708,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
+ 		if (cc->cpages[i])
+ 			f2fs_compress_free_page(cc->cpages[i]);
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ destroy_compress_ctx:
+ 	if (cops->destroy_compress_ctx)
+@@ -1302,7 +1301,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	cic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
+ 	cic->inode = inode;
+ 	atomic_set(&cic->pending_pages, cc->valid_nr_cpages);
+-	cic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!cic->rpages)
+ 		goto out_put_cic;
+ 
+@@ -1395,13 +1394,13 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	spin_unlock(&fi->i_size_lock);
+ 
+ 	f2fs_put_rpages(cc);
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	f2fs_destroy_compress_ctx(cc, false);
+ 	return 0;
+ 
+ out_destroy_crypt:
+-	page_array_free(cc->inode, cic->rpages, cc->cluster_size);
++	page_array_free(sbi, cic->rpages, cc->cluster_size);
+ 
+ 	for (--i; i >= 0; i--)
+ 		fscrypt_finalize_bounce_page(&cc->cpages[i]);
+@@ -1419,7 +1418,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 		f2fs_compress_free_page(cc->cpages[i]);
+ 		cc->cpages[i] = NULL;
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	return -EAGAIN;
+ }
+@@ -1449,7 +1448,7 @@ void f2fs_compress_write_end_io(struct bio *bio, struct page *page)
+ 		end_page_writeback(cic->rpages[i]);
+ 	}
+ 
+-	page_array_free(cic->inode, cic->rpages, cic->nr_rpages);
++	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+ 	kmem_cache_free(cic_entry_slab, cic);
+ }
+ 
+@@ -1587,7 +1586,7 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ 	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
+ 		return 0;
+ 
+-	dic->tpages = page_array_alloc(dic->inode, dic->cluster_size);
++	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
+ 	if (!dic->tpages)
+ 		return -ENOMEM;
+ 
+@@ -1647,7 +1646,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
+ 	if (!dic)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	dic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	dic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!dic->rpages) {
+ 		kmem_cache_free(dic_entry_slab, dic);
+ 		return ERR_PTR(-ENOMEM);
+@@ -1668,7 +1667,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
+ 		dic->rpages[i] = cc->rpages[i];
+ 	dic->nr_rpages = cc->cluster_size;
+ 
+-	dic->cpages = page_array_alloc(dic->inode, dic->nr_cpages);
++	dic->cpages = page_array_alloc(sbi, dic->nr_cpages);
+ 	if (!dic->cpages) {
+ 		ret = -ENOMEM;
+ 		goto out_free;
+@@ -1698,6 +1697,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback)
+ {
+ 	int i;
++	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
+ 
+ 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
+ 
+@@ -1709,7 +1709,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 				continue;
+ 			f2fs_compress_free_page(dic->tpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->tpages, dic->cluster_size);
++		page_array_free(sbi, dic->tpages, dic->cluster_size);
+ 	}
+ 
+ 	if (dic->cpages) {
+@@ -1718,10 +1718,10 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 				continue;
+ 			f2fs_compress_free_page(dic->cpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->cpages, dic->nr_cpages);
++		page_array_free(sbi, dic->cpages, dic->nr_cpages);
+ 	}
+ 
+-	page_array_free(dic->inode, dic->rpages, dic->nr_rpages);
++	page_array_free(sbi, dic->rpages, dic->nr_rpages);
+ 	kmem_cache_free(dic_entry_slab, dic);
  }
  
 -- 
