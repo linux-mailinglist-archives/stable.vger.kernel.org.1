@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950FDC8F0BE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456ECC8F1C0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1155F3B781C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 69032343B02
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5622333456;
-	Thu, 27 Nov 2025 14:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD2032AAC4;
+	Thu, 27 Nov 2025 15:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2DNn/ng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXcrtgOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6107832C301;
-	Thu, 27 Nov 2025 14:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00624E4A8;
+	Thu, 27 Nov 2025 15:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255398; cv=none; b=kJVT0PBnUyMirjKX+MC6RHW00pgUHku31NpB27hiKCJqyt7HEdUwbCo35d7J7EasPUzaUDK1G+12BBl7PVmVcctiQc3kCMYpALHT3fS+fAM1DT+w/ssYbOkAymlxMVGPJDQS2b7Rlm+mIgr+wMjh9+8o9oPtFHNzApYPOND6+OI=
+	t=1764255957; cv=none; b=A0PRaYh5/j4CuyxCI/db1EMs+Dk0VvVr6I5MpcmicJJYu6OObM5ex2VzNpg6SMuUd3I+7NFRq+QUgcvJ4JtWYndD1atIX5OuZ8Y1tA1FKY0aQp6dqng7SCsfK9gMptCdIcn4krD/GeXf70gMbRLhEgcna2/KhaEzwLnhA8Iw8gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255398; c=relaxed/simple;
-	bh=zifeG1Cahg2ZQAPIg4HI81NcLceRzXVasFK0DDV6QAo=;
+	s=arc-20240116; t=1764255957; c=relaxed/simple;
+	bh=48sIomVFUQPPuXBQuXp6DAtX2H3jyqpqJR6USRouRoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E/FR+K1HI2jNWk87T3BKGOaLQB9a4rfVWUS5rB40nX5IVOfkSRRcsXFdBR1OrtMzIyRWu6Gu2PEHzAxXFHd0Dfb4kOUnbguYhaxWm+6+OYpKBUU+7IMmzN8T/ccyuozElfAGo4gX3VgYDV4gO37KAUThiac8jEooy+MtFV2wT2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2DNn/ng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E4AC4CEF8;
-	Thu, 27 Nov 2025 14:56:37 +0000 (UTC)
+	 MIME-Version; b=ai9/a9UNvvdhMLSSeuuoje8Oy9JLpkyO1ma/2FxMb307crtJKRx3/eWxE8JPLyWti1Mk/IvecCpAD+39ucFV1DvthioMbLfgCLb+wkBgf586IdwcToHI6pd49TJRRVRH+u263OmOUcGFk4LzViSd9ELBacSfL1mje/qRXEJCLz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXcrtgOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32236C4CEF8;
+	Thu, 27 Nov 2025 15:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255398;
-	bh=zifeG1Cahg2ZQAPIg4HI81NcLceRzXVasFK0DDV6QAo=;
+	s=korg; t=1764255957;
+	bh=48sIomVFUQPPuXBQuXp6DAtX2H3jyqpqJR6USRouRoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2DNn/ngcgrvl4NuEDWtLnRQ26FKyUI6TNXz5z0YPsLgZkBkUVL3WBYtByEX1zVqM
-	 LOUA16gBor4Ms223D+AFmy0kiR56cNxBdIi04eMNHc9KarxB0ri0zeEQvAQjN4iiU6
-	 ETRdHvJU4u+BStRq034BxvKqFNK2/PHokdw3S1HU=
+	b=QXcrtgOEpwSSnNyE2JTfI5u6/ziN3gfs21fpn/0lLjNr/Gl9+R5R4xKXzf96lxTqp
+	 LDPfYo0XZp+d3m5w+53+q0f8aNZxpIYPlaY5E4Jwsg7pNgUtPd4e0SnSERgE018BzH
+	 Ti+6iaBV+yXaByYx7kzBFSgdDqw3RDP/4qk/fGwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Thomas Spear <speeddymon@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/112] kconfig/mconf: Initialize the default locale at startup
+Subject: [PATCH 6.17 140/175] cifs: fix typo in enable_gcm_256 module parameter
 Date: Thu, 27 Nov 2025 15:46:33 +0100
-Message-ID: <20251127144036.172388856@linuxfoundation.org>
+Message-ID: <20251127144048.071359400@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
+[ Upstream commit f765fdfcd8b5bce92c6aa1a517ff549529ddf590 ]
 
-Fix bug where make menuconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+Fix typo in description of enable_gcm_256 module parameter
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Suggested-by: Thomas Spear <speeddymon@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/mconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/cifsfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
-index 84ea9215c0a7e..b8b7bba84a651 100644
---- a/scripts/kconfig/mconf.c
-+++ b/scripts/kconfig/mconf.c
-@@ -12,6 +12,7 @@
- #include <errno.h>
- #include <fcntl.h>
- #include <limits.h>
-+#include <locale.h>
- #include <stdarg.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -931,6 +932,8 @@ int main(int ac, char **av)
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index e1848276bab41..984545cfe30b7 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -133,7 +133,7 @@ module_param(enable_oplocks, bool, 0644);
+ MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
  
- 	signal(SIGINT, sig_handler);
+ module_param(enable_gcm_256, bool, 0644);
+-MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
++MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/1");
  
-+	setlocale(LC_ALL, "");
-+
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		silent = 1;
- 		/* Silence conf_read() until the real callback is set up */
+ module_param(require_gcm_256, bool, 0644);
+ MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
 -- 
 2.51.0
 
