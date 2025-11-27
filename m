@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CBAC8EE8B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FF8C8F253
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DFE2D34D94A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936223BC84C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544BF33345D;
-	Thu, 27 Nov 2025 14:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A067533437A;
+	Thu, 27 Nov 2025 15:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4cFRxEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0rIW41z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF15332EC0;
-	Thu, 27 Nov 2025 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9ED20FAAB;
+	Thu, 27 Nov 2025 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255253; cv=none; b=dqpN6H+vBNFp0Hs7yExoWmFdON8kfjBZBug7RKmjK/YXkahEb8oh9gOm9qBivMjO5AannuBoXw/t/t4VIWe7GdXeIkb+8s4Zs3uE18vv0onAqIGuLbf+BZ4yC44eAiJpMD9merGCVc7GZuUaeLIP852zoCx2oHuhIiebS/IbM6I=
+	t=1764255676; cv=none; b=XEs4k7cP0Dqx0yLWgDHHGX5Y2U6JATud2yElBqPeSuDLqlE+bX21Yxdj71DVjb8HJ5scQiKx8UKDY2SXMFgyZ3eTn8uouu+lD49DZdkdXisr5URnxshu3BIBmnDw9PDhUbRmog0W2mXnRh4JayTEs/2tn3udVJDWeKXYWwRwQtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255253; c=relaxed/simple;
-	bh=boZZxREKREZHypXj1Vx0n3tC8w7HSMxGv2lEjA6n7xE=;
+	s=arc-20240116; t=1764255676; c=relaxed/simple;
+	bh=QugguSdakp2L3182dzT4Sx+epFRt5FE4on6BB2KBTP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnoC4V2oCcMRVzVlfyK2owVhq2QS0A8ApNIojWowlg41NrzJDCOZ9TqZE7qpeaqio/kR2R6aR/asa0eOQIdS+WChGQa0EcyX9AF9npthZQfJVRU/sJrJaEsrGNcuVTfbzYFIBfNFLY7gODt7DKQMJJZmdiUv7Ok4mnFu+NtKa1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4cFRxEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D266C4CEF8;
-	Thu, 27 Nov 2025 14:54:12 +0000 (UTC)
+	 MIME-Version; b=ZRPfva1vYdoqp7BuM0X8Foy8XqQgluD9rVdO0nJrxvBtQKlpHSkP95JDMGg0lQLBslOfkx+GE1xnrNfXOx6YIeOGpNy/9zjjwU1tq5WJG5meOkxs6pH0fwYqdYkADRNVAXYG4WempJ7gLThbnuUNUnAUFYh/rFezEcP/nhO/lHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0rIW41z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F815C4CEF8;
+	Thu, 27 Nov 2025 15:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255252;
-	bh=boZZxREKREZHypXj1Vx0n3tC8w7HSMxGv2lEjA6n7xE=;
+	s=korg; t=1764255675;
+	bh=QugguSdakp2L3182dzT4Sx+epFRt5FE4on6BB2KBTP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4cFRxEVWw3Z8994Sz1bYxMDPUam9OY2vLUK2Q/nzPYFqNsHfHPXTD8l2zIid0KUM
-	 RXgDK6lMdIXB4fTL64aqa/KogOe3zD6RUsVbyU51WzuLolXnIMkvyhf2VJom+qeZAm
-	 d+uXJLmcIJOhk1g4Jr95QvLRtnWSHJX/GfdAO/Lk=
+	b=U0rIW41zSgPdA5eck75KN/dDgFEd38JV9nW1mKIamB8sHke4dvgiRdzvMLUzWJijF
+	 taIEHmmlAjgqiv3KSjbvtGDM0UJ2wHwxhPLx+hByFrz1FBN9cv8bZbnfD0DQI47rM9
+	 0U/9hHACT8J1E+MunNoU1k/xZgZ5aDD6aG/ig1zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 027/112] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+	Aric Cyr <aric.cyr@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 076/175] drm/amd/display: Clear the CUR_ENABLE register on DCN20 on DPP5
 Date: Thu, 27 Nov 2025 15:45:29 +0100
-Message-ID: <20251127144033.833437873@linuxfoundation.org>
+Message-ID: <20251127144045.742307249@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Ivan Lipski <ivan.lipski@amd.com>
 
-commit ec33b59542d96830e3c89845ff833cf7b25ef172 upstream.
+commit 5bab4c89390f32b2f491f49a151948cd226dd909 upstream.
 
-The kernel test has reported:
+[Why]
+On DCN20 & DCN30, the 6th DPP's & HUBP's are powered on permanently and
+cannot be power gated. Thus, when dpp_reset() is invoked for the DPP5,
+while it's still powered on, the cached cursor_state
+(dpp_base->pos.cur0_ctl.bits.cur0_enable)
+and the actual state (CUR0_ENABLE) bit are unsycned. This can cause a
+double cursor in full screen with non-native scaling.
 
-  BUG: unable to handle page fault for address: fffba000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pde = 03171067 *pte = 00000000
-  Oops: Oops: 0002 [#1]
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
-  Tainted: [T]=RANDSTRUCT
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
-  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
-  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
-  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
-  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
-  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
-  Call Trace:
-   poison_element (mm/mempool.c:83 mm/mempool.c:102)
-   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
-   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   do_one_initcall (init/main.c:1283)
+[How]
+Force disable cursor on DPP5 on plane powerdown for ASICs w/ 6 DPPs/HUBPs.
 
-Christoph found out this is due to the poisoning code not dealing
-properly with CONFIG_HIGHMEM because only the first page is mapped but
-then the whole potentially high-order page is accessed.
-
-We could give up on HIGHMEM here, but it's straightforward to fix this
-with a loop that's mapping, poisoning or checking and unmapping
-individual pages.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
-Analyzed-by: Christoph Hellwig <hch@lst.de>
-Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4673
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 79b3c037f972dcb13e325a8eabfb8da835764e15)
 Cc: stable@vger.kernel.org
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempool.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -68,10 +68,20 @@ static void check_element(mempool_t *poo
- 	} else if (pool->free == mempool_free_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -614,6 +614,14 @@ void dcn20_dpp_pg_control(
+ 		 *		DOMAIN11_PGFSM_PWR_STATUS, pwr_status,
+ 		 * 		1, 1000);
+ 		 */
 +
-+			__check_element(pool, addr, PAGE_SIZE);
-+			kunmap_local(addr);
++		/* Force disable cursor on plane powerdown on DPP 5 using dpp_force_disable_cursor */
++		if (!power_on) {
++			struct dpp *dpp5 = hws->ctx->dc->res_pool->dpps[dpp_inst];
++			if (dpp5 && dpp5->funcs->dpp_force_disable_cursor)
++				dpp5->funcs->dpp_force_disable_cursor(dpp5);
 +		}
-+#else
-+		void *addr = page_address((struct page *)element);
 +
-+		__check_element(pool, addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- 
-@@ -97,10 +107,20 @@ static void poison_element(mempool_t *po
- 	} else if (pool->alloc == mempool_alloc_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__poison_element(addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__poison_element(addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- #else /* CONFIG_SLUB_DEBUG_ON */
+ 		break;
+ 	default:
+ 		BREAK_TO_DEBUGGER();
 
 
 
