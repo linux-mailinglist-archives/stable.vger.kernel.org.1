@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51729C8F290
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09D8C8EDB7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90D2F3B7028
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6DD3B34B882
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9BD32AAC4;
-	Thu, 27 Nov 2025 15:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ECC296BD1;
+	Thu, 27 Nov 2025 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPaNPwts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PME4RtJ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF80720FAAB;
-	Thu, 27 Nov 2025 15:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B960828CF7C;
+	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255716; cv=none; b=eWRAkxYhWzHhOnLxWWDVR3t/CGIPFwZv5tie2LOBiCYhvD4EmVHvT+CTvJWGHAubbpmuEhJuJFCP5gp6lG1z01OV3+dsLk4m/9cn37gJ4LCmpZoj9GNKnGTh6THLqs8AhEefXVXYP6KksqsjrUsTvphUjiqRxx6DMS9oFsb/ymE=
+	t=1764255000; cv=none; b=r3B2IuiOWZRdJ+L597VeLRS1seB4BV/cnHnCVLvsTdKvf8pgIA3B7PWyPzkRRATnkr8Atm+FRnvfi2h/rwDwhCSj5+htEypNb3J/xkMiebrRtHu4nxRd7w2lSQeTCoFrhk3tOp9RWhhZr/FqJjN9zfbm1xtfsRbIUIQabfQlQJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255716; c=relaxed/simple;
-	bh=UwAW4VIHMxeFoRAiZUW8aOGYs8LZZ121ItCxHdx34vE=;
+	s=arc-20240116; t=1764255000; c=relaxed/simple;
+	bh=BhUvM8TCKIi69h0p4B0ScdYwZ0Jwle01+f4c3vi1enw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IG2YMafYzadxOyOZmcU0BLEhfS8WssAStqm/laccCDIRF4n2NaSqATyrFrFjf7G9Sv8imZDc1tGpHeoFhDsbvysMjJ5OTOSnYbhrORbxbNpHTtcSDcxO/jw+m8VaDIQNNNNUZWGTsp7ENcfonYDrhyGBJ8F15/JusqrLpyRZr4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPaNPwts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CA7C4CEF8;
-	Thu, 27 Nov 2025 15:01:56 +0000 (UTC)
+	 MIME-Version; b=PS2knYpgYFu4kvMH2mBErXlqLZQr8G0pb+P6NiPcNUpenOhFFogU5GJAGZ4Ou2E3ZK+MekFODOVtDIFxuhMecyA9ghWeNtqYj/RVcxuH9tfHSuTKbqZbdnERmin44aPXSvBsG+ukJ50WGDtLtoZOrNoX0kXcX9H2T4kLlpG8a5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PME4RtJ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E042C113D0;
+	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255716;
-	bh=UwAW4VIHMxeFoRAiZUW8aOGYs8LZZ121ItCxHdx34vE=;
+	s=korg; t=1764255000;
+	bh=BhUvM8TCKIi69h0p4B0ScdYwZ0Jwle01+f4c3vi1enw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPaNPwtsLTTRdV0UReSJpOrjcMP9tkBIYUbdranrzg8JiiHuYgF9xT/md2QL/NqgR
-	 vPDa9wqzhtwJg4pe5PKZusApuyzZKnx/FXMahpPnk69zTDL0am0AnAB2WvYN+YbbrC
-	 ZlsBcG0t31O7HQI3BUdsTY+U/k2gPqns614y3N4Y=
+	b=PME4RtJ2ZihM1vuhAL8D2TyxuoJKAj/Rnb38/c7u7VxgaZ1YJM+yHMItO1LGBW4yH
+	 gWfeBWDdDKbA5MnvcrvWk2FaGYgZys6r2Y7MXY+DqxSPAMYHo3ojJkkhb6sYn7QP+D
+	 e7nR/h8TYLhj7Y2+THuBrBfK8tGwpcStnivGI27U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 089/175] xfrm: Determine inner GSO type from packet inner protocol
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 26/86] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
 Date: Thu, 27 Nov 2025 15:45:42 +0100
-Message-ID: <20251127144046.213920814@linuxfoundation.org>
+Message-ID: <20251127144028.778665428@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
+commit 316e361b5d2cdeb8d778983794a1c6eadcb26814 upstream.
 
-The GSO segmentation functions for ESP tunnel mode
-(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
-determining the inner packet's L2 protocol type by checking the static
-x->inner_mode.family field from the xfrm state.
+The "groups" property can hold multiple entries (e.g.
+toshiba/tmpv7708-rm-mbrc.dts file), so allow that by dropping incorrect
+type (pinmux-node.yaml schema already defines that as string-array) and
+adding constraints for items.  This fixes dtbs_check warnings like:
 
-This is unreliable. In tunnel mode, the state's actual inner family
-could be defined by x->inner_mode.family or by
-x->inner_mode_iaf.family. Checking only the former can lead to a
-mismatch with the actual packet being processed, causing GSO to create
-segments with the wrong L2 header type.
+  toshiba/tmpv7708-rm-mbrc.dtb: pinctrl@24190000 (toshiba,tmpv7708-pinctrl):
+    pwm-pins:groups: ['pwm0_gpio16_grp', 'pwm1_gpio17_grp', 'pwm2_gpio18_grp', 'pwm3_gpio19_grp'] is too long
 
-This patch fixes the bug by deriving the inner mode directly from the
-packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
-
-Instead of replicating the code, this patch modifies the
-xfrm_ip2inner_mode helper function. It now correctly returns
-&x->inner_mode if the selector family (x->sel.family) is already
-specified, thereby handling both specific and AF_UNSPEC cases
-appropriately.
-
-With this change, ESP GSO can use xfrm_ip2inner_mode to get the
-correct inner mode. It doesn't affect existing callers, as the updated
-logic now mirrors the checks they were already performing externally.
-
-Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1825c1fe0057 ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h      | 3 ++-
- net/ipv4/esp4_offload.c | 6 ++++--
- net/ipv6/esp6_offload.c | 6 ++++--
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml |   26 +++++-----
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index f3014e4f54fc3..0a14daaa5dd40 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -536,7 +536,8 @@ static inline int xfrm_af2proto(unsigned int family)
+--- a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
+@@ -50,18 +50,20 @@ patternProperties:
+       groups:
+         description:
+           Name of the pin group to use for the functions.
+-        $ref: /schemas/types.yaml#/definitions/string
+-        enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
+-               i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
+-               spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
+-               spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
+-               uart0_grp, uart1_grp, uart2_grp, uart3_grp,
+-               pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
+-               pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
+-               pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
+-               pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
+-               pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
+-               pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
++        items:
++          enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
++                 i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
++                 spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
++                 spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
++                 uart0_grp, uart1_grp, uart2_grp, uart3_grp,
++                 pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
++                 pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
++                 pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
++                 pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
++                 pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
++                 pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
++        minItems: 1
++        maxItems: 8
  
- static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
- {
--	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
-+	if ((x->sel.family != AF_UNSPEC) ||
-+	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
- 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
- 		return &x->inner_mode;
- 	else
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index e0d94270da28a..05828d4cb6cdb 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -122,8 +122,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
- {
--	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
--						       : htons(ETH_P_IP);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
-+						     : htons(ETH_P_IP);
- 
- 	return skb_eth_gso_segment(skb, features, type);
- }
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index 7b41fb4f00b58..22410243ebe88 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -158,8 +158,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
- {
--	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
--						      : htons(ETH_P_IPV6);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
-+						    : htons(ETH_P_IPV6);
- 
- 	return skb_eth_gso_segment(skb, features, type);
- }
--- 
-2.51.0
-
+       drive-strength:
+         enum: [2, 4, 6, 8, 16, 24, 32]
 
 
 
