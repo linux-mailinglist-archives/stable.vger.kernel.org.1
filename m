@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20777C8F244
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF81FC8ED6C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8AE3B73CA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817643B34AE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B9C298CAF;
-	Thu, 27 Nov 2025 15:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F344F274B3C;
+	Thu, 27 Nov 2025 14:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGeboQdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOKpO4vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45320FAAB;
-	Thu, 27 Nov 2025 15:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC82B273D6D;
+	Thu, 27 Nov 2025 14:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255742; cv=none; b=Hl/B4x0r4D5pkuyxUZBSfpwmdzR41OsklAMLfG9gtxgGVJ/KlgGo1yBOiOh6E4zyh4TMlk4DFYkCrK9pIQ+WCogWXw9qoKXxArLXGyaVqjyRWCBE4EGurUu7lcmOhxAdLMxzt/1NvJqoKC92DEATKTApXTjeFtyuDy1C9opwV6o=
+	t=1764254885; cv=none; b=iAf4c2hqtoynVj2UQH3NPUf01Ar7XV0d+z0OOsmrurI8P2M7IKouxnn/kjRNtMjb9hFrWSuUeff4dJvttWs9ZfF0kr42NnlmdFl1kVm1b4LOAT2OD4iX3n6lD02fu6UFBXUr4qqa+d76oAMsqcOidv52Wjp3YT5I28RcwQDPTkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255742; c=relaxed/simple;
-	bh=HoSxvjEI6KW/liFzT95dX1MZ3wlWQcs5Ka/UsYhEhXk=;
+	s=arc-20240116; t=1764254885; c=relaxed/simple;
+	bh=+9BWl4I7TdD7YD/skTXL6qiY7xbOvviuY8yVdzYaUHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qk+2Ep1bEAwEx01KlgAMKh23BhsPmdr4wFnP5EPctPHO987AebTFY0TdB7mQViMGX38UnZZxB7n0m9sdLpaX+NliN/dKpUYM2PYJ/dKlkIv3k47qOlu1Mt2Wxk+bCJUI1+PJH4UCPTZ481qbqlUi5C3Lu2ullBK4SYcBoStySHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGeboQdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCB9C113D0;
-	Thu, 27 Nov 2025 15:02:22 +0000 (UTC)
+	 MIME-Version; b=ZIvVOsgE8YQyMoNLZ+LZMR4928k5HuLzGbUAhJ3wkUpDa61qyk+21XjoL+VW9bgJESCwjFZ72VufcDsYJYaNN7h2pFTaZKAnRW5ouq3TDjAVxFurOwwCXoNuZteI8Vk+aqFnXInzxsFc4q1EUTSLsoXp8ZdfiYy/ayerN7hzAnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOKpO4vv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C98C4CEF8;
+	Thu, 27 Nov 2025 14:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255742;
-	bh=HoSxvjEI6KW/liFzT95dX1MZ3wlWQcs5Ka/UsYhEhXk=;
+	s=korg; t=1764254885;
+	bh=+9BWl4I7TdD7YD/skTXL6qiY7xbOvviuY8yVdzYaUHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGeboQdQT0Dg42I8Uvarra724gaTktEglfdCtv8X2yZmLXyz+20Eky5rJAeGqou8h
-	 UZExb+dK39KPiouAXUIWQy0bzsWOfe7VODTKH+kkMep/O39BV6ZSV5WyM+RYx5bPA9
-	 2n0XR7Mvkf0t+yWUqVfAV/He+QPR0H+XgeUw+oAY=
+	b=DOKpO4vvFpzS7l6rMRGDDynhwoad7AyxFdL0tJ7JGG+q7WPFM3waUaEVPcCZQ9Sxq
+	 cd0gH2MkcDvwxzeWB7mnGRWLbJeEy1zTflQcweZ9FimDGmT9t2tj3Yl57ko6HMA04J
+	 ZcnuiH+6FNwPBt+CsWo154+1NTv8FlwrNCEWC/aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 065/175] mptcp: avoid unneeded subflow-level drops
+	staffan.melin@oscillator.se,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 02/86] HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
 Date: Thu, 27 Nov 2025 15:45:18 +0100
-Message-ID: <20251127144045.341465647@linuxfoundation.org>
+Message-ID: <20251127144027.893675365@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit 4f102d747cadd8f595f2b25882eed9bec1675fb1 upstream.
+commit beab067dbcff642243291fd528355d64c41dc3b2 upstream.
 
-The rcv window is shared among all the subflows. Currently, MPTCP sync
-the TCP-level rcv window with the MPTCP one at tcp_transmit_skb() time.
+Based on available evidence, the USB ID 4c4a:4155 used by multiple
+devices has been attributed to Jieli. The commit 1a8953f4f774
+("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY") affected touchscreen
+functionality. Added checks for manufacturer and serial number to
+maintain microphone compatibility, enabling both devices to function
+properly.
 
-The above means that incoming data may sporadically observe outdated
-TCP-level rcv window and being wrongly dropped by TCP.
-
-Address the issue checking for the edge condition before queuing the
-data at TCP level, and eventually syncing the rcv window as needed.
-
-Note that the issue is actually present from the very first MPTCP
-implementation, but backports older than the blamed commit below will
-range from impossible to useless.
-
-Before:
-
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              14                 0.0
-
-After:
-
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              0                  0.0
-
-Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
+[jkosina@suse.com: edit shortlog]
+Fixes: 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-2-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: staffan.melin@oscillator.se
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   31 +++++++++++++++++++++++++++++++
- net/mptcp/protocol.h |    1 +
- 2 files changed, 32 insertions(+)
+ drivers/hid/hid-ids.h    |    4 ++--
+ drivers/hid/hid-quirks.c |   13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1044,6 +1044,31 @@ static void __mptcp_snd_una_update(struc
- 	WRITE_ONCE(msk->snd_una, new_snd_una);
- }
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1511,7 +1511,7 @@
+ #define USB_VENDOR_ID_SIGNOTEC			0x2133
+ #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
  
-+static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
-+			struct sk_buff *skb)
-+{
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	struct tcp_sock *tp = tcp_sk(ssk);
-+	u64 mptcp_rcv_wnd;
-+
-+	/* Avoid touching extra cachelines if TCP is going to accept this
-+	 * skb without filling the TCP-level window even with a possibly
-+	 * outdated mptcp-level rwin.
-+	 */
-+	if (!skb->len || skb->len < tcp_receive_window(tp))
-+		return;
-+
-+	mptcp_rcv_wnd = atomic64_read(&msk->rcv_wnd_sent);
-+	if (!after64(mptcp_rcv_wnd, subflow->rcv_wnd_sent))
-+		return;
-+
-+	/* Some other subflow grew the mptcp-level rwin since rcv_wup,
-+	 * resync.
-+	 */
-+	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
-+	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
-+}
-+
- static void ack_update_msk(struct mptcp_sock *msk,
- 			   struct sock *ssk,
- 			   struct mptcp_options_received *mp_opt)
-@@ -1211,6 +1236,7 @@ bool mptcp_incoming_options(struct sock
- 	 */
- 	if (mp_opt.use_ack)
- 		ack_update_msk(msk, sk, &mp_opt);
-+	rwin_update(msk, sk, skb);
+-#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
+-#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
++#define USB_VENDOR_ID_JIELI_SDK_DEFAULT		0x4c4a
++#define USB_DEVICE_ID_JIELI_SDK_4155		0x4155
  
- 	/* Zero-data-length packets are dropped by the caller and not
- 	 * propagated to the MPTCP layer, so the skb extension does not
-@@ -1297,6 +1323,10 @@ static void mptcp_set_rwin(struct tcp_so
+ #endif
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -900,7 +900,6 @@ static const struct hid_device_id hid_ig
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
+ 	{ }
+ };
  
- 	if (rcv_wnd_new != rcv_wnd_old) {
- raise_win:
-+		/* The msk-level rcv wnd is after the tcp level one,
-+		 * sync the latter.
+@@ -1057,6 +1056,18 @@ bool hid_ignore(struct hid_device *hdev)
+ 					     strlen(elan_acpi_id[i].id)))
+ 					return true;
+ 		break;
++	case USB_VENDOR_ID_JIELI_SDK_DEFAULT:
++		/*
++		 * Multiple USB devices with identical IDs (mic & touchscreen).
++		 * The touch screen requires hid core processing, but the
++		 * microphone does not. They can be distinguished by manufacturer
++		 * and serial number.
 +		 */
-+		rcv_wnd_new = rcv_wnd_old;
- 		win = rcv_wnd_old - ack_seq;
- 		tp->rcv_wnd = min_t(u64, win, U32_MAX);
- 		new_win = tp->rcv_wnd;
-@@ -1320,6 +1350,7 @@ raise_win:
++		if (hdev->product == USB_DEVICE_ID_JIELI_SDK_4155 &&
++		    strncmp(hdev->name, "SmartlinkTechnology", 19) == 0 &&
++		    strncmp(hdev->uniq, "20201111000001", 14) == 0)
++			return true;
++		break;
+ 	}
  
- update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
-+	subflow->rcv_wnd_sent = rcv_wnd_new;
- }
- 
- static void mptcp_track_rwin(struct tcp_sock *tp)
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -509,6 +509,7 @@ struct mptcp_subflow_context {
- 	u64	remote_key;
- 	u64	idsn;
- 	u64	map_seq;
-+	u64	rcv_wnd_sent;
- 	u32	snd_isn;
- 	u32	token;
- 	u32	rel_write_seq;
+ 	if (hdev->type == HID_TYPE_USBMOUSE &&
 
 
 
