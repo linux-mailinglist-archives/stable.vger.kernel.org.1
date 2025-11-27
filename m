@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923CEC8ED45
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D73C8EF52
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEF5B4E82A3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54E914ED7ED
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566E727587C;
-	Thu, 27 Nov 2025 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FAD33030A;
+	Thu, 27 Nov 2025 14:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCK56HYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSgz3gzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A1B21770B;
-	Thu, 27 Nov 2025 14:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0330EF64;
+	Thu, 27 Nov 2025 14:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254877; cv=none; b=cWHdfVU9nIy+7P2t6kQlJtR9PDkKmVIbqpPBaOhKi3vGPgokBoE0lCH/xOaeKSw3iyuJ8OWv+3bs4C65mCbJcHXYOECmn+KVs2pHi7SmQ0vugD65I9S+NcFi6Fk0/dTFLjk2bE8BKxVIQrBpwMILMr+1KG/9DsMpXYYLZevvWSc=
+	t=1764255264; cv=none; b=ngKLZORXsYbndclO27SeHNH43o9AqJV6AzNps+Fvv0jr48kcZZE8WSIvU/Otcn6FRt11pdZTeshSgpAcev/r3BQDmADRPDHB14PYYD8td3GQDJfCEhrfEf1O5OgWqZ28Zaqz84suDjpIWOsL6rq2+Y9s9JAHm7s2g3CK1gIWFH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254877; c=relaxed/simple;
-	bh=L20LJ+TQoMJrHv/sQPWtcsESKgAOl7MiVwiG6YluCFA=;
+	s=arc-20240116; t=1764255264; c=relaxed/simple;
+	bh=YT92KHJff74/jyLyCJqpbm2ftv0EfBNgAF3JRTMX7pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/pzUt7o2Y4aK30q913MnVZI9+naca/1Bp2vKZ6qNT8C49X+XU53ABT5xFrvdboBv++s/VI/bsdnrgMRDq4FFZJRfVz3OnWAFu0B3hMA4ljgfCZyFXEXRAVrqvPbqtRMLq8Xn6qVdHXlvurncOM/JGDs6GddN71gg9VXIqrHiic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCK56HYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB48C4CEF8;
-	Thu, 27 Nov 2025 14:47:55 +0000 (UTC)
+	 MIME-Version; b=lgwgP1MMqrvj6vBngnSQrIJDFBvIeH8vC3AQHHkUst81Q8Vh9aocDxcvU2AGA4s7DyAsXscGbMCM70boIoo9GFkCW6Lr8oGqpcDRsK466D6pKAaD06zEdkVqbHZ8kvKyiSyh6ZTkO1BFJ504QaikWWqqSADSWXpl1yKpUcrBtk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSgz3gzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E05C4CEF8;
+	Thu, 27 Nov 2025 14:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254876;
-	bh=L20LJ+TQoMJrHv/sQPWtcsESKgAOl7MiVwiG6YluCFA=;
+	s=korg; t=1764255264;
+	bh=YT92KHJff74/jyLyCJqpbm2ftv0EfBNgAF3JRTMX7pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCK56HYEXgap5mK9h1UwaSseeZZs9LxdGrBP4xP1mMyD731/O/PIUHrLrby1XGKRk
-	 s4gihbVyYFjepf6TQRAXXdVz644GmcyJwOacOLiksqzkHp29lgr22aH/GEuMAEyxXt
-	 EtxikweJ985aSG3ywgJtVa3ONIFRyXlrmhoJi7sY=
+	b=cSgz3gzgSoZoMWf3RXV6LOJLRiUEBd7SdUaG0ou4HyLPGX+2ROX1ZH0k8SCO/TBtQ
+	 +cG52XMjsP9s68M5zaheiI+p86Kd8aiDVMzCy8xlDy+3PHlE9UAOhsMCrIb9p+SzEN
+	 +oo7ASsDRiTB5eJwnhLHSE98hVu1E4fpCEcpc3F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weikang Guo <guoweikang.kernel@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 17/86] Input: goodix - add support for ACPI ID GDIX1003
+	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
+	Hannes Reinecke <hare@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 031/112] scsi: sg: Do not sleep in atomic context
 Date: Thu, 27 Nov 2025 15:45:33 +0100
-Message-ID: <20251127144028.445205015@linuxfoundation.org>
+Message-ID: <20251127144033.978633861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit c6d99e488117201c63efd747ce17b80687c3f5a9 upstream.
+commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
 
-Some newer devices use an ACPI hardware ID of GDIX1003 for their Goodix
-touchscreen controller, instead of GDIX1001 / GDIX1002. Add GDIX1003
-to the goodix_acpi_match[] table.
+sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
+sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
+of disabled.
 
-Reported-by: Weikang Guo <guoweikang.kernel@gmail.com>
-Closes: https://lore.kernel.org/linux-input/20250225024409.1467040-1-guoweikang.kernel@gmail.com/
-Tested-by: Weikang Guo <guoweikang.kernel@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20251013121022.44333-1-hansg@kernel.org
+Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
+Cc: Hannes Reinecke <hare@suse.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/goodix.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/sg.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/input/touchscreen/goodix.c
-+++ b/drivers/input/touchscreen/goodix.c
-@@ -1519,6 +1519,7 @@ MODULE_DEVICE_TABLE(i2c, goodix_ts_id);
- static const struct acpi_device_id goodix_acpi_match[] = {
- 	{ "GDIX1001", 0 },
- 	{ "GDIX1002", 0 },
-+	{ "GDIX1003", 0 },
- 	{ "GDX9110", 0 },
- 	{ }
- };
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2210,9 +2210,17 @@ sg_remove_sfp_usercontext(struct work_st
+ 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	while (!list_empty(&sfp->rq_list)) {
+ 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
+-		sg_finish_rem_req(srp);
+ 		list_del(&srp->entry);
++		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
++
++		sg_finish_rem_req(srp);
++		/*
++		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
++		 * srp->parentfp after blk_mq_free_request() has been called.
++		 */
+ 		srp->parentfp = NULL;
++
++		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	}
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+ 
 
 
 
