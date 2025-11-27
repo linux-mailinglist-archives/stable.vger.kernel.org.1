@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D73C8EF52
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8F5C8F24D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54E914ED7ED
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195243BF9E9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FAD33030A;
-	Thu, 27 Nov 2025 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EE83321D0;
+	Thu, 27 Nov 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSgz3gzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLO7EIxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0330EF64;
-	Thu, 27 Nov 2025 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59228135D;
+	Thu, 27 Nov 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255264; cv=none; b=ngKLZORXsYbndclO27SeHNH43o9AqJV6AzNps+Fvv0jr48kcZZE8WSIvU/Otcn6FRt11pdZTeshSgpAcev/r3BQDmADRPDHB14PYYD8td3GQDJfCEhrfEf1O5OgWqZ28Zaqz84suDjpIWOsL6rq2+Y9s9JAHm7s2g3CK1gIWFH0=
+	t=1764255690; cv=none; b=LOj1z98vmCZt4J0EL3dtLXzPwBudJNuLhSoXmVuJzq3JEgeLyGjX5vl4dHj+nNtfRdWHU3i4y/M3o2uKjlretZkjKTH3j098uOjRp2IXPz7VRZQPOI0sf09X7gVDverRRYPJFh9ATjUi6bsZhbrpxa85BjjPTXcyy5hYc+Buvi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255264; c=relaxed/simple;
-	bh=YT92KHJff74/jyLyCJqpbm2ftv0EfBNgAF3JRTMX7pg=;
+	s=arc-20240116; t=1764255690; c=relaxed/simple;
+	bh=R34ry8XHla/hnNZtrLnHsQTVHsGAWwsG7CPLOq3YoB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgwgP1MMqrvj6vBngnSQrIJDFBvIeH8vC3AQHHkUst81Q8Vh9aocDxcvU2AGA4s7DyAsXscGbMCM70boIoo9GFkCW6Lr8oGqpcDRsK466D6pKAaD06zEdkVqbHZ8kvKyiSyh6ZTkO1BFJ504QaikWWqqSADSWXpl1yKpUcrBtk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSgz3gzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E05C4CEF8;
-	Thu, 27 Nov 2025 14:54:23 +0000 (UTC)
+	 MIME-Version; b=mE4bR8+3jGuW5SWrPa+BPX39AIqVDvhDl/R4FPFYc44JpnuiTtjB+aHVCTKBxD8kPSGvzFI7xG0Q4FiGQPoZ3PNxbx95srtgcs3fuk9P1ZzX413ViQI26FAZ0+GZO6cUh+qMaXYYnLSqKiYqiGxV+1L5LuRk36qSSFeLXV64tDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLO7EIxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50E4C4CEF8;
+	Thu, 27 Nov 2025 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255264;
-	bh=YT92KHJff74/jyLyCJqpbm2ftv0EfBNgAF3JRTMX7pg=;
+	s=korg; t=1764255690;
+	bh=R34ry8XHla/hnNZtrLnHsQTVHsGAWwsG7CPLOq3YoB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSgz3gzgSoZoMWf3RXV6LOJLRiUEBd7SdUaG0ou4HyLPGX+2ROX1ZH0k8SCO/TBtQ
-	 +cG52XMjsP9s68M5zaheiI+p86Kd8aiDVMzCy8xlDy+3PHlE9UAOhsMCrIb9p+SzEN
-	 +oo7ASsDRiTB5eJwnhLHSE98hVu1E4fpCEcpc3F4=
+	b=XLO7EIxdrHE7ZpkQ/k02rSi6DYJtfPbnWgxwpKRXwMUg5M34t0D9eM/wP1/KKDdu6
+	 +UIvojx8Wo8r1k5cx7pmgmNJKcPh4BWKsRav1nB2NHHiD0pIBlVo4s23f5ZCScRiv2
+	 z1hSg9YMVtjILxozVHhN6TIpmFqV5FaSSBt7532Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
-	Hannes Reinecke <hare@suse.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 031/112] scsi: sg: Do not sleep in atomic context
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 080/175] xfrm: drop SA reference in xfrm_state_update if dir doesnt match
 Date: Thu, 27 Nov 2025 15:45:33 +0100
-Message-ID: <20251127144033.978633861@linuxfoundation.org>
+Message-ID: <20251127144045.888691329@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
+[ Upstream commit 8d2a2a49c30f67a480fa9ed25e08436a446f057e ]
 
-sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
-sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
-of disabled.
+We're not updating x1, but we still need to put() it.
 
-Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: stable@vger.kernel.org
-Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a4a87fa4e96c ("xfrm: Add Direction to the SA in or out")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_state.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2210,9 +2210,17 @@ sg_remove_sfp_usercontext(struct work_st
- 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	while (!list_empty(&sfp->rq_list)) {
- 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
--		sg_finish_rem_req(srp);
- 		list_del(&srp->entry);
-+		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
-+
-+		sg_finish_rem_req(srp);
-+		/*
-+		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
-+		 * srp->parentfp after blk_mq_free_request() has been called.
-+		 */
- 		srp->parentfp = NULL;
-+
-+		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index d213ca3653a8f..e4736d1ebb443 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2191,14 +2191,18 @@ int xfrm_state_update(struct xfrm_state *x)
  	}
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
  
+ 	if (x1->km.state == XFRM_STATE_ACQ) {
+-		if (x->dir && x1->dir != x->dir)
++		if (x->dir && x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
+ 
+ 		__xfrm_state_insert(x);
+ 		x = NULL;
+ 	} else {
+-		if (x1->dir != x->dir)
++		if (x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
+ 	}
+ 	err = 0;
+ 
+-- 
+2.51.0
+
 
 
 
