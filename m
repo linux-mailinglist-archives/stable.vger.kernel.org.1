@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A143C8F2C2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95CEC8EE86
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764123A1189
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59A544ED703
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BD633375C;
-	Thu, 27 Nov 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B2C32C301;
+	Thu, 27 Nov 2025 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyV4mzYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wufeUshM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D43328F0;
-	Thu, 27 Nov 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4D731281E;
+	Thu, 27 Nov 2025 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255756; cv=none; b=Ls+zzyeJGMmkEoBqMaJgfReDEhB4gvsMbIX9ajyUKC9eF2QnFm74C/pWqgRY1BkR14/27JYEyFFukiekpQmN0XCQY9z2SdKAu6Eo0vdx+fg7BuzllnsInr2TNz0p6WGYlPdSESrsLBflyR3oaQi/UjG/jE07KRLl/il3Zw+JVUY=
+	t=1764255112; cv=none; b=cLGaHlAdBdWnRRrpqVM7C1BCZACPdRjuhfqq1GfXUfbcqW4QIcxmM/lsCFOSpb6QONbEbUFjsMcnlFOTbxWjnmSAx+JKKG0Imbe4LJArFwq5xVJuHiNJPJuB9WGcp8denkQF/lS3URB8D/2TqnCNoMjKALw9LMhWsvnFw/USqEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255756; c=relaxed/simple;
-	bh=ShonL97NGNgWyLVlJeKjxaxkJw0XyWAimb/CypfxM/8=;
+	s=arc-20240116; t=1764255112; c=relaxed/simple;
+	bh=FcI6EkOhD+D1s4WfIRnCTRCXPIL186QEVFr/THVzuSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FP2x/29TSPPQC10atLx54c1sBTq7G6qSJXV/vOfYqfg11x9xUy0xdBZxEQJV63UsN2kVZoZQFpGkC6H52GtIv3s3rtchIxSRvj/gSA2m4MkSQt6iIMOnfZKKLl15DJogQZaf9PauahFfvwUS7p8QX+s036JmMpG8EjBTtG4wIYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyV4mzYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27988C4CEF8;
-	Thu, 27 Nov 2025 15:02:35 +0000 (UTC)
+	 MIME-Version; b=AnIpjfMx0tK/rKTHREUkLD0hYkJyZMr2FZJN0jmDHZFia7yRIqDzYtzHXCz+6zjcaA1KHb7wyGQnWxKczsCglLvwIxxX9PndXIx9yX+/5CIwIsdeP0oqSpzCU8/QgygRL1zASYqf/euyc8TGg2wNSkERgZs4UBaCHR1A3ei0Yto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wufeUshM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F2C19422;
+	Thu, 27 Nov 2025 14:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255756;
-	bh=ShonL97NGNgWyLVlJeKjxaxkJw0XyWAimb/CypfxM/8=;
+	s=korg; t=1764255111;
+	bh=FcI6EkOhD+D1s4WfIRnCTRCXPIL186QEVFr/THVzuSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyV4mzYkEzfke1xfhwWHJTvtCsUAz4kpbfIXZE4mu303nPazfICuMeLfmWmE2rLXw
-	 VlXqrjzoD4MCReA/cUeXaOWWgrAh2NnSttAyIXaUXFVUw8DiBn9stEGlme0pNgcwdF
-	 wOaxo/7uEi00WJTtGW9JRP8Tb83Fsa4wb2tba2tQ=
+	b=wufeUshMurQ64tMVXJzBtP1XioBhIvRjMHySmLQfaGzrVjF/+v/Qkmr+wzkqEW4vY
+	 TvqjgUKpt873UewfJrp0+BTUvfNXNHbsX+8BMV9iiwRuPbXIUbU0Uz51OVPx/pBkL+
+	 sGSTbZUqcZNcAd3N4ZTYo3uLT5QU8fyfRwuJIzys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 060/175] mptcp: fix ack generation for fallback msk
-Date: Thu, 27 Nov 2025 15:45:13 +0100
-Message-ID: <20251127144045.157576942@linuxfoundation.org>
+	Mike Yuan <me@yhndnzj.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH 6.12 012/112] shmem: fix tmpfs reconfiguration (remount) when noswap is set
+Date: Thu, 27 Nov 2025 15:45:14 +0100
+Message-ID: <20251127144033.179150294@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Mike Yuan <me@yhndnzj.com>
 
-commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b upstream.
+commit 3cd1548a278c7d6a9bdef1f1866e7cf66bfd3518 upstream.
 
-mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
-rcv_wnd sent, and such information is tracked into the msk->old_wspace
-field, updated at ack transmission time by mptcp_write_options().
+In systemd we're trying to switch the internal credentials setup logic
+to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
+consistently fails on tmpfs with noswap option. This can be trivially
+reproduced with the following:
 
-Fallback socket do not add any mptcp options, such helper is never
-invoked, and msk->old_wspace value remain stale. That in turn makes
-ack generation at recvmsg() time quite random.
+```
+int fs_fd = fsopen("tmpfs", 0);
+fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+fsmount(fs_fd, 0, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
+```
 
-Address the issue ensuring mptcp_write_options() is invoked even for
-fallback sockets, and just update the needed info in such a case.
+After some digging the culprit is shmem_reconfigure() rejecting
+!(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
+as ctx->seen serves as a mask for whether certain options are touched
+at all. On top of that, noswap option doesn't use fsparam_flag_no,
+hence it's not really possible to "reenable" swap to begin with.
+Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
 
-The issue went unnoticed for a long time, as mptcp currently overshots
-the fallback socket receive buffer autotune significantly. It is going
-to change in the near future.
+[1] https://github.com/systemd/systemd/pull/39637
 
-Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Link: https://patch.msgid.link/20251108190930.440685-1-me@yhndnzj.com
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ mm/shmem.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -838,8 +838,11 @@ bool mptcp_established_options(struct so
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -127,8 +127,7 @@ struct shmem_options {
+ #define SHMEM_SEEN_INODES 2
+ #define SHMEM_SEEN_HUGE 4
+ #define SHMEM_SEEN_INUMS 8
+-#define SHMEM_SEEN_NOSWAP 16
+-#define SHMEM_SEEN_QUOTA 32
++#define SHMEM_SEEN_QUOTA 16
+ };
  
- 	opts->suboptions = 0;
- 
-+	/* Force later mptcp_write_options(), but do not use any actual
-+	 * option space.
-+	 */
- 	if (unlikely(__mptcp_check_fallback(msk) && !mptcp_check_infinite_map(skb)))
--		return false;
-+		return true;
- 
- 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
- 		if (mptcp_established_options_fastclose(sk, &opt_size, remaining, opts) ||
-@@ -1319,6 +1322,20 @@ update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
- }
- 
-+static void mptcp_track_rwin(struct tcp_sock *tp)
-+{
-+	const struct sock *ssk = (const struct sock *)tp;
-+	struct mptcp_subflow_context *subflow;
-+	struct mptcp_sock *msk;
-+
-+	if (!ssk)
-+		return;
-+
-+	subflow = mptcp_subflow_ctx(ssk);
-+	msk = mptcp_sk(subflow->conn);
-+	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
-+}
-+
- __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
- {
- 	struct csum_pseudo_header header;
-@@ -1611,6 +1628,10 @@ mp_rst:
- 				      opts->reset_transient,
- 				      opts->reset_reason);
- 		return;
-+	} else if (unlikely(!opts->suboptions)) {
-+		/* Fallback to TCP */
-+		mptcp_track_rwin(tp);
-+		return;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+@@ -4330,7 +4329,6 @@ static int shmem_parse_one(struct fs_con
+ 				       "Turning off swap in unprivileged tmpfs mounts unsupported");
+ 		}
+ 		ctx->noswap = true;
+-		ctx->seen |= SHMEM_SEEN_NOSWAP;
+ 		break;
+ 	case Opt_quota:
+ 		if (fc->user_ns != &init_user_ns)
+@@ -4480,14 +4478,15 @@ static int shmem_reconfigure(struct fs_c
+ 		err = "Current inum too high to switch to 32-bit inums";
+ 		goto out;
  	}
+-	if ((ctx->seen & SHMEM_SEEN_NOSWAP) && ctx->noswap && !sbinfo->noswap) {
++
++	/*
++	 * "noswap" doesn't use fsparam_flag_no, i.e. there's no "swap"
++	 * counterpart for (re-)enabling swap.
++	 */
++	if (ctx->noswap && !sbinfo->noswap) {
+ 		err = "Cannot disable swap on remount";
+ 		goto out;
+ 	}
+-	if (!(ctx->seen & SHMEM_SEEN_NOSWAP) && !ctx->noswap && sbinfo->noswap) {
+-		err = "Cannot enable swap on remount if it was disabled on first mount";
+-		goto out;
+-	}
  
- 	if (OPTION_MPTCP_PRIO & opts->suboptions) {
+ 	if (ctx->seen & SHMEM_SEEN_QUOTA &&
+ 	    !sb_any_quota_loaded(fc->root->d_sb)) {
 
 
 
