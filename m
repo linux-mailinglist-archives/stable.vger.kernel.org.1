@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6F3C8F022
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:01:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CB5C8F214
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:10:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 885A63BCA6D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:55:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F65D4ED90C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C298B334C2D;
-	Thu, 27 Nov 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1814A33436D;
+	Thu, 27 Nov 2025 15:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNaSUz+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTqineFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BB633374E;
-	Thu, 27 Nov 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79E928135D;
+	Thu, 27 Nov 2025 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255295; cv=none; b=D+wBUyf7p4Gs3kAD5tf6u5gklLORh3O21svwa/n7Sbjex4LUVeiUtVlMFJPqp01sovLQfdQecgOgr/NRQ5/itYSDbgbnYw26W8NY+3sH7Cvm4EtpSLibcI1ws1e2DGhGNXOk428UwLSHgHX2EpMZSSn3y9bXeLUCKCgKyrj6kBQ=
+	t=1764255819; cv=none; b=Ho9QSbdZj4IlfmL25h7WH1OSdWFq0h6vH1FvYOX38G3OzYqwTk56yzJu54Qkh4F0rTPzSi54p1Xyez9LiV4Oud9cTAnYNMrSrK2n8zQm/IbbGSCEIURfhDUfxSXx6bWl6StDj1ovydvERHBOQvNZekjwFnqTG7k3xXxw7a7j+S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255295; c=relaxed/simple;
-	bh=095LrkOBKhRNh/SjAA4tHDfeTFcrbpVzgRo2JlMDhgU=;
+	s=arc-20240116; t=1764255819; c=relaxed/simple;
+	bh=4nWTGwLSGIdyEJveC/1LyNq6uxRZ5pFQHfCrF5wvSo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wqq1KRp/4HrTjIQPpIz30kDbzKw8OgwmaIN9pLekWfwv4V9bBTUrVEzI0W8WVoWeqVNtjsejVKw+TiyRt+CTp30TSf+Lxwc+NYWpe8WJFJ/nXsNhG/BVn0Oh7zIPE2/nr5Gye/t62iSrU9iokKqkdRm47sf5iDY5+4yY+K9vRsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNaSUz+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AE0C16AAE;
-	Thu, 27 Nov 2025 14:54:54 +0000 (UTC)
+	 MIME-Version; b=kIlUc4HASWHbR8rXLk2FlUF20WzowU2YkdnS8dWosEjjqK7WQYBppIkWbh/Vnv3CE+kVmgXldyC6sPykW2ZtRYwxRIwL9dIKHIXcjndMH49oX8afvSYuCMIo2rhr7j8ckqSojVMxFMkQeMYXoUFRAQgQHg5amuR+gBbH7wPhasU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTqineFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F98EC4CEF8;
+	Thu, 27 Nov 2025 15:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255295;
-	bh=095LrkOBKhRNh/SjAA4tHDfeTFcrbpVzgRo2JlMDhgU=;
+	s=korg; t=1764255819;
+	bh=4nWTGwLSGIdyEJveC/1LyNq6uxRZ5pFQHfCrF5wvSo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNaSUz+hRKaISAbJijurf0F17oXEyY4XAqrNzzVyDni9FItrpAhwC0vrrhjyy7eeF
-	 SExfKso09gv1/iqxIs/P6Df56mmkvCNr30trgmveLX0/oq5cSaQzpKVbWqcKjYP8aU
-	 CXMDwtnwKt/zpJvtH+FJwEqZyb2MRvJjPX9MRSlA=
+	b=DTqineFYaAX+FGRdU+eoARz+QG2k7WyGNA7rYky19dyCOskRxBe7T6Gj5PhhWWPFI
+	 THTPdg7RLiBnvO3KJKY4r3p4lc24OgNmyQK3YSlVHIe/1Qds58hubMjpCe51Qfk31h
+	 KqkY8Azd4aoQ3bE/9lDbNfgppBz3PSxOTpoLclQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/112] devlink: rate: Unset parent pointer in devl_rate_nodes_destroy
+Subject: [PATCH 6.17 125/175] gpio: cdev: make sure the cdev fd is still active before emitting events
 Date: Thu, 27 Nov 2025 15:46:18 +0100
-Message-ID: <20251127144035.623776101@linuxfoundation.org>
+Message-ID: <20251127144047.524330658@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit f94c1a114ac209977bdf5ca841b98424295ab1f0 ]
+[ Upstream commit d4cd0902c156b2ca60fdda8cd8b5bcb4b0e9ed64 ]
 
-The function devl_rate_nodes_destroy is documented to "Unset parent for
-all rate objects". However, it was only calling the driver-specific
-`rate_leaf_parent_set` or `rate_node_parent_set` ops and decrementing
-the parent's refcount, without actually setting the
-`devlink_rate->parent` pointer to NULL.
+With the final call to fput() on a file descriptor, the release action
+may be deferred and scheduled on a work queue. The reference count of
+that descriptor is still zero and it must not be used. It's possible
+that a GPIO change, we want to notify the user-space about, happens
+AFTER the reference count on the file descriptor associated with the
+character device went down to zero but BEFORE the .release() callback
+was called from the workqueue and so BEFORE we unregistered from the
+notifier.
 
-This leaves a dangling pointer in the `devlink_rate` struct, which cause
-refcount error in netdevsim[1] and mlx5[2]. In addition, this is
-inconsistent with the behavior of `devlink_nl_rate_parent_node_set`,
-where the parent pointer is correctly cleared.
+Using the regular get_file() routine in this situation triggers the
+following warning:
 
-This patch fixes the issue by explicitly setting `devlink_rate->parent`
-to NULL after notifying the driver, thus fulfilling the function's
-documented behavior for all rate objects.
+  struct file::f_count incremented from zero; use-after-free condition present!
 
-[1]
-repro steps:
-echo 1 > /sys/bus/netdevsim/new_device
-devlink dev eswitch set netdevsim/netdevsim1 mode switchdev
-echo 1 > /sys/bus/netdevsim/devices/netdevsim1/sriov_numvfs
-devlink port function rate add netdevsim/netdevsim1/test_node
-devlink port function rate set netdevsim/netdevsim1/128 parent test_node
-echo 1 > /sys/bus/netdevsim/del_device
+So use the get_file_active() variant that will return NULL on file
+descriptors that have been or are being released.
 
-dmesg:
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 8 PID: 1530 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
-CPU: 8 UID: 0 PID: 1530 Comm: bash Not tainted 6.18.0-rc4+ #1 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x42/0xe0
-Call Trace:
- <TASK>
- devl_rate_leaf_destroy+0x8d/0x90
- __nsim_dev_port_del+0x6c/0x70 [netdevsim]
- nsim_dev_reload_destroy+0x11c/0x140 [netdevsim]
- nsim_drv_remove+0x2b/0xb0 [netdevsim]
- device_release_driver_internal+0x194/0x1f0
- bus_remove_device+0xc6/0x130
- device_del+0x159/0x3c0
- device_unregister+0x1a/0x60
- del_device_store+0x111/0x170 [netdevsim]
- kernfs_fop_write_iter+0x12e/0x1e0
- vfs_write+0x215/0x3d0
- ksys_write+0x5f/0xd0
- do_syscall_64+0x55/0x10f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-[2]
-devlink dev eswitch set pci/0000:08:00.0 mode switchdev
-devlink port add pci/0000:08:00.0 flavour pcisf pfnum 0 sfnum 1000
-devlink port function rate add pci/0000:08:00.0/group1
-devlink port function rate set pci/0000:08:00.0/32768 parent group1
-modprobe -r mlx5_ib mlx5_fwctl mlx5_core
-
-dmesg:
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 7 PID: 16151 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
-CPU: 7 UID: 0 PID: 16151 Comm: bash Not tainted 6.17.0-rc7_for_upstream_min_debug_2025_10_02_12_44 #1 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x42/0xe0
-Call Trace:
- <TASK>
- devl_rate_leaf_destroy+0x8d/0x90
- mlx5_esw_offloads_devlink_port_unregister+0x33/0x60 [mlx5_core]
- mlx5_esw_offloads_unload_rep+0x3f/0x50 [mlx5_core]
- mlx5_eswitch_unload_sf_vport+0x40/0x90 [mlx5_core]
- mlx5_sf_esw_event+0xc4/0x120 [mlx5_core]
- notifier_call_chain+0x33/0xa0
- blocking_notifier_call_chain+0x3b/0x50
- mlx5_eswitch_disable_locked+0x50/0x110 [mlx5_core]
- mlx5_eswitch_disable+0x63/0x90 [mlx5_core]
- mlx5_unload+0x1d/0x170 [mlx5_core]
- mlx5_uninit_one+0xa2/0x130 [mlx5_core]
- remove_one+0x78/0xd0 [mlx5_core]
- pci_device_remove+0x39/0xa0
- device_release_driver_internal+0x194/0x1f0
- unbind_store+0x99/0xa0
- kernfs_fop_write_iter+0x12e/0x1e0
- vfs_write+0x215/0x3d0
- ksys_write+0x5f/0xd0
- do_syscall_64+0x53/0x1f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: d75559845078 ("devlink: Allow setting parent node of rate objects")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1763381149-1234377-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 40b7c49950bd ("gpio: cdev: put emitting the line state events on a workqueue")
+Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Closes: https://lore.kernel.org/all/5d605f7fc99456804911403102a4fe999a14cc85.camel@siemens.com/
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20251117-gpio-cdev-get-file-v1-1-28a16b5985b8@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/devlink/rate.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-cdev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/devlink/rate.c b/net/devlink/rate.c
-index 7139e67e93aeb..adb5267d377cf 100644
---- a/net/devlink/rate.c
-+++ b/net/devlink/rate.c
-@@ -701,13 +701,15 @@ void devl_rate_nodes_destroy(struct devlink *devlink)
- 		if (!devlink_rate->parent)
- 			continue;
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index e6a289fa0f8fd..6a52d812e4e7c 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2548,10 +2548,17 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
+ 		container_of(nb, struct gpio_chardev_data, lineinfo_changed_nb);
+ 	struct lineinfo_changed_ctx *ctx;
+ 	struct gpio_desc *desc = data;
++	struct file *fp;
  
--		refcount_dec(&devlink_rate->parent->refcnt);
- 		if (devlink_rate_is_leaf(devlink_rate))
- 			ops->rate_leaf_parent_set(devlink_rate, NULL, devlink_rate->priv,
- 						  NULL, NULL);
- 		else if (devlink_rate_is_node(devlink_rate))
- 			ops->rate_node_parent_set(devlink_rate, NULL, devlink_rate->priv,
- 						  NULL, NULL);
+ 	if (!test_bit(gpio_chip_hwgpio(desc), cdev->watched_lines))
+ 		return NOTIFY_DONE;
+ 
++	/* Keep the file descriptor alive for the duration of the notification. */
++	fp = get_file_active(&cdev->fp);
++	if (!fp)
++		/* Chardev file descriptor was or is being released. */
++		return NOTIFY_DONE;
 +
-+		refcount_dec(&devlink_rate->parent->refcnt);
-+		devlink_rate->parent = NULL;
- 	}
- 	list_for_each_entry_safe(devlink_rate, tmp, &devlink->rate_list, list) {
- 		if (devlink_rate_is_node(devlink_rate)) {
+ 	/*
+ 	 * If this is called from atomic context (for instance: with a spinlock
+ 	 * taken by the atomic notifier chain), any sleeping calls must be done
+@@ -2575,8 +2582,6 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
+ 	/* Keep the GPIO device alive until we emit the event. */
+ 	ctx->gdev = gpio_device_get(desc->gdev);
+ 	ctx->cdev = cdev;
+-	/* Keep the file descriptor alive too. */
+-	get_file(ctx->cdev->fp);
+ 
+ 	INIT_WORK(&ctx->work, lineinfo_changed_func);
+ 	queue_work(ctx->gdev->line_state_wq, &ctx->work);
 -- 
 2.51.0
 
