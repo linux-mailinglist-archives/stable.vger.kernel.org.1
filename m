@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-197136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1258DC8ED66
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE1EC8EF0D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A78C4E879C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847713B4850
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B7827587C;
-	Thu, 27 Nov 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C91A2FBE03;
+	Thu, 27 Nov 2025 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSwi1Uc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gkze1bPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616AE21770B;
-	Thu, 27 Nov 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DBF286416;
+	Thu, 27 Nov 2025 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254894; cv=none; b=qvKOrbNtlu0kyUWWExMg2N32vvhEGzCm+Q+uPmTqUbd0OCh9Ua4n0MkT7umrx5E0ruCHaC0I2x/cL6XJA/7iqoA/RekixzMvsvlI1sfkJE7bNK5msYeMIqa5xD3OCfurogpV7EpBLxoN6ovmEQ9KJUKQH7Y8K6t9SWttfy8hTj4=
+	t=1764255129; cv=none; b=Snh4SCmdT4Os9BMgkjOo3wws0quIoiSgGBTgyrExuI65atKiJjWdtSgRl4hh12seY7V7GEewCK3VmXU3JkPkUK9Vf56sKQfxlIcXH/n+FS6hXdhbxueBXsth+rZi3FfPUesGmjbJm+zGATsMcxpGS03jyVgZG9C0AolFxLjZqmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254894; c=relaxed/simple;
-	bh=yDkvk9uH6ulMTjtejMXNh45GqvEQnsdMF5hN2I5oVc0=;
+	s=arc-20240116; t=1764255129; c=relaxed/simple;
+	bh=0IfAz7slasUxkOA4w4xjdJBl917UNdsc5mnCijYVf0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+pSGtXVLISHOnIUy3J6HFRc4+Tmq5ErnUYVX7U2lTxnfd4o2yBfalAW5UDPYLW+e5xyTna6M52iBfvgpw2cnWNG1fDJDsh7bY0J1gSootyEE7f7v88F0rF3EGWcX3L3AIBDBBdv2LCYilU2nuvSbi7fCdkCZ1TrAFXBr4GrVoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSwi1Uc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EC9C4CEF8;
-	Thu, 27 Nov 2025 14:48:13 +0000 (UTC)
+	 MIME-Version; b=nLZwwT4rZIM2Tokr8huoXn2kr11/AwC/eXfQYEXVpKixO2OSUpsqeG8y1B8GsNQlBCZP7WsFZKXDB+XtZy8lYXe0e5FZvAKA/wKhsl8bQx4LuFVF86JaTFJHvqqKV+dkjHZ6n79wrkfs3RsqH/olaVKDpCYhVHJGcEGGu7v094Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gkze1bPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31EAC113D0;
+	Thu, 27 Nov 2025 14:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254894;
-	bh=yDkvk9uH6ulMTjtejMXNh45GqvEQnsdMF5hN2I5oVc0=;
+	s=korg; t=1764255129;
+	bh=0IfAz7slasUxkOA4w4xjdJBl917UNdsc5mnCijYVf0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSwi1Uc9wlFlor4Jc/MoRrinRKhCSIyKEstSlP/usvqEHTMbDshOXVcaH8/7b1wl8
-	 /Zc8Icj5B9oymEx6wc2cAAYC2qAQxkUa1pf+sgosv5dhQ9Vo0uqLnxwGQFZeCawlJ3
-	 A+o9XAV5pBwCmVrmq6QvEZoYDS4YLFB5DFqerXSY=
+	b=Gkze1bPWxsqdsMu7qtpl0af+bWKJrQdcrKCtuwmiDZ8/8SjOq9A/9NUodc/QB/tUe
+	 Rp5ksuIlrc01WlwRyV8axuYZmEOHLz4APRQkOL92lE471tywB/B4PMDjYAhpv7OHfP
+	 5/XJ8bwLEd1BrY1AROZeNek/QUFKv3qXYjGUDL4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 04/86] mtdchar: fix integer overflow in read/write ioctls
+	David Howells <dhowells@redhat.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 018/112] smb: client: introduce close_cached_dir_locked()
 Date: Thu, 27 Nov 2025 15:45:20 +0100
-Message-ID: <20251127144027.967570870@linuxfoundation.org>
+Message-ID: <20251127144033.401440064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit e4185bed738da755b191aa3f2e16e8b48450e1b8 upstream.
+commit a9d1f38df7ecd0e21233447c9cc6fa1799eddaf3 upstream.
 
-The "req.start" and "req.len" variables are u64 values that come from the
-user at the start of the function.  We mask away the high 32 bits of
-"req.len" so that's capped at U32_MAX but the "req.start" variable can go
-up to U64_MAX which means that the addition can still integer overflow.
+Replace close_cached_dir() calls under cfid_list_lock with a new
+close_cached_dir_locked() variant that uses kref_put() instead of
+kref_put_lock() to avoid recursive locking when dropping references.
 
-Use check_add_overflow() to fix this bug.
+While the existing code works if the refcount >= 2 invariant holds,
+this area has proven error-prone. Make deadlocks impossible and WARN
+on invariant violations.
 
-Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
-Fixes: 6420ac0af95d ("mtdchar: prevent unbounded allocation in MEMWRITE ioctl")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/mtdchar.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/client/cached_dir.c |   41 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/mtdchar.c
-+++ b/drivers/mtd/mtdchar.c
-@@ -599,6 +599,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
- 	uint8_t *datbuf = NULL, *oobbuf = NULL;
- 	size_t datbuf_len, oobbuf_len;
- 	int ret = 0;
-+	u64 end;
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -16,6 +16,7 @@ static struct cached_fid *init_cached_di
+ static void free_cached_dir(struct cached_fid *cfid);
+ static void smb2_close_cached_fid(struct kref *ref);
+ static void cfids_laundromat_worker(struct work_struct *work);
++static void close_cached_dir_locked(struct cached_fid *cfid);
  
- 	if (copy_from_user(&req, argp, sizeof(req)))
- 		return -EFAULT;
-@@ -618,7 +619,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
- 	req.len &= 0xffffffff;
- 	req.ooblen &= 0xffffffff;
+ struct cached_dir_dentry {
+ 	struct list_head entry;
+@@ -362,7 +363,7 @@ out:
+ 			 * lease. Release one here, and the second below.
+ 			 */
+ 			cfid->has_lease = false;
+-			close_cached_dir(cfid);
++			close_cached_dir_locked(cfid);
+ 		}
+ 		spin_unlock(&cfids->cfid_list_lock);
  
--	if (req.start + req.len > mtd->size)
-+	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size)
- 		return -EINVAL;
- 
- 	datbuf_len = min_t(size_t, req.len, mtd->erasesize);
-@@ -698,6 +699,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
- 	size_t datbuf_len, oobbuf_len;
- 	size_t orig_len, orig_ooblen;
- 	int ret = 0;
-+	u64 end;
- 
- 	if (copy_from_user(&req, argp, sizeof(req)))
- 		return -EFAULT;
-@@ -724,7 +726,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
- 	req.len &= 0xffffffff;
- 	req.ooblen &= 0xffffffff;
- 
--	if (req.start + req.len > mtd->size) {
-+	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size) {
- 		ret = -EINVAL;
- 		goto out;
+@@ -448,18 +449,52 @@ void drop_cached_dir_by_name(const unsig
+ 	spin_lock(&cfid->cfids->cfid_list_lock);
+ 	if (cfid->has_lease) {
+ 		cfid->has_lease = false;
+-		close_cached_dir(cfid);
++		close_cached_dir_locked(cfid);
  	}
+ 	spin_unlock(&cfid->cfids->cfid_list_lock);
+ 	close_cached_dir(cfid);
+ }
+ 
+-
++/**
++ * close_cached_dir - drop a reference of a cached dir
++ *
++ * The release function will be called with cfid_list_lock held to remove the
++ * cached dirs from the list before any other thread can take another @cfid
++ * ref. Must not be called with cfid_list_lock held; use
++ * close_cached_dir_locked() called instead.
++ *
++ * @cfid: cached dir
++ */
+ void close_cached_dir(struct cached_fid *cfid)
+ {
++	lockdep_assert_not_held(&cfid->cfids->cfid_list_lock);
+ 	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
+ }
+ 
++/**
++ * close_cached_dir_locked - put a reference of a cached dir with
++ * cfid_list_lock held
++ *
++ * Calling close_cached_dir() with cfid_list_lock held has the potential effect
++ * of causing a deadlock if the invariant of refcount >= 2 is false.
++ *
++ * This function is used in paths that hold cfid_list_lock and expect at least
++ * two references. If that invariant is violated, WARNs and returns without
++ * dropping a reference; the final put must still go through
++ * close_cached_dir().
++ *
++ * @cfid: cached dir
++ */
++static void close_cached_dir_locked(struct cached_fid *cfid)
++{
++	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
++
++	if (WARN_ON(kref_read(&cfid->refcount) < 2))
++		return;
++
++	kref_put(&cfid->refcount, smb2_close_cached_fid);
++}
++
+ /*
+  * Called from cifs_kill_sb when we unmount a share
+  */
 
 
 
