@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBA5C8F1FF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3586C8EF8B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1F33BC819
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05083B984B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB2F3346B6;
-	Thu, 27 Nov 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C913299943;
+	Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Msw1RhSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7zld9PK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CA0334C01;
-	Thu, 27 Nov 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A042882C9;
+	Thu, 27 Nov 2025 14:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255670; cv=none; b=oVQtw8w2tDPDG2qmFAdBJ59SnMoNKsZGh+8/65bKv9S/Ly1CDI6ZvH4owUrCPwiKF4bIcEZlUGAiL2FbxDfKbUmE/gN48Jd0YEgyzqp/tTfa/kJFz555iEnkOmZeMzzPgK3bipbswCZu834jakaXomxty6txAU3oTtvYyFCeBFM=
+	t=1764255200; cv=none; b=HKN7L8jV4dBOLelYTpGNF7YaF5sNuZpqgrbH8SoFKlgXpIUU3nb2Pmg1FkXchkOVKIj9LeVDfI7dFwGP0cl1ejDGRptU8KOIxw6/8M3tNN8DML8YsXV4nWrSS2acwTAtWsZTyjIQEYG86VbMxIFM/tlXzw1atGcZw4jhPIom/4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255670; c=relaxed/simple;
-	bh=wAFmsnRrFxy2TGQmmDylO6AcVQ+M6RCE+DSsAOA0ObY=;
+	s=arc-20240116; t=1764255200; c=relaxed/simple;
+	bh=O1YA3zk2Ry9cdskEn+kMjeM313H22u6w2Wszb1MpXEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmEDh9D74inHIaLxi/K6djco3zHXxTuPRN1gTL0i2xV8LyK+0zKvnovUgqUFvorDdxhkxPIJDa4kHph0MaOYN+0n2fPLrykxP9SriFED+juSAaaBSK6GPT0JKO4nTZMjaZz9AV2UhmaP9gMimE0DUnXFjuI0a9phnwO8F3kyo9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Msw1RhSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4356C116C6;
-	Thu, 27 Nov 2025 15:01:09 +0000 (UTC)
+	 MIME-Version; b=T4KjEWVO2DTHg13t7K14ikLaoISPlBCjXZO4LSlrbwsPaPscpT4WExUJX3uCx1Kcu7qP8dSa7TVqVCgCfwpXsXbxd0kxUhSuszhfRm2l75a5yxy4qcrM9p08iyCw6rp7Li+az4qclB0jlSMc7MiBH0YIO2mFqNy5bNjyzZXo1W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7zld9PK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52DCC4CEF8;
+	Thu, 27 Nov 2025 14:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255670;
-	bh=wAFmsnRrFxy2TGQmmDylO6AcVQ+M6RCE+DSsAOA0ObY=;
+	s=korg; t=1764255200;
+	bh=O1YA3zk2Ry9cdskEn+kMjeM313H22u6w2Wszb1MpXEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Msw1RhSHAH1PMZYiCiL8l16HnsHzAFQa6JQr0dq415IZy8oPZHHqLEoPQld8w3pik
-	 yyotsyEqJgjjnbic3q5PFRBhYnP/aO2h5bRo2wMxjrTHshYoI02uwC91brdJGpgS2g
-	 d6xe1MQzdCNjKrSDllKIOThGgDRmPlWXMprwlxEU=
+	b=F7zld9PKqEefCYWX7C7fZiFjNVoaPqRIUFgxo3fddArZzdhVp+2ozm9gNlpimLhS/
+	 4YzIqQm+gbO562HHtUKkalezub2dMBdTvnBRuq2ZEVzJb8weOV6uaS93Q/w/MVIN3Z
+	 X38c31/cw/vZHWnwKOKCfvedyBA5eUTsP4EQB+Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 074/175] drm/amd/display: Move sleep into each retry for retrieve_link_cap()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 025/112] Input: imx_sc_key - fix memory corruption on unload
 Date: Thu, 27 Nov 2025 15:45:27 +0100
-Message-ID: <20251127144045.668768554@linuxfoundation.org>
+Message-ID: <20251127144033.760335705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 71ad9054c1f241be63f9d11df8cbd0aa0352fe16 upstream.
+commit d83f1512758f4ef6fc5e83219fe7eeeb6b428ea4 upstream.
 
-[Why]
-When a monitor is booting it's possible that it isn't ready to retrieve
-link caps and this can lead to an EDID read failure:
+This is supposed to be "priv" but we accidentally pass "&priv" which is
+an address in the stack and so it will lead to memory corruption when
+the imx_sc_key_action() function is called.  Remove the &.
 
-```
-[drm:retrieve_link_cap [amdgpu]] *ERROR* retrieve_link_cap: Read receiver caps dpcd data failed.
-amdgpu 0000:c5:00.0: [drm] *ERROR* No EDID read.
-```
-
-[How]
-Rather than msleep once and try a few times, msleep each time.  Should
-be no changes for existing working monitors, but should correct reading
-caps on a monitor that is slow to boot.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4672
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 669dca37b3348a447db04bbdcbb3def94d5997cc)
+Fixes: 768062fd1284 ("Input: imx_sc_key - use devm_add_action_or_reset() to handle all cleanups")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/aQYKR75r2VMFJutT@stanley.mountain
 Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/input/keyboard/imx_sc_key.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1734,12 +1734,13 @@ static bool retrieve_link_cap(struct dc_
+--- a/drivers/input/keyboard/imx_sc_key.c
++++ b/drivers/input/keyboard/imx_sc_key.c
+@@ -158,7 +158,7 @@ static int imx_sc_key_probe(struct platf
+ 		return error;
  	}
  
- 	dpcd_set_source_specific_data(link);
--	/* Sink may need to configure internals based on vendor, so allow some
--	 * time before proceeding with possibly vendor specific transactions
--	 */
--	msleep(post_oui_delay);
+-	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, &priv);
++	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, priv);
+ 	if (error)
+ 		return error;
  
- 	for (i = 0; i < read_dpcd_retry_cnt; i++) {
-+		/*
-+		 * Sink may need to configure internals based on vendor, so allow some
-+		 * time before proceeding with possibly vendor specific transactions
-+		 */
-+		msleep(post_oui_delay);
- 		status = core_link_read_dpcd(
- 				link,
- 				DP_DPCD_REV,
 
 
 
