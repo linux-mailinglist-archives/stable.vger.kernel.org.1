@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A92AC8EE41
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF1DC8F06A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EA65034CF85
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8879F34C9AE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C95E299943;
-	Thu, 27 Nov 2025 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F0A3346AE;
+	Thu, 27 Nov 2025 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGwYsz7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSRKFmbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4756E28C84D;
-	Thu, 27 Nov 2025 14:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8002823F439;
+	Thu, 27 Nov 2025 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255158; cv=none; b=EfUHDeDaepVqn9iHA7zz/p7xBQ1F/Mb2ZfJaIsFQMAAZ4V85LtvW29fm8GVIAVL9rRaKaCQfre5okopnVSuguwxMfnx2uHvOixnVI5BSKK/DEBYBBdHKfuTbqDsfTiLN8If5is+oHDNI83SnDMUrHsI+azCNZQpnFGSqRHd7KA0=
+	t=1764255624; cv=none; b=UmzLz4sMGrVNnELnaLmaMt0aHV8DXN1SVnO5QlfEvP6cxwfAvwTOchhoi0ZxFQ4frnEJje6UYfMZbQHrGjckAMfn7VaA+6oGrweIBeUrFsMa4rAeqyM3CjPTxVFtnxjB6or4BQZL7zwxHNx+GYyiu+Bu9BepLbRVrq1ePGbGXsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255158; c=relaxed/simple;
-	bh=VR2dG8rlRXZGAvV0COHY/ioBmIuwM1OK+2lBs55Quos=;
+	s=arc-20240116; t=1764255624; c=relaxed/simple;
+	bh=FoC/uO0ocJ8q1H/h+86ChrVDhQWjJ4RPMItqcD//d7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDVuHtWDlyRpbTa9Ml+SkRzuaBWcas6mxmHtiwKfreZDQ4BcIqS99vrjFbgP4VsJHMi3iO5vnBgyi2btgntVcx4s9H0I/8eq88eDv6cIyiIFYEM4zR2HwruFHi73ycOek/oE+3aem0PMSfN+JFkd1w+Wl6kuweBZLlGCOLNXUBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGwYsz7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7892BC4CEF8;
-	Thu, 27 Nov 2025 14:52:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cInQ4ER8y3WEgc+oQrhHkFr5ddGuOnO7dIluq2uQfrP/eWCqOB3047XARO/DxpB5CHtjCDj9auv5uvOBvE22h8+nkxdKvWr9s/qJdynAhnIlLL2fkw3tkJV1TPVIYcuTnp+iXR+nt4+rFRxF0UDsWmvcT0KPqDiVB0xJ+KCVBtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSRKFmbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05260C4CEF8;
+	Thu, 27 Nov 2025 15:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255157;
-	bh=VR2dG8rlRXZGAvV0COHY/ioBmIuwM1OK+2lBs55Quos=;
+	s=korg; t=1764255624;
+	bh=FoC/uO0ocJ8q1H/h+86ChrVDhQWjJ4RPMItqcD//d7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGwYsz7H6kON89upc8ZkZrBsY3Mtwrrx8Sihg3GshmWO6pkgBOyerQkS3kDlwSf84
-	 AaCA41DfUk8F+goHtxLsFFMbSTAf5YORG8Q7HPPfz66Z4wpjVZq6AYjHnWS43Yw9/B
-	 OSDTXbMve0xW31gTYbkT7Cj0TqVRGPJTj5/z9B3g=
+	b=kSRKFmbX3r4IPopqDHllbkc4/Ik3UjuiVkkiiz59zKuqgqr8VrIudqSrHUBqYIEE0
+	 vxR8JgRk+m0Sm+ncK17ZyvkaCaegCDKuw8C0z26kPhlTjBZ3TZENItMaVH4nqyldtN
+	 2znx9wVrV/F5cmRM9ejFe70r17gVpeKWNeFOTcK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 007/112] arm64: dts: rockchip: include rk3399-base instead of rk3399 in rk3399-op1
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.17 056/175] platform/x86: alienware-wmi-wmax: Add support for the whole "G" family
 Date: Thu, 27 Nov 2025 15:45:09 +0100
-Message-ID: <20251127144032.984191239@linuxfoundation.org>
+Message-ID: <20251127144045.011353270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit 08d70143e3033d267507deb98a5fd187df3e6640 upstream.
+commit a6003d90f02863898babbcb3f55b1cd33f7867c2 upstream.
 
-In commit 296602b8e5f7 ("arm64: dts: rockchip: Move RK3399 OPPs to dtsi
-files for SoC variants"), everything shared between variants of RK3399
-was put into rk3399-base.dtsi and the rest in variant-specific DTSI,
-such as rk3399-t, rk3399-op1, rk3399, etc.
-Therefore, the variant-specific DTSI should include rk3399-base.dtsi and
-not another variant's DTSI.
+Add support for the whole "Dell G" laptop family.
 
-rk3399-op1 wrongly includes rk3399 (a variant) DTSI instead of
-rk3399-base DTSI, let's fix this oversight by including the intended
-DTSI.
-
-Fortunately, this had no impact on the resulting DTB since all nodes
-were named the same and all node properties were overridden in
-rk3399-op1.dtsi. This was checked by doing a checksum of rk3399-op1 DTBs
-before and after this commit.
-
-No intended change in behavior.
-
-Fixes: 296602b8e5f7 ("arm64: dts: rockchip: Move RK3399 OPPs to dtsi files for SoC variants")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/20251029-rk3399-op1-include-v1-1-2472ee60e7f8@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://patch.msgid.link/20251103-family-supp-v1-5-a241075d1787@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |   56 +++----------------------
+ 1 file changed, 8 insertions(+), 48 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi
-index c4f4f1ff6117..9da6fd82e46b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2016-2017 Fuzhou Rockchip Electronics Co., Ltd
-  */
- 
--#include "rk3399.dtsi"
-+#include "rk3399-base.dtsi"
- 
- / {
- 	cluster0_opp: opp-table-0 {
--- 
-2.52.0
-
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -170,74 +170,34 @@ static const struct dmi_system_id awcc_d
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Dell Inc. G15 5510",
++		.ident = "Dell Inc. G15",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5510"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15"),
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
+ 	{
+-		.ident = "Dell Inc. G15 5511",
++		.ident = "Dell Inc. G16",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5511"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G16"),
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
+ 	{
+-		.ident = "Dell Inc. G15 5515",
++		.ident = "Dell Inc. G3",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5515"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G3"),
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
+ 	{
+-		.ident = "Dell Inc. G15 5530",
++		.ident = "Dell Inc. G5",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5530"),
+-		},
+-		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Dell Inc. G16 7630",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G16 7630"),
+-		},
+-		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Dell Inc. G3 3500",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "G3 3500"),
+-		},
+-		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Dell Inc. G3 3590",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "G3 3590"),
+-		},
+-		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Dell Inc. G5 5500",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "G5 5500"),
+-		},
+-		.driver_data = &g_series_quirks,
+-	},
+-	{
+-		.ident = "Dell Inc. G5 5505",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "G5 5505"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G5"),
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
 
 
 
