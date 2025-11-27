@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD982C8F307
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10936C8EDC9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25B0F3B1BF0
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B0B4A34823F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2728D335091;
-	Thu, 27 Nov 2025 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3B1288537;
+	Thu, 27 Nov 2025 14:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ci5bJW4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiWLJM9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE4335069;
-	Thu, 27 Nov 2025 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E527F18B;
+	Thu, 27 Nov 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255989; cv=none; b=Znu0oY5lDMqkJ2BSK+X7mbCQ4uBU4LsJqYpewMK2ucPb2Mck1/ZBZ1BQXTRV+aEIBpyb2/ak10pqye2zurEPZdXqOzCMjQS5Ti/4VhCbo1mZKy+De5N/TXS+oUbcMrFpc5Zu2LTuh73jH3Aag6tHrOoqC0kOHctxO0MMmD+RZfQ=
+	t=1764255037; cv=none; b=m5YJX3u4aknwAX/pu2zfiMpEu7ieW+NJJvy9weDvHkDh/YoqeZbC7e6EkcvaS7JuoeL1TH1H+Q9ggY9Jf+ZmSvfW4l//x86bVKj81OnAlQMWDE618j0F6zWDKAZ6bP9D09Y+wnaejLlqyzbPzDyNJ8nlb5BpKtdsls/0i3P+dOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255989; c=relaxed/simple;
-	bh=TlQRAsSld7liGVBkDb+G4ZAg970JCnmYiqwkTbwq+5A=;
+	s=arc-20240116; t=1764255037; c=relaxed/simple;
+	bh=a9Z2se+k0vOpiF1aQlr98wjW2oPIRkOw+1reRfiDsxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjJA8WYjsiKTZckx4Mv5HoeziQ0nYSZiEGGhGQ6FCUtbn2DOqd8pJsHi8HMk//rSwBgBaaUw7ziwGzxD5gsySpjJX40xPX8yLD2tpbHogZzStXq4KoxwyVXntn4jBfxABlxJyg2Q886uycEXBA73qThDgu/7n5jaZfd3cLUiYrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ci5bJW4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569E1C113D0;
-	Thu, 27 Nov 2025 15:06:29 +0000 (UTC)
+	 MIME-Version; b=noNNPvfsglr5KP0P+yA2bJY/MOkVoYCOhWNld99HTLQ/00zjqE8Rcg9lRrJx18f1xUaCInYxVW0DDxgsPaR5mst/0VR0BaUqtEy68lfqi8dxdw1yzUuja5SqcsdWs6beXwZWiITDO859hulBh/nLgX6wtGQ0IH6xXgYzvzm+AAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiWLJM9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6921EC4CEF8;
+	Thu, 27 Nov 2025 14:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255989;
-	bh=TlQRAsSld7liGVBkDb+G4ZAg970JCnmYiqwkTbwq+5A=;
+	s=korg; t=1764255037;
+	bh=a9Z2se+k0vOpiF1aQlr98wjW2oPIRkOw+1reRfiDsxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ci5bJW4+jezbmXL7Sc0BNLV5r4mQ/eR+0ip//R62UK+Ys9odX24l/Z7mXqpLaaojR
-	 vFpQxz/VDfl4/UvvrdztzBMRDxQF0iSM1AFs17fPw7C5oRTEYNoA5yapbcdxawZ0aN
-	 czhuanu5cM9LPHgt7ffO+9/MI5rquBvw8NeSLO5c=
+	b=KiWLJM9b1Xz8yqk/A7U0F5M46sEhWsGAsdq3Ujkyw3UJL0+bNCB06dQ1onjm4AeEC
+	 MdzRZYyJMgx68BO4UQOJKJFJxIbk0SrGEz/NFtRdpgYuXQq4I38TEy6H7vM5Jyda8P
+	 9jsNyPHBulPX6HXls/krwEywK9y3XdNiK+5Jc41A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edoardo Canepa <edoardo.canepa@canonical.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/112] selftests: net: use BASH for bareudp testing
+	Sebastian Ene <sebastianene@google.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 73/86] KVM: arm64: Check the untrusted offset in FF-A memory share
 Date: Thu, 27 Nov 2025 15:46:29 +0100
-Message-ID: <20251127144036.027173199@linuxfoundation.org>
+Message-ID: <20251127144030.497315157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+From: Sebastian Ene <sebastianene@google.com>
 
-[ Upstream commit 9311e9540a8b406d9f028aa87fb072a3819d4c82 ]
+commit 103e17aac09cdd358133f9e00998b75d6c1f1518 upstream.
 
-In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
-BASH script at the very beginning.
+Verify the offset to prevent OOB access in the hypervisor
+FF-A buffer in case an untrusted large enough value
+[U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
+is set from the host kernel.
 
-But on some operating systems like Ubuntu, /bin/sh is actually pointed to
-DASH, thus it will try to run BASH commands with DASH and consequently
-leads to syntax issues:
-  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
-  # ./bareudp.sh: 5: ./lib.sh: source: not found
-  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
-
-Fix this by explicitly using BASH for bareudp.sh. This fixes test
-execution failures on systems where /bin/sh is not BASH.
-
-Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-Link: https://bugs.launchpad.net/bugs/2129812
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20251027095710.2036108-2-po-hsu.lin@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/bareudp.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/nvhe/ffa.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
-index f366cadbc5e86..ff4308b48e65d 100755
---- a/tools/testing/selftests/net/bareudp.sh
-+++ b/tools/testing/selftests/net/bareudp.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/arch/arm64/kvm/hyp/nvhe/ffa.c
++++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+@@ -425,7 +425,7 @@ static void __do_ffa_mem_xfer(const u64
+ 	DECLARE_REG(u32, npages_mbz, ctxt, 4);
+ 	struct ffa_composite_mem_region *reg;
+ 	struct ffa_mem_region *buf;
+-	u32 offset, nr_ranges;
++	u32 offset, nr_ranges, checked_offset;
+ 	int ret = 0;
  
- # Test various bareudp tunnel configurations.
--- 
-2.51.0
-
+ 	if (addr_mbz || npages_mbz || fraglen > len ||
+@@ -460,7 +460,12 @@ static void __do_ffa_mem_xfer(const u64
+ 		goto out_unlock;
+ 	}
+ 
+-	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
++	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
++		ret = FFA_RET_INVALID_PARAMETERS;
++		goto out_unlock;
++	}
++
++	if (fraglen < checked_offset) {
+ 		ret = FFA_RET_INVALID_PARAMETERS;
+ 		goto out_unlock;
+ 	}
 
 
 
