@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB766C8EEB6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47341C8F139
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FC2E3B6C88
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:31 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 90A66345F95
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918C328D850;
-	Thu, 27 Nov 2025 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB203334C06;
+	Thu, 27 Nov 2025 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGZFFFgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ur2/A1Kp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E83627F18B;
-	Thu, 27 Nov 2025 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892163346AE;
+	Thu, 27 Nov 2025 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255089; cv=none; b=gP1rdNk0NYFZIk/NRhESFNAEckKSdH4wJT1ufNg3ydwyzokhUciBZscp43U70NmpQvN1zt+XWHovBqTfJVVcF1srsf6FZU86lg0mhmRQTePZtuvHBXpyQTRjLxP9X37cTlZ+rtEsfQ5DNnN0WWAIKw1qJUV+M3JSs7Ww0eigGuE=
+	t=1764255825; cv=none; b=pmISihBPUiUoQ1Iu3lHFlz1FIvOI6Va0tOme9/PwMI+b8scCaxUKx+lFtVtFakX3yMISFzHwvEOowzcKR5uAifhAPlcjykK39c97di7a3/hWeXQiTI/ksxxlVVSojFfZHj/qSYOupvzWvBhe/EKySDtIsEMN/S9umboHuZfBoWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255089; c=relaxed/simple;
-	bh=TVoj4jZYxwrOzoY0waogAJXCPSM7keoGgbmaKlgRyfM=;
+	s=arc-20240116; t=1764255825; c=relaxed/simple;
+	bh=NNolQwKJyacI9TlJ2tl2eDC7Pz4va9i4k1UaFmgXuJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYAXdR0Pf772xnN5izNbM0RQQFkLvZ/TXYU43nZjUwc9f7EEJnD0CWnu6WJEp2fKvCBYUAdx3q2DkCu3wiM39hfYU36SrhhNRUsiiQb2TkP68Avfhq7e1klMNWt92fSF3HXgMl/jjlTJLgv3i7dgFPY+/rgIyBsm8ptVP2kPoS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGZFFFgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB7DC4CEF8;
-	Thu, 27 Nov 2025 14:51:28 +0000 (UTC)
+	 MIME-Version; b=bCW7Uz6BBrqHc/kisLjnysmD2GP7sBiCvfVHM0hXJhjp3s48djaZyFpSrKGasO1XrmIkEPKHIbN8WxlBcEEPhNjs0ZvwZ3uPAecba+m5w/SU6UuRJcq+fy2qXsOlMdU/oPpAVbRkI8YP88FNF+wHw3VxGPICiEjlFoUkK58m7iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ur2/A1Kp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6ABC19422;
+	Thu, 27 Nov 2025 15:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255089;
-	bh=TVoj4jZYxwrOzoY0waogAJXCPSM7keoGgbmaKlgRyfM=;
+	s=korg; t=1764255825;
+	bh=NNolQwKJyacI9TlJ2tl2eDC7Pz4va9i4k1UaFmgXuJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGZFFFgyjJfuLaCUwLVwfaqwMijK5vuXMB1k4FEATRpNyUyOXMcmbWdCi+S+OQnOB
-	 CqUrN/xc+zbAVtbE5n7R9LPZ1lNCZPuAOjUQH7pWwDo8mUSems3DPucMT+uPthvJWa
-	 ibliacvCuyLQ/E6zJcq3lPREiVPTmpy68pQ1rLuQ=
+	b=ur2/A1Kpn1ciVkBgj+NfRNiBYMdMXdt0TfyDFqsT4vSX+g2y+jxPAELDzX24vZnqi
+	 qxJFw+wCLshkYsubbM4DWcmmqMyyAbBZl0ClyS9uKktS6qF/cTb4CRM6TbukfPHmRn
+	 G8Rj5pfHS3jIPIaIzA+HSuEoO8TCSEXBlwnwPeDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 63/86] net: tls: Cancel RX async resync request on rcd_delta overflow
+Subject: [PATCH 6.17 126/175] net: phylink: add missing supported link modes for the fixed-link
 Date: Thu, 27 Nov 2025 15:46:19 +0100
-Message-ID: <20251127144030.134105281@linuxfoundation.org>
+Message-ID: <20251127144047.560563237@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
+[ Upstream commit e31a11be41cd134f245c01d1329e7bc89aba78fb ]
 
-When a netdev issues a RX async resync request for a TLS connection,
-the TLS module handles it by logging record headers and attempting to
-match them to the tcp_sn provided by the device. If a match is found,
-the TLS module approves the tcp_sn for resynchronization.
+Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
+initialized, so these link modes will not work for the fixed-link. This
+leads to a TCP performance degradation issue observed on the i.MX943
+platform.
 
-While waiting for a device response, the TLS module also increments
-rcd_delta each time a new TLS record is received, tracking the distance
-from the original resync request.
+The switch CPU port of i.MX943 is connected to an ENETC MAC, this link
+is a fixed link and the link speed is 2.5Gbps. And one of the switch
+user ports is the RGMII interface, and its link speed is 1Gbps. If the
+flow-control of the fixed link is not enabled, we can easily observe
+the iperf performance of TCP packets is very low. Because the inbound
+rate on the CPU port is greater than the outbound rate on the user port,
+the switch is prone to congestion, leading to the loss of some TCP
+packets and requiring multiple retransmissions.
 
-However, if the device response is delayed or fails (e.g due to
-unstable connection and device getting out of tracking, hardware
-errors, resource exhaustion etc.), the TLS module keeps logging and
-incrementing, which can lead to a WARN() when rcd_delta exceeds the
-threshold.
+Solving this problem should be as simple as setting the Asym_Pause and
+Pause bits. The reason why the Autoneg bit needs to be set, Russell
+has gave a very good explanation in the thread [1], see below.
 
-To address this, introduce tls_offload_rx_resync_async_request_cancel()
-to explicitly cancel resync requests when a device response failure is
-detected. Call this helper also as a final safeguard when rcd_delta
-crosses its threshold, as reaching this point implies that earlier
-cancellation did not occur.
+"As the advertising and lp_advertising bitmasks have to be non-empty,
+and the swphy reports aneg capable, aneg complete, and AN enabled, then
+for consistency with that state, Autoneg should be set. This is how it
+was prior to the blamed commit."
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
+Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link configuration")
+Link: https://lore.kernel.org/aRjqLN8eQDIQfBjS@shell.armlinux.org.uk # [1]
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20251117102943.1862680-1-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tls.h    | 6 ++++++
- net/tls/tls_device.c | 4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/phy/phylink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 6c642ea180504..66527376ca973 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -474,6 +474,12 @@ tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
- 		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
- }
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 1988b7d2089a6..928a1186f0d9a 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -637,6 +637,9 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
  
-+static inline void
-+tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
-+{
-+	atomic64_set(&resync_async->req, 0);
-+}
-+
- static inline void
- tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
+ static void phylink_fill_fixedlink_supported(unsigned long *supported)
  {
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 8c94c926606ad..4f72fd26ab405 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -727,8 +727,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
- 		/* shouldn't get to wraparound:
- 		 * too long in async stage, something bad happened
- 		 */
--		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
-+		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
-+			tls_offload_rx_resync_async_request_cancel(resync_async);
- 			return false;
-+		}
- 
- 		/* asynchronous stage: log all headers seq such that
- 		 * req_seq <= seq <= end_seq, and wait for real resync request
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, supported);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, supported);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, supported);
 -- 
 2.51.0
 
