@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EDBC8ED36
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:47:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12B7C8F088
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FA644EA1CA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4FE20356E41
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDDB273D6D;
-	Thu, 27 Nov 2025 14:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FA1334C12;
+	Thu, 27 Nov 2025 15:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/upgOr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5SfCm+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786C026F2A7;
-	Thu, 27 Nov 2025 14:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D244333456;
+	Thu, 27 Nov 2025 15:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254859; cv=none; b=fDlUxnD2fG9bCLow2xxa7/RgDcdaK33l210tv1iYP56gIFKt5KAFIn2Me8e6ULvhB/SkbGb4nwPakRsbQ3AIF06aGxfoDGmUPOkPvsKMUWwR4r7QEJYin3qZ66QC6YUm4ecfZEwzVhbIdEmeuiUh4Y1qcqt4BVfnpZDkKQV3AU8=
+	t=1764255673; cv=none; b=IDV5UHP5fj/FPBlk64LghGeIo1ezq9tKERuVO8hsTlHExGJD9kMn/2SeLF8VIOMjOFggB0QZkN0ymZOX4EVbHg87Uy6vPmih2SbRAzewb2pRE4AJPgaYMkaR494dPA2CVOsRad5bfFJxRX01XtPw057gJaXvMdFHAgQ6ytn8qCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254859; c=relaxed/simple;
-	bh=OdBKVo/P4Ugp242yJpDa+nfmMSMHBRD8wyhvqbHV/c8=;
+	s=arc-20240116; t=1764255673; c=relaxed/simple;
+	bh=+CaYF+weOBqwD66I1/Dj21QvjWbO1zTQCrtVhUxmq6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kl2LH475/lPOWrqV/9lGbVpBz0AHRX6WRZJxgayogP5biF3XK5/ZaOvly+Al50jjficzEXlpdMBi3HpaCPpsk0XVGId7aU+lOkxeLEWZDfEJ0p2QeCyH1lTBTFAOv4zNK8BcE+Cw3f50xM8det+5ZIPsAqtKWO4NHEpRkaythm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/upgOr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDA6C4CEF8;
-	Thu, 27 Nov 2025 14:47:38 +0000 (UTC)
+	 MIME-Version; b=GIYKOMINboQLPupI/mI9hVRoQhfapCIZaZBXFdM4RQulYQ4Iu3ki12GY/S5Gm9sSPeko5Uihz8aWVHK034KcU5i5p+b6ZtyINQI3dhhp4KAaUKLRXgzoLjEITHx6QT41yJ9aOcI9b8h7Qd8t03OxCBSATFwtexrk8+Ea6Iykx9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5SfCm+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5821C4CEF8;
+	Thu, 27 Nov 2025 15:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254859;
-	bh=OdBKVo/P4Ugp242yJpDa+nfmMSMHBRD8wyhvqbHV/c8=;
+	s=korg; t=1764255673;
+	bh=+CaYF+weOBqwD66I1/Dj21QvjWbO1zTQCrtVhUxmq6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/upgOr+hvbNQD+AubGJE/bS5/viX7YtDy5aV2Zl5gsnRmd/vecVBxRDwo8L5d/Sb
-	 UDLHqo6zK3OmPzvCZuIeqEhedse8rtTa24aP1D+0K3GIi+ZFSRREZUce7lXRjBOy7K
-	 gUb0NFj1K6rMjZvB6gmzhBlu6RDDXnxbrkcSeRNI=
+	b=h5SfCm+V1RNas02ewh/O2FF1l0EXxq0weJKpMxa+R7foNQ0zN4IV1khzH6ubitz96
+	 Dxn2voiEFdOxgykxwusGBwmiiSGCHdxuEahuXifrNyz1RbrYsqzKQAgST118JQU3dl
+	 V1O8rCDsYUEtetF2Ji/WPR75cW+aK34cQnwWL/zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 11/86] smb: client: introduce close_cached_dir_locked()
-Date: Thu, 27 Nov 2025 15:45:27 +0100
-Message-ID: <20251127144028.229212120@linuxfoundation.org>
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 075/175] drm/amd/display: Fix pbn to kbps Conversion
+Date: Thu, 27 Nov 2025 15:45:28 +0100
+Message-ID: <20251127144045.704882644@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +64,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-commit a9d1f38df7ecd0e21233447c9cc6fa1799eddaf3 upstream.
+commit 1788ef30725da53face7e311cdf62ad65fababcd upstream.
 
-Replace close_cached_dir() calls under cfid_list_lock with a new
-close_cached_dir_locked() variant that uses kref_put() instead of
-kref_put_lock() to avoid recursive locking when dropping references.
+[Why]
+Existing routine has two conversion sequence,
+pbn_to_kbps and kbps_to_pbn with margin.
+Non of those has without-margin calculation.
 
-While the existing code works if the refcount >= 2 invariant holds,
-this area has proven error-prone. Make deadlocks impossible and WARN
-on invariant violations.
+kbps_to_pbn with margin conversion includes
+fec overhead which has already been included in
+pbn_div calculation with 0.994 factor considered.
+It is a double counted fec overhead factor that causes
+potential bw loss.
 
+[How]
+Add without-margin calculation.
+Fix fec overhead double counted issue.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3735
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e0dec00f3d05e8c0eceaaebfdca217f8d10d380c)
 Cc: stable@vger.kernel.org
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |   41 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   59 ++++--------
+ 1 file changed, 23 insertions(+), 36 deletions(-)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -16,6 +16,7 @@ static struct cached_fid *init_cached_di
- static void free_cached_dir(struct cached_fid *cfid);
- static void smb2_close_cached_fid(struct kref *ref);
- static void cfids_laundromat_worker(struct work_struct *work);
-+static void close_cached_dir_locked(struct cached_fid *cfid);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -852,26 +852,28 @@ struct dsc_mst_fairness_params {
+ };
  
- struct cached_dir_dentry {
- 	struct list_head entry;
-@@ -362,7 +363,7 @@ out:
- 			 * lease. Release one here, and the second below.
- 			 */
- 			cfid->has_lease = false;
--			close_cached_dir(cfid);
-+			close_cached_dir_locked(cfid);
- 		}
- 		spin_unlock(&cfids->cfid_list_lock);
- 
-@@ -448,18 +449,52 @@ void drop_cached_dir_by_name(const unsig
- 	spin_lock(&cfid->cfids->cfid_list_lock);
- 	if (cfid->has_lease) {
- 		cfid->has_lease = false;
--		close_cached_dir(cfid);
-+		close_cached_dir_locked(cfid);
- 	}
- 	spin_unlock(&cfid->cfids->cfid_list_lock);
- 	close_cached_dir(cfid);
- }
- 
--
-+/**
-+ * close_cached_dir - drop a reference of a cached dir
-+ *
-+ * The release function will be called with cfid_list_lock held to remove the
-+ * cached dirs from the list before any other thread can take another @cfid
-+ * ref. Must not be called with cfid_list_lock held; use
-+ * close_cached_dir_locked() called instead.
-+ *
-+ * @cfid: cached dir
-+ */
- void close_cached_dir(struct cached_fid *cfid)
+ #if defined(CONFIG_DRM_AMD_DC_FP)
+-static uint16_t get_fec_overhead_multiplier(struct dc_link *dc_link)
++static uint64_t kbps_to_pbn(int kbps, bool is_peak_pbn)
  {
-+	lockdep_assert_not_held(&cfid->cfids->cfid_list_lock);
- 	kref_put_lock(&cfid->refcount, smb2_close_cached_fid, &cfid->cfids->cfid_list_lock);
+-	u8 link_coding_cap;
+-	uint16_t fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B;
++	uint64_t effective_kbps = (uint64_t)kbps;
+ 
+-	link_coding_cap = dc_link_dp_mst_decide_link_encoding_format(dc_link);
+-	if (link_coding_cap == DP_128b_132b_ENCODING)
+-		fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B;
++	if (is_peak_pbn) {	// add 0.6% (1006/1000) overhead into effective kbps
++		effective_kbps *= 1006;
++		effective_kbps = div_u64(effective_kbps, 1000);
++	}
+ 
+-	return fec_overhead_multiplier_x1000;
++	return (uint64_t) DIV64_U64_ROUND_UP(effective_kbps * 64, (54 * 8 * 1000));
  }
  
-+/**
-+ * close_cached_dir_locked - put a reference of a cached dir with
-+ * cfid_list_lock held
-+ *
-+ * Calling close_cached_dir() with cfid_list_lock held has the potential effect
-+ * of causing a deadlock if the invariant of refcount >= 2 is false.
-+ *
-+ * This function is used in paths that hold cfid_list_lock and expect at least
-+ * two references. If that invariant is violated, WARNs and returns without
-+ * dropping a reference; the final put must still go through
-+ * close_cached_dir().
-+ *
-+ * @cfid: cached dir
-+ */
-+static void close_cached_dir_locked(struct cached_fid *cfid)
-+{
-+	lockdep_assert_held(&cfid->cfids->cfid_list_lock);
+-static int kbps_to_peak_pbn(int kbps, uint16_t fec_overhead_multiplier_x1000)
++static uint32_t pbn_to_kbps(unsigned int pbn, bool with_margin)
+ {
+-	u64 peak_kbps = kbps;
++	uint64_t pbn_effective = (uint64_t)pbn;
 +
-+	if (WARN_ON(kref_read(&cfid->refcount) < 2))
-+		return;
-+
-+	kref_put(&cfid->refcount, smb2_close_cached_fid);
-+}
-+
- /*
-  * Called from cifs_kill_sb when we unmount a share
-  */
++	if (with_margin)	// deduct 0.6% (994/1000) overhead from effective pbn
++		pbn_effective *= (1000000 / PEAK_FACTOR_X1000);
++	else
++		pbn_effective *= 1000;
+ 
+-	peak_kbps *= 1006;
+-	peak_kbps *= fec_overhead_multiplier_x1000;
+-	peak_kbps = div_u64(peak_kbps, 1000 * 1000);
+-	return (int) DIV64_U64_ROUND_UP(peak_kbps * 64, (54 * 8 * 1000));
++	return DIV_U64_ROUND_UP(pbn_effective * 8 * 54, 64);
+ }
+ 
+ static void set_dsc_configs_from_fairness_vars(struct dsc_mst_fairness_params *params,
+@@ -942,7 +944,7 @@ static int bpp_x16_from_pbn(struct dsc_m
+ 	dc_dsc_get_default_config_option(param.sink->ctx->dc, &dsc_options);
+ 	dsc_options.max_target_bpp_limit_override_x16 = drm_connector->display_info.max_dsc_bpp * 16;
+ 
+-	kbps = div_u64((u64)pbn * 994 * 8 * 54, 64);
++	kbps = pbn_to_kbps(pbn, false);
+ 	dc_dsc_compute_config(
+ 			param.sink->ctx->dc->res_pool->dscs[0],
+ 			&param.sink->dsc_caps.dsc_dec_caps,
+@@ -971,12 +973,11 @@ static int increase_dsc_bpp(struct drm_a
+ 	int link_timeslots_used;
+ 	int fair_pbn_alloc;
+ 	int ret = 0;
+-	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
+ 
+ 	for (i = 0; i < count; i++) {
+ 		if (vars[i + k].dsc_enabled) {
+ 			initial_slack[i] =
+-			kbps_to_peak_pbn(params[i].bw_range.max_kbps, fec_overhead_multiplier_x1000) - vars[i + k].pbn;
++			kbps_to_pbn(params[i].bw_range.max_kbps, false) - vars[i + k].pbn;
+ 			bpp_increased[i] = false;
+ 			remaining_to_increase += 1;
+ 		} else {
+@@ -1072,7 +1073,6 @@ static int try_disable_dsc(struct drm_at
+ 	int next_index;
+ 	int remaining_to_try = 0;
+ 	int ret;
+-	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
+ 	int var_pbn;
+ 
+ 	for (i = 0; i < count; i++) {
+@@ -1105,7 +1105,7 @@ static int try_disable_dsc(struct drm_at
+ 
+ 		DRM_DEBUG_DRIVER("MST_DSC index #%d, try no compression\n", next_index);
+ 		var_pbn = vars[next_index].pbn;
+-		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
++		vars[next_index].pbn = kbps_to_pbn(params[next_index].bw_range.stream_kbps, true);
+ 		ret = drm_dp_atomic_find_time_slots(state,
+ 						    params[next_index].port->mgr,
+ 						    params[next_index].port,
+@@ -1165,7 +1165,6 @@ static int compute_mst_dsc_configs_for_l
+ 	int count = 0;
+ 	int i, k, ret;
+ 	bool debugfs_overwrite = false;
+-	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
+ 	struct drm_connector_state *new_conn_state;
+ 
+ 	memset(params, 0, sizeof(params));
+@@ -1246,7 +1245,7 @@ static int compute_mst_dsc_configs_for_l
+ 	DRM_DEBUG_DRIVER("MST_DSC Try no compression\n");
+ 	for (i = 0; i < count; i++) {
+ 		vars[i + k].aconnector = params[i].aconnector;
+-		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
++		vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
+ 		vars[i + k].dsc_enabled = false;
+ 		vars[i + k].bpp_x16 = 0;
+ 		ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr, params[i].port,
+@@ -1268,7 +1267,7 @@ static int compute_mst_dsc_configs_for_l
+ 	DRM_DEBUG_DRIVER("MST_DSC Try max compression\n");
+ 	for (i = 0; i < count; i++) {
+ 		if (params[i].compression_possible && params[i].clock_force_enable != DSC_CLK_FORCE_DISABLE) {
+-			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps, fec_overhead_multiplier_x1000);
++			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.min_kbps, false);
+ 			vars[i + k].dsc_enabled = true;
+ 			vars[i + k].bpp_x16 = params[i].bw_range.min_target_bpp_x16;
+ 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
+@@ -1276,7 +1275,7 @@ static int compute_mst_dsc_configs_for_l
+ 			if (ret < 0)
+ 				return ret;
+ 		} else {
+-			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
++			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
+ 			vars[i + k].dsc_enabled = false;
+ 			vars[i + k].bpp_x16 = 0;
+ 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
+@@ -1731,18 +1730,6 @@ clean_exit:
+ 	return ret;
+ }
+ 
+-static uint32_t kbps_from_pbn(unsigned int pbn)
+-{
+-	uint64_t kbps = (uint64_t)pbn;
+-
+-	kbps *= (1000000 / PEAK_FACTOR_X1000);
+-	kbps *= 8;
+-	kbps *= 54;
+-	kbps /= 64;
+-
+-	return (uint32_t)kbps;
+-}
+-
+ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
+ 					  struct dc_dsc_bw_range *bw_range)
+ {
+@@ -1835,7 +1822,7 @@ enum dc_status dm_dp_mst_is_port_support
+ 			dc_link_get_highest_encoding_format(stream->link));
+ 	cur_link_settings = stream->link->verified_link_cap;
+ 	root_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link, &cur_link_settings);
+-	virtual_channel_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
++	virtual_channel_bw_in_kbps = pbn_to_kbps(aconnector->mst_output_port->full_pbn, true);
+ 
+ 	/* pick the end to end bw bottleneck */
+ 	end_to_end_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
+@@ -1886,7 +1873,7 @@ enum dc_status dm_dp_mst_is_port_support
+ 				immediate_upstream_port = aconnector->mst_output_port->parent->port_parent;
+ 
+ 			if (immediate_upstream_port) {
+-				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
++				virtual_channel_bw_in_kbps = pbn_to_kbps(immediate_upstream_port->full_pbn, true);
+ 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
+ 			} else {
+ 				/* For topology LCT 1 case - only one mstb*/
 
 
 
