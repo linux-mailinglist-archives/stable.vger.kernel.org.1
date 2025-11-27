@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856E6C8EE77
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F974C8EF91
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBD653B235B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF5173B9967
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9766E2C0271;
-	Thu, 27 Nov 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B73F3126C0;
+	Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJived74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9mufY/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299E9289367;
-	Thu, 27 Nov 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180FB2882C9;
+	Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255012; cv=none; b=BRYmpDLF1yej6kLnf9LvZF8sPJSzGwT2yzGav0GJTDnEd5Gb7rXGVze0eP/S8K8AxWpZgDLk9iapMt7rCUWP5zkYxYdqtXA15pPgaOQA68AWlV3nQPGoQ2JDX4FqNJY6eCWi/2j7fLLLUwGx/UoNnFuS1OraLRLPGq5y36ntm7o=
+	t=1764255206; cv=none; b=XVvhxihS5DasaRHUvP/9TCgzUu/0WntEAUCmLApweuVpvfLiVu5rxWCfJUSw8+G0tYirgXlrQZloLShk5Q6NMSjIaBCU9PBKRXcq3z3QvPVjSGcjdu1/85HCz65YOaLK6QKvR/B0LAAd1oUz67tLYpXpwIKr9bTo5fCS3srtH28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255012; c=relaxed/simple;
-	bh=KsxrLZr5vkcy4BQot/x+mDmxGEwRqSs0XZ+OfMIpKZU=;
+	s=arc-20240116; t=1764255206; c=relaxed/simple;
+	bh=Ta1xi6669fNTigz6L8qQavLt0YU/PUqu/E2gSdwp47g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3CIXkMHwyWaOw8mLLlQ78yQDWC1JkAW3Op05C3VJlRNIA6t5w/vjFDhN6PTt8ihEnzUtW9MeUCIpuNmU1tDzIzJBLx+VcI5twPCZ/3PjwzcXXlyz+bkUgIqOt7SaH6vuyOtGLGtmuONmGIKSvWmpeGukKYR0W+TVN/cA5bF0jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJived74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D86C4CEF8;
-	Thu, 27 Nov 2025 14:50:11 +0000 (UTC)
+	 MIME-Version; b=lvCeWcy4UTGFyUrU5+O+HyW642/GlCdp18jswLBoShgpupbmcdnEPgISGtLJGdIGaCZu6qbTw/C+yq6nkRjo/XRmu6LOvQq83B4klcJbXm3fdiYgCMR6i8DXqlMcmrsgEO9jsvbKtyMuJeTA6tmTs2I7exBGaHVA2J51f359pcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9mufY/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8821BC4CEF8;
+	Thu, 27 Nov 2025 14:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255012;
-	bh=KsxrLZr5vkcy4BQot/x+mDmxGEwRqSs0XZ+OfMIpKZU=;
+	s=korg; t=1764255205;
+	bh=Ta1xi6669fNTigz6L8qQavLt0YU/PUqu/E2gSdwp47g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJived7475tvvu/3ABoHm0yoCSDGpD/l1OioWlfMoxwe6voE18Q0vegQ8Mmy/6llr
-	 jFmvmJQ2ATWdLeviy7oL20KQ3tD1T+ig8kkTTllJAFVgC5VEPCFa/gy6WBp09xQfgp
-	 igVq5nQx/xyzwSFj6OIrikrlc1/xTuFEE8ys8pPc=
+	b=S9mufY/bO10ojAGH87VSPJRsbivaNL2m4CpFksCcGe7BFiq7XLFtlTKBM8ZJSBGa5
+	 G6KF9nxKhlrS8M4OauhuMvwZsIwvp2/7w5pTMi8UVMn5FOAWFOOn3k4/Rf96rATyLk
+	 50ZVzMyVz1W+7LvLQGZM0/96o+sZsyWgJK9lFcTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 30/86] mptcp: fix premature close in case of fallback
+Subject: [PATCH 6.12 044/112] mptcp: do not fallback when OoO is present
 Date: Thu, 27 Nov 2025 15:45:46 +0100
-Message-ID: <20251127144028.924358785@linuxfoundation.org>
+Message-ID: <20251127144034.453818002@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
+commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 upstream.
 
-I'm observing very frequent self-tests failures in case of fallback when
-running on a CONFIG_PREEMPT kernel.
+In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
+reset if fallback is possible. Such corruptions happen in the receive
+path; to ensure fallback is possible the stack additionally needs to
+check for OoO data, otherwise the fallback will break the data stream.
 
-The root cause is that subflow_sched_work_if_closed() closes any subflow
-as soon as it is half-closed and has no incoming data pending.
-
-That works well for regular subflows - MPTCP needs bi-directional
-connectivity to operate on a given subflow - but for fallback socket is
-race prone.
-
-When TCP peer closes the connection before the MPTCP one,
-subflow_sched_work_if_closed() will schedule the MPTCP worker to
-gracefully close the subflow, and shortly after will do another schedule
-to inject and process a dummy incoming DATA_FIN.
-
-On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
-fallback subflow before subflow_sched_work_if_closed() is able to create
-the dummy DATA_FIN, unexpectedly interrupting the transfer.
-
-Address the issue explicitly avoiding closing fallback subflows on when
-the peer is only half-closed.
-
-Note that, when the subflow is able to create the DATA_FIN before the
-worker invocation, the worker will change the msk state before trying to
-close the subflow and will skip the latter operation as the msk will not
-match anymore the precondition in __mptcp_close_subflow().
-
-Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
+Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
 Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -2585,7 +2585,8 @@ static void __mptcp_close_subflow(struct
+@@ -906,6 +906,13 @@ static bool __mptcp_finish_join(struct m
+ 	if (sk->sk_state != TCP_ESTABLISHED)
+ 		return false;
  
- 		if (ssk_state != TCP_CLOSE &&
- 		    (ssk_state != TCP_CLOSE_WAIT ||
--		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
-+		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
-+		     __mptcp_check_fallback(msk)))
- 			continue;
- 
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
++	/* The caller possibly is not holding the msk socket lock, but
++	 * in the fallback case only the current subflow is touching
++	 * the OoO queue.
++	 */
++	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
++		return false;
++
+ 	spin_lock_bh(&msk->fallback_lock);
+ 	if (!msk->allow_subflows) {
+ 		spin_unlock_bh(&msk->fallback_lock);
 
 
 
