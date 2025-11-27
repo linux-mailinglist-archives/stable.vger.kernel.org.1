@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D896CC8EF20
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A206C8ED7B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0443B7842
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55A583B0849
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A9E312807;
-	Thu, 27 Nov 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926FE27877D;
+	Thu, 27 Nov 2025 14:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrHXazOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmWPIMpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052E0312838;
-	Thu, 27 Nov 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2C6273816;
+	Thu, 27 Nov 2025 14:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255132; cv=none; b=LTatS4ASC/gSqjZxnhKCc8a7VGzYS/x9pQv48Ugm2yaLrFtZoxOPsxMXRYyc7zAyO0MxTKYeEAor4fY3AphuPiWeWK+pD7N1hPKqshs9OuLxyOWbD3tTVLzlDQX0MQaoJQMKSkzR//pF6Ryr27dto3sbPIEWhQUisMpoj6uf0as=
+	t=1764254897; cv=none; b=QY9XDn66y25w2ZTFNqxXCRvv5DTsnYa48+Z2LCPGOBnpSopMYP1eGBxXHn+BYwtwgea8HDTeaaXbF/9t544xfbaxvOeMcWLKDbQCtBTMwM+VNnqmZEE4adpkEu5DVWhTKxuq3O2sjh5AAxRrJVPs/j5DDWd4B59wGAMhjs8Ct8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255132; c=relaxed/simple;
-	bh=9Qd/1i1zofhqF58IJOoDzBgFUcSNQoIomxioBthPxqY=;
+	s=arc-20240116; t=1764254897; c=relaxed/simple;
+	bh=HwjMhvTvi3Pia68tpB2Lm3mTfXzThD/5BLiYXq2szg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4AKZLkCdyndkawofqaLmbiy33IIZ2MKNROpXTQlCPHH97YaJOi6gD7O93PjV6yP7nWel+svHlHXRfclXix13hF1xqAXgRyJIqIfuj1apjBWJ+u++/mjDUQert2FI7UTsxmsfmSLDZQdMS6R/ZRfWxss/cng1unZe7zM5WjCUVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrHXazOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862A1C113D0;
-	Thu, 27 Nov 2025 14:52:11 +0000 (UTC)
+	 MIME-Version; b=gOcv5aaz2oThorhqJ2WhVovJwzEHqQS98LA0emrQ+8BXBQsnArT2evUK+1xyJCQ3y44Yyrx2CKB2L3i2xpa9FXdYSfIurK90mdelvMmDkd8CdeDB8ww5m5Nu37mgnXvnkaU4y3nXeJygTNi9Z7PdwvnjpxQy8/ESJSEAXaIJgfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmWPIMpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A93C4CEF8;
+	Thu, 27 Nov 2025 14:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255131;
-	bh=9Qd/1i1zofhqF58IJOoDzBgFUcSNQoIomxioBthPxqY=;
+	s=korg; t=1764254896;
+	bh=HwjMhvTvi3Pia68tpB2Lm3mTfXzThD/5BLiYXq2szg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrHXazOG/Wid9HPnEOyJJ+Cv3y0PTorp0/LacKtcOTv8eaiWJtzEMtq/UwJIhDzNL
-	 ie9kuvZTlkJat9uxDCu/FiCXVzWaH3ZOySTUtd8ZPKnm2nBNB41TNr6z/uQ/ByY5u9
-	 BG/YHxrqVggkNa67URsO/Ay07/jhNVG0Kb0R9vgE=
+	b=mmWPIMpk2FeEX5V1xrW2llJZ/BQqqWuXymieA6gW+qqFuLYCxXmFpcdlA3mXsiwV+
+	 aCYt6jU5W3RqVgpJAH8QT9n0Z07g8Dlz8ApVZR1u8FMUiY7B1iflySYJBh+0lcXB8A
+	 NPFbwtqDJCxx0vhGUZX+81jmNMWdN9wUMr8nAUps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@h-partners.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 019/112] ata: libata-scsi: Add missing scsi_device_put() in ata_scsi_dev_rescan()
+	Mike Yuan <me@yhndnzj.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH 6.6 05/86] shmem: fix tmpfs reconfiguration (remount) when noswap is set
 Date: Thu, 27 Nov 2025 15:45:21 +0100
-Message-ID: <20251127144033.437358315@linuxfoundation.org>
+Message-ID: <20251127144028.004026969@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@h-partners.com>
+From: Mike Yuan <me@yhndnzj.com>
 
-commit b32cc17d607e8ae7af037303fe101368cb4dc44c upstream.
+commit 3cd1548a278c7d6a9bdef1f1866e7cf66bfd3518 upstream.
 
-Call scsi_device_put() in ata_scsi_dev_rescan() if the device or its
-queue are not running.
+In systemd we're trying to switch the internal credentials setup logic
+to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
+consistently fails on tmpfs with noswap option. This can be trivially
+reproduced with the following:
 
-Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
+```
+int fs_fd = fsopen("tmpfs", 0);
+fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+fsmount(fs_fd, 0, 0);
+fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
+```
+
+After some digging the culprit is shmem_reconfigure() rejecting
+!(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
+as ctx->seen serves as a mask for whether certain options are touched
+at all. On top of that, noswap option doesn't use fsparam_flag_no,
+hence it's not really possible to "reenable" swap to begin with.
+Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
+
+[1] https://github.com/systemd/systemd/pull/39637
+
+Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Link: https://patch.msgid.link/20251108190930.440685-1-me@yhndnzj.com
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yihang Li <liyihang9@h-partners.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/shmem.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4807,8 +4807,10 @@ void ata_scsi_dev_rescan(struct work_str
- 			spin_unlock_irqrestore(ap->lock, flags);
- 			if (do_resume) {
- 				ret = scsi_resume_device(sdev);
--				if (ret == -EWOULDBLOCK)
-+				if (ret == -EWOULDBLOCK) {
-+					scsi_device_put(sdev);
- 					goto unlock_scan;
-+				}
- 				dev->flags &= ~ATA_DFLAG_RESUMING;
- 			}
- 			ret = scsi_rescan_device(sdev);
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -126,8 +126,7 @@ struct shmem_options {
+ #define SHMEM_SEEN_INODES 2
+ #define SHMEM_SEEN_HUGE 4
+ #define SHMEM_SEEN_INUMS 8
+-#define SHMEM_SEEN_NOSWAP 16
+-#define SHMEM_SEEN_QUOTA 32
++#define SHMEM_SEEN_QUOTA 16
+ };
+ 
+ #ifdef CONFIG_TMPFS
+@@ -4004,7 +4003,6 @@ static int shmem_parse_one(struct fs_con
+ 				       "Turning off swap in unprivileged tmpfs mounts unsupported");
+ 		}
+ 		ctx->noswap = true;
+-		ctx->seen |= SHMEM_SEEN_NOSWAP;
+ 		break;
+ 	case Opt_quota:
+ 		if (fc->user_ns != &init_user_ns)
+@@ -4154,14 +4152,15 @@ static int shmem_reconfigure(struct fs_c
+ 		err = "Current inum too high to switch to 32-bit inums";
+ 		goto out;
+ 	}
+-	if ((ctx->seen & SHMEM_SEEN_NOSWAP) && ctx->noswap && !sbinfo->noswap) {
++
++	/*
++	 * "noswap" doesn't use fsparam_flag_no, i.e. there's no "swap"
++	 * counterpart for (re-)enabling swap.
++	 */
++	if (ctx->noswap && !sbinfo->noswap) {
+ 		err = "Cannot disable swap on remount";
+ 		goto out;
+ 	}
+-	if (!(ctx->seen & SHMEM_SEEN_NOSWAP) && !ctx->noswap && sbinfo->noswap) {
+-		err = "Cannot enable swap on remount if it was disabled on first mount";
+-		goto out;
+-	}
+ 
+ 	if (ctx->seen & SHMEM_SEEN_QUOTA &&
+ 	    !sb_any_quota_loaded(fc->root->d_sb)) {
 
 
 
