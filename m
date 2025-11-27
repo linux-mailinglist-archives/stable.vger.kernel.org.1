@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-197284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38111C8EFEF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E2DC8EE80
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 178F14EF984
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0283B2664
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E71633030A;
-	Thu, 27 Nov 2025 14:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC828D8E8;
+	Thu, 27 Nov 2025 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+H1CTpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3BYQgRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A5334366;
-	Thu, 27 Nov 2025 14:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34ED2882BB;
+	Thu, 27 Nov 2025 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255315; cv=none; b=qMuhNffui5la7Qg9vnV0n9jbdsGXCvcP0vlFmf15LdwWxEbCg76SRXuuCapEIXee08LWjv6IucS5Fxa5hyMiRPeqbBhQ/bi9rZHn22FZ6iyI3u6c2zkLBrKHVP/jec8qG0nXaaO3CaP0cDvy0h6BcJ8wHrXCsrKbWvRcrgzo/rw=
+	t=1764255023; cv=none; b=Zwu3/d2P9N3jVIVKuhrvEcAszRTnsonblYyyxv/uW/CCDrSCByiP700P6OtRFmOzS7vhGb3Fxck6s9t6pHxu+Zo61GEutyFb9h5E6H8Qsb7sM9osE4zKD8ARwEQFMUaJMLiAV9MKzkToQUV+yjmW8gRGYtZe0woGsYo1Hqaoh2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255315; c=relaxed/simple;
-	bh=sCR0I3HWYvW3rSMgsGNqK9N5euQTGj8Gljz+KO4fhJ0=;
+	s=arc-20240116; t=1764255023; c=relaxed/simple;
+	bh=hK/qYLmUTPVWgbNdvegebY9Ezrq+KHz4QrUDjSxpKYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGcqvwxgtXtPnhZyrB6FiAT+3d+rtj8jMJNewS0rgExHjGj11WvSDW82kfyDfw6LtermGXnLwhsltIkACXdMA5f40DZq7ZQifsIdN3BCxMzPniXm2R4BPry+BdiPpKFnER/hwM+nhmsiBrK6di/oZuQI3d0LErbqTxsCp5N+KMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+H1CTpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB2CC4CEF8;
-	Thu, 27 Nov 2025 14:55:14 +0000 (UTC)
+	 MIME-Version; b=ZYTTskxddCGOAmKYgf5c3XvnuFROFZV7U/LvzqpQ9VmVbnyanvxFhZIDzBWsyzYCaBnz8chD/hxCvDO1DUsACUjP7LpxySAkO85ydQGAeZkQksluhkFCoTC+LJEIP4EI1YDhHqKbzIQ6CE4LshCglf7DOeHtXMfe7J2gCRWstpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3BYQgRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4BBC4CEF8;
+	Thu, 27 Nov 2025 14:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255315;
-	bh=sCR0I3HWYvW3rSMgsGNqK9N5euQTGj8Gljz+KO4fhJ0=;
+	s=korg; t=1764255023;
+	bh=hK/qYLmUTPVWgbNdvegebY9Ezrq+KHz4QrUDjSxpKYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+H1CTpDwfhRn/3Mze0rO1Wsmhj+HIzu1RDIRVn+MMYaK82eloxOWk9bom8zelLwh
-	 XEbyAORFi8KSz+/ke2pTeA2pY/c6DiZfOGW6TKdU2pfEGst80zjZRSGKvBOcAqVr5J
-	 3OyVN7QdOu967mRUkEqkE+cSHBH6toO8NrcFkd4o=
+	b=Z3BYQgRadt1eUaOTbUs0egGgQG92b86/UBmWP8NAeW2fc+DZeEF2OgRIoMU0EI2Gm
+	 jSsxLQna6YM+B/G45IQz/BFISnP49b215P/et0K+xNHuqTrivA42WqfavZiEnPgpYO
+	 uQ/R2QCwb0ltQviPqi84C4oVvOnpBcuX4uLH9Pco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Baocong Liu <baocong.liu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/112] vsock: Ignore signal/timeout on connect() if already established
+Subject: [PATCH 6.6 68/86] f2fs: compress: fix UAF of f2fs_inode_info in f2fs_free_dic
 Date: Thu, 27 Nov 2025 15:46:24 +0100
-Message-ID: <20251127144035.843386660@linuxfoundation.org>
+Message-ID: <20251127144030.317555881@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +66,224 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 002541ef650b742a198e4be363881439bb9d86b4 ]
+[ Upstream commit 39868685c2a94a70762bc6d77dc81d781d05bff5 ]
 
-During connect(), acting on a signal/timeout by disconnecting an already
-established socket leads to several issues:
+The decompress_io_ctx may be released asynchronously after
+I/O completion. If this file is deleted immediately after read,
+and the kworker of processing post_read_wq has not been executed yet
+due to high workloads, It is possible that the inode(f2fs_inode_info)
+is evicted and freed before it is used f2fs_free_dic.
 
-1. connect() invoking vsock_transport_cancel_pkt() ->
-   virtio_transport_purge_skbs() may race with sendmsg() invoking
-   virtio_transport_get_credit(). This results in a permanently elevated
-   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
+    The UAF case as below:
+    Thread A                                      Thread B
+    - f2fs_decompress_end_io
+     - f2fs_put_dic
+      - queue_work
+        add free_dic work to post_read_wq
+                                                   - do_unlink
+                                                    - iput
+                                                     - evict
+                                                      - call_rcu
+    This file is deleted after read.
 
-2. connect() resetting a connected socket's state may race with socket
-   being placed in a sockmap. A disconnected socket remaining in a sockmap
-   breaks sockmap's assumptions. And gives rise to WARNs.
+    Thread C                                 kworker to process post_read_wq
+    - rcu_do_batch
+     - f2fs_free_inode
+      - kmem_cache_free
+     inode is freed by rcu
+                                             - process_scheduled_works
+                                              - f2fs_late_free_dic
+                                               - f2fs_free_dic
+                                                - f2fs_release_decomp_mem
+                                      read (dic->inode)->i_compress_algorithm
 
-3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
-   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
-   any simultaneous sendmsg() or connect() and may result in a
-   use-after-free/null-ptr-deref.
+This patch store compress_algorithm and sbi in dic to avoid inode UAF.
 
-Do not disconnect socket on signal/timeout. Keep the logic for unconnected
-sockets: they don't linger, can't be placed in a sockmap, are rejected by
-sendmsg().
+In addition, the previous solution is deprecated in [1] may cause system hang.
+[1] https://lore.kernel.org/all/c36ab955-c8db-4a8b-a9d0-f07b5f426c3f@kernel.org
 
-[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
-[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
-[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Daeho Jeong <daehojeong@google.com>
+Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ In Linux 6.6.y, the f2fs_vmalloc() function parameters are not
+  related to the f2fs_sb_info structure, the code changes for
+  f2fs_vmalloc() have not been backported. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
+ fs/f2fs/compress.c | 38 +++++++++++++++++++-------------------
+ fs/f2fs/f2fs.h     |  2 ++
+ 2 files changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 68a9d4214584f..621be9be64f67 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1616,18 +1616,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 		timeout = schedule_timeout(timeout);
- 		lock_sock(sk);
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 3bf7a6b40cbed..df7404214f34e 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -209,13 +209,13 @@ static int lzo_decompress_pages(struct decompress_io_ctx *dic)
+ 	ret = lzo1x_decompress_safe(dic->cbuf->cdata, dic->clen,
+ 						dic->rbuf, &dic->rlen);
+ 	if (ret != LZO_E_OK) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"lzo decompress failed, ret:%d", ret);
+ 		return -EIO;
+ 	}
  
--		if (signal_pending(current)) {
--			err = sock_intr_errno(timeout);
--			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
--			sock->state = SS_UNCONNECTED;
--			vsock_transport_cancel_pkt(vsk);
--			vsock_remove_connected(vsk);
--			goto out_wait;
--		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
--			err = -ETIMEDOUT;
-+		/* Connection established. Whatever happens to socket once we
-+		 * release it, that's not connect()'s concern. No need to go
-+		 * into signal and timeout handling. Call it a day.
-+		 *
-+		 * Note that allowing to "reset" an already established socket
-+		 * here is racy and insecure.
-+		 */
-+		if (sk->sk_state == TCP_ESTABLISHED)
-+			break;
-+
-+		/* If connection was _not_ established and a signal/timeout came
-+		 * to be, we want the socket's state reset. User space may want
-+		 * to retry.
-+		 *
-+		 * sk_state != TCP_ESTABLISHED implies that socket is not on
-+		 * vsock_connected_table. We keep the binding and the transport
-+		 * assigned.
-+		 */
-+		if (signal_pending(current) || timeout == 0) {
-+			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
-+
-+			/* Listener might have already responded with
-+			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
-+			 * sk_state == TCP_SYN_SENT, which hereby we break.
-+			 * In such case VIRTIO_VSOCK_OP_RST will follow.
-+			 */
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
-+
-+			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
-+			 * transport->connect().
-+			 */
- 			vsock_transport_cancel_pkt(vsk);
-+
- 			goto out_wait;
+ 	if (dic->rlen != PAGE_SIZE << dic->log_cluster_size) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"lzo invalid rlen:%zu, expected:%lu",
+ 				dic->rlen, PAGE_SIZE << dic->log_cluster_size);
+ 		return -EIO;
+@@ -289,13 +289,13 @@ static int lz4_decompress_pages(struct decompress_io_ctx *dic)
+ 	ret = LZ4_decompress_safe(dic->cbuf->cdata, dic->rbuf,
+ 						dic->clen, dic->rlen);
+ 	if (ret < 0) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"lz4 decompress failed, ret:%d", ret);
+ 		return -EIO;
+ 	}
+ 
+ 	if (ret != PAGE_SIZE << dic->log_cluster_size) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"lz4 invalid ret:%d, expected:%lu",
+ 				ret, PAGE_SIZE << dic->log_cluster_size);
+ 		return -EIO;
+@@ -423,7 +423,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
+ 
+ 	stream = zstd_init_dstream(max_window_size, workspace, workspace_size);
+ 	if (!stream) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"%s zstd_init_dstream failed", __func__);
+ 		vfree(workspace);
+ 		return -EIO;
+@@ -459,14 +459,14 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
+ 
+ 	ret = zstd_decompress_stream(stream, &outbuf, &inbuf);
+ 	if (zstd_is_error(ret)) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"%s zstd_decompress_stream failed, ret: %d",
+ 				__func__, zstd_get_error_code(ret));
+ 		return -EIO;
+ 	}
+ 
+ 	if (dic->rlen != outbuf.pos) {
+-		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
++		f2fs_err_ratelimited(dic->sbi,
+ 				"%s ZSTD invalid rlen:%zu, expected:%lu",
+ 				__func__, dic->rlen,
+ 				PAGE_SIZE << dic->log_cluster_size);
+@@ -726,7 +726,7 @@ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
+ 
+ void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 	struct f2fs_inode_info *fi = F2FS_I(dic->inode);
+ 	const struct f2fs_compress_ops *cops =
+ 			f2fs_cops[fi->i_compress_algorithm];
+@@ -799,7 +799,7 @@ void f2fs_end_read_compressed_page(struct page *page, bool failed,
+ {
+ 	struct decompress_io_ctx *dic =
+ 			(struct decompress_io_ctx *)page_private(page);
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 
+ 	dec_page_count(sbi, F2FS_RD_DATA);
+ 
+@@ -1579,14 +1579,13 @@ static inline bool allow_memalloc_for_decomp(struct f2fs_sb_info *sbi,
+ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ 		bool pre_alloc)
+ {
+-	const struct f2fs_compress_ops *cops =
+-		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
++	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
+ 	int i;
+ 
+-	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
++	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
+ 		return 0;
+ 
+-	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
++	dic->tpages = page_array_alloc(dic->sbi, dic->cluster_size);
+ 	if (!dic->tpages)
+ 		return -ENOMEM;
+ 
+@@ -1616,10 +1615,9 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback, bool pre_alloc)
+ {
+-	const struct f2fs_compress_ops *cops =
+-		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
++	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
+ 
+-	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
++	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
+ 		return;
+ 
+ 	if (!bypass_destroy_callback && cops->destroy_decompress_ctx)
+@@ -1654,6 +1652,8 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
+ 
+ 	dic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
+ 	dic->inode = cc->inode;
++	dic->sbi = sbi;
++	dic->compress_algorithm = F2FS_I(cc->inode)->i_compress_algorithm;
+ 	atomic_set(&dic->remaining_pages, cc->nr_cpages);
+ 	dic->cluster_idx = cc->cluster_idx;
+ 	dic->cluster_size = cc->cluster_size;
+@@ -1697,7 +1697,8 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback)
+ {
+ 	int i;
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	/* use sbi in dic to avoid UFA of dic->inode*/
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 
+ 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
+ 
+@@ -1740,8 +1741,7 @@ static void f2fs_put_dic(struct decompress_io_ctx *dic, bool in_task)
+ 			f2fs_free_dic(dic, false);
+ 		} else {
+ 			INIT_WORK(&dic->free_work, f2fs_late_free_dic);
+-			queue_work(F2FS_I_SB(dic->inode)->post_read_wq,
+-					&dic->free_work);
++			queue_work(dic->sbi->post_read_wq, &dic->free_work);
  		}
+ 	}
+ }
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index ab2ddd09d8131..406243395b943 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1493,6 +1493,7 @@ struct compress_io_ctx {
+ struct decompress_io_ctx {
+ 	u32 magic;			/* magic number to indicate page is compressed */
+ 	struct inode *inode;		/* inode the context belong to */
++	struct f2fs_sb_info *sbi;	/* f2fs_sb_info pointer */
+ 	pgoff_t cluster_idx;		/* cluster index number */
+ 	unsigned int cluster_size;	/* page count in cluster */
+ 	unsigned int log_cluster_size;	/* log of cluster size */
+@@ -1533,6 +1534,7 @@ struct decompress_io_ctx {
  
+ 	bool failed;			/* IO error occurred before decompression? */
+ 	bool need_verity;		/* need fs-verity verification after decompression? */
++	unsigned char compress_algorithm;	/* backup algorithm type */
+ 	void *private;			/* payload buffer for specified decompression algorithm */
+ 	void *private2;			/* extra payload buffer */
+ 	struct work_struct verity_work;	/* work to verify the decompressed pages */
 -- 
 2.51.0
 
