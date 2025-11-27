@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95CEC8EE86
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1299C8F19C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59A544ED703
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A98A14EFCA3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B2C32C301;
-	Thu, 27 Nov 2025 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D966333468E;
+	Thu, 27 Nov 2025 15:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wufeUshM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2QJ1VT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4D731281E;
-	Thu, 27 Nov 2025 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8B3284B58;
+	Thu, 27 Nov 2025 15:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255112; cv=none; b=cLGaHlAdBdWnRRrpqVM7C1BCZACPdRjuhfqq1GfXUfbcqW4QIcxmM/lsCFOSpb6QONbEbUFjsMcnlFOTbxWjnmSAx+JKKG0Imbe4LJArFwq5xVJuHiNJPJuB9WGcp8denkQF/lS3URB8D/2TqnCNoMjKALw9LMhWsvnFw/USqEI=
+	t=1764255656; cv=none; b=K3wG50KuefRpKylf8eMWpqZD2FsG20ncoVhMtd4Wyf+mIg0zychkJb2BILxfnByAcJmKHJOh4F16IfG6B+6AknkIJ38vphBMI8RDexGYu0zwecZviCybpbvXzqJL26VsvgRv4XPoLJ6cD1yhbvPGvhEAoKNbTwcV9JD/galC6z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255112; c=relaxed/simple;
-	bh=FcI6EkOhD+D1s4WfIRnCTRCXPIL186QEVFr/THVzuSY=;
+	s=arc-20240116; t=1764255656; c=relaxed/simple;
+	bh=DPwxhn1PPeuUBWxVJRSc4RVzOlIcabqLiErh7ndWNso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnIpjfMx0tK/rKTHREUkLD0hYkJyZMr2FZJN0jmDHZFia7yRIqDzYtzHXCz+6zjcaA1KHb7wyGQnWxKczsCglLvwIxxX9PndXIx9yX+/5CIwIsdeP0oqSpzCU8/QgygRL1zASYqf/euyc8TGg2wNSkERgZs4UBaCHR1A3ei0Yto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wufeUshM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F2C19422;
-	Thu, 27 Nov 2025 14:51:51 +0000 (UTC)
+	 MIME-Version; b=AjE65VzdFJihYdiTnlVXuxtsDaEv9Z9r2kd1fMgs8V4/xLwAhvr6v08kZAZ4hixqum5ZFVJHZARRN/AdJFtQZCmMPaB0L5Rir/bBQQob1TbEisbeAh3Rdq1HEGC0o6ikTbD7T3IgDDQvrwtWdNHxZJ/+SY5Gogo2cTApQSIYhFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2QJ1VT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3B6C4CEF8;
+	Thu, 27 Nov 2025 15:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255111;
-	bh=FcI6EkOhD+D1s4WfIRnCTRCXPIL186QEVFr/THVzuSY=;
+	s=korg; t=1764255656;
+	bh=DPwxhn1PPeuUBWxVJRSc4RVzOlIcabqLiErh7ndWNso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wufeUshMurQ64tMVXJzBtP1XioBhIvRjMHySmLQfaGzrVjF/+v/Qkmr+wzkqEW4vY
-	 TvqjgUKpt873UewfJrp0+BTUvfNXNHbsX+8BMV9iiwRuPbXIUbU0Uz51OVPx/pBkL+
-	 sGSTbZUqcZNcAd3N4ZTYo3uLT5QU8fyfRwuJIzys=
+	b=W2QJ1VT8tYKpMLjhdz/mojXe6PPMlursdLdf1Uf+cgCxYnN5a8tdRFydIpo8vQvk0
+	 GnzYYuhciAHFExRDJxTfrYmh+3UobdChGr5wXWGm+Dw20HhoaDfpd1XRlSiwhHOl77
+	 xZ2tDBg2kQcNdQ7BMuOy3FGmWkH0LFa8IFS6GH/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Yuan <me@yhndnzj.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>
-Subject: [PATCH 6.12 012/112] shmem: fix tmpfs reconfiguration (remount) when noswap is set
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 061/175] mptcp: fix duplicate reset on fastclose
 Date: Thu, 27 Nov 2025 15:45:14 +0100
-Message-ID: <20251127144033.179150294@linuxfoundation.org>
+Message-ID: <20251127144045.194382118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Yuan <me@yhndnzj.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 3cd1548a278c7d6a9bdef1f1866e7cf66bfd3518 upstream.
+commit ae155060247be8dcae3802a95bd1bdf93ab3215d upstream.
 
-In systemd we're trying to switch the internal credentials setup logic
-to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
-consistently fails on tmpfs with noswap option. This can be trivially
-reproduced with the following:
+The CI reports sporadic failures of the fastclose self-tests. The root
+cause is a duplicate reset, not carrying the relevant MPTCP option.
+In the failing scenario the bad reset is received by the peer before
+the fastclose one, preventing the reception of the latter.
 
-```
-int fs_fd = fsopen("tmpfs", 0);
-fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
-fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-fsmount(fs_fd, 0, 0);
-fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
-```
+Indeed there is window of opportunity at fastclose time for the
+following race:
 
-After some digging the culprit is shmem_reconfigure() rejecting
-!(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
-as ctx->seen serves as a mask for whether certain options are touched
-at all. On top of that, noswap option doesn't use fsparam_flag_no,
-hence it's not really possible to "reenable" swap to begin with.
-Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
+  mptcp_do_fastclose
+    __mptcp_close_ssk
+      __tcp_close()
+        tcp_set_state() [1]
+        tcp_send_active_reset() [2]
 
-[1] https://github.com/systemd/systemd/pull/39637
+After [1] the stack will send reset to in-flight data reaching the now
+closed port. Such reset may race with [2].
 
-Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
-Signed-off-by: Mike Yuan <me@yhndnzj.com>
-Link: https://patch.msgid.link/20251108190930.440685-1-me@yhndnzj.com
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
+Address the issue explicitly sending a single reset on fastclose before
+explicitly moving the subflow to close status.
+
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/596
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-6-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ net/mptcp/protocol.c |   36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -127,8 +127,7 @@ struct shmem_options {
- #define SHMEM_SEEN_INODES 2
- #define SHMEM_SEEN_HUGE 4
- #define SHMEM_SEEN_INUMS 8
--#define SHMEM_SEEN_NOSWAP 16
--#define SHMEM_SEEN_QUOTA 32
-+#define SHMEM_SEEN_QUOTA 16
- };
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2377,7 +2377,6 @@ bool __mptcp_retransmit_pending_data(str
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-@@ -4330,7 +4329,6 @@ static int shmem_parse_one(struct fs_con
- 				       "Turning off swap in unprivileged tmpfs mounts unsupported");
- 		}
- 		ctx->noswap = true;
--		ctx->seen |= SHMEM_SEEN_NOSWAP;
- 		break;
- 	case Opt_quota:
- 		if (fc->user_ns != &init_user_ns)
-@@ -4480,14 +4478,15 @@ static int shmem_reconfigure(struct fs_c
- 		err = "Current inum too high to switch to 32-bit inums";
- 		goto out;
- 	}
--	if ((ctx->seen & SHMEM_SEEN_NOSWAP) && ctx->noswap && !sbinfo->noswap) {
-+
-+	/*
-+	 * "noswap" doesn't use fsparam_flag_no, i.e. there's no "swap"
-+	 * counterpart for (re-)enabling swap.
-+	 */
-+	if (ctx->noswap && !sbinfo->noswap) {
- 		err = "Cannot disable swap on remount";
- 		goto out;
- 	}
--	if (!(ctx->seen & SHMEM_SEEN_NOSWAP) && !ctx->noswap && sbinfo->noswap) {
--		err = "Cannot enable swap on remount if it was disabled on first mount";
--		goto out;
+ /* flags for __mptcp_close_ssk() */
+ #define MPTCP_CF_PUSH		BIT(1)
+-#define MPTCP_CF_FASTCLOSE	BIT(2)
+ 
+ /* be sure to send a reset only if the caller asked for it, also
+  * clean completely the subflow status when the subflow reaches
+@@ -2388,7 +2387,7 @@ static void __mptcp_subflow_disconnect(s
+ 				       unsigned int flags)
+ {
+ 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    (flags & MPTCP_CF_FASTCLOSE)) {
++	    subflow->send_fastclose) {
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+@@ -2435,14 +2434,8 @@ static void __mptcp_close_ssk(struct soc
+ 
+ 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 
+-	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
+-		/* be sure to force the tcp_close path
+-		 * to generate the egress reset
+-		 */
+-		ssk->sk_lingertime = 0;
+-		sock_set_flag(ssk, SOCK_LINGER);
+-		subflow->send_fastclose = 1;
 -	}
++	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
++		tcp_set_state(ssk, TCP_CLOSE);
  
- 	if (ctx->seen & SHMEM_SEEN_QUOTA &&
- 	    !sb_any_quota_loaded(fc->root->d_sb)) {
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+@@ -2745,9 +2738,26 @@ static void mptcp_do_fastclose(struct so
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	mptcp_set_state(sk, TCP_CLOSE);
+-	mptcp_for_each_subflow_safe(msk, subflow, tmp)
+-		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow),
+-				  subflow, MPTCP_CF_FASTCLOSE);
++
++	/* Explicitly send the fastclose reset as need */
++	if (__mptcp_check_fallback(msk))
++		return;
++
++	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++
++		lock_sock(ssk);
++
++		/* Some subflow socket states don't allow/need a reset.*/
++		if ((1 << ssk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE))
++			goto unlock;
++
++		subflow->send_fastclose = 1;
++		tcp_send_active_reset(ssk, ssk->sk_allocation,
++				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
++unlock:
++		release_sock(ssk);
++	}
+ }
+ 
+ static void mptcp_worker(struct work_struct *work)
 
 
 
