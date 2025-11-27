@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10936C8EDC9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB89C8F2F9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B0B4A34823F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46D724F17A6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3B1288537;
-	Thu, 27 Nov 2025 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023F4334C0B;
+	Thu, 27 Nov 2025 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiWLJM9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifloQxus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E527F18B;
-	Thu, 27 Nov 2025 14:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19D0334373;
+	Thu, 27 Nov 2025 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255037; cv=none; b=m5YJX3u4aknwAX/pu2zfiMpEu7ieW+NJJvy9weDvHkDh/YoqeZbC7e6EkcvaS7JuoeL1TH1H+Q9ggY9Jf+ZmSvfW4l//x86bVKj81OnAlQMWDE618j0F6zWDKAZ6bP9D09Y+wnaejLlqyzbPzDyNJ8nlb5BpKtdsls/0i3P+dOg=
+	t=1764255992; cv=none; b=eQIZLsT1EAajtxccn9ZCYENUNrgEKo2ybcjgUU22Bax4SOkc6KA4vkklqOLGJBiTgOMZSaGIGjLEg9An4fI4JiHEHLaUSroxe/cg3Z7Z5W6qJb8HIsHRd0cZH0AInzbqIh2eCUMU1SjBCZql4g9HpATg/+ccHwWUIrSktObnLsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255037; c=relaxed/simple;
-	bh=a9Z2se+k0vOpiF1aQlr98wjW2oPIRkOw+1reRfiDsxM=;
+	s=arc-20240116; t=1764255992; c=relaxed/simple;
+	bh=F6P7YLQbny+/42W18yvh9mCYTLPqIWfOD7/9P1mIY/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noNNPvfsglr5KP0P+yA2bJY/MOkVoYCOhWNld99HTLQ/00zjqE8Rcg9lRrJx18f1xUaCInYxVW0DDxgsPaR5mst/0VR0BaUqtEy68lfqi8dxdw1yzUuja5SqcsdWs6beXwZWiITDO859hulBh/nLgX6wtGQ0IH6xXgYzvzm+AAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiWLJM9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6921EC4CEF8;
-	Thu, 27 Nov 2025 14:50:37 +0000 (UTC)
+	 MIME-Version; b=WcYdsJ6PsueyY+M1N99dVxQQovoP6GJ1QPC+zM2WxdQiiGroOX2brCzWETsnj0ZtdCmhm3lngNSCYZKpoWmmweC9j5jSvT3MjlO8Rf8gqTm83QW6hajDdZatkSN4SIiio+39NXaNdhPGHIlnZJDPnq9/X3CYUKvSlv2+SDY1/68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifloQxus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34285C19421;
+	Thu, 27 Nov 2025 15:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255037;
-	bh=a9Z2se+k0vOpiF1aQlr98wjW2oPIRkOw+1reRfiDsxM=;
+	s=korg; t=1764255992;
+	bh=F6P7YLQbny+/42W18yvh9mCYTLPqIWfOD7/9P1mIY/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiWLJM9b1Xz8yqk/A7U0F5M46sEhWsGAsdq3Ujkyw3UJL0+bNCB06dQ1onjm4AeEC
-	 MdzRZYyJMgx68BO4UQOJKJFJxIbk0SrGEz/NFtRdpgYuXQq4I38TEy6H7vM5Jyda8P
-	 9jsNyPHBulPX6HXls/krwEywK9y3XdNiK+5Jc41A=
+	b=ifloQxusunOTFmVj+HUumaDgoanRu6QKWWnET+9WEX+MS4PkqgZFsPsAwwW5KBZlV
+	 PRNsjUUlxJ10O7+pCgSBv6bqNFDKZ2k9V8GG8hQJmgtfbtMA615rsPg87brFqi6orC
+	 VB68bjY8cFrYxgU1Zmgzn/SsjrFzJJuKEt1nU0H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 73/86] KVM: arm64: Check the untrusted offset in FF-A memory share
-Date: Thu, 27 Nov 2025 15:46:29 +0100
-Message-ID: <20251127144030.497315157@linuxfoundation.org>
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 088/112] net: tls: Change async resync helpers argument
+Date: Thu, 27 Nov 2025 15:46:30 +0100
+Message-ID: <20251127144036.063143869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ene <sebastianene@google.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit 103e17aac09cdd358133f9e00998b75d6c1f1518 upstream.
+[ Upstream commit 34892cfec0c2d96787c4be7bda0d5f18d7dacf85 ]
 
-Verify the offset to prevent OOB access in the hypervisor
-FF-A buffer in case an untrusted large enough value
-[U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
-is set from the host kernel.
+Update tls_offload_rx_resync_async_request_start() and
+tls_offload_rx_resync_async_request_end() to get a struct
+tls_offload_resync_async parameter directly, rather than
+extracting it from struct sock.
 
-Signed-off-by: Sebastian Ene <sebastianene@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change aligns the function signatures with the upcoming
+tls_offload_rx_resync_async_request_cancel() helper, which
+will be introduced in a subsequent patch.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761508983-937977-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/hyp/nvhe/ffa.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ktls_rx.c     |  9 ++++++--
+ include/net/tls.h                             | 21 +++++++------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/arch/arm64/kvm/hyp/nvhe/ffa.c
-+++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
-@@ -425,7 +425,7 @@ static void __do_ffa_mem_xfer(const u64
- 	DECLARE_REG(u32, npages_mbz, ctxt, 4);
- 	struct ffa_composite_mem_region *reg;
- 	struct ffa_mem_region *buf;
--	u32 offset, nr_ranges;
-+	u32 offset, nr_ranges, checked_offset;
- 	int ret = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+index 65ccb33edafb7..c0089c704c0cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+@@ -425,12 +425,14 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
+ {
+ 	struct mlx5e_ktls_rx_resync_buf *buf = wi->tls_get_params.buf;
+ 	struct mlx5e_ktls_offload_context_rx *priv_rx;
++	struct tls_offload_context_rx *rx_ctx;
+ 	u8 tracker_state, auth_state, *ctx;
+ 	struct device *dev;
+ 	u32 hw_seq;
  
- 	if (addr_mbz || npages_mbz || fraglen > len ||
-@@ -460,7 +460,12 @@ static void __do_ffa_mem_xfer(const u64
- 		goto out_unlock;
+ 	priv_rx = buf->priv_rx;
+ 	dev = mlx5_core_dma_dev(sq->channel->mdev);
++	rx_ctx = tls_offload_ctx_rx(tls_get_ctx(priv_rx->sk));
+ 	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags)))
+ 		goto out;
+ 
+@@ -447,7 +449,8 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
  	}
  
--	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
-+	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
-+		ret = FFA_RET_INVALID_PARAMETERS;
-+		goto out_unlock;
-+	}
-+
-+	if (fraglen < checked_offset) {
- 		ret = FFA_RET_INVALID_PARAMETERS;
- 		goto out_unlock;
- 	}
+ 	hw_seq = MLX5_GET(tls_progress_params, ctx, hw_resync_tcp_sn);
+-	tls_offload_rx_resync_async_request_end(priv_rx->sk, cpu_to_be32(hw_seq));
++	tls_offload_rx_resync_async_request_end(rx_ctx->resync_async,
++						cpu_to_be32(hw_seq));
+ 	priv_rx->rq_stats->tls_resync_req_end++;
+ out:
+ 	mlx5e_ktls_priv_rx_put(priv_rx);
+@@ -482,6 +485,7 @@ static bool resync_queue_get_psv(struct sock *sk)
+ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
+ {
+ 	struct ethhdr *eth = (struct ethhdr *)(skb->data);
++	struct tls_offload_resync_async *resync_async;
+ 	struct net_device *netdev = rq->netdev;
+ 	struct net *net = dev_net(netdev);
+ 	struct sock *sk = NULL;
+@@ -528,7 +532,8 @@ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
+ 
+ 	seq = th->seq;
+ 	datalen = skb->len - depth;
+-	tls_offload_rx_resync_async_request_start(sk, seq, datalen);
++	resync_async = tls_offload_ctx_rx(tls_get_ctx(sk))->resync_async;
++	tls_offload_rx_resync_async_request_start(resync_async, seq, datalen);
+ 	rq->stats->tls_resync_req_start++;
+ 
+ unref:
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 61fef28801140..181173e62a068 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -448,25 +448,20 @@ static inline void tls_offload_rx_resync_request(struct sock *sk, __be32 seq)
+ 
+ /* Log all TLS record header TCP sequences in [seq, seq+len] */
+ static inline void
+-tls_offload_rx_resync_async_request_start(struct sock *sk, __be32 seq, u16 len)
++tls_offload_rx_resync_async_request_start(struct tls_offload_resync_async *resync_async,
++					  __be32 seq, u16 len)
+ {
+-	struct tls_context *tls_ctx = tls_get_ctx(sk);
+-	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
+-
+-	atomic64_set(&rx_ctx->resync_async->req, ((u64)ntohl(seq) << 32) |
++	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) |
+ 		     ((u64)len << 16) | RESYNC_REQ | RESYNC_REQ_ASYNC);
+-	rx_ctx->resync_async->loglen = 0;
+-	rx_ctx->resync_async->rcd_delta = 0;
++	resync_async->loglen = 0;
++	resync_async->rcd_delta = 0;
+ }
+ 
+ static inline void
+-tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
++tls_offload_rx_resync_async_request_end(struct tls_offload_resync_async *resync_async,
++					__be32 seq)
+ {
+-	struct tls_context *tls_ctx = tls_get_ctx(sk);
+-	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
+-
+-	atomic64_set(&rx_ctx->resync_async->req,
+-		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
++	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ }
+ 
+ static inline void
+-- 
+2.51.0
+
 
 
 
