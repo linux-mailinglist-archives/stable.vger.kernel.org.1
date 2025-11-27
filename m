@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-197293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B049BC8F013
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:01:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC53C8EE9E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6515E4E92DB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142D33B42D5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C045333758;
-	Thu, 27 Nov 2025 14:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8756028C5D9;
+	Thu, 27 Nov 2025 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9C2HR8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/qVjy7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5FD332EA0;
-	Thu, 27 Nov 2025 14:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EFF25BEE8;
+	Thu, 27 Nov 2025 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255401; cv=none; b=mf6ZNtxWfK6Mb0eE3HxrkbAGUD1m3c+JtLj0B1KgOEcDSmaG9KPOW8GyzBTGuLvdQsljVD2Eh0OqHJeLWcaSPIaS61TbXSYDYYyFEEvecYL0phuPFUNLboyg8LMUVVbjVg9oYg+q7WLS7Rfx1UnZY4nE749KRNVDsRNXPbe8Vko=
+	t=1764255055; cv=none; b=pW3w77MVk1dUc/coafBCTLifOxypO0dY/O7zHSHTLcTTqeMPIS7e12YffxdeKkel8japLV5wXd9dJLIUsMTcDJ0jIYWm5wXVPKDcDj7JVDZnMYODshnAAvSTZR8/IxB+Ar/hKnHQ6AKTs0aFTFb3U+hymDNI5QPlALt1d/HND2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255401; c=relaxed/simple;
-	bh=+CKqqqYe7XBcamQ2WPpYmsHbtSv30Fd+KWF/TcGXmpc=;
+	s=arc-20240116; t=1764255055; c=relaxed/simple;
+	bh=VK3CZ55zmN9NETgedyn6Bxy0Fcu4SgFg0njGrC9JrDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UiUF/1ovS6rnRJPIpdfNok9q7yvhFSZEcsZFNdhteWQR6QWzJPiumzVGTZbqGpmDuQPsVYqdr1/ckg5wpHsJizKiCgs2FgHpGHQHN/UbY0aof6JWbjgnGPfqSS/27X2gq1IWD6QIgaFMF8QTKhfV9LeZuY0I2h34F1gBS9Lh4jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9C2HR8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6ADBC4CEF8;
-	Thu, 27 Nov 2025 14:56:40 +0000 (UTC)
+	 MIME-Version; b=MlwIxBirH+Xs9w0LJEk+idF6tcCH8J/uLhylmWRKH0wAmJFPBczCAiEnWVHlb5qfgR3yaOyCYOgKgALA5TLFVf1L5oDRZi1v3Q0fVo1/kzYXjtXKWVV9ddHgV9qHLDcXhZs/eo4gGiSiv5JBsAiequ/trxP7bxXSkKkWRwWCKNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/qVjy7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79D8C4CEF8;
+	Thu, 27 Nov 2025 14:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255401;
-	bh=+CKqqqYe7XBcamQ2WPpYmsHbtSv30Fd+KWF/TcGXmpc=;
+	s=korg; t=1764255055;
+	bh=VK3CZ55zmN9NETgedyn6Bxy0Fcu4SgFg0njGrC9JrDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9C2HR8MG2VFyE6Zav2l0FIHG32tAzo4jFv3XZhwZsWalf1p6dlRkk0E5iHfJcLYe
-	 CduyVo8kiceWIbpxSUHXFDR3Wkcz6mefm6ddnTZzKmxt1Dd+R6HlUbCGelTfNoY3/1
-	 ukZfmhujMePJ8CIq/qqm2edO3MKZSqPG3v5fBTas=
+	b=l/qVjy7hALEtHm9Y76G1GpKaZXh60CMyIqIrNx3NjrV+FKZPSLaUhCdLSGFnNbulU
+	 mJRHSHThhfL4eeuM7wzkfGQPvQ4L2nZpWYPElAc6A0WRDlN6E/FLb3PF7wO1dodzLI
+	 Y2drfVW2b8dxtm9/lQ6KZzRwaTxUZEjz/DqXtaw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/112] kconfig/nconf: Initialize the default locale at startup
+Subject: [PATCH 6.6 78/86] ftrace: Fix BPF fexit with livepatch
 Date: Thu, 27 Nov 2025 15:46:34 +0100
-Message-ID: <20251127144036.209143204@linuxfoundation.org>
+Message-ID: <20251127144030.681047956@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +64,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 43c2931a95e6b295bfe9e3b90dbe0f7596933e91 ]
+[ Upstream commit 56b3c85e153b84f27e6cff39623ba40a1ad299d3 ]
 
-Fix bug where make nconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+When livepatch is attached to the same function as bpf trampoline with
+a fexit program, bpf trampoline code calls register_ftrace_direct()
+twice. The first time will fail with -EAGAIN, and the second time it
+will succeed. This requires register_ftrace_direct() to unregister
+the address on the first attempt. Otherwise, the bpf trampoline cannot
+attach. Here is an easy way to reproduce this issue:
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014144405.3975275-2-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+  insmod samples/livepatch/livepatch-sample.ko
+  bpftrace -e 'fexit:cmdline_proc_show {}'
+  ERROR: Unable to attach probe: fexit:vmlinux:cmdline_proc_show...
+
+Fix this by cleaning up the hash when register_ftrace_function_nolock hits
+errors.
+
+Also, move the code that resets ops->func and ops->trampoline to the error
+path of register_ftrace_direct(); and add a helper function reset_direct()
+in register_ftrace_direct() and unregister_ftrace_direct().
+
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Closes: https://lore.kernel.org/live-patching/c5058315a39d4615b333e485893345be@crowdstrike.com/
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-and-tested-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251027175023.1521602-2-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ moved cleanup to reset_direct() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/trampoline.c |    4 ----
+ kernel/trace/ftrace.c   |   20 ++++++++++++++------
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 5f484422278e1..cfe66aaf8bfe9 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -7,6 +7,7 @@
- #ifndef _GNU_SOURCE
- #define _GNU_SOURCE
- #endif
-+#include <locale.h>
- #include <string.h>
- #include <strings.h>
- #include <stdlib.h>
-@@ -1478,6 +1479,8 @@ int main(int ac, char **av)
- 	int lines, columns;
- 	char *mode;
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -460,10 +460,6 @@ again:
+ 		 * BPF_TRAMP_F_SHARE_IPMODIFY is set, we can generate the
+ 		 * trampoline again, and retry register.
+ 		 */
+-		/* reset fops->func and fops->trampoline for re-register */
+-		tr->fops->func = NULL;
+-		tr->fops->trampoline = 0;
+-
+ 		/* reset im->image memory attr for arch_prepare_bpf_trampoline */
+ 		set_memory_nx((long)im->image, 1);
+ 		set_memory_rw((long)im->image, 1);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5370,6 +5370,17 @@ static void remove_direct_functions_hash
+ 	}
+ }
  
-+	setlocale(LC_ALL, "");
++static void reset_direct(struct ftrace_ops *ops, unsigned long addr)
++{
++	struct ftrace_hash *hash = ops->func_hash->filter_hash;
 +
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		/* Silence conf_read() until the real callback is set up */
- 		conf_set_message_callback(NULL);
--- 
-2.51.0
-
++	remove_direct_functions_hash(hash, addr);
++
++	/* cleanup for possible another register call */
++	ops->func = NULL;
++	ops->trampoline = 0;
++}
++
+ /**
+  * register_ftrace_direct - Call a custom trampoline directly
+  * for multiple functions registered in @ops
+@@ -5465,6 +5476,8 @@ int register_ftrace_direct(struct ftrace
+ 	ops->direct_call = addr;
+ 
+ 	err = register_ftrace_function_nolock(ops);
++	if (err)
++		reset_direct(ops, addr);
+ 
+  out_unlock:
+ 	mutex_unlock(&direct_mutex);
+@@ -5497,7 +5510,6 @@ EXPORT_SYMBOL_GPL(register_ftrace_direct
+ int unregister_ftrace_direct(struct ftrace_ops *ops, unsigned long addr,
+ 			     bool free_filters)
+ {
+-	struct ftrace_hash *hash = ops->func_hash->filter_hash;
+ 	int err;
+ 
+ 	if (check_direct_multi(ops))
+@@ -5507,13 +5519,9 @@ int unregister_ftrace_direct(struct ftra
+ 
+ 	mutex_lock(&direct_mutex);
+ 	err = unregister_ftrace_function(ops);
+-	remove_direct_functions_hash(hash, addr);
++	reset_direct(ops, addr);
+ 	mutex_unlock(&direct_mutex);
+ 
+-	/* cleanup for possible another register call */
+-	ops->func = NULL;
+-	ops->trampoline = 0;
+-
+ 	if (free_filters)
+ 		ftrace_free_filter(ops);
+ 	return err;
 
 
 
