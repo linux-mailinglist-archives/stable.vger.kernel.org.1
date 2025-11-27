@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979BFC8F0C7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48F8C8ED33
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 831B634775E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 418594E5A8B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3D2284B58;
-	Thu, 27 Nov 2025 15:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917AC27602C;
+	Thu, 27 Nov 2025 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amh4msxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nb69tQc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C020FAAB;
-	Thu, 27 Nov 2025 15:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3F227877D;
+	Thu, 27 Nov 2025 14:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255740; cv=none; b=i3YZYn1TB8n2MULBZEChkgJZg/Z+lo1/7cHtwrNRqkZ/HAAaYPbpxkzQk1wQDxbNic3nXlXMzKZelMaSSDnOMUC6j+1e9bTXcaaRj15o7CPLK5WVkopzf0C2wLGtIMB1RCHJg4VKYTItlIsLQ5P8DlN5NTNi7XD4TMF7xGmlAEw=
+	t=1764254854; cv=none; b=r3KSSmgYcRAyh3ZAqkvrFgDEJsLF0Pa9AKVDKVKjBVANSdsc65znnxkNyRaB2Vzf8lfoDqLUsIatAly5U9iQMqjdo3D8yoX2HVLmbWKjJgFVzMLRJu3EkGsfDDycB0a9/5U1xuUbSWsH0Y1pm3eMtd8YRbOZRnsHzXx2nIJDFis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255740; c=relaxed/simple;
-	bh=8Fl4iDfahRc5HbmXuX6zHUDSEkGJn+bqU1zhEJCQFuE=;
+	s=arc-20240116; t=1764254854; c=relaxed/simple;
+	bh=fu5Fmp12AtIx0eytaoNRgTikbpvcTR1QAUJ9OiMUM8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=er6jgvkG/aehaGYPpVQkUxtjEHirsEng/UDYvHdDjwPXAbuG79oVdaSu17JhWWBWl1X2EqARXKXIJOCZpdjoPIOe6+YBQW2fXSIg1hTZmGnch6So/F3GytEjirW8+v9gTlq45YRkrS7g7Gz03ZDRIfQAVOIwBBiusTmVQ/2B4/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amh4msxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E792C4CEF8;
-	Thu, 27 Nov 2025 15:02:19 +0000 (UTC)
+	 MIME-Version; b=F5k7MTPIYZ3CjObO+CpVBAFNg2Gg0jM+VvlEdj/afv++frZuk//qmvOmqUCOXQQkwB+zf3AIrGXfyw60Ht3y6ExaJc/+HAA0ZfZzClUoMUnWxaXLqLlpuDAsRDM5Z8t9kxBhMOkTwDZtapQQgYM54BeQ5t4PwWSVSSY+NbKvgog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nb69tQc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86D0C4CEF8;
+	Thu, 27 Nov 2025 14:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255739;
-	bh=8Fl4iDfahRc5HbmXuX6zHUDSEkGJn+bqU1zhEJCQFuE=;
+	s=korg; t=1764254853;
+	bh=fu5Fmp12AtIx0eytaoNRgTikbpvcTR1QAUJ9OiMUM8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amh4msxBIUvo5HOG6m6WKXGYjvSc5TBGtWyssxyy7G5m01NfR4wq03wJyiRts4jkM
-	 blYUe53bAqgG95tq1zFDZ7BeND1f4AuyB5HGnyRiddqZYKr66scBW3+YieoH0UMRDy
-	 HqZ3E04fVEH5U8HfRTQu2dWjw9pcItw5oStxfXvU=
+	b=Nb69tQc0lRXsSlJ4ULpBrCEbfxtj/TjH+U4GBcGsOdfQ42Qm2zyfgNIV8ircy/6nf
+	 aop8jxNID5Iin5oJ2HflVzpJ0rCRVbkqX1fbm1ChNFEvjPWcgBBdJ4S8r33S7rhr8n
+	 /rzWVjhnkZUFHCT7BEa+GpFDIoAsZ4DCBbhth8Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 064/175] selftests: mptcp: join: userspace: longer timeout
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 01/86] timers: Fix NULL function pointer race in timer_shutdown_sync()
 Date: Thu, 27 Nov 2025 15:45:17 +0100
-Message-ID: <20251127144045.305184757@linuxfoundation.org>
+Message-ID: <20251127144027.857276716@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit 0e4ec14dc1ee4b1ec347729c225c3ca950f2bcf6 upstream.
+commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
 
-In rare cases, when the test environment is very slow, some userspace
-tests can fail because some expected events have not been seen.
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-Because the tests are expecting a long on-going connection, and they are
-not waiting for the end of the transfer, it is fine to have a longer
-timeout, and even go over the default one. This connection will be
-killed at the end, after the verifications: increasing the timeout
-doesn't change anything, apart from avoiding it to end before the end of
-the verifications.
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
 
-To play it safe, all userspace tests not waiting for the end of the
-transfer are now having a longer timeout: 2 minutes.
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer = timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer = NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
 
-The Fixes commit was making the connection longer, but still, the
-default timeout would have stopped it after 1 minute, which might not be
-enough in very slow environments.
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
 
-Fixes: 290493078b96 ("selftests: mptcp: join: userspace: longer transfer")
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
+
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-9-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/time/timer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3620,7 +3620,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns1
- 		pm_nl_set_limits $ns2 2 2
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns1
-@@ -3653,7 +3653,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3681,7 +3681,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3702,7 +3702,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns2
- 		pm_nl_set_limits $ns1 0 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns2
-@@ -3726,7 +3726,7 @@ userspace_tests()
- 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
- 		set_userspace_pm $ns1
- 		pm_nl_set_limits $ns2 1 1
--		{ test_linkfail=128 speed=5 \
-+		{ timeout_test=120 test_linkfail=128 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
- 		local tests_pid=$!
- 		wait_mpj $ns1
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1413,10 +1413,11 @@ static int __try_to_del_timer_sync(struc
+ 
+ 	base = lock_timer_base(timer, &flags);
+ 
+-	if (base->running_timer != timer)
++	if (base->running_timer != timer) {
+ 		ret = detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function = NULL;
++		if (shutdown)
++			timer->function = NULL;
++	}
+ 
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+ 
 
 
 
