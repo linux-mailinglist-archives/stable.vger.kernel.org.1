@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5FBC8EED1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30604C8F16C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F39E04EE7C2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97D134EF88A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7DB28CF42;
-	Thu, 27 Nov 2025 14:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27112882A7;
+	Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19CNFH3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0fxTWN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FF9322DCB;
-	Thu, 27 Nov 2025 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12327FD51;
+	Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255152; cv=none; b=kQCbuMwVq/AZMINC06r1g4wD2wNRok1ISr5koFIxSJZ44QBRl2PN849Eu0d4hjedQQTQxl+EukU5JZMLaHss7GPLJyHmFO1IorSPc2jGTwrPgmCcSopelBX2yyCVf25oAyuvaB1zeo3qDenDKuZPiXpjxIWenul3tHQyFN/tDs4=
+	t=1764255621; cv=none; b=DVfxNN8pdXDG4K621pr00r/ZXRy79aZgxFSexh/CMS9brTG1t+sFO3526AqfAUrDXgSVIOrxU4opnbn3hUB3LiHQ+EC9ZDigU61w03BmXSBTermxhCoDDrQfNE32VS/TFwldLZcL0TIbIad4EkBPEGSipdfR7osCocw3bx/fVMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255152; c=relaxed/simple;
-	bh=vk6mSw50bEZXnJKWPJu8TQWM/lxO0nCZcadBgouPu2s=;
+	s=arc-20240116; t=1764255621; c=relaxed/simple;
+	bh=77cFdQD+akn+gz0B5y1DtC5bPlvB8mmcH13IY7dT9dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jt8czzziIfEGC6r7rdiYsOLCRS3hhNnT6WOxvOvBuHswrCbKbi6/4yQBBf++3V7heKVEG02wxGcqeMNQV5p5W5Q/sxqPEJ0hTlMlO0Vc60BGtRpZU2cG0d9tEylk0TKnmRU420uDIjm+yzlqNMSG9R7uBvM+yZVaBUvnSvoptZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19CNFH3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA683C4CEF8;
-	Thu, 27 Nov 2025 14:52:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nw+HWc0pbR464L49etEJiz25mPmQ2CSR8ochhW9RfQPAiOs9XSMQzoTS0eiPFfeIhTkzAZysMtSuT3Kqgt/KuuNWrwppaXwavisyo2hSQzU9d1AOecSfkuz9IRAJ/GGJlQLgCDyJcd2ZKVu2tPVJNfLuxXU8rIZhjJ8g0xV32HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0fxTWN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D5C4CEF8;
+	Thu, 27 Nov 2025 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255152;
-	bh=vk6mSw50bEZXnJKWPJu8TQWM/lxO0nCZcadBgouPu2s=;
+	s=korg; t=1764255621;
+	bh=77cFdQD+akn+gz0B5y1DtC5bPlvB8mmcH13IY7dT9dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19CNFH3CsVU7omZzLVuLyPcGpd6vSeEBTKN0QNOACPqoMccAJ7WcdLXziSEK8467O
-	 6ah52+5Oa8wgpuD3kZHc5F/BxMSwf67FGE/XcHt6W5Gb6ZteWsNLKHKN4lz773/N99
-	 4eHwjiMrRjLIoiZhM7bwQxjOUc6eGUTGItycVLO8=
+	b=z0fxTWN4gdDX+Zppk6lrdgbdkLCxjjXjODV6db69iAinHielfUokwCsiVCbYA9AT9
+	 xT18jgEg3B9UsTuHkbuOZ/9wYYxb1tGy4hUZJFWvbukY1a7QnwT4bNVXLJr5H0fNqs
+	 zDu9Fe7GI+a9ruNy1+j1iIbCVuhu3dNfH5RWY2EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 005/112] arm64: dts: rockchip: Fix vccio4-supply on rk3566-pinetab2
-Date: Thu, 27 Nov 2025 15:45:07 +0100
-Message-ID: <20251127144032.910174745@linuxfoundation.org>
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.17 055/175] platform/x86: alienware-wmi-wmax: Add support for the whole "X" family
+Date: Thu, 27 Nov 2025 15:45:08 +0100
+Message-ID: <20251127144044.974918251@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diederik de Haas <diederik@cknow-tech.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit 03c7e964a02e388ee168c804add7404eda23908c upstream.
+commit 21ebfff1cf4727bc325c89b94ed93741f870744f upstream.
 
-Page 13 of the PineTab2 v2 schematic dd 20230417 shows VCCIO4's power
-source is VCCIO_WL. Page 19 shows that VCCIO_WL is connected to
-VCCA1V8_PMU, so fix the PineTab2 dtsi to reflect that.
+Add support for the whole "Alienware X" laptop family.
 
-Fixes: 1b7e19448f8f ("arm64: dts: rockchip: Add devicetree for Pine64 PineTab2")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Diederik de Haas <diederik@cknow-tech.com>
-Link: https://patch.msgid.link/20251027155724.138096-1-diederik@cknow-tech.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://patch.msgid.link/20251103-family-supp-v1-4-a241075d1787@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinetab2.dtsi
-@@ -789,7 +789,7 @@
- 	vccio1-supply = <&vccio_acodec>;
- 	vccio2-supply = <&vcc_1v8>;
- 	vccio3-supply = <&vccio_sd>;
--	vccio4-supply = <&vcc_1v8>;
-+	vccio4-supply = <&vcca1v8_pmu>;
- 	vccio5-supply = <&vcc_1v8>;
- 	vccio6-supply = <&vcc1v8_dvp>;
- 	vccio7-supply = <&vcc_3v3>;
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -154,26 +154,18 @@ static const struct dmi_system_id awcc_d
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Alienware x15 R1",
++		.ident = "Alienware x15",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R1"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15"),
+ 		},
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Alienware x15 R2",
++		.ident = "Alienware x17",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R2"),
+-		},
+-		.driver_data = &generic_quirks,
+-	},
+-	{
+-		.ident = "Alienware x17 R2",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x17 R2"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x17"),
+ 		},
+ 		.driver_data = &generic_quirks,
+ 	},
 
 
 
