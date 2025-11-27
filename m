@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-197189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA86C8EE4D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F83C8EE9B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 660814EBF58
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757CD3B4231
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2316288537;
-	Thu, 27 Nov 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0B92882C9;
+	Thu, 27 Nov 2025 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INeVCx3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WQL0w6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D558286416;
-	Thu, 27 Nov 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6913F27F18B;
+	Thu, 27 Nov 2025 14:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255046; cv=none; b=rmyYAQrx11gMT+FXxZ6BXPJi2cOn9t0u414sLydtHFuzyvnpaWFOToIAV3gVtfWUaiZVhys4GBRqPvsQ4U7xF32dMCgntlN+IhYQ42vCr+InHvesJMRsNhu9h1lANCBPfhw2TgevD5xJPJ9YiOcUlqU+RjqGFQ+5iiOSXnu+W8c=
+	t=1764255052; cv=none; b=E0bIkcG1gQrKyVEi0yYr4M8A/tUhMODaxe/2xTIYAYfzF6kLwf5b9cYdOYM+OcfWEsQPT1Apek78J+eo+COcB9mUZotO8GJxM4Trrk7DhbiijHleeXjQ4sKAP4qjzCRdYe2AnU4wFjFMnq4nLz57HlydTSrFNUfGR0Wh0v5Ofks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255046; c=relaxed/simple;
-	bh=mdzEY10yOLChqDl6eWQ5CSpWxh3PRAUCDIuYGHj4Xeo=;
+	s=arc-20240116; t=1764255052; c=relaxed/simple;
+	bh=IgoIlWsu1iE2PeCWXhgNfFrGHhVOhEnKsoa7uuVkNmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qT+YN+/1rHqdctnhAVmOXKf7KrCTbTIKif7qgShCRhuw/D2E1/vegoRReX+pBV+QGAVLtGZrqpMH6JISXFcMf15CHvMJ4nh+58FW1k6OD02BA6Pbs2asPAixXGu2s4z1eLsvTycIMBC7Ax9yP5EDkFpb3DNPyzlWZecfaAFxRtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INeVCx3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2816EC4CEF8;
-	Thu, 27 Nov 2025 14:50:45 +0000 (UTC)
+	 MIME-Version; b=VFpdY4cAfNVCa8dNDyNu/zcvgTeGoBH4Lng5hT/pFzAB758JN28DZzlW+1sXHrLdGnYFV/B+LYzDWlt+CWDPs+0tjp4Yy4rA0TVJbk/WIcCRYkdDwFKWp3i78En/y2xhd6TkwTXKiped6jhuNeSFvQZUQO21b5IdL4eS/VdCc9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WQL0w6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A80C4CEF8;
+	Thu, 27 Nov 2025 14:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255046;
-	bh=mdzEY10yOLChqDl6eWQ5CSpWxh3PRAUCDIuYGHj4Xeo=;
+	s=korg; t=1764255052;
+	bh=IgoIlWsu1iE2PeCWXhgNfFrGHhVOhEnKsoa7uuVkNmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INeVCx3i1nJ2VsNtqwggR5oH4whOQ2yo+c6/+eumCGMXsKo+28Pwp+GPnplGlDvrs
-	 7IF8wyOoqLLVvj0+MsgGUn6AZXCSly/ZjWL7iXi5klifY7KYJiovLi8y5WxTxTYjtm
-	 3UyTDo7Y/OT83pu0FCaURxHGZlv116frX4PXxe3Y=
+	b=2WQL0w6gTvm74qiWvIaCq2ubq5o2rPUsP43HGaJFvihqv8YR/ZswS5gCW4W2EYsIu
+	 E0R9IIuvxRjL1IePBZd7DhZYvWrUxz1hJ8ZC/VnIITI51MhVtTpQfbY/zlC6R5znP1
+	 zqkEmhSUBIy/MCaQbAHU1kxZfc/JkqVJOYOo2C4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 76/86] wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
-Date: Thu, 27 Nov 2025 15:46:32 +0100
-Message-ID: <20251127144030.605824387@linuxfoundation.org>
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Baoquan He <bhe@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 77/86] crash: fix crashkernel resource shrink
+Date: Thu, 27 Nov 2025 15:46:33 +0100
+Message-ID: <20251127144030.642475246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
 References: <20251127144027.800761504@linuxfoundation.org>
@@ -66,94 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-commit 2c5dee15239f3f3e31aa5c8808f18996c039e2c1 upstream.
+[ Upstream commit 00fbff75c5acb4755f06f08bd1071879c63940c5 ]
 
-Callers of wdev_chandef() must hold the wiphy mutex.
+When crashkernel is configured with a high reservation, shrinking its
+value below the low crashkernel reservation causes two issues:
 
-But the worker cfg80211_propagate_cac_done_wk() never takes the lock.
-Which triggers the warning below with the mesh_peer_connected_dfs
-test from hostapd and not (yet) released mac80211 code changes:
+1. Invalid crashkernel resource objects
+2. Kernel crash if crashkernel shrinking is done twice
 
-WARNING: CPU: 0 PID: 495 at net/wireless/chan.c:1552 wdev_chandef+0x60/0x165
-Modules linked in:
-CPU: 0 UID: 0 PID: 495 Comm: kworker/u4:2 Not tainted 6.14.0-rc5-wt-g03960e6f9d47 #33 13c287eeabfe1efea01c0bcc863723ab082e17cf
-Workqueue: cfg80211 cfg80211_propagate_cac_done_wk
-Stack:
- 00000000 00000001 ffffff00 6093267c
- 00000000 6002ec30 6d577c50 60037608
- 00000000 67e8d108 6063717b 00000000
-Call Trace:
- [<6002ec30>] ? _printk+0x0/0x98
- [<6003c2b3>] show_stack+0x10e/0x11a
- [<6002ec30>] ? _printk+0x0/0x98
- [<60037608>] dump_stack_lvl+0x71/0xb8
- [<6063717b>] ? wdev_chandef+0x60/0x165
- [<6003766d>] dump_stack+0x1e/0x20
- [<6005d1b7>] __warn+0x101/0x20f
- [<6005d3a8>] warn_slowpath_fmt+0xe3/0x15d
- [<600b0c5c>] ? mark_lock.part.0+0x0/0x4ec
- [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
- [<600b11a2>] ? mark_held_locks+0x5a/0x6e
- [<6005d2c5>] ? warn_slowpath_fmt+0x0/0x15d
- [<60052e53>] ? unblock_signals+0x3a/0xe7
- [<60052f2d>] ? um_set_signals+0x2d/0x43
- [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
- [<607508b2>] ? lock_is_held_type+0x207/0x21f
- [<6063717b>] wdev_chandef+0x60/0x165
- [<605f89b4>] regulatory_propagate_dfs_state+0x247/0x43f
- [<60052f00>] ? um_set_signals+0x0/0x43
- [<605e6bfd>] cfg80211_propagate_cac_done_wk+0x3a/0x4a
- [<6007e460>] process_scheduled_works+0x3bc/0x60e
- [<6007d0ec>] ? move_linked_works+0x4d/0x81
- [<6007d120>] ? assign_work+0x0/0xaa
- [<6007f81f>] worker_thread+0x220/0x2dc
- [<600786ef>] ? set_pf_worker+0x0/0x57
- [<60087c96>] ? to_kthread+0x0/0x43
- [<6008ab3c>] kthread+0x2d3/0x2e2
- [<6007f5ff>] ? worker_thread+0x0/0x2dc
- [<6006c05b>] ? calculate_sigpending+0x0/0x56
- [<6003b37d>] new_thread_handler+0x4a/0x64
-irq event stamp: 614611
-hardirqs last  enabled at (614621): [<00000000600bc96b>] __up_console_sem+0x82/0xaf
-hardirqs last disabled at (614630): [<00000000600bc92c>] __up_console_sem+0x43/0xaf
-softirqs last  enabled at (614268): [<00000000606c55c6>] __ieee80211_wake_queue+0x933/0x985
-softirqs last disabled at (614266): [<00000000606c52d6>] __ieee80211_wake_queue+0x643/0x985
+For example, with crashkernel=200M,high, the kernel reserves 200MB of high
+memory and some default low memory (say 256MB).  The reservation appears
+as:
 
-Fixes: 26ec17a1dc5e ("cfg80211: Fix radar event during another phy CAC")
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://patch.msgid.link/20250717162547.94582-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ The author recommends that when porting to older kernels, we should use wiphy_lock()
-and wiphy_unlock() instead of guard(). ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+cat /proc/iomem | grep -i crash
+af000000-beffffff : Crash kernel
+433000000-43f7fffff : Crash kernel
+
+If crashkernel is then shrunk to 50MB (echo 52428800 >
+/sys/kernel/kexec_crash_size), /proc/iomem still shows 256MB reserved:
+af000000-beffffff : Crash kernel
+
+Instead, it should show 50MB:
+af000000-b21fffff : Crash kernel
+
+Further shrinking crashkernel to 40MB causes a kernel crash with the
+following trace (x86):
+
+BUG: kernel NULL pointer dereference, address: 0000000000000038
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+<snip...>
+Call Trace: <TASK>
+? __die_body.cold+0x19/0x27
+? page_fault_oops+0x15a/0x2f0
+? search_module_extables+0x19/0x60
+? search_bpf_extables+0x5f/0x80
+? exc_page_fault+0x7e/0x180
+? asm_exc_page_fault+0x26/0x30
+? __release_resource+0xd/0xb0
+release_resource+0x26/0x40
+__crash_shrink_memory+0xe5/0x110
+crash_shrink_memory+0x12a/0x190
+kexec_crash_size_store+0x41/0x80
+kernfs_fop_write_iter+0x141/0x1f0
+vfs_write+0x294/0x460
+ksys_write+0x6d/0xf0
+<snip...>
+
+This happens because __crash_shrink_memory()/kernel/crash_core.c
+incorrectly updates the crashk_res resource object even when
+crashk_low_res should be updated.
+
+Fix this by ensuring the correct crashkernel resource object is updated
+when shrinking crashkernel memory.
+
+Link: https://lkml.kernel.org/r/20251101193741.289252-1-sourabhjain@linux.ibm.com
+Fixes: 16c6006af4d4 ("kexec: enable kexec_crash_size to support two crash kernel regions")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Applied fix to `kernel/kexec_core.c` instead of `kernel/crash_core.c` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/reg.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/kexec_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -4208,6 +4208,9 @@ EXPORT_SYMBOL(regulatory_pre_cac_allowed
- static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
- {
- 	struct wireless_dev *wdev;
-+
-+	wiphy_lock(&rdev->wiphy);
-+
- 	/* If we finished CAC or received radar, we should end any
- 	 * CAC running on the same channels.
- 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
-@@ -4231,6 +4234,8 @@ static void cfg80211_check_and_end_cac(s
- 		if (!cfg80211_chandef_dfs_usable(&rdev->wiphy, chandef))
- 			rdev_end_cac(rdev, wdev->netdev);
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1132,7 +1132,7 @@ static int __crash_shrink_memory(struct
+ 		old_res->start = 0;
+ 		old_res->end   = 0;
+ 	} else {
+-		crashk_res.end = ram_res->start - 1;
++		old_res->end = ram_res->start - 1;
  	}
-+
-+	wiphy_unlock(&rdev->wiphy);
- }
  
- void regulatory_propagate_dfs_state(struct wiphy *wiphy,
+ 	crash_free_reserved_phys_range(ram_res->start, ram_res->end);
 
 
 
