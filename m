@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086EBC8F019
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:01:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268D0C8EE50
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90DAF4EAF04
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B4874EC2AA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF47933345E;
-	Thu, 27 Nov 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9359028CF42;
+	Thu, 27 Nov 2025 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sL8iVyO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJdxkdgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E1930DED3;
-	Thu, 27 Nov 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416D1286416;
+	Thu, 27 Nov 2025 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255404; cv=none; b=SPAEOdagcNz6bWlz8D0bFzMl7GYingdr6Hp+HH4UzKeWMtbsZFuyfho3jNCsTgeuRIaRQ6OYOflPEgppsubvzUzWh7Gp9OsdNimbY2FaEjp08uaIk16c0izhamDK0mGRpyu5M+B7/ywzrxmzkX9MrZxpNpIoGkdPI1Sc4TXyBIU=
+	t=1764255058; cv=none; b=T3hQuy2SpHrtld9TN7WyHSy1RZpR9CI35lIh6hcRonGo34g9AAUVPBwbBdAffzZIyTWp1zZpU+BVR3KCS1fbBr8AWDj1XtFyJuWiOT1vrwBD+Kvzb5uag21m7/dpM+7FNlWSkomZgfvcsh0bbMGzLAt6W12i8TM1dWU6in9ARM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255404; c=relaxed/simple;
-	bh=CXXKUlfUJWPTiISEGGip9ob9MPUR8iAfYVm3xS8yVbI=;
+	s=arc-20240116; t=1764255058; c=relaxed/simple;
+	bh=AIvmQCb23L2VT0MTAytpwEEuPZApP2LbKvEQPHpYmn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFquwaHiinXnNgdRIXAC3vnt98QeNroqMg0WhkZbl8PAXnlfWqneYvBjg3UkbPJtGWF99G5zOcaiNvIt14N8Ei77Fd4zHkKIpt9BG/P79izhqLB1o+G5piA1fzT7nhgI3r6YnZQHwhxoOjZT31o33+hbryatCjCd85EWfvftS00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sL8iVyO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AD2C4CEF8;
-	Thu, 27 Nov 2025 14:56:43 +0000 (UTC)
+	 MIME-Version; b=EcZHL9lNPeeUtNtTDviNgWwNx+GZr5+ab6RmqWzZOnAMPvY6Zf27KOto6p3T8IH9ldF9X1eK9ie0j8rgJ4fGNLKPcCUC+o6MFn9EVby1y+uNmzoJra0Z7bU/0sGgf6cTVv3pHnhuai+GkVSquP7AxSAZS3JbC4tzVMPkMBJi+M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJdxkdgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49C0C4CEF8;
+	Thu, 27 Nov 2025 14:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255404;
-	bh=CXXKUlfUJWPTiISEGGip9ob9MPUR8iAfYVm3xS8yVbI=;
+	s=korg; t=1764255058;
+	bh=AIvmQCb23L2VT0MTAytpwEEuPZApP2LbKvEQPHpYmn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sL8iVyO9TDCw7JRI1t4jAT7BYYMhCz7uAidKaI0kENTQQIIeMMcyactXuX4FANtc0
-	 GrEwvb2qZA//pOHpCK+BKj9gSO9/ipcUkhrsHHE9K6ocRp8yy8EkKLhr/GC7ExlGdC
-	 d4Jq4S3fyA2k/lTOkat+AG4v/ggqO0xrizrPPbP0=
+	b=MJdxkdgp4Y5wR6A6J+xHw0FSoFzTTHGSiNW0tELSdGSQbOavJhILPhfxYcdj5a+WJ
+	 lX+3uaEu0HNZbYHDF8U99LUrK+UI1uKfBq8brYmeWZFgl4dhbcw1ATflTSdf8ND5RE
+	 kD2fmJGA42UzHCrJhOmJByVtTPRVzf3nfCWsAuUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/112] ALSA: usb-audio: Fix missing unlock at error path of maxpacksize check
+Subject: [PATCH 6.6 79/86] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
 Date: Thu, 27 Nov 2025 15:46:35 +0100
-Message-ID: <20251127144036.245075625@linuxfoundation.org>
+Message-ID: <20251127144030.718834990@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-The recent backport of the upstream commit 05a1fc5efdd8 ("ALSA:
-usb-audio: Fix potential overflow of PCM transfer buffer") on the
-older stable kernels like 6.12.y was broken since it doesn't consider
-the mutex unlock, where the upstream code manages with guard().
-In the older code, we still need an explicit unlock.
+[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
 
-This is a fix that corrects the error path, applied only on old stable
-trees.
+If of_genpd_add_provider_onecell() fails during probe, the previously
+created generic power domains are not removed, leading to a memory leak
+and potential kernel crash later in genpd_debug_add().
 
-Reported-by: Pavel Machek <pavel@denx.de>
-Closes: https://lore.kernel.org/aSWtH0AZH5+aeb+a@duo.ucw.cz
-Fixes: 98e9d5e33bda ("ALSA: usb-audio: Fix potential overflow of PCM transfer buffer")
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add proper error handling to unwind the initialized domains before
+returning from probe to ensure all resources are correctly released on
+failure.
+
+Example crash trace observed without this fix:
+
+  | Unable to handle kernel paging request at virtual address fffffffffffffc70
+  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
+  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
+  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  | pc : genpd_debug_add+0x2c/0x160
+  | lr : genpd_debug_init+0x74/0x98
+  | Call trace:
+  |  genpd_debug_add+0x2c/0x160 (P)
+  |  genpd_debug_init+0x74/0x98
+  |  do_one_initcall+0xd0/0x2d8
+  |  do_initcall_level+0xa0/0x140
+  |  do_initcalls+0x60/0xa8
+  |  do_basic_setup+0x28/0x40
+  |  kernel_init_freeable+0xe8/0x170
+  |  kernel_init+0x2c/0x140
+  |  ret_from_fork+0x10/0x20
+
+Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/endpoint.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/scmi_pm_domain.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
-index 7238f65cbcfff..aa201e4744bf6 100644
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1389,7 +1389,8 @@ int snd_usb_endpoint_set_params(struct snd_usb_audio *chip,
- 	if (ep->packsize[1] > ep->maxpacksize) {
- 		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
- 			      ep->maxpacksize, ep->cur_rate, ep->pps);
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto unlock;
- 	}
+--- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
++++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
+@@ -54,7 +54,7 @@ static int scmi_pd_power_off(struct gene
  
- 	/* calculate the frequency in 16.16 format */
--- 
-2.51.0
-
+ static int scmi_pm_domain_probe(struct scmi_device *sdev)
+ {
+-	int num_domains, i;
++	int num_domains, i, ret;
+ 	struct device *dev = &sdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct scmi_pm_domain *scmi_pd;
+@@ -112,9 +112,18 @@ static int scmi_pm_domain_probe(struct s
+ 	scmi_pd_data->domains = domains;
+ 	scmi_pd_data->num_domains = num_domains;
+ 
++	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
++	if (ret)
++		goto err_rm_genpds;
++
+ 	dev_set_drvdata(dev, scmi_pd_data);
+ 
+-	return of_genpd_add_provider_onecell(np, scmi_pd_data);
++	return 0;
++err_rm_genpds:
++	for (i = num_domains - 1; i >= 0; i--)
++		pm_genpd_remove(domains[i]);
++
++	return ret;
+ }
+ 
+ static void scmi_pm_domain_remove(struct scmi_device *sdev)
 
 
 
