@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BAEC8F15A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BAFC8ED96
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F0824343B07
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 631284E926B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164C6334373;
-	Thu, 27 Nov 2025 15:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C866B2882BB;
+	Thu, 27 Nov 2025 14:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HZV+sxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyJhcx75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6A82882A7;
-	Thu, 27 Nov 2025 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8087D274B3C;
+	Thu, 27 Nov 2025 14:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255848; cv=none; b=hY6qUkWgadwnfxY2VMN38kRSIBaC7tk2G/+q4jAz2zV2TtkYoM7MvMEWJbImk1S6C+CTsoWKHVMqDzBE67DmNJ6F+h6luhpAi7fbDqeLPs4+rhTtFNGpmnE+DldvUuKMCI/ACNhWC5OsefcV0QgXSTd9VFyYnnMhhpJ54iSuCnE=
+	t=1764254943; cv=none; b=Zmpa+QAPDk9JwVzsYL9R+r0s07j5W84lh3tgKVwyNeVmQhHAdAFeNAFuJatic1ivaARLJEJfHrUOlR6JXGP8H7i4khcwwloItiwDQYTywv+zngwiM/YPZp/ARtBIIpaTBWqNbOLgcJxQCqzvdBTZfkMoggItUAF5TTP/KdNVNgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255848; c=relaxed/simple;
-	bh=IJewKVXisSPRLVMVGUqWlQFUqn7WyShfKJkmiRzqBvo=;
+	s=arc-20240116; t=1764254943; c=relaxed/simple;
+	bh=/2Fk9yQpjHRenTt8pTRlDTITM9bW9R6LtnEJWAabv+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQgP2EUxS0zrpx8dW9M+uD++L35nc/BZH3fDX1RnaYf3+24JphoYQqv1FdGFeMdL6f7xU8BPsaqNI7kHUbNz95gWMV/LpmyIjY+qmklbNWBr9CfborCEVO8GD61iMbA2dGuSQ8C/Jn0Hn6JS4MwwlfUqpg+lK2+wYkiNATlkgGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HZV+sxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A192C4CEF8;
-	Thu, 27 Nov 2025 15:04:08 +0000 (UTC)
+	 MIME-Version; b=tJgqwkHNRc9U/6UnBtSs5jPnm3arkaYiwcXeKWvAVwH6as90bNLnRogjrY+zFAcrlxv23tjPFuhb6o3wIdPKPrK1bsp6WEe2ovJy5yhM/24PTXKTvqUQpOYtxHrfLc7FXQgH6ZwRY4HLxx5a5sMC3GIgMpdufd7bnREOpuUv/ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyJhcx75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6A8C4CEF8;
+	Thu, 27 Nov 2025 14:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255848;
-	bh=IJewKVXisSPRLVMVGUqWlQFUqn7WyShfKJkmiRzqBvo=;
+	s=korg; t=1764254943;
+	bh=/2Fk9yQpjHRenTt8pTRlDTITM9bW9R6LtnEJWAabv+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2HZV+sxIWMk6JHWnnnOJjsAPBc8MUcXiohTJR4LQFgqaQjN34hERvqONfY9XJQyn8
-	 YhyY8GNw5NLIxHnC8Q3GlSSUBCSrXzVOwI0qN/KRO8DK6CUqdMitGNoGX3Y84rcVGP
-	 BBSSzT+4sOU6yrBEosGiM2HXl5JPnNg4ocqbK7lY=
+	b=wyJhcx75SfziI1yq2f+tbc5wldUCpLzuSxeFJpRL36V2E4xTcKitgfDrrveqy7pA8
+	 rGoltVuxSmm5h+OvzqiTKCqgmLoExgB3t7kVybUW3rh5oKVJ4px3zPF7k1ueVueL/8
+	 ZwMGwAe72tCdF4hlfUVacKZ+SZcrdc5g1fjXM4pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 102/175] tools: riscv: Fixed misalignment of CSR related definitions
-Date: Thu, 27 Nov 2025 15:45:55 +0100
-Message-ID: <20251127144046.684790693@linuxfoundation.org>
+Subject: [PATCH 6.6 40/86] pinctrl: cirrus: Fix fwnode leak in cs42l43_pin_probe()
+Date: Thu, 27 Nov 2025 15:45:56 +0100
+Message-ID: <20251127144029.293245190@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Pei <cp0613@linux.alibaba.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit e2cb69263e797c0aa6676bcef23e9e27e44c83b0 ]
+[ Upstream commit 9b07cdf86a0b90556f5b68a6b20b35833b558df3 ]
 
-The file tools/arch/riscv/include/asm/csr.h borrows from
-arch/riscv/include/asm/csr.h, and subsequent modifications
-related to CSR should maintain consistency.
+The driver calls fwnode_get_named_child_node() which takes a reference
+on the child node, but never releases it, which causes a reference leak.
 
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-Link: https://patch.msgid.link/20251114071215.816-1-cp0613@linux.alibaba.com
-[pjw@kernel.org: dropped Fixes: lines for patches that weren't broken; removed superfluous blank line]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fix by using devm_add_action_or_reset() to automatically release the
+reference when the device is removed.
+
+Fixes: d5282a539297 ("pinctrl: cs42l43: Add support for the cs42l43")
+Suggested-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c       | 2 +-
- tools/arch/riscv/include/asm/csr.h | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index 698de8ddf895b..824209f0a3641 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -1019,7 +1019,7 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
- 			/* compute hardware counter index */
- 			hidx = info->csr - CSR_CYCLE;
+diff --git a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+index c096463184195..e1ac89be7c847 100644
+--- a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
++++ b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+@@ -532,6 +532,11 @@ static int cs42l43_gpio_add_pin_ranges(struct gpio_chip *chip)
+ 	return ret;
+ }
  
--		/* check if the corresponding bit is set in sscountovf or overflow mask in shmem */
-+		/* check if the corresponding bit is set in scountovf or overflow mask in shmem */
- 		if (!(overflow & BIT(hidx)))
- 			continue;
++static void cs42l43_fwnode_put(void *data)
++{
++	fwnode_handle_put(data);
++}
++
+ static int cs42l43_pin_probe(struct platform_device *pdev)
+ {
+ 	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
+@@ -563,10 +568,20 @@ static int cs42l43_pin_probe(struct platform_device *pdev)
+ 	priv->gpio_chip.ngpio = CS42L43_NUM_GPIOS;
  
-diff --git a/tools/arch/riscv/include/asm/csr.h b/tools/arch/riscv/include/asm/csr.h
-index 0dfc09254f99a..1cd824aaa3ba2 100644
---- a/tools/arch/riscv/include/asm/csr.h
-+++ b/tools/arch/riscv/include/asm/csr.h
-@@ -167,7 +167,8 @@
- #define VSIP_TO_HVIP_SHIFT	(IRQ_VS_SOFT - IRQ_S_SOFT)
- #define VSIP_VALID_MASK		((_AC(1, UL) << IRQ_S_SOFT) | \
- 				 (_AC(1, UL) << IRQ_S_TIMER) | \
--				 (_AC(1, UL) << IRQ_S_EXT))
-+				 (_AC(1, UL) << IRQ_S_EXT) | \
-+				 (_AC(1, UL) << IRQ_PMU_OVF))
+ 	if (is_of_node(fwnode)) {
+-		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
+-
+-		if (fwnode && !fwnode->dev)
+-			fwnode->dev = priv->dev;
++		struct fwnode_handle *child;
++
++		child = fwnode_get_named_child_node(fwnode, "pinctrl");
++		if (child) {
++			ret = devm_add_action_or_reset(&pdev->dev,
++				cs42l43_fwnode_put, child);
++			if (ret) {
++				fwnode_handle_put(child);
++				return ret;
++			}
++			if (!child->dev)
++				child->dev = priv->dev;
++			fwnode = child;
++		}
+ 	}
  
- /* AIA CSR bits */
- #define TOPI_IID_SHIFT		16
-@@ -280,7 +281,7 @@
- #define CSR_HPMCOUNTER30H	0xc9e
- #define CSR_HPMCOUNTER31H	0xc9f
- 
--#define CSR_SSCOUNTOVF		0xda0
-+#define CSR_SCOUNTOVF		0xda0
- 
- #define CSR_SSTATUS		0x100
- #define CSR_SIE			0x104
+ 	priv->gpio_chip.fwnode = fwnode;
 -- 
 2.51.0
 
