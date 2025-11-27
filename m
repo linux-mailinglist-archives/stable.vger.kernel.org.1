@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447A2C8EDF9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5422C8F0C1
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7768F4ED3D4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D76A3BE01D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405EB3064B9;
-	Thu, 27 Nov 2025 14:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D16632BF40;
+	Thu, 27 Nov 2025 14:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtYMwtMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7iDunmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F098728D830;
-	Thu, 27 Nov 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD37E296BBC;
+	Thu, 27 Nov 2025 14:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254975; cv=none; b=VlIlFELDKWq4uCRThWVoCA/iB6hVPpQQ3xN1zeI1W0TX+9rv3K0I4iFQMDAvmnpDLLO5awrm+LopNpXkLrmAoDFBHHi96bOLqKyxi03ygV/MTs6teYhsaURMg/a6DHOi9JWLNaUWcqE3DjBXBn+P0ezgricCQE9FSfy0cfj0xNs=
+	t=1764255412; cv=none; b=peNYEK9Tg1jQwWGG8EAsLSu96mSrOgj82/acu6Kq27EkOAX3313I+4FWbhkA+TWKIHHjycP+YfMu3gf3XDGNem84THR585VBN76Am+fSIK3ySQrWAERZLkPx9M1sHjNn0L/LvfEjsz54QvDLzPpyhRFvw6Y9WIezzMwYOq3oI1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254975; c=relaxed/simple;
-	bh=zwpkKna52HRr+2zJWhEqLYQkn66EswwTJAVFh24Hq/g=;
+	s=arc-20240116; t=1764255412; c=relaxed/simple;
+	bh=zsrvqqCcwTGbp6UOq7hXA1oK07L5i3dvDZhwf6L1uHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SisTGnfbG9kpfa03UMfyi0PInwzYYUVaKH9t6MaqEUTX040yP+OMNwC6WYIwPpkHKGd2xVeWYv4FNN/6727fJDr0bJERlGmjBBZOImiTKG3jqY4ZQxxS8dBrBF4p3FDEqX0C/JyTFBL7Vr4V0i5l3CUDwM1lm9tmOA8au1EREOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtYMwtMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B6CC4CEF8;
-	Thu, 27 Nov 2025 14:49:34 +0000 (UTC)
+	 MIME-Version; b=SxBdEs4qb0er56NemHkCofst4CoRkByVcaW1vhe5okMD+6h+glVcfOlcwIr8S+musp3zLtsWzVDBd/78QdrtttR6uPIfqAQOuMBRMrdbaiyoU3VeaA/cB340yhHUv+OLL9EfIvXDpKNBwv2qi4uycMWECK6I6Jy4VSvsxbZ4T/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7iDunmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54189C4CEF8;
+	Thu, 27 Nov 2025 14:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254974;
-	bh=zwpkKna52HRr+2zJWhEqLYQkn66EswwTJAVFh24Hq/g=;
+	s=korg; t=1764255412;
+	bh=zsrvqqCcwTGbp6UOq7hXA1oK07L5i3dvDZhwf6L1uHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtYMwtMWOyDSb3mvnt8NnOBNq5U3Rzqq9rw8fJm5QIpMAglZUO3RV+j9UcXvNxIKq
-	 fyDBrvLM9hbqe0Gk0xFwsdC0IFESEuoaBgG1qmlutCr/apcKqSl4aPQtOlPcDP8StU
-	 WzxcL1O2WKAHtAHIONvi3q4hYThRvk/Kw5qy2nwI=
+	b=h7iDunmY5RNjCdkvJUaA3pg5l9rn/ywiAzXL+PSq2Wstg220MDj2nYYW4qXu5xBQw
+	 ZYy7HjzOKLuy3OqWpKZBgsvUMxEEEg9GzgB3ssjOTmEFP+wO6JoO0cz/w6++7w9bjo
+	 +36S/Ef9s1B8WuBdzSJTxg1cDHZxKuiI0vlYIN9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 50/86] net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
+Subject: [PATCH 6.12 064/112] net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
 Date: Thu, 27 Nov 2025 15:46:06 +0100
-Message-ID: <20251127144029.657840710@linuxfoundation.org>
+Message-ID: <20251127144035.182166341@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 896f1a2493b59beb2b5ccdf990503dbb16cb2256 ]
+[ Upstream commit b0c959fec18f4595a6a6317ffc30615cfa37bf69 ]
 
-The loops in 'qede_tpa_cont()' and 'qede_tpa_end()', iterate
-over 'cqe->len_list[]' using only a zero-length terminator as
-the stopping condition. If the terminator was missing or
-malformed, the loop could run past the end of the fixed-size array.
+The call to devlink_info_version_fixed_put() in
+mlxsw_linecard_devlink_info_get() did not check for errors,
+although it is checked everywhere in the code.
 
-Add an explicit bound check using ARRAY_SIZE() in both loops to prevent
-a potential out-of-bounds access.
+Add missed 'err' check to the mlxsw_linecard_devlink_info_get()
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
+Fixes: 3fc0c51905fb ("mlxsw: core_linecards: Expose device PSID over device info")
 Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Link: https://patch.msgid.link/20251113112757.4166625-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251113161922.813828-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-index cb1746bc0e0c5..273dae622c411 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2019-2020 Marvell International Ltd.
-  */
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+index b032d5a4b3b84..10f5bc4892fc7 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+@@ -601,6 +601,8 @@ int mlxsw_linecard_devlink_info_get(struct mlxsw_linecard *linecard,
+ 		err = devlink_info_version_fixed_put(req,
+ 						     DEVLINK_INFO_VERSION_GENERIC_FW_PSID,
+ 						     info->psid);
++		if (err)
++			goto unlock;
  
-+#include <linux/array_size.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/skbuff.h>
-@@ -960,7 +961,7 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
- {
- 	int i;
- 
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
- 
-@@ -985,7 +986,7 @@ static int qede_tpa_end(struct qede_dev *edev,
- 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
- 			       PAGE_SIZE, rxq->data_direction);
- 
--	for (i = 0; cqe->len_list[i]; i++)
-+	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
- 	if (unlikely(i > 1))
+ 		sprintf(buf, "%u.%u.%u", info->fw_major, info->fw_minor,
+ 			info->fw_sub_minor);
 -- 
 2.51.0
 
