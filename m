@@ -1,72 +1,55 @@
-Return-Path: <stable+bounces-197389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D30C8F1F6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4E9C8ED5D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFEAE3BF952
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A6813AF0FB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598E6334C1A;
-	Thu, 27 Nov 2025 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC026F2A7;
+	Thu, 27 Nov 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTEWjEn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gX5d9urx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2A6333456;
-	Thu, 27 Nov 2025 15:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00491A9B58;
+	Thu, 27 Nov 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255678; cv=none; b=AbEt6ySh+nY30mRoggxi27UDB+jLWwsuGsD5NoJoKN5MAc+lewxK33FG+CjQfKx9RMjq7w+TFV/0j/Nd/B5jspH0awaVv6q9O1Zip6Eald49A+xAK5VbtzkcsCoEK6rhQILXL8SHchGKpTCOWuK4sSUp5ouFSS8txY1Q+U7EXcI=
+	t=1764254867; cv=none; b=hXqVfHWXZBj7AD6dZNBbYIplTMHnV20bMJ9Rs7yXQN/oFQ34OML31YyGoseLBkQjKd/bLcoNyNag+A/axu13WhICxHnZkyWY+F79LoADbJ2ZYUcQwFidF5KKvB3PHJNb5wScP4reTNQs5O16LSfW2WF3Zszkw88Z8jVL+eC1DYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255678; c=relaxed/simple;
-	bh=9dega0Ce2RGehyrWfGSgAFH3kf1xhB+5cHm8p0+/FDk=;
+	s=arc-20240116; t=1764254867; c=relaxed/simple;
+	bh=FOTx/gMebdaxGfn5j2LXiGTFnHtgMy/atZ7I/D7sBzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+eoqbDWND1sh3AJ/QKmC5vhGELCmTQ85ghGMMypOfGS3Tt3rLnnZyOLuRTuf9EH33HMNNNwXx67vSpgUhYjww7vVAn4/O1t0ThX2dyP6CKVpBtaRjrGXUP8TWUTlcganNyHzMO1G6scBBIGSYHAac+WQGj4onxCRNacHIcBok0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTEWjEn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31073C4CEF8;
-	Thu, 27 Nov 2025 15:01:18 +0000 (UTC)
+	 MIME-Version; b=ACbZRhBXXBzTwptIX8JrDOVucz6OKwU0K4JsbHXRJsO2dx0O5uUiExdnhk5DNkDVgtOJANleQr7u/j54vetsDAh8wk60myiui4rGXz4bapkhwZnmsnhTkQqEvGhZMV4KeE+D7wyUmrvcZ4+f3elCYjJ1dpupmFm2WoKnh43mGCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gX5d9urx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F810C4CEF8;
+	Thu, 27 Nov 2025 14:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255678;
-	bh=9dega0Ce2RGehyrWfGSgAFH3kf1xhB+5cHm8p0+/FDk=;
+	s=korg; t=1764254867;
+	bh=FOTx/gMebdaxGfn5j2LXiGTFnHtgMy/atZ7I/D7sBzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTEWjEn17lur1KJgHvjstmnZ97S1dtFt91hCDXT60KLCpg28/Wc36hKRsSp4GQLzK
-	 F66BkX80yXRDIBuMed9I5BJVkcsqxH+RhSJ9vfi8mgJwTNiyMjQNtt8pCXCXQCTluI
-	 mzwWrf623a6kVEBExa92YSuOoyxRGWNUKOW67Kos=
+	b=gX5d9urx2GbsjkYf/RjdFgqy53VWCH06Xg7PiOhdrQQv2NQwEs8xLkbk68rqHnJRw
+	 vt1P9Hfp7Y5JBfq22yQ4D5KEkBC5hF9YuIrd9jIlHLVTMHkDUkF1h+pHU7T4pa6vLx
+	 ZB/ZusGch57WM8TZsT0gBDBDLVVV8aBjQseIhJnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 077/175] mm/truncate: unmap large folio on split failure
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 14/86] net: dsa: microchip: lan937x: Fix RGMII delay tuning
 Date: Thu, 27 Nov 2025 15:45:30 +0100
-Message-ID: <20251127144045.778843047@linuxfoundation.org>
+Message-ID: <20251127144028.339434354@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,120 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiryl Shutsemau <kas@kernel.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit fa04f5b60fda62c98a53a60de3a1e763f11feb41 upstream.
+commit 3ceb6ac2116ecda1c5d779bb73271479e70fccb4 upstream.
 
-Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-supposed to generate SIGBUS.
+Correct RGMII delay application logic in lan937x_set_tune_adj().
 
-This behavior might not be respected on truncation.
+The function was missing `data16 &= ~PORT_TUNE_ADJ` before setting the
+new delay value. This caused the new value to be bitwise-OR'd with the
+existing PORT_TUNE_ADJ field instead of replacing it.
 
-During truncation, the kernel splits a large folio in order to reclaim
-memory.  As a side effect, it unmaps the folio and destroys PMD mappings
-of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
-are preserved.
+For example, when setting the RGMII 2 TX delay on port 4, the
+intended TUNE_ADJUST value of 0 (RGMII_2_TX_DELAY_2NS) was
+incorrectly OR'd with the default 0x1B (from register value 0xDA3),
+leaving the delay at the wrong setting.
 
-However, if the split fails, PMD mappings are preserved and the user will
-not receive SIGBUS on any accesses within the PMD.
+This patch adds the missing mask to clear the field, ensuring the
+correct delay value is written. Physical measurements on the RGMII TX
+lines confirm the fix, showing the delay changing from ~1ns (before
+change) to ~2ns.
 
-Unmap the folio on split failure.  It will lead to refault as PTEs and
-preserve SIGBUS semantics.
+While testing on i.MX 8MP showed this was within the platform's timing
+tolerance, it did not match the intended hardware-characterized value.
 
-Make an exception for shmem/tmpfs that for long time intentionally mapped
-with PMDs across i_size.
-
-Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
-Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b19ac41faa3f ("net: dsa: microchip: apply rgmii tx and rx delay in phylink mac config")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20251114090951.4057261-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/truncate.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ drivers/net/dsa/microchip/lan937x_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -177,6 +177,32 @@ int truncate_inode_folio(struct address_
- 	return 0;
- }
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -336,6 +336,7 @@ static void lan937x_set_tune_adj(struct
+ 	ksz_pread16(dev, port, reg, &data16);
  
-+static int try_folio_split_or_unmap(struct folio *folio, struct page *split_at,
-+				    unsigned long min_order)
-+{
-+	enum ttu_flags ttu_flags =
-+		TTU_SYNC |
-+		TTU_SPLIT_HUGE_PMD |
-+		TTU_IGNORE_MLOCK;
-+	int ret;
-+
-+	ret = try_folio_split_to_order(folio, split_at, min_order);
-+
-+	/*
-+	 * If the split fails, unmap the folio, so it will be refaulted
-+	 * with PTEs to respect SIGBUS semantics.
-+	 *
-+	 * Make an exception for shmem/tmpfs that for long time
-+	 * intentionally mapped with PMDs across i_size.
-+	 */
-+	if (ret && !shmem_mapping(folio->mapping)) {
-+		try_to_unmap(folio, ttu_flags);
-+		WARN_ON(folio_mapped(folio));
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * Handle partial folios.  The folio may be entirely within the
-  * range if a split has raced with us.  If not, we zero the part of the
-@@ -226,7 +252,7 @@ bool truncate_inode_partial_folio(struct
+ 	/* Update tune Adjust */
++	data16 &= ~PORT_TUNE_ADJ;
+ 	data16 |= FIELD_PREP(PORT_TUNE_ADJ, val);
+ 	ksz_pwrite16(dev, port, reg, data16);
  
- 	min_order = mapping_min_folio_order(folio->mapping);
- 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
--	if (!try_folio_split_to_order(folio, split_at, min_order)) {
-+	if (!try_folio_split_or_unmap(folio, split_at, min_order)) {
- 		/*
- 		 * try to split at offset + length to make sure folios within
- 		 * the range can be dropped, especially to avoid memory waste
-@@ -250,13 +276,10 @@ bool truncate_inode_partial_folio(struct
- 		if (!folio_trylock(folio2))
- 			goto out;
- 
--		/*
--		 * make sure folio2 is large and does not change its mapping.
--		 * Its split result does not matter here.
--		 */
-+		/* make sure folio2 is large and does not change its mapping */
- 		if (folio_test_large(folio2) &&
- 		    folio2->mapping == folio->mapping)
--			try_folio_split_to_order(folio2, split_at2, min_order);
-+			try_folio_split_or_unmap(folio2, split_at2, min_order);
- 
- 		folio_unlock(folio2);
- out:
 
 
 
