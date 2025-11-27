@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83004C8EEBF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613A0C8EFDE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66D63B6DC3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E6064EAA57
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6381F288537;
-	Thu, 27 Nov 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A0D334389;
+	Thu, 27 Nov 2025 14:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjJXUoOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yc8VBXNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E542286416;
-	Thu, 27 Nov 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5B73358CC;
+	Thu, 27 Nov 2025 14:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255092; cv=none; b=De76EiNvwDk3a0PEMTvAZqdzizGMFAwTKt7ZKV/zqJ3i0QDnaU04qeDo1LBqUaFTL91iz/2imXLTbG+c5HW/vvGaqdzxIyB/7ANCMIY3hxwPQ3uwBiQex3soufJsjbK3gRIeItIPpwk4eqN2V0UbQ+z+EILJH6eDRsdU0EmhjTY=
+	t=1764255301; cv=none; b=RZ94+CztcOmiRHtJf1SKvy5BpTWmL1qLm+JRsUa9r4asBBUgfAkhCOkfk2QXf1SsFCilUgGRzPMNqrJ2JedqHMV9GdkfpAJS3nbCFET6dqNlaTIjaJ2prKMI80l/uDe2kVkSRLAfFnFF2Z2FzQ8XbgeY0Y4BP3NuUSQ8frypjaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255092; c=relaxed/simple;
-	bh=oq9hMvJYFoqMC0/5jd2bAWrmLN3QKz0U/GrZfAZ5sS8=;
+	s=arc-20240116; t=1764255301; c=relaxed/simple;
+	bh=gEtc4kQWcwecqeBxjcOUID7N/FSGKWEVv1ujnxCM9xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XnZ6j1cMqzWmU9iqJI9C1dwldKi1CGwnF/L7WkJMfsOL6CULWV+eBy5RbBiWz9lArUrd7v/wEpaw30lTLBMLpp9yMjTKaXvpn0NV3MdIUcVQvtEi4Zoc6ADuFoBwBBaNk6Dpzxb258mVCYJ8SriupDio+FuFZ1e3lSdxkUsZ6Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjJXUoOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2B3C113D0;
-	Thu, 27 Nov 2025 14:51:31 +0000 (UTC)
+	 MIME-Version; b=OhpJ/tX7JJfwIySnVL1ResyiD9LlUwkX2rLr61L4jZE0poQIlgs3OuAzqrCyVCihbPbvEf3Iw1/MtzPQjHB7kOOisPOe/E6jcacTztKq+NJ72pceHLC8ms2uCnWizTWih1CWXuiAx7KbnyRFfvmx8el4H/oqGLxrIgZT1tP4hgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yc8VBXNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8553C116C6;
+	Thu, 27 Nov 2025 14:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255092;
-	bh=oq9hMvJYFoqMC0/5jd2bAWrmLN3QKz0U/GrZfAZ5sS8=;
+	s=korg; t=1764255301;
+	bh=gEtc4kQWcwecqeBxjcOUID7N/FSGKWEVv1ujnxCM9xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjJXUoOKLXHw/BHYmQqr+7w6Ly9orjjkU3MVJWgMOl07uSUDT3owU1AgHXxF/aIW+
-	 gmwaGRLOAx5wQK/jSeejfOs3jlDsQHbIGXQ90DGE5ilNRbuoOB1IRCECb8vB2QrSTz
-	 uShcEE8VeN0w0V3mVX5VxfZmuOCGJ0wmwSrcgLdM=
+	b=Yc8VBXNFY5zZMwsjmtT0873HHn/7UsIkUN/2R7twbvWDwwiKk7ZFKKovVo9ZwUU71
+	 0OkMwn7ymFo86PLqHyJPLnO3xh5gzHHp3gvn1gRlyhYwCXPSshkPPt1A+KuLK+f6Nr
+	 oE34UKxNfSNFBONZK25aNnhNrwADjxT2ow3sTsG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 64/86] kconfig/mconf: Initialize the default locale at startup
+Subject: [PATCH 6.12 078/112] af_unix: Cache state->msg in unix_stream_read_generic().
 Date: Thu, 27 Nov 2025 15:46:20 +0100
-Message-ID: <20251127144030.170568399@linuxfoundation.org>
+Message-ID: <20251127144035.697471796@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
+[ Upstream commit 8b77338eb2af74bb93986e4a8cfd86724168fe39 ]
 
-Fix bug where make menuconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+In unix_stream_read_generic(), state->msg is fetched multiple times.
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Let's cache it in a local variable.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250702223606.1054680-6-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7bf3a476ce43 ("af_unix: Read sk_peek_offset() again after sleeping in unix_stream_read_generic().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/mconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/unix/af_unix.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
-index 3795c36a9181a..2364140596c5d 100644
---- a/scripts/kconfig/mconf.c
-+++ b/scripts/kconfig/mconf.c
-@@ -12,6 +12,7 @@
- #include <errno.h>
- #include <fcntl.h>
- #include <limits.h>
-+#include <locale.h>
- #include <stdarg.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -1015,6 +1016,8 @@ int main(int ac, char **av)
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 45f8e21829ecd..26d37a90b755d 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2769,20 +2769,21 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				    bool freezable)
+ {
+-	struct scm_cookie scm;
++	int noblock = state->flags & MSG_DONTWAIT;
+ 	struct socket *sock = state->socket;
++	struct msghdr *msg = state->msg;
+ 	struct sock *sk = sock->sk;
+-	struct unix_sock *u = unix_sk(sk);
+-	int copied = 0;
++	size_t size = state->size;
+ 	int flags = state->flags;
+-	int noblock = flags & MSG_DONTWAIT;
+ 	bool check_creds = false;
+-	int target;
++	struct scm_cookie scm;
++	unsigned int last_len;
++	struct unix_sock *u;
++	int copied = 0;
+ 	int err = 0;
+ 	long timeo;
++	int target;
+ 	int skip;
+-	size_t size = state->size;
+-	unsigned int last_len;
  
- 	signal(SIGINT, sig_handler);
+ 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
+ 		err = -EINVAL;
+@@ -2802,6 +2803,8 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
  
-+	setlocale(LC_ALL, "");
+ 	memset(&scm, 0, sizeof(scm));
+ 
++	u = unix_sk(sk);
 +
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		silent = 1;
- 		/* Silence conf_read() until the real callback is set up */
+ 	/* Lock the socket to prevent queue disordering
+ 	 * while sleeps in memcpy_tomsg
+ 	 */
+@@ -2894,14 +2897,12 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		}
+ 
+ 		/* Copy address just once */
+-		if (state->msg && state->msg->msg_name) {
+-			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr,
+-					 state->msg->msg_name);
+-			unix_copy_addr(state->msg, skb->sk);
++		if (msg && msg->msg_name) {
++			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr, msg->msg_name);
+ 
+-			BPF_CGROUP_RUN_PROG_UNIX_RECVMSG_LOCK(sk,
+-							      state->msg->msg_name,
+-							      &state->msg->msg_namelen);
++			unix_copy_addr(msg, skb->sk);
++			BPF_CGROUP_RUN_PROG_UNIX_RECVMSG_LOCK(sk, msg->msg_name,
++							      &msg->msg_namelen);
+ 
+ 			sunaddr = NULL;
+ 		}
+@@ -2959,8 +2960,8 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 	} while (size);
+ 
+ 	mutex_unlock(&u->iolock);
+-	if (state->msg)
+-		scm_recv_unix(sock, state->msg, &scm, flags);
++	if (msg)
++		scm_recv_unix(sock, msg, &scm, flags);
+ 	else
+ 		scm_destroy(&scm);
+ out:
 -- 
 2.51.0
 
