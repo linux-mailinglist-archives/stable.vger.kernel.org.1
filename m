@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3697C8F208
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64D8C8EF1C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB23C4ED610
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2FEE4EAC4F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6E73346A1;
-	Thu, 27 Nov 2025 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B08322DCB;
+	Thu, 27 Nov 2025 14:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la11u1Em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4X+Oi+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB80E33437A;
-	Thu, 27 Nov 2025 15:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C528D8E8;
+	Thu, 27 Nov 2025 14:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255791; cv=none; b=CGIzNxt5JUxjw5Qy5irwVuTfFaTdZElB6OvXuuZzL8BvyHDjEkVhxEHvWmA3wAdVSMQkKUWWA8nEbNkTPfkpK0Ezq2lBeZT58e1QLpjgaHhmC+VZJ3dTrCBjma60BkxC8WyjOZrBVDEvrURHLQe0vNn99lRjl1nPmuShlHYDeH4=
+	t=1764255220; cv=none; b=IPnJYEpQESvWi0OetuOexVLQvWJmVtOqavPBMSN6bxzgvXYLcftNWziwhR/58a/ZnEH1+pnp8UsI26OMmAD0yW8BJBVD3Ul67brs4UFc34JydhSfgiBgdSsRov8lIhyvN/fMfGgas7tlKMEe506h0RVK+cSLdsxqQ8CfTqxLhTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255791; c=relaxed/simple;
-	bh=3q8hc6a/c2FSVaBgo47d/tJYElNQGw8t7LljN+bWO3E=;
+	s=arc-20240116; t=1764255220; c=relaxed/simple;
+	bh=CJRzWObSfedXo4QaxWgySKL1jz7L2auMhUjRoz9udTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khJSs4IiFlJt9SS1l3Oc48h84ukLHO5uasyMNmaSmP+HdFxO4Pa+eWS5b5uagtVaNzDTilRB75k8Opd3stJmBH2TzYE+fsJDa66qRtpQbBx5ksGbWiuTXt8TVtChUYQD3FN9VVkqzVRfHhbosR0gmVW4jtkXxTdpfNMl+gmMhBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la11u1Em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767C3C4CEF8;
-	Thu, 27 Nov 2025 15:03:10 +0000 (UTC)
+	 MIME-Version; b=nrN1ZD5fKJfptFKqXvl+/N1pI9J4vKETjIE73hg3B6M1t0szV09SnA62rbUP8k0XPojBFskWQl1J9wHWd3K4+uhaRA2MNKxnnkCx+yKwrrkjzAWPxr0JJOMwaJV0SV9KsERSQDdl9uvsS0OpQk7J5lLWEv4MiwIlaJmESCzD0io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4X+Oi+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A37C4CEF8;
+	Thu, 27 Nov 2025 14:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255790;
-	bh=3q8hc6a/c2FSVaBgo47d/tJYElNQGw8t7LljN+bWO3E=;
+	s=korg; t=1764255220;
+	bh=CJRzWObSfedXo4QaxWgySKL1jz7L2auMhUjRoz9udTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=la11u1Emn5UJIHhWc5eCMkNd8daimE3bXiKzAqgXD6xXogOiMDQEhishK2vguGlk/
-	 elIWyPQxGWhIqIKJxJu4rZZrxo5wBoSXwAeDysRIOFUj3PaoR8VIje9bNELBYmwZjh
-	 zkvqE6V/OyFm0M4Ibs5JAhrgIoWnnNytS9XHnLB8=
+	b=q4X+Oi+Y7MhGQjhsZ7d7KzCCkfVRhFKwQXAdb4137QN96oIc8r7B6rXF8KUBeh1Ln
+	 qmvPs1KDeuGlJDss9SPs+M2rVfK29G3HRUmhK5rf1iNMF+++eOmk25IjuoLPIP7CvH
+	 jn3qAaJChDg+tKgEduOOowaePhXObR4MsOLltIok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 098/175] net: dsa: hellcreek: fix missing error handling in LED registration
+	Alex Hung <alex.hung@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 049/112] drm/amd/display: Increase DPCD read retries
 Date: Thu, 27 Nov 2025 15:45:51 +0100
-Message-ID: <20251127144046.538902311@linuxfoundation.org>
+Message-ID: <20251127144034.637323261@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
+commit 8612badc331bcab2068baefa69e1458085ed89e3 upstream.
 
-The LED setup routine registered both led_sync_good
-and led_is_gm devices without checking the return
-values of led_classdev_register(). If either registration
-failed, the function continued silently, leaving the
-driver in a partially-initialized state and leaking
-a registered LED classdev.
+[Why]
+Empirical measurement of some monitors that fail to read EDID while
+booting shows that the number of retries with a 30ms delay between
+tries is as high as 16.
 
-Add proper error handling
+[How]
+Increase number of retries to 20.
 
-Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
-Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4672
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ad1c59ad7cf74ec06e32fe2c330ac1e957222288)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-index bfe21f9f7dcd3..cb23bea9c21b8 100644
---- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-+++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-@@ -376,8 +376,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
- 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
- 
- 	/* Register both leds */
--	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
--	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
-+		goto out;
-+	}
-+
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
-+		led_classdev_unregister(&hellcreek->led_sync_good);
-+		goto out;
-+	}
- 
- 	ret = 0;
- 
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -1587,7 +1587,7 @@ static bool retrieve_link_cap(struct dc_
+ 	union edp_configuration_cap edp_config_cap;
+ 	union dp_downstream_port_present ds_port = { 0 };
+ 	enum dc_status status = DC_ERROR_UNEXPECTED;
+-	uint32_t read_dpcd_retry_cnt = 3;
++	uint32_t read_dpcd_retry_cnt = 20;
+ 	int i;
+ 	struct dp_sink_hw_fw_revision dp_hw_fw_revision;
+ 	const uint32_t post_oui_delay = 30; // 30ms
 
 
 
