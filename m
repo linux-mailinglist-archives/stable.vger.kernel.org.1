@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-197456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFB8C8F2B3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E37C8F049
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2B03BDF12
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C5A84EB0A9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06B928135D;
-	Thu, 27 Nov 2025 15:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EBA31281E;
+	Thu, 27 Nov 2025 14:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoBi01PT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byqvTWi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7833115A6;
-	Thu, 27 Nov 2025 15:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316CE28D830;
+	Thu, 27 Nov 2025 14:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255871; cv=none; b=T/5JsFuPeUalPQPNdPsPYMnGRnAxIrl+X99H4JTeOgiJ0kQa71Tk+A3EAmc7dkKqT9FyJ3rahLd12K7suZ1xzTbEAQ241wOIXuc/8SKnDpn51WaKopdDH+5JwDQjnJDPmDWzXDopErMeWP89U1gWweZYVM/i88kwDo7Qhzeouek=
+	t=1764255430; cv=none; b=c0rFitwokhye7TUHyi7vnWU4/NncqEM0PwCJFF9wtrMUOQvAuYF9ptjKAcKHjjMYQ7X60nNpMM4epfcgG5kEGDUaqcTm3WDAc+oS5OHMeX7jS6MK1fmDetl8uyhYzOVsx1paldhvMXwxcsad4Fxr+mykQtV04HwTlB1PHSvHKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255871; c=relaxed/simple;
-	bh=Zlhx6Zr58a3PkDtOZoVLjzwbX44Md/oJM1nqJaMd3Kk=;
+	s=arc-20240116; t=1764255430; c=relaxed/simple;
+	bh=tPkKX9z1cq2AQEg1ReKGd/zF7x9NDu1z43zAFlIEM34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1tCafx915zDyFdUI80geKVQgCi2Z4Q6GwYc2KKDU5cu7odppmvxEW9sl9jXrpRUFMAGkSHKXrcmbV+lX+14YA69jvGV1cj9l7SGwSp4K/5NY1c+vi1je9xJ81tf6CiloFu/xRh7hDdbxA2aFG33UK3rGs5hKYPjLc0IPLtFPls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoBi01PT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA0EC4CEF8;
-	Thu, 27 Nov 2025 15:04:30 +0000 (UTC)
+	 MIME-Version; b=PhBTjpqte6ZkL+rifUTKMSjqT1lFpRlxMxIXPuO8XxZjgAiSP3SHstHsWTisJ6Ux6R0XctUwUrSWnj2bcfOZXDWzOOqYBQsCRNWVzPrSXxpVt1LXIDZMCjLmcJ5gBOb1yuYPvXHavlkcHOMyylvxLVGJk8rHuLMxqW/mRYfPve4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byqvTWi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29FDC4CEF8;
+	Thu, 27 Nov 2025 14:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255871;
-	bh=Zlhx6Zr58a3PkDtOZoVLjzwbX44Md/oJM1nqJaMd3Kk=;
+	s=korg; t=1764255430;
+	bh=tPkKX9z1cq2AQEg1ReKGd/zF7x9NDu1z43zAFlIEM34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoBi01PTRYcGskg56JS0S3/sf2mZuHBdn7C225zobJ9qwWOjZppI/Elm8Ajt8vhaJ
-	 H3fAcK/IRfLfVynE0zXJ5NuVKJ08H1Cnq73E1qTcTFe+6FnatamEthPPnGO5g6g+xf
-	 KwNWItn4G/LmbHIY3gt0NTnR3gFULHhXktGsPY6Y=
+	b=byqvTWi+F8C4C5BlUfP7Jbr6AiaKIrYS/I1/BUUCpT54jkXRw1+5HXjBwMsi4+pCv
+	 UsSHmVJpjyEsgiTtG9WT4zrxTzKIhm0lOeFu+SDZGl6YsnzI37cPx98Ep9DdnAZtNt
+	 CfkGSAxH5uuLQjZaAuCbk4mSGr5/BGWFaVwuMhEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Koen Koning <koen.koning@intel.com>,
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 144/175] x86/microcode/AMD: Limit Entrysign signature checking to known generations
-Date: Thu, 27 Nov 2025 15:46:37 +0100
-Message-ID: <20251127144048.215615738@linuxfoundation.org>
+Subject: [PATCH 6.12 096/112] drm/xe: Prevent BIT() overflow when handling invalid prefetch region
+Date: Thu, 27 Nov 2025 15:46:38 +0100
+Message-ID: <20251127144036.354973519@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 8a9fb5129e8e64d24543ebc70de941a2d77a9e77 ]
+[ Upstream commit d52dea485cd3c98cfeeb474cf66cf95df2ab142f ]
 
-Limit Entrysign sha256 signature checking to CPUs in the range Zen1-Zen5.
+If user provides a large value (such as 0x80) for parameter
+prefetch_mem_region_instance in vm_bind ioctl, it will cause
+BIT(prefetch_region) overflow as below:
+"
+ ------------[ cut here ]------------
+ UBSAN: shift-out-of-bounds in drivers/gpu/drm/xe/xe_vm.c:3414:7
+ shift exponent 128 is too large for 64-bit type 'long unsigned int'
+ CPU: 8 UID: 0 PID: 53120 Comm: xe_exec_system_ Tainted: G        W           6.18.0-rc1-lgci-xe-kernel+ #200 PREEMPT(voluntary)
+ Tainted: [W]=WARN
+ Hardware name: ASUS System Product Name/PRIME Z790-P WIFI, BIOS 0812 02/24/2023
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0xa0/0xc0
+  dump_stack+0x10/0x20
+  ubsan_epilogue+0x9/0x40
+  __ubsan_handle_shift_out_of_bounds+0x10e/0x170
+  ? mutex_unlock+0x12/0x20
+  xe_vm_bind_ioctl.cold+0x20/0x3c [xe]
+ ...
+"
+Fix it by validating prefetch_region before the BIT() usage.
 
-X86_BUG cannot be used here because the loading on the BSP happens way
-too early, before the cpufeatures machinery has been set up.
+v2: Add Closes and Cc stable kernels. (Matt)
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/all/20251023124629.5385-1-bp@kernel.org
+Reported-by: Koen Koning <koen.koning@intel.com>
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6478
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20251112181005.2120521-2-shuicheng.lin@intel.com
+(cherry picked from commit 8f565bdd14eec5611cc041dba4650e42ccdf71d9)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit d52dea485cd3c98cfeeb474cf66cf95df2ab142f)
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index c5363e6563798..ff40fe7ef58eb 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -236,13 +236,31 @@ static bool need_sha_check(u32 cur_rev)
- 	return true;
- }
- 
-+static bool cpu_has_entrysign(void)
-+{
-+	unsigned int fam   = x86_family(bsp_cpuid_1_eax);
-+	unsigned int model = x86_model(bsp_cpuid_1_eax);
-+
-+	if (fam == 0x17 || fam == 0x19)
-+		return true;
-+
-+	if (fam == 0x1a) {
-+		if (model <= 0x2f ||
-+		    (0x40 <= model && model <= 0x4f) ||
-+		    (0x60 <= model && model <= 0x6f))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsigned int len)
- {
- 	struct patch_digest *pd = NULL;
- 	u8 digest[SHA256_DIGEST_SIZE];
- 	int i;
- 
--	if (x86_family(bsp_cpuid_1_eax) < 0x17)
-+	if (!cpu_has_entrysign())
- 		return true;
- 
- 	if (!need_sha_check(cur_rev))
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index fc5f0e1351932..30625ce691fa2 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2903,8 +2903,8 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe,
+ 				 op == DRM_XE_VM_BIND_OP_PREFETCH) ||
+ 		    XE_IOCTL_DBG(xe, prefetch_region &&
+ 				 op != DRM_XE_VM_BIND_OP_PREFETCH) ||
+-		    XE_IOCTL_DBG(xe, !(BIT(prefetch_region) &
+-				       xe->info.mem_region_mask)) ||
++		    XE_IOCTL_DBG(xe, prefetch_region >= (sizeof(xe->info.mem_region_mask) * 8) ||
++				 !(BIT(prefetch_region) & xe->info.mem_region_mask)) ||
+ 		    XE_IOCTL_DBG(xe, obj &&
+ 				 op == DRM_XE_VM_BIND_OP_UNMAP)) {
+ 			err = -EINVAL;
 -- 
 2.51.0
 
