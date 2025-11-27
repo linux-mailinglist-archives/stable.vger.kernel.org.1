@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68428C8F0E8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019A4C8F271
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494DB3B15DC
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 77B134EE68D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB132BF40;
-	Thu, 27 Nov 2025 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E0B32AAC4;
+	Thu, 27 Nov 2025 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLpOR8BE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3+plpax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA1B28D8E8;
-	Thu, 27 Nov 2025 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFA224E4A8;
+	Thu, 27 Nov 2025 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255462; cv=none; b=cfC/FS1R6/xUtRE+lkna+A12e0Jb472wz08DXuShMlE06cUB1m1vSh0vjN/VNphRublITUmhuQp+ZeS/AywEjvrmN3kYpPSJV4XmAKqWnujr4W/Bmbgvl7WpqNXV+4Pw6ROwCcn5FW6CGT1p19UpPhhwPLnqN/j4G/F5zFAlTqI=
+	t=1764255883; cv=none; b=EXeCHatrLcratldE2sv0/A+6ZpyPTTz7Rnh+dlaSCC/NpmHxxzntmi3wf6qq4Fb40BbHsMwhfh7dD0LOhU+/KK2pu+u8JiE6T3MonCNRJtCAB3o3N1SDBBhUceCoMPJ4mENJb8SID5B0LRFE2CmrGlGroAT56xQDD6iiDfHTkI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255462; c=relaxed/simple;
-	bh=dmgu0S/J6K4AhsOSoOHfUsl1kvTYizcn8Uyv1gYyjmg=;
+	s=arc-20240116; t=1764255883; c=relaxed/simple;
+	bh=tcgHKSFZZt2szZh+6BzUc/jySu5YNvizMi36E87uPcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e300qV9YEuPaPXvrREL2aQe+SWs9F31tSyeh2Ilhqn3gSeF6VEWqrbakcDK51BieEqK3NNEfZoTUfZsiz5IQvRYKdnA7tGz2sjU91NuE3l2qoP2LKC32gZPFmwqN02uu2/pSY0kUV/bUYpYVEr6tcsrfvoqb6AIU2cPjKCp9jV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLpOR8BE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB861C4CEF8;
-	Thu, 27 Nov 2025 14:57:41 +0000 (UTC)
+	 MIME-Version; b=kk8UM7Xgg10oGtmEyErQqQH/oC0jgbrXAD6LIfae6MPTleXgl+An1k3gxEa1d1GMaL0+cG3fOk09CclZjuRo+D2F1XWybwgR6BzCAupgSdOoFECxLl1KNXfww8Y6+aIp5apdFUTmXC0GjSsqCh1WEfwVRy/+6e1sq3yfKusID7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3+plpax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CECC4CEF8;
+	Thu, 27 Nov 2025 15:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255462;
-	bh=dmgu0S/J6K4AhsOSoOHfUsl1kvTYizcn8Uyv1gYyjmg=;
+	s=korg; t=1764255883;
+	bh=tcgHKSFZZt2szZh+6BzUc/jySu5YNvizMi36E87uPcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLpOR8BEb5QBfck42wf50zP+K+CV75zR2iHjwwg6BzTVLAqp9ThYWo18Cfz4D8EZT
-	 cIsi4qVXuAH4GOBtCBk6Mrcmk/UOmqcdovwlpUbkgmThm/OdRZm40uWwiDFoAuwPFm
-	 BauKWTGth9OkPB1v+hNW9Gw+dmxrrQ/0wfoQhGUQ=
+	b=r3+plpax9SVOSgZGtOebpEoZRdxgETt47hZOjPuefvoZUAk1yLHPuaQrC1uKUWVrq
+	 ZPZGw1M4f61Jj2hdoWFVGxFeebgDDdXYeLloot3hkIdRmsd7Qd+cIPT15Aw3iD30r+
+	 es83tsbw90YN4AsTbIM6rAlRyu7mZ5v8Utz7Rvh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Nishanth Menon <nm@ti.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/112] net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
+Subject: [PATCH 6.17 148/175] net: tls: Change async resync helpers argument
 Date: Thu, 27 Nov 2025 15:46:41 +0100
-Message-ID: <20251127144036.465067633@linuxfoundation.org>
+Message-ID: <20251127144048.359577088@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,169 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 90a88306eb874fe4bbdd860e6c9787f5bbc588b5 ]
+[ Upstream commit 34892cfec0c2d96787c4be7bda0d5f18d7dacf85 ]
 
-Make knav_dma_open_channel consistently return NULL on error instead
-of ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h
-returns NULL when the driver is disabled, but the driver
-implementation does not even return NULL or ERR_PTR on failure,
-causing inconsistency in the users. This results in a crash in
-netcp_free_navigator_resources as followed (trimmed):
+Update tls_offload_rx_resync_async_request_start() and
+tls_offload_rx_resync_async_request_end() to get a struct
+tls_offload_resync_async parameter directly, rather than
+extracting it from struct sock.
 
-Unhandled fault: alignment exception (0x221) at 0xfffffff2
-[fffffff2] *pgd=80000800207003, *pmd=82ffda003, *pte=00000000
-Internal error: : 221 [#1] SMP ARM
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc7 #1 NONE
-Hardware name: Keystone
-PC is at knav_dma_close_channel+0x30/0x19c
-LR is at netcp_free_navigator_resources+0x2c/0x28c
+This change aligns the function signatures with the upcoming
+tls_offload_rx_resync_async_request_cancel() helper, which
+will be introduced in a subsequent patch.
 
-[... TRIM...]
-
-Call trace:
- knav_dma_close_channel from netcp_free_navigator_resources+0x2c/0x28c
- netcp_free_navigator_resources from netcp_ndo_open+0x430/0x46c
- netcp_ndo_open from __dev_open+0x114/0x29c
- __dev_open from __dev_change_flags+0x190/0x208
- __dev_change_flags from netif_change_flags+0x1c/0x58
- netif_change_flags from dev_change_flags+0x38/0xa0
- dev_change_flags from ip_auto_config+0x2c4/0x11f0
- ip_auto_config from do_one_initcall+0x58/0x200
- do_one_initcall from kernel_init_freeable+0x1cc/0x238
- kernel_init_freeable from kernel_init+0x1c/0x12c
- kernel_init from ret_from_fork+0x14/0x38
-[... TRIM...]
-
-Standardize the error handling by making the function return NULL on
-all error conditions. The API is used in just the netcp_core.c so the
-impact is limited.
-
-Note, this change, in effect reverts commit 5b6cb43b4d62 ("net:
-ethernet: ti: netcp_core: return error while dma channel open issue"),
-but provides a less error prone implementation.
-
-Suggested-by: Simon Horman <horms@kernel.org>
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251103162811.3730055-1-nm@ti.com
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761508983-937977-2-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/netcp_core.c | 10 +++++-----
- drivers/soc/ti/knav_dma.c            | 14 +++++++-------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ktls_rx.c     |  9 ++++++--
+ include/net/tls.h                             | 21 +++++++------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
-index 11b90e1da0c63..d07dcffc2517e 100644
---- a/drivers/net/ethernet/ti/netcp_core.c
-+++ b/drivers/net/ethernet/ti/netcp_core.c
-@@ -1338,10 +1338,10 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+index 65ccb33edafb7..c0089c704c0cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+@@ -425,12 +425,14 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
+ {
+ 	struct mlx5e_ktls_rx_resync_buf *buf = wi->tls_get_params.buf;
+ 	struct mlx5e_ktls_offload_context_rx *priv_rx;
++	struct tls_offload_context_rx *rx_ctx;
+ 	u8 tracker_state, auth_state, *ctx;
+ 	struct device *dev;
+ 	u32 hw_seq;
  
- 	tx_pipe->dma_channel = knav_dma_open_channel(dev,
- 				tx_pipe->dma_chan_name, &config);
--	if (IS_ERR(tx_pipe->dma_channel)) {
-+	if (!tx_pipe->dma_channel) {
- 		dev_err(dev, "failed opening tx chan(%s)\n",
- 			tx_pipe->dma_chan_name);
--		ret = PTR_ERR(tx_pipe->dma_channel);
-+		ret = -EINVAL;
- 		goto err;
+ 	priv_rx = buf->priv_rx;
+ 	dev = mlx5_core_dma_dev(sq->channel->mdev);
++	rx_ctx = tls_offload_ctx_rx(tls_get_ctx(priv_rx->sk));
+ 	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags)))
+ 		goto out;
+ 
+@@ -447,7 +449,8 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
  	}
  
-@@ -1359,7 +1359,7 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
- 	return 0;
+ 	hw_seq = MLX5_GET(tls_progress_params, ctx, hw_resync_tcp_sn);
+-	tls_offload_rx_resync_async_request_end(priv_rx->sk, cpu_to_be32(hw_seq));
++	tls_offload_rx_resync_async_request_end(rx_ctx->resync_async,
++						cpu_to_be32(hw_seq));
+ 	priv_rx->rq_stats->tls_resync_req_end++;
+ out:
+ 	mlx5e_ktls_priv_rx_put(priv_rx);
+@@ -482,6 +485,7 @@ static bool resync_queue_get_psv(struct sock *sk)
+ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
+ {
+ 	struct ethhdr *eth = (struct ethhdr *)(skb->data);
++	struct tls_offload_resync_async *resync_async;
+ 	struct net_device *netdev = rq->netdev;
+ 	struct net *net = dev_net(netdev);
+ 	struct sock *sk = NULL;
+@@ -528,7 +532,8 @@ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
  
- err:
--	if (!IS_ERR_OR_NULL(tx_pipe->dma_channel))
-+	if (tx_pipe->dma_channel)
- 		knav_dma_close_channel(tx_pipe->dma_channel);
- 	tx_pipe->dma_channel = NULL;
- 	return ret;
-@@ -1678,10 +1678,10 @@ static int netcp_setup_navigator_resources(struct net_device *ndev)
+ 	seq = th->seq;
+ 	datalen = skb->len - depth;
+-	tls_offload_rx_resync_async_request_start(sk, seq, datalen);
++	resync_async = tls_offload_ctx_rx(tls_get_ctx(sk))->resync_async;
++	tls_offload_rx_resync_async_request_start(resync_async, seq, datalen);
+ 	rq->stats->tls_resync_req_start++;
  
- 	netcp->rx_channel = knav_dma_open_channel(netcp->netcp_device->device,
- 					netcp->dma_chan_name, &config);
--	if (IS_ERR(netcp->rx_channel)) {
-+	if (!netcp->rx_channel) {
- 		dev_err(netcp->ndev_dev, "failed opening rx chan(%s\n",
- 			netcp->dma_chan_name);
--		ret = PTR_ERR(netcp->rx_channel);
-+		ret = -EINVAL;
- 		goto fail;
- 	}
+ unref:
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 857340338b694..b90f3b675c3c4 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -451,25 +451,20 @@ static inline void tls_offload_rx_resync_request(struct sock *sk, __be32 seq)
  
-diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
-index fb0746d8caad4..c9cf8a90c6d49 100644
---- a/drivers/soc/ti/knav_dma.c
-+++ b/drivers/soc/ti/knav_dma.c
-@@ -402,7 +402,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
-  * @name:	slave channel name
-  * @config:	dma configuration parameters
-  *
-- * Returns pointer to appropriate DMA channel on success or error.
-+ * Return: Pointer to appropriate DMA channel on success or NULL on error.
-  */
- void *knav_dma_open_channel(struct device *dev, const char *name,
- 					struct knav_dma_cfg *config)
-@@ -414,13 +414,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ /* Log all TLS record header TCP sequences in [seq, seq+len] */
+ static inline void
+-tls_offload_rx_resync_async_request_start(struct sock *sk, __be32 seq, u16 len)
++tls_offload_rx_resync_async_request_start(struct tls_offload_resync_async *resync_async,
++					  __be32 seq, u16 len)
+ {
+-	struct tls_context *tls_ctx = tls_get_ctx(sk);
+-	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
+-
+-	atomic64_set(&rx_ctx->resync_async->req, ((u64)ntohl(seq) << 32) |
++	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) |
+ 		     ((u64)len << 16) | RESYNC_REQ | RESYNC_REQ_ASYNC);
+-	rx_ctx->resync_async->loglen = 0;
+-	rx_ctx->resync_async->rcd_delta = 0;
++	resync_async->loglen = 0;
++	resync_async->rcd_delta = 0;
+ }
  
- 	if (!kdev) {
- 		pr_err("keystone-navigator-dma driver not registered\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
+ static inline void
+-tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
++tls_offload_rx_resync_async_request_end(struct tls_offload_resync_async *resync_async,
++					__be32 seq)
+ {
+-	struct tls_context *tls_ctx = tls_get_ctx(sk);
+-	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
+-
+-	atomic64_set(&rx_ctx->resync_async->req,
+-		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
++	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ }
  
- 	chan_num = of_channel_match_helper(dev->of_node, name, &instance);
- 	if (chan_num < 0) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", name);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	dev_dbg(kdev->dev, "initializing %s channel %d from DMA %s\n",
-@@ -431,7 +431,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (config->direction != DMA_MEM_TO_DEV &&
- 	    config->direction != DMA_DEV_TO_MEM) {
- 		dev_err(kdev->dev, "bad direction\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma instance */
-@@ -443,7 +443,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	}
- 	if (!dma) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma channel from dma instance */
-@@ -463,14 +463,14 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (!chan) {
- 		dev_err(kdev->dev, "channel %d is not in DMA %s\n",
- 				chan_num, instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	if (atomic_read(&chan->ref_count) >= 1) {
- 		if (!check_config(chan, config)) {
- 			dev_err(kdev->dev, "channel %d config miss-match\n",
- 				chan_num);
--			return (void *)-EINVAL;
-+			return NULL;
- 		}
- 	}
- 
+ static inline void
 -- 
 2.51.0
 
