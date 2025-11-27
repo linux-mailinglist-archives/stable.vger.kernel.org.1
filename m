@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70097C8F29B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38111C8EFEF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 804A63BFBBA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 178F14EF984
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458F3332EA0;
-	Thu, 27 Nov 2025 15:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E71633030A;
+	Thu, 27 Nov 2025 14:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P22PBh2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+H1CTpD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BEB2882A7;
-	Thu, 27 Nov 2025 15:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A5334366;
+	Thu, 27 Nov 2025 14:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255840; cv=none; b=fJVqP5XpvQSRKyx+QjODcD2VSKerctO5RpVuITxh1GdNSDiZEVLOZqu2Vj7MLSzjLMTcjp/4EketO6wZiBw2HFfSXaoKRTUT/MTKACJLBpjD6nwd7UDT1VN4cxi6I33knQphhcKx0q7Bb+FTsqoh0BtfKFDZUFdRotL7lgErYmY=
+	t=1764255315; cv=none; b=qMuhNffui5la7Qg9vnV0n9jbdsGXCvcP0vlFmf15LdwWxEbCg76SRXuuCapEIXee08LWjv6IucS5Fxa5hyMiRPeqbBhQ/bi9rZHn22FZ6iyI3u6c2zkLBrKHVP/jec8qG0nXaaO3CaP0cDvy0h6BcJ8wHrXCsrKbWvRcrgzo/rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255840; c=relaxed/simple;
-	bh=MEwCjPoQwn2pPQr4WQQB1qiteBg+Wcp4FxHPjl6SMIU=;
+	s=arc-20240116; t=1764255315; c=relaxed/simple;
+	bh=sCR0I3HWYvW3rSMgsGNqK9N5euQTGj8Gljz+KO4fhJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LE5YuWNEmuV7VjlXJzDrl6tPnpTyHhzuDxRnjcp7KB3eQQLF2ZB6TAaWfGVqas8L+CRXITJnLgmgcgupHk05JK2s2MjbIWzrmE8sI3OIrorrYboRHpSj0/EzcXlbDi4DBaalC9/5OOgRxSKmSjkD/1MygQQ6183ldGr2PPQF2oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P22PBh2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72167C4CEF8;
-	Thu, 27 Nov 2025 15:03:59 +0000 (UTC)
+	 MIME-Version; b=kGcqvwxgtXtPnhZyrB6FiAT+3d+rtj8jMJNewS0rgExHjGj11WvSDW82kfyDfw6LtermGXnLwhsltIkACXdMA5f40DZq7ZQifsIdN3BCxMzPniXm2R4BPry+BdiPpKFnER/hwM+nhmsiBrK6di/oZuQI3d0LErbqTxsCp5N+KMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+H1CTpD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB2CC4CEF8;
+	Thu, 27 Nov 2025 14:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255839;
-	bh=MEwCjPoQwn2pPQr4WQQB1qiteBg+Wcp4FxHPjl6SMIU=;
+	s=korg; t=1764255315;
+	bh=sCR0I3HWYvW3rSMgsGNqK9N5euQTGj8Gljz+KO4fhJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P22PBh2TceAE1b99BoIu7YpU5lnf2v7nVV0S7hQSHHl4G6H5ORFLMJZZERbBRvk8f
-	 udvgINDOZoLAyWRkuUgq01DZxwpondE3CPCMssdOD+Q+MkL7Q5//JTk7bObR1TKhQu
-	 GhBO1ujpvJfoYghvw9GOrCeVLQ8b14KxtzgpjP1k=
+	b=I+H1CTpDwfhRn/3Mze0rO1Wsmhj+HIzu1RDIRVn+MMYaK82eloxOWk9bom8zelLwh
+	 XEbyAORFi8KSz+/ke2pTeA2pY/c6DiZfOGW6TKdU2pfEGst80zjZRSGKvBOcAqVr5J
+	 3OyVN7QdOu967mRUkEqkE+cSHBH6toO8NrcFkd4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 131/175] vsock: Ignore signal/timeout on connect() if already established
+Subject: [PATCH 6.12 082/112] vsock: Ignore signal/timeout on connect() if already established
 Date: Thu, 27 Nov 2025 15:46:24 +0100
-Message-ID: <20251127144047.743000047@linuxfoundation.org>
+Message-ID: <20251127144035.843386660@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -107,10 +107,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 31 insertions(+), 9 deletions(-)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 21758f59edc13..67bd6779448a5 100644
+index 68a9d4214584f..621be9be64f67 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -1666,18 +1666,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+@@ -1616,18 +1616,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
  		timeout = schedule_timeout(timeout);
  		lock_sock(sk);
  
