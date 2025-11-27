@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-197483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE6EC8F1B7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD982C8F307
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C458D356CAB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25B0F3B1BF0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88B932AAC4;
-	Thu, 27 Nov 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2728D335091;
+	Thu, 27 Nov 2025 15:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u57MX+BY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ci5bJW4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7453928135D;
-	Thu, 27 Nov 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE4335069;
+	Thu, 27 Nov 2025 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255946; cv=none; b=rdP3rxVPghVvsNPIZcRrk0fGvLAdlHLG/BJ6RzSyZChda4eZEgCZ0uOSGwq8JW4wKidOE54WFiQ1PetnpCZNQJuYnUvXfj6cpk7TrNBZs8oY/lSeLfjX/qSRagyOZOrhphpsBEzLdsLi3sHb9FNvwP1ftCE366NyRPAaOwTFuww=
+	t=1764255989; cv=none; b=Znu0oY5lDMqkJ2BSK+X7mbCQ4uBU4LsJqYpewMK2ucPb2Mck1/ZBZ1BQXTRV+aEIBpyb2/ak10pqye2zurEPZdXqOzCMjQS5Ti/4VhCbo1mZKy+De5N/TXS+oUbcMrFpc5Zu2LTuh73jH3Aag6tHrOoqC0kOHctxO0MMmD+RZfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255946; c=relaxed/simple;
-	bh=zSW6i8GQvJVec330s4nrHUvtKnf52843w3UR/tYFKhs=;
+	s=arc-20240116; t=1764255989; c=relaxed/simple;
+	bh=TlQRAsSld7liGVBkDb+G4ZAg970JCnmYiqwkTbwq+5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jngKYC6LmQhtGn3ABu1z1o2nC8vT+dKrYeG1SdiFiFmN9XtsCreJZPjTq5Huy5gT03zQjgEjtQ7/MR/jEzqy5xyHSsVwqKC5FbsmLyE6u13yQPdrfAfDGLiObhwWOL9vtX1z/onaD6MzY816xmENq3AibxF0mYS7WfwucysI4mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u57MX+BY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED357C4CEF8;
-	Thu, 27 Nov 2025 15:05:45 +0000 (UTC)
+	 MIME-Version; b=IjJA8WYjsiKTZckx4Mv5HoeziQ0nYSZiEGGhGQ6FCUtbn2DOqd8pJsHi8HMk//rSwBgBaaUw7ziwGzxD5gsySpjJX40xPX8yLD2tpbHogZzStXq4KoxwyVXntn4jBfxABlxJyg2Q886uycEXBA73qThDgu/7n5jaZfd3cLUiYrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ci5bJW4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569E1C113D0;
+	Thu, 27 Nov 2025 15:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255946;
-	bh=zSW6i8GQvJVec330s4nrHUvtKnf52843w3UR/tYFKhs=;
+	s=korg; t=1764255989;
+	bh=TlQRAsSld7liGVBkDb+G4ZAg970JCnmYiqwkTbwq+5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u57MX+BYE9dl8wsDQ60/4O426K0rnYY5rVXgh+OwpgJcZggTKdlPI5YZTZKknU3cg
-	 ePHchDgpBvfO0yLxQm3fneTZ+jwWZtMCrpfQ76FsT6mfMwwsN/7Hv7+7mzBkkLz6bp
-	 Y4toYD4/eOARfWC41nhjDaT3kXQOtscOnmvx2XVs=
+	b=ci5bJW4+jezbmXL7Sc0BNLV5r4mQ/eR+0ip//R62UK+Ys9odX24l/Z7mXqpLaaojR
+	 vFpQxz/VDfl4/UvvrdztzBMRDxQF0iSM1AFs17fPw7C5oRTEYNoA5yapbcdxawZ0aN
+	 czhuanu5cM9LPHgt7ffO+9/MI5rquBvw8NeSLO5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Edoardo Canepa <edoardo.canepa@canonical.com>,
+	Po-Hsu Lin <po-hsu.lin@canonical.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 136/175] bcma: dont register devices disabled in OF
+Subject: [PATCH 6.12 087/112] selftests: net: use BASH for bareudp testing
 Date: Thu, 27 Nov 2025 15:46:29 +0100
-Message-ID: <20251127144047.925670756@linuxfoundation.org>
+Message-ID: <20251127144036.027173199@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Po-Hsu Lin <po-hsu.lin@canonical.com>
 
-[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
+[ Upstream commit 9311e9540a8b406d9f028aa87fb072a3819d4c82 ]
 
-Some bus devices can be marked as disabled for specific SoCs or models.
-Those should not be registered to avoid probing them.
+In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
+BASH script at the very beginning.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+But on some operating systems like Ubuntu, /bin/sh is actually pointed to
+DASH, thus it will try to run BASH commands with DASH and consequently
+leads to syntax issues:
+  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
+  # ./bareudp.sh: 5: ./lib.sh: source: not found
+  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
+
+Fix this by explicitly using BASH for bareudp.sh. This fixes test
+execution failures on systems where /bin/sh is not BASH.
+
+Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+Link: https://bugs.launchpad.net/bugs/2129812
+Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20251027095710.2036108-2-po-hsu.lin@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bcma/main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/net/bareudp.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 6ecfc821cf833..72f045e6ed513 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 	int err;
+diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
+index f366cadbc5e86..ff4308b48e65d 100755
+--- a/tools/testing/selftests/net/bareudp.sh
++++ b/tools/testing/selftests/net/bareudp.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- 	list_for_each_entry(core, &bus->cores, list) {
-+		struct device_node *np;
-+
- 		/* We support that core ourselves */
- 		switch (core->id.id) {
- 		case BCMA_CORE_4706_CHIPCOMMON:
-@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 		if (bcma_is_core_needed_early(core->id.id))
- 			continue;
- 
-+		np = core->dev.of_node;
-+		if (np && !of_device_is_available(np))
-+			continue;
-+
- 		/* Only first GMAC core on BCM4706 is connected and working */
- 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
- 		    core->core_unit > 0)
+ # Test various bareudp tunnel configurations.
 -- 
 2.51.0
 
