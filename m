@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-197369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30604C8F16C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCCAC8EF3D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97D134EF88A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C970B3B850C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27112882A7;
-	Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDDB2F8BC9;
+	Thu, 27 Nov 2025 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0fxTWN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBlaKb43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12327FD51;
-	Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569F528C84D;
+	Thu, 27 Nov 2025 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255621; cv=none; b=DVfxNN8pdXDG4K621pr00r/ZXRy79aZgxFSexh/CMS9brTG1t+sFO3526AqfAUrDXgSVIOrxU4opnbn3hUB3LiHQ+EC9ZDigU61w03BmXSBTermxhCoDDrQfNE32VS/TFwldLZcL0TIbIad4EkBPEGSipdfR7osCocw3bx/fVMs=
+	t=1764255155; cv=none; b=JhUZdvjPkAz+9twKuGJg7h0kMFkYNXvxPjl6zWTDQRUvNnXkzR3GX5SwMPTYRsg7/Wv32bjJ7aJDQUpsv5L6rNtEklXttZt9UOOMLia+CFpD1U2tNuUPdrKO5FHswhRFYjt3GM+xkKY77cEToDJcyRZBESoaMu29uhTtZz+Qa/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255621; c=relaxed/simple;
-	bh=77cFdQD+akn+gz0B5y1DtC5bPlvB8mmcH13IY7dT9dc=;
+	s=arc-20240116; t=1764255155; c=relaxed/simple;
+	bh=dLTtjFAAtg2oeaK6fIVsmM19OTQEmqvN6m3QeUku7Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nw+HWc0pbR464L49etEJiz25mPmQ2CSR8ochhW9RfQPAiOs9XSMQzoTS0eiPFfeIhTkzAZysMtSuT3Kqgt/KuuNWrwppaXwavisyo2hSQzU9d1AOecSfkuz9IRAJ/GGJlQLgCDyJcd2ZKVu2tPVJNfLuxXU8rIZhjJ8g0xV32HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0fxTWN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D5C4CEF8;
-	Thu, 27 Nov 2025 15:00:20 +0000 (UTC)
+	 MIME-Version; b=Ex0DH9tafirn/ACbMLCzrdF2qk5O1sCQEu8uQxbr9HCP96iUBNUJhEzFwV4RBxQXd9rCokQqZuQGQPFa/GsndEDxbJLI9AYzJyEZGy67TBR2P3MwvUb4vxJwtf3Xwe/6NxhTNq7ApJrvRXjWsYry2/cLXKt+uTR4caUFDmGocD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBlaKb43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E3CC4CEF8;
+	Thu, 27 Nov 2025 14:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255621;
-	bh=77cFdQD+akn+gz0B5y1DtC5bPlvB8mmcH13IY7dT9dc=;
+	s=korg; t=1764255155;
+	bh=dLTtjFAAtg2oeaK6fIVsmM19OTQEmqvN6m3QeUku7Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0fxTWN4gdDX+Zppk6lrdgbdkLCxjjXjODV6db69iAinHielfUokwCsiVCbYA9AT9
-	 xT18jgEg3B9UsTuHkbuOZ/9wYYxb1tGy4hUZJFWvbukY1a7QnwT4bNVXLJr5H0fNqs
-	 zDu9Fe7GI+a9ruNy1+j1iIbCVuhu3dNfH5RWY2EA=
+	b=zBlaKb43QVXyOjHjk4pOL906FLQ4LC9P3g7/jiewooziK2a4obUNyvUVV69GHWWM0
+	 KdB9OlnjoKYrwlY4niPWVqdeLGEGn/W+0JTII/USyFfPJAEIJW48ZZnPEiDsIQUO58
+	 NGpWUmKmiA0eLaTQreR0TNnz2LUy/wFe7tS4iXpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.17 055/175] platform/x86: alienware-wmi-wmax: Add support for the whole "X" family
+	Mykola Kvach <xakep.amatop@gmail.com>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 006/112] arm64: dts: rockchip: fix PCIe 3.3V regulator voltage on orangepi-5
 Date: Thu, 27 Nov 2025 15:45:08 +0100
-Message-ID: <20251127144044.974918251@linuxfoundation.org>
+Message-ID: <20251127144032.948457947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Mykola Kvach <xakep.amatop@gmail.com>
 
-commit 21ebfff1cf4727bc325c89b94ed93741f870744f upstream.
+commit b5414520793e68d266fdd97a84989d9831156aad upstream.
 
-Add support for the whole "Alienware X" laptop family.
+The vcc3v3_pcie20 fixed regulator powers the PCIe device-side 3.3V rail
+for pcie2x1l2 via vpcie3v3-supply. The DTS mistakenly set its
+regulator-min/max-microvolt to 1800000 (1.8 V). Correct both to 3300000
+(3.3 V) to match the rail name, the PCIe/M.2 power requirement, and the
+actual hardware wiring on Orange Pi 5.
 
+Fixes: b6bc755d806e ("arm64: dts: rockchip: Add Orange Pi 5")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://patch.msgid.link/20251103-family-supp-v1-4-a241075d1787@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Mykola Kvach <xakep.amatop@gmail.com>
+Reviewed-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://patch.msgid.link/cf6e08dfdfbf1c540685d12388baab1326f95d2c.1762165324.git.xakep.amatop@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/alienware-wmi-wmax.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-+++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -154,26 +154,18 @@ static const struct dmi_system_id awcc_d
- 		.driver_data = &generic_quirks,
- 	},
- 	{
--		.ident = "Alienware x15 R1",
-+		.ident = "Alienware x15",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R1"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15"),
- 		},
- 		.driver_data = &generic_quirks,
- 	},
- 	{
--		.ident = "Alienware x15 R2",
-+		.ident = "Alienware x17",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R2"),
--		},
--		.driver_data = &generic_quirks,
--	},
--	{
--		.ident = "Alienware x17 R2",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x17 R2"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x17"),
- 		},
- 		.driver_data = &generic_quirks,
- 	},
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+@@ -85,8 +85,8 @@
+ 		gpios = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
+ 		regulator-name = "vcc3v3_pcie20";
+ 		regulator-boot-on;
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
+ 		startup-delay-us = <50000>;
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
 
 
 
