@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652EBC8EEF8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3B6C8F1C6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC86C3A313D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DCDC4F0299
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD11299943;
-	Thu, 27 Nov 2025 14:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FCF284B58;
+	Thu, 27 Nov 2025 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKfunen6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igsK2cIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE7028CF42;
-	Thu, 27 Nov 2025 14:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D67260585;
+	Thu, 27 Nov 2025 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255114; cv=none; b=l1PjK5pFs0aE1+ocISVuhQXYRbgRBQOLoY0naa8mU0SkjHLQ0VtZ/+lX8rPfljYalzGw7f5tqmXZdTtdWjGg9xD61Sui6jO/zkmVAFrDFv9xiKE22ciOKUVgeLZoSM3y8n5HD0rowaoe4URv07y2qYeBeYGtBphNVrvIyIvIB/I=
+	t=1764255719; cv=none; b=pJUAOJNqJ7qLJuXQO2iON4oFB8gH5pL22LqVVJovKTKXv0NjEK35Th2VkGGcJSHYo939u6zC9Fh+RprPvCL7Lo4pZ/QwwK7HG97NnRiFdT7FWR4WUxOei3myQb5eMkLajwYYBaJmknOIyVqu6mFsITFOr8T3NqU7eUk2d4WZL/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255114; c=relaxed/simple;
-	bh=BrjBCzY51X+tBpg0WDP+5z38Pk2g319mErVlNiF6AvE=;
+	s=arc-20240116; t=1764255719; c=relaxed/simple;
+	bh=/KshH6ZuAoCLFHePeUV2LRV9+6euJHGygq2Z+VtXtrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K57gf1QrnngfnDCK0sfTVDCsiDaqKfVjd0CHwSlLYHyHUJyPh45siwbCbmPKXr9KOUQK8ZEw329tLOeVEorBsmpZUhTaKtHxeFAEarPb181J3TZVy9UqisSH4iBQTYUlccnDQdXPKcfcX5Go895tvie4epK8i2P6rLY6r2i7GWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKfunen6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5750FC4CEF8;
-	Thu, 27 Nov 2025 14:51:54 +0000 (UTC)
+	 MIME-Version; b=KyVQaMfy3ssC+3ZGao6Xci9TW0UzgfSM+pIW8rT79iONRLXe0TDMP3pRUG3fZHgmZ0IGyneToRjvIokbeVFnVNRwpDGIEE1Lwdlir4NpwS5OWENtDQLOdNdUq7mfGLa2EupHZZJTUbV7JajgRmlwdgd2RWvCY//cnNvS7vNB7Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igsK2cIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED45C4CEF8;
+	Thu, 27 Nov 2025 15:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255114;
-	bh=BrjBCzY51X+tBpg0WDP+5z38Pk2g319mErVlNiF6AvE=;
+	s=korg; t=1764255719;
+	bh=/KshH6ZuAoCLFHePeUV2LRV9+6euJHGygq2Z+VtXtrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKfunen6Fzfawq0my94ilTUFQlG/Coy/lsbW40PghqLzASGjExLxyXRCJt+ye4LCM
-	 7tntHD7mPPNF4Pi2la/aU309urM9HExs6qnI6U2W/Z6dX3UFJB4KbSnDknM9qMq/68
-	 vM6p3cCu9sITS/yhbQ+ad034IkamglZwbMw10Tx8=
+	b=igsK2cIHHCnYEeA855wBHzSpA27f48dec4t8xNEcszitpi58E2uCnHq/XLQmq25+L
+	 lAhnTdElRDROsbiF2aSdFhvIMy2LTQ4JtrEk4F9FYgEs/GZeQZu85r4EXriBwChfOz
+	 0yDMVo9d6kC2B4wGJvtymEvoJN1YZgzWN+oodgjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 013/112] exfat: check return value of sb_min_blocksize in exfat_read_boot_sector
-Date: Thu, 27 Nov 2025 15:45:15 +0100
-Message-ID: <20251127144033.215763543@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 063/175] selftests: mptcp: join: endpoints: longer timeout
+Date: Thu, 27 Nov 2025 15:45:16 +0100
+Message-ID: <20251127144045.268957448@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f2c1f631630e01821fe4c3fdf6077bc7a8284f82 upstream.
+commit fb13c6bb810ca871964e062cf91882d1c83db509 upstream.
 
-sb_min_blocksize() may return 0. Check its return value to avoid
-accessing the filesystem super block when sb->s_blocksize is 0.
+In rare cases, when the test environment is very slow, some endpoints
+tests can fail because some expected events have not been seen.
 
-Cc: stable@vger.kernel.org # v6.15
-Fixes: 719c1e1829166d ("exfat: add super block operations")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Link: https://patch.msgid.link/20251104125009.2111925-3-yangyongpeng.storage@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to have a longer
+timeout, and even go over the default one. This connection will be
+killed at the end, after the verifications: increasing the timeout
+doesn't change anything, apart from avoiding it to end before the end of
+the verifications.
+
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now having a longer timeout: 2 minutes.
+
+The Fixes commit was making the connection longer, but still, the
+default timeout would have stopped it after 1 minute, which might not be
+enough in very slow environments.
+
+Fixes: 6457595db987 ("selftests: mptcp: join: endpoints: longer transfer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-8-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/super.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/exfat/super.c
-+++ b/fs/exfat/super.c
-@@ -452,7 +452,10 @@ static int exfat_read_boot_sector(struct
- 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3757,7 +3757,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		{ test_linkfail=128 speed=slow \
++		{ timeout_test=120 test_linkfail=128 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- 	/* set block size to read super block */
--	sb_min_blocksize(sb, 512);
-+	if (!sb_min_blocksize(sb, 512)) {
-+		exfat_err(sb, "unable to set blocksize");
-+		return -EINVAL;
-+	}
+@@ -3784,7 +3784,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
- 	/* read boot sector */
- 	sbi->boot_bh = sb_bread(sb, 0);
+@@ -3862,7 +3862,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
+@@ -3935,7 +3935,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		{ test_linkfail=128 speed=20 \
++		{ timeout_test=120 test_linkfail=128 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
 
 
 
