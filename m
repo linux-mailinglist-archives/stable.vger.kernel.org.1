@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-197184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB2EC8EE47
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9323CC8F085
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EF194EDDD5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029433B0F01
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83D828D8E8;
-	Thu, 27 Nov 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A48A333755;
+	Thu, 27 Nov 2025 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSNifKZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/vjgz9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AA8286416;
-	Thu, 27 Nov 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FD331281E;
+	Thu, 27 Nov 2025 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255032; cv=none; b=kDT2vI+ZFvVhxXyIvjpOIZVCYAZBWFHUMhGJhdj+52jrnERLKwRTryJ0huxzDG+t5xsjv2iSqJCQRdj/MC8V6kghUT3fvlhTai/qEzaH4eXi4S4RbQFBtKMNl7/ZM5kklySV9F3HDpmYImJ4z4g8m9+hU8iJ+E4u/lR8FNrl/Vk=
+	t=1764255323; cv=none; b=UuaJFXPeLkkxFrEVMUuMbJ7SN0yAP5VNg6V1fMOMwi+P3JSBD3iuBYv5MIeHuQ7ibiAKKffW8ZwCUsYxA6A+yjp9sqOVVo6LdRwcmIatTTtZA8W9oKW5aNWnFU2JRF8AtLTMam1/yIKF0JCKbfzhkhB5xK+2lxymD1VCLIK0yBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255032; c=relaxed/simple;
-	bh=F2uz2sFOpEWvmxWZJfkwVCuaHbogIKoEh8YAjxhRDS0=;
+	s=arc-20240116; t=1764255323; c=relaxed/simple;
+	bh=pnan15gYfvdJAXW8BARFaD0C6p8C/AYp3wSXkDeH0Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgEmhdHNcpFGMn0XYFasTQwxqweNtbPjf7mlX2Ly5XiP8psIccxw4nOPXk5Yf/Ei/jjcrWhVy4xPWXucnvlnsDz3dwTakjOGj4YiUgsj9kF8umpNm9C6QOyXFeO9zEuRuCzH2T4BbVcHJlLyRlgCT0U33SQyIgjNbDh5cSbbacM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSNifKZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F1CC4CEF8;
-	Thu, 27 Nov 2025 14:50:31 +0000 (UTC)
+	 MIME-Version; b=Fol6VoDpHS/1AuF9QuL72Ax0QKCYZoL3wiYyPXhMwp6QYJcK1fnRLtnKtcgvGSVM12MrMIeik5JrnKqeS5YAATiNlUdHYpDYM7eaVfsDkwQjl/mNae0mpfJ5v5oaYCsdxkNoWoxcPcFADUQ04YAPfls5X+OK54kS+u12bMHF0FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/vjgz9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BEEC4CEF8;
+	Thu, 27 Nov 2025 14:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255032;
-	bh=F2uz2sFOpEWvmxWZJfkwVCuaHbogIKoEh8YAjxhRDS0=;
+	s=korg; t=1764255323;
+	bh=pnan15gYfvdJAXW8BARFaD0C6p8C/AYp3wSXkDeH0Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSNifKZF0LSedAdO7TKl7R5sMhSCEUkh0mNMwVg1IAS9nALPqUTGzrpslFr9/98yV
-	 AZk4ZYtdmdocT5s/FP2XQr62MllijvjvS7L89dMb4UVUE5JRjQUPNlAE++mO43UYLY
-	 toe4F+1E3rmz2H47UlybnTrdqOLNRU1Rk39T00f8=
+	b=q/vjgz9rDAmezrK41w4eMVN7/RXOSBIGrdLRSS4RKVTlDHVgboLffCPSzhG+fJDpD
+	 P8USlaP4DgFQLXqTbBF43OJeN1bNo+DYQ4MY16Z26FA6+vixL00N/l8w+0i8NecIdL
+	 GRWhX3eDhMiWlI0T5SRF/IBoAWnRRbO4535PoVc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 71/86] tracing/tools: Fix incorrcet short option in usage text for --threads
+Subject: [PATCH 6.12 085/112] scsi: core: Fix a regression triggered by scsi_host_busy()
 Date: Thu, 27 Nov 2025 15:46:27 +0100
-Message-ID: <20251127144030.425773243@linuxfoundation.org>
+Message-ID: <20251127144035.953667953@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 53afec2c8fb2a562222948cb1c2aac48598578c9 ]
+[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
 
-The help message incorrectly listed '-t' as the short option for
---threads, but the actual getopt_long configuration uses '-e'.
-This mismatch can confuse users and lead to incorrect command-line
-usage. This patch updates the usage string to correctly show:
-	"-e, --threads NRTHR"
-to match the implementation.
+Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
+iterators") introduced the following regression:
 
-Note: checkpatch.pl reports a false-positive spelling warning on
-'Run', which is intentional.
+Call trace:
+ __srcu_read_lock+0x30/0x80 (P)
+ blk_mq_tagset_busy_iter+0x44/0x300
+ scsi_host_busy+0x38/0x70
+ ufshcd_print_host_state+0x34/0x1bc
+ ufshcd_link_startup.constprop.0+0xe4/0x2e0
+ ufshcd_init+0x944/0xf80
+ ufshcd_pltfrm_init+0x504/0x820
+ ufs_rockchip_probe+0x2c/0x88
+ platform_probe+0x5c/0xa4
+ really_probe+0xc0/0x38c
+ __driver_probe_device+0x7c/0x150
+ driver_probe_device+0x40/0x120
+ __driver_attach+0xc8/0x1e0
+ bus_for_each_dev+0x7c/0xdc
+ driver_attach+0x24/0x30
+ bus_add_driver+0x110/0x230
+ driver_register+0x68/0x130
+ __platform_driver_register+0x20/0x2c
+ ufs_rockchip_pltform_init+0x1c/0x28
+ do_one_initcall+0x60/0x1e0
+ kernel_init_freeable+0x248/0x2c4
+ kernel_init+0x20/0x140
+ ret_from_fork+0x10/0x20
 
-Link: https://patch.msgid.link/20251106031040.1869-1-zhangchujun@cmss.chinamobile.com
-Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fix this regression by making scsi_host_busy() check whether the SCSI
+host tag set has already been initialized. tag_set->ops is set by
+scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
+fix is based on the assumption that scsi_host_busy() and
+scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
+driver.
+
+Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/latency/latency-collector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/hosts.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
-index cf263fe9deaf4..ef97916e3873a 100644
---- a/tools/tracing/latency/latency-collector.c
-+++ b/tools/tracing/latency/latency-collector.c
-@@ -1725,7 +1725,7 @@ static void show_usage(void)
- "-n, --notrace\t\tIf latency is detected, do not print out the content of\n"
- "\t\t\tthe trace file to standard output\n\n"
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index e021f1106beab..5cf13d019a15e 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -607,8 +607,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
+ {
+ 	int cnt = 0;
  
--"-t, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
-+"-e, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
- 
- "-r, --random\t\tArbitrarily sleep a certain amount of time, default\n"
- "\t\t\t%ld ms, before reading the trace file. The\n"
+-	blk_mq_tagset_busy_iter(&shost->tag_set,
+-				scsi_host_check_in_flight, &cnt);
++	if (shost->tag_set.ops)
++		blk_mq_tagset_busy_iter(&shost->tag_set,
++					scsi_host_check_in_flight, &cnt);
+ 	return cnt;
+ }
+ EXPORT_SYMBOL(scsi_host_busy);
 -- 
 2.51.0
 
