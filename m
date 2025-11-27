@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DC8C8ED81
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:37 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9DCC8F077
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7C183B0E8C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D38173505C4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6A27C162;
-	Thu, 27 Nov 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D28828135D;
+	Thu, 27 Nov 2025 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ0HEC+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKld0yBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980027587C;
-	Thu, 27 Nov 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3968420FAAB;
+	Thu, 27 Nov 2025 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254903; cv=none; b=bUkjZUidy24RRCoesEho4nef/lIk8GQmzpzjTMP8/eEdhvKtYI4vcgEF/4/Iown0JcmWHz3gh3rP0V1a8jJNWCgt0YPPF+Myz7vu5SiPuxe2yCvJtbgAWHbWxGVKtlvumICbGq4/eMDuRkSR8Bbjh6MdKQUAMXjmui5ICJ70NNM=
+	t=1764255659; cv=none; b=MaQj7YmFsT51fn1XpUAaoydvx5zxLvB8Y7+W2nh2wOJ6jJ66F11nN6QAhCPclOnkWOn/E9Qv3AOtpiYVrfNW3MZ5HVv83HP396td7e41EnaBvX5vCq1oSFpnh8wQOSOwFBZNFufrLFjLU8FAXxUKYXgZ1UODlo5QMGVcMdqg4Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254903; c=relaxed/simple;
-	bh=JpmWrk2Wzjoo6sb5zMEyhOfci3Vwxm9CBqDguBGFfgU=;
+	s=arc-20240116; t=1764255659; c=relaxed/simple;
+	bh=4qDj80O4qqVeIcbpg8UgqeTgA0fgg6Ev2gCx5zZFY/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/IQtbfZx0LWekZkOBWDKIgw3PLUcY7CyCZV/2qDEE4OnAW/Jte8lS4x02Y9HGGNSw/BaIgnTU2+lK+NTh4ENdDS6J8+OUpVvvT4R+/CAKg5y/LuJs4YPsNfVYh/w2W14C718qwqBlzpbFkn1k90SH3eCdmfgLGv/m3WLlYXQI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ0HEC+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997ADC4CEF8;
-	Thu, 27 Nov 2025 14:48:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uajI3faS3YHtwJnB4qP9WDMIfrK8egeBpGwEUuT05hP710H0qWkDDpS9c97gFeHR02KDw6q42hbZE8kZOkGsK8P+YSBeW/zmHsbhOddGj+2RBQIvlm39WUrWTVSEi8pam5LnV54tEWczWY/Wqmq19S3RQBUCnXjSK05S2h5ST3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKld0yBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B240CC4CEF8;
+	Thu, 27 Nov 2025 15:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254903;
-	bh=JpmWrk2Wzjoo6sb5zMEyhOfci3Vwxm9CBqDguBGFfgU=;
+	s=korg; t=1764255659;
+	bh=4qDj80O4qqVeIcbpg8UgqeTgA0fgg6Ev2gCx5zZFY/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ0HEC+fm95p4w5wtG4i5G+SxM8+8gPFrtZNymiRrBl9lbBFa9Lp8nrPo9PdWY/Vx
-	 0Rvjv/VnuA/YUQmG7JWxvhoay3q3TUUshhn1fpxZDewluyJNf8zcWssvXto3lBv/Li
-	 mWoN7GsCbLk1m1mX5eMFBc9D9Yj/pGs0PGDzKNEY=
+	b=rKld0yBk2ytTXs6DtGOBa2vICAZ464rVTAEQ2Vt/vuBmFJ5+mCoWUsQ82I2CviT+y
+	 HaqtLF4LPfioII6FLkaIzmo1wMaWGnZOWU46ZKT7AeJrl3SfSeX1wTF3dRXy8qq5ga
+	 mJ6kRO2yKbgSrnBOOG//wNxgbzv0lTkyWv5Yzw5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6 07/86] mptcp: Disallow MPTCP subflows from sockmap
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.17 070/175] drm/plane: Fix create_in_format_blob() return value
 Date: Thu, 27 Nov 2025 15:45:23 +0100
-Message-ID: <20251127144028.077969934@linuxfoundation.org>
+Message-ID: <20251127144045.523290439@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit fbade4bd08ba52cbc74a71c4e86e736f059f99f7 upstream.
+commit cead55e24cf9e092890cf51c0548eccd7569defa upstream.
 
-The sockmap feature allows bpf syscall from userspace, or based on bpf
-sockops, replacing the sk_prot of sockets during protocol stack processing
-with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
-Consider two scenarios:
+create_in_format_blob() is either supposed to return a valid
+pointer or an error, but never NULL. The caller will dereference
+the blob when it is not an error, and thus will oops if NULL
+returned. Return proper error values in the failure cases.
 
-1. When the server has MPTCP enabled and the client also requests MPTCP,
-   the sk passed to the BPF program is a subflow sk. Since subflows only
-   handle partial data, replacing their sk_prot is meaningless and will
-   cause traffic disruption.
-
-2. When the server has MPTCP enabled but the client sends a TCP SYN
-   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-   '''
-   subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-   '''
-   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
-   converts the subflow to plain TCP.
-
-For the first case, we should prevent it from being combined with sockmap
-by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
-sockmap's own flow.
-
-For the second case, since subflow_syn_recv_sock() has already restored
-sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
+Cc: stable@vger.kernel.org
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Fixes: 0d6dcd741c26 ("drm/plane: modify create_in_formats to acommodate async")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20251112233030.24117-2-ville.syrjala@linux.intel.com
+Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/drm_plane.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2095,6 +2095,10 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
- 	tcp_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcp_prot_override.psock_update_sk_prot = NULL;
-+#endif
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index 38f82391bfda..a30493ed9715 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -210,7 +210,7 @@ static struct drm_property_blob *create_in_format_blob(struct drm_device *dev,
+ 	formats_size = sizeof(__u32) * plane->format_count;
+ 	if (WARN_ON(!formats_size)) {
+ 		/* 0 formats are never expected */
+-		return 0;
++		return ERR_PTR(-EINVAL);
+ 	}
  
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -2132,6 +2136,10 @@ void __init mptcp_subflow_init(void)
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
- 	tcpv6_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcpv6_prot_override.psock_update_sk_prot = NULL;
-+#endif
- #endif
+ 	modifiers_size =
+@@ -226,7 +226,7 @@ static struct drm_property_blob *create_in_format_blob(struct drm_device *dev,
  
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+ 	blob = drm_property_create_blob(dev, blob_size, NULL);
+ 	if (IS_ERR(blob))
+-		return NULL;
++		return blob;
+ 
+ 	blob_data = blob->data;
+ 	blob_data->version = FORMAT_BLOB_CURRENT;
+-- 
+2.52.0
+
 
 
 
