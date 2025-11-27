@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DA7C8EE23
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464A4C8F2DA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9DF4F3501BD
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEABF3B7470
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C091B333753;
-	Thu, 27 Nov 2025 14:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D6E2FBE03;
+	Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6qJYIDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H363d4XU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D15288537;
-	Thu, 27 Nov 2025 14:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB628135D;
+	Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255126; cv=none; b=KhmmKRxCJlqyq0jEkJhlDhRefNV2IHdSy0FuO5QpUZwgIiEYs4QIh7rP6DcmjFNoI3xUXkONAM63f06iMYiVZ7QX09asNjx0h0i838ZW/Pc6Q/194NSRylJ7xXqaiKMdNrPjzUjijQGYaWt+TjPeFuU12xRHgSWlQoEraK7zT+M=
+	t=1764255748; cv=none; b=n/pxZzmvuYtC/rZJ62fSDMulwkG3qr2FMUmkp4HD6oNxifegEuABp6yzxoEfHdyDyRIxaKYuLsRLVdhXwfy3hZYH3cmMLLwVhFAFM5CC63q3TeUb41id+lCcfRAgV23kUIML0SI6C18BDqLaH7i36CwiSnbZEEu8trse9xnErpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255126; c=relaxed/simple;
-	bh=muMTH/jxj53rJAlJD3ni+zu156tCUuEUlg+AGuPxSrI=;
+	s=arc-20240116; t=1764255748; c=relaxed/simple;
+	bh=1IF2XWPrp7XqJhRALUTRRRTJ3K84zi2HMXPzeqRr46c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktMQfeaEU8Qr211jV894cHCplpLtAEzI2qgKhRJx3AHQTaPMpj9R+HcyPu+j0KYuYLLys0YxjXpS+hrNju/EYF1XAXhGyvDr9/m9lmkeCqfuALeSz7irdW4x2ImWGLhyUwDkBwnZOdvC2uCgxinRMrD2rQ/NKSra1GEwzpCOp/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6qJYIDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE802C116D0;
-	Thu, 27 Nov 2025 14:52:05 +0000 (UTC)
+	 MIME-Version; b=kO29Q9Na1yEpk7WA3MgjrIqEeKPMWh0KYE67W8WbZHF3GN7Qkn1qbDWz30qwk9YHV5QXmfg4jei4okOZ5/pplVt6XYXbF0C+BkX4E/jApnmERxs8GbPnoi/oKGEOwR9Jo7BLHwwLFPFHe6ak97SZuu9ZyXRJ5Xz6alFv9UCuoBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H363d4XU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EDAC4CEF8;
+	Thu, 27 Nov 2025 15:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255126;
-	bh=muMTH/jxj53rJAlJD3ni+zu156tCUuEUlg+AGuPxSrI=;
+	s=korg; t=1764255748;
+	bh=1IF2XWPrp7XqJhRALUTRRRTJ3K84zi2HMXPzeqRr46c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6qJYIDMn/mD3JgS9bAltqs41slatZkcVYjgo4gkGeCnxW1lPANvnzyTMZzOT8h/h
-	 b5vGF7QuK4zOKUNLoiS5FyeOxo4Nl2PGds4o0TgsS07rTkRmoV4wMb4XiX+cJyZ0XA
-	 MmGaNRR3G9cq8W1Cf7PmeED20x4t6CiK7Jh3aM+E=
+	b=H363d4XU32wPcHKz0yNHZ3YZOivG8pkxE8yVCRUgtc5PkPj6KaOgp9bcztqJZ7hVL
+	 HufPVjjfgzFZ6GaotQDhHTpLCYwER596LSJyPvznMywafHTmK8joGO6eFspajhUZOK
+	 scEb3Py8MlIwzIWY/Ear5111jajLGjYpyWuIaq0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 017/112] MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Date: Thu, 27 Nov 2025 15:45:19 +0100
-Message-ID: <20251127144033.363768060@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 067/175] mptcp: do not fallback when OoO is present
+Date: Thu, 27 Nov 2025 15:45:20 +0100
+Message-ID: <20251127144045.414470862@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,179 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
+commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 upstream.
 
-Depending on the particular CPU implementation a TLB shutdown may occur
-if multiple matching entries are detected upon the execution of a TLBP
-or the TLBWI/TLBWR instructions.  Given that we don't know what entries
-we have been handed we need to be very careful with the initial TLB
-setup and avoid all these instructions.
+In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
+reset if fallback is possible. Such corruptions happen in the receive
+path; to ensure fallback is possible the stack additionally needs to
+check for OoO data, otherwise the fallback will break the data stream.
 
-Therefore read all the TLB entries one by one with the TLBR instruction,
-bypassing the content addressing logic, and truncate any large pages in
-place so as to avoid a case in the second step where an incoming entry
-for a large page at a lower address overlaps with a replacement entry
-chosen at another index.  Then preinitialize the TLB using addresses
-outside our usual unique range and avoiding clashes with any entries
-received, before making the usual call to local_flush_tlb_all().
-
-This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
-entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
-address).
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 64 insertions(+), 38 deletions(-)
+ net/mptcp/protocol.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -15,6 +15,7 @@
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-+#include <linux/sort.h>
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -77,6 +77,13 @@ bool __mptcp_try_fallback(struct mptcp_s
+ 	if (__mptcp_check_fallback(msk))
+ 		return true;
  
- #include <asm/cpu.h>
- #include <asm/cpu-type.h>
-@@ -508,55 +509,79 @@ static int __init set_ntlb(char *str)
- 
- __setup("ntlb=", set_ntlb);
- 
--/* Initialise all TLB entries with unique values */
++	/* The caller possibly is not holding the msk socket lock, but
++	 * in the fallback case only the current subflow is touching
++	 * the OoO queue.
++	 */
++	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
++		return false;
 +
-+/* Comparison function for EntryHi VPN fields.  */
-+static int r4k_vpn_cmp(const void *a, const void *b)
-+{
-+	long v = *(unsigned long *)a - *(unsigned long *)b;
-+	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
-+	return s ? (v != 0) | v >> s : v;
-+}
-+
-+/*
-+ * Initialise all TLB entries with unique values that do not clash with
-+ * what we have been handed over and what we'll be using ourselves.
-+ */
- static void r4k_tlb_uniquify(void)
- {
--	int entry = num_wired_entries();
-+	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
-+	int tlbsize = current_cpu_data.tlbsize;
-+	int start = num_wired_entries();
-+	unsigned long vpn_mask;
-+	int cnt, ent, idx, i;
-+
-+	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
-+	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
- 
- 	htw_stop();
--	write_c0_entrylo0(0);
--	write_c0_entrylo1(0);
- 
--	while (entry < current_cpu_data.tlbsize) {
--		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
--		unsigned long asid = 0;
--		int idx;
-+	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-+		unsigned long vpn;
- 
--		/* Skip wired MMID to make ginvt_mmid work */
--		if (cpu_has_mmid)
--			asid = MMID_KERNEL_WIRED + 1;
-+		write_c0_index(i);
-+		mtc0_tlbr_hazard();
-+		tlb_read();
-+		tlb_read_hazard();
-+		vpn = read_c0_entryhi();
-+		vpn &= vpn_mask & PAGE_MASK;
-+		tlb_vpns[cnt] = vpn;
- 
--		/* Check for match before using UNIQUE_ENTRYHI */
--		do {
--			if (cpu_has_mmid) {
--				write_c0_memorymapid(asid);
--				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
--			} else {
--				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
--			}
--			mtc0_tlbw_hazard();
--			tlb_probe();
--			tlb_probe_hazard();
--			idx = read_c0_index();
--			/* No match or match is on current entry */
--			if (idx < 0 || idx == entry)
--				break;
--			/*
--			 * If we hit a match, we need to try again with
--			 * a different ASID.
--			 */
--			asid++;
--		} while (asid < asid_mask);
--
--		if (idx >= 0 && idx != entry)
--			panic("Unable to uniquify TLB entry %d", idx);
--
--		write_c0_index(entry);
-+		/* Prevent any large pages from overlapping regular ones.  */
-+		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
- 		mtc0_tlbw_hazard();
- 		tlb_write_indexed();
--		entry++;
-+		tlbw_use_hazard();
- 	}
- 
-+	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
-+
-+	write_c0_pagemask(PM_DEFAULT_MASK);
-+	write_c0_entrylo0(0);
-+	write_c0_entrylo1(0);
-+
-+	idx = 0;
-+	ent = tlbsize;
-+	for (i = start; i < tlbsize; i++)
-+		while (1) {
-+			unsigned long entryhi, vpn;
-+
-+			entryhi = UNIQUE_ENTRYHI(ent);
-+			vpn = entryhi & vpn_mask & PAGE_MASK;
-+
-+			if (idx >= cnt || vpn < tlb_vpns[idx]) {
-+				write_c0_entryhi(entryhi);
-+				write_c0_index(i);
-+				mtc0_tlbw_hazard();
-+				tlb_write_indexed();
-+				ent++;
-+				break;
-+			} else if (vpn == tlb_vpns[idx]) {
-+				ent++;
-+			} else {
-+				idx++;
-+			}
-+		}
-+
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-@@ -602,6 +627,7 @@ static void r4k_tlb_configure(void)
- 
- 	/* From this point on the ARC firmware is dead.	 */
- 	r4k_tlb_uniquify();
-+	local_flush_tlb_all();
- 
- 	/* Did I tell you that ARC SUCKS?  */
- }
+ 	spin_lock_bh(&msk->fallback_lock);
+ 	if (!msk->allow_infinite_fallback) {
+ 		spin_unlock_bh(&msk->fallback_lock);
 
 
 
