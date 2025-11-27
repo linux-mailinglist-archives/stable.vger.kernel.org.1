@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175E5C8F202
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB98EC8EE29
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 242983B6FAD
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDA864EDBF5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F6D274652;
-	Thu, 27 Nov 2025 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6222B33345D;
+	Thu, 27 Nov 2025 14:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmgFojFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLaio3+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EA62882A7;
-	Thu, 27 Nov 2025 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B121D33030A;
+	Thu, 27 Nov 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255722; cv=none; b=ZfV6P5/WaXeXahkjx1EHeOWBh3I6LKL2Dvl8ulf7x8v7p0CXVQqGWWQgZ+K/7BLoq+paXENmWju/Gmks3jxsEspo/FzEcPhTrmctv9ztUTSLrOe09PlVrW6Q0bTYHztAnQ7JVLQaWfvHSr61NEeVerqKAEbKiwHCAogMj6MC51E=
+	t=1764255006; cv=none; b=FnuoP7upvGttXVdlyzn+FsmyZ84QcKQpqH44dcK9dyyqgBbgxKTgy86F0/aHOY2j+mURG3O0c7O/8GEhRHgCxUzEznAPV4EPff9O7lBns1Jt/6ltu3Jj1aSkU33rhbFxXBAo/c+twLUgrbb/H9pEv41oNibpm6iKRRsMVoHBzFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255722; c=relaxed/simple;
-	bh=f04QJZ0UlL69kKVZyifNQ3mKql89jIr4MUU/p0f+H+4=;
+	s=arc-20240116; t=1764255006; c=relaxed/simple;
+	bh=s2CPfsrnQvfyM7LA2o90XskKzXz20UktVl04QRtWlKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub4Pjhy4tqGIy4cGjFJJRKosNHmc0Ioh+IBfCADR79GIp7N0K5i9LsrbrvneI03mpVidgr4jqNN3Yumbu8s6OLCOXYWjzhcNzHDRcFc0n0i06DThqmOVaW6sZVjleAsTdTic4vgCdfr5MsyNRCagov51Ck7Cd0Ih2nAE/rryJdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmgFojFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08013C4CEF8;
-	Thu, 27 Nov 2025 15:02:01 +0000 (UTC)
+	 MIME-Version; b=FbPqiIew6FyKNjTC2i9mpKNLrhRTbeZpgPlgIX2N4Ge625jU2WaOsh5LIUiz+ytRD3YBB6SNtAvjMLltZq/F5GDfROPSRaClQWO+CPDDLfe8F7m3kCmS9sIsgY785uytdKgiffvpltAkuOJXZ1HvU0iq5QfGTw9arVvpwH7Gnpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLaio3+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F1DC4CEF8;
+	Thu, 27 Nov 2025 14:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255722;
-	bh=f04QJZ0UlL69kKVZyifNQ3mKql89jIr4MUU/p0f+H+4=;
+	s=korg; t=1764255006;
+	bh=s2CPfsrnQvfyM7LA2o90XskKzXz20UktVl04QRtWlKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmgFojFQeaDV34j+0hoVZPVKmWTamB3ydafGcvhcSCbj2Qi03vPbsVPEVFUgsxGsN
-	 lyKqJl5diEXTDB9cQDCSJ6gqt45jM15S2PUw7uspITVKTjmXTvhrHqMdPD2bGZvI0V
-	 01t0+z2/sRTUgOAK+M0CZc5UQxeZNXTrDGEiWpIU=
+	b=LLaio3+5TUbB+R3Gisbd28pFVV5rKY4usq2XjZCuCtdweqKVb1BQXQ9U7i8MDZ2N+
+	 ZfXH0T4JclFKwRgu2a3xTIu/tCFhBJOcA9k4P0t7Dvx4UdQ8aRswzyWBkmhIwH10jd
+	 PYrtn+f2iSPxVBq4HkEvWRIZYYBBHLHrGMcs/JNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 090/175] xfrm: Prevent locally generated packets from direct output in tunnel mode
-Date: Thu, 27 Nov 2025 15:45:43 +0100
-Message-ID: <20251127144046.249801895@linuxfoundation.org>
+	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 28/86] mptcp: fix race condition in mptcp_schedule_work()
+Date: Thu, 27 Nov 2025 15:45:44 +0100
+Message-ID: <20251127144028.851198407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 59630e2ccd728703cc826e3a3515d70f8c7a766c ]
+commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
 
-Add a check to ensure locally generated packets (skb->sk != NULL) do
-not use direct output in tunnel mode, as these packets require proper
-L2 header setup that is handled by the normal XFRM processing path.
+syzbot reported use-after-free in mptcp_schedule_work() [1]
 
-Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Issue here is that mptcp_schedule_work() schedules a work,
+then gets a refcount on sk->sk_refcnt if the work was scheduled.
+This refcount will be released by mptcp_worker().
+
+[A] if (schedule_work(...)) {
+[B]     sock_hold(sk);
+        return true;
+    }
+
+Problem is that mptcp_worker() can run immediately and complete before [B]
+
+We need instead :
+
+    sock_hold(sk);
+    if (schedule_work(...))
+        return true;
+    sock_put(sk);
+
+[1]
+refcount_t: addition on 0; use-after-free.
+ WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
+Call Trace:
+ <TASK>
+ __refcount_add include/linux/refcount.h:-1 [inline]
+  __refcount_inc include/linux/refcount.h:366 [inline]
+  refcount_inc include/linux/refcount.h:383 [inline]
+  sock_hold include/net/sock.h:816 [inline]
+  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
+  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
+  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+  expire_timers kernel/time/timer.c:1798 [inline]
+  __run_timers kernel/time/timer.c:2372 [inline]
+  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
+  run_timer_base kernel/time/timer.c:2393 [inline]
+  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Cc: stable@vger.kernel.org
+Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
+Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_output.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index a98b5bf55ac31..54222fcbd7fd8 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -772,8 +772,12 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 		/* Exclusive direct xmit for tunnel mode, as
- 		 * some filtering or matching rules may apply
- 		 * in transport mode.
-+		 * Locally generated packets also require
-+		 * the normal XFRM path for L2 header setup,
-+		 * as the hardware needs the L2 header to match
-+		 * for encryption, so skip direct output as well.
- 		 */
--		if (x->props.mode == XFRM_MODE_TUNNEL)
-+		if (x->props.mode == XFRM_MODE_TUNNEL && !skb->sk)
- 			return xfrm_dev_direct_output(sk, x, skb);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -961,14 +961,19 @@ static void mptcp_reset_rtx_timer(struct
  
- 		return xfrm_output_resume(sk, skb, 0);
--- 
-2.51.0
-
+ bool mptcp_schedule_work(struct sock *sk)
+ {
+-	if (inet_sk_state_load(sk) != TCP_CLOSE &&
+-	    schedule_work(&mptcp_sk(sk)->work)) {
+-		/* each subflow already holds a reference to the sk, and the
+-		 * workqueue is invoked by a subflow, so sk can't go away here.
+-		 */
+-		sock_hold(sk);
++	if (inet_sk_state_load(sk) == TCP_CLOSE)
++		return false;
++
++	/* Get a reference on this socket, mptcp_worker() will release it.
++	 * As mptcp_worker() might complete before us, we can not avoid
++	 * a sock_hold()/sock_put() if schedule_work() returns false.
++	 */
++	sock_hold(sk);
++
++	if (schedule_work(&mptcp_sk(sk)->work))
+ 		return true;
+-	}
++
++	sock_put(sk);
+ 	return false;
+ }
+ 
 
 
 
