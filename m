@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-197255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E3DC8EE74
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A8BC8ED51
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8424F34B203
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2338E3B19AC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F5B30EF64;
-	Thu, 27 Nov 2025 14:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEDA27877D;
+	Thu, 27 Nov 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlUVnRrq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiiXFEj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21DF28D8E8;
-	Thu, 27 Nov 2025 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A22B273816;
+	Thu, 27 Nov 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255234; cv=none; b=NUk1kuZZXM173n3sJ1fxd/e6oZOgJnoV4HppT2mUQhhfLTx1NVU5EV4XiDlgybQR2chyLbvx3PQCX7+3meDPOaQAUiefLphZHBgs/vQOOc2eTrSC+Z9+DcTI6ecPQvoig1hkw8FcnYQQje8hhJzJCM5FoPgsPZAolDq2eSQLWk4=
+	t=1764254865; cv=none; b=ZmA+bGqR/t7gpYurxxLGHWDYi45D6s84GM/Y/sHeItqUsHqZpMvXf/UICcM3Xrg7KM+8YVOohcsW2L1YKqbFKvjJA3FdTzLDYWiyV924Tmfam0/EGFzK26BCdDLf086o7eNtbaQIBbP9YHanoHGQ+v+KcwPHcfW4JJLSTmehTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255234; c=relaxed/simple;
-	bh=U4swBUNQzIToKizYDbZqAJyt9KKamyLyBtvPiMhyfG0=;
+	s=arc-20240116; t=1764254865; c=relaxed/simple;
+	bh=ROz2PM8+rGXDAzImK6NtdVXVFhpqEGnhl04yGhIMvfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gm+wd7xHazyJg73dtUnc2kuHYIHCc2CR1fXjBcwXIbhjnWX87g+X+GLnmAwI8jK4Q7+telD2pVu4r1YY7vVZZ37ssZI4lYOU7DhSb/vdqGzaMErOoWARv8fAO1JN45QB20464T8o/bBtHUovUOzAnYIHYs8n8kjpdOJhnEYSIag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlUVnRrq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3218FC4CEF8;
-	Thu, 27 Nov 2025 14:53:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Owp2pIOueL76BHBcRiBkwIuWgStdxKGUTIrCQnZULnPBcalKF/eFsd49fLApgYskC4WislJkfszEYwQf3nkRzmrLBDdOdoOevNxGIVXQNrIDacUH+jKvPdhOQ4P+hADO32FgR17TEQ4DysOtlxR25F6c6HpDHtoQEev+iFX16OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiiXFEj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE2AC4CEF8;
+	Thu, 27 Nov 2025 14:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255232;
-	bh=U4swBUNQzIToKizYDbZqAJyt9KKamyLyBtvPiMhyfG0=;
+	s=korg; t=1764254864;
+	bh=ROz2PM8+rGXDAzImK6NtdVXVFhpqEGnhl04yGhIMvfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlUVnRrqa61Kc1o5cj/mm5jOhVsq9V/ITH/62tRgxekSQ+T4wyWqdm714p7RIoF6P
-	 qkE6Q6Tl86xsloYJBA2jYqYSB+ZqLyZ/ja6uLaTWur/6Y/mvMhV7M0FdWF4P90h5jK
-	 Q1Dwb9FE9KzxGTANXvcCnGHgjoS/wInP/ioU3nD4=
+	b=iiiXFEj/fpPGJGmmltSqAMIOMlbLxZyq4jJX0wewG/Kp219Zoq04MhLJm+vFqkbmT
+	 WN6BrQOq6ZPDNxfehgsgATWFX+Z/v7qcDaZbUDKLzbTVSbjw82QIJRxfZtueKbQFjO
+	 fLBRszWj5bNny9T5PK5d27fo7Y7mQBKeSgBD+dzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 026/112] Input: pegasus-notetaker - fix potential out-of-bounds access
-Date: Thu, 27 Nov 2025 15:45:28 +0100
-Message-ID: <20251127144033.796446375@linuxfoundation.org>
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 13/86] be2net: pass wrb_params in case of OS2BMC
+Date: Thu, 27 Nov 2025 15:45:29 +0100
+Message-ID: <20251127144028.302863626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-commit 69aeb507312306f73495598a055293fa749d454e upstream.
+commit 7d277a7a58578dd62fd546ddaef459ec24ccae36 upstream.
 
-In the pegasus_notetaker driver, the pegasus_probe() function allocates
-the URB transfer buffer using the wMaxPacketSize value from
-the endpoint descriptor. An attacker can use a malicious USB descriptor
-to force the allocation of a very small buffer.
+be_insert_vlan_in_pkt() is called with the wrb_params argument being NULL
+at be_send_pkt_to_bmc() call site.  This may lead to dereferencing a NULL
+pointer when processing a workaround for specific packet, as commit
+bc0c3405abbb ("be2net: fix a Tx stall bug caused by a specific ipv6
+packet") states.
 
-Subsequently, if the device sends an interrupt packet with a specific
-pattern (e.g., where the first byte is 0x80 or 0x42),
-the pegasus_parse_packet() function parses the packet without checking
-the allocated buffer size. This leads to an out-of-bounds memory access.
+The correct way would be to pass the wrb_params from be_xmit().
 
-Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
+Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://patch.msgid.link/20251119105015.194501-1-a.vatoropin@crpt.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/tablet/pegasus_notetaker.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/emulex/benet/be_main.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/input/tablet/pegasus_notetaker.c
-+++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -63,6 +63,9 @@
- #define BUTTON_PRESSED			0xb5
- #define COMMAND_VERSION			0xa9
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1296,7 +1296,8 @@ static void be_xmit_flush(struct be_adap
+ 		(adapter->bmc_filt_mask & BMC_FILT_MULTICAST)
  
-+/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
-+#define NOTETAKER_PACKET_SIZE		6
-+
- /* in xy data packet */
- #define BATTERY_NO_REPORT		0x40
- #define BATTERY_LOW			0x41
-@@ -303,6 +306,12 @@ static int pegasus_probe(struct usb_inte
- 	}
+ static bool be_send_pkt_to_bmc(struct be_adapter *adapter,
+-			       struct sk_buff **skb)
++			       struct sk_buff **skb,
++			       struct be_wrb_params *wrb_params)
+ {
+ 	struct ethhdr *eh = (struct ethhdr *)(*skb)->data;
+ 	bool os2bmc = false;
+@@ -1360,7 +1361,7 @@ done:
+ 	 * to BMC, asic expects the vlan to be inline in the packet.
+ 	 */
+ 	if (os2bmc)
+-		*skb = be_insert_vlan_in_pkt(adapter, *skb, NULL);
++		*skb = be_insert_vlan_in_pkt(adapter, *skb, wrb_params);
  
- 	pegasus->data_len = usb_maxpacket(dev, pipe);
-+	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
-+		dev_err(&intf->dev, "packet size is too small (%d)\n",
-+			pegasus->data_len);
-+		error = -EINVAL;
-+		goto err_free_mem;
-+	}
- 
- 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
- 					   &pegasus->data_dma);
+ 	return os2bmc;
+ }
+@@ -1387,7 +1388,7 @@ static netdev_tx_t be_xmit(struct sk_buf
+ 	/* if os2bmc is enabled and if the pkt is destined to bmc,
+ 	 * enqueue the pkt a 2nd time with mgmt bit set.
+ 	 */
+-	if (be_send_pkt_to_bmc(adapter, &skb)) {
++	if (be_send_pkt_to_bmc(adapter, &skb, &wrb_params)) {
+ 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
+ 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+ 		if (unlikely(!wrb_cnt))
 
 
 
