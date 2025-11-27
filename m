@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C2BC8EF2E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FA3C8F2D4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3BF134E9463
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50A643BDE62
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7769C30EF64;
-	Thu, 27 Nov 2025 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F354732AAC4;
+	Thu, 27 Nov 2025 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K55bxF0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnN22JJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33572299943;
-	Thu, 27 Nov 2025 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC9828CF42;
+	Thu, 27 Nov 2025 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255244; cv=none; b=svXeihoWZLqWuSQrq0dQLFyF06WG7WGmhrN0XkH8W6S9jT7WlDccoULSZuO9/SxqjeatNKW5B02BJc0wLbVOQLvPoCRaeHSbSjapLYrLzpCrvyy8NIUIW9kuDmsbc6p+TXNI5JPJQkq7pyJLS9ID1rMXoPk5uFV2eyS2l8Vm5TI=
+	t=1764255857; cv=none; b=UYMyII9ZqOwj933JLTJNQ0kfGLqyaeslQveg4hE/G7i0IxRF4aTt55qely/Q7uLfWqj9cLMItahh03HFsdEASk0XnQyZ3E1kmyICK13qHDDKD1z7u5aRxhXxWyYo6H5E9tvMTBrzGEH8wHrLPHc7x4KvP8R5HOT3HUffve5KnAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255244; c=relaxed/simple;
-	bh=viDplz5WBWczqhYLNsmYsxA0ZlTl1nP+T6IEozBSxCk=;
+	s=arc-20240116; t=1764255857; c=relaxed/simple;
+	bh=rjXiduA133FZ5YC7Qs2HPI5joPfa5uy0y2EnaoV3xoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTJdytNCvXykzlKZ8G/d95e3JBwHgK2JJse7qxbGP/XKTPynlpfDiO3kyHySL4bbIX+TU4Cn0l97DQG+XcmKVAtxcJtXrUsRsBcOcTMhXn0x2O9bQmO8FP7qtjeBX2bLXLrxYVN088vHYMX4H7+o7E2Kxslly2WLuBMEWGNIObY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K55bxF0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B11C4CEF8;
-	Thu, 27 Nov 2025 14:54:03 +0000 (UTC)
+	 MIME-Version; b=MQX1q3Z9C6ebpQO8xgKPi65ky9OkJifAu4rzOghMpqRAJz5s3AEwt1xVRRMeRrrggSdlXT8CA8PTQnB+6EQDGu4rj787wwXjGrfNlVU6LUn0MCoZ1HrzqAjV5vMFYxVv2+IHR1CjRGWKGlQU1ohRPe8mutAN1QZc05vBPRezNdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnN22JJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7B6C4CEF8;
+	Thu, 27 Nov 2025 15:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255244;
-	bh=viDplz5WBWczqhYLNsmYsxA0ZlTl1nP+T6IEozBSxCk=;
+	s=korg; t=1764255857;
+	bh=rjXiduA133FZ5YC7Qs2HPI5joPfa5uy0y2EnaoV3xoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K55bxF0PncpQWVbEZDbLN0urulXnUfZlHdMzU61brBXRgZU6kJERN39+aX+azUo1R
-	 f2OiPPmDJLa2RrK3QAhHoSJibSRYhF4vA0q+nNS6zUi/aQimLkJsQiPNeWvZPGoAwQ
-	 PSp2EYKpg+pvWQTNj38RMeJhBBw+pwMSluCZlla8=
+	b=FnN22JJAGvIPm5EKND+Y/ImfTC+dNF+/oboTq0P6KxLaGgFXtHweNTQU094XaEcrN
+	 3+331FILpxxHsMlOl1yY6eovf1GchFZBUYCi8Nn01UUcsK7KiwW1IJKkmNvg68jh7i
+	 l9AJaDpVd7rm/bdqwbTlzYSCaFUkj0hx6N2YRLJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/112] xfrm: Determine inner GSO type from packet inner protocol
+Subject: [PATCH 6.17 105/175] drm/i915/xe3lpd: Load DMC for Xe3_LPD version 30.02
 Date: Thu, 27 Nov 2025 15:45:58 +0100
-Message-ID: <20251127144034.891942355@linuxfoundation.org>
+Message-ID: <20251127144046.794204758@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 
-[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
+[ Upstream commit fa766e759ff7b128ab77323d9d9c232434621bb6 ]
 
-The GSO segmentation functions for ESP tunnel mode
-(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
-determining the inner packet's L2 protocol type by checking the static
-x->inner_mode.family field from the xfrm state.
+Load the DMC for Xe3_LPD version 30.02.
 
-This is unreliable. In tunnel mode, the state's actual inner family
-could be defined by x->inner_mode.family or by
-x->inner_mode_iaf.family. Checking only the former can lead to a
-mismatch with the actual packet being processed, causing GSO to create
-segments with the wrong L2 header type.
-
-This patch fixes the bug by deriving the inner mode directly from the
-packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
-
-Instead of replicating the code, this patch modifies the
-xfrm_ip2inner_mode helper function. It now correctly returns
-&x->inner_mode if the selector family (x->sel.family) is already
-specified, thereby handling both specific and AF_UNSPEC cases
-appropriately.
-
-With this change, ESP GSO can use xfrm_ip2inner_mode to get the
-correct inner mode. It doesn't affect existing callers, as the updated
-logic now mirrors the checks they were already performing externally.
-
-Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 3c0f211bc8fc ("drm/xe: Add Wildcat Lake device IDs to PTL list")
+Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Link: https://lore.kernel.org/r/20251016131517.2032684-1-dnyaneshwar.bhadane@intel.com
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+(cherry picked from commit a63db39a578b543f5e5719b9f14dd82d3b8648d1)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[Rodrigo added the Fixes tag while cherry-picking to fixes]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h      | 3 ++-
- net/ipv4/esp4_offload.c | 6 ++++--
- net/ipv6/esp6_offload.c | 6 ++++--
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dmc.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 1484dd15a3694..caaff61601a07 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -472,7 +472,8 @@ static inline int xfrm_af2proto(unsigned int family)
+diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
+index 4aa2aa6379787..8ec06a734d8e3 100644
+--- a/drivers/gpu/drm/i915/display/intel_dmc.c
++++ b/drivers/gpu/drm/i915/display/intel_dmc.c
+@@ -127,6 +127,9 @@ static bool dmc_firmware_param_disabled(struct intel_display *display)
+ #define DISPLAY_VER13_DMC_MAX_FW_SIZE	0x20000
+ #define DISPLAY_VER12_DMC_MAX_FW_SIZE	ICL_DMC_MAX_FW_SIZE
  
- static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
- {
--	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
-+	if ((x->sel.family != AF_UNSPEC) ||
-+	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
- 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
- 		return &x->inner_mode;
- 	else
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index e0d94270da28a..05828d4cb6cdb 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -122,8 +122,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
- {
--	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
--						       : htons(ETH_P_IP);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
-+						     : htons(ETH_P_IP);
++#define XE3LPD_3002_DMC_PATH		DMC_PATH(xe3lpd_3002)
++MODULE_FIRMWARE(XE3LPD_3002_DMC_PATH);
++
+ #define XE3LPD_DMC_PATH			DMC_PATH(xe3lpd)
+ MODULE_FIRMWARE(XE3LPD_DMC_PATH);
  
- 	return skb_eth_gso_segment(skb, features, type);
- }
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index 7b41fb4f00b58..22410243ebe88 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -158,8 +158,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
- 						struct sk_buff *skb,
- 						netdev_features_t features)
+@@ -183,9 +186,10 @@ static const char *dmc_firmware_default(struct intel_display *display, u32 *size
  {
--	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
--						      : htons(ETH_P_IPV6);
-+	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
-+					XFRM_MODE_SKB_CB(skb)->protocol);
-+	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
-+						    : htons(ETH_P_IPV6);
- 
- 	return skb_eth_gso_segment(skb, features, type);
- }
+ 	const char *fw_path = NULL;
+ 	u32 max_fw_size = 0;
+-
+-	if (DISPLAY_VERx100(display) == 3002 ||
+-	    DISPLAY_VERx100(display) == 3000) {
++	if (DISPLAY_VERx100(display) == 3002) {
++		fw_path = XE3LPD_3002_DMC_PATH;
++		max_fw_size = XE2LPD_DMC_MAX_FW_SIZE;
++	} else if (DISPLAY_VERx100(display) == 3000) {
+ 		fw_path = XE3LPD_DMC_PATH;
+ 		max_fw_size = XE2LPD_DMC_MAX_FW_SIZE;
+ 	} else if (DISPLAY_VERx100(display) == 2000) {
 -- 
 2.51.0
 
