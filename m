@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-197199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4205EC8EE59
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68428C8F0E8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59DD74EA03D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494DB3B15DC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAAC288537;
-	Thu, 27 Nov 2025 14:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB132BF40;
+	Thu, 27 Nov 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="winrepUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLpOR8BE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1725BEE8;
-	Thu, 27 Nov 2025 14:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA1B28D8E8;
+	Thu, 27 Nov 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255075; cv=none; b=mW2J9T0s8FeodJgDN84/U9yDAD2OC8se7uG0e6g3Z2tJosbnHUJyt7bzc+hNhQinDUUmqXDKu3Fe5fakDjD8xT2nDV7iNVwKuHdw7Kze3NKmzqBc6UsVJEQlAX34tr5Ffl8AEb69xGrukc2VAEqiq4aHZMSPbQBVhtDqJ7D8Z4U=
+	t=1764255462; cv=none; b=cfC/FS1R6/xUtRE+lkna+A12e0Jb472wz08DXuShMlE06cUB1m1vSh0vjN/VNphRublITUmhuQp+ZeS/AywEjvrmN3kYpPSJV4XmAKqWnujr4W/Bmbgvl7WpqNXV+4Pw6ROwCcn5FW6CGT1p19UpPhhwPLnqN/j4G/F5zFAlTqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255075; c=relaxed/simple;
-	bh=+u/v8rcEFZ6coRCiWpnUqueAGPX0C8OHGB1tnz6wHJs=;
+	s=arc-20240116; t=1764255462; c=relaxed/simple;
+	bh=dmgu0S/J6K4AhsOSoOHfUsl1kvTYizcn8Uyv1gYyjmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSmuL7Xkk3OwLRS4geNznc8VKbLe32OE1SUtD+wjQAAdXfkb/KssV0vcE/1fIjdnkzAie2bKJD/nEWrtqzaZnkWRyE7drVo9goaXOEsmDWMt+eqrRaAzc2OjWHMjRXwQsXS8qfCJhv6FHcJnne4PMv/XZdQBmEV2aek+Bjmvetg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=winrepUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1176C4CEF8;
-	Thu, 27 Nov 2025 14:51:14 +0000 (UTC)
+	 MIME-Version; b=e300qV9YEuPaPXvrREL2aQe+SWs9F31tSyeh2Ilhqn3gSeF6VEWqrbakcDK51BieEqK3NNEfZoTUfZsiz5IQvRYKdnA7tGz2sjU91NuE3l2qoP2LKC32gZPFmwqN02uu2/pSY0kUV/bUYpYVEr6tcsrfvoqb6AIU2cPjKCp9jV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLpOR8BE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB861C4CEF8;
+	Thu, 27 Nov 2025 14:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255075;
-	bh=+u/v8rcEFZ6coRCiWpnUqueAGPX0C8OHGB1tnz6wHJs=;
+	s=korg; t=1764255462;
+	bh=dmgu0S/J6K4AhsOSoOHfUsl1kvTYizcn8Uyv1gYyjmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=winrepUPnBhgsLYx2hUtteMqcH4OtpNxVHQ4uBVQS3ScDy3zKCa1jkwVnr+rh8O8Y
-	 efC198lsVgfYXZ2x+C3QEHWi09VvS/0redKprmAh8+X5mcZedzZdhUiSJyyf1nSzjh
-	 00z9MXeGP0moMWvLDspWP5tQm1DDrFowv8Q7lGIU=
+	b=GLpOR8BEb5QBfck42wf50zP+K+CV75zR2iHjwwg6BzTVLAqp9ThYWo18Cfz4D8EZT
+	 cIsi4qVXuAH4GOBtCBk6Mrcmk/UOmqcdovwlpUbkgmThm/OdRZm40uWwiDFoAuwPFm
+	 BauKWTGth9OkPB1v+hNW9Gw+dmxrrQ/0wfoQhGUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Nishanth Menon <nm@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 85/86] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+Subject: [PATCH 6.12 099/112] net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
 Date: Thu, 27 Nov 2025 15:46:41 +0100
-Message-ID: <20251127144030.944601567@linuxfoundation.org>
+Message-ID: <20251127144036.465067633@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
+[ Upstream commit 90a88306eb874fe4bbdd860e6c9787f5bbc588b5 ]
 
-The kernel test has reported:
+Make knav_dma_open_channel consistently return NULL on error instead
+of ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h
+returns NULL when the driver is disabled, but the driver
+implementation does not even return NULL or ERR_PTR on failure,
+causing inconsistency in the users. This results in a crash in
+netcp_free_navigator_resources as followed (trimmed):
 
-  BUG: unable to handle page fault for address: fffba000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pde = 03171067 *pte = 00000000
-  Oops: Oops: 0002 [#1]
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
-  Tainted: [T]=RANDSTRUCT
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
-  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
-  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
-  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
-  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
-  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
-  Call Trace:
-   poison_element (mm/mempool.c:83 mm/mempool.c:102)
-   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
-   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   do_one_initcall (init/main.c:1283)
+Unhandled fault: alignment exception (0x221) at 0xfffffff2
+[fffffff2] *pgd=80000800207003, *pmd=82ffda003, *pte=00000000
+Internal error: : 221 [#1] SMP ARM
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc7 #1 NONE
+Hardware name: Keystone
+PC is at knav_dma_close_channel+0x30/0x19c
+LR is at netcp_free_navigator_resources+0x2c/0x28c
 
-Christoph found out this is due to the poisoning code not dealing
-properly with CONFIG_HIGHMEM because only the first page is mapped but
-then the whole potentially high-order page is accessed.
+[... TRIM...]
 
-We could give up on HIGHMEM here, but it's straightforward to fix this
-with a loop that's mapping, poisoning or checking and unmapping
-individual pages.
+Call trace:
+ knav_dma_close_channel from netcp_free_navigator_resources+0x2c/0x28c
+ netcp_free_navigator_resources from netcp_ndo_open+0x430/0x46c
+ netcp_ndo_open from __dev_open+0x114/0x29c
+ __dev_open from __dev_change_flags+0x190/0x208
+ __dev_change_flags from netif_change_flags+0x1c/0x58
+ netif_change_flags from dev_change_flags+0x38/0xa0
+ dev_change_flags from ip_auto_config+0x2c4/0x11f0
+ ip_auto_config from do_one_initcall+0x58/0x200
+ do_one_initcall from kernel_init_freeable+0x1cc/0x238
+ kernel_init_freeable from kernel_init+0x1c/0x12c
+ kernel_init from ret_from_fork+0x14/0x38
+[... TRIM...]
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
-Analyzed-by: Christoph Hellwig <hch@lst.de>
-Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
-Cc: stable@vger.kernel.org
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Standardize the error handling by making the function return NULL on
+all error conditions. The API is used in just the netcp_core.c so the
+impact is limited.
+
+Note, this change, in effect reverts commit 5b6cb43b4d62 ("net:
+ethernet: ti: netcp_core: return error while dma channel open issue"),
+but provides a less error prone implementation.
+
+Suggested-by: Simon Horman <horms@kernel.org>
+Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251103162811.3730055-1-nm@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempool.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/netcp_core.c | 10 +++++-----
+ drivers/soc/ti/knav_dma.c            | 14 +++++++-------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -64,10 +64,20 @@ static void check_element(mempool_t *poo
- 	} else if (pool->free == mempool_free_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
+diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
+index 11b90e1da0c63..d07dcffc2517e 100644
+--- a/drivers/net/ethernet/ti/netcp_core.c
++++ b/drivers/net/ethernet/ti/netcp_core.c
+@@ -1338,10 +1338,10 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
  
--		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__check_element(pool, addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__check_element(pool, addr, PAGE_SIZE << order);
-+#endif
+ 	tx_pipe->dma_channel = knav_dma_open_channel(dev,
+ 				tx_pipe->dma_chan_name, &config);
+-	if (IS_ERR(tx_pipe->dma_channel)) {
++	if (!tx_pipe->dma_channel) {
+ 		dev_err(dev, "failed opening tx chan(%s)\n",
+ 			tx_pipe->dma_chan_name);
+-		ret = PTR_ERR(tx_pipe->dma_channel);
++		ret = -EINVAL;
+ 		goto err;
  	}
- }
  
-@@ -89,10 +99,20 @@ static void poison_element(mempool_t *po
- 	} else if (pool->alloc == mempool_alloc_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
+@@ -1359,7 +1359,7 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+ 	return 0;
  
--		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__poison_element(addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__poison_element(addr, PAGE_SIZE << order);
-+#endif
+ err:
+-	if (!IS_ERR_OR_NULL(tx_pipe->dma_channel))
++	if (tx_pipe->dma_channel)
+ 		knav_dma_close_channel(tx_pipe->dma_channel);
+ 	tx_pipe->dma_channel = NULL;
+ 	return ret;
+@@ -1678,10 +1678,10 @@ static int netcp_setup_navigator_resources(struct net_device *ndev)
+ 
+ 	netcp->rx_channel = knav_dma_open_channel(netcp->netcp_device->device,
+ 					netcp->dma_chan_name, &config);
+-	if (IS_ERR(netcp->rx_channel)) {
++	if (!netcp->rx_channel) {
+ 		dev_err(netcp->ndev_dev, "failed opening rx chan(%s\n",
+ 			netcp->dma_chan_name);
+-		ret = PTR_ERR(netcp->rx_channel);
++		ret = -EINVAL;
+ 		goto fail;
  	}
- }
- #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
+ 
+diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
+index fb0746d8caad4..c9cf8a90c6d49 100644
+--- a/drivers/soc/ti/knav_dma.c
++++ b/drivers/soc/ti/knav_dma.c
+@@ -402,7 +402,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
+  * @name:	slave channel name
+  * @config:	dma configuration parameters
+  *
+- * Returns pointer to appropriate DMA channel on success or error.
++ * Return: Pointer to appropriate DMA channel on success or NULL on error.
+  */
+ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 					struct knav_dma_cfg *config)
+@@ -414,13 +414,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 
+ 	if (!kdev) {
+ 		pr_err("keystone-navigator-dma driver not registered\n");
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	chan_num = of_channel_match_helper(dev->of_node, name, &instance);
+ 	if (chan_num < 0) {
+ 		dev_err(kdev->dev, "No DMA instance with name %s\n", name);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	dev_dbg(kdev->dev, "initializing %s channel %d from DMA %s\n",
+@@ -431,7 +431,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	if (config->direction != DMA_MEM_TO_DEV &&
+ 	    config->direction != DMA_DEV_TO_MEM) {
+ 		dev_err(kdev->dev, "bad direction\n");
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	/* Look for correct dma instance */
+@@ -443,7 +443,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	}
+ 	if (!dma) {
+ 		dev_err(kdev->dev, "No DMA instance with name %s\n", instance);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	/* Look for correct dma channel from dma instance */
+@@ -463,14 +463,14 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	if (!chan) {
+ 		dev_err(kdev->dev, "channel %d is not in DMA %s\n",
+ 				chan_num, instance);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	if (atomic_read(&chan->ref_count) >= 1) {
+ 		if (!check_config(chan, config)) {
+ 			dev_err(kdev->dev, "channel %d config miss-match\n",
+ 				chan_num);
+-			return (void *)-EINVAL;
++			return NULL;
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
