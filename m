@@ -1,212 +1,191 @@
-Return-Path: <stable+bounces-197118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C60C8EBB8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:19:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAA3C8EBCD
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67F5A4E501D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:19:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AF634E33BC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682022571C5;
-	Thu, 27 Nov 2025 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6DE2FF15E;
+	Thu, 27 Nov 2025 14:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HkR2ObvF"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O+ED2TXu";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IXtp1l1F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9983328F2
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 14:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1C91FE46D
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 14:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764253153; cv=none; b=oVb5azrNujxotdOvyPbjdA/HIb7FYJB6avczYkBlVWNlWRtwEQflYVnthcH7VFsAK3bjhvM6ux9g3N85Zv6HVMgu3l/nzBNx3Btg4JEYYgJ28/C6D06fO3lh1m/qEGpaqbcMJYbc9kQsENlZI1roAkqKWZOPwEMycUlXRkp0A3k=
+	t=1764253534; cv=none; b=LiA5kmUOC3hkSH6asKeWS6FVfCiaLH86YjARPgpCnOP6HlvIrvilcyM9loBBlgkhHGRL6WmAP50SapCEADhjw5edN9VAMAVi7+wpA5tqhmYa9QdRe5BHmrnKtjKKhidUeV3YmQmnXid1pVhtDh820X4X70BU/2nsb0Q/O5Pj9nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764253153; c=relaxed/simple;
-	bh=+rK0NdDFqbxjsxwEGy5d1mdUZ/tS/dpwvMX+IXOJ0vg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=twDVhmF3M1jlaEiYEg2OAP6aRwJP59CD9eHiXK1MSWxhwSo8LHMVuiSw0Fq/8pkB5VLkD9g983awQ8hQER8kGi/y6hLqxZtNlDSEOQSZrBOwX/tsLiT+HgUNmBVVJZzNQQl2oGtgItfSCeYPLfY2K8rCeUuK3eNX9yejrwl0b8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HkR2ObvF; arc=none smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-64306a32ed2so740156d50.2
-        for <stable@vger.kernel.org>; Thu, 27 Nov 2025 06:19:10 -0800 (PST)
+	s=arc-20240116; t=1764253534; c=relaxed/simple;
+	bh=+qcBtseFiA92n5m2T1naWIfaTbnYB+iuqMe5ly6ejWg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tYvdsuAPMIFrpHecszsTWvNCb5eB6uawfg7qZKC2TC/AgeY4BR6DTDUWbsYPgpaYcH3AsL1fgfXbfNNm3lgKr/HX1gKs3D2GvUq6/1LCYQGYvL/sJMyOG2PK07xN8pXNZUCwDDbeSiEbbWa/r6rkEHGEm7AHm/ZgZMnTAoSSfHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O+ED2TXu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IXtp1l1F; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ARD2YvJ1023020
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 14:25:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lXfQGw9aQcdQsXAqShAhqg7C4NopwvslBYymEWJH4zY=; b=O+ED2TXuJmVoFhaU
+	km8EVBUOCpZ3HTYumGT5retiXw2EepI2LX/yrhNaaVRUxY69I9/mOjjmUJNXx1I5
+	DmxxdYG6q9vWFmPJDM1tNUecRRbYBVY69r5kdRvtMfUzovwJp9WUHLR4V+XVHsdO
+	hMxiwJErYI1jtUjj5UGAwUgau62nLd9l8nINhPmpOTLRXeXHOKrhrGNWNoTZJgOr
+	ZZQUFzJLnLANgZL1XAfrloxZfRe/TkX078X766fGui+6m8P0+IzmxXJbareqdHP6
+	m9wPqr1LgNAstcsOKZS5oFwCNH6nMyWawvheH3KT+3FVg+L/gVZYFyyrELZDRbfI
+	/HpfkA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4apq66g5ud-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 14:25:31 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ee05927208so2552491cf.1
+        for <stable@vger.kernel.org>; Thu, 27 Nov 2025 06:25:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764253149; x=1764857949; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SiuHFLg406W9DhQLXabUumf69AD24Rb67vEaZ3vvDD0=;
-        b=HkR2ObvFvjWpKTiF9mnknd9EVrWxDh3UaZqr9H1TFSrb/Xmbe/0nozzY8M94BkzBpi
-         AiISjUkchR6K/YLVW3Q5uqjx9vyrL/fLc23PnmxIgEx7Y67lrotjj5vZkabIWD2tEgwH
-         EV+pgXon7HloIzseVuMMcXQ+NFkRQVwYKdKc6CsETUXKAzhEjMGEAuOnoeEMB0m6zPof
-         psu7C48hrI4lVJkybqFdhJcqgs11fVsreG3JNr2sItpRYgqCzsMJtdL4ev1ERITDAIcI
-         KnLDChEW8eb4yq3cwaQYoEbBq4mg9CZRkLzGDx6nze4AxSEvI48Yvu6wCm31BPvVrdnB
-         /lsA==
+        d=oss.qualcomm.com; s=google; t=1764253531; x=1764858331; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lXfQGw9aQcdQsXAqShAhqg7C4NopwvslBYymEWJH4zY=;
+        b=IXtp1l1Fdpo4WDrmbmYJdN2abbTB29B88mwrWpUjqUJqeXibiOK7BAF5KyqyzkCCUU
+         TsjkNOpBNOfD8bDFAiBOOzb55EPuqqD5BxDJgcqhrmDXco7EKw0hVWzT/MWmDdzGG6kY
+         RuoKvAYNbQ70S/azvHtg/GSOBJnN2vNMfpsRoq93Z7UB5f41lZaMyLEMJGqGpcorRc8X
+         yDUZZatxQ4x/MBuJSuujV23H41GWdcrkbwuv3osUkqDZRrDZpUKbgYJZ+JNU7t1wZO2d
+         D6RNInALkGSMxmX/+36o5QwiN8birRek5UdpwbjOJS//8yGzjt0q0neTEoPbkTkdANZp
+         RcjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764253149; x=1764857949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SiuHFLg406W9DhQLXabUumf69AD24Rb67vEaZ3vvDD0=;
-        b=FmrqkZ2ICcRYf7+Xd7E31x9xJSZbrPhAyGvN1rcvIXklKsKKqSB3tMRvO+hNc3L98D
-         kJxfdBEmn8j53/wrBCfN7cBmxnVZsWZUdcVGDzU8KTjYgtmf6y8ajh5enY+k/gnCRiDl
-         f+wGatd/HaohqI9hSkQ86oOZP7d0FQHSwFBWVSNyC3avXHuONYXlMjZrrIP22x80Qb2g
-         MqdKa311overEDiyAjZh7tn/tqb00vetM0zSe/9h3VnJd6lMk0vvFcUzD1Z2vxFZukjH
-         CfSLAVFFfwKKfPgxWFutQqaMXUS3jgRMJN8lBGIO5P1IMjZFeO8uQuSIPzD5fvWWbfPV
-         xf1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWrsZpb/SgBRZQoTzJNGSLUrt8pHImCTU1Xl+r+7YTc7MskcmNwiJRCiN7efg+NsbXNjFoUl/s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTDNDDC1ugkdubtBsEQm47HJdh6VTZjcRxw2uI28QPWPfNtRIH
-	tEHbWwBp/psmcYTp8y9VTQKSsFSrs2YTPZVvdw5dKWTk6HpM+HYPtEtacOWBM7ZkBPjCHMvq8/a
-	ALzmRLBXBDo7YdnyoTOsBd/ZLFKQFBDA=
-X-Gm-Gg: ASbGncuWpcWRghQ2vHIGx8L3o1RWrTz9PcAB2P0myhk/jFnz2tuhTKm6oZ9hd6XspTK
-	JVEIHndFx45/2ORDSllSh2T2P/ZxhzuudD+Kqp6y0/SjSoiVzTOr/UmER1j0UkKEnBRst5bfGRo
-	chdVpf6lnvwyfijFXr0rtIB4BIvrtYVJqd0l86jjW1Njjq+f+EAuDHlSkMGG3MR5XwQqAW7o1rj
-	iCAKXnDwTcARAJ5VCx4HICOPCZ956rQR6ZxvE8Bn2nDgphsJRpZPc1venafQLV8lbbH2g==
-X-Google-Smtp-Source: AGHT+IH9PoAq9XPvTiPzII5EfnthmkcpC3LouL1/7BuNls425a7Mp4OkuOlhOHCMfx8jqaUvqg0nrmdyPfdfvCBZVjI=
-X-Received: by 2002:a05:690e:787:b0:63f:b5a5:373 with SMTP id
- 956f58d0204a3-64302a2aab4mr13618764d50.10.1764253148641; Thu, 27 Nov 2025
- 06:19:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764253531; x=1764858331;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lXfQGw9aQcdQsXAqShAhqg7C4NopwvslBYymEWJH4zY=;
+        b=tgovGi4giq/VmQyAqVQRNWipMRkbLgep8Bx/dosR/1NqXRg4VnR+qlZc5nwYFTjK1P
+         vZBOw02ikUNlZQ2tFWSl/A6bdKAH8W+Be7UjignqtA+csyrsKAhz8TMmy+NosMGStgGQ
+         Z6GlNgz22x8bshMurgDp8FV/zMOXsmXg3Znu7m2VMdiQ9Mpb9coeuNW6F7BNQyNwjewL
+         sjajqBY3Kp0S3R4tLRc18flku31KlPus+xWzGV9pW01FfuPg0TMuuvF9nIw9FT8Y7uA5
+         VGm2X4ooMD7VENzP1X8Q6GldHiHNTj8oOamyyD59pZXDcqMhQPrslSf5yKuUfq231x7T
+         P9jg==
+X-Forwarded-Encrypted: i=1; AJvYcCWLAQSR5oWJHVaYgMM3IqmAQS/xw8bfKHBV3Gd/m9bDmZPDTOai51dr1/tKjYvI778houAB0/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc7X0M4H0DD8s44xvhDWIJxRuYykV3X/NN4Ie9zlEO/8dJNvdS
+	bZOc6vnSm/4LWn0BUt9yg9OuIk4ZRzmi3X+bxWZOpigVwswi4ticVL3Qbnflb8JWweXpVWtjbnu
+	h8wOqGHSRvbsfV5iswAtF4Simau6teUVbdTrW3jKA/rktb2KA+/fQFcgIcLQ=
+X-Gm-Gg: ASbGncvYrUkt6X8dYWeTQmIXvqr8zQkBFNpxxQxqhl3DI6HIPh9D/CHpX0Y3h+lU+92
+	eFtizVR1xOE63wLklfzI71AsML9tMR0Ya0WlzIpNZU3hYDaLvpDJC0ALcPb/dMHZ8unu12zvUDc
+	sDtFS9tYMuqJcwUQq5TLDldn32B5H1FlFVrmKVy6lbHZl8/hpdEOF9g3q6aS+VhRO+e5faygpJq
+	HGBk1NGQZpp41wENXR6Bez5dRbw5eKWQeHFVMR48yhRIpcRLq9Vi+e8CpGhhdRC08hTeL4+GKEB
+	SXPavndYrJhQt5PbKu0CtEMMgJzZGmsTJOlAj42JSoWDEPVM53PjzC3PwspbZKrjMf0PYzKKn9V
+	BhLiqiZCNI9EcExFz9UBPi5pWxuHDqvVootyKMsX62TQPnZUaQRrmk3QXc4UDgAt25L4=
+X-Received: by 2002:ac8:7f47:0:b0:4ee:1367:8836 with SMTP id d75a77b69052e-4ee5b6fad57mr245601431cf.5.1764253530913;
+        Thu, 27 Nov 2025 06:25:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG1PEAD2AIQg2biuCDwbY2+IKiEBg3avLNdeTwyi+/WMXHOuqe/1V83hpMDDO6bHfXgntzNkw==
+X-Received: by 2002:ac8:7f47:0:b0:4ee:1367:8836 with SMTP id d75a77b69052e-4ee5b6fad57mr245600931cf.5.1764253530457;
+        Thu, 27 Nov 2025 06:25:30 -0800 (PST)
+Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59a6a67sm172720266b.34.2025.11.27.06.25.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Nov 2025 06:25:29 -0800 (PST)
+Message-ID: <58570d98-f8f1-4e8c-8ae2-5f70a1ced67a@oss.qualcomm.com>
+Date: Thu, 27 Nov 2025 15:25:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710165040.3525304-1-henrique.carvalho@suse.com>
- <2944136.1752224518@warthog.procyon.org.uk> <aHE0--yUyFJqK6lb@precision>
- <CAGypqWyyA6nUfH-bGhQxLYD74O7EcE_6_W15=AB8jvi6yZiV_Q@mail.gmail.com>
- <2025112112-icon-bunkmate-bfad@gregkh> <CAGypqWy8=Oq6CC0YGFSr72L7kqrEDOytboSqJFJBxxV5tGQgFA@mail.gmail.com>
- <2025112707-pummel-film-6bd6@gregkh>
-In-Reply-To: <2025112707-pummel-film-6bd6@gregkh>
-From: Bharath SM <bharathsm.hsk@gmail.com>
-Date: Thu, 27 Nov 2025 06:18:57 -0800
-X-Gm-Features: AWmQ_bkZnXYHxZVlrw2maEPUy5EOPfRwX8Q8KPo1yxUBs5GKouSjvLobSq3_es0
-Message-ID: <CAGypqWyRS0YJ_pgRw4Lx_JkhYYQhXy3DBAW4D+U5sC_HSmZvBQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6.y] smb: client: support kvec iterators in async read path
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>, stable@vger.kernel.org, 
-	Shyam Prasad N <sprasad@microsoft.com>, apais@microsoft.com, 
-	Bharath S M <bharathsm@microsoft.com>, David Howells <dhowells@redhat.com>, smfrench@gmail.com, 
-	linux-cifs@vger.kernel.org, Laura Kerner <laura.kerner@ichaus.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/msm: Fix a7xx per pipe register programming
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+        Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar
+ <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Antonino Maniscalco <antomani103@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: QEkStv-mTpLFuBh68rUMaO8n9_kqPt17
+X-Proofpoint-ORIG-GUID: QEkStv-mTpLFuBh68rUMaO8n9_kqPt17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI3MDEwNyBTYWx0ZWRfX/FiO1KG+dUdZ
+ NSiGe9W8pL5GVLU1QnSXhOkclp9lYSZvgLOr4DZv5WO5JElr372lpa0GHL0e1k61s6S4abAIGJ+
+ It+Yyg6x7WivtsvmDz6SZHSrifPU9xOl0jgtecrxAbCJfPcLgfbSDUsJMjNBgygpWymXY5DJWct
+ dTsbLPQptLBgZH82Yj0MlzGGElhsOWZO9xMm/em6vsNDqtxaf9HfCPdmLMjP4rAWpNNbjhP8pzn
+ UkDKzCrtWQDIZm/YABJggwW2T68IAXzOta2aYYncJiwOnTAe0KuRZuGW+No3tGyqi8r0JBsUJqH
+ WxVD7vrpGNiw/eNFll3a0mSvOcXZ6jLIa54wUNaSHtpHK3SZH5JKsSLd9SvxvOzw6lsQDLWqhfX
+ 1H3P4oAoUB8bw99SV01Op3mHeS6gXA==
+X-Authority-Analysis: v=2.4 cv=BYHVE7t2 c=1 sm=1 tr=0 ts=69285f5b cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=51bRkEKeLUuq6sK2_JkA:9
+ a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 bulkscore=0 priorityscore=1501 spamscore=0
+ clxscore=1015 suspectscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511270107
 
-On Thu, Nov 27, 2025 at 5:30=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Fri, Nov 21, 2025 at 02:31:20AM -0800, Bharath SM wrote:
-> > On Fri, Nov 21, 2025 at 2:02=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Thu, Nov 06, 2025 at 06:02:39AM -0800, Bharath SM wrote:
-> > > > On Fri, Jul 11, 2025 at 9:01=E2=80=AFAM Henrique Carvalho
-> > > > <henrique.carvalho@suse.com> wrote:
-> > > > >
-> > > > > On Fri, Jul 11, 2025 at 10:01:58AM +0100, David Howells wrote:
-> > > > > > Henrique Carvalho <henrique.carvalho@suse.com> wrote:
-> > > > > >
-> > > > > > > Add cifs_limit_kvec_subset() and select the appropriate limit=
-er in
-> > > > > > > cifs_send_async_read() to handle kvec iterators in async read=
- path,
-> > > > > > > fixing the EIO bug when running executables in cifs shares mo=
-unted
-> > > > > > > with nolease.
-> > > > > > >
-> > > > > > > This patch -- or equivalent patch, does not exist upstream, a=
-s the
-> > > > > > > upstream code has suffered considerable API changes. The affe=
-cted path
-> > > > > > > is currently handled by netfs lib and located under netfs/dir=
-ect_read.c.
-> > > > > >
-> > > > > > Are you saying that you do see this upstream too?
-> > > > > >
-> > > > >
-> > > > > No, the patch only targets the 6.6.y stable tree. Since version 6=
-.8,
-> > > > > this path has moved into the netfs layer, so the original bug no =
-longer
-> > > > > exists.
-> > > > >
-> > > > > The bug was fixed at least since the commit referred in the commi=
-t
-> > > > > message -- 3ee1a1fc3981. In this commit, the call to cifs_user_re=
-adv()
-> > > > > is replaced by a call to netfs_unbuffered_read_iter(), inside the
-> > > > > function cifs_strict_readv().
-> > > > >
-> > > > > netfs_unbuffered_read_iter() itself was introduced in commit
-> > > > > 016dc8516aec8, along with other netfs api changes, present in ker=
-nel
-> > > > > versions 6.8+.
-> > > > >
-> > > > > Backporting netfs directly would be non-trivial. Instead, I:
-> > > > >
-> > > > > - add cifs_limit_kvec_subset(), modeled on the existing
-> > > > >   cifs_limit_bvec_subset()
-> > > > > - choose between the kvec or bvec limiter function early in
-> > > > >   cifs_write_from_iter().
-> > > > >
-> > > > > The Fixes tag references d08089f649a0c, which implements
-> > > > > cifs_limit_bvec_subset() and uses it inside cifs_write_from_iter(=
-).
-> > > > >
-> > > > > > > Reproducer:
-> > > > > > >
-> > > > > > > $ mount.cifs //server/share /mnt -o nolease
-> > > > > > > $ cat - > /mnt/test.sh <<EOL
-> > > > > > > echo hallo
-> > > > > > > EOL
-> > > > > > > $ chmod +x /mnt/test.sh
-> > > > > > > $ /mnt/test.sh
-> > > > > > > bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-=
-/Ausgabefehler
-> > > > > > > $ rm -f /mnt/test.sh
-> > > > > >
-> > > > > > Is this what you are expecting to see when it works or when it =
-fails?
-> > > > > >
-> > > > >
-> > > > > This is the reproducer for the observed bug. In english it reads =
-"Bad
-> > > > > interpreter: Input/Output error".
-> > > > >
-> > > > > FYI: I tried to follow Option 3 of the stable-kernel rules for su=
-bmission:
-> > > > > <https://www.kernel.org/doc/html/v6.15/process/stable-kernel-rule=
-s.html>
-> > > > > Please let me know if you'd prefer a different approach or any fu=
-rther
-> > > > > changes.
-> > > > Thanks Henrique.
-> > > >
-> > > > Hi Greg,
-> > > >
-> > > > We are observing the same issue with the 6.6 Kernel, Can you please
-> > > > help include this patch in the 6.6 stable kernel.?
-> > >
-> > > Pleas provide a working backport and we will be glad to imclude it.
-> > >
-> > This fix is not needed now in the stable kernels as "[PATCH] cifs: Fix
-> > uncached read into ITER_KVEC iterator" submitted
-> > in email thread "Request to backport data corruption fix to stable"
-> > fixes this issue.
->
-> I do not understand, what commit fixed this?  You attached a fix, but
-> that's not needed?
+On 11/27/25 12:46 AM, Anna Maniscalco wrote:
+> GEN7_GRAS_NC_MODE_CNTL was only programmed for BR and not for BV pipe
+> but it needs to be programmed for both.
+> 
+> Program both pipes in hw_init and introducea separate reglist for it in
+> order to add this register to the dynamic reglist which supports
+> restoring registers per pipe.
+> 
+> Fixes: 91389b4e3263 ("drm/msm/a6xx: Add a pwrup_list field to a6xx_info")
+> Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+> ---
+>  drivers/gpu/drm/msm/adreno/a6xx_catalog.c |  9 ++-
+>  drivers/gpu/drm/msm/adreno/a6xx_gpu.c     | 91 +++++++++++++++++++++++++++++--
+>  drivers/gpu/drm/msm/adreno/a6xx_gpu.h     |  1 +
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.h   | 13 +++++
+>  4 files changed, 109 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> index 29107b362346..c8d0b1d59b68 100644
+> --- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> +++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+> @@ -1376,7 +1376,6 @@ static const uint32_t a7xx_pwrup_reglist_regs[] = {
+>  	REG_A6XX_UCHE_MODE_CNTL,
+>  	REG_A6XX_RB_NC_MODE_CNTL,
+>  	REG_A6XX_RB_CMP_DBG_ECO_CNTL,
+> -	REG_A7XX_GRAS_NC_MODE_CNTL,
+>  	REG_A6XX_RB_CONTEXT_SWITCH_GMEM_SAVE_RESTORE_ENABLE,
+>  	REG_A6XX_UCHE_GBIF_GX_CONFIG,
+>  	REG_A6XX_UCHE_CLIENT_PF,
+> @@ -1448,6 +1447,12 @@ static const u32 a750_ifpc_reglist_regs[] = {
+>  
+>  DECLARE_ADRENO_REGLIST_LIST(a750_ifpc_reglist);
+>  
+> +static const struct adreno_reglist_pipe a750_reglist_pipe_regs[] = {
+> +	{ REG_A7XX_GRAS_NC_MODE_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
 
-For the issue described originally in this thread, both David and
-Henrique has submitted different fixes.
-Since David's patch already merged to stable kernel 6.6 recently, we
-don't need the patch submitted by Henriqie in this thread.
+At a glance at kgsl, all gen7 GPUs that support concurrent binning (i.e.
+not gen7_3_0/a710? and gen7_14_0/whatever that translates to) need this
 
-Link to david's patch that is already in 6.6 stable:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/fs/=
-smb/client?h=3Dlinux-6.6.y&id=3D25d6e76639323ee3d1fb4df7066c6d79190f6c33
-
-Thank you.!
+Konrad
 
