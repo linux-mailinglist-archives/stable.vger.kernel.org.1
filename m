@@ -1,124 +1,124 @@
-Return-Path: <stable+bounces-197061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E199EC8C7E8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 02:01:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9DCC8CAC3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 03:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95C9A3B0B02
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 01:01:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFE60351AF8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 02:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD81B28852E;
-	Thu, 27 Nov 2025 01:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46890248867;
+	Thu, 27 Nov 2025 02:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="altWrIVJ"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="fAcq+yWC";
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="h76ftoVh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774943B1B3;
-	Thu, 27 Nov 2025 01:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E2F21CC68;
+	Thu, 27 Nov 2025 02:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764205293; cv=none; b=CSXtMlqfJBQEs6HTdvItvNQ3j9GIZDxNZC6dgUjWkB89kTIn0YakC0Cr/J8EtcJCPef1YWV6EKNnaYx89ddnpgmb29ZkczT+hhLIzFKa7HlzLmspGOcS36JL2Khi4ldvNCqx/dkElcuwgKkLXfNkhZ2kObOhI3BYWQ+ccKoAWu4=
+	t=1764210770; cv=none; b=SRStTBQWjHWQeThrviKp7B66tDWn2WsQYVmVWVpuik+C9C+gl4vMx2FT2SkobAuxhuiswzk6yy16H8ziOA4s807chDiwtSEVtMHJ241IzGMxtmmAKhhpDQaF7Vp0MGT4F164CXgWPcKJDP4RHu25rYh5XwqFFcpjP4NZd8SeWz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764205293; c=relaxed/simple;
-	bh=SKBQ8+lQ33UFwKRoD5O6+nU0QPbxUGW+/Bqz/jbtYAU=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=fNqEgeYQ7Oqe0nVEsg9fFgzg1g+6Hb14P/Ory3NXCa814nEzgmt3L7KsDQyUp5wzCirTKo7K88SOiotwZD75H6kZl9Gz9ZCUfidPog36S0C77rjPOpSAU9uLzIpoeTD3e8xlxOn8hQRdhZIr1EwSzZnr7peU3hJ9T64FsRE23Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=altWrIVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6E7C116D0;
-	Thu, 27 Nov 2025 01:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764205293;
-	bh=SKBQ8+lQ33UFwKRoD5O6+nU0QPbxUGW+/Bqz/jbtYAU=;
-	h=Date:From:To:Cc:Subject:References:From;
-	b=altWrIVJRKDxicVP5Te7l1tshks9S753tQzbBGCHLVGim2TaKBWL2ALjC6Q7y9ueM
-	 YkIekZAMbanmOLmdtwjkhwtmuzSZOFSa+3GG2dhLjEmPH/YsA4wPPdvFNqMnHetqlh
-	 hx/tODzq4mn+PzvJHgYokYVOcFxlOzefDzcgpm48/D18zKq8/vjpKkdw7VKI+uK1cA
-	 Ii2pJN1VoLq7lMz4+4JpP36b3Z3KDmC23hdBv81sO7gl+2b4b9U6LfmAUeWfJPnXyV
-	 E7FS2qw/eaJfjslvcG/0doWDT4oF6uZFELu8ZbTMY1Q9dNxUD/L3SfhSbhNSlWd9nY
-	 DuyvyzCobVaEA==
-Received: from rostedt by gandalf with local (Exim 4.98.2)
-	(envelope-from <rostedt@kernel.org>)
-	id 1vOQOq-00000006JX0-1wRq;
-	Wed, 26 Nov 2025 20:02:20 -0500
-Message-ID: <20251127010220.313531895@kernel.org>
-User-Agent: quilt/0.68
-Date: Wed, 26 Nov 2025 20:02:05 -0500
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
-  <wang.yaxin@zte.com.cn>,
-  <zhang.run@zte.com.cn>,
-  <yang.yang29@zte.com.cn>,
- Shengming Hu <hu.shengming@zte.com.cn>
-Subject: [for-linus][PATCH 2/2] fgraph: Check ftrace_pids_enabled on registration for early filtering
-References: <20251127010203.011129471@kernel.org>
+	s=arc-20240116; t=1764210770; c=relaxed/simple;
+	bh=TAXvV327W3/HWHYhaW8BCOljyf0ywz72yBANEpC5JMQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CQncGWCj0A1NG35reZtK27HNDpFPVltZxqgwCaJRotmNdYrzy40/vgN9h6oLOrgcOF43/+d/h3ojRbMusqnu+mksKIYIgDwtPLLHp3kuTxhSoxHT4IbHb0zKa0Ikb06nh865yrwsrrnRhdHL8F/Qo51ODdYNgi1UtyFYt508IsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=fAcq+yWC; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=h76ftoVh; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1764210766;
+	bh=+gi4eVpD8x7Ekg5ewmo295blVaWoyq0TWrl7FTTPFZ8=; l=1250;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fAcq+yWCITpbSkMHiXK6qn87ikNC7JuMxJzU1vHOvNZEnspTJsapv7sbmCfcDY7mP
+	 esyEGZ5LnHQKeIUcbQ8JxB0UuRQLasedm4WS6uJPhQxQnQ1OzLXACvnW4kWU8uHxJk
+	 T5QIGMxxs/Kt6UmoMqjraxGVeJyQeB85WIUQ4zmho56bMP1IbAMz2/V2bsUpDHn7pC
+	 HcZsTKKTS1ZwsBDN66qhoxpQxY8u81/CxcJlSJp7Vm2XIJsMUQpP/vWIbS5U3iCbM1
+	 bywxf0anwSzpCiBApOVyVc4mEjpUmeyToHsnwcSVL2flmnUq0rVfbF6uXGdBGO4A/q
+	 7ITuBKjsdziGQ==
+Received: from 192.168.8.21
+	by mg.richtek.com with MailGates ESMTP Server V3.0(1128079:0:AUTH_RELAY)
+	(envelope-from <prvs=1422232011=cy_huang@richtek.com>); Thu, 27 Nov 2025 10:32:45 +0800 (CST)
+X-MailGates: (compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1764210765;
+	bh=+gi4eVpD8x7Ekg5ewmo295blVaWoyq0TWrl7FTTPFZ8=; l=1250;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=h76ftoVhtClDxEwBidimxzqXyLXShkUsLjvQb8sQaM0GPli6f61m1FZGH4Tj/iEpH
+	 b+Y6jUhDKLyPGI/AeMXrSz5Q9xQkk9JOOSdrDM1SotuuuS9P97Qy4TsCTqu8JGFvN1
+	 2RG21TYl6L3uJfv43I7jKzXXhqMVq7AxPVOh2TQVnzyT+tmKQvgvS43cWmnKDHvowy
+	 B5NpL8kdO1GPD9yHcLYFAjdvSpqQedcXq3O4HfTfa17FsHYqzxPJN4l/nNIldTfUTe
+	 CmGBT+HzY+Cw8Ak2ct+6Ez9ETiqkQHNEYUcEQ195Wh52TAmfe8t7yCOFrfJUWRUOQl
+	 ICOfOdP4ytVxw==
+Received: from 192.168.10.46
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(3436903:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Thu, 27 Nov 2025 10:25:56 +0800 (CST)
+Received: from ex3.rt.l (192.168.10.46) by ex3.rt.l (192.168.10.46) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Thu, 27 Nov
+ 2025 10:25:55 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex3.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Thu, 27 Nov 2025 10:25:55 +0800
+From: <cy_huang@richtek.com>
+To: Mark Brown <broonie@kernel.org>
+CC: Liam Girdwood <lgirdwood@gmail.com>, Edward Kim <edward_kim@richtek.com>,
+	<linux-kernel@vger.kernel.org>, ChiYuan Huang <cy_huang@richtek.com>,
+	<stable@vger.kernel.org>, Yoon Dong Min <dm.youn@telechips.com>
+Subject: [PATCH 1/2] regulator: rtq2208: Correct buck group2 phase mapping logic
+Date: Thu, 27 Nov 2025 10:25:50 +0800
+Message-ID: <8527ae02a72b754d89b7580a5fe7474d6f80f5c3.1764209258.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Shengming Hu <hu.shengming@zte.com.cn>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-When registering ftrace_graph, check if ftrace_pids_enabled is active.
-If enabled, assign entryfunc to fgraph_pid_func to ensure filtering
-is performed before executing the saved original entry function.
+Correct buck group2 H and F mapping logic.
 
 Cc: stable@vger.kernel.org
-Cc: <wang.yaxin@zte.com.cn>
-Cc: <mhiramat@kernel.org>
-Cc: <mark.rutland@arm.com>
-Cc: <mathieu.desnoyers@efficios.com>
-Cc: <zhang.run@zte.com.cn>
-Cc: <yang.yang29@zte.com.cn>
-Link: https://patch.msgid.link/20251126173331679XGVF98NLhyLJRdtNkVZ6w@zte.com.cn
-Fixes: df3ec5da6a1e7 ("function_graph: Add pid tracing back to function graph tracer")
-Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Yoon Dong Min <dm.youn@telechips.com>
+Fixes: 1742e7e978ba ("regulator: rtq2208: Fix incorrect buck converter phase mapping")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
 ---
- kernel/trace/fgraph.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/regulator/rtq2208-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-index d6222bb99d1d..599f2939cd94 100644
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -1377,6 +1377,13 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
+index 9cde7181b0f0..4a174e27c579 100644
+--- a/drivers/regulator/rtq2208-regulator.c
++++ b/drivers/regulator/rtq2208-regulator.c
+@@ -543,14 +543,14 @@ static int rtq2208_regulator_check(struct device *dev, int *num, int *regulator_
  
- 	ftrace_graph_active++;
- 
-+	/* Always save the function, and reset at unregistering */
-+	gops->saved_func = gops->entryfunc;
-+#ifdef CONFIG_DYNAMIC_FTRACE
-+	if (ftrace_pids_enabled(&gops->ops))
-+		gops->entryfunc = fgraph_pid_func;
-+#endif
-+
- 	if (ftrace_graph_active == 2)
- 		ftrace_graph_disable_direct(true);
- 
-@@ -1396,8 +1403,6 @@ int register_ftrace_graph(struct fgraph_ops *gops)
- 	} else {
- 		init_task_vars(gops->idx);
- 	}
--	/* Always save the function, and reset at unregistering */
--	gops->saved_func = gops->entryfunc;
- 
- 	gops->ops.flags |= FTRACE_OPS_FL_GRAPH;
- 
+ 	switch (FIELD_GET(RTQ2208_MASK_BUCKPH_GROUP2, buck_phase)) {
+ 	case 2:
+-		rtq2208_used_table[RTQ2208_BUCK_F] = true;
++		rtq2208_used_table[RTQ2208_BUCK_H] = true;
+ 		fallthrough;
+ 	case 1:
+ 		rtq2208_used_table[RTQ2208_BUCK_E] = true;
+ 		fallthrough;
+ 	case 0:
+ 	case 3:
+-		rtq2208_used_table[RTQ2208_BUCK_H] = true;
++		rtq2208_used_table[RTQ2208_BUCK_F] = true;
+ 		fallthrough;
+ 	default:
+ 		rtq2208_used_table[RTQ2208_BUCK_G] = true;
+
+base-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
 -- 
-2.51.0
-
+2.34.1
 
 
