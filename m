@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12B7C8F088
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899B4C8ED3C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4FE20356E41
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CC59D4E940E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FA1334C12;
-	Thu, 27 Nov 2025 15:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B60274B3C;
+	Thu, 27 Nov 2025 14:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5SfCm+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4csuMch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D244333456;
-	Thu, 27 Nov 2025 15:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25D91A9B58;
+	Thu, 27 Nov 2025 14:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255673; cv=none; b=IDV5UHP5fj/FPBlk64LghGeIo1ezq9tKERuVO8hsTlHExGJD9kMn/2SeLF8VIOMjOFggB0QZkN0ymZOX4EVbHg87Uy6vPmih2SbRAzewb2pRE4AJPgaYMkaR494dPA2CVOsRad5bfFJxRX01XtPw057gJaXvMdFHAgQ6ytn8qCQ=
+	t=1764254862; cv=none; b=plmc6kG77GtEjOMnbTEqeGwaErZLGxNNI7i2jEX34gbOXyX/rGgwaOswBCJoTLovfr0oIm2+/ypY9jtnHQTIPzhf/bky8pIWSjwVrVQssKSIDY88gSWVtNh9Tpp7cKsfzWyPBAZtqUq9zkJ7fBzeSlgIj6L05PSiD6UR3KPkQhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255673; c=relaxed/simple;
-	bh=+CaYF+weOBqwD66I1/Dj21QvjWbO1zTQCrtVhUxmq6A=;
+	s=arc-20240116; t=1764254862; c=relaxed/simple;
+	bh=muZ2lGeRj5jYtXsmEhnouc30Ki2kJFyLaYmpBn0egG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIYKOMINboQLPupI/mI9hVRoQhfapCIZaZBXFdM4RQulYQ4Iu3ki12GY/S5Gm9sSPeko5Uihz8aWVHK034KcU5i5p+b6ZtyINQI3dhhp4KAaUKLRXgzoLjEITHx6QT41yJ9aOcI9b8h7Qd8t03OxCBSATFwtexrk8+Ea6Iykx9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5SfCm+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5821C4CEF8;
-	Thu, 27 Nov 2025 15:01:12 +0000 (UTC)
+	 MIME-Version; b=PL9jJXqGInoLeK7aa1/Z65Wc4Os81R4838dSStg307J/GGClgVEIp6sX2ulaJhD7AfJ6LI0D1jwV6gOOYODhF2VtsI2oCcC4xvxWDFhpOa+wWNzjMiKZRDdfum5q1eiROGfKQ8RGO3cVrb7m8n0etnQRcPYycJx8TVgo9kzCdGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4csuMch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EA3C4CEF8;
+	Thu, 27 Nov 2025 14:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255673;
-	bh=+CaYF+weOBqwD66I1/Dj21QvjWbO1zTQCrtVhUxmq6A=;
+	s=korg; t=1764254862;
+	bh=muZ2lGeRj5jYtXsmEhnouc30Ki2kJFyLaYmpBn0egG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5SfCm+V1RNas02ewh/O2FF1l0EXxq0weJKpMxa+R7foNQ0zN4IV1khzH6ubitz96
-	 Dxn2voiEFdOxgykxwusGBwmiiSGCHdxuEahuXifrNyz1RbrYsqzKQAgST118JQU3dl
-	 V1O8rCDsYUEtetF2Ji/WPR75cW+aK34cQnwWL/zQ=
+	b=q4csuMchBuqk8uJog5lJwIOeMYg6VxDgB1X0ztdVuTxKIwC5VSz7P+mag6+hrfoBm
+	 yhW3HfTnSDP8/A3VR2ZR8EKM38OsNFVkQ4Cix8wJKEP5kUmpDykjp8g0fAJXLtaWX0
+	 BDcHgvOjSzd6CnIdphR5gJBlDhKAbNzXifzKuXmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 075/175] drm/amd/display: Fix pbn to kbps Conversion
+	Yihang Li <liyihang9@h-partners.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 12/86] ata: libata-scsi: Add missing scsi_device_put() in ata_scsi_dev_rescan()
 Date: Thu, 27 Nov 2025 15:45:28 +0100
-Message-ID: <20251127144045.704882644@linuxfoundation.org>
+Message-ID: <20251127144028.266542045@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,198 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Yihang Li <liyihang9@h-partners.com>
 
-commit 1788ef30725da53face7e311cdf62ad65fababcd upstream.
+commit b32cc17d607e8ae7af037303fe101368cb4dc44c upstream.
 
-[Why]
-Existing routine has two conversion sequence,
-pbn_to_kbps and kbps_to_pbn with margin.
-Non of those has without-margin calculation.
+Call scsi_device_put() in ata_scsi_dev_rescan() if the device or its
+queue are not running.
 
-kbps_to_pbn with margin conversion includes
-fec overhead which has already been included in
-pbn_div calculation with 0.994 factor considered.
-It is a double counted fec overhead factor that causes
-potential bw loss.
-
-[How]
-Add without-margin calculation.
-Fix fec overhead double counted issue.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3735
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e0dec00f3d05e8c0eceaaebfdca217f8d10d380c)
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
 Cc: stable@vger.kernel.org
+Signed-off-by: Yihang Li <liyihang9@h-partners.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   59 ++++--------
- 1 file changed, 23 insertions(+), 36 deletions(-)
+ drivers/ata/libata-scsi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -852,26 +852,28 @@ struct dsc_mst_fairness_params {
- };
- 
- #if defined(CONFIG_DRM_AMD_DC_FP)
--static uint16_t get_fec_overhead_multiplier(struct dc_link *dc_link)
-+static uint64_t kbps_to_pbn(int kbps, bool is_peak_pbn)
- {
--	u8 link_coding_cap;
--	uint16_t fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B;
-+	uint64_t effective_kbps = (uint64_t)kbps;
- 
--	link_coding_cap = dc_link_dp_mst_decide_link_encoding_format(dc_link);
--	if (link_coding_cap == DP_128b_132b_ENCODING)
--		fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B;
-+	if (is_peak_pbn) {	// add 0.6% (1006/1000) overhead into effective kbps
-+		effective_kbps *= 1006;
-+		effective_kbps = div_u64(effective_kbps, 1000);
-+	}
- 
--	return fec_overhead_multiplier_x1000;
-+	return (uint64_t) DIV64_U64_ROUND_UP(effective_kbps * 64, (54 * 8 * 1000));
- }
- 
--static int kbps_to_peak_pbn(int kbps, uint16_t fec_overhead_multiplier_x1000)
-+static uint32_t pbn_to_kbps(unsigned int pbn, bool with_margin)
- {
--	u64 peak_kbps = kbps;
-+	uint64_t pbn_effective = (uint64_t)pbn;
-+
-+	if (with_margin)	// deduct 0.6% (994/1000) overhead from effective pbn
-+		pbn_effective *= (1000000 / PEAK_FACTOR_X1000);
-+	else
-+		pbn_effective *= 1000;
- 
--	peak_kbps *= 1006;
--	peak_kbps *= fec_overhead_multiplier_x1000;
--	peak_kbps = div_u64(peak_kbps, 1000 * 1000);
--	return (int) DIV64_U64_ROUND_UP(peak_kbps * 64, (54 * 8 * 1000));
-+	return DIV_U64_ROUND_UP(pbn_effective * 8 * 54, 64);
- }
- 
- static void set_dsc_configs_from_fairness_vars(struct dsc_mst_fairness_params *params,
-@@ -942,7 +944,7 @@ static int bpp_x16_from_pbn(struct dsc_m
- 	dc_dsc_get_default_config_option(param.sink->ctx->dc, &dsc_options);
- 	dsc_options.max_target_bpp_limit_override_x16 = drm_connector->display_info.max_dsc_bpp * 16;
- 
--	kbps = div_u64((u64)pbn * 994 * 8 * 54, 64);
-+	kbps = pbn_to_kbps(pbn, false);
- 	dc_dsc_compute_config(
- 			param.sink->ctx->dc->res_pool->dscs[0],
- 			&param.sink->dsc_caps.dsc_dec_caps,
-@@ -971,12 +973,11 @@ static int increase_dsc_bpp(struct drm_a
- 	int link_timeslots_used;
- 	int fair_pbn_alloc;
- 	int ret = 0;
--	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 
- 	for (i = 0; i < count; i++) {
- 		if (vars[i + k].dsc_enabled) {
- 			initial_slack[i] =
--			kbps_to_peak_pbn(params[i].bw_range.max_kbps, fec_overhead_multiplier_x1000) - vars[i + k].pbn;
-+			kbps_to_pbn(params[i].bw_range.max_kbps, false) - vars[i + k].pbn;
- 			bpp_increased[i] = false;
- 			remaining_to_increase += 1;
- 		} else {
-@@ -1072,7 +1073,6 @@ static int try_disable_dsc(struct drm_at
- 	int next_index;
- 	int remaining_to_try = 0;
- 	int ret;
--	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 	int var_pbn;
- 
- 	for (i = 0; i < count; i++) {
-@@ -1105,7 +1105,7 @@ static int try_disable_dsc(struct drm_at
- 
- 		DRM_DEBUG_DRIVER("MST_DSC index #%d, try no compression\n", next_index);
- 		var_pbn = vars[next_index].pbn;
--		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
-+		vars[next_index].pbn = kbps_to_pbn(params[next_index].bw_range.stream_kbps, true);
- 		ret = drm_dp_atomic_find_time_slots(state,
- 						    params[next_index].port->mgr,
- 						    params[next_index].port,
-@@ -1165,7 +1165,6 @@ static int compute_mst_dsc_configs_for_l
- 	int count = 0;
- 	int i, k, ret;
- 	bool debugfs_overwrite = false;
--	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 	struct drm_connector_state *new_conn_state;
- 
- 	memset(params, 0, sizeof(params));
-@@ -1246,7 +1245,7 @@ static int compute_mst_dsc_configs_for_l
- 	DRM_DEBUG_DRIVER("MST_DSC Try no compression\n");
- 	for (i = 0; i < count; i++) {
- 		vars[i + k].aconnector = params[i].aconnector;
--		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
-+		vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
- 		vars[i + k].dsc_enabled = false;
- 		vars[i + k].bpp_x16 = 0;
- 		ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr, params[i].port,
-@@ -1268,7 +1267,7 @@ static int compute_mst_dsc_configs_for_l
- 	DRM_DEBUG_DRIVER("MST_DSC Try max compression\n");
- 	for (i = 0; i < count; i++) {
- 		if (params[i].compression_possible && params[i].clock_force_enable != DSC_CLK_FORCE_DISABLE) {
--			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps, fec_overhead_multiplier_x1000);
-+			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.min_kbps, false);
- 			vars[i + k].dsc_enabled = true;
- 			vars[i + k].bpp_x16 = params[i].bw_range.min_target_bpp_x16;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-@@ -1276,7 +1275,7 @@ static int compute_mst_dsc_configs_for_l
- 			if (ret < 0)
- 				return ret;
- 		} else {
--			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
-+			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
- 			vars[i + k].dsc_enabled = false;
- 			vars[i + k].bpp_x16 = 0;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-@@ -1731,18 +1730,6 @@ clean_exit:
- 	return ret;
- }
- 
--static uint32_t kbps_from_pbn(unsigned int pbn)
--{
--	uint64_t kbps = (uint64_t)pbn;
--
--	kbps *= (1000000 / PEAK_FACTOR_X1000);
--	kbps *= 8;
--	kbps *= 54;
--	kbps /= 64;
--
--	return (uint32_t)kbps;
--}
--
- static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
- 					  struct dc_dsc_bw_range *bw_range)
- {
-@@ -1835,7 +1822,7 @@ enum dc_status dm_dp_mst_is_port_support
- 			dc_link_get_highest_encoding_format(stream->link));
- 	cur_link_settings = stream->link->verified_link_cap;
- 	root_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link, &cur_link_settings);
--	virtual_channel_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
-+	virtual_channel_bw_in_kbps = pbn_to_kbps(aconnector->mst_output_port->full_pbn, true);
- 
- 	/* pick the end to end bw bottleneck */
- 	end_to_end_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
-@@ -1886,7 +1873,7 @@ enum dc_status dm_dp_mst_is_port_support
- 				immediate_upstream_port = aconnector->mst_output_port->parent->port_parent;
- 
- 			if (immediate_upstream_port) {
--				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
-+				virtual_channel_bw_in_kbps = pbn_to_kbps(immediate_upstream_port->full_pbn, true);
- 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
- 			} else {
- 				/* For topology LCT 1 case - only one mstb*/
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4838,8 +4838,10 @@ void ata_scsi_dev_rescan(struct work_str
+ 			spin_unlock_irqrestore(ap->lock, flags);
+ 			if (do_resume) {
+ 				ret = scsi_resume_device(sdev);
+-				if (ret == -EWOULDBLOCK)
++				if (ret == -EWOULDBLOCK) {
++					scsi_device_put(sdev);
+ 					goto unlock_scan;
++				}
+ 				dev->flags &= ~ATA_DFLAG_RESUMING;
+ 			}
+ 			ret = scsi_rescan_device(sdev);
 
 
 
