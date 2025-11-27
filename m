@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-197332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA225C8EFF5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B862C8F10F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CBAD3524B6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:59:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D03B84EF463
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E439334394;
-	Thu, 27 Nov 2025 14:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAE0334697;
+	Thu, 27 Nov 2025 14:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRQj0aWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5XKEAn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3266F33345E;
-	Thu, 27 Nov 2025 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF45533468A;
+	Thu, 27 Nov 2025 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255515; cv=none; b=bN+megBD8wyhx+JekIfb2OuuRZW13A1GeqkeH9lostnPLXSGbM+aJt1Q1TFvQK+9FyZq+PgnC+RAoPZkwv/D5g+roVw5TJJfh3YFIjS+oWZkjtCGvi3N3rQd8YdrunrPV9Bjro6czHtHJz6fHM3Xq/28JzQPQMnYw9U66xDM4Fk=
+	t=1764255529; cv=none; b=P1Wva43jRX8TncACCFke4WS6pn2Nzyp8+RhB7r4bVB352VdsjoXPRU5nIERhLvD7vgyaVnzoriEGq9+u5Lro0oleExJDZ7ft6gc1fenvq6mM3UU4+8g//qCaraINmqdd3VN2+0AS3e471NHrWhmFuvAmLSupAxEcl4iduF4BnE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255515; c=relaxed/simple;
-	bh=Fyp63ZkMQXVD6S6NaOX+XBUq++UzxZLAlggp7RGdJqI=;
+	s=arc-20240116; t=1764255529; c=relaxed/simple;
+	bh=atq6RA82a01jP2iI0vyq3bx7JVTcFiUAjiHmfNmDdmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gx6hYBwEq6RcTIZ2vXA4VFgGbpBPB00Abh+id+H347gZG4gFbGZ/68NE5ue4R9KjXBWWgf9NPATk9d5lzMBanb4NRg8HUWOdWk2EPf8q91qjfvFj42EoZibjd35oKeljZSjzvtC7IlNG52xkpLXdNRsGP4a6n01zGluypNouFLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRQj0aWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DD8C4CEF8;
-	Thu, 27 Nov 2025 14:58:34 +0000 (UTC)
+	 MIME-Version; b=efTq0TXaJmae4B3FMlpSQ3k26sFtOTW5lrOUk9ulKidDJbZjak71FKmnZYa2ku293d7oiZkuQyZ3pt86hBBPVcvHoo7rchY3xtnXmnF8C1aUUJggCGtgD+TmT/6XZc6J0fo1Ir9SdpdjVXayZvDnWVKdYcIlwnOpIVdfeIm2FMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5XKEAn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6B9C4CEF8;
+	Thu, 27 Nov 2025 14:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255514;
-	bh=Fyp63ZkMQXVD6S6NaOX+XBUq++UzxZLAlggp7RGdJqI=;
+	s=korg; t=1764255529;
+	bh=atq6RA82a01jP2iI0vyq3bx7JVTcFiUAjiHmfNmDdmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRQj0aWefLc6zl14fC7EJhnr/4RRDfokvKTQRA5AMYGgOatnaqRVh3dV3D2CqVRpb
-	 JpyMUVGw14Jo1iDHS5aq4yprpIfu5T8y96AtuSjXs0R/YjRZKTBO3mFQ1j6ZD6RSxE
-	 +zjftetXhNV57fMpv1eyCliMypNNUqr7lXS3gqDs=
+	b=c5XKEAn/7rYCS7+b/udNbcqfji0oFFu4kaBpcpuiyqqfXsWdDzm2DzalxUrORfrVi
+	 LFkpt6ISerWYp3fbFphDWQDdp5I7nX6w2PyQSCRhnzyL+hadwv8rVaJPO7WvkhX4z3
+	 gmelJ7lm1HWmbpR2eSh/NO0OsWAijnOJyo+VOeM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.17 002/175] timers: Fix NULL function pointer race in timer_shutdown_sync()
-Date: Thu, 27 Nov 2025 15:44:15 +0100
-Message-ID: <20251127144043.039059802@linuxfoundation.org>
+	Alexey Charkov <alchark@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.17 003/175] arm64: dts: rockchip: Remove non-functioning CPU OPPs from RK3576
+Date: Thu, 27 Nov 2025 15:44:16 +0100
+Message-ID: <20251127144043.074889073@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
 References: <20251127144042.945669935@linuxfoundation.org>
@@ -65,89 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Alexey Charkov <alchark@gmail.com>
 
-commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
+commit 05b80cd1f37db042e074ecc7ee0d39869fed2f52 upstream.
 
-There is a race condition between timer_shutdown_sync() and timer
-expiration that can lead to hitting a WARN_ON in expire_timers().
+Drop the top-frequency OPPs from both the LITTLE and big CPU clusters on
+RK3576, as neither the opensource TF-A [1] nor the recent (after v1.08)
+binary BL31 images provided by Rockchip expose those.
 
-The issue occurs when timer_shutdown_sync() clears the timer function
-to NULL while the timer is still running on another CPU. The race
-scenario looks like this:
+This fixes the problem [2] when the cpufreq governor tries to jump
+directly to the highest-frequency OPP, which results in a failed SCMI call
+leaving the system stuck at the previous OPP before the attempted change.
 
-CPU0					CPU1
-					<SOFTIRQ>
-					lock_timer_base()
-					expire_timers()
-					base->running_timer = timer;
-					unlock_timer_base()
-					[call_timer_fn enter]
-					mod_timer()
-					...
-timer_shutdown_sync()
-lock_timer_base()
-// For now, will not detach the timer but only clear its function to NULL
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
-					[call_timer_fn exit]
-					lock_timer_base()
-					base->running_timer = NULL;
-					unlock_timer_base()
-					...
-					// Now timer is pending while its function set to NULL.
-					// next timer trigger
-					<SOFTIRQ>
-					expire_timers()
-					WARN_ON_ONCE(!fn) // hit
-					...
-lock_timer_base()
-// Now timer will detach
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
+[1] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/rockchip/rk3576/scmi/rk3576_clk.c#L264-L304
+[2] https://lore.kernel.org/linux-rockchip/CABjd4Yz4NbqzZH4Qsed3ias56gcga9K6CmYA+BLDBxtbG915Ag@mail.gmail.com/
 
-The problem is that timer_shutdown_sync() clears the timer function
-regardless of whether the timer is currently running. This can leave a
-pending timer with a NULL function pointer, which triggers the
-WARN_ON_ONCE(!fn) check in expire_timers().
-
-Fix this by only clearing the timer function when actually detaching the
-timer. If the timer is running, leave the function pointer intact, which is
-safe because the timer will be properly detached when it finishes running.
-
-Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 57b1ce903966 ("arm64: dts: rockchip: Add rk3576 SoC base DT")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1458,10 +1458,11 @@ static int __try_to_del_timer_sync(struc
+--- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+@@ -269,12 +269,6 @@
+ 			opp-microvolt = <900000 900000 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+-
+-		opp-2208000000 {
+-			opp-hz = /bits/ 64 <2208000000>;
+-			opp-microvolt = <950000 950000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+ 	};
  
- 	base = lock_timer_base(timer, &flags);
+ 	cluster1_opp_table: opp-table-cluster1 {
+@@ -341,12 +335,6 @@
+ 			opp-microvolt = <925000 925000 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+-
+-		opp-2304000000 {
+-			opp-hz = /bits/ 64 <2304000000>;
+-			opp-microvolt = <950000 950000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+ 	};
  
--	if (base->running_timer != timer)
-+	if (base->running_timer != timer) {
- 		ret = detach_if_pending(timer, base, true);
--	if (shutdown)
--		timer->function = NULL;
-+		if (shutdown)
-+			timer->function = NULL;
-+	}
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- 
+ 	gpu_opp_table: opp-table-gpu {
 
 
 
