@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAA0C8EDBA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171FCC8EF8E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CBEC93471A4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F4C3B98D9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EB427703C;
-	Thu, 27 Nov 2025 14:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B37A30EF64;
+	Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09hMv8oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjQqfGQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96F73064B9;
-	Thu, 27 Nov 2025 14:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157FC288537;
+	Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255009; cv=none; b=GAdn2mLouq7aryqHOw/R0Dx3xaFlg/GEXwaTVHKiiOeFxcycLgDl+gXGyuMZfNM5TrPDKTjGYD7rd7yTDrMGsMBeve43eu5nFI0Je7fUNadby3NVX9WJyMLWQ5NKQHQNMdE8dnT5loxCScEGOXlvoB4y8fy3x/DjiRHXrvUu26g=
+	t=1764255203; cv=none; b=sQy6F+JcoPzqoqjB69twvo7qmtUFEzOx5e6MKSFtWVTI4wcC3WULlgl6doPeqGamZW5w4uqsICuCS5rUtKCjEdRBEU5od07wHSt8Cex0DcIR5Em8B38UDnEb1O4AmXl8OxZ31mH/UK2NV3Lkysj1BnZzWjmF5flLxIM8cvE1keY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255009; c=relaxed/simple;
-	bh=te55fCbauSbnUeulmccmjvHLgmgpn5H2SF18Sr3XGYo=;
+	s=arc-20240116; t=1764255203; c=relaxed/simple;
+	bh=8nBO3TgO4D6jcilZtjakw8WAIyF8VzDDl3A6kIzTLzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDxwPIzCtxi5eRG3h+ysL5Ju+y5tiOQJ/Hva2FxqImX6k2uYuTSwcVWw1lkW4d9lq0t40riHGHJVZfKjRS3WAPpYrSjri4oToku8iqMH9XPn5m3+xZeDcFR4JRhuW3hiv9mhRHv+zNhscJb1W91soLele1egDVvnCbQZiX2GxVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09hMv8oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6424C4CEF8;
-	Thu, 27 Nov 2025 14:50:08 +0000 (UTC)
+	 MIME-Version; b=TBbTBjhsTT0PGWdGsIIYJ//30Ly4/4BMp/J0VYbh6+J4Bftwom5kHosR66H2B8IeTa4keIIoz6qRZ8W+su3Kiwd9ArhAjHkNL6U52pJvIVoGmXkwLWPkLGE3JTCpsvDyueQ3xnpIxmtqFommGsMG5o1XglolrgOLnAxG6n/fR4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjQqfGQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0EC4CEF8;
+	Thu, 27 Nov 2025 14:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255009;
-	bh=te55fCbauSbnUeulmccmjvHLgmgpn5H2SF18Sr3XGYo=;
+	s=korg; t=1764255203;
+	bh=8nBO3TgO4D6jcilZtjakw8WAIyF8VzDDl3A6kIzTLzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09hMv8ojgXSVnLuVBoKirlzTvmAmPxCGk9gLdcjP3IVykeGfMB3R7nGO1N6cUfUk5
-	 mCFYVXlKAfcizWDi3aoWbKANPujO4XqUJJ5i6AIBizoYdLbxFTcLk2+D7QNMZH62OH
-	 guXsyz6Rljr3fhyG+cCrWciO5mqyggp4VzQr1CeQ=
+	b=WjQqfGQWwoYSrbYoplVy+VA4qM0Q/jkFH2FcyjsMBiUF6HhlDppx3PcoMGfx7T/eB
+	 HPWBqfObgEpKXv/0NjnUwWNEg2V+rUZpVSqp7namUNJPIz12OV2Zfrjqt1SX9XTcQ/
+	 /vnmfcHlsBSb2ly2OOeM0p5Q4hQPKx/p+NIjQG/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 29/86] mptcp: fix ack generation for fallback msk
+Subject: [PATCH 6.12 043/112] mptcp: decouple mptcp fastclose from tcp close
 Date: Thu, 27 Nov 2025 15:45:45 +0100
-Message-ID: <20251127144028.887934395@linuxfoundation.org>
+Message-ID: <20251127144034.416791864@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b upstream.
+commit fff0c87996672816a84c3386797a5e69751c5888 upstream.
 
-mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
-rcv_wnd sent, and such information is tracked into the msk->old_wspace
-field, updated at ack transmission time by mptcp_write_options().
+With the current fastclose implementation, the mptcp_do_fastclose()
+helper is in charge of two distinct actions: send the fastclose reset
+and cleanup the subflows.
 
-Fallback socket do not add any mptcp options, such helper is never
-invoked, and msk->old_wspace value remain stale. That in turn makes
-ack generation at recvmsg() time quite random.
+Formally decouple the two steps, ensuring that mptcp explicitly closes
+all the subflows after the mentioned helper.
 
-Address the issue ensuring mptcp_write_options() is invoked even for
-fallback sockets, and just update the needed info in such a case.
+This will make the upcoming fix simpler, and allows dropping the 2nd
+argument from mptcp_destroy_common(). The Fixes tag is then the same as
+in the next commit to help with the backports.
 
-The issue went unnoticed for a long time, as mptcp currently overshots
-the fallback socket receive buffer autotune significantly. It is going
-to change in the near future.
-
-Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |   13 +++++++++----
+ net/mptcp/protocol.h |    2 +-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -839,8 +839,11 @@ bool mptcp_established_options(struct so
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2869,7 +2869,11 @@ static void mptcp_worker(struct work_str
+ 		__mptcp_close_subflow(sk);
  
- 	opts->suboptions = 0;
- 
-+	/* Force later mptcp_write_options(), but do not use any actual
-+	 * option space.
-+	 */
- 	if (unlikely(__mptcp_check_fallback(msk) && !mptcp_check_infinite_map(skb)))
--		return false;
-+		return true;
- 
- 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
- 		if (mptcp_established_options_fastclose(sk, &opt_size, remaining, opts) ||
-@@ -1318,6 +1321,20 @@ update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
- }
- 
-+static void mptcp_track_rwin(struct tcp_sock *tp)
-+{
-+	const struct sock *ssk = (const struct sock *)tp;
-+	struct mptcp_subflow_context *subflow;
-+	struct mptcp_sock *msk;
+ 	if (mptcp_close_tout_expired(sk)) {
++		struct mptcp_subflow_context *subflow, *tmp;
 +
-+	if (!ssk)
-+		return;
-+
-+	subflow = mptcp_subflow_ctx(ssk);
-+	msk = mptcp_sk(subflow->conn);
-+	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
-+}
-+
- __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
- {
- 	struct csum_pseudo_header header;
-@@ -1610,6 +1627,10 @@ mp_rst:
- 				      opts->reset_transient,
- 				      opts->reset_reason);
- 		return;
-+	} else if (unlikely(!opts->suboptions)) {
-+		/* Fallback to TCP */
-+		mptcp_track_rwin(tp);
-+		return;
+ 		mptcp_do_fastclose(sk);
++		mptcp_for_each_subflow_safe(msk, subflow, tmp)
++			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
+ 		mptcp_close_wake_up(sk);
  	}
  
- 	if (OPTION_MPTCP_PRIO & opts->suboptions) {
+@@ -3301,7 +3305,8 @@ static int mptcp_disconnect(struct sock
+ 	/* msk->subflow is still intact, the following will not free the first
+ 	 * subflow
+ 	 */
+-	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
++	mptcp_do_fastclose(sk);
++	mptcp_destroy_common(msk);
+ 
+ 	/* The first subflow is already in TCP_CLOSE status, the following
+ 	 * can't overlap with a fallback anymore
+@@ -3483,7 +3488,7 @@ void mptcp_rcv_space_init(struct mptcp_s
+ 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
+ }
+ 
+-void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
++void mptcp_destroy_common(struct mptcp_sock *msk)
+ {
+ 	struct mptcp_subflow_context *subflow, *tmp;
+ 	struct sock *sk = (struct sock *)msk;
+@@ -3492,7 +3497,7 @@ void mptcp_destroy_common(struct mptcp_s
+ 
+ 	/* join list will be eventually flushed (with rst) at sock lock release time */
+ 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
+-		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
++		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
+ 
+ 	/* move to sk_receive_queue, sk_stream_kill_queues will purge it */
+ 	mptcp_data_lock(sk);
+@@ -3517,7 +3522,7 @@ static void mptcp_destroy(struct sock *s
+ 
+ 	/* allow the following to close even the initial subflow */
+ 	msk->free_first = 1;
+-	mptcp_destroy_common(msk, 0);
++	mptcp_destroy_common(msk);
+ 	sk_sockets_allocated_dec(sk);
+ }
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -968,7 +968,7 @@ static inline void mptcp_propagate_sndbu
+ 	local_bh_enable();
+ }
+ 
+-void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
++void mptcp_destroy_common(struct mptcp_sock *msk);
+ 
+ #define MPTCP_TOKEN_MAX_RETRIES	4
+ 
 
 
 
