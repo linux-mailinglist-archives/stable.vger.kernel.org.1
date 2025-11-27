@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09D8C8EDB7
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A120C8EE53
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6DD3B34B882
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC8C5348A7C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ECC296BD1;
-	Thu, 27 Nov 2025 14:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EC62F8BC9;
+	Thu, 27 Nov 2025 14:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PME4RtJ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXQ91cZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B960828CF7C;
-	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B3A288537;
+	Thu, 27 Nov 2025 14:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255000; cv=none; b=r3B2IuiOWZRdJ+L597VeLRS1seB4BV/cnHnCVLvsTdKvf8pgIA3B7PWyPzkRRATnkr8Atm+FRnvfi2h/rwDwhCSj5+htEypNb3J/xkMiebrRtHu4nxRd7w2lSQeTCoFrhk3tOp9RWhhZr/FqJjN9zfbm1xtfsRbIUIQabfQlQJU=
+	t=1764255192; cv=none; b=TOhF5DdwDoBNg9s2b6nwvSf4hyOGVhxsNW1w9MHOlFZ79v4sMnX7pQiyajV2pdSBmNUktjwJSPCQ9HkGSvYMZw//vC09aMBEyLM11bo6c3YypXtcsMTBOFWtDsQJ391DFSu2XyXZBy6kXRtdXf4TkhlU0zp/HwUZbo2srVflL5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255000; c=relaxed/simple;
-	bh=BhUvM8TCKIi69h0p4B0ScdYwZ0Jwle01+f4c3vi1enw=;
+	s=arc-20240116; t=1764255192; c=relaxed/simple;
+	bh=K1mqtr4YQflebsE6wYHZWrH73gZDuMMvOAXORjU2eqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PS2knYpgYFu4kvMH2mBErXlqLZQr8G0pb+P6NiPcNUpenOhFFogU5GJAGZ4Ou2E3ZK+MekFODOVtDIFxuhMecyA9ghWeNtqYj/RVcxuH9tfHSuTKbqZbdnERmin44aPXSvBsG+ukJ50WGDtLtoZOrNoX0kXcX9H2T4kLlpG8a5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PME4RtJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E042C113D0;
-	Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
+	 MIME-Version; b=joJtsymITpghCejYbyoZbNU+UFF7NkDsLcnGwRYpbvs8t2/fHxJRs/WKbEV0/2zDug8i1MeWLf91TP82yLgDDhpaMTW/rUqOCvr5OmuZ2XqSuucRaN+qZgymsE8HUIlPuHiOILM756tYdZWhCOpCPyPjEnICOx510LTZ8cvhvno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXQ91cZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71329C4CEF8;
+	Thu, 27 Nov 2025 14:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255000;
-	bh=BhUvM8TCKIi69h0p4B0ScdYwZ0Jwle01+f4c3vi1enw=;
+	s=korg; t=1764255191;
+	bh=K1mqtr4YQflebsE6wYHZWrH73gZDuMMvOAXORjU2eqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PME4RtJ2ZihM1vuhAL8D2TyxuoJKAj/Rnb38/c7u7VxgaZ1YJM+yHMItO1LGBW4yH
-	 gWfeBWDdDKbA5MnvcrvWk2FaGYgZys6r2Y7MXY+DqxSPAMYHo3ojJkkhb6sYn7QP+D
-	 e7nR/h8TYLhj7Y2+THuBrBfK8tGwpcStnivGI27U=
+	b=yXQ91cZubfbPQCIyksNqTKHgx76KvjMUVhjYPXcGyABj4kf8FgABmypYNqe6shLbF
+	 AQ+GP7P/NH1L6BjOKOjfVAAaA4NkFIaUH4ZNu6QOeyhnx7b6LvyoYchi70q8kKbYu1
+	 wwNfCYJJ8A2CJxpHv4tsaqQzZIgpeUeqOdue2Eoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 26/86] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 040/112] selftests: mptcp: join: endpoints: longer timeout
 Date: Thu, 27 Nov 2025 15:45:42 +0100
-Message-ID: <20251127144028.778665428@linuxfoundation.org>
+Message-ID: <20251127144034.308311164@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 316e361b5d2cdeb8d778983794a1c6eadcb26814 upstream.
+commit fb13c6bb810ca871964e062cf91882d1c83db509 upstream.
 
-The "groups" property can hold multiple entries (e.g.
-toshiba/tmpv7708-rm-mbrc.dts file), so allow that by dropping incorrect
-type (pinmux-node.yaml schema already defines that as string-array) and
-adding constraints for items.  This fixes dtbs_check warnings like:
+In rare cases, when the test environment is very slow, some endpoints
+tests can fail because some expected events have not been seen.
 
-  toshiba/tmpv7708-rm-mbrc.dtb: pinctrl@24190000 (toshiba,tmpv7708-pinctrl):
-    pwm-pins:groups: ['pwm0_gpio16_grp', 'pwm1_gpio17_grp', 'pwm2_gpio18_grp', 'pwm3_gpio19_grp'] is too long
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to have a longer
+timeout, and even go over the default one. This connection will be
+killed at the end, after the verifications: increasing the timeout
+doesn't change anything, apart from avoiding it to end before the end of
+the verifications.
 
-Fixes: 1825c1fe0057 ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC")
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now having a longer timeout: 2 minutes.
+
+The Fixes commit was making the connection longer, but still, the
+default timeout would have stopped it after 1 minute, which might not be
+enough in very slow environments.
+
+Fixes: 6457595db987 ("selftests: mptcp: join: endpoints: longer transfer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-8-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml |   26 +++++-----
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-@@ -50,18 +50,20 @@ patternProperties:
-       groups:
-         description:
-           Name of the pin group to use for the functions.
--        $ref: /schemas/types.yaml#/definitions/string
--        enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
--               i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
--               spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
--               spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
--               uart0_grp, uart1_grp, uart2_grp, uart3_grp,
--               pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
--               pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
--               pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
--               pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
--               pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
--               pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        items:
-+          enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
-+                 i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
-+                 spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
-+                 spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
-+                 uart0_grp, uart1_grp, uart2_grp, uart3_grp,
-+                 pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
-+                 pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
-+                 pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
-+                 pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
-+                 pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
-+                 pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        minItems: 1
-+        maxItems: 8
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3728,7 +3728,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		{ test_linkfail=128 speed=slow \
++		{ timeout_test=120 test_linkfail=128 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
  
-       drive-strength:
-         enum: [2, 4, 6, 8, 16, 24, 32]
+@@ -3755,7 +3755,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
+@@ -3833,7 +3833,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
+@@ -3906,7 +3906,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		{ test_linkfail=128 speed=20 \
++		{ timeout_test=120 test_linkfail=128 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 
 
 
 
