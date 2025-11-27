@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B185C8F211
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:10:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C92C8EF43
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C133BA1AE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB98A3B8683
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE547334385;
-	Thu, 27 Nov 2025 15:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191C928D8E8;
+	Thu, 27 Nov 2025 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnAvUAoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb68xb1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4F93346AE;
-	Thu, 27 Nov 2025 15:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C634B28C84D;
+	Thu, 27 Nov 2025 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255627; cv=none; b=apQeOqFjSY0kDOPu4NaPEQioIikJItMpal11/dBhBdLP7BoPLEoDu3FG5tO8/2D2AnSC1e8f2AuKImZ/hHRRKDX9LXaiWXN00umTZgIOJS5lvTO62fs8NfKcZ/AYpQii7QHsJa1gcgHFu+GL4pbNq5cyywiXbU6zg/UjuWVwU0w=
+	t=1764255160; cv=none; b=P9Q6nEJcBHP939Vr2bZt6OTBjT+8sa5tf7FPT+RQnEPTUHAhpHzKYAqoY2jzMbBQ3UEoMPdfSrwNFGRhgY69mSOq3IzWzSXuaRJrcSTI5PhzAOMvpQSsOBHCRS3W/2OnmFJCLB5XitM0Zw6aYAxCFKNqMQ7TVdX1i+vk40227bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255627; c=relaxed/simple;
-	bh=QIJvxbW4tRwZA6TqTzTFpV9l6C80UlgrHt2oCFrWKqM=;
+	s=arc-20240116; t=1764255160; c=relaxed/simple;
+	bh=+qxyqjdyFz1W1zVkCdrn35aCSnghCNui/WoQD3cFuWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h4uql/6UZi30M0yse2IZqLjRXu3gVUfzwnduQmSB5/u6e95wC1lWs4LkKPawZeHY4n01vsfLOz0kqOLqphU+/59nJX7cnrQNCmwIj9BUpC6ziHDy388rzf/4FYEW0+Sa/Shz4vtvt7lGUrr9yksvTG3Xrwklif1fwyGGHg87NnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnAvUAoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F057BC4CEF8;
-	Thu, 27 Nov 2025 15:00:26 +0000 (UTC)
+	 MIME-Version; b=menP1VJjcdryF1PVhKBdZVbEUZ/pYbM6C9Y0xSjm7ENhhhISshDjRMw+qL2FX2t/TeUa5F5uMhMMwox84xD/ZHvnBObvPbhKd9gJ/dea5dC5hmsW2HSwLrOUuUlB7T21yC6WVcWUTlxWO/JM6kLSwmZ3TCyvTYF+g6HKO2doAKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yb68xb1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5147FC4CEF8;
+	Thu, 27 Nov 2025 14:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255627;
-	bh=QIJvxbW4tRwZA6TqTzTFpV9l6C80UlgrHt2oCFrWKqM=;
+	s=korg; t=1764255160;
+	bh=+qxyqjdyFz1W1zVkCdrn35aCSnghCNui/WoQD3cFuWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnAvUAoL8CRQ+SivjSF/XL9TVqrNoLYBPDBu2G5wYC5+TrHLxi+Q7LNZYQ3oFr8jw
-	 2vaOR8AYnOkdauSc9bKeOV8J50k9i3GD08wIXwm4RQCumElwu5Oxgb0BDywcvOFSwN
-	 YYw8o2BaBxmT/HpImHYw3/T1yudKkxnxFnw07o1o=
+	b=Yb68xb1tBic10XAoevUpLgZgLgkKIwP9v7PiK2e3v1ikAlFry+Ls1MZtmi3dUglCZ
+	 WWmNfbeUoDOwY17imYK+/eCNfyvGhN5e874dYedr+v0gAGpv0cM0ZIu04Eb8rOScif
+	 RvHPgKm1mmGOKHDp7wCfeKnOl2rbP0PjaY8fJXeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Wong <anthony.wong@ubuntu.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.17 057/175] platform/x86: alienware-wmi-wmax: Add AWCC support to Alienware 16 Aurora
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 008/112] arm64: dts: rockchip: disable HS400 on RK3588 Tiger
 Date: Thu, 27 Nov 2025 15:45:10 +0100
-Message-ID: <20251127144045.048377016@linuxfoundation.org>
+Message-ID: <20251127144033.021334705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Wong <anthony.wong@ubuntu.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-commit 6f91ad24c6639220f2edb0ad8edb199b43cc3b22 upstream.
+commit baa18d577cd445145039e731d3de0fa49ca57204 upstream.
 
-Add AWCC support to Alienware 16 Aurora
+We've had reports from the field that some RK3588 Tiger have random
+issues with eMMC errors.
 
+Applying commit a28352cf2d2f ("mmc: sdhci-of-dwcmshc: Change
+DLL_STRBIN_TAPNUM_DEFAULT to 0x4") didn't help and seemed to have made
+things worse for our board.
+
+Our HW department checked the eMMC lines and reported that they are too
+long and don't look great so signal integrity is probably not the best.
+
+Note that not all Tigers with the same eMMC chip have errors, so the
+suspicion is that we're really on the edge in terms of signal integrity
+and only a handful devices are failing. Additionally, we have RK3588
+Jaguars with the same eMMC chip but the layout is different and we also
+haven't received reports about those so far.
+
+Lowering the max-frequency to 150MHz from 200MHz instead of simply
+disabling HS400 was briefly tested and seem to work as well. We've
+disabled HS400 downstream and haven't received reports since so we'll go
+with that instead of lowering the max-frequency.
+
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Fixes: 6173ef24b35b ("arm64: dts: rockchip: add RK3588-Q7 (Tiger) SoM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anthony Wong <anthony.wong@ubuntu.com>
-Reviewed-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://patch.msgid.link/20251116185311.18074-1-anthony.wong@canonical.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20251112-tiger-hs200-v1-1-b50adac107c0@cherry.de
+[added Fixes tag and stable-cc from 2nd mail]
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/alienware-wmi-wmax.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-+++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -90,6 +90,14 @@ static struct awcc_quirks empty_quirks;
- 
- static const struct dmi_system_id awcc_dmi_table[] __initconst = {
- 	{
-+		.ident = "Alienware 16 Aurora",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware 16 Aurora"),
-+		},
-+		.driver_data = &g_series_quirks,
-+	},
-+	{
- 		.ident = "Alienware Area-51m",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+--- a/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
+@@ -359,14 +359,12 @@
+ 	cap-mmc-highspeed;
+ 	mmc-ddr-1_8v;
+ 	mmc-hs200-1_8v;
+-	mmc-hs400-1_8v;
+-	mmc-hs400-enhanced-strobe;
+ 	mmc-pwrseq = <&emmc_pwrseq>;
+ 	no-sdio;
+ 	no-sd;
+ 	non-removable;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk &emmc_data_strobe>;
++	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk>;
+ 	vmmc-supply = <&vcc_3v3_s3>;
+ 	vqmmc-supply = <&vcc_1v8_s3>;
+ 	status = "okay";
 
 
 
