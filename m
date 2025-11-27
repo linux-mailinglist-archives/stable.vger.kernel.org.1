@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CC7C8F052
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1C4C8EEDA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 110D4348158
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3AA03AFC2E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F17334698;
-	Thu, 27 Nov 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D91628C5D9;
+	Thu, 27 Nov 2025 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uhG8QH0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQkz7OzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D193D334684;
-	Thu, 27 Nov 2025 15:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4870E25BEE8;
+	Thu, 27 Nov 2025 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255604; cv=none; b=IyFL2+bn45AV3MpO8sh8Hr5ruCv6urHLmBIl+CB8cqD9yxx/H7UCMJy0ZueFJ8eo+LtlYPRHjeJ0zBZRDg2D6v1n8A7gVxdmt12RPJ/yolqmtrWJiNL66lOBDd+5NdyV6cutRAaRBWfElCPFmG5Ea8wlAYi9SE11Dvim+/bshVs=
+	t=1764255103; cv=none; b=dWVuGwXeMI0EPUv270f40lcu0cU12bdB/aM9ZvrgzpGQbP7M5kXokmxsHIBvIiXvcDWW10o2xOB3TCFUWDpOe6SFAFlMW2zmOBAJR6cp2BVzR8ExQQzx8ji4wU6v/rK5J56Otyq+qAQoAIDAExL00i8wjPNtaJwvbyw6K6VnDFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255604; c=relaxed/simple;
-	bh=3/jwRldgeiwyd4H5vnRdc1Nw+QIzBYaKWHyrQHjbce4=;
+	s=arc-20240116; t=1764255103; c=relaxed/simple;
+	bh=ZuGltzw6uJOuiwZaTL35h17XTFzLk28SEPNS6zHpmoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVhqctLxwbTPxpolHmxxT0iglA5Y9wmm4tLYii3+zbxrrJ4Xo+0MmxWrofh8witTDgFYf+lXcblnJTI1TtNSQij9xyDDi9GecwYGVR7axkmwEXOb8CnvdxIxQhQ6+WEJOer7pakb6Gz84gVnoOedudbDZubr+cjdy3+FT+M3RE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uhG8QH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06511C4CEF8;
-	Thu, 27 Nov 2025 15:00:03 +0000 (UTC)
+	 MIME-Version; b=dTNY0lLee8oNx4KCGPaQBYVrKxdtUph2kUlEURL5O/4+LRF3BTlSeC2JIIYyqiEizKH5jL3TTXb5ZezxG3YhvVU3HcGG5B0Hh3+HsmA9qU1I3wkrF9f3fVpBnBLPcRq8wosxfCwwX7xyx5UW0f0CA60ngBbmmNt9+cTbajZjL0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQkz7OzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0D8C4CEF8;
+	Thu, 27 Nov 2025 14:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255604;
-	bh=3/jwRldgeiwyd4H5vnRdc1Nw+QIzBYaKWHyrQHjbce4=;
+	s=korg; t=1764255103;
+	bh=ZuGltzw6uJOuiwZaTL35h17XTFzLk28SEPNS6zHpmoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uhG8QH0igJmCMrNIjt1vdiXz9E0eHacudO8PcPQ94ZvpUtAHykssL7hPkNz6w6Jp
-	 AkQIN81CBcyJSx2jGIC3FmU7j1Z84zOdsQjGMiktYh12ntg5LI1il8cgx5oW31uAdO
-	 1v2Klm23IS2YfA3nyJRcunmG2JaFqZnxS9z1LWGw=
+	b=sQkz7OzChtSz8tBRoOB1v1+f+81QXy7lPFkqTTDsSp2tj9g/KN5hAbqGJ5YDQnU4g
+	 mgeS64hlxX/dEQw1bBLEIVkBDLhQMphk2bWlE4h2KLtn4dNokhdpwXgYCf/W46aAIO
+	 UOBWlBCctwE7c4fZQZB1rG05Z/h3Pp4gzBUz4n3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.17 050/175] LoongArch: BPF: Disable trampoline for kernel module function trace
+	Sebastian Ene <sebastianene@google.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.12 001/112] KVM: arm64: Check the untrusted offset in FF-A memory share
 Date: Thu, 27 Nov 2025 15:45:03 +0100
-Message-ID: <20251127144044.793710655@linuxfoundation.org>
+Message-ID: <20251127144032.763524853@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Li <vincent.mc.li@gmail.com>
+From: Sebastian Ene <sebastianene@google.com>
 
-commit 677e6123e3d24adaa252697dc89740f2ac07664e upstream.
+commit 103e17aac09cdd358133f9e00998b75d6c1f1518 upstream.
 
-The current LoongArch BPF trampoline implementation is incompatible
-with tracing functions in kernel modules. This causes several severe
-and user-visible problems:
+Verify the offset to prevent OOB access in the hypervisor
+FF-A buffer in case an untrusted large enough value
+[U32_MAX - sizeof(struct ffa_composite_mem_region) + 1, U32_MAX]
+is set from the host kernel.
 
-* The `bpf_selftests/module_attach` test fails consistently.
-* Kernel lockup when a BPF program is attached to a module function [1].
-* Critical kernel modules like WireGuard experience traffic disruption
-  when their functions are traced with fentry [2].
-
-Given the severity and the potential for other unknown side-effects, it
-is safest to disable the feature entirely for now. This patch prevents
-the BPF subsystem from allowing trampoline attachments to kernel module
-functions on LoongArch.
-
-This is a temporary mitigation until the core issues in the trampoline
-code for kernel module handling can be identified and fixed.
-
-[root@fedora bpf]# ./test_progs -a module_attach -v
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_module_attach:PASS:skel_open 0 nsec
-test_module_attach:PASS:set_attach_target 0 nsec
-test_module_attach:PASS:set_attach_target_explicit 0 nsec
-test_module_attach:PASS:skel_load 0 nsec
-libbpf: prog 'handle_fentry': failed to attach: -ENOTSUPP
-libbpf: prog 'handle_fentry': failed to auto-attach: -ENOTSUPP
-test_module_attach:FAIL:skel_attach skeleton attach failed: -524
-Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
-
-[1]: https://lore.kernel.org/loongarch/CAK3+h2wDmpC-hP4u4pJY8T-yfKyk4yRzpu2LMO+C13FMT58oqQ@mail.gmail.com/
-[2]: https://lore.kernel.org/loongarch/CAK3+h2wYcpc+OwdLDUBvg2rF9rvvyc5amfHT-KcFaK93uoELPg@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: f9b6b41f0cf3 ("LoongArch: BPF: Add basic bpf trampoline support")
-Acked-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Vincent Li <vincent.mc.li@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://patch.msgid.link/20251017075710.2605118-1-sebastianene@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kvm/hyp/nvhe/ffa.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -1626,6 +1626,9 @@ static int __arch_prepare_bpf_trampoline
- 	/* Direct jump skips 5 NOP instructions */
- 	else if (is_bpf_text_address((unsigned long)orig_call))
- 		orig_call += LOONGARCH_BPF_FENTRY_NBYTES;
-+	/* Module tracing not supported - cause kernel lockups */
-+	else if (is_module_text_address((unsigned long)orig_call))
-+		return -ENOTSUPP;
+--- a/arch/arm64/kvm/hyp/nvhe/ffa.c
++++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+@@ -437,7 +437,7 @@ static void __do_ffa_mem_xfer(const u64
+ 	struct ffa_mem_region_attributes *ep_mem_access;
+ 	struct ffa_composite_mem_region *reg;
+ 	struct ffa_mem_region *buf;
+-	u32 offset, nr_ranges;
++	u32 offset, nr_ranges, checked_offset;
+ 	int ret = 0;
  
- 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
- 		move_addr(ctx, LOONGARCH_GPR_A0, (const u64)im);
+ 	if (addr_mbz || npages_mbz || fraglen > len ||
+@@ -474,7 +474,12 @@ static void __do_ffa_mem_xfer(const u64
+ 		goto out_unlock;
+ 	}
+ 
+-	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
++	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
++		ret = FFA_RET_INVALID_PARAMETERS;
++		goto out_unlock;
++	}
++
++	if (fraglen < checked_offset) {
+ 		ret = FFA_RET_INVALID_PARAMETERS;
+ 		goto out_unlock;
+ 	}
 
 
 
