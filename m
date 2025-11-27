@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-197068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BFCC8D3F8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 08:55:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9F3C8D61D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 09:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 636E64E7B8C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 07:53:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B659E34CA4C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 08:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D33E322DD4;
-	Thu, 27 Nov 2025 07:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B57322DD4;
+	Thu, 27 Nov 2025 08:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="sUPs2Au5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SdI6h346"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F8B31985F;
-	Thu, 27 Nov 2025 07:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F167D2356A4;
+	Thu, 27 Nov 2025 08:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764229772; cv=none; b=aWjX3YKfxaJI1VIfKv9xriGFVekLLJ6XREt5667KZQNZFEV5JYR2a+rtxXU0/wu+B4moMk9stZHmJwzqBSerM8cOGrDRhMdEbZscMMGmtGaPeh1Fle86p8rxeIYLTCNTj3oh/toYkrSSvzYUDzbMZZqPCJXbGSaiwai5I8pRu8c=
+	t=1764232864; cv=none; b=DPYoldY9wfjfkaXL48W/mF7CZDekRF+T/CihX8ubgINA31mkzvfbzx6Naa5+cjzRAVsdLGU/RV2l6z7ILVGgKLtG2ULPkJHda7IBOrVAPDyZ9klJcxBajojxuyrI0tkfqVgFJI6NExfeQOYAeqS90ZiyP+Nw23pixvc7iY4JDzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764229772; c=relaxed/simple;
-	bh=zSZ1f+02kqA59jJK/bRMa8+blQFKDUon9lqMcp/qB50=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KoM4oOed62RxIPzxASvXfJZp5CMe/8RQ12kFtUUQs2r64FQTlsc8d+H6pQ+fdZ9U4YPkxoKK3uCHAPJ9eQiWCA1AHvz1U83QD+uGH8yUrOnhdsDJtz7JYWE13X2V4SNwdp33YD4izWI6LWwwq743SbDeWDqkupO/5nc1P+VisKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=sUPs2Au5; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 96636212cb6511f0b2bf0b349165d6e0-20251127
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=hgDKXubw77KdgweCTG67NGe7D1ZsFSC7veEKw8yR7o0=;
-	b=sUPs2Au5U9mHMRX5WAAU0AlOzm/5NXxngYnt5n9fwGaUa6H4VXiQviqj85k1Q2KQeeIj+EuC2uDOvYEA9R7u2/KAMkGAMhlR921XfpQ2WtUB/fRTEaotSD7aDJEGxyvwyczxSPP4UeBDxbUtKlxtNGdtSGdN5/sEw4u8q4/o8/Q=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:554806dc-3d78-4d3f-96bc-a9a8bbc7950b,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:a9d874c,CLOUDID:0feb41bb-0c02-41a0-92a3-94dc7dc7eeca,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 96636212cb6511f0b2bf0b349165d6e0-20251127
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <quan.zhou@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1137846885; Thu, 27 Nov 2025 15:49:22 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 27 Nov 2025 15:49:21 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Thu, 27 Nov 2025 15:49:20 +0800
-From: Quan Zhou <quan.zhou@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
-	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
-	<km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi Xu
-	<shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, CH Yeh
-	<ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, linux-wireless
-	<linux-wireless@vger.kernel.org>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-Date: Thu, 27 Nov 2025 15:49:11 +0800
-Message-ID: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1764232864; c=relaxed/simple;
+	bh=jwpF5p7Btj34ZHiu4EGv+DefCVkf1TvTSypgzdIwT7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rEUIJDivAGS/qugcTDIYvJmkrawiZqIggA4KZQSDyBl160OvCKEY2cKPlvpFDzM1LWSpbAL7lJiY1BFCN4v4wsyScXzitd1fCNF6yMVQYQdJbVK3QKBpBP/Dsmj+alsDDpt5BhL2qdJvGgakj3aa5WvF1tQwuu0t3PagJ+S/rOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SdI6h346; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764232863; x=1795768863;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jwpF5p7Btj34ZHiu4EGv+DefCVkf1TvTSypgzdIwT7E=;
+  b=SdI6h346857Q6KTEFgxSBq6LbxznyT33v9WkTvXtOchwZj635aPG3iRl
+   8G1DSNEFNnl2V8RX0lI0poXJidM9AteBaaFO3d0J517ijcLRpZby7z4sA
+   D2CGUhFBrTkiqx65N16ilM445k5Xa5qfp/hu+iP1KZRdDIeW6pfNLGQsk
+   UEeQD9TH/WwnyFmOB9uK+bg0Ta42xeMjCf+ZkpekMC0/tKgEIS4gbC0/S
+   3uDPHEr1kN5Qaxg8RVV1+SlQ1qd8wMSFyPU3oaKSIioJmTPUkOFf5m75c
+   uC7gSXUcE5rYcEtnb6yUvGDt/ZLBgnY5iEIj9O1E69BCWdi15r7waXTaF
+   Q==;
+X-CSE-ConnectionGUID: /klX917wRBG3hkL6563k0w==
+X-CSE-MsgGUID: h5UpO9A5QZ2xspsX9NB1gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="65988441"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="65988441"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 00:41:02 -0800
+X-CSE-ConnectionGUID: Nc8FAxgaTtuOrKnhIBW+MQ==
+X-CSE-MsgGUID: vWf86RVcSzmTNVlSS3CfYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="192305036"
+Received: from junjie-nuc14rvs.bj.intel.com ([10.238.152.23])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 00:40:59 -0800
+From: Junjie Cao <junjie.cao@intel.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	syzbot+14afda08dc3484d5db82@syzkaller.appspotmail.com
+Cc: horms@kernel.org,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	stable@vger.kernel.org,
+	junjie.cao@intel.com
+Subject: [PATCH] netrom: fix possible deadlock between nr_rt_ioctl() and nr_rt_device_down()
+Date: Thu, 27 Nov 2025 16:41:12 +0800
+Message-ID: <20251127084112.123837-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,47 +81,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-Previously, the AMPDU state bit for a given TID was set before attempting
-to start a BA session, which could result in the AMPDU state being marked
-active even if ieee80211_start_tx_ba_session() failed. This patch changes
-the logic to only set the AMPDU state bit after successfully starting a BA
-session, ensuring proper synchronization between AMPDU state and BA session
-status.
+syzbot reported a circular locking dependency involving
+nr_neigh_list_lock, nr_node_list_lock and nr_node->node_lock in the
+NET/ROM routing code [1].
 
-This fixes potential issues with aggregation state tracking and improves
-compatibility with mac80211 BA session management.
+One of the problematic scenarios looks like this:
 
-Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txwi_free")
+  CPU0                               CPU1
+  ----                               ----
+  nr_rt_device_down()                nr_rt_ioctl()
+    lock(nr_neigh_list_lock);          nr_del_node()
+    ...                                  lock(nr_node_list_lock);
+    lock(nr_node_list_lock);            nr_remove_neigh();
+                                          lock(nr_neigh_list_lock);
+
+This creates the following lock chain:
+
+  nr_neigh_list_lock -> nr_node_list_lock -> &nr_node->node_lock
+
+while the ioctl path may acquire the locks in the opposite order via
+nr_dec_obs()/nr_del_node(), which makes lockdep complain about a
+possible deadlock.
+
+Refactor nr_rt_device_down() to avoid nested locking of
+nr_neigh_list_lock and nr_node_list_lock.  The function now performs
+two separate passes: one that walks all nodes under nr_node_list_lock
+and drops routes / reference counts, and a second one that removes
+unused neighbours under nr_neigh_list_lock.
+
+This also fixes a reference count leak of nr_neigh in the node route
+removal path.
+
+[1] https://syzkaller.appspot.com/bug?extid=14afda08dc3484d5db82
+
+Reported-by: syzbot+14afda08dc3484d5db82@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14afda08dc3484d5db82
+Tested-by: syzbot+14afda08dc3484d5db82@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 ---
-v2: modify to avoid weakening atomicity
----
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netrom/nr_route.c | 61 +++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index 871b67101976..5e5b1df78633 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -881,8 +881,10 @@ static void mt7925_tx_check_aggr(struct ieee80211_sta *sta, struct sk_buff *skb,
- 	else
- 		mlink = &msta->deflink;
+diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
+index b94cb2ffbaf8..cc8c47e1340a 100644
+--- a/net/netrom/nr_route.c
++++ b/net/netrom/nr_route.c
+@@ -511,37 +511,40 @@ void nr_rt_device_down(struct net_device *dev)
+ 	struct nr_node  *t;
+ 	int i;
  
--	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
--		ieee80211_start_tx_ba_session(sta, tid, 0);
-+	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
-+		if (ieee80211_start_tx_ba_session(sta, tid, 0))
-+			clear_bit(tid, &mlink->wcid.ampdu_state);
+-	spin_lock_bh(&nr_neigh_list_lock);
+-	nr_neigh_for_each_safe(s, nodet, &nr_neigh_list) {
+-		if (s->dev == dev) {
+-			spin_lock_bh(&nr_node_list_lock);
+-			nr_node_for_each_safe(t, node2t, &nr_node_list) {
+-				nr_node_lock(t);
+-				for (i = 0; i < t->count; i++) {
+-					if (t->routes[i].neighbour == s) {
+-						t->count--;
+-
+-						switch (i) {
+-						case 0:
+-							t->routes[0] = t->routes[1];
+-							fallthrough;
+-						case 1:
+-							t->routes[1] = t->routes[2];
+-							break;
+-						case 2:
+-							break;
+-						}
+-					}
+-				}
++	spin_lock_bh(&nr_node_list_lock);
++	nr_node_for_each_safe(t, node2t, &nr_node_list) {
++		nr_node_lock(t);
++		for (i = 0; i < t->count; i++) {
++			s = t->routes[i].neighbour;
++			if (s->dev == dev) {
++				s->count--;
++				nr_neigh_put(s);
++				t->count--;
+ 
+-				if (t->count <= 0)
+-					nr_remove_node_locked(t);
+-				nr_node_unlock(t);
++				switch (i) {
++				case 0:
++					t->routes[0] = t->routes[1];
++					fallthrough;
++				case 1:
++					t->routes[1] = t->routes[2];
++					break;
++				case 2:
++					break;
++				}
++				i--;
+ 			}
+-			spin_unlock_bh(&nr_node_list_lock);
++		}
+ 
++		if (t->count <= 0)
++			nr_remove_node_locked(t);
++		nr_node_unlock(t);
 +	}
++	spin_unlock_bh(&nr_node_list_lock);
++
++	spin_lock_bh(&nr_neigh_list_lock);
++	nr_neigh_for_each_safe(s, nodet, &nr_neigh_list) {
++		if (s->dev == dev)
+ 			nr_remove_neigh_locked(s);
+-		}
+ 	}
+ 	spin_unlock_bh(&nr_neigh_list_lock);
  }
+@@ -965,8 +968,8 @@ void nr_rt_free(void)
+ 	struct nr_node  *t = NULL;
+ 	struct hlist_node *nodet;
  
- static bool
+-	spin_lock_bh(&nr_neigh_list_lock);
+ 	spin_lock_bh(&nr_node_list_lock);
++	spin_lock_bh(&nr_neigh_list_lock);
+ 	nr_node_for_each_safe(t, nodet, &nr_node_list) {
+ 		nr_node_lock(t);
+ 		nr_remove_node_locked(t);
+@@ -979,6 +982,6 @@ void nr_rt_free(void)
+ 		}
+ 		nr_remove_neigh_locked(s);
+ 	}
+-	spin_unlock_bh(&nr_node_list_lock);
+ 	spin_unlock_bh(&nr_neigh_list_lock);
++	spin_unlock_bh(&nr_node_list_lock);
+ }
 -- 
-2.45.2
+2.43.0
 
 
