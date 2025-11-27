@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8753EC8F277
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C943BC8EF25
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F50D3A1DCD
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 55FD6352936
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DACC28135D;
-	Thu, 27 Nov 2025 15:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB2E332EA0;
+	Thu, 27 Nov 2025 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzHaECQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhS7rGbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285FD260585;
-	Thu, 27 Nov 2025 15:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06489335BB6;
+	Thu, 27 Nov 2025 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255774; cv=none; b=me3ZRTyw8WbipmZ5m0BzQEUdDlDnbgQ6iHaOdaVU8heJ23YZsmvjQXGOIqhd1Wg4bq/uVZURVOtSMvJRq336FJeXH0H+1hiHbPedcEd68ZGGsS/advemeU06zoy7srHc/2eTEpDMOvgX4VqLVv8BGFkyLA4Qn5STcmSoQ8THNOI=
+	t=1764255304; cv=none; b=qhlQpZ5iIaQQmChFlh/8wkr3obPdCe+8oyI5R4S5qDbZNyhA/45KDK+GfkZYPK6tu6ZCz8MNNLCiZ8md/3D2as61SUizeELC9KY4T4ID+I4Tf8MKrCNU7OTgXqwlf1e7kcenAEFTWSv8wwPYOE196/Uodxz3VW9/dKEiBlRWSUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255774; c=relaxed/simple;
-	bh=Y0wL8oDz66dE9JOvOYe1qW8ZzHAXg3Aqd6gQiLAwZcw=;
+	s=arc-20240116; t=1764255304; c=relaxed/simple;
+	bh=DHUVtSgufpZNH0z4mW/APF6GyH3APSTWFbvC1Cror44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snXgJhiv8dkwEM4xQcVB2vHa8B1I0PGQrstIUqmNrZu+qyfkTZHXD0DZDnL3W2Lysaml4eVS1UAHbxqcfQGww8o6KCeWC6CAbsIyn+xEcvNuTH9kswKVrE/mWSKzFRCyHDf9cjGw8nHoIIkxi88PWeYK+GEJZvEDll5A2i6EKc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzHaECQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EDAC4CEF8;
-	Thu, 27 Nov 2025 15:02:53 +0000 (UTC)
+	 MIME-Version; b=BGn/DM6eNx8B7l/PlVgQEDm0rKGzXoss1NQgPnhFlYGglzorkvQrMWSrmlCMJnh9l5MP47DvvXIP/NeUgn3A1DuXbdIx9ExHlLWfkzonS81hBT9VGqZcHRBImlWWu91+7U/wXuaeEPeOuVfVIhG2mqdiRu7n31Ist0XZTfiADko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhS7rGbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F65C116C6;
+	Thu, 27 Nov 2025 14:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255774;
-	bh=Y0wL8oDz66dE9JOvOYe1qW8ZzHAXg3Aqd6gQiLAwZcw=;
+	s=korg; t=1764255303;
+	bh=DHUVtSgufpZNH0z4mW/APF6GyH3APSTWFbvC1Cror44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzHaECQt2KumXGVg2Bnl+4k3U9iVaYJ2xcV5qR/v7hJYwUzNcgYTggRgOA9J0sAq7
-	 gq1B8lihIcbJOYKTwA5AwLNtZfQHsrjUZXR4/kbb5nUEXnFGaSxFZbesNiWl7/IuQ9
-	 EL2EgfD5HMJMq3nQuGkukBy+olJUshZKALKb8IMs=
+	b=NhS7rGbAaShFyu+MIJAkRP5iWe2wzAOmDl6xPX6sMOR8EW9zfDWvhgBkkTLopMIwN
+	 kMqSLD9kVt8Zvk/8HPjn40uFoZd9RRrUzzSi1Q/RaCAMDfiWmzxctdDdR0h5vpzrJP
+	 Q6Otp5YSj3Fsfm6jzAeKnGEbLtPPR4hekTJqO8gE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 110/175] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
+Subject: [PATCH 6.12 061/112] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
 Date: Thu, 27 Nov 2025 15:46:03 +0100
-Message-ID: <20251127144046.975259324@linuxfoundation.org>
+Message-ID: <20251127144035.072647725@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
+[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
 
-isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is returned from the probe function as is but
-probe functions should return normal errnos. A proper implementation
-can be found in drivers/leds/leds-ss4200.c.
+The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
+obtain a ruleset reference. If the subsequent call to
+mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
+an error without releasing the ruleset reference, causing a memory leak.
 
-Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
-normal errno before returning.
+Fix this by using a goto to the existing error handling label, which
+calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
 
-Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-index 3f4343147dadb..950ede5eab769 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-@@ -108,11 +108,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+index f07955b5439f6..a8d4cf8b92998 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -820,8 +820,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
+ 		return -EINVAL;
  
- 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+ 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
+-	if (!rule)
+-		return -EINVAL;
++	if (!rule) {
++		err = -EINVAL;
++		goto err_rule_get_stats;
++	}
  
- 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 
- 	pcu_base &= GENMASK(10, 0);
- 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
+ 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
+ 					  &drops, &lastuse, &used_hw_stats);
 -- 
 2.51.0
 
