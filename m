@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DFAC8F0D3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B71C8F268
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B355A3A9A72
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D2F3A7BDC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED10533436C;
-	Thu, 27 Nov 2025 14:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A87332EA0;
+	Thu, 27 Nov 2025 15:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVzhBwXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epoeIJBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9FF28D830;
-	Thu, 27 Nov 2025 14:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3293E3115A6;
+	Thu, 27 Nov 2025 15:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255418; cv=none; b=n6nG/K98PXy5taSXd7kpViK/PVoh1XqmDxBRcDJ5V/yM5DxeL/aIgJgNKpAS1BIpPEqw5ZkFM6rQlxrCtO0MJEew9P4cngeOc6G8fz7Ix0iuGYpPcfkckFAmscvFtorgzu2P9ySuu9pbSJIL5+hdkUjPSwzez6PNiLTzfHMAmEI=
+	t=1764255788; cv=none; b=UrBAKy0cWPMWEQgK2i6Xzu1042pwSEaFtPT7mY+iDSH+fzik1yihWaxbFVelWrzoFf96FXg8wmRDY18pdeBoedK5ysYaUy19InSHEaOTVqdzHOjpW4f3AjJP7yYsT+FdB+CeA7rcQn23AnuyNVKR6mwvERysaGAkEEwExM/bp1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255418; c=relaxed/simple;
-	bh=b0nbNU+6HoKlyaEoy/PY/l2w6K36vUz3IgyNT97ygrc=;
+	s=arc-20240116; t=1764255788; c=relaxed/simple;
+	bh=u1DHXa8xAougz9TzNfL6kxFzdqmOzQ+nC0LccNy4+1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkhYRgmIlesa3bTcLwkS08Df7Cqswb27AKjV/Da7Gq1y7DIKASc3OhsNI5V7QnKHFWd3J31rHjVyClIIuCeymLYqMitHQS/eHWv76t3wvPSxJAFbs7ImJRFkleiQxsZhkz//Y6g/UChxMUzb+51cHUuKj+wqIkHt7hoqaROLg/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVzhBwXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DEBC4CEF8;
-	Thu, 27 Nov 2025 14:56:57 +0000 (UTC)
+	 MIME-Version; b=aIqQYBe1cneCdE0qcddWvxCxOUimOiUBJmhIrysHJRgZExHp8YYvlC/psoRMettwHk01AjNMoEyPae8K+f9slyAfuGzMjgt9Wyg/lJyeUeVZ06YL1EEaaYwBgQwbti0R8gFPhvpnCIWOpSBYrcp2wQVpT2Ci+ujKD1u7lUhGoU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epoeIJBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11F9C4CEF8;
+	Thu, 27 Nov 2025 15:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255418;
-	bh=b0nbNU+6HoKlyaEoy/PY/l2w6K36vUz3IgyNT97ygrc=;
+	s=korg; t=1764255788;
+	bh=u1DHXa8xAougz9TzNfL6kxFzdqmOzQ+nC0LccNy4+1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVzhBwXBpogUrjt8paIlNMtkZa3BlH2Us91vj2SiAVX9zZ/8RRf2oHzWbHjf0turD
-	 aJxsIgSBjGxPkFJ/+hC0RyxQyApGPBQmMx77Dl/Zh0QMoUB1a2FrHDY4ejyCSqRgaw
-	 Mp4of7rc2SSB4xjhW+RP1A5xq/914qjKD9j9XD/Q=
+	b=epoeIJBbeimpyIOJNZJW0N789MznK2Tj904l8YJDJVHGF7HjKKIJbEnu3i9MSEAdG
+	 Feiboqetbgr0ORG5l631JO7emZ4TROFgMaNEkpAdH+nv2oWqQGAzk0ABLknujMy5Nv
+	 xD6eck84rsICc26aqyoR9z4GzvkZPc9X6b+EBhm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/112] tools: riscv: Fixed misalignment of CSR related definitions
+Subject: [PATCH 6.17 115/175] drm/i915/xe3: Restrict PTL intel_encoder_is_c10phy() to only PHY A
 Date: Thu, 27 Nov 2025 15:46:08 +0100
-Message-ID: <20251127144035.257990807@linuxfoundation.org>
+Message-ID: <20251127144047.160308754@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Pei <cp0613@linux.alibaba.com>
+From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 
-[ Upstream commit e2cb69263e797c0aa6676bcef23e9e27e44c83b0 ]
+[ Upstream commit 5474560381775bc70cc90ed2acefad48ffd6ee07 ]
 
-The file tools/arch/riscv/include/asm/csr.h borrows from
-arch/riscv/include/asm/csr.h, and subsequent modifications
-related to CSR should maintain consistency.
+On PTL, no combo PHY is connected to PORT B. However, PORT B can
+still be used for Type-C and will utilize the C20 PHY for eDP
+over Type-C. In such configurations, VBTs also enumerate PORT B.
 
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-Link: https://patch.msgid.link/20251114071215.816-1-cp0613@linux.alibaba.com
-[pjw@kernel.org: dropped Fixes: lines for patches that weren't broken; removed superfluous blank line]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+This leads to issues where PORT B is incorrectly identified as using the
+C10 PHY, due to the assumption that returning true for PORT B in
+intel_encoder_is_c10phy() would not cause problems.
+
+>From PTL's perspective, only PORT A/PHY A uses the C10 PHY.
+
+Update the helper intel_encoder_is_c10phy() to return true only for
+PORT A/PHY on PTL.
+
+v2: Change the condition code style for ptl/wcl
+
+Bspec: 72571,73944
+Fixes: 9d10de78a37f ("drm/i915/wcl: C10 phy connected to port A and B")
+Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://lore.kernel.org/r/20250922150317.2334680-4-dnyaneshwar.bhadane@intel.com
+(cherry picked from commit 8147f7a1c083fd565fb958824f7c552de3b2dc46)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c       | 2 +-
- tools/arch/riscv/include/asm/csr.h | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_cx0_phy.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index da3651d329069..6df8b260f0702 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -1016,7 +1016,7 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
- 			/* compute hardware counter index */
- 			hidx = info->csr - CSR_CYCLE;
+diff --git a/drivers/gpu/drm/i915/display/intel_cx0_phy.c b/drivers/gpu/drm/i915/display/intel_cx0_phy.c
+index 801235a5bc0a3..a2d2cecf71217 100644
+--- a/drivers/gpu/drm/i915/display/intel_cx0_phy.c
++++ b/drivers/gpu/drm/i915/display/intel_cx0_phy.c
+@@ -39,14 +39,12 @@ bool intel_encoder_is_c10phy(struct intel_encoder *encoder)
+ 	struct intel_display *display = to_intel_display(encoder);
+ 	enum phy phy = intel_encoder_to_phy(encoder);
  
--		/* check if the corresponding bit is set in sscountovf or overflow mask in shmem */
-+		/* check if the corresponding bit is set in scountovf or overflow mask in shmem */
- 		if (!(overflow & BIT(hidx)))
- 			continue;
+-	/* PTL doesn't have a PHY connected to PORT B; as such,
+-	 * there will never be a case where PTL uses PHY B.
+-	 * WCL uses PORT A and B with the C10 PHY.
+-	 * Reusing the condition for WCL and extending it for PORT B
+-	 * should not cause any issues for PTL.
+-	 */
+-	if (display->platform.pantherlake && phy < PHY_C)
+-		return true;
++	if (display->platform.pantherlake) {
++		if (display->platform.pantherlake_wildcatlake)
++			return phy <= PHY_B;
++		else
++			return phy == PHY_A;
++	}
  
-diff --git a/tools/arch/riscv/include/asm/csr.h b/tools/arch/riscv/include/asm/csr.h
-index 0dfc09254f99a..1cd824aaa3ba2 100644
---- a/tools/arch/riscv/include/asm/csr.h
-+++ b/tools/arch/riscv/include/asm/csr.h
-@@ -167,7 +167,8 @@
- #define VSIP_TO_HVIP_SHIFT	(IRQ_VS_SOFT - IRQ_S_SOFT)
- #define VSIP_VALID_MASK		((_AC(1, UL) << IRQ_S_SOFT) | \
- 				 (_AC(1, UL) << IRQ_S_TIMER) | \
--				 (_AC(1, UL) << IRQ_S_EXT))
-+				 (_AC(1, UL) << IRQ_S_EXT) | \
-+				 (_AC(1, UL) << IRQ_PMU_OVF))
- 
- /* AIA CSR bits */
- #define TOPI_IID_SHIFT		16
-@@ -280,7 +281,7 @@
- #define CSR_HPMCOUNTER30H	0xc9e
- #define CSR_HPMCOUNTER31H	0xc9f
- 
--#define CSR_SSCOUNTOVF		0xda0
-+#define CSR_SCOUNTOVF		0xda0
- 
- #define CSR_SSTATUS		0x100
- #define CSR_SIE			0x104
+ 	if ((display->platform.lunarlake || display->platform.meteorlake) && phy < PHY_C)
+ 		return true;
 -- 
 2.51.0
 
