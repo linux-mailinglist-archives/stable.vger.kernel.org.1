@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB89C8F2F9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601F6C8F1BA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46D724F17A6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EAF133574DF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023F4334C0B;
-	Thu, 27 Nov 2025 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19C7334373;
+	Thu, 27 Nov 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifloQxus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8NsqUKF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19D0334373;
-	Thu, 27 Nov 2025 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFDB3115A6;
+	Thu, 27 Nov 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255992; cv=none; b=eQIZLsT1EAajtxccn9ZCYENUNrgEKo2ybcjgUU22Bax4SOkc6KA4vkklqOLGJBiTgOMZSaGIGjLEg9An4fI4JiHEHLaUSroxe/cg3Z7Z5W6qJb8HIsHRd0cZH0AInzbqIh2eCUMU1SjBCZql4g9HpATg/+ccHwWUIrSktObnLsg=
+	t=1764255950; cv=none; b=BUctn8TMWj8dEZV7Rb2qBwwfz1IQnccn6es2yFdxcT8tfWfE6GyhMoNbBi1n0YsGna/OU73TX4nNF+DA356bdEBu8xwKLp5CjJV5PpnO9gk35C7k1odh4yetyRqbB1N2q+/O5vkKXLwZTo5iAjbqjbQBhzzh77Nfjd2E5ODQ+4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255992; c=relaxed/simple;
-	bh=F6P7YLQbny+/42W18yvh9mCYTLPqIWfOD7/9P1mIY/s=;
+	s=arc-20240116; t=1764255950; c=relaxed/simple;
+	bh=H2mAlA+TcapDRs9LoB5Ja3gABEey4Jm2ji/THu2oUG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcYdsJ6PsueyY+M1N99dVxQQovoP6GJ1QPC+zM2WxdQiiGroOX2brCzWETsnj0ZtdCmhm3lngNSCYZKpoWmmweC9j5jSvT3MjlO8Rf8gqTm83QW6hajDdZatkSN4SIiio+39NXaNdhPGHIlnZJDPnq9/X3CYUKvSlv2+SDY1/68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifloQxus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34285C19421;
-	Thu, 27 Nov 2025 15:06:32 +0000 (UTC)
+	 MIME-Version; b=AYYxIpkG2N2DVuh1lScqRSPCps6SUN21+g9gspwF3a+wUEkbiJgQQvxpSYK3E/ji+myKeybYA6hn9g1qNcRHTey37CDjX8sXGUl4mSY8heA/AOrvyz1DkuZjHFc4+MyudVVAjWXyZ0a6G1ZXDR1fBeUolggqOnUiQPnZdQiGVt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8NsqUKF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D411CC4CEF8;
+	Thu, 27 Nov 2025 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255992;
-	bh=F6P7YLQbny+/42W18yvh9mCYTLPqIWfOD7/9P1mIY/s=;
+	s=korg; t=1764255949;
+	bh=H2mAlA+TcapDRs9LoB5Ja3gABEey4Jm2ji/THu2oUG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifloQxusunOTFmVj+HUumaDgoanRu6QKWWnET+9WEX+MS4PkqgZFsPsAwwW5KBZlV
-	 PRNsjUUlxJ10O7+pCgSBv6bqNFDKZ2k9V8GG8hQJmgtfbtMA615rsPg87brFqi6orC
-	 VB68bjY8cFrYxgU1Zmgzn/SsjrFzJJuKEt1nU0H8=
+	b=Y8NsqUKFAh+AraQl9v621I6a3KABiTA9Gb7Kf0/VkD+SV4wv1r4rx4r1S8MOWLhbo
+	 aZXtkUl6ESktoAk0WScBZQAszUyb1VsPscY755lxNQlK9+xVSpZNOYTJ2QkdETvQB1
+	 aWrxC4cB5JN6rH/Mng7fpo4cbi4/LqIcSTJwTl/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	"Emil Tsalapatis (Meta)" <emil@etsalapatis.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/112] net: tls: Change async resync helpers argument
+Subject: [PATCH 6.17 137/175] sched_ext: defer queue_balance_callback() until after ops.dispatch
 Date: Thu, 27 Nov 2025 15:46:30 +0100
-Message-ID: <20251127144036.063143869@linuxfoundation.org>
+Message-ID: <20251127144047.962265514@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Emil Tsalapatis <etsal@meta.com>
 
-[ Upstream commit 34892cfec0c2d96787c4be7bda0d5f18d7dacf85 ]
+[ Upstream commit a8ad873113d3fe01f9b5d737d4b0570fa36826b0 ]
 
-Update tls_offload_rx_resync_async_request_start() and
-tls_offload_rx_resync_async_request_end() to get a struct
-tls_offload_resync_async parameter directly, rather than
-extracting it from struct sock.
+The sched_ext code calls queue_balance_callback() during enqueue_task()
+to defer operations that drop multiple locks until we can unpin them.
+The call assumes that the rq lock is held until the callbacks are
+invoked, and the pending callbacks will not be visible to any other
+threads. This is enforced by a WARN_ON_ONCE() in rq_pin_lock().
 
-This change aligns the function signatures with the upcoming
-tls_offload_rx_resync_async_request_cancel() helper, which
-will be introduced in a subsequent patch.
+However, balance_one() may actually drop the lock during a BPF dispatch
+call. Another thread may win the race to get the rq lock and see the
+pending callback. To avoid this, sched_ext must only queue the callback
+after the dispatch calls have completed.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1761508983-937977-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CPU 0                   CPU 1           CPU 2
+
+scx_balance()
+  rq_unpin_lock()
+  scx_balance_one()
+    |= IN_BALANCE	scx_enqueue()
+    ops.dispatch()
+      rq_unlock()
+                        rq_lock()
+                        queue_balance_callback()
+                        rq_unlock()
+                                        [WARN] rq_pin_lock()
+      rq_lock()
+    &= ~IN_BALANCE
+rq_repin_lock()
+
+Changelog
+
+v2-> v1 (https://lore.kernel.org/sched-ext/aOgOxtHCeyRT_7jn@gpd4)
+
+- Fixed explanation in patch description (Andrea)
+- Fixed scx_rq mask state updates (Andrea)
+- Added Reviewed-by tag from Andrea
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Emil Tsalapatis (Meta) <emil@etsalapatis.com>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en_accel/ktls_rx.c     |  9 ++++++--
- include/net/tls.h                             | 21 +++++++------------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ kernel/sched/ext.c   | 29 +++++++++++++++++++++++++++--
+ kernel/sched/sched.h |  1 +
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-index 65ccb33edafb7..c0089c704c0cc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-@@ -425,12 +425,14 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
- {
- 	struct mlx5e_ktls_rx_resync_buf *buf = wi->tls_get_params.buf;
- 	struct mlx5e_ktls_offload_context_rx *priv_rx;
-+	struct tls_offload_context_rx *rx_ctx;
- 	u8 tracker_state, auth_state, *ctx;
- 	struct device *dev;
- 	u32 hw_seq;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index b454206100ce5..d6d2eea9d1483 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -820,13 +820,23 @@ static void schedule_deferred(struct rq *rq)
+ 	if (rq->scx.flags & SCX_RQ_IN_WAKEUP)
+ 		return;
  
- 	priv_rx = buf->priv_rx;
- 	dev = mlx5_core_dma_dev(sq->channel->mdev);
-+	rx_ctx = tls_offload_ctx_rx(tls_get_ctx(priv_rx->sk));
- 	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags)))
- 		goto out;
- 
-@@ -447,7 +449,8 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
++	/* Don't do anything if there already is a deferred operation. */
++	if (rq->scx.flags & SCX_RQ_BAL_PENDING)
++		return;
++
+ 	/*
+ 	 * If in balance, the balance callbacks will be called before rq lock is
+ 	 * released. Schedule one.
++	 *
++	 *
++	 * We can't directly insert the callback into the
++	 * rq's list: The call can drop its lock and make the pending balance
++	 * callback visible to unrelated code paths that call rq_pin_lock().
++	 *
++	 * Just let balance_one() know that it must do it itself.
+ 	 */
+ 	if (rq->scx.flags & SCX_RQ_IN_BALANCE) {
+-		queue_balance_callback(rq, &rq->scx.deferred_bal_cb,
+-				       deferred_bal_cb_workfn);
++		rq->scx.flags |= SCX_RQ_BAL_CB_PENDING;
+ 		return;
  	}
  
- 	hw_seq = MLX5_GET(tls_progress_params, ctx, hw_resync_tcp_sn);
--	tls_offload_rx_resync_async_request_end(priv_rx->sk, cpu_to_be32(hw_seq));
-+	tls_offload_rx_resync_async_request_end(rx_ctx->resync_async,
-+						cpu_to_be32(hw_seq));
- 	priv_rx->rq_stats->tls_resync_req_end++;
- out:
- 	mlx5e_ktls_priv_rx_put(priv_rx);
-@@ -482,6 +485,7 @@ static bool resync_queue_get_psv(struct sock *sk)
- static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
- {
- 	struct ethhdr *eth = (struct ethhdr *)(skb->data);
-+	struct tls_offload_resync_async *resync_async;
- 	struct net_device *netdev = rq->netdev;
- 	struct net *net = dev_net(netdev);
- 	struct sock *sk = NULL;
-@@ -528,7 +532,8 @@ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
- 
- 	seq = th->seq;
- 	datalen = skb->len - depth;
--	tls_offload_rx_resync_async_request_start(sk, seq, datalen);
-+	resync_async = tls_offload_ctx_rx(tls_get_ctx(sk))->resync_async;
-+	tls_offload_rx_resync_async_request_start(resync_async, seq, datalen);
- 	rq->stats->tls_resync_req_start++;
- 
- unref:
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 61fef28801140..181173e62a068 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -448,25 +448,20 @@ static inline void tls_offload_rx_resync_request(struct sock *sk, __be32 seq)
- 
- /* Log all TLS record header TCP sequences in [seq, seq+len] */
- static inline void
--tls_offload_rx_resync_async_request_start(struct sock *sk, __be32 seq, u16 len)
-+tls_offload_rx_resync_async_request_start(struct tls_offload_resync_async *resync_async,
-+					  __be32 seq, u16 len)
- {
--	struct tls_context *tls_ctx = tls_get_ctx(sk);
--	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
--
--	atomic64_set(&rx_ctx->resync_async->req, ((u64)ntohl(seq) << 32) |
-+	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) |
- 		     ((u64)len << 16) | RESYNC_REQ | RESYNC_REQ_ASYNC);
--	rx_ctx->resync_async->loglen = 0;
--	rx_ctx->resync_async->rcd_delta = 0;
-+	resync_async->loglen = 0;
-+	resync_async->rcd_delta = 0;
+@@ -2043,6 +2053,19 @@ static void flush_dispatch_buf(struct scx_sched *sch, struct rq *rq)
+ 	dspc->cursor = 0;
  }
  
- static inline void
--tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
-+tls_offload_rx_resync_async_request_end(struct tls_offload_resync_async *resync_async,
-+					__be32 seq)
++static inline void maybe_queue_balance_callback(struct rq *rq)
++{
++	lockdep_assert_rq_held(rq);
++
++	if (!(rq->scx.flags & SCX_RQ_BAL_CB_PENDING))
++		return;
++
++	queue_balance_callback(rq, &rq->scx.deferred_bal_cb,
++				deferred_bal_cb_workfn);
++
++	rq->scx.flags &= ~SCX_RQ_BAL_CB_PENDING;
++}
++
+ static int balance_one(struct rq *rq, struct task_struct *prev)
  {
--	struct tls_context *tls_ctx = tls_get_ctx(sk);
--	struct tls_offload_context_rx *rx_ctx = tls_offload_ctx_rx(tls_ctx);
--
--	atomic64_set(&rx_ctx->resync_async->req,
--		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
-+	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ 	struct scx_sched *sch = scx_root;
+@@ -2190,6 +2213,8 @@ static int balance_scx(struct rq *rq, struct task_struct *prev,
+ #endif
+ 	rq_repin_lock(rq, rf);
+ 
++	maybe_queue_balance_callback(rq);
++
+ 	return ret;
  }
  
- static inline void
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 72fb9129afb6a..c7f67f54d4e3e 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -782,6 +782,7 @@ enum scx_rq_flags {
+ 	SCX_RQ_BAL_KEEP		= 1 << 3, /* balance decided to keep current */
+ 	SCX_RQ_BYPASSING	= 1 << 4,
+ 	SCX_RQ_CLK_VALID	= 1 << 5, /* RQ clock is fresh and valid */
++	SCX_RQ_BAL_CB_PENDING	= 1 << 6, /* must queue a cb after dispatching */
+ 
+ 	SCX_RQ_IN_WAKEUP	= 1 << 16,
+ 	SCX_RQ_IN_BALANCE	= 1 << 17,
 -- 
 2.51.0
 
