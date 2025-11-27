@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-197316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B28C8EFA3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id F152DC8F17E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AC3F6353799
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0F85C34EDE0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577323126C0;
-	Thu, 27 Nov 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73E1334373;
+	Thu, 27 Nov 2025 15:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie1Er+k/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um19l20W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E63E28D8E8;
-	Thu, 27 Nov 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F7128CF42;
+	Thu, 27 Nov 2025 15:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255468; cv=none; b=Fe9xPz73j2uEZTq84hDgHgP3k4Zms7/0tprjkdsIemkeGh2qOqPFU/tX+hM29kCia8iQUmFwnK/0+3S7CLCvx5AeKJ06T79vG9W1NEXGHCbMVKouq42Bxsd2jlm55MpEryK/8zko8v8nqtPGhkwMCHR1VR5xD5Q/Kp2BxIPIC70=
+	t=1764255889; cv=none; b=M2QnqwAdbb4PuQlTzuerXIjIf4vl9hmyrEz+Ah8S7zY2r9ngNH556fX7fUYbD+b0wyqIi1OZTwzHbn2ktVC3ZEbnlMbY3QrQyAlXnrk7GTjc0D+ZDrCemSwwls5TXnDd0VEURHK8CPTvSE2pZVokjk9CnInRo4dQiZ9KIy0Lw9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255468; c=relaxed/simple;
-	bh=1yUw7B70uPHbbewvORd5smALCXpkmjzv92JfAjkx+ek=;
+	s=arc-20240116; t=1764255889; c=relaxed/simple;
+	bh=kTyumaOFyvXvO4gS7jONwYHjAeF2tZL8V3FCPrZtQUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lE+2xJ6eBpLlRaTBl7pUzSSHkeKjxzZvghozk9JuqfiBUvNFmsc5fPyucLcJizC1Anm9r0m/UFN7UU9VXEflsTJ0TY3XNYk+5lEy4CfMwKaED8sABC2u/fCgZmwUY61Qd6TDl61hl2E+f24nU8xa5lNmYN9OAQ83f6WraXV+PWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie1Er+k/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B16CC4CEF8;
-	Thu, 27 Nov 2025 14:57:47 +0000 (UTC)
+	 MIME-Version; b=CMdCqczF+S2LYynqtR1OLAD+QoAHJyrkVmm+boU9Vd4sRnnkjoF0VdpoHJN0vWREUhXJijrol7WlXVb+TrCyJW9ARp+xSsWUIxjqZWFVcUBCSG3ZIbvlcFELVjv/WKhm2K+djD2MNWE33J2aGsyAp0lfDXE2CcqvUjveJsET4Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um19l20W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9840C4CEF8;
+	Thu, 27 Nov 2025 15:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255467;
-	bh=1yUw7B70uPHbbewvORd5smALCXpkmjzv92JfAjkx+ek=;
+	s=korg; t=1764255889;
+	bh=kTyumaOFyvXvO4gS7jONwYHjAeF2tZL8V3FCPrZtQUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ie1Er+k/UZYBirpkw/2SMdQcMXIv8Q7h+/C4ngtszneCFou6DHEU/Os6Z/cOWbWgu
-	 8fCqn4/CjtkGTo0Zdz5TJOZa3PNjbaUE36ZEU3CEaWMyJJPITyUp4cxxwJEVbhT1S7
-	 hgTWu0UReLqt+SULygdsIXXodJGb8VrQ1/ukm79Y=
+	b=Um19l20W1FZgdLlRxgR6qVN0rCKrT1ItTlB8KELB7P0HboOew6LfAy6rTCHAQCDGS
+	 vsyzL5WiSQljDgbqCtYQVCns0XWshfozCby8TEx+/jBKD7U441YSxI8joHey+/8whb
+	 3HLUWLgY0bM/te9WR4g8AgQEvMx/aUc/wDCfqbYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Zhang <guoqing.zhang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/112] drm/amdgpu: fix gpu page fault after hibernation on PF passthrough
+Subject: [PATCH 6.17 150/175] net: tls: Cancel RX async resync request on rcd_delta overflow
 Date: Thu, 27 Nov 2025 15:46:43 +0100
-Message-ID: <20251127144036.538409778@linuxfoundation.org>
+Message-ID: <20251127144048.431936627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Zhang <guoqing.zhang@amd.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit eb6e7f520d6efa4d4ebf1671455abe4a681f7a05 ]
+[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
 
-On PF passthrough environment, after hibernate and then resume, coralgemm
-will cause gpu page fault.
+When a netdev issues a RX async resync request for a TLS connection,
+the TLS module handles it by logging record headers and attempting to
+match them to the tcp_sn provided by the device. If a match is found,
+the TLS module approves the tcp_sn for resynchronization.
 
-Mode1 reset happens during hibernate, but partition mode is not restored
-on resume, register mmCP_HYP_XCP_CTL and mmCP_PSP_XCP_CTL is not right
-after resume. When CP access the MQD BO, wrong stride size is used,
-this will cause out of bound access on the MQD BO, resulting page fault.
+While waiting for a device response, the TLS module also increments
+rcd_delta each time a new TLS record is received, tracking the distance
+from the original resync request.
 
-The fix is to ensure gfx_v9_4_3_switch_compute_partition() is called
-when resume from a hibernation.
-KFD resume is called separately during a reset recovery or resume from
-suspend sequence. Hence it's not required to be called as part of
-partition switch.
+However, if the device response is delayed or fails (e.g due to
+unstable connection and device getting out of tracking, hardware
+errors, resource exhaustion etc.), the TLS module keeps logging and
+incrementing, which can lead to a WARN() when rcd_delta exceeds the
+threshold.
 
-Signed-off-by: Samuel Zhang <guoqing.zhang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5d1b32cfe4a676fe552416cb5ae847b215463a1a)
+To address this, introduce tls_offload_rx_resync_async_request_cancel()
+to explicitly cancel resync requests when a device response failure is
+detected. Call this helper also as a final safeguard when rcd_delta
+crosses its threshold, as reaching this point implies that earlier
+cancellation did not occur.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 3 ++-
- drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c    | 4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ include/net/tls.h    | 6 ++++++
+ net/tls/tls_device.c | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-index ccfd2a4b4acc8..9c89e234c7869 100644
---- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-@@ -555,7 +555,8 @@ static int aqua_vanjaram_switch_partition_mode(struct amdgpu_xcp_mgr *xcp_mgr,
- 		return -EINVAL;
- 	}
+diff --git a/include/net/tls.h b/include/net/tls.h
+index b90f3b675c3c4..c7bcdb3afad75 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -467,6 +467,12 @@ tls_offload_rx_resync_async_request_end(struct tls_offload_resync_async *resync_
+ 	atomic64_set(&resync_async->req, ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ }
  
--	if (adev->kfd.init_complete && !amdgpu_in_reset(adev))
-+	if (adev->kfd.init_complete && !amdgpu_in_reset(adev) &&
-+		!adev->in_suspend)
- 		flags |= AMDGPU_XCP_OPS_KFD;
++static inline void
++tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
++{
++	atomic64_set(&resync_async->req, 0);
++}
++
+ static inline void
+ tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
+ {
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index a82fdcf199690..bb14d9b467f28 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -723,8 +723,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
+ 		/* shouldn't get to wraparound:
+ 		 * too long in async stage, something bad happened
+ 		 */
+-		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
++		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
++			tls_offload_rx_resync_async_request_cancel(resync_async);
+ 			return false;
++		}
  
- 	if (flags & AMDGPU_XCP_OPS_KFD) {
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-index f27ccb8f3c8c5..26c2d8d9e2463 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-@@ -2297,7 +2297,9 @@ static int gfx_v9_4_3_cp_resume(struct amdgpu_device *adev)
- 		r = amdgpu_xcp_init(adev->xcp_mgr, num_xcp, mode);
- 
- 	} else {
--		if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
-+		if (adev->in_suspend)
-+			amdgpu_xcp_restore_partition_mode(adev->xcp_mgr);
-+		else if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
- 						    AMDGPU_XCP_FL_NONE) ==
- 		    AMDGPU_UNKNOWN_COMPUTE_PARTITION_MODE)
- 			r = amdgpu_xcp_switch_partition_mode(
+ 		/* asynchronous stage: log all headers seq such that
+ 		 * req_seq <= seq <= end_seq, and wait for real resync request
 -- 
 2.51.0
 
