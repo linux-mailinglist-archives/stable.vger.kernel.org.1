@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-197380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4456DC8F199
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3D0C8F130
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 74D044E8F47
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E03944EBDF7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE5B2765D4;
-	Thu, 27 Nov 2025 15:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2459D334C0A;
+	Thu, 27 Nov 2025 14:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV+ZZHvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw5wOOcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896D323F439;
-	Thu, 27 Nov 2025 15:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C86334C07;
+	Thu, 27 Nov 2025 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255653; cv=none; b=unFO1XtZLBbw1GJkVJtU5WPPfQKmXlAGskCgF3kYSrfn1Y8o3q/myAasAdrRayqfloZKn5gN3etPZx4MMNd4vlQMms+/IZ/efRqHncTUMzpJDhDcfjBj52/eoXCO4IfbT0Xv5znQEhnJipX++BIx166M7Z7hzkzeVI3LqEY6nAo=
+	t=1764255553; cv=none; b=aEnfoEN3jJYLl/QpTHzmX/ulB80Q8M12jo+nRyyNbpWWhzc9JTSyJTO73zmpQ5gollcFDAOdyOLS9Ijme+wdIQuXWwQ53ctwFldOmM0OZQK4oav5g/LzUW1vPsxVkmYn3Q6Socr0E+5xIkfddjbGzeAUwstOCm7Q1XcW9IOUlPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255653; c=relaxed/simple;
-	bh=YFg4t1mObEuCRCpY/kYDbO7ebwt2m+f0yR0zBw0sEz0=;
+	s=arc-20240116; t=1764255553; c=relaxed/simple;
+	bh=NAnneL8yCvNhuDvhXIWU49ZJtBvGj8v0YBzsWPaaHeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZiMQWo/HFoTZg3ccHuZuDR63543T1BPX5v59kWQ/YiTtfQShG8h6PnWP4B2IduBGhREP1EK1NBC2+RcAbk8DJnP39K+XJ4DleW4UIzI33MSAgrBasYMdX4eUlT1yuwEwJGkI8snRdcDlgh3Zg2WQoE7tZYtPuORCYdGzKC0hyPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV+ZZHvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB23C113D0;
-	Thu, 27 Nov 2025 15:00:52 +0000 (UTC)
+	 MIME-Version; b=WQ7aqKa52+Hux7idLTGpVzGiffcHQw2+JNx75ylPEeunuYrDWY20uOWvxv2qf96rVmGl9HTEM3FMKk0s8cB2o6TrLrcuXp4S1mNRF7gG/QQORSuo9MYnZW6OwHIkQTFfVvYsVkSDl7QR+CMcfr6gLueTpE1Uykatj/mPxcTjLck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hw5wOOcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0E3C113D0;
+	Thu, 27 Nov 2025 14:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255653;
-	bh=YFg4t1mObEuCRCpY/kYDbO7ebwt2m+f0yR0zBw0sEz0=;
+	s=korg; t=1764255552;
+	bh=NAnneL8yCvNhuDvhXIWU49ZJtBvGj8v0YBzsWPaaHeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BV+ZZHvqQyHiVOcqTtuwykhXuC4v6iq+orS4Trg6sCSV05Ev9m/qitgYxOVeeYIUI
-	 8YSuu76AoxvrWtYD5ha9IIXeNC4wHHAV/URUkmqkzWp0jTeGLe4oZrnUKt1Bg+8K1V
-	 hOAdDXbdypmaUqw28b06kvDfAE5v7dFzUS1Leq0s=
+	b=hw5wOOcw7HSexYn0jXdDLjHeg1+bGTqty5mv+8Z5743jgH5Xltu+zz4N08IigFRMP
+	 lBwqlH4nOwQ8CfyxIFx8FJRhlzeqbqnClHJAlZhxNYOP0+uEDN0+erPqd2LqanHPF1
+	 v+gSnIi7OEfMc4TjvsgKbYMTLvwG0IxoHfH5C7FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.17 024/175] ACPI: APEI: EINJ: Fix EINJV2 initialization and injection
-Date: Thu, 27 Nov 2025 15:44:37 +0100
-Message-ID: <20251127144043.847191193@linuxfoundation.org>
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.17 025/175] ata: libata-scsi: Fix system suspend for a security locked drive
+Date: Thu, 27 Nov 2025 15:44:38 +0100
+Message-ID: <20251127144043.883736331@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
 References: <20251127144042.945669935@linuxfoundation.org>
@@ -65,159 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit d2932a59c2d4fb364396f21df58431c44918dd47 upstream.
+commit b11890683380a36b8488229f818d5e76e8204587 upstream.
 
-ACPI 6.6 specification for EINJV2 appends an extra structure to
-the end of the existing struct set_error_type_with_address.
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
-Several issues showed up in testing.
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
- 1) Initialization was broken by an earlier fix [1] since is_v2 is only
-    set while performing an injection, not during initialization.
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
 
- 2) A buggy BIOS provided invalid "revision" and "length" for the
-    extension structure. Add several sanity checks.
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
 
- 3) When injecting legacy error types on an EINJV2 capable system,
-    don't copy the component arrays.
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
 
-Fixes: 6c7058514991 ("ACPI: APEI: EINJ: Check if user asked for EINJV2 injection") # [1]
-Fixes: b47610296d17 ("ACPI: APEI: EINJ: Enable EINJv2 error injections")
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-[ rjw: Changelog edits ]
-Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
-Link: https://patch.msgid.link/20251119012712.178715-1-tony.luck@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
+
+Cc: stable@vger.kernel.org
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/einj-core.c |   64 ++++++++++++++++++++++++++----------------
- 1 file changed, 41 insertions(+), 23 deletions(-)
+ drivers/ata/libata-scsi.c |    7 +++++++
+ include/linux/ata.h       |    1 +
+ 2 files changed, 8 insertions(+)
 
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -182,6 +182,7 @@ bool einj_initialized __ro_after_init;
- 
- static void __iomem *einj_param;
- static u32 v5param_size;
-+static u32 v66param_size;
- static bool is_v2;
- 
- static void einj_exec_ctx_init(struct apei_exec_context *ctx)
-@@ -283,6 +284,24 @@ static void check_vendor_extension(u64 p
- 	acpi_os_unmap_iomem(p, sizeof(v));
- }
- 
-+static u32 einjv2_init(struct einjv2_extension_struct *e)
-+{
-+	if (e->revision != 1) {
-+		pr_info("Unknown v2 extension revision %u\n", e->revision);
-+		return 0;
-+	}
-+	if (e->length < sizeof(*e) || e->length > PAGE_SIZE) {
-+		pr_info(FW_BUG "Bad1 v2 extension length %u\n", e->length);
-+		return 0;
-+	}
-+	if ((e->length - sizeof(*e)) % sizeof(e->component_arr[0])) {
-+		pr_info(FW_BUG "Bad2 v2 extension length %u\n", e->length);
-+		return 0;
-+	}
-+
-+	return (e->length - sizeof(*e)) / sizeof(e->component_arr[0]);
-+}
-+
- static void __iomem *einj_get_parameter_address(void)
- {
- 	int i;
-@@ -310,28 +329,21 @@ static void __iomem *einj_get_parameter_
- 		v5param_size = sizeof(v5param);
- 		p = acpi_os_map_iomem(pa_v5, sizeof(*p));
- 		if (p) {
--			int offset, len;
--
- 			memcpy_fromio(&v5param, p, v5param_size);
- 			acpi5 = 1;
- 			check_vendor_extension(pa_v5, &v5param);
--			if (is_v2 && available_error_type & ACPI65_EINJV2_SUPP) {
--				len = v5param.einjv2_struct.length;
--				offset = offsetof(struct einjv2_extension_struct, component_arr);
--				max_nr_components = (len - offset) /
--						sizeof(v5param.einjv2_struct.component_arr[0]);
--				/*
--				 * The first call to acpi_os_map_iomem above does not include the
--				 * component array, instead it is used to read and calculate maximum
--				 * number of components supported by the system. Below, the mapping
--				 * is expanded to include the component array.
--				 */
-+			if (available_error_type & ACPI65_EINJV2_SUPP) {
-+				struct einjv2_extension_struct *e;
-+
-+				e = &v5param.einjv2_struct;
-+				max_nr_components = einjv2_init(e);
-+
-+				/* remap including einjv2_extension_struct */
- 				acpi_os_unmap_iomem(p, v5param_size);
--				offset = offsetof(struct set_error_type_with_address, einjv2_struct);
--				v5param_size = offset + struct_size(&v5param.einjv2_struct,
--					component_arr, max_nr_components);
--				p = acpi_os_map_iomem(pa_v5, v5param_size);
-+				v66param_size = v5param_size - sizeof(*e) + e->length;
-+				p = acpi_os_map_iomem(pa_v5, v66param_size);
- 			}
-+
- 			return p;
- 		}
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -992,6 +992,13 @@ static void ata_gen_ata_sense(struct ata
+ 		return;
  	}
-@@ -527,6 +539,7 @@ static int __einj_error_inject(u32 type,
- 			       u64 param3, u64 param4)
- {
- 	struct apei_exec_context ctx;
-+	u32 param_size = is_v2 ? v66param_size : v5param_size;
- 	u64 val, trigger_paddr, timeout = FIRMWARE_TIMEOUT;
- 	int i, rc;
  
-@@ -539,11 +552,11 @@ static int __einj_error_inject(u32 type,
- 	if (acpi5) {
- 		struct set_error_type_with_address *v5param;
- 
--		v5param = kmalloc(v5param_size, GFP_KERNEL);
-+		v5param = kmalloc(param_size, GFP_KERNEL);
- 		if (!v5param)
- 			return -ENOMEM;
- 
--		memcpy_fromio(v5param, einj_param, v5param_size);
-+		memcpy_fromio(v5param, einj_param, param_size);
- 		v5param->type = type;
- 		if (type & ACPI5_VENDOR_BIT) {
- 			switch (vendor_flags) {
-@@ -601,7 +614,7 @@ static int __einj_error_inject(u32 type,
- 				break;
- 			}
- 		}
--		memcpy_toio(einj_param, v5param, v5param_size);
-+		memcpy_toio(einj_param, v5param, param_size);
- 		kfree(v5param);
- 	} else {
- 		rc = apei_exec_run(&ctx, ACPI_EINJ_SET_ERROR_TYPE);
-@@ -1099,9 +1112,14 @@ static void einj_remove(struct faux_devi
- 	struct apei_exec_context ctx;
- 
- 	if (einj_param) {
--		acpi_size size = (acpi5) ?
--			v5param_size :
--			sizeof(struct einj_parameter);
-+		acpi_size size;
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
++	}
 +
-+		if (v66param_size)
-+			size = v66param_size;
-+		else if (acpi5)
-+			size = v5param_size;
-+		else
-+			size = sizeof(struct einj_parameter);
- 
- 		acpi_os_unmap_iomem(einj_param, size);
- 		if (vendor_errors.size)
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+ 			    "Missing result TF: reporting aborted command\n");
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -566,6 +566,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 
 
 
