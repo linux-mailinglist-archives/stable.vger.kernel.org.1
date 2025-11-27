@@ -1,156 +1,102 @@
-Return-Path: <stable+bounces-197100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9318FC8E78E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:31:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CEDC8E896
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C86E54E8FF3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 848343AD147
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BF82765C3;
-	Thu, 27 Nov 2025 13:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310C027FD44;
+	Thu, 27 Nov 2025 13:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLttpL+f"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YCTTW2Jv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D1B2750ED;
-	Thu, 27 Nov 2025 13:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396927978C;
+	Thu, 27 Nov 2025 13:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764250231; cv=none; b=W2SdHI35L7Z8ybuQclYJJ4cAajWr4xpgyITkHxnfGlorHfT99kPQa5sSjplAYP3q9PMqDXmLQ8yq6wiH86WBtnXfMhsgHT+N1UtslQoT1dAb41lYMCJxJMr0HJ7fbko8JSPZKirWheK+QQS50Y1iPd27Apo7aaPPtqGSzZvsv1A=
+	t=1764250913; cv=none; b=We6D/b1Xy1kPAeRTEyoBpiY7lx334zHkZxsIOPkl0FQqgHV4DAJTjcnh5Wi/LOUL6D8zcRcM7KH1nnO88/2whSpIwnalziP7qDmpEd74xsTjcIaAV1k396N7nYg+SvTLa3i4TjmqZRxjkw4pQ97o6+hAtW12P7Qfubapg0A6BHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764250231; c=relaxed/simple;
-	bh=LuW33Qmw6b+FBxoiMZUsrTuCLWkTEsGgiIgp0uKhm3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UPnkI/WEIcVWsH1hDDwErGMVNukOokLl2HSn+jTbpgVWlOaCiopE7ZcegkNDRrsK02jKxPeUoLZmrlA5OLSfxFbRR9G1vSgWHvj+v1ROuetU7QGy4PgMCShzs81ySTldKtKsWBEgl0YKP3bxOQmBeUaodZm/8ljJKZb4rEnFkH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLttpL+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1DBC4CEF8;
-	Thu, 27 Nov 2025 13:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764250231;
-	bh=LuW33Qmw6b+FBxoiMZUsrTuCLWkTEsGgiIgp0uKhm3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hLttpL+fSi/4VGEdZbJXeBfo5lC65USaTdPOiDBNJuEFlBhC/rGbVORs8f/Rp8B+2
-	 09EtLwc5Mtx9Z3M0REc8V8xAVdo71b7TRTCiEx6ylelSVDwDRSmrkDNYkxiiTnN1L0
-	 D3RkJHvopkyo+bOmwr0KcXe6OrT2lOhTC/MjPGQA=
-Date: Thu, 27 Nov 2025 14:30:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Bharath SM <bharathsm.hsk@gmail.com>
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>, stable@vger.kernel.org,
-	Shyam Prasad N <sprasad@microsoft.com>, apais@microsoft.com,
-	Bharath S M <bharathsm@microsoft.com>,
-	David Howells <dhowells@redhat.com>, smfrench@gmail.com,
-	linux-cifs@vger.kernel.org, Laura Kerner <laura.kerner@ichaus.de>
-Subject: Re: [PATCH 6.6.y] smb: client: support kvec iterators in async read
- path
-Message-ID: <2025112707-pummel-film-6bd6@gregkh>
-References: <20250710165040.3525304-1-henrique.carvalho@suse.com>
- <2944136.1752224518@warthog.procyon.org.uk>
- <aHE0--yUyFJqK6lb@precision>
- <CAGypqWyyA6nUfH-bGhQxLYD74O7EcE_6_W15=AB8jvi6yZiV_Q@mail.gmail.com>
- <2025112112-icon-bunkmate-bfad@gregkh>
- <CAGypqWy8=Oq6CC0YGFSr72L7kqrEDOytboSqJFJBxxV5tGQgFA@mail.gmail.com>
+	s=arc-20240116; t=1764250913; c=relaxed/simple;
+	bh=0C0ec2t7VLdJmBKmgnrsAHutWDQQX9XJnTOmZEwMrik=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eTVUJdn8uXMwii1YEEdnP5Foya4kwVU8r7jJQZvWXRQ5MOuVxZfcN7eyQ/GhcGLJlhrAtABYcojoyCgp4JohqMJJbdGfWKwECg/LDXER7sosv2WL2GHGpqR27MnnePjv+DglgaKTyZ8lPeAAr++IUV0409uRBL7S3gZkG30rEAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YCTTW2Jv; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C7C0BC16A19;
+	Thu, 27 Nov 2025 13:41:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8169A6068C;
+	Thu, 27 Nov 2025 13:41:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 311B2102F2771;
+	Thu, 27 Nov 2025 14:41:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764250903; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0C0ec2t7VLdJmBKmgnrsAHutWDQQX9XJnTOmZEwMrik=;
+	b=YCTTW2JvGOER39oApB54JK+qZPEBpl0okPwtulTGyTRPTL6CaN4XnP8NVsUmqGIEbVx9CE
+	qLfwO1iLQTN7ZQ4Ohcj4bwnMgzWegpZvz/G1R+zUrpcCR2KqSj6a7Xw2vxF//uRXF/ozmE
+	fJGG5DMDSP2wUfwQu40KXVsnE6Yf1iv5MdMP05f4pvSYIj9assq3ADlDiz8eSYvUI5RdEB
+	yxEpSSfbPHCKcxqmNArOMr7ukJIJyp7urzX0yULScUmvn7r2p57vZA69OC3TsVzGXfEiuW
+	NwcxEYf9lalj8NwxYF5OnL4mtBaGW1vUxZbsiz0cESkaa2ZswkaaxgSLV1pqCg==
+Date: Thu, 27 Nov 2025 14:41:38 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger Quadros
+ <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Lee Jones
+ <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] Enable 1GHz OPP am335x-bonegreen-eco
+Message-ID: <20251127144138.400d1dcd@kmaincent-XPS-13-7390>
+In-Reply-To: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
+References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGypqWy8=Oq6CC0YGFSr72L7kqrEDOytboSqJFJBxxV5tGQgFA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Nov 21, 2025 at 02:31:20AM -0800, Bharath SM wrote:
-> On Fri, Nov 21, 2025 at 2:02 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Nov 06, 2025 at 06:02:39AM -0800, Bharath SM wrote:
-> > > On Fri, Jul 11, 2025 at 9:01 AM Henrique Carvalho
-> > > <henrique.carvalho@suse.com> wrote:
-> > > >
-> > > > On Fri, Jul 11, 2025 at 10:01:58AM +0100, David Howells wrote:
-> > > > > Henrique Carvalho <henrique.carvalho@suse.com> wrote:
-> > > > >
-> > > > > > Add cifs_limit_kvec_subset() and select the appropriate limiter in
-> > > > > > cifs_send_async_read() to handle kvec iterators in async read path,
-> > > > > > fixing the EIO bug when running executables in cifs shares mounted
-> > > > > > with nolease.
-> > > > > >
-> > > > > > This patch -- or equivalent patch, does not exist upstream, as the
-> > > > > > upstream code has suffered considerable API changes. The affected path
-> > > > > > is currently handled by netfs lib and located under netfs/direct_read.c.
-> > > > >
-> > > > > Are you saying that you do see this upstream too?
-> > > > >
-> > > >
-> > > > No, the patch only targets the 6.6.y stable tree. Since version 6.8,
-> > > > this path has moved into the netfs layer, so the original bug no longer
-> > > > exists.
-> > > >
-> > > > The bug was fixed at least since the commit referred in the commit
-> > > > message -- 3ee1a1fc3981. In this commit, the call to cifs_user_readv()
-> > > > is replaced by a call to netfs_unbuffered_read_iter(), inside the
-> > > > function cifs_strict_readv().
-> > > >
-> > > > netfs_unbuffered_read_iter() itself was introduced in commit
-> > > > 016dc8516aec8, along with other netfs api changes, present in kernel
-> > > > versions 6.8+.
-> > > >
-> > > > Backporting netfs directly would be non-trivial. Instead, I:
-> > > >
-> > > > - add cifs_limit_kvec_subset(), modeled on the existing
-> > > >   cifs_limit_bvec_subset()
-> > > > - choose between the kvec or bvec limiter function early in
-> > > >   cifs_write_from_iter().
-> > > >
-> > > > The Fixes tag references d08089f649a0c, which implements
-> > > > cifs_limit_bvec_subset() and uses it inside cifs_write_from_iter().
-> > > >
-> > > > > > Reproducer:
-> > > > > >
-> > > > > > $ mount.cifs //server/share /mnt -o nolease
-> > > > > > $ cat - > /mnt/test.sh <<EOL
-> > > > > > echo hallo
-> > > > > > EOL
-> > > > > > $ chmod +x /mnt/test.sh
-> > > > > > $ /mnt/test.sh
-> > > > > > bash: /mnt/test.sh: /bin/bash: Defekter Interpreter: Eingabe-/Ausgabefehler
-> > > > > > $ rm -f /mnt/test.sh
-> > > > >
-> > > > > Is this what you are expecting to see when it works or when it fails?
-> > > > >
-> > > >
-> > > > This is the reproducer for the observed bug. In english it reads "Bad
-> > > > interpreter: Input/Output error".
-> > > >
-> > > > FYI: I tried to follow Option 3 of the stable-kernel rules for submission:
-> > > > <https://www.kernel.org/doc/html/v6.15/process/stable-kernel-rules.html>
-> > > > Please let me know if you'd prefer a different approach or any further
-> > > > changes.
-> > > Thanks Henrique.
-> > >
-> > > Hi Greg,
-> > >
-> > > We are observing the same issue with the 6.6 Kernel, Can you please
-> > > help include this patch in the 6.6 stable kernel.?
-> >
-> > Pleas provide a working backport and we will be glad to imclude it.
-> >
-> This fix is not needed now in the stable kernels as "[PATCH] cifs: Fix
-> uncached read into ITER_KVEC iterator" submitted
-> in email thread "Request to backport data corruption fix to stable"
-> fixes this issue.
+On Wed, 12 Nov 2025 16:14:19 +0100
+"Kory Maincent (TI.com)" <kory.maincent@bootlin.com> wrote:
 
-I do not understand, what commit fixed this?  You attached a fix, but
-that's not needed?
+> The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
+> which prevented the CPU from reaching the 1GHz operating point. This
+> limitation was put in place because voltage changes were not working
+> correctly, causing the board to stall when attempting higher frequencies.
+> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
+> used.
+>=20
+> Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
+> handling, to make voltage transitions work reliably.
 
-confused,
+Hello,
 
-greg k-h
+What is the status on this series?
+Is there anything that could prevent it from being merged?
 
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
