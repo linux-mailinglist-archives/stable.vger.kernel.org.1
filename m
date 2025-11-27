@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-197310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB31C8EF94
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F786C8F28F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0417C3549BB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C0ED04EF205
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F143128A6;
-	Thu, 27 Nov 2025 14:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488F5334395;
+	Thu, 27 Nov 2025 15:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI87mBF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9bnn8kZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C437728D830;
-	Thu, 27 Nov 2025 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01441334373;
+	Thu, 27 Nov 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255450; cv=none; b=XNN5KS2rN3qmkuBsqg3DKj5xjTHCU3go5nYddUxeeeJ6FANzsv5tfAMNK4TYplse3JfdCJVIAz70XDHKv9nH03WGKew/NvaPKDOoPWCkrAWxTSBT3FK7m0Dh740nafR0pxbUHnowB4KeLI7n2lskdjjqC5+U0yRlvB0JXE+guls=
+	t=1764255921; cv=none; b=t0Eb5ivGUmAinpyB+y8s3cu+zkc8eKF4rI4w6pHhJFk5Q9dcVhkdApRVnymJrNjvLfNmQtexrdhlop9B+DDVT4nnJpezlM01MVHbgdgyVnBTylPR5ZV6w75RnoAwGkZYeLRmfzVSHU0f7S/sr0b5XJdMxXKM6iPpd9rlOSdCpDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255450; c=relaxed/simple;
-	bh=AbqfYN6Rt3IGI270iy95H4A3wsxJcaYDAjFwp9EyL2E=;
+	s=arc-20240116; t=1764255921; c=relaxed/simple;
+	bh=nc7h5IZAbmn1JM6v4rX68l8as2encXfWRd/14QlXIyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iESEHE+iJ9JkQMcmL6J6gHuGHzbYaPP2RM6BmqBWVcqMEA2rpraHQgZi0AlLl89/eIL3Rm5DV0xYVKybzADr4q2W8cx08D3AUgaTf43UkLGDcQpvgmxSIRlrOAR0nA9huQF7FLVY6tghbNFwMaKuoV1g7LfYSLDVIGaiwSDbagY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI87mBF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F30C4CEF8;
-	Thu, 27 Nov 2025 14:57:30 +0000 (UTC)
+	 MIME-Version; b=jnBZBHFv3i37hodMPlZu9CgW5P2aU2yztBbXzG03ITDY/WoKd8xOhhfby0ld/Ml1SGPceGALxqxg5y930X9A4CFoQLrSPk2R2DYSaymt797azSHvZ4w+XVonWpQ0DvO6zMDsEvUVhwvhnb24Ol4x/wKCLtUJZP0Gc9SCMdxn5g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9bnn8kZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FB6C113D0;
+	Thu, 27 Nov 2025 15:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255450;
-	bh=AbqfYN6Rt3IGI270iy95H4A3wsxJcaYDAjFwp9EyL2E=;
+	s=korg; t=1764255920;
+	bh=nc7h5IZAbmn1JM6v4rX68l8as2encXfWRd/14QlXIyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LI87mBF9RNfGo+6qRXwbP/4JWKl9DOst3t7Kl2WVIoSzs7Ms9E5B0ptyqeb3Sq2dr
-	 Ul/6no41gZVr16qHggGMItEvircaKn9FxLoZ9UWMIsYbrbWIZihWUNWokRB3+wTPUj
-	 8FQMw5ma4VuuusQF7YMco+IA1L1RTGNS/jzQK7PU=
+	b=G9bnn8kZAOy2I7gCuKKYAQH4v7af++bsUMebr+sdKceXTM8MPtSWfyBKO3emLgF9L
+	 Xir1s7wUdyttzJrK21L8BLz+yy4j8xlB+Lzw40dFkOt47O4bWfnPeyh6V3NrTSvjnA
+	 ViC38hcJv/mk/HsAGvdrLJfJprJ3kzWYohFdE20U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ovidiu (Ovi) Bunea" <ovidiu.bunea@amd.com>,
-	Yihan Zhu <yihan.zhu@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
+	Samuel Zhang <guoqing.zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/112] drm/amd/display: Insert dccg log for easy debug
+Subject: [PATCH 6.17 160/175] drm/amdgpu: fix gpu page fault after hibernation on PF passthrough
 Date: Thu, 27 Nov 2025 15:46:53 +0100
-Message-ID: <20251127144036.915492047@linuxfoundation.org>
+Message-ID: <20251127144048.795863120@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,147 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Samuel Zhang <guoqing.zhang@amd.com>
 
-[ Upstream commit 35bcc9168f3ce6416cbf3f776758be0937f84cb3 ]
+[ Upstream commit eb6e7f520d6efa4d4ebf1671455abe4a681f7a05 ]
 
-[why]
-Log for sequence tracking
+On PF passthrough environment, after hibernate and then resume, coralgemm
+will cause gpu page fault.
 
-Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
-Reviewed-by: Yihan Zhu <yihan.zhu@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Mode1 reset happens during hibernate, but partition mode is not restored
+on resume, register mmCP_HYP_XCP_CTL and mmCP_PSP_XCP_CTL is not right
+after resume. When CP access the MQD BO, wrong stride size is used,
+this will cause out of bound access on the MQD BO, resulting page fault.
+
+The fix is to ensure gfx_v9_4_3_switch_compute_partition() is called
+when resume from a hibernation.
+KFD resume is called separately during a reset recovery or resume from
+suspend sequence. Hence it's not required to be called as part of
+partition switch.
+
+Signed-off-by: Samuel Zhang <guoqing.zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: cfa0904a35fd ("drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched")
+(cherry picked from commit 5d1b32cfe4a676fe552416cb5ae847b215463a1a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c |   24 ++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 3 ++-
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c    | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -39,6 +39,7 @@
- 
- #define CTX \
- 	dccg_dcn->base.ctx
-+#include "logger_types.h"
- #define DC_LOGGER \
- 	dccg->ctx->logger
- 
-@@ -1132,7 +1133,7 @@ static void dcn35_set_dppclk_enable(stru
- 	default:
- 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+index 811124ff88a88..f9e2edf5260bc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
++++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+@@ -407,7 +407,8 @@ static int aqua_vanjaram_switch_partition_mode(struct amdgpu_xcp_mgr *xcp_mgr,
+ 		return -EINVAL;
  	}
--	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
-+	DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
  
- }
+-	if (adev->kfd.init_complete && !amdgpu_in_reset(adev))
++	if (adev->kfd.init_complete && !amdgpu_in_reset(adev) &&
++		!adev->in_suspend)
+ 		flags |= AMDGPU_XCP_OPS_KFD;
  
-@@ -1400,6 +1401,10 @@ static void dccg35_set_dtbclk_dto(
- 		 * PIPEx_DTO_SRC_SEL should not be programmed during DTBCLK update since OTG may still be on, and the
- 		 * programming is handled in program_pix_clk() regardless, so it can be removed from here.
- 		 */
-+		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO enabled: pixclk_khz=%d, ref_dtbclk_khz=%d, req_dtbclk_khz=%d, phase=%d, modulo=%d\n",
-+				__func__, params->otg_inst, params->pixclk_khz,
-+				params->ref_dtbclk_khz, req_dtbclk_khz, phase, modulo);
-+
+ 	if (flags & AMDGPU_XCP_OPS_KFD) {
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index f06bc94cf6e14..9ee7d25bb06cf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -2292,7 +2292,9 @@ static int gfx_v9_4_3_cp_resume(struct amdgpu_device *adev)
+ 		r = amdgpu_xcp_init(adev->xcp_mgr, num_xcp, mode);
+ 
  	} else {
- 		switch (params->otg_inst) {
- 		case 0:
-@@ -1425,6 +1430,8 @@ static void dccg35_set_dtbclk_dto(
- 
- 		REG_WRITE(DTBCLK_DTO_MODULO[params->otg_inst], 0);
- 		REG_WRITE(DTBCLK_DTO_PHASE[params->otg_inst], 0);
-+
-+		DC_LOG_DEBUG("%s: OTG%d DTBCLK DTO disabled\n", __func__, params->otg_inst);
- 	}
- }
- 
-@@ -1469,6 +1476,8 @@ static void dccg35_set_dpstreamclk(
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
-+	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_EN = %d, DPSTREAMCLK_SRC_SEL = %d\n",
-+			__func__, dp_hpo_inst, (src == REFCLK) ? 0 : 1, otg_inst);
- }
- 
- 
-@@ -1508,6 +1517,8 @@ static void dccg35_set_dpstreamclk_root_
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
-+	DC_LOG_DEBUG("%s: dp_hpo_inst(%d) DPSTREAMCLK_ROOT_GATE_DISABLE = %d\n",
-+			__func__, dp_hpo_inst, enable ? 1 : 0);
- }
- 
- 
-@@ -1547,7 +1558,7 @@ static void dccg35_set_physymclk_root_cl
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
--	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
-+	DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE: %d\n", __func__, phy_inst, enable ? 0 : 1);
- 
- }
- 
-@@ -1620,6 +1631,8 @@ static void dccg35_set_physymclk(
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
-+	DC_LOG_DEBUG("%s: phy_inst(%d) PHYxSYMCLK_EN = %d, PHYxSYMCLK_SRC_SEL = %d\n",
-+			__func__, phy_inst, force_enable ? 1 : 0, clk_src);
- }
- 
- static void dccg35_set_valid_pixel_rate(
-@@ -1667,6 +1680,7 @@ static void dccg35_dpp_root_clock_contro
- 	}
- 
- 	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
-+	DC_LOG_DEBUG("%s: dpp_inst(%d) clock_on = %d\n", __func__, dpp_inst, clock_on);
- }
- 
- static void dccg35_disable_symclk32_se(
-@@ -1725,6 +1739,7 @@ static void dccg35_disable_symclk32_se(
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
-+
- }
- 
- static void dccg35_init_cb(struct dccg *dccg)
-@@ -1732,7 +1747,6 @@ static void dccg35_init_cb(struct dccg *
- 	(void)dccg;
- 	/* Any RCG should be done when driver enter low power mode*/
- }
--
- void dccg35_init(struct dccg *dccg)
- {
- 	int otg_inst;
-@@ -1747,6 +1761,8 @@ void dccg35_init(struct dccg *dccg)
- 		for (otg_inst = 0; otg_inst < 2; otg_inst++) {
- 			dccg31_disable_symclk32_le(dccg, otg_inst);
- 			dccg31_set_symclk32_le_root_clock_gating(dccg, otg_inst, false);
-+			DC_LOG_DEBUG("%s: OTG%d SYMCLK32_LE disabled and root clock gating disabled\n",
-+					__func__, otg_inst);
- 		}
- 
- //	if (dccg->ctx->dc->debug.root_clock_optimization.bits.symclk32_se)
-@@ -1759,6 +1775,8 @@ void dccg35_init(struct dccg *dccg)
- 			dccg35_set_dpstreamclk(dccg, REFCLK, otg_inst,
- 						otg_inst);
- 			dccg35_set_dpstreamclk_root_clock_gating(dccg, otg_inst, false);
-+			DC_LOG_DEBUG("%s: OTG%d DPSTREAMCLK disabled and root clock gating disabled\n",
-+					__func__, otg_inst);
- 		}
- 
- /*
+-		if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
++		if (adev->in_suspend)
++			amdgpu_xcp_restore_partition_mode(adev->xcp_mgr);
++		else if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
+ 						    AMDGPU_XCP_FL_NONE) ==
+ 		    AMDGPU_UNKNOWN_COMPUTE_PARTITION_MODE)
+ 			r = amdgpu_xcp_switch_partition_mode(
+-- 
+2.51.0
+
 
 
 
