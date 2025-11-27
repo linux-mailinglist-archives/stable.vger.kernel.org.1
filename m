@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-197160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB0AC8EDE4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E987CC8F0EB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 075454EAEA3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3487035737E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E2D333755;
-	Thu, 27 Nov 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753AC3115A6;
+	Thu, 27 Nov 2025 15:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFEdTn1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1LA0Rm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32825289E17;
-	Thu, 27 Nov 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAAD260585;
+	Thu, 27 Nov 2025 15:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254963; cv=none; b=HXWUjm+KUtwbMSUtI7yY/n3RQ9paPUwaz8xJA6hIYJ3JvgoTFiLH/69gikJm68v7Mrbhx6WFBV/NK2qKKw/0WZ66uqtNHYyhcjP2MnOhH3b/ekR+JHdNFCt0GrqG8QZJ5X8kRoVzv9eU0IYzwJXalTi7D1FASF6Ti4XoXjI2JKw=
+	t=1764255771; cv=none; b=V/fcRADRFxkw6zF775C8HrmGy5II2jSqo8gtBowxyRAlRa+Lq9owpJ5wF7OehbLEghCwquyL+VxgzkwzNDJcsv8irVeV8rpCjoMHjDv5KwPENcy91QT0sjvAbytCtly+XOLLmvdqTJcCT/g5JN9+nRrUqibBWQI2GrIav/13HIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254963; c=relaxed/simple;
-	bh=dZo7htpguKCidEM6eKKKXidjVUwURrMQsmueHOaQ2TM=;
+	s=arc-20240116; t=1764255771; c=relaxed/simple;
+	bh=6Q4wm0iexnL18r79CCH5wSWav79Flago6pXH6c8Olhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oU4EdqkevRENHRtNF7R+xUSEcFKJpmRsroHbFCHunpjeBL1kF0zTXUkh9V2Oq8DKA3ftvxv1Z8EcUN7uH1UPxjv216TIyQN3yq6JFQaxOaF9e8NIqV8dgFtssIpcAifzwqcov9Rs/Ec14ve+LxsDCr4lqGJK7H/8Qem03uB2Aa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFEdTn1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2045C113D0;
-	Thu, 27 Nov 2025 14:49:22 +0000 (UTC)
+	 MIME-Version; b=FuY51bbuCEQ36EIEZpJ1VxtHT1bkoChYvKPixqXJeooGa8Axi1PwxAp3ADuLrojrFoY8mSpbMi6DZiRtj4GMkoJj0q2r3GbGMycirgUreky8LMdEiBjxUlDFLPUujeOGYMKh82XrLdZOuCMAaRib1mwEbpPuv8SQbmjmpLjFRks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1LA0Rm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60E2C4CEF8;
+	Thu, 27 Nov 2025 15:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254963;
-	bh=dZo7htpguKCidEM6eKKKXidjVUwURrMQsmueHOaQ2TM=;
+	s=korg; t=1764255771;
+	bh=6Q4wm0iexnL18r79CCH5wSWav79Flago6pXH6c8Olhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFEdTn1Td6kumRUkOkBe5ZJzP/kS9a9DxLLn5DTBcktnOxxDdhLzNC+ITuqbHuGuM
-	 cqQ73Bus7IrRsRBBd8cCTvYozfBZfA17+IAwu0Iy4PO9h6RoAdC6cniUnSfauxtS7B
-	 81rkSbH5aPsFVyd1AwFWN0yKgGWRzFE3WIVg9/e8=
+	b=P1LA0Rm+QjtotKwvLcDq/z2TXxaz3w7eiO0uNQtpPxJeSFWaoaZiy8BDi35gMeKwP
+	 i7N2QWdQeIiwJLc0Qey6/6G50xLLKnuR2DoFc+TTCRM1bWxkImXqHjpk62GfFLOiPC
+	 PMo/ydX4dA4AYHN/AsemdQBqdCKfdX3oyVLcCSUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 46/86] nvme-multipath: fix lockdep WARN due to partition scan work
+Subject: [PATCH 6.17 109/175] net: airoha: Do not loopback traffic to GDM2 if it is available on the device
 Date: Thu, 27 Nov 2025 15:46:02 +0100
-Message-ID: <20251127144029.513345949@linuxfoundation.org>
+Message-ID: <20251127144046.938562157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
+[ Upstream commit 8e0a754b0836d996802713bbebc87bc1cc17925c ]
 
-Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
-lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
-a deadlock can happen due to the dependency among disk->open_mutex,
-kblockd workqueue completion and partition_scan_work completion.
+Airoha_eth driver forwards offloaded uplink traffic (packets received
+on GDM1 and forwarded to GDM{3,4}) to GDM2 in order to apply hw QoS.
+This is correct if the device does not support a dedicated GDM2 port.
+In this case, in order to enable hw offloading for uplink traffic,
+the packets should be sent to GDM{3,4} directly.
 
-To avoid the lockdep WARN and the potential deadlock, cut the dependency
-by running the partition_scan_work not by kblockd workqueue but by
-nvme_wq.
-
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
-Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
-Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 9cd451d414f6 ("net: airoha: Add loopback support for GDM2")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251113-airoha-hw-offload-gdm2-fix-v1-1-7e4ca300872f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
+ drivers/net/ethernet/airoha/airoha_ppe.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 57416bbf9344f..578f4f29eacfe 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -686,7 +686,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 			return;
- 		}
- 		nvme_add_ns_head_cdev(head);
--		kblockd_schedule_work(&head->partition_scan_work);
-+		queue_work(nvme_wq, &head->partition_scan_work);
- 	}
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 62e46a8d7e3c8..20e77cdb86d0c 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -281,7 +281,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+ 			if (!airoha_is_valid_gdm_port(eth, port))
+ 				return -EINVAL;
  
- 	mutex_lock(&head->lock);
+-			if (dsa_port >= 0)
++			if (dsa_port >= 0 || eth->ports[1])
+ 				pse_port = port->id == 4 ? FE_PSE_PORT_GDM4
+ 							 : port->id;
+ 			else
 -- 
 2.51.0
 
