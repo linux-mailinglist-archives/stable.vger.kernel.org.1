@@ -1,110 +1,95 @@
-Return-Path: <stable+bounces-197104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89619C8E8F0
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:46:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0657C8E92F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E8D7234E4F9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:46:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E22FC4E9EDA
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EE1248869;
-	Thu, 27 Nov 2025 13:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E62267B94;
+	Thu, 27 Nov 2025 13:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxMyScOx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdwWYaU8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D702417DE;
-	Thu, 27 Nov 2025 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEFA1EB1A4;
+	Thu, 27 Nov 2025 13:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764251211; cv=none; b=Hpu3KT2CoS1EjghbZKkJ1WPMZDw39zXsTj2q15uCFhbr/fjBcfxaShw71a7/NmMgfcNLcjV3QNLuKZ2/DbyA6lLmCM6qsMSyQOslW9BRsusd51e22PJG8FtqALNH31WlLAQ9NLPtp3n+mo5V1FmL9rfD3eLzvShz1HHWOrNpues=
+	t=1764251242; cv=none; b=gNIeqr3CIoXzUR7H9vVs7teGd17T0VwkBIouPSJW0iWlXLxa+Vxnlsh3DUp+x81tuYfM4A5Li7XYfju6UacJbafDz33t8gfS1/nzlDff54DczeglHZhMKcPqorn87cULPQAyQfGxXv4x1jzVOnBUgUh4EFwy8PcLlXJ5Qfcrjqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764251211; c=relaxed/simple;
-	bh=nYUsJMeosQDz50qHJWQC4uIRjpDpFDnsaUPdl3/yWrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kzxyFZB19oyYLMF14JzR9n3/NHYP4SE17E3EulxuBoHLcrOxd1VJPhzmYUinruWUfRIEWw6w8MXCDIG11bcIsPHSvNHX+CmhIIRmVeO86LU9w0YuOmyVCSGoBfDxp2v0seRIVtF9INpUNXJ6CuxEPogWVMUNJLz3p0+VSzIBfZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxMyScOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274FDC4CEF8;
-	Thu, 27 Nov 2025 13:46:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764251210;
-	bh=nYUsJMeosQDz50qHJWQC4uIRjpDpFDnsaUPdl3/yWrg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RxMyScOxNS1/6+i9B9j0juRfxj8G+sovOyfDngj85F2ghu4dmgL20u9vlhpCT7OTs
-	 t9P8k3p8JyLiD8OcTaB7eXQTVMSk6gyKh2x3baTa6DMZiifgt41ay0x5+C9rwhMJh2
-	 LCFpbOgNDjSXXMso3zV3RqAAypcdikhxp0bhtpFw=
-Date: Thu, 27 Nov 2025 14:46:47 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Russell King - ARM Linux <linux@armlinux.org.uk>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
-Subject: Re: [PATCH 5.15 000/411] 5.15.186-rc1 review
-Message-ID: <2025112721-elective-delusion-7eb1@gregkh>
-References: <20250623130632.993849527@linuxfoundation.org>
- <CA+G9fYuU5uSG1MKdYPoaC6O=-w5z6BtLtwd=+QBzrtZ1uQ8VXg@mail.gmail.com>
- <2025062439-tamer-diner-68e9@gregkh>
- <CA+G9fYvUG9=yGCp1W9-9+dhA6xLRo7mrL=7x9kBNJmzg7TCn7w@mail.gmail.com>
- <2025062517-lucrative-justness-83fe@gregkh>
- <202511061127.52ECA4AB40@keescook>
- <2025112157-renewable-batboy-7b5c@gregkh>
- <202511210951.39AA2F97@keescook>
+	s=arc-20240116; t=1764251242; c=relaxed/simple;
+	bh=WlaS2NiP9VyUK5RBnIDbkYPzn1Q+caa+OeUlNygoR4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+gVSQ++sk5O9I/0SD5qQPSs8hits+IUGvRYMM6IzpZ/nZ0KphpU6VgNVNhgOpB7MiVKZjO8yKTR2hgkfN6IdXQ+ArXzupHEZX3pm+C+B3m1/fUFAuU9z9JKytdYpCz142x2JMEdgC18h1B+OEWWAtgy7WukpQ0fYaw9OTiVt8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdwWYaU8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B28CC4CEF8;
+	Thu, 27 Nov 2025 13:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764251241;
+	bh=WlaS2NiP9VyUK5RBnIDbkYPzn1Q+caa+OeUlNygoR4E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tdwWYaU8syHQMhF7AQZKvnoWjUjUta1B3rTVaCBc6qXGWE6fErjguuuywbXhpwfbr
+	 sRutUK7kndlgJg0HGRTwxF/dk5xv8jh/31aoMNspM09mupYvfeqjV8GRlbyXeZp1cQ
+	 E5F6EFW6TCYbgx58dpg855gDXis64jpvEdF6Ks8MZtwQP9gBTysZ+wq17TKtKJx7gg
+	 4h5thC7fjd06gjpfueQYZKRX9n49NlcOh6zPc7W2kAWdQggiSZzpBmyVBlgFpvtRvi
+	 iNE72mUD0g3/gcmPHA4L6rxqp7beK9JfyWIaiwWDolblEItP3lsowvEUj8xv39um/M
+	 pAz91CLACJMsg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vOcLE-000000000VJ-1EFL;
+	Thu, 27 Nov 2025 14:47:24 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Peter Rosin <peda@axentia.se>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Davis <afd@ti.com>
+Subject: [PATCH] mux: mmio: fix regmap leak on probe failure
+Date: Thu, 27 Nov 2025 14:47:02 +0100
+Message-ID: <20251127134702.1915-1-johan@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202511210951.39AA2F97@keescook>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 21, 2025 at 10:00:53AM -0800, Kees Cook wrote:
-> On Fri, Nov 21, 2025 at 10:36:22AM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Nov 06, 2025 at 11:32:18AM -0800, Kees Cook wrote:
-> > > This thread got pointed out to me. You can put this back in if you want;
-> > > you just need the other associated fix (which had a bit of an obscure
-> > > Fixes tag):
-> > 
-> > What exactly is "this" commit?
-> > 
-> > > d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
-> > 
-> > Can you give a list of git ids asked for here?  This thread is confusing
-> > :)
-> 
-> Sorry! For stable, you want these, if they're not already present:
-> 
-> 960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
-> d8720235d5b5 ("scsi: qedf: Use designated initializer for struct qed_fcoe_cb_ops")
-> e136a4062174 ("randstruct: gcc-plugin: Remove bogus void member")
-> f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
-> 
-> 
-> An additional bit of confusion is that the fix in 960013ec5b5e landed
-> twice via 2 trees:
-> 6b3ab7f2cbfa ("net: qede: Initialize qede_ll_ops with designated initializer")
-> 960013ec5b5e ("net: qede: Initialize qede_ll_ops with designated initializer")
+The mmio regmap that may be allocated during probe is never freed.
 
-Ugh, that's why we got confused.  This only backported to 6.1.y, but not
-earlier.  I'll go queue it up to the older ones as well.  All of the
-other commits listed above are already in stable releases.
+Switch to using the device managed allocator so that the regmap is
+released on probe failures (e.g. probe deferral) and on driver unbind.
 
-thanks,
+Fixes: 61de83fd8256 ("mux: mmio: Do not use syscon helper to build regmap")
+Cc: stable@vger.kernel.org	# 6.16
+Cc: Andrew Davis <afd@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/mux/mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/mux/mmio.c b/drivers/mux/mmio.c
+index 9993ce38a818..5b0171d19d43 100644
+--- a/drivers/mux/mmio.c
++++ b/drivers/mux/mmio.c
+@@ -58,7 +58,7 @@ static int mux_mmio_probe(struct platform_device *pdev)
+ 		if (IS_ERR(base))
+ 			regmap = ERR_PTR(-ENODEV);
+ 		else
+-			regmap = regmap_init_mmio(dev, base, &mux_mmio_regmap_cfg);
++			regmap = devm_regmap_init_mmio(dev, base, &mux_mmio_regmap_cfg);
+ 		/* Fallback to checking the parent node on "real" errors. */
+ 		if (IS_ERR(regmap) && regmap != ERR_PTR(-EPROBE_DEFER)) {
+ 			regmap = dev_get_regmap(dev->parent, NULL);
+-- 
+2.51.2
+
 
