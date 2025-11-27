@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F974C8EF91
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5714C8F1DE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF5173B9967
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA6754F0367
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B73F3126C0;
-	Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE1528C84D;
+	Thu, 27 Nov 2025 15:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9mufY/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzV6dDdE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180FB2882C9;
-	Thu, 27 Nov 2025 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044AE260585;
+	Thu, 27 Nov 2025 15:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255206; cv=none; b=XVvhxihS5DasaRHUvP/9TCgzUu/0WntEAUCmLApweuVpvfLiVu5rxWCfJUSw8+G0tYirgXlrQZloLShk5Q6NMSjIaBCU9PBKRXcq3z3QvPVjSGcjdu1/85HCz65YOaLK6QKvR/B0LAAd1oUz67tLYpXpwIKr9bTo5fCS3srtH28=
+	t=1764255734; cv=none; b=Re5DNVZlJfvdBu268Z9hydHOPp9hxLN/k/2jS3MLmTCld391vU2egDhXwhec+HaHDL/yRy3ZrIQQmU955X76UL5BYXbjj/qA5UCpFsgOwSW9o4503W5gG0I92aw+4GTvrsStP0US9Uu0yuz5fvJFPP1PadoZ7RJT4NlUQHc4HNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255206; c=relaxed/simple;
-	bh=Ta1xi6669fNTigz6L8qQavLt0YU/PUqu/E2gSdwp47g=;
+	s=arc-20240116; t=1764255734; c=relaxed/simple;
+	bh=Iv9gfxhkJB/yj2dOJgWF4XNg9ZRWr+iYFEW3ksd6doY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvCeWcy4UTGFyUrU5+O+HyW642/GlCdp18jswLBoShgpupbmcdnEPgISGtLJGdIGaCZu6qbTw/C+yq6nkRjo/XRmu6LOvQq83B4klcJbXm3fdiYgCMR6i8DXqlMcmrsgEO9jsvbKtyMuJeTA6tmTs2I7exBGaHVA2J51f359pcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9mufY/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8821BC4CEF8;
-	Thu, 27 Nov 2025 14:53:25 +0000 (UTC)
+	 MIME-Version; b=Y8iDRFiq8vUVCAg/T3/6pa0nFOYpaYuNqHkcICiffZ4ed0rI5BQIpp96oNRga+1YwJ6E+UJHmz6xHRmVY/NFDzK/4Yv1GWbmg88sMmzUqJ7XDTWmxIAeMxs5+id6dnu3mIi6GNTxkJh+smTetDNJqUU8o/YHfjk5SSHPp7zLBdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzV6dDdE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8320DC113D0;
+	Thu, 27 Nov 2025 15:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255205;
-	bh=Ta1xi6669fNTigz6L8qQavLt0YU/PUqu/E2gSdwp47g=;
+	s=korg; t=1764255733;
+	bh=Iv9gfxhkJB/yj2dOJgWF4XNg9ZRWr+iYFEW3ksd6doY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9mufY/bO10ojAGH87VSPJRsbivaNL2m4CpFksCcGe7BFiq7XLFtlTKBM8ZJSBGa5
-	 G6KF9nxKhlrS8M4OauhuMvwZsIwvp2/7w5pTMi8UVMn5FOAWFOOn3k4/Rf96rATyLk
-	 50ZVzMyVz1W+7LvLQGZM0/96o+sZsyWgJK9lFcTw=
+	b=zzV6dDdEa7WqeQvefMJ9o+P1QDO5Bw+AW0BqX1Ns3JkpZhy/Q3qDOryQ9WJHEfKqr
+	 l7dxwCVQ9/A3/XrxIdZEMulJ+ubFxSQE5fQTtAUJD0ELk7Aa8O2XEa2JYfamC98tKs
+	 cw2/7izSy5cCm7nnYfIxWRrnpOqqCpuY6OMIJfa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 044/112] mptcp: do not fallback when OoO is present
-Date: Thu, 27 Nov 2025 15:45:46 +0100
-Message-ID: <20251127144034.453818002@linuxfoundation.org>
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 094/175] mips: dts: econet: fix EN751221 core type
+Date: Thu, 27 Nov 2025 15:45:47 +0100
+Message-ID: <20251127144046.394724092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 upstream.
+[ Upstream commit 09782e72eec451fa14d327595f86cdc338ebe53c ]
 
-In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
-reset if fallback is possible. Such corruptions happen in the receive
-path; to ensure fallback is possible the stack additionally needs to
-check for OoO data, otherwise the fallback will break the data stream.
+In fact, it is a multi-threaded MIPS34Kc, not a single-threaded MIPS24Kc.
 
-Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ec488700972 ("mips: dts: Add EcoNet DTS with EN751221 and SmartFiber XP8421-B board")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/mips/boot/dts/econet/en751221.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -906,6 +906,13 @@ static bool __mptcp_finish_join(struct m
- 	if (sk->sk_state != TCP_ESTABLISHED)
- 		return false;
+diff --git a/arch/mips/boot/dts/econet/en751221.dtsi b/arch/mips/boot/dts/econet/en751221.dtsi
+index 66197e73d4f04..2abeef5b744a8 100644
+--- a/arch/mips/boot/dts/econet/en751221.dtsi
++++ b/arch/mips/boot/dts/econet/en751221.dtsi
+@@ -18,7 +18,7 @@
  
-+	/* The caller possibly is not holding the msk socket lock, but
-+	 * in the fallback case only the current subflow is touching
-+	 * the OoO queue.
-+	 */
-+	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
-+		return false;
-+
- 	spin_lock_bh(&msk->fallback_lock);
- 	if (!msk->allow_subflows) {
- 		spin_unlock_bh(&msk->fallback_lock);
+ 		cpu@0 {
+ 			device_type = "cpu";
+-			compatible = "mips,mips24KEc";
++			compatible = "mips,mips34Kc";
+ 			reg = <0>;
+ 		};
+ 	};
+-- 
+2.51.0
+
 
 
 
