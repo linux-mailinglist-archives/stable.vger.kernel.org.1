@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB79CC8EE03
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613C8C8EF70
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE95B3504AB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2E4E9A45
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C825329993F;
-	Thu, 27 Nov 2025 14:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE88334367;
+	Thu, 27 Nov 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjW1+bDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWSACMPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DDA2882BB;
-	Thu, 27 Nov 2025 14:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D55330B1F;
+	Thu, 27 Nov 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255100; cv=none; b=RSxps0EwVsNlQNgpg4AJG3gd70mLUXPkKMLt5duMlK9hM8rsFqA6bo0Ongenuuf4kxRTkxLhoTV1paWDhLLBkexyHwHU75HDCNTUyZIAS07jX8CEt5LbGCmI2PeEfzLgq0/ZlITaGSY3tlQcDgAE3J/WP/0v5AXRsNxKBpKUJzE=
+	t=1764255281; cv=none; b=OfaQI+KRnoxJLxEMBAgW+42S7qx8bS0YmvCj2qSRegM38N1AA/SWgi1gzeVB5fYza5LZqMCMRDdK0SbkC6PAAahfD9oTucIpefdahLcuc6dd7Z10H68ca1weA6tjXrbj8qMNcXXt7horIk/Blz3IL8xdVyJbNEO/rPkLJFQzhF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255100; c=relaxed/simple;
-	bh=IflB5oBPt7hsZngGPR3C4shGsvLeHz+KP7kZd+UXjVU=;
+	s=arc-20240116; t=1764255281; c=relaxed/simple;
+	bh=79kGmcv7C6HOM3P5EWJzLh81187A77+7IBFagM2MQMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjft+uFjkOUpxQo6X5gW6QiYBBkHnMpNhvJCqmcLETTepkTShtuWs2pua6DzNf5O/lvHubuR31jIlWUop4GWbJmbe8l5U9TC3X7TjZo8CH6tRLveNB0pDTc+OkzOxKBinCzoXAXiPKJy9TjBPWKv67N4qtF5IQZ1vYtlTGDOcoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjW1+bDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D6EC4CEF8;
-	Thu, 27 Nov 2025 14:51:39 +0000 (UTC)
+	 MIME-Version; b=U3NSHsPtAnIpYWcDDpr1O8AKa7C0HJaBZQJ+danh9bLiK0QhLSJctoK0EHrXmx0du17lGzaJi7Ta/cR51Eu+zJbSV3lXSdrPfulcXK6ghrJOibDgNl5tHA/eTcgWBPl+Wy+pqaQA84o2Sx78ze8fnmTf6xSBe0HxfZLuf4Ob5H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWSACMPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88FFC4CEF8;
+	Thu, 27 Nov 2025 14:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255100;
-	bh=IflB5oBPt7hsZngGPR3C4shGsvLeHz+KP7kZd+UXjVU=;
+	s=korg; t=1764255281;
+	bh=79kGmcv7C6HOM3P5EWJzLh81187A77+7IBFagM2MQMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjW1+bDsadJcv/QrEJzDvQa27bZcBzIrS3vAzfB8P0RPvwACBiOmWmpjzyXC8Md3m
-	 KvKsYq/9+FO9NF+gHHvzJvKl8ILGK7PT8X5r7SenPUQo8JV4hWFer5XFeJDb8trXVC
-	 +cHSd7npvfxBA3T0ouaWyX4CzBasmcWbyp8nl668=
+	b=sWSACMPpLp+MhHU15hLTe8YcRJwP/wSRvCpR7WEJnKySW4r4uKKEes6SpHSedXVX8
+	 w8ZhMD0nb1o1myguQVamOA2eJJggNO0tzz+LFWeXIeqy4PdwOa7ik55uWMz35MI+jl
+	 BrMTrcKgFFo1vhKI4DPL0b9Nzl3o9vLFuXzEbCOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 57/86] vsock: Ignore signal/timeout on connect() if already established
+Subject: [PATCH 6.12 071/112] net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
 Date: Thu, 27 Nov 2025 15:46:13 +0100
-Message-ID: <20251127144029.915077567@linuxfoundation.org>
+Message-ID: <20251127144035.439870743@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 002541ef650b742a198e4be363881439bb9d86b4 ]
+[ Upstream commit 896f1a2493b59beb2b5ccdf990503dbb16cb2256 ]
 
-During connect(), acting on a signal/timeout by disconnecting an already
-established socket leads to several issues:
+The loops in 'qede_tpa_cont()' and 'qede_tpa_end()', iterate
+over 'cqe->len_list[]' using only a zero-length terminator as
+the stopping condition. If the terminator was missing or
+malformed, the loop could run past the end of the fixed-size array.
 
-1. connect() invoking vsock_transport_cancel_pkt() ->
-   virtio_transport_purge_skbs() may race with sendmsg() invoking
-   virtio_transport_get_credit(). This results in a permanently elevated
-   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
+Add an explicit bound check using ARRAY_SIZE() in both loops to prevent
+a potential out-of-bounds access.
 
-2. connect() resetting a connected socket's state may race with socket
-   being placed in a sockmap. A disconnected socket remaining in a sockmap
-   breaks sockmap's assumptions. And gives rise to WARNs.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
-   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
-   any simultaneous sendmsg() or connect() and may result in a
-   use-after-free/null-ptr-deref.
-
-Do not disconnect socket on signal/timeout. Keep the logic for unconnected
-sockets: they don't linger, can't be placed in a sockmap, are rejected by
-sendmsg().
-
-[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
-[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
-[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Link: https://patch.msgid.link/20251113112757.4166625-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 64790062cfa2e..ca1289e64bcc8 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1550,18 +1550,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 		timeout = schedule_timeout(timeout);
- 		lock_sock(sk);
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+index 847fa62c80df8..e338bfc8b7b2f 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+@@ -4,6 +4,7 @@
+  * Copyright (c) 2019-2020 Marvell International Ltd.
+  */
  
--		if (signal_pending(current)) {
--			err = sock_intr_errno(timeout);
--			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
--			sock->state = SS_UNCONNECTED;
--			vsock_transport_cancel_pkt(vsk);
--			vsock_remove_connected(vsk);
--			goto out_wait;
--		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
--			err = -ETIMEDOUT;
-+		/* Connection established. Whatever happens to socket once we
-+		 * release it, that's not connect()'s concern. No need to go
-+		 * into signal and timeout handling. Call it a day.
-+		 *
-+		 * Note that allowing to "reset" an already established socket
-+		 * here is racy and insecure.
-+		 */
-+		if (sk->sk_state == TCP_ESTABLISHED)
-+			break;
-+
-+		/* If connection was _not_ established and a signal/timeout came
-+		 * to be, we want the socket's state reset. User space may want
-+		 * to retry.
-+		 *
-+		 * sk_state != TCP_ESTABLISHED implies that socket is not on
-+		 * vsock_connected_table. We keep the binding and the transport
-+		 * assigned.
-+		 */
-+		if (signal_pending(current) || timeout == 0) {
-+			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
-+
-+			/* Listener might have already responded with
-+			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
-+			 * sk_state == TCP_SYN_SENT, which hereby we break.
-+			 * In such case VIRTIO_VSOCK_OP_RST will follow.
-+			 */
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
-+
-+			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
-+			 * transport->connect().
-+			 */
- 			vsock_transport_cancel_pkt(vsk);
-+
- 			goto out_wait;
- 		}
++#include <linux/array_size.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/skbuff.h>
+@@ -960,7 +961,7 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
+ {
+ 	int i;
  
+-	for (i = 0; cqe->len_list[i]; i++)
++	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
+ 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+ 				   le16_to_cpu(cqe->len_list[i]));
+ 
+@@ -985,7 +986,7 @@ static int qede_tpa_end(struct qede_dev *edev,
+ 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
+ 			       PAGE_SIZE, rxq->data_direction);
+ 
+-	for (i = 0; cqe->len_list[i]; i++)
++	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
+ 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+ 				   le16_to_cpu(cqe->len_list[i]));
+ 	if (unlikely(i > 1))
 -- 
 2.51.0
 
