@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56586C8ED72
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E67C8F245
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DC3634E9633
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE743B32E5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B2227E05E;
-	Thu, 27 Nov 2025 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBA133437A;
+	Thu, 27 Nov 2025 15:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRK9hA/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBfTAXCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219B421770B;
-	Thu, 27 Nov 2025 14:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0267826159E;
+	Thu, 27 Nov 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254906; cv=none; b=anxc7NU4pOnJYVJhtcAXv9jNLCQIaOVO6LJQFi1po/SQCD2rW1UqCsYB/Batakq0eMU/gtf93uoAkwQ2KnRAo5IcVQuNZWUWaGrREm1RpGIzamooPQGY/luc9I67r/8x9b9FAGRYPpHkUr9tB9UlRPBKxTDJ+YqSRT6ZgVXBpQY=
+	t=1764255662; cv=none; b=BAGioI9DmIfowwuK0zglOyZOIb9PIar5G0f3n0SsdKNrqI81lM63OEP/BVl8NPH5BsgmMeLX+XWsucAbF4bp2a0XE8tKT7wUA1iljXf2uQHTDqifpXFjSn/EHbY1dIK6uwTZyVMx6EijBk6lmRJn7Gvdei8XyneQlPuT7jPYGmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254906; c=relaxed/simple;
-	bh=JwCH0FGAJmKzOYm3doPmF7V49vkyU5wJaXMVszsSfuc=;
+	s=arc-20240116; t=1764255662; c=relaxed/simple;
+	bh=WLL1sQhyuqRF4AiLPmT3G4S6x5xlHksaXwmYBhilXTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gukgfheXvTradwoioy/kRARfvg86rpvqAudiWu2vmHvyLERfqNJC+z+P5Ap1hRvkF+45C9zjWmkMuaZaQZD/m9yCZFPYq0xBLcB1GJimvDcc6TZ6xSsXDW89ar3vucjyr7uwKt81Q/v1Q4r8g9lkh2qnNJzZVj0pXzll6Ereljw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRK9hA/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E94FC4CEF8;
-	Thu, 27 Nov 2025 14:48:25 +0000 (UTC)
+	 MIME-Version; b=ksAHoWq44237of0xOA+YczRft+NtyaEac5cNJQSWcesQCjHY64etYqarPlPCzWcysnpnSDdGCX2QOiYbKdvUoc7ZEII+/q/Pjsd1KGKBUseer9nRB4lKBBSgAfh3PjfTIcwrMd7U+JP7F5w5eSKs3QHCXK66VPb7EsJ4LpfgLzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBfTAXCY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80479C4CEF8;
+	Thu, 27 Nov 2025 15:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254905;
-	bh=JwCH0FGAJmKzOYm3doPmF7V49vkyU5wJaXMVszsSfuc=;
+	s=korg; t=1764255661;
+	bh=WLL1sQhyuqRF4AiLPmT3G4S6x5xlHksaXwmYBhilXTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRK9hA/uTncPJNM/y8rQsW+uRDoDlwbco0ydhRMHe9J/0vBMl40qZYgd8/wtxSNWS
-	 GCtRtUcdcZE53hpd9V4iGLesZg50Nmu84mE6+6GPu5skAyjxW0r2vr2AQ0qRa2wB2Z
-	 xZXwQogS7+m5iBlsdROzozYy8TUfsI8iV6Xidqxs=
+	b=aBfTAXCYvAkRUsZ0ko0N4B5u4efe0pBqJlN1Rz3Z+hRfd8qkYj6mLL1m2AUfhv30l
+	 e6CjJiWbVssUASPsy9sKAbFkCrgkP1dMCijig6S9Wtma9DpfAvgUwUGXS9oAnF26zG
+	 oUq0RH2elpGeC+mJ19S38CkBXNMF2TXdS0nKXwhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6 08/86] mptcp: Fix proto fallback detection with BPF
+	Peyton.Lee@amd.com,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.17 071/175] drm/amd: Skip power ungate during suspend for VPE
 Date: Thu, 27 Nov 2025 15:45:24 +0100
-Message-ID: <20251127144028.116430525@linuxfoundation.org>
+Message-ID: <20251127144045.559397909@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
+commit 31ab31433c9bd2f255c48dc6cb9a99845c58b1e4 upstream.
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+During the suspend sequence VPE is already going to be power gated
+as part of vpe_suspend().  It's unnecessary to call during calls to
+amdgpu_device_set_pg_state().
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+It actually can expose a race condition with the firmware if s0i3
+sequence starts as well.  Drop these calls.
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
-
-This fix uses the more generic sk_family for the comparison instead.
-
-Additionally, this also prevents a WARNING from occurring:
-
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
+Cc: Peyton.Lee@amd.com
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a6c826cfeedd7714611ac115371a959ead55bda)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -57,11 +57,13 @@ static u64 mptcp_wnd_end(const struct mp
- 
- static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
- {
-+	unsigned short family = READ_ONCE(sk->sk_family);
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	if (sk->sk_prot == &tcpv6_prot)
-+	if (family == AF_INET6)
- 		return &inet6_stream_ops;
- #endif
--	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
-+	WARN_ON_ONCE(family != AF_INET);
- 	return &inet_stream_ops;
- }
- 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3360,10 +3360,11 @@ int amdgpu_device_set_pg_state(struct am
+ 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
+ 		     adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SDMA))
+ 			continue;
+-		/* skip CG for VCE/UVD, it's handled specially */
++		/* skip CG for VCE/UVD/VPE, it's handled specially */
+ 		if (adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_UVD &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCE &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCN &&
++		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VPE &&
+ 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_JPEG &&
+ 		    adev->ip_blocks[i].version->funcs->set_powergating_state) {
+ 			/* enable powergating to save power */
 
 
 
