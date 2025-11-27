@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05302C8F0A0
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6718BC8EDCC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C55DB343981
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 478CE3B364E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D4D2882A7;
-	Thu, 27 Nov 2025 15:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF40D28314B;
+	Thu, 27 Nov 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsJ7tQVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9UuqHgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E195213254;
-	Thu, 27 Nov 2025 15:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E4E273816;
+	Thu, 27 Nov 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255708; cv=none; b=aKBBGljfi9yZ6NzWJjZVD9VONf4bHKGPVT8iRWtTu94ykIIjtyBBbYyXy4TqMh01siq/AT38Z8pQSNzkPICpIBKUF+R2J61alyqgGDIlM/30MErjNo8REUifF16ltc+JfJLa4UJrag0TkqY1W0Kc6ksenm35B10bt4aUQGsZ8Sk=
+	t=1764254946; cv=none; b=eWrPReyxSsvo1m/p529j3TDYrlr2xgaVfavpMpp92NfxFuZML6PTosS8cr/ku6ZrLHMmTERuGi6UZoOXG/Gwf0SBTH0vpQYFpWDem2WlBqByUmkWQpGPbjk3K5J3pZQpaGJuRMJylGrDjTa5AwKw3XMMDuZynsx7aBL+TG8ZPmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255708; c=relaxed/simple;
-	bh=9Tws0BiIFDIV9JcywIK7MHstCX1FeRfnt/drZFW+sK4=;
+	s=arc-20240116; t=1764254946; c=relaxed/simple;
+	bh=CdHRKALhr8crO4nX9R1I5QyQQPMk9emGjTOywbtuBEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXEYtjBrVtP0Yj5IVWrreo8zPH+2tzpkDOavO6YvE8SUz9r16kZveUSbEMVqSZMz6Y27C4zzih/BHldinJlPyBxFDINUqNyRmaQC2SB8TSRJegNpY5s/1FuukXEiv+InTdcOvtNS3MbVXXpNPqfEBD/0G8VwBLhw1ugdyPmMLuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsJ7tQVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2348DC4CEF8;
-	Thu, 27 Nov 2025 15:01:46 +0000 (UTC)
+	 MIME-Version; b=CwaKC+2rKhy89g6pidYQqb+lzfJ5AimzKGnH/X6Iy7mQuogLozphZ2SdsMeYTVYeShDepXJcQ57qMF5mqv5zMavm65AlqvcIyeemFGDty/gUpGnMJRVkwpomWn6aop43p/S9gZIBb37cLS671Ki7C0LSt7PFDKzCalP6LqyJaDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9UuqHgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC8DC4CEF8;
+	Thu, 27 Nov 2025 14:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255707;
-	bh=9Tws0BiIFDIV9JcywIK7MHstCX1FeRfnt/drZFW+sK4=;
+	s=korg; t=1764254946;
+	bh=CdHRKALhr8crO4nX9R1I5QyQQPMk9emGjTOywbtuBEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsJ7tQVRFAs14pL/F80MxFJg4l2XUml5TTx/WxW8m9JKHCPHVltc4GsFaD2Tdz+Un
-	 I7+JY7r7WyEVUUfo1XAW1b0RHHol5yYkYzSObXder216/Tf6StZZ5dyQrI4JnvAugV
-	 CspB3dbQlkbyrGLaw1B5RrCSuhIztopsg9CnUCQ0=
+	b=l9UuqHguJ/KkaRCsLqWJcr9d59iXX48y7Z9B+joWkRloikmCtthRLFY5wBnIc59+c
+	 w6ubnQiV24fex+R8MKw6q+nJy5/T4w6xnARDfOCH2JDLgv1trOJUxK6mSQKvoDb43e
+	 Avt3//EaklS4t8uFSSdB5JbrrDD5GTPz1l+tltAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 086/175] clk: sunxi-ng: sun55i-a523-ccu: Lower audio0 pll minimum rate
+	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
+	Hannes Reinecke <hare@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 23/86] scsi: sg: Do not sleep in atomic context
 Date: Thu, 27 Nov 2025 15:45:39 +0100
-Message-ID: <20251127144046.105499506@linuxfoundation.org>
+Message-ID: <20251127144028.667557107@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@kernel.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 2050280a4bb660b47f8cccf75a69293ae7cbb087 ]
+commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
 
-While the user manual states that the PLL's rate should be between 180
-MHz and 3 GHz in the register defninition section, it also says the
-actual operating frequency is 22.5792*4 MHz in the PLL features table.
+sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
+sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
+of disabled.
 
-22.5792*4 MHz is one of the actual clock rates that we want and is
-is available in the SDM table. Lower the minimum clock rate to 90 MHz
-so that both rates in the SDM table can be used.
-
-Fixes: 7cae1e2b5544 ("clk: sunxi-ng: Add support for the A523/T527 CCU PLLs")
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251020171059.2786070-7-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun55i-a523.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sg.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun55i-a523.c b/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
-index 1a9a1cb869e23..9e0468fb012b6 100644
---- a/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
-@@ -299,7 +299,7 @@ static struct ccu_nm pll_audio0_4x_clk = {
- 	.m		= _SUNXI_CCU_DIV(16, 6),
- 	.sdm		= _SUNXI_CCU_SDM(pll_audio0_sdm_table, BIT(24),
- 					 0x178, BIT(31)),
--	.min_rate	= 180000000U,
-+	.min_rate	= 90000000U,
- 	.max_rate	= 3000000000U,
- 	.common		= {
- 		.reg		= 0x078,
--- 
-2.51.0
-
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2212,9 +2212,17 @@ sg_remove_sfp_usercontext(struct work_st
+ 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	while (!list_empty(&sfp->rq_list)) {
+ 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
+-		sg_finish_rem_req(srp);
+ 		list_del(&srp->entry);
++		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
++
++		sg_finish_rem_req(srp);
++		/*
++		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
++		 * srp->parentfp after blk_mq_free_request() has been called.
++		 */
+ 		srp->parentfp = NULL;
++
++		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	}
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+ 
 
 
 
