@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-197413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464A4C8F2DA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1258DC8ED66
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEABF3B7470
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A78C4E879C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D6E2FBE03;
-	Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B7827587C;
+	Thu, 27 Nov 2025 14:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H363d4XU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSwi1Uc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB628135D;
-	Thu, 27 Nov 2025 15:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616AE21770B;
+	Thu, 27 Nov 2025 14:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255748; cv=none; b=n/pxZzmvuYtC/rZJ62fSDMulwkG3qr2FMUmkp4HD6oNxifegEuABp6yzxoEfHdyDyRIxaKYuLsRLVdhXwfy3hZYH3cmMLLwVhFAFM5CC63q3TeUb41id+lCcfRAgV23kUIML0SI6C18BDqLaH7i36CwiSnbZEEu8trse9xnErpA=
+	t=1764254894; cv=none; b=qvKOrbNtlu0kyUWWExMg2N32vvhEGzCm+Q+uPmTqUbd0OCh9Ua4n0MkT7umrx5E0ruCHaC0I2x/cL6XJA/7iqoA/RekixzMvsvlI1sfkJE7bNK5msYeMIqa5xD3OCfurogpV7EpBLxoN6ovmEQ9KJUKQH7Y8K6t9SWttfy8hTj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255748; c=relaxed/simple;
-	bh=1IF2XWPrp7XqJhRALUTRRRTJ3K84zi2HMXPzeqRr46c=;
+	s=arc-20240116; t=1764254894; c=relaxed/simple;
+	bh=yDkvk9uH6ulMTjtejMXNh45GqvEQnsdMF5hN2I5oVc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kO29Q9Na1yEpk7WA3MgjrIqEeKPMWh0KYE67W8WbZHF3GN7Qkn1qbDWz30qwk9YHV5QXmfg4jei4okOZ5/pplVt6XYXbF0C+BkX4E/jApnmERxs8GbPnoi/oKGEOwR9Jo7BLHwwLFPFHe6ak97SZuu9ZyXRJ5Xz6alFv9UCuoBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H363d4XU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EDAC4CEF8;
-	Thu, 27 Nov 2025 15:02:27 +0000 (UTC)
+	 MIME-Version; b=V+pSGtXVLISHOnIUy3J6HFRc4+Tmq5ErnUYVX7U2lTxnfd4o2yBfalAW5UDPYLW+e5xyTna6M52iBfvgpw2cnWNG1fDJDsh7bY0J1gSootyEE7f7v88F0rF3EGWcX3L3AIBDBBdv2LCYilU2nuvSbi7fCdkCZ1TrAFXBr4GrVoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSwi1Uc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EC9C4CEF8;
+	Thu, 27 Nov 2025 14:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255748;
-	bh=1IF2XWPrp7XqJhRALUTRRRTJ3K84zi2HMXPzeqRr46c=;
+	s=korg; t=1764254894;
+	bh=yDkvk9uH6ulMTjtejMXNh45GqvEQnsdMF5hN2I5oVc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H363d4XU32wPcHKz0yNHZ3YZOivG8pkxE8yVCRUgtc5PkPj6KaOgp9bcztqJZ7hVL
-	 HufPVjjfgzFZ6GaotQDhHTpLCYwER596LSJyPvznMywafHTmK8joGO6eFspajhUZOK
-	 scEb3Py8MlIwzIWY/Ear5111jajLGjYpyWuIaq0g=
+	b=VSwi1Uc9wlFlor4Jc/MoRrinRKhCSIyKEstSlP/usvqEHTMbDshOXVcaH8/7b1wl8
+	 /Zc8Icj5B9oymEx6wc2cAAYC2qAQxkUa1pf+sgosv5dhQ9Vo0uqLnxwGQFZeCawlJ3
+	 A+o9XAV5pBwCmVrmq6QvEZoYDS4YLFB5DFqerXSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 067/175] mptcp: do not fallback when OoO is present
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 04/86] mtdchar: fix integer overflow in read/write ioctls
 Date: Thu, 27 Nov 2025 15:45:20 +0100
-Message-ID: <20251127144045.414470862@linuxfoundation.org>
+Message-ID: <20251127144027.967570870@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 upstream.
+commit e4185bed738da755b191aa3f2e16e8b48450e1b8 upstream.
 
-In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
-reset if fallback is possible. Such corruptions happen in the receive
-path; to ensure fallback is possible the stack additionally needs to
-check for OoO data, otherwise the fallback will break the data stream.
+The "req.start" and "req.len" variables are u64 values that come from the
+user at the start of the function.  We mask away the high 32 bits of
+"req.len" so that's capped at U32_MAX but the "req.start" variable can go
+up to U64_MAX which means that the addition can still integer overflow.
 
-Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
+Use check_add_overflow() to fix this bug.
+
+Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
+Fixes: 6420ac0af95d ("mtdchar: prevent unbounded allocation in MEMWRITE ioctl")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/mtdchar.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -77,6 +77,13 @@ bool __mptcp_try_fallback(struct mptcp_s
- 	if (__mptcp_check_fallback(msk))
- 		return true;
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -599,6 +599,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
+ 	uint8_t *datbuf = NULL, *oobbuf = NULL;
+ 	size_t datbuf_len, oobbuf_len;
+ 	int ret = 0;
++	u64 end;
  
-+	/* The caller possibly is not holding the msk socket lock, but
-+	 * in the fallback case only the current subflow is touching
-+	 * the OoO queue.
-+	 */
-+	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
-+		return false;
-+
- 	spin_lock_bh(&msk->fallback_lock);
- 	if (!msk->allow_infinite_fallback) {
- 		spin_unlock_bh(&msk->fallback_lock);
+ 	if (copy_from_user(&req, argp, sizeof(req)))
+ 		return -EFAULT;
+@@ -618,7 +619,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
+ 	req.len &= 0xffffffff;
+ 	req.ooblen &= 0xffffffff;
+ 
+-	if (req.start + req.len > mtd->size)
++	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size)
+ 		return -EINVAL;
+ 
+ 	datbuf_len = min_t(size_t, req.len, mtd->erasesize);
+@@ -698,6 +699,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
+ 	size_t datbuf_len, oobbuf_len;
+ 	size_t orig_len, orig_ooblen;
+ 	int ret = 0;
++	u64 end;
+ 
+ 	if (copy_from_user(&req, argp, sizeof(req)))
+ 		return -EFAULT;
+@@ -724,7 +726,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
+ 	req.len &= 0xffffffff;
+ 	req.ooblen &= 0xffffffff;
+ 
+-	if (req.start + req.len > mtd->size) {
++	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 
 
 
