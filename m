@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951E1C8EEF9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE59C8EDFC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82A314EC302
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 344DA4ED452
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C17312807;
-	Thu, 27 Nov 2025 14:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7033299943;
+	Thu, 27 Nov 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsfiEsLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVRkBkmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA672882C9;
-	Thu, 27 Nov 2025 14:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F712874E3;
+	Thu, 27 Nov 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255186; cv=none; b=soYsF1s+sL/ea2gsiCwGovFpHrFJOphZIzu1eqraIU+6cB89ZViG/Ofw8hzmhiwI0Wg7hv/TD2VNqUy7reHtjHJW7g44//eP8S90CzX1R5tM38zWPG+3baKF3uMOz4QkwAVxX1+LeC6sUtGnUWZivztncoXzNcm20MNSIYYi3C4=
+	t=1764254977; cv=none; b=gzPHEmnS8Tkm81ImfSX6ftkTAz3JeBcvb7B9s3oWRANdhJMvxH5M+JQENSMboGfZuYoNYp9eUR6U+I3FVgI/sii6mr70KBrojpDphGa/9trtlf0vdBpXUd3Jb+uQmmAEsvvoV8t3CrRBFaXKJa7CKwkEjEYHiVSGSgOz/jSU8f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255186; c=relaxed/simple;
-	bh=8JYn7KNcga02Q336UyqUnsZIKLRDKed/6CWnLYRIR0k=;
+	s=arc-20240116; t=1764254977; c=relaxed/simple;
+	bh=cQpxegvZ7OOUX7rIkHaxoXjxr/30Qmzzut+sCQ2+/Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErjSlFo1I+RegZ/0xOxR34wS4x1AvbvbuPgpHNVxvKB/29d+McyZM5BP/xufHHn/jvDhP7DLWIfbm2nb/SVyMFjkl/pEMzAffuF/sTssvsAyZwJENFmJkS9bWVLc+W17XAicgJ5WxGr9VSXEOacjgOSB/7PdPMvYG96XYQrlhLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsfiEsLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E466AC4CEF8;
-	Thu, 27 Nov 2025 14:53:05 +0000 (UTC)
+	 MIME-Version; b=W62pqtdBx9VgzrOkWeaqDxntcxWVXqizlh0a7o4dOlcJnAg1uuEI44pxcQ7OJkKZYc5SQ/0pV4sAu7G7G6Hpv/pDDpBd+m2TixEA556naKfRpEmQcZRRmsE0+1Rms8Ev6n/+N7zI1f0euyLaGT2m0m6AcZCK6zuPX604SY3eKWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVRkBkmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ADFC4CEF8;
+	Thu, 27 Nov 2025 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255186;
-	bh=8JYn7KNcga02Q336UyqUnsZIKLRDKed/6CWnLYRIR0k=;
+	s=korg; t=1764254977;
+	bh=cQpxegvZ7OOUX7rIkHaxoXjxr/30Qmzzut+sCQ2+/Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsfiEsLw3OKD+qyQ6aYMcxdKwzuoU6yVWtkENwWl84Y1h+/E1kXlEgl5u1uTn8z2s
-	 /Xj/m/QCq9ijdt8IxNTarvJS77VU4HPeu9vjAc0jKWAuRvZqHW9GOi6qvcSeNZeZ2H
-	 xgcWFEJLu/9HuwICr8wVw72nWWe+ru+zhUg/6tCE=
+	b=gVRkBkmVyJk8nLS0jmw0LYyYaGjVxV3glWHtJdpbRcz48v8oAMS+SPkr20zsm4tax
+	 S2hcWau6ZcDCj1xNXOeyhcYr+1QhWNi6QiFXzCGCPoSxfWJme3Dsml1LuD30vr6Ory
+	 cPTg+Zu/UZW7aLHXRcwp9o/R9+aTgAcavmJBA1Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 038/112] mptcp: fix duplicate reset on fastclose
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Allen Pais <apais@linux.microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 24/86] scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
 Date: Thu, 27 Nov 2025 15:45:40 +0100
-Message-ID: <20251127144034.235543706@linuxfoundation.org>
+Message-ID: <20251127144028.704148895@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-commit ae155060247be8dcae3802a95bd1bdf93ab3215d upstream.
+commit e6965188f84a7883e6a0d3448e86b0cf29b24dfc upstream.
 
-The CI reports sporadic failures of the fastclose self-tests. The root
-cause is a duplicate reset, not carrying the relevant MPTCP option.
-In the failing scenario the bad reset is received by the peer before
-the fastclose one, preventing the reception of the latter.
+If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
+attempt to dereference it in tcm_loop_tpg_address_show() we will get a
+segfault, see below for an example. So, check tl_hba->sh before
+dereferencing it.
 
-Indeed there is window of opportunity at fastclose time for the
-following race:
+  Unable to allocate struct scsi_host
+  BUG: kernel NULL pointer dereference, address: 0000000000000194
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
+  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
+  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
+...
+  Call Trace:
+   <TASK>
+   configfs_read_iter+0x12d/0x1d0 [configfs]
+   vfs_read+0x1b5/0x300
+   ksys_read+0x6f/0xf0
+...
 
-  mptcp_do_fastclose
-    __mptcp_close_ssk
-      __tcp_close()
-        tcp_set_state() [1]
-        tcp_send_active_reset() [2]
-
-After [1] the stack will send reset to in-flight data reaching the now
-closed port. Such reset may race with [2].
-
-Address the issue explicitly sending a single reset on fastclose before
-explicitly moving the subflow to close status.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/596
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-6-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Allen Pais <apais@linux.microsoft.com>
+Link: https://patch.msgid.link/1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ drivers/target/loopback/tcm_loop.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2461,7 +2461,6 @@ bool __mptcp_retransmit_pending_data(str
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -893,6 +893,9 @@ static ssize_t tcm_loop_tpg_address_show
+ 			struct tcm_loop_tpg, tl_se_tpg);
+ 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
  
- /* flags for __mptcp_close_ssk() */
- #define MPTCP_CF_PUSH		BIT(1)
--#define MPTCP_CF_FASTCLOSE	BIT(2)
- 
- /* be sure to send a reset only if the caller asked for it, also
-  * clean completely the subflow status when the subflow reaches
-@@ -2472,7 +2471,7 @@ static void __mptcp_subflow_disconnect(s
- 				       unsigned int flags)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    (flags & MPTCP_CF_FASTCLOSE)) {
-+	    subflow->send_fastclose) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2519,14 +2518,8 @@ static void __mptcp_close_ssk(struct soc
- 
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
- 
--	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
--		/* be sure to force the tcp_close path
--		 * to generate the egress reset
--		 */
--		ssk->sk_lingertime = 0;
--		sock_set_flag(ssk, SOCK_LINGER);
--		subflow->send_fastclose = 1;
--	}
-+	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
-+		tcp_set_state(ssk, TCP_CLOSE);
- 
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
-@@ -2829,9 +2822,26 @@ static void mptcp_do_fastclose(struct so
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
- 	mptcp_set_state(sk, TCP_CLOSE);
--	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow),
--				  subflow, MPTCP_CF_FASTCLOSE);
++	if (!tl_hba->sh)
++		return -ENODEV;
 +
-+	/* Explicitly send the fastclose reset as need */
-+	if (__mptcp_check_fallback(msk))
-+		return;
-+
-+	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+
-+		lock_sock(ssk);
-+
-+		/* Some subflow socket states don't allow/need a reset.*/
-+		if ((1 << ssk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE))
-+			goto unlock;
-+
-+		subflow->send_fastclose = 1;
-+		tcp_send_active_reset(ssk, ssk->sk_allocation,
-+				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
-+unlock:
-+		release_sock(ssk);
-+	}
+ 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
+ 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
  }
- 
- static void mptcp_worker(struct work_struct *work)
 
 
 
