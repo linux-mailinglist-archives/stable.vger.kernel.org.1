@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8CCC8F27A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652EBC8EEF8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B155D3BC89F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC86C3A313D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2348334385;
-	Thu, 27 Nov 2025 15:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD11299943;
+	Thu, 27 Nov 2025 14:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBfRZQ4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKfunen6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA6D284B58;
-	Thu, 27 Nov 2025 15:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE7028CF42;
+	Thu, 27 Nov 2025 14:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255687; cv=none; b=nRlxLX+/Zw5C4mC1pFwq3hkIN0hOhujn6lD4uMkwthkaifw5v8vIS5sLIvkHI9xVUBozsNP6aWk2xfiuOHbepThqjt3tYOEdzbwGbUrnTwfyfEU4cGw2ZMnWSQCuMf4i7Pp+8uiavphTpg0rcF6yX3q+ghPNwsPT+J5DcpfWMr4=
+	t=1764255114; cv=none; b=l1PjK5pFs0aE1+ocISVuhQXYRbgRBQOLoY0naa8mU0SkjHLQ0VtZ/+lX8rPfljYalzGw7f5tqmXZdTtdWjGg9xD61Sui6jO/zkmVAFrDFv9xiKE22ciOKUVgeLZoSM3y8n5HD0rowaoe4URv07y2qYeBeYGtBphNVrvIyIvIB/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255687; c=relaxed/simple;
-	bh=HsYYkA/SgvgDHh2VtNH3uqWIxuUNkFYUZSnLsKDJa6I=;
+	s=arc-20240116; t=1764255114; c=relaxed/simple;
+	bh=BrjBCzY51X+tBpg0WDP+5z38Pk2g319mErVlNiF6AvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNbaLgcSXnv+6JuQ3W5McGNtjdVSR2rXgEP7b30ggvivtRaNoFmUM0lCHjCZQyjYjM8Hc5PJPHEv+Ae7YqxjsH5L+UZn3IeYDXuEKaN6pabuV7rhR7ertjLFUzgo+WTMMvps4xtBZDqoT2h72NDz110L0mXMCJu0BltE5C7npP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBfRZQ4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F4BC4CEF8;
-	Thu, 27 Nov 2025 15:01:26 +0000 (UTC)
+	 MIME-Version; b=K57gf1QrnngfnDCK0sfTVDCsiDaqKfVjd0CHwSlLYHyHUJyPh45siwbCbmPKXr9KOUQK8ZEw329tLOeVEorBsmpZUhTaKtHxeFAEarPb181J3TZVy9UqisSH4iBQTYUlccnDQdXPKcfcX5Go895tvie4epK8i2P6rLY6r2i7GWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKfunen6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5750FC4CEF8;
+	Thu, 27 Nov 2025 14:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255687;
-	bh=HsYYkA/SgvgDHh2VtNH3uqWIxuUNkFYUZSnLsKDJa6I=;
+	s=korg; t=1764255114;
+	bh=BrjBCzY51X+tBpg0WDP+5z38Pk2g319mErVlNiF6AvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBfRZQ4djfekbcmgzavT5rUq1XcDjs2UfIZenkVhukEet9mXkdGf68deNWgUYk5NX
-	 yqDn8DAJrihTmsflSNTrQtbfD22/ATXvyjb151QSztT1Qxdq5Zx2NUNnYTXSQf8JL/
-	 xD1om6vBp+s9HYVUW4+FgjEmwuF4hTY9JjkN/E3k=
+	b=RKfunen6Fzfawq0my94ilTUFQlG/Coy/lsbW40PghqLzASGjExLxyXRCJt+ye4LCM
+	 7tntHD7mPPNF4Pi2la/aU309urM9HExs6qnI6U2W/Z6dX3UFJB4KbSnDknM9qMq/68
+	 vM6p3cCu9sITS/yhbQ+ad034IkamglZwbMw10Tx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 062/175] mptcp: fix premature close in case of fallback
+	Christoph Hellwig <hch@lst.de>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 013/112] exfat: check return value of sb_min_blocksize in exfat_read_boot_sector
 Date: Thu, 27 Nov 2025 15:45:15 +0100
-Message-ID: <20251127144045.231574083@linuxfoundation.org>
+Message-ID: <20251127144033.215763543@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
+commit f2c1f631630e01821fe4c3fdf6077bc7a8284f82 upstream.
 
-I'm observing very frequent self-tests failures in case of fallback when
-running on a CONFIG_PREEMPT kernel.
+sb_min_blocksize() may return 0. Check its return value to avoid
+accessing the filesystem super block when sb->s_blocksize is 0.
 
-The root cause is that subflow_sched_work_if_closed() closes any subflow
-as soon as it is half-closed and has no incoming data pending.
-
-That works well for regular subflows - MPTCP needs bi-directional
-connectivity to operate on a given subflow - but for fallback socket is
-race prone.
-
-When TCP peer closes the connection before the MPTCP one,
-subflow_sched_work_if_closed() will schedule the MPTCP worker to
-gracefully close the subflow, and shortly after will do another schedule
-to inject and process a dummy incoming DATA_FIN.
-
-On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
-fallback subflow before subflow_sched_work_if_closed() is able to create
-the dummy DATA_FIN, unexpectedly interrupting the transfer.
-
-Address the issue explicitly avoiding closing fallback subflows on when
-the peer is only half-closed.
-
-Note that, when the subflow is able to create the DATA_FIN before the
-worker invocation, the worker will change the msk state before trying to
-close the subflow and will skip the latter operation as the msk will not
-match anymore the precondition in __mptcp_close_subflow().
-
-Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v6.15
+Fixes: 719c1e1829166d ("exfat: add super block operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Link: https://patch.msgid.link/20251104125009.2111925-3-yangyongpeng.storage@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/exfat/super.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2531,7 +2531,8 @@ static void __mptcp_close_subflow(struct
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -452,7 +452,10 @@ static int exfat_read_boot_sector(struct
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
  
- 		if (ssk_state != TCP_CLOSE &&
- 		    (ssk_state != TCP_CLOSE_WAIT ||
--		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
-+		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
-+		     __mptcp_check_fallback(msk)))
- 			continue;
+ 	/* set block size to read super block */
+-	sb_min_blocksize(sb, 512);
++	if (!sb_min_blocksize(sb, 512)) {
++		exfat_err(sb, "unable to set blocksize");
++		return -EINVAL;
++	}
  
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
+ 	/* read boot sector */
+ 	sbi->boot_bh = sb_bread(sb, 0);
 
 
 
