@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-197236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C752BC8EF64
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69672C8EE2F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92CD3BB5C1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CC2E14EB75F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1667628D8E8;
-	Thu, 27 Nov 2025 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45C7312838;
+	Thu, 27 Nov 2025 14:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4HwTyx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJh8/4Ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69E4288537;
-	Thu, 27 Nov 2025 14:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0F02F8BC9;
+	Thu, 27 Nov 2025 14:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255177; cv=none; b=LmHwedK4Vo9v8yPssosgWvnWiG07URU5vpMcD4yZ9Dio2aJ52O7YIBE3BYL5Vh0SDKiTA3NzamWKM10Ctfvs+UrMiWs7WliighXPd2Qv3ok0oa0hTyy6QdaHqW/mGT6fR37p2bgIalZq6UtvCSmWDQ2YAV45ZXOrhQVSKAz7cNk=
+	t=1764255015; cv=none; b=fvRP2fvlbTzLPTEq53bM8TTc6tX32cKl+Q66GSOCMlVW7pPJz6AMOdgZU1LJ+PyPxfQpZHltSU7ey6Tc77AFiYiEUJWI9onl3JuGTdS0ksO4XIGvPsOpT6LXQJjoAT6teR39teQKWTyFJovGf2iXAO6IATwxakJeGmaYmMxMCIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255177; c=relaxed/simple;
-	bh=7KCq1IF8ZIwLsSx0MAqOjJc54CNCvHyLJEH5Ul79mVs=;
+	s=arc-20240116; t=1764255015; c=relaxed/simple;
+	bh=jVk3RTPIIm+mm5zrncPJ08eTCkPQCwJiMAaDonwIUi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/I2CCLV4IEkodkUw+SwStHE0xETOAnuaTGtwbUW1HgLvxh4iuZHpBp3E10mrlIzYVyLwpDhhEYcPTymSXrQ2TN5Nevdn4bD1sxak8ugEj+62kwiv9V/x1NY7j0y2TUyLQqFsor+v6LmUwRmYetMBS80Y4zrWi8Q6uLE5E/2m8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4HwTyx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440D7C4CEF8;
-	Thu, 27 Nov 2025 14:52:57 +0000 (UTC)
+	 MIME-Version; b=RDhKuBnS4/inffxgPYU9yhRqRF6/9rwECCYit1wG4uhBWVfE6I8oaq7NviDqK7NqmNyRY+jlCTbjdgOkU/14fwl/bmongtH+8WlWfxR+ltJEF6TeIoFeidRgb7up39VIasgAJR+5C0NAbIkk9RHYdfme4t2eJ8dz2G04UJWXrPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJh8/4Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D65C4CEF8;
+	Thu, 27 Nov 2025 14:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255177;
-	bh=7KCq1IF8ZIwLsSx0MAqOjJc54CNCvHyLJEH5Ul79mVs=;
+	s=korg; t=1764255015;
+	bh=jVk3RTPIIm+mm5zrncPJ08eTCkPQCwJiMAaDonwIUi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4HwTyx3iNo6LasYVqZiWmG1r+QEEHqKmSq1s28cJDzpGzVBByB568BNhWWrN2TA6
-	 IFWkqA9TpeOdai7KXoghSyl8eVLTtL1MbxINF8rK53GP73MiyJEeMn48abBRbLGyRI
-	 KDZMwYRirxfNo5Pi/Mc02jztyykTnJdTcN5HT8PU=
+	b=QJh8/4OwhaIoU9ibbwtB5+C0s6clSsL/sjp4RHOMDeDp8z5F/yPupuFJmu2XLKo78
+	 hPveBFjWVUx14k0+H407fKnFfnch1Y+wW6LlleDTmeuxb/MUy/w+IeA8XS+ygYWsHC
+	 bmwQJfLrrxrGqMiOQXL5lBd3kJhQu/hd8c3QAir0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 035/112] LoongArch: Dont panic if no valid cache info for PCI
+	Marco Patalano <mpatalan@redhat.com>,
+	Ewan Milne <emilne@redhat.com>,
+	James Smart <james.smart@broadcom.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Ming Lei <ming.lei@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.6 21/86] nvme: nvme-fc: move tagset removal to nvme_fc_delete_ctrl()
 Date: Thu, 27 Nov 2025 15:45:37 +0100
-Message-ID: <20251127144034.126544008@linuxfoundation.org>
+Message-ID: <20251127144028.593463762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +66,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ewan D. Milne <emilne@redhat.com>
 
-commit a6b533adfc05ba15360631e019d3e18275080275 upstream.
+commit ea3442efabd0aa3930c5bab73c3901ef38ef6ac3 upstream.
 
-If there is no valid cache info detected (may happen in virtual machine)
-for pci_dfl_cache_line_size, kernel shouldn't panic. Because in the PCI
-core it will be evaluated to (L1_CACHE_BYTES >> 2).
+Now target is removed from nvme_fc_ctrl_free() which is the ctrl->ref
+release handler. And even admin queue is unquiesced there, this way
+is definitely wrong because the ctr->ref is grabbed when submitting
+command.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+And Marco observed that nvme_fc_ctrl_free() can be called from request
+completion code path, and trigger kernel warning since request completes
+from softirq context.
+
+Fix the issue by moveing target removal into nvme_fc_delete_ctrl(),
+which is also aligned with nvme-tcp and nvme-rdma.
+
+Patch originally proposed by Ming Lei, then modified to move the tagset
+removal down to after nvme_fc_delete_association() after further testing.
+
+Cc: Marco Patalano <mpatalan@redhat.com>
+Cc: Ewan Milne <emilne@redhat.com>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org
+Tested-by: Marco Patalano <mpatalan@redhat.com>
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/host/fc.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -51,11 +51,11 @@ static int __init pcibios_init(void)
- 	 */
- 	lsize = cpu_last_level_cache_line_size();
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -2349,17 +2349,11 @@ nvme_fc_ctrl_free(struct kref *ref)
+ 		container_of(ref, struct nvme_fc_ctrl, ref);
+ 	unsigned long flags;
  
--	BUG_ON(!lsize);
-+	if (lsize) {
-+		pci_dfl_cache_line_size = lsize >> 2;
- 
--	pci_dfl_cache_line_size = lsize >> 2;
+-	if (ctrl->ctrl.tagset)
+-		nvme_remove_io_tag_set(&ctrl->ctrl);
 -
--	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
-+		pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
-+	}
+ 	/* remove from rport list */
+ 	spin_lock_irqsave(&ctrl->rport->lock, flags);
+ 	list_del(&ctrl->ctrl_list);
+ 	spin_unlock_irqrestore(&ctrl->rport->lock, flags);
  
- 	return 0;
+-	nvme_unquiesce_admin_queue(&ctrl->ctrl);
+-	nvme_remove_admin_tag_set(&ctrl->ctrl);
+-
+ 	kfree(ctrl->queues);
+ 
+ 	put_device(ctrl->dev);
+@@ -3250,11 +3244,18 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
+ 
+ 	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
++
+ 	/*
+ 	 * kill the association on the link side.  this will block
+ 	 * waiting for io to terminate
+ 	 */
+ 	nvme_fc_delete_association(ctrl);
++
++	if (ctrl->ctrl.tagset)
++		nvme_remove_io_tag_set(&ctrl->ctrl);
++
++	nvme_unquiesce_admin_queue(&ctrl->ctrl);
++	nvme_remove_admin_tag_set(&ctrl->ctrl);
  }
+ 
+ static void
 
 
 
