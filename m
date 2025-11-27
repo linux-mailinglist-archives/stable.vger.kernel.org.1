@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C699BC8F213
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:10:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C54C8EEE6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 91C274EDDEC
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1490D351163
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F92332EA0;
-	Thu, 27 Nov 2025 15:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C08334C1E;
+	Thu, 27 Nov 2025 14:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWz3c2fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1Fxe8Ml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA90228135D;
-	Thu, 27 Nov 2025 15:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E65A334C14;
+	Thu, 27 Nov 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255816; cv=none; b=EvNnfs6msykMUai/M5g2A3K43NspZlem+1wBltMQ/WBZ8THyCnN89eOnEYEDRq/i3jpUSYSllRbBsBgrz0VUF7Z7uKBacnzVUNJHwzM1voI5qzYf3BXZFM83WS7+C3WksxVFO9YezCGjVdc9t50IeRu2l6mq0aBthklHXGseelA=
+	t=1764255293; cv=none; b=SdehsV34mH5mW5u9hLZM8uUr3N4HRE9RO47Pyyr9CElvaDlASOTwzfBjCtTu7Ercz3bdNS7NzSiMyVTxihf59uZo4LvovY5CiEP+KQnD/s9KyqSz0LPG29KQOb5a60msmKbVa6XR/9N0H7ACQZlnKJnqEjY/08JRe5aVyOLf6xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255816; c=relaxed/simple;
-	bh=rkmp1dhQJGGR8jWtdL3vS8dezmcF7v+RIfilvy2kTK4=;
+	s=arc-20240116; t=1764255293; c=relaxed/simple;
+	bh=hJ9NQwCYRTZrhmO6ENF3Ak7jgLXtAr/am2ikfCKEnwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdrrYTQ3MPwMv/NLPpUh4Ysl3O0C6RkfHg4bhFXMYOtBx14QdhmL1ps7Ena8QIPDdqchZEoh1rrD2gJT6cUDwmImIErq6rOwjnLAxZH3TCqII9nZUbngy3BH5Jz5UfI3wImOCoAHWWgPn2f83Sjrqf5ZJ62oTlpvT30ApiuwcfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWz3c2fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C4FC4CEF8;
-	Thu, 27 Nov 2025 15:03:35 +0000 (UTC)
+	 MIME-Version; b=h57cmIi98bH5UcvvfXoELUWnMwYo/gGNkc/vSmIn1XZMMy/0Qa9F0SBFDFQ5/6gv+p6I6XEn2kaAzI5DC2sovkw/tjjpUv1gZIGcm/4ve0TCO1O1xZJpa9T6/uR3/3wOqR11NA3RRiEQGIKV/070p2wNZcbdNkXTm2ghiNfHwAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1Fxe8Ml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FDAC113D0;
+	Thu, 27 Nov 2025 14:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255816;
-	bh=rkmp1dhQJGGR8jWtdL3vS8dezmcF7v+RIfilvy2kTK4=;
+	s=korg; t=1764255292;
+	bh=hJ9NQwCYRTZrhmO6ENF3Ak7jgLXtAr/am2ikfCKEnwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWz3c2fkreMmJDgSeYNbOJiXsY0d3kGx8J58x+TbFyELAtnICyDoHMNECkJkeUTKF
-	 n7Quj/G2f6ERI0J97NpqNV76h1D8Ps6ZnZ0q06CJubU3rdm6vxi3Sq81VSfcKy3pti
-	 PxCmGYDYBVCNwfLo1XuZAW4hRpjk+81NVJb/LiQE=
+	b=M1Fxe8MlxiaEznYV+kYGqq1MCjMAH6lgk5nEbpClYZ+tOupEk8mOKwA+oA5Yw2mwT
+	 7XqTq24M/D//0iYEOnvOg1GQ4mp44Grq0IJizKS/QdnYpt86a1dPJf8TObXsOy7wHp
+	 zK5AEZpnUdn4ee2KYsn4ESKu698A4sEljiiE5fhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jared Kangas <jkangas@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 124/175] af_unix: Read sk_peek_offset() again after sleeping in unix_stream_read_generic().
+Subject: [PATCH 6.12 075/112] pinctrl: s32cc: initialize gpio_pin_config::list after kmalloc()
 Date: Thu, 27 Nov 2025 15:46:17 +0100
-Message-ID: <20251127144047.488583287@linuxfoundation.org>
+Message-ID: <20251127144035.587218112@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit 7bf3a476ce43833c49fceddbe94ff3472e04e9bc ]
+[ Upstream commit 6010d4d8b55b5d3ae1efb5502c54312e15c14f21 ]
 
-Miao Wang reported a bug of SO_PEEK_OFF on AF_UNIX SOCK_STREAM
-socket.
+s32_pmx_gpio_request_enable() does not initialize the newly-allocated
+gpio_pin_config::list before adding it to s32_pinctrl::gpio_configs.
+This could result in a linked list corruption.
 
-The unexpected behaviour is triggered when the peek offset is
-larger than the recv queue and the thread is unblocked by new
-data.
+Initialize the new list_head with INIT_LIST_HEAD() to fix this.
 
-Let's assume a socket which has "aaaa" in the recv queue and
-the peek offset is 4.
-
-First, unix_stream_read_generic() reads the offset 4 and skips
-the skb(s) of "aaaa" with the code below:
-
-	skip = max(sk_peek_offset(sk, flags), 0);	/* @skip is 4. */
-
-	do {
-	...
-		while (skip >= unix_skb_len(skb)) {
-			skip -= unix_skb_len(skb);
-		...
-			skb = skb_peek_next(skb, &sk->sk_receive_queue);
-			if (!skb)
-				goto again;		/* @skip is 0. */
-		}
-
-The thread jumps to the 'again' label and goes to sleep since
-new data has not arrived yet.
-
-Later, new data "bbbb" unblocks the thread, and the thread jumps
-to the 'redo:' label to restart the entire process from the first
-skb in the recv queue.
-
-	do {
-		...
-redo:
-		...
-		last = skb = skb_peek(&sk->sk_receive_queue);
-		...
-again:
-		if (skb == NULL) {
-			...
-			timeo = unix_stream_data_wait(sk, timeo, last,
-						      last_len, freezable);
-			...
-			goto redo;			/* @skip is 0 !! */
-
-However, the peek offset is not reset in the path.
-
-If the buffer size is 8, recv() will return "aaaabbbb" without
-skipping any data, and the final offset will be 12 (the original
-offset 4 + peeked skbs' length 8).
-
-After sleeping in unix_stream_read_generic(), we have to fetch the
-peek offset again.
-
-Let's move the redo label before mutex_lock(&u->iolock).
-
-Fixes: 9f389e35674f ("af_unix: return data from multiple SKBs on recv() with MSG_PEEK flag")
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Closes: https://lore.kernel.org/netdev/3B969F90-F51F-4B9D-AB1A-994D9A54D460@gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20251117174740.3684604-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 6d7c110814ffa..0f288a80e0acd 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2954,6 +2954,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 51ecb8d0fb7e8..35511f83d0560 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -392,6 +392,7 @@ static int s32_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
  
- 	u = unix_sk(sk);
+ 	gpio_pin->pin_id = offset;
+ 	gpio_pin->config = config;
++	INIT_LIST_HEAD(&gpio_pin->list);
  
-+redo:
- 	/* Lock the socket to prevent queue disordering
- 	 * while sleeps in memcpy_tomsg
- 	 */
-@@ -2965,7 +2966,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 		struct sk_buff *skb, *last;
- 		int chunk;
- 
--redo:
- 		unix_state_lock(sk);
- 		if (sock_flag(sk, SOCK_DEAD)) {
- 			err = -ECONNRESET;
-@@ -3015,7 +3015,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 				goto out;
- 			}
- 
--			mutex_lock(&u->iolock);
- 			goto redo;
- unlock:
- 			unix_state_unlock(sk);
+ 	spin_lock_irqsave(&ipctl->gpio_configs_lock, flags);
+ 	list_add(&gpio_pin->list, &ipctl->gpio_configs);
 -- 
 2.51.0
 
