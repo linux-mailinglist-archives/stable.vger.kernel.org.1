@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-197430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543B7C8F26E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7D6C8EF7A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86DCE3BD67E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 04EB1355586
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A9028CF42;
-	Thu, 27 Nov 2025 15:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD34D332EA9;
+	Thu, 27 Nov 2025 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6OLkyX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="roT5BUIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D0F334373;
-	Thu, 27 Nov 2025 15:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B9289811;
+	Thu, 27 Nov 2025 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255796; cv=none; b=lfpVY/BqyhJ/hW/EekEP51jO4Jh3tesqA64aLzxiWg5L+kyRTiFQYaGd0lI59nUFNKsaqVOJwUWjghepOn+8qNWy8znsjtYIUzCG1FxUERHj/uxSFPqdesu0nBnRiOdpLVyAHn5S5BqNpYR0gVAGOf+0RkKCtZpVOu/7cbJYu50=
+	t=1764255424; cv=none; b=Ec/3pxwhAG4LUbo/tUQt4CH6Ffg0IWDRUhmABAqUO+HEYLoNpfoPQUchCGjq1FqaW/8ddmhzOOkyIEf9DnZghNMgHqmiOsyydK90DMgDNmlvZDBtcSMba15js+rVMY1k/dJtYHyySmDP58Mmp3Py8ALylNHcFgc1jXOhLkpzmxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255796; c=relaxed/simple;
-	bh=iZbbENgK17ekdpLVxt5UTfm2muXQjJ74OdOcvR8qAEI=;
+	s=arc-20240116; t=1764255424; c=relaxed/simple;
+	bh=uCR0SMBhHzO/YDpHYXisB/iSJOR06R3Wyjwzfb9ioaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lpy88Z+m6539dMLIHvgerQjtdTxfJZGPAY/pXHFszMYgThv4o7q2lDUv9EDcN0tSTpJXv1alOvvdCyRFUxUhYcLTMVTUIB+pTBUW06NlSWw4n5ZB1v9XihTa7eLQNW/eFJXTg4t2ldkInjyDjBbLE570oCOXE+iSUkiERV88rEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6OLkyX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B29C4CEF8;
-	Thu, 27 Nov 2025 15:03:15 +0000 (UTC)
+	 MIME-Version; b=LORJIqwtkCiiARywA+N4jwGNEDbfzFPHbjspD1q54tH5IJ882sfhBu0ipmBbS99TG9RN5kWAg1UV0puqOzC0xRYw/ouR+IMCEaraRTwYDuqTNWFVyZKLFW6eH1nlFkORhLJYqtOBFKA3JXB0hGQLoFg5teUgUYgDf2oPE6mPYGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=roT5BUIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2122C4CEF8;
+	Thu, 27 Nov 2025 14:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255796;
-	bh=iZbbENgK17ekdpLVxt5UTfm2muXQjJ74OdOcvR8qAEI=;
+	s=korg; t=1764255424;
+	bh=uCR0SMBhHzO/YDpHYXisB/iSJOR06R3Wyjwzfb9ioaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6OLkyX19VU0GZ3Wdok6uoWlFlyuEErcbfoKyl8YOJS91lylH6IZut49IeXBQ1FyF
-	 HV4ant9Zd8Q3RD8h914d4jx4Wlx6IK0/HwQMOWAzVpHleNorVazY7xC7Bqnrgr3Ryl
-	 PYbf/Y2rs5XFHZ+DJCtiG5Twb7Dr7Occ/Yyjcp4Q=
+	b=roT5BUIkL6U0tTNAjgvTBLv71CXiMrCFs4DFKWgtz8QVG8fx9h/peI4HJvrtszxCL
+	 AHtFNZfDG06YIMzv3xZiosuG6XOkwqnLw4XI80cMeMJhDk1Md7OHQf/Na4aKPOquPy
+	 ydjifi2P/TOBiTLzLxZugBCRUES9oyrWCNtG95/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>,
-	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 117/175] drm/xe/irq: Handle msix vector0 interrupt
+Subject: [PATCH 6.12 068/112] s390/ctcm: Fix double-kfree
 Date: Thu, 27 Nov 2025 15:46:10 +0100
-Message-ID: <20251127144047.233098441@linuxfoundation.org>
+Message-ID: <20251127144035.330334127@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
 
-[ Upstream commit 5b38c22687d9287d85dd3bef2fa708bf62cf3895 ]
+[ Upstream commit da02a1824884d6c84c5e5b5ac373b0c9e3288ec2 ]
 
-Current gu2host handler registered as MSI-X vector 0 and as per bspec for
-a msix vector 0 interrupt, the driver must check the legacy registers
-190008(TILE_INT_REG), 190060h (GT INTR Identity Reg 0) and other registers
-mentioned in "Interrupt Service Routine Pseudocode" otherwise it will block
-the next interrupts. To overcome this issue replacing guc2host handler
-with legacy xe_irq_handler.
+The function 'mpc_rcvd_sweep_req(mpcginfo)' is called conditionally
+from function 'ctcmpc_unpack_skb'. It frees passed mpcginfo.
+After that a call to function 'kfree' in function 'ctcmpc_unpack_skb'
+frees it again.
 
-Fixes: da889070be7b2 ("drm/xe/irq: Separate MSI and MSI-X flows")
-Bspec: 62357
-Signed-off-by: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Link: https://patch.msgid.link/20251107083141.2080189-1-venkata.ramana.nayana@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit c34a14bce7090862ebe5a64abe8d85df75e62737)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Remove 'kfree' call in function 'mpc_rcvd_sweep_req(mpcginfo)'.
+
+Bug detected by the clang static analyzer.
+
+Fixes: 0c0b20587b9f25a2 ("s390/ctcm: fix potential memory leak")
+Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
+Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251112182724.1109474-1-aswin@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_irq.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/s390/net/ctcm_mpc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_irq.c b/drivers/gpu/drm/xe/xe_irq.c
-index 5df5b8c2a3e4d..da22f083e86a7 100644
---- a/drivers/gpu/drm/xe/xe_irq.c
-+++ b/drivers/gpu/drm/xe/xe_irq.c
-@@ -843,22 +843,6 @@ static int xe_irq_msix_init(struct xe_device *xe)
- 	return 0;
+diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
+index 9e580ef69bdaa..48ea517ff567a 100644
+--- a/drivers/s390/net/ctcm_mpc.c
++++ b/drivers/s390/net/ctcm_mpc.c
+@@ -700,7 +700,6 @@ static void mpc_rcvd_sweep_req(struct mpcg_info *mpcginfo)
+ 
+ 	grp->sweep_req_pend_num--;
+ 	ctcmpc_send_sweep_resp(ch);
+-	kfree(mpcginfo);
+ 	return;
  }
  
--static irqreturn_t guc2host_irq_handler(int irq, void *arg)
--{
--	struct xe_device *xe = arg;
--	struct xe_tile *tile;
--	u8 id;
--
--	if (!atomic_read(&xe->irq.enabled))
--		return IRQ_NONE;
--
--	for_each_tile(tile, xe, id)
--		xe_guc_irq_handler(&tile->primary_gt->uc.guc,
--				   GUC_INTR_GUC2HOST);
--
--	return IRQ_HANDLED;
--}
--
- static irqreturn_t xe_irq_msix_default_hwe_handler(int irq, void *arg)
- {
- 	unsigned int tile_id, gt_id;
-@@ -975,7 +959,7 @@ int xe_irq_msix_request_irqs(struct xe_device *xe)
- 	u16 msix;
- 
- 	msix = GUC2HOST_MSIX;
--	err = xe_irq_msix_request_irq(xe, guc2host_irq_handler, xe,
-+	err = xe_irq_msix_request_irq(xe, xe_irq_handler(xe), xe,
- 				      DRIVER_NAME "-guc2host", false, &msix);
- 	if (err)
- 		return err;
 -- 
 2.51.0
 
