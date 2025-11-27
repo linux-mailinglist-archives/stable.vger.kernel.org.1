@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF81FC8ED6C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A51C8F2C8
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817643B34AE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E4E3B0AAF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F344F274B3C;
-	Thu, 27 Nov 2025 14:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947AA284B58;
+	Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOKpO4vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/YvgAFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC82B273D6D;
-	Thu, 27 Nov 2025 14:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D505260585;
+	Thu, 27 Nov 2025 15:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254885; cv=none; b=iAf4c2hqtoynVj2UQH3NPUf01Ar7XV0d+z0OOsmrurI8P2M7IKouxnn/kjRNtMjb9hFrWSuUeff4dJvttWs9ZfF0kr42NnlmdFl1kVm1b4LOAT2OD4iX3n6lD02fu6UFBXUr4qqa+d76oAMsqcOidv52Wjp3YT5I28RcwQDPTkc=
+	t=1764255745; cv=none; b=dG7icMY5HROJ+dZYwH8AOLPLGf+RgSUE4GNjMgrcX/Cu2LXRKEuj/BvsSFwtK45GSH+nflNduiJauNZ/9KCjBgJkbCp97U6h66n3hKVJcugHkjv6sGJDe1VBSfAPJMTDuW1FfFIg2Um8ls8hZEPNEOnQPrhDi3n8WLe/Gm61efw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254885; c=relaxed/simple;
-	bh=+9BWl4I7TdD7YD/skTXL6qiY7xbOvviuY8yVdzYaUHE=;
+	s=arc-20240116; t=1764255745; c=relaxed/simple;
+	bh=yAqQzi0vkUaT5HmIoD/VrMyhuD6Wr0Xtt8fgEgLE8mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIvVOsgE8YQyMoNLZ+LZMR4928k5HuLzGbUAhJ3wkUpDa61qyk+21XjoL+VW9bgJESCwjFZ72VufcDsYJYaNN7h2pFTaZKAnRW5ouq3TDjAVxFurOwwCXoNuZteI8Vk+aqFnXInzxsFc4q1EUTSLsoXp8ZdfiYy/ayerN7hzAnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOKpO4vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C98C4CEF8;
-	Thu, 27 Nov 2025 14:48:04 +0000 (UTC)
+	 MIME-Version; b=OTjd8xcESjVVkIci8s6389zTMdK66P/SokqXJ1JJAVw1/BpsQveyNmYJAMYLglQ/Wzygej3S1emdl2lXJoBGIEivfNGAFCsYPQgIh+7GsYnMNv/AkWNrOM9FQWVsNoRnwJr8foBHq5qyYDSYm0/8r3zZ+Cd8xzlLZ9tV7wvvsDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/YvgAFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF36FC4CEF8;
+	Thu, 27 Nov 2025 15:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254885;
-	bh=+9BWl4I7TdD7YD/skTXL6qiY7xbOvviuY8yVdzYaUHE=;
+	s=korg; t=1764255745;
+	bh=yAqQzi0vkUaT5HmIoD/VrMyhuD6Wr0Xtt8fgEgLE8mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOKpO4vvFpzS7l6rMRGDDynhwoad7AyxFdL0tJ7JGG+q7WPFM3waUaEVPcCZQ9Sxq
-	 cd0gH2MkcDvwxzeWB7mnGRWLbJeEy1zTflQcweZ9FimDGmT9t2tj3Yl57ko6HMA04J
-	 ZcnuiH+6FNwPBt+CsWo154+1NTv8FlwrNCEWC/aw=
+	b=A/YvgAFt05uTmHuquQBCEQvgpxjn2SdG9N9KjgvLHuygNTYiI2W7w27Jg1SIbul5p
+	 nIRFsGN3c50yXS1f3lZOv8oDe/uUGE1h05pVJL8M2XpmApi+W74PjQfLLxzFt/Z2z5
+	 J4UOGjqMQs5pQ5FuKR+oWL+b07/mW33njsyck+Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	staffan.melin@oscillator.se,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 02/86] HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
-Date: Thu, 27 Nov 2025 15:45:18 +0100
-Message-ID: <20251127144027.893675365@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 066/175] mptcp: decouple mptcp fastclose from tcp close
+Date: Thu, 27 Nov 2025 15:45:19 +0100
+Message-ID: <20251127144045.377899674@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit beab067dbcff642243291fd528355d64c41dc3b2 upstream.
+commit fff0c87996672816a84c3386797a5e69751c5888 upstream.
 
-Based on available evidence, the USB ID 4c4a:4155 used by multiple
-devices has been attributed to Jieli. The commit 1a8953f4f774
-("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY") affected touchscreen
-functionality. Added checks for manufacturer and serial number to
-maintain microphone compatibility, enabling both devices to function
-properly.
+With the current fastclose implementation, the mptcp_do_fastclose()
+helper is in charge of two distinct actions: send the fastclose reset
+and cleanup the subflows.
 
-[jkosina@suse.com: edit shortlog]
-Fixes: 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
+Formally decouple the two steps, ensuring that mptcp explicitly closes
+all the subflows after the mentioned helper.
+
+This will make the upcoming fix simpler, and allows dropping the 2nd
+argument from mptcp_destroy_common(). The Fixes tag is then the same as
+in the next commit to help with the backports.
+
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
 Cc: stable@vger.kernel.org
-Tested-by: staffan.melin@oscillator.se
-Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    |    4 ++--
- drivers/hid/hid-quirks.c |   13 ++++++++++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |   13 +++++++++----
+ net/mptcp/protocol.h |    2 +-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1511,7 +1511,7 @@
- #define USB_VENDOR_ID_SIGNOTEC			0x2133
- #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2785,7 +2785,11 @@ static void mptcp_worker(struct work_str
+ 		__mptcp_close_subflow(sk);
  
--#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
--#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
-+#define USB_VENDOR_ID_JIELI_SDK_DEFAULT		0x4c4a
-+#define USB_DEVICE_ID_JIELI_SDK_4155		0x4155
- 
- #endif
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -900,7 +900,6 @@ static const struct hid_device_id hid_ig
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
- 	{ }
- };
- 
-@@ -1057,6 +1056,18 @@ bool hid_ignore(struct hid_device *hdev)
- 					     strlen(elan_acpi_id[i].id)))
- 					return true;
- 		break;
-+	case USB_VENDOR_ID_JIELI_SDK_DEFAULT:
-+		/*
-+		 * Multiple USB devices with identical IDs (mic & touchscreen).
-+		 * The touch screen requires hid core processing, but the
-+		 * microphone does not. They can be distinguished by manufacturer
-+		 * and serial number.
-+		 */
-+		if (hdev->product == USB_DEVICE_ID_JIELI_SDK_4155 &&
-+		    strncmp(hdev->name, "SmartlinkTechnology", 19) == 0 &&
-+		    strncmp(hdev->uniq, "20201111000001", 14) == 0)
-+			return true;
-+		break;
+ 	if (mptcp_close_tout_expired(sk)) {
++		struct mptcp_subflow_context *subflow, *tmp;
++
+ 		mptcp_do_fastclose(sk);
++		mptcp_for_each_subflow_safe(msk, subflow, tmp)
++			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
+ 		mptcp_close_wake_up(sk);
  	}
  
- 	if (hdev->type == HID_TYPE_USBMOUSE &&
+@@ -3210,7 +3214,8 @@ static int mptcp_disconnect(struct sock
+ 	/* msk->subflow is still intact, the following will not free the first
+ 	 * subflow
+ 	 */
+-	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
++	mptcp_do_fastclose(sk);
++	mptcp_destroy_common(msk);
+ 
+ 	/* The first subflow is already in TCP_CLOSE status, the following
+ 	 * can't overlap with a fallback anymore
+@@ -3389,7 +3394,7 @@ void mptcp_rcv_space_init(struct mptcp_s
+ 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
+ }
+ 
+-void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
++void mptcp_destroy_common(struct mptcp_sock *msk)
+ {
+ 	struct mptcp_subflow_context *subflow, *tmp;
+ 	struct sock *sk = (struct sock *)msk;
+@@ -3398,7 +3403,7 @@ void mptcp_destroy_common(struct mptcp_s
+ 
+ 	/* join list will be eventually flushed (with rst) at sock lock release time */
+ 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
+-		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
++		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
+ 
+ 	__skb_queue_purge(&sk->sk_receive_queue);
+ 	skb_rbtree_purge(&msk->out_of_order_queue);
+@@ -3416,7 +3421,7 @@ static void mptcp_destroy(struct sock *s
+ 
+ 	/* allow the following to close even the initial subflow */
+ 	msk->free_first = 1;
+-	mptcp_destroy_common(msk, 0);
++	mptcp_destroy_common(msk);
+ 	sk_sockets_allocated_dec(sk);
+ }
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -979,7 +979,7 @@ static inline void mptcp_propagate_sndbu
+ 	local_bh_enable();
+ }
+ 
+-void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
++void mptcp_destroy_common(struct mptcp_sock *msk);
+ 
+ #define MPTCP_TOKEN_MAX_RETRIES	4
+ 
 
 
 
