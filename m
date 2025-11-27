@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E8AC8EDB1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96357C8EF34
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E27B94EB2EC
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6CEEB4EC8C6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5F3280335;
-	Thu, 27 Nov 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B992531280E;
+	Thu, 27 Nov 2025 14:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfV1mTD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpzzjjqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C6D273816;
-	Thu, 27 Nov 2025 14:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7441E2F8BC9;
+	Thu, 27 Nov 2025 14:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254955; cv=none; b=rRYRBUDlyXrSJxXuECv3j1LU61yjPXu/9Q295+A9WvCbARLQElniA/HLwTV4C40TzRFHM9pwIaXK3ry3B00yyVYpnaYMqHgzAEw+XiWQTTVWF88mLA+i17aytTQeW3jw0skymF3TymudRgZM3gYn44I9TomnOzqXwZ4QvnD50Aw=
+	t=1764255248; cv=none; b=qA1d+N1ABTOPiEncV+Zke7RILjYEY+aUqOgQJ7kojfv8z7MgMMnUPf/AVcA1cPWJt4Og+L4hfGcfU6D1KFSqUCl/i67b0vpdjSXMyl55b9fLYoKKPRIDGwF++z/65JNQbmgNR6mR/RyJZD5ZTBoanJjjiALjMAEa7HOQgaOQOSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254955; c=relaxed/simple;
-	bh=ayh8iypufqkyETfT3ZN8Jaa8AgYkJTPxho1bNqC2Tss=;
+	s=arc-20240116; t=1764255248; c=relaxed/simple;
+	bh=zorpkr6U0gB9k1WMOM2RZv9Hr0xxxV9BnJraugY2eDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G19UO1jR4gd7G5MZQjRVf1QfukQu0f0/RX5nkVUFN4KNWI3yxFxw6oQD0HtManZOp2nHUeNhEEwbsWuJ9MK0S41CjU0Pj14LO5XHmYKim14s9X4GdmAjWgdNEWJOFAwCZ3Tl7lO52ofLg3b9UMrEJXZunQNAZp+hdp90PjTOxAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfV1mTD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5243DC4CEF8;
-	Thu, 27 Nov 2025 14:49:14 +0000 (UTC)
+	 MIME-Version; b=datjyoVx8zzVHkJ4+5fzmDCit11Ql1MJR02gIDeBk202f7Ixd7tR4L3KEtJqW6GyL2D5q33RS/Xq4tfgZWtN88XwjijxgEuk4jsR9MLe9RpEBMWX+17XlUeVSJvefGigJc1p93JcYif/nvhMn8X4+Q0jiDYQ+PeVoRVmqsaVaQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpzzjjqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816C3C4CEF8;
+	Thu, 27 Nov 2025 14:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254954;
-	bh=ayh8iypufqkyETfT3ZN8Jaa8AgYkJTPxho1bNqC2Tss=;
+	s=korg; t=1764255246;
+	bh=zorpkr6U0gB9k1WMOM2RZv9Hr0xxxV9BnJraugY2eDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HfV1mTD5KRr+XIPfTbUP/zShamt+JDzM+pHKaPKBjHAa9kgfN9dCtCY9DzLaWt/s6
-	 XynPtbsZtlIUMe+SeokZnNyTb0vsKbcxQpC1Yhzs5LzWcuOr5PrqQtDVAMcCyPvgGQ
-	 kizrK076J57X85DLchi2PCUW5Vymgm083+dT/UXM=
+	b=CpzzjjqZONLkjRv/aiQPb+GNyIcBjqqjY0wf83HPTTXggCOCRwXujP0iirnkvaM7l
+	 8qowut2axOUI0X1CoQaVMlcXcXYEptaTqvhSB8D5y/jq71kaMw7xAr35My02E/GB8N
+	 Cri30985P8kNl94hDp3YIjOmONexfh5K4+ex5DoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 43/86] net: dsa: hellcreek: fix missing error handling in LED registration
+Subject: [PATCH 6.12 057/112] xfrm: Prevent locally generated packets from direct output in tunnel mode
 Date: Thu, 27 Nov 2025 15:45:59 +0100
-Message-ID: <20251127144029.403188505@linuxfoundation.org>
+Message-ID: <20251127144034.927887776@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
+[ Upstream commit 59630e2ccd728703cc826e3a3515d70f8c7a766c ]
 
-The LED setup routine registered both led_sync_good
-and led_is_gm devices without checking the return
-values of led_classdev_register(). If either registration
-failed, the function continued silently, leaving the
-driver in a partially-initialized state and leaking
-a registered LED classdev.
+Add a check to ensure locally generated packets (skb->sk != NULL) do
+not use direct output in tunnel mode, as these packets require proper
+L2 header setup that is handled by the normal XFRM processing path.
 
-Add proper error handling
-
-Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
-Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_output.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-index 5249a1c2a80b8..1bb994f785963 100644
---- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-+++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-@@ -371,8 +371,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
- 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index a30538a980cc7..9277dd4ed541a 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -766,8 +766,12 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		/* Exclusive direct xmit for tunnel mode, as
+ 		 * some filtering or matching rules may apply
+ 		 * in transport mode.
++		 * Locally generated packets also require
++		 * the normal XFRM path for L2 header setup,
++		 * as the hardware needs the L2 header to match
++		 * for encryption, so skip direct output as well.
+ 		 */
+-		if (x->props.mode == XFRM_MODE_TUNNEL)
++		if (x->props.mode == XFRM_MODE_TUNNEL && !skb->sk)
+ 			return xfrm_dev_direct_output(sk, x, skb);
  
- 	/* Register both leds */
--	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
--	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
-+		goto out;
-+	}
-+
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
-+		led_classdev_unregister(&hellcreek->led_sync_good);
-+		goto out;
-+	}
- 
- 	ret = 0;
- 
+ 		return xfrm_output_resume(sk, skb, 0);
 -- 
 2.51.0
 
