@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-197230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C92C8EF43
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2D7C8F178
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB98A3B8683
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21CBE4E9CAF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191C928D8E8;
-	Thu, 27 Nov 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B8833468E;
+	Thu, 27 Nov 2025 15:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb68xb1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3Wi359X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C634B28C84D;
-	Thu, 27 Nov 2025 14:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDB03346A4;
+	Thu, 27 Nov 2025 15:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255160; cv=none; b=P9Q6nEJcBHP939Vr2bZt6OTBjT+8sa5tf7FPT+RQnEPTUHAhpHzKYAqoY2jzMbBQ3UEoMPdfSrwNFGRhgY69mSOq3IzWzSXuaRJrcSTI5PhzAOMvpQSsOBHCRS3W/2OnmFJCLB5XitM0Zw6aYAxCFKNqMQ7TVdX1i+vk40227bU=
+	t=1764255630; cv=none; b=Qdtg+cOZw8i8AgMTLSGvOFw254QdIhZF9R1YhxnOgsV+F76UBTuCtxYmg6pZS5q68EnITTt5IBd1HPWTdzHMxOTj3MJtJvxeH7y06vo97ymQnpfcD+csBd+i8P2Gar2zs85zST3jShjTepzgGfpi7mJO16U9TvmpO+hnGOiFyqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255160; c=relaxed/simple;
-	bh=+qxyqjdyFz1W1zVkCdrn35aCSnghCNui/WoQD3cFuWs=;
+	s=arc-20240116; t=1764255630; c=relaxed/simple;
+	bh=HIEMb6iyAg2lV+QL64nunQSgGEV9FIubL+l9bEDc3oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=menP1VJjcdryF1PVhKBdZVbEUZ/pYbM6C9Y0xSjm7ENhhhISshDjRMw+qL2FX2t/TeUa5F5uMhMMwox84xD/ZHvnBObvPbhKd9gJ/dea5dC5hmsW2HSwLrOUuUlB7T21yC6WVcWUTlxWO/JM6kLSwmZ3TCyvTYF+g6HKO2doAKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yb68xb1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5147FC4CEF8;
-	Thu, 27 Nov 2025 14:52:40 +0000 (UTC)
+	 MIME-Version; b=b6nOOeR+wTXTaORkv2lv8h4ShEBt9M3/sMEyX4aPNWx3AKp0vRdhpp2HU0tgJASe+8zNq1gEE2WGNwciJB43VSUUwidRlInn5PI/22wiFuSoPYhfs2Uf+GLKiDxEKL1yiuBSDGkpP9+8A6DsYzcdlMGSVPAg0km1NzNZIP+AOEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3Wi359X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE775C4CEF8;
+	Thu, 27 Nov 2025 15:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255160;
-	bh=+qxyqjdyFz1W1zVkCdrn35aCSnghCNui/WoQD3cFuWs=;
+	s=korg; t=1764255630;
+	bh=HIEMb6iyAg2lV+QL64nunQSgGEV9FIubL+l9bEDc3oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yb68xb1tBic10XAoevUpLgZgLgkKIwP9v7PiK2e3v1ikAlFry+Ls1MZtmi3dUglCZ
-	 WWmNfbeUoDOwY17imYK+/eCNfyvGhN5e874dYedr+v0gAGpv0cM0ZIu04Eb8rOScif
-	 RvHPgKm1mmGOKHDp7wCfeKnOl2rbP0PjaY8fJXeg=
+	b=R3Wi359X3KOFUawZT0cuUG4dWQCeHwmyw9Y5YEjD1YdyWojedY4AS4Ih15AZOJORx
+	 IjLi8Doizoc+cJQuwEzVrE42pSnB7F/kTc6Lz2Tti+af/slwjczGWN5jiAnsSF+1cq
+	 p7bW6SnwwFWwBMMDZ31CgFrSr40gVjacKgqcopTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 008/112] arm64: dts: rockchip: disable HS400 on RK3588 Tiger
-Date: Thu, 27 Nov 2025 15:45:10 +0100
-Message-ID: <20251127144033.021334705@linuxfoundation.org>
+	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 058/175] mptcp: fix race condition in mptcp_schedule_work()
+Date: Thu, 27 Nov 2025 15:45:11 +0100
+Message-ID: <20251127144045.085864260@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit baa18d577cd445145039e731d3de0fa49ca57204 upstream.
+commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
 
-We've had reports from the field that some RK3588 Tiger have random
-issues with eMMC errors.
+syzbot reported use-after-free in mptcp_schedule_work() [1]
 
-Applying commit a28352cf2d2f ("mmc: sdhci-of-dwcmshc: Change
-DLL_STRBIN_TAPNUM_DEFAULT to 0x4") didn't help and seemed to have made
-things worse for our board.
+Issue here is that mptcp_schedule_work() schedules a work,
+then gets a refcount on sk->sk_refcnt if the work was scheduled.
+This refcount will be released by mptcp_worker().
 
-Our HW department checked the eMMC lines and reported that they are too
-long and don't look great so signal integrity is probably not the best.
+[A] if (schedule_work(...)) {
+[B]     sock_hold(sk);
+        return true;
+    }
 
-Note that not all Tigers with the same eMMC chip have errors, so the
-suspicion is that we're really on the edge in terms of signal integrity
-and only a handful devices are failing. Additionally, we have RK3588
-Jaguars with the same eMMC chip but the layout is different and we also
-haven't received reports about those so far.
+Problem is that mptcp_worker() can run immediately and complete before [B]
 
-Lowering the max-frequency to 150MHz from 200MHz instead of simply
-disabling HS400 was briefly tested and seem to work as well. We've
-disabled HS400 downstream and haven't received reports since so we'll go
-with that instead of lowering the max-frequency.
+We need instead :
 
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Fixes: 6173ef24b35b ("arm64: dts: rockchip: add RK3588-Q7 (Tiger) SoM")
+    sock_hold(sk);
+    if (schedule_work(...))
+        return true;
+    sock_put(sk);
+
+[1]
+refcount_t: addition on 0; use-after-free.
+ WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
+Call Trace:
+ <TASK>
+ __refcount_add include/linux/refcount.h:-1 [inline]
+  __refcount_inc include/linux/refcount.h:366 [inline]
+  refcount_inc include/linux/refcount.h:383 [inline]
+  sock_hold include/net/sock.h:816 [inline]
+  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
+  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
+  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+  expire_timers kernel/time/timer.c:1798 [inline]
+  __run_timers kernel/time/timer.c:2372 [inline]
+  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
+  run_timer_base kernel/time/timer.c:2393 [inline]
+  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251112-tiger-hs200-v1-1-b50adac107c0@cherry.de
-[added Fixes tag and stable-cc from 2nd mail]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
+Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/mptcp/protocol.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
-@@ -359,14 +359,12 @@
- 	cap-mmc-highspeed;
- 	mmc-ddr-1_8v;
- 	mmc-hs200-1_8v;
--	mmc-hs400-1_8v;
--	mmc-hs400-enhanced-strobe;
- 	mmc-pwrseq = <&emmc_pwrseq>;
- 	no-sdio;
- 	no-sd;
- 	non-removable;
- 	pinctrl-names = "default";
--	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk &emmc_data_strobe>;
-+	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk>;
- 	vmmc-supply = <&vcc_3v3_s3>;
- 	vqmmc-supply = <&vcc_1v8_s3>;
- 	status = "okay";
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -895,14 +895,19 @@ static void mptcp_reset_rtx_timer(struct
+ 
+ bool mptcp_schedule_work(struct sock *sk)
+ {
+-	if (inet_sk_state_load(sk) != TCP_CLOSE &&
+-	    schedule_work(&mptcp_sk(sk)->work)) {
+-		/* each subflow already holds a reference to the sk, and the
+-		 * workqueue is invoked by a subflow, so sk can't go away here.
+-		 */
+-		sock_hold(sk);
++	if (inet_sk_state_load(sk) == TCP_CLOSE)
++		return false;
++
++	/* Get a reference on this socket, mptcp_worker() will release it.
++	 * As mptcp_worker() might complete before us, we can not avoid
++	 * a sock_hold()/sock_put() if schedule_work() returns false.
++	 */
++	sock_hold(sk);
++
++	if (schedule_work(&mptcp_sk(sk)->work))
+ 		return true;
+-	}
++
++	sock_put(sk);
+ 	return false;
+ }
+ 
 
 
 
