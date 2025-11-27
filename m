@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B939CC8EE02
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DFAC8F0D3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ACF644EB08C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B355A3A9A72
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A656F288537;
-	Thu, 27 Nov 2025 14:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED10533436C;
+	Thu, 27 Nov 2025 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoutQlFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVzhBwXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CF6280335;
-	Thu, 27 Nov 2025 14:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9FF28D830;
+	Thu, 27 Nov 2025 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254983; cv=none; b=jO2f2X3lkR0dHYg5PR0EUjbD+WVzYrS9oI2ZV/37KMj8HdIkVqffeSgtkb5mpeR39dnz16NfBPVlj9Tuf8UQntsVC089fs6QKet1r+MKPbE4KlebC71LTEam3dWCl8IiTalfRzlaxyDP1MZCN3zxdEEZM+DWMMeG0+ecKZ/mhPU=
+	t=1764255418; cv=none; b=n6nG/K98PXy5taSXd7kpViK/PVoh1XqmDxBRcDJ5V/yM5DxeL/aIgJgNKpAS1BIpPEqw5ZkFM6rQlxrCtO0MJEew9P4cngeOc6G8fz7Ix0iuGYpPcfkckFAmscvFtorgzu2P9ySuu9pbSJIL5+hdkUjPSwzez6PNiLTzfHMAmEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254983; c=relaxed/simple;
-	bh=HlMx9IIW+SKZUL+FQgQ8A4+GNCqcAMvYk37PaD1lkxI=;
+	s=arc-20240116; t=1764255418; c=relaxed/simple;
+	bh=b0nbNU+6HoKlyaEoy/PY/l2w6K36vUz3IgyNT97ygrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YY5U2x2BChnmcuLzTigk2o8pc4IdFpFymsKJe3FBZcpvyCkItXqc2dqfwgHifAiD8aTWJNnnqJ//SDEUMsLf4Y4L+0WBoEnSiO4rVj7Zplo7vPytrYmFmkXvgvNwHWTzyWgsCJYQFoCQg231aBHNguNE5gyrmYsSuKq7YXgesZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoutQlFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1671C4CEF8;
-	Thu, 27 Nov 2025 14:49:42 +0000 (UTC)
+	 MIME-Version; b=EkhYRgmIlesa3bTcLwkS08Df7Cqswb27AKjV/Da7Gq1y7DIKASc3OhsNI5V7QnKHFWd3J31rHjVyClIIuCeymLYqMitHQS/eHWv76t3wvPSxJAFbs7ImJRFkleiQxsZhkz//Y6g/UChxMUzb+51cHUuKj+wqIkHt7hoqaROLg/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVzhBwXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DEBC4CEF8;
+	Thu, 27 Nov 2025 14:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254983;
-	bh=HlMx9IIW+SKZUL+FQgQ8A4+GNCqcAMvYk37PaD1lkxI=;
+	s=korg; t=1764255418;
+	bh=b0nbNU+6HoKlyaEoy/PY/l2w6K36vUz3IgyNT97ygrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoutQlFC2TxQHuU+2Se+hVHny5nIPzZZ/IHVQr0EuoClW1+syQDKll3htAfARVSx3
-	 Rh0RiX28bFN59REJpOmQPJ2Efre7Z32vnhfZRuab/A+4SdE+zz6vxUKs/DyoEa4lM4
-	 IJtrCjhsuRYZpGRKy3d82aqaanPrB8s0mCOx0nr4=
+	b=hVzhBwXBpogUrjt8paIlNMtkZa3BlH2Us91vj2SiAVX9zZ/8RRf2oHzWbHjf0turD
+	 aJxsIgSBjGxPkFJ/+hC0RyxQyApGPBQmMx77Dl/Zh0QMoUB1a2FrHDY4ejyCSqRgaw
+	 Mp4of7rc2SSB4xjhW+RP1A5xq/914qjKD9j9XD/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jared Kangas <jkangas@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 52/86] pinctrl: s32cc: initialize gpio_pin_config::list after kmalloc()
+Subject: [PATCH 6.12 066/112] tools: riscv: Fixed misalignment of CSR related definitions
 Date: Thu, 27 Nov 2025 15:46:08 +0100
-Message-ID: <20251127144029.731269447@linuxfoundation.org>
+Message-ID: <20251127144035.257990807@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jared Kangas <jkangas@redhat.com>
+From: Chen Pei <cp0613@linux.alibaba.com>
 
-[ Upstream commit 6010d4d8b55b5d3ae1efb5502c54312e15c14f21 ]
+[ Upstream commit e2cb69263e797c0aa6676bcef23e9e27e44c83b0 ]
 
-s32_pmx_gpio_request_enable() does not initialize the newly-allocated
-gpio_pin_config::list before adding it to s32_pinctrl::gpio_configs.
-This could result in a linked list corruption.
+The file tools/arch/riscv/include/asm/csr.h borrows from
+arch/riscv/include/asm/csr.h, and subsequent modifications
+related to CSR should maintain consistency.
 
-Initialize the new list_head with INIT_LIST_HEAD() to fix this.
-
-Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
-Signed-off-by: Jared Kangas <jkangas@redhat.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+Link: https://patch.msgid.link/20251114071215.816-1-cp0613@linux.alibaba.com
+[pjw@kernel.org: dropped Fixes: lines for patches that weren't broken; removed superfluous blank line]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/nxp/pinctrl-s32cc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/riscv_pmu_sbi.c       | 2 +-
+ tools/arch/riscv/include/asm/csr.h | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-index 9e97968e25fcd..9c435e44abb4f 100644
---- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
-+++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-@@ -392,6 +392,7 @@ static int s32_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index da3651d329069..6df8b260f0702 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -1016,7 +1016,7 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
+ 			/* compute hardware counter index */
+ 			hidx = info->csr - CSR_CYCLE;
  
- 	gpio_pin->pin_id = offset;
- 	gpio_pin->config = config;
-+	INIT_LIST_HEAD(&gpio_pin->list);
+-		/* check if the corresponding bit is set in sscountovf or overflow mask in shmem */
++		/* check if the corresponding bit is set in scountovf or overflow mask in shmem */
+ 		if (!(overflow & BIT(hidx)))
+ 			continue;
  
- 	spin_lock_irqsave(&ipctl->gpio_configs_lock, flags);
- 	list_add(&gpio_pin->list, &ipctl->gpio_configs);
+diff --git a/tools/arch/riscv/include/asm/csr.h b/tools/arch/riscv/include/asm/csr.h
+index 0dfc09254f99a..1cd824aaa3ba2 100644
+--- a/tools/arch/riscv/include/asm/csr.h
++++ b/tools/arch/riscv/include/asm/csr.h
+@@ -167,7 +167,8 @@
+ #define VSIP_TO_HVIP_SHIFT	(IRQ_VS_SOFT - IRQ_S_SOFT)
+ #define VSIP_VALID_MASK		((_AC(1, UL) << IRQ_S_SOFT) | \
+ 				 (_AC(1, UL) << IRQ_S_TIMER) | \
+-				 (_AC(1, UL) << IRQ_S_EXT))
++				 (_AC(1, UL) << IRQ_S_EXT) | \
++				 (_AC(1, UL) << IRQ_PMU_OVF))
+ 
+ /* AIA CSR bits */
+ #define TOPI_IID_SHIFT		16
+@@ -280,7 +281,7 @@
+ #define CSR_HPMCOUNTER30H	0xc9e
+ #define CSR_HPMCOUNTER31H	0xc9f
+ 
+-#define CSR_SSCOUNTOVF		0xda0
++#define CSR_SCOUNTOVF		0xda0
+ 
+ #define CSR_SSTATUS		0x100
+ #define CSR_SIE			0x104
 -- 
 2.51.0
 
