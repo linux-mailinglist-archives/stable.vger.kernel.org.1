@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-197202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C257C8EE62
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8478EC8EDF0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 890D74EAAA4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3052A34B92D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F9C28C5D9;
-	Thu, 27 Nov 2025 14:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DFB2882BB;
+	Thu, 27 Nov 2025 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ7geTa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adeVmXLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A9725BEE8;
-	Thu, 27 Nov 2025 14:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBFE25BEE8;
+	Thu, 27 Nov 2025 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255083; cv=none; b=Sv+suqMwBdqqjTfoXGTAJBSPlJNTFLDihpmORHQMirl/2njKfnN42PFwWuCNHcYwpkmBNo7MEc0TQWvuhgIW6S/upK5AXW5BHW55+Ao82xanwu5YmL0TUzPUXufME9TQldxulY/bd8bCwxn4bubdmUEaB346urS+jxKV4XOMFc0=
+	t=1764255086; cv=none; b=faoiVlIJ2hnKRYDE2HGtVyW1YXdiTfi89bOwN3BpY/w7PHXEYnt/B/AK+Tk/aNdmajdi6eG4DDCYWVIqHRAeRCV+H6UwOWm9UdQBuNu3KIwnRsiCNYZPKoB2/ctNFVqz6O5AEDDl9ADLu+9OjQacMhCTGh2btH3vqBSAci+ip5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255083; c=relaxed/simple;
-	bh=Q/66rYVRk0/IBh9u1u5I2XBRhigjlyVB5XMbS6hmUDY=;
+	s=arc-20240116; t=1764255086; c=relaxed/simple;
+	bh=O7G25OH2mpba4ir46bM7CxJDP24URtpyg4KcP8Vgef0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeIf5f6IbvSlGC6rC+LIdhVLDBZca9H6xFP0QsXUegMrGlTPCz1laP8zIbTi4XXNYDubeNgoI9nygaBCKAHmIlElNG0wx23jzUVMELrssDrk/CREIgXtBD60xsDQZERVWx4I4+FqBC62vd/G0f3arLd/igmFljkZ4HuslYBa+2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ7geTa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4194FC4CEF8;
-	Thu, 27 Nov 2025 14:51:23 +0000 (UTC)
+	 MIME-Version; b=aVzrQ1tHvyrWMqvMEepPod6r2BE3s1VuejYBCAWGwWdHBE50X7aTsNDdjfT/wbY/ysDdRFCe1QgQmyKkmKlIWZQxjXhiTU2LjvoOn6y4RvCLtZ304z5P4Xo3enzG8OVpdTlu7JvwczhXr9+BP5nOyY68SIXIoSUI/dMqzK4bKwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adeVmXLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D5CC4CEF8;
+	Thu, 27 Nov 2025 14:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255083;
-	bh=Q/66rYVRk0/IBh9u1u5I2XBRhigjlyVB5XMbS6hmUDY=;
+	s=korg; t=1764255086;
+	bh=O7G25OH2mpba4ir46bM7CxJDP24URtpyg4KcP8Vgef0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZ7geTa/FCeXtA9M63vEUVOQ/Nj9FCcMwOBdeHX6oxssIuOX5k8QtEC05vpu5nDiY
-	 mTNh/8TqOGosSVDEn0/lLSfgm+ub5c84SlMfzpoXC9ocOYGigy3IY9NgiTqMQArMfP
-	 chGTQBqWx+L9Ein/EyR6cQRTjg/jLB1z2RZemFWE=
+	b=adeVmXLIFDm76Dgcm6S8GG59zHCArWYcWDw+LhCW5pxQursRA52nBs4DoLlruzN9K
+	 tZZ0dyipRo4BBiOioV++l+XtI77QfzZL3yZ4DMWrp7k7umQ75DD4ZlFI2Rzi0TibcB
+	 sRoKYnPdOHZEeNbqJrBjq6we4rs46twr5Liye1a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Edoardo Canepa <edoardo.canepa@canonical.com>,
+	Po-Hsu Lin <po-hsu.lin@canonical.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 61/86] x86/microcode/AMD: Limit Entrysign signature checking to known generations
-Date: Thu, 27 Nov 2025 15:46:17 +0100
-Message-ID: <20251127144030.061038593@linuxfoundation.org>
+Subject: [PATCH 6.6 62/86] selftests: net: use BASH for bareudp testing
+Date: Thu, 27 Nov 2025 15:46:18 +0100
+Message-ID: <20251127144030.097356092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
 References: <20251127144027.800761504@linuxfoundation.org>
@@ -65,60 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Po-Hsu Lin <po-hsu.lin@canonical.com>
 
-[ Upstream commit 8a9fb5129e8e64d24543ebc70de941a2d77a9e77 ]
+[ Upstream commit 9311e9540a8b406d9f028aa87fb072a3819d4c82 ]
 
-Limit Entrysign sha256 signature checking to CPUs in the range Zen1-Zen5.
+In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
+BASH script at the very beginning.
 
-X86_BUG cannot be used here because the loading on the BSP happens way
-too early, before the cpufeatures machinery has been set up.
+But on some operating systems like Ubuntu, /bin/sh is actually pointed to
+DASH, thus it will try to run BASH commands with DASH and consequently
+leads to syntax issues:
+  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
+  # ./bareudp.sh: 5: ./lib.sh: source: not found
+  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/all/20251023124629.5385-1-bp@kernel.org
+Fix this by explicitly using BASH for bareudp.sh. This fixes test
+execution failures on systems where /bin/sh is not BASH.
+
+Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+Link: https://bugs.launchpad.net/bugs/2129812
+Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20251027095710.2036108-2-po-hsu.lin@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/bareudp.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index f9b6e2043e6b2..9952c774eaa69 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -226,6 +226,24 @@ static bool need_sha_check(u32 cur_rev)
- 	return true;
- }
+diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
+index f366cadbc5e86..ff4308b48e65d 100755
+--- a/tools/testing/selftests/net/bareudp.sh
++++ b/tools/testing/selftests/net/bareudp.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
-+static bool cpu_has_entrysign(void)
-+{
-+	unsigned int fam   = x86_family(bsp_cpuid_1_eax);
-+	unsigned int model = x86_model(bsp_cpuid_1_eax);
-+
-+	if (fam == 0x17 || fam == 0x19)
-+		return true;
-+
-+	if (fam == 0x1a) {
-+		if (model <= 0x2f ||
-+		    (0x40 <= model && model <= 0x4f) ||
-+		    (0x60 <= model && model <= 0x6f))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsigned int len)
- {
- 	struct patch_digest *pd = NULL;
-@@ -233,7 +251,7 @@ static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsi
- 	struct sha256_state s;
- 	int i;
- 
--	if (x86_family(bsp_cpuid_1_eax) < 0x17)
-+	if (!cpu_has_entrysign())
- 		return true;
- 
- 	if (!need_sha_check(cur_rev))
+ # Test various bareudp tunnel configurations.
 -- 
 2.51.0
 
