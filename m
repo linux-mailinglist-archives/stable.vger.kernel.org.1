@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E98C8F07F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC26C8F2BF
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28CE3BD8E6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D16844EE9F3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6533F333754;
-	Thu, 27 Nov 2025 14:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B8033436D;
+	Thu, 27 Nov 2025 15:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1UH7GKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Da9Yd/al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8D131281E;
-	Thu, 27 Nov 2025 14:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC2628135D;
+	Thu, 27 Nov 2025 15:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255318; cv=none; b=HJrtJLgoplGwAK88zmbeJ20OgAH2ahy/QNidSTWukQHC3FWIa4uG4XUejfuQP+moS2vPBpp7b7LzhL1b8E7eSqhMzYxYT5Vxy/LswNFnyO6NFf8DtbrMil1H4q2o1/KZGosfkeZWAsFsPsAxo0/3QmKSiJXF44+wQueqxT7oURU=
+	t=1764255964; cv=none; b=ofuxSkxGZ/TPtgGzxIjzJ4RqljiDqSboqDGQq4TN10AB5MzxXWHuuxJ0mAG/wXglOvQeAbxibhxVQkgesrNahrKNTSwQUdVcBSLX3Cb7tQVmVbySpIg91yD7j3uEztiQWOTFQsoHQYhZJmRwyuc51qG/YDO6IFogX5k518KySM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255318; c=relaxed/simple;
-	bh=pqVfP9kM4umaxv+Hu7WsJ7Ggc6F0QXl15iTmuQE0OzA=;
+	s=arc-20240116; t=1764255964; c=relaxed/simple;
+	bh=dpKE7ED493mqZPro8OtOTi1HN7d3pWhPA/u905z+ILQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SSyYLAV/zNBTGNBOzDAA1TCIbZmCOYRtS1dEFrEOwsLzat59UcIENr3eEE1MzyJKUpFJOK+K4mFqkYwA/YnknMKYeyezNZPWeRxlJKFt4Ngrggx5q8siR18L6YKTCPcI1gaWvdZq24fdatXHETMzRCTEWUceWP29s5lo5oqsKc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1UH7GKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9887BC4CEF8;
-	Thu, 27 Nov 2025 14:55:17 +0000 (UTC)
+	 MIME-Version; b=ii6xoiyagupfkcRnM19c8oM2PIoBKfflNN3YXAC2lJyvDUNh3UP0eugoqJSlRzr0wnZJw2COcAQ2+xqr4n1ljfsXi2iIb+T9bc3PwI3hXBNffWh615+rTYO0hFG5R9PKjyiM21q5w8ibUm9p9Egv1mRYpw38Ufz/9C6/mAJBU/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Da9Yd/al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579F1C4CEF8;
+	Thu, 27 Nov 2025 15:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255318;
-	bh=pqVfP9kM4umaxv+Hu7WsJ7Ggc6F0QXl15iTmuQE0OzA=;
+	s=korg; t=1764255963;
+	bh=dpKE7ED493mqZPro8OtOTi1HN7d3pWhPA/u905z+ILQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1UH7GKVpakXIJhJ48X9S4rae2XmaV47V7VSJJnIPGkGH8ilqVJg4KCSZ9fkstQXY
-	 YhoIr27ew+rtQ4YiO3lz/R/kB5C/qd+W0rvEHgdP2xz8EgprVJokETRmXdATAZUBpE
-	 B0gYanp7x5QaVZH8oK98JPTQXkBOGz9oUsXEJVEc=
+	b=Da9Yd/alu6WkQLHZTZ575eLqVNBvsunfxvevvNmRavensfE4tevWP9erotFLxAXOJ
+	 ErJliA+Fav8i0lkASeO9OzmhtewuXrRsWlxRtpZ4ed00d29a4urqoCdq+xR2ijM36w
+	 0I2iWMNM0jm/2V2OUYtaTd/Kf/tI68MI7ndvaVSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Malaya Kumar Rout <mrout@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/112] bcma: dont register devices disabled in OF
+Subject: [PATCH 6.17 132/175] timekeeping: Fix resource leak in tk_aux_sysfs_init() error paths
 Date: Thu, 27 Nov 2025 15:46:25 +0100
-Message-ID: <20251127144035.879715310@linuxfoundation.org>
+Message-ID: <20251127144047.780175083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Malaya Kumar Rout <mrout@redhat.com>
 
-[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
+[ Upstream commit 7b5ab04f035f829ed6008e4685501ec00b3e73c9 ]
 
-Some bus devices can be marked as disabled for specific SoCs or models.
-Those should not be registered to avoid probing them.
+tk_aux_sysfs_init() returns immediately on error during the auxiliary clock
+initialization loop without cleaning up previously allocated kobjects and
+sysfs groups.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+If kobject_create_and_add() or sysfs_create_group() fails during loop
+iteration, the parent kobjects (tko and auxo) and any previously created
+child kobjects are leaked.
+
+Fix this by adding proper error handling with goto labels to ensure all
+allocated resources are cleaned up on failure. kobject_put() on the
+parent kobjects will handle cleanup of their children.
+
+Fixes: 7b95663a3d96 ("timekeeping: Provide interface to control auxiliary clocks")
+Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251120150213.246777-1-mrout@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bcma/main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/time/timekeeping.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 6ecfc821cf833..72f045e6ed513 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 	int err;
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 3a4d3b2e3f740..08e0943b54da6 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -3060,29 +3060,32 @@ static const struct attribute_group aux_clock_enable_attr_group = {
+ static int __init tk_aux_sysfs_init(void)
+ {
+ 	struct kobject *auxo, *tko = kobject_create_and_add("time", kernel_kobj);
++	int ret = -ENOMEM;
  
- 	list_for_each_entry(core, &bus->cores, list) {
-+		struct device_node *np;
-+
- 		/* We support that core ourselves */
- 		switch (core->id.id) {
- 		case BCMA_CORE_4706_CHIPCOMMON:
-@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 		if (bcma_is_core_needed_early(core->id.id))
- 			continue;
+ 	if (!tko)
+-		return -ENOMEM;
++		return ret;
  
-+		np = core->dev.of_node;
-+		if (np && !of_device_is_available(np))
-+			continue;
+ 	auxo = kobject_create_and_add("aux_clocks", tko);
+-	if (!auxo) {
+-		kobject_put(tko);
+-		return -ENOMEM;
+-	}
++	if (!auxo)
++		goto err_clean;
+ 
+ 	for (int i = 0; i < MAX_AUX_CLOCKS; i++) {
+ 		char id[2] = { [0] = '0' + i, };
+ 		struct kobject *clk = kobject_create_and_add(id, auxo);
+ 
+ 		if (!clk)
+-			return -ENOMEM;
+-
+-		int ret = sysfs_create_group(clk, &aux_clock_enable_attr_group);
++			goto err_clean;
+ 
++		ret = sysfs_create_group(clk, &aux_clock_enable_attr_group);
+ 		if (ret)
+-			return ret;
++			goto err_clean;
+ 	}
+ 	return 0;
 +
- 		/* Only first GMAC core on BCM4706 is connected and working */
- 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
- 		    core->core_unit > 0)
++err_clean:
++	kobject_put(auxo);
++	kobject_put(tko);
++	return ret;
+ }
+ late_initcall(tk_aux_sysfs_init);
+ 
 -- 
 2.51.0
 
