@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-197171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2CBC8EE17
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0DFC8F11B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DE54C4E9156
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 33326354051
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C50273816;
-	Thu, 27 Nov 2025 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99C533437A;
+	Thu, 27 Nov 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEvLEeNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKN18PJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147D828D8E8;
-	Thu, 27 Nov 2025 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7322332AAC4;
+	Thu, 27 Nov 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254995; cv=none; b=G5zDYP17AnINy637pKjqKgGtbokU3dA1msHPOlDeHfhf7utJmoxehivkyZ//rnXFlaE5YRcU/ZIGURqVvXJsoFQ93OAgCOhNYf8GI2OrHWvSrFwzlz+Z+nUBPStusiIvSng2TUF91i4wmuvzZiSOpCuG5beFQDP2fpZT+W5Rr5U=
+	t=1764255803; cv=none; b=HYWYpaqbITjPUnoWMYsKRHg8GY56B+oMP9U0EriVM1BaKJPvEPwcQPkHmZRfr2MozGb+a9T9GFO9laIrM7BMUgy9BshaoXwySPC8Z9DocgrqkfiRo/t60HdONqUn4JQbZNc8o8KHDmrcVBXZJEY93X2DX46e6cVUcG0Nlay8pZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254995; c=relaxed/simple;
-	bh=UhzXs1XAn0rYVveesrCNV955Xw+Z4ULE63E9nONai+E=;
+	s=arc-20240116; t=1764255803; c=relaxed/simple;
+	bh=A/WLlw1IgprEHWBQ/6ubNZFVYQIWzFDdWdtDBhFc7QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cB2P8mFcNBH52iK4UVee05xunwT3eMSs7MzBK5TiqNfNjvBoRciPG7/RqiOXfn+APFlIOWtqjMWbKkG2Tc/DyQYxpgOziw3PKJ+RFLPO84NtEEfFu4eLlHC+xgkEQu7AJceGXwkgdp4cdrwNLeVF9r1miAI1VpaSroAMTsMu+os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEvLEeNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9449EC4CEF8;
-	Thu, 27 Nov 2025 14:49:54 +0000 (UTC)
+	 MIME-Version; b=nOE1AmIMe3o+SReTbcSpDbGwdWg8ZKbqtwCNDyIyeGAIERa2iB+UUayUuoUMQgBRYBh2By/df51IzvDUMl6099/ngiFlw9y250A30Lbn3MX5CtsY6EeYmfnPTsFMRFyaTZ2RRcmou2azKa3TFa3qRUZy0nD1hE5A8NvUaSMDxQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKN18PJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D43BC4CEF8;
+	Thu, 27 Nov 2025 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254995;
-	bh=UhzXs1XAn0rYVveesrCNV955Xw+Z4ULE63E9nONai+E=;
+	s=korg; t=1764255802;
+	bh=A/WLlw1IgprEHWBQ/6ubNZFVYQIWzFDdWdtDBhFc7QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEvLEeNBfPd5SJQsi7A/OktqfYtJhjtDJKRUzrMdpH/8TgnyO8m0MSndXAUOGI7v9
-	 khKazMLn6FPf4QFulWmnwSAJKA54SB8DlQVzzWYv2mQwjrhomGKzwuoSm59V2nQfeS
-	 0nF4te+be/oanUgkaGoFMuN16PLDjvTW+TZu9OMY=
+	b=vKN18PJTXCDPKriL+U4ji2dPD3cobHQHM9vFqAXByscbBZNufkI3kNMpD+aOu39nr
+	 imHdiYp3ysKesVD2lYITEgCuR2r4V5uQ+kNxreahPPZFNwvetUWFii7CmdgTvqV4yO
+	 KCtJb31atCWAHL1kunYxnLDhLBF7jD47nOn3sInA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+87be6809ed9bf6d718e3@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 56/86] cifs: fix memory leak in smb3_fs_context_parse_param error path
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.17 119/175] ice: fix PTP cleanup on driver removal in error path
 Date: Thu, 27 Nov 2025 15:46:12 +0100
-Message-ID: <20251127144029.878119860@linuxfoundation.org>
+Message-ID: <20251127144047.305663818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +65,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit 7e4d9120cfa413dd34f4f434befc5dbe6c38b2e5 ]
+[ Upstream commit 23a5b9b12de9dcd15ebae4f1abc8814ec1c51ab0 ]
 
-Add proper cleanup of ctx->source and fc->source to the
-cifs_parse_mount_err error handler. This ensures that memory allocated
-for the source strings is correctly freed on all error paths, matching
-the cleanup already performed in the success path by
-smb3_cleanup_fs_context_contents().
-Pointers are also set to NULL after freeing to prevent potential
-double-free issues.
+Improve the cleanup on releasing PTP resources in error path.
+The error case might happen either at the driver probe and PTP
+feature initialization or on PTP restart (errors in reset handling, NVM
+update etc). In both cases, calls to PF PTP cleanup (ice_ptp_cleanup_pf
+function) and 'ps_lock' mutex deinitialization were missed.
+Additionally, ptp clock was not unregistered in the latter case.
 
-This change fixes a memory leak originally detected by syzbot. The
-leak occurred when processing Opt_source mount options if an error
-happened after ctx->source and fc->source were successfully
-allocated but before the function completed.
+Keep PTP state as 'uninitialized' on init to distinguish between error
+scenarios and to avoid resource release duplication at driver removal.
 
-The specific leak sequence was:
-1. ctx->source = smb3_fs_context_fullpath(ctx, '/') allocates memory
-2. fc->source = kstrdup(ctx->source, GFP_KERNEL) allocates more memory
-3. A subsequent error jumps to cifs_parse_mount_err
-4. The old error handler freed passwords but not the source strings,
-causing the memory to leak.
+The consequence of missing ice_ptp_cleanup_pf call is the following call
+trace dumped when ice_adapter object is freed (port list is not empty,
+as it is required at this stage):
 
-This issue was not addressed by commit e8c73eb7db0a ("cifs: client:
-fix memory leak in smb3_fs_context_parse_param"), which only fixed
-leaks from repeated fsconfig() calls but not this error path.
+[  T93022] ------------[ cut here ]------------
+[  T93022] WARNING: CPU: 10 PID: 93022 at
+ice/ice_adapter.c:67 ice_adapter_put+0xef/0x100 [ice]
+...
+[  T93022] RIP: 0010:ice_adapter_put+0xef/0x100 [ice]
+...
+[  T93022] Call Trace:
+[  T93022]  <TASK>
+[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
+33d2647ad4f6d866d41eefff1806df37c68aef0c]
+[  T93022]  ? __warn.cold+0xb0/0x10e
+[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
+33d2647ad4f6d866d41eefff1806df37c68aef0c]
+[  T93022]  ? report_bug+0xd8/0x150
+[  T93022]  ? handle_bug+0xe9/0x110
+[  T93022]  ? exc_invalid_op+0x17/0x70
+[  T93022]  ? asm_exc_invalid_op+0x1a/0x20
+[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
+33d2647ad4f6d866d41eefff1806df37c68aef0c]
+[  T93022]  pci_device_remove+0x42/0xb0
+[  T93022]  device_release_driver_internal+0x19f/0x200
+[  T93022]  driver_detach+0x48/0x90
+[  T93022]  bus_remove_driver+0x70/0xf0
+[  T93022]  pci_unregister_driver+0x42/0xb0
+[  T93022]  ice_module_exit+0x10/0xdb0 [ice
+33d2647ad4f6d866d41eefff1806df37c68aef0c]
+...
+[  T93022] ---[ end trace 0000000000000000 ]---
+[  T93022] ice: module unloaded
 
-Patch updated with minor change suggested by kernel test robot
-
-Reported-by: syzbot+87be6809ed9bf6d718e3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=87be6809ed9bf6d718e3
-Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index cf233cb9c1943..a64c0b0dbec78 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1726,6 +1726,10 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	ctx->password = NULL;
- 	kfree_sensitive(ctx->password2);
- 	ctx->password2 = NULL;
-+	kfree(ctx->source);
-+	ctx->source = NULL;
-+	kfree(fc->source);
-+	fc->source = NULL;
- 	return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index fb0f6365a6d6f..8ec0f7d0fcebd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -3246,7 +3246,7 @@ void ice_ptp_init(struct ice_pf *pf)
+ 
+ 	err = ice_ptp_init_port(pf, &ptp->port);
+ 	if (err)
+-		goto err_exit;
++		goto err_clean_pf;
+ 
+ 	/* Start the PHY timestamping block */
+ 	ice_ptp_reset_phy_timestamping(pf);
+@@ -3263,13 +3263,19 @@ void ice_ptp_init(struct ice_pf *pf)
+ 	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
+ 	return;
+ 
++err_clean_pf:
++	mutex_destroy(&ptp->port.ps_lock);
++	ice_ptp_cleanup_pf(pf);
+ err_exit:
+ 	/* If we registered a PTP clock, release it */
+ 	if (pf->ptp.clock) {
+ 		ptp_clock_unregister(ptp->clock);
+ 		pf->ptp.clock = NULL;
+ 	}
+-	ptp->state = ICE_PTP_ERROR;
++	/* Keep ICE_PTP_UNINIT state to avoid ambiguity at driver unload
++	 * and to avoid duplicated resources release.
++	 */
++	ptp->state = ICE_PTP_UNINIT;
+ 	dev_err(ice_pf_to_dev(pf), "PTP failed %d\n", err);
  }
  
+@@ -3282,9 +3288,19 @@ void ice_ptp_init(struct ice_pf *pf)
+  */
+ void ice_ptp_release(struct ice_pf *pf)
+ {
+-	if (pf->ptp.state != ICE_PTP_READY)
++	if (pf->ptp.state == ICE_PTP_UNINIT)
+ 		return;
+ 
++	if (pf->ptp.state != ICE_PTP_READY) {
++		mutex_destroy(&pf->ptp.port.ps_lock);
++		ice_ptp_cleanup_pf(pf);
++		if (pf->ptp.clock) {
++			ptp_clock_unregister(pf->ptp.clock);
++			pf->ptp.clock = NULL;
++		}
++		return;
++	}
++
+ 	pf->ptp.state = ICE_PTP_UNINIT;
+ 
+ 	/* Disable timestamping for both Tx and Rx */
 -- 
 2.51.0
 
