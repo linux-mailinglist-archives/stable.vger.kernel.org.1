@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B23C8F274
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:42 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B28C8EFA3
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8E5C14EA4FF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AC3F6353799
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C6024E4A8;
-	Thu, 27 Nov 2025 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577323126C0;
+	Thu, 27 Nov 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTl0ORpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie1Er+k/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913F628CF42;
-	Thu, 27 Nov 2025 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E63E28D8E8;
+	Thu, 27 Nov 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255886; cv=none; b=tjPmBbcn2PJNVsLdmDaxS3H7vVVpqivquxqSUY4N8SYMN7zNyZuyIhoAd32tyYNWdUfsx0p8bpq6uA39TxFqi7VnJCAW6Pb/Ov/fIOUlsp7fn4ZYqOBDpLVRlP8TMX5IblQqS2YBmFbsGcxQqXPTP5ygolxzPBdhL6y+gGyqZ0c=
+	t=1764255468; cv=none; b=Fe9xPz73j2uEZTq84hDgHgP3k4Zms7/0tprjkdsIemkeGh2qOqPFU/tX+hM29kCia8iQUmFwnK/0+3S7CLCvx5AeKJ06T79vG9W1NEXGHCbMVKouq42Bxsd2jlm55MpEryK/8zko8v8nqtPGhkwMCHR1VR5xD5Q/Kp2BxIPIC70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255886; c=relaxed/simple;
-	bh=6UTWROIxF9Qhr8zoGI69sQ4KGEXMDTrcNrqTCxvzH38=;
+	s=arc-20240116; t=1764255468; c=relaxed/simple;
+	bh=1yUw7B70uPHbbewvORd5smALCXpkmjzv92JfAjkx+ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbKAEZcftszZ3RhTRW/lvMkvPytmCx97ie0p0gLB1I81GegSJOTbOfNwgWfltw90Yy3i6tO4Cii21gzCcIBrdr50TI32YOiaG8lS+vSTKZcRpJgP0Fv/mFs7FiWfCNKFRlrxFOTLcC3WcN6M4xeyfTyBV7r/6ztyiaqdJEYK7z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTl0ORpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC3C4CEF8;
-	Thu, 27 Nov 2025 15:04:45 +0000 (UTC)
+	 MIME-Version; b=lE+2xJ6eBpLlRaTBl7pUzSSHkeKjxzZvghozk9JuqfiBUvNFmsc5fPyucLcJizC1Anm9r0m/UFN7UU9VXEflsTJ0TY3XNYk+5lEy4CfMwKaED8sABC2u/fCgZmwUY61Qd6TDl61hl2E+f24nU8xa5lNmYN9OAQ83f6WraXV+PWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie1Er+k/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B16CC4CEF8;
+	Thu, 27 Nov 2025 14:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255886;
-	bh=6UTWROIxF9Qhr8zoGI69sQ4KGEXMDTrcNrqTCxvzH38=;
+	s=korg; t=1764255467;
+	bh=1yUw7B70uPHbbewvORd5smALCXpkmjzv92JfAjkx+ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTl0ORpKtrN1Ex1d2NbCt9GvchjJ8NCw8tzWDSdXRfcQrHuN0VvNIjRBft3pnbPKl
-	 PzZ4emHM+gPeue2QzQBShCMrQFMu8K6NKKNdMM2aZtXosdOH+BlHFWI7fKq9qUld7N
-	 ZeRFQY/BPFHX+7eYpn8PRx8vHfQGk9LnThLtMZn0=
+	b=Ie1Er+k/UZYBirpkw/2SMdQcMXIv8Q7h+/C4ngtszneCFou6DHEU/Os6Z/cOWbWgu
+	 8fCqn4/CjtkGTo0Zdz5TJOZa3PNjbaUE36ZEU3CEaWMyJJPITyUp4cxxwJEVbhT1S7
+	 hgTWu0UReLqt+SULygdsIXXodJGb8VrQ1/ukm79Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Llamas <cmllamas@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Samuel Zhang <guoqing.zhang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 149/175] blk-crypto: use BLK_STS_INVAL for alignment errors
-Date: Thu, 27 Nov 2025 15:46:42 +0100
-Message-ID: <20251127144048.396118156@linuxfoundation.org>
+Subject: [PATCH 6.12 101/112] drm/amdgpu: fix gpu page fault after hibernation on PF passthrough
+Date: Thu, 27 Nov 2025 15:46:43 +0100
+Message-ID: <20251127144036.538409778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Samuel Zhang <guoqing.zhang@amd.com>
 
-[ Upstream commit 0b39ca457241aeca07a613002512573e8804f93a ]
+[ Upstream commit eb6e7f520d6efa4d4ebf1671455abe4a681f7a05 ]
 
-Make __blk_crypto_bio_prep() propagate BLK_STS_INVAL when IO segments
-fail the data unit alignment check.
+On PF passthrough environment, after hibernate and then resume, coralgemm
+will cause gpu page fault.
 
-This was flagged by an LTP test that expects EINVAL when performing an
-O_DIRECT read with a misaligned buffer [1].
+Mode1 reset happens during hibernate, but partition mode is not restored
+on resume, register mmCP_HYP_XCP_CTL and mmCP_PSP_XCP_CTL is not right
+after resume. When CP access the MQD BO, wrong stride size is used,
+this will cause out of bound access on the MQD BO, resulting page fault.
 
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/all/aP-c5gPjrpsn0vJA@google.com/ [1]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The fix is to ensure gfx_v9_4_3_switch_compute_partition() is called
+when resume from a hibernation.
+KFD resume is called separately during a reset recovery or resume from
+suspend sequence. Hence it's not required to be called as part of
+partition switch.
+
+Signed-off-by: Samuel Zhang <guoqing.zhang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5d1b32cfe4a676fe552416cb5ae847b215463a1a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 3 ++-
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c    | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-crypto.c b/block/blk-crypto.c
-index 4b1ad84d1b5ab..3e7bf1974cbd8 100644
---- a/block/blk-crypto.c
-+++ b/block/blk-crypto.c
-@@ -292,7 +292,7 @@ bool __blk_crypto_bio_prep(struct bio **bio_ptr)
+diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+index ccfd2a4b4acc8..9c89e234c7869 100644
+--- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
++++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+@@ -555,7 +555,8 @@ static int aqua_vanjaram_switch_partition_mode(struct amdgpu_xcp_mgr *xcp_mgr,
+ 		return -EINVAL;
  	}
  
- 	if (!bio_crypt_check_alignment(bio)) {
--		bio->bi_status = BLK_STS_IOERR;
-+		bio->bi_status = BLK_STS_INVAL;
- 		goto fail;
- 	}
+-	if (adev->kfd.init_complete && !amdgpu_in_reset(adev))
++	if (adev->kfd.init_complete && !amdgpu_in_reset(adev) &&
++		!adev->in_suspend)
+ 		flags |= AMDGPU_XCP_OPS_KFD;
  
+ 	if (flags & AMDGPU_XCP_OPS_KFD) {
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index f27ccb8f3c8c5..26c2d8d9e2463 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -2297,7 +2297,9 @@ static int gfx_v9_4_3_cp_resume(struct amdgpu_device *adev)
+ 		r = amdgpu_xcp_init(adev->xcp_mgr, num_xcp, mode);
+ 
+ 	} else {
+-		if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
++		if (adev->in_suspend)
++			amdgpu_xcp_restore_partition_mode(adev->xcp_mgr);
++		else if (amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
+ 						    AMDGPU_XCP_FL_NONE) ==
+ 		    AMDGPU_UNKNOWN_COMPUTE_PARTITION_MODE)
+ 			r = amdgpu_xcp_switch_partition_mode(
 -- 
 2.51.0
 
