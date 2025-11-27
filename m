@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1667AC8F043
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D308AC8EE98
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 24A984F045C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A03B1350191
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4ED33437F;
-	Thu, 27 Nov 2025 14:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A1130DED3;
+	Thu, 27 Nov 2025 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5VUtHto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/0rZxkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EF728D830;
-	Thu, 27 Nov 2025 14:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ACE299943;
+	Thu, 27 Nov 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255427; cv=none; b=OrhAhSUd1ogEChPp07ES6umVE7MdPO4vM0Ie8l+UbU/hIpIJh8rUkIszN5bHvtdmWo5AKQwX2c4rlsmbdBosLJ2MtlC7U2s2pe033OTlBcWM0YXEEdCxNl3/htKYVIi6vRlyQTV90/hiwn2bdJ7fX1WXTAPcEU7ogbNGy9609vk=
+	t=1764255272; cv=none; b=QfGXgGIIQhoYwTj77+T/VkYjow7dIq3frfPmhw3HYHagxb+b1bxaxoqcLHDio8UlbbBsr5hPKNK27LwnqxKsOxmkY00/pg/xhYOZW7RjBSulneUcX8/8OFnJur2ZLrvfTkicWPmZiBQ7Pl62cjkgmk8QdS0TjGASmJp3fG/twMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255427; c=relaxed/simple;
-	bh=BsRPrQ0ip6dOzvp6fFzuN/wLEIPZ1CqNZRdYjabxQso=;
+	s=arc-20240116; t=1764255272; c=relaxed/simple;
+	bh=6dqLq0aMl7iV8qUB0SfsNuhAazKfUZU9OzhLQ9c+QqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TzXZHmb//LfYrs2aAXffj+s7+FWgjagz82FVN2IJjf6Bpzoy+NB6gji5KDzse3vJdrAyEiUCDBZwseznEVFNkOzHt/zbW1Nq/xYZDh0jmQ9xgQapRao+NllLKGSPJh32REXHp4zarq8HEwBrH2ipnzT90zx6YVRDUbzdyB+DwDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5VUtHto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A46C4CEF8;
-	Thu, 27 Nov 2025 14:57:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aIkWOjlqeGJUuv+gZBYX8xPgkGypo2+Gw1Ubc5/O6ZW8hDtUSTM+02XCZHl/ZxmlJKuCwiyJxpU34R8u1hCcKBO+NQuoQt1zGtX4dpJ4YIy4ynzqh/b06ZpW3lNq/wchDYuvhRAfuYSxGdYBW6t/AcTDfjDxF9ieJOPpOG0Hma8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/0rZxkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFE4C4CEF8;
+	Thu, 27 Nov 2025 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255427;
-	bh=BsRPrQ0ip6dOzvp6fFzuN/wLEIPZ1CqNZRdYjabxQso=;
+	s=korg; t=1764255272;
+	bh=6dqLq0aMl7iV8qUB0SfsNuhAazKfUZU9OzhLQ9c+QqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5VUtHtoQ56SDiBC6XSPPxDF8cQn97uw557JLslX/cG3agE5a+HQnju0MeJNJ7W7y
-	 AhVZopvIqzo1Jx9XvM6mm3YA93i7kxQu/ejRfdXXqyyJatAP+uPlbUe2MMq64YRgKa
-	 a8epx1QIJ2VT+l9+KfiQ+mTqXRu80YGgHzWVGtlU=
+	b=U/0rZxkLqy9GNTiFvS5e7hTD0XN7sz9g/miT4lSTF1tQRvT6mdv+Yduwp4xLJEUZF
+	 FUahPKXXeLPg4IjS3W2OjeL0mVvFpKNWuYn7OWv6sZElgFb80xV4mDIrXxwC9hkzF6
+	 ktu5VoodNGr/XyXuLmjCHqx7BkU8MNsB9ymjL26Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Armin Wolf <W_Armin@gmx.de>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/112] platform/x86: msi-wmi-platform: Only load on MSI devices
-Date: Thu, 27 Nov 2025 15:46:01 +0100
-Message-ID: <20251127144035.000701524@linuxfoundation.org>
+Subject: [PATCH 6.12 060/112] platform/x86: msi-wmi-platform: Fix typo in WMI GUID
+Date: Thu, 27 Nov 2025 15:46:02 +0100
+Message-ID: <20251127144035.036782444@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
 References: <20251127144032.705323598@linuxfoundation.org>
@@ -70,101 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c93433fd4e2bbbe7caa67b53d808b4a084852ff3 ]
+[ Upstream commit 97b726eb1dc2b4a2532544eb3da72bb6acbd39a3 ]
 
-It turns out that the GUID used by the msi-wmi-platform driver
-(ABBC0F60-8EA1-11D1-00A0-C90629100000) is not unique, but was instead
-copied from the WIndows Driver Samples. This means that this driver
-could load on devices from other manufacturers that also copied this
-GUID, potentially causing hardware errors.
+The WMI driver core only supports GUID strings containing only
+uppercase characters, however the GUID string used by the
+msi-wmi-platform driver contains a single lowercase character.
+This prevents the WMI driver core from matching said driver to
+its WMI device.
 
-Prevent this by only loading on devices whitelisted via DMI. The DMI
-matches where taken from the msi-ec driver.
+Fix this by turning the lowercase character into a uppercase
+character. Also update the WMI driver development guide to warn
+about this.
 
 Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
 Fixes: 9c0beb6b29e7 ("platform/x86: wmi: Add MSI WMI Platform driver")
 Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251110111253.16204-2-W_Armin@gmx.de
+Link: https://patch.msgid.link/20251110111253.16204-3-W_Armin@gmx.de
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/Kconfig            |  1 +
- drivers/platform/x86/msi-wmi-platform.c | 41 ++++++++++++++++++++++++-
- 2 files changed, 41 insertions(+), 1 deletion(-)
+ Documentation/wmi/driver-development-guide.rst | 1 +
+ drivers/platform/x86/msi-wmi-platform.c        | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 3875abba5a790..902b50510d8d6 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -726,6 +726,7 @@ config MSI_WMI
- config MSI_WMI_PLATFORM
- 	tristate "MSI WMI Platform features"
- 	depends on ACPI_WMI
-+	depends on DMI
- 	depends on HWMON
- 	help
- 	  Say Y here if you want to have support for WMI-based platform features
+diff --git a/Documentation/wmi/driver-development-guide.rst b/Documentation/wmi/driver-development-guide.rst
+index 429137b2f6323..4c10159d5f6cd 100644
+--- a/Documentation/wmi/driver-development-guide.rst
++++ b/Documentation/wmi/driver-development-guide.rst
+@@ -50,6 +50,7 @@ to matching WMI devices using a struct wmi_device_id table:
+ ::
+ 
+   static const struct wmi_device_id foo_id_table[] = {
++         /* Only use uppercase letters! */
+          { "936DA01F-9ABD-4D9D-80C7-02AF85C822A8", NULL },
+          { }
+   };
 diff --git a/drivers/platform/x86/msi-wmi-platform.c b/drivers/platform/x86/msi-wmi-platform.c
-index dc5e9878cb682..bd2687828a2e6 100644
+index bd2687828a2e6..e912fcc12d124 100644
 --- a/drivers/platform/x86/msi-wmi-platform.c
 +++ b/drivers/platform/x86/msi-wmi-platform.c
-@@ -14,6 +14,7 @@
- #include <linux/debugfs.h>
- #include <linux/device.h>
- #include <linux/device/driver.h>
-+#include <linux/dmi.h>
- #include <linux/errno.h>
- #include <linux/hwmon.h>
- #include <linux/kernel.h>
-@@ -448,7 +449,45 @@ static struct wmi_driver msi_wmi_platform_driver = {
- 	.probe = msi_wmi_platform_probe,
- 	.no_singleton = true,
- };
--module_wmi_driver(msi_wmi_platform_driver);
-+
-+/*
-+ * MSI reused the WMI GUID from the WMI-ACPI sample code provided by Microsoft,
-+ * so other manufacturers might use it as well for their WMI-ACPI implementations.
-+ */
-+static const struct dmi_system_id msi_wmi_platform_whitelist[] __initconst = {
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MICRO-STAR INT"),
-+		},
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Micro-Star International"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static int __init msi_wmi_platform_module_init(void)
-+{
-+	if (!dmi_check_system(msi_wmi_platform_whitelist)) {
-+		if (!force)
-+			return -ENODEV;
-+
-+		pr_warn("Ignoring DMI whitelist\n");
-+	}
-+
-+	return wmi_driver_register(&msi_wmi_platform_driver);
-+}
-+
-+static void __exit msi_wmi_platform_module_exit(void)
-+{
-+	wmi_driver_unregister(&msi_wmi_platform_driver);
-+}
-+
-+module_init(msi_wmi_platform_module_init);
-+module_exit(msi_wmi_platform_module_exit);
-+
+@@ -29,7 +29,7 @@
  
- MODULE_AUTHOR("Armin Wolf <W_Armin@gmx.de>");
- MODULE_DESCRIPTION("MSI WMI platform features");
+ #define DRIVER_NAME	"msi-wmi-platform"
+ 
+-#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11d1-00A0-C90629100000"
++#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11D1-00A0-C90629100000"
+ 
+ #define MSI_WMI_PLATFORM_INTERFACE_VERSION	2
+ 
 -- 
 2.51.0
 
