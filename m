@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-197450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42588C8F24E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C2BC8EF2E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D3A894EE4D4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3BF134E9463
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB41333437A;
-	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7769C30EF64;
+	Thu, 27 Nov 2025 14:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fgpa/Hc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K55bxF0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CF832AAC4;
-	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33572299943;
+	Thu, 27 Nov 2025 14:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255854; cv=none; b=megqB/Cx60JCsVkkir6bD/V08l8poavFBYuexBJwEHKey5F+UhKG5ogoigQII2f2JPLwOip2DLNQ21tpCBhjf7mU4V7p2GfCHLrhPgrdqfOUhav/c1ZZO37li0DhWdYCrA5GFBqueN/+nNS+ijvz3gWhydes+I/4rzPKCPUkABA=
+	t=1764255244; cv=none; b=svXeihoWZLqWuSQrq0dQLFyF06WG7WGmhrN0XkH8W6S9jT7WlDccoULSZuO9/SxqjeatNKW5B02BJc0wLbVOQLvPoCRaeHSbSjapLYrLzpCrvyy8NIUIW9kuDmsbc6p+TXNI5JPJQkq7pyJLS9ID1rMXoPk5uFV2eyS2l8Vm5TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255854; c=relaxed/simple;
-	bh=ORJAD0e4asMRe8oxtcMO/1vauoA+5tPmU+Les8NXzUA=;
+	s=arc-20240116; t=1764255244; c=relaxed/simple;
+	bh=viDplz5WBWczqhYLNsmYsxA0ZlTl1nP+T6IEozBSxCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZnnFv8AYYZ2Lt9LZbBjPs2qR9BcwfGFhDnT6LUGHHD9qAtYgmfuI1g/Lgal6Xb0ba5Bt425K74ZXGvvqzfl+HPeL4nYAl8l1CnU2daAZ5H9nfVO8sWtDtd46daYD2gUZ+1qfMYGsnwET4tcTQgL+370HFZj8AP7Ov07EPt7njVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fgpa/Hc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B07C4CEF8;
-	Thu, 27 Nov 2025 15:04:14 +0000 (UTC)
+	 MIME-Version; b=GTJdytNCvXykzlKZ8G/d95e3JBwHgK2JJse7qxbGP/XKTPynlpfDiO3kyHySL4bbIX+TU4Cn0l97DQG+XcmKVAtxcJtXrUsRsBcOcTMhXn0x2O9bQmO8FP7qtjeBX2bLXLrxYVN088vHYMX4H7+o7E2Kxslly2WLuBMEWGNIObY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K55bxF0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B11C4CEF8;
+	Thu, 27 Nov 2025 14:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255854;
-	bh=ORJAD0e4asMRe8oxtcMO/1vauoA+5tPmU+Les8NXzUA=;
+	s=korg; t=1764255244;
+	bh=viDplz5WBWczqhYLNsmYsxA0ZlTl1nP+T6IEozBSxCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fgpa/Hc3sYcliHfT61F6IVGSlBIa3KGVkcb4Eb2SxnhjSSKJ88esLAnQnPdEe+CNr
-	 2xCsY/887naEURD1GER4TQBA1IziSn7MWPRK7mUTi7USf8fl0ceO9HqPrZrUwaQg0h
-	 8/g35iWtkB2XHnMHJff6uY2euE+4S6YsbUYKV3N0=
+	b=K55bxF0PncpQWVbEZDbLN0urulXnUfZlHdMzU61brBXRgZU6kJERN39+aX+azUo1R
+	 f2OiPPmDJLa2RrK3QAhHoSJibSRYhF4vA0q+nNS6zUi/aQimLkJsQiPNeWvZPGoAwQ
+	 PSp2EYKpg+pvWQTNj38RMeJhBBw+pwMSluCZlla8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 104/175] nvme-multipath: fix lockdep WARN due to partition scan work
-Date: Thu, 27 Nov 2025 15:45:57 +0100
-Message-ID: <20251127144046.757734260@linuxfoundation.org>
+Subject: [PATCH 6.12 056/112] xfrm: Determine inner GSO type from packet inner protocol
+Date: Thu, 27 Nov 2025 15:45:58 +0100
+Message-ID: <20251127144034.891942355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
+[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
 
-Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
-lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
-a deadlock can happen due to the dependency among disk->open_mutex,
-kblockd workqueue completion and partition_scan_work completion.
+The GSO segmentation functions for ESP tunnel mode
+(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
+determining the inner packet's L2 protocol type by checking the static
+x->inner_mode.family field from the xfrm state.
 
-To avoid the lockdep WARN and the potential deadlock, cut the dependency
-by running the partition_scan_work not by kblockd workqueue but by
-nvme_wq.
+This is unreliable. In tunnel mode, the state's actual inner family
+could be defined by x->inner_mode.family or by
+x->inner_mode_iaf.family. Checking only the former can lead to a
+mismatch with the actual packet being processed, causing GSO to create
+segments with the wrong L2 header type.
 
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
-Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
-Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This patch fixes the bug by deriving the inner mode directly from the
+packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
+
+Instead of replicating the code, this patch modifies the
+xfrm_ip2inner_mode helper function. It now correctly returns
+&x->inner_mode if the selector family (x->sel.family) is already
+specified, thereby handling both specific and AF_UNSPEC cases
+appropriately.
+
+With this change, ESP GSO can use xfrm_ip2inner_mode to get the
+correct inner mode. It doesn't affect existing callers, as the updated
+logic now mirrors the checks they were already performing externally.
+
+Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/xfrm.h      | 3 ++-
+ net/ipv4/esp4_offload.c | 6 ++++--
+ net/ipv6/esp6_offload.c | 6 ++++--
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 543e17aead12b..e35eccacee8c8 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -793,7 +793,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 			return;
- 		}
- 		nvme_add_ns_head_cdev(head);
--		kblockd_schedule_work(&head->partition_scan_work);
-+		queue_work(nvme_wq, &head->partition_scan_work);
- 	}
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 1484dd15a3694..caaff61601a07 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -472,7 +472,8 @@ static inline int xfrm_af2proto(unsigned int family)
  
- 	nvme_mpath_add_sysfs_link(ns->head);
+ static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
+ {
+-	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
++	if ((x->sel.family != AF_UNSPEC) ||
++	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
+ 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
+ 		return &x->inner_mode;
+ 	else
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index e0d94270da28a..05828d4cb6cdb 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -122,8 +122,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
+-						       : htons(ETH_P_IP);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
++						     : htons(ETH_P_IP);
+ 
+ 	return skb_eth_gso_segment(skb, features, type);
+ }
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 7b41fb4f00b58..22410243ebe88 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -158,8 +158,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
+-						      : htons(ETH_P_IPV6);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
++						    : htons(ETH_P_IPV6);
+ 
+ 	return skb_eth_gso_segment(skb, features, type);
+ }
 -- 
 2.51.0
 
