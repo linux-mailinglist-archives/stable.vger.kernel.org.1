@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-197288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF94CC8EF31
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE6EC8F1B7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 746F0353111
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C458D356CAB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D928E334687;
-	Thu, 27 Nov 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88B932AAC4;
+	Thu, 27 Nov 2025 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPEUFY16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u57MX+BY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9542F32B988;
-	Thu, 27 Nov 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7453928135D;
+	Thu, 27 Nov 2025 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255326; cv=none; b=nd2UGqqivfRNhFlvwH4f3KoluB7s65eIwNLZwsrW0BfHkLkE9mAAjNB/xwB2u97WdTy7q8e8szVupUTYdoWDv65lUEW2/0WHaw5sWoEDxJD0Hc7x7tMtU/Fe6VA0MM1t5TuaY8/3ajdyApJ7mI84MVa/MjqOty8idvsknokJQFU=
+	t=1764255946; cv=none; b=rdP3rxVPghVvsNPIZcRrk0fGvLAdlHLG/BJ6RzSyZChda4eZEgCZ0uOSGwq8JW4wKidOE54WFiQ1PetnpCZNQJuYnUvXfj6cpk7TrNBZs8oY/lSeLfjX/qSRagyOZOrhphpsBEzLdsLi3sHb9FNvwP1ftCE366NyRPAaOwTFuww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255326; c=relaxed/simple;
-	bh=Mmz2kVz3FxrieoubLRBFALJ5iUQrlDko86ujDMcDJzI=;
+	s=arc-20240116; t=1764255946; c=relaxed/simple;
+	bh=zSW6i8GQvJVec330s4nrHUvtKnf52843w3UR/tYFKhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6OQnUVSxuvoa4ghAVqr0fqzd8KYwfDi9Eq3SqoEZ3FnPETcX/+yUH/1vVvz4R5W5H3GLQn4EZfP8wyczr81u2MlCHtXgOGWd66HoknasC1YMQOpWKpR4QFxqRk6wChIKYTZKC++X+IFM1T/NetTIJqAoTjiIsebPOa0pXSvNUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPEUFY16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA77C116D0;
-	Thu, 27 Nov 2025 14:55:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jngKYC6LmQhtGn3ABu1z1o2nC8vT+dKrYeG1SdiFiFmN9XtsCreJZPjTq5Huy5gT03zQjgEjtQ7/MR/jEzqy5xyHSsVwqKC5FbsmLyE6u13yQPdrfAfDGLiObhwWOL9vtX1z/onaD6MzY816xmENq3AibxF0mYS7WfwucysI4mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u57MX+BY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED357C4CEF8;
+	Thu, 27 Nov 2025 15:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255326;
-	bh=Mmz2kVz3FxrieoubLRBFALJ5iUQrlDko86ujDMcDJzI=;
+	s=korg; t=1764255946;
+	bh=zSW6i8GQvJVec330s4nrHUvtKnf52843w3UR/tYFKhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPEUFY16p0ABKVnNPpHMCC19cDz00GcqnAVUbK60292Mn0SAQpu9VMzrdjyQpQgXE
-	 Mgvq1fwT4SPy0H6h0EyKP4UZMjGrP8A25RjCBVC4aO2+AFYOW/xhT/p0nCyVGaLkhR
-	 ussfTy6i5J/XHGtgq2kNxI06HqXLAY7/aoB5m9cI=
+	b=u57MX+BYE9dl8wsDQ60/4O426K0rnYY5rVXgh+OwpgJcZggTKdlPI5YZTZKknU3cg
+	 ePHchDgpBvfO0yLxQm3fneTZ+jwWZtMCrpfQ76FsT6mfMwwsN/7Hv7+7mzBkkLz6bp
+	 Y4toYD4/eOARfWC41nhjDaT3kXQOtscOnmvx2XVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/112] x86/microcode/AMD: Limit Entrysign signature checking to known generations
-Date: Thu, 27 Nov 2025 15:46:28 +0100
-Message-ID: <20251127144035.990488670@linuxfoundation.org>
+Subject: [PATCH 6.17 136/175] bcma: dont register devices disabled in OF
+Date: Thu, 27 Nov 2025 15:46:29 +0100
+Message-ID: <20251127144047.925670756@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 8a9fb5129e8e64d24543ebc70de941a2d77a9e77 ]
+[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
 
-Limit Entrysign sha256 signature checking to CPUs in the range Zen1-Zen5.
+Some bus devices can be marked as disabled for specific SoCs or models.
+Those should not be registered to avoid probing them.
 
-X86_BUG cannot be used here because the loading on the BSP happens way
-too early, before the cpufeatures machinery has been set up.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/all/20251023124629.5385-1-bp@kernel.org
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/bcma/main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 93cbf05b83a56..7e997360223b2 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -224,6 +224,24 @@ static bool need_sha_check(u32 cur_rev)
- 	return true;
- }
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index 6ecfc821cf833..72f045e6ed513 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 	int err;
  
-+static bool cpu_has_entrysign(void)
-+{
-+	unsigned int fam   = x86_family(bsp_cpuid_1_eax);
-+	unsigned int model = x86_model(bsp_cpuid_1_eax);
+ 	list_for_each_entry(core, &bus->cores, list) {
++		struct device_node *np;
 +
-+	if (fam == 0x17 || fam == 0x19)
-+		return true;
-+
-+	if (fam == 0x1a) {
-+		if (model <= 0x2f ||
-+		    (0x40 <= model && model <= 0x4f) ||
-+		    (0x60 <= model && model <= 0x6f))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsigned int len)
- {
- 	struct patch_digest *pd = NULL;
-@@ -231,7 +249,7 @@ static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsi
- 	struct sha256_state s;
- 	int i;
+ 		/* We support that core ourselves */
+ 		switch (core->id.id) {
+ 		case BCMA_CORE_4706_CHIPCOMMON:
+@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 		if (bcma_is_core_needed_early(core->id.id))
+ 			continue;
  
--	if (x86_family(bsp_cpuid_1_eax) < 0x17)
-+	if (!cpu_has_entrysign())
- 		return true;
- 
- 	if (!need_sha_check(cur_rev))
++		np = core->dev.of_node;
++		if (np && !of_device_is_available(np))
++			continue;
++
+ 		/* Only first GMAC core on BCM4706 is connected and working */
+ 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
+ 		    core->core_unit > 0)
 -- 
 2.51.0
 
