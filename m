@@ -1,227 +1,186 @@
-Return-Path: <stable+bounces-197077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5675C8D9A6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 10:43:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F196C8DAFC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 11:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E5D3A845B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 09:43:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB0464E038B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 10:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C993A322524;
-	Thu, 27 Nov 2025 09:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3B62E0418;
+	Thu, 27 Nov 2025 10:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZMA2aF3Q"
 X-Original-To: stable@vger.kernel.org
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2048E253F05
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 09:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDDC13B
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 10:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764236578; cv=none; b=fcnoZPLwWMI1T2faFasDjes8WGrdmJ/snxLJAjDfVcb0b91wkaV32o5UDqpECXngGEDHNbhlCcfRQdUHOmXSks2Q+gRIve0hu6mulZ/OwmfsKC+Qw2O2SmvUN7oAaswk+Lk//Vkbc2qCUUyA0INY2NoES1Yz4GIAWWusrh4KAXU=
+	t=1764237970; cv=none; b=LPnqq6W4P+BQ1mD/1fqG35r/JUBE8iPGnZLzRIIQfpqgWz7UUhkKRUTEwPM/RURY7sM4jLrWwySoFXTMO7cL0BqYoCcpbomN1Hl2JufLI5rkBiLm7olxnV6CUnf3JZCduIpXgzonUW6K+JmQGvPqCuIilofZ+MjNGwszpmKBiG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764236578; c=relaxed/simple;
-	bh=7EZ24EPjZ7MqsUV1Mf5MNxZkXv9u5pbTSYLKNgD+uJ4=;
+	s=arc-20240116; t=1764237970; c=relaxed/simple;
+	bh=dajGMcF5ciAeIRmfVpam5zQkcGfClTk8GVSC0Dv6WCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svHoIU+luWD84PHFT6w8z6Gg+cdZpqdcMJj5JJ6d7CJv5Nw8b6K1pg9IeRz8VxjTDd05PCWnoWSa6+FhiD8UX3XgjidqaX6WLya9TM1S5WnVxXTW9Jn9SV1U2MkkTV4t7eX1StlGdvTzDwi+1Y1B6az5KRm2lP3t7PmtIGBcgkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from ipservice-092-210-203-096.092.210.pools.vodafone-ip.de ([92.210.203.96] helo=martin-debian-3.kaiser.cx)
-	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <martin@kaiser.cx>)
-	id 1vOYWa-0005k7-2f;
-	Thu, 27 Nov 2025 10:42:52 +0100
-From: Martin Kaiser <martin@kaiser.cx>
-To: stable@vger.kernel.org
-Cc: Martin Kaiser <martin@kaiser.cx>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] maple_tree: fix tracepoint string pointers
-Date: Thu, 27 Nov 2025 10:42:37 +0100
-Message-ID: <20251127094237.1844183-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <2025112053-undefined-canning-8643@gregkh>
-References: <2025112053-undefined-canning-8643@gregkh>
+	 MIME-Version:Content-Type; b=SpXug/iNmP203b2EMEEjNXrY8O+zCRONv0dxhNk4BIF1mwaZVR9e1DR0DpiktBhlRNUyBct5G2i0OVNYKEcDWDFUQ2xWjM3LAgkR69+zbZB/LTze1D+YwEBpM/sggo2SFI2vTIgFiQj120cUQn/4498TXeFK3k+SQNnni0xUaK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZMA2aF3Q; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764237968; x=1795773968;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dajGMcF5ciAeIRmfVpam5zQkcGfClTk8GVSC0Dv6WCA=;
+  b=ZMA2aF3QNCFsMzQAZw6D4WBr+zy/OCzBzrgmV4VyhgKaWnyxNd2Mfy2T
+   ylnnmW56ZUVEAmFoWn+TwnBLpc3uc4ks/Km2gN9WigLwcUm2Y6VzryefF
+   9s9K3ss4C00B94/+Ah5CMgPafQFg/uE/XgV8WH2G2HQ3ZA+nVVFoUbFlr
+   UYZtfZ2DABVCMcnnHTV+oKoPjEizIYDle6RO8Zhu3mP07bek60QSHcx3d
+   UPugCLmaFwP9dX5fwKA7api4YPPt/afXdxoBmXTQP2FMiy1TAhV77XDh2
+   E8J/yqFte0jFiXYVW9aRkm7ZMhkA39DmDn17KaQbIiOL10rrLo/07LHOZ
+   g==;
+X-CSE-ConnectionGUID: Yh8lAaYPSNSgP2vsquZLOA==
+X-CSE-MsgGUID: 7IpzqzLyQMKOxeR+pWhKRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66358793"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="66358793"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 02:06:07 -0800
+X-CSE-ConnectionGUID: Y85IV73DSIufn/YRPWnwQw==
+X-CSE-MsgGUID: nDseewuzShyFvp9hgSzXCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="216545577"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.49])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 02:06:04 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ stable@vger.kernel.org, =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject:
+ Re: [PATCH] drm/i915/gem: NULL-initialize the eb->vma[].vma pointers in
+ gem_do_execbuffer
+Date: Thu, 27 Nov 2025 11:06:02 +0100
+Message-ID: <1835827.4herOUoSWf@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <qylrctylmtj6qzibfpbapwpb77ut7gzckgg2wpc3gv56kl46m2@hyio7hcsj6vy>
+References:
+ <20251125133337.26483-2-krzysztof.niemiec@intel.com>
+ <4423188.Fh7cpCN91P@jkrzyszt-mobl2.ger.corp.intel.com>
+ <qylrctylmtj6qzibfpbapwpb77ut7gzckgg2wpc3gv56kl46m2@hyio7hcsj6vy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-maple_tree tracepoints contain pointers to function names. Such a pointer
-is saved when a tracepoint logs an event. There's no guarantee that it's
-still valid when the event is parsed later and the pointer is dereferenced.
+On Wednesday, 26 November 2025 18:28:55 CET Krzysztof Niemiec wrote:
+> On 2025-11-25 at 19:06:32 GMT, Janusz Krzysztofik wrote:
+> > Re-sending because of my response unintentionally HTML formatted, with correct 
+> > email address of Tvrtko by the way.
+> > 
+> > 
+> > Hi Krzysztof,
+> > 
+> > On Tuesday, 25 November 2025 14:33:38 CET Krzysztof Niemiec wrote:
+> > > Initialize eb->vma[].vma pointers to NULL when the eb structure is first
+> > > set up.
+> > > 
+> > > During the execution of eb_lookup_vmas(), the eb->vma array is
+> > > successively filled up with struct eb_vma objects. This process includes
+> > > calling eb_add_vma(), which might fail; however, even in the event of
+> > > failure, eb->vma[i].vma is set for the currently processed buffer.
+> > > 
+> > > If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+> > > prompts a call to eb_release_vmas() to clean up the mess. Since
+> > > eb_lookup_vmas() might fail during processing any (possibly not first)
+> > > buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+> > > at what point did the lookup function fail.
+> > > 
+> > > In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+> > > function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+> > > set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+> > > current one needs to be cleaned up by eb_release_vmas() at this point,
+> > > so the next one is set. If eb_add_vma() fails, neither the current nor
+> > > the next vma is nullified, which is a source of a NULL deref bug
+> > > described in [1].
+> > > 
+> > > When entering eb_lookup_vmas(), the vma pointers are set to the slab
+> > > poison value, instead of NULL. 
+> > 
+> > 
+> > Your commit description still doesn't answer my question why the whole memory 
+> > area allocated to the table of VMAs is not initialized to 0 on allocation, 
+> > only left populated with poison values.
+> > 
+> 
+> Becuase kvmalloc_array() is used. [1]
+> 
+> I guess one could swap it to a call to kvcalloc() or something similar;
+> the thing is that the call actually handles both allocations of
+> exec_list2 and the eb_vma array, the former doesn't need to be
+> zero-initialized, the latter technically also doesn't but it simplifies
+> error paths (and fixes the linked bug). I'm not sure if a
+> zero-initializing *alloc() would be more readable or not here.
 
-The kernel warns about these unsafe pointers.
+To my taste, zeroing on allocation would be a more clean solution.
 
-	event 'ma_read' has unsafe pointer field 'fn'
-	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
+But, while being at it, please have a still closer look, especially at these 
+two statements:
 
-Mark the function names as tracepoint_string() to fix the events.
+at drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c:i915_gem_execbuffer2_ioctl():3588
 
-One case that doesn't work without my patch would be trace-cmd record
-to save the binary ringbuffer and trace-cmd report to parse it in
-userspace.  The address of __func__ can't be dereferenced from
-userspace but tracepoint_string will add an entry to
-/sys/kernel/tracing/printk_formats
+	/* Allocate extra slots for use by the command parser */
+	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+			       __GFP_NOWARN | GFP_KERNEL);
 
-Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 91a54090026f84ceffaa12ac53c99b9f162946f6)
----
- lib/maple_tree.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+at drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c:i915_gem_do_execbuffer():3354
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 59f83ece2024..e4b68b19ae9a 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -64,6 +64,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/maple_tree.h>
- 
-+#define TP_FCT tracepoint_string(__func__)
-+
- #define MA_ROOT_PARENT 1
- 
- /*
-@@ -2949,7 +2951,7 @@ static inline void mas_rebalance(struct ma_state *mas,
- 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	/*
- 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
-@@ -3314,7 +3316,7 @@ static void mas_split(struct ma_state *mas, struct maple_big_node *b_node)
- 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 	mas->depth = mas_mt_height(mas);
- 
- 	mast.l = &l_mas;
-@@ -3487,7 +3489,7 @@ static bool mas_is_span_wr(struct ma_wr_state *wr_mas)
- 			return false;
- 	}
- 
--	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
- 	return true;
- }
- 
-@@ -3721,7 +3723,7 @@ static noinline void mas_wr_spanning_store(struct ma_wr_state *wr_mas)
- 	 * of data may happen.
- 	 */
- 	mas = wr_mas->mas;
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
- 		return mas_new_root(mas, wr_mas->entry);
-@@ -3858,7 +3860,7 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas,
- 	} else {
- 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
- 	}
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	mas->end = new_end;
- 	return;
-@@ -3903,7 +3905,7 @@ static inline void mas_wr_slot_store(struct ma_wr_state *wr_mas)
- 		return;
- 	}
- 
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	/*
- 	 * Only update gap when the new entry is empty or there is an empty
- 	 * entry in the original two ranges.
-@@ -4024,7 +4026,7 @@ static inline void mas_wr_append(struct ma_wr_state *wr_mas,
- 		mas_update_gap(mas);
- 
- 	mas->end = new_end;
--	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
- 	return;
- }
- 
-@@ -4038,7 +4040,7 @@ static void mas_wr_bnode(struct ma_wr_state *wr_mas)
- {
- 	struct maple_big_node b_node;
- 
--	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
- 	memset(&b_node, 0, sizeof(struct maple_big_node));
- 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
- 	mas_commit_b_node(wr_mas, &b_node);
-@@ -5418,7 +5420,7 @@ void *mas_store(struct ma_state *mas, void *entry)
- 	int request;
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (MAS_WARN_ON(mas, mas->index > mas->last))
- 		pr_err("Error %lX > %lX %p\n", mas->index, mas->last, entry);
-@@ -5518,7 +5520,7 @@ void mas_store_prealloc(struct ma_state *mas, void *entry)
- 	}
- 
- store:
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- 	mas_wr_store_entry(&wr_mas);
- 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
- 	mas_destroy(mas);
-@@ -6320,7 +6322,7 @@ void *mtree_load(struct maple_tree *mt, unsigned long index)
- 	MA_STATE(mas, mt, index, index);
- 	void *entry;
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 	rcu_read_lock();
- retry:
- 	entry = mas_start(&mas);
-@@ -6363,7 +6365,7 @@ int mtree_store_range(struct maple_tree *mt, unsigned long index,
- 	MA_STATE(mas, mt, index, last);
- 	int ret = 0;
- 
--	trace_ma_write(__func__, &mas, 0, entry);
-+	trace_ma_write(TP_FCT, &mas, 0, entry);
- 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
- 		return -EINVAL;
- 
-@@ -6586,7 +6588,7 @@ void *mtree_erase(struct maple_tree *mt, unsigned long index)
- 	void *entry = NULL;
- 
- 	MA_STATE(mas, mt, index, index);
--	trace_ma_op(__func__, &mas);
-+	trace_ma_op(TP_FCT, &mas);
- 
- 	mtree_lock(mt);
- 	entry = mas_erase(&mas);
-@@ -6924,7 +6926,7 @@ void *mt_find(struct maple_tree *mt, unsigned long *index, unsigned long max)
- 	unsigned long copy = *index;
- #endif
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 
- 	if ((*index) > max)
- 		return NULL;
--- 
-2.43.7
+	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+
+Why do we allocate space for 2 tables of count size plus 2 extra pairs of 
+their elements, but then place the second table at count + 1 offset, leaving 
+space for only one extra element of the first type?
+
+Looking at git history, there was a couple of excessively complex patches and 
+reverts that apparently introduced that discrepancy.  Unfortunately, none of 
+them, with exception of the one that introduced the above shown inline 
+comment, provided a clear justification why we need to switch from 1 to 2 or 
+vice versa.
+
+Anyway, depending on how that extra space is actually used by the command 
+parser, we may or may not get into troubles with that, so we should better fix 
+it, I believe.
+
+Thanks,
+Janusz
+
+> 
+> Thanks
+> Krzysztof
+> 
+> [1] https://elixir.bootlin.com/linux/v6.17.9/source/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c#L3586
+> 
+> > Thanks,
+> > Janusz
+> 
+
+
+
 
 
