@@ -1,79 +1,78 @@
-Return-Path: <stable+bounces-197509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9261AC8F6C5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 17:03:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E347EC8F6B6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 17:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 459294EAFC2
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD1D3B16A1
 	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB9933769A;
-	Thu, 27 Nov 2025 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D87F337B9E;
+	Thu, 27 Nov 2025 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="FHeG+t6N"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="clsmRiOm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CF121B9DA
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 15:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3806C3375D1
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 15:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764259147; cv=none; b=D2XLYAHzaI/V1I0HIUx2BxDhj0n25w11S1k8Kmnm03+0ZhpQHPXHJJ0bHGejb+omMj9lzF8132uwf/3UiEnJVhXVfeiTPJ7arAIU9kXNU8lyytyhi09EvA1BK+Knc4TLVK/XAhtQNVu5aUGFHClOhu/8+2b5mhYdTfoEhOSX0cc=
+	t=1764259148; cv=none; b=ke0H0oODqV2gmdJ2sFvvEoBt5Fdv+D+dAl63WVP0O56QrjKhVMv/fWO4HcOuL8rRsKkaElVbsMV3OK+eGhQ7rnexsldmza7BzF1+nppIKkn1ZET199HMN84EXnVcYng+VG8llh4UGdzjQFiEs/G5dZZq7T89FA/MOq2VCiJaEko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764259147; c=relaxed/simple;
-	bh=9ZzKcKIgZ9n6Eo23EJ8Prora+F9A0YM3L2CXsxAKcds=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=uzOYX7LZogGnJXXa3KQsHjiDI1DMmwdplBhSai88ZMaqA8h7IMcyKEqypLHG33x4OhkZtitp05TwREFRW9Pi8qmaaDF9TcaSC0wpT7sYl9zL51SqWT63n4RPFuzykv3RHrdVtQpEnqVkrsvGAzwO7Rri77ut1l/BFjQ4mlvlCY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=FHeG+t6N; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1764259148; c=relaxed/simple;
+	bh=MeVJTDRqvix+fjpFfN8qVq5tgECkcOd6ZQmgrol0Li0=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Kb81YpkrxgDr95uXQZA/6/eK66iMqcVM3JwBoM/lMr/3oteeirEjo6NPLUA9IFSbocBIFQkhEPO7kYhi71vgjKUkmhGyrRNSB2a9lpRVvIrPegsooJ1qLohnh1WtJRV+MF4SPZX3K64lJTGha6+IJbM4XRqAKKOuuOFmGc3Us2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=clsmRiOm; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7aace33b75bso949053b3a.1
-        for <stable@vger.kernel.org>; Thu, 27 Nov 2025 07:59:05 -0800 (PST)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7b86e0d9615so1184446b3a.0
+        for <stable@vger.kernel.org>; Thu, 27 Nov 2025 07:59:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764259145; x=1764863945; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764259146; x=1764863946; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tJHmsqXzEO1WhzD9aktbA8nnXS+LjHgPh9TLG0CUyNo=;
-        b=FHeG+t6NDy/489qxiHKcEBovCMghtm+YycYnQooyRoheYqMXKBPMEcX+TS5HAFKoaf
-         pLyE+1gpbzjZio7/Js4j2Jc42F+RUx5g4I6pMMJU0jX5XY3Gc1WNCcLMicFvfxAXTuGG
-         3/WKuzX/mWC/xi4yK2krk3J9BpFYzDsArjBg09iI+BkLB3lwAgdeDzoeTbkJ6YJ572Yl
-         4wKzkNOhaM57EgycpIuQrbjWHN+1QzG3fGNTXjwHA/j60/GWkPZuBLB2HIIlh8PHWwnK
-         MAHHQjcNYvN875/aCdBw5KB6cvOYUx/6yxchgthkBDQ542zLa5Mph/DxBaUKGkdbHcMN
-         SZPg==
+        bh=b/o3ib3A95R0MnlS/jlAhMyOQzuBN0skjKPjxzMlfKY=;
+        b=clsmRiOmJbkgy3FQPK3nQBjADzg6lQr2EDWLBKFvVfC10rDgEZCCRB/n7o7i46GKz8
+         fEzuz7WPmbf0TA8mIJzB9NJggWk+z/Ct/dLifEqYb29RkwGwSX14YjGVqHq21XQBUKdi
+         GV7aVE/pFJ1TW0UNHLiOvR3EQqKp9b4fOLGNqUCs0ZZ9pAP/mFnNqdYxSFt9W5Ii/ije
+         TtfYycM2rbq3gkAGVAdJeTpxO1nWEekTTswbFdzkFK7qFiBgWe7Vj7spq3rgFCDP24GG
+         6Khk8/kYGMdPcY5EHDDWyf7CJNxNSl9uXZN4ihsGn+M/TzTMYT586tS+cesPgL76KE1b
+         eaeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764259145; x=1764863945;
+        d=1e100.net; s=20230601; t=1764259146; x=1764863946;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tJHmsqXzEO1WhzD9aktbA8nnXS+LjHgPh9TLG0CUyNo=;
-        b=jkMHRt08CXr8aabKJGQig48NpRGxfxwLFMMg6ab+2F6I0/K/vsUv6v2TnRKEs4MbDD
-         FAmXdiHHn2Nk4aEoTfgHXitGJZVPiJgXCQFi8LdpP7HKT5zbS90V3hCjSAqA7AZJcM4c
-         OyyOl8kpMnN/BAVeiIqxNKyaE8fECI7Y/KUcNo2Oi0BRMnxQWhUKsXAVfB05sduVUVcY
-         0Ws1sJQg/S6aVfWWnZY+6oJsKtWK5rO2HutrBaGuNwO87G6x5qbYUSvdp154fo4JKynE
-         TiW3NHcHa8VrZDcii5Uo1g50D5QkezkxeeHMoM+41oXO82uWkWAJFobCn2TwRM+uobMu
-         mPHA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6xM6+wjYSyMJeOW22uxJ9WK+6ccWEenYZZZcTqqIQEd5uegTwWC74f9Cpa4HxPKwh0eY9An8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwItv9OjqgSeLirqt8P8R7+1c31QhGAc34pWxpQEwgndZp2/bd1
-	+zAlAIaUQ+uLyWBNEhNuyeSTPPYQBT3nNVz8im0QIdloXNaCU7HsdHtLxK2r4gS9Jgf5LB951Z+
-	EZ2af
-X-Gm-Gg: ASbGncvP/Z53Ab8xC1vg9B8yTpcg1WE5/juOpNQYslNkMNKX0ypwfnUpT8ywiFZ67CD
-	WSnhN4P2bOHM/cjEdteadL+2tEVXr0cp93AcRkulPv9dy0hfPdF5y0jWCyt15JdSFlkTEejfcf+
-	oI1kiPS0tmWE00gtSWYlGSLk8sqlXyhW+LoGahwYNFLHLzgf8+LgAX7vQbkcl6OI8f6WiAl17hU
-	yHUe9eESsvsvy6m7Pj9kY24gnO2BQOFeFrlnWUeQuJSfrKNCvfCzWPwj0SWSrTaq7v4CfeXcxOP
-	vFtfpwzvxkw3SL3oTlmXp0fH5QGFmWDDnKChm5aKop0m00JEDQnB+Xoje2UwZqIV/VSnjyMcYkW
-	d1KhqOUo+06ucEnPwxNPtnBn8WfdMOh9sSH5qN0U87WQd+wGwlWTqTiIfiPL11JvBJSRSKWBgJ3
-	V1nlCZWyH/isV4Bmo=
-X-Google-Smtp-Source: AGHT+IFYeXpPQkoR0TI1wvui1aWw/ijHUTEJA+OXVRgB6TCQ3g4Dqq3qPqWd13aV+kyIgccNR8uGLg==
-X-Received: by 2002:a05:7022:6181:b0:11a:2c18:cb89 with SMTP id a92af1059eb24-11c9d860d64mr16161603c88.35.1764259145026;
-        Thu, 27 Nov 2025 07:59:05 -0800 (PST)
+        bh=b/o3ib3A95R0MnlS/jlAhMyOQzuBN0skjKPjxzMlfKY=;
+        b=i23HNjKDSWhYSCgKcluUhsVxgUJ3/e32nmIBmKEjP/yxR9CN79ypEVkKWk/bkQnpj+
+         ybgV/w9G8TLtB5Qoww3AIzx6qz4TMCdRE9zfD37fodSEV066Zl9vjJ9gaPEXuf00NMsr
+         kdFcK37R9AWqdstyZBXzsepBAuCmIASiojsasoSSo7V7F/7shvgyG2HwJH0loJzjdQpj
+         6ZCW4L70mBc9PFynempB5zw22lQ187EjRgsU0/Ivl6t6ka+11AVlFLTfHsyar2S8QbDw
+         1XYYxojF/ELDxaVsVID6VQgzI+ARho2ROb6rL/7y3/jakDMewwQ7Xn1tnolPBNcVxqtj
+         1h9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUU2QGBwgUqJIzddQhlDdTH5BgIUyMm5Ap1maJhSGLeNhD2e+TvXIXHyCnfaS8jeTnAEN6CzLw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGawD5aDTVt3pPyLw0uKaqDQDXlbyyDYKP7HSGSWBqpbqc8bMN
+	daoobbGk/vGOl9LzPw6XuIdV+wR+9Iw5zETgBi7SE6YlYe9tRJJiihPJWdmhN+d6hro=
+X-Gm-Gg: ASbGnctwwnhYX5LAQeTTPblYXNWsSSCIk2qQFXxwTTFR7GNR5SM/GFqBl0i2SC3TIb2
+	3BRTMixMdQoc1xNY0tax6P/ScohM+PCwGBGNWd4LkymOlDSwuT4vT3Xt9U5Bi72kXDyODNI0bNZ
+	xacLGPAm7AGGniUt0y8am52Qns2aDuEnEQ79SfgndXfcKqqL3hTFQ+CSl1lJRX2/g0k4oi5EgzF
+	z+cbUyKrsClv1QUd3NdHLi8ccmcd2wNMuB+5GD5YugIlhEPxW7+r3JAip9mqtTy3oOQwvnftdYS
+	4JhLFkhRXoe56fguxpvu47YgMQF9QK3DlW2uF8wiAWBXzp3eB8kPAnrOYMjCO1IFTq1zUPkJ1Vs
+	pmxH1lJBQeAUUXgDfLb3D05m6TXvT8sfuGsmVGQNGQ/VkAhGO+BRTyMJq8h5gO0A+bvw3itdfU/
+	jE/v0B
+X-Google-Smtp-Source: AGHT+IEAObwOcoc6zJgHKWkkYn3eSwV59uItS1hxvFRoVdpnmhsj4BFGwgv2vc8As+5mnrFEqSb61g==
+X-Received: by 2002:a05:7022:2390:b0:11b:2de8:6271 with SMTP id a92af1059eb24-11c9d8635bcmr20156208c88.39.1764259146304;
+        Thu, 27 Nov 2025 07:59:06 -0800 (PST)
 Received: from 1ece3ece63ba ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaed5fcasm8605109c88.2.2025.11.27.07.59.04
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaee7076sm7834694c88.4.2025.11.27.07.59.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 07:59:04 -0800 (PST)
+        Thu, 27 Nov 2025 07:59:05 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -82,15 +81,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) GCC does not allow
+Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) GCC does not allow
  variable
  declarations in for loop initializers ...
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Thu, 27 Nov 2025 15:59:04 -0000
-Message-ID: <176425914379.933.3008623423965283783@1ece3ece63ba>
+Date: Thu, 27 Nov 2025 15:59:05 -0000
+Message-ID: <176425914524.933.12037386521228740196@1ece3ece63ba>
 
 
 
@@ -98,15 +97,15 @@ Message-ID: <176425914379.933.3008623423965283783@1ece3ece63ba>
 
 Hello,
 
-New build issue found on stable-rc/linux-5.15.y:
+New build issue found on stable-rc/linux-5.10.y:
 
 ---
- GCC does not allow variable declarations in for loop initializers before C99 [-Werror,-Wgcc-compat] in mm/mempool.o (mm/mempool.c) [logspec:kbuild,kbuild.compiler.error]
+ GCC does not allow variable declarations in for loop initializers before C99 [-Wgcc-compat] in mm/mempool.o (mm/mempool.c) [logspec:kbuild,kbuild.compiler.warning]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:5387ce1530c340d198d1f318d34f9904675295a1
+- dashboard: https://d.kernelci.org/i/maestro:edfc0791be4ae7547a2a17054e9cd0317c106f20
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  0001989708674740432a288983eddc1fdad1073b
+- commit HEAD:  92a27d160c829ca1d8dd3be92e8e8669620d66d5
 
 
 Please include the KernelCI tag when submitting a fix:
@@ -116,14 +115,36 @@ Reported-by: kernelci.org bot <bot@kernelci.org>
 
 Log excerpt:
 =====================================================
-mm/mempool.c:68:8: error: GCC does not allow variable declarations in for loop initializers before C99 [-Werror,-Wgcc-compat]
+mm/mempool.c:68:8: warning: GCC does not allow variable declarations in for loop initializers before C99 [-Wgcc-compat]
    68 |                 for (int i = 0; i < (1 << order); i++) {
       |                      ^
-mm/mempool.c:101:8: error: GCC does not allow variable declarations in for loop initializers before C99 [-Werror,-Wgcc-compat]
+mm/mempool.c:70:17: error: implicit declaration of function 'kmap_local_page' [-Werror,-Wimplicit-function-declaration]
+   70 |                         void *addr = kmap_local_page(page + i);
+      |                                      ^
+mm/mempool.c:70:17: note: did you mean 'kmap_to_page'?
+./include/linux/highmem.h:124:14: note: 'kmap_to_page' declared here
+  124 | struct page *kmap_to_page(void *addr);
+      |              ^
+mm/mempool.c:70:10: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+   70 |                         void *addr = kmap_local_page(page + i);
+      |                               ^      ~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/mempool.c:73:4: error: implicit declaration of function 'kunmap_local' [-Werror,-Wimplicit-function-declaration]
+   73 |                         kunmap_local(addr);
+      |                         ^
+mm/mempool.c:101:8: warning: GCC does not allow variable declarations in for loop initializers before C99 [-Wgcc-compat]
   101 |                 for (int i = 0; i < (1 << order); i++) {
       |                      ^
-  CC      kernel/irq/spurious.o
-2 errors generated.
+mm/mempool.c:103:17: error: implicit declaration of function 'kmap_local_page' [-Werror,-Wimplicit-function-declaration]
+  103 |                         void *addr = kmap_local_page(page + i);
+      |                                      ^
+mm/mempool.c:103:10: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+  103 |                         void *addr = kmap_local_page(page + i);
+      |                               ^      ~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/mempool.c:106:4: error: implicit declaration of function 'kunmap_local' [-Werror,-Wimplicit-function-declaration]
+  106 |                         kunmap_local(addr);
+      |                         ^
+  CC      fs/notify/fanotify/fanotify.o
+2 warnings and 6 errors generated.
 
 =====================================================
 
@@ -132,16 +153,16 @@ mm/mempool.c:101:8: error: GCC does not allow variable declarations in for loop 
 
 ## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
 - compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69286d2ef5b8743b1f65f3ee/.config
-- dashboard: https://d.kernelci.org/build/maestro:69286d2ef5b8743b1f65f3ee
+- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69286cb5f5b8743b1f65f372/.config
+- dashboard: https://d.kernelci.org/build/maestro:69286cb5f5b8743b1f65f372
 
 ## i386_defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (i386):
 - compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-69286d6ff5b8743b1f65f41f/.config
-- dashboard: https://d.kernelci.org/build/maestro:69286d6ff5b8743b1f65f41f
+- config: https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-69286ceff5b8743b1f65f3b6/.config
+- dashboard: https://d.kernelci.org/build/maestro:69286ceff5b8743b1f65f3b6
 
 
-#kernelci issue maestro:5387ce1530c340d198d1f318d34f9904675295a1
+#kernelci issue maestro:edfc0791be4ae7547a2a17054e9cd0317c106f20
 
 --
 This is an experimental report format. Please send feedback in!
