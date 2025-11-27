@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27174C8F1F9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F419C8EDDB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 77EEA4F10E3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363F23AFBC9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4874298CAF;
-	Thu, 27 Nov 2025 15:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79E5283C9E;
+	Thu, 27 Nov 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZfmuzPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rdmj+uwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA3C28135D;
-	Thu, 27 Nov 2025 15:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D8428314B;
+	Thu, 27 Nov 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255765; cv=none; b=XrYqMZw4+YH2rGyfEEGIB33SyOg3uMIzJxUVaB7Ym7s5PHVRnL7W52B4UuryJHJQ3Q1DG1oS3B1swEHzKug1Ov/m45Mnhob7MVB+svmNrQLauOxgXuXurVLHj58K5e+MYM3zYxQk52mcZprAW9fw8aTDpS+jc+0dv0mUaLCYFn4=
+	t=1764254957; cv=none; b=iU/Uzv82xh4abGf6DeKwbnl+4cP4uOINdaFRrKHv5NXae01lsKCsfWGACp+UoJY/+FA0ypdqdvGOmg769hMFHFRWx4Q4J3nbdd/smnIV6V+y0isLFd8oRyOm28sZCRKwgGl31d0lxr/wGoJ4watGyNLoP3QZ44t77HDOw51fW+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255765; c=relaxed/simple;
-	bh=p64imfh5ZN1tlW4n1GCs2PZPcEDtLVF6hMbh6OTSSbA=;
+	s=arc-20240116; t=1764254957; c=relaxed/simple;
+	bh=gcSpgCxw2kVKCGjkD1zi8N2I/parU1hH9J9u2G7rwcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5nL3YqaK0xc+q4hr2V6Q/nRnFRkGJr0Gv3jFKHJL4/QXRMHOJYJBr3SHUHVmJ9Agx1Ipnp4pcsKsvbRMpEaa6Dp2aAmrIbILsIESb2BzML8qm6MbwwK6R5y4NK9BZsU8eHp1kKcGDo/F1qej+qOTD6teC98lnKGXTQys2dXJqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZfmuzPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F2DC4CEF8;
-	Thu, 27 Nov 2025 15:02:44 +0000 (UTC)
+	 MIME-Version; b=WV5Q/ddWseC+TpPGeN+U5eerObrkSfG9z1zFtNiv5lDyaIDIMlr7uMo62qhReP64kVtT3coTvjFp2SHlOJE5NiQr72tS3hn/rUwhzMatu1KSM9PLcVWtg3hDVFxpFRDqnVBXF3ZlkPY8+vKVkYQd1sBP73aFatsdcND2iYygKqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rdmj+uwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E95C4CEF8;
+	Thu, 27 Nov 2025 14:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255765;
-	bh=p64imfh5ZN1tlW4n1GCs2PZPcEDtLVF6hMbh6OTSSbA=;
+	s=korg; t=1764254957;
+	bh=gcSpgCxw2kVKCGjkD1zi8N2I/parU1hH9J9u2G7rwcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZfmuzPzni1wS8DmBRIpRTN1kDDj77PFKuXbfqmZWaa6BcK/1LCMAAAcn5qv/xcKW
-	 yRmoXZv6ajA4b5ISatT8tl/K9EkUkBU1NtmJBALkB0rxtunkaDc2sO/TBCnkpza7wu
-	 Atbm+zxgytetPSfY05V4pmBXJv3SbSHPtEwHK1Hs=
+	b=Rdmj+uwJGYJJknAnNelUBdwdAFA/9xhuUPkvBKN7Yj4FhH2uA5HqA2jTxqwWANl7g
+	 bp5u/bKB3Psr7zQc4SgCLzyQqU2/AGrILaMn8NqxTbzRh1NNpDe/OIQjVJRyp9/kT6
+	 l9QTioSb3NwlWBdFT7456uf1gFtFFnhc0aZNsl5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 107/175] selftests: net: lib: Do not overwrite error messages
+Subject: [PATCH 6.6 44/86] net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
 Date: Thu, 27 Nov 2025 15:46:00 +0100
-Message-ID: <20251127144046.865802689@linuxfoundation.org>
+Message-ID: <20251127144029.440211812@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit bed22c7b90af732978715a1789bca1c3cfa245a6 ]
+[ Upstream commit b0c959fec18f4595a6a6317ffc30615cfa37bf69 ]
 
-ret_set_ksft_status() calls ksft_status_merge() with the current return
-status and the last one. It treats a non-zero return code from
-ksft_status_merge() as an indication that the return status was
-overwritten by the last one and therefore overwrites the return message
-with the last one.
+The call to devlink_info_version_fixed_put() in
+mlxsw_linecard_devlink_info_get() did not check for errors,
+although it is checked everywhere in the code.
 
-Currently, ksft_status_merge() returns a non-zero return code even if
-the current return status and the last one are equal. This results in
-return messages being overwritten which is counter-productive since we
-are more interested in the first failure message and not the last one.
+Add missed 'err' check to the mlxsw_linecard_devlink_info_get()
 
-Fix by changing ksft_status_merge() to only return a non-zero return
-code if the current return status was actually changed.
-
-Add a test case which checks that the first error message is not
-overwritten.
-
-Before:
-
- # ./lib_sh_test.sh
- [...]
- TEST: RET tfail2 tfail -> fail                                      [FAIL]
-        retmsg=tfail expected tfail2
- [...]
- # echo $?
- 1
-
-After:
-
- # ./lib_sh_test.sh
- [...]
- TEST: RET tfail2 tfail -> fail                                      [ OK ]
- [...]
- # echo $?
- 0
-
-Fixes: 596c8819cb78 ("selftests: forwarding: Have RET track kselftest framework constants")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251116081029.69112-1-idosch@nvidia.com
+Fixes: 3fc0c51905fb ("mlxsw: core_linecards: Expose device PSID over device info")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251113161922.813828-1-Pavel.Zhigulin@kaspersky.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/lib_sh_test.sh | 7 +++++++
- tools/testing/selftests/net/lib.sh                    | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/lib_sh_test.sh b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-index ff2accccaf4d4..b4eda6c6199ed 100755
---- a/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-+++ b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-@@ -30,6 +30,11 @@ tfail()
- 	do_test "tfail" false
- }
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+index b032d5a4b3b84..10f5bc4892fc7 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+@@ -601,6 +601,8 @@ int mlxsw_linecard_devlink_info_get(struct mlxsw_linecard *linecard,
+ 		err = devlink_info_version_fixed_put(req,
+ 						     DEVLINK_INFO_VERSION_GENERIC_FW_PSID,
+ 						     info->psid);
++		if (err)
++			goto unlock;
  
-+tfail2()
-+{
-+	do_test "tfail2" false
-+}
-+
- txfail()
- {
- 	FAIL_TO_XFAIL=yes do_test "txfail" false
-@@ -132,6 +137,8 @@ test_ret()
- 	ret_subtest $ksft_fail "tfail" txfail tfail
- 
- 	ret_subtest $ksft_xfail "txfail" txfail txfail
-+
-+	ret_subtest $ksft_fail "tfail2" tfail2 tfail
- }
- 
- exit_status_tests_run()
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 80cf1a75136cf..bc332ab3f7b88 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -43,7 +43,7 @@ __ksft_status_merge()
- 		weights[$i]=$((weight++))
- 	done
- 
--	if [[ ${weights[$a]} > ${weights[$b]} ]]; then
-+	if [[ ${weights[$a]} -ge ${weights[$b]} ]]; then
- 		echo "$a"
- 		return 0
- 	else
+ 		sprintf(buf, "%u.%u.%u", info->fw_major, info->fw_minor,
+ 			info->fw_sub_minor);
 -- 
 2.51.0
 
