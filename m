@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-197469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E44AC8F283
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:57 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187FBC8EF85
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3923A4EDCCE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CB93350580
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95C328CF42;
-	Thu, 27 Nov 2025 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2493112D5;
+	Thu, 27 Nov 2025 14:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm51teLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMhm3Ikz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D6D3115A6;
-	Thu, 27 Nov 2025 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7B528851E;
+	Thu, 27 Nov 2025 14:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255909; cv=none; b=rXbubzgcbhX0YiZcwTqZFNvtg1PXIHG8QUrgKQ6IO+02ZdN7SoWfhovHN3v0jNQPHttzExjUunX/g6kU9mWn1KwaY71yZ0LVIDk5iPBXw2TsKHTM0Lxj4HBEoz2TAv1wlCY/0MLltbH00QmQp5HRXnhSYIHTHGDKPml8AfKZI6c=
+	t=1764255438; cv=none; b=fQzjxos0DbDlhCzu9eRijz/guH/0uuCORyGlQXVdaaG6udTbG7fdA8BhW3GGLhHeYc/shCRsnEwDqu5Xv/b8QHM0XVXR1Ipgr/o3RvTtbOeN/rrY5c9Z6mNtiZK/61kdHE7fwmP7VK/RT1sUIqUlre+MmgIBq2jSzEFMhYIhRGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255909; c=relaxed/simple;
-	bh=ivG98NkGe7rzidzrakgWxzV3U5OqOfPh9xpfYUxpHt0=;
+	s=arc-20240116; t=1764255438; c=relaxed/simple;
+	bh=0BqLRSiJqOi2fIhmcqmbNYrPv4QBxIRalEHNTjfzcWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mdz7DlulV8TnnokRQfuoFnHpt7ZwimqVA9lDW2A2tiAI1gmsVZ9TqXPfjAkHNIc44yttjxvRZIsBVfXccqr/A6iRhquoMj15Eo+JligwgTm9ez8iQMQjOu/FqH95AoaITefY92TZLpnlBAIUjzl7eAoA/2MWfefq2MXaTMXlXjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm51teLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3496C4CEF8;
-	Thu, 27 Nov 2025 15:05:08 +0000 (UTC)
+	 MIME-Version; b=iANbA61scJadPxJcOLy6WEG0RemZAn9lK07a3ogUX0kqKNQ9pz0QLtLobXqsFM0pLGM0WKISdRpCybZYqHpkwM/Ez8wzfOfDk4BDw6wgFHwYsz05m1GxtTHuggX6+vJ6SYhPoq2fsAr4JKydMzipKdNNra4EnoJkhiwKw+qRqc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMhm3Ikz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F69C4CEF8;
+	Thu, 27 Nov 2025 14:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255909;
-	bh=ivG98NkGe7rzidzrakgWxzV3U5OqOfPh9xpfYUxpHt0=;
+	s=korg; t=1764255438;
+	bh=0BqLRSiJqOi2fIhmcqmbNYrPv4QBxIRalEHNTjfzcWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hm51teLwo6lhOfmOS29TO9J0S5zE4plSAGFSAWPL8jEdXjbsbCINayBJu99KvBB7F
-	 fAn8yWOF/+syy6f9u/q6j5gn1B83s6bRBLV5ObLdjzmsyS7OxVf2L3nWbRGvtetqve
-	 UNCPkftXlS+VL61PGlnI6DKdDs1A5KIo5E78z4qA=
+	b=sMhm3IkziayknUITbjpXLXr9UfVkIXUqrsaPSFOGwdOB0bMjWjduVXDl1OVMmg7BZ
+	 0okNax+v0t38LGsitq3gIKyqezOi11PGZu6T+LNVNsnZ22qYoYfk4qcJVs3F66hMm4
+	 YN8PUdQw2CuX8gqKnBCbzi2hf9lWl4gw4sabPZmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Marcelo Moreira <marcelomoreira1905@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 156/175] scsi: ufs: ufs-qcom: Fix UFS OCP issue during UFS power down (PC=3)
+Subject: [PATCH 6.12 107/112] xfs: Replace strncpy with memcpy
 Date: Thu, 27 Nov 2025 15:46:49 +0100
-Message-ID: <20251127144048.651250493@linuxfoundation.org>
+Message-ID: <20251127144036.763492386@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +66,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
 
-[ Upstream commit 5127be409c6c3815c4a7d8f6d88043e44f9b9543 ]
+[ Upstream commit 33ddc796ecbd50cd6211aa9e9eddbf4567038b49 ]
 
-According to UFS specifications, the power-off sequence for a UFS device
-includes:
+The changes modernizes the code by aligning it with current kernel best
+practices. It improves code clarity and consistency, as strncpy is deprecated
+as explained in Documentation/process/deprecated.rst. This change does
+not alter the functionality or introduce any behavioral changes.
 
- - Sending an SSU command with Power_Condition=3 and await a response.
-
- - Asserting RST_N low.
-
- - Turning off REF_CLK.
-
- - Turning off VCC.
-
- - Turning off VCCQ/VCCQ2.
-
-As part of ufs shutdown, after the SSU command completion, asserting
-hardware reset (HWRST) triggers the device firmware to wake up and
-execute its reset routine. This routine initializes hardware blocks and
-takes a few milliseconds to complete. During this time, the ICCQ draws a
-large current.
-
-This large ICCQ current may cause issues for the regulator which is
-supplying power to UFS, because the turn off request from UFS driver to
-the regulator framework will be immediately followed by low power
-mode(LPM) request by regulator framework. This is done by framework
-because UFS which is the only client is requesting for disable. So if
-the rail is still in the process of shutting down while ICCQ exceeds LPM
-current thresholds, and LPM mode is activated in hardware during this
-state, it may trigger an overcurrent protection (OCP) fault in the
-regulator.
-
-To prevent this, a 10ms delay is added after asserting HWRST. This
-allows the reset operation to complete while power rails remain active
-and in high-power mode.
-
-Currently there is no way for Host to query whether the reset is
-completed or not and hence this the delay is based on experiments with
-Qualcomm UFS controllers across multiple UFS vendors.
-
-Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251012173828.9880-1-nitin.rawat@oss.qualcomm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Suggested-by: Dave Chinner <david@fromorbit.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: 678e1cc2f482 ("xfs: fix out of bounds memory read error in symlink repair")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ fs/xfs/scrub/symlink_repair.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 2b6eb377eec07..f14c124c103b3 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -744,8 +744,21 @@ static int ufs_qcom_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+--- a/fs/xfs/scrub/symlink_repair.c
++++ b/fs/xfs/scrub/symlink_repair.c
+@@ -185,7 +185,7 @@ xrep_symlink_salvage_inline(
+ 		return 0;
  
- 
- 	/* reset the connected UFS device during power down */
--	if (ufs_qcom_is_link_off(hba) && host->device_reset)
-+	if (ufs_qcom_is_link_off(hba) && host->device_reset) {
- 		ufs_qcom_device_reset_ctrl(hba, true);
-+		/*
-+		 * After sending the SSU command, asserting the rst_n
-+		 * line causes the device firmware to wake up and
-+		 * execute its reset routine.
-+		 *
-+		 * During this process, the device may draw current
-+		 * beyond the permissible limit for low-power mode (LPM).
-+		 * A 10ms delay, based on experimental observations,
-+		 * allows the UFS device to complete its hardware reset
-+		 * before transitioning the power rail to LPM.
-+		 */
-+		usleep_range(10000, 11000);
-+	}
- 
- 	return ufs_qcom_ice_suspend(host);
+ 	nr = min(XFS_SYMLINK_MAXLEN, xfs_inode_data_fork_size(ip));
+-	strncpy(target_buf, ifp->if_data, nr);
++	memcpy(target_buf, ifp->if_data, nr);
+ 	return nr;
  }
--- 
-2.51.0
-
+ 
 
 
 
