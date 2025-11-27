@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-197305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4629AC8F04F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E44AC8F283
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E7BC84F04E1
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3923A4EDCCE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D423126C0;
-	Thu, 27 Nov 2025 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95C328CF42;
+	Thu, 27 Nov 2025 15:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7d6Emby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm51teLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0199828851E;
-	Thu, 27 Nov 2025 14:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D6D3115A6;
+	Thu, 27 Nov 2025 15:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255436; cv=none; b=tjrVC1DctdTre5WorPwXGx48lsAIUMyqMvMac9eIMdgto34thY4gG6OjHZxTZ5vYoYbzBDNfBNpv80KOZeBM7IJ39iQPoDyofOnN/C1KExMI3TLybG/0/Rn7earmsDpapHgakJtQyS/H9MItEnXWgichXXKlceQkjDIuUXU2OXY=
+	t=1764255909; cv=none; b=rXbubzgcbhX0YiZcwTqZFNvtg1PXIHG8QUrgKQ6IO+02ZdN7SoWfhovHN3v0jNQPHttzExjUunX/g6kU9mWn1KwaY71yZ0LVIDk5iPBXw2TsKHTM0Lxj4HBEoz2TAv1wlCY/0MLltbH00QmQp5HRXnhSYIHTHGDKPml8AfKZI6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255436; c=relaxed/simple;
-	bh=n2N8IAYVbfpp8AP3NCc+m88h6AveGYlPAy6S0LLKIO8=;
+	s=arc-20240116; t=1764255909; c=relaxed/simple;
+	bh=ivG98NkGe7rzidzrakgWxzV3U5OqOfPh9xpfYUxpHt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqLHrnMJ5vqHWCXTm8X8JtylF9F6KiSA8kGa8w2V641gbH07lmBA0uDQhZ/soqeFwi9RMm7RPIwDY+t0pcsSYoUr4q5ZaUGiUcMotgpesTWgdc1CR+wtDEN7IX7lszOtGstlA7mHI5l0ASvjFNonhuORfIz+zgysSqUk/tTXiBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7d6Emby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790B2C113D0;
-	Thu, 27 Nov 2025 14:57:15 +0000 (UTC)
+	 MIME-Version; b=Mdz7DlulV8TnnokRQfuoFnHpt7ZwimqVA9lDW2A2tiAI1gmsVZ9TqXPfjAkHNIc44yttjxvRZIsBVfXccqr/A6iRhquoMj15Eo+JligwgTm9ez8iQMQjOu/FqH95AoaITefY92TZLpnlBAIUjzl7eAoA/2MWfefq2MXaTMXlXjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm51teLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3496C4CEF8;
+	Thu, 27 Nov 2025 15:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255435;
-	bh=n2N8IAYVbfpp8AP3NCc+m88h6AveGYlPAy6S0LLKIO8=;
+	s=korg; t=1764255909;
+	bh=ivG98NkGe7rzidzrakgWxzV3U5OqOfPh9xpfYUxpHt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7d6EmbyUDscLlpv3FDT5Kke64eV/fd0B6f01s0GuhwXxzXxOixB0JfuLyMauFc7y
-	 bJZefiCt4OlE+3NBIXldhkk+Vh1DUpWHoRPS69lEZfm9RrNutE8WNxI0eHirDXg+KL
-	 BtOiSNa2KnqsgC+yFPX4ubGaz7ctic9jLSUBZE6A=
+	b=hm51teLwo6lhOfmOS29TO9J0S5zE4plSAGFSAWPL8jEdXjbsbCINayBJu99KvBB7F
+	 fAn8yWOF/+syy6f9u/q6j5gn1B83s6bRBLV5ObLdjzmsyS7OxVf2L3nWbRGvtetqve
+	 UNCPkftXlS+VL61PGlnI6DKdDs1A5KIo5E78z4qA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/112] mptcp: fix a race in mptcp_pm_del_add_timer()
-Date: Thu, 27 Nov 2025 15:46:48 +0100
-Message-ID: <20251127144036.725728632@linuxfoundation.org>
+Subject: [PATCH 6.17 156/175] scsi: ufs: ufs-qcom: Fix UFS OCP issue during UFS power down (PC=3)
+Date: Thu, 27 Nov 2025 15:46:49 +0100
+Message-ID: <20251127144048.651250493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,200 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
 
-[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
+[ Upstream commit 5127be409c6c3815c4a7d8f6d88043e44f9b9543 ]
 
-mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
-while another might have free entry already, as reported by syzbot.
+According to UFS specifications, the power-off sequence for a UFS device
+includes:
 
-Add RCU protection to fix this issue.
+ - Sending an SSU command with Power_Condition=3 and await a response.
 
-Also change confusing add_timer variable with stop_timer boolean.
+ - Asserting RST_N low.
 
-syzbot report:
+ - Turning off REF_CLK.
 
-BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
+ - Turning off VCC.
 
-CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: events mptcp_worker
-Call Trace:
- <TASK>
-  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
-  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
-  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
-  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
-  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
-  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
-  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
-  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
-  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
-  process_backlog+0x31e/0x900 net/core/dev.c:6544
-  __napi_poll+0xb6/0x540 net/core/dev.c:7594
-  napi_poll net/core/dev.c:7657 [inline]
-  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
-  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
- mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
-  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+ - Turning off VCCQ/VCCQ2.
 
-Allocated by task 44:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
-  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
-  kasan_kmalloc include/linux/kasan.h:262 [inline]
-  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
-  kmalloc_noprof include/linux/slab.h:957 [inline]
-  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
-  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
-  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
-  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
-  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+As part of ufs shutdown, after the SSU command completion, asserting
+hardware reset (HWRST) triggers the device firmware to wake up and
+execute its reset routine. This routine initializes hardware blocks and
+takes a few milliseconds to complete. During this time, the ICCQ draws a
+large current.
 
-Freed by task 6630:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
-  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
-  poison_slab_object mm/kasan/common.c:252 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
-  kasan_slab_free include/linux/kasan.h:234 [inline]
-  slab_free_hook mm/slub.c:2523 [inline]
-  slab_free mm/slub.c:6611 [inline]
-  kfree+0x197/0x950 mm/slub.c:6818
-  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
-  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
-  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
-  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
-  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
-  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
-  __sys_sendmsg net/socket.c:2716 [inline]
-  __do_sys_sendmsg net/socket.c:2721 [inline]
-  __se_sys_sendmsg net/socket.c:2719 [inline]
-  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This large ICCQ current may cause issues for the regulator which is
+supplying power to UFS, because the turn off request from UFS driver to
+the regulator framework will be immediately followed by low power
+mode(LPM) request by regulator framework. This is done by framework
+because UFS which is the only client is requesting for disable. So if
+the rail is still in the process of shutting down while ICCQ exceeds LPM
+current thresholds, and LPM mode is activated in hardware during this
+state, it may trigger an overcurrent protection (OCP) fault in the
+regulator.
 
-Cc: stable@vger.kernel.org
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To prevent this, a 10ms delay is added after asserting HWRST. This
+allows the reset operation to complete while power rails remain active
+and in high-power mode.
+
+Currently there is no way for Host to query whether the reset is
+completed or not and hence this the delay is based on experiments with
+Qualcomm UFS controllers across multiple UFS vendors.
+
+Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251012173828.9880-1-nitin.rawat@oss.qualcomm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -24,6 +24,7 @@ struct mptcp_pm_add_entry {
- 	u8			retrans_times;
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
-+	struct rcu_head		rcu;
- };
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 2b6eb377eec07..f14c124c103b3 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -744,8 +744,21 @@ static int ufs_qcom_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
  
- struct pm_nl_pernet {
-@@ -343,22 +344,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
--	struct timer_list *add_timer = NULL;
-+	bool stop_timer = false;
-+
-+	rcu_read_lock();
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
- 	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
--		add_timer = &entry->add_timer;
-+		stop_timer = true;
- 	}
- 	if (!check_id && entry)
- 		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
+ 	/* reset the connected UFS device during power down */
+-	if (ufs_qcom_is_link_off(hba) && host->device_reset)
++	if (ufs_qcom_is_link_off(hba) && host->device_reset) {
+ 		ufs_qcom_device_reset_ctrl(hba, true);
++		/*
++		 * After sending the SSU command, asserting the rst_n
++		 * line causes the device firmware to wake up and
++		 * execute its reset routine.
++		 *
++		 * During this process, the device may draw current
++		 * beyond the permissible limit for low-power mode (LPM).
++		 * A 10ms delay, based on experimental observations,
++		 * allows the UFS device to complete its hardware reset
++		 * before transitioning the power rail to LPM.
++		 */
++		usleep_range(10000, 11000);
++	}
  
--	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
--	if (add_timer)
--		sk_stop_timer_sync(sk, add_timer);
-+	/* Note: entry might have been removed by another thread.
-+	 * We hold rcu_read_lock() to ensure it is not freed under us.
-+	 */
-+	if (stop_timer)
-+		sk_stop_timer_sync(sk, &entry->add_timer);
- 
-+	rcu_read_unlock();
- 	return entry;
+ 	return ufs_qcom_ice_suspend(host);
  }
- 
-@@ -414,7 +420,7 @@ void mptcp_pm_free_anno_list(struct mptc
- 
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
- 		sk_stop_timer_sync(sk, &entry->add_timer);
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 	}
- }
- 
-@@ -1525,7 +1531,7 @@ static bool remove_anno_list_by_saddr(st
- 
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 		return true;
- 	}
- 
+-- 
+2.51.0
+
 
 
 
