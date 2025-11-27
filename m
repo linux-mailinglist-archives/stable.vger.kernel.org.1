@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-197382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9DCC8F077
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3262C8EEC5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D38173505C4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCFF24EB73D
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D28828135D;
-	Thu, 27 Nov 2025 15:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B52B32AADC;
+	Thu, 27 Nov 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKld0yBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqdY7TQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3968420FAAB;
-	Thu, 27 Nov 2025 15:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C66312807;
+	Thu, 27 Nov 2025 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255659; cv=none; b=MaQj7YmFsT51fn1XpUAaoydvx5zxLvB8Y7+W2nh2wOJ6jJ66F11nN6QAhCPclOnkWOn/E9Qv3AOtpiYVrfNW3MZ5HVv83HP396td7e41EnaBvX5vCq1oSFpnh8wQOSOwFBZNFufrLFjLU8FAXxUKYXgZ1UODlo5QMGVcMdqg4Js=
+	t=1764255140; cv=none; b=YFuDtCkRCov2v8DOFQFggM4u/DhEJn+iZrFzjsQqsl6Emv7WgWTGKeA00FIPe174hZwpC1/mXXV5nErF8j62PhPLFLlR0VUsRv74i4aQHA1r+S5tYP+J7IZq1A8QcDnJJS2qbox9EN0YxmUwncLcznJDQM63Dg9EWmS1vikH5XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255659; c=relaxed/simple;
-	bh=4qDj80O4qqVeIcbpg8UgqeTgA0fgg6Ev2gCx5zZFY/w=;
+	s=arc-20240116; t=1764255140; c=relaxed/simple;
+	bh=2KBMhuDZKdF9wPzR/2uSIJ81rMeXVF66x0M89CKvdOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uajI3faS3YHtwJnB4qP9WDMIfrK8egeBpGwEUuT05hP710H0qWkDDpS9c97gFeHR02KDw6q42hbZE8kZOkGsK8P+YSBeW/zmHsbhOddGj+2RBQIvlm39WUrWTVSEi8pam5LnV54tEWczWY/Wqmq19S3RQBUCnXjSK05S2h5ST3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKld0yBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B240CC4CEF8;
-	Thu, 27 Nov 2025 15:00:58 +0000 (UTC)
+	 MIME-Version; b=FZijtL5HkibD+95GcTC3lowPSxpQz1waFVjoSOOj0paMEy20r0rkmETDc6PBPiGAFGT+p2qcBDrff6aQ9TpZJkGbPoIQ4xxFsk9s9r3tbHQABjWGg1puY7gboqLo4KDVlvD4YYmMUUNS/G9OldKN2wfygDKjlCRYJu40bxWk3Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqdY7TQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE43C4CEF8;
+	Thu, 27 Nov 2025 14:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255659;
-	bh=4qDj80O4qqVeIcbpg8UgqeTgA0fgg6Ev2gCx5zZFY/w=;
+	s=korg; t=1764255140;
+	bh=2KBMhuDZKdF9wPzR/2uSIJ81rMeXVF66x0M89CKvdOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKld0yBk2ytTXs6DtGOBa2vICAZ464rVTAEQ2Vt/vuBmFJ5+mCoWUsQ82I2CviT+y
-	 HaqtLF4LPfioII6FLkaIzmo1wMaWGnZOWU46ZKT7AeJrl3SfSeX1wTF3dRXy8qq5ga
-	 mJ6kRO2yKbgSrnBOOG//wNxgbzv0lTkyWv5Yzw5s=
+	b=pqdY7TQa9x/Y31+GaNx6R8kXIrReBl5XWna+TaX+IaWiWZhR2ZIcDj8PB5IL1nVJZ
+	 qPGQZtM6RiH4naY/7mKQ16fLtf2di3+d0t/VAL2M12IXjkBP1vePHULNiXlB5csd3R
+	 9mIVwARvNHHCEmq21PVPNJb4lwBYCSMoj0Ripxmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arun R Murthy <arun.r.murthy@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.17 070/175] drm/plane: Fix create_in_format_blob() return value
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 021/112] net: dsa: microchip: lan937x: Fix RGMII delay tuning
 Date: Thu, 27 Nov 2025 15:45:23 +0100
-Message-ID: <20251127144045.523290439@linuxfoundation.org>
+Message-ID: <20251127144033.510522272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit cead55e24cf9e092890cf51c0548eccd7569defa upstream.
+commit 3ceb6ac2116ecda1c5d779bb73271479e70fccb4 upstream.
 
-create_in_format_blob() is either supposed to return a valid
-pointer or an error, but never NULL. The caller will dereference
-the blob when it is not an error, and thus will oops if NULL
-returned. Return proper error values in the failure cases.
+Correct RGMII delay application logic in lan937x_set_tune_adj().
 
+The function was missing `data16 &= ~PORT_TUNE_ADJ` before setting the
+new delay value. This caused the new value to be bitwise-OR'd with the
+existing PORT_TUNE_ADJ field instead of replacing it.
+
+For example, when setting the RGMII 2 TX delay on port 4, the
+intended TUNE_ADJUST value of 0 (RGMII_2_TX_DELAY_2NS) was
+incorrectly OR'd with the default 0x1B (from register value 0xDA3),
+leaving the delay at the wrong setting.
+
+This patch adds the missing mask to clear the field, ensuring the
+correct delay value is written. Physical measurements on the RGMII TX
+lines confirm the fix, showing the delay changing from ~1ns (before
+change) to ~2ns.
+
+While testing on i.MX 8MP showed this was within the platform's timing
+tolerance, it did not match the intended hardware-characterized value.
+
+Fixes: b19ac41faa3f ("net: dsa: microchip: apply rgmii tx and rx delay in phylink mac config")
 Cc: stable@vger.kernel.org
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Fixes: 0d6dcd741c26 ("drm/plane: modify create_in_formats to acommodate async")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20251112233030.24117-2-ville.syrjala@linux.intel.com
-Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20251114090951.4057261-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_plane.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/microchip/lan937x_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-index 38f82391bfda..a30493ed9715 100644
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -210,7 +210,7 @@ static struct drm_property_blob *create_in_format_blob(struct drm_device *dev,
- 	formats_size = sizeof(__u32) * plane->format_count;
- 	if (WARN_ON(!formats_size)) {
- 		/* 0 formats are never expected */
--		return 0;
-+		return ERR_PTR(-EINVAL);
- 	}
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -339,6 +339,7 @@ static void lan937x_set_tune_adj(struct
+ 	ksz_pread16(dev, port, reg, &data16);
  
- 	modifiers_size =
-@@ -226,7 +226,7 @@ static struct drm_property_blob *create_in_format_blob(struct drm_device *dev,
+ 	/* Update tune Adjust */
++	data16 &= ~PORT_TUNE_ADJ;
+ 	data16 |= FIELD_PREP(PORT_TUNE_ADJ, val);
+ 	ksz_pwrite16(dev, port, reg, data16);
  
- 	blob = drm_property_create_blob(dev, blob_size, NULL);
- 	if (IS_ERR(blob))
--		return NULL;
-+		return blob;
- 
- 	blob_data = blob->data;
- 	blob_data->version = FORMAT_BLOB_CURRENT;
--- 
-2.52.0
-
 
 
 
