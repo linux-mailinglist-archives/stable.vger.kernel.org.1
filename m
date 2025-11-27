@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B70EC8EE0E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A143C8F2C2
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BC099346A68
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764123A1189
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF5528C5D9;
-	Thu, 27 Nov 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BD633375C;
+	Thu, 27 Nov 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF4PGv2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyV4mzYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175502882C9;
-	Thu, 27 Nov 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D43328F0;
+	Thu, 27 Nov 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255109; cv=none; b=g/gFi7jN9ZenaVby9uUUZgQzQECaA1T5TUqjzqpehqmJDH/5jadauKl/DPwoDLjPPPP/WQIcBj8fWohzGAJnCblY6ip9IfA1zEXeAB8MxWXeiOqoeMsMGPWZHTRrNXUJRqJpvF414rjIVATvQuxaR4tmmroWkrTP4ZHcr6Z6LNI=
+	t=1764255756; cv=none; b=Ls+zzyeJGMmkEoBqMaJgfReDEhB4gvsMbIX9ajyUKC9eF2QnFm74C/pWqgRY1BkR14/27JYEyFFukiekpQmN0XCQY9z2SdKAu6Eo0vdx+fg7BuzllnsInr2TNz0p6WGYlPdSESrsLBflyR3oaQi/UjG/jE07KRLl/il3Zw+JVUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255109; c=relaxed/simple;
-	bh=L39wsl2v0ImcyUnJmTdEfYTlQUgqDCgADrALiKL7OSI=;
+	s=arc-20240116; t=1764255756; c=relaxed/simple;
+	bh=ShonL97NGNgWyLVlJeKjxaxkJw0XyWAimb/CypfxM/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yi2Qtq8H+mOsCkmALyFIwKXKeaYcEYxeJNtZuWF5Yu0XwYxtEHxu2SS6HliD/7SKv9bl41EYwGHIjINUiBWZGBDvjXJGsF/CgxbyucapqWm02uahVZ8P2zICvgB6g22RoyCwNM1RQbvNOaPy32dgddEEYnwFra6NGu/W4mo2pGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF4PGv2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857DDC4CEF8;
-	Thu, 27 Nov 2025 14:51:48 +0000 (UTC)
+	 MIME-Version; b=FP2x/29TSPPQC10atLx54c1sBTq7G6qSJXV/vOfYqfg11x9xUy0xdBZxEQJV63UsN2kVZoZQFpGkC6H52GtIv3s3rtchIxSRvj/gSA2m4MkSQt6iIMOnfZKKLl15DJogQZaf9PauahFfvwUS7p8QX+s036JmMpG8EjBTtG4wIYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyV4mzYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27988C4CEF8;
+	Thu, 27 Nov 2025 15:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255108;
-	bh=L39wsl2v0ImcyUnJmTdEfYTlQUgqDCgADrALiKL7OSI=;
+	s=korg; t=1764255756;
+	bh=ShonL97NGNgWyLVlJeKjxaxkJw0XyWAimb/CypfxM/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JF4PGv2CHII0iiRFLrV7NTYhWHN9lfmXzDp17eoLJuvDu9GZVU4gNrhP9fu30dzzH
-	 j6orsNZgHdHAmlxf2IHgfTHINfXm0VQbpmp8xGefS1OMfD7r5UWSLC4B52HLlK067X
-	 rHuPCJCPE4HdqoUPT1Y1ySrr18EABmA/DEuC5Qx4=
+	b=XyV4mzYkEzfke1xfhwWHJTvtCsUAz4kpbfIXZE4mu303nPazfICuMeLfmWmE2rLXw
+	 VlXqrjzoD4MCReA/cUeXaOWWgrAh2NnSttAyIXaUXFVUw8DiBn9stEGlme0pNgcwdF
+	 wOaxo/7uEi00WJTtGW9JRP8Tb83Fsa4wb2tba2tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 011/112] isofs: check the return value of sb_min_blocksize() in isofs_fill_super
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 060/175] mptcp: fix ack generation for fallback msk
 Date: Thu, 27 Nov 2025 15:45:13 +0100
-Message-ID: <20251127144033.141870289@linuxfoundation.org>
+Message-ID: <20251127144045.157576942@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit e106e269c5cb38315eb0a0e7e38f71e9b20c8c66 upstream.
+commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b upstream.
 
-sb_min_blocksize() may return 0. Check its return value to avoid
-opt->blocksize and sb->s_blocksize is 0.
+mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
+rcv_wnd sent, and such information is tracked into the msk->old_wspace
+field, updated at ack transmission time by mptcp_write_options().
 
-Cc: stable@vger.kernel.org # v6.15
-Fixes: 1b17a46c9243e9 ("isofs: convert isofs to use the new mount API")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Link: https://patch.msgid.link/20251104125009.2111925-4-yangyongpeng.storage@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fallback socket do not add any mptcp options, such helper is never
+invoked, and msk->old_wspace value remain stale. That in turn makes
+ack generation at recvmsg() time quite random.
+
+Address the issue ensuring mptcp_write_options() is invoked even for
+fallback sockets, and just update the needed info in such a case.
+
+The issue went unnoticed for a long time, as mptcp currently overshots
+the fallback socket receive buffer autotune significantly. It is going
+to change in the near future.
+
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/inode.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/options.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -610,6 +610,11 @@ static int isofs_fill_super(struct super
- 		goto out_freesbi;
- 	}
- 	opt->blocksize = sb_min_blocksize(s, opt->blocksize);
-+	if (!opt->blocksize) {
-+		printk(KERN_ERR
-+		       "ISOFS: unable to set blocksize\n");
-+		goto out_freesbi;
-+	}
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -838,8 +838,11 @@ bool mptcp_established_options(struct so
  
- 	sbi->s_high_sierra = 0; /* default is iso9660 */
- 	sbi->s_session = opt->session;
+ 	opts->suboptions = 0;
+ 
++	/* Force later mptcp_write_options(), but do not use any actual
++	 * option space.
++	 */
+ 	if (unlikely(__mptcp_check_fallback(msk) && !mptcp_check_infinite_map(skb)))
+-		return false;
++		return true;
+ 
+ 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
+ 		if (mptcp_established_options_fastclose(sk, &opt_size, remaining, opts) ||
+@@ -1319,6 +1322,20 @@ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
+ }
+ 
++static void mptcp_track_rwin(struct tcp_sock *tp)
++{
++	const struct sock *ssk = (const struct sock *)tp;
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk;
++
++	if (!ssk)
++		return;
++
++	subflow = mptcp_subflow_ctx(ssk);
++	msk = mptcp_sk(subflow->conn);
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++}
++
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
+ {
+ 	struct csum_pseudo_header header;
+@@ -1611,6 +1628,10 @@ mp_rst:
+ 				      opts->reset_transient,
+ 				      opts->reset_reason);
+ 		return;
++	} else if (unlikely(!opts->suboptions)) {
++		/* Fallback to TCP */
++		mptcp_track_rwin(tp);
++		return;
+ 	}
+ 
+ 	if (OPTION_MPTCP_PRIO & opts->suboptions) {
 
 
 
