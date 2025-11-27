@@ -1,164 +1,272 @@
-Return-Path: <stable+bounces-197535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF10C9007C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 20:37:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947DCC9010C
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 20:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A12F3AA7CB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 19:37:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FEBB4E2065
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 19:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4F03054C1;
-	Thu, 27 Nov 2025 19:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAEB308F33;
+	Thu, 27 Nov 2025 19:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CQqGlVCe"
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="BeQEgU6O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163D30506A;
-	Thu, 27 Nov 2025 19:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4533081D8;
+	Thu, 27 Nov 2025 19:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764272230; cv=none; b=qcG7EJ+bde5qavfIGLzXb8jFZAKyZ66NCCySLlgrI/0fzVF7lkr+Yzhv8u2mrjdxFnAuRRjnJG1mkbsn6FE/Kl1TC4dgMcy+HWrDKSRn/VrN0lS/9FtxzLV0hUV/zePALEX9V3+nh3PjPT8tdN1I49eBnFkqh+yab+eB1f53HMs=
+	t=1764273265; cv=none; b=Ioa4X4wWmzvJrRxU9EK8EWk4GaUN8RJvjSnK3Si4zhvu9Jny+QEC86F+Ohy5+jgQhAhR/7QyHsRssGMT7gXCm80b/7p8ZDbmhhx0lSL2EIlQxvuUsNvP2IBGYg/9R+B9vyn/ZEld65x5qaTgcnmHVnQVKg77DJlY+5XE6hQOPYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764272230; c=relaxed/simple;
-	bh=oFv6rFYosJ9FFGLFKn092gXULUdhZUkpj+COxCMFt9Q=;
-	h=Date:To:From:Subject:Message-Id; b=oBUQ9I8TURKjQOJ9HBdy347OtrYNHxY5ka5FbkBc9phy/YvO9RQg8FsycCefjBG1OqGrvtpvE0qinB8vTmpsvt5D7J3dELxgayjMj/z5KxF2sZ6sJaQBmqYwlzz80Bvi8YJWISAZiyaQch2k2NrsYkfHIvHLPqt5HseybVS5ywg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CQqGlVCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922B9C4CEFB;
-	Thu, 27 Nov 2025 19:37:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764272230;
-	bh=oFv6rFYosJ9FFGLFKn092gXULUdhZUkpj+COxCMFt9Q=;
-	h=Date:To:From:Subject:From;
-	b=CQqGlVCeSq8l0cJzn9iUI27qtZ9R+Y8XtjMLHwy58pshYHoLmjZUh0ggTjRQ+o+vh
-	 2Tk5KdhzsQw2pyHKVo6Y24WQVf1/CsLdgFCO6JSHKUwLNag1LjJMDksOnz39DAZGaT
-	 uWgcFPM5MV9twHag7Tf+Ld6VlP5iJkZSE12UFGWs=
-Date: Thu, 27 Nov 2025 11:37:10 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,leitao@debian.org,jpazdziora@redhat.com,coxu@redhat.com,catalin.marinas@arm.com,bhe@redhat.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + arm64-kernel-initialize-missing-kexec_buf-random-field.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251127193710.922B9C4CEFB@smtp.kernel.org>
+	s=arc-20240116; t=1764273265; c=relaxed/simple;
+	bh=dhEuKsM2NppW4tF828Yksm4bMtmNh9kyQeRpXyknWPA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RlXEKiCkFXu2MZq6QTh9VyrGS5EsEpVS2Fp7iOVPeBk6R/VVz8VkpL58fok5EHFFsePNBwlNqwsiN41ZJAWOd3Z+5UYzzKWXF35gWv20szPPGSrgOU/5l1sLkqarwO5rZq034tX+EZrLCrl5Z3yyjjHA4jUwKPdLqdiiOj2neGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=BeQEgU6O; arc=none smtp.client-ip=93.188.205.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1764273257;
+	bh=dhEuKsM2NppW4tF828Yksm4bMtmNh9kyQeRpXyknWPA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BeQEgU6OkYZ0xXIqsRYbL4qgsKy1uGrCkS6yZ6eMM1ors+lt6WWMnGMuzM+QvK36w
+	 YygOg1G2MxqN6yTRDEVzNBGL13eDuTrrMO2tBWp1+6KubK7RN6bftkV+SI/qWPepS4
+	 8T+hpBuV9Qyg73s7IsWB19ZVZlMXS77nszAzSn8UMsWX2tdLfioXbWa3r5wD4v4+RN
+	 RvZS4GxMMt1v4Z8w4jccf5k6MlbcGju3Qe4DMNe7OEMtf37zWPo1V6u2eRWgn3VZBx
+	 ZIC7qxJrscLkEaRa41vpW0b4p9RMLrulCyHTXPzAH5lYnCXhrcd17rUSL1RabmnChW
+	 Nq0uZHsvJ5xPg==
+Received: from gca-msk-a-srv-ksmg01 (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 9043B1F6FB;
+	Thu, 27 Nov 2025 22:54:17 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Thu, 27 Nov 2025 22:54:16 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru.astracloud.ru (unknown [10.198.18.213])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4dHRvh4z2BzZcC1;
+	Thu, 27 Nov 2025 22:54:08 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Shu Han <ebpqwerty472123@gmail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com,
+	Jann Horn <jannh@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@Oracle.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	James Morris <jmorris@namei.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.1] mm: split critical region in remap_file_pages() and invoke LSMs in between
+Date: Thu, 27 Nov 2025 22:53:48 +0300
+Message-Id: <20251127195348.29971-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/27 19:27:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 81 0.3.81 2adfceff315e7344370a427642ad41a4cfd99e1f, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, syzkaller.appspot.com:5.0.1,7.1.1;lkml.kernel.org:7.1.1;new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 198493 [Nov 27 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.20
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/11/27 19:18:00 #27982198
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/11/27 18:54:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-The patch titled
-     Subject: arm64: kernel: initialize missing kexec_buf->random field
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+commit 58a039e679fe72bd0efa8b2abe669a7914bb4429 upstream.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
+remap_file_pages()") fixed a security issue, it added an LSM check when
+trying to remap file pages, so that LSMs have the opportunity to evaluate
+such action like for other memory operations such as mmap() and
+mprotect().
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+However, that commit called security_mmap_file() inside the mmap_lock
+lock, while the other calls do it before taking the lock, after commit
+8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+This caused lock inversion issue with IMA which was taking the mmap_lock
+and i_mutex lock in the opposite way when the remap_file_pages() system
+call was called.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Solve the issue by splitting the critical region in remap_file_pages() in
+two regions: the first takes a read lock of mmap_lock, retrieves the VMA
+and the file descriptor associated, and calculates the 'prot' and 'flags'
+variables; the second takes a write lock on mmap_lock, checks that the VMA
+flags and the VMA file descriptor are the same as the ones obtained in the
+first critical region (otherwise the system call fails), and calls
+do_mmap().
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+In between, after releasing the read lock and before taking the write
+lock, call security_mmap_file(), and solve the lock inversion issue.
 
-------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: arm64: kernel: initialize missing kexec_buf->random field
-Date: Thu, 27 Nov 2025 18:26:44 +0000
-
-Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-introduced the kexec_buf->random field to enable random placement of
-kexec_buf.
-
-However, this field was never properly initialized for kexec images that
-do not need to be placed randomly, leading to the following UBSAN warning:
-
-[  +0.364528] ------------[ cut here ]------------
-[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
-[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
-[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
-[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-[  +0.000000] Call trace:
-[  +0.000001]  show_stack+0x24/0x40 (C)
-[  +0.000006]  __dump_stack+0x28/0x48
-[  +0.000002]  dump_stack_lvl+0x7c/0xb0
-[  +0.000002]  dump_stack+0x18/0x34
-[  +0.000001]  ubsan_epilogue+0x10/0x50
-[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
-[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
-[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
-[  +0.000001]  kexec_add_buffer+0xa8/0x178
-[  +0.000002]  image_load+0xf0/0x258
-[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
-[  +0.000002]  invoke_syscall+0x68/0xe8
-[  +0.000001]  el0_svc_common+0xb0/0xf8
-[  +0.000002]  do_el0_svc+0x28/0x48
-[  +0.000001]  el0_svc+0x40/0xe8
-[  +0.000002]  el0t_64_sync_handler+0x84/0x140
-[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
-
-To address this, initialise kexec_buf->random field properly.
-
-Link: https://lkml.kernel.org/r/20251127182644.1577592-1-yeoreum.yun@arm.com
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Jan Pazdziora <jpazdziora@redhat.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20241018161415.3845146-1-roberto.sassu@huaweicloud.com
+Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.46d20.0036.GAE@google.com/
+Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Cc: Eric Snowberg <eric.snowberg@oracle.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Shu Han <ebpqwerty472123@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
 ---
+Tested with the syzkaller reproducers for
+https://syzkaller.appspot.com/bug?extid=1cd571a672400ef3a930
+https://syzkaller.appspot.com/bug?extid=b02bbe0ff80a09a08c1b:
+the issue triggers on vanilla v6.1.y and no longer reproduces with this
+patch applied.
+ mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 17 deletions(-)
 
- arch/arm64/kernel/kexec_image.c        |    3 +++
- arch/arm64/kernel/machine_kexec_file.c |    6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
---- a/arch/arm64/kernel/kexec_image.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/kexec_image.c
-@@ -76,6 +76,9 @@ static void *image_load(struct kimage *i
- 	kbuf.buf_min = 0;
- 	kbuf.buf_max = ULONG_MAX;
- 	kbuf.top_down = false;
-+#ifdef CONFIG_CRASH_DUMP
-+	kbuf.random = false;
-+#endif
+diff --git a/mm/mmap.c b/mm/mmap.c
+index f93526b3df0c..5672d22be7e7 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -2974,6 +2974,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	unsigned long populate = 0;
+ 	unsigned long ret = -EINVAL;
+ 	struct file *file;
++	vm_flags_t vm_flags;
  
- 	kbuf.buffer = kernel;
- 	kbuf.bufsz = kernel_len;
---- a/arch/arm64/kernel/machine_kexec_file.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/machine_kexec_file.c
-@@ -94,7 +94,11 @@ int load_other_segments(struct kimage *i
- 			char *initrd, unsigned long initrd_len,
- 			char *cmdline)
- {
--	struct kexec_buf kbuf = {};
-+	struct kexec_buf kbuf = {
-+#ifdef CONFIG_CRASH_DUMP
-+		.random = false,
-+#endif
-+	};
- 	void *dtb = NULL;
- 	unsigned long initrd_load_addr = 0, dtb_len,
- 		      orig_segments = image->nr_segments;
-_
-
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
-
-arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+ 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/mm/remap_file_pages.rst.\n",
+ 		     current->comm, current->pid);
+@@ -2990,12 +2991,60 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
+ 		return ret;
+ 
+-	if (mmap_write_lock_killable(mm))
++	if (mmap_read_lock_killable(mm))
+ 		return -EINTR;
+ 
++	/*
++	 * Look up VMA under read lock first so we can perform the security
++	 * without holding locks (which can be problematic). We reacquire a
++	 * write lock later and check nothing changed underneath us.
++	 */
+ 	vma = vma_lookup(mm, start);
+ 
+-	if (!vma || !(vma->vm_flags & VM_SHARED))
++	if (!vma || !(vma->vm_flags & VM_SHARED)) {
++		mmap_read_unlock(mm);
++		return -EINVAL;
++	}
++
++	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
++	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
++	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
++
++	flags &= MAP_NONBLOCK;
++	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
++	if (vma->vm_flags & VM_LOCKED)
++		flags |= MAP_LOCKED;
++
++	/* Save vm_flags used to calculate prot and flags, and recheck later. */
++	vm_flags = vma->vm_flags;
++	file = get_file(vma->vm_file);
++
++	mmap_read_unlock(mm);
++
++	/* Call outside mmap_lock to be consistent with other callers. */
++	ret = security_mmap_file(file, prot, flags);
++	if (ret) {
++		fput(file);
++		return ret;
++	}
++
++	ret = -EINVAL;
++
++	/* OK security check passed, take write lock + let it rip. */
++	if (mmap_write_lock_killable(mm)) {
++		fput(file);
++		return -EINTR;
++	}
++
++	vma = vma_lookup(mm, start);
++
++	if (!vma)
++		goto out;
++
++	/* Make sure things didn't change under us. */
++	if (vma->vm_flags != vm_flags)
++		goto out;
++	if (vma->vm_file != file)
+ 		goto out;
+ 
+ 	if (start + size > vma->vm_end) {
+@@ -3023,25 +3072,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 			goto out;
+ 	}
+ 
+-	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
+-	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
+-	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
+-
+-	flags &= MAP_NONBLOCK;
+-	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
+-	if (vma->vm_flags & VM_LOCKED)
+-		flags |= MAP_LOCKED;
+-
+-	file = get_file(vma->vm_file);
+-	ret = security_mmap_file(vma->vm_file, prot, flags);
+-	if (ret)
+-		goto out_fput;
+ 	ret = do_mmap(vma->vm_file, start, size,
+ 			prot, flags, pgoff, &populate, NULL);
+-out_fput:
+-	fput(file);
+ out:
+ 	mmap_write_unlock(mm);
++	fput(file);
+ 	if (populate)
+ 		mm_populate(ret, populate);
+ 	if (!IS_ERR_VALUE(ret))
+-- 
+2.30.2
 
 
