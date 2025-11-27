@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-197436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF3FC8F131
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3634C8EED7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 99A1E343835
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4012E35251B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E72F334385;
-	Thu, 27 Nov 2025 15:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5ED3346A2;
+	Thu, 27 Nov 2025 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxXQu/zq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWb8faMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB48533437A;
-	Thu, 27 Nov 2025 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F21334697;
+	Thu, 27 Nov 2025 14:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255813; cv=none; b=lOYKyjl53liMIWmtLhh9TvnjWgyS5Zrbhgdy/xngg/6PnyomZHTN/ss3we3FqgtAk14RQKKC+Ml8us49XE8PXePGBWqs4JxhVHvB/QLTdGbcFSyin/5n9N33OsEhdpyiHihZ2Emu0NiL5+mM84Roa6X3m0VmaolRXUPCqMvyQ6w=
+	t=1764255291; cv=none; b=r87tFhQMuWIT+RmZ1FOYgjYWU+1zIwlbPhRVnvfnK7b7cFsSSdDTBEYOfv9Kvsr6xtQqR6kRqtDe3QdV4HNn/BuxvmD/gF5GhuEwwBTdyvcnpKEwyOGuRyt4JCheBe4mNikiNfqWnWwxqiAE6XDt9AV0rLIGOHptbFRGFm0SGrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255813; c=relaxed/simple;
-	bh=mjqVeCxnIpAcmc5u1F9lBY3Ym5uhWvEQ6om6Ptb8vyU=;
+	s=arc-20240116; t=1764255291; c=relaxed/simple;
+	bh=yJbSNaa5aE3VVuhWilq542InJseenOYhIoh8sNQTZcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTyAiZ+O/rNwjzB6AJMGMPGTJm5vykKcio4dkwHEqQ8TcQV073bghQ5odQiigSfXLpBJfvoU59wXF5yMw6cTUEp1M4egdN1ybh7DR4M2cxQzQ60pBvCy4aY8b3dX1w5rJ7M1BpYrzCaO+myI/KyoTQZQev7Wt9A8N5bT+O7BD4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxXQu/zq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45890C116C6;
-	Thu, 27 Nov 2025 15:03:33 +0000 (UTC)
+	 MIME-Version; b=b/75ppfZmHBv1S7afPXCzeBbshEDC6ok3c8NiTvQPH7Yf9hM2shzxmtWrbEl2nm0IGtQ3iUU0aEaJZvPhkQ/Vwo8wgAZ9URnEBg5ayup/FKeFbRNtOxJje8VzYtgRrDp99g5bgbrC9igqIeTkbNVKUd7O2wVSzgZAbBtfGg6dlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWb8faMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0E7C4CEF8;
+	Thu, 27 Nov 2025 14:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255813;
-	bh=mjqVeCxnIpAcmc5u1F9lBY3Ym5uhWvEQ6om6Ptb8vyU=;
+	s=korg; t=1764255289;
+	bh=yJbSNaa5aE3VVuhWilq542InJseenOYhIoh8sNQTZcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxXQu/zqxKaFyWGIY2nbdZOaNsDVT/lpe62y6aRa8KUsojZsmxGcqi4b78sQ7b2qT
-	 vx9+FTBa2HNpRFwD21lmDmjktYmJrXCAHjt6IKuDqM8ZTAdJzgxVa9IOO2RxXcdW0i
-	 2nyivH4JL+nzEx7wQ2t+KxyCWuAKeBuu3WT99VMQ=
+	b=TWb8faMsgSMBqvif321ebVHKMpr9t1HetV09BH1Oq+ShN4fbnxksUgodjPg7Jaaya
+	 MuPTVBiWjM/h2w/maI+hHhnezuE/I3P7Rd5W8D9EZH3aEplHtoux5Cu/dPJElX97og
+	 YhPvR+VXSKFye5hChsYsxFYOq/Y54kZa24ZqQ3cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohith Kumar Thummaluru <mohith.k.kumar.thummaluru@oracle.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Pradyumn Rahar <pradyumn.rahar@oracle.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jared Kangas <jkangas@redhat.com>,
+	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 123/175] net/mlx5: Clean up only new IRQ glue on request_irq() failure
+Subject: [PATCH 6.12 074/112] pinctrl: s32cc: fix uninitialized memory in s32_pinctrl_desc
 Date: Thu, 27 Nov 2025 15:46:16 +0100
-Message-ID: <20251127144047.452262018@linuxfoundation.org>
+Message-ID: <20251127144035.550547955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,163 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pradyumn Rahar <pradyumn.rahar@oracle.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit d47515af6cccd7484d8b0870376858c9848a18ec ]
+[ Upstream commit 97ea34defbb57bfaf71ce487b1b0865ffd186e81 ]
 
-The mlx5_irq_alloc() function can inadvertently free the entire rmap
-and end up in a crash[1] when the other threads tries to access this,
-when request_irq() fails due to exhausted IRQ vectors. This commit
-modifies the cleanup to remove only the specific IRQ mapping that was
-just added.
+s32_pinctrl_desc is allocated with devm_kmalloc(), but not all of its
+fields are initialized. Notably, num_custom_params is used in
+pinconf_generic_parse_dt_config(), resulting in intermittent allocation
+errors, such as the following splat when probing i2c-imx:
 
-This prevents removal of other valid mappings and ensures precise
-cleanup of the failed IRQ allocation's associated glue object.
+        WARNING: CPU: 0 PID: 176 at mm/page_alloc.c:4795 __alloc_pages_noprof+0x290/0x300
+        [...]
+        Hardware name: NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3) (DT)
+        [...]
+        Call trace:
+         __alloc_pages_noprof+0x290/0x300 (P)
+         ___kmalloc_large_node+0x84/0x168
+         __kmalloc_large_node_noprof+0x34/0x120
+         __kmalloc_noprof+0x2ac/0x378
+         pinconf_generic_parse_dt_config+0x68/0x1a0
+         s32_dt_node_to_map+0x104/0x248
+         dt_to_map_one_config+0x154/0x1d8
+         pinctrl_dt_to_map+0x12c/0x280
+         create_pinctrl+0x6c/0x270
+         pinctrl_get+0xc0/0x170
+         devm_pinctrl_get+0x50/0xa0
+         pinctrl_bind_pins+0x60/0x2a0
+         really_probe+0x60/0x3a0
+        [...]
+         __platform_driver_register+0x2c/0x40
+         i2c_adap_imx_init+0x28/0xff8 [i2c_imx]
+        [...]
 
-Note: This error is observed when both fwctl and rds configs are enabled.
+This results in later parse failures that can cause issues in dependent
+drivers:
 
-[1]
-mlx5_core 0000:05:00.0: Successfully registered panic handler for port 1
-mlx5_core 0000:05:00.0: mlx5_irq_alloc:293:(pid 66740): Failed to
-request irq. err = -28
-infiniband mlx5_0: mlx5_ib_test_wc:290:(pid 66740): Error -28 while
-trying to test write-combining support
-mlx5_core 0000:05:00.0: Successfully unregistered panic handler for port 1
-mlx5_core 0000:06:00.0: Successfully registered panic handler for port 1
-mlx5_core 0000:06:00.0: mlx5_irq_alloc:293:(pid 66740): Failed to
-request irq. err = -28
-infiniband mlx5_0: mlx5_ib_test_wc:290:(pid 66740): Error -28 while
-trying to test write-combining support
-mlx5_core 0000:06:00.0: Successfully unregistered panic handler for port 1
-mlx5_core 0000:03:00.0: mlx5_irq_alloc:293:(pid 28895): Failed to
-request irq. err = -28
-mlx5_core 0000:05:00.0: mlx5_irq_alloc:293:(pid 28895): Failed to
-request irq. err = -28
-general protection fault, probably for non-canonical address
-0xe277a58fde16f291: 0000 [#1] SMP NOPTI
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
+        [...]
+        pca953x 0-0022: failed writing register: -6
+        i2c i2c-0: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
+        i2c i2c-1: IMX I2C adapter registered
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
+        i2c i2c-2: IMX I2C adapter registered
 
-RIP: 0010:free_irq_cpu_rmap+0x23/0x7d
-Call Trace:
-   <TASK>
-   ? show_trace_log_lvl+0x1d6/0x2f9
-   ? show_trace_log_lvl+0x1d6/0x2f9
-   ? mlx5_irq_alloc.cold+0x5d/0xf3 [mlx5_core]
-   ? __die_body.cold+0x8/0xa
-   ? die_addr+0x39/0x53
-   ? exc_general_protection+0x1c4/0x3e9
-   ? dev_vprintk_emit+0x5f/0x90
-   ? asm_exc_general_protection+0x22/0x27
-   ? free_irq_cpu_rmap+0x23/0x7d
-   mlx5_irq_alloc.cold+0x5d/0xf3 [mlx5_core]
-   irq_pool_request_vector+0x7d/0x90 [mlx5_core]
-   mlx5_irq_request+0x2e/0xe0 [mlx5_core]
-   mlx5_irq_request_vector+0xad/0xf7 [mlx5_core]
-   comp_irq_request_pci+0x64/0xf0 [mlx5_core]
-   create_comp_eq+0x71/0x385 [mlx5_core]
-   ? mlx5e_open_xdpsq+0x11c/0x230 [mlx5_core]
-   mlx5_comp_eqn_get+0x72/0x90 [mlx5_core]
-   ? xas_load+0x8/0x91
-   mlx5_comp_irqn_get+0x40/0x90 [mlx5_core]
-   mlx5e_open_channel+0x7d/0x3c7 [mlx5_core]
-   mlx5e_open_channels+0xad/0x250 [mlx5_core]
-   mlx5e_open_locked+0x3e/0x110 [mlx5_core]
-   mlx5e_open+0x23/0x70 [mlx5_core]
-   __dev_open+0xf1/0x1a5
-   __dev_change_flags+0x1e1/0x249
-   dev_change_flags+0x21/0x5c
-   do_setlink+0x28b/0xcc4
-   ? __nla_parse+0x22/0x3d
-   ? inet6_validate_link_af+0x6b/0x108
-   ? cpumask_next+0x1f/0x35
-   ? __snmp6_fill_stats64.constprop.0+0x66/0x107
-   ? __nla_validate_parse+0x48/0x1e6
-   __rtnl_newlink+0x5ff/0xa57
-   ? kmem_cache_alloc_trace+0x164/0x2ce
-   rtnl_newlink+0x44/0x6e
-   rtnetlink_rcv_msg+0x2bb/0x362
-   ? __netlink_sendskb+0x4c/0x6c
-   ? netlink_unicast+0x28f/0x2ce
-   ? rtnl_calcit.isra.0+0x150/0x146
-   netlink_rcv_skb+0x5f/0x112
-   netlink_unicast+0x213/0x2ce
-   netlink_sendmsg+0x24f/0x4d9
-   __sock_sendmsg+0x65/0x6a
-   ____sys_sendmsg+0x28f/0x2c9
-   ? import_iovec+0x17/0x2b
-   ___sys_sendmsg+0x97/0xe0
-   __sys_sendmsg+0x81/0xd8
-   do_syscall_64+0x35/0x87
-   entry_SYSCALL_64_after_hwframe+0x6e/0x0
-RIP: 0033:0x7fc328603727
-Code: c3 66 90 41 54 41 89 d4 55 48 89 f5 53 89 fb 48 83 ec 10 e8 0b ed
-ff ff 44 89 e2 48 89 ee 89 df 41 89 c0 b8 2e 00 00 00 0f 05 <48> 3d 00
-f0 ff ff 77 35 44 89 c7 48 89 44 24 08 e8 44 ed ff ff 48
-RSP: 002b:00007ffe8eb3f1a0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 000000000000000d RCX: 00007fc328603727
-RDX: 0000000000000000 RSI: 00007ffe8eb3f1f0 RDI: 000000000000000d
-RBP: 00007ffe8eb3f1f0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007ffe8eb3f3c8 R15: 00007ffe8eb3f3bc
-   </TASK>
----[ end trace f43ce73c3c2b13a2 ]---
-RIP: 0010:free_irq_cpu_rmap+0x23/0x7d
-Code: 0f 1f 80 00 00 00 00 48 85 ff 74 6b 55 48 89 fd 53 66 83 7f 06 00
-74 24 31 db 48 8b 55 08 0f b7 c3 48 8b 04 c2 48 85 c0 74 09 <8b> 38 31
-f6 e8 c4 0a b8 ff 83 c3 01 66 3b 5d 06 72 de b8 ff ff ff
-RSP: 0018:ff384881640eaca0 EFLAGS: 00010282
-RAX: e277a58fde16f291 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ff2335e2e20b3600 RSI: 0000000000000000 RDI: ff2335e2e20b3400
-RBP: ff2335e2e20b3400 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 00000000ffffffe4 R12: ff384881640ead88
-R13: ff2335c3760751e0 R14: ff2335e2e1672200 R15: ff2335c3760751f8
-FS:  00007fc32ac22480(0000) GS:ff2335e2d6e00000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f651ab54000 CR3: 00000029f1206003 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x1dc00000 from 0xffffffff81000000 (relocation range:
-0xffffffff80000000-0xffffffffbfffffff)
-kvm-guest: disable async PF for cpu 0
+Fix this by initializing s32_pinctrl_desc with devm_kzalloc() instead of
+devm_kmalloc() in s32_pinctrl_probe(), which sets the previously
+uninitialized fields to zero.
 
-Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
-Signed-off-by: Mohith Kumar Thummaluru<mohith.k.kumar.thummaluru@oracle.com>
-Tested-by: Mohith Kumar Thummaluru<mohith.k.kumar.thummaluru@oracle.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Pradyumn Rahar <pradyumn.rahar@oracle.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1763381768-1234998-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Tested-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index 692ef9c2f7293..82ada674f8e27 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -324,10 +324,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
- 	free_irq(irq->map.virq, &irq->nh);
- err_req_irq:
- #ifdef CONFIG_RFS_ACCEL
--	if (i && rmap && *rmap) {
--		free_irq_cpu_rmap(*rmap);
--		*rmap = NULL;
--	}
-+	if (i && rmap && *rmap)
-+		irq_cpu_rmap_remove(*rmap, irq->map.virq);
- err_irq_rmap:
- #endif
- 	if (i && pci_msix_can_alloc_dyn(dev->pdev))
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 501eb296c7605..51ecb8d0fb7e8 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -951,7 +951,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
+ 	spin_lock_init(&ipctl->gpio_configs_lock);
+ 
+ 	s32_pinctrl_desc =
+-		devm_kmalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
++		devm_kzalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
+ 	if (!s32_pinctrl_desc)
+ 		return -ENOMEM;
+ 
 -- 
 2.51.0
 
