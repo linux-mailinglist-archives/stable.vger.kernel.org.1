@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-197214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C308C8EEFE
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:56:24 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979BFC8F0C7
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BABF3A3D85
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 831B634775E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E132329993F;
-	Thu, 27 Nov 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3D2284B58;
+	Thu, 27 Nov 2025 15:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrgIb3sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amh4msxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C77528CF42;
-	Thu, 27 Nov 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C020FAAB;
+	Thu, 27 Nov 2025 15:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255117; cv=none; b=QFORWfL1XKwzypaZg5azy2yR/0l2wnMA/2TuLOM+xQNNd4THTdeGGbuOKKLAL/kRL70vdnLzm7dG41YmF5L4UiXStiTdU6fC3IOSbyecQdLk7mfnpoGtatrpHCdFSvNF310Sn7ob7mkDx6yCuDUsFcURVsx2Wmdq7bxRBt0JFcI=
+	t=1764255740; cv=none; b=i3YZYn1TB8n2MULBZEChkgJZg/Z+lo1/7cHtwrNRqkZ/HAAaYPbpxkzQk1wQDxbNic3nXlXMzKZelMaSSDnOMUC6j+1e9bTXcaaRj15o7CPLK5WVkopzf0C2wLGtIMB1RCHJg4VKYTItlIsLQ5P8DlN5NTNi7XD4TMF7xGmlAEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255117; c=relaxed/simple;
-	bh=Dic0wXHgDdKIbGm5PXOPJ543Vs1dP0oFmHMltCHdON0=;
+	s=arc-20240116; t=1764255740; c=relaxed/simple;
+	bh=8Fl4iDfahRc5HbmXuX6zHUDSEkGJn+bqU1zhEJCQFuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BggxRDHr9nL1cNm1WqNH+QVvXSMtEmeW6HGs08QPbyER3vPQlUUunPwQvAIDy128F0TygZ7ResxIySYxhIfIDeskNdMHUcgcEb9YhyLyzwPVE3b2mN82BOkZaQmQsqHzr49hGoTT8pvQjDHghMSwJR1+i8nORVksn6zKJfPeWI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrgIb3sv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BC8C4CEF8;
-	Thu, 27 Nov 2025 14:51:56 +0000 (UTC)
+	 MIME-Version; b=er6jgvkG/aehaGYPpVQkUxtjEHirsEng/UDYvHdDjwPXAbuG79oVdaSu17JhWWBWl1X2EqARXKXIJOCZpdjoPIOe6+YBQW2fXSIg1hTZmGnch6So/F3GytEjirW8+v9gTlq45YRkrS7g7Gz03ZDRIfQAVOIwBBiusTmVQ/2B4/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amh4msxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E792C4CEF8;
+	Thu, 27 Nov 2025 15:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255117;
-	bh=Dic0wXHgDdKIbGm5PXOPJ543Vs1dP0oFmHMltCHdON0=;
+	s=korg; t=1764255739;
+	bh=8Fl4iDfahRc5HbmXuX6zHUDSEkGJn+bqU1zhEJCQFuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrgIb3svnPigo15EoN9Q4++YurNvOc9dc31DAnyfhpKmvuUR4lEkA0SUJ1N11FGVL
-	 rKJfTINOOFm9fpbnVMpQyfEAZtNK6UEen2g/8f5JKt28cQgQz7uu3sSNyf3MKuaATN
-	 Rt3PMtf8luy5sXdIieXAHmci2b+ib/kM3zjhNDWA=
+	b=amh4msxBIUvo5HOG6m6WKXGYjvSc5TBGtWyssxyy7G5m01NfR4wq03wJyiRts4jkM
+	 blYUe53bAqgG95tq1zFDZ7BeND1f4AuyB5HGnyRiddqZYKr66scBW3+YieoH0UMRDy
+	 HqZ3E04fVEH5U8HfRTQu2dWjw9pcItw5oStxfXvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.12 014/112] mptcp: Disallow MPTCP subflows from sockmap
-Date: Thu, 27 Nov 2025 15:45:16 +0100
-Message-ID: <20251127144033.253356287@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 064/175] selftests: mptcp: join: userspace: longer timeout
+Date: Thu, 27 Nov 2025 15:45:17 +0100
+Message-ID: <20251127144045.305184757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit fbade4bd08ba52cbc74a71c4e86e736f059f99f7 upstream.
+commit 0e4ec14dc1ee4b1ec347729c225c3ca950f2bcf6 upstream.
 
-The sockmap feature allows bpf syscall from userspace, or based on bpf
-sockops, replacing the sk_prot of sockets during protocol stack processing
-with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
-Consider two scenarios:
+In rare cases, when the test environment is very slow, some userspace
+tests can fail because some expected events have not been seen.
 
-1. When the server has MPTCP enabled and the client also requests MPTCP,
-   the sk passed to the BPF program is a subflow sk. Since subflows only
-   handle partial data, replacing their sk_prot is meaningless and will
-   cause traffic disruption.
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to have a longer
+timeout, and even go over the default one. This connection will be
+killed at the end, after the verifications: increasing the timeout
+doesn't change anything, apart from avoiding it to end before the end of
+the verifications.
 
-2. When the server has MPTCP enabled but the client sends a TCP SYN
-   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-   '''
-   subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-   '''
-   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
-   converts the subflow to plain TCP.
+To play it safe, all userspace tests not waiting for the end of the
+transfer are now having a longer timeout: 2 minutes.
 
-For the first case, we should prevent it from being combined with sockmap
-by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
-sockmap's own flow.
+The Fixes commit was making the connection longer, but still, the
+default timeout would have stopped it after 1 minute, which might not be
+enough in very slow environments.
 
-For the second case, since subflow_syn_recv_sock() has already restored
-sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
+Fixes: 290493078b96 ("selftests: mptcp: join: userspace: longer transfer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-9-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2150,6 +2150,10 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
- 	tcp_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcp_prot_override.psock_update_sk_prot = NULL;
-+#endif
- 
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -2186,6 +2190,10 @@ void __init mptcp_subflow_init(void)
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
- 	tcpv6_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcpv6_prot_override.psock_update_sk_prot = NULL;
-+#endif
- #endif
- 
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3620,7 +3620,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns2 2 2
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
+@@ -3653,7 +3653,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3681,7 +3681,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3702,7 +3702,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+@@ -3726,7 +3726,7 @@ userspace_tests()
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns2 1 1
+-		{ test_linkfail=128 speed=5 \
++		{ timeout_test=120 test_linkfail=128 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
 
 
 
