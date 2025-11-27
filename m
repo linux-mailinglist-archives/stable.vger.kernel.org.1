@@ -1,143 +1,173 @@
-Return-Path: <stable+bounces-197109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88035C8EA2B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3349CC8EA1F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B4F3A866C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:51:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B55B03528BE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA95127E06C;
-	Thu, 27 Nov 2025 13:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF0A3328FB;
+	Thu, 27 Nov 2025 13:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkBz925/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZQxChmo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA74622759C
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 13:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C745E32E74B;
+	Thu, 27 Nov 2025 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764251513; cv=none; b=btvAsbuo4Ehjc7dZBTlJn624dfhbMSEpqQ+sFlnVWRjQZD6B9XpB210z91lXRU9Ze+OY6xADmcurWEflLPouqOj8z3Qt2X17RUfxQFbv3Sjbba2tsFRvhlTuM8CDPhxfWLotRPxAP9+AuG8eIbxlVyggbpMtoL3go5IoWlJjqOk=
+	t=1764251713; cv=none; b=AvfU3s8AON7fjDKvtZGZdAtFtymm4Sra4QAtBe0xC7/3gFxvppaCjbYozQLnuFQTmL98t7QGML5M9X4+oE7qhaBizPXHeD85iKccPxTH3KuBWH0vWakMOHh/xHVJZAIBOxGvCSzejeDqC1+TeKgvHtQSSxGdQbIBubU+IFBTQD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764251513; c=relaxed/simple;
-	bh=eoHz/3tJbsd4wMAL8xs/k+Qt2IeD5tZ+X3aHmdsTFp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=paPJNv78+Dr+RReooUNMZyXBPhxh/7mNnr5dy8ryVZBQ8VNlXFqX/LmrfYlznomEK8HK7U0P8LwWISRrMKk/65waO6WUlne7Acakb+w0KL+/fBwmStNl0rFQsoKei1FN3CPOM+FJWvQ6PifB10hiFtRdvMz0jrFAKifkE3K3jbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkBz925/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2999AC113D0;
-	Thu, 27 Nov 2025 13:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764251513;
-	bh=eoHz/3tJbsd4wMAL8xs/k+Qt2IeD5tZ+X3aHmdsTFp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SkBz925/I07XQwHqlJt8WJfrnozQHiRcP6AORhvik1wFoosj4P1be1QbzigIaPR8a
-	 TIkuZWV2+QAmRa9JnamrxSONAONcBJGr05XnpCzhtZ2OMjsBozcvtHfa/WCgnSFW2l
-	 RloOFo9Bftj0TbRoRt611HqmOJMzNNnJ0/ccOx28=
-Date: Thu, 27 Nov 2025 14:51:50 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, stable@vger.kernel.org,
-	linus.walleij@linaro.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH] Revert "gpio: swnode: don't use the swnode's name as the
- key for GPIO lookup"
-Message-ID: <2025112757-squash-hesitant-d8d6@gregkh>
-References: <20251125102924.3612459-1-ckeepax@opensource.cirrus.com>
- <CAMRc=MfoycdnEFXU3yDUp4eJwDfkChNhXDQ-aoyoBcLxw_tmpQ@mail.gmail.com>
- <2025112531-glance-majorette-40b0@gregkh>
- <aSWXcml8rkX99MEy@opensource.cirrus.com>
- <2025112505-unlovable-crease-cfe2@gregkh>
- <aSWl95gPfnaaq1gR@opensource.cirrus.com>
+	s=arc-20240116; t=1764251713; c=relaxed/simple;
+	bh=eA0cfKfU41iaZNTEtKcAhl4jAiD+DBmTitPZhDCP/Ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gGOPVIDscyzw896ZPNiuw/h9HVYVP8L5IKne6guiilNQJIg/NkvZ685S03o6eoXIWrRq6St4a0Frq8XndyfQrT7oUP9bUZXIcR36bK+IXAxmscnJqNGX7C3+rPwATUjqT79ZNaVL1dHzAg3iXUQVu+RLAtuCe85g1ICtmJs0jIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZQxChmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9991C116C6;
+	Thu, 27 Nov 2025 13:55:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764251713;
+	bh=eA0cfKfU41iaZNTEtKcAhl4jAiD+DBmTitPZhDCP/Ek=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SZQxChmoLmeBM5Kj77kceX0TlaPIakJY2Llxix3vDNrhqIk6PtvgkVxsUN4IEQpY5
+	 8yJIbuBA+1accaX4VEEui4frFGZMoVLQN6RTIWrx4w12PIfhQOYyVwWuX0cGJx5rMC
+	 KP3fUgIpI31PPX+DRD5WTy1306as4byhXPs2iTDlOVYpJAAFvCs6uETYtvz5j/UCQD
+	 iVGVPiQHBSzR5v5IbSpkZlTsYWQD8ieR4tPIKjtzaC0SBeHrBKrjzuf93+/sjAzP5c
+	 hPxs9RPHyVq0gKcU89S+1wOLtF3y11bWnus5rQQcDShNiY62HbeA81MBAHh1gS/6D2
+	 8cCZQZG+IV5hQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: ross.philipson@oracle.com,
+	Jonathan McDowell <noodles@earth.li>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 04/11] KEYS: trusted: Fix memory leak in tpm2_load()
+Date: Thu, 27 Nov 2025 15:54:36 +0200
+Message-ID: <20251127135445.2141241-5-jarkko@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251127135445.2141241-1-jarkko@kernel.org>
+References: <20251127135445.2141241-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSWl95gPfnaaq1gR@opensource.cirrus.com>
 
-On Tue, Nov 25, 2025 at 12:49:59PM +0000, Charles Keepax wrote:
-> On Tue, Nov 25, 2025 at 12:58:30PM +0100, Greg KH wrote:
-> > On Tue, Nov 25, 2025 at 11:48:02AM +0000, Charles Keepax wrote:
-> > > On Tue, Nov 25, 2025 at 12:43:16PM +0100, Greg KH wrote:
-> > > > On Tue, Nov 25, 2025 at 11:31:56AM +0100, Bartosz Golaszewski wrote:
-> > > > > On Tue, Nov 25, 2025 at 11:29 AM Charles Keepax
-> > > > > <ckeepax@opensource.cirrus.com> wrote:
-> > > > > >
-> > > > > > This reverts commit 25decf0469d4c91d90aa2e28d996aed276bfc622.
-> > > > > >
-> > > > > > This software node change doesn't actually fix any current issues
-> > > > > > with the kernel, it is an improvement to the lookup process rather
-> > > > > > than fixing a live bug. It also causes a couple of regressions with
-> > > > > > shipping laptops, which relied on the label based lookup.
-> > > > > >
-> > > > > > There is a fix for the regressions in mainline, the first 5 patches
-> > > > > > of [1]. However, those patches are fairly substantial changes and
-> > > > > > given the patch causing the regression doesn't actually fix a bug
-> > > > > > it seems better to just revert it in stable.
-> > > > > >
-> > > > > > CC: stable@vger.kernel.org # 6.12, 6.17
-> > > > > > Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org/ [1]
-> > > > > > Closes: https://github.com/thesofproject/linux/issues/5599
-> > > > > > Closes: https://github.com/thesofproject/linux/issues/5603
-> > > > > > Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > > > > Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> > > > > > ---
-> > > > > >
-> > > > > > I wasn't exactly sure of the proceedure for reverting a patch that was
-> > > > > > cherry-picked to stable, so apologies if I have made any mistakes here
-> > > > > > but happy to update if necessary.
-> > > > > >
-> > > > > 
-> > > > > Yes, I'd like to stress the fact that this MUST NOT be reverted in
-> > > > > mainline, only in v6.12 and v6.17 stable branches.
-> > > > 
-> > > > But why?  Why not take the upstream changes instead?  We would much
-> > > > rather do that as it reduces the divergance.  5 patches is trivial for
-> > > > us to take.
-> > > 
-> > > My thinking was that they are a bit invasive for backports, as
-> > > noted in the commit message. But if that is the preferred option
-> > > I can do a series with those instead?
-> > 
-> > I'd prefer to take what is upstream, it's simpler over the long term to
-> > do so.
-> > 
-> 
-> I really doubt this will end up simpler, as the comparison here
-> is a) not backporting a change that probably shouldn't have gone
-> to stable in the first place vs. b) backport a bunch of quite
-> invasive changes.
+tpm2_load() allocates a blob indirectly via tpm2_key_decode() but it is
+not freed in all failure paths. Address this with a scope-based cleanup
+helper __free(). For legacy blobs, the implicit de-allocation is gets
+disable by no_free_ptr().
 
-But think about future changes/fixes.  6.12 is going to be around for 5
-more years, doing one-off fixes ensures that any future changes/fixes
-will NOT apply to 6.12.y and require custom changes that are almost
-guaranteed to break.
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v7:
+- Fix compiler warning.
+v6:
+- A new patch in this version.
+---
+ security/keys/trusted-keys/trusted_tpm2.c | 24 +++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Again, it is almost always better to take the same changes that are in
-Linus's tree as they are better tested and future fixes apply cleaner.
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 3205732fb4b7..00bc1afb32c8 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -98,9 +98,8 @@ struct tpm2_key_context {
+ 	u32 priv_len;
+ };
+ 
+-static int tpm2_key_decode(struct trusted_key_payload *payload,
+-			   struct trusted_key_options *options,
+-			   u8 **buf)
++static void *tpm2_key_decode(struct trusted_key_payload *payload,
++			     struct trusted_key_options *options)
+ {
+ 	int ret;
+ 	struct tpm2_key_context ctx;
+@@ -111,16 +110,15 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
+ 	ret = asn1_ber_decoder(&tpm2key_decoder, &ctx, payload->blob,
+ 			       payload->blob_len);
+ 	if (ret < 0)
+-		return ret;
++		return ERR_PTR(ret);
+ 
+ 	if (ctx.priv_len + ctx.pub_len > MAX_BLOB_SIZE)
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
+ 
+ 	blob = kmalloc(ctx.priv_len + ctx.pub_len + 4, GFP_KERNEL);
+ 	if (!blob)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+-	*buf = blob;
+ 	options->keyhandle = ctx.parent;
+ 
+ 	memcpy(blob, ctx.priv, ctx.priv_len);
+@@ -128,7 +126,7 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
+ 
+ 	memcpy(blob, ctx.pub, ctx.pub_len);
+ 
+-	return 0;
++	return blob;
+ }
+ 
+ int tpm2_key_parent(void *context, size_t hdrlen,
+@@ -372,6 +370,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 			 struct trusted_key_options *options,
+ 			 u32 *blob_handle)
+ {
++	u8 *blob_ref __free(kfree) = NULL;
+ 	struct tpm_buf buf;
+ 	unsigned int private_len;
+ 	unsigned int public_len;
+@@ -380,11 +379,14 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 	int rc;
+ 	u32 attrs;
+ 
+-	rc = tpm2_key_decode(payload, options, &blob);
+-	if (rc) {
++	blob = tpm2_key_decode(payload, options);
++	if (IS_ERR(blob)) {
+ 		/* old form */
+ 		blob = payload->blob;
+ 		payload->old_format = 1;
++	} else {
++		/* Bind to cleanup: */
++		blob_ref = blob;
+ 	}
+ 
+ 	/* new format carries keyhandle but old format doesn't */
+@@ -449,8 +451,6 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
+ 
+ out:
+-	if (blob != payload->blob)
+-		kfree(blob);
+ 	tpm_buf_destroy(&buf);
+ 
+ 	if (rc > 0)
+-- 
+2.52.0
 
-But I defer to the maintainer, of the maintainer says to take this
-one-off change (i.e. revert), I'll gladly do so.  Just trying to explain
-that taking lots of upstream changes is almost always the right thing to
-do in the long run.  And we are in this for the long run.
-
-> Do we have to wait for the fixes to hit Linus's tree before
-> pushing them to stable? As they are still in Philipp Zabel's
-> reset tree at the moment and I would quite like to stem the
-> rising tide of tickets I am getting about audio breaking on
-> peoples laptops as soon as possible.
-
-Yes, we need the fixes there first.
-
-thanks,
-
-greg k-h
 
