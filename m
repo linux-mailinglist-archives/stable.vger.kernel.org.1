@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-197391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861E2C8F08B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A868AC8ED63
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 846383464E4
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFBF3B2429
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00746334690;
-	Thu, 27 Nov 2025 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA1C27877D;
+	Thu, 27 Nov 2025 14:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK9momCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOyAK8lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6258333456;
-	Thu, 27 Nov 2025 15:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C951A9B58;
+	Thu, 27 Nov 2025 14:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255684; cv=none; b=pa46td4sjhgfS+7+7gASJ+pzWE/NSRveeQX3KrDg3iPkzwdYtQNy8G+JSQQtQR5trn1+TimKRS1C3lYfShEsqGD8lcoZ7UqZjfIW3uK989eMhPy3QR3S6x2sZm2uWpGBCe344YmZ4gzoQoGJFcRKSraHx0PLX14LgT0vNOUdpZ4=
+	t=1764254873; cv=none; b=rinobzdL67trGcJvUwRUiqDCYBBKdziPOXvWocmzjcqsv0rrAvIElMQqlkeyA4YPR+vE67z9cXYqW0nrhPN3RB/NQ8JydGgCCk7zXbRmWQ2fMDUro56jbOsVIxd6yKHL+nqsQgCM98Cub/ud9OBHOUpb5FQWTk0m6h5fNxJfynA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255684; c=relaxed/simple;
-	bh=pRmU/SbvuEFB3SqJwd51rNwx2dU9xA/P6co7Xw0BEno=;
+	s=arc-20240116; t=1764254873; c=relaxed/simple;
+	bh=8ZZjcpdBrh1xE2e6Z0D+c8jm1uYr4z6w/2pROhbWz4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbVa0s9LvJVi7Whcfkyu5lxcRwW3KgDdbQY9pSKVOMjvEZUyNP3U2KRPrbWhRnprInqVeJ7tegxo4D5QfzZVMofEr2+xbuapZahvpfjMUDxws8+wwA9cyUlJUpTqW6AAHLGvyMROrEllEmKy3fmBufbUFtDyx0jwHp4IJuBNn0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK9momCf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28896C4CEF8;
-	Thu, 27 Nov 2025 15:01:23 +0000 (UTC)
+	 MIME-Version; b=jQriZsCIWvXHWfxoVxiMqHIRyFKUJjGYdO43YU2VltDMj7gjzrHb7K/x5qTpOJP7CPkxHXuKn3WxQfQiV939i8FUnRdx2vyDabLnzkZO1I0daGl2L4HAKuTUmhvRsDy4s1JLbTLtjoRq0ag/2O8FZ4/JlUF75bDerikZ6s8+170=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOyAK8lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D84C116C6;
+	Thu, 27 Nov 2025 14:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255684;
-	bh=pRmU/SbvuEFB3SqJwd51rNwx2dU9xA/P6co7Xw0BEno=;
+	s=korg; t=1764254873;
+	bh=8ZZjcpdBrh1xE2e6Z0D+c8jm1uYr4z6w/2pROhbWz4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gK9momCfyhN9zaBheQqWb+1b554ymjUHlPNuX1e7UyKYyr3b8oUBFPg7XTRNZjpAl
-	 H5GGkqUFPSnBik5cNnjVsmlrF52iABoiSOTtqq2/pJ62bRP/nvgXe8D139x16ArH6O
-	 GYzKTc7fmkBZxtjMUYZp070Ht96SK+XybYB4HexE=
+	b=VOyAK8lhDG4SGt3Th9nrtDEoDe2ADnmM4iHE7RBDuxFwRg6Uuq5ahhZIht/L24aos
+	 Wwv2J5VioM2LSuNCBjk9ut/2CsN+lon/EoxziRDjk7NZr5YJ3JZ4S0uZZ0FOVj3cIX
+	 AR0JAz/oTRad8z4EhAdVBrB8U4DdZB4Q8Uiz/YzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 079/175] pinctrl: mediatek: mt8189: align register base names to dt-bindings ones
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 16/86] Input: cros_ec_keyb - fix an invalid memory access
 Date: Thu, 27 Nov 2025 15:45:32 +0100
-Message-ID: <20251127144045.852191551@linuxfoundation.org>
+Message-ID: <20251127144028.409651883@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 518919276c4119e34e24334003af70ab12477f00 ]
+commit e08969c4d65ac31297fcb4d31d4808c789152f68 upstream.
 
-The mt8189-pinctrl driver requires to probe that a device tree uses
-in the device node the same names than mt8189_pinctrl_register_base_names
-array. But they are not matching the required ones in the
-"mediatek,mt8189-pinctrl" dt-bindings, leading to possible dtbs check
-issues. The mt8189_pinctrl_register_base_names entry order is also
-different.
-So, align all mt8189_pinctrl_register_base_names entry names and order
-on dt-bindings.
+If cros_ec_keyb_register_matrix() isn't called (due to
+`buttons_switches_only`) in cros_ec_keyb_probe(), `ckdev->idev` remains
+NULL.  An invalid memory access is observed in cros_ec_keyb_process()
+when receiving an EC_MKBP_EVENT_KEY_MATRIX event in cros_ec_keyb_work()
+in such case.
 
-Fixes: a3fe1324c3c5 ("pinctrl: mediatek: Add pinctrl driver for mt8189")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Unable to handle kernel read from unreadable memory at virtual address 0000000000000028
+  ...
+  x3 : 0000000000000000 x2 : 0000000000000000
+  x1 : 0000000000000000 x0 : 0000000000000000
+  Call trace:
+  input_event
+  cros_ec_keyb_work
+  blocking_notifier_call_chain
+  ec_irq_thread
+
+It's still unknown about why the kernel receives such malformed event,
+in any cases, the kernel shouldn't access `ckdev->idev` and friends if
+the driver doesn't intend to initialize them.
+
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://patch.msgid.link/20251104070310.3212712-1-tzungbi@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mt8189.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/input/keyboard/cros_ec_keyb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mt8189.c b/drivers/pinctrl/mediatek/pinctrl-mt8189.c
-index 7028aff55ae58..f6a3e584588b0 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mt8189.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mt8189.c
-@@ -1642,9 +1642,7 @@ static const struct mtk_pin_reg_calc mt8189_reg_cals[PINCTRL_PIN_REG_MAX] = {
- };
+--- a/drivers/input/keyboard/cros_ec_keyb.c
++++ b/drivers/input/keyboard/cros_ec_keyb.c
+@@ -263,6 +263,12 @@ static int cros_ec_keyb_work(struct noti
+ 	case EC_MKBP_EVENT_KEY_MATRIX:
+ 		pm_wakeup_event(ckdev->dev, 0);
  
- static const char * const mt8189_pinctrl_register_base_names[] = {
--	"gpio_base", "iocfg_bm0_base", "iocfg_bm1_base", "iocfg_bm2_base", "iocfg_lm_base",
--	"iocfg_lt0_base", "iocfg_lt1_base", "iocfg_rb0_base", "iocfg_rb1_base",
--	"iocfg_rt_base"
-+	"base", "lm", "rb0", "rb1", "bm0", "bm1", "bm2", "lt0", "lt1", "rt",
- };
- 
- static const struct mtk_eint_hw mt8189_eint_hw = {
--- 
-2.51.0
-
++		if (!ckdev->idev) {
++			dev_warn_once(ckdev->dev,
++				      "Unexpected key matrix event\n");
++			return NOTIFY_OK;
++		}
++
+ 		if (ckdev->ec->event_size != ckdev->cols) {
+ 			dev_err(ckdev->dev,
+ 				"Discarded incomplete key matrix event.\n");
 
 
 
