@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-197484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601F6C8F1BA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2631BC8EE92
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EAF133574DF
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8A113B345F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19C7334373;
-	Thu, 27 Nov 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39926286416;
+	Thu, 27 Nov 2025 14:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8NsqUKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjg7imkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFDB3115A6;
-	Thu, 27 Nov 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC95D28CF42;
+	Thu, 27 Nov 2025 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255950; cv=none; b=BUctn8TMWj8dEZV7Rb2qBwwfz1IQnccn6es2yFdxcT8tfWfE6GyhMoNbBi1n0YsGna/OU73TX4nNF+DA356bdEBu8xwKLp5CjJV5PpnO9gk35C7k1odh4yetyRqbB1N2q+/O5vkKXLwZTo5iAjbqjbQBhzzh77Nfjd2E5ODQ+4g=
+	t=1764255040; cv=none; b=uo9SpJrgKDMA/2NZ2jAOAlTlyL+Eapxh0cW5rHc5W2QpoaYurE/eTTYiCB1dnrNQZv88R4WPkdHl1pPMJepCZb/ZX4ZIm0LiGJAVqJh2KmcsGWkpmt4vl9gZTgHItnkfgnR4izuwG8mqE6WH44M8p2Xx33/ZuRGgfS8FOXHPCig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255950; c=relaxed/simple;
-	bh=H2mAlA+TcapDRs9LoB5Ja3gABEey4Jm2ji/THu2oUG4=;
+	s=arc-20240116; t=1764255040; c=relaxed/simple;
+	bh=MemAtqEcw5pZzPzzXPmkfldHoHDrk85nWw1Jzm3bdhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYYxIpkG2N2DVuh1lScqRSPCps6SUN21+g9gspwF3a+wUEkbiJgQQvxpSYK3E/ji+myKeybYA6hn9g1qNcRHTey37CDjX8sXGUl4mSY8heA/AOrvyz1DkuZjHFc4+MyudVVAjWXyZ0a6G1ZXDR1fBeUolggqOnUiQPnZdQiGVt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8NsqUKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D411CC4CEF8;
-	Thu, 27 Nov 2025 15:05:48 +0000 (UTC)
+	 MIME-Version; b=THHOYQXkMCM57QXfMCUlt9HMGzUByQXDU4nVm/Eu+wDOhWPLMBcCbgPQsyh5WACbjI3XN/lWgeW0DH916ppjgUav8+ljmsCOXGri60XEeuPa7u1xaWk0XOreMykZR6BvdKf3PvU9V58ASlz/jY4SAkZ3ye20EeWWAJy/gxSUDa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjg7imkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FFAC4CEF8;
+	Thu, 27 Nov 2025 14:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255949;
-	bh=H2mAlA+TcapDRs9LoB5Ja3gABEey4Jm2ji/THu2oUG4=;
+	s=korg; t=1764255040;
+	bh=MemAtqEcw5pZzPzzXPmkfldHoHDrk85nWw1Jzm3bdhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8NsqUKFAh+AraQl9v621I6a3KABiTA9Gb7Kf0/VkD+SV4wv1r4rx4r1S8MOWLhbo
-	 aZXtkUl6ESktoAk0WScBZQAszUyb1VsPscY755lxNQlK9+xVSpZNOYTJ2QkdETvQB1
-	 aWrxC4cB5JN6rH/Mng7fpo4cbi4/LqIcSTJwTl/s=
+	b=hjg7imkBmlHmwOLXDcylmbSYmmUHszRjF7C8cLMWmrfjVIXawE3BzeSLyox8Rp7cM
+	 dGfbiHn0gI5FE0X4UWfXN5M12JLVpXvz/lQcSs2ZT17pL0Hi7DIT2uyXlw5Ioa85/Q
+	 uakZLDWAps5Qd5guHLE38NgxbwiNKxCuiV//QU0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Emil Tsalapatis (Meta)" <emil@etsalapatis.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 137/175] sched_ext: defer queue_balance_callback() until after ops.dispatch
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH 6.6 74/86] uio_hv_generic: Set event for all channels on the device
 Date: Thu, 27 Nov 2025 15:46:30 +0100
-Message-ID: <20251127144047.962265514@linuxfoundation.org>
+Message-ID: <20251127144030.533475877@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,133 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tsalapatis <etsal@meta.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit a8ad873113d3fe01f9b5d737d4b0570fa36826b0 ]
+commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
 
-The sched_ext code calls queue_balance_callback() during enqueue_task()
-to defer operations that drop multiple locks until we can unpin them.
-The call assumes that the rq lock is held until the callbacks are
-invoked, and the pending callbacks will not be visible to any other
-threads. This is enforced by a WARN_ON_ONCE() in rq_pin_lock().
+Hyper-V may offer a non latency sensitive device with subchannels without
+monitor bit enabled. The decision is entirely on the Hyper-V host not
+configurable within guest.
 
-However, balance_one() may actually drop the lock during a BPF dispatch
-call. Another thread may win the race to get the rq lock and see the
-pending callback. To avoid this, sched_ext must only queue the callback
-after the dispatch calls have completed.
+When a device has subchannels, also signal events for the subchannel
+if its monitor bit is disabled.
 
-CPU 0                   CPU 1           CPU 2
+This patch also removes the memory barrier when monitor bit is enabled
+as it is not necessary. The memory barrier is only needed between
+setting up interrupt mask and calling vmbus_set_event() when monitor
+bit is disabled.
 
-scx_balance()
-  rq_unpin_lock()
-  scx_balance_one()
-    |= IN_BALANCE	scx_enqueue()
-    ops.dispatch()
-      rq_unlock()
-                        rq_lock()
-                        queue_balance_callback()
-                        rq_unlock()
-                                        [WARN] rq_pin_lock()
-      rq_lock()
-    &= ~IN_BALANCE
-rq_repin_lock()
-
-Changelog
-
-v2-> v1 (https://lore.kernel.org/sched-ext/aOgOxtHCeyRT_7jn@gpd4)
-
-- Fixed explanation in patch description (Andrea)
-- Fixed scx_rq mask state updates (Andrea)
-- Added Reviewed-by tag from Andrea
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Emil Tsalapatis (Meta) <emil@etsalapatis.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
+Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
+Closes: https://bugs.debian.org/1120602
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c   | 29 +++++++++++++++++++++++++++--
- kernel/sched/sched.h |  1 +
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index b454206100ce5..d6d2eea9d1483 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -820,13 +820,23 @@ static void schedule_deferred(struct rq *rq)
- 	if (rq->scx.flags & SCX_RQ_IN_WAKEUP)
- 		return;
- 
-+	/* Don't do anything if there already is a deferred operation. */
-+	if (rq->scx.flags & SCX_RQ_BAL_PENDING)
-+		return;
-+
- 	/*
- 	 * If in balance, the balance callbacks will be called before rq lock is
- 	 * released. Schedule one.
-+	 *
-+	 *
-+	 * We can't directly insert the callback into the
-+	 * rq's list: The call can drop its lock and make the pending balance
-+	 * callback visible to unrelated code paths that call rq_pin_lock().
-+	 *
-+	 * Just let balance_one() know that it must do it itself.
- 	 */
- 	if (rq->scx.flags & SCX_RQ_IN_BALANCE) {
--		queue_balance_callback(rq, &rq->scx.deferred_bal_cb,
--				       deferred_bal_cb_workfn);
-+		rq->scx.flags |= SCX_RQ_BAL_CB_PENDING;
- 		return;
- 	}
- 
-@@ -2043,6 +2053,19 @@ static void flush_dispatch_buf(struct scx_sched *sch, struct rq *rq)
- 	dspc->cursor = 0;
- }
- 
-+static inline void maybe_queue_balance_callback(struct rq *rq)
-+{
-+	lockdep_assert_rq_held(rq);
-+
-+	if (!(rq->scx.flags & SCX_RQ_BAL_CB_PENDING))
-+		return;
-+
-+	queue_balance_callback(rq, &rq->scx.deferred_bal_cb,
-+				deferred_bal_cb_workfn);
-+
-+	rq->scx.flags &= ~SCX_RQ_BAL_CB_PENDING;
-+}
-+
- static int balance_one(struct rq *rq, struct task_struct *prev)
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
  {
- 	struct scx_sched *sch = scx_root;
-@@ -2190,6 +2213,8 @@ static int balance_scx(struct rq *rq, struct task_struct *prev,
- #endif
- 	rq_repin_lock(rq, rf);
+ 	struct hv_uio_private_data *pdata = info->priv;
+ 	struct hv_device *dev = pdata->device;
++	struct vmbus_channel *primary, *sc;
  
-+	maybe_queue_balance_callback(rq);
+-	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
+-	virt_mb();
++	primary = dev->channel;
++	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
 +
- 	return ret;
++	mutex_lock(&vmbus_connection.channel_mutex);
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
++	mutex_unlock(&vmbus_connection.channel_mutex);
+ 
+ 	return 0;
+ }
+@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
+ static void hv_uio_channel_cb(void *context)
+ {
+ 	struct vmbus_channel *chan = context;
+-	struct hv_device *hv_dev = chan->device_obj;
+-	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
++	struct hv_device *hv_dev;
++	struct hv_uio_private_data *pdata;
+ 
+ 	virt_mb();
+ 
++	/*
++	 * The callback may come from a subchannel, in which case look
++	 * for the hv device in the primary channel
++	 */
++	hv_dev = chan->primary_channel ?
++		 chan->primary_channel->device_obj : chan->device_obj;
++	pdata = hv_get_drvdata(hv_dev);
+ 	uio_event_notify(&pdata->info);
  }
  
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 72fb9129afb6a..c7f67f54d4e3e 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -782,6 +782,7 @@ enum scx_rq_flags {
- 	SCX_RQ_BAL_KEEP		= 1 << 3, /* balance decided to keep current */
- 	SCX_RQ_BYPASSING	= 1 << 4,
- 	SCX_RQ_CLK_VALID	= 1 << 5, /* RQ clock is fresh and valid */
-+	SCX_RQ_BAL_CB_PENDING	= 1 << 6, /* must queue a cb after dispatching */
- 
- 	SCX_RQ_IN_WAKEUP	= 1 << 16,
- 	SCX_RQ_IN_BALANCE	= 1 << 17,
--- 
-2.51.0
-
 
 
 
