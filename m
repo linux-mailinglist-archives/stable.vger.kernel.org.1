@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-197453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0861C8F160
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB2EC8EE47
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DABF7345944
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EF194EDDD5
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F583346AE;
-	Thu, 27 Nov 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83D828D8E8;
+	Thu, 27 Nov 2025 14:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08LbbNRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSNifKZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2AA28135D;
-	Thu, 27 Nov 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AA8286416;
+	Thu, 27 Nov 2025 14:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255863; cv=none; b=eikwizXRgUTLCeT9EFMZcLNwAdKkNKrwSTeEbbIBtGmmLkp5ymqf36aV8MeOsqq546XT8t4hdX/REwaZOkBBrYDXME5mLZ669HcmGR52idgLwRu7fNeq7l0h29+eZ8uiiB6NVngBZ+kA6vLeRQIjkZwqhQyhKi7gO7lRgdQZ7Bw=
+	t=1764255032; cv=none; b=kDT2vI+ZFvVhxXyIvjpOIZVCYAZBWFHUMhGJhdj+52jrnERLKwRTryJ0huxzDG+t5xsjv2iSqJCQRdj/MC8V6kghUT3fvlhTai/qEzaH4eXi4S4RbQFBtKMNl7/ZM5kklySV9F3HDpmYImJ4z4g8m9+hU8iJ+E4u/lR8FNrl/Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255863; c=relaxed/simple;
-	bh=pLf7rwIyCXjCPmkehp5tK+vm78DPmgAUea281SicIdM=;
+	s=arc-20240116; t=1764255032; c=relaxed/simple;
+	bh=F2uz2sFOpEWvmxWZJfkwVCuaHbogIKoEh8YAjxhRDS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eIumU+9LP9R9tz7VfHmTkaJfqeaZlSn4K2Wls4iSV7jvOzkn65hUcTISOdmp8NvSb/WK7Ai0WTc94IW1HHvOuImlfOVs5ZR3JXQ8PglTTOQ1gWJg2gkw+rNuoxjy2kbMNOiYLD0qgysBk2HWm0sDjzlQHvlK0Hi8cLu+kVkWf0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08LbbNRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36C3C4CEF8;
-	Thu, 27 Nov 2025 15:04:22 +0000 (UTC)
+	 MIME-Version; b=jgEmhdHNcpFGMn0XYFasTQwxqweNtbPjf7mlX2Ly5XiP8psIccxw4nOPXk5Yf/Ei/jjcrWhVy4xPWXucnvlnsDz3dwTakjOGj4YiUgsj9kF8umpNm9C6QOyXFeO9zEuRuCzH2T4BbVcHJlLyRlgCT0U33SQyIgjNbDh5cSbbacM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSNifKZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F1CC4CEF8;
+	Thu, 27 Nov 2025 14:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255863;
-	bh=pLf7rwIyCXjCPmkehp5tK+vm78DPmgAUea281SicIdM=;
+	s=korg; t=1764255032;
+	bh=F2uz2sFOpEWvmxWZJfkwVCuaHbogIKoEh8YAjxhRDS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08LbbNRQjnNNHz7u5bew8Fwc6dLQhSOqsEnx4f1Cg1uU+03yXQkuT9oAHk4UxPg8S
-	 66AD2u75uc1T3qPsUKgvU3Meddr7+V+rfkAuxn1EdIAktqDRwRGUmWqtoJwqho7ehE
-	 p2zaLEzv/rS9MqBTmHVZMnn2rG4p6/QxC9moR0lA=
+	b=jSNifKZF0LSedAdO7TKl7R5sMhSCEUkh0mNMwVg1IAS9nALPqUTGzrpslFr9/98yV
+	 AZk4ZYtdmdocT5s/FP2XQr62MllijvjvS7L89dMb4UVUE5JRjQUPNlAE++mO43UYLY
+	 toe4F+1E3rmz2H47UlybnTrdqOLNRU1Rk39T00f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/175] MIPS: kernel: Fix random segmentation faults
-Date: Thu, 27 Nov 2025 15:46:26 +0100
-Message-ID: <20251127144047.816234013@linuxfoundation.org>
+Subject: [PATCH 6.6 71/86] tracing/tools: Fix incorrcet short option in usage text for --threads
+Date: Thu, 27 Nov 2025 15:46:27 +0100
+Message-ID: <20251127144030.425773243@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
 
-[ Upstream commit 14b46ba92bf547508b4a49370c99aba76cb53b53 ]
+[ Upstream commit 53afec2c8fb2a562222948cb1c2aac48598578c9 ]
 
-Commit 69896119dc9d ("MIPS: vdso: Switch to generic storage
-implementation") switches to a generic vdso storage, which increases
-the number of data pages from 1 to 4. But there is only one page
-reserved, which causes segementation faults depending where the VDSO
-area is randomized to. To fix this use the same size of reservation
-and allocation of the VDSO data pages.
+The help message incorrectly listed '-t' as the short option for
+--threads, but the actual getopt_long configuration uses '-e'.
+This mismatch can confuse users and lead to incorrect command-line
+usage. This patch updates the usage string to correctly show:
+	"-e, --threads NRTHR"
+to match the implementation.
 
-Fixes: 69896119dc9d ("MIPS: vdso: Switch to generic storage implementation")
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Note: checkpatch.pl reports a false-positive spelling warning on
+'Run', which is intentional.
+
+Link: https://patch.msgid.link/20251106031040.1869-1-zhangchujun@cmss.chinamobile.com
+Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/process.c | 2 +-
+ tools/tracing/latency/latency-collector.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 29191fa1801e2..a3101f2268c6c 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -692,7 +692,7 @@ unsigned long mips_stack_top(void)
- 	/* Space for the VDSO, data page & GIC user page */
- 	if (current->thread.abi) {
- 		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--		top -= PAGE_SIZE;
-+		top -= VDSO_NR_PAGES * PAGE_SIZE;
- 		top -= mips_gic_present() ? PAGE_SIZE : 0;
+diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
+index cf263fe9deaf4..ef97916e3873a 100644
+--- a/tools/tracing/latency/latency-collector.c
++++ b/tools/tracing/latency/latency-collector.c
+@@ -1725,7 +1725,7 @@ static void show_usage(void)
+ "-n, --notrace\t\tIf latency is detected, do not print out the content of\n"
+ "\t\t\tthe trace file to standard output\n\n"
  
- 		/* Space to randomize the VDSO base */
+-"-t, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
++"-e, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
+ 
+ "-r, --random\t\tArbitrarily sleep a certain amount of time, default\n"
+ "\t\t\t%ld ms, before reading the trace file. The\n"
 -- 
 2.51.0
 
