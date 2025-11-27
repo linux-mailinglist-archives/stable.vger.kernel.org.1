@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-197128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F3AC8ED60
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:48:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9B1C8F1B4
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C133A99E5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 505AE4F0F1A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DE274B3C;
-	Thu, 27 Nov 2025 14:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8F2332EC1;
+	Thu, 27 Nov 2025 15:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wh8LCjrb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSS/mJLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060BA1DEFE8;
-	Thu, 27 Nov 2025 14:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC96213254;
+	Thu, 27 Nov 2025 15:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254871; cv=none; b=n7WS3VXbIJsR5aZmhyd50/hryROahRd7cnxiFyZ44fMQlDDieFh8ZInbJxrxUOb0NHNqY8ld7Xck2yj5E0Lj0JKmodONcuj+Us9MkBeoDvtoxvYtVBZIto5NSHzqT/H8nrjr1ynX0RjeE/zGoVBQGZtpnFerhzi7tLsRRFwz7Qk=
+	t=1764255681; cv=none; b=gIFDh/yQEYKooAbTxfJKa42T/L0uyiVLctmc1VgkLtr/0ZvJYmW7SNmDtJLMU2Be2itTMGZdtHOfxQ7qMwMlggKx6D4HIX+ODDM1xX8NIK8CTm1WFUB2erbD8SNKE9SkMqxqF8XHIsFw5Kkmj5Q2z1fJkdfesSRyWpe/KxgjNtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254871; c=relaxed/simple;
-	bh=l0OE53kvPCAxryiRmqfXxlpaUWj4LouVOPamzihiLbA=;
+	s=arc-20240116; t=1764255681; c=relaxed/simple;
+	bh=s4rGPM56Jlp85GIxg/FImrYn2GImYb/e8WMiRD8PLCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xdf3ud7aePOgZ4Fcb6wt+JXgr8Cf7JgM0tIxQ+ncLcjOALxEzP3HB783UZ1Y3ri0ylzTRPd+GMuJKviZRVbie8xd8rbNiQKCqT6CEOo7ObBQ9zxTpaXmBIN9h5b3ny7uDOyQdqTyLvG1JzaPXpnF0fLFd1wp3jGW7SiYJJgMtos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wh8LCjrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416F2C4CEF8;
-	Thu, 27 Nov 2025 14:47:50 +0000 (UTC)
+	 MIME-Version; b=pAuVRdtSNp1fNK613L++GFaYbs3zJt/utJfvJJNiEkePEzbKvnKbQpoeTjoGWlknsBYoTGYgbKf2d6Z2e/BKuEzbuLPzKNfaR1QA0Xw/lonHyvOAYGxQvwYZCLIvKsiTdJoTxMVZNe7h3gmJm7L4yG97WxCQ/D7wb5cC0mRT+EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSS/mJLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D60C4CEF8;
+	Thu, 27 Nov 2025 15:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254870;
-	bh=l0OE53kvPCAxryiRmqfXxlpaUWj4LouVOPamzihiLbA=;
+	s=korg; t=1764255681;
+	bh=s4rGPM56Jlp85GIxg/FImrYn2GImYb/e8WMiRD8PLCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wh8LCjrbIOrDTgDiSLuwKsnrWh2vrZjCUnXxIhtZ6X9Y4Mg41V5LM8aSyxqfU/s1s
-	 LwhD+K08DTFWcZ8Cn8KA4Y3LGW0WPmXf0AMbi6r5Qd/4uVFXqhQk7PnSyXE9a2J5UP
-	 xZTDzvKKKP2Ne/jjBok2zF309JNaU2Xm8iY9KWFA=
+	b=CSS/mJLTKe9c7jbDnAf6pXlChqK03FnORdeRYGfpstIePs6tAOxidGmPIprqvkjU8
+	 edbhlAitQUibdeJdcR+wMqgsY4Ev34ThGIUyKAtwkYZ1W/MFoQupc7p5mQodmxZtCI
+	 x0IFaVOodszYmLEg83rduFDENxCAqLz5zEzmZhLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.6 15/86] Revert "drm/tegra: dsi: Clear enable register if powered by bootloader"
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 078/175] pinctrl: mediatek: mt8196: align register base names to dt-bindings ones
 Date: Thu, 27 Nov 2025 15:45:31 +0100
-Message-ID: <20251127144028.374404899@linuxfoundation.org>
+Message-ID: <20251127144045.816080972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-commit 660b299bed2a2a55a1f9102d029549d0235f881c upstream.
+[ Upstream commit 404ee89b4008cf2130554dac2c64cd8412601356 ]
 
-Commit b6bcbce33596 ("soc/tegra: pmc: Ensure power-domains are in a
-known state") was introduced so that all power domains get initialized
-to a known working state when booting and it does this by shutting them
-down (including asserting resets and disabling clocks) before registering
-each power domain with the genpd framework, leaving it to each driver to
-later on power its needed domains.
+The mt8196-pinctrl driver requires to probe that a device tree uses
+in the device node the same names than mt8196_pinctrl_register_base_names
+array. But they are not matching the required ones in the
+"mediatek,mt8196-pinctrl" dt-bindings, leading to possible dtbs check
+issues.
+So, align all mt8196_pinctrl_register_base_names entries on dt-bindings
+ones.
 
-This caused the Google Pixel C to hang when booting due to a workaround
-in the DSI driver introduced in commit b22fd0b9639e ("drm/tegra: dsi:
-Clear enable register if powered by bootloader") meant to handle the case
-where the bootloader enabled the DSI hardware module. The workaround relies
-on reading a hardware register to determine the current status and after
-b6bcbce33596 that now happens in a powered down state thus leading to
-the boot hang.
-
-Fix this by reverting b22fd0b9639e since currently we are guaranteed
-that the hardware will be fully reset by the time we start enabling the
-DSI module.
-
-Fixes: b6bcbce33596 ("soc/tegra: pmc: Ensure power-domains are in a known state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20251103-diogo-smaug_ec_typec-v1-1-be656ccda391@tecnico.ulisboa.pt
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f7a29377c253 ("pinctrl: mediatek: Add pinctrl driver on mt8196")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dsi.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-mt8196.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/tegra/dsi.c
-+++ b/drivers/gpu/drm/tegra/dsi.c
-@@ -912,15 +912,6 @@ static void tegra_dsi_encoder_enable(str
- 	u32 value;
- 	int err;
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt8196.c b/drivers/pinctrl/mediatek/pinctrl-mt8196.c
+index 82a73929c7a0f..dec957c1724b0 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt8196.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt8196.c
+@@ -1801,10 +1801,8 @@ static const struct mtk_pin_reg_calc mt8196_reg_cals[PINCTRL_PIN_REG_MAX] = {
+ };
  
--	/* If the bootloader enabled DSI it needs to be disabled
--	 * in order for the panel initialization commands to be
--	 * properly sent.
--	 */
--	value = tegra_dsi_readl(dsi, DSI_POWER_CONTROL);
--
--	if (value & DSI_POWER_CONTROL_ENABLE)
--		tegra_dsi_disable(dsi);
--
- 	err = tegra_dsi_prepare(dsi);
- 	if (err < 0) {
- 		dev_err(dsi->dev, "failed to prepare: %d\n", err);
+ static const char * const mt8196_pinctrl_register_base_names[] = {
+-	"iocfg0", "iocfg_rt", "iocfg_rm1", "iocfg_rm2",
+-	"iocfg_rb", "iocfg_bm1", "iocfg_bm2", "iocfg_bm3",
+-	"iocfg_lt", "iocfg_lm1", "iocfg_lm2", "iocfg_lb1",
+-	"iocfg_lb2", "iocfg_tm1", "iocfg_tm2", "iocfg_tm3",
++	"base", "rt", "rm1", "rm2", "rb", "bm1", "bm2", "bm3",
++	"lt", "lm1", "lm2", "lb1", "lb2", "tm1", "tm2", "tm3",
+ };
+ 
+ static const struct mtk_eint_hw mt8196_eint_hw = {
+-- 
+2.51.0
+
 
 
 
