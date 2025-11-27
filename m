@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-197122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48F8C8ED33
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:47:54 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96589C8EE20
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 418594E5A8B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:47:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 77C0E35021B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917AC27602C;
-	Thu, 27 Nov 2025 14:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0745C30EF64;
+	Thu, 27 Nov 2025 14:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nb69tQc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyRWc43a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3F227877D;
-	Thu, 27 Nov 2025 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B689F2882C9;
+	Thu, 27 Nov 2025 14:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254854; cv=none; b=r3KSSmgYcRAyh3ZAqkvrFgDEJsLF0Pa9AKVDKVKjBVANSdsc65znnxkNyRaB2Vzf8lfoDqLUsIatAly5U9iQMqjdo3D8yoX2HVLmbWKjJgFVzMLRJu3EkGsfDDycB0a9/5U1xuUbSWsH0Y1pm3eMtd8YRbOZRnsHzXx2nIJDFis=
+	t=1764255120; cv=none; b=fe3KBHnurBd/QPno2TmiyGlRYXlgBwIGNr1xIqNEgWLsn2ZSIjN7vlROUYTHwMR7DDcSbm5AYj8XkNCB13IX3ocS7rTQhfiYODZ12xKlddEETJvBa8DYJmeVnzjQs+F++Oa7nS/BDSSm/a9hYSIptTahYdVQcIQ+Dbin+FIk/VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254854; c=relaxed/simple;
-	bh=fu5Fmp12AtIx0eytaoNRgTikbpvcTR1QAUJ9OiMUM8I=;
+	s=arc-20240116; t=1764255120; c=relaxed/simple;
+	bh=Q7xiEWAblFoYXQfS7zKq6u2Ua1nQeZVoBMXvF2y3/GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5k7MTPIYZ3CjObO+CpVBAFNg2Gg0jM+VvlEdj/afv++frZuk//qmvOmqUCOXQQkwB+zf3AIrGXfyw60Ht3y6ExaJc/+HAA0ZfZzClUoMUnWxaXLqLlpuDAsRDM5Z8t9kxBhMOkTwDZtapQQgYM54BeQ5t4PwWSVSSY+NbKvgog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nb69tQc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86D0C4CEF8;
-	Thu, 27 Nov 2025 14:47:32 +0000 (UTC)
+	 MIME-Version; b=JUHKxgA/WXPUzAC+aonFFzzHvvlqF6zmarTsnqo0nlfEYuZ5wiHP7gR6WOkTYSFb6IQR3E8N+5tigVjHndEa5V2J7R+DDQIPHheala3uOfJdQwyik7ROf52WW4iite7OzcSqriAHjCl9y2uH7CpW+Bd9qgbByBHDyVKsSpt+j2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyRWc43a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF14C4CEF8;
+	Thu, 27 Nov 2025 14:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254853;
-	bh=fu5Fmp12AtIx0eytaoNRgTikbpvcTR1QAUJ9OiMUM8I=;
+	s=korg; t=1764255120;
+	bh=Q7xiEWAblFoYXQfS7zKq6u2Ua1nQeZVoBMXvF2y3/GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nb69tQc0lRXsSlJ4ULpBrCEbfxtj/TjH+U4GBcGsOdfQ42Qm2zyfgNIV8ircy/6nf
-	 aop8jxNID5Iin5oJ2HflVzpJ0rCRVbkqX1fbm1ChNFEvjPWcgBBdJ4S8r33S7rhr8n
-	 /rzWVjhnkZUFHCT7BEa+GpFDIoAsZ4DCBbhth8Eo=
+	b=qyRWc43aXKAlq8uSYbEWI11kjOOdoI3LzYYNt3qww70KbaqR/MyGhHpUNZZrApg8i
+	 btna4urfq98rCvQvqDg/tEL1t1fTS+rLmy9rT0FWrRhaLAvrWl67Pos+KZqZJeedUV
+	 GIkEA+3KdmOCOo4gqJvEI2N3+OQ9jcaAmymc0pw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 01/86] timers: Fix NULL function pointer race in timer_shutdown_sync()
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.12 015/112] mptcp: Fix proto fallback detection with BPF
 Date: Thu, 27 Nov 2025 15:45:17 +0100
-Message-ID: <20251127144027.857276716@linuxfoundation.org>
+Message-ID: <20251127144033.289954555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
+commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
 
-There is a race condition between timer_shutdown_sync() and timer
-expiration that can lead to hitting a WARN_ON in expire_timers().
+The sockmap feature allows bpf syscall from userspace, or based
+on bpf sockops, replacing the sk_prot of sockets during protocol stack
+processing with sockmap's custom read/write interfaces.
+'''
+tcp_rcv_state_process()
+  syn_recv_sock()/subflow_syn_recv_sock()
+    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+      bpf_skops_established       <== sockops
+        bpf_sock_map_update(sk)   <== call bpf helper
+          tcp_bpf_update_proto()  <== update sk_prot
+'''
 
-The issue occurs when timer_shutdown_sync() clears the timer function
-to NULL while the timer is still running on another CPU. The race
-scenario looks like this:
+When the server has MPTCP enabled but the client sends a TCP SYN
+without MPTCP, subflow_syn_recv_sock() performs a fallback on the
+subflow, replacing the subflow sk's sk_prot with the native sk_prot.
+'''
+subflow_syn_recv_sock()
+  subflow_ulp_fallback()
+    subflow_drop_ctx()
+      mptcp_subflow_ops_undo_override()
+'''
 
-CPU0					CPU1
-					<SOFTIRQ>
-					lock_timer_base()
-					expire_timers()
-					base->running_timer = timer;
-					unlock_timer_base()
-					[call_timer_fn enter]
-					mod_timer()
-					...
-timer_shutdown_sync()
-lock_timer_base()
-// For now, will not detach the timer but only clear its function to NULL
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
-					[call_timer_fn exit]
-					lock_timer_base()
-					base->running_timer = NULL;
-					unlock_timer_base()
-					...
-					// Now timer is pending while its function set to NULL.
-					// next timer trigger
-					<SOFTIRQ>
-					expire_timers()
-					WARN_ON_ONCE(!fn) // hit
-					...
-lock_timer_base()
-// Now timer will detach
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
+Then, this subflow can be normally used by sockmap, which replaces the
+native sk_prot with sockmap's custom sk_prot. The issue occurs when the
+user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
+Here, it uses sk->sk_prot to compare with the native sk_prot, but this
+is incorrect when sockmap is used, as we may incorrectly set
+sk->sk_socket->ops.
 
-The problem is that timer_shutdown_sync() clears the timer function
-regardless of whether the timer is currently running. This can leave a
-pending timer with a NULL function pointer, which triggers the
-WARN_ON_ONCE(!fn) check in expire_timers().
+This fix uses the more generic sk_family for the comparison instead.
 
-Fix this by only clearing the timer function when actually detaching the
-timer. If the timer is running, leave the function pointer intact, which is
-safe because the timer will be properly detached when it finishes running.
+Additionally, this also prevents a WARNING from occurring:
 
-Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+result from ./scripts/decode_stacktrace.sh:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
+(net/mptcp/protocol.c:4005)
+Modules linked in:
+...
+
+PKRU: 55555554
+Call Trace:
+<TASK>
+do_accept (net/socket.c:1989)
+__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
+__x64_sys_accept (net/socket.c:2067)
+x64_sys_call (arch/x86/entry/syscall_64.c:41)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+RIP: 0033:0x7f87ac92b83d
+
+---[ end trace 0000000000000000 ]---
+
+Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1413,10 +1413,11 @@ static int __try_to_del_timer_sync(struc
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -57,11 +57,13 @@ static u64 mptcp_wnd_end(const struct mp
  
- 	base = lock_timer_base(timer, &flags);
- 
--	if (base->running_timer != timer)
-+	if (base->running_timer != timer) {
- 		ret = detach_if_pending(timer, base, true);
--	if (shutdown)
--		timer->function = NULL;
-+		if (shutdown)
-+			timer->function = NULL;
-+	}
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
+ static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
+ {
++	unsigned short family = READ_ONCE(sk->sk_family);
++
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+-	if (sk->sk_prot == &tcpv6_prot)
++	if (family == AF_INET6)
+ 		return &inet6_stream_ops;
+ #endif
+-	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
++	WARN_ON_ONCE(family != AF_INET);
+ 	return &inet_stream_ops;
+ }
  
 
 
