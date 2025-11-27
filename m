@@ -1,154 +1,104 @@
-Return-Path: <stable+bounces-197083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4471EC8DC0A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 11:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561BBC8DD4F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 11:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8208F350E44
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 10:27:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F359534462E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 10:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DB8329E69;
-	Thu, 27 Nov 2025 10:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B49299924;
+	Thu, 27 Nov 2025 10:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lWPPtEyM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e28GUUQn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8FB32BF54;
-	Thu, 27 Nov 2025 10:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6B923BD17
+	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 10:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764239199; cv=none; b=AUV1Wee9Li5uY8cDldB+d2ux8F5Fq4FgWxNGio+HSsWsKUVKa3TfzkH12m5/1FAYMLLBmWRHfGXwmG/kSIfPpK3YtwfrlQP9RiZ/jQL4J4uRSkMQh45RTgQ4U72WhPscPMa7J8Sr+9+a0FEbWJgg0JJBd6hulfn79revEP8xqzQ=
+	t=1764240377; cv=none; b=SmN1KOy+3AQhek04pUzgMCRrA4T2btY6qIqzCBIu5QDtlyOEQ9nEEqdtlh6KwcOBhrDAcgJzfLEh8lbalZ4O9Dxus8AoSWycxDMY3BKj+Xzu4LVv3E2Z18IvvsjT99aTQclNa5szpFNrS3dgtE3QBbW52CqfiN5s/Sd1+/1dSe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764239199; c=relaxed/simple;
-	bh=tn0StNZReqkKl0wkSYrUp2ZTVG6T5RT9sPvVz2A2EAo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LMuyuFSOTIawwx3IhqgNFVGi2t7VOOThGTEehfQQJTtserPK505S9Yb8idW3RgdLwnE6ZrfjOTH2eBmHtnp06BoIqwQ46cpfKwKeSlhLBAhnOO0hvB6+nHtzj1jCfhxUqVJNPMRUGuzmmPq4R5qs6OakM2vQWakg27Q35+r/Zro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lWPPtEyM; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9B29A1A1DCC;
-	Thu, 27 Nov 2025 10:26:35 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 708376072A;
-	Thu, 27 Nov 2025 10:26:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C0F0102F275A;
-	Thu, 27 Nov 2025 11:26:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764239194; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=lFvV4pIsDLWnAbmZyAdOTJZYJAocNppm+NL9MdS0/y0=;
-	b=lWPPtEyMjs2+lAQ/ndRPyoApXSxEuBSRuO5MvPTgTBY/+XSq1eerRt7s6xaVmkjelp7W1f
-	416ddSEWPnyfxy4eSHgieZcESh1ye8Jjzs4dxgw8CjIVnCZKAHqwlY7fkvF//WZhv8F2Ad
-	wA6bfpUEykr7Oz+av1gpGrfAq6flT3j41e7Gts9tO4cXi/sh+GmQ0o/AhaQ4PPArA7xqUO
-	Gy4X6znMCIR/9+FIqxfI8hJd/loPoc2HvirkiHOUiIzqEALJ8WZ3eq4eJtN218LFOy1++a
-	qUAILd+aYh5OyQwTdP381XxKUcDw3FicZEA7AbqpgFrAdiaBpKByeF+ffzBmjw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Thu, 27 Nov 2025 11:26:17 +0100
-Subject: [PATCH v2 2/2] phy: rockchip: inno-usb2: fix communication
- disruption in gadget mode
+	s=arc-20240116; t=1764240377; c=relaxed/simple;
+	bh=769dfkMjwB9JqVOZ3iZbI/fNgaIZ21gfa4qwhm9zbXQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=C2b6GfJBPR/T3peb7WH5t+0NHFIsITWpFzwwuh6XJN3VSVmbsHzcJvFB3PS+8njky272I5AbjZDMTJS3werrCdiRYcuqqd/YjxUKBRaK7AI68cYdDEZ10qtDe8/UJprwv9bkiMay81caTzNuadwVHHxDjYnF03AdHOhgTUQGIxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e28GUUQn; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764240373; x=1795776373;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=769dfkMjwB9JqVOZ3iZbI/fNgaIZ21gfa4qwhm9zbXQ=;
+  b=e28GUUQn3KXeG8hlyf9v+urM7n5/Y2oq9LVkf5v0NTcR0WkAQiSRycnU
+   mpHNRTEEgrGi3OkfbaBWmK7D/HBuxMOFDsotlAI7ardZ+dOySmV6gCRQw
+   jftV4Tu5g730I1iDFLX71Oep5PEE3Pgp/RQT/Z1EuYH3C5sUBOglmfZHj
+   /67TiKJRn4lubv/oqohdStwCAMYHHFKZ8j6eeD5lBTI3LMa3mR4vu/+br
+   xcWVdmyTLfIvR2ACmrWrmEvP5uGGa9GWIG4fJWzvwTlf1y9v9nCpIyUy9
+   2GaZoaf/DmFEOa7DhiOB5phKTvOioYc+hpZtOW1ay/a+pfpyBvuljGgAd
+   Q==;
+X-CSE-ConnectionGUID: 72P7Y7ONQ4SzsTZ7fAdRcA==
+X-CSE-MsgGUID: EaIHDAX1QWypHBedQ5EhbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77756233"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="77756233"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 02:46:13 -0800
+X-CSE-ConnectionGUID: TXdyOk74SWOPAGhU7TKbCg==
+X-CSE-MsgGUID: LLRTSh/cRRCYqaUimuPpEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="230469413"
+Received: from ettammin-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.43])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 02:46:08 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, Krzysztof
+ Niemiec <krzysztof.niemiec@intel.com>
+Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ stable@vger.kernel.org, =?utf-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
+ Tvrtko Ursulin
+ <tvrtko.ursulin@linux.intel.com>, Chris Wilson
+ <chris.p.wilson@linux.intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH] drm/i915/gem: NULL-initialize the eb->vma[].vma
+ pointers in gem_do_execbuffer
+In-Reply-To: <1835827.4herOUoSWf@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20251125133337.26483-2-krzysztof.niemiec@intel.com>
+ <4423188.Fh7cpCN91P@jkrzyszt-mobl2.ger.corp.intel.com>
+ <qylrctylmtj6qzibfpbapwpb77ut7gzckgg2wpc3gv56kl46m2@hyio7hcsj6vy>
+ <1835827.4herOUoSWf@jkrzyszt-mobl2.ger.corp.intel.com>
+Date: Thu, 27 Nov 2025 12:46:05 +0200
+Message-ID: <24917431ff16a8464b89b1314e02201172cc3fde@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-2-dac8a02cd2ca@bootlin.com>
-References: <20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-0-dac8a02cd2ca@bootlin.com>
-In-Reply-To: <20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-0-dac8a02cd2ca@bootlin.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Heiko Stuebner <heiko@sntech.de>, William Wu <wulf@rock-chips.com>
-Cc: Kever Yang <kever.yang@rock-chips.com>, 
- Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>, 
- Alan Stern <stern@rowland.harvard.edu>, 
- Louis Chauvet <louis.chauvet@bootlin.com>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- linux-phy@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
 
-When the OTG USB port is used to power to SoC, configured as peripheral and
-used in gadget mode, communication stops without notice about 6 seconds
-after the gadget is configured and enumerated.
+On Thu, 27 Nov 2025, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
+> To my taste, zeroing on allocation would be a more clean solution.
 
-The problem was observed on a Radxa Rock Pi S board, which can only be
-powered by the only USB-C connector. That connector is the only one usable
-in gadget mode. This implies the USB cable is connected from before boot
-and never disconnects while the kernel runs.
+IIUC there are micro optimizations to not clear on allocation when you
+don't strictly have to...
 
-The related code flow in the PHY driver code can be summarized as:
+I'm not advocating one or the other approach, just stating what I
+believe is the reason.
 
- * the first time chg_detect_work starts (6 seconds after gadget is
-   configured and enumerated)
-   -> rockchip_chg_detect_work():
-       if chg_state is UNDEFINED:
-          property_enable(base, &rphy->phy_cfg->chg_det.opmode, false); [Y]
 
- * rockchip_chg_detect_work() changes state and re-triggers itself a few
-   times until it reaches the DETECTED state:
-   -> rockchip_chg_detect_work():
-       if chg_state is DETECTED:
-          property_enable(base, &rphy->phy_cfg->chg_det.opmode, true); [Z]
-
-At [Y] all existing communications stop. E.g. using a CDC serial gadget,
-the /dev/tty* devices are still present on both host and device, but no
-data is transferred anymore. The later call with a 'true' argument at [Z]
-does not restore it.
-
-Due to the lack of documentation, what chg_det.opmode does exactly is not
-clear, however by code inspection it seems reasonable that is disables
-something needed to keep the communication working, and testing proves that
-disabling these lines lets gadget mode keep working. So prevent changes to
-chg_det.opmode when there is a cable connected (VBUS present).
-
-Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-index 0106d7b7ae24..e5efae7b0135 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -833,7 +833,8 @@ static void rockchip_chg_detect_work(struct work_struct *work)
- 		if (!rport->suspended && !vbus_attach)
- 			rockchip_usb2phy_power_off(rport->phy);
- 		/* put the controller in non-driving mode */
--		property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
-+		if (!vbus_attach)
-+			property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
- 		/* Start DCD processing stage 1 */
- 		rockchip_chg_enable_dcd(rphy, true);
- 		rphy->chg_state = USB_CHG_STATE_WAIT_FOR_DCD;
-@@ -896,7 +897,8 @@ static void rockchip_chg_detect_work(struct work_struct *work)
- 		fallthrough;
- 	case USB_CHG_STATE_DETECTED:
- 		/* put the controller in normal mode */
--		property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
-+		if (!vbus_attach)
-+			property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
- 		rockchip_usb2phy_otg_sm_work(&rport->otg_sm_work.work);
- 		dev_dbg(&rport->phy->dev, "charger = %s\n",
- 			 chg_to_string(rphy->chg_type));
+BR,
+Jani.
 
 -- 
-2.51.1
-
+Jani Nikula, Intel
 
