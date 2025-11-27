@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171FCC8EF8E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C655BC8F1DB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F4C3B98D9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E0A14F0310
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B37A30EF64;
-	Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86092260585;
+	Thu, 27 Nov 2025 15:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjQqfGQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnPy6XYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157FC288537;
-	Thu, 27 Nov 2025 14:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA0220FAAB;
+	Thu, 27 Nov 2025 15:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255203; cv=none; b=sQy6F+JcoPzqoqjB69twvo7qmtUFEzOx5e6MKSFtWVTI4wcC3WULlgl6doPeqGamZW5w4uqsICuCS5rUtKCjEdRBEU5od07wHSt8Cex0DcIR5Em8B38UDnEb1O4AmXl8OxZ31mH/UK2NV3Lkysj1BnZzWjmF5flLxIM8cvE1keY=
+	t=1764255731; cv=none; b=ZhuhNZS51Qid6NFEGP3aCECCbH7G7MJYd+jIWIhnCx7kLIgSIOQaE7xx6QmJJMX680fKY02tbY1ngauo/nayZ51pddIfoaljm7Lr0DuEcilWqjDseLjkl4ZKxcRUv0Mw9OeMb+O6WrO5aCJhw0HnSMzLI8zQRscd+x3FsYjvtlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255203; c=relaxed/simple;
-	bh=8nBO3TgO4D6jcilZtjakw8WAIyF8VzDDl3A6kIzTLzs=;
+	s=arc-20240116; t=1764255731; c=relaxed/simple;
+	bh=JTrF5blgTB4rKjCArWc93vK0e7D6KGFGHWDlRjxCA3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBbTBjhsTT0PGWdGsIIYJ//30Ly4/4BMp/J0VYbh6+J4Bftwom5kHosR66H2B8IeTa4keIIoz6qRZ8W+su3Kiwd9ArhAjHkNL6U52pJvIVoGmXkwLWPkLGE3JTCpsvDyueQ3xnpIxmtqFommGsMG5o1XglolrgOLnAxG6n/fR4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjQqfGQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0EC4CEF8;
-	Thu, 27 Nov 2025 14:53:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rFc+z5Q7ozASZLLp73FQwkUhs5TUvIY//uA2q/SZ3+9L1pOySfZERxUDs0OCEVhgniZOIcspbGY+HrF9eBhr7eNTNE0IwECvRIoLLGv61P0+mMKIXi0hGJsn56wskhsdld/+NPa5KN0B0ibdn7duaU5ZdBmA9DMJP1aRKjhUh4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnPy6XYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54ADC4CEF8;
+	Thu, 27 Nov 2025 15:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255203;
-	bh=8nBO3TgO4D6jcilZtjakw8WAIyF8VzDDl3A6kIzTLzs=;
+	s=korg; t=1764255731;
+	bh=JTrF5blgTB4rKjCArWc93vK0e7D6KGFGHWDlRjxCA3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjQqfGQWwoYSrbYoplVy+VA4qM0Q/jkFH2FcyjsMBiUF6HhlDppx3PcoMGfx7T/eB
-	 HPWBqfObgEpKXv/0NjnUwWNEg2V+rUZpVSqp7namUNJPIz12OV2Zfrjqt1SX9XTcQ/
-	 /vnmfcHlsBSb2ly2OOeM0p5Q4hQPKx/p+NIjQG/Y=
+	b=rnPy6XYF4bu3M4KpsBTCUdg1gxBC2pbKJDwvFLdyAA1KQnA3g1vBcqYgbNdtuMLjs
+	 QtL1+JvYY0HrF8ypJljCcBkDa2Gdqs3oDAozJWSbYbGIUTAQBC17GKQIHJqj9B0H19
+	 apaZn3pmlsfuowBAXy5qQuUgv5vc1UhQ2xgNcNh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 043/112] mptcp: decouple mptcp fastclose from tcp close
-Date: Thu, 27 Nov 2025 15:45:45 +0100
-Message-ID: <20251127144034.416791864@linuxfoundation.org>
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 093/175] platform/x86: msi-wmi-platform: Fix typo in WMI GUID
+Date: Thu, 27 Nov 2025 15:45:46 +0100
+Message-ID: <20251127144046.358571072@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit fff0c87996672816a84c3386797a5e69751c5888 upstream.
+[ Upstream commit 97b726eb1dc2b4a2532544eb3da72bb6acbd39a3 ]
 
-With the current fastclose implementation, the mptcp_do_fastclose()
-helper is in charge of two distinct actions: send the fastclose reset
-and cleanup the subflows.
+The WMI driver core only supports GUID strings containing only
+uppercase characters, however the GUID string used by the
+msi-wmi-platform driver contains a single lowercase character.
+This prevents the WMI driver core from matching said driver to
+its WMI device.
 
-Formally decouple the two steps, ensuring that mptcp explicitly closes
-all the subflows after the mentioned helper.
+Fix this by turning the lowercase character into a uppercase
+character. Also update the WMI driver development guide to warn
+about this.
 
-This will make the upcoming fix simpler, and allows dropping the 2nd
-argument from mptcp_destroy_common(). The Fixes tag is then the same as
-in the next commit to help with the backports.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Fixes: 9c0beb6b29e7 ("platform/x86: wmi: Add MSI WMI Platform driver")
+Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251110111253.16204-3-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++----
- net/mptcp/protocol.h |    2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ Documentation/wmi/driver-development-guide.rst | 1 +
+ drivers/platform/x86/msi-wmi-platform.c        | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2869,7 +2869,11 @@ static void mptcp_worker(struct work_str
- 		__mptcp_close_subflow(sk);
+diff --git a/Documentation/wmi/driver-development-guide.rst b/Documentation/wmi/driver-development-guide.rst
+index 99ef21fc1c1ed..5680303ae314e 100644
+--- a/Documentation/wmi/driver-development-guide.rst
++++ b/Documentation/wmi/driver-development-guide.rst
+@@ -54,6 +54,7 @@ to matching WMI devices using a struct wmi_device_id table:
+ ::
  
- 	if (mptcp_close_tout_expired(sk)) {
-+		struct mptcp_subflow_context *subflow, *tmp;
-+
- 		mptcp_do_fastclose(sk);
-+		mptcp_for_each_subflow_safe(msk, subflow, tmp)
-+			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
- 		mptcp_close_wake_up(sk);
- 	}
+   static const struct wmi_device_id foo_id_table[] = {
++         /* Only use uppercase letters! */
+          { "936DA01F-9ABD-4D9D-80C7-02AF85C822A8", NULL },
+          { }
+   };
+diff --git a/drivers/platform/x86/msi-wmi-platform.c b/drivers/platform/x86/msi-wmi-platform.c
+index bd2687828a2e6..e912fcc12d124 100644
+--- a/drivers/platform/x86/msi-wmi-platform.c
++++ b/drivers/platform/x86/msi-wmi-platform.c
+@@ -29,7 +29,7 @@
  
-@@ -3301,7 +3305,8 @@ static int mptcp_disconnect(struct sock
- 	/* msk->subflow is still intact, the following will not free the first
- 	 * subflow
- 	 */
--	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
-+	mptcp_do_fastclose(sk);
-+	mptcp_destroy_common(msk);
+ #define DRIVER_NAME	"msi-wmi-platform"
  
- 	/* The first subflow is already in TCP_CLOSE status, the following
- 	 * can't overlap with a fallback anymore
-@@ -3483,7 +3488,7 @@ void mptcp_rcv_space_init(struct mptcp_s
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
- }
+-#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11d1-00A0-C90629100000"
++#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11D1-00A0-C90629100000"
  
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-+void mptcp_destroy_common(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct sock *sk = (struct sock *)msk;
-@@ -3492,7 +3497,7 @@ void mptcp_destroy_common(struct mptcp_s
+ #define MSI_WMI_PLATFORM_INTERFACE_VERSION	2
  
- 	/* join list will be eventually flushed (with rst) at sock lock release time */
- 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
-+		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
- 
- 	/* move to sk_receive_queue, sk_stream_kill_queues will purge it */
- 	mptcp_data_lock(sk);
-@@ -3517,7 +3522,7 @@ static void mptcp_destroy(struct sock *s
- 
- 	/* allow the following to close even the initial subflow */
- 	msk->free_first = 1;
--	mptcp_destroy_common(msk, 0);
-+	mptcp_destroy_common(msk);
- 	sk_sockets_allocated_dec(sk);
- }
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -968,7 +968,7 @@ static inline void mptcp_propagate_sndbu
- 	local_bh_enable();
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
-+void mptcp_destroy_common(struct mptcp_sock *msk);
- 
- #define MPTCP_TOKEN_MAX_RETRIES	4
- 
+-- 
+2.51.0
+
 
 
 
