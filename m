@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C655BC8F1DB
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:08:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856E6C8EE77
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E0A14F0310
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBD653B235B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86092260585;
-	Thu, 27 Nov 2025 15:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9766E2C0271;
+	Thu, 27 Nov 2025 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnPy6XYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJived74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA0220FAAB;
-	Thu, 27 Nov 2025 15:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299E9289367;
+	Thu, 27 Nov 2025 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255731; cv=none; b=ZhuhNZS51Qid6NFEGP3aCECCbH7G7MJYd+jIWIhnCx7kLIgSIOQaE7xx6QmJJMX680fKY02tbY1ngauo/nayZ51pddIfoaljm7Lr0DuEcilWqjDseLjkl4ZKxcRUv0Mw9OeMb+O6WrO5aCJhw0HnSMzLI8zQRscd+x3FsYjvtlA=
+	t=1764255012; cv=none; b=BRYmpDLF1yej6kLnf9LvZF8sPJSzGwT2yzGav0GJTDnEd5Gb7rXGVze0eP/S8K8AxWpZgDLk9iapMt7rCUWP5zkYxYdqtXA15pPgaOQA68AWlV3nQPGoQ2JDX4FqNJY6eCWi/2j7fLLLUwGx/UoNnFuS1OraLRLPGq5y36ntm7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255731; c=relaxed/simple;
-	bh=JTrF5blgTB4rKjCArWc93vK0e7D6KGFGHWDlRjxCA3w=;
+	s=arc-20240116; t=1764255012; c=relaxed/simple;
+	bh=KsxrLZr5vkcy4BQot/x+mDmxGEwRqSs0XZ+OfMIpKZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rFc+z5Q7ozASZLLp73FQwkUhs5TUvIY//uA2q/SZ3+9L1pOySfZERxUDs0OCEVhgniZOIcspbGY+HrF9eBhr7eNTNE0IwECvRIoLLGv61P0+mMKIXi0hGJsn56wskhsdld/+NPa5KN0B0ibdn7duaU5ZdBmA9DMJP1aRKjhUh4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnPy6XYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54ADC4CEF8;
-	Thu, 27 Nov 2025 15:02:10 +0000 (UTC)
+	 MIME-Version; b=U3CIXkMHwyWaOw8mLLlQ78yQDWC1JkAW3Op05C3VJlRNIA6t5w/vjFDhN6PTt8ihEnzUtW9MeUCIpuNmU1tDzIzJBLx+VcI5twPCZ/3PjwzcXXlyz+bkUgIqOt7SaH6vuyOtGLGtmuONmGIKSvWmpeGukKYR0W+TVN/cA5bF0jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJived74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D86C4CEF8;
+	Thu, 27 Nov 2025 14:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255731;
-	bh=JTrF5blgTB4rKjCArWc93vK0e7D6KGFGHWDlRjxCA3w=;
+	s=korg; t=1764255012;
+	bh=KsxrLZr5vkcy4BQot/x+mDmxGEwRqSs0XZ+OfMIpKZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnPy6XYF4bu3M4KpsBTCUdg1gxBC2pbKJDwvFLdyAA1KQnA3g1vBcqYgbNdtuMLjs
-	 QtL1+JvYY0HrF8ypJljCcBkDa2Gdqs3oDAozJWSbYbGIUTAQBC17GKQIHJqj9B0H19
-	 apaZn3pmlsfuowBAXy5qQuUgv5vc1UhQ2xgNcNh4=
+	b=KJived7475tvvu/3ABoHm0yoCSDGpD/l1OioWlfMoxwe6voE18Q0vegQ8Mmy/6llr
+	 jFmvmJQ2ATWdLeviy7oL20KQ3tD1T+ig8kkTTllJAFVgC5VEPCFa/gy6WBp09xQfgp
+	 igVq5nQx/xyzwSFj6OIrikrlc1/xTuFEE8ys8pPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 093/175] platform/x86: msi-wmi-platform: Fix typo in WMI GUID
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 30/86] mptcp: fix premature close in case of fallback
 Date: Thu, 27 Nov 2025 15:45:46 +0100
-Message-ID: <20251127144046.358571072@linuxfoundation.org>
+Message-ID: <20251127144028.924358785@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 97b726eb1dc2b4a2532544eb3da72bb6acbd39a3 ]
+commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
 
-The WMI driver core only supports GUID strings containing only
-uppercase characters, however the GUID string used by the
-msi-wmi-platform driver contains a single lowercase character.
-This prevents the WMI driver core from matching said driver to
-its WMI device.
+I'm observing very frequent self-tests failures in case of fallback when
+running on a CONFIG_PREEMPT kernel.
 
-Fix this by turning the lowercase character into a uppercase
-character. Also update the WMI driver development guide to warn
-about this.
+The root cause is that subflow_sched_work_if_closed() closes any subflow
+as soon as it is half-closed and has no incoming data pending.
 
-Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-Fixes: 9c0beb6b29e7 ("platform/x86: wmi: Add MSI WMI Platform driver")
-Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251110111253.16204-3-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That works well for regular subflows - MPTCP needs bi-directional
+connectivity to operate on a given subflow - but for fallback socket is
+race prone.
+
+When TCP peer closes the connection before the MPTCP one,
+subflow_sched_work_if_closed() will schedule the MPTCP worker to
+gracefully close the subflow, and shortly after will do another schedule
+to inject and process a dummy incoming DATA_FIN.
+
+On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
+fallback subflow before subflow_sched_work_if_closed() is able to create
+the dummy DATA_FIN, unexpectedly interrupting the transfer.
+
+Address the issue explicitly avoiding closing fallback subflows on when
+the peer is only half-closed.
+
+Note that, when the subflow is able to create the DATA_FIN before the
+worker invocation, the worker will change the msk state before trying to
+close the subflow and will skip the latter operation as the msk will not
+match anymore the precondition in __mptcp_close_subflow().
+
+Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/wmi/driver-development-guide.rst | 1 +
- drivers/platform/x86/msi-wmi-platform.c        | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/wmi/driver-development-guide.rst b/Documentation/wmi/driver-development-guide.rst
-index 99ef21fc1c1ed..5680303ae314e 100644
---- a/Documentation/wmi/driver-development-guide.rst
-+++ b/Documentation/wmi/driver-development-guide.rst
-@@ -54,6 +54,7 @@ to matching WMI devices using a struct wmi_device_id table:
- ::
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2585,7 +2585,8 @@ static void __mptcp_close_subflow(struct
  
-   static const struct wmi_device_id foo_id_table[] = {
-+         /* Only use uppercase letters! */
-          { "936DA01F-9ABD-4D9D-80C7-02AF85C822A8", NULL },
-          { }
-   };
-diff --git a/drivers/platform/x86/msi-wmi-platform.c b/drivers/platform/x86/msi-wmi-platform.c
-index bd2687828a2e6..e912fcc12d124 100644
---- a/drivers/platform/x86/msi-wmi-platform.c
-+++ b/drivers/platform/x86/msi-wmi-platform.c
-@@ -29,7 +29,7 @@
+ 		if (ssk_state != TCP_CLOSE &&
+ 		    (ssk_state != TCP_CLOSE_WAIT ||
+-		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
++		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
++		     __mptcp_check_fallback(msk)))
+ 			continue;
  
- #define DRIVER_NAME	"msi-wmi-platform"
- 
--#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11d1-00A0-C90629100000"
-+#define MSI_PLATFORM_GUID	"ABBC0F6E-8EA1-11D1-00A0-C90629100000"
- 
- #define MSI_WMI_PLATFORM_INTERFACE_VERSION	2
- 
--- 
-2.51.0
-
+ 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
 
 
 
