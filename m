@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-197300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91045C8F0D9
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 543B7C8F26E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D65FC3B7D41
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86DCE3BD67E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4265334363;
-	Thu, 27 Nov 2025 14:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A9028CF42;
+	Thu, 27 Nov 2025 15:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLytJXRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6OLkyX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA4B289811;
-	Thu, 27 Nov 2025 14:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D0F334373;
+	Thu, 27 Nov 2025 15:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255421; cv=none; b=uEn3Q1e7DtHspxMpkwdCpk7pSwmf+U05Af4IsGQPqQajtqRKyRZTLUhFv1iFBO0LShK7PX8LH4vX1t0uf/pHsBH4967UNehtS1gSjjx7vMdx1hDshAauqj7nGbLn5WSecc/FNUH63IyN9tjuS/Akka0d1mlThc8cEp3dOnh2wpY=
+	t=1764255796; cv=none; b=lfpVY/BqyhJ/hW/EekEP51jO4Jh3tesqA64aLzxiWg5L+kyRTiFQYaGd0lI59nUFNKsaqVOJwUWjghepOn+8qNWy8znsjtYIUzCG1FxUERHj/uxSFPqdesu0nBnRiOdpLVyAHn5S5BqNpYR0gVAGOf+0RkKCtZpVOu/7cbJYu50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255421; c=relaxed/simple;
-	bh=8kNgnz/lYUeR2hhDdSG7RacQ1ML7s8EM2kiPkDF4l94=;
+	s=arc-20240116; t=1764255796; c=relaxed/simple;
+	bh=iZbbENgK17ekdpLVxt5UTfm2muXQjJ74OdOcvR8qAEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnatqnhSbN+kumA44dgRlqYMSYlxjuQL9PjQd/ScHt6/bu0t4Z4xxPnFBe7oC5Z51BRVPpbotryRuN4leAwmkLXSlW0X8Af9Cahq/0rAmo8zm09uwSfBCdN/pfb7/YPh5Qc1skT6FU/rX+0Exb5Pitt9Hbd633L/FJ1BsszVQwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLytJXRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099D7C4CEF8;
-	Thu, 27 Nov 2025 14:57:00 +0000 (UTC)
+	 MIME-Version; b=Lpy88Z+m6539dMLIHvgerQjtdTxfJZGPAY/pXHFszMYgThv4o7q2lDUv9EDcN0tSTpJXv1alOvvdCyRFUxUhYcLTMVTUIB+pTBUW06NlSWw4n5ZB1v9XihTa7eLQNW/eFJXTg4t2ldkInjyDjBbLE570oCOXE+iSUkiERV88rEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6OLkyX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B29C4CEF8;
+	Thu, 27 Nov 2025 15:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255421;
-	bh=8kNgnz/lYUeR2hhDdSG7RacQ1ML7s8EM2kiPkDF4l94=;
+	s=korg; t=1764255796;
+	bh=iZbbENgK17ekdpLVxt5UTfm2muXQjJ74OdOcvR8qAEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLytJXRsx0t9ll3sOmMKrG/+EmJqoFUd+3wzmQ0RNHeZU0mD9JugSddg1ST0Lww5r
-	 tq4KgzJ9Qcs5KfaBTmi9EfME+4GKHs8WvjSVe3yyE+Eduw8wWpMJIqUq0sm9wgfGpr
-	 LOyhEI7N9I0Lfl05M0+sUuokhuWY9152nGLl0VcU=
+	b=y6OLkyX19VU0GZ3Wdok6uoWlFlyuEErcbfoKyl8YOJS91lylH6IZut49IeXBQ1FyF
+	 HV4ant9Zd8Q3RD8h914d4jx4Wlx6IK0/HwQMOWAzVpHleNorVazY7xC7Bqnrgr3Ryl
+	 PYbf/Y2rs5XFHZ+DJCtiG5Twb7Dr7Occ/Yyjcp4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>,
+	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/112] nvme-multipath: fix lockdep WARN due to partition scan work
-Date: Thu, 27 Nov 2025 15:46:09 +0100
-Message-ID: <20251127144035.294735156@linuxfoundation.org>
+Subject: [PATCH 6.17 117/175] drm/xe/irq: Handle msix vector0 interrupt
+Date: Thu, 27 Nov 2025 15:46:10 +0100
+Message-ID: <20251127144047.233098441@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
 
-[ Upstream commit 6d87cd5335784351280f82c47cc8a657271929c3 ]
+[ Upstream commit 5b38c22687d9287d85dd3bef2fa708bf62cf3895 ]
 
-Blktests test cases nvme/014, 057 and 058 fail occasionally due to a
-lockdep WARN. As reported in the Closes tag URL, the WARN indicates that
-a deadlock can happen due to the dependency among disk->open_mutex,
-kblockd workqueue completion and partition_scan_work completion.
+Current gu2host handler registered as MSI-X vector 0 and as per bspec for
+a msix vector 0 interrupt, the driver must check the legacy registers
+190008(TILE_INT_REG), 190060h (GT INTR Identity Reg 0) and other registers
+mentioned in "Interrupt Service Routine Pseudocode" otherwise it will block
+the next interrupts. To overcome this issue replacing guc2host handler
+with legacy xe_irq_handler.
 
-To avoid the lockdep WARN and the potential deadlock, cut the dependency
-by running the partition_scan_work not by kblockd workqueue but by
-nvme_wq.
-
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-block/CAHj4cs8mJ+R_GmQm9R8ebResKAWUE8kF5+_WVg0v8zndmqd6BQ@mail.gmail.com/
-Link: https://lore.kernel.org/linux-block/oeyzci6ffshpukpfqgztsdeke5ost5hzsuz4rrsjfmvpqcevax@5nhnwbkzbrpa/
-Fixes: 1f021341eef4 ("nvme-multipath: defer partition scanning")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: da889070be7b2 ("drm/xe/irq: Separate MSI and MSI-X flows")
+Bspec: 62357
+Signed-off-by: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Link: https://patch.msgid.link/20251107083141.2080189-1-venkata.ramana.nayana@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit c34a14bce7090862ebe5a64abe8d85df75e62737)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_irq.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 24cff8b044923..4ec4a1b11bb2e 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -687,7 +687,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 			return;
- 		}
- 		nvme_add_ns_head_cdev(head);
--		kblockd_schedule_work(&head->partition_scan_work);
-+		queue_work(nvme_wq, &head->partition_scan_work);
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_irq.c b/drivers/gpu/drm/xe/xe_irq.c
+index 5df5b8c2a3e4d..da22f083e86a7 100644
+--- a/drivers/gpu/drm/xe/xe_irq.c
++++ b/drivers/gpu/drm/xe/xe_irq.c
+@@ -843,22 +843,6 @@ static int xe_irq_msix_init(struct xe_device *xe)
+ 	return 0;
+ }
  
- 	mutex_lock(&head->lock);
+-static irqreturn_t guc2host_irq_handler(int irq, void *arg)
+-{
+-	struct xe_device *xe = arg;
+-	struct xe_tile *tile;
+-	u8 id;
+-
+-	if (!atomic_read(&xe->irq.enabled))
+-		return IRQ_NONE;
+-
+-	for_each_tile(tile, xe, id)
+-		xe_guc_irq_handler(&tile->primary_gt->uc.guc,
+-				   GUC_INTR_GUC2HOST);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static irqreturn_t xe_irq_msix_default_hwe_handler(int irq, void *arg)
+ {
+ 	unsigned int tile_id, gt_id;
+@@ -975,7 +959,7 @@ int xe_irq_msix_request_irqs(struct xe_device *xe)
+ 	u16 msix;
+ 
+ 	msix = GUC2HOST_MSIX;
+-	err = xe_irq_msix_request_irq(xe, guc2host_irq_handler, xe,
++	err = xe_irq_msix_request_irq(xe, xe_irq_handler(xe), xe,
+ 				      DRIVER_NAME "-guc2host", false, &msix);
+ 	if (err)
+ 		return err;
 -- 
 2.51.0
 
