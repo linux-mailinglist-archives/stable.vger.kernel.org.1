@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-197182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07766C8EE83
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E98C8F07F
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724CB3BA3D3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28CE3BD8E6
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1779728D850;
-	Thu, 27 Nov 2025 14:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6533F333754;
+	Thu, 27 Nov 2025 14:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS4pqBxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1UH7GKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C970925BEE8;
-	Thu, 27 Nov 2025 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8D131281E;
+	Thu, 27 Nov 2025 14:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255026; cv=none; b=pxujvMo15MJCzdS91b1q58C6S/GCHc2pzDHOpevaDSb+IR8SbjnwBX0shriNz34/RKV7nLOvc9bvh+hV2aywA2UerhPhlqjV8B7IVt3O3McIvj2wTolf8cjdcy7YYl9x2VcImwj60dFOjhyQPWfbNqXO/eoukGg2UuRsQiSlHXw=
+	t=1764255318; cv=none; b=HJrtJLgoplGwAK88zmbeJ20OgAH2ahy/QNidSTWukQHC3FWIa4uG4XUejfuQP+moS2vPBpp7b7LzhL1b8E7eSqhMzYxYT5Vxy/LswNFnyO6NFf8DtbrMil1H4q2o1/KZGosfkeZWAsFsPsAxo0/3QmKSiJXF44+wQueqxT7oURU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255026; c=relaxed/simple;
-	bh=Wke53vn3U5yfYhFHMXOYRPEozYi4Er+yuBvUNaJ0yDQ=;
+	s=arc-20240116; t=1764255318; c=relaxed/simple;
+	bh=pqVfP9kM4umaxv+Hu7WsJ7Ggc6F0QXl15iTmuQE0OzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kSetD8YcSKeMZifqY9kpxsJVZ7qGtfyLZmih/kYusUOOhmq+Zjg9Yxo6Ms8hb3P4UOvU/sPE+RTRnbS72D3ViaNHe6shBBdIK7oirqFG1HSNV2Ev7cATKebObXsDEvaQeIcdRjl5s8lkc4mKjpD98VfDjwvOYZqBpJ1+mdQh1QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS4pqBxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9B8C4CEF8;
-	Thu, 27 Nov 2025 14:50:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SSyYLAV/zNBTGNBOzDAA1TCIbZmCOYRtS1dEFrEOwsLzat59UcIENr3eEE1MzyJKUpFJOK+K4mFqkYwA/YnknMKYeyezNZPWeRxlJKFt4Ngrggx5q8siR18L6YKTCPcI1gaWvdZq24fdatXHETMzRCTEWUceWP29s5lo5oqsKc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1UH7GKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9887BC4CEF8;
+	Thu, 27 Nov 2025 14:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255026;
-	bh=Wke53vn3U5yfYhFHMXOYRPEozYi4Er+yuBvUNaJ0yDQ=;
+	s=korg; t=1764255318;
+	bh=pqVfP9kM4umaxv+Hu7WsJ7Ggc6F0QXl15iTmuQE0OzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iS4pqBxhNI3whiGpnC2o18+bBTUPLjdB8DZZQ6EtnBsKjmwsWP53CyQJCXzB+ZoWM
-	 eg8AFJ1LbUNxEoNSqR79Px/DSpjAcROeOwfPHxZjfhujZsT5gjSNqScJrcjz5j639f
-	 SHpZwaQhB3BJMrP3OKSJajWMFA7xSVTmpakObtYs=
+	b=n1UH7GKVpakXIJhJ48X9S4rae2XmaV47V7VSJJnIPGkGH8ilqVJg4KCSZ9fkstQXY
+	 YhoIr27ew+rtQ4YiO3lz/R/kB5C/qd+W0rvEHgdP2xz8EgprVJokETRmXdATAZUBpE
+	 B0gYanp7x5QaVZH8oK98JPTQXkBOGz9oUsXEJVEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 69/86] ALSA: usb-audio: fix uac2 clock source at terminal parser
+Subject: [PATCH 6.12 083/112] bcma: dont register devices disabled in OF
 Date: Thu, 27 Nov 2025 15:46:25 +0100
-Message-ID: <20251127144030.353402803@linuxfoundation.org>
+Message-ID: <20251127144035.879715310@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
+[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
 
-Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
-UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
-bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
-Clean up check_input_term()") into parse_term_uac2_clock_source().
+Some bus devices can be marked as disabled for specific SoCs or models.
+Those should not be registered to avoid probing them.
 
-This breaks the clock source selection for at least my
-1397:0003 BEHRINGER International GmbH FCA610 Pro.
-
-Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
-
-Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
-Signed-off-by: René Rebe <rene@exactco.de>
-Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bcma/main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 787cdeddbdf44..e19d962fab870 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -930,7 +930,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
- {
- 	struct uac_clock_source_descriptor *d = p1;
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index 6ecfc821cf833..72f045e6ed513 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 	int err;
  
--	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
-+	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
- 	term->id = id;
- 	term->name = d->iClockSource;
- 	return 0;
+ 	list_for_each_entry(core, &bus->cores, list) {
++		struct device_node *np;
++
+ 		/* We support that core ourselves */
+ 		switch (core->id.id) {
+ 		case BCMA_CORE_4706_CHIPCOMMON:
+@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 		if (bcma_is_core_needed_early(core->id.id))
+ 			continue;
+ 
++		np = core->dev.of_node;
++		if (np && !of_device_is_available(np))
++			continue;
++
+ 		/* Only first GMAC core on BCM4706 is connected and working */
+ 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
+ 		    core->core_unit > 0)
 -- 
 2.51.0
 
