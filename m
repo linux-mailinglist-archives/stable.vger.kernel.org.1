@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-197148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C8BC8ED90
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:49:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3697C8F208
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E96CF4E9D0B
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:48:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB23C4ED610
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C506283C9E;
-	Thu, 27 Nov 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6E73346A1;
+	Thu, 27 Nov 2025 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6m8XfEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la11u1Em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2732D2797B5;
-	Thu, 27 Nov 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB80E33437A;
+	Thu, 27 Nov 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764254929; cv=none; b=a4C5zyIT0o3ar1QpRgOgNwtxsdSoT7bVh003ZKTNc6HQZzcNEiyqimu4Ujs0jqEmh4LNarlYXYmY+TLK5W9zZ+6OOXfzWE6z84Y7sQz+FSPdanVnQMVybji33YtxihD33DCC2CcAWjQFsslN9u/rHD+yI85fmI3CwbytkI6ppqQ=
+	t=1764255791; cv=none; b=CGIzNxt5JUxjw5Qy5irwVuTfFaTdZElB6OvXuuZzL8BvyHDjEkVhxEHvWmA3wAdVSMQkKUWWA8nEbNkTPfkpK0Ezq2lBeZT58e1QLpjgaHhmC+VZJ3dTrCBjma60BkxC8WyjOZrBVDEvrURHLQe0vNn99lRjl1nPmuShlHYDeH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764254929; c=relaxed/simple;
-	bh=59FC7jnlIjZp1yDBaB3aHI1YIKGSJMcj8BuUtYdgav0=;
+	s=arc-20240116; t=1764255791; c=relaxed/simple;
+	bh=3q8hc6a/c2FSVaBgo47d/tJYElNQGw8t7LljN+bWO3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCSYJn/r3TikAiOb4899jQ9eS0CRxWVAOsviS7+fIdsnJmNfHUxUof25FIzXhYStnaPQH+8PNlqnRVhpJSW4UJDYjYkHy+aGCRpVNg4oE5lqwOcI15SBYWAT9L5jwzzpCbsitMB0vE8iVvBrNqbGm6YeT37CfC5NyZ0L5GmgTnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6m8XfEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1000C4CEF8;
-	Thu, 27 Nov 2025 14:48:48 +0000 (UTC)
+	 MIME-Version; b=khJSs4IiFlJt9SS1l3Oc48h84ukLHO5uasyMNmaSmP+HdFxO4Pa+eWS5b5uagtVaNzDTilRB75k8Opd3stJmBH2TzYE+fsJDa66qRtpQbBx5ksGbWiuTXt8TVtChUYQD3FN9VVkqzVRfHhbosR0gmVW4jtkXxTdpfNMl+gmMhBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la11u1Em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767C3C4CEF8;
+	Thu, 27 Nov 2025 15:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764254929;
-	bh=59FC7jnlIjZp1yDBaB3aHI1YIKGSJMcj8BuUtYdgav0=;
+	s=korg; t=1764255790;
+	bh=3q8hc6a/c2FSVaBgo47d/tJYElNQGw8t7LljN+bWO3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6m8XfEizd22msY70FSfIFHPVBNjv5qht72xuIH/pD/dUwCbEW7HP+H4+69G5XpCy
-	 khiT1W2TxYaz5eKCwim5H30wNOKTBuUkSb0zmDoErIIIfOaGAqSr+AYqKN26/+PKPN
-	 N9/Iol9hPFuHMl/HCag2DrWEjdHv022f2J1Vcr0o=
+	b=la11u1Emn5UJIHhWc5eCMkNd8daimE3bXiKzAqgXD6xXogOiMDQEhishK2vguGlk/
+	 elIWyPQxGWhIqIKJxJu4rZZrxo5wBoSXwAeDysRIOFUj3PaoR8VIje9bNELBYmwZjh
+	 zkvqE6V/OyFm0M4Ibs5JAhrgIoWnnNytS9XHnLB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zha <Yifan.Zha@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 35/86] drm/amdgpu: Skip emit de meta data on gfx11 with rs64 enabled
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 098/175] net: dsa: hellcreek: fix missing error handling in LED registration
 Date: Thu, 27 Nov 2025 15:45:51 +0100
-Message-ID: <20251127144029.108129745@linuxfoundation.org>
+Message-ID: <20251127144046.538902311@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zha <Yifan.Zha@amd.com>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-commit 80d8a9ad1587b64c545d515ab6cb7ecb9908e1b3 upstream.
+[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
 
-[Why]
-Accoreding to CP updated to RS64 on gfx11,
-WRITE_DATA with PREEMPTION_META_MEMORY(dst_sel=8) is illegal for CP FW.
-That packet is used for MCBP on F32 based system.
-So it would lead to incorrect GRBM write and FW is not handling that
-extra case correctly.
+The LED setup routine registered both led_sync_good
+and led_is_gm devices without checking the return
+values of led_classdev_register(). If either registration
+failed, the function continued silently, leaving the
+driver in a partially-initialized state and leaking
+a registered LED classdev.
 
-[How]
-With gfx11 rs64 enabled, skip emit de meta data.
+Add proper error handling
 
-Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8366cd442d226463e673bed5d199df916f4ecbcf)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
+Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -5296,9 +5296,9 @@ static void gfx_v11_0_ring_emit_ib_gfx(s
- 		if (flags & AMDGPU_IB_PREEMPTED)
- 			control |= INDIRECT_BUFFER_PRE_RESUME(1);
+diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+index bfe21f9f7dcd3..cb23bea9c21b8 100644
+--- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
++++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+@@ -376,8 +376,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
+ 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
  
--		if (vmid)
-+		if (vmid && !ring->adev->gfx.rs64_enable)
- 			gfx_v11_0_ring_emit_de_meta(ring,
--				    (!amdgpu_sriov_vf(ring->adev) && flags & AMDGPU_IB_PREEMPTED) ? true : false);
-+				!amdgpu_sriov_vf(ring->adev) && (flags & AMDGPU_IB_PREEMPTED));
- 	}
+ 	/* Register both leds */
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
++		goto out;
++	}
++
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
++		led_classdev_unregister(&hellcreek->led_sync_good);
++		goto out;
++	}
  
- 	if (ring->is_mes_queue)
+ 	ret = 0;
+ 
+-- 
+2.51.0
+
 
 
 
