@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-197449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900D2C8F15D
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EECC8EF28
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 911FE343F43
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40C5E4E9D4A
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0902933436D;
-	Thu, 27 Nov 2025 15:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF82528D8E8;
+	Thu, 27 Nov 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sn2zfBc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m87HKWwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78E128CF42;
-	Thu, 27 Nov 2025 15:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5603126C0;
+	Thu, 27 Nov 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255851; cv=none; b=Dnyqb4sH6ELW9EAKERoqD0XXYiLTX9U0j1qRMPWmlzUrgXhnvgZCHRZJio+JbEHpPAsB63sj1cwjTGcw0FUhcvBwnwflQGKs8jgu/lY9YiD/SDuzKQvEoFA1xdiQDnV+eKJiCDwfWJZxA0OUhXQFA3lEtJZln+Lh2dzrvGt3OXE=
+	t=1764255238; cv=none; b=f7HYDqKSbwI76Qk4nVxdSR5gd+2AD1DQKB/RJW/4wPWwnxqwmyojPDWznKps21nXKhGJwJ2kjT2/Nd707lV7fM1vldrZhd7cthsyaVCZYQQ60IBcMPocHWU+FkSKFjGEyyP/z4iWbFs9FKIBzX0iXDaWI3zHeGDmaeZVFNnf69I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255851; c=relaxed/simple;
-	bh=skYJjyhHi7jh3ypHB2pAPU3o4dUuAQRLKpskdplJxGI=;
+	s=arc-20240116; t=1764255238; c=relaxed/simple;
+	bh=b3zVerin3E+gmKgcto8U+7G7rjRcxSXGfpANryebFlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NURN+yK9JDZkzL57Mma2S5ShKXJtSGc5xySmr/3JsRMLK15GCwWn7V/D/okZHlr8x0GOr1HjUyhuOI1p7Db1VMWJLUp8924TeDfSdJzLmtefRmpfAD6dbMijAdH5Ls+obUUcoIVppedqaPkpWgclQz+BexBYq8H6SW+XieW0y5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sn2zfBc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A76C4CEF8;
-	Thu, 27 Nov 2025 15:04:10 +0000 (UTC)
+	 MIME-Version; b=nss7tsSFXhU66U0jG+1F6m+ISmMEHSYpxUac0qS0IYdjR6qmp5co+azTHsqP6jMiXtnbX3rL6mlyQ/OfGaHGiUgMKyEh6KwhrtyHn7abYsZSd0x1qTGzi8TemcuZKah8A/h1HJi9sRI+NVGiqVKGdJNB8MBRRZrF4wxz3kMUXKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m87HKWwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD842C4CEF8;
+	Thu, 27 Nov 2025 14:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255851;
-	bh=skYJjyhHi7jh3ypHB2pAPU3o4dUuAQRLKpskdplJxGI=;
+	s=korg; t=1764255238;
+	bh=b3zVerin3E+gmKgcto8U+7G7rjRcxSXGfpANryebFlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sn2zfBc1SdGc5LkA7i4oT1AHp6wCO1SciWIxizGtMlw5I3mzNu9pcNT9ah9U4BZcy
-	 dmIZvPoyF2uRCQ9BX20gLGifqMNTpPmitrcvTZzHptFpRLyRMf3NhZAFqbOzU8/mPA
-	 IXg2AFsGHL1EfNonO7SvwmrETVlKd7ivOHIWDV5s=
+	b=m87HKWwVetZyQi39PzqbmjEv+4m29pk5eMYcddEU5F6qpkeZkcL5ZmmkgaRm9CZuv
+	 8Wsy910wERrerAgn8YvLiZ64v1HwJ+fVuJth4UimwELG5dO1Tj3CPNN9MzwM0Tf8Ba
+	 22JBFSIBHC1hwZTtuwhGhUA6UQAfmIl+FlMv+IyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Martin George <marting@netapp.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 103/175] nvmet-auth: update sc_c in target host hash calculation
+Subject: [PATCH 6.12 054/112] xfrm: set err and extack on failure to create pcpu SA
 Date: Thu, 27 Nov 2025 15:45:56 +0100
-Message-ID: <20251127144046.721013453@linuxfoundation.org>
+Message-ID: <20251127144034.819527806@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Francis <alistair.francis@wdc.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 159de7a825aea4242d3f8d32de5853d269dbe72f ]
+[ Upstream commit 1dcf617bec5cb85f68ca19969e7537ef6f6931d3 ]
 
-Commit 7e091add9c43 "nvme-auth: update sc_c in host response" added
-the sc_c variable to the dhchap queue context structure which is
-appropriately set during negotiate and then used in the host response.
+xfrm_state_construct can fail without setting an error if the
+requested pcpu_num value is too big. Set err and add an extack message
+to avoid confusing userspace.
 
-This breaks secure concat connections with a Linux target as the target
-code wasn't updated at the same time. This patch fixes this by adding a
-new sc_c variable to the host hash calculations.
-
-Fixes: 7e091add9c43 ("nvme-auth: update sc_c in host response")
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Martin George <marting@netapp.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/auth.c             | 4 ++--
- drivers/nvme/target/fabrics-cmd-auth.c | 1 +
- drivers/nvme/target/nvmet.h            | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_user.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-index ceba21684e82c..300d5e032f6d4 100644
---- a/drivers/nvme/target/auth.c
-+++ b/drivers/nvme/target/auth.c
-@@ -298,7 +298,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 	const char *hash_name;
- 	u8 *challenge = req->sq->dhchap_c1;
- 	struct nvme_dhchap_key *transformed_key;
--	u8 buf[4], sc_c = ctrl->concat ? 1 : 0;
-+	u8 buf[4];
- 	int ret;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index d41e5642625e3..3d0fdeebaf3c8 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -893,8 +893,11 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
  
- 	hash_name = nvme_auth_hmac_name(ctrl->shash_id);
-@@ -367,7 +367,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 	ret = crypto_shash_update(shash, buf, 2);
- 	if (ret)
- 		goto out;
--	*buf = sc_c;
-+	*buf = req->sq->sc_c;
- 	ret = crypto_shash_update(shash, buf, 1);
- 	if (ret)
- 		goto out;
-diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
-index bf01ec414c55f..5946681cb0e32 100644
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -43,6 +43,7 @@ static u8 nvmet_auth_negotiate(struct nvmet_req *req, void *d)
- 		 data->auth_protocol[0].dhchap.halen,
- 		 data->auth_protocol[0].dhchap.dhlen);
- 	req->sq->dhchap_tid = le16_to_cpu(data->t_id);
-+	req->sq->sc_c = data->sc_c;
- 	if (data->sc_c != NVME_AUTH_SECP_NOSC) {
- 		if (!IS_ENABLED(CONFIG_NVME_TARGET_TCP_TLS))
- 			return NVME_AUTH_DHCHAP_FAILURE_CONCAT_MISMATCH;
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 51df72f5e89b7..f3b09f4099f08 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -159,6 +159,7 @@ struct nvmet_sq {
- 	bool			authenticated;
- 	struct delayed_work	auth_expired_work;
- 	u16			dhchap_tid;
-+	u8			sc_c;
- 	u8			dhchap_status;
- 	u8			dhchap_step;
- 	u8			*dhchap_c1;
+ 	if (attrs[XFRMA_SA_PCPU]) {
+ 		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
+-		if (x->pcpu_num >= num_possible_cpus())
++		if (x->pcpu_num >= num_possible_cpus()) {
++			err = -ERANGE;
++			NL_SET_ERR_MSG(extack, "pCPU number too big");
+ 			goto error;
++		}
+ 	}
+ 
+ 	err = __xfrm_init_state(x, false, attrs[XFRMA_OFFLOAD_DEV], extack);
 -- 
 2.51.0
 
