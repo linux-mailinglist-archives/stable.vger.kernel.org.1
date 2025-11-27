@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-197201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530F6C8EE5F
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:53:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C699BC8F213
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A5DB54EA90C
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 91C274EDDEC
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189482882C9;
-	Thu, 27 Nov 2025 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F92332EA0;
+	Thu, 27 Nov 2025 15:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LXC68Bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWz3c2fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C938E25BEE8;
-	Thu, 27 Nov 2025 14:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA90228135D;
+	Thu, 27 Nov 2025 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255080; cv=none; b=AYibtrG3AcW6Buh06IJjpSTcGl6RJxbzeGfZv8epfYVzcqcG5rtjQeiv74RIPeMEK7YSWawrGHVhjJIkbjoPoAunLtbGDoR3QrO36JjbyFCCa4I6Hz1mPr+3e65DdCBSV7SQY66UcQG0k9eqXUeqVxTDUgxTcmf/ouu1qiGryjE=
+	t=1764255816; cv=none; b=EvNnfs6msykMUai/M5g2A3K43NspZlem+1wBltMQ/WBZ8THyCnN89eOnEYEDRq/i3jpUSYSllRbBsBgrz0VUF7Z7uKBacnzVUNJHwzM1voI5qzYf3BXZFM83WS7+C3WksxVFO9YezCGjVdc9t50IeRu2l6mq0aBthklHXGseelA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255080; c=relaxed/simple;
-	bh=jH3GGk9XtQErJ/YJY2K52hIEJZ55IedV0zpYW9CQAvU=;
+	s=arc-20240116; t=1764255816; c=relaxed/simple;
+	bh=rkmp1dhQJGGR8jWtdL3vS8dezmcF7v+RIfilvy2kTK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SX1E9doiEPXUjbgXAs0r/tNxKnuL51KJM2ovz/W4x+b2yxB060TPIFKr/hDWJpzJV6jicNZ23M+aLI6aB+jwmnu/otpBCq0JkrCgLGnEURzgA2SBGl/dN9SDbLusvLRPuaGFNytRp9szNI+y96ow+0gWILCsYL8tmV7EttIdyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LXC68Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54377C4CEF8;
-	Thu, 27 Nov 2025 14:51:20 +0000 (UTC)
+	 MIME-Version; b=HdrrYTQ3MPwMv/NLPpUh4Ysl3O0C6RkfHg4bhFXMYOtBx14QdhmL1ps7Ena8QIPDdqchZEoh1rrD2gJT6cUDwmImIErq6rOwjnLAxZH3TCqII9nZUbngy3BH5Jz5UfI3wImOCoAHWWgPn2f83Sjrqf5ZJ62oTlpvT30ApiuwcfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWz3c2fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C4FC4CEF8;
+	Thu, 27 Nov 2025 15:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255080;
-	bh=jH3GGk9XtQErJ/YJY2K52hIEJZ55IedV0zpYW9CQAvU=;
+	s=korg; t=1764255816;
+	bh=rkmp1dhQJGGR8jWtdL3vS8dezmcF7v+RIfilvy2kTK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LXC68BgH3amzPB4yAgIOaiz85Yyohs0emAXI26feMWIKcn57Rx9p2SS2fteaeFoy
-	 8mOopLL3/Nb7JviNota0dA6vQHWY3wkUvYigMcVtsU0v9epyjzgkbXxQuX+rE+Dlqj
-	 W7ujSXM+f0AVvw2RNe1k5Tra++ZCIz+hOKbGbsts=
+	b=QWz3c2fkreMmJDgSeYNbOJiXsY0d3kGx8J58x+TbFyELAtnICyDoHMNECkJkeUTKF
+	 n7Quj/G2f6ERI0J97NpqNV76h1D8Ps6ZnZ0q06CJubU3rdm6vxi3Sq81VSfcKy3pti
+	 PxCmGYDYBVCNwfLo1XuZAW4hRpjk+81NVJb/LiQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 60/86] scsi: core: Fix a regression triggered by scsi_host_busy()
-Date: Thu, 27 Nov 2025 15:46:16 +0100
-Message-ID: <20251127144030.023893987@linuxfoundation.org>
+Subject: [PATCH 6.17 124/175] af_unix: Read sk_peek_offset() again after sleeping in unix_stream_read_generic().
+Date: Thu, 27 Nov 2025 15:46:17 +0100
+Message-ID: <20251127144047.488583287@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
+[ Upstream commit 7bf3a476ce43833c49fceddbe94ff3472e04e9bc ]
 
-Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
-iterators") introduced the following regression:
+Miao Wang reported a bug of SO_PEEK_OFF on AF_UNIX SOCK_STREAM
+socket.
 
-Call trace:
- __srcu_read_lock+0x30/0x80 (P)
- blk_mq_tagset_busy_iter+0x44/0x300
- scsi_host_busy+0x38/0x70
- ufshcd_print_host_state+0x34/0x1bc
- ufshcd_link_startup.constprop.0+0xe4/0x2e0
- ufshcd_init+0x944/0xf80
- ufshcd_pltfrm_init+0x504/0x820
- ufs_rockchip_probe+0x2c/0x88
- platform_probe+0x5c/0xa4
- really_probe+0xc0/0x38c
- __driver_probe_device+0x7c/0x150
- driver_probe_device+0x40/0x120
- __driver_attach+0xc8/0x1e0
- bus_for_each_dev+0x7c/0xdc
- driver_attach+0x24/0x30
- bus_add_driver+0x110/0x230
- driver_register+0x68/0x130
- __platform_driver_register+0x20/0x2c
- ufs_rockchip_pltform_init+0x1c/0x28
- do_one_initcall+0x60/0x1e0
- kernel_init_freeable+0x248/0x2c4
- kernel_init+0x20/0x140
- ret_from_fork+0x10/0x20
+The unexpected behaviour is triggered when the peek offset is
+larger than the recv queue and the thread is unblocked by new
+data.
 
-Fix this regression by making scsi_host_busy() check whether the SCSI
-host tag set has already been initialized. tag_set->ops is set by
-scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
-fix is based on the assumption that scsi_host_busy() and
-scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
-driver.
+Let's assume a socket which has "aaaa" in the recv queue and
+the peek offset is 4.
 
-Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+First, unix_stream_read_generic() reads the offset 4 and skips
+the skb(s) of "aaaa" with the code below:
+
+	skip = max(sk_peek_offset(sk, flags), 0);	/* @skip is 4. */
+
+	do {
+	...
+		while (skip >= unix_skb_len(skb)) {
+			skip -= unix_skb_len(skb);
+		...
+			skb = skb_peek_next(skb, &sk->sk_receive_queue);
+			if (!skb)
+				goto again;		/* @skip is 0. */
+		}
+
+The thread jumps to the 'again' label and goes to sleep since
+new data has not arrived yet.
+
+Later, new data "bbbb" unblocks the thread, and the thread jumps
+to the 'redo:' label to restart the entire process from the first
+skb in the recv queue.
+
+	do {
+		...
+redo:
+		...
+		last = skb = skb_peek(&sk->sk_receive_queue);
+		...
+again:
+		if (skb == NULL) {
+			...
+			timeo = unix_stream_data_wait(sk, timeo, last,
+						      last_len, freezable);
+			...
+			goto redo;			/* @skip is 0 !! */
+
+However, the peek offset is not reset in the path.
+
+If the buffer size is 8, recv() will return "aaaabbbb" without
+skipping any data, and the final offset will be 12 (the original
+offset 4 + peeked skbs' length 8).
+
+After sleeping in unix_stream_read_generic(), we have to fetch the
+peek offset again.
+
+Let's move the redo label before mutex_lock(&u->iolock).
+
+Fixes: 9f389e35674f ("af_unix: return data from multiple SKBs on recv() with MSG_PEEK flag")
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Closes: https://lore.kernel.org/netdev/3B969F90-F51F-4B9D-AB1A-994D9A54D460@gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20251117174740.3684604-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index 445f4a220df3e..f274812aee1e8 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -602,8 +602,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
- {
- 	int cnt = 0;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 6d7c110814ffa..0f288a80e0acd 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2954,6 +2954,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
  
--	blk_mq_tagset_busy_iter(&shost->tag_set,
--				scsi_host_check_in_flight, &cnt);
-+	if (shost->tag_set.ops)
-+		blk_mq_tagset_busy_iter(&shost->tag_set,
-+					scsi_host_check_in_flight, &cnt);
- 	return cnt;
- }
- EXPORT_SYMBOL(scsi_host_busy);
+ 	u = unix_sk(sk);
+ 
++redo:
+ 	/* Lock the socket to prevent queue disordering
+ 	 * while sleeps in memcpy_tomsg
+ 	 */
+@@ -2965,7 +2966,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		struct sk_buff *skb, *last;
+ 		int chunk;
+ 
+-redo:
+ 		unix_state_lock(sk);
+ 		if (sock_flag(sk, SOCK_DEAD)) {
+ 			err = -ECONNRESET;
+@@ -3015,7 +3015,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				goto out;
+ 			}
+ 
+-			mutex_lock(&u->iolock);
+ 			goto redo;
+ unlock:
+ 			unix_state_unlock(sk);
 -- 
 2.51.0
 
