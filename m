@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48654C8F29E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094C8C8EF88
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB273BACB5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:02:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E7F3B9819
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBBE28135D;
-	Thu, 27 Nov 2025 15:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77A93126C0;
+	Thu, 27 Nov 2025 14:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk0Lrhe+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewg2ZYDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC54213254;
-	Thu, 27 Nov 2025 15:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A822882C9;
+	Thu, 27 Nov 2025 14:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255725; cv=none; b=XTKfNeyOKtmIvf3OKsZpN5yuDE/Uv9Qs9sxAWkm092A9VaXktizG4UaVxymof8UEmIyOeGGuZyI3Jw2dBEd46y9SjP09v62R9x4dALRL101El6WHOvC02JWBsUvuPNXPQL3UaqJFHkXQFQUGSVtLtb7A4olpbzOIAU8ymZwDQL4=
+	t=1764255197; cv=none; b=TFSQ9VLGzfYTg85VL6trTtJkeUMGbOJNYxqt7sugdadJInKZ0HFNq4dfZijYzamPnlL7nbdcWHfBBUsPESkQ3bjiX1+jmvpgFwLCnrLmTq7D3poYmtkqA8Qw4pdh/GgXzzSqY/GGuL11M7Vp08zgDdbiBmo2PVcqIrer+eAXcyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255725; c=relaxed/simple;
-	bh=bCRGyg2CifTtlB6VGDcTDQEkfwXcVHMzzR9q/RBKtoc=;
+	s=arc-20240116; t=1764255197; c=relaxed/simple;
+	bh=XK35D9czRVtpf+zyZVLrki3fY8/7L4D3wJGxxub3dBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7fpCMHDMZzt/L03seGUywD0QkdvcAN8gHdXsnlAlmb6AFiEs/YojUKXUws93w3tGtUrNcVEsmyYRTc/M59STItXnK/KiZhjhOLGGCBk5g7xDG0dyqT8GCtpQGpUpRFfnUTGUt7aFzMMGkniorW1XWxyOHJMiEQQ4NrOAfB4EeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk0Lrhe+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1B6C113D0;
-	Thu, 27 Nov 2025 15:02:04 +0000 (UTC)
+	 MIME-Version; b=i9M5Xub88h4N56rY9tEv7jRqZqIHfj+NrXSiInme/LEIZp+Q+nDql22eP9+iOhn8mxFoqa8flpqdLfWm0ZKuTemATF8wXQ6+m8yMGpP3RE+8z8wOlCqJ10NihDa1g9CHHApcb/4M01l4g3ag4b1xhPhQN5W+GjZ9QzrgYvYdkjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewg2ZYDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D03EC4CEF8;
+	Thu, 27 Nov 2025 14:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255725;
-	bh=bCRGyg2CifTtlB6VGDcTDQEkfwXcVHMzzR9q/RBKtoc=;
+	s=korg; t=1764255197;
+	bh=XK35D9czRVtpf+zyZVLrki3fY8/7L4D3wJGxxub3dBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rk0Lrhe+d+gvZs+cy0QTWBQuVki52Ai3budB71LtDElGu20l1oy25dTnaXLbed4JE
-	 g5W6EhVR85cisQ+Y6JFXv6sudhah+pHAHm5D2HDBI9cSHK8yImqrnX3M8bkmPNcywS
-	 bSzE4bbhfbdDQFOwmZxVdj6MRozEaCkR3+jsvsKg=
+	b=ewg2ZYDd5aEh5qnkSLS+cNpj+ygxfL2E43PsHksuRKDX8oc4YK6Dwkwcx6sjBNH4r
+	 j8VnKj4daH3toHl8sz4HJgdPIfRqIdYk0LO5ygNM0BCg65DLURoLGAPTbGe1s872lS
+	 s7MXiZde5y6wXYF/MV9lOPuUm6LMGR+f4O748MgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 091/175] pinctrl: cirrus: Fix fwnode leak in cs42l43_pin_probe()
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 042/112] mptcp: avoid unneeded subflow-level drops
 Date: Thu, 27 Nov 2025 15:45:44 +0100
-Message-ID: <20251127144046.285860985@linuxfoundation.org>
+Message-ID: <20251127144034.380486055@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 9b07cdf86a0b90556f5b68a6b20b35833b558df3 ]
+commit 4f102d747cadd8f595f2b25882eed9bec1675fb1 upstream.
 
-The driver calls fwnode_get_named_child_node() which takes a reference
-on the child node, but never releases it, which causes a reference leak.
+The rcv window is shared among all the subflows. Currently, MPTCP sync
+the TCP-level rcv window with the MPTCP one at tcp_transmit_skb() time.
 
-Fix by using devm_add_action_or_reset() to automatically release the
-reference when the device is removed.
+The above means that incoming data may sporadically observe outdated
+TCP-level rcv window and being wrongly dropped by TCP.
 
-Fixes: d5282a539297 ("pinctrl: cs42l43: Add support for the cs42l43")
-Suggested-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address the issue checking for the edge condition before queuing the
+data at TCP level, and eventually syncing the rcv window as needed.
+
+Note that the issue is actually present from the very first MPTCP
+implementation, but backports older than the blamed commit below will
+range from impossible to useless.
+
+Before:
+
+  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
+  TcpExtBeyondWindow              14                 0.0
+
+After:
+
+  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
+  TcpExtBeyondWindow              0                  0.0
+
+Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-2-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/cirrus/pinctrl-cs42l43.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ net/mptcp/options.c  |   31 +++++++++++++++++++++++++++++++
+ net/mptcp/protocol.h |    1 +
+ 2 files changed, 32 insertions(+)
 
-diff --git a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-index 68abb6d6cecd8..a8f82104a3842 100644
---- a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-+++ b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-@@ -532,6 +532,11 @@ static int cs42l43_gpio_add_pin_ranges(struct gpio_chip *chip)
- 	return ret;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1044,6 +1044,31 @@ static void __mptcp_snd_una_update(struc
+ 	WRITE_ONCE(msk->snd_una, new_snd_una);
  }
  
-+static void cs42l43_fwnode_put(void *data)
++static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
++			struct sk_buff *skb)
 +{
-+	fwnode_handle_put(data);
++	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
++	struct tcp_sock *tp = tcp_sk(ssk);
++	u64 mptcp_rcv_wnd;
++
++	/* Avoid touching extra cachelines if TCP is going to accept this
++	 * skb without filling the TCP-level window even with a possibly
++	 * outdated mptcp-level rwin.
++	 */
++	if (!skb->len || skb->len < tcp_receive_window(tp))
++		return;
++
++	mptcp_rcv_wnd = atomic64_read(&msk->rcv_wnd_sent);
++	if (!after64(mptcp_rcv_wnd, subflow->rcv_wnd_sent))
++		return;
++
++	/* Some other subflow grew the mptcp-level rwin since rcv_wup,
++	 * resync.
++	 */
++	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
++	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
 +}
 +
- static int cs42l43_pin_probe(struct platform_device *pdev)
- {
- 	struct cs42l43 *cs42l43 = dev_get_drvdata(pdev->dev.parent);
-@@ -563,10 +568,20 @@ static int cs42l43_pin_probe(struct platform_device *pdev)
- 	priv->gpio_chip.ngpio = CS42L43_NUM_GPIOS;
+ static void ack_update_msk(struct mptcp_sock *msk,
+ 			   struct sock *ssk,
+ 			   struct mptcp_options_received *mp_opt)
+@@ -1211,6 +1236,7 @@ bool mptcp_incoming_options(struct sock
+ 	 */
+ 	if (mp_opt.use_ack)
+ 		ack_update_msk(msk, sk, &mp_opt);
++	rwin_update(msk, sk, skb);
  
- 	if (is_of_node(fwnode)) {
--		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
--
--		if (fwnode && !fwnode->dev)
--			fwnode->dev = priv->dev;
-+		struct fwnode_handle *child;
-+
-+		child = fwnode_get_named_child_node(fwnode, "pinctrl");
-+		if (child) {
-+			ret = devm_add_action_or_reset(&pdev->dev,
-+				cs42l43_fwnode_put, child);
-+			if (ret) {
-+				fwnode_handle_put(child);
-+				return ret;
-+			}
-+			if (!child->dev)
-+				child->dev = priv->dev;
-+			fwnode = child;
-+		}
- 	}
+ 	/* Zero-data-length packets are dropped by the caller and not
+ 	 * propagated to the MPTCP layer, so the skb extension does not
+@@ -1297,6 +1323,10 @@ static void mptcp_set_rwin(struct tcp_so
  
- 	priv->gpio_chip.fwnode = fwnode;
--- 
-2.51.0
-
+ 	if (rcv_wnd_new != rcv_wnd_old) {
+ raise_win:
++		/* The msk-level rcv wnd is after the tcp level one,
++		 * sync the latter.
++		 */
++		rcv_wnd_new = rcv_wnd_old;
+ 		win = rcv_wnd_old - ack_seq;
+ 		tp->rcv_wnd = min_t(u64, win, U32_MAX);
+ 		new_win = tp->rcv_wnd;
+@@ -1320,6 +1350,7 @@ raise_win:
+ 
+ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++	subflow->rcv_wnd_sent = rcv_wnd_new;
+ }
+ 
+ static void mptcp_track_rwin(struct tcp_sock *tp)
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -508,6 +508,7 @@ struct mptcp_subflow_context {
+ 	u64	remote_key;
+ 	u64	idsn;
+ 	u64	map_seq;
++	u64	rcv_wnd_sent;
+ 	u32	snd_isn;
+ 	u32	token;
+ 	u32	rel_write_seq;
 
 
 
