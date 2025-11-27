@@ -1,85 +1,111 @@
-Return-Path: <stable+bounces-197094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C37EC8E556
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:49:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F6BC8E575
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 13:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A6CD3A7B24
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 12:49:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55AD24E2D26
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 12:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3F821D3C9;
-	Thu, 27 Nov 2025 12:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46041EB9FA;
+	Thu, 27 Nov 2025 12:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6tZaaLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdIXX3Fm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CCF1EB9FA
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 12:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFBB21A425;
+	Thu, 27 Nov 2025 12:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764247789; cv=none; b=djYBGGSqkyS9rPdIqEQVvyJKAvrE2LwD3U3CSrfxAZBGAxDOi6zatIuOHLabo4Rg6uzP0mPyL1csoLIl6YEGqkKx3os2dh+/U4HOdTPD41IcwRDODunCOvmegXM2Fz9ZjFOCmYdP2zYbyIkC9Ol8Ptl0ao2Ra8Zavx8HQ2xeL0o=
+	t=1764247935; cv=none; b=jzkar/0gsY+jMhhsKPF8/MYZEcsI2abicKpLEc6WzSySO+7Fe7hd7cwcmYu2WGA7z+Ab+TSLsme1e0k50uunkH7HWlioG9EIatKVfjg/I7SLBUwojlOeZMjxhYfJT4hbn6BvQilBRFVqfViYTK9fqB7RQD5kaGHxFUnwo1nFjOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764247789; c=relaxed/simple;
-	bh=jzJqFisASzR/XPIuI3xK7fA1MH7E+8pM4xcu2RxJxhk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCk+TAnKMrFfWEiFbmRXR+SbuAZ9TOSb4JXKCElHdDbD+XSEZ0cdX12kdHPBFzOQl7eoVhv2kzsStejmYyLClha5RRVJpSU6ZBuMOr5qXuocMXRQhP5GHMVpVrX1OVpCX9s0AOF5JkzuKRi+osWaiOM0V1T4ZD/x9i1qz/+6cew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6tZaaLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC09C4CEF8;
-	Thu, 27 Nov 2025 12:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764247788;
-	bh=jzJqFisASzR/XPIuI3xK7fA1MH7E+8pM4xcu2RxJxhk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6tZaaLhyl3IJUxv4VZANxvmFlq9rE8/RoxKWkeUQwCHqx0o+cztGM2PUOqVruKkl
-	 9sW3BtIgajKIu6K5u4gWlVPvauEUuzLhzF+0nwR8Qe24nXuTRcCvsRW+2o+2BYQZiA
-	 jcpKIdsMI2HJDRmhc7v0AAWJitSS5suV6cEFtI2m+zzwOcwT7tCmmDd6w/+cg7ef5z
-	 EtSnVC6kd4JFi1u9lIPqOl2es5pqjtn0yBc1YnoQ7yZOJSoDRA39NlD+vb6tPS9R9K
-	 7Hx0W+G7Iq9HqHxqEHXzRNO6jy9eXuFgm/nbp8OzNKSeV/abe+oqaX1K5cZeJFXTYq
-	 rI9Srwb+VQjXA==
-From: Sasha Levin <sashal@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: stable@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.1.y 2/2] mm/memory: do not populate page table entries beyond i_size
-Date: Thu, 27 Nov 2025 07:49:45 -0500
-Message-ID: <20251127124945.1637925-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251121135057.1062568-2-kas@kernel.org>
-References: <20251121135057.1062568-2-kas@kernel.org>
+	s=arc-20240116; t=1764247935; c=relaxed/simple;
+	bh=7mI+R1BGydSJzPjv/tZ3DYJPk36lOhgPS1Ewmy4H4g4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BLt2HrQDf3qZkOvOcPJ9PCdi8cFCpAw6U9SoqW8NPmmxp7OC7Ibj2mb7xJizbripQ3IoxFXnUcEJESceKZ4CF6nRxzpqzOuDfYGpwx+nz5nWbduQpHjtJW1/Uc07H4EgD6B3RlT9qMVyMrFLhyyYd8PDXeo6C+jV8V46C0fwWKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdIXX3Fm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705DEC4CEF8;
+	Thu, 27 Nov 2025 12:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764247934;
+	bh=7mI+R1BGydSJzPjv/tZ3DYJPk36lOhgPS1Ewmy4H4g4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jdIXX3FmfgW9rrMSrt6YCBuAMDKmmxw/CGeVgZ44QF/LGIfLXjH7Mg/KrAh6iX508
+	 5JHZd4jjHhTWoDHH3gcoJIKrSS2jPM+KoVkFNxTa52hnVjsJiwxKtudrbg5OQORp5G
+	 4AaWI5xJs4XElSRhgb5lVAFfMTCoYo+2Sbfv1JuQ=
+Date: Thu, 27 Nov 2025 13:52:12 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: Re: [PATCH 6.17 817/849] smb: client: fix potential UAF in
+ smb2_close_cached_fid()
+Message-ID: <2025112701-renewed-mooing-f822@gregkh>
+References: <20251111004536.460310036@linuxfoundation.org>
+ <20251111004556.178148239@linuxfoundation.org>
+ <ed7d962e-b350-4986-ae92-14509306ea65@kernel.org>
+ <2f9985eb-e180-44f4-9185-b863826245f9@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f9985eb-e180-44f4-9185-b863826245f9@suse.com>
 
-This patch has been queued up for the 6.1 stable tree.
+On Wed, Nov 26, 2025 at 11:11:30AM -0300, Henrique Carvalho wrote:
+> 
+> 
+> On 11/26/25 3:47 AM, Jiri Slaby wrote:
+> > On 11. 11. 25, 1:46, Greg Kroah-Hartman wrote:
+> >> 6.17-stable review patch.  If anyone has any objections, please let me
+> >> know.
+> >>
+> >> ------------------
+> >>
+> >> From: Henrique Carvalho <henrique.carvalho@suse.com>
+> >>
+> >> commit 734e99623c5b65bf2c03e35978a0b980ebc3c2f8 upstream.
+> ...
+> > 
+> > This _backport_ (of a 6.18-rc5 commit) omits to change
+> > cfids_invalidation_worker() which was removed in 6.18-rc1 by:
+> > 7ae6152b7831 smb: client: remove cfids_invalidation_worker
+> > 
+> > This likely causes:
+> > https://bugzilla.suse.com/show_bug.cgi?id=1254096
+> > BUG: workqueue leaked atomic, lock or RCU
+> > 
+> > Because cfids_invalidation_worker() still does:
+> >                 kref_put(&cfid->refcount, smb2_close_cached_fid);
+> > instead of now required kref_put_lock() aka:
+> >                 close_cached_dir(cfid);
+> > 
+> > thanks,
+> 
+> Thanks, Jiri.
+> 
+> I'm sending the updated patch attached.
+> 
+> This new version should also replace the patch backported to stable
+> versions:
+> 
+> - 6.12.y (065bd62412271a2d734810dd50336cae88c54427)
+> - 6.6.y (cb52d9c86d70298de0ab7c7953653898cbc0efd6)
+> 
+> Alternatively, I'm sending just the fix ("smb: client: fix incomplete
+> backport in cfids_invalidation_worker()").
 
-Subject: mm/memory: do not populate page table entries beyond i_size
-Queue: 6.1
+Thanks, I've taken the "fixup" now.
 
-Thanks for the backport!
+greg k-h
 
