@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2ABC8EE3E
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97025C8F061
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A49673501F2
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:52:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B07E734B1A0
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD83E3126AD;
-	Thu, 27 Nov 2025 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D09322578A;
+	Thu, 27 Nov 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK68nN3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwSKe4vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A4D28D8E8;
-	Thu, 27 Nov 2025 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C86334363;
+	Thu, 27 Nov 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255149; cv=none; b=kVsjII0b8EyfBW3tc5S2aLNXuIJZePx5NhueYKqts5b6GgOpeAxG857gTKD2WcvalbmaoyIQ0dYKmJpOnANFlkiCUWBCX/hhMh7NNk95jI5d6N5ablX9zAJWeFNTmOMun9vqkHzUP0q5uSNO8whisVGLjBEv4UxRPMd8dEmtPp0=
+	t=1764255613; cv=none; b=td494LDAQNjg0W8RBoFEax76q225Qkdemvdx3kO/CLMtmwiKcvcrUFEfQ8NmBxtcXRg0ZJ/DXP/1FJBRI/l0j666PhYt1HNhcgrmLf+5c8EX5/gPRn+zncD4x0/P5jeswzqGLqQ4rcbl7lHU3v77cYaUjrnkN7QvKliUwSSVdug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255149; c=relaxed/simple;
-	bh=fXSqA5HAGSr1fZC3+JfoBPZpWPl3Un7nOtj6fxnGyKw=;
+	s=arc-20240116; t=1764255613; c=relaxed/simple;
+	bh=DUl2amK4oQOqo8julhTO32WvYse2KTjTKDnq8PM/oHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2npgUl/r9o0gzlwj8RGKVGFBYNKMIVvjWk+FOvfvfrV3E+MANpbHRyXMJKlk4cdi6PvwoOJz+hrsDdGgriXDFUrbTMinvR/LVFf/PHgh4ud/XrneWBPmFG0CLcEigH2H/HXHRGO9PKVxhHd8QVNP6PXDWlFjgiPd/5UoKCEdNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK68nN3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CB4C113D0;
-	Thu, 27 Nov 2025 14:52:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q7cTFy0tzJZzM0AI80IwYA/LJGyXhzjWkHS8QT6QWLWv0lugI5kzzMLMguhmAodqgL1wObxyrOzy2I32PzfcUOcclN8KWF3Zg8+BAQL/v74STHX0kZ8kATeSSLJTeuAcuxqJa01WS/HFcD5pTLgUdp7cHi99CR31e3iw5l6Nm1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwSKe4vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BD8C4CEF8;
+	Thu, 27 Nov 2025 15:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255149;
-	bh=fXSqA5HAGSr1fZC3+JfoBPZpWPl3Un7nOtj6fxnGyKw=;
+	s=korg; t=1764255612;
+	bh=DUl2amK4oQOqo8julhTO32WvYse2KTjTKDnq8PM/oHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HK68nN3YSN8UTndC+yx0m4PQdYLCqcjH1MlpHU4qRGyreS7hR4c6NBsCsjSXz9Rxk
-	 Qitds4zeySbobYPrOjUZJ7lbBBRRWv9SODGrPRo3wtVIsiHCbMdYNmVJ2lzE5/jV7m
-	 sYfdzobErBB5GiBKIudtpy2Qhgg39fpAwqN29pNM=
+	b=ZwSKe4vF18t+Kg3oWsFCH3IQpH+oZM32vY6coRMUaVp7QHN5y3BffmMMZyN6mDItR
+	 wz/FB79UCZGdUvJgIdHkdcPfxrG4UOcIpoM63QBMCyx6U9Jc5GzVVofBJCmD9ZCR3U
+	 MCe4dWmg9Hbu7h1luznVP9HbwG0BWe/E5HWHtpSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	staffan.melin@oscillator.se,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 004/112] HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
+	Cihan Ozakca <cozakca@outlook.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.17 053/175] platform/x86: alienware-wmi-wmax: Fix "Alienware m16 R1 AMD" quirk order
 Date: Thu, 27 Nov 2025 15:45:06 +0100
-Message-ID: <20251127144032.873589827@linuxfoundation.org>
+Message-ID: <20251127144044.901547016@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit beab067dbcff642243291fd528355d64c41dc3b2 upstream.
+commit bd4f9f113dda07293ed4002a17d14f62121d324f upstream.
 
-Based on available evidence, the USB ID 4c4a:4155 used by multiple
-devices has been attributed to Jieli. The commit 1a8953f4f774
-("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY") affected touchscreen
-functionality. Added checks for manufacturer and serial number to
-maintain microphone compatibility, enabling both devices to function
-properly.
+Quirks are matched using dmi_first_match(), therefore move the
+"Alienware m16 R1 AMD" entry above other m16 entries.
 
-[jkosina@suse.com: edit shortlog]
-Fixes: 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
+Reported-by: Cihan Ozakca <cozakca@outlook.com>
+Fixes: e2468dc70074 ("Revert "platform/x86: alienware-wmi-wmax: Add G-Mode support to Alienware m16 R1"")
 Cc: stable@vger.kernel.org
-Tested-by: staffan.melin@oscillator.se
-Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://patch.msgid.link/20251103-family-supp-v1-1-a241075d1787@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    |    4 ++--
- drivers/hid/hid-quirks.c |   13 ++++++++++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1528,7 +1528,7 @@
- #define USB_VENDOR_ID_SIGNOTEC			0x2133
- #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
- 
--#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
--#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
-+#define USB_VENDOR_ID_JIELI_SDK_DEFAULT		0x4c4a
-+#define USB_DEVICE_ID_JIELI_SDK_4155		0x4155
- 
- #endif
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -900,7 +900,6 @@ static const struct hid_device_id hid_ig
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
- 	{ }
- };
- 
-@@ -1057,6 +1056,18 @@ bool hid_ignore(struct hid_device *hdev)
- 					     strlen(elan_acpi_id[i].id)))
- 					return true;
- 		break;
-+	case USB_VENDOR_ID_JIELI_SDK_DEFAULT:
-+		/*
-+		 * Multiple USB devices with identical IDs (mic & touchscreen).
-+		 * The touch screen requires hid core processing, but the
-+		 * microphone does not. They can be distinguished by manufacturer
-+		 * and serial number.
-+		 */
-+		if (hdev->product == USB_DEVICE_ID_JIELI_SDK_4155 &&
-+		    strncmp(hdev->name, "SmartlinkTechnology", 19) == 0 &&
-+		    strncmp(hdev->uniq, "20201111000001", 14) == 0)
-+			return true;
-+		break;
- 	}
- 
- 	if (hdev->type == HID_TYPE_USBMOUSE &&
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -122,20 +122,20 @@ static const struct dmi_system_id awcc_d
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Alienware m16 R1",
++		.ident = "Alienware m16 R1 AMD",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
+ 		},
+-		.driver_data = &g_series_quirks,
++		.driver_data = &generic_quirks,
+ 	},
+ 	{
+-		.ident = "Alienware m16 R1 AMD",
++		.ident = "Alienware m16 R1",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
+ 		},
+-		.driver_data = &generic_quirks,
++		.driver_data = &g_series_quirks,
+ 	},
+ 	{
+ 		.ident = "Alienware m16 R2",
 
 
 
