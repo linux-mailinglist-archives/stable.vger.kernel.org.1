@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-197180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CA5C8EE35
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:52:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8B9C8F157
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF2AF4EDCA3
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4CF6934B20E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D5E2949E0;
-	Thu, 27 Nov 2025 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7953532AAC4;
+	Thu, 27 Nov 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBdFFhYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzfKKy+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128C528D850;
-	Thu, 27 Nov 2025 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A6528135D;
+	Thu, 27 Nov 2025 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255021; cv=none; b=VisbxeTH8Z6dVCh4JTlopWZovgHYelEnkrqi4z9JXK5SjttvjTDDWM77oy5/VYy5QWDw1bQMqJe+UQ2sJEHP4Iza/6BzoVqIdgn9H3VtWDiFfP5Hy7t//OZVyrT2xFb4iEAU5hWDWGEw1pRJ2XpjB4OZ/2fMnfUqS7ETwkjfP4Q=
+	t=1764255837; cv=none; b=KkqgXAjX0CUmh61AYp8cJPkzuRmXRAZwrTsKmMI0F5jj551vbijPBcVZ43Xp7BdS+aa1ZdK/YSVmC7ioN6PKx39XSI5XkuFjKfa5J62XpIxa6TSXVr8tVCDxlVlgQDaStuo4b6Hco/4cBvvvuvPLAwKPwINE+SNXSQ5Cte1eI2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255021; c=relaxed/simple;
-	bh=NL083HLjM+AlG332QKV3nPyfOFS7AqID58IHVgHBEek=;
+	s=arc-20240116; t=1764255837; c=relaxed/simple;
+	bh=wDgvoydGhkbkvl8xs/oyXNM9+OYlrPblm/PxmpTUAmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElvZywBRPzyp+w/JSgwpFexEryFfNl01SD8SuXZN7lBeyrIwZw7WboPHuvhtCTbQknJ6vxNRIaA1abON3r8ZObQBdd1NPZOCjYEEPLntgThFcpGqG695yKRUa/kcTMxP4rNwf03SAKl3PJ+7/GV2/CGqJD2rhgruGBweCZmGqTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBdFFhYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633ACC4CEF8;
-	Thu, 27 Nov 2025 14:50:20 +0000 (UTC)
+	 MIME-Version; b=RqBD6psMxtzaAGuCAOqAFH9ygWC08ClchIopysNgzyKKvIJAnJBxpbs0DIoSiKkYzRGMjj5YzWQc/FQpLxWJ4fRhn36NXCUR+QfaRLBr1GbvZeh3l1eU818H/uXYZeO3qM9OjoGZllWPezKDAEWcVC1iiXWKlyVKZuifq4C4Xpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzfKKy+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8403EC4CEF8;
+	Thu, 27 Nov 2025 15:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255020;
-	bh=NL083HLjM+AlG332QKV3nPyfOFS7AqID58IHVgHBEek=;
+	s=korg; t=1764255837;
+	bh=wDgvoydGhkbkvl8xs/oyXNM9+OYlrPblm/PxmpTUAmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBdFFhYuICFV8XD27rC8SyLzZ/vZbvvCH0clj+Aq25Dsfncp0FAgUq3LT6y7vZFgz
-	 WgF3Q1+nTFSOHzn2ASa0MClPG4bOB7C3rfuNRButadxNJZi3ozxOb3DjHWQmKh2ivA
-	 iPXcdTZw7Tf2zqEWKmfd9OEFRKUtSXm9mOYCTMyc=
+	b=xzfKKy+3LXSm4fvwqaFciXfXj8OaMCka5JAasiLcQ3Fv8sN1fa568qP+8GbfrcgFj
+	 LTqYHk3kABx9K5F2DPn6CF0rnQ8PEZGQCK9aFRn2MYNNBQVrJDsUkOWe93uw0OC0jD
+	 YNRD5S8TQGnUj78rLroUn/jiE7XwMb66YKUHnFw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 67/86] s390/mm: Fix __ptep_rdp() inline assembly
+Subject: [PATCH 6.17 130/175] perf: Fix 0 count issue of cpu-clock
 Date: Thu, 27 Nov 2025 15:46:23 +0100
-Message-ID: <20251127144030.281178622@linuxfoundation.org>
+Message-ID: <20251127144047.706644888@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-References: <20251127144027.800761504@linuxfoundation.org>
+In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
+References: <20251127144042.945669935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit 31475b88110c4725b4f9a79c3a0d9bbf97e69e1c ]
+[ Upstream commit f1f96511b1c4c33e53f05909dd267878e0643a9a ]
 
-When a zero ASCE is passed to the __ptep_rdp() inline assembly, the
-generated instruction should have the R3 field of the instruction set to
-zero. However the inline assembly is written incorrectly: for such cases a
-zero is loaded into a register allocated by the compiler and this register
-is then used by the instruction.
+Currently cpu-clock event always returns 0 count, e.g.,
 
-This means that selected TLB entries may not be flushed since the specified
-ASCE does not match the one which was used when the selected TLB entries
-were created.
+perf stat -e cpu-clock -- sleep 1
 
-Fix this by removing the asce and opt parameters of __ptep_rdp(), since
-all callers always pass zero, and use a hard-coded register zero for
-the R3 field.
+ Performance counter stats for 'sleep 1':
+                 0      cpu-clock                        #    0.000 CPUs utilized
+       1.002308394 seconds time elapsed
 
-Fixes: 0807b856521f ("s390/mm: add support for RDP (Reset DAT-Protection)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+The root cause is the commit 'bc4394e5e79c ("perf: Fix the throttle
+ error of some clock events")' adds PERF_EF_UPDATE flag check before
+calling cpu_clock_event_update() to update the count, however the
+PERF_EF_UPDATE flag is never set when the cpu-clock event is stopped in
+counting mode (pmu->dev() -> cpu_clock_event_del() ->
+cpu_clock_event_stop()). This leads to the cpu-clock event count is
+never updated.
+
+To fix this issue, force to set PERF_EF_UPDATE flag for cpu-clock event
+just like what task-clock does.
+
+Fixes: bc4394e5e79c ("perf: Fix the throttle error of some clock events")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20251112080526.3971392-1-dapeng1.mi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/pgtable.h | 12 +++++-------
- arch/s390/mm/pgtable.c          |  4 ++--
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index da2e91b5b1925..2cc9d7bb1b2ac 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1065,17 +1065,15 @@ static inline pte_t pte_mkhuge(pte_t pte)
- #define IPTE_NODAT	0x400
- #define IPTE_GUEST_ASCE	0x800
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f13565d0eb699..970c4a5ab763b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11885,7 +11885,7 @@ static int cpu_clock_event_add(struct perf_event *event, int flags)
  
--static __always_inline void __ptep_rdp(unsigned long addr, pte_t *ptep,
--				       unsigned long opt, unsigned long asce,
--				       int local)
-+static __always_inline void __ptep_rdp(unsigned long addr, pte_t *ptep, int local)
+ static void cpu_clock_event_del(struct perf_event *event, int flags)
  {
- 	unsigned long pto;
- 
- 	pto = __pa(ptep) & ~(PTRS_PER_PTE * sizeof(pte_t) - 1);
--	asm volatile(".insn rrf,0xb98b0000,%[r1],%[r2],%[asce],%[m4]"
-+	asm volatile(".insn	rrf,0xb98b0000,%[r1],%[r2],%%r0,%[m4]"
- 		     : "+m" (*ptep)
--		     : [r1] "a" (pto), [r2] "a" ((addr & PAGE_MASK) | opt),
--		       [asce] "a" (asce), [m4] "i" (local));
-+		     : [r1] "a" (pto), [r2] "a" (addr & PAGE_MASK),
-+		       [m4] "i" (local));
+-	cpu_clock_event_stop(event, flags);
++	cpu_clock_event_stop(event, PERF_EF_UPDATE);
  }
  
- static __always_inline void __ptep_ipte(unsigned long address, pte_t *ptep,
-@@ -1259,7 +1257,7 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
- 	 * A local RDP can be used to do the flush.
- 	 */
- 	if (MACHINE_HAS_RDP && !(pte_val(*ptep) & _PAGE_PROTECT))
--		__ptep_rdp(address, ptep, 0, 0, 1);
-+		__ptep_rdp(address, ptep, 1);
- }
- #define flush_tlb_fix_spurious_fault flush_tlb_fix_spurious_fault
- 
-diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-index 5e349869590a8..1fb435b3913cd 100644
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -312,9 +312,9 @@ void ptep_reset_dat_prot(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 	preempt_disable();
- 	atomic_inc(&mm->context.flush_count);
- 	if (cpumask_equal(mm_cpumask(mm), cpumask_of(smp_processor_id())))
--		__ptep_rdp(addr, ptep, 0, 0, 1);
-+		__ptep_rdp(addr, ptep, 1);
- 	else
--		__ptep_rdp(addr, ptep, 0, 0, 0);
-+		__ptep_rdp(addr, ptep, 0);
- 	/*
- 	 * PTE is not invalidated by RDP, only _PAGE_PROTECT is cleared. That
- 	 * means it is still valid and active, and must not be changed according
+ static void cpu_clock_event_read(struct perf_event *event)
 -- 
 2.51.0
 
