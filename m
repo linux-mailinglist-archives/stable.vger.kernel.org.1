@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-197343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37083C8F1A8
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:07:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30083C8F107
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79CB63BA346
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47FA23B8BFE
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10223346AC;
-	Thu, 27 Nov 2025 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE40A332900;
+	Thu, 27 Nov 2025 14:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/tWOI4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJCz41ZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD27531281E;
-	Thu, 27 Nov 2025 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA65F28D8E8;
+	Thu, 27 Nov 2025 14:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255546; cv=none; b=AhmJfg8FmGecJ6w360LdcfLeeAuJhSEBEVdieZz9HQAICSA2sDig/d6omROnqkUCXn52VQz5/gbZ0sMM+U+fPkwPH/SQ4yfk+IjZZijd7Khc5JFaxHBmG2sq6wqzLQniQddLk5ezMEmLiSdoRb2pW4xM0vBPVv1zKdyunEmvPSI=
+	t=1764255485; cv=none; b=GiHYdP2BdvhSuRU3Bz/Qmld+ZgyYptyTTFi1n6pdEptvD5LExqTya9+H9pwqcbEBBLfPOArXIUhP1EEOTdwwOTVsCQNGoPqZRWbhWYEPrbbXLxh4mbzsGrtcsdYMMhIr1Si+Xs0NsYmZPz7gHoxlvPjaEHPieI3rYUL78TBkTRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255546; c=relaxed/simple;
-	bh=+x7qne16A5nBEZjpxToRS9iv+lMywp5UT6pxxzoc0Ew=;
+	s=arc-20240116; t=1764255485; c=relaxed/simple;
+	bh=sr+9PST12/JLU0Fa5wb1L3qfkHJzk1LqrdOXMROlxuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eS2zu/VINBFC7EmGbOvGH5eSNawqHmk4kfmhktnGFgt6QGntzzgfDrglQmTwrqEgCqwodAEt+pbhSKLlBaK4ppj8m+KEpqUYgbGXZ4+u0YC+YoHkPOQVkQxLZTyuSY3yUpScgWgdanCjFpNDc2xy/mdVdfGqIxScweI9bYpuvI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/tWOI4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E0DC4CEF8;
-	Thu, 27 Nov 2025 14:59:06 +0000 (UTC)
+	 MIME-Version; b=JxvGm/ieNKBS4L58ppyVLLk3d+XE4iNc2ph2gakkLnTj/G6hFpc5nt3IZuFYo2/mDkIhcYrUrCQrgpsHnTTEyD44KMOElqTvHMPyAcAELku6/CxBVHX8ztiIxsHjrRi5c0I0AlCjhzdyBsxuAbgGsYtNG0WqghlGQHjBWqNtHcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJCz41ZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35191C4CEF8;
+	Thu, 27 Nov 2025 14:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255546;
-	bh=+x7qne16A5nBEZjpxToRS9iv+lMywp5UT6pxxzoc0Ew=;
+	s=korg; t=1764255485;
+	bh=sr+9PST12/JLU0Fa5wb1L3qfkHJzk1LqrdOXMROlxuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/tWOI4gjblig1jzHydsopHtznqO+T1b36SVFQGdhmcNOzKw8aJP3VaFKE7qDgil1
-	 b2uwTv3NkStDKDFvGd+8lf7Ssj0IUlLEThSXqp4r4Ks/ji1KUZd5Rs+8mbCv30JZte
-	 ubliK7cVuPBLGPLA3FXAUby57CY/VKtGA87TUNHo=
+	b=DJCz41ZVzuzCt2tImJm7W5h8aJS//Vy8qSgrWM6IdaQcJ912T5sw7nBKnAIHAPSlW
+	 QPrSKoFWMPE9OM4FFoimK7f5hQD+dcdTjeHYbf2ueHPkF9PIVXusWIq2qmEnaShD5H
+	 2uFamhJBgm9dlZ+NaN+OhaFDRYlvuQ24FqlwHr58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Quentin Schulz <quentin.schulz@cherry.de>,
-	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.17 009/175] arm64: dts: rockchip: include rk3399-base instead of rk3399 in rk3399-op1
-Date: Thu, 27 Nov 2025 15:44:22 +0100
-Message-ID: <20251127144043.297326799@linuxfoundation.org>
+Subject: [PATCH 6.17 010/175] arm64: dts: rockchip: disable HS400 on RK3588 Tiger
+Date: Thu, 27 Nov 2025 15:44:23 +0100
+Message-ID: <20251127144043.333267719@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
 References: <20251127144042.945669935@linuxfoundation.org>
@@ -68,48 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-commit 08d70143e3033d267507deb98a5fd187df3e6640 upstream.
+commit baa18d577cd445145039e731d3de0fa49ca57204 upstream.
 
-In commit 296602b8e5f7 ("arm64: dts: rockchip: Move RK3399 OPPs to dtsi
-files for SoC variants"), everything shared between variants of RK3399
-was put into rk3399-base.dtsi and the rest in variant-specific DTSI,
-such as rk3399-t, rk3399-op1, rk3399, etc.
-Therefore, the variant-specific DTSI should include rk3399-base.dtsi and
-not another variant's DTSI.
+We've had reports from the field that some RK3588 Tiger have random
+issues with eMMC errors.
 
-rk3399-op1 wrongly includes rk3399 (a variant) DTSI instead of
-rk3399-base DTSI, let's fix this oversight by including the intended
-DTSI.
+Applying commit a28352cf2d2f ("mmc: sdhci-of-dwcmshc: Change
+DLL_STRBIN_TAPNUM_DEFAULT to 0x4") didn't help and seemed to have made
+things worse for our board.
 
-Fortunately, this had no impact on the resulting DTB since all nodes
-were named the same and all node properties were overridden in
-rk3399-op1.dtsi. This was checked by doing a checksum of rk3399-op1 DTBs
-before and after this commit.
+Our HW department checked the eMMC lines and reported that they are too
+long and don't look great so signal integrity is probably not the best.
 
-No intended change in behavior.
+Note that not all Tigers with the same eMMC chip have errors, so the
+suspicion is that we're really on the edge in terms of signal integrity
+and only a handful devices are failing. Additionally, we have RK3588
+Jaguars with the same eMMC chip but the layout is different and we also
+haven't received reports about those so far.
 
-Fixes: 296602b8e5f7 ("arm64: dts: rockchip: Move RK3399 OPPs to dtsi files for SoC variants")
-Cc: stable@vger.kernel.org
+Lowering the max-frequency to 150MHz from 200MHz instead of simply
+disabling HS400 was briefly tested and seem to work as well. We've
+disabled HS400 downstream and haven't received reports since so we'll go
+with that instead of lowering the max-frequency.
+
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/20251029-rk3399-op1-include-v1-1-2472ee60e7f8@cherry.de
+Fixes: 6173ef24b35b ("arm64: dts: rockchip: add RK3588-Q7 (Tiger) SoM")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251112-tiger-hs200-v1-1-b50adac107c0@cherry.de
+[added Fixes tag and stable-cc from 2nd mail]
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-op1.dtsi
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2016-2017 Fuzhou Rockchip Electronics Co., Ltd
-  */
- 
--#include "rk3399.dtsi"
-+#include "rk3399-base.dtsi"
- 
- / {
- 	cluster0_opp: opp-table-0 {
+--- a/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi
+@@ -382,14 +382,12 @@
+ 	cap-mmc-highspeed;
+ 	mmc-ddr-1_8v;
+ 	mmc-hs200-1_8v;
+-	mmc-hs400-1_8v;
+-	mmc-hs400-enhanced-strobe;
+ 	mmc-pwrseq = <&emmc_pwrseq>;
+ 	no-sdio;
+ 	no-sd;
+ 	non-removable;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk &emmc_data_strobe>;
++	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk>;
+ 	vmmc-supply = <&vcc_3v3_s3>;
+ 	vqmmc-supply = <&vcc_1v8_s3>;
+ 	status = "okay";
 
 
 
