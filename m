@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-197439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BE5C8F136
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:06:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A47C8EFA9
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48E8D3449CA
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963613B5C8E
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9AA32AAC4;
-	Thu, 27 Nov 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EBA32C301;
+	Thu, 27 Nov 2025 14:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeLSuW8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJPBedg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691E2882A7;
-	Thu, 27 Nov 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B6131281E;
+	Thu, 27 Nov 2025 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255822; cv=none; b=rYok/sXJ5a1X6Gi/I2v0DsmU27d1UvGrYP9Xe0z70YZRKrNENg6V15FINy529sbZgHFcuZjG2R9GUAHhrVdmB6OKhjtUYrKeTzeGwkOsMxNvH6hwo7B2tIIpBefnNgAZCPmTJCzjTOywR2yD6vicFkk7mwihGJIwfJ1J1MnR6JI=
+	t=1764255224; cv=none; b=R1SUh8M8oAhA2hUvSp6EYHCv7lnoQXTgSmxS5ee4VpHUZYL5D7RDn2XPDrnzTKe0S0nwtAoO2BpKTpPt4XPTfSsMonRep0c06Ga22Mhyn0AJ4ruibV5gPqvvRnuMHuzoWN6G8X0ei2k/tOmahy/aa6KTrl2tK/4hH1fT3bEjcxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255822; c=relaxed/simple;
-	bh=zGJLoIchn3WknDPRizXflDSNuSddY/r5ObGuGconEiY=;
+	s=arc-20240116; t=1764255224; c=relaxed/simple;
+	bh=T/8Gw+LQkF8pyZsvwxkPO/Tidz5cgWx97/GNyObD4Sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7yAxEw8vVTqPALxPLJ+ND2Yxc0JNvxdqzYZaxJ1gy64nSYJy6wc02TpatIKun2m10yHuur16NILHO36nIV0ykPhbRlDrXtzQ1tRJR/7H1DgFeF29fEghYR+FDEEmwPBmqqKziZHrmwzxFT/xVA2tPs/3En3AoM2vWt1S8K5Bhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeLSuW8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A469C4CEF8;
-	Thu, 27 Nov 2025 15:03:41 +0000 (UTC)
+	 MIME-Version; b=G5DHRkVOtoqS27Ns8BaFYm2BlnsBdE8jDK8eM6o3px7t31BnMDkiXDmkD6HixLInqpfArjbYK74gEeBtGtMmecJVfhSyDeV170ILxmCnELDkS6KWmTI12WYW+u+7XlpmEpcONmHDF3D3JYed/ghXhSWJgj699gwGlzNxsp3BGJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJPBedg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7931FC4CEF8;
+	Thu, 27 Nov 2025 14:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255822;
-	bh=zGJLoIchn3WknDPRizXflDSNuSddY/r5ObGuGconEiY=;
+	s=korg; t=1764255223;
+	bh=T/8Gw+LQkF8pyZsvwxkPO/Tidz5cgWx97/GNyObD4Sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeLSuW8GEE+ptCd+SkUdkYlfwMv+vm17PJlJ57yeLHVnFpJxGxScOUFp9ND8l5Hap
-	 bwkUEQI9GppxupIgBTG4+rJ9+LJRk3dKFi+rtKrKsvgUdfguuvOxdABg68nZZiLs8h
-	 VQ8/njsPLfK5a4ORbrisvjULn5OhHm3C/GEvIUp0=
+	b=VJPBedg+QaDkjfOn18QNRS41FOaodbSA0VjvAfSEGlqat1YaOJ6wINIoE+zAQ9PUl
+	 FmTUDTf9eqaRO4PKXKJIej7rZbnStYGY+s9aYTVdL9nYk/LdA/bEUmj5lTZUS6vQUa
+	 LdfhfglLHbtwS85Uw5Nf1m4CetIgSu0z3oxBBf7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 099/175] net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
+	Alex Hung <alex.hung@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 050/112] drm/amd/display: Move sleep into each retry for retrieve_link_cap()
 Date: Thu, 27 Nov 2025 15:45:52 +0100
-Message-ID: <20251127144046.575454169@linuxfoundation.org>
+Message-ID: <20251127144034.673690400@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit b0c959fec18f4595a6a6317ffc30615cfa37bf69 ]
+commit 71ad9054c1f241be63f9d11df8cbd0aa0352fe16 upstream.
 
-The call to devlink_info_version_fixed_put() in
-mlxsw_linecard_devlink_info_get() did not check for errors,
-although it is checked everywhere in the code.
+[Why]
+When a monitor is booting it's possible that it isn't ready to retrieve
+link caps and this can lead to an EDID read failure:
 
-Add missed 'err' check to the mlxsw_linecard_devlink_info_get()
+```
+[drm:retrieve_link_cap [amdgpu]] *ERROR* retrieve_link_cap: Read receiver caps dpcd data failed.
+amdgpu 0000:c5:00.0: [drm] *ERROR* No EDID read.
+```
 
-Fixes: 3fc0c51905fb ("mlxsw: core_linecards: Expose device PSID over device info")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251113161922.813828-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Rather than msleep once and try a few times, msleep each time.  Should
+be no changes for existing working monitors, but should correct reading
+caps on a monitor that is slow to boot.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4672
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 669dca37b3348a447db04bbdcbb3def94d5997cc)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-index b032d5a4b3b84..10f5bc4892fc7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-@@ -601,6 +601,8 @@ int mlxsw_linecard_devlink_info_get(struct mlxsw_linecard *linecard,
- 		err = devlink_info_version_fixed_put(req,
- 						     DEVLINK_INFO_VERSION_GENERIC_FW_PSID,
- 						     info->psid);
-+		if (err)
-+			goto unlock;
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -1633,12 +1633,13 @@ static bool retrieve_link_cap(struct dc_
+ 	status = dpcd_get_tunneling_device_data(link);
  
- 		sprintf(buf, "%u.%u.%u", info->fw_major, info->fw_minor,
- 			info->fw_sub_minor);
--- 
-2.51.0
-
+ 	dpcd_set_source_specific_data(link);
+-	/* Sink may need to configure internals based on vendor, so allow some
+-	 * time before proceeding with possibly vendor specific transactions
+-	 */
+-	msleep(post_oui_delay);
+ 
+ 	for (i = 0; i < read_dpcd_retry_cnt; i++) {
++		/*
++		 * Sink may need to configure internals based on vendor, so allow some
++		 * time before proceeding with possibly vendor specific transactions
++		 */
++		msleep(post_oui_delay);
+ 		status = core_link_read_dpcd(
+ 				link,
+ 				DP_DPCD_REV,
 
 
 
