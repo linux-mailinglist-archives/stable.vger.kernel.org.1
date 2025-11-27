@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-197270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4D4C8EFE6
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:00:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C82C8EE11
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1913BC299
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:54:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22BF84ED753
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011CA333456;
-	Thu, 27 Nov 2025 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C3A28B4FE;
+	Thu, 27 Nov 2025 14:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2m3VCpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ym3fiNCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3F29BD89;
-	Thu, 27 Nov 2025 14:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C64728469B;
+	Thu, 27 Nov 2025 14:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255275; cv=none; b=Wy3xYs5sZ0rsChHcUwDeO5hm+6x8Jrx8y7RmItNgLqvXSTaL0WXn/KNBpoW1LjiDI12yHrfNHGi3oTDXErlvn1s/Ul6QZhJAItrV9Fu92GaHOavJCWFd2nYchoZqwPTacn+o11r5f3gtdJ4/4hxLxkpqV3WDgO0CqOdi5OrZyQM=
+	t=1764254992; cv=none; b=KEfVN1ZhyGa45ce1kdRECOXID39xW+E7WFIz33xdEIRYL+Scke+1ys+3dNZVRrSnLRBvq4DOVJSs9kGrDOv9IAybnPCW1dizzvGPA1XjBvOjtVy22R7tzg2PBnP0QWex+32i+Sibrz4EAhc6Xozrn2T94sp4pDlFs38NtwyCV+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255275; c=relaxed/simple;
-	bh=hUdCD70F6GEE14GTcHqqvqsCcOmyW2jMKCfIn6ceNGw=;
+	s=arc-20240116; t=1764254992; c=relaxed/simple;
+	bh=ZD2nnTfGnEcQ33GlL4VcGSvzQ6iw+ioAdW9+D7bILBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7Luu9MgJJWxRvQaYE2zekFN+/FqDvykRJl2Pdm0J6zWt4asd89abX84xTV6pyFdb4tg+olV6ktEXyR8aNSzvjpFeCS9Nv2MCLd5okoHsqJUWTdBPezIUSEKS2kn2xMsdSS075tJ6EVXa+VlwCYX5UKjJkFNFCMhVQZsNrsHE34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2m3VCpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2455AC4CEF8;
-	Thu, 27 Nov 2025 14:54:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NUo2jDkdL5b9uPFttUlGV43Y1Zhxdw3RX3ZLchAsmMVzjBvWX4Uysnzn1E4s+J7FiZ2oy1xgTwYmMUu+hLconBsnwTAjDOYykoQgz2Zbc9pu8OKVSUeY428snaO1HCcPPsxrNyKq+/oxC4rGMtx+GgiDDif/sSes/JUZ8rCjAjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ym3fiNCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9125FC4CEF8;
+	Thu, 27 Nov 2025 14:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255275;
-	bh=hUdCD70F6GEE14GTcHqqvqsCcOmyW2jMKCfIn6ceNGw=;
+	s=korg; t=1764254992;
+	bh=ZD2nnTfGnEcQ33GlL4VcGSvzQ6iw+ioAdW9+D7bILBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2m3VCpXjbVYDO2bUtk54Uti0tP5vUfavqCM7b4jHgwpTeuo49JRf4fy1vnZ/J4Mc
-	 g838tZ7cH3Jq34zHGbzwke6kJq+sV7TydH0L1vbHEXVLXWQebNbS2IMhvshNSwk832
-	 G8Flmv1h846NbxPmSLXS3szOiHTRVO/Kx8MTRKI4=
+	b=ym3fiNCt4IJBeBUaHBJBexE6VNQ7AVKnsL0MUa4DazMGTRQ38m27SchSzupHagw3+
+	 LZnWZnI7e5TYUIRvjrk5f4TL1moePKBvngIXclWBMCHyYv7tQCrFiEEwI9YfHkqqUM
+	 X/cv/DszebGTsyG+MaUdo4ejkEGXnMfqnO3lUHxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/112] selftests: net: lib: Do not overwrite error messages
+Subject: [PATCH 6.6 55/86] LoongArch: Use UAPI types in ptrace UAPI header
 Date: Thu, 27 Nov 2025 15:46:11 +0100
-Message-ID: <20251127144035.367286075@linuxfoundation.org>
+Message-ID: <20251127144029.841516502@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
-References: <20251127144032.705323598@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +60,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit bed22c7b90af732978715a1789bca1c3cfa245a6 ]
+[ Upstream commit 20d7338f2d3bcb570068dd6d39b16f1a909fe976 ]
 
-ret_set_ksft_status() calls ksft_status_merge() with the current return
-status and the last one. It treats a non-zero return code from
-ksft_status_merge() as an indication that the return status was
-overwritten by the last one and therefore overwrites the return message
-with the last one.
+The kernel UAPI headers already contain fixed-width integer types, there
+is no need to rely on the libc types. There may not be a libc available
+or the libc may not provides the <stdint.h>, like for example on nolibc.
 
-Currently, ksft_status_merge() returns a non-zero return code even if
-the current return status and the last one are equal. This results in
-return messages being overwritten which is counter-productive since we
-are more interested in the first failure message and not the last one.
+This also aligns the header with the rest of the LoongArch UAPI headers.
 
-Fix by changing ksft_status_merge() to only return a non-zero return
-code if the current return status was actually changed.
-
-Add a test case which checks that the first error message is not
-overwritten.
-
-Before:
-
- # ./lib_sh_test.sh
- [...]
- TEST: RET tfail2 tfail -> fail                                      [FAIL]
-        retmsg=tfail expected tfail2
- [...]
- # echo $?
- 1
-
-After:
-
- # ./lib_sh_test.sh
- [...]
- TEST: RET tfail2 tfail -> fail                                      [ OK ]
- [...]
- # echo $?
- 0
-
-Fixes: 596c8819cb78 ("selftests: forwarding: Have RET track kselftest framework constants")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251116081029.69112-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/lib_sh_test.sh | 7 +++++++
- tools/testing/selftests/net/lib.sh                    | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/loongarch/include/uapi/asm/ptrace.h | 40 +++++++++++-------------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/lib_sh_test.sh b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-index ff2accccaf4d4..b4eda6c6199ed 100755
---- a/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-+++ b/tools/testing/selftests/net/forwarding/lib_sh_test.sh
-@@ -30,6 +30,11 @@ tfail()
- 	do_test "tfail" false
- }
+diff --git a/arch/loongarch/include/uapi/asm/ptrace.h b/arch/loongarch/include/uapi/asm/ptrace.h
+index aafb3cd9e943e..215e0f9e8aa32 100644
+--- a/arch/loongarch/include/uapi/asm/ptrace.h
++++ b/arch/loongarch/include/uapi/asm/ptrace.h
+@@ -10,10 +10,6 @@
  
-+tfail2()
-+{
-+	do_test "tfail2" false
-+}
-+
- txfail()
- {
- 	FAIL_TO_XFAIL=yes do_test "txfail" false
-@@ -132,6 +137,8 @@ test_ret()
- 	ret_subtest $ksft_fail "tfail" txfail tfail
+ #include <linux/types.h>
  
- 	ret_subtest $ksft_xfail "txfail" txfail txfail
-+
-+	ret_subtest $ksft_fail "tfail2" tfail2 tfail
- }
+-#ifndef __KERNEL__
+-#include <stdint.h>
+-#endif
+-
+ /*
+  * For PTRACE_{POKE,PEEK}USR. 0 - 31 are GPRs,
+  * 32 is syscall's original ARG0, 33 is PC, 34 is BADVADDR.
+@@ -41,44 +37,44 @@ struct user_pt_regs {
+ } __attribute__((aligned(8)));
  
- exit_status_tests_run()
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index bb4d2f8d50d67..501615d285300 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -40,7 +40,7 @@ __ksft_status_merge()
- 		weights[$i]=$((weight++))
- 	done
+ struct user_fp_state {
+-	uint64_t fpr[32];
+-	uint64_t fcc;
+-	uint32_t fcsr;
++	__u64 fpr[32];
++	__u64 fcc;
++	__u32 fcsr;
+ };
  
--	if [[ ${weights[$a]} > ${weights[$b]} ]]; then
-+	if [[ ${weights[$a]} -ge ${weights[$b]} ]]; then
- 		echo "$a"
- 		return 0
- 	else
+ struct user_lsx_state {
+ 	/* 32 registers, 128 bits width per register. */
+-	uint64_t vregs[32*2];
++	__u64 vregs[32*2];
+ };
+ 
+ struct user_lasx_state {
+ 	/* 32 registers, 256 bits width per register. */
+-	uint64_t vregs[32*4];
++	__u64 vregs[32*4];
+ };
+ 
+ struct user_lbt_state {
+-	uint64_t scr[4];
+-	uint32_t eflags;
+-	uint32_t ftop;
++	__u64 scr[4];
++	__u32 eflags;
++	__u32 ftop;
+ };
+ 
+ struct user_watch_state {
+-	uint64_t dbg_info;
++	__u64 dbg_info;
+ 	struct {
+-		uint64_t    addr;
+-		uint64_t    mask;
+-		uint32_t    ctrl;
+-		uint32_t    pad;
++		__u64    addr;
++		__u64    mask;
++		__u32    ctrl;
++		__u32    pad;
+ 	} dbg_regs[8];
+ };
+ 
+ struct user_watch_state_v2 {
+-	uint64_t dbg_info;
++	__u64 dbg_info;
+ 	struct {
+-		uint64_t    addr;
+-		uint64_t    mask;
+-		uint32_t    ctrl;
+-		uint32_t    pad;
++		__u64    addr;
++		__u64    mask;
++		__u32    ctrl;
++		__u32    pad;
+ 	} dbg_regs[14];
+ };
+ 
 -- 
 2.51.0
 
