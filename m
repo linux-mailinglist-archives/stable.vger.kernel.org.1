@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-197433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5075CC8F2F5
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:14:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB79CC8EE03
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37A6A3BD71A
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:03:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE95B3504AB
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FFB332EA0;
-	Thu, 27 Nov 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C825329993F;
+	Thu, 27 Nov 2025 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkmYtvW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjW1+bDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B02882A7;
-	Thu, 27 Nov 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DDA2882BB;
+	Thu, 27 Nov 2025 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255805; cv=none; b=Wo6CrO7JFeadk83Yi/PTxGCvPt7XaHjGuPYd1gW65h01lnEPu7WTx7oaCs4DzD30O0mqbJfEgeJl7MXG+kwNn4XEqx7ZCyJRhMzf+P8IyUjQlH31ttqtcCAbE9LyWFa5dHGMvzw4/v5+uHXYWoJNYA2+Krzmxi76CXIEDeOx62Q=
+	t=1764255100; cv=none; b=RSxps0EwVsNlQNgpg4AJG3gd70mLUXPkKMLt5duMlK9hM8rsFqA6bo0Ongenuuf4kxRTkxLhoTV1paWDhLLBkexyHwHU75HDCNTUyZIAS07jX8CEt5LbGCmI2PeEfzLgq0/ZlITaGSY3tlQcDgAE3J/WP/0v5AXRsNxKBpKUJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255805; c=relaxed/simple;
-	bh=U9bNtPSZKIMZCF80FS71YLkDvH6FusK7XIrbLggi7pA=;
+	s=arc-20240116; t=1764255100; c=relaxed/simple;
+	bh=IflB5oBPt7hsZngGPR3C4shGsvLeHz+KP7kZd+UXjVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhaX3g3yo2nkD2FhPc/LNedQ4TfEB8eYx7N4hPIZ4p+Uoq3U+05tTxDeuKdEDRJnqS/bgBimv7CokF9E0b9M3luIZVUu++zt+eZbevJwnZUxwaPpt1KYRmpZdJ4N7GnL+rcV60GmG9zHqie3/bRX8JaswV9toolKAoK4vM8v+Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkmYtvW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E62C4CEF8;
-	Thu, 27 Nov 2025 15:03:24 +0000 (UTC)
+	 MIME-Version; b=fjft+uFjkOUpxQo6X5gW6QiYBBkHnMpNhvJCqmcLETTepkTShtuWs2pua6DzNf5O/lvHubuR31jIlWUop4GWbJmbe8l5U9TC3X7TjZo8CH6tRLveNB0pDTc+OkzOxKBinCzoXAXiPKJy9TjBPWKv67N4qtF5IQZ1vYtlTGDOcoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjW1+bDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D6EC4CEF8;
+	Thu, 27 Nov 2025 14:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255805;
-	bh=U9bNtPSZKIMZCF80FS71YLkDvH6FusK7XIrbLggi7pA=;
+	s=korg; t=1764255100;
+	bh=IflB5oBPt7hsZngGPR3C4shGsvLeHz+KP7kZd+UXjVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkmYtvW8IG3uMlS1Z+Qb4lgZ61RFUWkzZ4BwOCHkwPcVb3raFU374W7hUgrK4tdZ4
-	 aVKF6Jg0k6NYfeSLMtr5YVx9AvOEzNbqXprhd7K4gNDRBKF63IHM1FwNWXO2yov1b1
-	 CSHBu9uOCsgmj4r+IbkyCoXQyQYcNqzgNLO0RGC4=
+	b=YjW1+bDsadJcv/QrEJzDvQa27bZcBzIrS3vAzfB8P0RPvwACBiOmWmpjzyXC8Md3m
+	 KvKsYq/9+FO9NF+gHHvzJvKl8ILGK7PT8X5r7SenPUQo8JV4hWFer5XFeJDb8trXVC
+	 +cHSd7npvfxBA3T0ouaWyX4CzBasmcWbyp8nl668=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jared Kangas <jkangas@redhat.com>,
-	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 120/175] pinctrl: s32cc: fix uninitialized memory in s32_pinctrl_desc
+Subject: [PATCH 6.6 57/86] vsock: Ignore signal/timeout on connect() if already established
 Date: Thu, 27 Nov 2025 15:46:13 +0100
-Message-ID: <20251127144047.343086303@linuxfoundation.org>
+Message-ID: <20251127144029.915077567@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jared Kangas <jkangas@redhat.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 97ea34defbb57bfaf71ce487b1b0865ffd186e81 ]
+[ Upstream commit 002541ef650b742a198e4be363881439bb9d86b4 ]
 
-s32_pinctrl_desc is allocated with devm_kmalloc(), but not all of its
-fields are initialized. Notably, num_custom_params is used in
-pinconf_generic_parse_dt_config(), resulting in intermittent allocation
-errors, such as the following splat when probing i2c-imx:
+During connect(), acting on a signal/timeout by disconnecting an already
+established socket leads to several issues:
 
-        WARNING: CPU: 0 PID: 176 at mm/page_alloc.c:4795 __alloc_pages_noprof+0x290/0x300
-        [...]
-        Hardware name: NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3) (DT)
-        [...]
-        Call trace:
-         __alloc_pages_noprof+0x290/0x300 (P)
-         ___kmalloc_large_node+0x84/0x168
-         __kmalloc_large_node_noprof+0x34/0x120
-         __kmalloc_noprof+0x2ac/0x378
-         pinconf_generic_parse_dt_config+0x68/0x1a0
-         s32_dt_node_to_map+0x104/0x248
-         dt_to_map_one_config+0x154/0x1d8
-         pinctrl_dt_to_map+0x12c/0x280
-         create_pinctrl+0x6c/0x270
-         pinctrl_get+0xc0/0x170
-         devm_pinctrl_get+0x50/0xa0
-         pinctrl_bind_pins+0x60/0x2a0
-         really_probe+0x60/0x3a0
-        [...]
-         __platform_driver_register+0x2c/0x40
-         i2c_adap_imx_init+0x28/0xff8 [i2c_imx]
-        [...]
+1. connect() invoking vsock_transport_cancel_pkt() ->
+   virtio_transport_purge_skbs() may race with sendmsg() invoking
+   virtio_transport_get_credit(). This results in a permanently elevated
+   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
 
-This results in later parse failures that can cause issues in dependent
-drivers:
+2. connect() resetting a connected socket's state may race with socket
+   being placed in a sockmap. A disconnected socket remaining in a sockmap
+   breaks sockmap's assumptions. And gives rise to WARNs.
 
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c0-pins/i2c0-grp0: could not parse node property
-        [...]
-        pca953x 0-0022: failed writing register: -6
-        i2c i2c-0: IMX I2C adapter registered
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c2-pins/i2c2-grp0: could not parse node property
-        i2c i2c-1: IMX I2C adapter registered
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
-        s32g-siul2-pinctrl 4009c240.pinctrl: /soc@0/pinctrl@4009c240/i2c4-pins/i2c4-grp0: could not parse node property
-        i2c i2c-2: IMX I2C adapter registered
+3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
+   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
+   any simultaneous sendmsg() or connect() and may result in a
+   use-after-free/null-ptr-deref.
 
-Fix this by initializing s32_pinctrl_desc with devm_kzalloc() instead of
-devm_kmalloc() in s32_pinctrl_probe(), which sets the previously
-uninitialized fields to zero.
+Do not disconnect socket on signal/timeout. Keep the logic for unconnected
+sockets: they don't linger, can't be placed in a sockmap, are rejected by
+sendmsg().
 
-Fixes: fd84aaa8173d ("pinctrl: add NXP S32 SoC family support")
-Signed-off-by: Jared Kangas <jkangas@redhat.com>
-Tested-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
+[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
+[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/nxp/pinctrl-s32cc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-index 501eb296c7605..51ecb8d0fb7e8 100644
---- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
-+++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-@@ -951,7 +951,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
- 	spin_lock_init(&ipctl->gpio_configs_lock);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 64790062cfa2e..ca1289e64bcc8 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1550,18 +1550,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 		timeout = schedule_timeout(timeout);
+ 		lock_sock(sk);
  
- 	s32_pinctrl_desc =
--		devm_kmalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
-+		devm_kzalloc(&pdev->dev, sizeof(*s32_pinctrl_desc), GFP_KERNEL);
- 	if (!s32_pinctrl_desc)
- 		return -ENOMEM;
+-		if (signal_pending(current)) {
+-			err = sock_intr_errno(timeout);
+-			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
+-			sock->state = SS_UNCONNECTED;
+-			vsock_transport_cancel_pkt(vsk);
+-			vsock_remove_connected(vsk);
+-			goto out_wait;
+-		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+-			err = -ETIMEDOUT;
++		/* Connection established. Whatever happens to socket once we
++		 * release it, that's not connect()'s concern. No need to go
++		 * into signal and timeout handling. Call it a day.
++		 *
++		 * Note that allowing to "reset" an already established socket
++		 * here is racy and insecure.
++		 */
++		if (sk->sk_state == TCP_ESTABLISHED)
++			break;
++
++		/* If connection was _not_ established and a signal/timeout came
++		 * to be, we want the socket's state reset. User space may want
++		 * to retry.
++		 *
++		 * sk_state != TCP_ESTABLISHED implies that socket is not on
++		 * vsock_connected_table. We keep the binding and the transport
++		 * assigned.
++		 */
++		if (signal_pending(current) || timeout == 0) {
++			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
++
++			/* Listener might have already responded with
++			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
++			 * sk_state == TCP_SYN_SENT, which hereby we break.
++			 * In such case VIRTIO_VSOCK_OP_RST will follow.
++			 */
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
++
++			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
++			 * transport->connect().
++			 */
+ 			vsock_transport_cancel_pkt(vsk);
++
+ 			goto out_wait;
+ 		}
  
 -- 
 2.51.0
