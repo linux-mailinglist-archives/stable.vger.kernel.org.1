@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-197471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D72C8F286
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE18C8F05B
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 16:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04F154EE822
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 15:05:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60A274F0568
+	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 14:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCD3334680;
-	Thu, 27 Nov 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DE933345D;
+	Thu, 27 Nov 2025 14:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoTAWQUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pISUZHhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673103115A6;
-	Thu, 27 Nov 2025 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFAC289E06;
+	Thu, 27 Nov 2025 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255915; cv=none; b=qhYIMWOWCy5NFyYKAmjw23DghKx0yDczOWEWKl2KvIyik2VMTgjcv2zblXuk957OEqBqq9ZjYdlCxjAMpmWKT7QauchaPGiNpAKm3A7UqcT19G2D9B0nP9q1Qo1N3IqcJQYmKgp2UoUG8fdTqH+JtQ15x31NFjCNfIPKPkwVNG4=
+	t=1764255444; cv=none; b=ReZFAWp7PGPraXMKo49GK5qmW4OpYzmpijX/7ByveJVN54AwazP6Z+n7yCf6K3saTzCLpph1uEfUS74oD4futZwiXBRJRGLMT635HJFK0sw7bfoPukCninATNuEdVEDzxaOlDP6BROFdnwJhmY7Gk2L+tSjGIKRJ/MfkLEc8tSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255915; c=relaxed/simple;
-	bh=FyC62cwJ1NTyANeGP55JieKJYLJ13tB62v7G0vAQSjw=;
+	s=arc-20240116; t=1764255444; c=relaxed/simple;
+	bh=9feSEPv3Fsv9sdnmfNiYqM+FjIbxmpA7Zed4jsqjQIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDRNEN+BBEQpqWzTrlf9UTj5BiK3Y4ki7FckQiMo6Y7PMWe1iPjY/QWY3plzTUfdc2JACtTKkACJqAsiYo6EUgZDOuxEf6cy3vZls6ie5jiyCkobvk5xMxlJGrT0T8v4G39tJ4495DQVR6VqQ3j2slMhngt0570wLaE/2r9MG54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoTAWQUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943D6C4CEF8;
-	Thu, 27 Nov 2025 15:05:14 +0000 (UTC)
+	 MIME-Version; b=NqIHkpWM0wYmi1EUqW0XgxLglw+s1CZzgTzv3d3+Nu0WtWlB6VPThJDgjZSes4KSOJ+3f3zV1/25vsvKU7gRXdwOmhvABLveBFCl2+hPXFkQ1SeYaB2Axdgod13loJ0YMDyavrLLte1LzmqFKxMX5Ofez4XnWu6WJVvRN7h0FHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pISUZHhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CD4C4CEF8;
+	Thu, 27 Nov 2025 14:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764255914;
-	bh=FyC62cwJ1NTyANeGP55JieKJYLJ13tB62v7G0vAQSjw=;
+	s=korg; t=1764255444;
+	bh=9feSEPv3Fsv9sdnmfNiYqM+FjIbxmpA7Zed4jsqjQIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoTAWQUScnyqNERgCtjklAeYrcjsGVnEDMkfVuAZRwemDfdJ2XHQ1OVaDAxUy4lBN
-	 /sAYsdwe+x8QRNerwYOEm7xH9B6phQ6cqijcLFSqJ7Zs2eQkdeUk4QcnGPUr/AKJJd
-	 kFU9KUqCTtgLcQ7c0uhSIG3ksVLjNnZM/BOFBUjY=
+	b=pISUZHhpYOg2xRr/w0pCSh3PbQikJkmw6VkFJqTC8hb+VWO8SVi/NwgU/Wwv82xSs
+	 2K1pnteY8TAtXcwCIBmdJbamFJ3prf8vXDNy5kbj0O9gPieZcQhKADrnTJVzNIzfvM
+	 Sdm3N7FZlZkD3iPI5XiQt3aRRTYEKDWZjmOC1otA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Martin Leung <martin.leung@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ausef Yousof <Ausef.Yousof@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 158/175] tracing/tools: Fix incorrcet short option in usage text for --threads
+Subject: [PATCH 6.12 109/112] drm/amd/display: avoid reset DTBCLK at clock init
 Date: Thu, 27 Nov 2025 15:46:51 +0100
-Message-ID: <20251127144048.723711971@linuxfoundation.org>
+Message-ID: <20251127144036.839812870@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251127144042.945669935@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
+In-Reply-To: <20251127144032.705323598@linuxfoundation.org>
+References: <20251127144032.705323598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +67,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 53afec2c8fb2a562222948cb1c2aac48598578c9 ]
+[ Upstream commit 0ae47e971b9add8f7b8f8d55ac5f407f6f346758 ]
 
-The help message incorrectly listed '-t' as the short option for
---threads, but the actual getopt_long configuration uses '-e'.
-This mismatch can confuse users and lead to incorrect command-line
-usage. This patch updates the usage string to correctly show:
-	"-e, --threads NRTHR"
-to match the implementation.
+[why & how]
+this is to init to HW real DTBCLK.
+and use real HW DTBCLK status to update internal logic state
 
-Note: checkpatch.pl reports a false-positive spelling warning on
-'Run', which is intentional.
-
-Link: https://patch.msgid.link/20251106031040.1869-1-zhangchujun@cmss.chinamobile.com
-Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Martin Leung <martin.leung@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cfa0904a35fd ("drm/amd/display: Prevent Gating DTBCLK before It Is Properly Latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/latency/latency-collector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c |   18 +++++++----
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
-index cf263fe9deaf4..ef97916e3873a 100644
---- a/tools/tracing/latency/latency-collector.c
-+++ b/tools/tracing/latency/latency-collector.c
-@@ -1725,7 +1725,7 @@ static void show_usage(void)
- "-n, --notrace\t\tIf latency is detected, do not print out the content of\n"
- "\t\t\tthe trace file to standard output\n\n"
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -393,6 +393,7 @@ void dcn35_update_clocks(struct clk_mgr
+ 		if (clk_mgr_base->clks.dtbclk_en && !new_clocks->dtbclk_en) {
+ 			if (clk_mgr->base.ctx->dc->config.allow_0_dtb_clk)
+ 				dcn35_smu_set_dtbclk(clk_mgr, false);
++
+ 			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
+ 		}
+ 		/* check that we're not already in lower */
+@@ -410,11 +411,17 @@ void dcn35_update_clocks(struct clk_mgr
+ 		}
  
--"-t, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
-+"-e, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
+ 		if (!clk_mgr_base->clks.dtbclk_en && new_clocks->dtbclk_en) {
+-			dcn35_smu_set_dtbclk(clk_mgr, true);
+-			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
++			int actual_dtbclk = 0;
  
- "-r, --random\t\tArbitrarily sleep a certain amount of time, default\n"
- "\t\t\t%ld ms, before reading the trace file. The\n"
--- 
-2.51.0
-
+ 			dcn35_update_clocks_update_dtb_dto(clk_mgr, context, new_clocks->ref_dtbclk_khz);
+-			clk_mgr_base->clks.ref_dtbclk_khz = new_clocks->ref_dtbclk_khz;
++			dcn35_smu_set_dtbclk(clk_mgr, true);
++
++			actual_dtbclk = REG_READ(CLK1_CLK4_CURRENT_CNT);
++
++			if (actual_dtbclk) {
++				clk_mgr_base->clks.ref_dtbclk_khz = new_clocks->ref_dtbclk_khz;
++				clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
++			}
+ 		}
+ 
+ 		/* check that we're not already in D0 */
+@@ -581,12 +588,10 @@ static bool dcn35_is_spll_ssc_enabled(st
+ 
+ static void init_clk_states(struct clk_mgr *clk_mgr)
+ {
+-	struct clk_mgr_internal *clk_mgr_int = TO_CLK_MGR_INTERNAL(clk_mgr);
+ 	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
++
+ 	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
+ 
+-	if (clk_mgr_int->smu_ver >= SMU_VER_THRESHOLD)
+-		clk_mgr->clks.dtbclk_en = true; // request DTBCLK disable on first commit
+ 	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
+ 	clk_mgr->clks.p_state_change_support = true;
+ 	clk_mgr->clks.prev_p_state_change_support = true;
+@@ -597,6 +602,7 @@ static void init_clk_states(struct clk_m
+ void dcn35_init_clocks(struct clk_mgr *clk_mgr)
+ {
+ 	struct clk_mgr_internal *clk_mgr_int = TO_CLK_MGR_INTERNAL(clk_mgr);
++
+ 	init_clk_states(clk_mgr);
+ 
+ 	// to adjust dp_dto reference clock if ssc is enable otherwise to apply dprefclk
 
 
 
