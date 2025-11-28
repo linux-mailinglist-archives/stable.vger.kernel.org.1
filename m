@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-197626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB95C92E96
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:31:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE64C92FA1
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E933A9AAB
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:31:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AF8C734F3E9
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962292080C8;
-	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFF42C327D;
+	Fri, 28 Nov 2025 18:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rz1eqlfw"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cR0YtCn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA42AD3D;
-	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2732D0622;
+	Fri, 28 Nov 2025 18:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764354700; cv=none; b=LKxKtElVkd2tPROirZrW4S8xZfjC/n5ppR2pD85psU+LDCOL0oO6fF5++UwvwXt6avX3fa2lFlclwHZTQxDcdaCp2gRm6o3NV40x93kMzadRip6vDKZa0gAN2bo8XyLN1w7X6YZOPXJnvXotlZVANW/dnj2JWW29yy6jdD2RVT8=
+	t=1764356124; cv=none; b=q18Ty5FgEgTaAFLVmqCjF2y2XvwlRhxWoyerg9SFsbHrICsjVMyOImvvhw5FC8MrTiElTcORhDloqrdpdzN29wJjBAnc2jVcnbQRsGF0JvRyfGiAfAH9V0k8kjqp57dSqAQ/D25vu6nIchdZP/fCGbJXq/6f/XP7FNnZmOa7ouM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764354700; c=relaxed/simple;
-	bh=+HCVMPz6KDr8bKwQ9mSr6H4ZItM7++fvxfbrQDJWRBU=;
-	h=Date:To:From:Subject:Message-Id; b=QNfBOpI6sv74aOQF2e/kPPWtHMldaHCFVRqTbwwBOrtHni4FsZSIughdez/FgLMl9m1hgdli212M3pt0oymbcYbGnwPBZSzJ4vMRGc09gNPBA0+bATyoTlm1vpqpTN2pUctIOv/RFiCyWgAsxG8xaSNKLAQbq9+myDROkl2oNd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rz1eqlfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD26C4CEF1;
-	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
+	s=arc-20240116; t=1764356124; c=relaxed/simple;
+	bh=bIPaIQFsV5dPVv4UUZ6HSMuS+/tihJQmcM7KGPYU09s=;
+	h=Date:To:From:Subject:Message-Id; b=WtBhAbv/722cxsJUrldkE9Ui9Lf/sqfGvV3qqZbXO+6RZqWr3CEBv+LgwlbaPQewHR2PH0h9I2+/bJhAIt6IfYaVbifjrZsiT0cPYt3cp8XFj2VXfyxk+zMkOHoQy/H+XUbzAK27sMc3ftLTdGzSIrPNWW/+Obkasc8xRApmxMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cR0YtCn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B995CC4CEFB;
+	Fri, 28 Nov 2025 18:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764354700;
-	bh=+HCVMPz6KDr8bKwQ9mSr6H4ZItM7++fvxfbrQDJWRBU=;
+	s=korg; t=1764356123;
+	bh=bIPaIQFsV5dPVv4UUZ6HSMuS+/tihJQmcM7KGPYU09s=;
 	h=Date:To:From:Subject:From;
-	b=Rz1eqlfwQaexjAGYBbagnLLlQmqSF3JeJ50nwjimX4Et8mNILg7gnJXUQSoTUTcQJ
-	 UTueUM/PX4f3MM8v46c+enj9cA6+P3PRE/2Z/gzsXXpaCn1FjtDUZ9oBCsQrKOC80i
-	 vbN3ztD/DshPTMnfx7HueacLF6/lg19awqw7HW3g=
-Date: Fri, 28 Nov 2025 10:31:39 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,leitao@debian.org,jpazdziora@redhat.com,coxu@redhat.com,catalin.marinas@arm.com,bhe@redhat.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
+	b=cR0YtCn39IZ3ttFZ4ZFWjp4ZtHlaOivISCx7OXo1P38xsKjyBFEMWHLDrQ4/vNTJb
+	 BGuGJnA5MSMMfSNdu3ncY/pLw9U0/GhFdGjgqOuZQAA1ffSLhS7P5EOlOx22dn3T1D
+	 CeqIyAWvxVDdtV4ro2jDN5IVLcUach/eK81OyeXc=
+Date: Fri, 28 Nov 2025 10:55:23 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,glider@google.com,dvyukov@google.com,dakr@kernel.org,andreyknvl@gmail.com,jiayuan.chen@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [obsolete] arm64-kernel-initialize-missing-kexec_buf-random-field.patch removed from -mm tree
-Message-Id: <20251128183140.0BD26C4CEF1@smtp.kernel.org>
+Subject: + mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251128185523.B995CC4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,99 +49,181 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The quilt patch titled
-     Subject: arm64: kernel: initialize missing kexec_buf->random field
-has been removed from the -mm tree.  Its filename was
-     arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+The patch titled
+     Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
 
-This patch was dropped because it is obsolete
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: arm64: kernel: initialize missing kexec_buf->random field
-Date: Thu, 27 Nov 2025 18:26:44 +0000
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+Date: Fri, 28 Nov 2025 19:15:14 +0800
 
-Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-introduced the kexec_buf->random field to enable random placement of
-kexec_buf.
+Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
+issues:
 
-However, this field was never properly initialized for kexec images that
-do not need to be placed randomly, leading to the following UBSAN warning:
+1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
+   unpoisoning the extended region. This flag is required to correctly
+   associate the allocation with KASAN's vmalloc tracking.
 
-[  +0.364528] ------------[ cut here ]------------
-[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
-[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
-[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
-[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-[  +0.000000] Call trace:
-[  +0.000001]  show_stack+0x24/0x40 (C)
-[  +0.000006]  __dump_stack+0x28/0x48
-[  +0.000002]  dump_stack_lvl+0x7c/0xb0
-[  +0.000002]  dump_stack+0x18/0x34
-[  +0.000001]  ubsan_epilogue+0x10/0x50
-[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
-[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
-[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
-[  +0.000001]  kexec_add_buffer+0xa8/0x178
-[  +0.000002]  image_load+0xf0/0x258
-[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
-[  +0.000002]  invoke_syscall+0x68/0xe8
-[  +0.000001]  el0_svc_common+0xb0/0xf8
-[  +0.000002]  do_el0_svc+0x28/0x48
-[  +0.000001]  el0_svc+0x40/0xe8
-[  +0.000002]  el0t_64_sync_handler+0x84/0x140
-[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
+   Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitly
+   sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it.
+   vrealloc must behave consistently — especially when reusing existing
+   vmalloc regions — to ensure KASAN can track allocations correctly.
 
-To address this, initialise kexec_buf->random field properly.
+2. When vrealloc reuses an existing vmalloc region (without allocating new
+   pages), KASAN previously generated a new tag, which broke tag-based
+   memory access tracking. We now add a 'reuse_tag' parameter to
+   __kasan_unpoison_vmalloc() to preserve the original tag in such cases.
 
-Link: https://lkml.kernel.org/r/20251127182644.1577592-1-yeoreum.yun@arm.com
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Jan Pazdziora <jpazdziora@redhat.com>
+A new helper kasan_unpoison_vralloc() is introduced to handle this reuse
+scenario, ensuring consistent tag behavior during reallocation.
+
+
+Link: https://lkml.kernel.org/r/20251128111516.244497-1-jiayuan.chen@linux.dev
+Link: https://syzkaller.appspot.com/bug?extid=997752115a851cb0cf36 [1]
+Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reported-by: syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68e243a2.050a0220.1696c6.007d.GAE@google.com/T/
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/arm64/kernel/kexec_image.c        |    3 +++
- arch/arm64/kernel/machine_kexec_file.c |    6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ include/linux/kasan.h |   21 +++++++++++++++++++--
+ mm/kasan/hw_tags.c    |    4 ++--
+ mm/kasan/shadow.c     |    6 ++++--
+ mm/vmalloc.c          |    4 ++--
+ 4 files changed, 27 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/kernel/kexec_image.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/kexec_image.c
-@@ -76,6 +76,9 @@ static void *image_load(struct kimage *i
- 	kbuf.buf_min = 0;
- 	kbuf.buf_max = ULONG_MAX;
- 	kbuf.top_down = false;
-+#ifdef CONFIG_CRASH_DUMP
-+	kbuf.random = false;
-+#endif
+--- a/include/linux/kasan.h~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/include/linux/kasan.h
+@@ -596,13 +596,23 @@ static inline void kasan_release_vmalloc
+ #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
  
- 	kbuf.buffer = kernel;
- 	kbuf.bufsz = kernel_len;
---- a/arch/arm64/kernel/machine_kexec_file.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/machine_kexec_file.c
-@@ -94,7 +94,11 @@ int load_other_segments(struct kimage *i
- 			char *initrd, unsigned long initrd_len,
- 			char *cmdline)
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-			       kasan_vmalloc_flags_t flags);
++			       kasan_vmalloc_flags_t flags, bool reuse_tag);
++
++static __always_inline void *kasan_unpoison_vrealloc(const void *start,
++						     unsigned long size,
++						     kasan_vmalloc_flags_t flags)
++{
++	if (kasan_enabled())
++		return __kasan_unpoison_vmalloc(start, size, flags, true);
++	return (void *)start;
++}
++
+ static __always_inline void *kasan_unpoison_vmalloc(const void *start,
+ 						unsigned long size,
+ 						kasan_vmalloc_flags_t flags)
  {
--	struct kexec_buf kbuf = {};
-+	struct kexec_buf kbuf = {
-+#ifdef CONFIG_CRASH_DUMP
-+		.random = false,
-+#endif
-+	};
- 	void *dtb = NULL;
- 	unsigned long initrd_load_addr = 0, dtb_len,
- 		      orig_segments = image->nr_segments;
+ 	if (kasan_enabled())
+-		return __kasan_unpoison_vmalloc(start, size, flags);
++		return __kasan_unpoison_vmalloc(start, size, flags, false);
+ 	return (void *)start;
+ }
+ 
+@@ -629,6 +639,13 @@ static inline void kasan_release_vmalloc
+ 					 unsigned long free_region_end,
+ 					 unsigned long flags) { }
+ 
++static inline void *kasan_unpoison_vrealloc(const void *start,
++					    unsigned long size,
++					    kasan_vmalloc_flags_t flags)
++{
++	return (void *)start;
++}
++
+ static inline void *kasan_unpoison_vmalloc(const void *start,
+ 					   unsigned long size,
+ 					   kasan_vmalloc_flags_t flags)
+--- a/mm/kasan/hw_tags.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/kasan/hw_tags.c
+@@ -317,7 +317,7 @@ static void init_vmalloc_pages(const voi
+ }
+ 
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-				kasan_vmalloc_flags_t flags)
++				kasan_vmalloc_flags_t flags, bool reuse_tag)
+ {
+ 	u8 tag;
+ 	unsigned long redzone_start, redzone_size;
+@@ -361,7 +361,7 @@ void *__kasan_unpoison_vmalloc(const voi
+ 		return (void *)start;
+ 	}
+ 
+-	tag = kasan_random_tag();
++	tag = reuse_tag ? get_tag(start) : kasan_random_tag();
+ 	start = set_tag(start, tag);
+ 
+ 	/* Unpoison and initialize memory up to size. */
+--- a/mm/kasan/shadow.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/kasan/shadow.c
+@@ -625,7 +625,7 @@ void kasan_release_vmalloc(unsigned long
+ }
+ 
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-			       kasan_vmalloc_flags_t flags)
++			       kasan_vmalloc_flags_t flags, bool reuse_tag)
+ {
+ 	/*
+ 	 * Software KASAN modes unpoison both VM_ALLOC and non-VM_ALLOC
+@@ -648,7 +648,9 @@ void *__kasan_unpoison_vmalloc(const voi
+ 	    !(flags & KASAN_VMALLOC_PROT_NORMAL))
+ 		return (void *)start;
+ 
+-	start = set_tag(start, kasan_random_tag());
++	if (!reuse_tag)
++		start = set_tag(start, kasan_random_tag());
++
+ 	kasan_unpoison(start, size, false);
+ 	return (void *)start;
+ }
+--- a/mm/vmalloc.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/vmalloc.c
+@@ -4175,8 +4175,8 @@ void *vrealloc_node_align_noprof(const v
+ 	 * We already have the bytes available in the allocation; use them.
+ 	 */
+ 	if (size <= alloced_size) {
+-		kasan_unpoison_vmalloc(p + old_size, size - old_size,
+-				       KASAN_VMALLOC_PROT_NORMAL);
++		kasan_unpoison_vrealloc(p, size,
++					KASAN_VMALLOC_PROT_NORMAL | KASAN_VMALLOC_VM_ALLOC);
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+ 		 * already been zeroed at initial allocation time or during
 _
 
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
+Patches currently in -mm which might be from jiayuan.chen@linux.dev are
 
+mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+mm-vmscan-skip-increasing-kswapd_failures-when-reclaim-was-boosted.patch
 
 
