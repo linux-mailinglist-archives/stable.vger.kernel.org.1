@@ -1,256 +1,126 @@
-Return-Path: <stable+bounces-197581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A28C91DFA
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 12:51:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC75C91EBA
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5206835213F
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 11:51:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8A10435455E
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 12:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAF83242C8;
-	Fri, 28 Nov 2025 11:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B7F30AAA6;
+	Fri, 28 Nov 2025 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9h3ippw"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="RYz2pkfO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A16B2F1FD3;
-	Fri, 28 Nov 2025 11:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCB264619
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 11:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764330654; cv=none; b=BFuhpXkCKjj5DTmBGX31ADCz5MglT9TaikeLtW4G9+0urDl356LuqFZ+9AdVKFm3DOQdBehpJm1cRghxYVbbPlvROXebsxXkpFQDsLwPvZZJlQP/fiEDDnglPaZAK+jKtp+0zkg2c82jvmwhy5DMWhe62NpxnSoh/MYYU16su2k=
+	t=1764331159; cv=none; b=FY1VIhKsV2Dteg1Qvq/zDyWF5B+tWaIeayPU3E8l/meWX8CmbIAdhaGJ4tGkR0Go6A11OcgM6pRFA3UNFJN+9Yr9BiUNB1Vwdl6CzzzIuYkLz76c/MinsdjDxQG9TXQKKG4BdpILXD4pS6ibclpsTLKMOhltEq6K0RVzvTvQqrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764330654; c=relaxed/simple;
-	bh=J3EqdeNEnlMVvV/TxElDoaTOZx5Kx11YfAHlUJndQpQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bbyx23wkNp1bc8XJOfiy8rodAxwmUKmro0RzCMMAO6aakYIkU9f13Xl3yE4nszeRn8ppxXbD8Kvh7r1Cn4JAb8yJP7+UsMS626/SZseDhNn9SNFq+T2kvaTNI5oQ/OBGaE0MaioWJdRcljs8J+2q6Gtyzl/jjoLOdNyKre3s9gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9h3ippw; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764330652; x=1795866652;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=J3EqdeNEnlMVvV/TxElDoaTOZx5Kx11YfAHlUJndQpQ=;
-  b=f9h3ippw1mcJkoTJUR1tx/wKeeHj0kfyyFsKOPWKUzhD1fQnQA23FXhK
-   4sohkeF5oy6u0hJM6aTwTknQds5MnnwAvwz7RagboCkbVuUREjv3giACs
-   rjlWL6d4IJqJ7A3yzD6gZtQhlkajqvgo+cUSJphQXfbjJn6Nb7rOBc7aH
-   PklDONF3Es/1Z4UrgU28GNVEmjfjk7TCuSO0XBzdic8RsBiCjcuq4/8cL
-   Y7yQhAnhQcuR1nff6sLJhHdIeRaCUi6vooQFFGTZtpCdEK4Dvgwz5ErZO
-   fuh+be/w17R1PlS7A/RqyZldIPmzXRb1XTXFTTS2kASeQD3Jts4HGcRpI
-   A==;
-X-CSE-ConnectionGUID: ycel80B9Q+eXgtUnMD1pzQ==
-X-CSE-MsgGUID: tGgTyPxSS3uHpNxS1huAPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66437133"
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="66437133"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 03:50:51 -0800
-X-CSE-ConnectionGUID: Y67/q+RZRqqSJrm6e/T0qQ==
-X-CSE-MsgGUID: ado3sna4RGKRGYinYh2Tzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="230725425"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.229])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 03:50:48 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-pci@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Wei Yang <weiyang@linux.vnet.ibm.com>,
-	=?UTF-8?q?Malte=20Schr=C3=B6der?= <malte+lkml@tnxip.de>,
+	s=arc-20240116; t=1764331159; c=relaxed/simple;
+	bh=FlbAgT3Fsp2QFJzt34+r8ldrh8ZXqT2HNPYCtznDzS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q9T3JtEqblXAYfpeS5u1zO2p7oHR+4ITOTLnRdc/g0cVZBP8xtpVUOuI+QKKHbYTUW/lbkD67QnjQipuSPCMuA+/tTWsRbX+cbWujTESvtVgVLPvOtlaowS9evFznUyfmo8TxavWH04voCJbquoBoaKrPfkfA5CRJhPZrvLSfDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=RYz2pkfO; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477b1cc8fb4so10600655e9.1
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 03:59:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1764331156; x=1764935956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4vzfBzGWa4ODlWjmtVQJGXcxzSl0srJUX999pZiDEZM=;
+        b=RYz2pkfOC3r0KSprW4Padgmrs0rX8dI5UmoPz1j2XzZpKqn7l7gM5bHjI+aneNdYCb
+         ZasOLjyJrTuVaiO2+50NojV8ldqAbxgVwFKO+LuAnBVKqv6e4NQFVdhVdk2VS+kWKVaq
+         prfKfXdabAYpJFy9iPPNS+/dBejuf/Sp9aBS6dZu8ESfY83uOcGR3ZRWgvElxqf7vzzj
+         LaGyT1fWMcbqfUz15wtgjkc2m2dNemEjAVhu9mnYHPZFBrjSUdPpGTrNABtli15MOXtY
+         DCixrXWz/k+QtS+8E5IAZjRkUeET1MO9LCytWM3Dr5ECt4fbM3y6Rgfe+uyTCfJn1qT6
+         1Jaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764331156; x=1764935956;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4vzfBzGWa4ODlWjmtVQJGXcxzSl0srJUX999pZiDEZM=;
+        b=A62NWGHVYn8S7GsTxAPe/2q3zy9qp+qwx8Y0UyQ8beegBScr4OjaY6gyz45TFOJ6hx
+         m+xsJ0uyoxYr4qFvmmn3RwxgSrxBRZTJZ/R7NultUXdjMjqUwAY4yP7S+ll+yaHFfjVM
+         FZGYSv13L7negv523xPuMQ49wyZEth2k1au8pnDkhkcLZ/g85xssxnCJsB+U3gdn+gc8
+         a1NqVymIGZ/O19DYwfuN1NUKqwwna7+CYkl6EbrZlJZSu7TRhQ1k0kWvnu29kmbt3tv8
+         i/QekpaC5Gx+kXwPdTOqV2eH1fkkKoX0H+CYydMMYrk5GpRwgMBCUPRS84MR1pTVfukD
+         ucew==
+X-Forwarded-Encrypted: i=1; AJvYcCUc/XEanoe2VaIg/pwcSyiK0pbJuQxq8PWQHpUfoWGABhcCDFVO9ys2KEw3ZbNWTtLhF8mq/SM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGodh5GzYebhT3MgCmUeSaVEKVtj8WVDFpFHIkzlszDs4erWkB
+	sFwQI4Pj4SjsFf6vqc2EoEVIEuX0ZKUuYzyx7QyCutB/gGCiFS6IfYuYxY+Wjw0WLUU=
+X-Gm-Gg: ASbGncuHlU3wQ7H4PizxS34CLKMnyfgz+FBaWutNjqv195wiwx8j+CiOfgnizUUzUIl
+	BOKzehL+UXf4Jt264HjAIaTETQRhrUl9a4X+qo5s+7w0c7hYRakNVG8pM6aGbEKCIotWybp5bvI
+	AmUg93WB7+QuwBg/x6ZcYRlE/jgIsUJVFpqvsQ0J8KvQoP57/uEnRSZl+rILzFPPy8AmeQH7JeB
+	3HIRuBXpoPY8N0FGmvN6zET8GeAEumlQrG0KCZZQtZDoQprU6O2xRGHaOygODHvtw+sxBYCLdPq
+	AAAspB0ogRmS9pyOukwDGHEZG0FNsm8HwKoFjTT4QcpvUM+GsOhMUGMoCSlivilwa/9HDa/TZ0K
+	253mx4swdpUEik2Bj0eKLzTF384yvihCfCYpZUlwAG3JJY7ljaHvhEERkuAuC5AYMhPwI/JhrpI
+	Nqit91
+X-Google-Smtp-Source: AGHT+IEblarfzojmnW5H0khhj7fcQLRiTfu2IrK6EsUrlrrVoe2bsVmRXDHPwcSd7mEc/1Ggu5xZRg==
+X-Received: by 2002:a05:600c:460a:b0:471:700:f281 with SMTP id 5b1f17b1804b1-47904b1b2dfmr89703405e9.25.1764331155967;
+        Fri, 28 Nov 2025 03:59:15 -0800 (PST)
+Received: from brgl-uxlite ([2a01:cb1d:dc:7e00:f3c6:aa54:79d2:8979])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479111565a1sm81343515e9.5.2025.11.28.03.59.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 03:59:15 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: linux-gpio@vger.kernel.org,
+	Xi Ruoyao <xry111@xry111.site>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	loongarch@lists.linux.dev,
+	stable@vger.kernel.org,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
 	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/4] PCI: Rewrite bridge window head alignment function
-Date: Fri, 28 Nov 2025 13:50:19 +0200
-Message-Id: <20251128115021.4287-3-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251128115021.4287-1-ilpo.jarvinen@linux.intel.com>
-References: <20251128115021.4287-1-ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH] gpio: loongson: Switch 2K2000/3000 GPIO to BYTE_CTRL_MODE
+Date: Fri, 28 Nov 2025 12:59:14 +0100
+Message-ID: <176433115039.40295.3243947969244377474.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251128075033.255821-1-xry111@xry111.site>
+References: <20251128075033.255821-1-xry111@xry111.site>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-The calculation of bridge window head alignment is done by
-calculate_mem_align() [*]. With the default bridge window alignment, it
-is used for both head and tail alignment.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-The selected head alignment does not always result in tight-fitting
-resources (gap at d4f00000-d4ffffff):
 
-    d4800000-dbffffff : PCI Bus 0000:06
-      d4800000-d48fffff : PCI Bus 0000:07
-        d4800000-d4803fff : 0000:07:00.0
-          d4800000-d4803fff : nvme
-      d4900000-d49fffff : PCI Bus 0000:0a
-        d4900000-d490ffff : 0000:0a:00.0
-          d4900000-d490ffff : r8169
-        d4910000-d4913fff : 0000:0a:00.0
-      d4a00000-d4cfffff : PCI Bus 0000:0b
-        d4a00000-d4bfffff : 0000:0b:00.0
-          d4a00000-d4bfffff : 0000:0b:00.0
-        d4c00000-d4c07fff : 0000:0b:00.0
-      d4d00000-d4dfffff : PCI Bus 0000:15
-        d4d00000-d4d07fff : 0000:15:00.0
-          d4d00000-d4d07fff : xhci-hcd
-      d4e00000-d4efffff : PCI Bus 0000:16
-        d4e00000-d4e7ffff : 0000:16:00.0
-        d4e80000-d4e803ff : 0000:16:00.0
-          d4e80000-d4e803ff : ahci
-      d5000000-dbffffff : PCI Bus 0000:0c
+On Fri, 28 Nov 2025 15:50:32 +0800, Xi Ruoyao wrote:
+> The manuals of 2K2000 says both BIT_CTRL_MODE and BYTE_CTRL_MODE are
+> supported but the latter is recommended.  Also on 2K3000, per the ACPI
+> DSDT the GPIO controller is compatible with 2K2000, but it fails to
+> operate GPIOs 62 and 63 (and maybe others) using BIT_CTRL_MODE.
+> Using BYTE_CTRL_MODE also makes those 2K3000 GPIOs work.
+> 
+> 
+> [...]
 
-This has not been caused problems (for years) with the default bridge
-window tail alignment that grossly over-estimates the required tail
-alignment leaving more tail room than necessary. With the introduction
-of relaxed tail alignment that leaves no extra tail room whatsoever,
-any gaps will immediately turn into assignment failures.
+Applied, thanks!
 
-Introduce head alignment calculation that ensures no gaps are left and
-apply the new approach when using relaxed alignment.
+[1/1] gpio: loongson: Switch 2K2000/3000 GPIO to BYTE_CTRL_MODE
+      https://git.kernel.org/brgl/linux/c/dae9750105cf93ac1e156ef91f4beeb53bd64777
 
-([*] I don't understand the algorithm in calculate_mem_align().)
-
-Fixes: 5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220775
-Reported-by: Malte Schröder <malte+lkml@tnxip.de>
-Tested-by: Malte Schröder <malte+lkml@tnxip.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
----
-
-Little annoyingly, there's difference in what aligns array contains
-between the legacy alignment approach (which I dare not to touch as I
-really don't understand what the algorithm tries to do) and this new
-head aligment algorithm, both consuming stack space. After making the
-new approach the only available approach in the follow-up patch, only
-one array remains (however, that follow-up change is also somewhat
-riskier when it comes to regressions).
-
-That being said, the new head alignment could work with the same aligns
-array as the legacy approach, it just won't necessarily produce an
-optimal (the smallest possible) head alignment when if (r_size <=
-align) condition is used. Just let me know if that approach is
-preferred (to save some stack space).
----
- drivers/pci/setup-bus.c | 53 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 70d021ffb486..93f6b0750174 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1224,6 +1224,45 @@ static inline resource_size_t calculate_mem_align(resource_size_t *aligns,
- 	return min_align;
- }
- 
-+/*
-+ * Calculate bridge window head alignment that leaves no gaps in between
-+ * resources.
-+ */
-+static resource_size_t calculate_head_align(resource_size_t *aligns,
-+					    int max_order)
-+{
-+	resource_size_t head_align = 1;
-+	resource_size_t remainder = 0;
-+	int order;
-+
-+	/* Take the largest alignment as the starting point. */
-+	head_align <<= max_order + __ffs(SZ_1M);
-+
-+	for (order = max_order - 1; order >= 0; order--) {
-+		resource_size_t align1 = 1;
-+
-+		align1 <<= order + __ffs(SZ_1M);
-+
-+		/*
-+		 * Account smaller resources with alignment < max_order that
-+		 * could be used to fill head room if alignment less than
-+		 * max_order is used.
-+		 */
-+		remainder += aligns[order];
-+
-+		/*
-+		 * Test if head fill is enough to satisfy the alignment of
-+		 * the larger resources after reducing the alignment.
-+		 */
-+		while ((head_align > align1) && (remainder >= head_align / 2)) {
-+			head_align /= 2;
-+			remainder -= head_align;
-+		}
-+	}
-+
-+	return head_align;
-+}
-+
- /**
-  * pbus_upstream_space_available - Check no upstream resource limits allocation
-  * @bus:	The bus
-@@ -1311,13 +1350,13 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- {
- 	struct pci_dev *dev;
- 	resource_size_t min_align, win_align, align, size, size0, size1 = 0;
--	resource_size_t aligns[28]; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns[28] = {}; /* Alignments from 1MB to 128TB */
-+	resource_size_t aligns2[28] = {};/* Alignments from 1MB to 128TB */
- 	int order, max_order;
- 	struct resource *b_res = pbus_select_window_for_type(bus, type);
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t relaxed_align;
- 	resource_size_t old_size;
- 
- 	if (!b_res)
-@@ -1327,7 +1366,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (b_res->parent)
- 		return;
- 
--	memset(aligns, 0, sizeof(aligns));
- 	max_order = 0;
- 	size = 0;
- 
-@@ -1378,6 +1416,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 			 */
- 			if (r_size <= align)
- 				aligns[order] += align;
-+			aligns2[order] += align;
- 			if (order > max_order)
- 				max_order = order;
- 
-@@ -1402,9 +1441,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 	if (bus->self && size0 &&
- 	    !pbus_upstream_space_available(bus, b_res, size0, min_align)) {
--		relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--		relaxed_align = max(relaxed_align, win_align);
--		min_align = min(min_align, relaxed_align);
-+		min_align = calculate_head_align(aligns2, max_order);
- 		size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
- 		resource_set_range(b_res, min_align, size0);
- 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
-@@ -1418,9 +1455,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 
- 		if (bus->self && size1 &&
- 		    !pbus_upstream_space_available(bus, b_res, size1, add_align)) {
--			relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
--			relaxed_align = max(relaxed_align, win_align);
--			min_align = min(min_align, relaxed_align);
-+			min_align = calculate_head_align(aligns2, max_order);
- 			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
- 						  old_size, win_align);
- 			pci_info(bus->self,
+Best regards,
 -- 
-2.39.5
-
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
