@@ -1,206 +1,140 @@
-Return-Path: <stable+bounces-197562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E73C9121A
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:21:30 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C428C91220
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D07B93462D4
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 08:21:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EF5DD345D83
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 08:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE9F2D5416;
-	Fri, 28 Nov 2025 08:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609DD823DD;
+	Fri, 28 Nov 2025 08:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KJaaVBRy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNXFJ2+G"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF520322
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BC01F94A
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764318084; cv=none; b=qJ8Y+MklzBjVqVSHsDriLJg5qQmDj5WlUsnGiHlh/PJY3StJhC/2hUQdJPE8JfLfhTVF+zS8/bT+JbwHZkplQ3FsAs2O9iyLj/1/wz5/UtbC17kP5OebH6FZKy26Djjh3Pk7cgw71UHf3LAadyORQ55VA3JWZohvebw7SeYpbfQ=
+	t=1764318166; cv=none; b=qQv4yfL9gBv5SR7Mc6+8W4eWBRzNeTk+3ET81gctWmRay9gV2ykKntqsG2UuEBcc/k5uw/+lY0IhF37bGeZlj5JcjlOBTd9y89uQiVpF+gpA+cma5PDrIiyrJq7C/b5JhGNIMECwHxU5JMRMupn6OaYZuiQK3BYtctpg3W6h9pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764318084; c=relaxed/simple;
-	bh=AdekLcG7GqFd0zXze/fg+up7Ax95SZCCQWtu33K7Uug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PuAlBjzNOR5I+C3H/9rnsyF1TZQ6aNjsOmwfMqtibH7YSGTKTZrl2oFg4GRoNC19F3BdgHFF37WZhbNGECs9CdRQshrmgiWYwb6wQ2zJgbIhEE2SRJHfaB2BLPMZ6OJd3QxwnxrW715VW44LD7WEvfiDZFcGHiw5an60wfZgGJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KJaaVBRy; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764318081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KKgF0At3T0HdCWd5M90J6uZEDhRAo1+0Ul43YUDqtPI=;
-	b=KJaaVBRyQHSnZCyun2lsxOgBK/kjze9Iw5x4iRCjGkkBQefhMOeF061VbNNPxdAdL9Cz7+
-	ErAYyt3waqY7lDwZ4ytjsV2WHfGYBjcc8xVrhOaYuE6Bn3BpMPtl6zQVBC9vcRmiq0/bt8
-	ZBO5mq6s7Sxv+F8fSZh730rRks4vNrk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-6eCKOMHFMpmCpH__rJnQ0Q-1; Fri,
- 28 Nov 2025 03:21:17 -0500
-X-MC-Unique: 6eCKOMHFMpmCpH__rJnQ0Q-1
-X-Mimecast-MFC-AGG-ID: 6eCKOMHFMpmCpH__rJnQ0Q_1764318075
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CFF51800447;
-	Fri, 28 Nov 2025 08:21:15 +0000 (UTC)
-Received: from thinkpad (unknown [10.45.225.196])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D07C619560B0;
-	Fri, 28 Nov 2025 08:21:09 +0000 (UTC)
-Date: Fri, 28 Nov 2025 09:21:05 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, jkarrenpalo@gmail.com,
-	arvid.brodin@alten.se, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/hsr: fix NULL pointer dereference in
- skb_clone with hw tag insertion
-Message-ID: <aSlbccUo_YwqehWL@thinkpad>
-References: <20251127163219.40389-1-ssrane_b23@ee.vjti.ac.in>
+	s=arc-20240116; t=1764318166; c=relaxed/simple;
+	bh=7oOJGGhMrog+ToQ8/FvfvQvGeOOCMZ+IneBzQFWOz6o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uOBihLgtgA/lUwFFtAWKttSlp9uY+22BJCpbG+4Y0Y5ETsMkJs0DKDSMtJwsQBdvTF6ijVUWxzSCwwgaKSWy+1D+n39APcN6v44x2/6K5W0Cv7Dd1xdjObbTLNqNF/1N/Vv01LNkBbZaKovxRckgEsVEhooEBPaZOSdig3+Y6nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNXFJ2+G; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5959b2f3fc9so1515354e87.2
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 00:22:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764318163; x=1764922963; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oHCeuj8gB2CuW6wprwhSKdOXpBDmYx45db33xCoSj/w=;
+        b=bNXFJ2+GRis3iqyN5uHxkEr+ekeybE8pHna2iQ1chs/ySI94LmmgWx608PUPD/VNvl
+         HhRIXRyUP1ulvb9eol41YO1U3aStiNiTV0WJF4n4v105FlFAhPbOz4pjI0B0j+hlQvCa
+         /UdUB8+GgOTxCuIFKdnFzvtF2fIbgMRy937BBtNzIFUOzDCvZ4vputjPtBFknamjI/a0
+         cSqhyjP6LeVMJTWp7fIjt5FH7XM8+VcRpMNIzXaXTS6reRyalSfRYxjsQLSMcI26l8z2
+         MSV4WZV1/NIZNSBoW+dCMuVrWqi3dmadr7QvvB9jf02oqmzDmUrlDVrwcz/kFK/aAjoL
+         hyTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764318163; x=1764922963;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oHCeuj8gB2CuW6wprwhSKdOXpBDmYx45db33xCoSj/w=;
+        b=DIcPGYWR/udSyDY5D103cRUcIaPWI85Z6pY9/tUOczB8eOg+CiCfqANblYm34hfYa0
+         /yrxuvurosSCZZmNnwAPez0VGbPvQ4abYkqjbw4PzJNx86LDPSRSISFZOmukNaCeHAlD
+         d48/a1PChSCAcjss4De4W1PRM23akRpwmtAGsoHZ3vm+0MOsnYzpdNhYfqg6rbIF/XMk
+         +fmnje8FS67G8nthH5Lm0YH1iY0d2BYwMv4aaKcbQM91mfV2ydOKh0SQHfG9AA0ZpKtd
+         1guWbQhhMr+joJbFNyCnNGF21AVSNa1NBNwgj5AA96PYxQ0Gp1eNx/wkG3Rf7+cpjJnO
+         s7Hg==
+X-Gm-Message-State: AOJu0YyFtkibne8P0W2C4ao2OA5RD+K8BA5y8OgxsaFelHw1LFork0PC
+	PB6XVkoygX4yLpqtTuw+KNeSO1BtmHmJgHOoexsMcR1MRN3WImEt1LZaECpxuj5x0AfT325ooxO
+	0tuNm6jDwnuadMOcu6m11vKRoCMaFAoY=
+X-Gm-Gg: ASbGnct+y4myYSVvVjZcqWFdR1LRnhvClc1fovlNVB1La1lFO6S4CFBPPp+Z6JL2o7g
+	BSBUf3lXJEA2PS2Iri/3066nKOemzjBnKjh7HNlks5mLAz6UtApWxHYtjpnhv+SR42RqOQC3V+m
+	Bs3fbbum0Ra4PPaTetQt8girjTWf/KicLtx9Ghmg15TzX/d3fHgznLtm4kI2PVrwueblGTc4G0H
+	mJhsSFIpm/hPycqHgiMHs77JLTgXW14Y2zydMZp48VIKUnYDWD7l6MG2tleR9oyYBbPD46OquzB
+	S4auNtSvQa+5csIS1GjXd4ofl0g=
+X-Google-Smtp-Source: AGHT+IEE0Ltog1BqZAp6EBgcX2H5jbG0BwiSehNgXi7ObjiEkhdk1nthjYej3asc2kjkPYi+ttWpAPwjSZUDybQpYhI=
+X-Received: by 2002:a05:6512:104f:b0:594:35b7:aa7 with SMTP id
+ 2adb3069b0e04-596a3ee53cfmr9323339e87.48.1764318162632; Fri, 28 Nov 2025
+ 00:22:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251127163219.40389-1-ssrane_b23@ee.vjti.ac.in>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+References: <20251127150348.216197881@linuxfoundation.org>
+In-Reply-To: <20251127150348.216197881@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Fri, 28 Nov 2025 13:52:31 +0530
+X-Gm-Features: AWmQ_bkJLsxwXDpSbB7s18HNg16Pz3k5EoQWRGjiTBwxrQHtrf5TCwhI-g3Cd9w
+Message-ID: <CAC-m1rrQKJPKs_TvpPjbYXkHDet_Gnzw8awNHdWWRLDfq9fiiQ@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/176] 6.17.10-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 10:02:19PM +0530, Shaurya Rane wrote:
-> When NETIF_F_HW_HSR_TAG_INS is enabled and frame->skb_std is NULL,
-> hsr_create_tagged_frame() and prp_create_tagged_frame() call skb_clone()
-> with a NULL pointer.
-
-Have you acually tested this or do you have any other indication that
-this can happen? After all, you are suggesting that this kernel crash in
-a syzbot VM is caused by a (very uncommon) feature of hardware NICs.
-
-> Similarly, prp_get_untagged_frame() doesn't check
-> if __pskb_copy() fails before calling skb_clone().
-
-I suspect that this is really the only condition that can trigger the
-crash in question. This would also match that the syzbot reproducer hits
-this with a PRP interface (IFLA_HSR_PROTOCOL=0x1).
-
-> This causes a kernel crash reported by Syzbot:
+On Thu, Nov 27, 2025 at 8:39=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-> CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-> RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-> Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-> RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-> RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-> RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-> RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-> R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-> R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-> FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-> Call Trace:
->  <TASK>
->  hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
->  hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
->  hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
->  __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
->  __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
->  __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
->  netif_receive_skb_internal net/core/dev.c:6278 [inline]
->  netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
->  tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
->  tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
->  tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
->  new_sync_write fs/read_write.c:593 [inline]
->  vfs_write+0x5c9/0xb30 fs/read_write.c:686
->  ksys_write+0x145/0x250 fs/read_write.c:738
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f0449f8e1ff
-> Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-> RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-> RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-> RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-> RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-> R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-> R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
->  </TASK>
+> This is the start of the stable review cycle for the 6.17.10 release.
+> There are 176 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Fix this by adding NULL checks for frame->skb_std before calling
-> skb_clone() in the affected functions.
+> Responses should be made by Sat, 29 Nov 2025 15:03:13 +0000.
+> Anything received after that time might be too late.
 >
-> Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-> Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-> ---
->  net/hsr/hsr_forward.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.17.10-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.17.y
+> and the diffstat can be found below.
 >
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 339f0d220212..8a8559f0880f 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -205,6 +205,8 @@ struct sk_buff *prp_get_untagged_frame(struct hsr_frame_info *frame,
->  				__pskb_copy(frame->skb_prp,
->  					    skb_headroom(frame->skb_prp),
->  					    GFP_ATOMIC);
-> +			if (!frame->skb_std)
-> +				return NULL;
->  		} else {
->  			/* Unexpected */
->  			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
-
-This check looks good to me.
-
-> @@ -341,6 +343,8 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
->  		hsr_set_path_id(frame, hsr_ethhdr, port);
->  		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
->  	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
-> +		if (!frame->skb_std)
-> +			return NULL;
->  		return skb_clone(frame->skb_std, GFP_ATOMIC);
->  	}
+> thanks,
 >
-> @@ -385,6 +389,8 @@ struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
->  		}
->  		return skb_clone(frame->skb_prp, GFP_ATOMIC);
->  	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
-> +		if (!frame->skb_std)
-> +			return NULL;
->  		return skb_clone(frame->skb_std, GFP_ATOMIC);
->  	}
+> greg k-h
 
-If any of these two conditions happen we have a different, serious
-problem that needs to be fixed elsewhere.
+Build and Boot Report for 6.17.10-rc2
 
-In hsr_create_tagged_frame(), we first check if we have an skb_hsr (an
-skb containing an already tagged message). If we don't, it has to be an
-skb_std (an skb without any tag). If !skb_std, we are either 1) handing
-around a frame without any skb; or 2) handing a PRP frame to an HSR
-function. In both cases, this would need to be fixed where the problem
-is introduced.
+The kernel version 6.17.10 was built and boot-tested using qemu-x86_64
+and qemu-arm64 with the default configuration (defconfig). The build and bo=
+ot
+processes completed successfully, and the kernel operated as expected
+in the virtualized environments without any issues.
+No dmesg regressions found.
 
-Thanks,
-   Felix
+Build Details :
+Builds : arm64, x86_64
+Kernel Version: 6.17.10
+Configuration : defconfig
+Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git
+Commit : 6c8c6a34f51808e7b3dedc4227e8bd060559a0e2
 
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+
+Best regards,
+Dileep Malepu
 
