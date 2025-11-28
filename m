@@ -1,193 +1,147 @@
-Return-Path: <stable+bounces-197625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46DDC92E26
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:09:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB95C92E96
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A06A4E18DF
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E933A9AAB
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462FE2D5948;
-	Fri, 28 Nov 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962292080C8;
+	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CV1DrBJU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rz1eqlfw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6986D253B59
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 18:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA42AD3D;
+	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764353392; cv=none; b=T21k7YUyzEIZLnt3kiFPu+k3rCvHGY5q8tVwOefVRKO3mwJU9/748AmS3udlGYFaNmQGFl3tnDd25GO2V/Cvb3xJGssa/cKLpdf2p7idYr3dT4AKvgnvrhAM3qfe71/PRPm7jwDiHflXiK4cWewVtWaMm5I9tl8vlxxEdRy8h6w=
+	t=1764354700; cv=none; b=LKxKtElVkd2tPROirZrW4S8xZfjC/n5ppR2pD85psU+LDCOL0oO6fF5++UwvwXt6avX3fa2lFlclwHZTQxDcdaCp2gRm6o3NV40x93kMzadRip6vDKZa0gAN2bo8XyLN1w7X6YZOPXJnvXotlZVANW/dnj2JWW29yy6jdD2RVT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764353392; c=relaxed/simple;
-	bh=qSso203uNfBdcfdMfxOxPQdJPuQCQsRjIUvWlFzvw+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KORv/q/dEvWXX/UxIYkojhAMG2gGKNpuela4iiCdIwwbxqLH3mx4dLt3YIbk7vSnaebKNckj16sw6oSCxMIfGJc8iUVLj80NaSwuHC6Z5m3xLvDey2Wn6AN2pvCuT2HpLJy+jOxemloGrTT8sTrFMJjIyfyqZbyehba5IuVFO6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CV1DrBJU; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so2474644b3a.3
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 10:09:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764353390; x=1764958190; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=uuufsf1wc8s/+4qxTfV5drQiKWWTHW29EK0nf2exhek=;
-        b=CV1DrBJUmD/2o9RlIYtOfCk/OtbbWgYX754oWtoAjkaZ/yL/ITbsL0Yw8zHhY0cNFx
-         V3AlHrrMI9dJDr29jfV/+01/atv1ZSP06kEUjviIUG6FoMgWKhDMe81NeeOIe6QzeTY+
-         0ucX/D2TgbZW7gGiDvskf0jG/tyucQF30c+q6rcXWWITHXiMXWjzMQFdQjE1e0MXQ3jZ
-         rInI//Wui/H8teNwsJazggano59TNcCIYDckJ65fo491TDDozt3YQ1/KvxC5T3NdIzl8
-         EHj3IzpBBRMfJybfOW9RhsCD5fb1dlJ5SUVF0sM2JLSj+aVXeI8pf3EHVZ0nAKfjm4Cf
-         vXLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764353390; x=1764958190;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uuufsf1wc8s/+4qxTfV5drQiKWWTHW29EK0nf2exhek=;
-        b=Cd4I9rsul+cn4AzbPxU2abd833NStS/oEUtiEJIn8DdWvcz2V1mh0zy/alI5qxliCo
-         eA1qngEtFiiFvwzEWomOyirLmdNrrgwBmxrgn943OjbVrAb5Raqr08YXk1USAuVh/6VQ
-         C2EExOWwuV3nu8XSvGeTxQ+foVZ1OaKV6KhYjHQ5JVoDR96acMWlKfFqeAa69jhOx+6f
-         9SEIY77uk8FyrejJqvYBvTd+9ma9PjW7klAh9btkPbixtctpyCJ/XIjWEzNC+CMeJQC5
-         9a07TNCwRBe2mzNoAusTzZ2jzePVixcZVkhWbYIlikBf7ms72zJPwnNGQGaIcK5vityE
-         YQag==
-X-Forwarded-Encrypted: i=1; AJvYcCXv/efFR7Bt/7XUc/aNanFMfiP0K5geU3KsBseqPcicd2BNaPdcFnry/p4PG0a2tJrd71lzlAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7pJjm/Z8brcQk6qSgB2/QnCB2vMEQ37PeAUaf7JmlVDjT0AP0
-	tlq5lkIOme6txY1FwgepQR4ijXraACXefVmwDfRHlQdp/OBO1DUqK0CS
-X-Gm-Gg: ASbGncsHIKRbfDP2W0PjBYgmlZ3hGgigETIQjOosLNiB4GEVz5B/F4Oyrm1FcsMYibZ
-	obw7JkLanP+09nzwEa9B0tz5pqoSEK6Y1takRXa17VAl7jEbHwdwAjQcYA8Pk3V2a0JTDQDw/4p
-	q3IJuU7POt/czLui71bxlMpyHK5QfknjgaIUUx5iyfl8sFPSz1jPgx5HyR+OY6b1g0RRQKPzooE
-	epMcaLkci8z2kemEGtY0oaUKNnMENpNLK8I8I+UhEGyl+LtlSTmyZueNe7NPbtKU+HOgOxYAJkY
-	S3nqz5LE7f5TZ6vaYYZs6GgDDDCsY94LSRsyYgbCscC97+rcAd4qtGr7D86/Ychp59lSIEmeNtn
-	lSpa9Nmg31pqIVfzp1IdricXK1VKYc6ZIAd7LS+0kizoUtSk1o20mJECQvaxntxUwoqgS/yPIYM
-	RoW1WEM6Dj5opcJsw7MlafxLuRyrMWqEF3b8BXDIoGhhlypk9Ls928rbrBKkgDMGKxIBs00A==
-X-Google-Smtp-Source: AGHT+IFwEVgM2Y8VugYE8LnLCVwhlY38xOhyysV16vA7ayWTYcGkztcIeDItSTWHlE2B+kYDjVhYiQ==
-X-Received: by 2002:a05:6a00:1ad1:b0:7ab:a41:2874 with SMTP id d2e1a72fcca58-7c58c2b19e8mr29165494b3a.10.1764353389658;
-        Fri, 28 Nov 2025 10:09:49 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d150c618e7sm5707343b3a.3.2025.11.28.10.09.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Nov 2025 10:09:49 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <d3b5379d-4900-492f-a5bc-49078468df06@roeck-us.net>
-Date: Fri, 28 Nov 2025 10:09:47 -0800
+	s=arc-20240116; t=1764354700; c=relaxed/simple;
+	bh=+HCVMPz6KDr8bKwQ9mSr6H4ZItM7++fvxfbrQDJWRBU=;
+	h=Date:To:From:Subject:Message-Id; b=QNfBOpI6sv74aOQF2e/kPPWtHMldaHCFVRqTbwwBOrtHni4FsZSIughdez/FgLMl9m1hgdli212M3pt0oymbcYbGnwPBZSzJ4vMRGc09gNPBA0+bATyoTlm1vpqpTN2pUctIOv/RFiCyWgAsxG8xaSNKLAQbq9+myDROkl2oNd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rz1eqlfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD26C4CEF1;
+	Fri, 28 Nov 2025 18:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764354700;
+	bh=+HCVMPz6KDr8bKwQ9mSr6H4ZItM7++fvxfbrQDJWRBU=;
+	h=Date:To:From:Subject:From;
+	b=Rz1eqlfwQaexjAGYBbagnLLlQmqSF3JeJ50nwjimX4Et8mNILg7gnJXUQSoTUTcQJ
+	 UTueUM/PX4f3MM8v46c+enj9cA6+P3PRE/2Z/gzsXXpaCn1FjtDUZ9oBCsQrKOC80i
+	 vbN3ztD/DshPTMnfx7HueacLF6/lg19awqw7HW3g=
+Date: Fri, 28 Nov 2025 10:31:39 -0800
+To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,leitao@debian.org,jpazdziora@redhat.com,coxu@redhat.com,catalin.marinas@arm.com,bhe@redhat.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [obsolete] arm64-kernel-initialize-missing-kexec_buf-random-field.patch removed from -mm tree
+Message-Id: <20251128183140.0BD26C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hwmon: (max6620) Add locking to avoid TOCTOU
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251128124351.3778-1-hanguidong02@gmail.com>
- <f5a0e99d-306a-4367-8283-b5790a74dfcb@roeck-us.net>
- <CALbr=LbzgLK7Y-e3TTpusXGZEq4+DJJ=mbVMP=M3gt6XDGNUGA@mail.gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <CALbr=LbzgLK7Y-e3TTpusXGZEq4+DJJ=mbVMP=M3gt6XDGNUGA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 11/28/25 09:59, Gui-Dong Han wrote:
-> On Sat, Nov 29, 2025 at 12:34 AM Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On Fri, Nov 28, 2025 at 08:43:51PM +0800, Gui-Dong Han wrote:
->>> The function max6620_read checks shared data (tach and target) for zero
->>> before passing it to max6620_fan_tach_to_rpm, which uses it as a divisor.
->>> These accesses are currently lockless. If the data changes to zero
->>> between the check and the division, it causes a divide-by-zero error.
->>>
->>> Explicitly acquire the update lock around these checks and calculations
->>> to ensure the data remains stable, preventing Time-of-Check to
->>> Time-of-Use (TOCTOU) race conditions.
->>>
->>> This change also aligns the locking behavior with the hwmon_fan_alarm
->>> case, which already uses the update lock.
->>>
->>> Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
->>> Fixes: e8ac01e5db32 ("hwmon: Add Maxim MAX6620 hardware monitoring driver")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
->>> ---
->>> Based on the discussion in the link, I will submit a series of patches to
->>> address TOCTOU issues in the hwmon subsystem by converting macros to
->>> functions or adjusting locking where appropriate.
->>
->> This patch is not necessary. The driver registers with the hwmon subsystem
->> using devm_hwmon_device_register_with_info(). That means the hwmon subsystem
->> handles the necessary locking. On top of that, removing the existing driver
->> internal locking code is queued for v6.19.
-> 
-> Hi Guenter,
-> 
-> Thanks for the information. I missed the new hwmon subsystem locking
-> implementation earlier as it wasn't present in v6.17.9. I have since
-> studied the code in v6.18-rc, and it looks like an excellent
-> improvement. I will focus exclusively on drivers not using
-> devm_hwmon_device_register_with_info() going forward.
-> 
-> In our previous discussion, you also suggested adding a note to
-> submitting-patches.rst about "avoiding calculations in macros" to
-> explicitly explain the risk of race conditions. Is this something you
-> would still like to see added? If so, I would be happy to prepare a
-> patch.
-> 
 
-Yes, that would be great. Thanks!
+The quilt patch titled
+     Subject: arm64: kernel: initialize missing kexec_buf->random field
+has been removed from the -mm tree.  Its filename was
+     arm64-kernel-initialize-missing-kexec_buf-random-field.patch
 
-Guenter
+This patch was dropped because it is obsolete
+
+------------------------------------------------------
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: arm64: kernel: initialize missing kexec_buf->random field
+Date: Thu, 27 Nov 2025 18:26:44 +0000
+
+Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+introduced the kexec_buf->random field to enable random placement of
+kexec_buf.
+
+However, this field was never properly initialized for kexec images that
+do not need to be placed randomly, leading to the following UBSAN warning:
+
+[  +0.364528] ------------[ cut here ]------------
+[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
+[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
+[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
+[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
+[  +0.000000] Call trace:
+[  +0.000001]  show_stack+0x24/0x40 (C)
+[  +0.000006]  __dump_stack+0x28/0x48
+[  +0.000002]  dump_stack_lvl+0x7c/0xb0
+[  +0.000002]  dump_stack+0x18/0x34
+[  +0.000001]  ubsan_epilogue+0x10/0x50
+[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
+[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
+[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
+[  +0.000001]  kexec_add_buffer+0xa8/0x178
+[  +0.000002]  image_load+0xf0/0x258
+[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
+[  +0.000002]  invoke_syscall+0x68/0xe8
+[  +0.000001]  el0_svc_common+0xb0/0xf8
+[  +0.000002]  do_el0_svc+0x28/0x48
+[  +0.000001]  el0_svc+0x40/0xe8
+[  +0.000002]  el0t_64_sync_handler+0x84/0x140
+[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
+
+To address this, initialise kexec_buf->random field properly.
+
+Link: https://lkml.kernel.org/r/20251127182644.1577592-1-yeoreum.yun@arm.com
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: levi.yun <yeoreum.yun@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Jan Pazdziora <jpazdziora@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm64/kernel/kexec_image.c        |    3 +++
+ arch/arm64/kernel/machine_kexec_file.c |    6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+--- a/arch/arm64/kernel/kexec_image.c~arm64-kernel-initialize-missing-kexec_buf-random-field
++++ a/arch/arm64/kernel/kexec_image.c
+@@ -76,6 +76,9 @@ static void *image_load(struct kimage *i
+ 	kbuf.buf_min = 0;
+ 	kbuf.buf_max = ULONG_MAX;
+ 	kbuf.top_down = false;
++#ifdef CONFIG_CRASH_DUMP
++	kbuf.random = false;
++#endif
+ 
+ 	kbuf.buffer = kernel;
+ 	kbuf.bufsz = kernel_len;
+--- a/arch/arm64/kernel/machine_kexec_file.c~arm64-kernel-initialize-missing-kexec_buf-random-field
++++ a/arch/arm64/kernel/machine_kexec_file.c
+@@ -94,7 +94,11 @@ int load_other_segments(struct kimage *i
+ 			char *initrd, unsigned long initrd_len,
+ 			char *cmdline)
+ {
+-	struct kexec_buf kbuf = {};
++	struct kexec_buf kbuf = {
++#ifdef CONFIG_CRASH_DUMP
++		.random = false,
++#endif
++	};
+ 	void *dtb = NULL;
+ 	unsigned long initrd_load_addr = 0, dtb_len,
+ 		      orig_segments = image->nr_segments;
+_
+
+Patches currently in -mm which might be from yeoreum.yun@arm.com are
+
 
 
