@@ -1,93 +1,100 @@
-Return-Path: <stable+bounces-197601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96246C925CA
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 15:48:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E9BC927F8
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 17:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A57C3AA641
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:48:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0EE4E348FD9
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 16:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA0727CCE0;
-	Fri, 28 Nov 2025 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D037B2882D0;
+	Fri, 28 Nov 2025 16:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y40UwwV8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HdIvhtzO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF0251795
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 14:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA1E283FCF
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 16:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764341277; cv=none; b=HOWE/dZkz3kqnPM+dgOORf1CRZjEivSZNeN3hfMzFpPe++X0TRFIVg6SyfCKgJRNopwP70+MslvMBpOTuEjo/Szqz0HL+kOZqrxuVP5u53VeBspb/MUYV7iQTbbqQ+L0/XH91W4b+wahJCj/WOEPVflXvm8u7a4ZI2Hx3XyRfag=
+	t=1764345950; cv=none; b=dIWCWo8tXpIlVIh4X1UBDmFbonnhb2ma5x0q4Z1MlXWtrw/Yd08M8gw/eJn6Jq8rZdzv8aLMOertZTljM7yB9nMjXAH/LkJe1DeXTar1S/P9rzmS4nzurzfjSmASk+m18RLEDLixcHbCAyxxk1okbZjlC+bn1wvKXIujHqntINM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764341277; c=relaxed/simple;
-	bh=kBsXaBTbTfKM2axj9Do1FbixYAYlvJ2ocJAHzb3rwog=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=peGkm7aG+R1Z4GFnwbZzKPdrLhB62PZXW6uv6MpquL7qG5xYieby1AZnPSuHG+lGzbATR6MMbEEPU7ZaG367Ab1q9qj3lR5Pb8z4zLxXWcP2LJeEE0X9ke6yu1zgakhj5zQFmIOg6B9o3mowQfrG80i/DB31bi6raYOh9Nrpg/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y40UwwV8; arc=none smtp.client-ip=209.85.167.48
+	s=arc-20240116; t=1764345950; c=relaxed/simple;
+	bh=7R/V3fLA5ZUpQU7ZkDgrTUeowxcERJCp6oWcWnZd8YQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZLni3EvcP2dqu6zSOMpuqt17mOlXQYur1ojaHE42pJ/Ms/bNtwvnfw93M41OYQhKn6cPqWh7i+jd1PA5ZWhZ3gFsPzGCch6qlQTiUt5S99jYdHjtYr3OtpaF1Wu3qk/X6yhszQ82//NhgY9E0YtS8euycnKY+5Uqr9ft0PB03tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HdIvhtzO; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5957d7e0bf3so3136324e87.0
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 06:47:55 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-298039e00c2so28675835ad.3
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:05:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764341274; x=1764946074; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764345947; x=1764950747; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6/Fm/oVY95uFXuY2detaFQ/ocohpIH0USIsHRoZb9Q=;
-        b=Y40UwwV8f93b/2anVNRU2FGNsOTTNhrozfofzHUHfYXVRjntSZAVok0FBAf35+Br6k
-         YNkN4XMsql/b6dmbI+Iz3Uod3UYo1tRbmebWwog9NWoCPs1+EcM8RTjYg4qqxeb8CqMx
-         HBbWQvb4TcTwfHPyHBNQhwUZnSc1urx1SUF8CPkCFnWGQEi7drfUSqY2FzJudSI5sX8g
-         bHt+8OCtXI95VB269iQVAstQbM/xGU+KxcQ0NChNoJ1N0VonmalcmmiBAmcTg9q1Qu2g
-         hcWssjaIuFpclqWa/hbKRGWsKhwzOGUTPx7qEfF5k4Bp/Q54WpT4fGd3OjoGH2MPDM8+
-         Ik3w==
+        bh=jr0436cSAe7dIJCuJ52U9qMmv3xepyLVevZMH0j277U=;
+        b=HdIvhtzOBvQ5EY6cqn4AipFgpqL552YJbs3JhicLIGEAFAC7S3KIJyUuUUOV+7E6k2
+         T42z3ruF9j09Ve0d6/G15lGLACv7LbwDADBSIvG7X9+BQFVCitZ9ZAgesw9AZx0FNWws
+         k1g+K6wt4Gynv3QWnesk5RImQY7oMI+l6z06S/GIJkpp+9VeTQqnPbvIcDUWfZJ5Mm3M
+         2nbAg2ZUnuqcOPRFok42nrhJNbyimDgGcXepdfVidSboxfb+kegEDTqe38fYVQlFGvvZ
+         1wGOlxHZvbJULLFg29t8Kw9Cp3JguVNAEr/FYJb41EG27G4nkNDsOpvqAbSVAf2kPyGV
+         R5Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764341274; x=1764946074;
+        d=1e100.net; s=20230601; t=1764345947; x=1764950747;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q6/Fm/oVY95uFXuY2detaFQ/ocohpIH0USIsHRoZb9Q=;
-        b=SSTlbXgwJB5/kP39H19s0S3JPxOw15U8P98mEFdoLQzytQxw4O+HVTDFXMNY1p4F8j
-         XFWkUnFyWG8MfdvvnGwoKU09s8yo3mK3az+oCx/lr/FKxtp7n9d4YoKJhuZrnOhOnk8d
-         W62GKxdiYjvu5u4P4x64oST5PQfderEzXlYzq8ZmGFfp3chHOw+QIxE3NCSh5Dal3Li0
-         YyJU9aTGIFKV2QJ856+FVL2y3szwTgNuOI3YgFr1J7S9vxDGIPFEpaHFhvcXkOMh2R2v
-         NKQdsaCW6Bss6aKZ00mVqAMUiL1cALXsPoIZs2XGnaWbRF+9lngEhVOjtMcYw3W/DuRB
-         2MJQ==
-X-Gm-Message-State: AOJu0YyP3DxIvAtCf4eHeBJ/AxpVeH+YwOVQfTvAGaLCm7D4P2zGZDGX
-	UnmGp0DHwcjTNaEiYt3RCIk0DfAbl1K4GZlxK+41c2+Tr7e/3bkNpHQE6zzWAiEODnkUQg==
-X-Gm-Gg: ASbGnctTgetbCHNwsycDsQbM1IBs2rtu5F/VRhiQZEUrYEnG98OJxiEhP6rvUizq/L8
-	UhJ5P3QMfgNwP64ZOJeJz/qTsk71wwVTH62fR5e37xnOdewNAnqVuKY3cqRKuYjMk1Udd/6MJzG
-	hv3U1wFvBGQqrwiOtAbqlIJv/VFzlOgSU2SRKyaGcesFEKCvIQzoN9iVqUYqqcqw1QWnUl8HPKX
-	PkvltuVEgy8S70ijj2wvu8FyHESLOdjYrJDMhTYYhTXk2UiwpGkQ7V25N5mw1HCYNHoq5oQCEob
-	lKoZSZEbidbjtgcBQIPv5k/zB7/VFDK0CNMsQV+ONe0yljfjelymrsPchP/0J4uuIVv/BaqPb2p
-	LxURNk6rMyWdFFoHQik45W2pKAK2At0smjrzwqberDwNk9I/2EXum/1Pd3SQE/Q3wcWUDd9OJmE
-	pS2un9+xh+AjX0eMNP9Ypi+6qdQu31J78CxAsZAJkVP0ghn6h2PwFevyI5
-X-Google-Smtp-Source: AGHT+IGri/Kcqai6Ho5kp6UE3YX9ridRldxzonTf7wiVODikqOhdC/WBm9NPMdz2N8FXWRU8ePEc8A==
-X-Received: by 2002:ac2:4e04:0:b0:595:90ce:df8e with SMTP id 2adb3069b0e04-596a3740821mr10547766e87.5.1764341273519;
-        Fri, 28 Nov 2025 06:47:53 -0800 (PST)
-Received: from cherrypc.astracloud.ru (109-252-18-135.nat.spd-mgts.ru. [109.252.18.135])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596bfa43e6csm1261533e87.54.2025.11.28.06.47.52
+        bh=jr0436cSAe7dIJCuJ52U9qMmv3xepyLVevZMH0j277U=;
+        b=U1ob52iRqqfywV6su3pXSoqxy/qvqiNy1d1SJkpK2bAsTsk34uTCmefIjlBF6LPxDh
+         199HnuHBEIOp7gnrgfafOvTHoZVbVt/THlegGJHr7lyJRVOevZ7+mf5APC2lAupdMWWc
+         axlbZxOQUaat04vJyXngboQDnCI9FTSDZtXbAXJVm9CYK7kA4GlBFQOhXa043c7nimgG
+         0dBGVlttws+fGhRziEF5MFS0FU+gk2Ls627S1VKBL61eGgFK+ci9eAWcu01nE64MmXEn
+         PxWPq5zcvOv4QQ8OBZ8RgvyXlZ+6bKb6+26fdcqPTq6Kao1M7mJLQXqPEfxEsMzKsv0n
+         d+CA==
+X-Gm-Message-State: AOJu0YyCRDhh+cWPAgPMxk/6vrmbT4nVHn0UmDxZRA6T4i+uFGKGmCJU
+	Vt45EWhyvI6K9rrXZHslhVwur5dFmKvY3TsbzmbrcH3yVA2Q+DzBLq5qLdWUJpOorcCakA==
+X-Gm-Gg: ASbGncsEwdxzpiPRZpwtiQy8OasSxzksYppi9ybSrrR6BtNsdW8i1KJVt8t7xCFL/nr
+	vWrStCan+zeCfjdhD83O5lQhy3tWZY7WJ+QCfbBGQtaOxtp8XSD4sOQ2OQW0m+9x34Q98m4vMb/
+	qwdVIQPtVxnt1ifaj1my7l/C9J92mIFbgxmC/leICWS4uhO9Cl6PHZEqv9t613bo01X06SwPt2y
+	1CPtLbsEfnMjUyFg9bujnGe+UaoMlGzGAADGevcRkMGH/aGZocoO7a2ppAkTIjbG67cNDj+MExW
+	j/mXijzgcMHAsCSmmYT4qn9VggrR40vHhoEnQ3brvoonUBR+0plpsBskEXaxC9W97LC/2VbYIDG
+	i/Dxkc3Vzio5nk/4PxH7lvIyfQjeM4a3QiE9fDpT1QdIjjTJZddDPBGL99GuEBlw/82XZ+RIksz
+	vmoXiWAm0VWtlZ62AlDyBVFXeTD2+8j7y3vzAGOQ==
+X-Google-Smtp-Source: AGHT+IEbRdUXnl5aQOE+Qq55lmPGygxKdzplNnm4FsxdZSNypxAVuwWstG2sn4JYjVv8VNlcsFkFkQ==
+X-Received: by 2002:a17:903:11c3:b0:297:e3f5:4a20 with SMTP id d9443c01a7336-29b6bee38ecmr348858315ad.26.1764345946851;
+        Fri, 28 Nov 2025 08:05:46 -0800 (PST)
+Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15f26f11fsm5408499b3a.50.2025.11.28.08.05.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 06:47:53 -0800 (PST)
-From: Nazar Kalashnikov <sivartiwe@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nazar Kalashnikov <sivartiwe@gmail.com>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org,
+        Fri, 28 Nov 2025 08:05:45 -0800 (PST)
+From: Jeongjun Park <aha310510@gmail.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	tglx@linutronix.de,
+	Julia.Lawall@inria.fr,
+	akpm@linux-foundation.org,
+	anna-maria@linutronix.de,
+	arnd@arndb.de,
+	linux-bluetooth@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Terrence Adams <tadamsjr@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>
-Subject: [PATCH 5.10/5.15/6.1] scsi: pm80xx: Set phy->enable_completion only when we
-Date: Fri, 28 Nov 2025 17:48:15 +0300
-Message-ID: <20251128144816.55522-1-sivartiwe@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux@roeck-us.net,
+	luiz.dentz@gmail.com,
+	marcel@holtmann.org,
+	maz@kernel.org,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	sboyd@kernel.org,
+	viresh.kumar@linaro.org,
+	aha310510@gmail.com,
+	linux-staging@lists.linux.dev
+Subject: [PATCH 5.15.y 00/14] timers: Provide timer_shutdown[_sync]()
+Date: Sat, 29 Nov 2025 01:05:25 +0900
+Message-Id: <20251128160539.358938-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,66 +103,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Igor Pylypiv <ipylypiv@google.com>
+The "timers: Provide timer_shutdown[_sync]()" patch series implemented a
+useful feature that addresses various bugs caused by attempts to rearm
+shutdown timers.
 
-[ Upstream commit e4f949ef1516c0d74745ee54a0f4882c1f6c7aea ]
+https://lore.kernel.org/all/20221123201306.823305113@linutronix.de/
 
-pm8001_phy_control() populates the enable_completion pointer with a stack
-address, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and
-returns. The problem arises when a phy control response comes late.  After
-300 ms the pm8001_phy_control() function returns and the passed
-enable_completion stack address is no longer valid. Late phy control
-response invokes complete() on a dangling enable_completion pointer which
-leads to a kernel crash.
+However, this patch series was not fully backported to versions prior to
+6.2, requiring separate patches for older kernels if these bugs were
+encountered.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Terrence Adams <tadamsjr@google.com>
-Link: https://lore.kernel.org/r/20240627155924.2361370-2-tadamsjr@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
+The biggest problem with this is that even if these bugs were discovered
+and patched in the upstream kernel, if the maintainer or author didn't
+create a separate backport patch for versions prior to 6.2, the bugs would
+remain untouched in older kernels.
+
+Therefore, to reduce the hassle of having to write a separate patch, we
+should backport the remaining unbackported commits from the
+"timers: Provide timer_shutdown[_sync]()" patch series to versions prior
+to 6.2.
+
 ---
-Backport fix for CVE-2024-47666
- drivers/scsi/pm8001/pm8001_sas.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index 765c5be6c84c..85c27f2f990f 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -163,7 +163,6 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 	unsigned long flags;
- 	pm8001_ha = sas_phy->ha->lldd_ha;
- 	phy = &pm8001_ha->phy[phy_id];
--	pm8001_ha->phy[phy_id].enable_completion = &completion;
- 	switch (func) {
- 	case PHY_FUNC_SET_LINK_RATE:
- 		rates = funcdata;
-@@ -176,6 +175,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 				rates->maximum_linkrate;
- 		}
- 		if (pm8001_ha->phy[phy_id].phy_state ==  PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -184,6 +184,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_HARD_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -192,6 +193,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_LINK_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
--- 
-2.43.0
-
+ Documentation/RCU/Design/Requirements/Requirements.rst      |   2 +-
+ Documentation/core-api/local_ops.rst                        |   2 +-
+ Documentation/kernel-hacking/locking.rst                    |  17 +++++++-----
+ Documentation/timers/hrtimers.rst                           |   2 +-
+ Documentation/translations/it_IT/kernel-hacking/locking.rst |  14 +++++-----
+ Documentation/translations/zh_CN/core-api/local_ops.rst     |   2 +-
+ arch/arm/mach-spear/time.c                                  |   8 +++---
+ drivers/bluetooth/hci_qca.c                                 |  10 +++++--
+ drivers/char/tpm/tpm-dev-common.c                           |   4 +--
+ drivers/clocksource/arm_arch_timer.c                        |  12 ++++-----
+ drivers/clocksource/timer-sp804.c                           |   6 ++---
+ drivers/staging/wlan-ng/hfa384x_usb.c                       |   4 +--
+ drivers/staging/wlan-ng/prism2usb.c                         |   6 ++---
+ include/linux/timer.h                                       |  17 ++++++++++--
+ kernel/time/timer.c                                         | 315 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------
+ net/sunrpc/xprt.c                                           |   2 +-
+ 16 files changed, 322 insertions(+), 101 deletions(-)
 
