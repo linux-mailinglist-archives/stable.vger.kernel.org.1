@@ -1,199 +1,130 @@
-Return-Path: <stable+bounces-197549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4460CC90A8D
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 03:53:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4762C90ADE
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 03:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A80924E4ABB
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 02:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F6203ADBDE
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 02:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163B972606;
-	Fri, 28 Nov 2025 02:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65E72BF3E2;
+	Fri, 28 Nov 2025 02:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwuXKnvl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcidIvAC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC8B1EE7C6;
-	Fri, 28 Nov 2025 02:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9E928312D;
+	Fri, 28 Nov 2025 02:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764298377; cv=none; b=tvrqXjmStsFp17C5aRu6slEIpIBJdFBm7m0CwsRNP3XyOoNVESlgEcDhEbEqhJbUfSGAkZ5FB1Bi0F80LsSurP+vt6udzAkTenyPaWRHGKB7TpKTn2+zs+ATJa2INAzHTsQMvNAPUJDam0xvI6Ov4L9VVQwRfm0WJGlcEIDeN6M=
+	t=1764298477; cv=none; b=ned0urMcUtLaTOdaRjoYFz7E8KWkBH8jEHthyszDMAGN4PlQJDSpxgc7HsDkywOIUDgM2N6+0eCavGvM3CspTtXxO+hVAbB6P4QRcPgNNhdxfZlCNQxdL9uajrp2U/SkyHFgUQ8obEzxABMZCXj7qHOomLAxwDkbuyVOUfeyRpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764298377; c=relaxed/simple;
-	bh=kN8f8ocFg/9iq69/nMOZcevqnWg1yZnJ/G3yn1vCZBg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hDnacae3yaa6QmlIUQYrHReFU4KXDdrsXg/OycKBPGgsXrGPqZyd8dP2rdG+m84UWA5BETAi8rZofcOhLvn+IDthJxHcvVRSjQUFOJIBw3uPbFZ9aLDv20muazCoe3GX2PDSG1WN8pyGxdmrjbjlQV9WhbZzMrHTIkhkwx4kfq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwuXKnvl; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764298376; x=1795834376;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kN8f8ocFg/9iq69/nMOZcevqnWg1yZnJ/G3yn1vCZBg=;
-  b=jwuXKnvlSlYpwdsuRSo+7bN42FuZxdo8v1XcRvX+LAUqP2Z5DOoKwUWY
-   ft2QcllrmyWPSe1Q0v542t4ySUaih99I6R4ozr/2bxZ0sh5XG35FlZzlq
-   PSuPO0PATYv8StFflhzaJqGto1fMjB56d/8yXlixH0qhGs6VEz12HDFQI
-   rnn/7G8ir8zeEBuLWw0kp0TAoKhBzuJzfYFirBE8/NuR2l5brVzavcHAP
-   kzaKO/ilA8FEVdV4jeZX2XS9xpQBOik53rxOwIGXW0Nj8NALLQmRCD92X
-   0EopTGl/PnPkoZPJID0aKj0wg+Um61PY18EW94lwosBgnSGfKvwvGKsTg
-   Q==;
-X-CSE-ConnectionGUID: VM9Ti/BJQFaupTrJX6uYbQ==
-X-CSE-MsgGUID: XdqbldHvTvafuI1G0j07Pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66281699"
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="66281699"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:52:55 -0800
-X-CSE-ConnectionGUID: kHmaFFJtSrCUNitANqQ8Mg==
-X-CSE-MsgGUID: OVGbIM/SSGC2110517cZ5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="193159342"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 27 Nov 2025 18:52:51 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vOobI-000000005xN-3R8H;
-	Fri, 28 Nov 2025 02:52:48 +0000
-Date: Fri, 28 Nov 2025 10:52:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Antonino Maniscalco <antomani103@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1764298477; c=relaxed/simple;
+	bh=uOIEuSunE38kel4/llCCCylnNxKaEVaG6d8iug+BmyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=frd5xe62VrD1QIQU1wDTJwAeASm2fZgMg1nnZv+PWIV8v23ze/DzxKNVTqm/qDRymFe3zm4C9dvcBSS+OCuO19bUjjnwWDNsHMiWd7ATD5bTSwwlAZ78D5lUCILxo5r9Zkh8GNXXmkB5b6ZRtjCax6eeSk+pj0VrZXOiJ9Hg6XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcidIvAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4418C4CEF8;
+	Fri, 28 Nov 2025 02:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764298477;
+	bh=uOIEuSunE38kel4/llCCCylnNxKaEVaG6d8iug+BmyQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pcidIvACMyCLvXGKZsMeq2aYgBUFgHgtupABQzDEhTb86GKaD+naAPl/Mo4QT66z4
+	 XVBVPAfvJiIGOWLhHf+WZYQB1364qVXRfFElOQ7G9TAWnX2FWQx9laG4qms3f9VO/x
+	 nNGJXbzNfqeTiGqfJoIcnE+p2ieOvUuCv2Gr/1/fGgiId9KHLynnOG1E0Y76rQawXm
+	 KKLCfYnFI66Lj7xAa5bgzMB7vydcqCVizVGYWWTqZN+xba1/ZreP0S2R9Z4qIA25dM
+	 TPG+7jRcSTIFCiBBjMe5ny3nAUfeWte5opUpSxcuzFDqX7/f9B+sdrTph2JMUiGnuw
+	 7mh8lKGivhNjg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: ross.philipson@oracle.com,
+	Jonathan McDowell <noodles@earth.li>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	stable@vger.kernel.org,
-	Anna Maniscalco <anna.maniscalco2000@gmail.com>
-Subject: Re: [PATCH] drm/msm: Fix a7xx per pipe register programming
-Message-ID: <202511281253.rIkrIiqt-lkp@intel.com>
-References: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v9 4/8] KEYS: trusted: Fix a memory leak in tpm2_load_cmd
+Date: Fri, 28 Nov 2025 04:53:56 +0200
+Message-ID: <20251128025402.4147024-5-jarkko@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251128025402.4147024-1-jarkko@kernel.org>
+References: <20251128025402.4147024-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Anna,
+'tpm2_load_cmd' allocates a tempoary blob indirectly via 'tpm2_key_decode'
+but it is not freed in the failure paths. Address this by wrapping the blob
+into with a cleanup helper.
 
-kernel test robot noticed the following build warnings:
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v9:
+- Fixed up the commit message. It was not up to date and referred to wrong
+  function.
+- Simplified the patch considereably. It was not optimally small.
+v8:
+- No changes.
+v7:
+- Fix compiler warning.
+v6:
+- A new patch in this version.
+---
+ security/keys/trusted-keys/trusted_tpm2.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-[auto build test WARNING on 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Anna-Maniscalco/drm-msm-Fix-a7xx-per-pipe-register-programming/20251127-074833
-base:   7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
-patch link:    https://lore.kernel.org/r/20251127-gras_nc_mode_fix-v1-1-5c0cf616401f%40gmail.com
-patch subject: [PATCH] drm/msm: Fix a7xx per pipe register programming
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20251128/202511281253.rIkrIiqt-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251128/202511281253.rIkrIiqt-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511281253.rIkrIiqt-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: warning: & has lower precedence than ==; == will be evaluated first [-Wparentheses]
-     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
-         |                                                        ^~~~~~~~~~~~~~~~~~~
-   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: note: place parentheses around the '==' expression to silence this warning
-     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
-         |                                                        ^ ~~~~~~~~~~~~~~~~~
-   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: note: place parentheses around the & expression to evaluate it first
-     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
-         |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-   1 warning generated.
-
-
-vim +984 drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-
-   931	
-   932	static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
-   933	{
-   934		struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-   935		struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
-   936		const struct adreno_reglist_list *reglist;
-   937		const struct adreno_reglist_pipe_list *pipe_reglist;
-   938		void *ptr = a6xx_gpu->pwrup_reglist_ptr;
-   939		struct cpu_gpu_lock *lock = ptr;
-   940		u32 *dest = (u32 *)&lock->regs[0];
-   941		u32 pipe_reglist_count = 0;
-   942		int i;
-   943	
-   944		lock->gpu_req = lock->cpu_req = lock->turn = 0;
-   945	
-   946		reglist = adreno_gpu->info->a6xx->ifpc_reglist;
-   947		lock->ifpc_list_len = reglist->count;
-   948	
-   949		/*
-   950		 * For each entry in each of the lists, write the offset and the current
-   951		 * register value into the GPU buffer
-   952		 */
-   953		for (i = 0; i < reglist->count; i++) {
-   954			*dest++ = reglist->regs[i];
-   955			*dest++ = gpu_read(gpu, reglist->regs[i]);
-   956		}
-   957	
-   958		reglist = adreno_gpu->info->a6xx->pwrup_reglist;
-   959		lock->preemption_list_len = reglist->count;
-   960	
-   961		for (i = 0; i < reglist->count; i++) {
-   962			*dest++ = reglist->regs[i];
-   963			*dest++ = gpu_read(gpu, reglist->regs[i]);
-   964		}
-   965	
-   966		/*
-   967		 * The overall register list is composed of
-   968		 * 1. Static IFPC-only registers
-   969		 * 2. Static IFPC + preemption registers
-   970		 * 3. Dynamic IFPC + preemption registers (ex: perfcounter selects)
-   971		 *
-   972		 * The first two lists are static. Size of these lists are stored as
-   973		 * number of pairs in ifpc_list_len and preemption_list_len
-   974		 * respectively. With concurrent binning, Some of the perfcounter
-   975		 * registers being virtualized, CP needs to know the pipe id to program
-   976		 * the aperture inorder to restore the same. Thus, third list is a
-   977		 * dynamic list with triplets as
-   978		 * (<aperture, shifted 12 bits> <address> <data>), and the length is
-   979		 * stored as number for triplets in dynamic_list_len.
-   980		 */
-   981		pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
-   982		for (u32 pipe_id = PIPE_BR; pipe_id <= PIPE_BV; pipe_id++) {
-   983			for (i = 0; i < pipe_reglist->count; i++) {
- > 984				if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
-   985					continue;
-   986				*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
-   987				*dest++ = pipe_reglist->regs[i].offset;
-   988				*dest++ = a7xx_read_pipe(gpu, pipe_id,
-   989							 pipe_reglist->regs[i].offset);
-   990				pipe_reglist_count++;
-   991			}
-   992		}
-   993		lock->dynamic_list_len = pipe_reglist_count;
-   994	}
-   995	
-
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 4467e880ebd5..225b8c9932bf 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -366,6 +366,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 			 struct trusted_key_options *options,
+ 			 u32 *blob_handle)
+ {
++	u8 *blob_ref __free(kfree) = NULL;
+ 	struct tpm_buf buf;
+ 	unsigned int private_len;
+ 	unsigned int public_len;
+@@ -379,6 +380,9 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 		/* old form */
+ 		blob = payload->blob;
+ 		payload->old_format = 1;
++	} else {
++		/* Bind for cleanup: */
++		blob_ref = blob;
+ 	}
+ 
+ 	/* new format carries keyhandle but old format doesn't */
+@@ -443,8 +447,6 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
+ 
+ out:
+-	if (blob != payload->blob)
+-		kfree(blob);
+ 	tpm_buf_destroy(&buf);
+ 
+ 	return tpm_ret_to_err(rc);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
 
