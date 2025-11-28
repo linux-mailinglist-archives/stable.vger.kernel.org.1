@@ -1,155 +1,98 @@
-Return-Path: <stable+bounces-197628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D0BC92FC9
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 20:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7DDC93056
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 20:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3A6F434B237
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:00:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 98995344598
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 19:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA92A26D4CD;
-	Fri, 28 Nov 2025 19:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E720B2D6E52;
+	Fri, 28 Nov 2025 19:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b0nL/TT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sU584lh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2821FC8;
-	Fri, 28 Nov 2025 19:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF3A2080C8;
+	Fri, 28 Nov 2025 19:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764356433; cv=none; b=EzwBmur3T1SkUUumWydBFjbnhQZRqLQzMSbkNpzd0j3fSzQjQrZZ6Z4DrD1nIPN0OZK3uqfnqGkS6zwcAATA71nQX/Ntw2UIy6McZvq3GhMIdJ1PwCAHOEwSl1AQya/6GdglyQwZ+R+ShJUNxAgVcDUATHsBnKqTTv1cyZJYZs0=
+	t=1764358177; cv=none; b=pjg8UWzR6f+Qqp5AfEvBeGlAYjsQrJeXcmDKp07jQqXWyqFSKlrwGTlFrPj/b+Z4LUUq+ZJX4BVmXzL5uzHZpa65fy87MzZzVZOLEZNtgImu2mAVFk78qrEEoS4Uu/xbyG3t5OLBi/vITyd0NZzHZ+44IuIyZIpulCnpu64m1Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764356433; c=relaxed/simple;
-	bh=r9vl59nidftiwOySsqW4gTCs7uMftqG/Lb4SoYrf3EI=;
-	h=Date:To:From:Subject:Message-Id; b=nzL9KmdmBfXJWFynE6nK3adV/qhDFD2l4y/8CjEu3PBifCCzcJ+KaN6No/MmRuMQ9bGmhzMOjgakjt5VVM6iN9wHVhHB5ZB8NLJopAnAJEyO+ugI0Jjg0dkYLLNi+r/dFktX5tZb7r9zA2IvQifOJ5AmmStXVRzxx1WST5GjcgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b0nL/TT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D3AC4CEF1;
-	Fri, 28 Nov 2025 19:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764356433;
-	bh=r9vl59nidftiwOySsqW4gTCs7uMftqG/Lb4SoYrf3EI=;
-	h=Date:To:From:Subject:From;
-	b=b0nL/TT3nCCe1ckrRZmp3D78nDuzBzDUw6KCq83zf5o2tjPKVFMLjutfJgEu1+lCW
-	 YLfChevKwtfhhqu/Bv+aOnHc6Vzc4cE3/QUjV3UqYxEyWRs3/klIqEZ8sgJFOL5rWh
-	 GzO9qzi5/wqvAmtUYmaIp/hDj6BactsRavnPr4ms=
-Date: Fri, 28 Nov 2025 11:00:32 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jan.sokolowski@intel.com,christian.koenig@amd.com,willy@infradead.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + idr-fix-idr_alloc-returning-an-id-out-of-range.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251128190032.E9D3AC4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1764358177; c=relaxed/simple;
+	bh=TvUgqyef1EG78HEX2NXFvJNwqFN/Fi+A7Vo0aEsybd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tj85OBNO+SbQJAaBYoBFHC71Ux0d2T4TkuV9U7UoRr6jv/qNGlojC2dD9Octzb0ANqft9TXzy+8DmHzX+l86OWuv7Z9+ULt1XdzvJsHMvAdcTnCf5RPsiGLnqhfqikUbaod6GPecleM1B+8WnrWVcxh8lPMFREuC5GO1TCPqQvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sU584lh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50111C4CEF1;
+	Fri, 28 Nov 2025 19:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764358177;
+	bh=TvUgqyef1EG78HEX2NXFvJNwqFN/Fi+A7Vo0aEsybd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sU584lh1TuC0DgSLusN9hTTkcOPvlXwOT4h9SWrV0RPrtjHlHZ6TH3N0WV3idaQJi
+	 XXnj1EYJCEHZ19lS3nQJHQk/s+oUp7sPHBqwy+vDdMJr9jAPsHoh0eehHiRH/3GuqE
+	 6GlbCqJIkTvIPX3NPM1pf0Bg2TibF1kWNTopxrVC24QyY6oOrKcHJZi+g7bLNAFMci
+	 4BFe3ZZ37HvohvYQmJivck20EOgRpL0UUVR8mI1t1BiYLR2AYnwjLOzgafzed6e6wG
+	 W/ozWoW+j8vsxGU7085ubDa1ivgFW+d3Jssh8eBLmiSLZFzvMVL+RH4/xOyDW44gCS
+	 y/Ol+CFrKHGiQ==
+Date: Fri, 28 Nov 2025 19:29:29 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/176] 6.17.10-rc2 review
+Message-ID: <c476235f-557a-4757-87c0-b2a46c324110@sirena.org.uk>
+References: <20251127150348.216197881@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="At8R1oUeOqR0MP+C"
+Content-Disposition: inline
+In-Reply-To: <20251127150348.216197881@linuxfoundation.org>
+X-Cookie: From concentrate.
 
 
-The patch titled
-     Subject: idr: fix idr_alloc() returning an ID out of range
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     idr-fix-idr_alloc-returning-an-id-out-of-range.patch
+--At8R1oUeOqR0MP+C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/idr-fix-idr_alloc-returning-an-id-out-of-range.patch
+On Thu, Nov 27, 2025 at 04:04:09PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.10 release.
+> There are 176 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+--At8R1oUeOqR0MP+C
+Content-Type: application/pgp-signature; name="signature.asc"
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+-----BEGIN PGP SIGNATURE-----
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkp+BkACgkQJNaLcl1U
+h9CVOgf/YF6unIDcCKQ/9dHqr9WF3/QOgY9nk7HpLAkKHe2G3jJIwuf3LOm13XSE
+L0U6SU7UYxMXZazID4ioRjwq5BCWLig7b+cOcAeNlisLg3+CfqFmNUZ8gUTEXVUw
+VGnbeNmvg9ICoVHXheMe3mLUGRTXV+Lk/LlHWchHuzbBrophKYkCI0TJL98TdHux
+HcFfZPQMANU4a4UAM0PgSiTmUoFj9/BjQf3tVlTwfaYqh/ALtZn4DKqueAcZhZUU
+ZiXzPwBoWM1bdaCoL9FpwmYi5XF6bxDmEMSQx+XlmwRy/WvobGbRYp5MQCIso2xE
+u9SLjpQxKFtoizQi0jZsbkoR9TGHJw==
+=CL19
+-----END PGP SIGNATURE-----
 
-------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: idr: fix idr_alloc() returning an ID out of range
-Date: Fri, 28 Nov 2025 16:18:32 +0000
-
-If you use an IDR with a non-zero base, and specify a range that lies
-entirely below the base, 'max - base' becomes very large and
-idr_get_free() can return an ID that lies outside of the requested range.
-
-Link: https://lkml.kernel.org/r/20251128161853.3200058-1-willy@infradead.org
-Fixes: 6ce711f27500 (idr: Make 1-based IDRs more efficient)
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reported-by: Koen Koning koen.koning@intel.com
-Reported-by: Peter Senna Tschudin peter.senna@linux.intel.com
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6449
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/idr.c                           |    2 ++
- tools/testing/radix-tree/idr-test.c |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
-
---- a/lib/idr.c~idr-fix-idr_alloc-returning-an-id-out-of-range
-+++ a/lib/idr.c
-@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void
- 
- 	if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
- 		idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-+	if (max < base)
-+		return -ENOSPC;
- 
- 	id = (id < base) ? 0 : id - base;
- 	radix_tree_iter_init(&iter, id);
---- a/tools/testing/radix-tree/idr-test.c~idr-fix-idr_alloc-returning-an-id-out-of-range
-+++ a/tools/testing/radix-tree/idr-test.c
-@@ -57,6 +57,26 @@ void idr_alloc_test(void)
- 	idr_destroy(&idr);
- }
- 
-+void idr_alloc2_test(void)
-+{
-+	int id;
-+	struct idr idr = IDR_INIT_BASE(idr, 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-+	assert(id == 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	idr_destroy(&idr);
-+}
-+
- void idr_replace_test(void)
- {
- 	DEFINE_IDR(idr);
-@@ -409,6 +429,7 @@ void idr_checks(void)
- 
- 	idr_replace_test();
- 	idr_alloc_test();
-+	idr_alloc2_test();
- 	idr_null_test();
- 	idr_nowait_test();
- 	idr_get_next_test(0);
-_
-
-Patches currently in -mm which might be from willy@infradead.org are
-
-idr-fix-idr_alloc-returning-an-id-out-of-range.patch
-mm-fix-vma_start_write_killable-signal-handling.patch
-
+--At8R1oUeOqR0MP+C--
 
