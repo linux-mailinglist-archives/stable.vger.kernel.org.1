@@ -1,143 +1,310 @@
-Return-Path: <stable+bounces-197621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF61C92BF2
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:06:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285C2C92C7C
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B294B341DE4
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 17:03:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA3634E4393
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 17:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F562BE053;
-	Fri, 28 Nov 2025 17:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EE732E727;
+	Fri, 28 Nov 2025 17:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIvh06r3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mie8/qVm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CA229E11B;
-	Fri, 28 Nov 2025 17:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39472FC879
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 17:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764349423; cv=none; b=ctf2YznEfus1n0cu1FGEk5YfCPrzXdYdnITleQbnziy7AzO1p7aSHwVGeML+crqKtRI88CzEGCtJ6brntqNOQ9eU35rsie2yPcheCnZT7+vtwy6/jgQLMlu4tmZ1hWLb7p26qnPF9wSmSAS0UTSQVnU4NmsCt3wTuche35+C9Jk=
+	t=1764350304; cv=none; b=Iygw2U7pzLOEkZieWqvqmnp2UbM2WYg99X2CigGsj5OGqoosu+jpQldwdJbIKaPXfvLoJhf7PPbtVqaMaxKuWSZSoVaMGLXeJHes42yjgwE1fkimkHbuaf/QcY/zEhc5IgLIG9JeQvaWx8WxYP8BDsw/Yyg7puRHZchMJv+jpzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764349423; c=relaxed/simple;
-	bh=Ab9/QvgY2oGmHJbmytHgV/rvTKv/Atdsju9GWpu/now=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=URO7pGPG/cy2HpD0qqEUOLvBaGowFtPLSkqfCJHL8xqR4q8e6X8g9TF2QHUkouo667PTD0hxRx5jxeLhhHkTuCL4VVInUcQuLZ1n1QSvPPG0D8l1T5OMBYzagbJ0YpG+DiVKyI35ZNWMGh7QY8+QgVy97+OJAxbtgptwa6czcgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIvh06r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BF6C4CEF1;
-	Fri, 28 Nov 2025 17:03:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764349422;
-	bh=Ab9/QvgY2oGmHJbmytHgV/rvTKv/Atdsju9GWpu/now=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uIvh06r3wOYQaDLbkwyb10fGHZciV6zWpju0H3tMGUIPq5BVWVINxbizVMd8fx5w3
-	 7wTpULtp18SjIvlybcJBZouKFR2pAljnHwQxzougN0XLv0AO5HRtopHOsnSFsVFq8D
-	 bLyZFm+EqoGktzT9QHKdWgPddkOJNQ3IS+iFTgoI4G9D9Glwe1LSnMFCBmCCNT0Flp
-	 llb94uT5cNphoF4LNZaReHL/0DLqhVZQDCB9kp1wNDMHD9c+6KUYpoZtgWQv5BEnGp
-	 BtmiP5XA4q/mpinTavPoruoqHaE7DJYNu1s/byiMpHc7wO2eDEyNoRUXE8zSfFlLOD
-	 jZLoSlmdqlnEg==
-Message-ID: <9e6ef98f-12eb-4608-aece-cf321e0a38d7@kernel.org>
-Date: Fri, 28 Nov 2025 18:03:38 +0100
+	s=arc-20240116; t=1764350304; c=relaxed/simple;
+	bh=qSMDgAab8niEa7uXA8/JyMRbEm4G4q6XD1/VjNo6mzM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qBsmuPgFPayuYQS75pysjN0s6sv04tqEByXhySHsGA1nmdjVfC56UrSQqxRFdV7QohSMaDCBB7V7O9S87KdFuPov7gtwyu5eMieOMCSx0EDRuiBY+JZdoH0ZpWbbdfU7gG722aAMNzSUYvLSrVCv3N0BSwTssMw0VuDw3awMjKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mie8/qVm; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b735b89501fso270490266b.0
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 09:18:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764350299; x=1764955099; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GJQwfOIw2qQpgiHTYzvOGMNFZV2HUBa/BfEUHAS1g30=;
+        b=mie8/qVm7GZTNlXrWjW7S9fsYxpm+NRxImyppNe8MqFXpG8I/6ycJnUfujWYQD77Jh
+         Ni2l4QjwRZgaUnD3uptBZUb2LKtOvX9UTH1dnGLlLwTf+rUfcnLHIkL5ePYpM/b3yBJg
+         9PRLUi53q2t+59ffo/GTQfpLE39EgmHKjFQVgWVt/RhrQmtK0309l0aSe26Sw6YwwUxv
+         I0x5j7op8+QReRCtzj2rZS8P9+n+tES9hfLC9ol8blSDWl8QQ6qLtcvvE0xLPQCgcGkl
+         AhAs1MK7lj34Yl8dE77EoPKzcg2helSy1z/HI/GPDU+J+mZK0lxTDB+A3F3fFqPpzpMc
+         7uWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764350299; x=1764955099;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GJQwfOIw2qQpgiHTYzvOGMNFZV2HUBa/BfEUHAS1g30=;
+        b=mBZB/eETQaCUD2lwSl/EhXyZSO44C91MO6vZCwM8n7nqMJ11x81hrLpmUC+3qWPtWF
+         FA6MnWoF8AhXkiuZ0+tn29r7AMx5UnGvf+YTN9BRw8ggMpiavGM4/BPCGtTDj/pdeU6k
+         RbW/+traV0JqcOjAtBqqd3OBlFJGPTCQlifalaK4z8kqMjHmNEC286iqD9zmmfrrveE2
+         3ICceNGe5izyT4/xqmWOEVbADNvCq36V2i8CLYSUXyRX0kSvP2ab7QkN/E+/iaKTbpiQ
+         VCog5nPQUwqA5FJFWSG6gw3fXB9ZZo/9sdCNXMbrvXowuNU9naptJAJKVinoiD2bN1iv
+         L/bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWASVtgT+vDSHIfptwJ3oAEqVdEKD1eKHrNmHStTzY/oSg5n7mzgDkBKTaqV9s8qGYOzp2C1P4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx80riSjlaTKqi3SjcwyA4aMOLYFh+yTFkegnAt0dBN7KBVkIJc
+	m7Le5DAySAKO1eufazntOHBaSK79VAstkaSXZmDGfXjNj8oxhyRs6Bc=
+X-Gm-Gg: ASbGnctDbFt1et2JM4E1kzW5l4w4m/sJ8PY6qj1b1J5wUuvSbMWO0UsM0YkeYIleFbW
+	UaUHcmVUmhKM1LrO5+HoL+F81of+LD1hbf2yfjMVKuu2eOLiuOFCfY1ZOaf+snKbNhkTa2LKm2n
+	5M4G5Ufr+0Qfj2seBru91/7n+zwkiw7f/lUoIGBYg2w0wfgwmPr0fIbJBC5AJ3SXS7AcRfJEuFu
+	celTEhUiTBvfLr6TdOX2bJSwn4AizEGkaCwm3KjHNk7bgoxqe3eeq3wBmAlfSrgS6GWW16yQolk
+	UqfkUJuijL4B+xV9jtnmIgACJmGvghGIoT2j0LNWZcJrmbQokWG7Imj/zVBPYAvmPQiFdOUDlgg
+	m2Sj56HoIHdUqfRot1NvIhaqNyEqX2mp021Lt5l7Hngs3TRqmFHiYCHenJECOETdtmzpFJtCJPP
+	PJk2oKVZbwe2VQpITJDHgl+Aidel21+kslJfKzxa7aJf53Yd4u/Qm4oeFaQYzDcCVB+0lek4I=
+X-Google-Smtp-Source: AGHT+IGMb2CAJXzm7R7ZYxSu0VKeZ+ZE/F03jrlS6C47GGzI0dctfnwYd5RO36R52sY8BYB1vKXY+g==
+X-Received: by 2002:a17:907:801:b0:b73:7de4:dfdb with SMTP id a640c23a62f3a-b76c5515010mr1501580566b.37.1764350298291;
+        Fri, 28 Nov 2025 09:18:18 -0800 (PST)
+Received: from [192.168.1.17] (host-79-36-164-91.retail.telecomitalia.it. [79.36.164.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f5162093sm509465066b.2.2025.11.28.09.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 09:18:17 -0800 (PST)
+From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Date: Fri, 28 Nov 2025 18:17:28 +0100
+Subject: [PATCH v2] drm/msm: Fix a7xx per pipe register programming
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Patch "mptcp: Fix proto fallback detection with BPF" has been
- added to the 6.1-stable tree
-Content-Language: en-GB, fr-BE
-To: gregkh@linuxfoundation.org, jiayuan.chen@linux.dev, sashal@kernel.org
-Cc: stable-commits@vger.kernel.org,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, jakub@cloudflare.com,
- martin.lau@kernel.org
-References: <2025112711-frigidly-unruly-4a72@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2025112711-frigidly-unruly-4a72@gregkh>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251128-gras_nc_mode_fix-v2-1-634cda7b810f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIACjZKWkC/2WNQQrCMBBFr1JmbSQTmxRdeQ8pIaSTdMA2kkhRS
+ u9uLLhy+R7891colJkKXJoVMi1cOM0V1KEBP7o5kuChMiipNKIyImZX7OztlAaygV+iU6ol0tK
+ 40xnq7JGp6j156yuPXJ4pv/eHBb/2F+v+YwsKFNpLHwyaVmK4xsnx/ejTBP22bR+MHLPwsAAAA
+ A==
+X-Change-ID: 20251126-gras_nc_mode_fix-7224ee506a39
+To: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Akhil P Oommen <akhilpo@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Antonino Maniscalco <antomani103@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Anna Maniscalco <anna.maniscalco2000@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764350296; l=7753;
+ i=anna.maniscalco2000@gmail.com; s=20240815; h=from:subject:message-id;
+ bh=qSMDgAab8niEa7uXA8/JyMRbEm4G4q6XD1/VjNo6mzM=;
+ b=T23Rwt648GTVB5YRJanV0yDkpqQX+VDqWRFRQ92FRrpdINbCDnsVnFd9OEz6+pj9nnS5aw8x+
+ KpSbq+SP5RzA4aaxGasbztjY6qk3Kg28G5Rv55eY27+65W6w647PBqk
+X-Developer-Key: i=anna.maniscalco2000@gmail.com; a=ed25519;
+ pk=0zicFb38tVla+iHRo4kWpOMsmtUrpGBEa7LkFF81lyY=
 
-Hi Greg, Sasha, Jiayuan,
+GEN7_GRAS_NC_MODE_CNTL was only programmed for BR and not for BV pipe
+but it needs to be programmed for both.
 
-On 27/11/2025 14:41, gregkh@linuxfoundation.org wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     mptcp: Fix proto fallback detection with BPF
-> 
-> to the 6.1-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      mptcp-fix-proto-fallback-detection-with-bpf.patch
-> and it can be found in the queue-6.1 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Program both pipes in hw_init and introducea separate reglist for it in
+order to add this register to the dynamic reglist which supports
+restoring registers per pipe.
 
-@Sasha: thank you for having resolved the conflicts for this patch (and
-many others related to MPTCP recently). Sadly, it is causing troubles.
+Fixes: 91389b4e3263 ("drm/msm/a6xx: Add a pwrup_list field to a6xx_info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+---
+Changes in v2:
+- Added missing Cc: stable to commit
+- Added pipe_regs to all 7xx gens
+- Null check pipe_regs in a7xx_patch_pwrup_reglist
+- Added parentheses around bitwise and in a7xx_patch_pwrup_reglist
+- Use A7XX_PIPE_{BR, BV, NONE} enum values
+- Link to v1: https://lore.kernel.org/r/20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com
+---
+ drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 12 ++++++++++-
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c     | 34 +++++++++++++++++++++++++++----
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.h     |  1 +
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h   | 13 ++++++++++++
+ 4 files changed, 55 insertions(+), 5 deletions(-)
 
-@Greg/Sasha: is it possible to remove it from 6.1, 5.15 and 5.10 queues
-please?
-(The related patch in 6.6 and above is OK)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+index 29107b362346..10732062d681 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+@@ -1376,7 +1376,6 @@ static const uint32_t a7xx_pwrup_reglist_regs[] = {
+ 	REG_A6XX_UCHE_MODE_CNTL,
+ 	REG_A6XX_RB_NC_MODE_CNTL,
+ 	REG_A6XX_RB_CMP_DBG_ECO_CNTL,
+-	REG_A7XX_GRAS_NC_MODE_CNTL,
+ 	REG_A6XX_RB_CONTEXT_SWITCH_GMEM_SAVE_RESTORE_ENABLE,
+ 	REG_A6XX_UCHE_GBIF_GX_CONFIG,
+ 	REG_A6XX_UCHE_CLIENT_PF,
+@@ -1448,6 +1447,12 @@ static const u32 a750_ifpc_reglist_regs[] = {
+ 
+ DECLARE_ADRENO_REGLIST_LIST(a750_ifpc_reglist);
+ 
++static const struct adreno_reglist_pipe a7xx_reglist_pipe_regs[] = {
++	{ REG_A7XX_GRAS_NC_MODE_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
++};
++
++DECLARE_ADRENO_REGLIST_PIPE_LIST(a7xx_reglist_pipe);
++
+ static const struct adreno_info a7xx_gpus[] = {
+ 	{
+ 		.chip_ids = ADRENO_CHIP_IDS(0x07000200),
+@@ -1491,6 +1496,7 @@ static const struct adreno_info a7xx_gpus[] = {
+ 			.hwcg = a730_hwcg,
+ 			.protect = &a730_protect,
+ 			.pwrup_reglist = &a7xx_pwrup_reglist,
++			.pipe_reglist = &a7xx_reglist_pipe,
+ 			.gbif_cx = a640_gbif,
+ 			.gmu_cgc_mode = 0x00020000,
+ 		},
+@@ -1513,6 +1519,7 @@ static const struct adreno_info a7xx_gpus[] = {
+ 			.hwcg = a740_hwcg,
+ 			.protect = &a730_protect,
+ 			.pwrup_reglist = &a7xx_pwrup_reglist,
++			.pipe_reglist = &a7xx_reglist_pipe,
+ 			.gbif_cx = a640_gbif,
+ 			.gmu_chipid = 0x7020100,
+ 			.gmu_cgc_mode = 0x00020202,
+@@ -1548,6 +1555,7 @@ static const struct adreno_info a7xx_gpus[] = {
+ 			.protect = &a730_protect,
+ 			.pwrup_reglist = &a7xx_pwrup_reglist,
+ 			.ifpc_reglist = &a750_ifpc_reglist,
++			.pipe_reglist = &a7xx_reglist_pipe,
+ 			.gbif_cx = a640_gbif,
+ 			.gmu_chipid = 0x7050001,
+ 			.gmu_cgc_mode = 0x00020202,
+@@ -1590,6 +1598,7 @@ static const struct adreno_info a7xx_gpus[] = {
+ 			.protect = &a730_protect,
+ 			.pwrup_reglist = &a7xx_pwrup_reglist,
+ 			.ifpc_reglist = &a750_ifpc_reglist,
++			.pipe_reglist = &a7xx_reglist_pipe,
+ 			.gbif_cx = a640_gbif,
+ 			.gmu_chipid = 0x7090100,
+ 			.gmu_cgc_mode = 0x00020202,
+@@ -1623,6 +1632,7 @@ static const struct adreno_info a7xx_gpus[] = {
+ 			.hwcg = a740_hwcg,
+ 			.protect = &a730_protect,
+ 			.pwrup_reglist = &a7xx_pwrup_reglist,
++			.pipe_reglist = &a7xx_reglist_pipe,
+ 			.gbif_cx = a640_gbif,
+ 			.gmu_chipid = 0x70f0000,
+ 			.gmu_cgc_mode = 0x00020222,
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 0200a7e71cdf..422ce4c97f70 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -849,9 +849,16 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
+ 		  min_acc_len_64b << 3 |
+ 		  hbb_lo << 1 | ubwc_mode);
+ 
+-	if (adreno_is_a7xx(adreno_gpu))
+-		gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
+-			  FIELD_PREP(GENMASK(8, 5), hbb_lo));
++	if (adreno_is_a7xx(adreno_gpu)) {
++		for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
++			gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
++				  A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id));
++			gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
++				  FIELD_PREP(GENMASK(8, 5), hbb_lo));
++		}
++		gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
++			  A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
++	}
+ 
+ 	gpu_write(gpu, REG_A6XX_UCHE_MODE_CNTL,
+ 		  min_acc_len_64b << 23 | hbb_lo << 21);
+@@ -865,9 +872,11 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+ 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+ 	const struct adreno_reglist_list *reglist;
++	const struct adreno_reglist_pipe_list *pipe_reglist;
+ 	void *ptr = a6xx_gpu->pwrup_reglist_ptr;
+ 	struct cpu_gpu_lock *lock = ptr;
+ 	u32 *dest = (u32 *)&lock->regs[0];
++	u32 pipe_reglist_count = 0;
+ 	int i;
+ 
+ 	lock->gpu_req = lock->cpu_req = lock->turn = 0;
+@@ -907,7 +916,24 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
+ 	 * (<aperture, shifted 12 bits> <address> <data>), and the length is
+ 	 * stored as number for triplets in dynamic_list_len.
+ 	 */
+-	lock->dynamic_list_len = 0;
++	pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
++	if (pipe_reglist) {
++		for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
++			gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
++				  A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id));
++			for (i = 0; i < pipe_reglist->count; i++) {
++				if ((pipe_reglist->regs[i].pipe & BIT(pipe_id)) == 0)
++					continue;
++				*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
++				*dest++ = pipe_reglist->regs[i].offset;
++				*dest++ = gpu_read(gpu, pipe_reglist->regs[i].offset);
++				pipe_reglist_count++;
++			}
++		}
++		gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
++			  A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
++	}
++	lock->dynamic_list_len = pipe_reglist_count;
+ }
+ 
+ static int a7xx_preempt_start(struct msm_gpu *gpu)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
+index 6820216ec5fc..0a1d6acbc638 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
+@@ -46,6 +46,7 @@ struct a6xx_info {
+ 	const struct adreno_protect *protect;
+ 	const struct adreno_reglist_list *pwrup_reglist;
+ 	const struct adreno_reglist_list *ifpc_reglist;
++	const struct adreno_reglist_pipe_list *pipe_reglist;
+ 	const struct adreno_reglist *gbif_cx;
+ 	const struct adreno_reglist_pipe *nonctxt_reglist;
+ 	u32 max_slices;
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+index 0f8d3de97636..1d0145f8b3ec 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+@@ -188,6 +188,19 @@ static const struct adreno_reglist_list name = {		\
+ 	.count = ARRAY_SIZE(name ## _regs),		\
+ };
+ 
++struct adreno_reglist_pipe_list {
++	/** @reg: List of register **/
++	const struct adreno_reglist_pipe *regs;
++	/** @count: Number of registers in the list **/
++	u32 count;
++};
++
++#define DECLARE_ADRENO_REGLIST_PIPE_LIST(name)	\
++static const struct adreno_reglist_pipe_list name = {		\
++	.regs = name ## _regs,				\
++	.count = ARRAY_SIZE(name ## _regs),		\
++};
++
+ struct adreno_gpu {
+ 	struct msm_gpu base;
+ 	const struct adreno_info *info;
 
-@Jiayuan: did you not specify you initially saw this issue on a v6.1
-kernel? By chance, do you already have a fix for that version?
+---
+base-commit: 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
+change-id: 20251126-gras_nc_mode_fix-7224ee506a39
 
-Cheers,
-Matt
+Best regards,
 -- 
-Sponsored by the NGI0 Core fund.
+Anna Maniscalco <anna.maniscalco2000@gmail.com>
 
 
