@@ -1,118 +1,143 @@
-Return-Path: <stable+bounces-197620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0CCC92989
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 17:36:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF61C92BF2
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 18:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D572D4E369C
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 16:36:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B294B341DE4
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 17:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BD1285058;
-	Fri, 28 Nov 2025 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F562BE053;
+	Fri, 28 Nov 2025 17:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6QZuUNH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIvh06r3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A5526D4CA
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 16:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CA229E11B;
+	Fri, 28 Nov 2025 17:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764347804; cv=none; b=rMu6TyxfOK6NTsbDCO3ZmEBUB7LMRxqt/1DthCNT8IWbDkzK5Pe4dxJUBljP6DAHZMXZSrQAJPn3Ao2I6PQ7eGveeeKJBZ5IJ96JorsAUkelfObtzriy6E9coobj6a6AUp+mQ5Ahux3sSVF8U45gZLkhjR8u2bxT3WeH3d9pyOM=
+	t=1764349423; cv=none; b=ctf2YznEfus1n0cu1FGEk5YfCPrzXdYdnITleQbnziy7AzO1p7aSHwVGeML+crqKtRI88CzEGCtJ6brntqNOQ9eU35rsie2yPcheCnZT7+vtwy6/jgQLMlu4tmZ1hWLb7p26qnPF9wSmSAS0UTSQVnU4NmsCt3wTuche35+C9Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764347804; c=relaxed/simple;
-	bh=kr6XAX3GH731cjzi4VKnV2LtQU3uss0kHe5M8FyBSFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjvwzqoRyHfbej6zCZ9tDzT9wuvlfa/BuEOwnBtv6poMmf0VM/hIzmwgVbdTF85dr0I++TmzA09Vi07L/bGsOa45+dVlBj97ZM/uvsBr0dLj1tgZloQDvsx0nFCpst6mTAwATxO7M8pP0YM0GIywW2ARO/058dKAUGuBZjArbNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6QZuUNH; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7aad4823079so1822155b3a.0
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:36:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764347800; x=1764952600; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jbNHKya0E2lKJwlLyC2FOZsBy0/KISJRow+SYNbETeQ=;
-        b=S6QZuUNH05x8dMVLUFDVVU+AvVTOw9c1G12h9gQdwBB21OTYvyJEbHCOVhKXEb0ZSm
-         QpBLMYsTWHVl2+mFViMdoi70u3A5Gtw7vFCV/8L8SsVx8BK4LJbjl+uXS4HgiiFo0AZX
-         lC5lvFE6BYlK4gtL7w7hF9MdmveX8TpJ26sHP5AseIEhhXrW5vttNBRjNCPs4h4e8Hnv
-         cCdBizhMWQ7hzIs0NHxnDC5Z7BVtLjn7mF+68N8Q4lJp2RLonojFBpKD9wrO0ZfQp1vk
-         jDBZx30tsO5NX3S5XzSeY3+VOkpbbzH2h3EuhsIK1ZteYe61/p6nwfmqVBzoZYAWxEyJ
-         paQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764347800; x=1764952600;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jbNHKya0E2lKJwlLyC2FOZsBy0/KISJRow+SYNbETeQ=;
-        b=dKkjEzyNEB3o06nTJOK9bwMmUPz24ffvGbkGd8N/GwqFmmz069hIwEdKNB+V4ueD0V
-         GOD961JTaMhTjOWTWkuOspz10Dm1ccPsdl37ClzjLjhVFroGJQZisPPuT7KfNzsCF5o+
-         ZZVsWD68BT7lW8sPCufz4MHhXY04etTtMfZ2+TAgmmkujHkXUOxgAsqN8LxnaC5RrU+p
-         StaFuKmAU4v4iGpxxFZYvRuBj0TbSDg0AYurXcFhr4DeNyXFp+3GQzs2nIAHcbm6qw/o
-         ux8EH1o5hLqf8qwd7YyX+yFZjjVM/ZOlsJ9YoudOlKlyaY14dKcc9JGisv8pAWIv9C1w
-         Gr9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUpA2kJ69gV1OeLAQc5KKDj/6IfLrEGSU0w8ssC2BmdCBUe0jvlVdLpDwc8YQR478JwPaYkXt4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbEQXn/zm9VfqvuXV3ZGbP2M8tEflBrdknNPBC6sykerxiVrwi
-	ojW5/oc1akj/4tLMw81Wc7ueORjU+5wnimNRoXqpRGhZq+nV9L9Ayyle
-X-Gm-Gg: ASbGnctmMlgLdVkopEPKdVCy4h64434/FqxSNo7v6sXWRScsCwvByDBT3BYtzhK93nk
-	+px4Cp0h1EmTjT+BZppjpO2ryZTrBCG0G6SMGbXNGIxhVh1GuUYhgZklnXPfvIqpi7dxGMVYrIa
-	32lzO0FeA526tXZQGm9IuAl+bA0PGlIoDTFT+vPirJwDOXO7aYfV+nudXOSvPwmvlDg7CfOpbPM
-	fjQiTW2h/E82EdtBLCbf0eaMNLZzrkJh90Z2lEj/WHd3YA1t6fGL5VaEF1HyNeIxzE1qNmNQpNo
-	7ShKsewHzi9Y9/zkUHIyiB4MP3q/ax+FVFxOM8hE4OZtVYLI4ccSxzxRqOiIaHmVUXBFfE7xhnA
-	WE+t/qNpWy+pYcsaK7rDCClYAx2SL7u1hpWsmXQGh6tAUo6wZKUgDHEP5AqACcPzgXvzR9WKq/x
-	9qLoJLN4V6LMctFUVZJGSIAF0=
-X-Google-Smtp-Source: AGHT+IHDO0GdukXZKQcUx5DsNAW5rrV9c26FtcSfU7VQ9695O3cefK8NgHmf3K1rDez2TgCnIGzh3A==
-X-Received: by 2002:a05:7022:671f:b0:119:e56b:91f2 with SMTP id a92af1059eb24-11c9d870411mr18511999c88.35.1764347799759;
-        Fri, 28 Nov 2025 08:36:39 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcb057cb0sm22692911c88.9.2025.11.28.08.36.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 08:36:39 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 28 Nov 2025 08:36:38 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (max16065) Use local variable to avoid TOCTOU
-Message-ID: <2fc6a617-3537-4c13-a8cb-1fbb79817319@roeck-us.net>
-References: <20251128124709.3876-1-hanguidong02@gmail.com>
+	s=arc-20240116; t=1764349423; c=relaxed/simple;
+	bh=Ab9/QvgY2oGmHJbmytHgV/rvTKv/Atdsju9GWpu/now=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=URO7pGPG/cy2HpD0qqEUOLvBaGowFtPLSkqfCJHL8xqR4q8e6X8g9TF2QHUkouo667PTD0hxRx5jxeLhhHkTuCL4VVInUcQuLZ1n1QSvPPG0D8l1T5OMBYzagbJ0YpG+DiVKyI35ZNWMGh7QY8+QgVy97+OJAxbtgptwa6czcgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIvh06r3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BF6C4CEF1;
+	Fri, 28 Nov 2025 17:03:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764349422;
+	bh=Ab9/QvgY2oGmHJbmytHgV/rvTKv/Atdsju9GWpu/now=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uIvh06r3wOYQaDLbkwyb10fGHZciV6zWpju0H3tMGUIPq5BVWVINxbizVMd8fx5w3
+	 7wTpULtp18SjIvlybcJBZouKFR2pAljnHwQxzougN0XLv0AO5HRtopHOsnSFsVFq8D
+	 bLyZFm+EqoGktzT9QHKdWgPddkOJNQ3IS+iFTgoI4G9D9Glwe1LSnMFCBmCCNT0Flp
+	 llb94uT5cNphoF4LNZaReHL/0DLqhVZQDCB9kp1wNDMHD9c+6KUYpoZtgWQv5BEnGp
+	 BtmiP5XA4q/mpinTavPoruoqHaE7DJYNu1s/byiMpHc7wO2eDEyNoRUXE8zSfFlLOD
+	 jZLoSlmdqlnEg==
+Message-ID: <9e6ef98f-12eb-4608-aece-cf321e0a38d7@kernel.org>
+Date: Fri, 28 Nov 2025 18:03:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251128124709.3876-1-hanguidong02@gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: Patch "mptcp: Fix proto fallback detection with BPF" has been
+ added to the 6.1-stable tree
+Content-Language: en-GB, fr-BE
+To: gregkh@linuxfoundation.org, jiayuan.chen@linux.dev, sashal@kernel.org
+Cc: stable-commits@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, jakub@cloudflare.com,
+ martin.lau@kernel.org
+References: <2025112711-frigidly-unruly-4a72@gregkh>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <2025112711-frigidly-unruly-4a72@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 28, 2025 at 08:47:09PM +0800, Gui-Dong Han wrote:
-> In max16065_current_show, data->curr_sense is read twice: once for the
-> error check and again for the calculation. Since
-> i2c_smbus_read_byte_data returns negative error codes on failure, if the
-> data changes to an error code between the check and the use, ADC_TO_CURR
-> results in an incorrect calculation.
-> 
-> Read data->curr_sense into a local variable to ensure consistency. Note
-> that data->curr_gain is constant and safe to access directly.
-> 
-> This aligns max16065_current_show with max16065_input_show, which
-> already uses a local variable for the same reason.
-> 
-> Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-> Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Hi Greg, Sasha, Jiayuan,
 
-Applied.
+On 27/11/2025 14:41, gregkh@linuxfoundation.org wrote:
+> 
+> This is a note to let you know that I've just added the patch titled
+> 
+>     mptcp: Fix proto fallback detection with BPF
+> 
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      mptcp-fix-proto-fallback-detection-with-bpf.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Thanks,
-Guenter
+@Sasha: thank you for having resolved the conflicts for this patch (and
+many others related to MPTCP recently). Sadly, it is causing troubles.
+
+@Greg/Sasha: is it possible to remove it from 6.1, 5.15 and 5.10 queues
+please?
+(The related patch in 6.6 and above is OK)
+
+@Jiayuan: did you not specify you initially saw this issue on a v6.1
+kernel? By chance, do you already have a fix for that version?
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
