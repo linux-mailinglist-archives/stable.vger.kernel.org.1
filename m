@@ -1,87 +1,84 @@
-Return-Path: <stable+bounces-197587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81266C92059
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:47:32 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE9CC9216F
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2DC3934816C
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 12:47:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 921BE34E68B
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAA92FE59A;
-	Fri, 28 Nov 2025 12:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB97230E0F3;
+	Fri, 28 Nov 2025 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hPq0SR4f"
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="IUzSoK9/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E1730F921
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 12:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B011228E0F;
+	Fri, 28 Nov 2025 13:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764334046; cv=none; b=KbxM6SM3YRX5kVjDHcohp4uGpZ92DUcyehWK6dTEcNVhJCZ/scfjV+VYLzEIRMKBeuS7WR1l01H1V6K/dDONPVsiAO3dCwKTD3GX4ZrSqGTIfEA09Tq1ywWJ0rsmPHQwY7YhIKZUOrtB5g5txjziSPMnO+oveT1uhKq0nZPJWik=
+	t=1764335768; cv=none; b=dUn06Jkx+FZ8B19g3n5RyRHgUgg8XeZdKGbVvG5fxxrx7ko6tJxApsUH4YQY9sNCkB0mHFHqEZuM5uK5zf8UUa8MastntWAGxpwkcTj8RdzhhW66ey8o3S1cerax9X8z5KbeLpcAf8y8cnYDAVk5wRapBXkFtkhXhaGAqfJtIw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764334046; c=relaxed/simple;
-	bh=kzV9+demnOfcGL4XXbAez13alLimd8ksp0/UGXP6G3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=keqhl+pSkfLLTL3iGJk6L99W1k4x55ZEyyGFnh3+B+zzxOBbx+WTE55nhd/QhY7aJ2cRLblqe6Lm7D3tmo/CXxob6MrE8CnA58f31/JxDfqQoYptpQMbiqijxb2E2b28PqcUpu4IswBNNC+nI2lZW/LX3Z1/wxgOoe/QSrEOle8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hPq0SR4f; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so2112291b3a.3
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 04:47:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764334044; x=1764938844; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=to/vAA7bFq5ou2zypDaoBxJgK9XuwGqaOChWbgZEfKc=;
-        b=hPq0SR4flAB9joF8x7U0XGpCjGcV/5C+VeQ3pkEnprTbH4mcwTIxaGSubZuewQ4nDm
-         xhCKxjgBJv6qcu2UA1thVHGK7yhnIy1eW4RwRoR/aDAu1rVjdHcI3EuIkaxagn5t+9xX
-         Z4gv+vbE1DskSgV9cthcrsQgw+/TWr28MBw8HKPRnuSrInGjVnyLIC90rudthkV4nP5k
-         MT1LekDXkUj/ErkcFbO4tItJnhut7VHBJtGWKsBZcz/BwRQ+FhnMXjgNEl2F6WkdTSJI
-         S5sry03Iqwg8F27bW0mJDC8p95kOzRV7x403BmJqjYINT5WkN7L8Bhkda8NPHTeHWZGX
-         4iXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764334044; x=1764938844;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=to/vAA7bFq5ou2zypDaoBxJgK9XuwGqaOChWbgZEfKc=;
-        b=dKk1di4DKX8eCr7Jl3eoNjw2+fNvdWBXLuzD5ptSE9dcXB64nNUgxURbHKVhCtQclK
-         tyIQ97PVy+gQv50xrRehT/lXh07GseS+At3SzuE1Hk2QoOG59a81eDVbSJiswpI48dyA
-         tjUg/D1Gg339FyRQ5/3jjD7nSxbbLilcG/Eue7c/WIZvL7DRsOiov+IpaOyx07lBrPFn
-         EhE54b9DAlAEJVwSjEMAmcH4q9fMkZnBLMLQL57WWy+BQ0TzdXQakQ+Ep8URNE/su6it
-         N5+NMqZiPVKfIa9hGl9pxy+2KCizBQb72qDLjdKkUcN3r+tJ1006oIhGSye5iySodiwO
-         4UzA==
-X-Forwarded-Encrypted: i=1; AJvYcCXV+H37gB8sltEJuT/OXDBbh2t3jDknH9P6kx5eRiubYOROqXNFmnfvJQlgs9N312OZtPiToIk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJaJAJTqOjoO0OHGysApIyznbRdxKQKPzZKq0BVXZV1UspteyB
-	g6sUWxdeIXx8Q4t9eGQtsOAwEFN2A2GI1sx9szbzPnTYbdUFzCrOmMlAzWr+oQ==
-X-Gm-Gg: ASbGncu4UBDABpgMkzpCEW4r10DrflGcQ35LjBLYqDMazTBGigUjzWo52c5WjNpC4ln
-	6ZPWySRbX0bv9C1WnUczoEyANOtfq+R2NYLDg1IFaRbVjLkT4L0LI8w5yYnrf8UK0eEGBGB+d68
-	EFB/Y/NauQxd+DopOqbG5yRKbMwpwBlzn4vyONPWKroUKnGhGegX/uOWhU5518oYR1SpqiigUer
-	uDI9H8eGCY66sWzRL6eXJ7iK9z0EwZPrUFsrhqX9axa4lbiRiV5U8ibabera4VM+hBsqszCZ9l+
-	Cj+42DleHYuebzu/gzCjG2NBr3i/xf20Jt3EAJKJn0ITFKlCyu6oa3uIf63RTyhTtaw4QF/vyyC
-	yB2pn0a8T60MqvVYbA3XSD7e9oshRVKYNmrzCsjHkDdymv6P2nwSj3CAb/TgpIdHKaB7QUVG6Ez
-	3/OgonxC2UCUrm3xEGBmx7pFErQvOm+MnYD47feL4atfQ7rkh9C8pJnchtngH5N6yCejaX
-X-Google-Smtp-Source: AGHT+IExavDrPYTAuFxviXdm3Se4ZMrsz/2FAilIbVsaAp7O+j6qMRHnuF8vULFtkbT7mW/nwVgERA==
-X-Received: by 2002:a05:7022:2521:b0:11b:a892:80b4 with SMTP id a92af1059eb24-11c9d60dc74mr17778260c88.5.1764334043683;
-        Fri, 28 Nov 2025 04:47:23 -0800 (PST)
-Received: from 2045L.localdomain (7.sub-75-221-66.myvzw.com. [75.221.66.7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaed5fcasm20956715c88.2.2025.11.28.04.47.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 04:47:23 -0800 (PST)
-From: Gui-Dong Han <hanguidong02@gmail.com>
-To: linux@roeck-us.net
-Cc: linux-hwmon@vger.kernel.org,
+	s=arc-20240116; t=1764335768; c=relaxed/simple;
+	bh=navCkuCx/ATT0lvncbtVJ6iQ8AslvcAu4TakSL5cGmU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ok6kLgWE2P0DSdqa/kTD3dBjNq1wfdynJTDjYZTxeKmXApMJ0GKXl4nnnsWLf5FumqATM40nKjbF4DoRAero+EUk2zjX2NZ+Iuk8gNN+Ac/tyuEcrr6TrG0NBdIXhbbT6ji6lRJUbvEIp6Xfs468fhX5rvgFan5IMKnNVYivLG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=IUzSoK9/; arc=none smtp.client-ip=93.188.205.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1764335759;
+	bh=navCkuCx/ATT0lvncbtVJ6iQ8AslvcAu4TakSL5cGmU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IUzSoK9/tbRIQSZiq+8HSfKfWGxzhX2ffIA0ae2q7WvtvhM8mKa0WJen7id9k2/xV
+	 lXzHyUr+dNbpQ8EaBh67hD9f14YsPb3gyAbCkhTmKPVA+/3GG+eKBVeQidm5wEKC1+
+	 DRjtdOhxuUS3L3lT482xKCSQPOwkGxU+Sho8LtHfV1f5s221UIexODDIqTcl6KJFgE
+	 j8bE8vcGgojXAQ07+/ynrD0MGTHyArrJDVdKkws9r+4vkhwA3Tivv0D85caOkyyvYM
+	 BM1yqecCKEEzSx6mxIzbdhtotBPUAXfETEMtFs4VLNb1JqLnYMgXbW9VPntH+4JAyj
+	 YVvQEqybnVzhQ==
+Received: from gca-msk-a-srv-ksmg01 (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 0B6CF1F745;
+	Fri, 28 Nov 2025 16:15:59 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri, 28 Nov 2025 16:15:57 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru.astracloud.ru (rbta-msk-lt-156703.astralinux.ru [10.198.57.41])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4dHv1h73MCzwPGg;
+	Fri, 28 Nov 2025 16:15:51 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Jay Vosburgh <j.vosburgh@gmail.com>,
+	Veaceslav Falico <vfalico@gmail.com>,
+	Andy Gospodarek <andy@greyhouse.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Moni Shoua <monis@Voltaire.COM>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] hwmon: (max16065) Use local variable to avoid TOCTOU
-Date: Fri, 28 Nov 2025 20:47:09 +0800
-Message-ID: <20251128124709.3876-1-hanguidong02@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Song Liu <songliubraving@fb.com>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	bpf@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 v2 0/3] Backport fix for CVE-2023-53103
+Date: Fri, 28 Nov 2025 16:15:34 +0300
+Message-Id: <20251128131537.4241-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,53 +86,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/28 10:15:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 81 0.3.81 2adfceff315e7344370a427642ad41a4cfd99e1f, {Tracking_one_url}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 198520 [Nov 28 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.20
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/11/28 10:03:00 #27985542
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/11/28 10:15:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-In max16065_current_show, data->curr_sense is read twice: once for the
-error check and again for the calculation. Since
-i2c_smbus_read_byte_data returns negative error codes on failure, if the
-data changes to an error code between the check and the use, ADC_TO_CURR
-results in an incorrect calculation.
+Changes in v2:
+  - Added a new patch fixing bonding regression, based on the Fixes tag in
+    c484fcc058ba ("bonding: Fix memory leak when changing bond type to Ethernet")
+  - Added a cover letter
+  - No changes in patches 1 and 3
+  - Retested the reproducer [1]
 
-Read data->curr_sense into a local variable to ensure consistency. Note
-that data->curr_gain is constant and safe to access directly.
+Tested with the syzkaller reproducer [1].
+The issue triggers on vanilla v5.10.y and no longer reproduces with these
+patches applied.
 
-This aligns max16065_current_show with max16065_input_show, which
-already uses a local variable for the same reason.
+Additionally, c484fcc058ba ("bonding: Fix memory leak when changing bond type
+to Ethernet") has a Fixes tag pointing to
+9ec7eb60dcbc ("bonding: restore IFF_MASTER/SLAVE flags on bond enslave ether
+type change"), so it should be ported as well.
 
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
----
-Based on the discussion in the link, I will submit a series of patches to
-address TOCTOU issues in the hwmon subsystem by converting macros to
-functions or adjusting locking where appropriate.
----
- drivers/hwmon/max16065.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+[1]: https://syzkaller.appspot.com/bug?extid=9dfc3f3348729cc82277
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 0ccb5eb596fc..4c9e7892a73c 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(struct device *dev,
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
-+	int curr_sense = data->curr_sense;
- 
--	if (unlikely(data->curr_sense < 0))
--		return data->curr_sense;
-+	if (unlikely(curr_sense < 0))
-+		return curr_sense;
- 
- 	return sysfs_emit(buf, "%d\n",
--			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
-+			  ADC_TO_CURR(curr_sense, data->curr_gain));
- }
- 
- static ssize_t max16065_limit_store(struct device *dev,
+
+Ido Schimmel (1):
+  bonding: Fix memory leak when changing bond type to Ethernet
+
+Nikolay Aleksandrov (2):
+  bonding: restore IFF_MASTER/SLAVE flags on bond enslave ether type
+    change
+  bonding: restore bond's IFF_SLAVE flag if a non-eth dev enslave fails
+
+ drivers/net/bonding/bond_main.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
 -- 
-2.43.0
-
+2.39.5
 
