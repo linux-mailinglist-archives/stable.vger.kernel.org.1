@@ -1,125 +1,101 @@
-Return-Path: <stable+bounces-197569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DEFC914EB
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:51:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E837C916E2
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 10:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A8BC4E07E2
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 08:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB0363A5A79
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A1F2EE611;
-	Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFF530217A;
+	Fri, 28 Nov 2025 09:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzXH5Dw5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FPkBbI9G"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5C1F3B85
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA9930215F
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 09:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764319868; cv=none; b=hY7pVyVU0mQRhuUwGM7GW5rJLpCDEcMaZqUE0UJ0OHLBMnYbvAhntm/fVq4Ed9wI/GvYUvNhchbbyyDfpqENP93O/01YwYNQkxXKeb3jkrVneSFSICrTk2uITTZdriYrGp1pcmIMm28JYiWPkhskTpLwXKyys+TPk25fZVoR3dU=
+	t=1764321859; cv=none; b=csrILkWbaeoyzCR8TUBiQcU2vBl/gUBGh5rY9zrmCEKUcg3Z0dVpMnVjfmvolEJX+7Kyw+Um8zsZ3IHSCx/+IxwdRUkty8QA3/eXAfq6UNDbx7u8pzXl9qEKFebe0n3ny7we3rvdHpRnGrw98wo06pzKKcyrBMJ3MzEGvgR9YB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764319868; c=relaxed/simple;
-	bh=cStjCdmu/XjU9UdftT+gFtkZTXeDN1Na3NsnkdbDc08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mrzSccp1P/1sTkdYDKtN5WI4A5/sJ+B9WhdON2FUh8+3iA4ggzII3sb90487uXxL5SMXzG8JqdYf8K2lz88GY1hXPS8/CRD4xlUbDMH7omyn+z7pAbJjjZSZbzK6TSWz9E/Sp2n+tDj/B7mMNQX/PB6HHqyf+YrA0/2Gh0m3KAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzXH5Dw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5736AC2BCFF
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764319868;
-	bh=cStjCdmu/XjU9UdftT+gFtkZTXeDN1Na3NsnkdbDc08=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CzXH5Dw5hSHdzGZ2KtAzHDWBKGujRbg5SzD2rN+Cv8ZX86pniZiwy6E74WfkATspT
-	 qb4fRsc+yQkKt9FdOHGYDof5iAREE582srdR6yTyWMhBgFBfdDdIYtmK0RhOibJbiZ
-	 Gf1gDLuVkheIZassIFrSmhnoGxMhEf3bSOCNR4U2mHWkIcfORcp6MBnMsIfWUS4u+R
-	 1r3P3/9JEj2xCltxFBe6jhJ4cPlwOrXvm9m3Q7NIUtxeN/kRZCyi15lKMNFBXzgdLD
-	 +Ge9kt1BKYRoizoFCBqKBAAUdj7JaM45ign6f2Du1VyqSBwNeJRELjXh6clH9lKDWN
-	 JLiUpzNIA6rdA==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so2573629a12.1
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 00:51:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWfTNLA0fyssRV1UPQh0xa8C0cVTA+mgS070XU6agCXoHw2osggMU4j1xBjopVIbZf81SB4RmE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTxc/57QZTLQ8eL+7FBAzpbFUbGEJZ0VYukdGIE9rzEK+uEhCV
-	YAkY8sRXHY/p0nASPssR4f+/aFq6Rf3Vn6AauAKNAxsPxymegQR/kz/PpHeM6o9aUnAG1rdrKKt
-	8mXKNiR37XnmSK8H7JMQGW5L0RdRVlHA=
-X-Google-Smtp-Source: AGHT+IGAGHIgD7iYaoiXG/+qhdn4V+4XRkeUjfCaSUCz3qFhqO+0Eq+fKZZEFpacHtC3jd1VFolBOAGdWDW6kBFzCKA=
-X-Received: by 2002:a17:906:fd86:b0:b73:8f33:eee6 with SMTP id
- a640c23a62f3a-b76715ac4a4mr2958545666b.23.1764319866787; Fri, 28 Nov 2025
- 00:51:06 -0800 (PST)
+	s=arc-20240116; t=1764321859; c=relaxed/simple;
+	bh=ED9nuiaO8n6F6aMYH2jutdJWyKTjRdS1+Fiwm5emSdo=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Ki8eJWXgPmV2jJOCRyfjUJqo4+EThjSQs5Egf/4T6CY+/j1wbk0tjbxgb+RNgaFGhfYXV6VpGGnvbDR9R4IL4Vz4bJK9tYgcxU7+4QPK3Fv3F/6ZEHCuf6nsSpwRLv0jcLNd4ai+/7Iy/9T6BLOzcqoqGdeIHsUnyUPJs6BPaK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FPkBbI9G; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29806bd47b5so9826565ad.3
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 01:24:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764321856; x=1764926656; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ED9nuiaO8n6F6aMYH2jutdJWyKTjRdS1+Fiwm5emSdo=;
+        b=FPkBbI9GiVnsb0M/Zj7McJfU2Rtk71JMpmlhMLnQROmpakm8KpEhBPOSFP8yjxQ7UH
+         +65YEffKC2iIX+uJlsZpfZ8aY8PIJObwIgxoeuvVU0n/+qL9brNV/WK9b+k0NvG/fzB0
+         5pp2cZa6V84u9RvDGUVafgO76IUj67obTzfEvgG5GYvt1zEhFtkZQcjnz01qsNZHHXfc
+         cblaFefKaaQk1087WkAJajHkKM+Vdpp+5CtmxIP6Lq34/0bPpFOY9tzEM70yoCTNqSKP
+         xEzPumm/cUN770xG3MvG1XY4jnIhxio13yKxtxggjPdz+NauPGKKoiMMs9Buy01QPnKr
+         YLGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764321856; x=1764926656;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ED9nuiaO8n6F6aMYH2jutdJWyKTjRdS1+Fiwm5emSdo=;
+        b=C97DIOI4JxU2dfH0/IMDVzEc/uhOdXXHOp3YO7n8F24qyMsPiLpwAARpi0T0JtArQB
+         FeR9XXdw4J7SbsJpbI7gk3JFBIkOB6Tb2R/iBU8+hjS4Ib9oA1xwA7fie/vWUxDzDFtH
+         bJGh6gJXKYIPgKc4XHgD7TQLKBJfywcn2RTJw91MS80hA9zuhHiT4WMWKOEKZib3/D8q
+         kZV65YQDDlC6KFTd1Ruie/+BZ+Z06WairWT4qjK9ADanfWuFT2cVDE8teozPS3irWopN
+         GQMOJv8CAWug4b9CQ0yhiQmm23I1gtir7zjGtL6eJ3hqcL7dOQoEsy1hYy2tEN1L13dm
+         zu7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVl8VKs1Iugeyz27vpdINRWvFoLIeDTAGpYfnIZrq0cRlbxDHHeV6PuYRoT/p2gVPa+FszDxek=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPGu79f7OUC9yKwHiAkBMONghebdG3RxqyYjq1G3b+kdF79g1r
+	+myoG+2vyzgqwH9owRc5QYPOl8oOrUEC896kdtaaDjkzh0S4H+TtIWFV/UX7XQUz
+X-Gm-Gg: ASbGncvHeFQCLCGPrh2Y62K9Ks4HDoYbwnsrptOHQo6OqyvPucVQYeWUUNak9ALtg2o
+	OcgyBigWf/yl16Qkah9229Q5T5b/Y6Yt86nvpBAHS0/UstTaDG9aTyoi5r08lYjjlHuC9pTbDjQ
+	qtRSlGJZrI6OXQ8pPe5wDgM1jgVFI3aHkdprHaRMp4+eOUwB1Y3j4gRbE0P/plNdGtvJx9WdI6r
+	+6Pcn7Mr8iVAz3k+ZGk+fn+EMYehLKmeRKT9pIiBIEriFr43jmIjnYu1ttww/T+XyYDCN6GfhDH
+	9jxm5l8eYOt4gAkwXWcQJ4xf2z0hVp6F/tELLW6X92eOVBQSE+3kPN7c/0HfZv0fv8KZ0encShn
+	2HbT3hblU4ZF1JOQCmi/iVdZF3uslN10swHFH3mBFA/4Gy+HUMbVOPJZjqS+QOifztMW+eg8yap
+	xaGYzW/xV1rAmL2l3U
+X-Google-Smtp-Source: AGHT+IFkvqq+4XxuQKa/k2q+LQMu+sa6LTsS3nR8WXj3JiP/G1PdBLLzpGBMoYNmd/LwjyGU4dN/Ig==
+X-Received: by 2002:a17:902:e54c:b0:24c:7b94:2f53 with SMTP id d9443c01a7336-29b6c3c2913mr349029165ad.6.1764321856487;
+        Fri, 28 Nov 2025 01:24:16 -0800 (PST)
+Received: from dw-tp ([49.207.234.175])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bce478762sm39554625ad.45.2025.11.28.01.24.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 01:24:15 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] powerpc/pseries/cmm: call balloon_devinfo_init() also without CONFIG_BALLOON_COMPACTION
+In-Reply-To: <20251021100606.148294-2-david@redhat.com>
+Date: Fri, 28 Nov 2025 14:37:28 +0530
+Message-ID: <87wm3amsof.ritesh.list@gmail.com>
+References: <20251021100606.148294-1-david@redhat.com> <20251021100606.148294-2-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251128075033.255821-1-xry111@xry111.site>
-In-Reply-To: <20251128075033.255821-1-xry111@xry111.site>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 28 Nov 2025 16:51:10 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4miSOrtuXS7E9Uc8wbB+-_7KwN97_mna8L58_sEBLvng@mail.gmail.com>
-X-Gm-Features: AWmQ_bkvVdTKfZ4tKN5jZ4CcYxS4w6r2VPttqUu2QL8hYPhFhtsstQ4O0ZdxljQ
-Message-ID: <CAAhV-H4miSOrtuXS7E9Uc8wbB+-_7KwN97_mna8L58_sEBLvng@mail.gmail.com>
-Subject: Re: [PATCH] gpio: loongson: Switch 2K2000/3000 GPIO to BYTE_CTRL_MODE
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: linux-gpio@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, 
-	Mingcong Bai <jeffbai@aosc.io>, loongarch@lists.linux.dev, stable@vger.kernel.org, 
-	Yinbo Zhu <zhuyinbo@loongson.cn>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi, Ruoyao,
+David Hildenbrand <david@redhat.com> writes:
 
-On Fri, Nov 28, 2025 at 3:51=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
-e:
+> We always have to initialize the balloon_dev_info, even when compaction
+> is not configured in: otherwise the containing list and the lock are
+> left uninitialized.
 >
-> The manuals of 2K2000 says both BIT_CTRL_MODE and BYTE_CTRL_MODE are
-> supported but the latter is recommended.  Also on 2K3000, per the ACPI
-> DSDT the GPIO controller is compatible with 2K2000, but it fails to
-> operate GPIOs 62 and 63 (and maybe others) using BIT_CTRL_MODE.
-> Using BYTE_CTRL_MODE also makes those 2K3000 GPIOs work.
-Use LS2K2000/3000 instead of 2K2000/3000 will be better, others LGTM.
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 
->
-> Fixes: 3feb70a61740 ("gpio: loongson: add more gpio chip support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-> ---
->  drivers/gpio/gpio-loongson-64bit.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loong=
-son-64bit.c
-> index 02f181cb219e..82d4c3aa4d2f 100644
-> --- a/drivers/gpio/gpio-loongson-64bit.c
-> +++ b/drivers/gpio/gpio-loongson-64bit.c
-> @@ -407,11 +407,11 @@ static const struct loongson_gpio_chip_data loongso=
-n_gpio_ls2k2000_data0 =3D {
->
->  static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1=
- =3D {
->         .label =3D "ls2k2000_gpio",
-> -       .mode =3D BIT_CTRL_MODE,
-> -       .conf_offset =3D 0x0,
-> -       .in_offset =3D 0x20,
-> -       .out_offset =3D 0x10,
-> -       .inten_offset =3D 0x30,
-> +       .mode =3D BYTE_CTRL_MODE,
-> +       .conf_offset =3D 0x800,
-> +       .in_offset =3D 0xa00,
-> +       .out_offset =3D 0x900,
-> +       .inten_offset =3D 0xb00,
->  };
->
->  static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data2=
- =3D {
-> --
-> 2.52.0
->
+Agreed cmm uses balloon_dev_info infrastructure beyond just
+CONFIG_BALLOON_COMPACTION, so it should be initialized by default.
+
+The patch looks good to me. Please feel free to add:
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
