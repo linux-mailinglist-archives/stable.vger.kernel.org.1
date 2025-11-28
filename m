@@ -1,82 +1,125 @@
-Return-Path: <stable+bounces-197570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E7FC91551
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DEFC914EB
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 09:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43F084E2CC5
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 08:59:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A8BC4E07E2
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 08:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E052FD676;
-	Fri, 28 Nov 2025 08:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A1F2EE611;
+	Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="CtP0t7ZO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzXH5Dw5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4965C29E0E6;
-	Fri, 28 Nov 2025 08:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5C1F3B85
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764320342; cv=none; b=L5dZ953b4+iUhPsEJmlExzXWj1+DUWIrA93GjHAkqtC29wjGuFZbAL9jubj3+IPNtm1BxBMqPzI7IxIp7TqApc7GsvM6HWXOWbFVPLpuEjea2553pXCj1Xg8lvdFuoyx0jPxtmuYKtgGfBySczMFe4piFYEfupmywFm+CpNQMgc=
+	t=1764319868; cv=none; b=hY7pVyVU0mQRhuUwGM7GW5rJLpCDEcMaZqUE0UJ0OHLBMnYbvAhntm/fVq4Ed9wI/GvYUvNhchbbyyDfpqENP93O/01YwYNQkxXKeb3jkrVneSFSICrTk2uITTZdriYrGp1pcmIMm28JYiWPkhskTpLwXKyys+TPk25fZVoR3dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764320342; c=relaxed/simple;
-	bh=YAM74eKyEhCV+5y8iMMdd/s1oJmYepKSWrFYbusRBrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qh/aCJ+EKn+HSqczfFWA+hYbaGZjeq5yglCAJLSEszroLTBWeaaBKC48jSWmVeF8ssZvijisOR2loG4yo2axeVUcLlr8pRWy/1zGUL8QH2YT5vCFVfUqLhuf9TVNaqwpo7AqudwkblPM2ec+tBHjvZFvyLTNvO/i03meZ772LFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=CtP0t7ZO; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.15])
-	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 2067B40D3C55;
-	Fri, 28 Nov 2025 08:50:20 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2067B40D3C55
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1764319820;
-	bh=YAM74eKyEhCV+5y8iMMdd/s1oJmYepKSWrFYbusRBrM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CtP0t7ZODyDAMXPrQBDIuDlL8R4pW+xRr1N5PIJY54/JpA/crdhfqI3LaLNFe6MiY
-	 YWfGk5lAlDyI8tSI4TbwYvWjJ72sJ1f7eKOk6Wl7SANbJJDPu3WVFF1BeuUL2YgJl2
-	 lo8m3H08hzF9NXfHXH+yIDjwtD409VIGhAyghWbg=
-Date: Fri, 28 Nov 2025 11:50:20 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Alexey Panov <apanov@astralinux.ru>
-Cc: stable@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Song Liu <songliubraving@fb.com>, 
-	Martin KaFai Lau <kafai@fb.com>, lvc-project@linuxtesting.org, 
-	Daniel Borkmann <daniel@iogearbox.net>, Nikolay Aleksandrov <nikolay@cumulusnetworks.com>, 
-	Jay Vosburgh <j.vosburgh@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andrii@kernel.org>, 
-	netdev@vger.kernel.org, Veaceslav Falico <vfalico@gmail.com>, 
-	Moni Shoua <monis@voltaire.com>, KP Singh <kpsingh@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Andy Gospodarek <andy@greyhouse.net>
-Subject: Re: [PATCH 5.10 1/2] bonding: restore IFF_MASTER/SLAVE flags on bond
- enslave ether type change
-Message-ID: <20251128114704-2369311bf17518b70a95dcb7-pchelkin@ispras>
-References: <20251127190140.346-1-apanov@astralinux.ru>
+	s=arc-20240116; t=1764319868; c=relaxed/simple;
+	bh=cStjCdmu/XjU9UdftT+gFtkZTXeDN1Na3NsnkdbDc08=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mrzSccp1P/1sTkdYDKtN5WI4A5/sJ+B9WhdON2FUh8+3iA4ggzII3sb90487uXxL5SMXzG8JqdYf8K2lz88GY1hXPS8/CRD4xlUbDMH7omyn+z7pAbJjjZSZbzK6TSWz9E/Sp2n+tDj/B7mMNQX/PB6HHqyf+YrA0/2Gh0m3KAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzXH5Dw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5736AC2BCFF
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 08:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764319868;
+	bh=cStjCdmu/XjU9UdftT+gFtkZTXeDN1Na3NsnkdbDc08=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CzXH5Dw5hSHdzGZ2KtAzHDWBKGujRbg5SzD2rN+Cv8ZX86pniZiwy6E74WfkATspT
+	 qb4fRsc+yQkKt9FdOHGYDof5iAREE582srdR6yTyWMhBgFBfdDdIYtmK0RhOibJbiZ
+	 Gf1gDLuVkheIZassIFrSmhnoGxMhEf3bSOCNR4U2mHWkIcfORcp6MBnMsIfWUS4u+R
+	 1r3P3/9JEj2xCltxFBe6jhJ4cPlwOrXvm9m3Q7NIUtxeN/kRZCyi15lKMNFBXzgdLD
+	 +Ge9kt1BKYRoizoFCBqKBAAUdj7JaM45ign6f2Du1VyqSBwNeJRELjXh6clH9lKDWN
+	 JLiUpzNIA6rdA==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so2573629a12.1
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 00:51:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWfTNLA0fyssRV1UPQh0xa8C0cVTA+mgS070XU6agCXoHw2osggMU4j1xBjopVIbZf81SB4RmE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTxc/57QZTLQ8eL+7FBAzpbFUbGEJZ0VYukdGIE9rzEK+uEhCV
+	YAkY8sRXHY/p0nASPssR4f+/aFq6Rf3Vn6AauAKNAxsPxymegQR/kz/PpHeM6o9aUnAG1rdrKKt
+	8mXKNiR37XnmSK8H7JMQGW5L0RdRVlHA=
+X-Google-Smtp-Source: AGHT+IGAGHIgD7iYaoiXG/+qhdn4V+4XRkeUjfCaSUCz3qFhqO+0Eq+fKZZEFpacHtC3jd1VFolBOAGdWDW6kBFzCKA=
+X-Received: by 2002:a17:906:fd86:b0:b73:8f33:eee6 with SMTP id
+ a640c23a62f3a-b76715ac4a4mr2958545666b.23.1764319866787; Fri, 28 Nov 2025
+ 00:51:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251127190140.346-1-apanov@astralinux.ru>
+References: <20251128075033.255821-1-xry111@xry111.site>
+In-Reply-To: <20251128075033.255821-1-xry111@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 28 Nov 2025 16:51:10 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4miSOrtuXS7E9Uc8wbB+-_7KwN97_mna8L58_sEBLvng@mail.gmail.com>
+X-Gm-Features: AWmQ_bkvVdTKfZ4tKN5jZ4CcYxS4w6r2VPttqUu2QL8hYPhFhtsstQ4O0ZdxljQ
+Message-ID: <CAAhV-H4miSOrtuXS7E9Uc8wbB+-_7KwN97_mna8L58_sEBLvng@mail.gmail.com>
+Subject: Re: [PATCH] gpio: loongson: Switch 2K2000/3000 GPIO to BYTE_CTRL_MODE
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: linux-gpio@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, 
+	Mingcong Bai <jeffbai@aosc.io>, loongarch@lists.linux.dev, stable@vger.kernel.org, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 27. Nov 22:01, Alexey Panov wrote:
-> [ Upstream commit 9ec7eb60dcbcb6c41076defbc5df7bbd95ceaba5 ]
+Hi, Ruoyao,
 
-c484fcc058ba ("bonding: Fix memory leak when changing bond type to
-Ethernet") has a Fixes tag pointing to the above-mentioned commit so
-should be ported as well I think.
+On Fri, Nov 28, 2025 at 3:51=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
+e:
+>
+> The manuals of 2K2000 says both BIT_CTRL_MODE and BYTE_CTRL_MODE are
+> supported but the latter is recommended.  Also on 2K3000, per the ACPI
+> DSDT the GPIO controller is compatible with 2K2000, but it fails to
+> operate GPIOs 62 and 63 (and maybe others) using BIT_CTRL_MODE.
+> Using BYTE_CTRL_MODE also makes those 2K3000 GPIOs work.
+Use LS2K2000/3000 instead of 2K2000/3000 will be better, others LGTM.
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 
---
-Fedor
+>
+> Fixes: 3feb70a61740 ("gpio: loongson: add more gpio chip support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> ---
+>  drivers/gpio/gpio-loongson-64bit.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loong=
+son-64bit.c
+> index 02f181cb219e..82d4c3aa4d2f 100644
+> --- a/drivers/gpio/gpio-loongson-64bit.c
+> +++ b/drivers/gpio/gpio-loongson-64bit.c
+> @@ -407,11 +407,11 @@ static const struct loongson_gpio_chip_data loongso=
+n_gpio_ls2k2000_data0 =3D {
+>
+>  static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1=
+ =3D {
+>         .label =3D "ls2k2000_gpio",
+> -       .mode =3D BIT_CTRL_MODE,
+> -       .conf_offset =3D 0x0,
+> -       .in_offset =3D 0x20,
+> -       .out_offset =3D 0x10,
+> -       .inten_offset =3D 0x30,
+> +       .mode =3D BYTE_CTRL_MODE,
+> +       .conf_offset =3D 0x800,
+> +       .in_offset =3D 0xa00,
+> +       .out_offset =3D 0x900,
+> +       .inten_offset =3D 0xb00,
+>  };
+>
+>  static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data2=
+ =3D {
+> --
+> 2.52.0
+>
 
