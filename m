@@ -1,138 +1,197 @@
-Return-Path: <stable+bounces-197597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D98FC92242
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:34:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA28C92591
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 15:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 636354E16F7
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:34:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E62B34E79E
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5415B30AD10;
-	Fri, 28 Nov 2025 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1165E328B7E;
+	Fri, 28 Nov 2025 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="o/HJ1uzV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+81eIja"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B6632E156
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 13:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B72D243968
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 14:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764336853; cv=none; b=WTzztvR8TKPEy10rybM9LqmCzVMnpauhnr16u5k3QbuLjH2JMuj9yo5a9gI763B0hMXa95Bg83B6yHpI7aG7Iz/xLIzfWlfzujDfiKkwZpvBouEY9OaYamFzLujXfmirSVBc/652LWZY/B/40CSzxISSmgXpxw6+WP+OtP7nhMo=
+	t=1764340870; cv=none; b=ZmtkZoTvZiT6CsvXPu9LSy9XMb5Fm0t6Tjc0zAR65XMVGOana0up8Fo/xz9Yu7QVJS601nJR8+S5gNWoqVR26HNI/PbQeteR7tNA52xHIQ/FT83Y53O9gwNC8nv2PhsdctohyrV23FyCMzH6s8y1YJ/mzQUy9d+uGxUitfsxdJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764336853; c=relaxed/simple;
-	bh=N7LVgPe4BHDfL/ikIaJUOBkx7jZTeSqHMuZCUFdGUVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RZZZ3KSE0LE5zLtcwetspXIyfymWTR9Mjx7v/snmz1tC6ylIaJs/zJmKRAhFT5P84fYIfx9N05d/qKYJJytkfnAjOV9npPOyC3tkL+XtUyMdzsfn0w69eJiNE0XQ4VUF70ThuTtcOUVaMBA5HocNt3degtLGAzbbSTPcD88E9z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=o/HJ1uzV; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7aad4823079so1652651b3a.0
-        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 05:34:09 -0800 (PST)
+	s=arc-20240116; t=1764340870; c=relaxed/simple;
+	bh=YiCXa/gTWlwoFZYY7VWOXyNDoQMkwRyt2rAHvg9j0ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fWOIJlnLJYtVwmhB1NcRgIcMlXD/QE7j/vSPOmdyotki7mPpZCE7wq5QP2kI3g0kDTdjvjVggauXnpigD71pWxkPud9Y8CYrEmwQYoseK4gZ6XfWuCqxeQ484KbAlfeYhUkszLlb9owMFDUJ3oBze6k3iXtyBx1+rzEE5XqG1d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+81eIja; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5957e017378so2232585e87.3
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 06:41:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1764336847; x=1764941647; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rbtpa9RFO4JNYg5slDho7aqS22A5VSOruLlvcT1PDXc=;
-        b=o/HJ1uzVZHaslFAuL3nUiCaf0nULLIKFBBT+HRPXbjZGvIkNPXGAjTMvqN1EQYOIU2
-         5zBgEIYHqCC6OkgNeo2+BHZqP6O0WwZiaThsVgCx2bHUTn+IeSwihpgBN0zJs6GmIJpq
-         0/NX33j4uTqEl4oKeXQSmfp7v/UQpStXHMWu5zGVXJ+4g/9OyiVg6jFXfga4Tjn8WT7Y
-         gBtAjwEa4Uzq6MF/C8oFgDUFWmoX26kOPwLglSlBftZQJJQbrzmzkCOnSN6aQRPIpyAx
-         McdQNGUs0O+BeRTcvAF/ljuJF14vn9BOYzsxwvaJ7xfhaGikPf+5p15Fu+G+U1d6DRth
-         rg4A==
+        d=gmail.com; s=20230601; t=1764340867; x=1764945667; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x9ZJ0WABz8zA/HIRl6+j40HXO4xcZdxgPrJAX3BYADI=;
+        b=X+81eIjamMEpCpZlBkIes5OzGFtZjBoJDKU8zdhbK06si844PWKz4hKwHtLqNe0O32
+         jR/sRe4qxLOPVjV6pmrAEvNRAuZvCBkqVjz4Intv91zyrjWM6qAGWCC5ZmnCIxMEzUCW
+         JDfKRjpkGYgTUudQz2Txam+hyuYYzVDh0za4Lp9IipmBt4+4y3CNFq/cR2dDyuQkJZ5a
+         K7lsA7wVrTquBJBOT29ZTXYxXwmsDT+8nwjolPqYPHMdVMarBqUZpKxEjLtyb5H+TlTo
+         YTtC9Azfy/fqGZEZcl6wAVUF+6cidRRWcaIFK9cxiIRB4VY1WIO+XTO5EdscNOOz4DOT
+         OmyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764336847; x=1764941647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Rbtpa9RFO4JNYg5slDho7aqS22A5VSOruLlvcT1PDXc=;
-        b=MNmMbIErXC96u2TkUi4ayrjWVvxvWxO5Lp7wvBNOpMRNtJn65Yd6mzzqx8/qR639Hx
-         NHKtr9JX6+QghZQ3+Hl3CHbmpWICOfPQ+dQ9lmF9eLmyK3LvP5Y3mAYBsKIdTpRUM+pp
-         RrHIVAhMES1EmCXo8PZUd94tjZFJYQxfcHkQAqktZAFxiCjE537zdJjgvmFyF6Fitv0v
-         wCVW8Ij/Pii4HIq3tt0C2uOpl0tcbwDK7lLDRNYAWrcj7W6p8ssZpKEGTjHOZBo82wqb
-         Vh2BWotZfOR3XUmcxqoUnK4smoNzHkSyykTHLtKd2ZoUh3oRKrVSsA3w6erDe4PoiIIX
-         BFsg==
-X-Gm-Message-State: AOJu0Yxqayvo7MorzP8rbZDHpJYKsAvycXPIEssXL/guA3tzo++beNvP
-	wIwQ0gwI543vjIdmq4+0dyFEAIHmKiwiyCfUj1XBdcMZ5E+D032NVhijPDrD7uQ/8LgfX0laSI1
-	TobtFIPZu2qq9sBl+y+WuTfc0rZgY6StjeHyfkQL0KQ==
-X-Gm-Gg: ASbGncvnBTf339xq5120xCZlgHtAAx/1FZxwwKGw1iAGaWJusp3JmzpxN2Gcratj3KW
-	6RhV0mOT5sHcMxRaF7J6Tzu8mW6UA/UV8uKbSCMYDNsOeRWx8hBwvSFMK/ttS0xYgbAMfpcZ+Sz
-	vS6B6JfhX2k2HbqymdY3NmYEugQHZGmKFxTBX0/e8L6LROuOLl52IQv56zIoAU4/56IuMqpj5JI
-	/NjLiZ9gGskcXEd3bBqb+utoBULECUmeVT2RI/0AN/JFFED7zyHGWdNiL1w/4q8svxEAWf63g==
-X-Google-Smtp-Source: AGHT+IGwm0o8aZuZ2m48OS+/3z/RTZBRrJEcimyjk2nYCgxroIcwnBJ2VdDKGAGeyiVfZpRcwlYYJqHTeB6yDAU3MkY=
-X-Received: by 2002:a05:7022:6382:b0:11b:9386:8254 with SMTP id
- a92af1059eb24-11c9d87056amr18623161c88.41.1764336847187; Fri, 28 Nov 2025
- 05:34:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764340867; x=1764945667;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x9ZJ0WABz8zA/HIRl6+j40HXO4xcZdxgPrJAX3BYADI=;
+        b=agfxXRCyuo6IcyaX8nZKbfEAaptywPeWF08m4HmLIypWNhrHvxPAKwTHR3OwLm5AJq
+         ynIUIIcV+u4eltcqQUYQ5/lY8NHLUG0X00q5h1U0wjyS2OHnF7sE26dzz8gdDQy/ikRl
+         emYgPEX99DK455D659qGqnGbQfhSQNbuu/Qx2tU3nJZpnW8bv1svQ52hZcyfBC6N7HXI
+         dEv7BOABGL0i/SWUJu2OZaYujkjRPEFyq62Q2j60ujARlCGzQydmoIZWYQTkiBZq2CUQ
+         O+2xblgmYeUn6tEHBAofrXZP+lkDtGELKtwaRSsIYWbuOxwliEtCT3LJNrMrv4YO+zl8
+         KYtg==
+X-Gm-Message-State: AOJu0Yw+gcthnR/P2Oy1+phoezrJTppHKZ554iibVRhDtfaMLJNxkimy
+	q1EN8+nrx1WyL3t0flvcCpsF7tXv/Ro7hpvGHIXqe2//bhsCMZhIMycj2m35V1dgdYbrVA==
+X-Gm-Gg: ASbGncuo8RD/N4ZF0p8fJDvyazWye8BvpjehLik+ngE0J12+QyyKLtADM7Hb6NlEvBl
+	YE28KNbwXhon5qvgLDhBdhm1utfqOSUXA9Apt78i97o5I8RgGl3R9WIiQQUaJZXi8WeD/dTGwVv
+	NgAn2FqnPL3W7PeuEfTGSQFSh83gAjNV1dhhWL5Q7Z60091gNl3rhyqwJj07tKpHwFlPrzb+9sX
+	9bSQfXXBJaF1hgwGcggWTyDQi4e611lHS4fAQjFIPyOPaMYFgJyyf48mW8PHKmzgWTba2mAH67E
+	AsyrVLarCqrXDq34zyIh55GJnXptnKb9fJEcZd14FNLPKCO3Y79Bb3psxsrwqVU97lhzjXA3d0G
+	hMV0m0Ivyy7trEiPovedHr/X88CD4VvyuYJosAUFOu4r5mhphlpCpT+S+o61AziWcRpfnphSgjS
+	02e2yoPQIl3vX53pCtrCfJ0BeBvnv0GsP32GBmLzUuhNzyJdcDXbYMC3rV
+X-Google-Smtp-Source: AGHT+IFgRxZMbnvG2mlcetIpPcII12g0inja9crdJSO7s3MSPIALUt1z3bE01YIbhTc2jfOsDHzEWg==
+X-Received: by 2002:a05:6512:3d22:b0:594:2d64:bd0f with SMTP id 2adb3069b0e04-596a3ebf31bmr10723863e87.16.1764340866523;
+        Fri, 28 Nov 2025 06:41:06 -0800 (PST)
+Received: from cherrypc.astracloud.ru (109-252-18-135.nat.spd-mgts.ru. [109.252.18.135])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596bfa43efcsm1269527e87.63.2025.11.28.06.41.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 06:41:06 -0800 (PST)
+From: Nazar Kalashnikov <sivartiwe@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nazar Kalashnikov <sivartiwe@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Jiufei Xue <jiufei.xue@samsung.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10] fs: writeback: fix use-after-free in __mark_inode_dirty()
+Date: Fri, 28 Nov 2025 17:41:19 +0300
+Message-ID: <20251128144121.54603-1-sivartiwe@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251127150348.216197881@linuxfoundation.org>
-In-Reply-To: <20251127150348.216197881@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Fri, 28 Nov 2025 22:33:50 +0900
-X-Gm-Features: AWmQ_blvACtblrWoxRgJepaWWrl4iemJdPZsf-ll7gR5yH6QtKiNw8xHfLCkhLc
-Message-ID: <CAKL4bV57MzMdQocXwJyuqjyrX88yufDLG0iXMDSfQBwVS5e9eQ@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/176] 6.17.10-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
+From: Jiufei Xue <jiufei.xue@samsung.com>
 
-On Fri, Nov 28, 2025 at 12:09=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.10 release.
-> There are 176 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 29 Nov 2025 15:03:13 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.10-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+[ Upstream commit d02d2c98d25793902f65803ab853b592c7a96b29 ]
 
-6.17.10-rc2 tested.
+An use-after-free issue occurred when __mark_inode_dirty() get the
+bdi_writeback that was in the progress of switching.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6.6.56-gb4403bd46a8e #1
+......
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __mark_inode_dirty+0x124/0x418
+lr : __mark_inode_dirty+0x118/0x418
+sp : ffffffc08c9dbbc0
+........
+Call trace:
+ __mark_inode_dirty+0x124/0x418
+ generic_update_time+0x4c/0x60
+ file_modified+0xcc/0xd0
+ ext4_buffered_write_iter+0x58/0x124
+ ext4_file_write_iter+0x54/0x704
+ vfs_write+0x1c0/0x308
+ ksys_write+0x74/0x10c
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x114
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x40/0xe4
+ el0t_64_sync_handler+0x120/0x12c
+ el0t_64_sync+0x194/0x198
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Root cause is:
 
-[    0.000000] Linux version 6.17.10-rc2rv-g6c8c6a34f518
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20251112, GNU ld (GNU
-Binutils) 2.45.1) #1 SMP PREEMPT_DYNAMIC Fri Nov 28 21:50:43 JST 2025
+systemd-random-seed                         kworker
+----------------------------------------------------------------------
+___mark_inode_dirty                     inode_switch_wbs_work_fn
 
-Thanks
+  spin_lock(&inode->i_lock);
+  inode_attach_wb
+  locked_inode_to_wb_and_lock_list
+     get inode->i_wb
+     spin_unlock(&inode->i_lock);
+     spin_lock(&wb->list_lock)
+  spin_lock(&inode->i_lock)
+  inode_io_list_move_locked
+  spin_unlock(&wb->list_lock)
+  spin_unlock(&inode->i_lock)
+                                    spin_lock(&old_wb->list_lock)
+                                      inode_do_switch_wbs
+                                        spin_lock(&inode->i_lock)
+                                        inode->i_wb = new_wb
+                                        spin_unlock(&inode->i_lock)
+                                    spin_unlock(&old_wb->list_lock)
+                                    wb_put_many(old_wb, nr_switched)
+                                      cgwb_release
+                                      old wb released
+  wb_wakeup_delayed() accesses wb,
+  then trigger the use-after-free
+  issue
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Fix this race condition by holding inode spinlock until
+wb_wakeup_delayed() finished.
+
+Signed-off-by: Jiufei Xue <jiufei.xue@samsung.com>
+Link: https://lore.kernel.org/20250728100715.3863241-1-jiufei.xue@samsung.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
+---
+Backport fix for CVE-2025-39866
+ fs/fs-writeback.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 045a3bd520ca..ba70508b405d 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2326,9 +2326,6 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			wakeup_bdi = inode_io_list_move_locked(inode, wb,
+ 							       dirty_list);
+ 
+-			spin_unlock(&wb->list_lock);
+-			trace_writeback_dirty_inode_enqueue(inode);
+-
+ 			/*
+ 			 * If this is the first dirty inode for this bdi,
+ 			 * we have to wake-up the corresponding bdi thread
+@@ -2338,6 +2335,10 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			if (wakeup_bdi &&
+ 			    (wb->bdi->capabilities & BDI_CAP_WRITEBACK))
+ 				wb_wakeup_delayed(wb);
++
++			spin_unlock(&wb->list_lock);
++			trace_writeback_dirty_inode_enqueue(inode);
++
+ 			return;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
