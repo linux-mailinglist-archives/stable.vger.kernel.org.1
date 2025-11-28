@@ -1,129 +1,199 @@
-Return-Path: <stable+bounces-197548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDF4C90A33
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 03:30:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4460CC90A8D
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 03:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F237A34812A
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 02:30:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A80924E4ABB
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 02:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FCE27D782;
-	Fri, 28 Nov 2025 02:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163B972606;
+	Fri, 28 Nov 2025 02:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwuXKnvl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6032765D7
-	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 02:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC8B1EE7C6;
+	Fri, 28 Nov 2025 02:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764297022; cv=none; b=WZBFhHdofwHh4uAn4K1TI8BT/bcjLU3e4d+/4UBOO4nDjIq9ur7UJ3ELfTxWOJ2J2k4gBdvKK5ay3oN1m+b8VrDd7Bi+2GaQ+TRClSyeyEi15RcR5hTG29wxxWyeptDhgTV/H9IBsjrg3R8E38Hdvz/JALjuDI2Ta/Idq8Ca1HM=
+	t=1764298377; cv=none; b=tvrqXjmStsFp17C5aRu6slEIpIBJdFBm7m0CwsRNP3XyOoNVESlgEcDhEbEqhJbUfSGAkZ5FB1Bi0F80LsSurP+vt6udzAkTenyPaWRHGKB7TpKTn2+zs+ATJa2INAzHTsQMvNAPUJDam0xvI6Ov4L9VVQwRfm0WJGlcEIDeN6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764297022; c=relaxed/simple;
-	bh=9MHeqYV9VOzRs27YXeCTC7voglS6naWACMdRGY2vIIA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=Lbim901NNtm4lEGCBcr1Bu5e4O7WKognqOt0OuaFCtW+JLAwyF3epl6s9MW4txXd9R7Yl7g+xx2dxCLBMFQJnfOSmeHxoDE5sm+FDLA+k+oVs7fOh0SZsp/abh7P177i8xQixlJPb5BSSqvD5nUtJ19eAQT19klBOSZFvrZ76mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.219])
-	by gateway (Coremail) with SMTP id _____8Dx9tA3CSlp6PQoAA--.17631S3;
-	Fri, 28 Nov 2025 10:30:15 +0800 (CST)
-Received: from chenhuacai$loongson.cn ( [223.64.68.219] ) by
- ajax-webmail-front1 (Coremail) ; Fri, 28 Nov 2025 10:30:12 +0800
- (GMT+08:00)
-Date: Fri, 28 Nov 2025 10:30:12 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	"Jiaxun Yang" <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH 6.17 051/175] LoongArch: Dont panic if no valid cache
- info for PCI
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250609(354f7833) Copyright (c) 2002-2025 www.mailtech.cn loongson
-In-Reply-To: <20251127144044.829793395@linuxfoundation.org>
-References: <20251127144042.945669935@linuxfoundation.org>
- <20251127144044.829793395@linuxfoundation.org>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: B2Pk7mZvb3Rlcl90eHQ9MTY4MDo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1764298377; c=relaxed/simple;
+	bh=kN8f8ocFg/9iq69/nMOZcevqnWg1yZnJ/G3yn1vCZBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hDnacae3yaa6QmlIUQYrHReFU4KXDdrsXg/OycKBPGgsXrGPqZyd8dP2rdG+m84UWA5BETAi8rZofcOhLvn+IDthJxHcvVRSjQUFOJIBw3uPbFZ9aLDv20muazCoe3GX2PDSG1WN8pyGxdmrjbjlQV9WhbZzMrHTIkhkwx4kfq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwuXKnvl; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764298376; x=1795834376;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kN8f8ocFg/9iq69/nMOZcevqnWg1yZnJ/G3yn1vCZBg=;
+  b=jwuXKnvlSlYpwdsuRSo+7bN42FuZxdo8v1XcRvX+LAUqP2Z5DOoKwUWY
+   ft2QcllrmyWPSe1Q0v542t4ySUaih99I6R4ozr/2bxZ0sh5XG35FlZzlq
+   PSuPO0PATYv8StFflhzaJqGto1fMjB56d/8yXlixH0qhGs6VEz12HDFQI
+   rnn/7G8ir8zeEBuLWw0kp0TAoKhBzuJzfYFirBE8/NuR2l5brVzavcHAP
+   kzaKO/ilA8FEVdV4jeZX2XS9xpQBOik53rxOwIGXW0Nj8NALLQmRCD92X
+   0EopTGl/PnPkoZPJID0aKj0wg+Um61PY18EW94lwosBgnSGfKvwvGKsTg
+   Q==;
+X-CSE-ConnectionGUID: VM9Ti/BJQFaupTrJX6uYbQ==
+X-CSE-MsgGUID: XdqbldHvTvafuI1G0j07Pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66281699"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
+   d="scan'208";a="66281699"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:52:55 -0800
+X-CSE-ConnectionGUID: kHmaFFJtSrCUNitANqQ8Mg==
+X-CSE-MsgGUID: OVGbIM/SSGC2110517cZ5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
+   d="scan'208";a="193159342"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 27 Nov 2025 18:52:51 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vOobI-000000005xN-3R8H;
+	Fri, 28 Nov 2025 02:52:48 +0000
+Date: Fri, 28 Nov 2025 10:52:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Antonino Maniscalco <antomani103@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Subject: Re: [PATCH] drm/msm: Fix a7xx per pipe register programming
+Message-ID: <202511281253.rIkrIiqt-lkp@intel.com>
+References: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <7d60571e.2cac5.19ac84bf531.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowJCx78M0CSlpg51BAQ--.25804W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQETBmkn6DAKrwABsn
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFWkXw1kGrykKw4kJF48Xwc_yoW8Cr4Dpr
-	ZxC3WfWr4rAr1xCw1DA3409r1rWrWkGFnFvayYk348C3yDZw18tFyfX34rZFyUZ34rGr4x
-	uFsxKwn2kF45JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUmYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_Gr1l6VACY4xI67k04243AbIYCTnIWIevJa73Uj
-	IFyTuYvjxUc3C7UUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
 
-SGksR3JlZywKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6ICJHcmVnIEty
-b2FoLUhhcnRtYW4iIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4KPiDlj5HpgIHml7bpl7Q6
-MjAyNS0xMS0yNyAyMjo0NTowNCAo5pif5pyf5ZubKQo+IOaUtuS7tuS6ujogc3RhYmxlQHZnZXIu
-a2VybmVsLm9yZwo+IOaKhOmAgTogIkdyZWcgS3JvYWgtSGFydG1hbiIgPGdyZWdraEBsaW51eGZv
-dW5kYXRpb24ub3JnPiwgcGF0Y2hlc0BsaXN0cy5saW51eC5kZXYsICJKaWF4dW4gWWFuZyIgPGpp
-YXh1bi55YW5nQGZseWdvYXQuY29tPiwgIkh1YWNhaSBDaGVuIiA8Y2hlbmh1YWNhaUBsb29uZ3Nv
-bi5jbj4KPiDkuLvpopg6IFtQQVRDSCA2LjE3IDA1MS8xNzVdIExvb25nQXJjaDogRG9udCBwYW5p
-YyBpZiBubyB2YWxpZCBjYWNoZSBpbmZvIGZvciBQQ0kKV2h5IERvbid0IGJlY2FtZSBEb250IHdo
-ZW4gYmFja3BvcnQgdGhpcyBwYXRjaCB0byBzdGFibGUgYnJhbmNocz8KCkh1YWNhaQoKPiAKPiA2
-LjE3LXN0YWJsZSByZXZpZXcgcGF0Y2guICBJZiBhbnlvbmUgaGFzIGFueSBvYmplY3Rpb25zLCBw
-bGVhc2UgbGV0IG1lIGtub3cuCj4gCj4gLS0tLS0tLS0tLS0tLS0tLS0tCj4gCj4gRnJvbTogSHVh
-Y2FpIENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+Cj4gCj4gY29tbWl0IGE2YjUzM2FkZmMw
-NWJhMTUzNjA2MzFlMDE5ZDNlMTgyNzUwODAyNzUgdXBzdHJlYW0uCj4gCj4gSWYgdGhlcmUgaXMg
-bm8gdmFsaWQgY2FjaGUgaW5mbyBkZXRlY3RlZCAobWF5IGhhcHBlbiBpbiB2aXJ0dWFsIG1hY2hp
-bmUpCj4gZm9yIHBjaV9kZmxfY2FjaGVfbGluZV9zaXplLCBrZXJuZWwgc2hvdWxkbid0IHBhbmlj
-LiBCZWNhdXNlIGluIHRoZSBQQ0kKPiBjb3JlIGl0IHdpbGwgYmUgZXZhbHVhdGVkIHRvIChMMV9D
-QUNIRV9CWVRFUyA+PiAyKS4KPiAKPiBDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+Cj4gU2ln
-bmVkLW9mZi1ieTogSmlheHVuIFlhbmcgPGppYXh1bi55YW5nQGZseWdvYXQuY29tPgo+IFNpZ25l
-ZC1vZmYtYnk6IEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxvb25nc29uLmNuPgo+IFNpZ25lZC1v
-ZmYtYnk6IEdyZWcgS3JvYWgtSGFydG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4g
-LS0tCj4gIGFyY2gvbG9vbmdhcmNoL3BjaS9wY2kuYyB8ICAgIDggKysrKy0tLS0KPiAgMSBmaWxl
-IGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiAKPiAtLS0gYS9hcmNo
-L2xvb25nYXJjaC9wY2kvcGNpLmMKPiArKysgYi9hcmNoL2xvb25nYXJjaC9wY2kvcGNpLmMKPiBA
-QCAtNTAsMTEgKzUwLDExIEBAIHN0YXRpYyBpbnQgX19pbml0IHBjaWJpb3NfaW5pdCh2b2lkKQo+
-ICAJICovCj4gIAlsc2l6ZSA9IGNwdV9sYXN0X2xldmVsX2NhY2hlX2xpbmVfc2l6ZSgpOwo+ICAK
-PiAtCUJVR19PTighbHNpemUpOwo+ICsJaWYgKGxzaXplKSB7Cj4gKwkJcGNpX2RmbF9jYWNoZV9s
-aW5lX3NpemUgPSBsc2l6ZSA+PiAyOwo+ICAKPiAtCXBjaV9kZmxfY2FjaGVfbGluZV9zaXplID0g
-bHNpemUgPj4gMjsKPiAtCj4gLQlwcl9kZWJ1ZygiUENJOiBwY2lfY2FjaGVfbGluZV9zaXplIHNl
-dCB0byAlZCBieXRlc1xuIiwgbHNpemUpOwo+ICsJCXByX2RlYnVnKCJQQ0k6IHBjaV9jYWNoZV9s
-aW5lX3NpemUgc2V0IHRvICVkIGJ5dGVzXG4iLCBsc2l6ZSk7Cj4gKwl9Cj4gIAo+ICAJcmV0dXJu
-IDA7Cj4gIH0KPiAKDQoNCuacrOmCruS7tuWPiuWFtumZhOS7tuWQq+aciem+meiKr+S4reenkeea
-hOWVhuS4muenmOWvhuS/oeaBr++8jOS7hemZkOS6juWPkemAgee7meS4iumdouWcsOWdgOS4reWI
-l+WHuueahOS4quS6uuaIlue+pOe7hOOAguemgeatouS7u+S9leWFtuS7luS6uuS7peS7u+S9leW9
-ouW8j+S9v+eUqO+8iOWMheaLrOS9huS4jemZkOS6juWFqOmDqOaIlumDqOWIhuWcsOazhOmcsuOA
-geWkjeWItuaIluaVo+WPke+8ieacrOmCruS7tuWPiuWFtumZhOS7tuS4reeahOS/oeaBr+OAguWm
-guaenOaCqOmUmeaUtuacrOmCruS7tu+8jOivt+aCqOeri+WNs+eUteivneaIlumCruS7tumAmuef
-peWPkeS7tuS6uuW5tuWIoOmZpOacrOmCruS7tuOAgiANClRoaXMgZW1haWwgYW5kIGl0cyBhdHRh
-Y2htZW50cyBjb250YWluIGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiBmcm9tIExvb25nc29uIFRl
-Y2hub2xvZ3kgLCB3aGljaCBpcyBpbnRlbmRlZCBvbmx5IGZvciB0aGUgcGVyc29uIG9yIGVudGl0
-eSB3aG9zZSBhZGRyZXNzIGlzIGxpc3RlZCBhYm92ZS4gQW55IHVzZSBvZiB0aGUgaW5mb3JtYXRp
-b24gY29udGFpbmVkIGhlcmVpbiBpbiBhbnkgd2F5IChpbmNsdWRpbmcsIGJ1dCBub3QgbGltaXRl
-ZCB0bywgdG90YWwgb3IgcGFydGlhbCBkaXNjbG9zdXJlLCByZXByb2R1Y3Rpb24gb3IgZGlzc2Vt
-aW5hdGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFuIHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykg
-aXMgcHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlbWFpbCBpbiBlcnJvciwgcGxlYXNl
-IG5vdGlmeSB0aGUgc2VuZGVyIGJ5IHBob25lIG9yIGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBkZWxl
-dGUgaXQuIA0KDQoNCg==
+Hi Anna,
 
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Anna-Maniscalco/drm-msm-Fix-a7xx-per-pipe-register-programming/20251127-074833
+base:   7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
+patch link:    https://lore.kernel.org/r/20251127-gras_nc_mode_fix-v1-1-5c0cf616401f%40gmail.com
+patch subject: [PATCH] drm/msm: Fix a7xx per pipe register programming
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20251128/202511281253.rIkrIiqt-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251128/202511281253.rIkrIiqt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511281253.rIkrIiqt-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: warning: & has lower precedence than ==; == will be evaluated first [-Wparentheses]
+     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
+         |                                                        ^~~~~~~~~~~~~~~~~~~
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: note: place parentheses around the '==' expression to silence this warning
+     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
+         |                                                        ^ ~~~~~~~~~~~~~~~~~
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:35: note: place parentheses around the & expression to evaluate it first
+     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
+         |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +984 drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+
+   931	
+   932	static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
+   933	{
+   934		struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+   935		struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+   936		const struct adreno_reglist_list *reglist;
+   937		const struct adreno_reglist_pipe_list *pipe_reglist;
+   938		void *ptr = a6xx_gpu->pwrup_reglist_ptr;
+   939		struct cpu_gpu_lock *lock = ptr;
+   940		u32 *dest = (u32 *)&lock->regs[0];
+   941		u32 pipe_reglist_count = 0;
+   942		int i;
+   943	
+   944		lock->gpu_req = lock->cpu_req = lock->turn = 0;
+   945	
+   946		reglist = adreno_gpu->info->a6xx->ifpc_reglist;
+   947		lock->ifpc_list_len = reglist->count;
+   948	
+   949		/*
+   950		 * For each entry in each of the lists, write the offset and the current
+   951		 * register value into the GPU buffer
+   952		 */
+   953		for (i = 0; i < reglist->count; i++) {
+   954			*dest++ = reglist->regs[i];
+   955			*dest++ = gpu_read(gpu, reglist->regs[i]);
+   956		}
+   957	
+   958		reglist = adreno_gpu->info->a6xx->pwrup_reglist;
+   959		lock->preemption_list_len = reglist->count;
+   960	
+   961		for (i = 0; i < reglist->count; i++) {
+   962			*dest++ = reglist->regs[i];
+   963			*dest++ = gpu_read(gpu, reglist->regs[i]);
+   964		}
+   965	
+   966		/*
+   967		 * The overall register list is composed of
+   968		 * 1. Static IFPC-only registers
+   969		 * 2. Static IFPC + preemption registers
+   970		 * 3. Dynamic IFPC + preemption registers (ex: perfcounter selects)
+   971		 *
+   972		 * The first two lists are static. Size of these lists are stored as
+   973		 * number of pairs in ifpc_list_len and preemption_list_len
+   974		 * respectively. With concurrent binning, Some of the perfcounter
+   975		 * registers being virtualized, CP needs to know the pipe id to program
+   976		 * the aperture inorder to restore the same. Thus, third list is a
+   977		 * dynamic list with triplets as
+   978		 * (<aperture, shifted 12 bits> <address> <data>), and the length is
+   979		 * stored as number for triplets in dynamic_list_len.
+   980		 */
+   981		pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
+   982		for (u32 pipe_id = PIPE_BR; pipe_id <= PIPE_BV; pipe_id++) {
+   983			for (i = 0; i < pipe_reglist->count; i++) {
+ > 984				if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
+   985					continue;
+   986				*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
+   987				*dest++ = pipe_reglist->regs[i].offset;
+   988				*dest++ = a7xx_read_pipe(gpu, pipe_id,
+   989							 pipe_reglist->regs[i].offset);
+   990				pipe_reglist_count++;
+   991			}
+   992		}
+   993		lock->dynamic_list_len = pipe_reglist_count;
+   994	}
+   995	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
