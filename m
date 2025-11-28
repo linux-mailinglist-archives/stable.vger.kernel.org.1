@@ -1,357 +1,191 @@
-Return-Path: <stable+bounces-197546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374DFC9054B
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 00:12:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D36C908CB
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 03:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6E85434E582
-	for <lists+stable@lfdr.de>; Thu, 27 Nov 2025 23:12:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2021734A65C
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 02:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBDC31A561;
-	Thu, 27 Nov 2025 23:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760CF2522B6;
+	Fri, 28 Nov 2025 01:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RemFNRwW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZPPyMRFU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5321CD15
-	for <stable@vger.kernel.org>; Thu, 27 Nov 2025 23:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869251C861A;
+	Fri, 28 Nov 2025 01:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764285174; cv=none; b=CA32eOLg6ek1aPtqFdyA18MCpx7PaFwpeZrKrY0TAMFQnIV6nLw1uLRaM4iHi03C1ZKf5lTW0i0jqA6hw2PETr0qtWWhkJt6FPyGvZKrI2gQphKk5/Q3FdVo0pi7km4IzbwEXCqRZtvib8xPENEHQG0fefSbUNpERJYCu6TOcYQ=
+	t=1764295196; cv=none; b=RlhszW8/u86s/5XkRNPCWhJebT9BvHkfGrYJEDIQuNUeXpqE/hpvNWBZKOg+xEgvRJxqC4fLhL2iSfGxoXAaaVlNBQEZipEkeK9rFqFV/DtZEi/hNdWs2o4seQNqFDe2pM8fqk4vpSUCEuVzHuKE5P520tWlnv1s4ORQlcun1iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764285174; c=relaxed/simple;
-	bh=wyto1R2GJUCS85I7MwhpNZhD3/bNc3GHhzBsFMtA+9E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FwW24IwegQD+/Hrh0ZUKnzuEB2aGyR/2cAAn9RkoutAZ0SFTt73174fSd8PdA5Rln6JY42SoVPIAIkxk9cZiUeRhImvhLnjwTU8zlc+FjsRChhv7YRk8OYpmh/NCAoLPwQgsUxxOED14mm+rhZh7Z1theJGKOgYCsqFIE35fyWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RemFNRwW; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b735b89501fso164576366b.0
-        for <stable@vger.kernel.org>; Thu, 27 Nov 2025 15:12:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764285171; x=1764889971; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AArP4+DUIM0Nfx2IVwUELwdJRuSoxBV1rN2oDzCFiJ4=;
-        b=RemFNRwWYbsSSPtpMAB7XTkl4E08vkZVdfzrqhsQnyKR67/mW04Bk12bYYq2NqhcIK
-         7Osj+7zBVZPTs0k02SbJ+vvUhwQkY1SxdDg/wJNksxDykAqLZWygVgWVZyQBmU1V07pY
-         StQqa9RyzaEq5IYIYX82gZzvHO/g9/pMqcu/ylt/mfIGZJM/vkait0e7CyhnPtcqQlAK
-         AeXGz9vcFIxl11V0Is8PLEQDunGEP61XX0K2vIo65mli0Y/qzLRXBdZE6Omez6VRa99K
-         t4AXaaz2H5szi07QJ62MSsMMFv+YXl54ZWD2XaPTUYPDpPu/qR2QHOzRpd+IkAnUWfl5
-         b27Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764285171; x=1764889971;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AArP4+DUIM0Nfx2IVwUELwdJRuSoxBV1rN2oDzCFiJ4=;
-        b=fMqI/R41aWf8qd0pgelN6CvTut/Iy/sLxwLlDI7ApO3p/XcB/0PTgszyJhF2JtHDTk
-         7yCL5A0KxhVyhy4dhqEKza06dwoharONMtFJkqcY4sdnlgmnU0V7Mhmsd91Z0Ly6HjOw
-         4Hn0CTP/VjwzOgx2yzOVLptn+mR1XSCJ1UsryUjtPA0cdInqh5wSTXX+pjeSSZWj14ig
-         dxtSTLFhprs/1PZMIk2PuFYPZ9BbNeSVa0TuFk2a8zwbdXH2UJZNIoO/Qndm7JclGoXg
-         tw8lXlDtP6I3fTCbIPxWoL+L53w2z3LYmiqkKfQEFH5N3DnIqU/kNkZx2sMoqEhcsa8p
-         EISg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPML/9MqukIvUrQfwqFXsmJYiSyWA7sy2pnubPB+nTne98Koytg+eehxzvqQQGmtMJ0MRYVB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI1/bZBHQYQ+pHCxeTSFw+xiXg3rVgtEpkfuWGJ3A87RR814j4
-	62geWQgUhqSAGZvkGYWA9AUfGKNwy3Xq8cht1BvpLHjnvpRpKGWGAI8=
-X-Gm-Gg: ASbGncsr5N7c3jXjHIcIQBItqVxwLDZ3jaRDR1NNIBsxPGzsuwj5osy2J4kRtZI1iwu
-	+rC83cS92doEzJvDe0EcWo9quDoUwz3i7+uIS0zcdIX4YVG4gl2oQO6aQKKcPn35Yb/RxMybjMx
-	W1r21OpqzV7LXxndboeoZBm/oY1MBZ63I0lfxeP217Tqubh21UrhD+7zrdd4kycfoaMB0PCfIN2
-	PVmwk4sAQidCki1Zo2NyZTuRpKyqe3NPX7rgl3BvyLy1jsibNfYyUvK8/aXoRbXfn4OXOTbypqY
-	2iw6cZyHXrx5fEZ5KTO0/gtZn/UPY4zP3iWam9VEiWSdGB8mbuoHCZS8LzwFR6rbRuoPxH0doz/
-	0aLiQZpzXnhYV9OhM7IU0o3DNp/2vAxusG1uN/fd0igWLfH9L5q2ZzMpZDz2pGkkcVCVykbuEhg
-	iPtD7gO5dAqKrMjjnEVNz7DSMVzobB/Hwf1ELZDQiDDuLN+dWEe8Vi0nAuUoR9YpvO3xv73hFMm
-	tntpLEVGx8FVoM=
-X-Google-Smtp-Source: AGHT+IEMxWnzG2ifJWh1BSUMm17RVos9fkFVww/FGBjxH3SNJrhVm3/rCAoCO3j22GYBP3LKDHiAtA==
-X-Received: by 2002:a17:907:801:b0:b73:7de4:dfdb with SMTP id a640c23a62f3a-b76c5515010mr1164030966b.37.1764285171107;
-        Thu, 27 Nov 2025 15:12:51 -0800 (PST)
-Received: from [192.168.1.17] (host-95-250-160-223.retail.telecomitalia.it. [95.250.160.223])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59e93acsm278805066b.50.2025.11.27.15.12.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Nov 2025 15:12:50 -0800 (PST)
-Message-ID: <c7d9f540-b1c0-45a4-befe-177b6d79277a@gmail.com>
-Date: Fri, 28 Nov 2025 00:12:48 +0100
+	s=arc-20240116; t=1764295196; c=relaxed/simple;
+	bh=jG+Q3vKVz8tj9mgaLr+HMnR7/uIPrxtNMPCHuccxSdA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jk8N6Rfy1flA6FPjVCPpeMSU0YYSROYUqeCkG3BC+Zi+RWRxRrnJwWPs8GuN/JvXxpc99otktGASeLrxrBqtAC7J9V6LSrAIwarv6haRIPV7x352qlzSuc+Z6TuX+nQCj+7cV5QnTljeYF5qUlM6ruY2ADACT0T6v/1i8VA6HZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZPPyMRFU; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764295195; x=1795831195;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jG+Q3vKVz8tj9mgaLr+HMnR7/uIPrxtNMPCHuccxSdA=;
+  b=ZPPyMRFUznFTy23LZz7Ga6D4s1iLuDBdI1MaRix4mLFm5Bii64UaaccJ
+   An7vhBuxNZ8qOjrmSib/6VN/6ZYfSZUwAR+IZ3zUkrzdnG8FjGR3V46IE
+   vPwtoLVrHA5Epf/x1VEx/dgNWkJn015PvKwJ33EWtv6QAoMBbd0IhipJG
+   Ur9+/P3BH54ZBACoOikun6tPDXOvGKBhIzsnpBGlOLbknN6ox7K3BkadS
+   w5+z8g/OzOfYgq/JTfvGq/45ClaVIvEBbERRjWwqIU6t8p5hv7Vld3TFp
+   BhGwvSFVEFy8PysKNanYHmP2r+O4L4XzidREkPsYiO1DzfLFirT4aENk+
+   Q==;
+X-CSE-ConnectionGUID: T9dELlFSSaeg0nVkXX3NpQ==
+X-CSE-MsgGUID: MCiP2F4hS2ypUOsa7P63GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="68925548"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
+   d="scan'208";a="68925548"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 17:59:54 -0800
+X-CSE-ConnectionGUID: ddZGwDcEQ66Xb8fiKIQDbw==
+X-CSE-MsgGUID: m60YY/UUSkGdERHuslMpnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
+   d="scan'208";a="192475967"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 27 Nov 2025 17:59:49 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vOnly-000000005v3-2oCr;
+	Fri, 28 Nov 2025 01:59:46 +0000
+Date: Fri, 28 Nov 2025 09:59:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Antonino Maniscalco <antomani103@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Subject: Re: [PATCH] drm/msm: Fix a7xx per pipe register programming
+Message-ID: <202511280900.x5OzOOoJ-lkp@intel.com>
+References: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/msm: Fix a7xx per pipe register programming
-To: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
- Konrad Dybcio <konradybcio@kernel.org>, Dmitry Baryshkov <lumag@kernel.org>,
- Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Antonino Maniscalco <antomani103@gmail.com>, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
- <bf66095e-9f25-4e0f-876a-00f637a7c696@oss.qualcomm.com>
-Content-Language: en-US
-From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-In-Reply-To: <bf66095e-9f25-4e0f-876a-00f637a7c696@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com>
 
-On 11/27/25 10:57 PM, Akhil P Oommen wrote:
-> On 11/27/2025 5:16 AM, Anna Maniscalco wrote:
->> GEN7_GRAS_NC_MODE_CNTL was only programmed for BR and not for BV pipe
->> but it needs to be programmed for both.
->>
->> Program both pipes in hw_init and introducea separate reglist for it in
->> order to add this register to the dynamic reglist which supports
->> restoring registers per pipe.
->>
->> Fixes: 91389b4e3263 ("drm/msm/a6xx: Add a pwrup_list field to a6xx_info")
->> Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
->> ---
->>   drivers/gpu/drm/msm/adreno/a6xx_catalog.c |  9 ++-
->>   drivers/gpu/drm/msm/adreno/a6xx_gpu.c     | 91 +++++++++++++++++++++++++++++--
->>   drivers/gpu/drm/msm/adreno/a6xx_gpu.h     |  1 +
->>   drivers/gpu/drm/msm/adreno/adreno_gpu.h   | 13 +++++
->>   4 files changed, 109 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> index 29107b362346..c8d0b1d59b68 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> @@ -1376,7 +1376,6 @@ static const uint32_t a7xx_pwrup_reglist_regs[] = {
->>   	REG_A6XX_UCHE_MODE_CNTL,
->>   	REG_A6XX_RB_NC_MODE_CNTL,
->>   	REG_A6XX_RB_CMP_DBG_ECO_CNTL,
->> -	REG_A7XX_GRAS_NC_MODE_CNTL,
->>   	REG_A6XX_RB_CONTEXT_SWITCH_GMEM_SAVE_RESTORE_ENABLE,
->>   	REG_A6XX_UCHE_GBIF_GX_CONFIG,
->>   	REG_A6XX_UCHE_CLIENT_PF,
->> @@ -1448,6 +1447,12 @@ static const u32 a750_ifpc_reglist_regs[] = {
->>   
->>   DECLARE_ADRENO_REGLIST_LIST(a750_ifpc_reglist);
->>   
->> +static const struct adreno_reglist_pipe a750_reglist_pipe_regs[] = {
->> +	{ REG_A7XX_GRAS_NC_MODE_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
->> +};
->> +
->> +DECLARE_ADRENO_REGLIST_PIPE_LIST(a750_reglist_pipe);
->> +
->>   static const struct adreno_info a7xx_gpus[] = {
->>   	{
->>   		.chip_ids = ADRENO_CHIP_IDS(0x07000200),
->> @@ -1548,6 +1553,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->>   			.ifpc_reglist = &a750_ifpc_reglist,
->> +			.pipe_reglist = &a750_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x7050001,
->>   			.gmu_cgc_mode = 0x00020202,
->> @@ -1590,6 +1596,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->>   			.ifpc_reglist = &a750_ifpc_reglist,
->> +			.pipe_reglist = &a750_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x7090100,
->>   			.gmu_cgc_mode = 0x00020202,
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> index 0200a7e71cdf..b98f3e93d0a8 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> @@ -16,6 +16,72 @@
->>   
->>   #define GPU_PAS_ID 13
->>   
->> +static void a7xx_aperture_slice_set(struct msm_gpu *gpu, enum adreno_pipe pipe)
->> +{
->> +	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->> +	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->> +	u32 val;
->> +
->> +	val = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe);
->> +
->> +	if (a6xx_gpu->cached_aperture == val)
->> +		return;
->> +
->> +	gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST, val);
->> +
->> +	a6xx_gpu->cached_aperture = val;
->> +}
->> +
->> +static void a7xx_aperture_acquire(struct msm_gpu *gpu, enum adreno_pipe pipe, unsigned long *flags)
->> +{
->> +	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->> +	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->> +
->> +	spin_lock_irqsave(&a6xx_gpu->aperture_lock, *flags);
->> +
->> +	a7xx_aperture_slice_set(gpu, pipe);
->> +}
->> +
->> +static void a7xx_aperture_release(struct msm_gpu *gpu, unsigned long flags)
->> +{
->> +	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->> +	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->> +
->> +	spin_unlock_irqrestore(&a6xx_gpu->aperture_lock, flags);
->> +}
->> +
->> +static void a7xx_aperture_clear(struct msm_gpu *gpu)
->> +{
->> +	unsigned long flags;
->> +
->> +	a7xx_aperture_acquire(gpu, PIPE_NONE, &flags);
->> +	a7xx_aperture_release(gpu, flags);
->> +}
->> +
->> +static void a7xx_write_pipe(struct msm_gpu *gpu, enum adreno_pipe pipe, u32 offset, u32 data)
->> +{
->> +	unsigned long flags;
->> +
->> +	a7xx_aperture_acquire(gpu, pipe, &flags);
->> +	gpu_write(gpu, offset, data);
->> +	a7xx_aperture_release(gpu, flags);
->> +}
->> +
->> +static u32 a7xx_read_pipe(struct msm_gpu *gpu, enum adreno_pipe pipe, u32 offset)
->> +{
->> +	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->> +	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->> +	unsigned long flags;
->> +	u32 val;
->> +
->> +	spin_lock_irqsave(&a6xx_gpu->aperture_lock, flags);
->> +	a7xx_aperture_slice_set(gpu, pipe);
->> +	val = gpu_read(gpu, offset);
->> +	spin_unlock_irqrestore(&a6xx_gpu->aperture_lock, flags);
->> +
->> +	return val;
->> +}
->> +
-> All of the above helper routines are unncessary because we access only a
-> single register under the aperture in a7x hw_init(). Lets drop these and
-> program the aperture register directly below.
-We also access (read) it in a7xx_patch_pwrup_reglist though, so do we 
-want to inline it twice?
->
->
->>   static u64 read_gmu_ao_counter(struct a6xx_gpu *a6xx_gpu)
->>   {
->>   	u64 count_hi, count_lo, temp;
->> @@ -849,9 +915,12 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
->>   		  min_acc_len_64b << 3 |
->>   		  hbb_lo << 1 | ubwc_mode);
->>   
->> -	if (adreno_is_a7xx(adreno_gpu))
->> -		gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
->> -			  FIELD_PREP(GENMASK(8, 5), hbb_lo));
->> +	if (adreno_is_a7xx(adreno_gpu)) {
->> +		for (u32 pipe_id = PIPE_BR; pipe_id <= PIPE_BV; pipe_id++)
->> +			a7xx_write_pipe(gpu, pipe_id, REG_A7XX_GRAS_NC_MODE_CNTL,
->> +					FIELD_PREP(GENMASK(8, 5), hbb_lo));
->> +		a7xx_aperture_clear(gpu);
->> +	}
->>   
->>   	gpu_write(gpu, REG_A6XX_UCHE_MODE_CNTL,
->>   		  min_acc_len_64b << 23 | hbb_lo << 21);
->> @@ -865,9 +934,11 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
->>   	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->>   	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->>   	const struct adreno_reglist_list *reglist;
->> +	const struct adreno_reglist_pipe_list *pipe_reglist;
->>   	void *ptr = a6xx_gpu->pwrup_reglist_ptr;
->>   	struct cpu_gpu_lock *lock = ptr;
->>   	u32 *dest = (u32 *)&lock->regs[0];
->> +	u32 pipe_reglist_count = 0;
->>   	int i;
->>   
->>   	lock->gpu_req = lock->cpu_req = lock->turn = 0;
->> @@ -907,7 +978,19 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
->>   	 * (<aperture, shifted 12 bits> <address> <data>), and the length is
->>   	 * stored as number for triplets in dynamic_list_len.
->>   	 */
->> -	lock->dynamic_list_len = 0;
->> +	pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
->> +	for (u32 pipe_id = PIPE_BR; pipe_id <= PIPE_BV; pipe_id++) {
->> +		for (i = 0; i < pipe_reglist->count; i++) {
->> +			if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
->> +				continue;
->> +			*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
->> +			*dest++ = pipe_reglist->regs[i].offset;
->> +			*dest++ = a7xx_read_pipe(gpu, pipe_id,
->> +						 pipe_reglist->regs[i].offset);
->> +			pipe_reglist_count++;
->> +		}
->> +	}
->> +	lock->dynamic_list_len = pipe_reglist_count;
->>   }
->>   
->>   static int a7xx_preempt_start(struct msm_gpu *gpu)
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> index 6820216ec5fc..0a1d6acbc638 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> @@ -46,6 +46,7 @@ struct a6xx_info {
->>   	const struct adreno_protect *protect;
->>   	const struct adreno_reglist_list *pwrup_reglist;
->>   	const struct adreno_reglist_list *ifpc_reglist;
->> +	const struct adreno_reglist_pipe_list *pipe_reglist;
->>   	const struct adreno_reglist *gbif_cx;
->>   	const struct adreno_reglist_pipe *nonctxt_reglist;
->>   	u32 max_slices;
->> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> index 0f8d3de97636..cd1846c1375e 100644
->> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> @@ -182,12 +182,25 @@ struct adreno_reglist_list {
->>   	u32 count;
->>   };
->>   
->> +struct adreno_reglist_pipe_list {
->> +	/** @reg: List of register **/
->> +	const struct adreno_reglist_pipe *regs;
->> +	/** @count: Number of registers in the list **/
->> +	u32 count;
->> +};
->> +
-> Please move this chunk down, just above the DECLARE_ADRENO_REGLIST_PIPE_LIST
->
-> -Akhil
->
->>   #define DECLARE_ADRENO_REGLIST_LIST(name)	\
->>   static const struct adreno_reglist_list name = {		\
->>   	.regs = name ## _regs,				\
->>   	.count = ARRAY_SIZE(name ## _regs),		\
->>   };
->>   
->> +#define DECLARE_ADRENO_REGLIST_PIPE_LIST(name)	\
->> +static const struct adreno_reglist_pipe_list name = {		\
->> +	.regs = name ## _regs,				\
->> +	.count = ARRAY_SIZE(name ## _regs),		\
->> +};
->> +
->>   struct adreno_gpu {
->>   	struct msm_gpu base;
->>   	const struct adreno_info *info;
->>
->> ---
->> base-commit: 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
->> change-id: 20251126-gras_nc_mode_fix-7224ee506a39
->>
->> Best regards,
+Hi Anna,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Anna-Maniscalco/drm-msm-Fix-a7xx-per-pipe-register-programming/20251127-074833
+base:   7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
+patch link:    https://lore.kernel.org/r/20251127-gras_nc_mode_fix-v1-1-5c0cf616401f%40gmail.com
+patch subject: [PATCH] drm/msm: Fix a7xx per pipe register programming
+config: loongarch-randconfig-001-20251128 (https://download.01.org/0day-ci/archive/20251128/202511280900.x5OzOOoJ-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251128/202511280900.x5OzOOoJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511280900.x5OzOOoJ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c: In function 'a7xx_patch_pwrup_reglist':
+>> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:984:71: warning: suggest parentheses around comparison in operand of '&' [-Wparentheses]
+     984 |                         if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
 
 
-Best regards,
+vim +984 drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+
+   931	
+   932	static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
+   933	{
+   934		struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+   935		struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+   936		const struct adreno_reglist_list *reglist;
+   937		const struct adreno_reglist_pipe_list *pipe_reglist;
+   938		void *ptr = a6xx_gpu->pwrup_reglist_ptr;
+   939		struct cpu_gpu_lock *lock = ptr;
+   940		u32 *dest = (u32 *)&lock->regs[0];
+   941		u32 pipe_reglist_count = 0;
+   942		int i;
+   943	
+   944		lock->gpu_req = lock->cpu_req = lock->turn = 0;
+   945	
+   946		reglist = adreno_gpu->info->a6xx->ifpc_reglist;
+   947		lock->ifpc_list_len = reglist->count;
+   948	
+   949		/*
+   950		 * For each entry in each of the lists, write the offset and the current
+   951		 * register value into the GPU buffer
+   952		 */
+   953		for (i = 0; i < reglist->count; i++) {
+   954			*dest++ = reglist->regs[i];
+   955			*dest++ = gpu_read(gpu, reglist->regs[i]);
+   956		}
+   957	
+   958		reglist = adreno_gpu->info->a6xx->pwrup_reglist;
+   959		lock->preemption_list_len = reglist->count;
+   960	
+   961		for (i = 0; i < reglist->count; i++) {
+   962			*dest++ = reglist->regs[i];
+   963			*dest++ = gpu_read(gpu, reglist->regs[i]);
+   964		}
+   965	
+   966		/*
+   967		 * The overall register list is composed of
+   968		 * 1. Static IFPC-only registers
+   969		 * 2. Static IFPC + preemption registers
+   970		 * 3. Dynamic IFPC + preemption registers (ex: perfcounter selects)
+   971		 *
+   972		 * The first two lists are static. Size of these lists are stored as
+   973		 * number of pairs in ifpc_list_len and preemption_list_len
+   974		 * respectively. With concurrent binning, Some of the perfcounter
+   975		 * registers being virtualized, CP needs to know the pipe id to program
+   976		 * the aperture inorder to restore the same. Thus, third list is a
+   977		 * dynamic list with triplets as
+   978		 * (<aperture, shifted 12 bits> <address> <data>), and the length is
+   979		 * stored as number for triplets in dynamic_list_len.
+   980		 */
+   981		pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
+   982		for (u32 pipe_id = PIPE_BR; pipe_id <= PIPE_BV; pipe_id++) {
+   983			for (i = 0; i < pipe_reglist->count; i++) {
+ > 984				if (pipe_reglist->regs[i].pipe & BIT(pipe_id) == 0)
+   985					continue;
+   986				*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
+   987				*dest++ = pipe_reglist->regs[i].offset;
+   988				*dest++ = a7xx_read_pipe(gpu, pipe_id,
+   989							 pipe_reglist->regs[i].offset);
+   990				pipe_reglist_count++;
+   991			}
+   992		}
+   993		lock->dynamic_list_len = pipe_reglist_count;
+   994	}
+   995	
+
 -- 
-Anna Maniscalco <anna.maniscalco2000@gmail.com>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
