@@ -1,116 +1,138 @@
-Return-Path: <stable+bounces-197596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744AAC9221E
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:30:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D98FC92242
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 14:34:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2223534D624
-	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:30:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 636354E16F7
+	for <lists+stable@lfdr.de>; Fri, 28 Nov 2025 13:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F2332C31C;
-	Fri, 28 Nov 2025 13:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5415B30AD10;
+	Fri, 28 Nov 2025 13:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="nt2PhpbI"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="o/HJ1uzV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720D01E32A2;
-	Fri, 28 Nov 2025 13:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B6632E156
+	for <stable@vger.kernel.org>; Fri, 28 Nov 2025 13:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764336633; cv=none; b=OWvSv4gHB9AkBaj341DbM6CgWQOVR3S8uaDlFKofyR/Hw3D0hsWp9qiVsO5XokM7LY91BAVBxV8WT61a+lnq91Wddo8unJafQkVDx1qfV10yXLEg+6JtO4P07qeEPwqWfqdHkL/64L/N/glQ1KcSIJdwpyHDKNeTrErLGQ0Tgpk=
+	t=1764336853; cv=none; b=WTzztvR8TKPEy10rybM9LqmCzVMnpauhnr16u5k3QbuLjH2JMuj9yo5a9gI763B0hMXa95Bg83B6yHpI7aG7Iz/xLIzfWlfzujDfiKkwZpvBouEY9OaYamFzLujXfmirSVBc/652LWZY/B/40CSzxISSmgXpxw6+WP+OtP7nhMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764336633; c=relaxed/simple;
-	bh=vUh/7k2pNcs1qKtAadocXz/3E+juXBsA3fyjDgDAYpA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g7xMgbwGpSs6af43S+ktWHPJV94otKtwbC9NaLbW2Bi19K9J++SCQIPJvTD2tXyt9MDIJZ6HjFGCDbr8Tm/BnYJ2mW0zJTyxeFLeemfjkNaqkv+S9Lo55iccQjlC6qDsQZW8O0u+7HGZ3EHuOVGDhFwYPyPCV8n+MdK2FfWHOEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=nt2PhpbI; arc=none smtp.client-ip=93.188.205.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1764336628;
-	bh=vUh/7k2pNcs1qKtAadocXz/3E+juXBsA3fyjDgDAYpA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nt2PhpbIr2pwtrWu1/j5I4KBUiKfEHpY/p6Fq6qkN9a7wD6DotZ1r1tsvUaTinItq
-	 F8h3/V7sccTzxh6QCB//D4NKa3NQVPyiN6Dn1REhpxig8T2DlbsoTlL58FK+PRQEGh
-	 8/8yJvz2Fe5TjBOL+3wYdqTni+ot8BIHjop9poxjKmD0jKsOJVR576jvKus3Kz0yA1
-	 d1NnT2M0nB1CV9E8WpwXQqBCRjG+IU9cTlHT3RxJs4tT7IkEfymWzMVeSN0L0HbTZn
-	 LXSHJbL//8pHQPJN9sr5ZGqpJs7d9HROp0P4e+6zLRzvmkj1a2DSOCF4iOucOzbT4f
-	 vMU/h83fvzeIg==
-Received: from gca-msk-a-srv-ksmg01 (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 24A901F97D;
-	Fri, 28 Nov 2025 16:30:28 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 28 Nov 2025 16:30:22 +0300 (MSK)
-Received: from [10.198.57.41] (rbta-msk-lt-156703.astralinux.ru [10.198.57.41])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4dHvKk2DPGz2xBj;
-	Fri, 28 Nov 2025 16:29:46 +0300 (MSK)
-Message-ID: <8c5bbb80-3d28-422e-9dc7-0caebb699986@astralinux.ru>
-Date: Fri, 28 Nov 2025 16:29:36 +0300
+	s=arc-20240116; t=1764336853; c=relaxed/simple;
+	bh=N7LVgPe4BHDfL/ikIaJUOBkx7jZTeSqHMuZCUFdGUVI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RZZZ3KSE0LE5zLtcwetspXIyfymWTR9Mjx7v/snmz1tC6ylIaJs/zJmKRAhFT5P84fYIfx9N05d/qKYJJytkfnAjOV9npPOyC3tkL+XtUyMdzsfn0w69eJiNE0XQ4VUF70ThuTtcOUVaMBA5HocNt3degtLGAzbbSTPcD88E9z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=o/HJ1uzV; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7aad4823079so1652651b3a.0
+        for <stable@vger.kernel.org>; Fri, 28 Nov 2025 05:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1764336847; x=1764941647; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rbtpa9RFO4JNYg5slDho7aqS22A5VSOruLlvcT1PDXc=;
+        b=o/HJ1uzVZHaslFAuL3nUiCaf0nULLIKFBBT+HRPXbjZGvIkNPXGAjTMvqN1EQYOIU2
+         5zBgEIYHqCC6OkgNeo2+BHZqP6O0WwZiaThsVgCx2bHUTn+IeSwihpgBN0zJs6GmIJpq
+         0/NX33j4uTqEl4oKeXQSmfp7v/UQpStXHMWu5zGVXJ+4g/9OyiVg6jFXfga4Tjn8WT7Y
+         gBtAjwEa4Uzq6MF/C8oFgDUFWmoX26kOPwLglSlBftZQJJQbrzmzkCOnSN6aQRPIpyAx
+         McdQNGUs0O+BeRTcvAF/ljuJF14vn9BOYzsxwvaJ7xfhaGikPf+5p15Fu+G+U1d6DRth
+         rg4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764336847; x=1764941647;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rbtpa9RFO4JNYg5slDho7aqS22A5VSOruLlvcT1PDXc=;
+        b=MNmMbIErXC96u2TkUi4ayrjWVvxvWxO5Lp7wvBNOpMRNtJn65Yd6mzzqx8/qR639Hx
+         NHKtr9JX6+QghZQ3+Hl3CHbmpWICOfPQ+dQ9lmF9eLmyK3LvP5Y3mAYBsKIdTpRUM+pp
+         RrHIVAhMES1EmCXo8PZUd94tjZFJYQxfcHkQAqktZAFxiCjE537zdJjgvmFyF6Fitv0v
+         wCVW8Ij/Pii4HIq3tt0C2uOpl0tcbwDK7lLDRNYAWrcj7W6p8ssZpKEGTjHOZBo82wqb
+         Vh2BWotZfOR3XUmcxqoUnK4smoNzHkSyykTHLtKd2ZoUh3oRKrVSsA3w6erDe4PoiIIX
+         BFsg==
+X-Gm-Message-State: AOJu0Yxqayvo7MorzP8rbZDHpJYKsAvycXPIEssXL/guA3tzo++beNvP
+	wIwQ0gwI543vjIdmq4+0dyFEAIHmKiwiyCfUj1XBdcMZ5E+D032NVhijPDrD7uQ/8LgfX0laSI1
+	TobtFIPZu2qq9sBl+y+WuTfc0rZgY6StjeHyfkQL0KQ==
+X-Gm-Gg: ASbGncvnBTf339xq5120xCZlgHtAAx/1FZxwwKGw1iAGaWJusp3JmzpxN2Gcratj3KW
+	6RhV0mOT5sHcMxRaF7J6Tzu8mW6UA/UV8uKbSCMYDNsOeRWx8hBwvSFMK/ttS0xYgbAMfpcZ+Sz
+	vS6B6JfhX2k2HbqymdY3NmYEugQHZGmKFxTBX0/e8L6LROuOLl52IQv56zIoAU4/56IuMqpj5JI
+	/NjLiZ9gGskcXEd3bBqb+utoBULECUmeVT2RI/0AN/JFFED7zyHGWdNiL1w/4q8svxEAWf63g==
+X-Google-Smtp-Source: AGHT+IGwm0o8aZuZ2m48OS+/3z/RTZBRrJEcimyjk2nYCgxroIcwnBJ2VdDKGAGeyiVfZpRcwlYYJqHTeB6yDAU3MkY=
+X-Received: by 2002:a05:7022:6382:b0:11b:9386:8254 with SMTP id
+ a92af1059eb24-11c9d87056amr18623161c88.41.1764336847187; Fri, 28 Nov 2025
+ 05:34:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: RuPost Desktop
-Subject: Re: [PATCH 5.10 1/2] bonding: restore IFF_MASTER/SLAVE flags on bond
- enslave ether type change
-Content-Language: ru
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Song Liu <songliubraving@fb.com>, Martin KaFai Lau <kafai@fb.com>,
- lvc-project@linuxtesting.org, Daniel Borkmann <daniel@iogearbox.net>,
- Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
- Jay Vosburgh <j.vosburgh@gmail.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, netdev@vger.kernel.org,
- Veaceslav Falico <vfalico@gmail.com>, Moni Shoua <monis@voltaire.com>,
- KP Singh <kpsingh@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Andy Gospodarek <andy@greyhouse.net>
-References: <20251127190140.346-1-apanov@astralinux.ru>
- <20251128114704-2369311bf17518b70a95dcb7-pchelkin@ispras>
-From: Alexey Panov <apanov@astralinux.ru>
-In-Reply-To: <20251128114704-2369311bf17518b70a95dcb7-pchelkin@ispras>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 81 0.3.81 2adfceff315e7344370a427642ad41a4cfd99e1f, {Tracking_arrow_text}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 198520 [Nov 28 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.20
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/11/28 12:43:00 #27986045
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+References: <20251127150348.216197881@linuxfoundation.org>
+In-Reply-To: <20251127150348.216197881@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Fri, 28 Nov 2025 22:33:50 +0900
+X-Gm-Features: AWmQ_blvACtblrWoxRgJepaWWrl4iemJdPZsf-ll7gR5yH6QtKiNw8xHfLCkhLc
+Message-ID: <CAKL4bV57MzMdQocXwJyuqjyrX88yufDLG0iXMDSfQBwVS5e9eQ@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/176] 6.17.10-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-28/11/25 11:50, Fedor Pchelkin wrote:
->> [ Upstream commit 9ec7eb60dcbcb6c41076defbc5df7bbd95ceaba5 ]
-> 
-> c484fcc058ba ("bonding: Fix memory leak when changing bond type to
-> Ethernet") has a Fixes tag pointing to the above-mentioned commit so
-> should be ported as well I think.
+Hi Greg
 
-Thanks for the suggestion. I've added this patch to v3.
+On Fri, Nov 28, 2025 at 12:09=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.17.10 release.
+> There are 176 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 29 Nov 2025 15:03:13 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.17.10-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.17.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
---
-Alexey
+6.17.10-rc2 tested.
 
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.17.10-rc2rv-g6c8c6a34f518
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20251112, GNU ld (GNU
+Binutils) 2.45.1) #1 SMP PREEMPT_DYNAMIC Fri Nov 28 21:50:43 JST 2025
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
