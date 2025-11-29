@@ -1,184 +1,184 @@
-Return-Path: <stable+bounces-197639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D025C93D89
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 13:37:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BCAC93F20
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 15:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A53693472CA
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 12:37:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D144434219A
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 14:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFA124886F;
-	Sat, 29 Nov 2025 12:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE77309EEE;
+	Sat, 29 Nov 2025 14:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="np2t0VYC"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A8778F3A;
-	Sat, 29 Nov 2025 12:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4F878F3A;
+	Sat, 29 Nov 2025 14:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764419818; cv=none; b=Wsi6CMI7Q3Lwx24W6nD7gvl9lfVLDgxiUHJCPdM7wCxpQMKYG/MPqqTI7WV5P8VOmQnLvecvCBWUlbgCj22hm547hK6iTywtJGffDjn8/Dt5ekx1diGIPVRd+qCtpn6ln2qpMbjn7LN+tVgYIhRWKyGS4ntUqCjFWGrb6rHIDb8=
+	t=1764425576; cv=none; b=H7qiaJAIPg+WgNAVeIWkmO3gUD79FisQHz7RqTc7mhAmIC/Q9V6LPyabkskztGYm+uDlCSnob8aWgfc3l5Z/eBSEAZauUZQjakTyp0pKqWXqiKaqnZs5ubtI6wKyWq/QUC7XBR1oq358iqjazgnLlwJRDZuM0RpA5JiD/Xp49po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764419818; c=relaxed/simple;
-	bh=DiV1stPWOn0B1rqNeg36zldNtgUkou0lBtBa+NAFznI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=B4i9fkDEK1UUWGm0YKFPK+yPpEVcq8V2eWtuAqYtmbBAIXvJjaMP7y7k3NkzhoUcB97TFpyJd9XqOi8zL1BOLKH+run+xozSawQSjT+VzDjdzSltA4A0JomRyLaJapt21lGMUTEf2H9CRkMTjbxyxntJZWlkiOR2aASd9/zmgC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D1E51063;
-	Sat, 29 Nov 2025 04:36:46 -0800 (PST)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AF5043F66E;
-	Sat, 29 Nov 2025 04:36:51 -0800 (PST)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: catalin.marinas@arm.com,
-	kevin.brodsky@arm.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] kasan: hw_tags: fix a false positive case of vrealloc in alloced size
-Date: Sat, 29 Nov 2025 12:36:47 +0000
-Message-Id: <20251129123648.1785982-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1764425576; c=relaxed/simple;
+	bh=/kK4Qo56+rfLS0ZM5UHB/qh23HZmv1r+PzCe0invxDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mdmo6nRw+ax2kSXKovmcWP6u9mkTn9pOb3CEhzBCiE5GFrJW/1zCuc1Uj6gOwE/dUIBhtNIQy0op826D9h94+xsuoGPnW1NzpC3pAtdVfzX+iEbhvyK/RqfUcjaEUWkqjMUgILlbkq/utKyf21NFIw7vVD/oA4A5+xBPy7e+4nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=np2t0VYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599A9C4CEF7;
+	Sat, 29 Nov 2025 14:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764425576;
+	bh=/kK4Qo56+rfLS0ZM5UHB/qh23HZmv1r+PzCe0invxDE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=np2t0VYCAZFX/wVENepm6wFH9Ln3zuYnGx+9LmmPbxsH03rmVpbEM4BzN+Eiz8xv2
+	 BL14/W6jN0H4pGZZCF2p8gG3iKeHCDQUpRZw4N+gIoVgKEpJ0UYZAWMn7iVHxyAJd9
+	 qiqcefDSMEt+F7dzOsrHJR2NKXrLuK6CZfyfGaV2Lc4KWanzqSeU8VNUc3zK2vvF4C
+	 hVGfjvqJMqLnU0NTLAoun2LFM4rJI8pOYOf5X1l3YwphkvtCwEBCm5yT4N8MlQ5Zqg
+	 iUU5oclmljOHa1YY7gnG3ycGOn43RxLE+RXlyhBtx8mH1SYnoN8sOzOXxTtZdl0Ee/
+	 ezTNOP3ytMA+g==
+Message-ID: <3a78dd9b-1426-44da-8870-0e1f9fcb52c1@kernel.org>
+Date: Sat, 29 Nov 2025 15:12:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] platform/x86: intel_pmc_ipc: fix ACPI buffer memory
+ leak
+To: yongxin.liu@windriver.com, platform-driver-x86@vger.kernel.org,
+ david.e.box@linux.intel.com, ilpo.jarvinen@linux.intel.com
+Cc: linux-kernel@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
+ stable@vger.kernel.org
+References: <20251128033254.3247322-2-yongxin.liu@windriver.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251128033254.3247322-2-yongxin.liu@windriver.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-When a memory region is allocated with vmalloc() and later expanded with
-vrealloc() — while still within the originally allocated size —
-KASAN may report a false positive because
-it does not update the tags for the newly expanded portion of the memory.
+On 28/11/2025 04:32, yongxin.liu@windriver.com wrote:
+> From: Yongxin Liu <yongxin.liu@windriver.com>
+> 
+> The intel_pmc_ipc() function uses ACPI_ALLOCATE_BUFFER to allocate memory
+> for the ACPI evaluation result but never frees it, causing a 192-byte
+> memory leak on each call.
+> 
+> This leak is triggered during network interface initialization when the
+> stmmac driver calls intel_mac_finish() -> intel_pmc_ipc().
+> 
+>   unreferenced object 0xffff96a848d6ea80 (size 192):
+>     comm "dhcpcd", pid 541, jiffies 4294684345
+>     hex dump (first 32 bytes):
+>       04 00 00 00 05 00 00 00 98 ea d6 48 a8 96 ff ff  ...........H....
+>       00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+>     backtrace (crc b1564374):
+>       kmemleak_alloc+0x2d/0x40
+>       __kmalloc_noprof+0x2fa/0x730
+>       acpi_ut_initialize_buffer+0x83/0xc0
+>       acpi_evaluate_object+0x29a/0x2f0
+>       intel_pmc_ipc+0xfd/0x170
+>       intel_mac_finish+0x168/0x230
+>       stmmac_mac_finish+0x3d/0x50
+>       phylink_major_config+0x22b/0x5b0
+>       phylink_mac_initial_config.constprop.0+0xf1/0x1b0
+>       phylink_start+0x8e/0x210
+>       __stmmac_open+0x12c/0x2b0
+>       stmmac_open+0x23c/0x380
+>       __dev_open+0x11d/0x2c0
+>       __dev_change_flags+0x1d2/0x250
+>       netif_change_flags+0x2b/0x70
+>       dev_change_flags+0x40/0xb0
+> 
+> Add __free(kfree) for ACPI object to properly release the allocated buffer.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7e2f7e25f6ff ("arch: x86: add IPC mailbox accessor function and add SoC register access")
+> Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
+> ---
+> V2->V3:
+> Use __free(kfree) instead of goto and kfree();
+> 
+> V1->V2:
+> Cover all potential paths for kfree();
+> ---
+>  include/linux/platform_data/x86/intel_pmc_ipc.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/platform_data/x86/intel_pmc_ipc.h b/include/linux/platform_data/x86/intel_pmc_ipc.h
+> index 1d34435b7001..cf0b78048b0e 100644
+> --- a/include/linux/platform_data/x86/intel_pmc_ipc.h
+> +++ b/include/linux/platform_data/x86/intel_pmc_ipc.h
+> @@ -9,6 +9,7 @@
+>  #ifndef INTEL_PMC_IPC_H
+>  #define INTEL_PMC_IPC_H
+>  #include <linux/acpi.h>
+> +#include <linux/cleanup.h>
+>  
+>  #define IPC_SOC_REGISTER_ACCESS			0xAA
+>  #define IPC_SOC_SUB_CMD_READ			0x00
+> @@ -48,7 +49,7 @@ static inline int intel_pmc_ipc(struct pmc_ipc_cmd *ipc_cmd, struct pmc_ipc_rbuf
+>  		{.type = ACPI_TYPE_INTEGER,},
+>  	};
+>  	struct acpi_object_list arg_list = { PMC_IPCS_PARAM_COUNT, params };
+> -	union acpi_object *obj;
+> +	union acpi_object *obj __free(kfree) = NULL;
 
-A typical example of this pattern occurs in the BPF verifier,
-and the following is a related false positive report:
 
-[ 2206.486476] ==================================================================
-[ 2206.486509] BUG: KASAN: invalid-access in __memcpy+0xc/0x30
-[ 2206.486607] Write at addr f5ff800083765270 by task test_progs/205
-[ 2206.486664] Pointer tag: [f5], memory tag: [fe]
-[ 2206.486703]
-[ 2206.486745] CPU: 4 UID: 0 PID: 205 Comm: test_progs Tainted: G           OE       6.18.0-rc7+ #145 PREEMPT(full)
-[ 2206.486861] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[ 2206.486897] Hardware name:  , BIOS
-[ 2206.486932] Call trace:
-[ 2206.486961]  show_stack+0x24/0x40 (C)
-[ 2206.487071]  __dump_stack+0x28/0x48
-[ 2206.487182]  dump_stack_lvl+0x7c/0xb0
-[ 2206.487293]  print_address_description+0x80/0x270
-[ 2206.487403]  print_report+0x94/0x100
-[ 2206.487505]  kasan_report+0xd8/0x150
-[ 2206.487606]  __do_kernel_fault+0x64/0x268
-[ 2206.487717]  do_bad_area+0x38/0x110
-[ 2206.487820]  do_tag_check_fault+0x38/0x60
-[ 2206.487936]  do_mem_abort+0x48/0xc8
-[ 2206.488042]  el1_abort+0x40/0x70
-[ 2206.488127]  el1h_64_sync_handler+0x50/0x118
-[ 2206.488217]  el1h_64_sync+0xa4/0xa8
-[ 2206.488303]  __memcpy+0xc/0x30 (P)
-[ 2206.488412]  do_misc_fixups+0x4f8/0x1950
-[ 2206.488528]  bpf_check+0x31c/0x840
-[ 2206.488638]  bpf_prog_load+0x58c/0x658
-[ 2206.488737]  __sys_bpf+0x364/0x488
-[ 2206.488833]  __arm64_sys_bpf+0x30/0x58
-[ 2206.488920]  invoke_syscall+0x68/0xe8
-[ 2206.489033]  el0_svc_common+0xb0/0xf8
-[ 2206.489143]  do_el0_svc+0x28/0x48
-[ 2206.489249]  el0_svc+0x40/0xe8
-[ 2206.489337]  el0t_64_sync_handler+0x84/0x140
-[ 2206.489427]  el0t_64_sync+0x1bc/0x1c0
+This is undesired syntax explicitly documented as one to avoid. Please
+don't use cleanup.h if you do not intend to follow it because it does
+not make the code simpler. The rule of explicit (useful, not NULL)
+constructor
 
-Here, 0xf5ff800083765000 is vmalloc()ed address for
-env->insn_aux_data with the size of 0x268.
-While this region is expanded size by 0x478 and initialise
-increased region to apply patched instructions,
-a false positive is triggered at the address 0xf5ff800083765270
-because __kasan_unpoison_vmalloc() with KASAN_VMALLOC_PROT_NORMAL flag only
-doesn't update the tag on increaed region.
-
-To address this, introduces KASAN_VMALLOC_EXPAND flag which
-is used to expand vmalloc()ed memory in range of real allocated size
-to update tag for increased region.
-
-Fixes: 23689e91fb22 ("kasan, vmalloc: add vmalloc tagging for HW_TAGS”)
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- include/linux/kasan.h |  1 +
- mm/kasan/hw_tags.c    | 11 +++++++++--
- mm/vmalloc.c          |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index d12e1a5f5a9a..0608c5d4e6cf 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
- #define KASAN_VMALLOC_INIT		((__force kasan_vmalloc_flags_t)0x01u)
- #define KASAN_VMALLOC_VM_ALLOC		((__force kasan_vmalloc_flags_t)0x02u)
- #define KASAN_VMALLOC_PROT_NORMAL	((__force kasan_vmalloc_flags_t)0x04u)
-+#define KASAN_VMALLOC_EXPAND		((__force kasan_vmalloc_flags_t)0x08u)
-
- #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
- #define KASAN_VMALLOC_TLB_FLUSH  0x2 /* TLB flush */
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index 1c373cc4b3fa..d768c7360093 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -347,7 +347,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 	 *
- 	 * For non-VM_ALLOC allocations, page_alloc memory is tagged as usual.
- 	 */
--	if (!(flags & KASAN_VMALLOC_VM_ALLOC)) {
-+	if (!(flags & (KASAN_VMALLOC_VM_ALLOC | KASAN_VMALLOC_EXPAND))) {
- 		WARN_ON(flags & KASAN_VMALLOC_INIT);
- 		return (void *)start;
- 	}
-@@ -361,7 +361,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 		return (void *)start;
- 	}
-
--	tag = kasan_random_tag();
-+	if (flags & KASAN_VMALLOC_EXPAND) {
-+		size = round_up(size + ((unsigned long)start & KASAN_GRANULE_MASK),
-+				KASAN_GRANULE_SIZE);
-+		start = PTR_ALIGN_DOWN(start, KASAN_GRANULE_SIZE);
-+		tag = get_tag(start);
-+	} else
-+		tag = kasan_random_tag();
-+
- 	start = set_tag(start, tag);
-
- 	/* Unpoison and initialize memory up to size. */
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 798b2ed21e46..6bfbf26fea3b 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4176,6 +4176,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 	 */
- 	if (size <= alloced_size) {
- 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
-+				       KASAN_VMALLOC_EXPAND |
- 				       KASAN_VMALLOC_PROT_NORMAL);
- 		/*
- 		 * No need to zero memory here, as unused memory will have
---
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
-
+Best regards,
+Krzysztof
 
