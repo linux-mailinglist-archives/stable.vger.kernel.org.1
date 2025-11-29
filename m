@@ -1,48 +1,83 @@
-Return-Path: <stable+bounces-197640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BCAC93F20
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 15:13:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09372C941B1
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 16:56:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D144434219A
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 14:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981D33A5BFB
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 15:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE77309EEE;
-	Sat, 29 Nov 2025 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B886218AC4;
+	Sat, 29 Nov 2025 15:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="np2t0VYC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLv4BGfF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4F878F3A;
-	Sat, 29 Nov 2025 14:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163A71EE7B9
+	for <stable@vger.kernel.org>; Sat, 29 Nov 2025 15:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764425576; cv=none; b=H7qiaJAIPg+WgNAVeIWkmO3gUD79FisQHz7RqTc7mhAmIC/Q9V6LPyabkskztGYm+uDlCSnob8aWgfc3l5Z/eBSEAZauUZQjakTyp0pKqWXqiKaqnZs5ubtI6wKyWq/QUC7XBR1oq358iqjazgnLlwJRDZuM0RpA5JiD/Xp49po=
+	t=1764431725; cv=none; b=qppp0R6egUh7G5E7engyfG+PSQfxn2ri79+0pEvsmEj4bHzMqKub+qTbu6BS61lESwLvTMY/M3+yEAfJ8PWc/To/l1Ph/5SK5XCIs8VIUy27aqHbN5sT1EdL5Z+YuptU/dtpRQk9IIJZ2uHKsS5I5ia+atB6zP2rlBmmkG7/SJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764425576; c=relaxed/simple;
-	bh=/kK4Qo56+rfLS0ZM5UHB/qh23HZmv1r+PzCe0invxDE=;
+	s=arc-20240116; t=1764431725; c=relaxed/simple;
+	bh=hW7QVlUNpaZY7Ylf70i9DgbfCIcNy1XWz+MAxnt4CqM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mdmo6nRw+ax2kSXKovmcWP6u9mkTn9pOb3CEhzBCiE5GFrJW/1zCuc1Uj6gOwE/dUIBhtNIQy0op826D9h94+xsuoGPnW1NzpC3pAtdVfzX+iEbhvyK/RqfUcjaEUWkqjMUgILlbkq/utKyf21NFIw7vVD/oA4A5+xBPy7e+4nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=np2t0VYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599A9C4CEF7;
-	Sat, 29 Nov 2025 14:12:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764425576;
-	bh=/kK4Qo56+rfLS0ZM5UHB/qh23HZmv1r+PzCe0invxDE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=np2t0VYCAZFX/wVENepm6wFH9Ln3zuYnGx+9LmmPbxsH03rmVpbEM4BzN+Eiz8xv2
-	 BL14/W6jN0H4pGZZCF2p8gG3iKeHCDQUpRZw4N+gIoVgKEpJ0UYZAWMn7iVHxyAJd9
-	 qiqcefDSMEt+F7dzOsrHJR2NKXrLuK6CZfyfGaV2Lc4KWanzqSeU8VNUc3zK2vvF4C
-	 hVGfjvqJMqLnU0NTLAoun2LFM4rJI8pOYOf5X1l3YwphkvtCwEBCm5yT4N8MlQ5Zqg
-	 iUU5oclmljOHa1YY7gnG3ycGOn43RxLE+RXlyhBtx8mH1SYnoN8sOzOXxTtZdl0Ee/
-	 ezTNOP3ytMA+g==
-Message-ID: <3a78dd9b-1426-44da-8870-0e1f9fcb52c1@kernel.org>
-Date: Sat, 29 Nov 2025 15:12:52 +0100
+	 In-Reply-To:Content-Type; b=Iz4O2A2i/P5Cv9TYQ7eivEfccTJq05ghulwgqHZ6aSOAeLBw8xGCK3yiIyvgGvEy71W4DXuOJmKCHuSbFmhJxlhqgeh/CJTdCzPm5zTQYRBdjCffbt2AZJdh1rRzvMH+9AfkwSGj0icIRFfPpGc5Q3g1y1x3GgKyR2JlSDZ4VzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLv4BGfF; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7bab7c997eeso3376738b3a.0
+        for <stable@vger.kernel.org>; Sat, 29 Nov 2025 07:55:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764431722; x=1765036522; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=FILplgLXEZgxFeyo/Z95euXOg6o1DHgnlcHWIEY4wAI=;
+        b=FLv4BGfF8jKy7LmTLjCQZB5e7faLlOwNAhxmpUE3y5Tx+ODJQWZ8m3V/KSA5auCXTP
+         EN/jgYzKpcrzd9szbkLRiJCgbqfOZUJv88hJnUlptiQBIF6cR6wXwvcYHwvlPZukhlnW
+         +EyMBUTt7FXKivGYCub7gK1z+GRno1L9YyaVSBAJF5FXLOFwKVKc6cy3rNiBn/atZ+U3
+         XhBKp7cA75LtbKh87pWzOYowhodOG9ucjyDbB0Ou8C04Lr89uCk+mca58HtSRkzos5Rk
+         3DgzjlkJ0hXekw1tstJ8v8fokWYnuOOqhjJKBAf4R9KMDf2nO8+sZ5PgUglIQLpCVZSa
+         aqPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764431722; x=1765036522;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FILplgLXEZgxFeyo/Z95euXOg6o1DHgnlcHWIEY4wAI=;
+        b=vzmnhfqYZpyZp/cD7Fboqh0+MattaD4JFtcCfvZI5+QhJ1vyQPRYOgu4yjzpAFrj0P
+         qBzZNd5yWg5DhKIulKFNlMGxcXakyW0SRMpEofD0RRAQPoTtef7vaqrCGr31C45zvDc1
+         3S+QoKMv1yBIeZEW6R7iWgUkCobelbO0ryfoicZMpg1OtZEm7G/vQqORtCyTPHvdk2gy
+         vDUTGOPw6HGyWo3KDEBYiqKvimpurb+rp+xUGxLsM6IAJC6B4cWLAFgQy/pvUoBj+4q2
+         5K9t5JiyAjZ5sH0RS+JHBl0azKvFJNEWk8Jf+AYRHjZWjOr16MTU7bHLNAlmK5P7zrgH
+         KLYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXILE0bbWo8ksapOMega5LWQTG/SGjBoA9ZGJqcV8BxixFBwknXKXrZZulWLQ1d+JfJg33+CVo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzlc+tysc/oZNIu49gERCszKXfTotRxiKPhR7xhhTlUePfr+jpy
+	Eqv7dV0SUJf9TxwcVX3sxKGOv8j4TR5ntjkSLyYsXbR0uLXtyhaAQyBA
+X-Gm-Gg: ASbGncsy+sy3U/lhwhUo4SKn0kLuC89egz9uadH/nwdz3mjY9Fk0m22PWVQ2kn4j0fw
+	ak+LZwBwEzh1pQqSoq5kPhjSqDDlQWD5EMJlvhcvik7O09+z8AvwcizWFB7AmiVJFsNYkylAE7C
+	tSqB/Eoc3dmLRvGwVBQeIXv3okvIpL91dh1vI45m0jQDzSNw5gdYAzwJKsuSBTFpPqiPgcdl/hp
+	CYfm+6ne7zHRBWCTYkmWMHmbGPf14u4Manor1Nof7/FPJmFMEibyFg/fCp4xT/+UQvN0fFFVs+w
+	S+M7bqAOZiBxTR+Jc7mrom5IzNilj48JGELGo3//bNjwFeWzq9AOVW40kcdhuwjTzGKv47wGirN
+	NY2moZeDoviAHRgAjHlmnNT3uci7ktUQaA4h6gW7lRo2ki4PQNEroAeBpiqTrekkpRY0700r2l2
+	UsolHgRl0iHawdjqb23ykxWL5tIFEnsivxbGK7FXPuLHRVYJz/QhCZ2ctsXuD89Z+u9SkjlQ==
+X-Google-Smtp-Source: AGHT+IEBD9n7FNKv88IprgbhQGe+ktNn1QSzk/wly9q12lcdGNCFafUk2CIt/NKIrUJYcNrG99yZZw==
+X-Received: by 2002:a05:7022:2393:b0:119:e569:f279 with SMTP id a92af1059eb24-11c9d865659mr25569004c88.34.1764431722166;
+        Sat, 29 Nov 2025 07:55:22 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaed5f6bsm40532343c88.1.2025.11.29.07.55.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 29 Nov 2025 07:55:21 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <a989d07a-a473-4d9a-ae76-d39de6981e35@roeck-us.net>
+Date: Sat, 29 Nov 2025 07:55:19 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,135 +85,185 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] platform/x86: intel_pmc_ipc: fix ACPI buffer memory
- leak
-To: yongxin.liu@windriver.com, platform-driver-x86@vger.kernel.org,
- david.e.box@linux.intel.com, ilpo.jarvinen@linux.intel.com
-Cc: linux-kernel@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
- stable@vger.kernel.org
-References: <20251128033254.3247322-2-yongxin.liu@windriver.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] hwmon: (w83l786ng) Convert macros to functions to avoid
+ TOCTOU
+To: david laight <david.laight@runbox.com>,
+ Gui-Dong Han <hanguidong02@gmail.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ baijiaju1990@gmail.com, stable@vger.kernel.org
+References: <20251128123816.3670-1-hanguidong02@gmail.com>
+ <20251128193720.0716cc6d@pumpkin>
+ <CALbr=LbYY-_-Uc_45fXDYzOMiYTJpwbNpuj41q2nHmdfangcBQ@mail.gmail.com>
+ <20251129101736.000fac82@pumpkin>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251128033254.3247322-2-yongxin.liu@windriver.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20251129101736.000fac82@pumpkin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 28/11/2025 04:32, yongxin.liu@windriver.com wrote:
-> From: Yongxin Liu <yongxin.liu@windriver.com>
+On 11/29/25 02:17, david laight wrote:
+> On Sat, 29 Nov 2025 08:33:42 +0800
+> Gui-Dong Han <hanguidong02@gmail.com> wrote:
 > 
-> The intel_pmc_ipc() function uses ACPI_ALLOCATE_BUFFER to allocate memory
-> for the ACPI evaluation result but never frees it, causing a 192-byte
-> memory leak on each call.
+>> On Sat, Nov 29, 2025 at 3:37 AM david laight <david.laight@runbox.com> wrote:
+>>>
+>>> On Fri, 28 Nov 2025 20:38:16 +0800
+>>> Gui-Dong Han <hanguidong02@gmail.com> wrote:
+>>>   
+>>>> The macros FAN_FROM_REG and TEMP_FROM_REG evaluate their arguments
+>>>> multiple times. When used in lockless contexts involving shared driver
+>>>> data, this causes Time-of-Check to Time-of-Use (TOCTOU) race
+>>>> conditions.
+>>>>
+>>>> Convert the macros to static functions. This guarantees that arguments
+>>>> are evaluated only once (pass-by-value), preventing the race
+>>>> conditions.
+>>>>
+>>>> Adhere to the principle of minimal changes by only converting macros
+>>>> that evaluate arguments multiple times and are used in lockless
+>>>> contexts.
+>>>>
+>>>> Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+>>>> Fixes: 85f03bccd6e0 ("hwmon: Add support for Winbond W83L786NG/NR")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+>>>> ---
+>>>> Based on the discussion in the link, I will submit a series of patches to
+>>>> address TOCTOU issues in the hwmon subsystem by converting macros to
+>>>> functions or adjusting locking where appropriate.
+>>>> ---
+>>>>   drivers/hwmon/w83l786ng.c | 26 ++++++++++++++++++--------
+>>>>   1 file changed, 18 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/hwmon/w83l786ng.c b/drivers/hwmon/w83l786ng.c
+>>>> index 9b81bd406e05..1d9109ca1585 100644
+>>>> --- a/drivers/hwmon/w83l786ng.c
+>>>> +++ b/drivers/hwmon/w83l786ng.c
+>>>> @@ -76,15 +76,25 @@ FAN_TO_REG(long rpm, int div)
+>>>>        return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
+>>>>   }
+>>>>
+>>>> -#define FAN_FROM_REG(val, div)       ((val) == 0   ? -1 : \
+>>>> -                             ((val) == 255 ? 0 : \
+>>>> -                             1350000 / ((val) * (div))))
+>>>> +static int fan_from_reg(int val, int div)
+>>>> +{
+>>>> +     if (val == 0)
+>>>> +             return -1;
+>>>> +     if (val == 255)
+>>>> +             return 0;
+>>>> +     return 1350000 / (val * div);
+>>>> +}
+>>>>
+>>>>   /* for temp */
+>>>>   #define TEMP_TO_REG(val)     (clamp_val(((val) < 0 ? (val) + 0x100 * 1000 \
+>>>>                                                      : (val)) / 1000, 0, 0xff))
+>>>
+>>> Can you change TEMP_TO_REG() as well.
+>>> And just use plain clamp() while you are at it.
+>>> Both these temperature conversion functions have to work with negative temperatures.
+>>> But the signed-ness gets passed through from the parameter - which may not be right.
+>>> IIRC some come from FIELD_GET() and will be 'unsigned long' unless cast somewhere.
+>>> The function parameter 'corrects' the type to a signed one.
+>>>
+>>> So you are fixing potential bugs as well.
+>>
+>> Hi David,
+>>
+>> Thanks for your feedback on TEMP_TO_REG and the detailed explanation
+>> regarding macro risks.
+>>
+>> Guenter has already applied this patch.
 > 
-> This leak is triggered during network interface initialization when the
-> stmmac driver calls intel_mac_finish() -> intel_pmc_ipc().
+> Patches are supposed to be posted for review and applied a few days later.
 > 
->   unreferenced object 0xffff96a848d6ea80 (size 192):
->     comm "dhcpcd", pid 541, jiffies 4294684345
->     hex dump (first 32 bytes):
->       04 00 00 00 05 00 00 00 98 ea d6 48 a8 96 ff ff  ...........H....
->       00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
->     backtrace (crc b1564374):
->       kmemleak_alloc+0x2d/0x40
->       __kmalloc_noprof+0x2fa/0x730
->       acpi_ut_initialize_buffer+0x83/0xc0
->       acpi_evaluate_object+0x29a/0x2f0
->       intel_pmc_ipc+0xfd/0x170
->       intel_mac_finish+0x168/0x230
->       stmmac_mac_finish+0x3d/0x50
->       phylink_major_config+0x22b/0x5b0
->       phylink_mac_initial_config.constprop.0+0xf1/0x1b0
->       phylink_start+0x8e/0x210
->       __stmmac_open+0x12c/0x2b0
->       stmmac_open+0x23c/0x380
->       __dev_open+0x11d/0x2c0
->       __dev_change_flags+0x1d2/0x250
->       netif_change_flags+0x2b/0x70
->       dev_change_flags+0x40/0xb0
-> 
-> Add __free(kfree) for ACPI object to properly release the allocated buffer.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7e2f7e25f6ff ("arch: x86: add IPC mailbox accessor function and add SoC register access")
-> Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
-> ---
-> V2->V3:
-> Use __free(kfree) instead of goto and kfree();
-> 
-> V1->V2:
-> Cover all potential paths for kfree();
-> ---
->  include/linux/platform_data/x86/intel_pmc_ipc.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/platform_data/x86/intel_pmc_ipc.h b/include/linux/platform_data/x86/intel_pmc_ipc.h
-> index 1d34435b7001..cf0b78048b0e 100644
-> --- a/include/linux/platform_data/x86/intel_pmc_ipc.h
-> +++ b/include/linux/platform_data/x86/intel_pmc_ipc.h
-> @@ -9,6 +9,7 @@
->  #ifndef INTEL_PMC_IPC_H
->  #define INTEL_PMC_IPC_H
->  #include <linux/acpi.h>
-> +#include <linux/cleanup.h>
->  
->  #define IPC_SOC_REGISTER_ACCESS			0xAA
->  #define IPC_SOC_SUB_CMD_READ			0x00
-> @@ -48,7 +49,7 @@ static inline int intel_pmc_ipc(struct pmc_ipc_cmd *ipc_cmd, struct pmc_ipc_rbuf
->  		{.type = ACPI_TYPE_INTEGER,},
->  	};
->  	struct acpi_object_list arg_list = { PMC_IPCS_PARAM_COUNT, params };
-> -	union acpi_object *obj;
-> +	union acpi_object *obj __free(kfree) = NULL;
 
+As long as I am the maintainer of this code, if and when to apply a patch
+after it was posted is my call to make.
 
-This is undesired syntax explicitly documented as one to avoid. Please
-don't use cleanup.h if you do not intend to follow it because it does
-not make the code simpler. The rule of explicit (useful, not NULL)
-constructor
+>> Since the primary scope here
+>> was strictly addressing TOCTOU race conditions (and TEMP_TO_REG is not
+>> used in lockless contexts), it wasn't included.
+>>
+>> However, I appreciate your point regarding type safety. I will look
+>> into addressing that in a future separate patch.
+> 
+> It's not just type safety, and #define that evaluates an argument more
+> than one is just a bug waiting to happen.
+> We've been removing (or trying not to write) those since the 1980s.
+> 
+> You also just didn't read the code:
+> 
 
-Best regards,
-Krzysztof
+That is just a claim. It could be seen as insult, so I would kindly
+ask you to refrain from such comments.
+
+> -#define TEMP_FROM_REG(val)	(((val) & 0x80 ? \
+> -				  (val) - 0x100 : (val)) * 1000)
+> +
+> +static int temp_from_reg(int val)
+> +{
+> +	if (val & 0x80)
+> +		return (val - 0x100) * 1000;
+> +	return val * 1000;
+> +}
+> 
+> Both those only work if 'val' is 8 bits.
+
+Yes, and it is. What exactly is your point ? It says "temp_from_reg",
+and reg is an 8-bit value. Passing it as int doesn't change that.
+
+> They are just ((s8)(val) * 1000) and generate a milli-centigrade
+> value from the 8-bit signed centigrade value the hardware provides.
+
+Exactly, and the code above does that. Yes, I know, "((s8)(val) * 1000)"
+would have been more efficient, but, again, it is my call to decide if
+I request that or if I think that the patch I accepted is good enough.
+
+Thanks,
+Guenter
+
 
