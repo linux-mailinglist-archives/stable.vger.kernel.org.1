@@ -1,242 +1,145 @@
-Return-Path: <stable+bounces-197642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B0CC9434A
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 17:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 339E6C94491
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 17:56:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5045D3A6CC4
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 16:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1643A5EA1
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 16:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1E730DED1;
-	Sat, 29 Nov 2025 16:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CABB217659;
+	Sat, 29 Nov 2025 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b="VbDmX63L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJKNB4ZS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D00273D6F
-	for <stable@vger.kernel.org>; Sat, 29 Nov 2025 16:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DDA1DFD96;
+	Sat, 29 Nov 2025 16:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764433785; cv=none; b=oQh44ZTfTGqKeqENkjfEYB5RsMWEAhn4YfBU8+t3v1IEUa/7rSi/tprkKa88OP9RuqQ0KVV3y6aw6QS8m4/Vk6qs8O3aj/aH0L1cjlrNT4eRaZsh94NxqNWoF/9HCYyj11YF5yeMU0lBmGiNdRCgE4Dd/EGv5z7lXLnk7+SPGN8=
+	t=1764435348; cv=none; b=iDiPJF9wwClqETh+ipwHz8h3JnVOnuIZEgli5DuSq19K2rzVC60pX6TfE8rg+w2KMVyiCBHNO0l/uIW+Uq9IMRwQkBD7sOC1Jw9BYt5dCazbeM3AuFMs9buMztq6oRs/Ga/4sungayh/jANnF4LDRlrnFGrFG5H5qWmnixRDvi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764433785; c=relaxed/simple;
-	bh=XxPsk9Eb43fSNiSNuZ5XLjWkiKMYwSYxirqZOM8CWWA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MoLM6UZBbF0ONmj0CbHrNAW2g12eA7Dy4kOEsIdXTUof7rQJHXTC86ttJwACLWhseVIUpyBzl0jKteMO6me1tOlLvIIAVWVAAXu5M7Utw7QSOuWG7VBZ8mtspqCtYoytW/lw6dDc39X3pqxRieox8aAMlTXu4xNPc1aT2divCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in; spf=none smtp.mailfrom=ee.vjti.ac.in; dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b=VbDmX63L; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ee.vjti.ac.in
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-787df0d729dso25908717b3.3
-        for <stable@vger.kernel.org>; Sat, 29 Nov 2025 08:29:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vjti.ac.in; s=google; t=1764433781; x=1765038581; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0YIaZWkYsG2+766HIF9sMG2jvdVnfYyu8Q7qgPYfzlE=;
-        b=VbDmX63LVfP0mKSxI4ECJi15XwrKxGIX075svRoiU9UdtCBvcZrTlvmTOnDbK+hJ8K
-         pFjSr5iP7UE8EXasMIRIu2B0P/+eXDNhQ5l5fxYbY+dpzdMbRuz3ZPNKqUGhKBOR1dkI
-         9B3XzoJaRpOhUwevZYcSkz2plTZtc9jBwHV+g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764433781; x=1765038581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0YIaZWkYsG2+766HIF9sMG2jvdVnfYyu8Q7qgPYfzlE=;
-        b=G1DyIFzdrYlwuPa0xYWzLRMDvkzMmarWhEg+v/UHH4G+8nv5dHmr1Y2vMSLEx5hkE+
-         zcw7OYJwnyqdgqF8/+cgy1eBRM+vr3TWmGNZU05Dz2wsMG9HveKthS61WD3lUCGjX6R0
-         zbfg9TwjU9POhCKyhWdATO+xKTxqQQBxrgLBs1JXylTfOPqn+vMuBKibEVnd2hKEmXYA
-         zSqrzL6Co93/3GYQvinNdoP3gcJejnXh15B7J6SnhUJUT8iRzCbFim4pv9zLuwyXpUM0
-         Ukqx3kXm6n7wTnihUh14w8HAwMPvurtE6Lc0nZslZyVD7nMbaXNPJPMcqXHLRgz/YC0B
-         Ep4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUYi9mE26GmKjpI1ExILu+iegvCR7nW9a7Lr9wTEXCrO1ZCLACWQJKhdUlp0fAIrbgICxJMNfs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxICkuz9KzHJThlzKcsWryf+PODctJfv3Hhvhuur7ga28A1LgEm
-	3duAE42byobRMUWHI9CMgKzhi39RePPvh4EgV4yPKYCcejZMOBkTVx7dgvO4gylFC909YIZSkz2
-	kb2MjPKj/6EWuc8XLrpl78k4+felou3gvOZ4lpr8AIw==
-X-Gm-Gg: ASbGncu16p2KZ222xIoN8KXmkNUUOGKCb+2T067QFx8qEFqpOK0ibiQgDX+Q7yngPd4
-	yhiYwvM+dlh1pGOnntie3zRtz3irc6+LTeELSdK+inYJVMwxN5/f82SJOHcWuQ1yR/AxkC1drRq
-	/0PQK7EZ3GVpdyEU4X2/zKjRiceNKdnw8lnzo5a/FWrqqetRu2K/OEqVa1Y7glzS/+aZ7yWl7K7
-	cQ8wdxmGl+JdHSZSRgMiS/3uT4X8eu+O9InmUiIYtSiu0Lw8PsDp9Pxp5UHEJS+BSqMQaG+QpcE
-	5DCepi5va1fCmTgimtzE2aQ=
-X-Google-Smtp-Source: AGHT+IH/amgjYZ4hepMx4cefCAqunHQoT6K399Q1T0St+afGYxSlkQhRoNJixWcVurrbQATvkbcwVxuu1x05BYn110A=
-X-Received: by 2002:a05:690c:7448:b0:788:763:179b with SMTP id
- 00721157ae682-78a8b5284e1mr261258247b3.45.1764433781248; Sat, 29 Nov 2025
- 08:29:41 -0800 (PST)
+	s=arc-20240116; t=1764435348; c=relaxed/simple;
+	bh=Zhh6dHTOJ+CBhruhJ6LnEqoBS250ILVGbB8B2h58rls=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S33U5qqNaL5DQGGmq7YrRHXHgiojrTDLfUUrYoQQPDOa8sJwIySXp6JOoQ8Q0qwv6jMOGLspxZaohziEpjmAm3MFVDkgLzUl5ulSwsfKztCV88TVPIV6b+uOeCHyb95VPKHBg0UZ8dgMegtTDq4LOGp/C8nOe2v4VV32cQgmf/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJKNB4ZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1508C4CEF7;
+	Sat, 29 Nov 2025 16:55:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764435347;
+	bh=Zhh6dHTOJ+CBhruhJ6LnEqoBS250ILVGbB8B2h58rls=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VJKNB4ZS9e4Tp9PTtxT/cppnpxj+z2IOAuF53sfAXDTh0IzbO/pF+WLvP4JRFjZQJ
+	 uTYopIMeNv7P2QQKRQN+7tDyH0ItpuO4D2bqr6R/UMa2G0xQF50TLOR3cT2ukARO6i
+	 PUbGYWU1p1+OyaBEKGVC8EXgFBhf5YPj1eJwmcUgTI/tRgF2Dmaa8G0nQH/6wvnu0Z
+	 ulP8A9/GnT3H/BRMcM+aTvYG/wWiDxi1bwuRYkjbQQZx9F1D4e8Odef8KykFF4bsSp
+	 g4p6n4gozTptEApoLvu3CXjIbttIq/xqBIXHN0SOjHUY62YtexNy3mCfob8v22PnHy
+	 71UadPV9qL0ow==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] selftests: mptcp: join: endpoints: longer transfer
+Date: Sat, 29 Nov 2025 17:55:11 +0100
+Message-ID: <20251129165510.2124040-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025112028-sly-exclude-8f08@gregkh>
+References: <2025112028-sly-exclude-8f08@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251127163219.40389-1-ssrane_b23@ee.vjti.ac.in> <aSlbccUo_YwqehWL@thinkpad>
-In-Reply-To: <aSlbccUo_YwqehWL@thinkpad>
-From: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>
-Date: Sat, 29 Nov 2025 21:59:29 +0530
-X-Gm-Features: AWmQ_bncfrkXutO0UvCWkOMRLGDeLeQrwA1iDa4opKW2TpPzUzBDSLvdOBQIILQ
-Message-ID: <CANNWa06MVDaEGKVyNW=LGUsFg+OM-RRW-vfBBkR5Vpb+pk4pxw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/hsr: fix NULL pointer dereference in skb_clone
- with hw tag insertion
-To: Felix Maurer <fmaurer@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, jkarrenpalo@gmail.com, 
-	arvid.brodin@alten.se, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	david.hunter.linux@gmail.com, khalid@kernel.org, 
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3609; i=matttbe@kernel.org; h=from:subject; bh=Zhh6dHTOJ+CBhruhJ6LnEqoBS250ILVGbB8B2h58rls=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK1VfOX/X237ve0uVuFJRO2Gqod+J0R9Eg9rbKzOUrz2 C+hpV9ZOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACayLoXhf86rVcFrD3Z8yE9n in0Z3hbmdl3sgXtIcGOjuffpGfPW9DAyzHgY3KwwL/vGoYCDHqHrqy4rGnkfC/659vDkaXub2Dh WcQEA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 28, 2025 at 1:51=E2=80=AFPM Felix Maurer <fmaurer@redhat.com> w=
-rote:
->
-> On Thu, Nov 27, 2025 at 10:02:19PM +0530, Shaurya Rane wrote:
-> > When NETIF_F_HW_HSR_TAG_INS is enabled and frame->skb_std is NULL,
-> > hsr_create_tagged_frame() and prp_create_tagged_frame() call skb_clone(=
-)
-> > with a NULL pointer.
->
-> Have you acually tested this or do you have any other indication that
-> this can happen? After all, you are suggesting that this kernel crash in
-> a syzbot VM is caused by a (very uncommon) feature of hardware NICs.
->
-Agreed. The syzbot reproducer uses PRP (protocol=3D1), and the crash
-path goes through prp_get_untagged_frame() where __pskb_copy() can
-fail and return NULL. I tested the patch with syzbot and the bug no
-longer reproduces, confirming this is the actual root cause.
+[ Upstream commit 6457595db9870298ee30b6d75287b8548e33fe19 ]
 
-> > Similarly, prp_get_untagged_frame() doesn't check
-> > if __pskb_copy() fails before calling skb_clone().
->
-> I suspect that this is really the only condition that can trigger the
-> crash in question. This would also match that the syzbot reproducer hits
-> this with a PRP interface (IFLA_HSR_PROTOCOL=3D0x1).
-That makes sense. I've dropped the NETIF_F_HW_HSR_TAG_INS checks and
-sent v3 with only the prp_get_untagged_frame() fix.That makes sense.
-I've dropped the NETIF_F_HW_HSR_TAG_INS checks and sent v3 with only
-the prp_get_untagged_frame() fix and tested it with the syzbot
-reproducer .
->
-> > This causes a kernel crash reported by Syzbot:
-> >
-> > Oops: general protection fault, probably for non-canonical address 0xdf=
-fffc000000000f: 0000 [#1] SMP KASAN NOPTI
-> > KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-> > CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT=
-(full)
-> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-=
-1.16.3-2~bpo12+1 04/01/2014
-> > RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-> > Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85=
- a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 =
-26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-> > RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-> > RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-> > RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-> > RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-> > R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-> > R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-> > FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:00000000000=
-00000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-> > Call Trace:
-> >  <TASK>
-> >  hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
-> >  hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
-> >  hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
-> >  __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
-> >  __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
-> >  __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
-> >  netif_receive_skb_internal net/core/dev.c:6278 [inline]
-> >  netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
-> >  tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
-> >  tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
-> >  tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
-> >  new_sync_write fs/read_write.c:593 [inline]
-> >  vfs_write+0x5c9/0xb30 fs/read_write.c:686
-> >  ksys_write+0x145/0x250 fs/read_write.c:738
-> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-> >  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > RIP: 0033:0x7f0449f8e1ff
-> > Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24=
- 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 =
-ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-> > RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-> > RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-> > RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-> > RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-> > R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-> > R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
-> >  </TASK>
-> >
-> > Fix this by adding NULL checks for frame->skb_std before calling
-> > skb_clone() in the affected functions.
-> >
-> > Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3D2fa344348a579b779e05
-> > Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-> > ---
-> >  net/hsr/hsr_forward.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> > index 339f0d220212..8a8559f0880f 100644
-> > --- a/net/hsr/hsr_forward.c
-> > +++ b/net/hsr/hsr_forward.c
-> > @@ -205,6 +205,8 @@ struct sk_buff *prp_get_untagged_frame(struct hsr_f=
-rame_info *frame,
-> >                               __pskb_copy(frame->skb_prp,
-> >                                           skb_headroom(frame->skb_prp),
-> >                                           GFP_ATOMIC);
-> > +                     if (!frame->skb_std)
-> > +                             return NULL;
-> >               } else {
-> >                       /* Unexpected */
-> >                       WARN_ONCE(1, "%s:%d: Unexpected frame received (p=
-ort_src %s)\n",
->
-> This check looks good to me.
->
-> > @@ -341,6 +343,8 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_=
-frame_info *frame,
-> >               hsr_set_path_id(frame, hsr_ethhdr, port);
-> >               return skb_clone(frame->skb_hsr, GFP_ATOMIC);
-> >       } else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
-> > +             if (!frame->skb_std)
-> > +                     return NULL;
-> >               return skb_clone(frame->skb_std, GFP_ATOMIC);
-> >       }
-> >
-> > @@ -385,6 +389,8 @@ struct sk_buff *prp_create_tagged_frame(struct hsr_=
-frame_info *frame,
-> >               }
-> >               return skb_clone(frame->skb_prp, GFP_ATOMIC);
-> >       } else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
-> > +             if (!frame->skb_std)
-> > +                     return NULL;
-> >               return skb_clone(frame->skb_std, GFP_ATOMIC);
-> >       }
->
-> If any of these two conditions happen we have a different, serious
-> problem that needs to be fixed elsewhere.
->
-> In hsr_create_tagged_frame(), we first check if we have an skb_hsr (an
-> skb containing an already tagged message). If we don't, it has to be an
-> skb_std (an skb without any tag). If !skb_std, we are either 1) handing
-> around a frame without any skb; or 2) handing a PRP frame to an HSR
-> function. In both cases, this would need to be fixed where the problem
-> is introduced.
->
-> Thanks,
->    Felix
->
-Thanks, Shaurya
+In rare cases, when the test environment is very slow, some userspace
+tests can fail because some expected events have not been seen.
+
+Because the tests are expecting a long on-going connection, and they are
+not waiting for the end of the transfer, it is fine to make the
+connection longer. This connection will be killed at the end, after the
+verifications, so making it longer doesn't change anything, apart from
+avoid it to end before the end of the verifications
+
+To play it safe, all endpoints tests not waiting for the end of the
+transfer are now sharing a longer file (128KB) at slow speed.
+
+Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
+Cc: stable@vger.kernel.org
+Fixes: e274f7154008 ("selftests: mptcp: add subflow limits test-cases")
+Fixes: b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+Fixes: e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-3-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ removed curly braces and stderr redirection ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Conflicts in mptcp_join.sh because commit 0c93af1f8907 ("selftests:
+  mptcp: drop test_linkfail parameter") is not in this version. It moved
+  the 4th parameter to an env var. To fix the conflicts, the new value
+  simply needs to be added as the 4th argument instead of an env var. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index e435e30e0d93..9f73297b69da 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3313,7 +3313,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow 2>/dev/null &
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 slow 2>/dev/null &
+ 
+ 		wait_mpj $ns1
+ 		pm_nl_check_endpoint 1 "creation" \
+@@ -3336,7 +3336,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_5 2>/dev/null &
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 speed_5 2>/dev/null &
+ 		local tests_pid=$!
+ 
+ 		wait_mpj $ns2
+@@ -3401,7 +3401,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
+-		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_5 2>/dev/null &
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 speed_5 2>/dev/null &
+ 		local tests_pid=$!
+ 
+ 		wait_mpj $ns2
+@@ -3464,7 +3464,7 @@ endpoint_tests()
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
+-		run_tests $ns1 $ns2 10.0.1.1 4 0 0 speed_20 2>/dev/null &
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 speed_20 2>/dev/null &
+ 		local tests_pid=$!
+ 
+ 		wait_attempt_fail $ns2
+-- 
+2.51.0
+
 
