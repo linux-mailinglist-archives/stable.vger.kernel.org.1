@@ -1,131 +1,155 @@
-Return-Path: <stable+bounces-197648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783CEC945EF
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 18:44:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB2EC94628
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 18:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2D1E54E1798
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 17:43:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38284345677
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 17:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EC030F934;
-	Sat, 29 Nov 2025 17:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B21310763;
+	Sat, 29 Nov 2025 17:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIC04vV/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ErYftYKH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5653620B7ED
-	for <stable@vger.kernel.org>; Sat, 29 Nov 2025 17:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF5B257459;
+	Sat, 29 Nov 2025 17:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764438234; cv=none; b=nQ2iyGlcw+d0fmOx4wWneTyi8p1MGCECvH9aWpDUGEfp5tyS4Kg+SZiVfsB7EygGa4l0/9KM8oq6a+up5m5aBF+V4k5H5nknxRPj5inHedt/yhJuqJWBktEeEPowTY8FT4InNK5uQhXvp6eM2cJVVFgT22IaukcvIL+oLfhVtoM=
+	t=1764439095; cv=none; b=U15DEdaBPQLq88Qxl5gUJjOg2nPg543V8iqgLRGWZCDbkfx3lOwbVYD+ET0wAnGe76ubK9rajrzNmolhQweWMu2e0bkA4vyi8CxuWXvOvimDUOrQX9QMK1H5MLQZQC+Xh5nWWunHa68WgTgXS/yZskMDMiS79oT9yPrJHWHA1EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764438234; c=relaxed/simple;
-	bh=hr/EnxzYarURpGb9g+Wt795YBjF7OBdlPOZnM7GdUlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZR/XOAvf28Jjfzmpko9q2CaUZFlO3MK7L8Kv5cBHy2eHOenTza89Ma3ISTxm1Y2puxDb9ALNub9nM+Tp3av7Y8Zns5T7gbcyv47S0gALDM1IRN8oPaOj571ObHmNZb4pg53UN/zAa4dP9ACSyTrx8016qY+QQ4Z9sM2sfYoFMyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIC04vV/; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29586626fbeso36221495ad.0
-        for <stable@vger.kernel.org>; Sat, 29 Nov 2025 09:43:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764438233; x=1765043033; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LjKc+y/SFNC4IxZSCNtfDR+P0M3U1zDfQwhqKcnpxBE=;
-        b=UIC04vV/mJISYNEWTgIre/UmV+o9AYa3B40sJ1YGA3dhoujQnmcVCEwJ588Dm+6WDt
-         5L7ySzAYUjacTMwncdbUn6d27JjKA0T4R0GjacmNXwe8Tfh7uC0djSd4lwoZkSJi6pCV
-         wDsZqsDpVvNVBZCokZvqsj9dihqIASuPEsKKC72nSD3PggDqwz3jQw7kjZD54t2GcCHA
-         H4vcK1GC+u+xx8Fj04cQhg7bnQrhpLlGROEji4dNlFNuhmXKaC+nmxCr4fQIioShJTit
-         yJvRGFBTrYFr3toJ0ocmnY983Sq8nagaLS3C4oH5zmRBgq5sDTxPWlL2p2wmhVD29ypA
-         fVTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764438233; x=1765043033;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LjKc+y/SFNC4IxZSCNtfDR+P0M3U1zDfQwhqKcnpxBE=;
-        b=sFp3GKJi7qUEsclhY8VE5JtcgvYKfCa5KF6/IytSJqRQ+6drWaCXmJfAR8sRNPJusj
-         IN+3Lh8CSA0qA6Z1m78OnGX6Axi8rn1/vK20smzpsbYXgXolsqozII9+Kvqa/OD+4MBu
-         udUgfc9K1ele9B8ms0oVkZYDt0gG77FX7brEZ8rbGpgbYlJms2QPRjPKvyd3jGwFtEdf
-         keRPmmnOicKocxgR7K31UD674lnr6Z7WvUazwEFe245YPNuFLc7bS1otwt/0V5YP8kp1
-         p6QPi1EwikATODBtHU095jUnBMoUtpLXvg0LXcCIIcFnNtUv7BvHLOS/lumgGHGA3/eF
-         9vhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzRo7fN/jxH5dtsOpkNt/iNZAFsWSKLCe+CIVLe7BYAYZ6nSYmtWQ/lCShTzOzk7I7p9CnuG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkPzPoYHGbfV7So67exOStKe0iojo8BiPg1fkQNYyj8cVGd4Ym
-	TzyNBZ6/NdQaL53/7DnosNmAdBB1j3ItStpGdMrFn6Lb9d9r+IST9uQa
-X-Gm-Gg: ASbGncsIL8pkLHKfESf1x3VNlMn0kzcfpBKOCro7rahuHKxALnppGrUbhQhVYLKOFfd
-	FUlpzSjH0HO4DTmTnBkEw/Dh9851cMrK0+f4yKhUlDIpKEtUiJ57MYfKUqi/iDhEYg4v7Rea4Fw
-	FRK+fxPNlEKxLP1OuWrdEFe7qTW7ROaeKAjCbNxqtFDWZE5ymsSDSDYUGIYssfVQMnrv0ZpPe2f
-	79zyw6CuP+4Usz/xjMcjNahtPo2W2Cbuw+VDr/837haI78bU1s2iCbVYY8RmNQOaSksjuBzTfgq
-	IVW+23OAIx10FPlRb2UhKfV8bB4BaTZQUGQE7SRaTYtUjhJOy3Pwfm8wDe+M1MG9j/7wM70Kokt
-	TjwMOPn8LthZpkrTZPwESzjtSI62mm7vO+YMUySlmyHmusbmA3Fq1fbwGJ/eKU88XsK+HW8wjRp
-	uEg7r9y5VJf2fBvQsH6n4tWDTKY4aTz1fhoukyPp1U2HIviQtM2xJM
-X-Google-Smtp-Source: AGHT+IH93LL3+ITbLAjL09Z3q3AunM/juzsLkPDlXTrXTowB7qxVhPg3FS+bcxr2Xm6E0HA19rYfHw==
-X-Received: by 2002:a05:7300:6b0a:b0:2a4:8aaf:d6b9 with SMTP id 5a478bee46e88-2a719112b90mr15450649eec.13.1764438232493;
-        Sat, 29 Nov 2025 09:43:52 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a965b1ceeesm26746638eec.5.2025.11.29.09.43.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Nov 2025 09:43:51 -0800 (PST)
-Message-ID: <9fc9bf59-8d96-4294-ae3d-5286588791fc@gmail.com>
-Date: Sat, 29 Nov 2025 09:43:50 -0800
+	s=arc-20240116; t=1764439095; c=relaxed/simple;
+	bh=F9PzxWJcm8Dr2q97EL2L8b6dlYERtrGM1VC8ZI1y2Xg=;
+	h=Date:To:From:Subject:Message-Id; b=pV/A+aeCRlfEpzWx/BPx4x0hQro6rxQLSmkna9C5XhFltL1HLhswkx1osTYwCFquMoXpCocc7WatxWS1RD5VObGz6PNehbJQ2LKjUkT/GlAuXVhHc5U97NURS0IqwSqQF8dkJFXjzxIs3j9p53HiZhfW7I2P9NEqDIXDBlAhrfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ErYftYKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E318EC4CEF7;
+	Sat, 29 Nov 2025 17:58:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764439095;
+	bh=F9PzxWJcm8Dr2q97EL2L8b6dlYERtrGM1VC8ZI1y2Xg=;
+	h=Date:To:From:Subject:From;
+	b=ErYftYKHSSWzG/TntlsVE+WGSV9J0y2mpy7aiuOechJECUmJKc8QflMqz6cQ8B3fH
+	 SwtkPQhBhLfLUPJIvKXl1rT+8ucpCTp/u7CUj0bFxEjBpF3jryof7iEazk53fqUCqN
+	 6vgz7+2/lwWPRnsHDhexQf0XzQchsnBcgaU3Uhts=
+Date: Sat, 29 Nov 2025 09:58:14 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peter.senna@linux.intel.com,koen.koning@intel.com,jan.sokolowski@intel.com,christian.koenig@amd.com,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + idr-fix-idr_alloc-returning-an-id-out-of-range.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251129175814.E318EC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/86] 6.6.118-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251127144027.800761504@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
 
+The patch titled
+     Subject: idr: fix idr_alloc() returning an ID out of range
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     idr-fix-idr_alloc-returning-an-id-out-of-range.patch
 
-On 11/27/2025 6:45 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.118 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 29 Nov 2025 14:40:08 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.118-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/idr-fix-idr_alloc-returning-an-id-out-of-range.patch
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: idr: fix idr_alloc() returning an ID out of range
+Date: Fri, 28 Nov 2025 16:18:32 +0000
+
+If you use an IDR with a non-zero base, and specify a range that lies
+entirely below the base, 'max - base' becomes very large and
+idr_get_free() can return an ID that lies outside of the requested range.
+
+Link: https://lkml.kernel.org/r/20251128161853.3200058-1-willy@infradead.org
+Fixes: 6ce711f27500 ("idr: Make 1-based IDRs more efficient")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reported-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Reported-by: Koen Koning <koen.koning@intel.com>
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6449
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/idr.c                           |    2 ++
+ tools/testing/radix-tree/idr-test.c |   21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+
+--- a/lib/idr.c~idr-fix-idr_alloc-returning-an-id-out-of-range
++++ a/lib/idr.c
+@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void
+ 
+ 	if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
+ 		idr->idr_rt.xa_flags |= IDR_RT_MARKER;
++	if (max < base)
++		return -ENOSPC;
+ 
+ 	id = (id < base) ? 0 : id - base;
+ 	radix_tree_iter_init(&iter, id);
+--- a/tools/testing/radix-tree/idr-test.c~idr-fix-idr_alloc-returning-an-id-out-of-range
++++ a/tools/testing/radix-tree/idr-test.c
+@@ -57,6 +57,26 @@ void idr_alloc_test(void)
+ 	idr_destroy(&idr);
+ }
+ 
++void idr_alloc2_test(void)
++{
++	int id;
++	struct idr idr = IDR_INIT_BASE(idr, 1);
++
++	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
++	assert(id == -ENOSPC);
++
++	id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
++	assert(id == 1);
++
++	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
++	assert(id == -ENOSPC);
++
++	id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
++	assert(id == -ENOSPC);
++
++	idr_destroy(&idr);
++}
++
+ void idr_replace_test(void)
+ {
+ 	DEFINE_IDR(idr);
+@@ -409,6 +429,7 @@ void idr_checks(void)
+ 
+ 	idr_replace_test();
+ 	idr_alloc_test();
++	idr_alloc2_test();
+ 	idr_null_test();
+ 	idr_nowait_test();
+ 	idr_get_next_test(0);
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+idr-fix-idr_alloc-returning-an-id-out-of-range.patch
+mm-fix-vma_start_write_killable-signal-handling.patch
 
 
