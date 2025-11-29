@@ -1,71 +1,57 @@
-Return-Path: <stable+bounces-197638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA366C93BE9
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 11:18:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D025C93D89
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 13:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8978A3A7BA4
-	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 10:18:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A53693472CA
+	for <lists+stable@lfdr.de>; Sat, 29 Nov 2025 12:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09062268688;
-	Sat, 29 Nov 2025 10:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="cB30Igpb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFA124886F;
+	Sat, 29 Nov 2025 12:36:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4C5149C6F
-	for <stable@vger.kernel.org>; Sat, 29 Nov 2025 10:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A8778F3A;
+	Sat, 29 Nov 2025 12:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764411482; cv=none; b=b1ZTjXaBJ73OU5zuaeVxnCUiQupcRof+79JFOWaMN6cfahWOIHmqAY0lOknmF0hMoUlb6nT43crGrZ08Q7GifCHBX8zv/e7Zj9+OxvJK1X4YtisKD0ikS8rY3iPezmsmNbbk5nmTvcBNukrclim2fXvtA4/MwjlHoSvLhBOOZgQ=
+	t=1764419818; cv=none; b=Wsi6CMI7Q3Lwx24W6nD7gvl9lfVLDgxiUHJCPdM7wCxpQMKYG/MPqqTI7WV5P8VOmQnLvecvCBWUlbgCj22hm547hK6iTywtJGffDjn8/Dt5ekx1diGIPVRd+qCtpn6ln2qpMbjn7LN+tVgYIhRWKyGS4ntUqCjFWGrb6rHIDb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764411482; c=relaxed/simple;
-	bh=9+f90tlUxzLaz0pPOC4jzL7gQQG0MPBSKqED34YCL2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m3u+U7y5j7via+Le4+Do3h0RTePXCpmeZPeJvK4qMxIAW1v6XxZrihX9X7AFt5aT47ePc6cQ/nF3iG15r0HA6aHxyjFi+h0/H7838pVtzQhtZwuo30HB2n4a1QOBihw7QjPH5BEYqPn3kdlxXCveeEY+NVPqXsVg24cKjZfzgOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=cB30Igpb; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPI1a-001HSQ-V5; Sat, 29 Nov 2025 11:17:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
-	bh=qA/6oh073nOg8GIV5pu86nLou0SogFYedJB+cFU2PS4=; b=cB30IgpbsFX6AeLQKyjz8QZMMC
-	r6w3Y3mZtKsiWkNDSj5tXrUjdY8Bot7AyGdw+ylunO527dZMIPls/lzRdWh/ysTBrZbDa9dc1q/SY
-	QAV9latXtJEBE+j/EHsWr1/WfCioo3aXA0XCepVjd+gyOCEVET0Ru5BGC90ZUmHzwy3VpmM2xjtIY
-	C4TGbvVMyNcSGFk4VMplSM0WVV0r9pQ3e/xTudprBvgJS7UJutLdisd6qUiTezkvW52cJGGD95XLy
-	tv/3j7KzHOhJLjIMkmkZ+DOLsTaarRAYoe9ohoXXB2wluUPzNz9DrldF10a1OcPtMvBT9e4I2fTDL
-	1dgmengQ==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vPI1a-0003uo-CK; Sat, 29 Nov 2025 11:17:54 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vPI1K-002sD5-22; Sat, 29 Nov 2025 11:17:38 +0100
-Date: Sat, 29 Nov 2025 10:17:36 +0000
-From: david laight <david.laight@runbox.com>
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: linux@roeck-us.net, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (w83l786ng) Convert macros to functions to avoid
- TOCTOU
-Message-ID: <20251129101736.000fac82@pumpkin>
-In-Reply-To: <CALbr=LbYY-_-Uc_45fXDYzOMiYTJpwbNpuj41q2nHmdfangcBQ@mail.gmail.com>
-References: <20251128123816.3670-1-hanguidong02@gmail.com>
-	<20251128193720.0716cc6d@pumpkin>
-	<CALbr=LbYY-_-Uc_45fXDYzOMiYTJpwbNpuj41q2nHmdfangcBQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1764419818; c=relaxed/simple;
+	bh=DiV1stPWOn0B1rqNeg36zldNtgUkou0lBtBa+NAFznI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=B4i9fkDEK1UUWGm0YKFPK+yPpEVcq8V2eWtuAqYtmbBAIXvJjaMP7y7k3NkzhoUcB97TFpyJd9XqOi8zL1BOLKH+run+xozSawQSjT+VzDjdzSltA4A0JomRyLaJapt21lGMUTEf2H9CRkMTjbxyxntJZWlkiOR2aASd9/zmgC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D1E51063;
+	Sat, 29 Nov 2025 04:36:46 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AF5043F66E;
+	Sat, 29 Nov 2025 04:36:51 -0800 (PST)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: catalin.marinas@arm.com,
+	kevin.brodsky@arm.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org,
+	urezki@gmail.com
+Cc: kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] kasan: hw_tags: fix a false positive case of vrealloc in alloced size
+Date: Sat, 29 Nov 2025 12:36:47 +0000
+Message-Id: <20251129123648.1785982-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,133 +59,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, 29 Nov 2025 08:33:42 +0800
-Gui-Dong Han <hanguidong02@gmail.com> wrote:
+When a memory region is allocated with vmalloc() and later expanded with
+vrealloc() — while still within the originally allocated size —
+KASAN may report a false positive because
+it does not update the tags for the newly expanded portion of the memory.
 
-> On Sat, Nov 29, 2025 at 3:37=E2=80=AFAM david laight <david.laight@runbox=
-.com> wrote:
-> >
-> > On Fri, 28 Nov 2025 20:38:16 +0800
-> > Gui-Dong Han <hanguidong02@gmail.com> wrote:
-> > =20
-> > > The macros FAN_FROM_REG and TEMP_FROM_REG evaluate their arguments
-> > > multiple times. When used in lockless contexts involving shared driver
-> > > data, this causes Time-of-Check to Time-of-Use (TOCTOU) race
-> > > conditions.
-> > >
-> > > Convert the macros to static functions. This guarantees that arguments
-> > > are evaluated only once (pass-by-value), preventing the race
-> > > conditions.
-> > >
-> > > Adhere to the principle of minimal changes by only converting macros
-> > > that evaluate arguments multiple times and are used in lockless
-> > > contexts.
-> > >
-> > > Link: https://lore.kernel.org/all/CALbr=3DLYJ_ehtp53HXEVkSpYoub+XYSTU=
-8Rg=3Do1xxMJ8=3D5z8B-g@mail.gmail.com/
-> > > Fixes: 85f03bccd6e0 ("hwmon: Add support for Winbond W83L786NG/NR")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-> > > ---
-> > > Based on the discussion in the link, I will submit a series of patche=
-s to
-> > > address TOCTOU issues in the hwmon subsystem by converting macros to
-> > > functions or adjusting locking where appropriate.
-> > > ---
-> > >  drivers/hwmon/w83l786ng.c | 26 ++++++++++++++++++--------
-> > >  1 file changed, 18 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/drivers/hwmon/w83l786ng.c b/drivers/hwmon/w83l786ng.c
-> > > index 9b81bd406e05..1d9109ca1585 100644
-> > > --- a/drivers/hwmon/w83l786ng.c
-> > > +++ b/drivers/hwmon/w83l786ng.c
-> > > @@ -76,15 +76,25 @@ FAN_TO_REG(long rpm, int div)
-> > >       return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 25=
-4);
-> > >  }
-> > >
-> > > -#define FAN_FROM_REG(val, div)       ((val) =3D=3D 0   ? -1 : \
-> > > -                             ((val) =3D=3D 255 ? 0 : \
-> > > -                             1350000 / ((val) * (div))))
-> > > +static int fan_from_reg(int val, int div)
-> > > +{
-> > > +     if (val =3D=3D 0)
-> > > +             return -1;
-> > > +     if (val =3D=3D 255)
-> > > +             return 0;
-> > > +     return 1350000 / (val * div);
-> > > +}
-> > >
-> > >  /* for temp */
-> > >  #define TEMP_TO_REG(val)     (clamp_val(((val) < 0 ? (val) + 0x100 *=
- 1000 \
-> > >                                                     : (val)) / 1000, =
-0, 0xff)) =20
-> >
-> > Can you change TEMP_TO_REG() as well.
-> > And just use plain clamp() while you are at it.
-> > Both these temperature conversion functions have to work with negative =
-temperatures.
-> > But the signed-ness gets passed through from the parameter - which may =
-not be right.
-> > IIRC some come from FIELD_GET() and will be 'unsigned long' unless cast=
- somewhere.
-> > The function parameter 'corrects' the type to a signed one.
-> >
-> > So you are fixing potential bugs as well. =20
->=20
-> Hi David,
->=20
-> Thanks for your feedback on TEMP_TO_REG and the detailed explanation
-> regarding macro risks.
->=20
-> Guenter has already applied this patch.
+A typical example of this pattern occurs in the BPF verifier,
+and the following is a related false positive report:
 
-Patches are supposed to be posted for review and applied a few days later.
+[ 2206.486476] ==================================================================
+[ 2206.486509] BUG: KASAN: invalid-access in __memcpy+0xc/0x30
+[ 2206.486607] Write at addr f5ff800083765270 by task test_progs/205
+[ 2206.486664] Pointer tag: [f5], memory tag: [fe]
+[ 2206.486703]
+[ 2206.486745] CPU: 4 UID: 0 PID: 205 Comm: test_progs Tainted: G           OE       6.18.0-rc7+ #145 PREEMPT(full)
+[ 2206.486861] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[ 2206.486897] Hardware name:  , BIOS
+[ 2206.486932] Call trace:
+[ 2206.486961]  show_stack+0x24/0x40 (C)
+[ 2206.487071]  __dump_stack+0x28/0x48
+[ 2206.487182]  dump_stack_lvl+0x7c/0xb0
+[ 2206.487293]  print_address_description+0x80/0x270
+[ 2206.487403]  print_report+0x94/0x100
+[ 2206.487505]  kasan_report+0xd8/0x150
+[ 2206.487606]  __do_kernel_fault+0x64/0x268
+[ 2206.487717]  do_bad_area+0x38/0x110
+[ 2206.487820]  do_tag_check_fault+0x38/0x60
+[ 2206.487936]  do_mem_abort+0x48/0xc8
+[ 2206.488042]  el1_abort+0x40/0x70
+[ 2206.488127]  el1h_64_sync_handler+0x50/0x118
+[ 2206.488217]  el1h_64_sync+0xa4/0xa8
+[ 2206.488303]  __memcpy+0xc/0x30 (P)
+[ 2206.488412]  do_misc_fixups+0x4f8/0x1950
+[ 2206.488528]  bpf_check+0x31c/0x840
+[ 2206.488638]  bpf_prog_load+0x58c/0x658
+[ 2206.488737]  __sys_bpf+0x364/0x488
+[ 2206.488833]  __arm64_sys_bpf+0x30/0x58
+[ 2206.488920]  invoke_syscall+0x68/0xe8
+[ 2206.489033]  el0_svc_common+0xb0/0xf8
+[ 2206.489143]  do_el0_svc+0x28/0x48
+[ 2206.489249]  el0_svc+0x40/0xe8
+[ 2206.489337]  el0t_64_sync_handler+0x84/0x140
+[ 2206.489427]  el0t_64_sync+0x1bc/0x1c0
 
-> Since the primary scope here
-> was strictly addressing TOCTOU race conditions (and TEMP_TO_REG is not
-> used in lockless contexts), it wasn't included.
->=20
-> However, I appreciate your point regarding type safety. I will look
-> into addressing that in a future separate patch.
+Here, 0xf5ff800083765000 is vmalloc()ed address for
+env->insn_aux_data with the size of 0x268.
+While this region is expanded size by 0x478 and initialise
+increased region to apply patched instructions,
+a false positive is triggered at the address 0xf5ff800083765270
+because __kasan_unpoison_vmalloc() with KASAN_VMALLOC_PROT_NORMAL flag only
+doesn't update the tag on increaed region.
 
-It's not just type safety, and #define that evaluates an argument more
-than one is just a bug waiting to happen.
-We've been removing (or trying not to write) those since the 1980s.
+To address this, introduces KASAN_VMALLOC_EXPAND flag which
+is used to expand vmalloc()ed memory in range of real allocated size
+to update tag for increased region.
 
-You also just didn't read the code:
+Fixes: 23689e91fb22 ("kasan, vmalloc: add vmalloc tagging for HW_TAGS”)
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ include/linux/kasan.h |  1 +
+ mm/kasan/hw_tags.c    | 11 +++++++++--
+ mm/vmalloc.c          |  1 +
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
--#define TEMP_FROM_REG(val)	(((val) & 0x80 ? \
--				  (val) - 0x100 : (val)) * 1000)
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index d12e1a5f5a9a..0608c5d4e6cf 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -28,6 +28,7 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
+ #define KASAN_VMALLOC_INIT		((__force kasan_vmalloc_flags_t)0x01u)
+ #define KASAN_VMALLOC_VM_ALLOC		((__force kasan_vmalloc_flags_t)0x02u)
+ #define KASAN_VMALLOC_PROT_NORMAL	((__force kasan_vmalloc_flags_t)0x04u)
++#define KASAN_VMALLOC_EXPAND		((__force kasan_vmalloc_flags_t)0x08u)
+
+ #define KASAN_VMALLOC_PAGE_RANGE 0x1 /* Apply exsiting page range */
+ #define KASAN_VMALLOC_TLB_FLUSH  0x2 /* TLB flush */
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index 1c373cc4b3fa..d768c7360093 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -347,7 +347,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 	 *
+ 	 * For non-VM_ALLOC allocations, page_alloc memory is tagged as usual.
+ 	 */
+-	if (!(flags & KASAN_VMALLOC_VM_ALLOC)) {
++	if (!(flags & (KASAN_VMALLOC_VM_ALLOC | KASAN_VMALLOC_EXPAND))) {
+ 		WARN_ON(flags & KASAN_VMALLOC_INIT);
+ 		return (void *)start;
+ 	}
+@@ -361,7 +361,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 		return (void *)start;
+ 	}
+
+-	tag = kasan_random_tag();
++	if (flags & KASAN_VMALLOC_EXPAND) {
++		size = round_up(size + ((unsigned long)start & KASAN_GRANULE_MASK),
++				KASAN_GRANULE_SIZE);
++		start = PTR_ALIGN_DOWN(start, KASAN_GRANULE_SIZE);
++		tag = get_tag(start);
++	} else
++		tag = kasan_random_tag();
 +
-+static int temp_from_reg(int val)
-+{
-+	if (val & 0x80)
-+		return (val - 0x100) * 1000;
-+	return val * 1000;
-+}
+ 	start = set_tag(start, tag);
 
-Both those only work if 'val' is 8 bits.
-They are just ((s8)(val) * 1000) and generate a milli-centigrade
-value from the 8-bit signed centigrade value the hardware provides.
-
-TEMP_TO_REG() is the opposite, so is:
-	(u8)clamp((val) / 1000, -128, 127)
-That is subtly different since it truncates negative values towards
-zero rather than -infinity.
-The more complicated:
-		(u8)(clamp(((val) + 128 * 1000)/1000, 0, 0xff) - 128)
-would exactly match the original (and generate less code) but I suspect
-it doesn't matter here.
-
-	David
-
->=20
-> Best regards,
-> Gui-Dong Han
->=20
+ 	/* Unpoison and initialize memory up to size. */
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 798b2ed21e46..6bfbf26fea3b 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4176,6 +4176,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+ 	 */
+ 	if (size <= alloced_size) {
+ 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
++				       KASAN_VMALLOC_EXPAND |
+ 				       KASAN_VMALLOC_PROT_NORMAL);
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
