@@ -1,100 +1,112 @@
-Return-Path: <stable+bounces-197659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DF5C94A42
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 02:46:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C30C94B0C
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 04:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4695634615B
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 01:46:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8EE09346C47
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 03:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4683B2A0;
-	Sun, 30 Nov 2025 01:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5E9221F2F;
+	Sun, 30 Nov 2025 03:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQdbTdvB"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T9GgRzQa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A857D184E
-	for <stable@vger.kernel.org>; Sun, 30 Nov 2025 01:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EB92139CE
+	for <stable@vger.kernel.org>; Sun, 30 Nov 2025 03:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764467202; cv=none; b=K25mmT1BEEQIucv1QooTaiLQm1VD120aWBuy20jrXNpiXKjZgD9CCNyft3VLBgZf3PzTHlKfnWSzoK2ezQ49OGV+M2W21ZFvFf62gxqOGi1UJ3amas2DJtKzKwnvxSCor2sg4pBOSsvhjL//QgyaqJjMWFhvT8WWEGwd7pcteS0=
+	t=1764472173; cv=none; b=dottZkSmJ6h4X0DgGmAb4sI/lcwe3faCgobzK8WgDi05RREfJVtS+Lu8ImAFkyzeyYkyoyUm3VL6vrlb9DDEdkE43uKJ9cUyleqwOkKrqb0DFIOwufhuPuCwBzPjZHdBxDlCBwWohT/QbSTmpwDUuZ9RRvN4HAGcDOSOSUR0oWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764467202; c=relaxed/simple;
-	bh=OqXlEtz2rn8wqWNvDF9whkiZxpiuh7vhQ56XscaI0bU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pXPLMBKgjVrXkzWCGjNUEJhxpaZvu+jMzAiLAOJ+Q3fdYx4r3YrmoJImwFNnRjqgcVlG76EzLY1p95uliB+qopQA/5ecUS9Vt2vTY8fEvyX6BJFNssiYp7MXOqtG6Pku5I2dZ1c6zFdz1CRcw5Z9ceQnf6iqLOaCXfOcvLJ9kCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQdbTdvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D483FC4CEF7;
-	Sun, 30 Nov 2025 01:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764467202;
-	bh=OqXlEtz2rn8wqWNvDF9whkiZxpiuh7vhQ56XscaI0bU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PQdbTdvBWFT60cxRW2RvBOZ8zmLanqsMd3RIHqQwniDx1lzIKhwePj904rGMhxp1p
-	 9CZ9WJ+j6Qv7aP5efc3UMkn+m3+5XXczxEOnfbWHSnydrJi/6N4PctPu9v7Y8lHAda
-	 4X55O99OOxUzPKZYJ3bVfdIQKvKOyq4YGUhX7qRORZHQ6nHv5yxo+ofrgZ5ujVzheH
-	 H3DQ+0/k7Pnwb+JprVLt2xG5c3H33cDDHnLRAGEkvujNP0jL3DcRa+jG2jowXxByf0
-	 0ZSS1hKlEJpFNCPw+0Rv+N5n4bbX11Db6sJJngM+eX2n0q7HVYCxSiFFDPU09gDb1h
-	 qRclpWnngrchw==
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-To: amd-gfx@lists.freedesktop.org
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "drm/amd: Skip power ungate during suspend for VPE"
-Date: Sat, 29 Nov 2025 19:46:31 -0600
-Message-ID: <20251130014631.29755-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764472173; c=relaxed/simple;
+	bh=oQWar6onaNJAQBuC9BezdrakiUnM6RqCm5OgOJmWMv0=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=XGyWXutm20AQis7gMK3Nj5NQrQ7Ow7kCdL/V+mamaMVBWVnyk1Yb/Iq5NFlJaPU4fAbSjrJwBCiJvhCuiPMYwvSWVoY4R0x6E1qKSmCzxlGQIEzVBeKSdd8pKQNlhWxYGKzhUUoZFVSBN/cPvcCdq6+StVhnyEMp4Cj+qJJkozM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T9GgRzQa; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1764472159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z/61guQPl+0JPBC31qNOsQVgN5ueVOOhWuwuMasymtc=;
+	b=T9GgRzQaQ/P9GFgmbVrdW3ovQPgv0UmRrhcelp4f/80Frg66mYk8j1J+xEHFpejXj8lij+
+	hsZIx5wRT+vXQ8ycUF66sCXf+nyDgBmL+IhQOCjc1rRwaJyPDulR35hGIEgcFfJCQpdBWI
+	0c+izRh6Aa/Q/uzGSOcZlk0SnLLIGuQ=
+Date: Sun, 30 Nov 2025 03:09:17 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <33fba9e2d4707f711fd1d477a07d427e684e2f07@linux.dev>
+TLS-Required: No
+Subject: Re: Patch "mptcp: Fix proto fallback detection with BPF" has been
+ added to the 6.1-stable tree
+To: "Matthieu Baerts" <matttbe@kernel.org>, gregkh@linuxfoundation.org,
+ sashal@kernel.org
+Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org,
+ jakub@cloudflare.com, martin.lau@kernel.org
+In-Reply-To: <9e6ef98f-12eb-4608-aece-cf321e0a38d7@kernel.org>
+References: <2025112711-frigidly-unruly-4a72@gregkh>
+ <9e6ef98f-12eb-4608-aece-cf321e0a38d7@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-Skipping power ungate exposed some scenarios that will fail
-like below:
+2025/11/29 01:03, "Matthieu Baerts" <matttbe@kernel.org mailto:matttbe@ke=
+rnel.org?to=3D%22Matthieu%20Baerts%22%20%3Cmatttbe%40kernel.org%3E > wrot=
+e:
 
-```
-amdgpu: Register(0) [regVPEC_QUEUE_RESET_REQ] failed to reach value 0x00000000 != 0x00000001n
-amdgpu 0000:c1:00.0: amdgpu: VPE queue reset failed
-...
-amdgpu: [drm] *ERROR* wait_for_completion_timeout timeout!
-```
 
-The underlying s2idle issue that prompted this commit is going to
-be fixed in BIOS.
-This reverts commit 31ab31433c9bd2f255c48dc6cb9a99845c58b1e4.
+>=20
+>=20Hi Greg, Sasha, Jiayuan,
+>=20
+>=20On 27/11/2025 14:41, gregkh@linuxfoundation.org wrote:
+>=20
+>=20>=20
+>=20> This is a note to let you know that I've just added the patch title=
+d
+> >=20=20
+>=20>  mptcp: Fix proto fallback detection with BPF
+> >=20=20
+>=20>  to the 6.1-stable tree which can be found at:
+> >  http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.=
+git;a=3Dsummary
+> >=20=20
+>=20>  The filename of the patch is:
+> >  mptcp-fix-proto-fallback-detection-with-bpf.patch
+> >  and it can be found in the queue-6.1 subdirectory.
+> >=20=20
+>=20>  If you, or anyone else, feels it should not be added to the stable=
+ tree,
+> >  please let <stable@vger.kernel.org> know about it.
+> >=20
+>=20@Sasha: thank you for having resolved the conflicts for this patch (a=
+nd
+> many others related to MPTCP recently). Sadly, it is causing troubles.
+>=20
+>=20@Greg/Sasha: is it possible to remove it from 6.1, 5.15 and 5.10 queu=
+es
+> please?
+> (The related patch in 6.6 and above is OK)
+>=20
+>=20@Jiayuan: did you not specify you initially saw this issue on a v6.1
+> kernel? By chance, do you already have a fix for that version?
+>=20
 
-Fixes: 31ab31433c9bd ("drm/amd: Skip power ungate during suspend for VPE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 076bbc09f30ce..2819aceaab749 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3414,11 +3414,10 @@ int amdgpu_device_set_pg_state(struct amdgpu_device *adev,
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
- 		     adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SDMA))
- 			continue;
--		/* skip CG for VCE/UVD/VPE, it's handled specially */
-+		/* skip CG for VCE/UVD, it's handled specially */
- 		if (adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_UVD &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCN &&
--		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VPE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_JPEG &&
- 		    adev->ip_blocks[i].version->funcs->set_powergating_state) {
- 			/* enable powergating to save power */
--- 
-2.43.0
-
+Hi=20Matthieu,
+I=E2=80=99ll send a separate patch for v6.1 immediately =E2=80=94 the iss=
+ue causes a panic in v6.1.
 
