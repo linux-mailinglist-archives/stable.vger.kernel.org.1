@@ -1,141 +1,123 @@
-Return-Path: <stable+bounces-197667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCCCC94E69
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 11:48:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B805AC95029
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 14:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4AA2034AC0A
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 10:48:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF5A14E0502
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 13:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30E827CCEE;
-	Sun, 30 Nov 2025 10:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0099B222562;
+	Sun, 30 Nov 2025 13:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6uchbDi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vA4CIQsX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3932773D3
-	for <stable@vger.kernel.org>; Sun, 30 Nov 2025 10:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7952186A;
+	Sun, 30 Nov 2025 13:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764499621; cv=none; b=DAPTZPW9vN659bHEmWEvaQWjNzzMPIu/Y1e2+Q5ocDSkbUFFRzGJoD2tefzjlWp6ONiR80DKBhkTxSR3RfWquWk/+4K+kg+RFy7gLKyvZn6WziHZYW5e0rlc65+1BknFJqXcoHzRGOHo8mUqGkywRNGp+jao4xPC+WC8UnwTpm8=
+	t=1764511049; cv=none; b=QCmKSO+aJ0ggxAGCQteHjP0oHp+cOj3zg49OuPN7NIoK8uGQhajHck2BjApD1anyT/0rW9WbtPU/e5iqdUdPAIP5VmwZVsN4DIjoYQNBiaG99p6KNn3gDc0yMKgI3sQ4dOYp6flAfVND7/4JuzW5PAeIaGTEla5UaKkoM9Eb+ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764499621; c=relaxed/simple;
-	bh=rlIrI/UmoKYEL0vlVjf1XS3AzQOskSjVa2f/87hoTwQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q0SiTJ3LlONfzZx27zcDpUWbAcIOzbZBaRyjYajdY18VV7RXzPHq5HOGPM8kjMM2QdkFU21UsrUQ+Ey/3SxireZEjFBov3wu9VWYOyrFQ0415IesBnZUKokk3EIxGWXqzvzprOrbE1aG2tlTd4Ft66OaGZB4W5VihWyHk0GndJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6uchbDi; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-297f35be2ffso48435315ad.2
-        for <stable@vger.kernel.org>; Sun, 30 Nov 2025 02:46:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764499619; x=1765104419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qTNLxP/M5VH8d16ArvNC5jrTL5Ks/32ppFB8c0OA9Rk=;
-        b=Y6uchbDiB4uvfX6+LRmJXtOvsJHNYqXKpFZZLCXKcTYTVwjbLmgAjtC9iBLC48satq
-         dRJxCQmUV1XlxvxV+Ixv0u1E/3QFcQrQ8f+NDGBaQNaYGG8p0yso2xqCvDm0IEzM80h7
-         AWSNZEUDzMmeVXGqa/61EH4pZqzW9Ld+BaMjJmjLMKx31n9tpi2W98CyiOly9vrVsdBR
-         8Isp68uhwD32sykuGtTrnfrKs3iuGvxkWCUFPO6QB+w2RC4aQwPA1KNAL/E+iaPBsFFf
-         wZF/rtJjGX8Bik+dA9pMzrGf5plvDrglziaPQ3Q7jl21irh40Ep2u6cibLLdtH9+nCVQ
-         uq7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764499619; x=1765104419;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qTNLxP/M5VH8d16ArvNC5jrTL5Ks/32ppFB8c0OA9Rk=;
-        b=Qq965RUPuaZdwOsBH0Hw+wMn8X6rxa+4v6N14D1gAzwYhn0c8uCZGPm0fk0mJn5iY1
-         w2LhkHTui2ziHxUCyLwiUfHLa2sLFL2M5oloODbFF64PveCWn+ivR6/Vw285qyYvhaMa
-         1g+aGPuWu6iHPAeyDNQjP/6xN0zEy3qUrAU0/6w0Lm7gDIlx5V+2ytOuL4jLv+c7qSZA
-         SfzlNlYKSFGrYAtJW+cFs030u+DqYYJLXso4c3nsDd8YfqLQipT6Sl/YMt0biX8WIuvs
-         oEyhCN/uwhEtLBAZtAvO0UEqJ/NKX0Sf4CIs7glElZXBeuy9DMYo5vvynGVM2u14yThK
-         2OWA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9CfsgvnS0eCx8Ew7rK9Xn1L8kCOZOPkUNSs75W0Ui+yRUnY5QIghESiQJFKR9J2CKX0IdeC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQz0nW+Ftc2zH7nTEFmoS2bCkd2/CC3HApL9xoIb3FsVKyv/XQ
-	Nmp10zAehxZ2BmOUVBq18SBMZaTr7+qucfnzYzVsTdWMS9GhpP6cZ69l
-X-Gm-Gg: ASbGncsPBNPRlE0Wio9njYLbQ/6Rrx7f0/tVaicNDVUZsIKxfvzjw2pYoaXK9mPfQPF
-	kGvjvk71Xps1y3iaSou9SvCQ7Hkg8bM2LfLYJDAfQLMgw/Ag3C/XPANCAwSd1F+6WyH9u3ug/Dh
-	CnJQpvb9Ns2Ru86fGkqRQ1id47GnTfGcu5k7j2Dn7L6NvCtw8g0w2IXVLMP6TOjS0KGa11jHbFV
-	pjaxUQDBhFOXE9F0wOmPx5NXru59M3SOxFHzaCR+UjbtcY24lR86su7q2Jsw77AmB4+B2yoy0VF
-	G95jpjtkxgoMj40yCAb/0VMw4kam4LBuobHbW3BDUkLDQMtkW8ohVxlLzEE2UZedhxPCkndW0ol
-	hqL1aCYW5xwcBJUsN9aULtk6/B+qiFCLRQ13gLjKh4lBfi87c7ab86bTkoQuWWjFkBhz/kqMJ7l
-	GBWpGI58qUy0C6LYQxko41H0j46bI=
-X-Google-Smtp-Source: AGHT+IERaLvmsksXdm4uqqeOPDAGOjVLAPcWW+DVufQ2i3ULjffRh0sjXfMbZt3b4sdgIKb56s8bhw==
-X-Received: by 2002:a17:903:2b07:b0:290:c94b:8381 with SMTP id d9443c01a7336-29b6c3db606mr396664675ad.7.1764499618952;
-        Sun, 30 Nov 2025 02:46:58 -0800 (PST)
-Received: from localhost.localdomain ([114.79.136.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb471c6sm91492475ad.79.2025.11.30.02.46.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 02:46:58 -0800 (PST)
-From: Prithvi Tambewagh <activprithvi@gmail.com>
-To: mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com
-Cc: ocfs2-devel@lists.linux.dev,
+	s=arc-20240116; t=1764511049; c=relaxed/simple;
+	bh=ZB0aNDoJbR7KCgkbpMsgbU9QCSi+qeVI22J87/0V+f8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aOHFLCvIzVUMZpUa//0oSdertBa8ZMC6qIJdlaR5gWFfkWZxFI7JgH6UxSlZs20h9kPwcyNKB7P3gHfYc4Wf2s4VYdC+79LYzOIIUQ97xVuz4SYo6jUCFRdLwr0lar2/SE8q/aYzGsV3LXENzzWcAAHV8/xodT57XmvW041Z8P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vA4CIQsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCECC4CEF8;
+	Sun, 30 Nov 2025 13:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764511049;
+	bh=ZB0aNDoJbR7KCgkbpMsgbU9QCSi+qeVI22J87/0V+f8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vA4CIQsXW1L4TO5BVfBXEVECIfMvTvMFKYI34kOyc3emtoWAm3b4Nw3DjkNLvg7wU
+	 hRh97yqTAgV39W29gpbrKLJJQnrzMHa4lCgaulS1VQ6PLRzexV1ft7Fp5Zt4XJ2sT3
+	 jpSMidlm6qn7jYdM46Zfrv1KVJEtX8cumCQb5EMPrsx6HXX2NwQQrFn+sTWm8nS7jl
+	 YWLXgvrZUNknYQl3lX0ofcdFAdcKHBS7Ydx/AMRHmc87OlcV5Uc4Zw7pB/XeDq8iY8
+	 DKfxleei0pZeyMGlu/aUA/KPQRJY73EGgjo5qY0aRr2KwdOtZpi5pqxo3BDIau5wkU
+	 kDgIqprbhR62A==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-iio@vger.kernel.org,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	stable@vger.kernel.org
-Subject: [PATCH] fs: ocfs2: fix kernel BUG in ocfs2_find_victim_chain
-Date: Sun, 30 Nov 2025 16:16:37 +0530
-Message-Id: <20251130104637.264258-1-activprithvi@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Sun, 30 Nov 2025 22:57:15 +0900
+Message-ID: <176451098931.9836.4127167335264943589.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1397; i=wbg@kernel.org; h=from:subject:message-id; bh=Ivzz5NMzZaBZSReLzEG+Clk4t6mpdj6JIAG6CCrrIDc=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJk6viZaHmnftkhuu2LJZsYUsNpEWYSjyy9h+vszi0+KK OeV/1/XUcrCIMbFICumyNJrfvbug0uqGj9ezN8GM4eVCWQIAxenAExk8gKGfwr3T3BfcFz72F9q flPkq/ua8+XmOX7eoL07k0FCbfnHj5WMDGf8VJ6p5Z9dpCnGXXTbNd/jwYm9z7YwBCyyTJCekMF XxAwA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 Content-Transfer-Encoding: 8bit
 
-syzbot reported a kernel BUG in ocfs2_find_victim_chain() because the
-`cl_next_free_rec` field of the allocation chain list is 0, triggring the
-BUG_ON(!cl->cl_next_free_rec) condition and panicking the kernel.
 
-To fix this, `cl_next_free_rec` is checked inside the caller of
-ocfs2_find_victim_chain() i.e. ocfs2_claim_suballoc_bits() and if it is
-equal to 0, ocfs2_error() is called, to log the corruption and force the
-filesystem into read-only mode, to prevent further damage.
+On Tue, 18 Nov 2025 09:35:48 +0100, A. Sverdlin wrote:
+> An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+> CONFIG_PROVE_RAW_LOCK_NESTING warns:
+> =============================
+> [ BUG: Invalid wait context ]
+> 6.18.0-rc1+git... #1
+> -----------------------------
+> some-user-space-process/1251 is trying to lock:
+> (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+> other info that might help us debug this:
+> context-{2:2}
+> no locks held by some-user-space-process/....
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+> Call trace:
+>  show_stack (C)
+>  dump_stack_lvl
+>  dump_stack
+>  __lock_acquire
+>  lock_acquire
+>  _raw_spin_lock_irqsave
+>  counter_push_event [counter]
+>  interrupt_cnt_isr [interrupt_cnt]
+>  __handle_irq_event_percpu
+>  handle_irq_event
+>  handle_simple_irq
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gpio_irq_handler
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gic_handle_irq
+>  call_on_irq_stack
+>  do_interrupt_handler
+>  el0_interrupt
+>  __el0_irq_handler_common
+>  el0t_64_irq_handler
+>  el0t_64_irq
+> 
+> [...]
 
-Reported-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d38c6e1655c1420a72
-Tested-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
----
- fs/ocfs2/suballoc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Applied, thanks!
 
-diff --git a/fs/ocfs2/suballoc.c b/fs/ocfs2/suballoc.c
-index 6ac4dcd54588..84bb2d11c2aa 100644
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -1993,6 +1993,13 @@ static int ocfs2_claim_suballoc_bits(struct ocfs2_alloc_context *ac,
- 
- 	cl = (struct ocfs2_chain_list *) &fe->id2.i_chain;
- 
-+	if (le16_to_cpu(cl->cl_next_free_rec) == 0) {
-+		status = ocfs2_error(ac->ac_inode->i_sb,
-+				     "Chain allocator dinode %llu has 0 chains\n",
-+				     (unsigned long long)le64_to_cpu(fe->i_blkno));
-+		goto bail;
-+	}
-+
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
- 
+[1/1] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+      commit: 1ea0a54c0a1fac796b133253804e392cb44068c8
 
-base-commit: 939f15e640f193616691d3bcde0089760e75b0d3
+Best regards,
 -- 
-2.34.1
-
+William Breathitt Gray <wbg@kernel.org>
 
