@@ -1,153 +1,209 @@
-Return-Path: <stable+bounces-197662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E5FC94B19
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 04:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD85C94C16
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 08:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2F3BA345F62
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 03:23:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 352793455B1
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 07:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D575233D85;
-	Sun, 30 Nov 2025 03:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ADD220F2A;
+	Sun, 30 Nov 2025 07:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TMmv1vrb"
 X-Original-To: stable@vger.kernel.org
-Received: from localhost.localdomain (unknown [147.136.157.3])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2A8189906
-	for <stable@vger.kernel.org>; Sun, 30 Nov 2025 03:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055B836D510;
+	Sun, 30 Nov 2025 07:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764473006; cv=none; b=LJEqFVxQane9rdDsMM/iRYMhg0gAd28wX6eTX7/mFE5wZyDTOlcvpQRf5ozVr9n6VU7bUaSEh1B+UXGburHj5SgIA7TQFUsRFgZJp+k5SoCPCnrFTgj+uuEsgtq5RuFS5NPVn3y6kCTF0v+qHnnMEHq/eeH+6lrITebYKzfJwCM=
+	t=1764488334; cv=none; b=B921hVkMAOZfkI94EqjVig4XXXuPyjjiravFKbba2uEZ10G7SM6/bFmGwSp4sa9GmvKYhog2ZHZk8SVOXoCWAx6UdtJxNAuco7vd9LB7VFdSavM8j03QAlqepis3GsntvfALrbZTJNPcoec7nM7XZX0JU+OxV4RXKu5qiFmPnLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764473006; c=relaxed/simple;
-	bh=kd3WM7du0C6ez4kq47Lda47fdq2kXHgfWAlqm2mufdw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLD5pZzMkh9Vez7hMQ5P850GatplRgLKkQqq5798e0CaB4bQAGxF4MWxkKAeS6epP1Os/7VN3DxQJo4dO2bPdokzjORzgZizs7nHTymeqPdFdpooDroZTlU1uTeerMOo2jsCp0H4EHQD3qXwH6/o+3q7ErWYWXIEnsw3ykeNYl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
-Received: by localhost.localdomain (Postfix, from userid 1007)
-	id 9C7FE8B2A3B; Sun, 30 Nov 2025 11:23:16 +0800 (+08)
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: stable@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	matthieu.baerts@tessares.net,
-	sashal@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: [PATCH 6.1.y v1 2/2] net,mptcp: fix proto fallback detection with BPF
-Date: Sun, 30 Nov 2025 11:23:03 +0800
-Message-ID: <20251130032303.324510-3-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251130032303.324510-1-jiayuan.chen@linux.dev>
-References: <20251130032303.324510-1-jiayuan.chen@linux.dev>
+	s=arc-20240116; t=1764488334; c=relaxed/simple;
+	bh=5dnK4oFXEiZYt1cEpiBmjME4Q9+HAvXwwE8FFYoFVCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VPFuwZoGS3LpUW7cmDG7R8LtTkDo3pOcyLrEgJej/d8xJNjhzrXuE5JyH5m72st5pOnXw0mr/I5jwvu3ziey4ddLhAjOAvE9Nfe1OurJNasPvUAjNnW9FloQugzS5hjvjuUzC9VMhMFlukd6GW+IvOryKFc7FLEp8wRyH57L0BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TMmv1vrb; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764488332; x=1796024332;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5dnK4oFXEiZYt1cEpiBmjME4Q9+HAvXwwE8FFYoFVCU=;
+  b=TMmv1vrbYF/fIySPWd13d9v1S6xlouHTIp6YTACYiTGkXxAcHSBOPUnI
+   gYlFUD2PfzHnTHuYqaCaTJdpcW5zujMkIJFzk+SnTp4PmYwxX3hfmPf6g
+   6OV8zv5XqTvoNcrTgf9tMDh1N3CVNM5IUae7QlyvY8YmvR4J6BXbdUPTF
+   dvCE9ssStOR0BXALMDIKQft6ADD5weC5u8KMWLOCdwZxG9ZgJmNhDEEDW
+   /Tk8D7/H2Pz6yj0Xk2LgxGIXiEnQtuedCYPsSVDgIbgcLPD2UgU5zsrWU
+   6ABL4IKvahIdDO0xWozOmZvsVxcXG074DftcLKUJmqadHtEC3R38Eilej
+   w==;
+X-CSE-ConnectionGUID: MzDfYGtcTpuRgxy+nsPRhg==
+X-CSE-MsgGUID: GX67BFmKSMGJ1W3rxekqlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11628"; a="54006014"
+X-IronPort-AV: E=Sophos;i="6.20,238,1758610800"; 
+   d="scan'208";a="54006014"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2025 23:38:51 -0800
+X-CSE-ConnectionGUID: dRXbbdVWRnGYZ/4OuEzi1Q==
+X-CSE-MsgGUID: dcPc/0ZbT665FlB88ciN8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,238,1758610800"; 
+   d="scan'208";a="231074250"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 29 Nov 2025 23:38:46 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vPc16-000000007px-29Xd;
+	Sun, 30 Nov 2025 07:38:44 +0000
+Date: Sun, 30 Nov 2025 15:38:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Antonino Maniscalco <antomani103@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Subject: Re: [PATCH v2] drm/msm: Fix a7xx per pipe register programming
+Message-ID: <202511301514.t3OSLc6E-lkp@intel.com>
+References: <20251128-gras_nc_mode_fix-v2-1-634cda7b810f@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251128-gras_nc_mode_fix-v2-1-634cda7b810f@gmail.com>
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+Hi Anna,
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+kernel test robot noticed the following build errors:
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
+[auto build test ERROR on 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530]
 
-This fix uses the more generic sk_family for the comparison instead.
+url:    https://github.com/intel-lab-lkp/linux/commits/Anna-Maniscalco/drm-msm-Fix-a7xx-per-pipe-register-programming/20251129-012027
+base:   7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
+patch link:    https://lore.kernel.org/r/20251128-gras_nc_mode_fix-v2-1-634cda7b810f%40gmail.com
+patch subject: [PATCH v2] drm/msm: Fix a7xx per pipe register programming
+config: um-randconfig-002-20251130 (https://download.01.org/0day-ci/archive/20251130/202511301514.t3OSLc6E-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251130/202511301514.t3OSLc6E-lkp@intel.com/reproduce)
 
-Additionally, this also prevents a PANIC from occurring:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511301514.t3OSLc6E-lkp@intel.com/
 
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
+All errors (new ones prefixed by >>):
 
-BUG: kernel NULL pointer dereference, address: 00000000000004bb
-PGD 0 P4D 0
-Oops: 0000 [#1] SMP PTI
-CPU: 0 PID: 400 Comm: test_progs Not tainted 6.1.0+ #16
-RIP: 0010:mptcp_stream_accept (./include/linux/list.h:88 net/mptcp/protocol.c:3719)
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c: In function 'a6xx_set_ubwc_config':
+>> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:853:36: error: 'A7XX_PIPE_BR' undeclared (first use in this function)
+     853 |                 for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
+         |                                    ^~~~~~~~~~~~
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:853:36: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:853:61: error: 'A7XX_PIPE_BV' undeclared (first use in this function)
+     853 |                 for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
+         |                                                             ^~~~~~~~~~~~
+>> drivers/gpu/drm/msm/adreno/a6xx_gpu.c:860:59: error: 'A7XX_PIPE_NONE' undeclared (first use in this function); did you mean 'MSM_PIPE_NONE'?
+     860 |                           A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
+         |                                                           ^~~~~~~~~~~~~~
+         |                                                           MSM_PIPE_NONE
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c: In function 'a7xx_patch_pwrup_reglist':
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:921:36: error: 'A7XX_PIPE_BR' undeclared (first use in this function)
+     921 |                 for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
+         |                                    ^~~~~~~~~~~~
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:921:61: error: 'A7XX_PIPE_BV' undeclared (first use in this function)
+     921 |                 for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
+         |                                                             ^~~~~~~~~~~~
+   drivers/gpu/drm/msm/adreno/a6xx_gpu.c:934:59: error: 'A7XX_PIPE_NONE' undeclared (first use in this function); did you mean 'MSM_PIPE_NONE'?
+     934 |                           A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
+         |                                                           ^~~~~~~~~~~~~~
+         |                                                           MSM_PIPE_NONE
 
-RSP: 0018:ffffc90000ef3cf0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff8880089dcc58
-RDX: 0000000000000003 RSI: 0000002c000000b0 RDI: 0000000000000000
-RBP: ffffc90000ef3d38 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880089dc600
-R13: ffff88800b859e00 R14: ffff88800638c680 R15: 0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000004bb CR3: 000000000b8e8006 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
-? apparmor_socket_accept (security/apparmor/lsm.c:966)
-do_accept (net/socket.c:1856)
-__sys_accept4 (net/socket.c:1897 net/socket.c:1927)
-__x64_sys_accept (net/socket.c:1941)
-do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
 
-Fixes: d2f77c53342e ("mptcp: check for plain TCP sock at accept time")
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/mptcp/protocol.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+vim +/A7XX_PIPE_BR +853 drivers/gpu/drm/msm/adreno/a6xx_gpu.c
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 1dbc62537259..13e3510e6c8f 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -79,8 +79,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
- static bool mptcp_is_tcpsk(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
-+	unsigned short family = READ_ONCE(sk->sk_family);
- 
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
-+	if (unlikely(family == AF_INET)) {
- 		/* we are being invoked after mptcp_accept() has
- 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
- 		 * not an mptcp one.
-@@ -91,7 +92,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
- 		sock->ops = &inet_stream_ops;
- 		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-+	} else if (unlikely(family == AF_INET6)) {
- 		sock->ops = &inet6_stream_ops;
- 		return true;
- #endif
+   807	
+   808	static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
+   809	{
+   810		struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+   811		const struct qcom_ubwc_cfg_data *cfg = adreno_gpu->ubwc_config;
+   812		/*
+   813		 * We subtract 13 from the highest bank bit (13 is the minimum value
+   814		 * allowed by hw) and write the lowest two bits of the remaining value
+   815		 * as hbb_lo and the one above it as hbb_hi to the hardware.
+   816		 */
+   817		BUG_ON(cfg->highest_bank_bit < 13);
+   818		u32 hbb = cfg->highest_bank_bit - 13;
+   819		bool rgb565_predicator = cfg->ubwc_enc_version >= UBWC_4_0;
+   820		u32 level2_swizzling_dis = !(cfg->ubwc_swizzle & UBWC_SWIZZLE_ENABLE_LVL2);
+   821		bool ubwc_mode = qcom_ubwc_get_ubwc_mode(cfg);
+   822		bool amsbc = cfg->ubwc_enc_version >= UBWC_3_0;
+   823		bool min_acc_len_64b = false;
+   824		u8 uavflagprd_inv = 0;
+   825		u32 hbb_hi = hbb >> 2;
+   826		u32 hbb_lo = hbb & 3;
+   827	
+   828		if (adreno_is_a650_family(adreno_gpu) || adreno_is_a7xx(adreno_gpu))
+   829			uavflagprd_inv = 2;
+   830	
+   831		if (adreno_is_a610(adreno_gpu) || adreno_is_a702(adreno_gpu))
+   832			min_acc_len_64b = true;
+   833	
+   834		gpu_write(gpu, REG_A6XX_RB_NC_MODE_CNTL,
+   835			  level2_swizzling_dis << 12 |
+   836			  rgb565_predicator << 11 |
+   837			  hbb_hi << 10 | amsbc << 4 |
+   838			  min_acc_len_64b << 3 |
+   839			  hbb_lo << 1 | ubwc_mode);
+   840	
+   841		gpu_write(gpu, REG_A6XX_TPL1_NC_MODE_CNTL,
+   842			  level2_swizzling_dis << 6 | hbb_hi << 4 |
+   843			  min_acc_len_64b << 3 |
+   844			  hbb_lo << 1 | ubwc_mode);
+   845	
+   846		gpu_write(gpu, REG_A6XX_SP_NC_MODE_CNTL,
+   847			  level2_swizzling_dis << 12 | hbb_hi << 10 |
+   848			  uavflagprd_inv << 4 |
+   849			  min_acc_len_64b << 3 |
+   850			  hbb_lo << 1 | ubwc_mode);
+   851	
+   852		if (adreno_is_a7xx(adreno_gpu)) {
+ > 853			for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
+   854				gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
+   855					  A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id));
+   856				gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
+   857					  FIELD_PREP(GENMASK(8, 5), hbb_lo));
+   858			}
+   859			gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
+ > 860				  A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
+   861		}
+   862	
+   863		gpu_write(gpu, REG_A6XX_UCHE_MODE_CNTL,
+   864			  min_acc_len_64b << 23 | hbb_lo << 21);
+   865	
+   866		gpu_write(gpu, REG_A6XX_RBBM_NC_MODE_CNTL,
+   867			  cfg->macrotile_mode);
+   868	}
+   869	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
