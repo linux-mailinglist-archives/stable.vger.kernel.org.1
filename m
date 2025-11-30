@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCC5C9524F
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 17:21:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E7CC95252
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 17:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB96F34170F
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 16:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31CC3A2CFD
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 16:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F3A298CA6;
-	Sun, 30 Nov 2025 16:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDFC298CA6;
+	Sun, 30 Nov 2025 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaxI8nW3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkozGWkF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C46711CAF;
-	Sun, 30 Nov 2025 16:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774CE11CAF;
+	Sun, 30 Nov 2025 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764519677; cv=none; b=EiKczZoQnq0M9Z3W00QyX8aHErWYavtff1m7hqVaEA69DKryO7NWCgJvAb5MaNcLbKp6BHsgN0XuyjxcbmrhHiO3m7CG6UaIr5A0biBafRyygIstDwBY/pI8wnB9psLG/rP6q2VZkud91sCpjqDz968b30KiXQ4p822JDoHVKC8=
+	t=1764519682; cv=none; b=m72D2bFfa142CgkDEpLxILGsPCe67mSRozuO0CRmzMiwZirLbbME1tRAWnD/g/w5Ttiqc25d1o+YZMjrSloGHci5jCbSjfR+2K7WdOBSpNBK4naMrNkslr/5zFJJvIOX+gMS8QziDbFLjKOz5HW1E2p2KWoib2wbsD00krqRHzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764519677; c=relaxed/simple;
-	bh=QIGxXzOXgetKMboQBkk6r8HvQViU7hOvjX/Fh/C0908=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qrDX3GRpRfV/HEQJ3RgThw/aS1RozaKPuu9c6pE6q4ubLicjQ7QRsAwR38HUDscrLmteEKEX15J0xk3FiQhwz3t9drMRS3wzGqYqp+fzyULrORDgiIUkpQ655DelndS/PAvpCb130th0rjCjQZr9bJb38iRhBbzbqrda170sw+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaxI8nW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D61DC4CEF8;
-	Sun, 30 Nov 2025 16:21:15 +0000 (UTC)
+	s=arc-20240116; t=1764519682; c=relaxed/simple;
+	bh=7kxHR/r2oI69yLuiH8cgTybiZhs3ebORqfxCuXWL2fw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=uaCL3cSLw2bwDCP7qNMczIGnK1c6HWxbEa0cLq3ojOAOG0e/t0TsDLq8CSJ8gkssDIW75IzDDu9YKqhTV/kgRNhSrGUnkgbh1qgU+JPxbJJ9G75ZUO4IGhefbzcTAQOZROeptwYwEbOjZcQpT9gAwSvFsTzD2lvZEXHFdeFquXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkozGWkF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC681C4CEF8;
+	Sun, 30 Nov 2025 16:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764519676;
-	bh=QIGxXzOXgetKMboQBkk6r8HvQViU7hOvjX/Fh/C0908=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iaxI8nW3Djp1jtV77hWZrTXMreN1mD4Y9zujgroegOO5eQgyGoSvUI5YI6ZrF4lrn
-	 8jc8qdEWsHfaEIg5i0Si6z7xDisNld5v/HSI3GYNMs6B3ebfxn6La1qWHE7gCcP3RR
-	 gu4TUahjcwk4ZSL2vGXeD3tfuLyTN8872Oh4+zXZjfdhEt1fIg4Q/QqTCFS5ChGVO7
-	 228LesFc5lPIi8GXPM1jr7C/FVtsZ2mBd6f+XPieHeRZ7f5gdoICrfr69BUzBYmdtE
-	 wRGHQF4hGXWTBlXD9TjUDdpnSdz3qrvnRE3ZX/aO66xnEh8Ly4cVTXtyzeddBt8cjN
-	 yBoJOnoyXW1Xw==
-Message-ID: <f24fccc6-9491-474f-a907-0ea53fbdc5ec@kernel.org>
-Date: Sun, 30 Nov 2025 17:21:13 +0100
+	s=k20201202; t=1764519682;
+	bh=7kxHR/r2oI69yLuiH8cgTybiZhs3ebORqfxCuXWL2fw=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=LkozGWkFt0i7KMa6UBTJ+fAwSKs542RMMCW1bx37IdCACbPqXj89H5AiBmakhrqjm
+	 7gXN3lOyxQT4/LrF/UH3b5i5uy8GDRrcIlPKeqVgvFEHeUxLTsG81O8a6mSd99bpP2
+	 kbzKuBdtSZjSVsFdq8E/0tkVTbHZsgon5QqK/leg25LiTaFLzpneVQbJE3gRWwGtfc
+	 t0a9tJ+ouzlMsrB2rYAGr/FEO+DGcnT3nf8d9g7griCID3vSbbQF7mA77jYCorQPBv
+	 20esjW0+O6zglJu224QqouDGVaft+a/gDs2O/KFF5IzOBRSeH7s+gA/TIBF7TaQiT/
+	 iZE19iJ7RIPMA==
+Message-ID: <a3bd7cdc-e0f3-448f-a1f2-aaa2a603486e@kernel.org>
+Date: Sun, 30 Nov 2025 17:21:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,15 +50,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.1.y v1 2/2] net,mptcp: fix proto fallback detection with
- BPF
+Subject: Re: [PATCH 6.1.y v1 0/2] mptcp: Fix conflicts between MPTCP and
+ sockmap
 Content-Language: en-GB, fr-BE
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, stable@vger.kernel.org,
- mptcp@lists.linux.dev, sashal@kernel.org, gregkh@linuxfoundation.org
-Cc: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
 References: <20251130032303.324510-1-jiayuan.chen@linux.dev>
- <20251130032303.324510-3-jiayuan.chen@linux.dev>
 From: Matthieu Baerts <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, mptcp@lists.linux.dev, sashal@kernel.org,
+ gregkh@linuxfoundation.org
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
  YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
@@ -103,57 +102,39 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20251130032303.324510-3-jiayuan.chen@linux.dev>
+In-Reply-To: <20251130032303.324510-1-jiayuan.chen@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Jiayuan,
 
 On 30/11/2025 04:23, Jiayuan Chen wrote:
-> The sockmap feature allows bpf syscall from userspace, or based
-> on bpf sockops, replacing the sk_prot of sockets during protocol stack
-> processing with sockmap's custom read/write interfaces.
+> Overall, we encountered a warning [1] that can be triggered by running the
+> selftest I provided.
 
-(...)
+Thank you for having shared these patches, but there are some issues
+with them:
 
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index 1dbc62537259..13e3510e6c8f 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -79,8 +79,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
->  static bool mptcp_is_tcpsk(struct sock *sk)
->  {
->  	struct socket *sock = sk->sk_socket;
-> +	unsigned short family = READ_ONCE(sk->sk_family);
->  
-> -	if (unlikely(sk->sk_prot == &tcp_prot)) {
-> +	if (unlikely(family == AF_INET)) {
->  		/* we are being invoked after mptcp_accept() has
->  		 * accepted a non-mp-capable flow: sk is a tcp_sk,
->  		 * not an mptcp one.
-> @@ -91,7 +92,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
->  		sock->ops = &inet_stream_ops;
->  		return true;
->  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-> -	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-> +	} else if (unlikely(family == AF_INET6)) {
+- Patch 1/2 has already been queued, see [1].
 
-These modifications here break MPTCP: this function (mptcp_is_tcpsk) is
-there to check if the socket is a "plain" TCP one (return "true") or an
-MPTCP one (return "false"). If it is not an MPTCP one, the sock ops is
-modified.
+- Patch 2/2 is the exact same patch as the one sent by Sasha [2], and
+recently dropped [3] because it breaks MPTCP. See my comment there.
 
-Here, you are saying: any IPv4 or IPv6 socket is a "plain" TCP one,
-never an MPTCP socket then.
+- You need to follow the stable rules [4] when sending patches to
+stable. In short, here, you should have kept the original upstream
+commit message, then add the SHA and a note about the conflicts, e.g.
+similar to [5]. Without that, it is a new patch, not a backport (and the
+reviewed-by/acked-by/... cannot be kept).
 
-I suggest adding ...
-
-  if (sk->sk_protocol == IPPROTO_MPTCP)
-          return false;
-
-... at the beginning of this function. I'm planning to send a patch
-later on including this check. Once it is sent, do you mind checking it
-with sockmap if you have the setup available, please?
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.1/mptcp-disallow-mptcp-subflows-from-sockmap.patch
+[2]
+https://lore.kernel.org/stable/9e6ef98f-12eb-4608-aece-cf321e0a38d7@kernel.org/T/#u
+[3]
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=a662939f16b515c5162e304e6a4cf95370e596e1
+[4] https://docs.kernel.org/process/stable-kernel-rules.html
+[5]
+https://lore.kernel.org/stable/20251129165612.2125498-2-matttbe@kernel.org/T/#u
 
 Cheers,
 Matt
