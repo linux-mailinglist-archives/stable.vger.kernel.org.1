@@ -1,100 +1,163 @@
-Return-Path: <stable+bounces-197678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464B7C95121
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 16:15:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCC5C9524F
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 17:21:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F9724E023D
-	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 15:15:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB96F34170F
+	for <lists+stable@lfdr.de>; Sun, 30 Nov 2025 16:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B0E27934B;
-	Sun, 30 Nov 2025 15:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F3A298CA6;
+	Sun, 30 Nov 2025 16:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oGdM5pUb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaxI8nW3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6EA36D4EB
-	for <stable@vger.kernel.org>; Sun, 30 Nov 2025 15:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C46711CAF;
+	Sun, 30 Nov 2025 16:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764515702; cv=none; b=qvxCbMDQrydqCGYE4MeTKjjKWlFaQMrLd6aEbcvW0DzKXb6ZbqN+Nf4SKNCxUHWua+T08WucM8sMT9RauYJUiMii1oUKGWLCnuT7hdtlVj0dO7L8FQNZOjvLmCSaSQkUA28GXHnGZyKvaTuB8wnEYoCvdl5aawqjilWxn7/XygE=
+	t=1764519677; cv=none; b=EiKczZoQnq0M9Z3W00QyX8aHErWYavtff1m7hqVaEA69DKryO7NWCgJvAb5MaNcLbKp6BHsgN0XuyjxcbmrhHiO3m7CG6UaIr5A0biBafRyygIstDwBY/pI8wnB9psLG/rP6q2VZkud91sCpjqDz968b30KiXQ4p822JDoHVKC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764515702; c=relaxed/simple;
-	bh=xs7djllhX3HB01eo/QrRaa5TNNqDHxbNUmtgL1UzCJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=vGvhYTjqUg+H4IH6Pl3RwHT6IcA8yDM8mA0vyhpMlaK/y8jHkr6XAhnmGu6yd4NUN6pO3F2Pl9sY2cwRe0hNKYxoS6V0oH2ZxiHRt/5DbgFt3HigH48APCs9FicjyOy6QEKhfqBan9KwDXtkvsc9V7xRUECdN8chRGHqUm0ugxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oGdM5pUb; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764515700; x=1796051700;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=xs7djllhX3HB01eo/QrRaa5TNNqDHxbNUmtgL1UzCJc=;
-  b=oGdM5pUb4++EIUdzEv0ZL/LoRYc1jvJ4U6LqXO84IZ6EqFAbj/YyGV0k
-   sl8GEn7SKrHMZzAXdT5dDgmk0BYADf4mGoyQAB2Oa50HZstscbtBFLBOF
-   5KJLBexjydpWXD3ab6IGajpmCJIT/IN90FQA0eAfTvtAK0qqdlEfcnrOw
-   FUupaq6insrDopvrm09Dc9pGgkZooMqoHJZ0U8dlnUoBt1jI7w+9/wLfQ
-   bqQ2S6TAoPBWSuWe2s16ioL49gcl+9t8ssIvImrO1l4Ai1l94OTjvl1vm
-   AhrtEXkUGQgCxKExmuly8axSNtKviYG+IDqDA34ETopts7ieiXgM+Ohql
-   g==;
-X-CSE-ConnectionGUID: uMr+uO/aSgavxUnRBhYrmA==
-X-CSE-MsgGUID: S44+2hzzQ0qNduPKN7O+HQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11629"; a="70324881"
-X-IronPort-AV: E=Sophos;i="6.20,238,1758610800"; 
-   d="scan'208";a="70324881"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2025 07:14:59 -0800
-X-CSE-ConnectionGUID: nJOVCqjXQ92f2KTFEQwY9A==
-X-CSE-MsgGUID: JnFP2muQSNyH7zbz1WFC7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,238,1758610800"; 
-   d="scan'208";a="224560864"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 30 Nov 2025 07:14:59 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vPj8a-0000000081Z-0Rug;
-	Sun, 30 Nov 2025 15:14:56 +0000
-Date: Sun, 30 Nov 2025 23:14:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 6/7] PCI: endpoint: pci-epf-vntb: Switch
- vpci_scan_bus() to use pci_scan_root_bus()
-Message-ID: <aSxfPMInBUE2pbEQ@73cdb724bd1e>
+	s=arc-20240116; t=1764519677; c=relaxed/simple;
+	bh=QIGxXzOXgetKMboQBkk6r8HvQViU7hOvjX/Fh/C0908=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qrDX3GRpRfV/HEQJ3RgThw/aS1RozaKPuu9c6pE6q4ubLicjQ7QRsAwR38HUDscrLmteEKEX15J0xk3FiQhwz3t9drMRS3wzGqYqp+fzyULrORDgiIUkpQ655DelndS/PAvpCb130th0rjCjQZr9bJb38iRhBbzbqrda170sw+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaxI8nW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D61DC4CEF8;
+	Sun, 30 Nov 2025 16:21:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764519676;
+	bh=QIGxXzOXgetKMboQBkk6r8HvQViU7hOvjX/Fh/C0908=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iaxI8nW3Djp1jtV77hWZrTXMreN1mD4Y9zujgroegOO5eQgyGoSvUI5YI6ZrF4lrn
+	 8jc8qdEWsHfaEIg5i0Si6z7xDisNld5v/HSI3GYNMs6B3ebfxn6La1qWHE7gCcP3RR
+	 gu4TUahjcwk4ZSL2vGXeD3tfuLyTN8872Oh4+zXZjfdhEt1fIg4Q/QqTCFS5ChGVO7
+	 228LesFc5lPIi8GXPM1jr7C/FVtsZ2mBd6f+XPieHeRZ7f5gdoICrfr69BUzBYmdtE
+	 wRGHQF4hGXWTBlXD9TjUDdpnSdz3qrvnRE3ZX/aO66xnEh8Ly4cVTXtyzeddBt8cjN
+	 yBoJOnoyXW1Xw==
+Message-ID: <f24fccc6-9491-474f-a907-0ea53fbdc5ec@kernel.org>
+Date: Sun, 30 Nov 2025 17:21:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251130151100.2591822-7-den@valinux.co.jp>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.1.y v1 2/2] net,mptcp: fix proto fallback detection with
+ BPF
+Content-Language: en-GB, fr-BE
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, stable@vger.kernel.org,
+ mptcp@lists.linux.dev, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: Jakub Sitnicki <jakub@cloudflare.com>
+References: <20251130032303.324510-1-jiayuan.chen@linux.dev>
+ <20251130032303.324510-3-jiayuan.chen@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20251130032303.324510-3-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Jiayuan,
 
-Thanks for your patch.
+On 30/11/2025 04:23, Jiayuan Chen wrote:
+> The sockmap feature allows bpf syscall from userspace, or based
+> on bpf sockops, replacing the sk_prot of sockets during protocol stack
+> processing with sockmap's custom read/write interfaces.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+(...)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 1dbc62537259..13e3510e6c8f 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -79,8 +79,9 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+>  static bool mptcp_is_tcpsk(struct sock *sk)
+>  {
+>  	struct socket *sock = sk->sk_socket;
+> +	unsigned short family = READ_ONCE(sk->sk_family);
+>  
+> -	if (unlikely(sk->sk_prot == &tcp_prot)) {
+> +	if (unlikely(family == AF_INET)) {
+>  		/* we are being invoked after mptcp_accept() has
+>  		 * accepted a non-mp-capable flow: sk is a tcp_sk,
+>  		 * not an mptcp one.
+> @@ -91,7 +92,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
+>  		sock->ops = &inet_stream_ops;
+>  		return true;
+>  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+> -	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
+> +	} else if (unlikely(family == AF_INET6)) {
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v3 6/7] PCI: endpoint: pci-epf-vntb: Switch vpci_scan_bus() to use pci_scan_root_bus()
-Link: https://lore.kernel.org/stable/20251130151100.2591822-7-den%40valinux.co.jp
+These modifications here break MPTCP: this function (mptcp_is_tcpsk) is
+there to check if the socket is a "plain" TCP one (return "true") or an
+MPTCP one (return "false"). If it is not an MPTCP one, the sock ops is
+modified.
 
+Here, you are saying: any IPv4 or IPv6 socket is a "plain" TCP one,
+never an MPTCP socket then.
+
+I suggest adding ...
+
+  if (sk->sk_protocol == IPPROTO_MPTCP)
+          return false;
+
+... at the beginning of this function. I'm planning to send a patch
+later on including this check. Once it is sent, do you mind checking it
+with sockmap if you have the setup available, please?
+
+Cheers,
+Matt
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Sponsored by the NGI0 Core fund.
 
 
