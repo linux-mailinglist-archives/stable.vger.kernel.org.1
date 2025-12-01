@@ -1,304 +1,215 @@
-Return-Path: <stable+bounces-197939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5395AC98619
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 17:56:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F58C986B9
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:09:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5067E3A3A12
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 16:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 392E63A42DF
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22502335067;
-	Mon,  1 Dec 2025 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFF1335561;
+	Mon,  1 Dec 2025 17:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sxeHnCxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUYYXLOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C5E315D30;
-	Mon,  1 Dec 2025 16:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0C335093
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764608155; cv=none; b=Zgsn/sO5plqfPXVx9L4tIXJG330CDWvvJ9hba0+you8SNEeOswp2jN3Bk+s7Dh3sqCvou57b2fEcEcFGgCxG7OMTcZsWNrDsAlmMBKcsOK9NcaRC7oCYyFmu0tQnxPcw31vHgkjIcResEKF9gd8O/T1NweLAmZe2pbJMQ/7vsVU=
+	t=1764608973; cv=none; b=aMPIb0+xMeEoNPM3VDjmZG4wlSYIR4qCuDfwuEc0TjZL7Mk9DsyUC29rbJktwasFTXguxlMwsy6IFnyS+q0yzFE9OjnTasmIpDi4foHYKZ/yZC7Wp4sVH6xYZMiunLihflGa1PJYNSBsb0CKqasE/pPtCmRFNELT4FEWmp9TaL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764608155; c=relaxed/simple;
-	bh=EUIjqavuIeUzMiAYONWEg7x6sMK2XPW3egS5wTGSHuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bjpmSYaFUhzFFc8fA8zzx6ZSEKoQHqWnayVWRER3TOYqLEflYKU7hMAjyq6o3InxFn154pw4hIPCq8/20E7NkvUFv/gKkpIlIIa98dHA5G5cDMIIxTl1L88+gXGQUhgbukPnnGXYVqHGA+ZEW2n8Z1kFrOGt4Wp8YwGA3xPSaOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sxeHnCxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7FDC4CEF1;
-	Mon,  1 Dec 2025 16:55:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764608155;
-	bh=EUIjqavuIeUzMiAYONWEg7x6sMK2XPW3egS5wTGSHuA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sxeHnCxmrnm586BzJ/MYUZmjS2inD096CbMlpLhPfAfJ3E67Q/rIkdvDWAB05IYRg
-	 qwnR0bZOXXaUocwROnUhFGOUrOP/x+p6DXSvGeF4a0pPsZ19TWtjiOZCnS6NN7kGel
-	 m6DtSf77P830FOQomLHHpDg3oigDQnyiWVcVF4kE63uI7dzlUt7OQLB/ZSuD8xJzaM
-	 h+fnAhIKQrZBtVnf9pF6enT/wmHaoqTBUqPiJEIENzkbhaFNO8vHVweCuMmhSkLVGT
-	 KJF2oHhtgBmtOtjBc5UVyMVm1OHsLPOtF7pDnLk5TzdOuw5GJVaAFzszg+gZ9ec5VE
-	 YOjoW5Utp7qnA==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tpm2-sessions: Fix tpm2_read_public range checks
-Date: Mon,  1 Dec 2025 18:55:45 +0200
-Message-ID: <20251201165545.629875-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1764608973; c=relaxed/simple;
+	bh=d10aIxe5tOuBdmh2Zl57CUeBk/IEwFYAijihOP1uyIg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a5cwQtEe7YCBsPmW9zQw+8mL4YnHQZNSnwpuOevBB+KbMJOTotXR4cQoUGri/qT2EUu8/hCTyOza8cGv731PsrT1vGU8AtseXhvla+QXf8QeDuwBwwgq9gbGPr3As+3CKEgKPpHGYtMqAlAbrC5dukj+gNA1ZvNwGcwyP3F6AYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUYYXLOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90040C4CEF1;
+	Mon,  1 Dec 2025 17:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764608971;
+	bh=d10aIxe5tOuBdmh2Zl57CUeBk/IEwFYAijihOP1uyIg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xUYYXLODNrdqe4EM9k/drjULHsw3sljB7oJVJYRVMnzUezuZuOLjPNNPsly0CFTGa
+	 QHdHSptwI3e8NGouddYd9mldh9hqCkOKX7QQ2wsb+3stNE8thhveY1BDOTVOnGzEIO
+	 55eQWQsziFivRYRY6wtkpO09tpSLixwPZuqSnziI=
+Subject: FAILED: patch "[PATCH] usb: renesas_usbhs: Fix synchronous external abort on unbind" failed to apply to 6.1-stable tree
+To: claudiu.beznea.uj@bp.renesas.com,gregkh@linuxfoundation.org,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 01 Dec 2025 18:09:27 +0100
+Message-ID: <2025120127-recital-default-e35a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-'tpm2_read_public' has some rudimentary range checks but does not
-explicitly check that both fields of TPMT_HA actually fit within the buffer
-size limits.
 
-Introduce a new function 'tpm2_resolve_name' to address all the possible
-out-of-range issues, and in addition do handle type validation.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- drivers/char/tpm/tpm2-cmd.c      | 95 ++++++++++++++++++++++++++++++++
- drivers/char/tpm/tpm2-sessions.c | 78 +-------------------------
- include/linux/tpm.h              |  2 +
- 3 files changed, 98 insertions(+), 77 deletions(-)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index e63254135a74..d51272573004 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -11,8 +11,11 @@
-  * used by the kernel internally.
-  */
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x eb9ac779830b2235847b72cb15cf07c7e3333c5e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120127-recital-default-e35a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From eb9ac779830b2235847b72cb15cf07c7e3333c5e Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Date: Mon, 27 Oct 2025 16:07:41 +0200
+Subject: [PATCH] usb: renesas_usbhs: Fix synchronous external abort on unbind
+
+A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
+executed after the configuration sequence described above:
+
+modprobe usb_f_ecm
+modprobe libcomposite
+modprobe configfs
+cd /sys/kernel/config/usb_gadget
+mkdir -p g1
+cd g1
+echo "0x1d6b" > idVendor
+echo "0x0104" > idProduct
+mkdir -p strings/0x409
+echo "0123456789" > strings/0x409/serialnumber
+echo "Renesas." > strings/0x409/manufacturer
+echo "Ethernet Gadget" > strings/0x409/product
+mkdir -p functions/ecm.usb0
+mkdir -p configs/c.1
+mkdir -p configs/c.1/strings/0x409
+echo "ECM" > configs/c.1/strings/0x409/configuration
+
+if [ ! -L configs/c.1/ecm.usb0 ]; then
+        ln -s functions/ecm.usb0 configs/c.1
+fi
+
+echo 11e20000.usb > UDC
+echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
+
+The displayed trace is as follows:
+
+ Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+ CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
+ Tainted: [M]=MACHINE_CHECK
+ Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
+ pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
+ lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
+ sp : ffff8000838b3920
+ x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
+ x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
+ x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
+ x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
+ x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
+ x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
+ x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
+ Call trace:
+ usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
+ usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
+ usb_gadget_disconnect_locked+0x48/0xd4
+ gadget_unbind_driver+0x44/0x114
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_release_driver+0x18/0x24
+ bus_remove_device+0xcc/0x10c
+ device_del+0x14c/0x404
+ usb_del_gadget+0x88/0xc0
+ usb_del_gadget_udc+0x18/0x30
+ usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
+ usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
+ usbhs_remove+0x98/0xdc [renesas_usbhs]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_driver_detach+0x18/0x24
+ unbind_store+0xb4/0xb8
+ drv_attr_store+0x24/0x38
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x128/0x1b8
+ vfs_write+0x2ac/0x350
+ ksys_write+0x68/0xfc
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xf0
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+ Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
+ ---[ end trace 0000000000000000 ]---
+ note: sh[188] exited with irqs disabled
+ note: sh[188] exited with preempt_count 1
+
+The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
+registers, is executed after the USBHS clocks have been disabled. The
+problem is reproducible on the Renesas RZ/G3S SoC starting with the
+addition of module stop in the clock enable/disable APIs. With module stop
+functionality enabled, a bus error is expected if a master accesses a
+module whose clock has been stopped and module stop activated.
+
+Disable the IP clocks at the end of remove.
+
+Cc: stable <stable@kernel.org>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
+index 8f536f2c500f..dc2fec9168b7 100644
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -813,18 +813,18 @@ static void usbhs_remove(struct platform_device *pdev)
  
-+#include "linux/dev_printk.h"
-+#include "linux/tpm.h"
- #include "tpm.h"
- #include <crypto/hash_info.h>
-+#include <linux/unaligned.h>
+ 	flush_delayed_work(&priv->notify_hotplug_work);
  
- static bool disable_pcr_integrity;
- module_param(disable_pcr_integrity, bool, 0444);
-@@ -769,3 +772,95 @@ int tpm2_find_cc(struct tpm_chip *chip, u32 cc)
- 
- 	return -1;
+-	/* power off */
+-	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+-		usbhsc_power_ctrl(priv, 0);
+-
+-	pm_runtime_disable(&pdev->dev);
+-
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+-	usbhsc_clk_put(priv);
+ 	reset_control_assert(priv->rsts);
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
++
++	/* power off */
++	if (!usbhs_get_dparam(priv, runtime_pwctrl))
++		usbhsc_power_ctrl(priv, 0);
++
++	usbhsc_clk_put(priv);
++	pm_runtime_disable(&pdev->dev);
  }
-+
-+/**
-+ * tpm2_name_size() - Resolve size of a TPMT_HA instance
-+ * @name:	Pointer to TPMT_HA structure extracted from TPM2B_NAME.
-+ *
-+ * Calculate size of the TPMT_HA payload of TPM2B_NAME. It is used with
-+ * transient keys, persistent and NV indexes.
-+ *
-+ * Returns zero when the hash size was successfully calculated.
-+ * Returns -EINVAL when the hash algorithm was not recognized.
-+ */
-+int tpm2_name_size(const u8 *name)
-+{
-+	u16 hash_alg = get_unaligned_be16(name);
-+
-+	switch (hash_alg) {
-+	case TPM_ALG_SHA1:
-+		return SHA1_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA256:
-+		return SHA256_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA384:
-+		return SHA384_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA512:
-+		return SHA512_DIGEST_SIZE + 2;
-+	case TPM_ALG_SM3_256:
-+		return SM3256_DIGEST_SIZE + 2;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+/**
-+ * tpm2_resolve_name - Resolve TPM object's name from the public area
-+ * @handle:	Persistent, transient or nv handle.
-+ *
-+ * Returns zero on success.
-+ * Returns -EINVAL when handles are not of valid type.
-+ * Returns -EIO if the transmission fails or response is malformed.
-+ */
-+int tpm2_resolve_name(struct tpm_chip *chip, u32 handle, void *name)
-+{
-+	u32 mso = tpm2_handle_mso(handle);
-+	off_t offset = TPM_HEADER_SIZE;
-+	int name_size, name_size_2;
-+	struct tpm_buf buf;
-+	int rc;
-+
-+	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
-+	    mso != TPM2_MSO_NVRAM)
-+		return -EINVAL;
-+
-+	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
-+	if (rc)
-+		return rc;
-+
-+	tpm_buf_append_u32(&buf, handle);
-+
-+	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
-+	if (rc) {
-+		tpm_buf_destroy(&buf);
-+		return tpm_ret_to_err(rc);
-+	}
-+
-+	/* Skip TPMT_PUBLIC: */
-+	offset += tpm_buf_read_u16(&buf, &offset);
-+
-+	/*
-+	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
-+	 * TPMT_HA (the extra four bytes).
-+	 */
-+	if (offset + 4 > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	name_size = tpm_buf_read_u16(&buf, &offset);
-+	name_size_2 = tpm2_name_size(&buf.data[offset]);
-+
-+	if (name_size != name_size_2) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	if (offset + name_size > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	memcpy(name, &buf.data[offset], name_size);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(tpm2_resolve_name);
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 82b9d9096fd1..7c85333d47c4 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -140,82 +140,6 @@ struct tpm2_auth {
- 	u8 name[AUTH_MAX_NAMES][2 + SHA512_DIGEST_SIZE];
- };
  
--#ifdef CONFIG_TCG_TPM2_HMAC
--
--/*
-- * Calculate size of the TPMT_HA payload of TPM2B_NAME.
-- */
--static int tpm2_name_size(const u8 *name)
--{
--	u16 hash_alg = get_unaligned_be16(name);
--
--	switch (hash_alg) {
--	case TPM_ALG_SHA1:
--		return SHA1_DIGEST_SIZE + 2;
--	case TPM_ALG_SHA256:
--		return SHA256_DIGEST_SIZE + 2;
--	case TPM_ALG_SHA384:
--		return SHA384_DIGEST_SIZE + 2;
--	case TPM_ALG_SHA512:
--		return SHA512_DIGEST_SIZE + 2;
--	case TPM_ALG_SM3_256:
--		return SM3256_DIGEST_SIZE + 2;
--	}
--
--	return -EINVAL;
--}
--
--static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
--{
--	struct tpm_header *head = (struct tpm_header *)buf->data;
--	off_t offset = TPM_HEADER_SIZE;
--	u32 tot_len = be32_to_cpu(head->length);
--	int name_size_alg;
--	u32 val;
--
--	/* we're starting after the header so adjust the length */
--	tot_len -= TPM_HEADER_SIZE;
--
--	/* skip public */
--	val = tpm_buf_read_u16(buf, &offset);
--	if (val > tot_len)
--		return -EINVAL;
--	offset += val;
--	/* name */
--
--	val = tpm_buf_read_u16(buf, &offset);
--	name_size_alg = tpm2_name_size(&buf->data[offset]);
--	if (name_size_alg < 0)
--		return name_size_alg;
--
--	if (val != name_size_alg)
--		return -EINVAL;
--
--	memcpy(name, &buf->data[offset], val);
--	/* forget the rest */
--	return 0;
--}
--
--static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
--{
--	struct tpm_buf buf;
--	int rc;
--
--	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
--	if (rc)
--		return rc;
--
--	tpm_buf_append_u32(&buf, handle);
--	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
--	if (rc == TPM2_RC_SUCCESS)
--		rc = tpm2_parse_read_public(name, &buf);
--
--	tpm_buf_destroy(&buf);
--
--	return rc;
--}
--#endif /* CONFIG_TCG_TPM2_HMAC */
--
- /**
-  * tpm_buf_append_name() - add a handle area to the buffer
-  * @chip: the TPM chip structure
-@@ -272,7 +196,7 @@ int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	    mso == TPM2_MSO_VOLATILE ||
- 	    mso == TPM2_MSO_NVRAM) {
- 		if (!name) {
--			ret = tpm2_read_public(chip, handle, auth->name[slot]);
-+			ret = tpm2_resolve_name(chip, handle, auth->name[slot]);
- 			if (ret)
- 				return tpm_ret_to_err(ret);
- 		}
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 1a59f0190eb3..727e6c26feeb 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -477,6 +477,8 @@ extern int tpm_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
- extern int tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
- extern struct tpm_chip *tpm_default_chip(void);
- void tpm2_flush_context(struct tpm_chip *chip, u32 handle);
-+int tpm2_name_size(const u8 *name);
-+int tpm2_resolve_name(struct tpm_chip *chip, u32 handle, void *name);
- 
- static inline void tpm_buf_append_empty_auth(struct tpm_buf *buf, u32 handle)
- {
--- 
-2.52.0
+ static int usbhsc_suspend(struct device *dev)
 
 
