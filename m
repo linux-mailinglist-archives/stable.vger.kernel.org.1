@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015B2C96FE2
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E43D7C97027
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:34:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D9B3434771B
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:30:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E152234368B
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2E43081CA;
-	Mon,  1 Dec 2025 11:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D31E2676DE;
+	Mon,  1 Dec 2025 11:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyaNesti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4U2MaSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17135307ACE;
-	Mon,  1 Dec 2025 11:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA91A264617;
+	Mon,  1 Dec 2025 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588616; cv=none; b=Wdu/1SgqE5AKhTJFTNDxCITinykhZjW+d/vFYsnLZRbF3nIMO3tGSNfwl+c2Qclp240NqIcuTGUiZvJPQDNhCzIAM+8pJU9GHWyxb4Mq0mR9wuBTvq97vFkj9pvlrXyC1No1nCsaeMkt9jqQa2MapKPI3CDJFprLJgei5q5i/d0=
+	t=1764588636; cv=none; b=WWbIV2KEmKQLcocKeki8mpqitvQMPyYBq8scLP+bF21+y4/Fx3efCm5n+J1Nwizrb52+eHMgouU6l7TCa0w5ECaDnGwo83xa28rsJFVM6fgkO+/xszIyg+KYRN71jgyaWvz0mb69yLnJz0sM1qEB53GPuyZqYcYWhDR8chQsS4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588616; c=relaxed/simple;
-	bh=OzJxtv1/1oe5X1T/LzfIE7+NdW+2BKCV94cb7oKxBPQ=;
+	s=arc-20240116; t=1764588636; c=relaxed/simple;
+	bh=EEUE0RgXseOeycU54lK3m1R1SQKsMhCckXSYiC2GeZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKzk7Vf93ouzTbYzrn+hCqWhNztUpxUD2SVxT2i0u5l1KqL2eaMmVkirtW9A3mQ5mJzy18SihqZbv8Rnrzunl2YS6izDE/Xy/uTPBl8zr+NZ81PUnCLWQIVXIUr7/nHG/MInOAXghTYZt/pjn+ytTafDFzQB6o1ocbt6OE/oDpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyaNesti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935B5C4CEF1;
-	Mon,  1 Dec 2025 11:30:15 +0000 (UTC)
+	 MIME-Version; b=Mcy0PBQrAF5YzQcr0Zzz6EULWF5hrRX4q/wmM03hrSAi99qNohl5M7vj83oSOSyfJqW9x3c1+AivGRLsSMdd23jyLonLBYvAn3N02OtsF6nA1EAapn5o8QX7TMyZdaIOSyIlb1/ZWkdWXYJe0jmNAlybXKaYK3+1OKwwiwZlrJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4U2MaSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D36EC4CEF1;
+	Mon,  1 Dec 2025 11:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588616;
-	bh=OzJxtv1/1oe5X1T/LzfIE7+NdW+2BKCV94cb7oKxBPQ=;
+	s=korg; t=1764588635;
+	bh=EEUE0RgXseOeycU54lK3m1R1SQKsMhCckXSYiC2GeZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyaNesticbFkcc0H5u33xNdigPkg4gCf2B9h5tdV/zW/xgr/Z+kJMvZaY0JHCJlom
-	 ZtXZRZp16U95FE6nhWLwyQx8qB/qVxeuTGW93NXQSMTqQO0DvWo395GYZSECbfm3QA
-	 DdIWlEmHtikXCrnUvYi0PU0C/iGBXD+AhO9HQ2wM=
+	b=A4U2MaSWjioHyhFlgq3DHMd6XGge/pMSJtFEOXUjZNGV4dN1t+2KYQYZn7+v/rbhH
+	 yqzIwERkp7XlSSbsfJIuvwFLRA/INWvZf9ZZdOcKX0v/G340b2xiwQTkTx5Ke0PP/R
+	 xDTC1j4x+FAns38MXQrJuCNv9HzfWAVTKkvTRr00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 083/187] selftests: Disable dad for ipv6 in fcnal-test.sh
-Date: Mon,  1 Dec 2025 12:23:11 +0100
-Message-ID: <20251201112244.230869061@linuxfoundation.org>
+Subject: [PATCH 5.4 084/187] selftests: Replace sleep with slowwait
+Date: Mon,  1 Dec 2025 12:23:12 +0100
+Message-ID: <20251201112244.266042170@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -69,33 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit 2f186dd5585c3afb415df80e52f71af16c9d3655 ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+Replace the sleep in kill_procs with slowwait.
 
 Signed-off-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Link: https://patch.msgid.link/20250910025828.38900-2-dsahern@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/fcnal-test.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index d2ac09b35dcf5..e3657454816b9 100755
+index e3657454816b9..354c766e7c24a 100755
 --- a/tools/testing/selftests/net/fcnal-test.sh
 +++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -376,6 +376,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+@@ -164,7 +164,7 @@ show_hint()
+ kill_procs()
+ {
+ 	killall nettest ping ping6 >/dev/null 2>&1
+-	sleep 1
++	slowwait 2 sh -c 'test -z "$(pgrep '"'^(nettest|ping|ping6)$'"')"'
  }
  
- # create veth pair to connect namespaces and apply addresses.
+ do_run_cmd()
 -- 
 2.51.0
 
