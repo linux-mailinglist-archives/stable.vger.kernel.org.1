@@ -1,194 +1,176 @@
-Return-Path: <stable+bounces-197970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE72C98A4C
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 19:03:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97EDC98A9E
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 19:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 179454E2693
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 18:02:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0E157342C0A
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 18:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40B0338917;
-	Mon,  1 Dec 2025 18:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9CC33891F;
+	Mon,  1 Dec 2025 18:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YwFvCcaC"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IarYOuhr"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011067.outbound.protection.outlook.com [52.101.62.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B757A319604;
-	Mon,  1 Dec 2025 18:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764612163; cv=fail; b=UkOMj/4oxcNqFbCwbeVLIo9XtyjJCRcuqc0qhDB+VNTUoi8xwNGFOXithmdNUeFYgqwj84aKehH4pO09kPE4JCuu26f4sNQo9fEvPzyRutvXIeUC2im4e7hb7I4wulgB0X9zX8WUfwaQMLofDN10dg2zI+lVtJc7fLlLIe2Mrys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764612163; c=relaxed/simple;
-	bh=kUioQdvSDaeO9YmhXKELLsUQYXMD3JbQ+F2JmnOYQEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jP2fwrLMq/G7c7ed5EFHfZJ9tb9cTsGy0Bgw/5pGjPYDAxWH4beL9sAFfRqQiR6vahKZHw7EUW1OQLM6W3vuAAeqfxxMxSH1MZf7WG74En5vGke5naMC7b6UP9KNHboy9lHf7mm87lrJx44XSajDgbDh2hif7oDgeKSgCEq2jKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=YwFvCcaC; arc=fail smtp.client-ip=52.101.62.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FF5mIzJB5lbEJQ7ITiSFEiKrGHu/fKsnfHkEcrn+LFjUFJg+6J75CSMRYBtF7IjMETGNQt69+1BO1oY5alDUbciyPhGq9BpIRS5IjRwbxSP64hXWZnvwLdK5Wq2MtBBbn2kiFTwtF1nD4Xh8tOFKbtV7yaws/yK5XX6i33bHvFnTfsDOL3dtF6GHutn+jBKoyLCJylSnt2bivSO5tzrhuRmoz76y7DzX6TK/ki1wQSy0dq/ksUuuK+CqsN1/0GqQRM0fwxQTyVUHHFFb9Rj9pY09dWXGhayS1W+N7nKttzA7xUydDejWX1bQuIi1+v833G3Rb/HoXC/V5HUitC3Dnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eDAD7cUBbknSg/Oh3wCPCcIlM1Jrsr0iR6k82+V6Poo=;
- b=XHTh4nsce4Bjx9j69u7wbcmCWVtyPynwtan9LKnguu+iHNV3wWu0JIB4eMAb/gY4dnSkwfH88ImdJf+qHbxugvDP7DkfV7wHHXHEt7eiSEG9+/LGt06gow3q6KcTMdM0rzVhmuFFuZR3hXMi/sElv8tCO7Wt2D8QLaSjoO01700O9d35i0273SAoCFnYAbRm4onvMmPzPdlg0lt+YkVic+sI9ZmUG0Xz9k6bmZMoJ0ZE9e1wrZlrqExNxYqz7pkc9aPNeTnTrq/I9zeJagXSzIhLlUmWSCPniPbi1nhlqaCbGCDY5HKxBOkdyKRiAqf2XahSfHXAW50HcCgQxgOvKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eDAD7cUBbknSg/Oh3wCPCcIlM1Jrsr0iR6k82+V6Poo=;
- b=YwFvCcaCO8RN0LsbAaPF8aYkZf7E8VCWPSjMG605hhQunAJ/duYDuPtgip8Sqq29cVPgzRFML5oqtKOVL9/KVKCOWemnxwYFCVtl5QANvUzKX5Dsa0W8I6Bf2+ib23nJ9yAoY9kQbPO/HFa1C0tDktOz/tc4ZoejerfbEttLh7I=
-Received: from BN9PR03CA0124.namprd03.prod.outlook.com (2603:10b6:408:fe::9)
- by BLAPR10MB5075.namprd10.prod.outlook.com (2603:10b6:208:322::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
- 2025 18:02:39 +0000
-Received: from BN1PEPF00006000.namprd05.prod.outlook.com
- (2603:10b6:408:fe:cafe::9d) by BN9PR03CA0124.outlook.office365.com
- (2603:10b6:408:fe::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Mon,
- 1 Dec 2025 18:02:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- BN1PEPF00006000.mail.protection.outlook.com (10.167.243.232) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Mon, 1 Dec 2025 18:02:39 +0000
-Received: from DLEE213.ent.ti.com (157.170.170.116) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
- 2025 12:02:34 -0600
-Received: from DLEE208.ent.ti.com (157.170.170.97) by DLEE213.ent.ti.com
- (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
- 2025 12:02:34 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE208.ent.ti.com
- (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Mon, 1 Dec 2025 12:02:34 -0600
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5B1I2XPG865445;
-	Mon, 1 Dec 2025 12:02:33 -0600
-Message-ID: <f8859e4e-b1e0-40ac-9e9b-dd30ab9d6d0b@ti.com>
-Date: Mon, 1 Dec 2025 12:02:33 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF94338591
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 18:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764612625; cv=none; b=L08XZXrUqZczJokjYTsI1LhWaxU54SzkO9QsSkia6xbGzsmDSY26b51gnJY9Oj1+7HRcTnFMme56txJxH0pavjXvtF+PebtaArq/NH0nDFP/n3uH1EmFXDMpVt86WPY7eKuWP5KLeDuD3JVDcBknhjZAGy44WDLpqnn+i1yjR8k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764612625; c=relaxed/simple;
+	bh=AycfQBJMYvnXm6bz5lQXY+UVp2sfanzYbZi4UEz2ocM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S9ZXfNVu7lXcD9oIxlTauHGzwCM4IInTcbQR1itOZnvsw1YE5QPWo98O2xKdZufhr9kV8pOI0KdXSCUXLaqTUYbA2b/+ea9e+up10iXYveH2H2GSpv3rZloYv3QbaqjA0erksAy6Nn7Hp0duU4um/AVU2KLlAm63lUzg0aA7jOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IarYOuhr; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b713c7096f9so735076266b.3
+        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 10:10:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1764612615; x=1765217415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fSAcsh/jLvy3jVAdeyxQi+guKPEheOPvD2BWq9t337E=;
+        b=IarYOuhrzh1UV39katXKth2Rsha4e+0xSEFp0P3FMSaQxBK5G0hh5z3yy0mS+BUUA2
+         9xIS/q5UBY8vunQpCQcgd7FFYKoatVLu+H7Kc2D7+aC3WaFNplvsvgytFqYnF6Z9dYI8
+         RErUvUUTCh6nQdCCknqVuGGBLfRQexejJeE1A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764612615; x=1765217415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fSAcsh/jLvy3jVAdeyxQi+guKPEheOPvD2BWq9t337E=;
+        b=OYCNXUjEF3pkWMvsIL1aXNuNpqSHiqDN1AFYj/QFnhPQ4fVzfbQ2NE1PfWbqUuyPKX
+         IUUxUeD4EEluVPFbzmuqHXvwfVN8hl683MPXp8BbiYrGMx3JGj10Us3BT7AM4scboP+z
+         PmZuaETbkSfJl1CU/QS0eL5qlsmgEQyQKNcV1gLGH3VgKQXJMk0Upy1iSMP9J4K1/g/m
+         JNqY49q1E5cGn3/Fmw9+wx6iRQKd+Dv1OLbFVCbAEm9Hoyxe6pJYHLE9Yjy41tdbkRvO
+         16PMhIdtHhqELIR78ShrddJM74aDgc/0j+jY0jPXpx5PivyaDD+I6epI40gSoQMFggI0
+         OaWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfUs1E0LFcE4Gv7xymGt+7UUnIwY5peS2lBehtgCkKxuBVGgRWEWf5EYGpV8vHRKbnG6+XJIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc54ibzWNZLN8vcwlvtzeZUfse7Cl1ug026xvuIlNJy/3MKcLF
+	1ksNoSwVF/jvUlAc6mh5h6lG2guIDl2oyuJmfi9CyRJrwgLmyAkhYd1RMYgATP/p9HUIlKNpFzd
+	3Nc2yirW9
+X-Gm-Gg: ASbGncsZr7alIfCjszzKQeJbzsy8cFRB4dK6kEmy3ATMY1QMQVA3jczS1t8VV9duJ+O
+	0DdIdB2xxMHsb57lyxNkx/4pYNUuRlUbzxyBUVp0d9URYcOEa3iDxedA0mj7O4LmRp4mDMdqgyd
+	cqzJJzsA3Tz2d6mLjwRVq9cVTNL0RcwTy788QtAuXQF4SmY/o7qnPVkLYMolteRtn18e49QqpQ9
+	d4JfIpfKn5g8OKnzeR15x+EB0lpjI5nkc3qz33aviIFFIxrQhhWmq+K7eZDB5vnGIhZoDynmNrm
+	1Qwx+XQPqnANDow3qpYNq/IsPWeTUmTBqpWBGNh7B4/M0N6Fb575AJ3X/+WfFw3EPaT+13Cnr88
+	y47gc5MicLSoBF2072k+Li7KnHCJcj5SFiapMrXK4F4W6gBoMFWBAS5xQabQ2o4uGIhXUEB2UW6
+	16Ns6fE9jIj8tdygFbe6nHK8WSn825mnNL+ki1TbgqsyqAJlDAVA==
+X-Google-Smtp-Source: AGHT+IECzm32FaeZ1pB5ceKpuwuFDbuh9jOgOhQ3b7oDyTUplGfe04h7Ro0ByYbbNBV5Wc9HyNZssw==
+X-Received: by 2002:a17:907:7205:b0:b40:8deb:9cbe with SMTP id a640c23a62f3a-b7671549ca8mr4469431066b.2.1764612615168;
+        Mon, 01 Dec 2025 10:10:15 -0800 (PST)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com. [209.85.128.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f5a1d750sm1252749666b.56.2025.12.01.10.10.13
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Dec 2025 10:10:14 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso50730795e9.3
+        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 10:10:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWJBV5fZGJ3KQTQp5lBRTkgThRx5962/0ecH/cf3/DpsskyxPdguB9lg+FdEfOTrdRbQ5C9708=@vger.kernel.org
+X-Received: by 2002:a05:600c:3ba1:b0:475:dd89:acb with SMTP id
+ 5b1f17b1804b1-477c11160cdmr415396085e9.22.1764612612856; Mon, 01 Dec 2025
+ 10:10:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: ti: k3-socinfo: fix regmap leak on probe failure
-To: Johan Hovold <johan@kernel.org>, Nishanth Menon <nm@ti.com>, "Santosh
- Shilimkar" <ssantosh@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20251127134942.2121-1-johan@kernel.org>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20251127134942.2121-1-johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006000:EE_|BLAPR10MB5075:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c38ec0a-7aa9-49df-1971-08de3103d139
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VlVBTEYycVRta1pFTHhSeUlEWkV5cGxxNHVyeC94TjlVbkM2K05jUkZ4QjhC?=
- =?utf-8?B?TnBPcG8rT2N2NTNMM1lNQ0x4QUVNa2l0dXRkMEhUKzdxSEZYdUtSWGVpMFFo?=
- =?utf-8?B?dXQ0K3VBSUI2VGVabCtVdmwxcGNETmdlUUNDRURORkJzZUJkOENDOVhBZmpj?=
- =?utf-8?B?cktCVWlTNlYxcXdoTXZlcnZUaURZSVQ5RW5jRXNpelYwYzFJTUpjcnc3VWRa?=
- =?utf-8?B?MzFmT3hlVCtRZmc4S0FYMmdJcndoS1FFUzlFZXBxQ3lKRWxCTXhFQkRENnpL?=
- =?utf-8?B?SGhoR1NSaGVjZ1p6eG9wUDNFb0I4dDE4Umc5N0JUNy9KWTU0YWJYdVBBVjQz?=
- =?utf-8?B?amczWTRjVUJTSm1EQWRjNmhhYVhySnJuQXBXZ2JnRmU2ejNUSEYwN1ZtMjFT?=
- =?utf-8?B?SVIrVjloS29DaGFQaTJpd2o0Zmd1dy8wZGZHSkpxMlhhUCtEZmd4ZXZzU0Q1?=
- =?utf-8?B?dlJBZjN6alEwWTVROHZiYnV6Tk5lNnBPdXBnd2ZKa2pjVjNvZUQwQUtDVS9E?=
- =?utf-8?B?MzRCRjhjS0xhb1hsRGRPNFJOczJCVDBTeVFjQXkwY0hLYkpZZkNZc0Y0VTZK?=
- =?utf-8?B?SURkMlAya3F5OFhtZk9UK0tPc2czQm1FcmVmVmt6TkYvTU5DZUxpM2toNi9L?=
- =?utf-8?B?MlRweFhpbFdZeFNuMmlUZGZnUzAxUFdnSW0wNHpvMWFxOG1qRUM4NXBNZjYx?=
- =?utf-8?B?c0FaUVY2UURGRGt5Y0ZVWE9GY3ZGNUliQ0NlYTQ4M0g0eEdsdTN1ZUlReXJp?=
- =?utf-8?B?d2w4UEUrS00rKytuYVE4TlVkUi9MS0VRQmhiM21td1d2aTRkY2YycXBFUWxJ?=
- =?utf-8?B?M09zNU5OdmtleXI4SjZqOVB6ZHB5eTk2SmFrTWNXT2l5VzJKeTlXUm5DZTg4?=
- =?utf-8?B?ZHptZ1ZUdnNHL2xMMEdtZXdCYmRJUTR5eHdaNlJvdTBtVFJ2dTBLeENza2E2?=
- =?utf-8?B?V2ZLb0tBZVY5UTZHcGk4eHhZUXExSERNbmdhNVV4aC80T1RrSXZYQmROWHlW?=
- =?utf-8?B?RlliZS9hbGdBYTdZS0hFbngweUhtdHR5eUs5b0Y5Z2EwUGE3Z0dwN0Z0V3pr?=
- =?utf-8?B?cjhDeDZZTjRqU1BOL1phVVVpSSs2MjBaYzhJVks0VWJaMmw1U0FzQ0FtYmhu?=
- =?utf-8?B?amhTVDJ3QVM5aGIwNVBqbDhrTS9EUFRVaEhvRUltK2dXMEtCcEIzY2ZoUnhC?=
- =?utf-8?B?NzJiOGswVGlFaEErL0tmaUtzQ0V2S29LYTdSS3J6bTUwMENiSmRQMEcrbEto?=
- =?utf-8?B?RTQyaTlYNC9ZLzhtd1ZGNzZhYW1pSGxLK3Nib2xLNGJGSW93VHozSmRwcnFj?=
- =?utf-8?B?M2pkaWtMU1hDNTFSR3kwNkd6djdoNmtUY3RBcVhKN1AwNnlBajJiVUwwb1Jx?=
- =?utf-8?B?RzFYQU0zUnhxckNsQ1M4a3FWWGo3dFozeUcyczVFYXZRYSszY3hlSmtQV3pt?=
- =?utf-8?B?RzU2T3RQbTllNkoxelVSOUptMnVkcDNSMk5CWEt2ME40MjZQOFVpMitQQ2di?=
- =?utf-8?B?OFJSdnNybVljdVZwTnZNTVQyS3QwTExORmRlQldRZzJCdEE1QWpCcS93T042?=
- =?utf-8?B?a3QwYVFYbmRwOG1vdUdpSnVTLzM5ODhmbjNGNWRwVkdZWnh5RjNINXZIZDdo?=
- =?utf-8?B?T0xTVEdvOTFLekZUUXFja2VxNU5zelMvbE5YejRIMG8vckdEQ2p2Y2psa2Ir?=
- =?utf-8?B?ankwd2VKeUt0UkM2OTVpRldLWjB0clBrWm5hTXNxNkJKWmFsS0Y2SlRmdzdV?=
- =?utf-8?B?Njh0MFJIdDdIUzJBZ0NhWXF3bG5INGM2OXBLZkEzaDNiMWl6UmRKR0cvMUxQ?=
- =?utf-8?B?Q0lqL3FnVncvMTBqVHZ3WGxtN1I4WnNqRXVuWVFmTU9zVG54eXMwUzV1TWx4?=
- =?utf-8?B?S0dhQnorRUo1YWRZRlVWMjhnV3dXV1FSdnB4d1JkMDZHTU0vZHEyOVNweEow?=
- =?utf-8?B?bTRLWGxlMS91aWVYaWVWNTQwRnVoUzY0YU5CdVczcEVMcDFLRnEvcitVamdv?=
- =?utf-8?B?a09KcHZVR051bGl5TzMwQ2MvdzdtOUJYRytBZVEwdldMeWJKVXZTbGRIMU1I?=
- =?utf-8?B?dDVaUm9KczdyNXk3NTVVMWs2ckdNQXkzL2JzS3hIRU04S29xT25qWVZoall1?=
- =?utf-8?Q?cCKk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 18:02:39.6820
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c38ec0a-7aa9-49df-1971-08de3103d139
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006000.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5075
+References: <20251125090546.137193-1-kory.maincent@bootlin.com>
+In-Reply-To: <20251125090546.137193-1-kory.maincent@bootlin.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Mon, 1 Dec 2025 10:10:01 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WikKrpLKvaxD22H0s3XHeG=WUiRrLJ0eQMM2pqvXJhuw@mail.gmail.com>
+X-Gm-Features: AWmQ_bmsv9J5UlggLGP1aiEVtrV6kayziPzbKKyqQbq8EQwvWpJS3SIXk8v0J68
+Message-ID: <CAD=FV=WikKrpLKvaxD22H0s3XHeG=WUiRrLJ0eQMM2pqvXJhuw@mail.gmail.com>
+Subject: Re: [PATCH v4] drm/tilcdc: Fix removal actions in case of failed probe
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Maxime Ripard <mripard@kernel.org>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	Bajjuri Praneeth <praneeth@ti.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Louis Chauvet <louis.chauvet@bootlin.com>, stable@vger.kernel.org, 
+	thomas.petazzoni@bootlin.com, Jyri Sarha <jyri.sarha@iki.fi>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/27/25 7:49 AM, Johan Hovold wrote:
-> The mmio regmap allocated during probe is never freed.
-> 
-> Switch to using the device managed allocator so that the regmap is
-> released on probe failures (e.g. probe deferral) and on driver unbind.
-> 
-> Fixes: a5caf03188e4 ("soc: ti: k3-socinfo: Do not use syscon helper to build regmap")
-> Cc: stable@vger.kernel.org	# 6.15
-> Cc: Andrew Davis <afd@ti.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+Hi,
+
+On Tue, Nov 25, 2025 at 1:06=E2=80=AFAM Kory Maincent <kory.maincent@bootli=
+n.com> wrote:
+>
+> From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+>
+> The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
+> should only be called when the device has been successfully registered.
+> Currently, these functions are called unconditionally in tilcdc_fini(),
+> which causes warnings during probe deferral scenarios.
+>
+> [    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_stat=
+e_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
+> ...
+> [    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_ge=
+t_crtc_state+0x68/0x108
+> [    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_=
+all+0x90/0x1c8
+> [    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shut=
+down+0x90/0x144
+> [    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [ti=
+lcdc]
+> [    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [t=
+ilcdc]
+>
+> Fix this by rewriting the failed probe cleanup path using the standard
+> goto error handling pattern, which ensures that cleanup functions are
+> only called on successfully initialized resources. Additionally, remove
+> the now-unnecessary is_registered flag.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/=
+remove time for misc drivers")
+> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 > ---
+>
+> I'm working on removing the usage of deprecated functions as well as
+> general improvements to this driver, but it will take some time so for
+> now this is a simple fix to a functional bug.
+>
+> Change in v4:
+> - Fix an unused label warning reported by the kernel test robot.
+>
+> Change in v3:
+> - Rewrite the failed probe clean up path using goto
+> - Remove the is_registered flag
+>
+> Change in v2:
+> - Add missing cc: stable tag
+> - Add Swamil reviewed-by
+> ---
+>  drivers/gpu/drm/tilcdc/tilcdc_crtc.c |  2 +-
+>  drivers/gpu/drm/tilcdc/tilcdc_drv.c  | 53 ++++++++++++++++++----------
+>  drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 +-
+>  3 files changed, 37 insertions(+), 20 deletions(-)
 
-Acked-by: Andrew Davis <afd@ti.com>
+Seems reasonable to me. I did a once-over and based on code inspection
+it looks like things are being reversed properly. I agree this should
+probably land to fix the regression while waiting for a bigger
+cleanup.
 
->   drivers/soc/ti/k3-socinfo.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/soc/ti/k3-socinfo.c b/drivers/soc/ti/k3-socinfo.c
-> index 50c170a995f9..42275cb5ba1c 100644
-> --- a/drivers/soc/ti/k3-socinfo.c
-> +++ b/drivers/soc/ti/k3-socinfo.c
-> @@ -141,7 +141,7 @@ static int k3_chipinfo_probe(struct platform_device *pdev)
->   	if (IS_ERR(base))
->   		return PTR_ERR(base);
->   
-> -	regmap = regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
-> +	regmap = devm_regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
->   	if (IS_ERR(regmap))
->   		return PTR_ERR(regmap);
->   
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
+This fixup has been sitting out there for a while. Who is the right
+person to apply it? If nobody else does and there are no objections, I
+can apply it to "fixes" next week...
+
+-Doug
 
