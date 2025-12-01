@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-197879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7B4C970CC
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57B8C970D5
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF743A6969
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FEEE3A6A20
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE7E2609D0;
-	Mon,  1 Dec 2025 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB18262FD3;
+	Mon,  1 Dec 2025 11:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq+LRwTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9GEy19Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C94258EDB;
-	Mon,  1 Dec 2025 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC473255F2D;
+	Mon,  1 Dec 2025 11:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588786; cv=none; b=bvbf7fzkWz7GZ22goww6AoibSZ1F9JDSnr+7blxvetbuTArJ/n+TV3RLZ0QETBfPddYxmkl8ikIt30XfBcAt1RkwUjtivEacAcJC507hcClGmPqfenH92Z76xUGpE97hrIkeBCRc9DTkDbCZMUuPdLvNgh51iuqpT+O6jqJ9VkQ=
+	t=1764588791; cv=none; b=cd824ssf8Ra/lwu/4vyytgyHTZMsUO91BWzOaMM/Plq3VDdCD156mw68qyP/3xzSHdAWzcfJcpRUvHS5IdLl97dCS5Ju7eFV88Swnz+3aRJaPR7Yiq+rM1q0Ojq/+nff+a72FJ/6oEZtGuZrzqAxGxp6umtPeVOQo+JInVN/wD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588786; c=relaxed/simple;
-	bh=Kk+3QPCEc3KZIlf+exloAKoqxSPwmojAWsgGyiDbz9I=;
+	s=arc-20240116; t=1764588791; c=relaxed/simple;
+	bh=ZqFFSZyAMyun/A6XNbhgPbbalKqvXzM67FHT5+3UV7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXN+sZ1FUouUWxiiZS3U3Y7OPRfvBfh4KcxBYlD3Ol+XGtlr6QAyWFkbSih8twgax4smL1wXj1At8iqhW6GmJH+YV/O0D8edOEP4HC9aRQD4GxN6cHc6j5uxiKPuj/hX5ZBzcO/pk0pk1P1UXcfxkCIGxE6EewrzHekcFQZFHQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq+LRwTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39AEC113D0;
-	Mon,  1 Dec 2025 11:33:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jLIF/3xhpedJTYTXj/a7usNNkyE9lj7OQyhJL7FDXxuVOEaIGo47uC6xg0T5tONcaOvTNh0ClkfBhgE8tOJJKHwAXWD6VXwa+xnMpzs1WAIDFJU2lqZOalQkm2eUvEuYDHe7eUs9Zp78PmKzr7qrsnZKFWCWvE1H9cfi7mAjhrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9GEy19Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D8DC113D0;
+	Mon,  1 Dec 2025 11:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588786;
-	bh=Kk+3QPCEc3KZIlf+exloAKoqxSPwmojAWsgGyiDbz9I=;
+	s=korg; t=1764588791;
+	bh=ZqFFSZyAMyun/A6XNbhgPbbalKqvXzM67FHT5+3UV7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq+LRwTw6f0MSwr46L7gVEj3SjvpwuFioXskpYAUTHSSY8tysX9LvYinW5CUp0ZTj
-	 m0pfLNiiZY0AUnOLRtc3SK+lr8wUY0BG3fQ6POzQdT2GQw6dCBpWbzqo06VNm0XsSA
-	 n5XAUlrWOZ8DFBtOcsmW+alidKnVi6HJfgLJQuVM=
+	b=V9GEy19QhJv1EMgB4inLg+SksQucQ2pschPuH3Jfrxkggi4vePpH75E2Wv13Nsfi4
+	 bDHeHFmjhZY3wyAxgPbGWqGAQj0O8F96oPrV+gv4Sbit5XsXzUc4wAPc9Iydtp0HUV
+	 80FLhS1SQltEg0Pi5tmo1QF3n2KJxjgh5UA9oqo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 171/187] mm/page_alloc: fix hash table order logging in alloc_large_system_hash()
-Date: Mon,  1 Dec 2025 12:24:39 +0100
-Message-ID: <20251201112247.387317659@linuxfoundation.org>
+Subject: [PATCH 5.4 172/187] ALSA: usb-audio: fix uac2 clock source at terminal parser
+Date: Mon,  1 Dec 2025 12:24:40 +0100
+Message-ID: <20251201112247.422913064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -62,59 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 0d6c356dd6547adac2b06b461528e3573f52d953 ]
+[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
+UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
+bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
+Clean up check_input_term()") into parse_term_uac2_clock_source().
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+This breaks the clock source selection for at least my
+1397:0003 BEHRINGER International GmbH FCA610 Pro.
 
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
+Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
 
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0d6c356dd6547adac2b06b461528e3573f52d953)
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
+Signed-off-by: René Rebe <rene@exactco.de>
+Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 2 +-
+ sound/usb/mixer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 66e4b78786a97..111f50054fc18 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -8275,7 +8275,7 @@ void *__init alloc_large_system_hash(const char *tablename,
- 		panic("Failed to allocate %s hash table\n", tablename);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 11a74cc0e94d8..d6dfa2b40067f 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -914,7 +914,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
+ {
+ 	struct uac_clock_source_descriptor *d = p1;
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? "vmalloc" : "linear");
- 
- 	if (_hash_shift)
+-	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
++	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
+ 	term->id = id;
+ 	term->name = d->iClockSource;
+ 	return 0;
 -- 
 2.51.0
 
