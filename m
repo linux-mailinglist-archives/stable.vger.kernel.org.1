@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-197958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28F4C98701
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:12:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573BFC9872E
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C738D3A2AC5
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:12:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CFC354E2DF9
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A82335556;
-	Mon,  1 Dec 2025 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF27D30E0D4;
+	Mon,  1 Dec 2025 17:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC3j48K+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoDBUTul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62A633290C
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E0F335BDC
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764609122; cv=none; b=jPXYl3FV7LBxEgCx8/3MfSSvcBJKpSlKvytU58WPXLKDg9mKzVSXJDOhcqswYsoHvYApsdAOSRjdopHPsTFBivBZlIQmF2q93dTd/LlFobLfOYiKweOKB+QvJUbp3TjRk6bwvtN9vMC8HhANGxeeZRuaqP3k26f8WhJgHBQw7B4=
+	t=1764609133; cv=none; b=MzY37OO44bvYUV+r3G+vXR/ZcsEBEMvMnRQV82tokZ4y07UdOvYcaPuiRU0/5ozuSe3EYM8VGdhPha6w8Lmf9AwampyPdwiFxOVKUpyuYlMnL9JjVl9ATsmbeNDzjRosooxqP84Qp+znSVY6wulwFWvM/3Hk/i4WwBtLkU+lsGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764609122; c=relaxed/simple;
-	bh=BLT+Rk+KW+25KDTlTMC5GYZGHDvd5BPX8M6w07guFQ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qP3uiXF2ut9pyUV+ko8GTnFtCkBuifMULRujZfe3b+bIngtsYp3ux2M4X6YACiX+UyGPlqwwFkYzxFU2xw8GdUyGeeyWjzr/7c2QhUAa4tIZIZS0Bblh0pD5AbvDidEGM1KN39C6zNn+d4+WXFvNZC1f6Or8+qurOzhupnBRVLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC3j48K+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE52C4CEF1;
-	Mon,  1 Dec 2025 17:12:01 +0000 (UTC)
+	s=arc-20240116; t=1764609133; c=relaxed/simple;
+	bh=TlAN2cItmErfGghtc2FK9E7jtd1uSoQF0QzkME/R2z0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kULD9akhi02TcHW7vUOgq1XzwBoWvkZV3w4EwTo81khI7GMtdT9CpgHMLICO+5rwjl+saztgQqqAPuIIB5qbm18RbRcCmXgedrFvzayy5k8pyYQZN63EK3N0O+JghPHI5jqCXwILH6PKKX84AqgmXCH+7PdBCkQ7SKKE/JnR5ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoDBUTul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CACC19422;
+	Mon,  1 Dec 2025 17:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764609122;
-	bh=BLT+Rk+KW+25KDTlTMC5GYZGHDvd5BPX8M6w07guFQ0=;
+	s=korg; t=1764609133;
+	bh=TlAN2cItmErfGghtc2FK9E7jtd1uSoQF0QzkME/R2z0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IC3j48K+qnD6Xy/tzn5AqDIj2vonJXsnK3urSq5pgB7SCIsZH2O9BV6T/3RKxRkAa
-	 IjG+6V/Tt2XV0DDyUYIoo5oi5nJqSScAP8/Y9qOu87AEPFV50Gh/4phGlwTaVxxHlc
-	 FHW7gIRqKQlnwvah/ZYAIKzGmItaf6ehb6JZPqws=
-Subject: FAILED: patch "[PATCH] xhci: fix stale flag preventig URBs after link state error is" failed to apply to 5.10-stable tree
-To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org
+	b=ZoDBUTul9g7YeqUMJB/Janpq9rUZSy3Rgks9lfAt8G6mJcG4I1MUMuWnnFdaNH9+X
+	 bkQC//4xdSHyBsvwbYNNpGXkhRd/qTeSRo7I3jE0T9SDitA8j5x0Titn7szibJZrON
+	 5+BuM5CW6RzveT9BkIXsNANbjauMsg89xeWBXms4=
+Subject: FAILED: patch "[PATCH] xhci: dbgtty: fix device unregister" failed to apply to 5.15-stable tree
+To: ukaszb@chromium.org,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 18:11:46 +0100
-Message-ID: <2025120146-coaster-huff-141a@gregkh>
+Date: Mon, 01 Dec 2025 18:12:10 +0100
+Message-ID: <2025120110-deuce-arrange-e66c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b69dfcab6894b1fed5362a364411502a7469fce3
+git cherry-pick -x 1f73b8b56cf35de29a433aee7bfff26cea98be3f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120146-coaster-huff-141a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120110-deuce-arrange-e66c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,106 +77,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b69dfcab6894b1fed5362a364411502a7469fce3 Mon Sep 17 00:00:00 2001
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Date: Fri, 7 Nov 2025 18:28:16 +0200
-Subject: [PATCH] xhci: fix stale flag preventig URBs after link state error is
- cleared
+From 1f73b8b56cf35de29a433aee7bfff26cea98be3f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Date: Wed, 19 Nov 2025 21:29:09 +0000
+Subject: [PATCH] xhci: dbgtty: fix device unregister
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-A usb device caught behind a link in ss.Inactive error state needs to
-be reset to recover. A VDEV_PORT_ERROR flag is used to track this state,
-preventing new transfers from being queued until error is cleared.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-This flag may be left uncleared if link goes to error state between two
-resets, and print the following message:
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
 
-"xhci_hcd 0000:00:14.0: Can't queue urb, port error, link inactive"
-
-Fix setting and clearing the flag.
-
-The flag is cleared after hub driver has successfully reset the device
-when hcd->reset_device is called. xhci-hcd issues an internal "reset
-device" command in this callback, and clear all flags once the command
-completes successfully.
-
-This command may complete with a context state error if slot was recently
-reset and is already in the defauilt state. This is treated as a success
-but flag was left uncleared.
-
-The link state field is also unreliable if port is currently in reset,
-so don't set the flag in active reset cases.
-Also clear the flag immediately when link is no longer in ss.Inactive
-state and port event handler detects a completed reset.
-
-This issue was discovered while debugging kernel bugzilla issue 220491.
-It is likely one small part of the problem, causing some of the failures,
-but root cause remains unknown
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220491
-Fixes: b8c3b718087b ("usb: xhci: Don't try to recover an endpoint if port is in error state.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251107162819.1362579-2-mathias.nyman@linux.intel.com
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 8e209aa33ea7..5bdcf9ab2b99 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1985,6 +1985,7 @@ static void xhci_cavium_reset_phy_quirk(struct xhci_hcd *xhci)
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index b7f95565524d..57cdda4e09c8 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -550,6 +550,12 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
  
- static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- {
-+	struct xhci_virt_device *vdev = NULL;
- 	struct usb_hcd *hcd;
- 	u32 port_id;
- 	u32 portsc, cmd_reg;
-@@ -2016,6 +2017,9 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- 		goto cleanup;
- 	}
- 
-+	if (port->slot_id)
-+		vdev = xhci->devs[port->slot_id];
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
 +
- 	/* We might get interrupts after shared_hcd is removed */
- 	if (port->rhub == &xhci->usb3_rhub && xhci->shared_hcd == NULL) {
- 		xhci_dbg(xhci, "ignore port event for removed USB3 hcd\n");
-@@ -2038,10 +2042,11 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- 		usb_hcd_resume_root_hub(hcd);
- 	}
- 
--	if (hcd->speed >= HCD_USB3 &&
--	    (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
--		if (port->slot_id && xhci->devs[port->slot_id])
--			xhci->devs[port->slot_id]->flags |= VDEV_PORT_ERROR;
-+	if (vdev && (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
-+		if (!(portsc & PORT_RESET))
-+			vdev->flags |= VDEV_PORT_ERROR;
-+	} else if (vdev && portsc & PORT_RC) {
-+		vdev->flags &= ~VDEV_PORT_ERROR;
- 	}
- 
- 	if ((portsc & PORT_PLC) && (portsc & PORT_PLS_MASK) == XDEV_RESUME) {
-@@ -2099,7 +2104,7 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- 		 * so the roothub behavior is consistent with external
- 		 * USB 3.0 hub behavior.
- 		 */
--		if (port->slot_id && xhci->devs[port->slot_id])
-+		if (vdev)
- 			xhci_ring_device(xhci, port->slot_id);
- 		if (bus_state->port_remote_wakeup & (1 << hcd_portnum)) {
- 			xhci_test_and_clear_bit(xhci, port, PORT_PLC);
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 0cb45b95e4f5..a148a1280126 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -4007,6 +4007,7 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
- 				xhci_get_slot_state(xhci, virt_dev->out_ctx));
- 		xhci_dbg(xhci, "Not freeing device rings.\n");
- 		/* Don't treat this as an error.  May change my mind later. */
-+		virt_dev->flags = 0;
- 		ret = 0;
- 		goto command_cleanup;
- 	case COMP_SUCCESS:
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
