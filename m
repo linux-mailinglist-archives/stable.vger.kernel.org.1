@@ -1,161 +1,128 @@
-Return-Path: <stable+bounces-197982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9C1C98D3B
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 20:18:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37371C98D77
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 20:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6520E345078
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 19:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9D853A4358
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 19:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6247E1FAC42;
-	Mon,  1 Dec 2025 19:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC6E1ACEDE;
+	Mon,  1 Dec 2025 19:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSDXGfXo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bB94WNmG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B947410F1
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 19:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742651B87C0
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 19:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764616685; cv=none; b=RkvTSfMdIE6sLcGQliNdq2D31xcQHWR89W4n86ROLJ1DoKHgU5UIqFgHW4L+YVlHuWeLE5j6OchnyCFW/GRJiSFj8MIDu6oXLbkfyjhpRqDfj28DMfEQpiQeCrIKbzYchryBq6be8lcAstWHpt9sPS/vIV1R3QKIGVENQfkcVQ4=
+	t=1764616943; cv=none; b=snEARdXThq/fWYdCCN6sovKroNgVsiPavOpScicgTrUMZo8tckVDWWmUafmEULqIODJOSxFUkqd/9Rga3CS6mk3HVnVbTbIrUbRgDh69mRNL8R3GKODBOCkSVG/DP50FQNT1Iupmo5ezotjc8G7BF/6CxWjuoIyPkp6nxMgBfQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764616685; c=relaxed/simple;
-	bh=IzPH5Klro3wwiiOI21/koAESObsx6RFP/Km849tmY70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PGMd9Dr0y7/n5JYd39Kydn87a4GeIsuy2bGQifbNqr9vNqRyNLlYpnhAOIyVg8SYhcW48WzWd96H+LXXtiO0/U6R8EmcTIAlMqPgX9Bp3FpQy+WHjfmvjR33Q3ienJlUXrNwnSPWthxIhwKNeTJQsXFiCYw4jR6xBu/Fxto8PZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZSDXGfXo; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1764616943; c=relaxed/simple;
+	bh=Zgbj8PlSoDz3e4r9wFsN81LzssrEk4T1hX/dR5Q9zhM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MC0d21/+cBZhOiGuCvhmABoLl3Oi/0X2bGd5Yea+T05I8VNr3IZr51/xHWJtsErNLsFbiipTKDc1cUpbThsf9L4z3gmhWaYDqJTtOi6ssFz4XFwoKf0HSQrBk69xTSJ5yQeSfNR9Bde3EzfLBFp6w66OgGl3FTNvTILhJm1u6y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bB94WNmG; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7bb2fa942daso542015b3a.1
-        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 11:18:02 -0800 (PST)
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8b3016c311bso575846485a.1
+        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 11:22:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764616682; x=1765221482; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uG1pef5j3kb+4gT82++NmcY1RocDe5RimSakU+cBCck=;
-        b=ZSDXGfXoKnnFC3LDHpElYCnh+bZHqi0T6lBGrhO4M1g8PKQGy+QPHNKfVQJ7qICIvK
-         PX40e8lHayTCoXkAdMDuN4L/kRf5d4DxVTV2YN2IT8YUzleWZJ5l2UtB+uHqBM+7vBTk
-         970D+KvtnU2y69CcvAKixajJwt2Xc40Sd3HEjz1Ah8Np3TEeSeuP09at1LQI1L76woSD
-         W55FTH4lntV3UGmH413zIBBXDhoUxRMhoSz0XSRgiMFWAZR7dqbM0PDSio62akkFyOa/
-         GO/W8Nw8WbJ9KUm6tXoqkEAiTJkul9SHlB0Qe7e0ts+JN6Ggu4vT1QJ1dL0dAAUoFnSG
-         crEg==
+        d=gmail.com; s=20230601; t=1764616941; x=1765221741; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fzDebQjWZpMlRG+LtMc42JVB6/2Vh3cogJRGNlIZlvc=;
+        b=bB94WNmGDSjotkoJL66LCs/lQBEjenb7Y0Ee2b/2Pc4lhaAKRVglwuelNZM2A/2I59
+         Smsidm0oKNdIoof/AesmqrT9ag6AYRYiKhnB3ahNAZh/0uwIvLxzb/JGnS0bIbEsyuam
+         Ysfue1/0ekDpHUHCKBC1ylxpihz8wdSB3Y5JOViywmtStpSaDfwkgarlfIT4rOnw6lqm
+         kHEAt7L4Gww/E2pswhZ+WQhtta5gpnJ1Xen8AwDzQvFq7m8ikBEwjFwuI+ThU9tDPGvQ
+         CBnBcImMy9HRaxWNNW4P4NmC+jtZ7jKLBXRHYq6P+p2LN1oWrb5xxckHbWtDIHY+FUdP
+         g++w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764616682; x=1765221482;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uG1pef5j3kb+4gT82++NmcY1RocDe5RimSakU+cBCck=;
-        b=UQyUKLaHhetebW8sQNZyPzeuBmHb2YwaV37JV6vdmivYBkP7HzzVOFn8yxXtGauhCf
-         ILAx3Q5qJxxBG13Ox76Fp5nIl1u3auoTWDUtX8orxMjZeenR7p+fHMK1KNOMR77KNzbr
-         FRK3iqZgxD6AHPnmX+z7pv8HntFaUJTEI6bOCSAh+3R/bmW3a2mtMrMy6/MrtJAxhj0q
-         MJ521UnhZtU55NI8fHhpzMWq/Zab0Ow/MjTIzpIisJuWTMvAxiLxyb5pakHuK0qb4Hi7
-         GTSsCYEt0bKlWGD9aYVOehyM73CnRJYdyAyie8k1SpfqvdBwEsC7DJzC26erYoybd4tM
-         iGCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQoD687cx8MokZR9f448omwwoJcUOqUVy1l4kMy25GIBlphn6CeaNR1pOATsQTwxfbMCo9GmA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoI7odMCHQ5tsoDVvk0crNWd/Y+tddpDwCIEyRqPdJWRWfnBZV
-	Hu4XCiK5UcPZiFkKwiFr8xXNTQX0pUcR/WHxOUbIu90snASq7xDSOWupCANru0uMLb24LK+r311
-	FSxXNWKQNVN3JfuLnchFDwbLGx56z108=
-X-Gm-Gg: ASbGncsYWGneMx61mw/6dTeDxng25K3HzUlGudeEPOH0kZMye09uhJuzRwy9PnqQ2jw
-	nDRET7a0EKhvWoD7U83e1kPH9YzZCjdXhqF1bjum/MKmNM4QnqU12+OSsw1G4knoAlwWWaRsrd6
-	Fe+HuFcjoG/eqiofLvJ1WUNu42fwd7/tYWzSgr4eHsJsH6OR0eM6O9yyHmIn2XR4gX10aByYUL2
-	b/3FnJcyF50wNi3o3109GyKJAUU9Z2aOE6BN5pd5p690lQlWYY6diUrEbES9VXqxLdKefY=
-X-Google-Smtp-Source: AGHT+IHK9eiAGQUPs7XxDwdINu82yjOiyGXjBNyvKQ1nsCNnDHeJez+OpNJZ1kHkrXY8DwHjOMdc+y57KAFRjvrxKCQ=
-X-Received: by 2002:a05:7022:f902:20b0:119:e56b:46b7 with SMTP id
- a92af1059eb24-11c9f303bbdmr17346603c88.1.1764616682007; Mon, 01 Dec 2025
- 11:18:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764616941; x=1765221741;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fzDebQjWZpMlRG+LtMc42JVB6/2Vh3cogJRGNlIZlvc=;
+        b=w2k9fKj0Mtsfhqc9GCNXgPtZQgw8kTKUpAGdI4DpNmdiOt6UZMLS2iqpMDR98QRgvG
+         gYN8mESSNlM8CQoWZmSdDV2hy0g37+WuydOtF/+YwDwkKBxtMkau70KJs+2W3fD439Wo
+         iTaSH9s+PJL5/qSoDCdQ0xD+cBI7rwrNVCoF6Sl0j+yLclm3XFgrGIeqM2VQaYw1vlYj
+         ksQgLKK78w86zhE6kAXuOrFaCheSprZWn+Hg5fRCsxEJYAxDRl3m8bG/ZMEYdXnsU/Y8
+         D1QraHUnnZhs9BaFZnEPDlCxZsXc3PUQN+/0COkuINgn7xS/eROyDeXtMCPOfV0LRd3S
+         fVug==
+X-Forwarded-Encrypted: i=1; AJvYcCVcHfJ9um9HhFWYTEXNnVKpjZP3YqRa4/7Mh+0OFBpHws7rq6HWKMe30LiirKM6nhLcTeVMvpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg33LslGtTDyvtxxV2TmLNuiwNO+p01wknyK1aiefGI3wDTdBr
+	wLlX5qyZQyormgz0sc0Qrc++10meVab3vkhTFjoL5xwTCwLwww7/BZ2Mhv4D9w==
+X-Gm-Gg: ASbGncs/ck80b283jFZVuzVPXsx3HDalnHsZWJ4PAgfXSJoFldZNjOyNnnquzLKIgyM
+	1FaY5JoOzZD/D985uX/aMnVezl1XFUiKrQGHdv3YOi5cGULU/Z41LpWAajdY350hqoB53XZY1g9
+	WuegWwwU3wwAGWIRXs0nkpv+bcAnkMASpqyBeIri0SqNZC0moTHDO/RASAWo+3FC6EsIHfo0HLp
+	JmYrosKJsFbVIT2l+uc0BsrnpMu8SF4oH5VFS5pEkmfFFeaImSqejk30+XT99MT1H3OLlI4dhoH
+	kwzn1q0F8XYEHRebRIWioMqTnvk7mpxHTd3yHpqUM1MwBB+kkjWbOTpR90704FQmaHsK/hNmHoz
+	+/TJeEDCw33wD6UT97QaRBKtNJZ/fbD7vfbZfycBaZHdsM2RTSruqkCQH1d2QOdIUTqEeUzILoP
+	2Wf+eCFRL3soqzhTx5f9ESoT7aZxgLzU4xKmpYxQ==
+X-Google-Smtp-Source: AGHT+IEcZfYkFHsvEMBvJ/GDPn5E07Zsr5/1DwlC7SyfCIghNvunkD76FZLcDH5dLmHl8dQPucWPTQ==
+X-Received: by 2002:a05:620a:450f:b0:84a:d3ce:c749 with SMTP id af79cd13be357-8b33d4cac81mr5684882585a.64.1764616941346;
+        Mon, 01 Dec 2025 11:22:21 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1dd169sm907120185a.52.2025.12.01.11.22.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Dec 2025 11:22:20 -0800 (PST)
+Message-ID: <e915024d-af6d-4919-ad17-153343ac0967@gmail.com>
+Date: Mon, 1 Dec 2025 11:22:17 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251130014631.29755-1-superm1@kernel.org> <ad10d9ef-c769-49ba-ad12-3d2b5ab7f1e1@kernel.org>
-In-Reply-To: <ad10d9ef-c769-49ba-ad12-3d2b5ab7f1e1@kernel.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 1 Dec 2025 14:17:50 -0500
-X-Gm-Features: AWmQ_blzIYmdGqX6DnxfaOOAl2trtlOnCOWHglxWvMTQPOVTdx5ArwlXlupYGzM
-Message-ID: <CADnq5_OJo_Z2feLLpeCjNE6KO9LZuDV7TBU4YUi+8ckw6g8NzQ@mail.gmail.com>
-Subject: Re: [PATCH] Revert "drm/amd: Skip power ungate during suspend for VPE"
-To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 000/187] 5.4.302-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251201112241.242614045@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 1, 2025 at 12:04=E2=80=AFAM Mario Limonciello (AMD) (kernel.org=
-)
-<superm1@kernel.org> wrote:
->
->
->
-> On 11/29/2025 7:46 PM, Mario Limonciello (AMD) wrote:
-> > Skipping power ungate exposed some scenarios that will fail
-> > like below:
-> >
-> > ```
-> > amdgpu: Register(0) [regVPEC_QUEUE_RESET_REQ] failed to reach value 0x0=
-0000000 !=3D 0x00000001n
-> > amdgpu 0000:c1:00.0: amdgpu: VPE queue reset failed
-> > ...
-> > amdgpu: [drm] *ERROR* wait_for_completion_timeout timeout!
-> > ```
-> >
-> > The underlying s2idle issue that prompted this commit is going to
-> > be fixed in BIOS.
-> > This reverts commit 31ab31433c9bd2f255c48dc6cb9a99845c58b1e4.
-> >
-> > Fixes: 31ab31433c9bd ("drm/amd: Skip power ungate during suspend for VP=
-E")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
->
-> This was reported by a few people tangentially to me reproducing it
-> myself and coming up with the revert.
->
-> Here's some more tags to include with the revert.
->
-> Reported-by: Konstantin <answer2019@yandex.ru>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220812
-> Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+On 12/1/25 03:21, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.302 release.
+> There are 187 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 03 Dec 2025 11:22:11 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.302-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
->
-> > ---
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +--
-> >   1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/d=
-rm/amd/amdgpu/amdgpu_device.c
-> > index 076bbc09f30ce..2819aceaab749 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> > @@ -3414,11 +3414,10 @@ int amdgpu_device_set_pg_state(struct amdgpu_de=
-vice *adev,
-> >                   (adev->ip_blocks[i].version->type =3D=3D AMD_IP_BLOCK=
-_TYPE_GFX ||
-> >                    adev->ip_blocks[i].version->type =3D=3D AMD_IP_BLOCK=
-_TYPE_SDMA))
-> >                       continue;
-> > -             /* skip CG for VCE/UVD/VPE, it's handled specially */
-> > +             /* skip CG for VCE/UVD, it's handled specially */
-> >               if (adev->ip_blocks[i].version->type !=3D AMD_IP_BLOCK_TY=
-PE_UVD &&
-> >                   adev->ip_blocks[i].version->type !=3D AMD_IP_BLOCK_TY=
-PE_VCE &&
-> >                   adev->ip_blocks[i].version->type !=3D AMD_IP_BLOCK_TY=
-PE_VCN &&
-> > -                 adev->ip_blocks[i].version->type !=3D AMD_IP_BLOCK_TY=
-PE_VPE &&
-> >                   adev->ip_blocks[i].version->type !=3D AMD_IP_BLOCK_TY=
-PE_JPEG &&
-> >                   adev->ip_blocks[i].version->funcs->set_powergating_st=
-ate) {
-> >                       /* enable powergating to save power */
->
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
