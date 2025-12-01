@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-197717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0522CC96EB5
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:29:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58ADC96EAF
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A355F4E494F
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:26:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 72BD6346074
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6CF308F0F;
-	Mon,  1 Dec 2025 11:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31A43093A6;
+	Mon,  1 Dec 2025 11:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeMDtnNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpmJHmuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF47307ADE;
-	Mon,  1 Dec 2025 11:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C002571A1;
+	Mon,  1 Dec 2025 11:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588315; cv=none; b=PyUofL6wJJHuLBIj6rxCk3DZ7uJZWNMoUg2q4sbLD/FqJuStKVPnupJLbveXfYz5lL0jxLWbsKWp2HTaL3uGBIIJCPfpenQD19jRADw7uy7YqxVsDhPCkpc2tXt3aDustaCcnMqZGLZbBji7Z1YZDrQN/Mt4TH5mXC3rH92c4+Q=
+	t=1764588346; cv=none; b=ZzXljg66Z24R+8dMSxcZ/ws0ji098CWms1JkfchTT5mG6CEP0v5MdZpBmBSIiH1y3Z3Ldxw2U+QUITuSzgj9bhlh/+sHcwRM84dcYDbkG/wEBL34gytKt+9vKAiHRMuGxKDFSSAaQChFXTAO+8OPfK1FzdcB9CoFmq4oY+fBmjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588315; c=relaxed/simple;
-	bh=vKmChMhovl2AN8B1KiHIJQ4Hc+ykot3Sc3/ywSQq30Q=;
+	s=arc-20240116; t=1764588346; c=relaxed/simple;
+	bh=FUYFt2higJKMdy4foeRHKWWI0IkmrI6TQm6oQ694+G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEeujgD28+kb1W2AWCMc4NNjYgHX0PhSBIWHdHTrzUUABAMI2pUq19bBWd6u10jWSUogxewWJ4GZ5b4xFo5tTlST27bSBImpfwwk2153nRHCKpyuT0SYyliTpG5EHc4ZUtFhAHqLO0rsy7SFpWoMK1k8RVwNmiqvOCjiiscfxFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeMDtnNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D20C4CEF1;
-	Mon,  1 Dec 2025 11:25:13 +0000 (UTC)
+	 MIME-Version; b=UzOrNyb6KRjfweje8FWQEzKM9LFGSONVOfwATwIg87zfyaLgpm024++FzmxstPnlau04PiFXntfy1ReLR2FyOuvXSv+G5f2PfL6T+GahNIwkyy2PlCdulDrzm05BSTwvHlHBjwZpozwt3U+RRWgX5/UCQtb4VnRGMy9CLSuzu2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpmJHmuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8579C4CEF1;
+	Mon,  1 Dec 2025 11:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588314;
-	bh=vKmChMhovl2AN8B1KiHIJQ4Hc+ykot3Sc3/ywSQq30Q=;
+	s=korg; t=1764588346;
+	bh=FUYFt2higJKMdy4foeRHKWWI0IkmrI6TQm6oQ694+G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeMDtnNyJ8Mv/62tddbHTzPyZdFPuAjgSW5uMVhG/DuzIoYqE7YsC9F86DaHwZt90
-	 9/M9Hy8NC8Oiph+x7T6ym3/7TJviexhPPB43oAY0ONh326Eb0ljA0Mtey4nh+WTwJ5
-	 MD+3LblcVF+ZSPgUCWac6hHrzr6hjCK4nbZjeDWU=
+	b=rpmJHmuAeMeCUt8pjab/o3jO1rBj3ELo4nyYaX1U8E1cZNWO2SKRkDyJtLUhTlSFz
+	 vT5gRZ0za312MgD65HHrrrxan4TyGq3lkzn6Ppy7n+it3+s9ourMzVgDGuo30fJo5h
+	 17eKO/0bWpKwI53y2SC4cIg1IAFH4k/UvelrWheQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/187] x86/bugs: Fix reporting of LFENCE retpoline
-Date: Mon,  1 Dec 2025 12:21:50 +0100
-Message-ID: <20251201112241.335929210@linuxfoundation.org>
+Subject: [PATCH 5.4 003/187] btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+Date: Mon,  1 Dec 2025 12:21:51 +0100
+Message-ID: <20251201112241.372208620@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -66,49 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit d1cc1baef67ac6c09b74629ca053bf3fb812f7dc ]
+[ Upstream commit 45c222468d33202c07c41c113301a4b9c8451b8f ]
 
-The LFENCE retpoline mitigation is not secure but the kernel prints
-inconsistent messages about this fact.  The dmesg log says 'Mitigation:
-LFENCE', implying the system is mitigated.  But sysfs reports 'Vulnerable:
-LFENCE' implying the system (correctly) is not mitigated.
+After setting the BTRFS_ROOT_FORCE_COW flag on the root we are doing a
+full write barrier, smp_wmb(), but we don't need to, all we need is a
+smp_mb__after_atomic().  The use of the smp_wmb() is from the old days
+when we didn't use a bit and used instead an int field in the root to
+signal if cow is forced. After the int field was changed to a bit in
+the root's state (flags field), we forgot to update the memory barrier
+in create_pending_snapshot() to smp_mb__after_atomic(), but we did the
+change in commit_fs_roots() after clearing BTRFS_ROOT_FORCE_COW. That
+happened in commit 27cdeb7096b8 ("Btrfs: use bitfield instead of integer
+data type for the some variants in btrfs_root"). On the reader side, in
+should_cow_block(), we also use the counterpart smp_mb__before_atomic()
+which generates further confusion.
 
-Fix this by printing a consistent 'Vulnerable: LFENCE' string everywhere
-when this mitigation is selected.
+So change the smp_wmb() to smp_mb__after_atomic(). In fact we don't
+even need any barrier at all since create_pending_snapshot() is called
+in the critical section of a transaction commit and therefore no one
+can concurrently join/attach the transaction, or start a new one, until
+the transaction is unblocked. By the time someone starts a new transaction
+and enters should_cow_block(), a lot of implicit memory barriers already
+took place by having acquired several locks such as fs_info->trans_lock
+and extent buffer locks on the root node at least. Nevertlheless, for
+consistency use smp_mb__after_atomic() after setting the force cow bit
+in create_pending_snapshot().
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/btrfs/transaction.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 4f803aed2ef0e..b10e257799c16 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1188,7 +1188,7 @@ spectre_v2_user_select_mitigation(void)
- static const char * const spectre_v2_strings[] = {
- 	[SPECTRE_V2_NONE]			= "Vulnerable",
- 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
--	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
-+	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
- 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
- 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
- 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
-@@ -2280,9 +2280,6 @@ static char *pbrsb_eibrs_state(void)
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 094b024bbf0cf..6618b42defed7 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1546,7 +1546,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
+ 	}
+ 	/* see comments in should_cow_block() */
+ 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
+-	smp_wmb();
++	smp_mb__after_atomic();
  
- static ssize_t spectre_v2_show_state(char *buf)
- {
--	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
--		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
--
- 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
- 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
- 
+ 	btrfs_set_root_node(new_root_item, tmp);
+ 	/* record when the snapshot was created in key.offset */
 -- 
 2.51.0
 
