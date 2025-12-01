@@ -1,100 +1,133 @@
-Return-Path: <stable+bounces-198004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB83C995AB
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 23:15:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B09C995EE
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 23:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B3D2E347158
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 22:14:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9473B4E23B9
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 22:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EB82C159C;
-	Mon,  1 Dec 2025 22:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3D725F988;
+	Mon,  1 Dec 2025 22:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JAqL3g/q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyC3LWN+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57C328642B
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 22:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8DB23AB95
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 22:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764627101; cv=none; b=cVGtJwuzD+FRT/cBVt46/0f1MyD0lcbYqNYPhBVTsIe4VKPN6FSEv1RuOG6OQeOInD6sCOoo22UYTq1zrnrOZim10MiSSydh7qpdhGNF57Yr0hK3dvVm5EvqNBU67VY8SZYLU/RNfTfvD+cWJkg/4pza2EPrrYd7aV172Dxtwv8=
+	t=1764627508; cv=none; b=bs+QbdyvnowFjQMkqkNCu0GmzHMnKARK84EFqChXLvnQVa0SrxipG4gWo4gc+jh3oQB3cE+6KxCiP+qn09nSo6XhMGAVXEG81k9WVRFiVrPhgYzt1dsO+fJsgjNTB7KWx+Kvvd4BTFbx3T1F91Qyi/2OmFJ+kWYvgaA4jbxInMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764627101; c=relaxed/simple;
-	bh=zM5zL4ZH0X5e+aoYJf0BBh5p2kFeFcfgPBfnzps3Hwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=qXCAq+0HoFl+lcTEcvyAegAhM4K3uQz1OyTzSGy2oUgg5h/mXjrL7gJUcEUzznqBzMWpSM06NP9mqozS1DHMG7XEPzufnfaN64x85Hvi4KsZO2VFHLhEM3khVMozpshGknaXFTosbyhyZ2pHsJUYr2h7fJYsC73F+LhxnvTRvlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JAqL3g/q; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764627100; x=1796163100;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=zM5zL4ZH0X5e+aoYJf0BBh5p2kFeFcfgPBfnzps3Hwk=;
-  b=JAqL3g/qSyOfr+xE+PDGcEDldB6v4RaLvMDeLmUneYM/pmbpaDLsGeZd
-   Ts/V6P26jtk5RMSj1EaZ+7xfov1/vUxM1e+m1OI1HAc2ZNQvuCSeW/TiQ
-   urkslGxTNOoIKzG7mXOznDMuQG4nQdHuQfvfyHf5+nKr3hwW+ACrMJC82
-   PLBIy7XzEShsfikpmfwhza+Z/1aYyBVa2ShBnYZ0aTgW8qfKLnsJQj2j+
-   imh9fUaOSSX0lCJeHMJcG346cq0Zx0KoUnzHvlamgFUswiDfErjhqMvl0
-   vA2Tt113z+4sGVJquroIq0pqOFAXuyINw5DDY26VNanhPnveCeHsCAYOu
-   Q==;
-X-CSE-ConnectionGUID: w7sEcEXKSOuqOnqf4CeV0Q==
-X-CSE-MsgGUID: MLXWqyEzSgWKnlPqlTNezA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66529036"
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; 
-   d="scan'208";a="66529036"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 14:11:39 -0800
-X-CSE-ConnectionGUID: jyhZjJBnRPmfFIncZEMQgw==
-X-CSE-MsgGUID: BaUbqutOThaaXxeW0aezbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; 
-   d="scan'208";a="198568345"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 01 Dec 2025 14:11:38 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vQC7M-000000009BJ-0WGY;
-	Mon, 01 Dec 2025 22:11:36 +0000
-Date: Tue, 2 Dec 2025 06:11:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6 2/9] s390/pci: Add architecture specific resource/bus
- address translation
-Message-ID: <aS4SjMrgP4NugXOo@656a63d76ae5>
+	s=arc-20240116; t=1764627508; c=relaxed/simple;
+	bh=DQrz4Oi3KOTQ6DszB4A3PDYNK4q7rvFCEyGO7op2j6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M1vn09KEet0diKeSgCLI/7cLHjRv17lDii7cNbtkHOVj018tQg8LG452JXzE0ziF0Z9VSlnkAnRdr+w62nTkgyvjS3IYWoke3PIuJIcui3QYUMdNnSuZwLcDfAKyfcdSYmZC+FRsLA3yO0kA2+1NCJzIVCADm4IbViCr6weoGpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyC3LWN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5A4C4CEF1;
+	Mon,  1 Dec 2025 22:18:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764627508;
+	bh=DQrz4Oi3KOTQ6DszB4A3PDYNK4q7rvFCEyGO7op2j6M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XyC3LWN+VtWcfQExMFUJeofdBXvkVokPqZbeR5Bl16RuEl+SsKK8+dWuOTQ8ufzg1
+	 i9KJMT+2PoMUAz3Q+eD8ynYqEBD8aL9+zSwRrwchac1PPQW/Qh5+03jDhz8eJZsRSU
+	 vndeLitD8FYVyAbh1VcqXyXqRWLyNmQC09bjxmqpjonBqhP4xo3aWR0yPTiU4WOrXK
+	 CaCVxQsyNLXxnN+NmBwY769fWhB/8ox+1lj7yZLiRzcDtEw4OIn43MxZ6twb5UE62n
+	 gu6sJyCyfei128BDZNBvPz2EPKkWHm97ngdHxXtF593GEq3UOYxZvM3q0uPbF4k+F/
+	 ACnU2vaPvPtxw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] mm/huge_memory: fix NULL pointer deference when splitting folio
+Date: Mon,  1 Dec 2025 17:18:18 -0500
+Message-ID: <20251201221818.1285944-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120102-geranium-elevator-ca86@gregkh>
+References: <2025120102-geranium-elevator-ca86@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201220823.3350-3-alifm@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Wei Yang <richard.weiyang@gmail.com>
 
-Thanks for your patch.
+[ Upstream commit cff47b9e39a6abf03dde5f4f156f841b0c54bba0 ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
+introduced an early check on the folio's order via mapping->flags before
+proceeding with the split work.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+This check introduced a bug: for shmem folios in the swap cache and
+truncated folios, the mapping pointer can be NULL.  Accessing
+mapping->flags in this state leads directly to a NULL pointer dereference.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v6 2/9] s390/pci: Add architecture specific resource/bus address translation
-Link: https://lore.kernel.org/stable/20251201220823.3350-3-alifm%40linux.ibm.com
+This commit fixes the issue by moving the check for mapping != NULL before
+any attempt to access mapping->flags.
 
+Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ applied fix to split_huge_page_to_list_to_order() instead of __folio_split() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/huge_memory.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index d68a22c729fb3..2065374c7e9e6 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3404,6 +3404,16 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 	if (new_order >= folio_order(folio))
+ 		return -EINVAL;
+ 
++	/*
++	 * Folios that just got truncated cannot get split. Signal to the
++	 * caller that there was a race.
++	 *
++	 * TODO: this will also currently refuse shmem folios that are in the
++	 * swapcache.
++	 */
++	if (!is_anon && !folio->mapping)
++		return -EBUSY;
++
+ 	if (is_anon) {
+ 		/* order-1 is not supported for anonymous THP. */
+ 		if (new_order == 1) {
+@@ -3466,13 +3476,6 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 		gfp_t gfp;
+ 
+ 		mapping = folio->mapping;
+-
+-		/* Truncated ? */
+-		if (!mapping) {
+-			ret = -EBUSY;
+-			goto out;
+-		}
+-
+ 		min_order = mapping_min_folio_order(folio->mapping);
+ 		if (new_order < min_order) {
+ 			VM_WARN_ONCE(1, "Cannot split mapped folio below min-order: %u",
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.51.0
 
 
