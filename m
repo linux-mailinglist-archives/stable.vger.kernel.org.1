@@ -1,61 +1,53 @@
-Return-Path: <stable+bounces-197861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65808C970C0
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCACCC97111
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFACA349395
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5635B4E453F
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82891262FF6;
-	Mon,  1 Dec 2025 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879FC263F49;
+	Mon,  1 Dec 2025 11:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpySA18l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+OQdsji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4E3184E;
-	Mon,  1 Dec 2025 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EB526A1AB;
+	Mon,  1 Dec 2025 11:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588735; cv=none; b=sv33feSPh/rAABnXvs1K9t3uLy0j0LU2ke59195wItS5e0SQlEzhXekQQBPUdxMpS/wCVUozRsJ1pUpJ7YSx6lKarYZGJwMQnZVbjYGDMN+9qRzURJVMWV7bx9tUMSS0E4/hjK5j/oBM6wAPJ77frlHGUp7zKMS4zwWPJRgUpk4=
+	t=1764588854; cv=none; b=CXo5RN4qxDnXaEqD9Opka16E8pGUMfIuCp5yX2YEnGVPbiSpvKfTZndagplGTTcqDRyGLqoHz9yxjM5lkZSsDWqOZHzGDZqUENvfQ2L54UU+uP+BNGp6YCHSnV0HqxqJjy9O2MGpJvoXGm5boFgcbechV3+ULr9TJlTeNGzlFsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588735; c=relaxed/simple;
-	bh=bCX9wKFU33vmk/Ffwa/0pWJBiUh9q1BA++PlZy3YwGg=;
+	s=arc-20240116; t=1764588854; c=relaxed/simple;
+	bh=T+XR65yKaM/A3oqOlnHCXGECvKTpkTbtzRPnY1ehJUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMR3zC4iaFb2a7/U/GkH4f4xv2OhCYkI6XAOhYtk6pp7s1FY9c67gW5dzFVnV62ypD8w7xgmwS3uD7robH6hyGLt9Xg50iQFqxhSlvf+t4evAD0IvaqrkhZdyY2u+VH9s1aSQPQsJqYxR0Ppny0yBp7GLXjy2Uy5e7xHTAStzNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpySA18l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966E9C4CEF1;
-	Mon,  1 Dec 2025 11:32:14 +0000 (UTC)
+	 MIME-Version; b=EPEvMeym2+ZqQGTKK1cc/P1rO74bG46WSfJkp1LdoD0rMzW3L9lzfUx0nHmUsLsff54uLvcL0JDNfwj3TgHWIpKFaHn6Zxuxqt7ryMACcIczltHOtUio2SR37fImT/dKubEqIzpEZwi3BT4JaKwfNkNax1MqRyxQsRH1zzMz8Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+OQdsji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A2FC116D0;
+	Mon,  1 Dec 2025 11:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588735;
-	bh=bCX9wKFU33vmk/Ffwa/0pWJBiUh9q1BA++PlZy3YwGg=;
+	s=korg; t=1764588854;
+	bh=T+XR65yKaM/A3oqOlnHCXGECvKTpkTbtzRPnY1ehJUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpySA18l/fy7ygjhurEWVoyhPj1NhCSts/3xXRpYvxTEBg6a471Drf4haMmqQZS+v
-	 uj1o8qgXzW4WpEVA2IbWWmuSIlhz5/UHThzU0tzLwHn6Q0E4sFWheTxDRXaPfBIDPH
-	 lajoh1nQneu4LpGk0bx7GZU6ZGeWGQy7xZh/9DGc=
+	b=D+OQdsjiPQ4Ws2DciPtrfYX03cbtnJjX+x/EMdj2ouCT0H2+K71GjjtWGP9tmK+pH
+	 AC/pand4K3m36HkXHUeTf2eM970rW407aCIO7zRGAgoAw1m6dVCd8i+5PXQaxmAVuL
+	 HX7mKpm5+9fKjJtNPONkxH6u56O53XzFud5VyZTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	SeongJae Park <sj@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 151/187] mm/ksm: fix flag-dropping behavior in ksm_madvise
-Date: Mon,  1 Dec 2025 12:24:19 +0100
-Message-ID: <20251201112246.673191817@linuxfoundation.org>
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 152/187] gcov: add support for GCC 15
+Date: Mon,  1 Dec 2025 12:24:20 +0100
+Message-ID: <20251201112246.709246359@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -74,108 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit f04aad36a07cc17b7a5d5b9a2d386ce6fae63e93 ]
+commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
 
-syzkaller discovered the following crash: (kernel BUG)
+Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 15.
 
-[   44.607039] ------------[ cut here ]------------
-[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
-[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
-[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+Tested with GCC 14.3.0 and GCC 15.2.0.
 
-<snip other registers, drop unreliable trace>
-
-[   44.617726] Call Trace:
-[   44.617926]  <TASK>
-[   44.619284]  userfaultfd_release+0xef/0x1b0
-[   44.620976]  __fput+0x3f9/0xb60
-[   44.621240]  fput_close_sync+0x110/0x210
-[   44.622222]  __x64_sys_close+0x8f/0x120
-[   44.622530]  do_syscall_64+0x5b/0x2f0
-[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   44.623244] RIP: 0033:0x7f365bb3f227
-
-Kernel panics because it detects UFFD inconsistency during
-userfaultfd_release_all().  Specifically, a VMA which has a valid pointer
-to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
-
-The inconsistency is caused in ksm_madvise(): when user calls madvise()
-with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR mode,
-it accidentally clears all flags stored in the upper 32 bits of
-vma->vm_flags.
-
-Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int and
-int are 32-bit wide.  This setup causes the following mishap during the &=
-~VM_MERGEABLE assignment.
-
-VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
-After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
-promoted to unsigned long before the & operation.  This promotion fills
-upper 32 bits with leading 0s, as we're doing unsigned conversion (and
-even for a signed conversion, this wouldn't help as the leading bit is 0).
-& operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
-instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
-the upper 32-bits of its value.
-
-Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
-BIT() macro.
-
-Note: other VM_* flags are not affected: This only happens to the
-VM_MERGEABLE flag, as the other VM_* flags are all constants of type int
-and after ~ operation, they end up with leading 1 and are thus converted
-to unsigned long with leading 1s.
-
-Note 2:
-After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
-no longer a kernel BUG, but a WARNING at the same place:
-
-[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
-
-but the root-cause (flag-drop) remains the same.
-
-[akpm@linux-foundation.org: rust bindgen wasn't able to handle BIT(), from Miguel]
-  Link: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-lkp@intel.com/
-Link: https://lkml.kernel.org/r/20251001090353.57523-2-acsjakub@amazon.de
-Fixes: 7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Signed-off-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Xu Xin <xu.xin16@zte.com.cn>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
+Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://github.com/linux-test-project/lcov/issues/445
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ acsjakub: drop rust-compatibility change (no rust in 5.4) ]
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 57cba6e4fdcd7..be8c793233d39 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -293,7 +293,7 @@ extern unsigned int kobjsize(const void *objp);
- #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
- #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
- #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
--#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
-+#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -19,7 +19,9 @@
+ #include <linux/vmalloc.h>
+ #include "gcov.h"
  
- #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
- #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
--- 
-2.51.0
-
+-#if (__GNUC__ >= 14)
++#if (__GNUC__ >= 15)
++#define GCOV_COUNTERS			10
++#elif (__GNUC__ >= 14)
+ #define GCOV_COUNTERS			9
+ #elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
 
 
 
