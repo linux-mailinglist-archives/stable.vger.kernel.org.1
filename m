@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-197724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FCBC96ECB
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:29:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE65FC96EDA
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7ADA64E4E97
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:27:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 747B1345F35
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4323093A5;
-	Mon,  1 Dec 2025 11:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7B330BBB9;
+	Mon,  1 Dec 2025 11:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y27uV857"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TO1ew8lZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA323081AD;
-	Mon,  1 Dec 2025 11:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDCE3081CE;
+	Mon,  1 Dec 2025 11:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588349; cv=none; b=faeNI7i8IFHu2X9bbPDm77yNaRp+TfbAS4Og3wRpkUjq3j6mTBt/desaINpxOGWZH5Rk80Ue70E0udTwYHpq4IitkFKXEVbVQ6Lao3plTHVJwd6HS42s8WyTfEeUJxsDLmdRDVSJwW8VWRUuOz+QBj0s9ihqM+UYZJ7Wp61lW+8=
+	t=1764588381; cv=none; b=bAkEjHnaKDkcPeZHVrl9UoBrTg9eByamgIgl+2RcS7zfQMPVkcujVQ6Zd8n7PuWawgNMMU7USsXWgnEJhMj3bOxaRdjnDRzfafsoFbf+vH2QvHgBKKJx9gas/ZS7eGvr3In4edOnCKfY9N0yHXqu1Kun6e4PVPUFYBAy/FUJ7KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588349; c=relaxed/simple;
-	bh=t40FUZZwQkGh5+UrTRTSxUXHMLadFGV0ikpdKA4jqGw=;
+	s=arc-20240116; t=1764588381; c=relaxed/simple;
+	bh=Cztz3bi8K8JWVpshrqKSOacTHTmAduUtY+nbjGx1MnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWBRucmVOyN+s4JzFLfFpH+dyIpi06WFHpW4ZKIRnX6FTf17Z4Qv+uwO217h/mCFzAEFOB52KvuGCH1RkOdBLMRO9AxWc7RktzhjEEk3MsNNFz5zTmVAaQZuiYBa64dm9TnPMyU9lMXsLhO8jNTiRZf7oo8Vj0xnjVoEr9pYV6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y27uV857; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3ECC116D0;
-	Mon,  1 Dec 2025 11:25:48 +0000 (UTC)
+	 MIME-Version; b=sgYok6J8tkqqZygpaI36S8K/4e7ef28/rv6Hs64Yv5srTOAGlw4hkpvawu6eA2X8Z/WZhmp25juyAy/capud4VinB5FHxPoU1XSpEHkcY0OTIxJSibD7VmjNOK7ByaS/j8nNbR7fcQNBGuCzpkwo+74oGmTlR843Oxw2LXg3K5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TO1ew8lZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DD1C19424;
+	Mon,  1 Dec 2025 11:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588349;
-	bh=t40FUZZwQkGh5+UrTRTSxUXHMLadFGV0ikpdKA4jqGw=;
+	s=korg; t=1764588381;
+	bh=Cztz3bi8K8JWVpshrqKSOacTHTmAduUtY+nbjGx1MnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y27uV857H5eQfSPmzOAvf3FvWbqDK9qTi+ycc0JWSbT0ZM0mTV0YksGQTqQWvCCje
-	 Thlyx3giTqzNUr8P4DBA1LCeqjMHkL37WScR6WAixFgXI31VARX66YbkAA0TgJXKS8
-	 lcWnMTx3tFPClIotObxVUn5V9TbE9l24mEAe/N0Q=
+	b=TO1ew8lZcNx1R/4ZcWoJMf/Cume1/KTlv1azjnTVxos8pUlg/C2QfGvicJaafntPB
+	 i77Wl0AeGr4xsLxWIrrEplcC65vevru3Dk7kIJtL1M6slFXq1ot0Ka/WWNOmHurmgs
+	 r894Ttp03CrLp6X8IJQewZT4N3BShewqTx9D2gyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.4 010/187] ASoC: qdsp6: q6asm: do not sleep while atomic
-Date: Mon,  1 Dec 2025 12:21:58 +0100
-Message-ID: <20251201112241.622197927@linuxfoundation.org>
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 011/187] wifi: ath10k: Fix memory leak on unsupported WMI command
+Date: Mon,  1 Dec 2025 12:21:59 +0100
+Message-ID: <20251201112241.658379809@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -66,38 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
+[ Upstream commit 2e9c1da4ee9d0acfca2e0a3d78f3d8cb5802da1b ]
 
-For some reason we ended up kfree between spinlock lock and unlock,
-which can sleep.
+ath10k_wmi_cmd_send takes ownership of the passed buffer (skb) and has the
+responsibility to release it in case of error. This patch fixes missing
+free in case of early error due to unhandled WMI command ID.
 
-move the kfree out of spinlock section.
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
 
-Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 553215592f14 ("ath10k: warn if give WMI command is not supported")
+Suggested-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250926195656.187970-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6asm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm.c
-+++ b/sound/soc/qcom/qdsp6/q6asm.c
-@@ -299,9 +299,9 @@ static void q6asm_audio_client_free_buf(
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index ed6316c41cb78..a445a192b30f3 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1894,6 +1894,7 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
+ 	if (cmd_id == WMI_CMD_UNSUPPORTED) {
+ 		ath10k_warn(ar, "wmi command %d is not supported by firmware\n",
+ 			    cmd_id);
++		dev_kfree_skb_any(skb);
+ 		return ret;
+ 	}
  
- 	spin_lock_irqsave(&ac->lock, flags);
- 	port->num_periods = 0;
-+	spin_unlock_irqrestore(&ac->lock, flags);
- 	kfree(port->buf);
- 	port->buf = NULL;
--	spin_unlock_irqrestore(&ac->lock, flags);
- }
- 
- /**
+-- 
+2.51.0
+
 
 
 
