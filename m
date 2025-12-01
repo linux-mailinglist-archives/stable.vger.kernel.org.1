@@ -1,326 +1,202 @@
-Return-Path: <stable+bounces-197974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A554EC98ADD
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 19:15:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F4DC98B02
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 19:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37E6F4E1880
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 18:15:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1ABF9342B5F
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 18:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779C63396E9;
-	Mon,  1 Dec 2025 18:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18D731A07C;
+	Mon,  1 Dec 2025 18:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aGqW0Z/R"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TSaoXuG2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010027.outbound.protection.outlook.com [52.101.193.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FD0338586
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 18:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764612907; cv=none; b=bKE4IyYLbPrNIp6kYAe23ACVjSLulmEA2hdLbV1/zrDJmvjAk3q/zoLMs9L7L+udkKwOX05HTxgXpVMkxVp1PjPw7D7w9wBMEIeu6N3otxmwlmfHenOQkjjWkDkEyiDWQsd77y9A7hKvVbOulQmVz4SCLpS57qBbCTQh7j9VZJ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764612907; c=relaxed/simple;
-	bh=FtPZ8ln+Dko9c5ZxEj0xatlsrhAWF4UkBy4isk3edds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lL/o6pcBeElLcmLe+EY8T/eL8772/ZJrvMJ3dLjpcdESbJwZPIe9hpRe0gjAITl0z7kHRxpOrNyQsox9n+IpSLjDejzqiZAF4vvvb/7W4HFUrtIPe1nvK69OGaVtiPW8u+MfmP3RWdOLi15CArsPhwcQ1YQscZPhFc1znjPTYyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aGqW0Z/R; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b735e278fa1so163889566b.0
-        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 10:15:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764612902; x=1765217702; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uDFjPV2bCEcJMIJe+ovqNB08eGKarAnB/LsdrnkXVnc=;
-        b=aGqW0Z/RKe5B4K0H5uKfcJL0toRM/Vn0ljPXHMTGKi5Lz+f3T0jhGG7grYNfAcUZrp
-         NHklGa8KbQpp6ctUejGcrOYKfYVFHgyYmQCqKPRdX9/vW4uHnLnZAnzbUPYrou87U3rX
-         63Am+Z1kIwhDNIbNRhp9geEZNlDH5n1/KwissDr+PNrlkhLIAtGlZhSBduEQjK2zzUG0
-         XpflS5R6ATeLs1EnMfxDJw5gWQ25rSysQwZqq5fk1wgCS68J/LMO+8/bvQxggcomkkJc
-         ZH75l44YPocEoT0XQQhLGFKwIci3lkxnEGPKy3e8bA5zloE1zkzwrcZqtRJqXa0ffq57
-         nR9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764612902; x=1765217702;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uDFjPV2bCEcJMIJe+ovqNB08eGKarAnB/LsdrnkXVnc=;
-        b=m/zhaY0+5h238CIrRzj6QzTMrw4MglXFT2np+/EuEyS4G6Y788+CRPBslW/XsCR5KQ
-         L0n/Ipg6sW9ThjJ4b+I99zkwVj6Ds5HZNcGRErrrpDFMEX810HopdlDpeJZc1xIZaeKT
-         7nnYfGOx8H2qs0NV4GIGMlqZuNXajyCWaCzPSu/rKDJPEY0jhKiOSFh+7foMWDTyOr1k
-         w+vnOQqSeZhr4n8guoTzx8OSVHbJ6UvJ10z2iR/mjLXADMQeDpchN2ETiAuwVL8vMlGr
-         3dHGRjEzA3qC6K4wESrK3l2GtTN8kXyFO7XYwwCHC0paU7rYVX9sNK5FybO8fyPfruEW
-         8yvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLFdMZQm+aa3QXQ15gt8I06CS9Tu8DlRXjglCdmIX8ocDZjHNi80ADliVrXbuY88mdOaFnhQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+q6omA+U1R2pyeTaINq2bvWu0c1vX7HNWGFXAOFujMjmzOZIq
-	hHA5+swuat8niFFn2AfmvcjHIKTxwbtUFUUkb9S9ihh4WKrNPy+nRNQ=
-X-Gm-Gg: ASbGncuteXxJoMmIxjqq7hY1pexEga82qVcWsR9Nh/m6PHe4CCAfVjnpiB8FfEAS972
-	VjCNf5dWQHCCRaItV95ZhBC93whBteK8w8godnlo/Bl8/XEmWQRdKIEPacWk6jybNrk8fPD0Mb9
-	xm8dN6Ih4B2l9hs+Vwg9Bsk4WBnsuTOWzJYghDegxAjxOlHqooeONNuzmap56eQoK2VVfEdPobO
-	8foted7ttr1lDX9eISdiGAJ5KVE30wU3r2mD7SfAwxjqQiJMaIZ00fcAzTjz/OqeeCRMz59DlFk
-	k3XN3XfDlEn0yOG2n7mgcyREhTWJ2aCKuwF445Yx0Wb60iONztONs4NQYhwmL/HDGJGqLcdqFi4
-	ngAxXRJcGiP5mPhtXFVdkUmnnTV560VFClbSBddrAZ9LDp5JiSCfMpMUyeUYBwcFg+hanxaQT9c
-	0eJ21AcUO7hCYCaU2AWiQvzxAwvt+sc6E0oceoD2wEWtyb5p+h0Y2kY4IJlOJlVjrmbr6lCEhBu
-	g==
-X-Google-Smtp-Source: AGHT+IFrteTmdKpXbAPM5X2OBc2eatrHMRgNBwNQjniHBNZv/OV/UcAPIc4J1u1StehmefDeVyKnvw==
-X-Received: by 2002:a17:907:6d1c:b0:b73:5936:77fc with SMTP id a640c23a62f3a-b76c54b85b0mr3000547266b.13.1764612902143;
-        Mon, 01 Dec 2025 10:15:02 -0800 (PST)
-Received: from [192.168.1.17] (host-79-32-234-137.retail.telecomitalia.it. [79.32.234.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f51c67e2sm1295011566b.27.2025.12.01.10.15.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Dec 2025 10:15:01 -0800 (PST)
-Message-ID: <2f93530c-7917-4169-8e17-9842f1b0c4ea@gmail.com>
-Date: Mon, 1 Dec 2025 19:15:00 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A6A1DEFF5;
+	Mon,  1 Dec 2025 18:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764613137; cv=fail; b=B7kAuY2irXfVp9fFKvjPRH5tvpk4hmr7nv98+63xBl2k72ch2Jg4ahVUESh3XQAElfNzWFtiA2jDSf9FQj1Tn5p5zwvSKa76SWWCh1klIDA1GT/EdRcAE4E8QvMjcm7R7Bej89SXQcU3g+q+WgFES6H3/c2EbSoOOAyCcwfrbQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764613137; c=relaxed/simple;
+	bh=XLRIOUMA3seod/tB7UjGvuTTor/WWnp51QW8N/OPKOQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=rXNEbs8ggS7JH2lvtsu39ApbcdfEfy/vlGBgDQ3ulADC0u2A8FxuRNjKs4Mmqzi1TQulqpux43lHIIavfvDAU+EXgegFK2WUWAdOicUSctl/fxyAaPM4MY8gPrrTiEW+2z1llBoPHG4rb6IelOzuXs4lpmeh+rjMKkPC0Yxy0cY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TSaoXuG2; arc=fail smtp.client-ip=52.101.193.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Zy8jeuuLn0gqMwV1bh11zUU8FftOzZfEig6eFycMCzAcMG0yrjMlKv+4kV6g44TDRLXz1e3p5rlL61MVBo9ndqj5y7PaBeIrqqN2A5BLnm219xCO7txXBG49pw+vzvykjGYXn0ev+Z3hrYSXN6bKZfNSYaibSMwxHSsJNjjxea27KJo740+BBGsPnZAlbNTEoPiNCfdMR5aKX/NZ5PYKPc7KM5dLFZuIPBbf52/X4cqOeRpokftRegm6wr0x7J2LiD28hhgU8S2KNEwajMc6WspkQmf7wuH8Y9mpBa1tK7TazT3mJaX1isvIpT4KYgBMrGxu2SvLornQPzLigyXegg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TvIx9eVtT+p2uupj1te1ADohxGU3QTtpUZRfYJYaaZM=;
+ b=Fa9rjSfzGLMbr2mirZPC1qLwt1rITt6YN7ekPC505S0PEn/KHPVwcLVn2Mtvpt7dv3h7WlWRlDgmA46qqIRs31us5D2GQn4PQoQ918qA0WXhdgSXQ360cp7bZPgxgf/gtOIrAX94kYDO2C5ocNMxZsMOWz7gaC2ginfqqY6+LGPh7O4+TcU7XjymthHJ4srj6A870QCuAyCirYdFeSZMsqeFCy+fxqn0+W8UmoXBS4nQ2t/YOjbgHaWf7Vhj1StnLE0xbklvNIcwgD49LSPyoCCy1lD9OrAmAuGs7BAInbekNy5Q8NHkc6Rsm9oQs6gk6Ccb7phgGb4bk8qVMeP/jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TvIx9eVtT+p2uupj1te1ADohxGU3QTtpUZRfYJYaaZM=;
+ b=TSaoXuG28ZxOpKq4yG/YqU5Kd1hE6rFUSsUHm2PMV/IUei1S3FrvLj4Dkzvc4/3JbxAKCqgVtf0kqGo4jwU5LcESe+yu6xb5jW9gCScHOPspZb92bzuJOaPo9SQX0Rdf73vPfteEwzEEmDwzcRpjoo5jvufOvbdUOqYx3ME6+Ei6QdYl/3rfm17ykr3wIB5NfZ8yZU9060lnLdnkVLnZ1jv70NeWj6kDMtmEcpkxFs3domM7RVAfm0yMaH4SZ2oWt71wRcInp1VqIwRMzDP7skMN5nRvYbfBULcyz60vpCNVaPzS1otP8ZwMoaKL/o7Bc0Rn/TIq7LWoBS+LYYaO/w==
+Received: from DS7PR06CA0018.namprd06.prod.outlook.com (2603:10b6:8:2a::9) by
+ MN0PR12MB5764.namprd12.prod.outlook.com (2603:10b6:208:377::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.17; Mon, 1 Dec 2025 18:18:51 +0000
+Received: from DS1PEPF0001709D.namprd05.prod.outlook.com
+ (2603:10b6:8:2a:cafe::69) by DS7PR06CA0018.outlook.office365.com
+ (2603:10b6:8:2a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Mon,
+ 1 Dec 2025 18:18:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DS1PEPF0001709D.mail.protection.outlook.com (10.167.18.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.8 via Frontend Transport; Mon, 1 Dec 2025 18:18:50 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
+ 2025 10:18:35 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 1 Dec 2025 10:18:34 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 1 Dec 2025 10:18:34 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.6 00/86] 6.6.118-rc1 review
+In-Reply-To: <20251127144027.800761504@linuxfoundation.org>
+References: <20251127144027.800761504@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/msm: Fix a7xx per pipe register programming
-To: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
- Konrad Dybcio <konradybcio@kernel.org>, Dmitry Baryshkov <lumag@kernel.org>,
- Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Antonino Maniscalco <antomani103@gmail.com>, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251128-gras_nc_mode_fix-v2-1-634cda7b810f@gmail.com>
- <17b0f475-6c67-4cef-9277-251f45c1837c@oss.qualcomm.com>
-Content-Language: en-US
-From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-In-Reply-To: <17b0f475-6c67-4cef-9277-251f45c1837c@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-ID: <a23f8d66-0a3c-48fb-ba9d-a78f7f09aab6@drhqmail201.nvidia.com>
+Date: Mon, 1 Dec 2025 10:18:34 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709D:EE_|MN0PR12MB5764:EE_
+X-MS-Office365-Filtering-Correlation-Id: b50279b2-5698-4776-21c1-08de310613e2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TUFKUmRGRzhtMVhWaHI5WWg3WUViM1MyT0ZjdGtVcVdWaVhZUWZpamdqU0dD?=
+ =?utf-8?B?d05qTmI5WVFnOTdHRmpXaWR1UmFLZFN3dm5CMnFSelJRdEhRTjc3YmNTekVY?=
+ =?utf-8?B?Y1ErbWNoelEvTHRaR2I0dUNaUXRnRW91MnVxc2dqNis5OXF1L2t5SGgveDl3?=
+ =?utf-8?B?QnA2TE1qaUJER0NyelFUZi9jNEh2M0pvSUE3Y3cyQWYrOUlNY043SVBaLzhZ?=
+ =?utf-8?B?M1hPRUlZU21FSnova2Y3di9PMERrbEYwRmdtZjc0TVJTOXI1WjhYMUVNdSti?=
+ =?utf-8?B?OE82QXFtY3lqankvdWJLa2dQd2Q0bGZadnZvTjRaME9lcEpUMCsyUit2SGRP?=
+ =?utf-8?B?dHQ5VGlFVlo2OXU2N2N1STE3WTJCZDBmTkxGMHlXUnNCMWNEd1cxdzZoWlJa?=
+ =?utf-8?B?YS9VQXRQYUV0Z3RyK3VvY1RLV3ZsMTVhVFBhdVAxcHBQWFdON1lRTWF1aUdM?=
+ =?utf-8?B?MUs5aG9WaHJrbWh4OW1nN1gwcTIrRW54bUk3YjlmbnFOZEVuNTkySDQrSWE4?=
+ =?utf-8?B?QXJrVTU1S08wRGFqQzYwOHRBTGtaS1E4aDNFQmw0dUhJcUNhcjFNZFQ2cUtU?=
+ =?utf-8?B?Q1Zuc0FuM1RQMjh0cmRBQVF1UU4wT2N6OFdBUGluUUM2RmtsNzN6SXNUV3N0?=
+ =?utf-8?B?OUFBQkwxRnBKbkNzVXMwYkU2UiszeE9yUTFRQVlpMGplaUhSUzNuT2Nyd0tW?=
+ =?utf-8?B?Z3ZMdzhJQ2RLNTRkNzAvOXFhNWEwcytqVTB6MFFGbzFrbFBQdytwRnhwVVNK?=
+ =?utf-8?B?VWJzcUVFcTJUZnk1dTRFaDJuUVQxME9tSVBJUklyY3dRTVhZWjZ6aXM3N3Nt?=
+ =?utf-8?B?QXpCWFV0VlJNanF6MmhLZUpBRjVYYWljV3IzZWp2d3VQVzMybFNvNUllTEpM?=
+ =?utf-8?B?em0rcmNYK3Vuc3UyTlVqRXlqUnA3QWQ4OW1tR3pPdk9vMEJCYWVOaUExQk9t?=
+ =?utf-8?B?VDVUUEtkQURQdThFWTRQdjA5dzZSN0tRM21BaUJOVzVLcUhjS1l5Z3ZLQVBr?=
+ =?utf-8?B?NUFkTGRicEZRdEJrZC8waGJHZjlSb2FleU5hMjY0NHdBbE5RazRyYWR2VzhX?=
+ =?utf-8?B?STJMNGgyTXdpYlhVYU9PNkh3bWN1blFXMnFzQWdpRVRJTEphdVkxdCt1UCtT?=
+ =?utf-8?B?Q3drWit1ZEFNZFp2dytENVFIN3M3Ujg0c2Q3d054bURwTDZGM3lpNG95eEZ2?=
+ =?utf-8?B?YjFrS0UvaUZtUnpRMXJFSStCZVB3N3JzdS9HSDJRbW00MjdBZ2FYZGNmN1RV?=
+ =?utf-8?B?QmxIL2w0Z3ptcG9FMVdTREt0aWRJS3lWeHVBMkhqaUxLLzlmUWFGRnBSeUV1?=
+ =?utf-8?B?aWI0cmRwNUhjL2M4aWJFSDFPM0hnWmszWWRsa1hFdHQ1MEdyNGRuN2RPUnZm?=
+ =?utf-8?B?SnF0TkV5bVFvaHljaGdtemU5YnNjU3RKQUErZ0U5OEZ0Tkl5OUk5SlRrMnFw?=
+ =?utf-8?B?c2RJVXFITS90STkzdmVpQ1lMOG1IbjJaWUVaeVV0VTI1dW5PSUUvS2ZKZTBx?=
+ =?utf-8?B?d3kvenhxMjVJQ3Y0a2dTbHVmZFplOUZDYVgxSXdUVGo1a0RuREcydHo1YmRG?=
+ =?utf-8?B?b3diN01vbFJ0YVJOTENUMTcxeVNSYWk3Q1ZkcXZzRmxrSitGVW1mUTFzUUhi?=
+ =?utf-8?B?QnIzTmZ0c0hJbzZlekp1L2hrQkN2Nzd2Z2U3bW04b3pteUo0Mk50TVVQMFFR?=
+ =?utf-8?B?Sk15ZTcrcUhYSS9SODI5amZNSG1RR2srNytKcnVzS2FOK2dWbm9oQ1lRVkxV?=
+ =?utf-8?B?djJqSkdxM2NydkhaS1NlRnZZVndFNzV2OXRvZmZDenRabG82MmRydmJ4WXRk?=
+ =?utf-8?B?MjA0K2pLNHFwd2hIbHpUNmgvMGtEKzRkR3FSMC9NNGlRM0kreFZkTXNWcE53?=
+ =?utf-8?B?ZVVNQURpK3hnNXFKd3ppZXo4UHdUTHF3Nmk4M0JwRGdZeVY4R0FyZVRkQ2tq?=
+ =?utf-8?B?NExpUk1iN3A2Nkp3cUpjL2dYeVNuam41VHNNM3NrZ3ZqNTd4NWUwZ2xRRndl?=
+ =?utf-8?B?UHlFSEdoeVpOdUs1N0FwNVRSL0IwRGN3OEQrcUVCTGVsSDBtS1NUNTF3cm9I?=
+ =?utf-8?B?VVV3Wnljcis3eGZQSG1aVkpMRHg5TVRQVGdtMmtHdDU2a29nUmlWSHJrOHRH?=
+ =?utf-8?Q?gUOk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 18:18:50.5054
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b50279b2-5698-4776-21c1-08de310613e2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF0001709D.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5764
 
-On 12/1/25 5:14 AM, Akhil P Oommen wrote:
-> On 11/28/2025 10:47 PM, Anna Maniscalco wrote:
->> GEN7_GRAS_NC_MODE_CNTL was only programmed for BR and not for BV pipe
->> but it needs to be programmed for both.
->>
->> Program both pipes in hw_init and introducea separate reglist for it in
->> order to add this register to the dynamic reglist which supports
->> restoring registers per pipe.
->>
->> Fixes: 91389b4e3263 ("drm/msm/a6xx: Add a pwrup_list field to a6xx_info")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
->> ---
->> Changes in v2:
->> - Added missing Cc: stable to commit
->> - Added pipe_regs to all 7xx gens
->> - Null check pipe_regs in a7xx_patch_pwrup_reglist
->> - Added parentheses around bitwise and in a7xx_patch_pwrup_reglist
->> - Use A7XX_PIPE_{BR, BV, NONE} enum values
->> - Link to v1: https://lore.kernel.org/r/20251127-gras_nc_mode_fix-v1-1-5c0cf616401f@gmail.com
->> ---
->>   drivers/gpu/drm/msm/adreno/a6xx_catalog.c | 12 ++++++++++-
->>   drivers/gpu/drm/msm/adreno/a6xx_gpu.c     | 34 +++++++++++++++++++++++++++----
->>   drivers/gpu/drm/msm/adreno/a6xx_gpu.h     |  1 +
->>   drivers/gpu/drm/msm/adreno/adreno_gpu.h   | 13 ++++++++++++
->>   4 files changed, 55 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> index 29107b362346..10732062d681 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
->> @@ -1376,7 +1376,6 @@ static const uint32_t a7xx_pwrup_reglist_regs[] = {
->>   	REG_A6XX_UCHE_MODE_CNTL,
->>   	REG_A6XX_RB_NC_MODE_CNTL,
->>   	REG_A6XX_RB_CMP_DBG_ECO_CNTL,
->> -	REG_A7XX_GRAS_NC_MODE_CNTL,
->>   	REG_A6XX_RB_CONTEXT_SWITCH_GMEM_SAVE_RESTORE_ENABLE,
->>   	REG_A6XX_UCHE_GBIF_GX_CONFIG,
->>   	REG_A6XX_UCHE_CLIENT_PF,
->> @@ -1448,6 +1447,12 @@ static const u32 a750_ifpc_reglist_regs[] = {
->>   
->>   DECLARE_ADRENO_REGLIST_LIST(a750_ifpc_reglist);
->>   
->> +static const struct adreno_reglist_pipe a7xx_reglist_pipe_regs[] = {
->> +	{ REG_A7XX_GRAS_NC_MODE_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
->> +};
->> +
->> +DECLARE_ADRENO_REGLIST_PIPE_LIST(a7xx_reglist_pipe);
->> +
->>   static const struct adreno_info a7xx_gpus[] = {
->>   	{
->>   		.chip_ids = ADRENO_CHIP_IDS(0x07000200),
->> @@ -1491,6 +1496,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.hwcg = a730_hwcg,
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->> +			.pipe_reglist = &a7xx_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_cgc_mode = 0x00020000,
->>   		},
->> @@ -1513,6 +1519,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.hwcg = a740_hwcg,
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->> +			.pipe_reglist = &a7xx_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x7020100,
->>   			.gmu_cgc_mode = 0x00020202,
->> @@ -1548,6 +1555,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->>   			.ifpc_reglist = &a750_ifpc_reglist,
->> +			.pipe_reglist = &a7xx_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x7050001,
->>   			.gmu_cgc_mode = 0x00020202,
->> @@ -1590,6 +1598,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->>   			.ifpc_reglist = &a750_ifpc_reglist,
->> +			.pipe_reglist = &a7xx_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x7090100,
->>   			.gmu_cgc_mode = 0x00020202,
->> @@ -1623,6 +1632,7 @@ static const struct adreno_info a7xx_gpus[] = {
->>   			.hwcg = a740_hwcg,
->>   			.protect = &a730_protect,
->>   			.pwrup_reglist = &a7xx_pwrup_reglist,
->> +			.pipe_reglist = &a7xx_reglist_pipe,
->>   			.gbif_cx = a640_gbif,
->>   			.gmu_chipid = 0x70f0000,
->>   			.gmu_cgc_mode = 0x00020222,
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> index 0200a7e71cdf..422ce4c97f70 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
->> @@ -849,9 +849,16 @@ static void a6xx_set_ubwc_config(struct msm_gpu *gpu)
->>   		  min_acc_len_64b << 3 |
->>   		  hbb_lo << 1 | ubwc_mode);
->>   
->> -	if (adreno_is_a7xx(adreno_gpu))
->> -		gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
->> -			  FIELD_PREP(GENMASK(8, 5), hbb_lo));
->> +	if (adreno_is_a7xx(adreno_gpu)) {
->> +		for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
->> +			gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
->> +				  A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id));
->> +			gpu_write(gpu, REG_A7XX_GRAS_NC_MODE_CNTL,
->> +				  FIELD_PREP(GENMASK(8, 5), hbb_lo));
->> +		}
->> +		gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
->> +			  A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
->> +	}
->>   
->>   	gpu_write(gpu, REG_A6XX_UCHE_MODE_CNTL,
->>   		  min_acc_len_64b << 23 | hbb_lo << 21);
->> @@ -865,9 +872,11 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
->>   	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
->>   	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
->>   	const struct adreno_reglist_list *reglist;
->> +	const struct adreno_reglist_pipe_list *pipe_reglist;
->>   	void *ptr = a6xx_gpu->pwrup_reglist_ptr;
->>   	struct cpu_gpu_lock *lock = ptr;
->>   	u32 *dest = (u32 *)&lock->regs[0];
->> +	u32 pipe_reglist_count = 0;
->>   	int i;
->>   
->>   	lock->gpu_req = lock->cpu_req = lock->turn = 0;
->> @@ -907,7 +916,24 @@ static void a7xx_patch_pwrup_reglist(struct msm_gpu *gpu)
->>   	 * (<aperture, shifted 12 bits> <address> <data>), and the length is
->>   	 * stored as number for triplets in dynamic_list_len.
->>   	 */
->> -	lock->dynamic_list_len = 0;
->> +	pipe_reglist = adreno_gpu->info->a6xx->pipe_reglist;
->> +	if (pipe_reglist) {
->> +		for (u32 pipe_id = A7XX_PIPE_BR; pipe_id <= A7XX_PIPE_BV; pipe_id++) {
-> This patch is probably not rebased on msm-next. On msm-next tip, we have
-> removed A7XX prefix for pipe enums.
+On Thu, 27 Nov 2025 15:45:16 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.118 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 29 Nov 2025 14:40:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.118-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Oh no it is rebased that was down to some confusion I made when I was 
-testing with an older branch.
+All tests passing for Tegra ...
 
-Fixed in v3
+Test results for stable-v6.6:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    120 tests:	120 pass, 0 fail
 
->
->> +			gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
->> +				  A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id));
->> +			for (i = 0; i < pipe_reglist->count; i++) {
->> +				if ((pipe_reglist->regs[i].pipe & BIT(pipe_id)) == 0)
->> +					continue;
->> +				*dest++ = A7XX_CP_APERTURE_CNTL_HOST_PIPE(pipe_id);
->> +				*dest++ = pipe_reglist->regs[i].offset;
->> +				*dest++ = gpu_read(gpu, pipe_reglist->regs[i].offset);
->> +				pipe_reglist_count++;
->> +			}
->> +		}
->> +		gpu_write(gpu, REG_A7XX_CP_APERTURE_CNTL_HOST,
->> +			  A7XX_CP_APERTURE_CNTL_HOST_PIPE(A7XX_PIPE_NONE));
->> +	}
->> +	lock->dynamic_list_len = pipe_reglist_count;
->>   }
->>   
->>   static int a7xx_preempt_start(struct msm_gpu *gpu)
->> diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> index 6820216ec5fc..0a1d6acbc638 100644
->> --- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> +++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
->> @@ -46,6 +46,7 @@ struct a6xx_info {
->>   	const struct adreno_protect *protect;
->>   	const struct adreno_reglist_list *pwrup_reglist;
->>   	const struct adreno_reglist_list *ifpc_reglist;
->> +	const struct adreno_reglist_pipe_list *pipe_reglist;
-> nit: Maybe dyn_pwrup_reglist is a better name.
->
-> Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Agreed, I changed the name in v3. Thx for the review!
->
-> -Akhil
->
->
->>   	const struct adreno_reglist *gbif_cx;
->>   	const struct adreno_reglist_pipe *nonctxt_reglist;
->>   	u32 max_slices;
->> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> index 0f8d3de97636..1d0145f8b3ec 100644
->> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
->> @@ -188,6 +188,19 @@ static const struct adreno_reglist_list name = {		\
->>   	.count = ARRAY_SIZE(name ## _regs),		\
->>   };
->>   
->> +struct adreno_reglist_pipe_list {
->> +	/** @reg: List of register **/
->> +	const struct adreno_reglist_pipe *regs;
->> +	/** @count: Number of registers in the list **/
->> +	u32 count;
->> +};
->> +
->> +#define DECLARE_ADRENO_REGLIST_PIPE_LIST(name)	\
->> +static const struct adreno_reglist_pipe_list name = {		\
->> +	.regs = name ## _regs,				\
->> +	.count = ARRAY_SIZE(name ## _regs),		\
->> +};
->> +
->>   struct adreno_gpu {
->>   	struct msm_gpu base;
->>   	const struct adreno_info *info;
->>
->> ---
->> base-commit: 7bc29d5fb6faff2f547323c9ee8d3a0790cd2530
->> change-id: 20251126-gras_nc_mode_fix-7224ee506a39
->>
->> Best regards,
+Linux version:	6.6.118-rc1-gdd9a47301c80
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Best regards,
--- 
-Anna Maniscalco <anna.maniscalco2000@gmail.com>
-
+Jon
 
