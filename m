@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1D4C986EF
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:11:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647F9C98704
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBC854E1CDC
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:10:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E163B4E20E5
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBF334C06;
-	Mon,  1 Dec 2025 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DBA334C24;
+	Mon,  1 Dec 2025 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWPctfgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ+UU8hV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAF93191D3
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672E6334C0A
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764609046; cv=none; b=oOAvc2OtjsynGnuGvdZOEi9YtDHWdpnlkyEX9zxi8BpDYI2iID+1sup6Kz5pgZcwwu0CV9rH7vs5KJjvGVx9EtBo+TO6iqtXqZAKWZTcmYNjpulgF/LpvYiQa+ngjHx43aiN5if6dM0fLpL6Ql6Av6NjGMb5mcG1YYzkLBSkhkI=
+	t=1764609084; cv=none; b=aNUynYBb3t/bucyUjsIfOZxr3REnglFChmx+/Cb2q1eUw5WSSvCILEbWrJyx3qHp12zDYgrDMvBUpfLlHj1NBuE33cnPLLq/5tS7vH+NaPjTcWcNW9wOQ2GdsK3D/eHWh20qMFVXOLaFQUDtfSQckcor1ttDBvgH/wDP+zG3fjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764609046; c=relaxed/simple;
-	bh=2CVslr4OPwVOOBVoC9vsiBK0aNtWz6XlqyMtlc4X/6U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TcHTnCYcNkuXI2tDt/2mlK48LDvcMpAw0Atx9grwlG327lHFN6C8VeH410SwlE0uxRcd5JwZSgDf0Uf+bVwQRsmoLoAAMYd2vziIMyDfx5jheFR67Avt9z24l34R9q1RFGyKJI1hne9hBKGZJsjU8mUXfYCV0c6WwAK+87GsFEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWPctfgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE8EC4CEF1;
-	Mon,  1 Dec 2025 17:10:43 +0000 (UTC)
+	s=arc-20240116; t=1764609084; c=relaxed/simple;
+	bh=0XTsk6wMWpX35pDCMxMh6u2aiP2Ro5s4pEPpeqsZYSE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ugg8EbsbFWp9IYIxO41+7KTcnn4JqRKmXtRFHrBhoYkYBRHxWbs3TMNleK2WweLq5KefN6gQLKS0VSod2u8GbHtyE/OkN2sagqcdD2rE2sZU/3mj8/Xv8LVTMkQZpGdpQKVelEC0YDbco1Bk/5rO62CJ+g4TrqK+Pjs/KojLH0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ+UU8hV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7093BC4CEF1;
+	Mon,  1 Dec 2025 17:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764609044;
-	bh=2CVslr4OPwVOOBVoC9vsiBK0aNtWz6XlqyMtlc4X/6U=;
+	s=korg; t=1764609083;
+	bh=0XTsk6wMWpX35pDCMxMh6u2aiP2Ro5s4pEPpeqsZYSE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AWPctfgZimUBO/NtYEBiGMO3aELk48zK7pzzCeByUQZ26bgIq6CgfxlP1ZQnDG1ge
-	 B35bLnT6xeAsmTGQXjykfTngL1jqH4BzBlc7CAU80Jc7d5LPvi1u2T/f6GTEvNlBKh
-	 81ecbPF4lKPL91OB9IB/HGJNnY6MXbabbkMw/BS4=
-Subject: FAILED: patch "[PATCH] usb: uas: fix urb unmapping issue when the uas device is" failed to apply to 5.10-stable tree
-To: guhuinan@xiaomi.com,chenyu45@xiaomi.com,gregkh@linuxfoundation.org,oneukum@suse.com,stable@kernel.org
+	b=fQ+UU8hVSJ9qZHm45WVQBUzMRc0zdPzg8T/2eakC6OYe3HDn9ZszTCXaTeo021tnW
+	 Z4Hj92WZFfaUT01c7Q7GbuiLfF9nWzmRMEVbGfLywNOU8jtdoVgGeBSRyPIpx74oYA
+	 +IOgOikY0IPA+WGeGZmKEBtvhy6w54oi3iJ+vmX4=
+Subject: FAILED: patch "[PATCH] usb: gadget: udc: fix use-after-free in usb_gadget_state_work" failed to apply to 6.17-stable tree
+To: hhhuuu@google.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 18:10:32 +0100
-Message-ID: <2025120132-patio-vocation-ff6a@gregkh>
+Date: Mon, 01 Dec 2025 18:11:20 +0100
+Message-ID: <2025120120-whooping-whole-a5b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 26d56a9fcb2014b99e654127960aa0a48a391e3c
+git cherry-pick -x baeb66fbd4201d1c4325074e78b1f557dff89b5b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120132-patio-vocation-ff6a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120120-whooping-whole-a5b2@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,79 +77,112 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26d56a9fcb2014b99e654127960aa0a48a391e3c Mon Sep 17 00:00:00 2001
-From: Owen Gu <guhuinan@xiaomi.com>
-Date: Thu, 20 Nov 2025 20:33:36 +0800
-Subject: [PATCH] usb: uas: fix urb unmapping issue when the uas device is
- remove during ongoing data transfer
+From baeb66fbd4201d1c4325074e78b1f557dff89b5b Mon Sep 17 00:00:00 2001
+From: Jimmy Hu <hhhuuu@google.com>
+Date: Thu, 23 Oct 2025 05:49:45 +0000
+Subject: [PATCH] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
 
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
 
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
+
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 4ed0dc19afe0..45b01df364f7 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 694653761c44..8dbe79bdc0f9 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct work_struct *work)
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
+ {
++	unsigned long flags;
 +
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 		uas_add_work(cmnd);
- 	}
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	trace_usb_gadget_set_state(gadget, 0);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct device *dev)
+ void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
+ 		void (*release)(struct device *dev))
+ {
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
+@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
+ 
+ 	if (!udc)
+ 		return;
+@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+ 	device_del(&gadget->dev);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 3aaf19e77558..8285b19a25e0 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -376,6 +376,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -451,6 +454,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 
 
