@@ -1,84 +1,60 @@
-Return-Path: <stable+bounces-198000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D481EC99551
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 23:10:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F28CC99572
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 23:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 423A63433E5
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 22:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DE853A5464
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 22:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F32BE04C;
-	Mon,  1 Dec 2025 22:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BD7289340;
+	Mon,  1 Dec 2025 22:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iENA3eni"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sSm/h4Uj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A9F29B8E6;
-	Mon,  1 Dec 2025 22:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13552882D0;
+	Mon,  1 Dec 2025 22:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764626923; cv=none; b=RlRov3rFop9v6KGjaS5DHCSlUsbE4/IVqevZNlE/aJF/v11WZw+kouablLXY4RDYEPlbMiFhp5qbAxf32dguVWPxtVyHNajDzBd9mbajuW+THIY6ZSoxKJGTwixKA9x3BV6hKmubVFGREPocLqJNmxew6BeGKC2iUuRdetoCmzU=
+	t=1764626957; cv=none; b=qy31Z2s7lB/a7ngNhJIKFwnMAF1QXa8MRIFwGD68dTcelMALtM6lIBacDI4zjNfmezC4GXhExO2nqbjfEn23flFVkrSW+7AGBgh81W1e379IGZgf8CDjsZZmpSW/Aul/B1Zh8EVID/SBxY42GWVDKieUvArH3f1Bs6tGS5zogMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764626923; c=relaxed/simple;
-	bh=RF702H01UZMM245IqK4Mg2efdXL5YgcEQmy0M1DynK0=;
+	s=arc-20240116; t=1764626957; c=relaxed/simple;
+	bh=Js3ghnFZJ7YTPR0bCSccW+BMGxnMoOTm8M8mf0LkAOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VS/N4vZnML/rO9qMuZxG6QeBfMrqP6IDlSiVU/TBGdyyZ+nuCRXjm+udaJgnC/AXIgf1d8CV4+h0NrPgLrXmRHQ5pMmt22G4vdNhylpOx+i+iJbtkD9kBK5PvWiLy4tpJoVbjcYlXl/nALsvC+hrt6/Wu8VyfAOGFZzjUEPoqLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iENA3eni; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B1K0MCR027811;
-	Mon, 1 Dec 2025 22:08:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=d2MuoCiU5gHflsWy4
-	dNAL57FJIhKmEG070jV8h1Ii+I=; b=iENA3eni/LXGHSzFT3ZuKVo3BcNVOathg
-	NYgI/g4haWsHajx3UOMsM0vl6ex8+MsKLlafau3uwdmAMD9E+T7S2u69w5zCIc++
-	OstopFDavkUMZxEzP+7eM5ib6djyDMp6mV+dFJd+p9lK7SHsMK/i3p44TWoIm8W2
-	MeYNiQBze9QKFox9A3NkogpTnPl56YtxEDiS+IdtOkEBNDIeD/ipDDohZkxm2VZR
-	xzsP08LyWsOr0kPqVcIDVqiV02pRmMoH9zm+cbWwBpIyh70V1dw328dBdVeBjz6Z
-	og2tFyne8HUeqHVHex7yhqggOL4FCZqwq/WSpN6BGVA/6Y5pKXvWQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqp8pspq7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Dec 2025 22:08:36 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B1J4GWf008558;
-	Mon, 1 Dec 2025 22:08:36 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4arc5mrwqt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Dec 2025 22:08:36 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B1M8YYn32244384
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Dec 2025 22:08:35 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E66658060;
-	Mon,  1 Dec 2025 22:08:34 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7D2E58056;
-	Mon,  1 Dec 2025 22:08:33 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.245.160])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Dec 2025 22:08:33 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
-        stable@vger.kernel.org, alifm@linux.ibm.com, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com
-Subject: [PATCH v6 9/9] vfio: Remove the pcie check for VFIO_PCI_ERR_IRQ_INDEX
-Date: Mon,  1 Dec 2025 14:08:23 -0800
-Message-ID: <20251201220823.3350-10-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251201220823.3350-1-alifm@linux.ibm.com>
-References: <20251201220823.3350-1-alifm@linux.ibm.com>
+	 MIME-Version; b=W680d2Yjs20w5BT3lWRl+geGWJCFiADLx5gkU6etAQMNBb4+BB5mu/KWtx6OvntPNiGltC6/JPaVfCP0JTxy6Tv8CqKcOAMTP2FW8QyFvHec88LpvkEW2MAoSZv79NIAySvmaOLY3LCTMhIwObxR3Iu7x7x8NhvxCAFHcZbourk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sSm/h4Uj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5E1C4CEF1;
+	Mon,  1 Dec 2025 22:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764626956;
+	bh=Js3ghnFZJ7YTPR0bCSccW+BMGxnMoOTm8M8mf0LkAOw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sSm/h4UjHJahCOwLj3mfF5fHKlXG2eyUlXEMS0j3tRlCV4sMROlID8tHAzaHED3Zt
+	 O2YrmpmkOyAdPeSt110PVdmH2cpFth73Yag3gWx0A0eRAIDF7n0xXL1fJjDXhSTmGx
+	 KYCyGWMwyJrD9bvGjTvNl/4fIxXlBvUBDRcEQ48eg7IYNCCuyv4d6qscXabQg/sha1
+	 lEaJfGk87zFwpYgPNXC6w2+nhh8aqLXiwKWAWAJtSqD15HL+SKnRXDYCVO/DHNmNxr
+	 sQg3pkJX+iCREfxdZ+7sYCdhKeYH2uaJicgei5D2H6UepxWpSYwaZDVu4kcZtYxUtt
+	 bHi3q8RcVrwhw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Paulo Alcantara <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Jay Shin <jaeshin@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] smb: client: fix memory leak in cifs_construct_tcon()
+Date: Mon,  1 Dec 2025 17:09:13 -0500
+Message-ID: <20251201220913.1279668-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120143-confider-enzyme-4aa6@gregkh>
+References: <2025120143-confider-enzyme-4aa6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,83 +62,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwMCBTYWx0ZWRfX4xxOnAQMItYl
- wmKZiQq9vRy6OB5uUPZKj90E1TeoCEhx3bv3puBukh4xmBo6JVFq4dpzZSQci2TmMKLdJPEr2+Z
- 6TMlr4Q3VOLxtVOymZyavzxj63kWonfDVUw7uWwRrHqyZMZiuW7PjelKpXaE+ir7MlgrQ4PLmLE
- 51+Hiu3xYdEGh1dthg8livT4JPR/Ir8lLELwrTfd3U8iJ5mBDQ0RdeQ+UNqeeFeKzlG0AQdcXpV
- yHkN8FHdJ/+ajMMCbVnX+LEPPR5P0HME5RP4IQPp/nNc6WWHc9Z3n7DaSVfwqhebcMwfFYHa3Mz
- vBj3Pk/HVJdLMGKjjDDcdI3gGaIfx62EE7riUCO2G1SvsLKGMSx56c2EAZ8NkY/Ubq+5sxzeJgo
- k6ZED/MYkphblPy5Ljhe8LZAVzrm3g==
-X-Authority-Analysis: v=2.4 cv=dIerWeZb c=1 sm=1 tr=0 ts=692e11e4 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=gONGJyW3jwFs4LhXXOUA:9
-X-Proofpoint-ORIG-GUID: _8I218NlVGZkhOa7k7imDrjeIgyYMFMc
-X-Proofpoint-GUID: _8I218NlVGZkhOa7k7imDrjeIgyYMFMc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511290000
 
-We are configuring the error signaling on the vast majority of devices and
-it's extremely rare that it fires anyway. This allows userspace to be
-notified on errors for legacy PCI devices. The Internal Share Memory (ISM)
-device on s390x is one such device. For PCI devices on IBM s390x error
-recovery involves platform firmware and notification to operating system
-is done by architecture specific way. So the ISM device can still be
-recovered when notified of an error.
+From: Paulo Alcantara <pc@manguebit.org>
 
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+[ Upstream commit 3184b6a5a24ec9ee74087b2a550476f386df7dc2 ]
+
+When having a multiuser mount with domain= specified and using
+cifscreds, cifs_set_cifscreds() will end up setting @ctx->domainname,
+so it needs to be freed before leaving cifs_construct_tcon().
+
+This fixes the following memory leak reported by kmemleak:
+
+  mount.cifs //srv/share /mnt -o domain=ZELDA,multiuser,...
+  su - testuser
+  cifscreds add -d ZELDA -u testuser
+  ...
+  ls /mnt/1
+  ...
+  umount /mnt
+  echo scan > /sys/kernel/debug/kmemleak
+  cat /sys/kernel/debug/kmemleak
+  unreferenced object 0xffff8881203c3f08 (size 8):
+    comm "ls", pid 5060, jiffies 4307222943
+    hex dump (first 8 bytes):
+      5a 45 4c 44 41 00 cc cc                          ZELDA...
+    backtrace (crc d109a8cf):
+      __kmalloc_node_track_caller_noprof+0x572/0x710
+      kstrdup+0x3a/0x70
+      cifs_sb_tlink+0x1209/0x1770 [cifs]
+      cifs_get_fattr+0xe1/0xf50 [cifs]
+      cifs_get_inode_info+0xb5/0x240 [cifs]
+      cifs_revalidate_dentry_attr+0x2d1/0x470 [cifs]
+      cifs_getattr+0x28e/0x450 [cifs]
+      vfs_getattr_nosec+0x126/0x180
+      vfs_statx+0xf6/0x220
+      do_statx+0xab/0x110
+      __x64_sys_statx+0xd5/0x130
+      do_syscall_64+0xbb/0x380
+      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: f2aee329a68f ("cifs: set domainName when a domain-key is used in multiuser")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ applied fix to fs/cifs/connect.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c  | 6 ++----
- drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ fs/cifs/connect.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index f2fcb81b3e69..d125471fd5ea 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -749,8 +749,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
- 			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
- 		}
- 	} else if (irq_type == VFIO_PCI_ERR_IRQ_INDEX) {
--		if (pci_is_pcie(vdev->pdev))
--			return 1;
-+		return 1;
- 	} else if (irq_type == VFIO_PCI_REQ_IRQ_INDEX) {
- 		return 1;
- 	}
-@@ -1150,8 +1149,7 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_pci_core_device *vdev,
- 	case VFIO_PCI_REQ_IRQ_INDEX:
- 		break;
- 	case VFIO_PCI_ERR_IRQ_INDEX:
--		if (pci_is_pcie(vdev->pdev))
--			break;
-+		break;
- 		fallthrough;
- 	default:
- 		return -EINVAL;
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 30d3e921cb0d..09ec079595f1 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -845,8 +845,7 @@ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
- 	case VFIO_PCI_ERR_IRQ_INDEX:
- 		switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
- 		case VFIO_IRQ_SET_ACTION_TRIGGER:
--			if (pci_is_pcie(vdev->pdev))
--				func = vfio_pci_set_err_trigger;
-+			func = vfio_pci_set_err_trigger;
- 			break;
- 		}
- 		break;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 51ceaf9ea3151..677c757fffffb 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -3926,6 +3926,7 @@ cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
+ 
+ out:
+ 	kfree(ctx->username);
++	kfree(ctx->domainname);
+ 	kfree_sensitive(ctx->password);
+ 	kfree(ctx);
+ 
 -- 
-2.43.0
+2.51.0
 
 
