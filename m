@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A37C9703C
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:35:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65B6C9708A
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3393A142A
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E095A349059
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C00F261B77;
-	Mon,  1 Dec 2025 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4816526C3BF;
+	Mon,  1 Dec 2025 11:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMEHm/UD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzhicuXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD477261B99;
-	Mon,  1 Dec 2025 11:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D0826B76A;
+	Mon,  1 Dec 2025 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588655; cv=none; b=i6LADLA4YJS36aFMuUDqAOZpGgS6+0MvX1i0QVSnoDfrOMCV3I+YCwH0RxFwAfE0Jkkw3n8/rjekEIDCQrjX1FpPe4A7MFxMVFdOy9StqNA+dpPWom8WVb6dAhEg3wr43bd+2Ot3yUQ5SR3piOWAM13zmFsmdoe9/h80lHC5PS8=
+	t=1764588687; cv=none; b=kZqX05IZnVX4ANRkSlg/8onp1lM0fI3fIOQfK80qhDp+KQHACfACQo2A71B6efyuxPRJSkMXbeHzT6feznM8uTAEe+6rwdDCl5SbMO1/bDuheXzSTadO1jIBnhNoBKiLZi0K+CVaSUrbw/owLx12jWz08ScHgZ26lwENToMZV/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588655; c=relaxed/simple;
-	bh=Rc9DI4jmAiO9hhJs7f6sn8cUQtdQ4VkgPrjiEpMs7tM=;
+	s=arc-20240116; t=1764588687; c=relaxed/simple;
+	bh=uo25JQegJdj7AdvfKgrYHOape1b7GV0uPmfAy8GHUWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdiumkmUBed1XKyOi36jthx7EOvBM78DEVeaHdzLM5qV0SJCDIqv1qB9Xd7kEywpJk+V4Y/Ds4AwsSvd8es28Js4FK96uO00WnuxBkXSrPtwO/xNFK+dZIwIx8MlsvU7XfOT/BMlLhUZpLz5aYerH5gECHybUUN6HQvO4JawuQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMEHm/UD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39627C113D0;
-	Mon,  1 Dec 2025 11:30:55 +0000 (UTC)
+	 MIME-Version; b=gdcSNBfIOIQ3lyACMC/JeBLYIpyHN891n/PNRXJVUBzh8I18yZLh22LblltR/M1cXTZtQVVgSoc8AGmddV+s2HeC84lHxILvoqfXGx+AR48OkNYIntTszpaQyXeq5bhAYxpx9obh6qA/nsRrx/rtc4xFPNIRaw6mYHQ4xJhmVew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzhicuXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F31EC4CEF1;
+	Mon,  1 Dec 2025 11:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588655;
-	bh=Rc9DI4jmAiO9hhJs7f6sn8cUQtdQ4VkgPrjiEpMs7tM=;
+	s=korg; t=1764588686;
+	bh=uo25JQegJdj7AdvfKgrYHOape1b7GV0uPmfAy8GHUWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMEHm/UDJv1n5Jqde3vdkcGU455H2YPmpVW7PknwlT0Ss3CsIgoIBW/NQJFePm5C8
-	 XC1cQ2R3KwbWp7gIkJIXbPafQ8MW18UJo1b0figVXazaux7GJ+MkQlwWUdjzOvTKT6
-	 n3aip8gz6sym5rdgDrEwYfASb+GsaA0Aj/sPRFuQ=
+	b=QzhicuXhe0UfYaJpYD7tZYi2394DGwsNHs2Uku7dVsz9MqbOqdJNb4z09b7BXcwG7
+	 xRp8Ak4GAX6m9bDdqLAz/13/vuCLXmCPAHu4YUnuk/Eo2hQuRp5sucndEDVM3yZBMG
+	 LoZR0X8/yt20e6sPa+aVHkxpR6vBbvKsBju6tn68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/187] net: dsa: b53: fix resetting speed and pause on forced link
-Date: Mon,  1 Dec 2025 12:23:45 +0100
-Message-ID: <20251201112245.456691158@linuxfoundation.org>
+Subject: [PATCH 5.4 118/187] net: dsa: b53: fix enabling ip multicast
+Date: Mon,  1 Dec 2025 12:23:46 +0100
+Message-ID: <20251201112245.492944400@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -69,60 +69,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
+[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
 
-There is no guarantee that the port state override registers have their
-default values, as not all switches support being reset via register or
-have a reset GPIO.
+In the New Control register bit 1 is either reserved, or has a different
+function:
 
-So when forcing port config, we need to make sure to clear all fields,
-which we currently do not do for the speed and flow control
-configuration. This can cause flow control stay enabled, or in the case
-of speed becoming an illegal value, e.g. configured for 1G (0x2), then
-setting 100M (0x1), results in 0x3 which is invalid.
+    Out of Range Error Discard
 
-For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
-supported chips, as the bit can have different meanings on other chips,
-e.g. for BCM5389 this controls scanning PHYs for link/speed
-configuration.
+    When enabled, the ingress port discards any frames
+    if the Length field is between 1500 and 1536
+    (excluding 1500 and 1536) and with good CRC.
 
-Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
+The actual bit for enabling IP multicast is bit 0, which was only
+explicitly enabled for BCM5325 so far.
+
+For older switch chips, this bit defaults to 0, so we want to enable it
+as well, while newer switch chips default to 1, and their documentation
+says "It is illegal to set this bit to zero."
+
+So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
+also for other switch chips. While at it, rename it to (B53_)IP_MC as
+that is how it is called in Broadcom code.
+
+Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
+Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 4 ++--
+ drivers/net/dsa/b53/b53_regs.h   | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index dca23e0edb9a8..234ef7771ceef 100644
+index 234ef7771ceef..bc303b3e1c966 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1066,6 +1066,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	else
- 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
- 
-+	reg &= ~(0x3 << GMII_PO_SPEED_S);
-+	if (is5301x(dev) || is58xx(dev))
-+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-+
- 	switch (speed) {
- 	case 2000:
- 		reg |= PORT_OVERRIDE_SPEED_2000M;
-@@ -1084,6 +1088,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
+@@ -347,11 +347,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		 * frames should be flooded or not.
+ 		 */
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	} else {
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_IP_MCAST_25;
++		mgmt |= B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
  	}
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 77fb7ae660b8c..95f70248c194d 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -104,8 +104,7 @@
  
-+	if (is5325(dev))
-+		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
-+	else
-+		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
-+
- 	if (rx_pause) {
- 		if (is5325(dev))
- 			reg |= PORT_OVERRIDE_LP_FLOW_25;
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
+-#define  B53_IP_MCAST_25		BIT(0)
+-#define  B53_IPMC_FWD_EN		BIT(1)
++#define  B53_IP_MC			BIT(0)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
+ 
 -- 
 2.51.0
 
