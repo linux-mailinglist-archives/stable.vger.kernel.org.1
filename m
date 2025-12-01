@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-197735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE65FC96EDA
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09072C96EE3
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 747B1345F35
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83722347B82
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7B330BBB9;
-	Mon,  1 Dec 2025 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C372E54A3;
+	Mon,  1 Dec 2025 11:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TO1ew8lZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNKOUSV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDCE3081CE;
-	Mon,  1 Dec 2025 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF8C2BE655;
+	Mon,  1 Dec 2025 11:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588381; cv=none; b=bAkEjHnaKDkcPeZHVrl9UoBrTg9eByamgIgl+2RcS7zfQMPVkcujVQ6Zd8n7PuWawgNMMU7USsXWgnEJhMj3bOxaRdjnDRzfafsoFbf+vH2QvHgBKKJx9gas/ZS7eGvr3In4edOnCKfY9N0yHXqu1Kun6e4PVPUFYBAy/FUJ7KI=
+	t=1764588413; cv=none; b=UpcAvdXFJU/zWRo1yNbC7Sq3gFl5Sq5hklOQo7SkiZ4D9l+515guxmzPfSDq7neDOcIfumU4XauUxWuMNaoVsy9m8v2OaoPzegtIbdFWwfhHYU6pRHSWw58Pzq2FKVQqMypG/AYnu1pR2XBmBVmXL9HRDEDrRKDorLZaad8rHws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588381; c=relaxed/simple;
-	bh=Cztz3bi8K8JWVpshrqKSOacTHTmAduUtY+nbjGx1MnE=;
+	s=arc-20240116; t=1764588413; c=relaxed/simple;
+	bh=gDeS/21ndbV12BhzuyG71GWYeVh/VsAN1DN78JF3Y+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgYok6J8tkqqZygpaI36S8K/4e7ef28/rv6Hs64Yv5srTOAGlw4hkpvawu6eA2X8Z/WZhmp25juyAy/capud4VinB5FHxPoU1XSpEHkcY0OTIxJSibD7VmjNOK7ByaS/j8nNbR7fcQNBGuCzpkwo+74oGmTlR843Oxw2LXg3K5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TO1ew8lZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DD1C19424;
-	Mon,  1 Dec 2025 11:26:20 +0000 (UTC)
+	 MIME-Version; b=ni2N1qd/jBQSXJkBGoK0D81n/i9ZPixoT5nKT9kWhFlxOx7PslSx9X69BU/TuIO1+bKVKAK4orMGbMRwWfSqyWBvRwTdFsYTAgy03scX6f31B8RHJqX5iXIFmVzH23IFliOnbb9HNi16omOl4XdQU9b6T0EW/nIxOr2rml9+MMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNKOUSV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A47C113D0;
+	Mon,  1 Dec 2025 11:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588381;
-	bh=Cztz3bi8K8JWVpshrqKSOacTHTmAduUtY+nbjGx1MnE=;
+	s=korg; t=1764588412;
+	bh=gDeS/21ndbV12BhzuyG71GWYeVh/VsAN1DN78JF3Y+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TO1ew8lZcNx1R/4ZcWoJMf/Cume1/KTlv1azjnTVxos8pUlg/C2QfGvicJaafntPB
-	 i77Wl0AeGr4xsLxWIrrEplcC65vevru3Dk7kIJtL1M6slFXq1ot0Ka/WWNOmHurmgs
-	 r894Ttp03CrLp6X8IJQewZT4N3BShewqTx9D2gyA=
+	b=GNKOUSV0p6E8fmWKFkkmPjlLIiJ01n3kP65OTEOCQPYnnKoIbFBZPTUNZgzycAwsS
+	 ScSAahWuAk9m5ia3ady8zQgmKushzpSQ7r4IJtIgWcoipo+DL3bf6/Aoc6SHTLtFKm
+	 wmvesQe5DhS7qsqolxbIkUCGdBjHqyScZVU6+ExY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/187] wifi: ath10k: Fix memory leak on unsupported WMI command
-Date: Mon,  1 Dec 2025 12:21:59 +0100
-Message-ID: <20251201112241.658379809@linuxfoundation.org>
+Subject: [PATCH 5.4 012/187] usbnet: Prevents free active kevent
+Date: Mon,  1 Dec 2025 12:22:00 +0100
+Message-ID: <20251201112241.694277404@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -67,39 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 2e9c1da4ee9d0acfca2e0a3d78f3d8cb5802da1b ]
+[ Upstream commit 420c84c330d1688b8c764479e5738bbdbf0a33de ]
 
-ath10k_wmi_cmd_send takes ownership of the passed buffer (skb) and has the
-responsibility to release it in case of error. This patch fixes missing
-free in case of early error due to unhandled WMI command ID.
+The root cause of this issue are:
+1. When probing the usbnet device, executing usbnet_link_change(dev, 0, 0);
+put the kevent work in global workqueue. However, the kevent has not yet
+been scheduled when the usbnet device is unregistered. Therefore, executing
+free_netdev() results in the "free active object (kevent)" error reported
+here.
 
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+2. Another factor is that when calling usbnet_disconnect()->unregister_netdev(),
+if the usbnet device is up, ndo_stop() is executed to cancel the kevent.
+However, because the device is not up, ndo_stop() is not executed.
 
-Fixes: 553215592f14 ("ath10k: warn if give WMI command is not supported")
-Suggested-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250926195656.187970-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+The solution to this problem is to cancel the kevent before executing
+free_netdev().
+
+Fixes: a69e617e533e ("usbnet: Fix linkwatch use-after-free on disconnect")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=8bfd7bcc98f7300afb84
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20251022024007.1831898-1-lizhi.xu@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index ed6316c41cb78..a445a192b30f3 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1894,6 +1894,7 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 	if (cmd_id == WMI_CMD_UNSUPPORTED) {
- 		ath10k_warn(ar, "wmi command %d is not supported by firmware\n",
- 			    cmd_id);
-+		dev_kfree_skb_any(skb);
- 		return ret;
- 	}
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 87c0bcfef4801..f0dd0d7b51dc1 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1615,6 +1615,8 @@ void usbnet_disconnect (struct usb_interface *intf)
+ 	net = dev->net;
+ 	unregister_netdev (net);
  
++	cancel_work_sync(&dev->kevent);
++
+ 	while ((urb = usb_get_from_anchor(&dev->deferred))) {
+ 		dev_kfree_skb(urb->context);
+ 		kfree(urb->sg);
 -- 
 2.51.0
 
