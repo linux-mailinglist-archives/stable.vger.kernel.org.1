@@ -1,327 +1,385 @@
-Return-Path: <stable+bounces-197704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DEFC96CD8
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:07:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7B9C96CED
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9AFE4343663
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:07:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DE5AD4E14FA
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A8E302149;
-	Mon,  1 Dec 2025 11:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAD23064A6;
+	Mon,  1 Dec 2025 11:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkisGbD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZ5NpEZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A22C29E0E9
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 11:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ED02DF14A;
+	Mon,  1 Dec 2025 11:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764587265; cv=none; b=GKXUYs88DXiCf8rIWUXvc05bLnF+roZysDBAN2jyJSkzqepOxqtQhVV7czy7fQ7//FHioSABOD1H6dQQpCVP8HUG4JQ5wvFzme4e2LHhGLp+VGd7Y/czFcnIoKM4ITZjJX2iTFmTCmpz4iSZSiwuuEeULnw4x0+kpeYM9L1eG2M=
+	t=1764587350; cv=none; b=XC0Z8bE0NNBpRgbsu916rvtUykpP3+UW/f+y4oxMA2GsP1/vGLE1GFH7+Uw555YzxmpsKwQuNi50PG52c8RYFNaSKclRYpcWP2O2y+w81qCged7pWuWeVAri1rqM/yYg7WBuu/Fmke3viCljVs4474hWYXATuU5HB9zB5Ba9Ofw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764587265; c=relaxed/simple;
-	bh=ivsPpTIrmgMxpL4foD/Hw6PuLmzZJ5p/e9U00gE3Pr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RoZ+GessiiqYKgot8zoN5g1S8E8k21geXu0Ae6lq3PKCRlP/jMi2/oL7n4Q/5py8LqnI/7oK141C6Mz56DTaIQfqryeY/z+Q7qdgryqeImbiBxZdwj1bHMN/X7wRisS413L9XhIOBikeIlEYMWbLDXxP3B6PYZ510J+Na+TKe/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkisGbD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6261C4CEF1;
-	Mon,  1 Dec 2025 11:07:44 +0000 (UTC)
+	s=arc-20240116; t=1764587350; c=relaxed/simple;
+	bh=bMVkt3Wyws0RXSc3tKjcREugImd8qV8NhEw2q4eblO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MwqWtKV40jJud4mQRbCe0OWSZ4rJVM2W5f5V/0makBg0WXsxKu/CadfQK125Ob26Q6v9k7XHvbMFVCnw4YJ/8wzxT8dHlGkAAhrazz+b/DpXQWoO77J1e+URQR+CqliG0emrqOFhbzrWJ+vd6zUycc7R6JKOwKsZC3ywxfVy6O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZ5NpEZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4F8C4CEF1;
+	Mon,  1 Dec 2025 11:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764587265;
-	bh=ivsPpTIrmgMxpL4foD/Hw6PuLmzZJ5p/e9U00gE3Pr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wkisGbD1W7yijhxmD+3JOHJUfGFEJUmceW65a03iSk4/FkVrMb5XUlUw2mxlGbrT1
-	 WThq7/JfbLt4ywEknqJ+VarV4DXTEamIFJ9jo6kHeI3/M+il0OhV0DsiMvQkGWlpAB
-	 1zFCZRgX224iPdp6aAfpoBctLGX/+ueDJS9T1sUM=
-Date: Mon, 1 Dec 2025 12:07:42 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: stable@vger.kernel.org, hbathini@linux.ibm.com, mpe@ellerman.id.au,
-	ritesh.list@gmail.com
-Subject: Re: [PATCH] powerpc/64s/radix/kfence: map __kfence_pool at page
- granularity
-Message-ID: <2025120130-comprised-water-debe@gregkh>
-References: <20250910110245.123817-1-aboorvad@linux.ibm.com>
- <149c66a94a28f33330e2016e50e4f3faad4dd59d.camel@linux.ibm.com>
- <dcd1165bab40f31878bb86cd2f582ed950c491ae.camel@linux.ibm.com>
+	s=korg; t=1764587349;
+	bh=bMVkt3Wyws0RXSc3tKjcREugImd8qV8NhEw2q4eblO0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tZ5NpEZKVhdcW9c2bOa7i7FY3MvO58M8HyeBFYXRfe9W07jd/GCFLwQF/iop6Pef+
+	 8ZDI6S73v9kPw/Yz7UXZgYj/WA6pItWtXDYR7+IHmQeHUI+3xh4IJLDu1k52ovCFea
+	 f2sEIqKu5bqdi9NAvyxkpttrcQ1XQr2c6+ztKL74=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.118
+Date: Mon,  1 Dec 2025 12:09:04 +0100
+Message-ID: <2025120105-eaten-fastness-6bfe@gregkh>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <dcd1165bab40f31878bb86cd2f582ed950c491ae.camel@linux.ibm.com>
 
-On Mon, Dec 01, 2025 at 04:28:08PM +0530, Aboorva Devarajan wrote:
-> On Mon, 2025-09-29 at 07:07 +0530, Aboorva Devarajan wrote:
-> > On Wed, 2025-09-10 at 16:32 +0530, Aboorva Devarajan wrote:
-> > 
-> > 
-> > > From: Hari Bathini <hbathini@linux.ibm.com>
-> > > 
-> > > When KFENCE is enabled, total system memory is mapped at page level
-> > > granularity. But in radix MMU mode, ~3GB additional memory is needed
-> > > to map 100GB of system memory at page level granularity when compared
-> > > to using 2MB direct mapping.This is not desired considering KFENCE is
-> > > designed to be enabled in production kernels [1].
-> > > 
-> > > Mapping only the memory allocated for KFENCE pool at page granularity is
-> > > sufficient to enable KFENCE support. So, allocate __kfence_pool during
-> > > bootup and map it at page granularity instead of mapping all system
-> > > memory at page granularity.
-> > > 
-> > > Without patch:
-> > >   # cat /proc/meminfo
-> > >   MemTotal:       101201920 kB
-> > > 
-> > > With patch:
-> > >   # cat /proc/meminfo
-> > >   MemTotal:       104483904 kB
-> > > 
-> > > Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-> > > as it depends on the ability to split page table mappings and such APIs
-> > > are not currently implemented for radix MMU.
-> > > 
-> > > All kfence_test.c testcases passed with this patch.
-> > > 
-> > > [1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
-> > > 
-> > > Fixes: a5edf9815dd7 ("powerpc/64s: Enable KFENCE on book3s64")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> > > Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> > > Link: https://msgid.link/20240701130021.578240-1-hbathini@linux.ibm.com
-> > > 
-> > > ---
-> > > 
-> > > Upstream commit 353d7a84c214 ("powerpc/64s/radix/kfence: map __kfence_pool at page granularity")
-> > > 
-> > > This has already been merged upstream and is required in stable kernels as well.
-> > > 
-> > > ---
-> > >  arch/powerpc/include/asm/kfence.h        | 11 +++-
-> > >  arch/powerpc/mm/book3s64/radix_pgtable.c | 84 ++++++++++++++++++++++--
-> > >  arch/powerpc/mm/init-common.c            |  3 +
-> > >  3 files changed, 93 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-> > > index 424ceef82ae615..fab124ada1c7f2 100644
-> > > --- a/arch/powerpc/include/asm/kfence.h
-> > > +++ b/arch/powerpc/include/asm/kfence.h
-> > > @@ -15,10 +15,19 @@
-> > >  #define ARCH_FUNC_PREFIX "."
-> > >  #endif
-> > >  
-> > > +#ifdef CONFIG_KFENCE
-> > > +extern bool kfence_disabled;
-> > > +
-> > > +static inline void disable_kfence(void)
-> > > +{
-> > > +	kfence_disabled = true;
-> > > +}
-> > > +
-> > >  static inline bool arch_kfence_init_pool(void)
-> > >  {
-> > > -	return true;
-> > > +	return !kfence_disabled;
-> > >  }
-> > > +#endif
-> > >  
-> > >  #ifdef CONFIG_PPC64
-> > >  static inline bool kfence_protect_page(unsigned long addr, bool protect)
-> > > diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> > > index 15e88f1439ec20..b0d927009af83c 100644
-> > > --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> > > +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> > > @@ -17,6 +17,7 @@
-> > >  #include <linux/hugetlb.h>
-> > >  #include <linux/string_helpers.h>
-> > >  #include <linux/memory.h>
-> > > +#include <linux/kfence.h>
-> > >  
-> > >  #include <asm/pgalloc.h>
-> > >  #include <asm/mmu_context.h>
-> > > @@ -31,6 +32,7 @@
-> > >  #include <asm/uaccess.h>
-> > >  #include <asm/ultravisor.h>
-> > >  #include <asm/set_memory.h>
-> > > +#include <asm/kfence.h>
-> > >  
-> > >  #include <trace/events/thp.h>
-> > >  
-> > > @@ -293,7 +295,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
-> > >  
-> > >  static int __meminit create_physical_mapping(unsigned long start,
-> > >  					     unsigned long end,
-> > > -					     int nid, pgprot_t _prot)
-> > > +					     int nid, pgprot_t _prot,
-> > > +					     unsigned long mapping_sz_limit)
-> > >  {
-> > >  	unsigned long vaddr, addr, mapping_size = 0;
-> > >  	bool prev_exec, exec = false;
-> > > @@ -301,7 +304,10 @@ static int __meminit create_physical_mapping(unsigned long start,
-> > >  	int psize;
-> > >  	unsigned long max_mapping_size = memory_block_size;
-> > >  
-> > > -	if (debug_pagealloc_enabled_or_kfence())
-> > > +	if (mapping_sz_limit < max_mapping_size)
-> > > +		max_mapping_size = mapping_sz_limit;
-> > > +
-> > > +	if (debug_pagealloc_enabled())
-> > >  		max_mapping_size = PAGE_SIZE;
-> > >  
-> > >  	start = ALIGN(start, PAGE_SIZE);
-> > > @@ -356,8 +362,74 @@ static int __meminit create_physical_mapping(unsigned long start,
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +#ifdef CONFIG_KFENCE
-> > > +static bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-> > > +
-> > > +static int __init parse_kfence_early_init(char *arg)
-> > > +{
-> > > +	int val;
-> > > +
-> > > +	if (get_option(&arg, &val))
-> > > +		kfence_early_init = !!val;
-> > > +	return 0;
-> > > +}
-> > > +early_param("kfence.sample_interval", parse_kfence_early_init);
-> > > +
-> > > +static inline phys_addr_t alloc_kfence_pool(void)
-> > > +{
-> > > +	phys_addr_t kfence_pool;
-> > > +
-> > > +	/*
-> > > +	 * TODO: Support to enable KFENCE after bootup depends on the ability to
-> > > +	 *       split page table mappings. As such support is not currently
-> > > +	 *       implemented for radix pagetables, support enabling KFENCE
-> > > +	 *       only at system startup for now.
-> > > +	 *
-> > > +	 *       After support for splitting mappings is available on radix,
-> > > +	 *       alloc_kfence_pool() & map_kfence_pool() can be dropped and
-> > > +	 *       mapping for __kfence_pool memory can be
-> > > +	 *       split during arch_kfence_init_pool().
-> > > +	 */
-> > > +	if (!kfence_early_init)
-> > > +		goto no_kfence;
-> > > +
-> > > +	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-> > > +	if (!kfence_pool)
-> > > +		goto no_kfence;
-> > > +
-> > > +	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> > > +	return kfence_pool;
-> > > +
-> > > +no_kfence:
-> > > +	disable_kfence();
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static inline void map_kfence_pool(phys_addr_t kfence_pool)
-> > > +{
-> > > +	if (!kfence_pool)
-> > > +		return;
-> > > +
-> > > +	if (create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-> > > +				    -1, PAGE_KERNEL, PAGE_SIZE))
-> > > +		goto err;
-> > > +
-> > > +	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> > > +	__kfence_pool = __va(kfence_pool);
-> > > +	return;
-> > > +
-> > > +err:
-> > > +	memblock_phys_free(kfence_pool, KFENCE_POOL_SIZE);
-> > > +	disable_kfence();
-> > > +}
-> > > +#else
-> > > +static inline phys_addr_t alloc_kfence_pool(void) { return 0; }
-> > > +static inline void map_kfence_pool(phys_addr_t kfence_pool) { }
-> > > +#endif
-> > > +
-> > >  static void __init radix_init_pgtable(void)
-> > >  {
-> > > +	phys_addr_t kfence_pool;
-> > >  	unsigned long rts_field;
-> > >  	phys_addr_t start, end;
-> > >  	u64 i;
-> > > @@ -365,6 +437,8 @@ static void __init radix_init_pgtable(void)
-> > >  	/* We don't support slb for radix */
-> > >  	slb_set_size(0);
-> > >  
-> > > +	kfence_pool = alloc_kfence_pool();
-> > > +
-> > >  	/*
-> > >  	 * Create the linear mapping
-> > >  	 */
-> > > @@ -381,9 +455,11 @@ static void __init radix_init_pgtable(void)
-> > >  		}
-> > >  
-> > >  		WARN_ON(create_physical_mapping(start, end,
-> > > -						-1, PAGE_KERNEL));
-> > > +						-1, PAGE_KERNEL, ~0UL));
-> > >  	}
-> > >  
-> > > +	map_kfence_pool(kfence_pool);
-> > > +
-> > >  	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
-> > >  			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
-> > >  		/*
-> > > @@ -875,7 +951,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
-> > >  	}
-> > >  
-> > >  	return create_physical_mapping(__pa(start), __pa(end),
-> > > -				       nid, prot);
-> > > +				       nid, prot, ~0UL);
-> > >  }
-> > >  
-> > >  int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-> > > diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-> > > index d3a7726ecf512c..21131b96d20901 100644
-> > > --- a/arch/powerpc/mm/init-common.c
-> > > +++ b/arch/powerpc/mm/init-common.c
-> > > @@ -31,6 +31,9 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
-> > >  
-> > >  bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
-> > >  bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-> > > +#ifdef CONFIG_KFENCE
-> > > +bool __ro_after_init kfence_disabled;
-> > > +#endif
-> > >  
-> > >  static int __init parse_nosmep(char *p)
-> > >  {
-> > 
-> > 
-> > Hi,
-> > 
-> > Just a gentle reminder, this patch is required in the stable kernels.
-> > 
-> > Please let me know if there are any comments.
-> > 
-> > Thanks,
-> > Aboorva
-> 
-> 
-> 
-> CC'ing Greg to check whether this patch can be backported to the stable
-> kernels.
+I'm announcing the release of the 6.6.118 kernel.
 
-<formletter>
+All users of the 6.6 kernel series must upgrade.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-</formletter>
+thanks,
+
+greg k-h
+
+------------
+
+ Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml |   26 +--
+ Makefile                                                                |    2 
+ arch/arm64/kvm/hyp/nvhe/ffa.c                                           |    9 -
+ arch/loongarch/include/uapi/asm/ptrace.h                                |   40 ++---
+ arch/loongarch/pci/pci.c                                                |    8 -
+ arch/mips/mti-malta/malta-init.c                                        |   20 +-
+ arch/s390/include/asm/pgtable.h                                         |   12 -
+ arch/s390/mm/pgtable.c                                                  |    4 
+ arch/x86/kernel/cpu/microcode/amd.c                                     |   20 ++
+ drivers/ata/libata-scsi.c                                               |   11 +
+ drivers/bcma/main.c                                                     |    6 
+ drivers/firmware/arm_scmi/scmi_pm_domain.c                              |   13 +
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c                                  |    4 
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c      |   11 -
+ drivers/gpu/drm/nouveau/nvkm/falcon/fw.c                                |    2 
+ drivers/gpu/drm/tegra/dc.c                                              |    1 
+ drivers/gpu/drm/tegra/dsi.c                                             |    9 -
+ drivers/gpu/drm/tegra/uapi.c                                            |    7 
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c                           |    2 
+ drivers/hid/hid-ids.h                                                   |    4 
+ drivers/hid/hid-quirks.c                                                |   13 +
+ drivers/input/keyboard/cros_ec_keyb.c                                   |    6 
+ drivers/input/keyboard/imx_sc_key.c                                     |    2 
+ drivers/input/tablet/pegasus_notetaker.c                                |    9 +
+ drivers/input/touchscreen/goodix.c                                      |    1 
+ drivers/mtd/mtdchar.c                                                   |    6 
+ drivers/mtd/nand/raw/cadence-nand-controller.c                          |    3 
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c                              |   14 +
+ drivers/net/dsa/microchip/lan937x_main.c                                |    1 
+ drivers/net/ethernet/emulex/benet/be_main.c                             |    7 
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c                       |    6 
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c                    |    2 
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c                   |    6 
+ drivers/net/ethernet/qlogic/qede/qede_fp.c                              |    5 
+ drivers/net/ethernet/ti/netcp_core.c                                    |   10 -
+ drivers/nvme/host/fc.c                                                  |   15 +-
+ drivers/nvme/host/multipath.c                                           |    2 
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c                                |   23 ++-
+ drivers/pinctrl/nxp/pinctrl-s32cc.c                                     |    3 
+ drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c               |    4 
+ drivers/pmdomain/imx/gpc.c                                              |   22 +-
+ drivers/s390/net/ctcm_mpc.c                                             |    1 
+ drivers/scsi/hosts.c                                                    |    5 
+ drivers/scsi/sg.c                                                       |   10 +
+ drivers/soc/ti/knav_dma.c                                               |   14 -
+ drivers/target/loopback/tcm_loop.c                                      |    3 
+ drivers/uio/uio_hv_generic.c                                            |   21 ++
+ fs/exfat/super.c                                                        |    5 
+ fs/f2fs/compress.c                                                      |   74 +++++-----
+ fs/f2fs/f2fs.h                                                          |    2 
+ fs/smb/client/cached_dir.c                                              |   43 +++++
+ fs/smb/client/cifsfs.c                                                  |    2 
+ fs/smb/client/fs_context.c                                              |    4 
+ include/linux/array_size.h                                              |   13 +
+ include/linux/ata.h                                                     |    1 
+ include/linux/kernel.h                                                  |    7 
+ include/linux/string.h                                                  |    1 
+ include/net/tls.h                                                       |    6 
+ include/net/xfrm.h                                                      |    3 
+ kernel/bpf/trampoline.c                                                 |    4 
+ kernel/kexec_core.c                                                     |    2 
+ kernel/time/timer.c                                                     |    7 
+ kernel/trace/ftrace.c                                                   |   20 +-
+ lib/maple_tree.c                                                        |   32 ++--
+ mm/mempool.c                                                            |   32 +++-
+ mm/shmem.c                                                              |   15 --
+ net/devlink/rate.c                                                      |    4 
+ net/ipv4/esp4_offload.c                                                 |    6 
+ net/ipv6/esp6_offload.c                                                 |    6 
+ net/mptcp/options.c                                                     |   54 +++++++
+ net/mptcp/pm_netlink.c                                                  |   20 +-
+ net/mptcp/protocol.c                                                    |   48 ++++--
+ net/mptcp/protocol.h                                                    |    3 
+ net/mptcp/subflow.c                                                     |    8 +
+ net/openvswitch/actions.c                                               |   68 ---------
+ net/openvswitch/flow_netlink.c                                          |   64 +-------
+ net/openvswitch/flow_netlink.h                                          |    2 
+ net/tls/tls_device.c                                                    |    4 
+ net/vmw_vsock/af_vsock.c                                                |   40 ++++-
+ net/wireless/reg.c                                                      |    5 
+ net/xfrm/xfrm_output.c                                                  |    6 
+ scripts/kconfig/mconf.c                                                 |    3 
+ scripts/kconfig/nconf.c                                                 |    3 
+ sound/usb/mixer.c                                                       |    2 
+ tools/testing/selftests/net/bareudp.sh                                  |    2 
+ tools/testing/selftests/net/mptcp/mptcp_join.sh                         |    8 -
+ tools/tracing/latency/latency-collector.c                               |    2 
+ 87 files changed, 650 insertions(+), 406 deletions(-)
+
+Alejandro Colomar (1):
+      kernel.h: Move ARRAY_SIZE() to a separate header
+
+Aleksei Nikiforov (1):
+      s390/ctcm: Fix double-kfree
+
+Alexander Wetzel (1):
+      wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+
+Andrey Vatoropin (1):
+      be2net: pass wrb_params in case of OS2BMC
+
+Bart Van Assche (2):
+      scsi: sg: Do not sleep in atomic context
+      scsi: core: Fix a regression triggered by scsi_host_busy()
+
+Borislav Petkov (AMD) (1):
+      x86/microcode/AMD: Limit Entrysign signature checking to known generations
+
+Dan Carpenter (2):
+      mtdchar: fix integer overflow in read/write ioctls
+      Input: imx_sc_key - fix memory corruption on unload
+
+Diogo Ivo (1):
+      Revert "drm/tegra: dsi: Clear enable register if powered by bootloader"
+
+Eric Dumazet (2):
+      mptcp: fix race condition in mptcp_schedule_work()
+      mptcp: fix a race in mptcp_pm_del_add_timer()
+
+Ewan D. Milne (2):
+      nvme: nvme-fc: move tagset removal to nvme_fc_delete_ctrl()
+      nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
+
+Fabio M. De Francesco (1):
+      mm/mempool: replace kmap_atomic() with kmap_local_page()
+
+Greg Kroah-Hartman (1):
+      Linux 6.6.118
+
+Hamza Mahfooz (1):
+      scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
+
+Hans de Goede (1):
+      Input: goodix - add support for ACPI ID GDIX1003
+
+Haotian Zhang (2):
+      pinctrl: cirrus: Fix fwnode leak in cs42l43_pin_probe()
+      platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
+
+Heiko Carstens (1):
+      s390/mm: Fix __ptep_rdp() inline assembly
+
+Henrique Carvalho (2):
+      smb: client: introduce close_cached_dir_locked()
+      smb: client: fix incomplete backport in cfids_invalidation_worker()
+
+Huacai Chen (1):
+      LoongArch: Don't panic if no valid cache info for PCI
+
+Ilya Maximets (1):
+      net: openvswitch: remove never-working support for setting nsh fields
+
+Jakub HorkÃ½ (2):
+      kconfig/mconf: Initialize the default locale at startup
+      kconfig/nconf: Initialize the default locale at startup
+
+Jared Kangas (2):
+      pinctrl: s32cc: fix uninitialized memory in s32_pinctrl_desc
+      pinctrl: s32cc: initialize gpio_pin_config::list after kmalloc()
+
+Jianbo Liu (2):
+      xfrm: Determine inner GSO type from packet inner protocol
+      xfrm: Prevent locally generated packets from direct output in tunnel mode
+
+Jiayuan Chen (2):
+      mptcp: Disallow MPTCP subflows from sockmap
+      mptcp: Fix proto fallback detection with BPF
+
+Krzysztof Kozlowski (1):
+      dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
+
+Long Li (1):
+      uio_hv_generic: Set event for all channels on the device
+
+Ma Ke (1):
+      drm/tegra: dc: Fix reference leak in tegra_dc_couple()
+
+Maciej W. Rozycki (1):
+      MIPS: Malta: Fix !EVA SOC-it PCI MMIO
+
+Mario Limonciello (AMD) (3):
+      drm/amd/display: Increase DPCD read retries
+      drm/amd/display: Move sleep into each retry for retrieve_link_cap()
+      HID: amd_sfh: Stop sensor before starting
+
+Martin Kaiser (1):
+      maple_tree: fix tracepoint string pointers
+
+Matthieu Baerts (NGI0) (1):
+      selftests: mptcp: join: endpoints: longer transfer
+
+Miaoqian Lin (1):
+      pmdomain: imx: Fix reference count leak in imx_gpc_remove
+
+Michal Luczaj (1):
+      vsock: Ignore signal/timeout on connect() if already established
+
+Mike Yuan (1):
+      shmem: fix tmpfs reconfiguration (remount) when noswap is set
+
+Nam Cao (1):
+      nouveau/firmware: Add missing kfree() of nvkm_falcon_fw::boot
+
+Niklas Cassel (1):
+      ata: libata-scsi: Fix system suspend for a security locked drive
+
+Niravkumar L Rabara (1):
+      mtd: rawnand: cadence: fix DMA device NULL pointer dereference
+
+Nishanth Menon (1):
+      net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
+
+Oleksij Rempel (1):
+      net: dsa: microchip: lan937x: Fix RGMII delay tuning
+
+Paolo Abeni (5):
+      mptcp: fix ack generation for fallback msk
+      mptcp: fix premature close in case of fallback
+      mptcp: avoid unneeded subflow-level drops
+      mptcp: decouple mptcp fastclose from tcp close
+      mptcp: do not fallback when OoO is present
+
+Pavel Zhigulin (3):
+      net: dsa: hellcreek: fix missing error handling in LED registration
+      net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
+      net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
+
+Po-Hsu Lin (1):
+      selftests: net: use BASH for bareudp testing
+
+Pradyumn Rahar (1):
+      net/mlx5: Clean up only new IRQ glue on request_irq() failure
+
+Prateek Agarwal (1):
+      drm/tegra: Add call to put_pid()
+
+RafaÅ‚ MiÅ‚ecki (1):
+      bcma: don't register devices disabled in OF
+
+RenÃ© Rebe (1):
+      ALSA: usb-audio: fix uac2 clock source at terminal parser
+
+Sebastian Ene (1):
+      KVM: arm64: Check the untrusted offset in FF-A memory share
+
+Seungjin Bae (1):
+      Input: pegasus-notetaker - fix potential out-of-bounds access
+
+Shahar Shitrit (1):
+      net: tls: Cancel RX async resync request on rcd_delta overflow
+
+Shaurya Rane (1):
+      cifs: fix memory leak in smb3_fs_context_parse_param error path
+
+Shay Drory (1):
+      devlink: rate: Unset parent pointer in devl_rate_nodes_destroy
+
+Shin'ichiro Kawasaki (1):
+      nvme-multipath: fix lockdep WARN due to partition scan work
+
+Song Liu (1):
+      ftrace: Fix BPF fexit with livepatch
+
+Sourabh Jain (1):
+      crash: fix crashkernel resource shrink
+
+Steve French (1):
+      cifs: fix typo in enable_gcm_256 module parameter
+
+Sudeep Holla (1):
+      pmdomain: arm: scmi: Fix genpd leak on provider registration failure
+
+Thomas WeiÃŸschuh (1):
+      LoongArch: Use UAPI types in ptrace UAPI header
+
+Tzung-Bi Shih (1):
+      Input: cros_ec_keyb - fix an invalid memory access
+
+Uwe Kleine-KÃ¶nig (1):
+      pmdomain: imx-gpc: Convert to platform remove callback returning void
+
+Vlastimil Babka (1):
+      mm/mempool: fix poisoning order>0 pages with HIGHMEM
+
+Yifan Zha (1):
+      drm/amdgpu: Skip emit de meta data on gfx11 with rs64 enabled
+
+Yihang Li (1):
+      ata: libata-scsi: Add missing scsi_device_put() in ata_scsi_dev_rescan()
+
+Yipeng Zou (1):
+      timers: Fix NULL function pointer race in timer_shutdown_sync()
+
+Yongpeng Yang (1):
+      exfat: check return value of sb_min_blocksize in exfat_read_boot_sector
+
+Zhang Chujun (1):
+      tracing/tools: Fix incorrcet short option in usage text for --threads
+
+Zhang Heng (1):
+      HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
+
+Zhiguo Niu (2):
+      f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
+      f2fs: compress: fix UAF of f2fs_inode_info in f2fs_free_dic
+
+Zilin Guan (1):
+      mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
+
 
