@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-197807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808EDC96FAC
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:32:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AF1C96FAF
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A43CC3A6AAE
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 86AB1346AD5
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2D42E5B2A;
-	Mon,  1 Dec 2025 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0957F2E62C4;
+	Mon,  1 Dec 2025 11:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ps99gTVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6EWn1tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB57C24DFF9;
-	Mon,  1 Dec 2025 11:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B925E2E5B36;
+	Mon,  1 Dec 2025 11:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588581; cv=none; b=Q3KZ7PfabED5tux/keEgbn2CXTiLU/ghYCKoQg6pct5WqUOwbR7iyzEamy+OcPZXx+r4nxK7KDKBd3aCs1jgLc55/d84xjFuNE0obmEYErF6MTr+E7OGs2uPtlSGWagoIzqSzJ9Ksc7c/kqfeFMO1h9FqOrYcKMq0sKh8mfjjCs=
+	t=1764588586; cv=none; b=t4ra0u8E8PubXoAL/ltpIYOnuG3RKFmgx2UxGgK3A4WIc/LUjtsCp0vuEOXZkoAYovMfhcJobcFeTw3DJsJ64fzwB02MXD6IGFCCmLh8sLAbCiocQuP34W27qZRskt3lASsyts48nqM5Sb11+RPMCIfrA+8/bOquJvLAedUHv8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588581; c=relaxed/simple;
-	bh=seoH5z4Pt93faqElTgzafYIHSFHmjLRxXMJISaFcYjE=;
+	s=arc-20240116; t=1764588586; c=relaxed/simple;
+	bh=5Qbth5hsRpYG3Dg4wNTbr8zrvhGr0lEXE2wM0C642Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGHZUoWpkt4hRJ5KnJ/rkb5jzfUbgerQmCWMufwlxS544XsW+2UDdOosogOQIrEuSvNWV2Vmjvww8it+XXRAymUCM/4gbSWEWfKXdBbqWTZ+lAqRB22GF3MWD8MXyeF52HGKkI5rytB6iifitsEy8OlLLKQn2gtxKo42cOWDH4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ps99gTVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797E3C4CEF1;
-	Mon,  1 Dec 2025 11:29:40 +0000 (UTC)
+	 MIME-Version; b=UGMLjLpOzZ/Ufsp/5dklZgLaTxdNwtxUBnNIdfKPsW0dUnxhSXqCOf0tBunTSrpzI0dtc4B1FoRvfhr2bD2/gIdmfU/O6RE8c7QpOykIWpLglouw2LcFytDuwXE6LhXxGJ5AVf4v7pKRJ3yvMn9og6HOjqhW6glBRvNu5hcoD9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6EWn1tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378E2C4CEF1;
+	Mon,  1 Dec 2025 11:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588580;
-	bh=seoH5z4Pt93faqElTgzafYIHSFHmjLRxXMJISaFcYjE=;
+	s=korg; t=1764588586;
+	bh=5Qbth5hsRpYG3Dg4wNTbr8zrvhGr0lEXE2wM0C642Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ps99gTVwvKCb2UHR3YXezUdgVWzZJxdaR+91VsR1ouR9MCbyDFjuGdmF/xJC3A4ER
-	 pvQ0+xwRkHh4p/L0eb4NGuiqOkbZ2f79vOVsPpatP6vLlK2i6d0HIG6u5640YJ7f4S
-	 nU4e3t6qdBc/1EnbN+AoTe33PpBym51LSTySUWoM=
+	b=d6EWn1tmJW9H8dzerVb8qG9FbNMYKNe5O7Vpm7Ydw2S+ZajZcIPM+dwyHHT2drp5o
+	 pBh36msKYfPw94eMiNvQunpimnUBcayvHedx2fCLk+7r54RHN8ozjROPMdNUXm4CSu
+	 zSaJ0LK4IrX4KvZDvWM/B6nved0JjAQins3UWaEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 099/187] NFSv4.1: fix mount hang after CREATE_SESSION failure
-Date: Mon,  1 Dec 2025 12:23:27 +0100
-Message-ID: <20251201112244.816238392@linuxfoundation.org>
+Subject: [PATCH 5.4 100/187] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
+Date: Mon,  1 Dec 2025 12:23:28 +0100
+Message-ID: <20251201112244.851606770@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -66,47 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
+[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
 
-When client initialization goes through server trunking discovery, it
-schedules the state manager and then sleeps waiting for nfs_client
-initialization completion.
+Theoretically it's an oopsable race, but I don't believe one can manage
+to hit it on real hardware; might become doable on a KVM, but it still
+won't be easy to attack.
 
-The state manager can fail during state recovery, and specifically in
-lease establishment as nfs41_init_clientid() will bail out in case of
-errors returned from nfs4_proc_create_session(), without ever marking
-the client ready. The session creation can fail for a variety of reasons
-e.g. during backchannel parameter negotiation, with status -EINVAL.
+Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
+put_unaligned_be64(), we can put that under ->d_lock and be done with that.
 
-The error status will propagate all the way to the nfs4_state_manager
-but the client status will not be marked, and thus the mount process
-will remain blocked waiting.
-
-Fix it by adding -EINVAL error handling to nfs4_state_manager().
-
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfs/nfs4proc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index b64a3751c3e4a..49defb02cc201 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2660,6 +2660,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	case -ENETUNREACH:
- 		nfs_mark_client_ready(clp, -EIO);
- 		break;
-+	case -EINVAL:
-+		nfs_mark_client_ready(clp, status);
-+		break;
- 	default:
- 		ssleep(1);
- 		break;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 7a4d7158c55f2..4e9b63c471af7 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -355,7 +355,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
+ 	*p++ = htonl(attrs);                           /* bitmap */
+ 	*p++ = htonl(12);             /* attribute buffer length */
+ 	*p++ = htonl(NF4DIR);
++	spin_lock(&dentry->d_lock);
+ 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
++	spin_unlock(&dentry->d_lock);
+ 
+ 	readdir->pgbase = (char *)p - (char *)start;
+ 	readdir->count -= readdir->pgbase;
 -- 
 2.51.0
 
