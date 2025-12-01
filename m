@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-197751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C776BC96F43
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2814DC96F82
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A22AC4E309D
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75913A6792
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5D030748C;
-	Mon,  1 Dec 2025 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A521253958;
+	Mon,  1 Dec 2025 11:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y27aXKG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3ctqFGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAA53074B2;
-	Mon,  1 Dec 2025 11:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B662E6100;
+	Mon,  1 Dec 2025 11:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588427; cv=none; b=XTGYCX1gxDOJj0h1k6WP1PR3vOYCL+UCGZaSUXSH9jdd3pTPU+zMU+6fWcl/Bx4/uJmPE2e7n6+lylUogfsl+bJfFYa/6aesQQweHZJ+2L3uFD5TX/wFkunV1etlS6xre1QK/plusEAueFRIPmbw5BfKh6qkW3OChQvcyWfVWtw=
+	t=1764588550; cv=none; b=jve8m1l81qwPkApqiYK2VS4m/FfnQECeDceW20z+Z07Gbl23IuRkIv+DGy7PiRPyLwzDjyBq6zjydPOX5yRWSj0tVOmh9zJVU+x35wK85OHqRVCkAoOfYQjbEHE3pwkYEUuPD500tJfTubu0zgFETBQ9Ylv/76jVVbs5Sksy9Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588427; c=relaxed/simple;
-	bh=idbaHqkRFdeSoATpMNVbdqVDU0e90qbzHi4i0J1FmLM=;
+	s=arc-20240116; t=1764588550; c=relaxed/simple;
+	bh=cZUTsioaliCrNOfP/sQ32e+5Ml2HTbWIRE22uvF4q2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLrb6IFY4Nd9T2K3+IY3NfaIuKRc24BFyPT0HnhKZWmoJSqikzsJPgLarQB+8SOUhYWB+P0oaCok1Fe9FASuSP3UnQ4CfJ1VbFWpCrXOs19nSEsjfg3zBwcdwbQwuLfO+mFYkOWI3SIoZXOBcnqgzB4YUDK/WQwbaxxbe4JMUak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y27aXKG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B141C4CEF1;
-	Mon,  1 Dec 2025 11:27:07 +0000 (UTC)
+	 MIME-Version; b=ScBapt4GszFAOut5umUrlmEPpeOv6h/IijcgO8w4zZbMDfP3ZKxYS4blalxIEBlT2eYVZB5+gQrbr2PPk4r0P5N9rsx9rHKJ0Ux9w0N5zPcY47SrfhLwcOIxmkKFxQQBt4KNOiBcjAcD++UXnQn8o1pILdmTKKnCoOK/x7ub5EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3ctqFGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A551C113D0;
+	Mon,  1 Dec 2025 11:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588427;
-	bh=idbaHqkRFdeSoATpMNVbdqVDU0e90qbzHi4i0J1FmLM=;
+	s=korg; t=1764588549;
+	bh=cZUTsioaliCrNOfP/sQ32e+5Ml2HTbWIRE22uvF4q2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y27aXKG4TbENA9ifHb8vXfHVYVrlXCT/5Yy97zEir3UcXx/4LL7tX1v3LUQcZfDgf
-	 5qZCxov/0e9zNV4mSryVnDl16UmEYUgJcB9LbKAA1uhKe+Rn0y8OGeP+ChzVMrRAZF
-	 tvAnr3QsHeBY5+7rScu8EsvpQ9MWZJrHLdXBnh3M=
+	b=g3ctqFGdxO/I6ZhoC6s0cZT1hseV+q2WoOWsTh7SutI137LEZ/ypRSOYyhKRNPMZC
+	 HS1jbUWCnegU7k9uyYnQffb9cogqQIGhzAnRltiAT7/jIhkJ6I1RhH5ycM1okBEOXn
+	 Q/hP3omHUfaA7BpSOmgaAqPdmonNNY7DsRm4BzpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/187] tools/power x86_energy_perf_policy: Enhance HWP enable
-Date: Mon,  1 Dec 2025 12:22:31 +0100
-Message-ID: <20251201112242.805162081@linuxfoundation.org>
+Subject: [PATCH 5.4 044/187] tools/power x86_energy_perf_policy: Prefer driver HWP limits
+Date: Mon,  1 Dec 2025 12:22:32 +0100
+Message-ID: <20251201112242.840466398@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -67,11 +67,17 @@ Content-Transfer-Encoding: 8bit
 
 From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit c97c057d357c4b39b153e9e430bbf8976e05bd4e ]
+[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
 
-On enabling HWP, preserve the reserved bits in MSR_PM_ENABLE.
+When we are successful in using cpufreq min/max limits,
+skip setting the raw MSR limits entirely.
 
-Also, skip writing the MSR_PM_ENABLE if HWP is already enabled.
+This is necessary to avoid undoing any modification that
+the cpufreq driver makes to our sysfs request.
+
+eg. intel_pstate may take our request for a limit
+that is valid according to HWP.CAP.MIN/MAX and clip
+it to be within the range available in PLATFORM_INFO.
 
 Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -80,32 +86,52 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 165eb4da8a644..0cb17e13c002b 100644
+index 0cb17e13c002b..c878e2e1cabea 100644
 --- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
 +++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -1024,13 +1024,18 @@ int update_hwp_request_pkg(int pkg)
+@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
+ unsigned char update_hwp_epp;
+ unsigned char update_hwp_min;
+ unsigned char update_hwp_max;
++unsigned char hwp_limits_done_via_sysfs;
+ unsigned char update_hwp_desired;
+ unsigned char update_hwp_window;
+ unsigned char update_hwp_use_pkg;
+@@ -809,8 +810,10 @@ int ratio_2_sysfs_khz(int ratio)
+ }
+ /*
+  * If HWP is enabled and cpufreq sysfs attribtes are present,
+- * then update sysfs, so that it will not become
+- * stale when we write to MSRs.
++ * then update via sysfs. The intel_pstate driver may modify (clip)
++ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
++ * and the driver-chosen value takes precidence.
++ *
+  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
+  *  so we don't have to touch that.)
+  */
+@@ -865,6 +868,8 @@ int update_sysfs(int cpu)
+ 	if (update_hwp_max)
+ 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
  
- int enable_hwp_on_cpu(int cpu)
- {
--	unsigned long long msr;
-+	unsigned long long old_msr, new_msr;
++	hwp_limits_done_via_sysfs = 1;
 +
-+	get_msr(cpu, MSR_PM_ENABLE, &old_msr);
-+
-+	if (old_msr & 1)
-+		return 0;	/* already enabled */
- 
--	get_msr(cpu, MSR_PM_ENABLE, &msr);
--	put_msr(cpu, MSR_PM_ENABLE, 1);
-+	new_msr = old_msr | 1;
-+	put_msr(cpu, MSR_PM_ENABLE, new_msr);
- 
- 	if (verbose)
--		printf("cpu%d: MSR_PM_ENABLE old: %d new: %d\n", cpu, (unsigned int) msr, 1);
-+		printf("cpu%d: MSR_PM_ENABLE old: %llX new: %llX\n", cpu, old_msr, new_msr);
- 
  	return 0;
  }
+ 
+@@ -943,10 +948,10 @@ int update_hwp_request(int cpu)
+ 	if (debug)
+ 		print_hwp_request(cpu, &req, "old: ");
+ 
+-	if (update_hwp_min)
++	if (update_hwp_min && !hwp_limits_done_via_sysfs)
+ 		req.hwp_min = req_update.hwp_min;
+ 
+-	if (update_hwp_max)
++	if (update_hwp_max && !hwp_limits_done_via_sysfs)
+ 		req.hwp_max = req_update.hwp_max;
+ 
+ 	if (update_hwp_desired)
 -- 
 2.51.0
 
