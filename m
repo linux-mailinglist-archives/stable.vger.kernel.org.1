@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-197843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609F6C97063
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:35:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29FEC97075
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4090C3A4502
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 069474E5AED
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D908267B01;
-	Mon,  1 Dec 2025 11:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166A326CE06;
+	Mon,  1 Dec 2025 11:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwjjDuyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/0SLq2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDE625A633;
-	Mon,  1 Dec 2025 11:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D152580F9;
+	Mon,  1 Dec 2025 11:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588684; cv=none; b=nZXN3iZc5H8virngvlBMxWFUHAV5jBNajxyfo0Al3tWCpB/Wx6PAEHGTVxvJPG3MjkoekKuiTn64utBdKrw7gsh9ZoNbcV4a2Do1zac6gmM9MuglBaUgSjQJYv/dlS4dgEXnZ0kXkN482rHh+kzHV69MRQD/Y5qMOB8GxqEpU/s=
+	t=1764588689; cv=none; b=EcyVAtRhR435FPZfw8HLRVtgSx7DFEc7kDlFWKLAmfjEJp7wz4wowr3iuQZyLP5iizr4nM0cmDnu2ACleUwVOWiOHiAnf/MzTIaGdeftha92h4mVfjlp/2Zu3HjxIKFdh3NZC+XdooaNtYKz666WLL1MzqAGMBIGf3NK+8PUI7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588684; c=relaxed/simple;
-	bh=Zpt6P8L5gjtxA/gZoMo+FMfMvMrMxvYEoOIKnNHfjTg=;
+	s=arc-20240116; t=1764588689; c=relaxed/simple;
+	bh=eumHjR4eDcZBGiyryAHgnCQLNuZuhEZfAStpowv5+Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3eK0ttcFM8SFFWaC3lVvw+90Lhv3y5JndlhmQmc13X3iAF3d4KZBh53qM3nydNeAp2nVWp+OlOc6wrQQxH/O4TlWVeXKwkAYPsW3cjDhOmX4CR0rsXDnWKpOblCVAtevAFCB6MNi1tphXa5+UM4315OxtfLCxQpWdMjnMU8u5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwjjDuyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73887C4CEF1;
-	Mon,  1 Dec 2025 11:31:23 +0000 (UTC)
+	 MIME-Version; b=P7aB7T0m8GzUUly5zjljzm6xJSylPK52dzjN5LfiSxEIj3bvAqC+SHjnOxWpmyDeYE0MIJ+aelikKy3UJ+B71Wrnc2Yq6xmjiOPjszmqAw5hGvZRXIn0GBsu5qTH16JdJ/Gs5NgnUNoj5G+rOUCdCJuKOyOBfVPD4Fij9dnCPuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/0SLq2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F91C113D0;
+	Mon,  1 Dec 2025 11:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588683;
-	bh=Zpt6P8L5gjtxA/gZoMo+FMfMvMrMxvYEoOIKnNHfjTg=;
+	s=korg; t=1764588689;
+	bh=eumHjR4eDcZBGiyryAHgnCQLNuZuhEZfAStpowv5+Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YwjjDuywcFtpRLzljNLpOotjpTbFv7jkRXl1puTESARpVhZ9DK6Dtjrg3NWokH9Gr
-	 in3Yq1gWKXHXVLvsAWaqyrghGAsgItsuyweD6WrjFtMbKcqNCBfKbT8QoEHgQ3vTkm
-	 RblaRT7XfAmaGXFAL4/j0ht1LxhdZT+Z0Dqd5Mpw=
+	b=v/0SLq2ZHplqaOZmQi22KjQ2Fh9yQPfZgODwXeY8nPnvje5LatI3SK/Tg43v9LYmL
+	 1LgfVpSnvbQZ10ISMHYmxY8/20okkEwrruPrXBSxxtdhEivw/Ja6l6r8mfrcKgB8M+
+	 30+UstCMYPTi0Gh/fd1Lif2LX0ATGSpPmwzL8hHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
 	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jon Maloy <jmaloy@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 135/187] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
-Date: Mon,  1 Dec 2025 12:24:03 +0100
-Message-ID: <20251201112246.103549216@linuxfoundation.org>
+Subject: [PATCH 5.4 136/187] tipc: simplify the finalize work queue
+Date: Mon,  1 Dec 2025 12:24:04 +0100
+Message-ID: <20251201112246.138877333@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -69,83 +67,162 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
+[ Upstream commit be07f056396d6bb40963c45a02951c566ddeef8e ]
 
-syzbot reported a possible shift-out-of-bounds [1]
+This patch is to use "struct work_struct" for the finalize work queue
+instead of "struct tipc_net_work", as it can get the "net" and "addr"
+from tipc_net's other members and there is no need to add extra net
+and addr in tipc_net by defining "struct tipc_net_work".
 
-Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
+Note that it's safe to get net from tn->bcl as bcl is always released
+after the finalize work queue is done.
 
-It is unclear if some sctp users are setting very large rto_alpha
-and/or rto_beta.
-
-In order to prevent user regression, perform the test at run time.
-
-Also add READ_ONCE() annotations as sysctl values can change under us.
-
-[1]
-
-UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
-shift exponent 64 is too large for 32-bit type 'unsigned int'
-CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:233 [inline]
-  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
-  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
-  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
-  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
-  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
-  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
-
-Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
-Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Jon Maloy <jmaloy@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 0725e6afb551 ("tipc: Fix use-after-free in tipc_mon_reinit_self().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/transport.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/tipc/core.c     |  4 ++--
+ net/tipc/core.h     |  8 +-------
+ net/tipc/discover.c |  4 ++--
+ net/tipc/link.c     |  5 +++++
+ net/tipc/link.h     |  1 +
+ net/tipc/net.c      | 15 +++------------
+ 6 files changed, 14 insertions(+), 23 deletions(-)
 
-diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-index 9c721d70df9c6..9921041079781 100644
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -337,6 +337,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+diff --git a/net/tipc/core.c b/net/tipc/core.c
+index 58ee5ee707816..cce4cde3f5f18 100644
+--- a/net/tipc/core.c
++++ b/net/tipc/core.c
+@@ -59,7 +59,7 @@ static int __net_init tipc_init_net(struct net *net)
+ 	tn->trial_addr = 0;
+ 	tn->addr_trial_end = 0;
+ 	tn->capabilities = TIPC_NODE_CAPABILITIES;
+-	INIT_WORK(&tn->final_work.work, tipc_net_finalize_work);
++	INIT_WORK(&tn->work, tipc_net_finalize_work);
+ 	memset(tn->node_id, 0, sizeof(tn->node_id));
+ 	memset(tn->node_id_string, 0, sizeof(tn->node_id_string));
+ 	tn->mon_threshold = TIPC_DEF_MON_THRESHOLD;
+@@ -101,7 +101,7 @@ static void __net_exit tipc_exit_net(struct net *net)
  
- 	if (tp->rttvar || tp->srtt) {
- 		struct net *net = tp->asoc->base.net;
-+		unsigned int rto_beta, rto_alpha;
- 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
- 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
- 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
-@@ -348,10 +349,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
- 		 * For example, assuming the default value of RTO.Alpha of
- 		 * 1/8, rto_alpha would be expressed as 3.
- 		 */
--		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
--			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
--		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
--			+ (rtt >> net->sctp.rto_alpha);
-+		rto_beta = READ_ONCE(net->sctp.rto_beta);
-+		if (rto_beta < 32)
-+			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
-+				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
-+		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
-+		if (rto_alpha < 32)
-+			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
-+				+ (rtt >> rto_alpha);
- 	} else {
- 		/* 6.3.1 C2) When the first RTT measurement R is made, set
- 		 * SRTT <- R, RTTVAR <- R/2.
+ 	tipc_detach_loopback(net);
+ 	/* Make sure the tipc_net_finalize_work() finished */
+-	cancel_work_sync(&tn->final_work.work);
++	cancel_work_sync(&tn->work);
+ 	tipc_net_stop(net);
+ 
+ 	tipc_bcast_stop(net);
+diff --git a/net/tipc/core.h b/net/tipc/core.h
+index 59f97ef12e60d..32c5945c89338 100644
+--- a/net/tipc/core.h
++++ b/net/tipc/core.h
+@@ -87,12 +87,6 @@ extern unsigned int tipc_net_id __read_mostly;
+ extern int sysctl_tipc_rmem[3] __read_mostly;
+ extern int sysctl_tipc_named_timeout __read_mostly;
+ 
+-struct tipc_net_work {
+-	struct work_struct work;
+-	struct net *net;
+-	u32 addr;
+-};
+-
+ struct tipc_net {
+ 	u8  node_id[NODE_ID_LEN];
+ 	u32 node_addr;
+@@ -143,7 +137,7 @@ struct tipc_net {
+ 	struct packet_type loopback_pt;
+ 
+ 	/* Work item for net finalize */
+-	struct tipc_net_work final_work;
++	struct work_struct work;
+ 	/* The numbers of work queues in schedule */
+ 	atomic_t wq_count;
+ };
+diff --git a/net/tipc/discover.c b/net/tipc/discover.c
+index 9c64567f8a741..a6aa9ecc4a0bb 100644
+--- a/net/tipc/discover.c
++++ b/net/tipc/discover.c
+@@ -167,7 +167,7 @@ static bool tipc_disc_addr_trial_msg(struct tipc_discoverer *d,
+ 
+ 	/* Apply trial address if we just left trial period */
+ 	if (!trial && !self) {
+-		tipc_sched_net_finalize(net, tn->trial_addr);
++		schedule_work(&tn->work);
+ 		msg_set_prevnode(buf_msg(d->skb), tn->trial_addr);
+ 		msg_set_type(buf_msg(d->skb), DSC_REQ_MSG);
+ 	}
+@@ -310,7 +310,7 @@ static void tipc_disc_timeout(struct timer_list *t)
+ 	if (!time_before(jiffies, tn->addr_trial_end) && !tipc_own_addr(net)) {
+ 		mod_timer(&d->timer, jiffies + TIPC_DISC_INIT);
+ 		spin_unlock_bh(&d->lock);
+-		tipc_sched_net_finalize(net, tn->trial_addr);
++		schedule_work(&tn->work);
+ 		return;
+ 	}
+ 
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 2052649fb537e..bf7e6fd855485 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -332,6 +332,11 @@ char tipc_link_plane(struct tipc_link *l)
+ 	return l->net_plane;
+ }
+ 
++struct net *tipc_link_net(struct tipc_link *l)
++{
++	return l->net;
++}
++
+ void tipc_link_update_caps(struct tipc_link *l, u16 capabilities)
+ {
+ 	l->peer_caps = capabilities;
+diff --git a/net/tipc/link.h b/net/tipc/link.h
+index adcad65e761ce..5ac43acce958a 100644
+--- a/net/tipc/link.h
++++ b/net/tipc/link.h
+@@ -151,4 +151,5 @@ int tipc_link_bc_sync_rcv(struct tipc_link *l,   struct tipc_msg *hdr,
+ int tipc_link_bc_nack_rcv(struct tipc_link *l, struct sk_buff *skb,
+ 			  struct sk_buff_head *xmitq);
+ bool tipc_link_too_silent(struct tipc_link *l);
++struct net *tipc_link_net(struct tipc_link *l);
+ #endif
+diff --git a/net/tipc/net.c b/net/tipc/net.c
+index 2498ce8b83c1a..3807ead54d3d5 100644
+--- a/net/tipc/net.c
++++ b/net/tipc/net.c
+@@ -41,6 +41,7 @@
+ #include "socket.h"
+ #include "node.h"
+ #include "bcast.h"
++#include "link.h"
+ #include "netlink.h"
+ #include "monitor.h"
+ 
+@@ -138,19 +139,9 @@ static void tipc_net_finalize(struct net *net, u32 addr)
+ 
+ void tipc_net_finalize_work(struct work_struct *work)
+ {
+-	struct tipc_net_work *fwork;
++	struct tipc_net *tn = container_of(work, struct tipc_net, work);
+ 
+-	fwork = container_of(work, struct tipc_net_work, work);
+-	tipc_net_finalize(fwork->net, fwork->addr);
+-}
+-
+-void tipc_sched_net_finalize(struct net *net, u32 addr)
+-{
+-	struct tipc_net *tn = tipc_net(net);
+-
+-	tn->final_work.net = net;
+-	tn->final_work.addr = addr;
+-	schedule_work(&tn->final_work.work);
++	tipc_net_finalize(tipc_link_net(tn->bcl), tn->trial_addr);
+ }
+ 
+ void tipc_net_stop(struct net *net)
 -- 
 2.51.0
 
