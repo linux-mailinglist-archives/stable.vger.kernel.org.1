@@ -1,129 +1,164 @@
-Return-Path: <stable+bounces-197937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662AAC982A2
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 17:04:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1BFC98475
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 17:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3C081344586
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 16:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E333A2C0B
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 16:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B5F2F60D8;
-	Mon,  1 Dec 2025 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F0033343A;
+	Mon,  1 Dec 2025 16:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kt5tHZ9i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqOwMPGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0270284889
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 16:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1321086341;
+	Mon,  1 Dec 2025 16:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764605065; cv=none; b=YBoReFbHV0muW1XZfZfwf4VhkpK5XTjW0LVDzxcujAGx+96zm1d/odudzE6xvmXjLi63+Tle8IR0oxhuiW314kA3L2fJcLFSj+p2Gij8zW4ItevhKhvU5q/tKpuwXqkhqqMixzqVmX3ayJDEgypcJjIFxlRY9xHOTIR0Y4JGG34=
+	t=1764606977; cv=none; b=GlwNkjwZzb2qnLwneCBA5mwNmH18+9KXfD72qpPovcNxpifcmyx33l1w30b0l8ti7nZPyNbnE3RLw0lMkgFKzpvatfSl8+a1xt07lFYqd0JQhKx/uFu0Aprmm3kvJ7GnLVVWEfX16Y/40eUOIcqTwzy5XoFzGVd5LcOnFxdJqiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764605065; c=relaxed/simple;
-	bh=VVysza45+EyHGdZkCgEYCP58nSmgX+I6fO6NGhUSFqQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kF02FvRaiUxw2d/VwHMqSz4Az2awFKANTxI3iiHf/K6eRonJW8P/Q4QrUQCbq30lBxb5c5Se59Jpu1avH9NSV7bxe+JnViSOUbnEh4nKC+Y75w/l+3ZZJNnN8PrUw8i+wjQ41awu6vQCe7sDA4ADcJ5gkmTgrCwbCTeaCjQVhps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kt5tHZ9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B41C4CEF1;
-	Mon,  1 Dec 2025 16:04:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764605064;
-	bh=VVysza45+EyHGdZkCgEYCP58nSmgX+I6fO6NGhUSFqQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Kt5tHZ9i3ZbU/6fXjqqPQ2s9qs2datk4c8gvMj9wU3cBZC2wPjnF2NrBtRrMP4GPO
-	 N9cEIPcqy3CrUwup6vOnfrYU/OVdJmnGr0+YMg5/ekxbMtZm4xS6zIBNXLL/vzrS++
-	 dzaU6JpaXKc0A8dEdMwLMhYM/suV1GNtvtukYM5k=
-Subject: FAILED: patch "[PATCH] mm: swap: remove duplicate nr_swap_pages decrement in" failed to apply to 6.17-stable tree
-To: youngjun.park@lge.com,akpm@linux-foundation.org,baohua@kernel.org,bhe@redhat.com,chrisl@kernel.org,kasong@tencent.com,nphamcs@gmail.com,shikemeng@huaweicloud.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 17:04:21 +0100
-Message-ID: <2025120121-fifteen-liver-792b@gregkh>
+	s=arc-20240116; t=1764606977; c=relaxed/simple;
+	bh=7Ela2txueqxoBkmbj3YnC/bBlyZlK3c3rgtnk2god44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rlj8jf9gWWjFKXW2au7rnPWDOO5rlkMpEikdcDhO5esuBwrcheg2B3bh4Fb5c4GgH9tZO0R2oVJZpuBznpCZLEBmg69K8VD3/eCZUCbpnWKOCLQ0Ue7DVPFl1XZWrcVmjfddnCzjqvg2BeG7M+OV25vmBOq3hpfUk4KlxbL0E3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqOwMPGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA66C4CEF1;
+	Mon,  1 Dec 2025 16:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764606976;
+	bh=7Ela2txueqxoBkmbj3YnC/bBlyZlK3c3rgtnk2god44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HqOwMPGeuNF5bpSwRNPmPeNDsKC0uPmbW/Kkaip0N/npqK+9wTujKDilxEyVYVsoa
+	 COkT7aCqeHyKyvf7J88Hb/RofgqlOA21OUsdE4v/ROhuXYFYfUIuJo+Y8brgF6P0vD
+	 eYy7fxWnvLyFZ4UKqxqVmFiJuNApPYRI0DZ7UU2I8VHHtqKjeEoSe5/ZMVqxMFfRnd
+	 4aqpxTXu15N34UcnYc5ODe3gd/Qfi5YrPy7GeRDSnw65rvJShkPNALr6aFkSzYBZCx
+	 D0VJVX70aYziyooSpHOkgF0AheL10892RPz7A02h8/i1dFRf43ybpDi4uqYT1z2ZGJ
+	 rkn9c/j+v2Xkg==
+Date: Mon, 1 Dec 2025 17:36:13 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, stable@vger.kernel.org, Herve Codina <herve.codina@bootlin.com>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Subject: Re: [PATCH v1] Revert "drm: bridge: ti-sn65dsi83: Add error recovery
+ mechanism"
+Message-ID: <20251201-uptight-limpet-of-chivalry-404dff@houat>
+References: <20251125103900.31750-1-francesco@dolcini.it>
+ <DEJCGODDOTXT.QT2J4E31GUVW@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="mteft2wa35d6pfvp"
+Content-Disposition: inline
+In-Reply-To: <DEJCGODDOTXT.QT2J4E31GUVW@bootlin.com>
 
 
-The patch below does not apply to the 6.17-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--mteft2wa35d6pfvp
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1] Revert "drm: bridge: ti-sn65dsi83: Add error recovery
+ mechanism"
+MIME-Version: 1.0
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi,
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
-git checkout FETCH_HEAD
-git cherry-pick -x f5e31a196edcd1f1bb44f26b6f9299b9a5b9b3c4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120121-fifteen-liver-792b@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+On Thu, Nov 27, 2025 at 09:46:07AM +0100, Luca Ceresoli wrote:
+> Hello Francesco, all,
+>=20
+> On Tue Nov 25, 2025 at 11:38 AM CET, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> >
+> > This reverts commit ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error
+> > recovery mechanism").
+> >
+> > The reverted commit introduces a regression on Verdin AM62, and
+> > potentially on more devices, not being able to generate a clock
+> > that the TI SN65DSI83 PLL can lock to, with the display periodically
+> > blinking.
+> >
+> > Verdin AM62 SoM has a Toshiba TC358778 DPI to DSI bridge, that can be
+> > connected to an LVDS display over a TI SN65DSI83 bridge. Before this
+> > change despite the TI SN65DSI83 reporting with a debug print a PLL
+> > locking error the display was working fine with no visible glitches.
+> >
+> > The reasons for this issue was investigated without getting to a final
+> > conclusion:
+> >
+> >  - the DPI clock was measure and it is stable/accurate
+> >  - the DSI clock was not possible to measure, but this setup is used
+> >    with other display/bridges with no known issues
+> >  - the DSI clock is configured in continuous mode
+> >  - the actual DSI clock generated from the TC358778 is generate with a
+> >    PLL from a 25MHz reference clock
+> >  - it's not clear why some frequencies are working and some are not, for
+> >    example 50000000, 68750000, 72750000, 75000000 frequencies are fine,
+> >    while 69750000, 71100000, 72500000 are not
+> >
+> > Given that the safest approach is to just revert the commit, till a
+> > proper solution for error recovery that is not introducing regression
+> > is figured out.
+> >
+> > Reported-by: Jo=E3o Paulo Gon=E7alves <jpaulo.silvagoncalves@gmail.com>
+> > Closes: https://lore.kernel.org/all/bhkn6hley4xrol5o3ytn343h4unkwsr26p6=
+s6ltcwexnrsjsdx@mgkdf6ztow42/
+> > Fixes: ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery mec=
+hanism")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+>=20
+> Thanks for having sent this revert patch.
+>=20
+> However after evaluating the overall situation I decided to send a
+> different patch to address this issue in the short term. The idea is to
+> just ignore the PLL_UNLOCK error, keeping the existing
+> structure. Rationale:
+>=20
+>  * this sloves the issue for Toradex, based on Jo=E3o's initial report
+>  * there is no evidence of any bugs in the recovery mechanism, it's
+>    just exposing a pre-existing problem that was only producing a
+>    non-fatal dev_err() before
+>  * a full revert would remove error checking for all errors, including
+>    those not creating any issue, thus removing a useful feature
+>  * a full revert would require rewriting patches such as [0] (not a big
+>    deal per se, but see next bullet)
+>  * after patches such as [0] are applied, re-adding the error recovery
+>    mechanism would require another rework, so more work for authors,
+>    reviewers, testers and maintainers
 
-Possible dependencies:
+Were are we on this? Both patches work for me, but we need to take a decisi=
+on.
 
+Maxime
 
+--mteft2wa35d6pfvp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-greg k-h
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaS3D/AAKCRAnX84Zoj2+
+dt1tAX4mjSsulIvmX9jR8B1feC0pANIxfizynEARF5Kf5Bouz8pMV2jfNf498hLx
+4N8wsu0BfjEEHTrAshXgxoeRQ2TFTwnMl3XyveCGJCPUn9MtBxjlNdhmtAUQ7587
+iY4cpgCo8w==
+=UEl2
+-----END PGP SIGNATURE-----
 
------------------- original commit in Linus's tree ------------------
-
-From f5e31a196edcd1f1bb44f26b6f9299b9a5b9b3c4 Mon Sep 17 00:00:00 2001
-From: Youngjun Park <youngjun.park@lge.com>
-Date: Sun, 2 Nov 2025 17:24:56 +0900
-Subject: [PATCH] mm: swap: remove duplicate nr_swap_pages decrement in
- get_swap_page_of_type()
-
-After commit 4f78252da887, nr_swap_pages is decremented in
-swap_range_alloc(). Since cluster_alloc_swap_entry() calls
-swap_range_alloc() internally, the decrement in get_swap_page_of_type()
-causes double-decrementing.
-
-As a representative userspace-visible runtime example of the impact,
-/proc/meminfo reports increasingly inaccurate SwapFree values.  The
-discrepancy grows with each swap allocation, and during hibernation
-when large amounts of memory are written to swap, the reported value
-can deviate significantly from actual available swap space, misleading
-users and monitoring tools.
-
-Remove the duplicate decrement.
-
-Link: https://lkml.kernel.org/r/20251102082456.79807-1-youngjun.park@lge.com
-Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from folio_alloc_swap() to swap_range_alloc()")
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Kairui Song <kasong@tencent.com>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: <stable@vger.kernel.org> [6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 10760240a3a2..a1b4b9d80e3b 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2005,10 +2005,8 @@ swp_entry_t get_swap_page_of_type(int type)
- 			local_lock(&percpu_swap_cluster.lock);
- 			offset = cluster_alloc_swap_entry(si, 0, 1);
- 			local_unlock(&percpu_swap_cluster.lock);
--			if (offset) {
-+			if (offset)
- 				entry = swp_entry(si->type, offset);
--				atomic_long_dec(&nr_swap_pages);
--			}
- 		}
- 		put_swap_device(si);
- 	}
-
+--mteft2wa35d6pfvp--
 
