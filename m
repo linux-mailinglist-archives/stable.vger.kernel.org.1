@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-197831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990AC9704B
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:35:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77381C96FC1
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 948FC346837
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:31:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0357C4E5C70
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8212737E1;
-	Mon,  1 Dec 2025 11:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCE23043AF;
+	Mon,  1 Dec 2025 11:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfkwYC4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7A0990A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C54258EF0;
-	Mon,  1 Dec 2025 11:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9261B2E040E;
+	Mon,  1 Dec 2025 11:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588650; cv=none; b=TFucTupeYseifAiA5zxY58O7SQbXjEk08D1uvfgb84wm/2YDbB+4u70b/42TFbaQo7bDn2hvNfdkfOGi2asC6WFQhUZPKFLiIxPhCuidOdvt232l/0V//SFupZTJJ+IeP9byLX9NOini6kFd7gQdm228I4I0UE4pPwecGO529Q4=
+	t=1764588555; cv=none; b=psg7i9+BnU8vGwgOJQICVu6+3yXv7w7LmUcTnUoujHcV3udP7HuxxQvRPpiUgHRLB1l0lJRt4SNsDARC3B3m7OvY9cu45quhLxxdlgAEfJSg3/yli/LBnTXjSlSMIc2dzkg+Gp/arvNlfPKPROx9Dj9bYwHsO1c6hjf/WjHAfIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588650; c=relaxed/simple;
-	bh=O7rnBXFfBVm0q7QzIPLUZKdL83/gDrtxCPtxwWPhTPs=;
+	s=arc-20240116; t=1764588555; c=relaxed/simple;
+	bh=pYMIW4m4ob1pniJn3MRB1I1Xu0DGCYnIWSOW6OUFWlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVG6sz97b/DpX2OUVnblUTDOabZZGgM7qV3AQFl8Z3a4+lZOi5W9Cu+v6WgY9MrOKPk8QTaF5kmlZyv0zYHWP6RdlmwV+CNwkxj2l67YZ4H2gILd4mrltA00oeCl5Pv5QSEQ0KAYpEGpX52FdMislgJs7ItoLtmX/cvzkChd8i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfkwYC4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B456C4CEF1;
-	Mon,  1 Dec 2025 11:30:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PzI/fZnr59ECB0nzcuHwqOdMW0xRKXNLkt1MQXMmKLfMicyKEXkqAocfTd+afFGh2OUjXNlsUyb/pXsjh8SLSkRunAKhpo4+fxxROCXSFYXkJ115Z3vyuy1J5mQLew0bpF2KN8mOeWiNtxoftBH4Ol+I0qD4S8pg8pPXjVjQa3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7A0990A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137F3C4CEF1;
+	Mon,  1 Dec 2025 11:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588650;
-	bh=O7rnBXFfBVm0q7QzIPLUZKdL83/gDrtxCPtxwWPhTPs=;
+	s=korg; t=1764588555;
+	bh=pYMIW4m4ob1pniJn3MRB1I1Xu0DGCYnIWSOW6OUFWlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfkwYC4vWPJlRwLlspEu5I6aZUOqKtTImOPp6nrKUe++hN8uiUlYI/7sraPk2BFRo
-	 GTYGV0TZU+NMkulZDRmzNZo2ZFsrYC8AOJzELpP9tENtSn9pTg3yOYWO5Tmgb+Kk14
-	 ZB8e9ibinO4qn3Uv88WIUHdZRoaeY0RGeMmsXY3c=
+	b=E7A0990A7a6Rgs3p9HS+JYVF+bd5BfgODgIIwL96J7IDgAZzyIIX5RKUy9M28Ryl1
+	 cIAYfb1ToWeEwnhAznjMYAcfRsXl0ym5UW2q+JvyJVo8xoliLm53FiExkL3NcFzRRV
+	 uNfrYj6lB2fLvPOFf6TD86FCwuIkWGrzJHZ/exr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Forest Crossman <cyrozap@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/187] allow finish_no_open(file, ERR_PTR(-E...))
-Date: Mon,  1 Dec 2025 12:23:17 +0100
-Message-ID: <20251201112244.458018097@linuxfoundation.org>
+Subject: [PATCH 5.4 090/187] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
+Date: Mon,  1 Dec 2025 12:23:18 +0100
+Message-ID: <20251201112244.494036801@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -60,54 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Forest Crossman <cyrozap@gmail.com>
 
-[ Upstream commit fe91e078b60d1beabf5cef4a37c848457a6d2dfb ]
+[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
 
-... allowing any ->lookup() return value to be passed to it.
+The usbmon binary interface currently truncates captures of large
+transfers from higher-speed USB devices. Because a single event capture
+is limited to one-fifth of the total buffer size, the current maximum
+size of a captured URB is around 240 KiB. This is insufficient when
+capturing traffic from modern devices that use transfers of several
+hundred kilobytes or more, as truncated URBs can make it impossible for
+user-space USB analysis tools like Wireshark to properly defragment and
+reassemble higher-level protocol packets in the captured data.
 
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
+not been changed since the binary interface was introduced in 2006.
+
+To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
+original comment for BUFF_MAX based the limit's calculation on a
+saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
+Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
+buffer should be at least 50 MB. The new limit of 64 MiB covers that,
+plus a little extra for any overhead.
+
+With this change, both users and developers should now be able to debug
+and reverse engineer modern USB devices even when running unmodified
+distro kernels.
+
+Please note that this change does not affect the default buffer size. A
+larger buffer is only allocated when a user explicitly requests it via
+the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
+should not unduly increase memory usage for users that don't
+deliberately request a larger buffer.
+
+Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
+Signed-off-by: Forest Crossman <cyrozap@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/open.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/usb/mon/mon_bin.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/open.c b/fs/open.c
-index f1c2ec6790bb3..2da364e942741 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -886,18 +886,20 @@ EXPORT_SYMBOL(finish_open);
-  * finish_no_open - finish ->atomic_open() without opening the file
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 35483217b1f6c..93998d328d9aa 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -68,18 +68,20 @@
+  * The magic limit was calculated so that it allows the monitoring
+  * application to pick data once in two ticks. This way, another application,
+  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
+- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
+- * enormous overhead built into the bus protocol, so we need about 1000 KB.
++ *
++ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
++ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
++ * buffer size is set to 64 MiB to accommodate this.
   *
-  * @file: file pointer
-- * @dentry: dentry or NULL (as returned from ->lookup())
-+ * @dentry: dentry, ERR_PTR(-E...) or NULL (as returned from ->lookup())
+  * This is still too much for most cases, where we just snoop a few
+  * descriptor fetches for enumeration. So, the default is a "reasonable"
+- * amount for systems with HZ=250 and incomplete bus saturation.
++ * amount for typical, low-throughput use cases.
   *
-- * This can be used to set the result of a successful lookup in ->atomic_open().
-+ * This can be used to set the result of a lookup in ->atomic_open().
-  *
-  * NB: unlike finish_open() this function does consume the dentry reference and
-  * the caller need not dput() it.
-  *
-- * Returns "0" which must be the return value of ->atomic_open() after having
-- * called this function.
-+ * Returns 0 or -E..., which must be the return value of ->atomic_open() after
-+ * having called this function.
+  * XXX What about multi-megabyte URBs which take minutes to transfer?
   */
- int finish_no_open(struct file *file, struct dentry *dentry)
- {
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
- 	file->f_path.dentry = dentry;
- 	return 0;
- }
+-#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
+-#define BUFF_DFL   CHUNK_ALIGN(300*1024)
+-#define BUFF_MIN     CHUNK_ALIGN(8*1024)
++#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
++#define BUFF_DFL      CHUNK_ALIGN(300*1024)
++#define BUFF_MIN        CHUNK_ALIGN(8*1024)
+ 
+ /*
+  * The per-event API header (2 per URB).
 -- 
 2.51.0
 
