@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-197794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D4DC96F85
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6101C96F1F
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DE2AB345DEA
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2C3C9343C4D
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2F330749A;
-	Mon,  1 Dec 2025 11:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8DF308F05;
+	Mon,  1 Dec 2025 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1hcMMRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBoCHS/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C682E5B3D;
-	Mon,  1 Dec 2025 11:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047DB253958;
+	Mon,  1 Dec 2025 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588549; cv=none; b=uvtm1J4g83GOFdyh6lQJMhzjoPfCNkf9oImh3MXkdEN+MYAdqDwi0fs/kiPjtKyjqnPzpWkovEMOIt+R6rY7bDdJJ81ug7U9/eutY1P1SFEAhAHpOF0nJe2GFLAokwdffzTG8vb1Nop6m4VtT3QsmcEUFat0wJSwI7O9+q/cqOs=
+	t=1764588453; cv=none; b=kS+Fv5/HCQNmAO6Qq+thzZZof6b1uYP9CDJy5EViCfI/i5zOBomWgoePxC6Snhmt6lMSiEdMqUcZNw65dQmN5WqFHPRLagD3+lruO8zCkhUUMKVOXuzXseNVAYM1Dmke8dUQItPyZO2+Mzd4uWv2zjC/zm6819mNIfg/Fb2EKDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588549; c=relaxed/simple;
-	bh=YfFEk0z4kYMcO2LODWWZDitwv78qHLemoWvGFqntc+0=;
+	s=arc-20240116; t=1764588453; c=relaxed/simple;
+	bh=PSPGYVzwXcB3ubuvi/dhMlfS8pHWmBTody3EeqQM6Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsHr+U57i/fvIZYOuB5m45RgKc9m09f6J6vOeLyVo22yanMDS9V49fK0J4rA2sxxQPIRwG42OBvTbW8eduui59HH+9ATMpMYhLzBXKucZD6Czj/Ob43Vueo4gE7qCgiAKVwGdgVZ7FPRgdGwYNvkmn0QvMXsN4C0yUQvzisujcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1hcMMRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E2DC4CEF1;
-	Mon,  1 Dec 2025 11:29:06 +0000 (UTC)
+	 MIME-Version; b=tI7sIksKXY2rcLcv6UOS8FqflnmAdLCD0Vg5q/WAZaIlFydDW/yucaDZaCvw9s797rYOQoVSRyRYY3KF7ZybRLxSb6Y+0PJidDX7ve3gYQtc+t4nO8wLKUAvXL8Hzc9iECUsSuHvMe2wr3Gg3csYXGGGvGm55VijEKuPkA6Cr7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBoCHS/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85150C4CEF1;
+	Mon,  1 Dec 2025 11:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588546;
-	bh=YfFEk0z4kYMcO2LODWWZDitwv78qHLemoWvGFqntc+0=;
+	s=korg; t=1764588452;
+	bh=PSPGYVzwXcB3ubuvi/dhMlfS8pHWmBTody3EeqQM6Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1hcMMRO7vSsos5HjyeAnpLvMVQPjD9LMgjGb0eNaiihd8dZaaNzAP3bKP6jx982R
-	 dUZpAVgI630msYaquT3Q0VD0ooBlyBo7zAodGVzsu4AfF9BA3pQ1ZJUzzJUkRk5/kC
-	 oS8vZeUwPe5BbJrdBB6RbzFzzsJZhOk5wNH9KElE=
+	b=iBoCHS/plm/Wn6/KgVCrRMYAPFBAqbFaKVNV/3LG8A8/mrFTyqg/teOlK4I9FMqSY
+	 napZv9vj2NMGMR4AYC4XCEgOoxmKhmHxDET/+NGngdZ4bMS8UdXR6GpByteXeLacRr
+	 F4JYm6ZCd51ln1xRILUJ54Dh3ZkLld3XRXDtVk38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/187] media: pci: ivtv: Dont create fake v4l2_fh
-Date: Mon,  1 Dec 2025 12:22:41 +0100
-Message-ID: <20251201112243.160183293@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 5.4 054/187] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+Date: Mon,  1 Dec 2025 12:22:42 +0100
+Message-ID: <20251201112243.195379722@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -66,178 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit cc6e8d1ccea792d8550428e0831e3a35b0ccfddc ]
+[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
 
-The ivtv driver has a structure named ivtv_open_id that models an open
-file handle for the device. It embeds a v4l2_fh instance for file
-handles that correspond to a V4L2 video device, and stores a pointer to
-that v4l2_fh in struct ivtv_stream to identify which open file handle
-owns a particular stream.
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-In addition to video devices, streams can be owned by ALSA PCM devices.
-Those devices do not make use of the v4l2_fh instance for obvious
-reasons, but the snd_ivtv_pcm_capture_open() function still initializes
-a "fake" v4l2_fh for the sole purpose of using it as an open file handle
-identifier. The v4l2_fh is not properly destroyed when the ALSA PCM
-device is closed, leading to possible resource leaks.
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
 
-Fortunately, the v4l2_fh instance pointed to by ivtv_stream is not
-accessed, only the pointer value is used for comparison. Replace it with
-a pointer to the ivtv_open_id structure that embeds the v4l2_fh, and
-don't initialize the v4l2_fh for ALSA PCM devices.
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address to RIP.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
+
+[ dhansen: flesh out code comments ]
+
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-alsa-pcm.c |  2 --
- drivers/media/pci/ivtv/ivtv-driver.h   |  3 ++-
- drivers/media/pci/ivtv/ivtv-fileops.c  | 18 +++++++++---------
- drivers/media/pci/ivtv/ivtv-irq.c      |  4 ++--
- 4 files changed, 13 insertions(+), 14 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-index 9e6019a159f4c..0b6b77aa29dd2 100644
---- a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-+++ b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-@@ -150,14 +150,12 @@ static int snd_ivtv_pcm_capture_open(struct snd_pcm_substream *substream)
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index 86e5a1c1055ff..85e80f0a8b15e 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
  
- 	s = &itv->streams[IVTV_ENC_STREAM_TYPE_PCM];
- 
--	v4l2_fh_init(&item.fh, &s->vdev);
- 	item.itv = itv;
- 	item.type = s->type;
- 
- 	/* See if the stream is available */
- 	if (ivtv_claim_stream(&item, item.type)) {
- 		/* No, it's already in use */
--		v4l2_fh_exit(&item.fh);
- 		snd_ivtv_unlock(itvsc);
- 		return -EBUSY;
- 	}
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
-index 90f38552bd362..8a48b4533a02f 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.h
-+++ b/drivers/media/pci/ivtv/ivtv-driver.h
-@@ -325,6 +325,7 @@ struct ivtv_queue {
- };
- 
- struct ivtv;				/* forward reference */
-+struct ivtv_open_id;
- 
- struct ivtv_stream {
- 	/* These first four fields are always set, even if the stream
-@@ -334,7 +335,7 @@ struct ivtv_stream {
- 	const char *name;		/* name of the stream */
- 	int type;			/* stream type */
- 
--	struct v4l2_fh *fh;		/* pointer to the streaming filehandle */
-+	struct ivtv_open_id *id;	/* pointer to the streaming ivtv_open_id */
- 	spinlock_t qlock;		/* locks access to the queues */
- 	unsigned long s_flags;		/* status flags, see above */
- 	int dma;			/* can be PCI_DMA_TODEVICE, PCI_DMA_FROMDEVICE or PCI_DMA_NONE */
-diff --git a/drivers/media/pci/ivtv/ivtv-fileops.c b/drivers/media/pci/ivtv/ivtv-fileops.c
-index 4202c3a47d33e..7ed0d2d85253e 100644
---- a/drivers/media/pci/ivtv/ivtv-fileops.c
-+++ b/drivers/media/pci/ivtv/ivtv-fileops.c
-@@ -38,16 +38,16 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 
- 	if (test_and_set_bit(IVTV_F_S_CLAIMED, &s->s_flags)) {
- 		/* someone already claimed this stream */
--		if (s->fh == &id->fh) {
-+		if (s->id == id) {
- 			/* yes, this file descriptor did. So that's OK. */
- 			return 0;
- 		}
--		if (s->fh == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
-+		if (s->id == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
- 					 type == IVTV_ENC_STREAM_TYPE_VBI)) {
- 			/* VBI is handled already internally, now also assign
- 			   the file descriptor to this stream for external
- 			   reading of the stream. */
--			s->fh = &id->fh;
-+			s->id = id;
- 			IVTV_DEBUG_INFO("Start Read VBI\n");
- 			return 0;
- 		}
-@@ -55,7 +55,7 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 		IVTV_DEBUG_INFO("Stream %d is busy\n", type);
- 		return -EBUSY;
- 	}
--	s->fh = &id->fh;
-+	s->id = id;
- 	if (type == IVTV_DEC_STREAM_TYPE_VBI) {
- 		/* Enable reinsertion interrupt */
- 		ivtv_clear_irq_mask(itv, IVTV_IRQ_DEC_VBI_RE_INSERT);
-@@ -93,7 +93,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 	struct ivtv *itv = s->itv;
- 	struct ivtv_stream *s_vbi;
- 
--	s->fh = NULL;
-+	s->id = NULL;
- 	if ((s->type == IVTV_DEC_STREAM_TYPE_VBI || s->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 		/* this stream is still in use internally */
-@@ -125,7 +125,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 		/* was already cleared */
- 		return;
- 	}
--	if (s_vbi->fh) {
-+	if (s_vbi->id) {
- 		/* VBI stream still claimed by a file descriptor */
- 		return;
- 	}
-@@ -349,7 +349,7 @@ static ssize_t ivtv_read(struct ivtv_stream *s, char __user *ubuf, size_t tot_co
- 	size_t tot_written = 0;
- 	int single_frame = 0;
- 
--	if (atomic_read(&itv->capturing) == 0 && s->fh == NULL) {
-+	if (atomic_read(&itv->capturing) == 0 && s->id == NULL) {
- 		/* shouldn't happen */
- 		IVTV_DEBUG_WARN("Stream %s not initialized before read\n", s->name);
- 		return -EIO;
-@@ -819,7 +819,7 @@ void ivtv_stop_capture(struct ivtv_open_id *id, int gop_end)
- 		     id->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		    test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 			/* Also used internally, don't stop capturing */
--			s->fh = NULL;
-+			s->id = NULL;
- 		}
- 		else {
- 			ivtv_stop_v4l2_encode_stream(s, gop_end);
-@@ -903,7 +903,7 @@ int ivtv_v4l2_close(struct file *filp)
- 	v4l2_fh_exit(fh);
- 
- 	/* Easy case first: this stream was never claimed by us */
--	if (s->fh != &id->fh)
-+	if (s->id != id)
- 		goto close_done;
- 
- 	/* 'Unclaim' this stream */
-diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
-index e39bf64c5c715..404335e5aff4e 100644
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -305,7 +305,7 @@ static void dma_post(struct ivtv_stream *s)
- 			ivtv_process_vbi_data(itv, buf, 0, s->type);
- 			s->q_dma.bytesused += buf->bytesused;
- 		}
--		if (s->fh == NULL) {
-+		if (s->id == NULL) {
- 			ivtv_queue_move(s, &s->q_dma, NULL, &s->q_free, 0);
- 			return;
- 		}
-@@ -330,7 +330,7 @@ static void dma_post(struct ivtv_stream *s)
- 		set_bit(IVTV_F_I_HAVE_WORK, &itv->i_flags);
+-	if (!(error_code & X86_PF_INSTR)) {
++	/*
++	 * Assume that faults at regs->ip are because of an
++	 * instruction fetch. Return early and avoid
++	 * emulation for faults during data accesses:
++	 */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
  	}
  
--	if (s->fh)
-+	if (s->id)
- 		wake_up(&s->waitq);
- }
++	/*
++	 * X86_PF_INSTR is only set when NX is supported.  When
++	 * available, use it to double-check that the emulation code
++	 * is only being used for instruction fetches:
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
  
+-	WARN_ON_ONCE(address != regs->ip);
+-
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.51.0
 
