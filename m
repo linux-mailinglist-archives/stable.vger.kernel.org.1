@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-197745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A106C96F31
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 699AEC96F34
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 290614E57CB
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A1FA14E47EA
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71068305074;
-	Mon,  1 Dec 2025 11:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0CB3064A5;
+	Mon,  1 Dec 2025 11:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciAAJTs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Fan1ES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152162BE655;
-	Mon,  1 Dec 2025 11:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A5B2F290A;
+	Mon,  1 Dec 2025 11:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588410; cv=none; b=b8eEx4IUL5XQIB7vphHHmFHzs8izzsgEa+e7vgQpr3E1bTJtKpFtiy/B821F2zCCMVneD5+77YSJoukDxidjQZhxd1pDnkSQyia150FjJwIY+cOjDhYX1ddrqomniqGo4hTGmUmL0DcuNzaYcHEZs1XsG+jYCek92tGTGeWxLYM=
+	t=1764588416; cv=none; b=WYzrcxN7umarPo4/BaUpd8E6pD41IhkmyHnSCCH5CGHT8AI7wZf3XLJpctHGUj5kulnqVemzpYls3hK7nCZFjykwXsUJ/8O51mScvPBFWsDrh+hu1Cjfo4JIxRXgaWTDCoksM51vwhpY3qrdLIHqH1F5VCML/feF2LQ/u+H37X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588410; c=relaxed/simple;
-	bh=83yTRh4Htnq+bO1eh/xaX54gRoMRPE3VDBc8pCy+bXk=;
+	s=arc-20240116; t=1764588416; c=relaxed/simple;
+	bh=BF7WgrpPcfF3SVrLy46uJ8n7Xf4lhm+SjnSj73mpa64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwTGcbC9O75vcy+msQ+B0eZi6mZBdkyWhZfxT5mQ1OfN3GkWLOdMJhoaqntRdAQTxEg6KF2DMrP+5ThPDOqDT+hUI2d94aP8rUQoTXl2vZUauNhQf1n2n/eQF+rqU8ieFH+9amAkbzu0tqqpHT3A4/BG9QghypegkhtpziPz8+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciAAJTs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2A1C19423;
-	Mon,  1 Dec 2025 11:26:49 +0000 (UTC)
+	 MIME-Version; b=gVKwNTI+ImSkDDtPukAyM5JF3i8XQVU991ygVgFngM8mwtGybQk8ufkBa8HACXkaaElTZgiC40t9ZvXtn3Se8EK+GBYv/PvaYOVoMhQKk9psGwCI5t89A2lpHKPyYvgw2ZMhMiH6i7hk1vBjBWGKS+qFuERr44vtI4D3dTF/1iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Fan1ES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758F1C113D0;
+	Mon,  1 Dec 2025 11:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588409;
-	bh=83yTRh4Htnq+bO1eh/xaX54gRoMRPE3VDBc8pCy+bXk=;
+	s=korg; t=1764588415;
+	bh=BF7WgrpPcfF3SVrLy46uJ8n7Xf4lhm+SjnSj73mpa64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciAAJTs9Q0sGReij3gBf2968ipCodN6W9YxWlL2u2zrY+0F6NaqJpYxO6sldZonEo
-	 nh7ewZwxWMVBrFW83/kUAnGvMMIKk+jRQ6lpc5xSCVMzfG11kwTsfrm/TmLHzgGfe3
-	 /spPmmnIAFz44UtD3yKhejuh4mQzGkTm5K79MQtE=
+	b=s/Fan1EStBxhsQ4R//gGNdMCj7ShpN+DsO6GFFszwARUDPv3tr9c/En0rtqtSyaXZ
+	 UIX39iZhwgKTEsCKxRWjwhBFdgRa3X8JpV1IUOnXHmWfafi7aoW14ITKCP2dbfDGIt
+	 uJRCw8Ylt+HigZWlfS/P5XKrKOhPEvmjw7j6P13I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/187] video: backlight: lp855x_bl: Set correct EPROM start for LP8556
-Date: Mon,  1 Dec 2025 12:22:26 +0100
-Message-ID: <20251201112242.626305916@linuxfoundation.org>
+Subject: [PATCH 5.4 039/187] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
+Date: Mon,  1 Dec 2025 12:22:27 +0100
+Message-ID: <20251201112242.661343426@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -67,35 +66,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 07c7efda24453e05951fb2879f5452b720b91169 ]
+[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
 
-According to LP8556 datasheet EPROM region starts at 0x98 so adjust value
-in the driver accordingly.
+The driver uses the raw_readl() and raw_writel() functions. Those are
+not for MMIO devices. Replace them with readl() and writel()
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
-Link: https://lore.kernel.org/r/20250909074304.92135-2-clamor95@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
+
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/lp855x_bl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
-index e94932c69f540..80a4b12563c6f 100644
---- a/drivers/video/backlight/lp855x_bl.c
-+++ b/drivers/video/backlight/lp855x_bl.c
-@@ -21,7 +21,7 @@
- #define LP855X_DEVICE_CTRL		0x01
- #define LP855X_EEPROM_START		0xA0
- #define LP855X_EEPROM_END		0xA7
--#define LP8556_EPROM_START		0xA0
-+#define LP8556_EPROM_START		0x98
- #define LP8556_EPROM_END		0xAF
+diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
+index fef0bb4e0c8c3..c37afdfb477f0 100644
+--- a/drivers/clocksource/timer-vf-pit.c
++++ b/drivers/clocksource/timer-vf-pit.c
+@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
  
- /* LP8555/7 Registers */
+ static inline void pit_timer_enable(void)
+ {
+-	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
++	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_timer_disable(void)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
++	writel(0, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_irq_acknowledge(void)
+ {
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ }
+ 
+ static u64 notrace pit_read_sched_clock(void)
+ {
+-	return ~__raw_readl(clksrc_base + PITCVAL);
++	return ~readl(clksrc_base + PITCVAL);
+ }
+ 
+ static int __init pit_clocksource_init(unsigned long rate)
+ {
+ 	/* set the max load value and start the clock source counter */
+-	__raw_writel(0, clksrc_base + PITTCTRL);
+-	__raw_writel(~0UL, clksrc_base + PITLDVAL);
+-	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
++	writel(0, clksrc_base + PITTCTRL);
++	writel(~0UL, clksrc_base + PITLDVAL);
++	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
+ 
+ 	sched_clock_register(pit_read_sched_clock, 32, rate);
+ 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
+@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
+ 	 * hardware requirement.
+ 	 */
+ 	pit_timer_disable();
+-	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
++	writel(delta - 1, clkevt_base + PITLDVAL);
+ 	pit_timer_enable();
+ 
+ 	return 0;
+@@ -132,8 +132,8 @@ static struct irqaction pit_timer_irq = {
+ 
+ static int __init pit_clockevent_init(unsigned long rate, int irq)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(0, clkevt_base + PITTCTRL);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ 
+ 	BUG_ON(setup_irq(irq, &pit_timer_irq));
+ 
+@@ -189,7 +189,7 @@ static int __init pit_timer_init(struct device_node *np)
+ 	cycle_per_jiffy = clk_rate / (HZ);
+ 
+ 	/* enable the pit module */
+-	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
++	writel(~PITMCR_MDIS, timer_base + PITMCR);
+ 
+ 	ret = pit_clocksource_init(clk_rate);
+ 	if (ret)
 -- 
 2.51.0
 
