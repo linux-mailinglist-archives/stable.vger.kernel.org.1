@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-197891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55848C970F0
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A755C97141
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D293A5893
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D2C63435C9
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14545262FE4;
-	Mon,  1 Dec 2025 11:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E0263C9F;
+	Mon,  1 Dec 2025 11:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9zIinDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWM374Al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4624255F2D;
-	Mon,  1 Dec 2025 11:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB1C25CC40;
+	Mon,  1 Dec 2025 11:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588819; cv=none; b=XTD+sFhtE/9RsgwVPM/lj9ibmfRN7aC9izLTLWpPAPCWkYnLGyvXBBjpsBrAirDxgzggYbU5AZqO4Nq5dSvpnbQqqJI7gFL0hVmFwHryH3F2SQEsR+KNYimMDfuRhZPd+VVdMiesti/akbfdjhOwfnMZp0tFLn7fpWq5OjATyqs=
+	t=1764588836; cv=none; b=GscwXg0VF+PRwKQFFqnlVas2/oJd9+Ux1FmBExZs2mfrk7IYw9L+bAhV75XsWAcTVaXRg4bIvPoLm7PhHqsqWSR52UxXfei/D7dCpabSgEl/paH1aduL+Q8uy1Y1tq6S40THwJRV+zLQskHY9Lx9M6h1N4SrCDBCLzDphTpBXYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588819; c=relaxed/simple;
-	bh=YsEFsF09qHiTUuyYZ59G/u4uEGAAPTHVp6s8BtYAQH4=;
+	s=arc-20240116; t=1764588836; c=relaxed/simple;
+	bh=a6glI3eI74LQEV1QaOwL4S+Xf94t8uMlDoBTBRDYMHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3y2WC1zamkmc69ZVCYG4dsQ+ktu/I7vt5HO9jwb65mYBckirnm+ftd79DGOZbZrEY7M05Mfx/c5OWQTxUkOLk7O3VJHt45oc3wOrxEXigJf1axxVJkpwL+MGS9uQs/wraEtcHiPOZInKwXQlO8byMco1ChhjXA22LCpk4XWPD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9zIinDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F761C4CEF1;
-	Mon,  1 Dec 2025 11:33:39 +0000 (UTC)
+	 MIME-Version; b=mfeiTE/agcpdJ5D/BluxQb6DW7b6ervG9e9iZlEHialKDBkwsQkovVd6f569pr3e9PIM60hEBvhZ7Snjbf2H1so5Pu9C6Re84Fuf9CwnuhyodQ0Xc8dAbOgArB72YSkmNw6Axy4CWkli3jHH/uEM6r1OXTdo8d02vXRPsaahnWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWM374Al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A622C4CEF1;
+	Mon,  1 Dec 2025 11:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588819;
-	bh=YsEFsF09qHiTUuyYZ59G/u4uEGAAPTHVp6s8BtYAQH4=;
+	s=korg; t=1764588836;
+	bh=a6glI3eI74LQEV1QaOwL4S+Xf94t8uMlDoBTBRDYMHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9zIinDFVcJG3IeIBXO48WHyKRjr6EqVEi/S2pgZP9oREkyAffEAkfALYMW2dwkiB
-	 zhb0HddfTDIeXmBONfTkVWUVwx521sgz6vkz4/96Qpp1nMCUKws3MPELbQQISfTCwa
-	 Tw0txP7+/5fANOpxnYsFCkXMio68uzJrYo3clpFg=
+	b=ZWM374Al8ucZkaoIpd/lOzyQk4p41OVzMqKy+KgDZwVxxAoSjj2lNc0zq6MQ9wOWE
+	 Q3ReowctAQ30OPqMyyr8LaIgpp/A+cm51kpg0hzQZ7oLKB95/DrRjLczuZsVkgHqGV
+	 +gqfL/F38jlTgtyM2oRTFB5eRPDw3JCQWtNMOC6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.4 155/187] spi: Try to get ACPI GPIO IRQ earlier
-Date: Mon,  1 Dec 2025 12:24:23 +0100
-Message-ID: <20251201112246.816640183@linuxfoundation.org>
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.4 156/187] EDAC/altera: Handle OCRAM ECC enable after warm reset
+Date: Mon,  1 Dec 2025 12:24:24 +0100
+Message-ID: <20251201112246.852036321@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -65,56 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
+Manager (SDM) during a power-on reset on SoCFPGA.
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+However, during a warm reset, the OCRAM content is retained to preserve data,
+while the control and status registers are reset to their default values. As
+a result, ECC must be explicitly re-enabled after a warm reset.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/edac/altera_edac.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2055,6 +2055,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1247,10 +1247,22 @@ altr_check_ocram_deps_init(struct altr_e
+ 	if (ret)
+ 		return ret;
  
+-	/* Verify OCRAM has been initialized */
 +	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
++	 * Verify that OCRAM has been initialized.
++	 * During a warm reset, OCRAM contents are retained, but the control
++	 * and status registers are reset to their default values. Therefore,
++	 * ECC must be explicitly re-enabled in the control register.
++	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
 +	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+
- 	acpi_device_set_enumerated(adev);
+ 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
+-			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
+-		return -ENODEV;
++			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
++		if (!ecc_test_bits(ALTR_A10_ECC_EN,
++				   (base + ALTR_A10_ECC_CTRL_OFST)))
++			ecc_set_bits(ALTR_A10_ECC_EN,
++				     (base + ALTR_A10_ECC_CTRL_OFST));
++		else
++			return -ENODEV;
++	}
  
- 	adev->power.flags.ignore_parent = true;
+ 	/* Enable IRQ on Single Bit Error */
+ 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
 
 
 
