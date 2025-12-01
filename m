@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-197723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58ADC96EAF
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:28:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF707C96E8E
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 72BD6346074
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08793A5F71
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31A43093A6;
-	Mon,  1 Dec 2025 11:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A71307AF2;
+	Mon,  1 Dec 2025 11:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpmJHmuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKBIalOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C002571A1;
-	Mon,  1 Dec 2025 11:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046642522B6;
+	Mon,  1 Dec 2025 11:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588346; cv=none; b=ZzXljg66Z24R+8dMSxcZ/ws0ji098CWms1JkfchTT5mG6CEP0v5MdZpBmBSIiH1y3Z3Ldxw2U+QUITuSzgj9bhlh/+sHcwRM84dcYDbkG/wEBL34gytKt+9vKAiHRMuGxKDFSSAaQChFXTAO+8OPfK1FzdcB9CoFmq4oY+fBmjc=
+	t=1764588332; cv=none; b=ecqbblDsF7VF19Q9vuPbNXvZijYFP6YYkSJf430ezevipo0iCgUvWbhylgWadrrn6mzixZAu/zxojYl8jdbi26USZvqBOHRWh5LdKLcHh36VV812LOwgnWphUcCW9ONLenKp4pEff91swapsEcUHQjzsJ9Frihc8PwGSj/cIBak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588346; c=relaxed/simple;
-	bh=FUYFt2higJKMdy4foeRHKWWI0IkmrI6TQm6oQ694+G8=;
+	s=arc-20240116; t=1764588332; c=relaxed/simple;
+	bh=ZfgmicC8ox5HfZtR13zFsgc7Dq+CgAYPJsjs8GSkXTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzOrNyb6KRjfweje8FWQEzKM9LFGSONVOfwATwIg87zfyaLgpm024++FzmxstPnlau04PiFXntfy1ReLR2FyOuvXSv+G5f2PfL6T+GahNIwkyy2PlCdulDrzm05BSTwvHlHBjwZpozwt3U+RRWgX5/UCQtb4VnRGMy9CLSuzu2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpmJHmuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8579C4CEF1;
-	Mon,  1 Dec 2025 11:25:45 +0000 (UTC)
+	 MIME-Version; b=CLzlkOR5xQfowy/R/0wNYHekELFk8f7YUfZK082W10hWU33XFXNJzpzD0Xns6PpVDxKeg6HhXYGkGdN7Qkw2NJs7z8uo7GNhjT3FucjTHMdZBr78DW5z9gDBFNozFYROG4iivQMYO7kbALq7g2lUhCxCJ6amJc5rrM8ltLr0e6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKBIalOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2136FC4CEF1;
+	Mon,  1 Dec 2025 11:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588346;
-	bh=FUYFt2higJKMdy4foeRHKWWI0IkmrI6TQm6oQ694+G8=;
+	s=korg; t=1764588331;
+	bh=ZfgmicC8ox5HfZtR13zFsgc7Dq+CgAYPJsjs8GSkXTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpmJHmuAeMeCUt8pjab/o3jO1rBj3ELo4nyYaX1U8E1cZNWO2SKRkDyJtLUhTlSFz
-	 vT5gRZ0za312MgD65HHrrrxan4TyGq3lkzn6Ppy7n+it3+s9ourMzVgDGuo30fJo5h
-	 17eKO/0bWpKwI53y2SC4cIg1IAFH4k/UvelrWheQ=
+	b=pKBIalObGZ2xfmvmoQfMG+/5DtRNf9uzcObtxPkZwQbAQE7fpDnTwTVRdrtkAcsjL
+	 jbM/m5xcVjzb96dSRCuvavS54CIk3makEA7xjR0ww3hJreLQ8WN7P0LZtreGwfLYkU
+	 YYZBox4ULs7/tb+xCSC3+M2ohEog411wLVG5jQAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/187] btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
-Date: Mon,  1 Dec 2025 12:21:51 +0100
-Message-ID: <20251201112241.372208620@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 004/187] net: usb: asix_devices: Check return value of usbnet_get_endpoints
+Date: Mon,  1 Dec 2025 12:21:52 +0100
+Message-ID: <20251201112241.407689807@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -66,58 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 45c222468d33202c07c41c113301a4b9c8451b8f ]
+commit dc89548c6926d68dfdda11bebc1a5258bc41d887 upstream.
 
-After setting the BTRFS_ROOT_FORCE_COW flag on the root we are doing a
-full write barrier, smp_wmb(), but we don't need to, all we need is a
-smp_mb__after_atomic().  The use of the smp_wmb() is from the old days
-when we didn't use a bit and used instead an int field in the root to
-signal if cow is forced. After the int field was changed to a bit in
-the root's state (flags field), we forgot to update the memory barrier
-in create_pending_snapshot() to smp_mb__after_atomic(), but we did the
-change in commit_fs_roots() after clearing BTRFS_ROOT_FORCE_COW. That
-happened in commit 27cdeb7096b8 ("Btrfs: use bitfield instead of integer
-data type for the some variants in btrfs_root"). On the reader side, in
-should_cow_block(), we also use the counterpart smp_mb__before_atomic()
-which generates further confusion.
+The code did not check the return value of usbnet_get_endpoints.
+Add checks and return the error if it fails to transfer the error.
 
-So change the smp_wmb() to smp_mb__after_atomic(). In fact we don't
-even need any barrier at all since create_pending_snapshot() is called
-in the critical section of a transaction commit and therefore no one
-can concurrently join/attach the transaction, or start a new one, until
-the transaction is unblocked. By the time someone starts a new transaction
-and enters should_cow_block(), a lot of implicit memory barriers already
-took place by having acquired several locks such as fs_info->trans_lock
-and extent buffer locks on the root node at least. Nevertlheless, for
-consistency use smp_mb__after_atomic() after setting the force cow bit
-in create_pending_snapshot().
+Found via static anlaysis and this is similar to
+commit 07161b2416f7 ("sr9800: Add check for usbnet_get_endpoints").
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 933a27d39e0e ("USB: asix - Add AX88178 support and many other changes")
+Fixes: 2e55cc7210fe ("[PATCH] USB: usbnet (3/9) module for ASIX Ethernet adapters")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://patch.msgid.link/20251026164318.57624-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/transaction.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 094b024bbf0cf..6618b42defed7 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1546,7 +1546,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 	}
- 	/* see comments in should_cow_block() */
- 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
--	smp_wmb();
-+	smp_mb__after_atomic();
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -230,7 +230,9 @@ static int ax88172_bind(struct usbnet *d
+ 	int i;
+ 	unsigned long gpio_bits = dev->driver_info->data;
  
- 	btrfs_set_root_node(new_root_item, tmp);
- 	/* record when the snapshot was created in key.offset */
--- 
-2.51.0
-
+-	usbnet_get_endpoints(dev,intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		goto out;
+ 
+ 	/* Toggle the GPIOs in a manufacturer/model specific way */
+ 	for (i = 2; i >= 0; i--) {
+@@ -681,7 +683,9 @@ static int ax88772_bind(struct usbnet *d
+ 	u32 phyid;
+ 	struct asix_common_private *priv;
+ 
+-	usbnet_get_endpoints(dev, intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
+ 
+ 	/* Maybe the boot loader passed the MAC address via device tree */
+ 	if (!eth_platform_get_mac_address(&dev->udev->dev, buf)) {
+@@ -1063,7 +1067,9 @@ static int ax88178_bind(struct usbnet *d
+ 	int ret;
+ 	u8 buf[ETH_ALEN] = {0};
+ 
+-	usbnet_get_endpoints(dev,intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
+ 
+ 	/* Get the MAC address */
+ 	ret = asix_read_cmd(dev, AX_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, buf, 0);
 
 
 
