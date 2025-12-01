@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-197760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA53C96F1C
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764CEC96F3A
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2146F343AD7
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:28:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 149BA34605A
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40F63081DE;
-	Mon,  1 Dec 2025 11:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB433081C2;
+	Mon,  1 Dec 2025 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFqIdp+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQT708JH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7226F3081C7;
-	Mon,  1 Dec 2025 11:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CC83081C6;
+	Mon,  1 Dec 2025 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588450; cv=none; b=TDvFc6VAD5GDOi989U8PdrrDKCwEpoxGcIHTl+Y0RJNeQm2SaR+UKORv0SnLWjN9lk/qaY5kMGf18Gw4/Nn68c46qECExuKm/5ZDqNlv1MgGAAp1ujy1rqcAZSPH44yjivPgLShRaohbnQtI9dpKoF56FqcmTQum3qI/jNbDThQ=
+	t=1764588481; cv=none; b=mYxUAbOaULjNzQ0dQDQQIwtSt53mg26t6Ay/eC1jfG2gTf8iSDDjIljkZQ0ornVNCHIhoUrTFytGv60j2XbVM3BuVLzZiEWC7ByLB2TvOwpAyH6dlPCzmjZKO/98ZEdLQiuvfz++nSX9vrtZdOqp3vTjvbMYBPaY9V50jEx2Fd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588450; c=relaxed/simple;
-	bh=SHbk2BtyCQ8dCHUTkvWC5t5uUqkPmlT7DEmCbcC8474=;
+	s=arc-20240116; t=1764588481; c=relaxed/simple;
+	bh=bAdCD7G3Ui46TMqiDZZy0qZg20J2ciEtUX8fV9bShrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DM0LpMreORKqR6OlKMk1WTreGOOn5oEkq0WCsqV03dTb56wvXeTS4w6qqy4TOKpxGhiQWs4F51tqIhlifRIKPaZlBCmmXwVb5VcMBMYhOXxIoJABHb33bsParr40L0G2nhvaHSHcGYQnBC+igEzM82cEzQJ/yOD++8s0Xvl0Nlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFqIdp+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00B9C113D0;
-	Mon,  1 Dec 2025 11:27:29 +0000 (UTC)
+	 MIME-Version; b=O9dONRMYgfKVy6JKkL8qK7kX4DrioE72jMkHfneBxLUE3+ZYm3Ltahu52PxJ0nNfC9S+X3zsBmIlKsMd1017Ud+x8eQKzaikgG3DjRahC65x84jhyNQ2A7UX2b86PAx238u5ATtLiHfuNMB8F+7nZqBUpH8CWwxeNZSfQ/D5Ag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQT708JH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4A2C4CEF1;
+	Mon,  1 Dec 2025 11:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588450;
-	bh=SHbk2BtyCQ8dCHUTkvWC5t5uUqkPmlT7DEmCbcC8474=;
+	s=korg; t=1764588481;
+	bh=bAdCD7G3Ui46TMqiDZZy0qZg20J2ciEtUX8fV9bShrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFqIdp+dhePHUrdxRQBlF+XraKGTz2GqpPBo6cIlerJDSDxZnFpeANUxPVfR5R4LS
-	 18SRoutrK2tPcXaNPJwvlIdDWCkpx1B/r2t/QT31pX9ark1j6IecV0MEt9XxkNOAwf
-	 +yFmjp0ulwR+Jf2wWR4fv8HqPlShriZiDZBYzSAw=
+	b=iQT708JHpIJMyd3AiWn0jywPinRp1ku8POcf7lU2QgivY6nlSnAcG0RxQ4WU72RWL
+	 RJhTYX73DapGzDvVxdngjUYa13wp7ogHz3TC7hk9QnoLEvFgoYP/90zxlyZqKKgHe8
+	 ZrblLgngcgZnj3hdS905M4B0L4fY6yT93xjYKAA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/187] mfd: stmpe: Remove IRQ domain upon removal
-Date: Mon,  1 Dec 2025 12:22:33 +0100
-Message-ID: <20251201112242.876427862@linuxfoundation.org>
+Subject: [PATCH 5.4 046/187] mfd: stmpe-i2c: Add missing MODULE_LICENSE
+Date: Mon,  1 Dec 2025 12:22:34 +0100
+Message-ID: <20251201112242.911873589@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -68,33 +68,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 57bf2a312ab2d0bc8ee0f4e8a447fa94a2fc877d ]
+[ Upstream commit 00ea54f058cd4cb082302fe598cfe148e0aadf94 ]
 
-The IRQ domain is (optionally) added during stmpe_probe, but never removed.
-Add the call to stmpe_remove.
+This driver is licensed GPL-2.0-only, so add the corresponding module flag.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250725070752.338376-1-alexander.stein@ew.tq-group.com
+Link: https://lore.kernel.org/r/20250725071153.338912-3-alexander.stein@ew.tq-group.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/stmpe-i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
-index 7f758fb60c1fa..70ca3fe4e99ee 100644
---- a/drivers/mfd/stmpe.c
-+++ b/drivers/mfd/stmpe.c
-@@ -1494,6 +1494,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
- 
- int stmpe_remove(struct stmpe *stmpe)
- {
-+	if (stmpe->domain)
-+		irq_domain_remove(stmpe->domain);
-+
- 	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
- 		regulator_disable(stmpe->vio);
- 	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
+diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
+index cd2f45257dc16..d52bb3ea7fb6f 100644
+--- a/drivers/mfd/stmpe-i2c.c
++++ b/drivers/mfd/stmpe-i2c.c
+@@ -139,3 +139,4 @@ module_exit(stmpe_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("STMPE MFD I2C Interface Driver");
+ MODULE_AUTHOR("Rabin Vincent <rabin.vincent@stericsson.com>");
++MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
