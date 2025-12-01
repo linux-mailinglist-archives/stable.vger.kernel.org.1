@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F56C986F8
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:11:50 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D12C986FB
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68761343753
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:11:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E8027344970
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2675030E0D4;
-	Mon,  1 Dec 2025 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D8334C24;
+	Mon,  1 Dec 2025 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAMiJveU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIp1ECfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90A633290C
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3759E335093
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764609106; cv=none; b=Ess4POEuo+/2kkTGifK6GFwh0q3fRTLfY60106flhejwui3CTeOgxzc9uU+8OSffvXFWVVVpdzJodT7a2nI0E5rZPnCK9cGon6bQB09krsv3igwpjhSscUxPJvXlrolLo5Ed/gDUik5BkaYV2LkrtYW/JGPcyGoActAEddL5Bdo=
+	t=1764609110; cv=none; b=ugKen5ORs4jzRVEZcTFqB2fXq90HMg8G75R0Zk/lZO47OkooYyDFHOTZa3yGyDBJL5JEWAN6b0e4JgRP8Zk3dm5yxq/4z+0tkpsRLbaam4ptm6d6JCiQ3HvdbXndElRcSqWm6tat8xfP6nSwNGrYr2n7jKv6yD6wvCr7gb4p7v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764609106; c=relaxed/simple;
-	bh=44DrNaWEOUPFr8Zfxi1scTVZHu2jGArcSMP7c1u0cqY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QLWk/+AMdrxEl7TCFSCFdkWAWfp3ZQDHYqjDtxoRlT7u2MLGY5cNCq82dTJMncXhKjoYdOryly4K1ynrAzbhLNLeUJaWV6l4sOPaCIL5OgpQDR5rXjtFOG7mM8qGZwNdKvkHhqbMJZ7A3rbc8WlHhxiGq2VY4SnQf18h8SnHK4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAMiJveU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55556C4CEF1;
-	Mon,  1 Dec 2025 17:11:46 +0000 (UTC)
+	s=arc-20240116; t=1764609110; c=relaxed/simple;
+	bh=LMdZ5I/H87hZeFYrI7oSM2ONABtafx/u2I6+hQqGrUM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S8EL0sAEKH95P+ALBjftlreupATJQUEnsQPCw+8nFEAatphaGXen9tqLM84b5haaX3dYPaEneMlpJFdySFeo1IhbOyHyoAs/0ddpQxmsuXO7X7fifyLFuBtcKn82OWo0MaKOwdkFvAkf2+cc4CWj1pU35buAnKo34hXfaOvxwHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIp1ECfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C63CC4CEF1;
+	Mon,  1 Dec 2025 17:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764609106;
-	bh=44DrNaWEOUPFr8Zfxi1scTVZHu2jGArcSMP7c1u0cqY=;
+	s=korg; t=1764609110;
+	bh=LMdZ5I/H87hZeFYrI7oSM2ONABtafx/u2I6+hQqGrUM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fAMiJveUUKYxayuI6IGFg9znP/ZhmstVfjpr+ges5FEWWkwUICRyi5uYiAfQQjkZd
-	 qGfhzna8xvI56rioVd3FrkeQ2puFc6kxaeIQ9fzfsHqJPnuK2sJDFZq7yx56PrHckZ
-	 lEeqhIUC0EDj0bZzPG3413os6kAbM9wB/NkeeJfc=
-Subject: FAILED: patch "[PATCH] usb: gadget: udc: fix use-after-free in usb_gadget_state_work" failed to apply to 5.10-stable tree
-To: hhhuuu@google.com,gregkh@linuxfoundation.org,stable@kernel.org
+	b=HIp1ECfOleVw5KHCp42r5BL1b6/IkWr77n4VQZ0+5pu90hUnttoZxg0Sho1Mdmi6i
+	 8woFqvpoKbrQtmD9VcqETchJZpdjLVHAfEJCFigrwWt6QulJaYSTauX0gw600GRx0p
+	 Fnmchhgdi2Vrgjdg+FBAs7BtfL3ergC3uN/GzG0M=
+Subject: FAILED: patch "[PATCH] xhci: fix stale flag preventig URBs after link state error is" failed to apply to 6.6-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 18:11:29 +0100
-Message-ID: <2025120129-earthlike-curse-b3f8@gregkh>
+Date: Mon, 01 Dec 2025 18:11:43 +0100
+Message-ID: <2025120143-crayfish-helpful-7944@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x baeb66fbd4201d1c4325074e78b1f557dff89b5b
+git cherry-pick -x b69dfcab6894b1fed5362a364411502a7469fce3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120129-earthlike-curse-b3f8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120143-crayfish-helpful-7944@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,112 +77,106 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From baeb66fbd4201d1c4325074e78b1f557dff89b5b Mon Sep 17 00:00:00 2001
-From: Jimmy Hu <hhhuuu@google.com>
-Date: Thu, 23 Oct 2025 05:49:45 +0000
-Subject: [PATCH] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
+From b69dfcab6894b1fed5362a364411502a7469fce3 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Fri, 7 Nov 2025 18:28:16 +0200
+Subject: [PATCH] xhci: fix stale flag preventig URBs after link state error is
+ cleared
 
-A race condition during gadget teardown can lead to a use-after-free
-in usb_gadget_state_work(), as reported by KASAN:
+A usb device caught behind a link in ss.Inactive error state needs to
+be reset to recover. A VDEV_PORT_ERROR flag is used to track this state,
+preventing new transfers from being queued until error is cleared.
 
-  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
-  Workqueue: events usb_gadget_state_work
+This flag may be left uncleared if link goes to error state between two
+resets, and print the following message:
 
-The fundamental race occurs because a concurrent event (e.g., an
-interrupt) can call usb_gadget_set_state() and schedule gadget->work
-at any time during the cleanup process in usb_del_gadget().
+"xhci_hcd 0000:00:14.0: Can't queue urb, port error, link inactive"
 
-Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
-device removal") attempted to fix this by moving flush_work() to after
-device_del(). However, this does not fully solve the race, as a new
-work item can still be scheduled *after* flush_work() completes but
-before the gadget's memory is freed, leading to the same use-after-free.
+Fix setting and clearing the flag.
 
-This patch fixes the race condition robustly by introducing a 'teardown'
-flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
-set during cleanup in usb_del_gadget() *before* calling flush_work() to
-prevent any new work from being scheduled once cleanup has commenced.
-The scheduling site, usb_gadget_set_state(), now checks this flag under
-the lock before queueing the work, thus safely closing the race window.
+The flag is cleared after hub driver has successfully reset the device
+when hcd->reset_device is called. xhci-hcd issues an internal "reset
+device" command in this callback, and clear all flags once the command
+completes successfully.
 
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+This command may complete with a context state error if slot was recently
+reset and is already in the defauilt state. This is treated as a success
+but flag was left uncleared.
+
+The link state field is also unreliable if port is currently in reset,
+so don't set the flag in active reset cases.
+Also clear the flag immediately when link is no longer in ss.Inactive
+state and port event handler detects a completed reset.
+
+This issue was discovered while debugging kernel bugzilla issue 220491.
+It is likely one small part of the problem, causing some of the failures,
+but root cause remains unknown
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220491
+Fixes: b8c3b718087b ("usb: xhci: Don't try to recover an endpoint if port is in error state.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251107162819.1362579-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 694653761c44..8dbe79bdc0f9 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct work_struct *work)
- void usb_gadget_set_state(struct usb_gadget *gadget,
- 		enum usb_device_state state)
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 8e209aa33ea7..5bdcf9ab2b99 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1985,6 +1985,7 @@ static void xhci_cavium_reset_phy_quirk(struct xhci_hcd *xhci)
+ 
+ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
  {
-+	unsigned long flags;
++	struct xhci_virt_device *vdev = NULL;
+ 	struct usb_hcd *hcd;
+ 	u32 port_id;
+ 	u32 portsc, cmd_reg;
+@@ -2016,6 +2017,9 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		goto cleanup;
+ 	}
+ 
++	if (port->slot_id)
++		vdev = xhci->devs[port->slot_id];
 +
-+	spin_lock_irqsave(&gadget->state_lock, flags);
- 	gadget->state = state;
--	schedule_work(&gadget->work);
-+	if (!gadget->teardown)
-+		schedule_work(&gadget->work);
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	trace_usb_gadget_set_state(gadget, 0);
- }
- EXPORT_SYMBOL_GPL(usb_gadget_set_state);
-@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct device *dev)
- void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
- 		void (*release)(struct device *dev))
- {
-+	spin_lock_init(&gadget->state_lock);
-+	gadget->teardown = false;
- 	INIT_WORK(&gadget->work, usb_gadget_state_work);
- 	gadget->dev.parent = parent;
+ 	/* We might get interrupts after shared_hcd is removed */
+ 	if (port->rhub == &xhci->usb3_rhub && xhci->shared_hcd == NULL) {
+ 		xhci_dbg(xhci, "ignore port event for removed USB3 hcd\n");
+@@ -2038,10 +2042,11 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		usb_hcd_resume_root_hub(hcd);
+ 	}
  
-@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
- void usb_del_gadget(struct usb_gadget *gadget)
- {
- 	struct usb_udc *udc = gadget->udc;
-+	unsigned long flags;
+-	if (hcd->speed >= HCD_USB3 &&
+-	    (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
+-		if (port->slot_id && xhci->devs[port->slot_id])
+-			xhci->devs[port->slot_id]->flags |= VDEV_PORT_ERROR;
++	if (vdev && (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
++		if (!(portsc & PORT_RESET))
++			vdev->flags |= VDEV_PORT_ERROR;
++	} else if (vdev && portsc & PORT_RC) {
++		vdev->flags &= ~VDEV_PORT_ERROR;
+ 	}
  
- 	if (!udc)
- 		return;
-@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
- 	device_del(&gadget->dev);
-+	/*
-+	 * Set the teardown flag before flushing the work to prevent new work
-+	 * from being scheduled while we are cleaning up.
-+	 */
-+	spin_lock_irqsave(&gadget->state_lock, flags);
-+	gadget->teardown = true;
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 3aaf19e77558..8285b19a25e0 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -376,6 +376,9 @@ struct usb_gadget_ops {
-  *	can handle. The UDC must support this and all slower speeds and lower
-  *	number of lanes.
-  * @state: the state we are now (attached, suspended, configured, etc)
-+ * @state_lock: Spinlock protecting the `state` and `teardown` members.
-+ * @teardown: True if the device is undergoing teardown, used to prevent
-+ *	new work from being scheduled during cleanup.
-  * @name: Identifies the controller hardware type.  Used in diagnostics
-  *	and sometimes configuration.
-  * @dev: Driver model state for this abstract device.
-@@ -451,6 +454,8 @@ struct usb_gadget {
- 	enum usb_ssp_rate		max_ssp_rate;
- 
- 	enum usb_device_state		state;
-+	spinlock_t			state_lock;
-+	bool				teardown;
- 	const char			*name;
- 	struct device			dev;
- 	unsigned			isoch_delay;
+ 	if ((portsc & PORT_PLC) && (portsc & PORT_PLS_MASK) == XDEV_RESUME) {
+@@ -2099,7 +2104,7 @@ static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
+ 		 * so the roothub behavior is consistent with external
+ 		 * USB 3.0 hub behavior.
+ 		 */
+-		if (port->slot_id && xhci->devs[port->slot_id])
++		if (vdev)
+ 			xhci_ring_device(xhci, port->slot_id);
+ 		if (bus_state->port_remote_wakeup & (1 << hcd_portnum)) {
+ 			xhci_test_and_clear_bit(xhci, port, PORT_PLC);
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 0cb45b95e4f5..a148a1280126 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -4007,6 +4007,7 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
+ 				xhci_get_slot_state(xhci, virt_dev->out_ctx));
+ 		xhci_dbg(xhci, "Not freeing device rings.\n");
+ 		/* Don't treat this as an error.  May change my mind later. */
++		virt_dev->flags = 0;
+ 		ret = 0;
+ 		goto command_cleanup;
+ 	case COMP_SUCCESS:
 
 
