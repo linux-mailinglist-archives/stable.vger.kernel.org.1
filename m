@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95A2C986BC
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC086C986BD
 	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BCE53449A5
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 652093A4413
 	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33AF192B75;
-	Mon,  1 Dec 2025 17:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64721335092;
+	Mon,  1 Dec 2025 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP2xj0ZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDJy/BMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDDC313534
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203EF3191D3
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764608980; cv=none; b=SvFQvtZ0VvAYtVAFVnFzUq7IGaYNPXGgMFFJ8mvXaMZuj0wO3Ux8Tnmobe9YyGdk5AHqqB49RkWCjVYtY41YkhG0357Qrp3AtUs9nZZ2Qra9qyyI+N0fxnWPhl3pWK3pbELOwI76Xe9tHXf7WNB+y/0wVo8HfXWRXQrw1/66jBs=
+	t=1764608984; cv=none; b=MpWhu7KHgJ/41lM951wX1q6NZKM977gIzI+a73O5kse+DgdyClY5fJGhBD6flKkA465ouTWC8CbaHLk+1nUZhllA2+zVqEmu3VYX6wmWlAQFLslrtiKN7h0A/hJoV6C0X+q72rANhf3/v9wGKC7bBfeSL7OYUWfKXJVW6Jz0u88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764608980; c=relaxed/simple;
-	bh=LOQpM6RxXLYoEtRE4ytf1zCEaHJABYXB2LoHDTrabJI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZRsp/WKGPNEDRmytoVoRohylzs4D+nPT7B7upFi28KSsuZUhkQzP21I0Igq1I3lFKAj0Bz/Hjcug/KHblyBxRo8V/pZgHKIyR0uXV+qEhuK6XW5OJ9r0+K9BAcy5H/hyFamnDCMuImv9TXPa9CBfVY+09WzjHPkhIqtxshp/qXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP2xj0ZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8F2C4CEF1;
-	Mon,  1 Dec 2025 17:09:39 +0000 (UTC)
+	s=arc-20240116; t=1764608984; c=relaxed/simple;
+	bh=eU/4469amh8kLp23NABJIIK4jm9SAjMXoJNQGUuBgIM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NT16IYTb6hDttPfih1I4PAUAbc8qCuqvi+ZujZ76Ji9uYc94A49KOIeYJl8V59siarjfN4n/vxJPrZpMQbkKktQc8rV42KjUFQvYzMEYCa0DR5oAkgD+kYrRcmRyUeylfIfAI/t9tiVYkABA34cdQHDJk51LqgGTimFJla9g/ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDJy/BMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFBCC4CEF1;
+	Mon,  1 Dec 2025 17:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764608980;
-	bh=LOQpM6RxXLYoEtRE4ytf1zCEaHJABYXB2LoHDTrabJI=;
+	s=korg; t=1764608983;
+	bh=eU/4469amh8kLp23NABJIIK4jm9SAjMXoJNQGUuBgIM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aP2xj0ZNkaPhJ0k+56ODjKg3EF6K9JtJRaBskLPkZaw7UJgqjbZ8Hs1Yl6zCHQUPY
-	 oBsUA7kZ24p6PY7XXI9yIS4oEXD065brPGLTvtbk1ioQhsQEq7qvw/TG3csn51UbbF
-	 BEcORYSnqEw4KixjIBtZvXE9piWRaHIhA8SqX0tE=
-Subject: FAILED: patch "[PATCH] usb: renesas_usbhs: Fix synchronous external abort on unbind" failed to apply to 5.15-stable tree
+	b=vDJy/BMV9aUG7kCVFeKl0h6VxyaKY355zti12TAtL/JrLpHpECn6kgGz1OMmPad5T
+	 T/0pbcQglt2+YAxb3AxFZIjJqX2Fn/S+NislsSkpJRtYoMDdyeJq8c/a7grDbrsOG5
+	 ntVg0fReKK4bRmV2ETusi9WrtDjE4DCb50x1GpfU=
+Subject: FAILED: patch "[PATCH] usb: renesas_usbhs: Fix synchronous external abort on unbind" failed to apply to 5.10-stable tree
 To: claudiu.beznea.uj@bp.renesas.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 18:09:28 +0100
-Message-ID: <2025120128-dawn-glowworm-efba@gregkh>
+Date: Mon, 01 Dec 2025 18:09:30 +0100
+Message-ID: <2025120130-monopoly-untaken-5e9c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x eb9ac779830b2235847b72cb15cf07c7e3333c5e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120128-dawn-glowworm-efba@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120130-monopoly-untaken-5e9c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
