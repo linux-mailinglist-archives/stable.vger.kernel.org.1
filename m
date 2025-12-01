@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-197867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9B5C970D8
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A79C97057
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 08C2034950C
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E3545345487
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541DF25A633;
-	Mon,  1 Dec 2025 11:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4883260587;
+	Mon,  1 Dec 2025 11:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/EN1uGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkKInLvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11696264A92;
-	Mon,  1 Dec 2025 11:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EFA184E;
+	Mon,  1 Dec 2025 11:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588752; cv=none; b=F2VahqCxbIQc62ZRVLi+WpJ0aMBjVPQGgYURwmgAaT8Ym6kd09Rc8tNH/O0I4huN5bx593xxKVs56q1YtRhlUPMd1UdtbFXt0ALIgyMtdM/U5KkaO13zcWxUkCYjfp4owuGJACPt8TMnG5Psb3jnhB+yNobSFCsNyBugFoOa8dc=
+	t=1764588658; cv=none; b=g8g1G3OxyDg/7UDkXD1T3Ql9ycFE2aa5FsYEIhNZE5ROJo+NLkO+nmEus9GYPrCjMB/qD740/yFep6tOmakQgVlodGQSJ+NnnK5PozxcV9aNIM3VO9+zm0eDxCKREMgOagu6e4o2UxWk1xKuVV/fDyAZ7guJNeeLDu016srzr2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588752; c=relaxed/simple;
-	bh=gv3vIlTydVZ5sSjw6cNOK5c6quYUaP4k4lgPouDC3jE=;
+	s=arc-20240116; t=1764588658; c=relaxed/simple;
+	bh=zG4fSS+PbVVIot74iGkdSyYSlvb+fRLNZcKk8GWG9h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1BSnp7hwBcbqICnn5gklkfYKkUx76KVFjsybWo2/fskBmpiLBxnAH52VfTZtbJSCNu5Np9aiNqQ4KChyejMrLqFOt9Iv/izmDfWvtaofeJYlGbxLUKhPJ2xOIfqiQkCI00TQbSjatlVQ+ZVqZJaEsWbLUFEQMB+ZtTkFjsj/Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/EN1uGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9049DC4CEF1;
-	Mon,  1 Dec 2025 11:32:31 +0000 (UTC)
+	 MIME-Version; b=rKxh9kBHVgGM1jSv40foK0bQOEqYpZDa8KrlU8ihfRKff8cZhzYX/f0HCJ+alQ7Z7R/v1ULM856tN/nMYcg4pyK2oeP5wiyDyjdh9IzmMgPAGqjEgYXsYO4t4m+3qHIHQWwTwWYuTcRXdQozTERqdt4bguSqekFjeGTOXQTXi1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkKInLvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03417C113D0;
+	Mon,  1 Dec 2025 11:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588751;
-	bh=gv3vIlTydVZ5sSjw6cNOK5c6quYUaP4k4lgPouDC3jE=;
+	s=korg; t=1764588658;
+	bh=zG4fSS+PbVVIot74iGkdSyYSlvb+fRLNZcKk8GWG9h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/EN1uGFbEyU4A6YrLMThjLaw5yhohbtKJE114k7x/OyLlmkTMJPPxjcEG08zgIxv
-	 Yi9teiGbJjb0Co616YTJl7vgXso4zS7EX5CpQEzZ1vyNFmdq71/CYYR/HtQT5lnZLO
-	 0OwvCFqEOda6T1gmg+g/B2uyaOAxiUJH3+eF6m/Q=
+	b=QkKInLvJfb1ckgCXzPwFdhQYN6hXXfRIEn5xA6XoBkRXtgWirmd62GswkqzKZIt6f
+	 IsUPNiOOVKGxmg5euoVfLGr6FtAwsvyRXwZB1Rrf1uKJMb2j2MSPW93IENazqXN55J
+	 9Ym097pCh+XSyhCZXH261jYxt/MAxpG399cEc47s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Joshua Watt <jpewhacker@gmail.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 125/187] compiler_types: Move unused static inline functions warning to W=2
-Date: Mon,  1 Dec 2025 12:23:53 +0100
-Message-ID: <20251201112245.745208882@linuxfoundation.org>
+Subject: [PATCH 5.4 126/187] NFS4: Fix state renewals missing after boot
+Date: Mon,  1 Dec 2025 12:23:54 +0100
+Message-ID: <20251201112245.780430670@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -67,55 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Joshua Watt <jpewhacker@gmail.com>
 
-[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
+[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
 
-Per Nathan, clang catches unused "static inline" functions in C files
-since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+Since the last renewal time was initialized to 0 and jiffies start
+counting at -5 minutes, any clients connected in the first 5 minutes
+after a reboot would have their renewal timer set to a very long
+interval. If the connection was idle, this would result in the client
+state timing out on the server and the next call to the server would
+return NFS4ERR_BADSESSION.
 
-Linus said:
+Fix this by initializing the last renewal time to the current jiffies
+instead of 0.
 
-> So I entirely ignore W=1 issues, because I think so many of the extra
-> warnings are bogus.
->
-> But if this one in particular is causing more problems than most -
-> some teams do seem to use W=1 as part of their test builds - it's fine
-> to send me a patch that just moves bad warnings to W=2.
->
-> And if anybody uses W=2 for their test builds, that's THEIR problem..
-
-Here is the change to bump the warning from W=1 to W=2.
-
-Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
-[nathan: Adjust comment as well]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler_types.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4client.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index b94d08d055ff5..a428104c5e777 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -165,10 +165,9 @@ struct ftrace_likely_data {
- /*
-  * GCC does not warn about unused static inline functions for -Wunused-function.
-  * Suppress the warning in clang as well by using __maybe_unused, but enable it
-- * for W=1 build. This will allow clang to find unused functions. Remove the
-- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
-+ * for W=2 build. This will allow clang to find unused functions.
-  */
--#ifdef KBUILD_EXTRA_WARN1
-+#ifdef KBUILD_EXTRA_WARN2
- #define __inline_maybe_unused
- #else
- #define __inline_maybe_unused __maybe_unused
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index eeab44727a766..dcef5785c1528 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -221,6 +221,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
+ 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
+ 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
+ 	clp->cl_mig_gen = 1;
++	clp->cl_last_renewal = jiffies;
+ #if IS_ENABLED(CONFIG_NFS_V4_1)
+ 	init_waitqueue_head(&clp->cl_lock_waitq);
+ #endif
 -- 
 2.51.0
 
