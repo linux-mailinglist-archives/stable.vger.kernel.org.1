@@ -1,185 +1,265 @@
-Return-Path: <stable+bounces-197922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932BEC97E74
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 15:50:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB24C97E41
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 15:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EB593A3C11
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 14:50:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1D0C24E02F7
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 14:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474F3319847;
-	Mon,  1 Dec 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AAB31DD99;
+	Mon,  1 Dec 2025 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="pB/VkOnf"
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="WhL8pCv7"
 X-Original-To: stable@vger.kernel.org
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F7A23D7C2;
-	Mon,  1 Dec 2025 14:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7869C319847;
+	Mon,  1 Dec 2025 14:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.158.23.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764600597; cv=none; b=of86UyGn4f7dca0JbfkGb2EQtSOUSmUgLETLrHYnn9gZ7zwvLNblJ/UGUMo0EKmxydZQEJnYl25ObOoE/YAF2xtY7VgoIgrQUb+wJljpxjnmmw6ii3C2DWtw85FpWnbKtQW93UAWt85+1DepQgsFPrqzr6199fYg2rtaDrM1wbU=
+	t=1764600325; cv=none; b=rZBVYEPY/WV95551ql4W5UXW/4i+9EejZcPJ7lzA07QiNKuW94g8JOJuf1u5dMGZEU++dyJ5e5KMLb0ei6OCC7g0smw5gXRC+Z2F6UMVA/Ukgt5Lge7QfIpq4BwLGTrnwCNothkKlGMDgfibbAMR+LTX6X4SfdG/u9I5Ju4bK9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764600597; c=relaxed/simple;
-	bh=7RZAnM0u/6Lq6J6wVPRlV/t5KSNgEJuY0qeQpWU0Ms0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZUzs+wo8wOKCVj57Uye47ocY1rEsUEN6xlFxxY3Vprl30PJ8xU9LtxGY9HROTQ7xYYQOCdqUOhVCbRTBQoEJceQQhGt7PZznw3wft5XW0wUmr6rKle3+APhbagsmUB1OqEE8ph7tni1U2eoz4BqfysXS5x0iA/M8MPDIJZHWuAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=pB/VkOnf; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=144439612d=os@dev.tdt.de>)
-	id 1vQ4yK-007EZZ-PB; Mon, 01 Dec 2025 15:33:48 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <os@dev.tdt.de>)
-	id 1vQ4yJ-007SVb-Bx; Mon, 01 Dec 2025 15:33:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1764599625;
-	bh=9I8JJfsEgB/9wcRxt2JdeIQlFusUaFYKdjq8kR3UnK4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pB/VkOnfHNPBcLV3L8l2MGMtPL00jDUWM+rF8V6SQORz7MywM3f8Eka9/cS8Teyni
-	 r14s6g8fh1ap1kXChEdonQmW9zMHPCsS+tqc6y2nddOQuKEbSC5frUncUoH3yljyI5
-	 QGk+Q0BhF1J0syEGsB8aN1WqIoKS5iuR2mE0SP1hzhxVEo2XFGdRC2ceG/jTfqo8+k
-	 IVC86+Xy6buVECj3Ch4koMOmk/CnI9qffLYOjG/5isazYkUiA7N5d2N9QaBjzA9N34
-	 pTBhhbIziDraX8I64FmhUE3LqI8+XLEKpfJw9c4ztwwzW+LuuHh8EfYDBQkUkbgRvs
-	 Q5cZ3/PbMEPlw==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 98EF3240040;
-	Mon,  1 Dec 2025 15:33:45 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 89540240036;
-	Mon,  1 Dec 2025 15:33:45 +0100 (CET)
-Received: from osedlbauer1.dev.tdt.de (unknown [10.2.3.165])
-	by mail.dev.tdt.de (Postfix) with ESMTPSA id F1F3120F9D;
-	Mon,  1 Dec 2025 15:33:44 +0100 (CET)
-From: Oliver Sedlbauer <os@dev.tdt.de>
-To: stable@vger.kernel.org
-Cc: Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Oliver Sedlbauer <os@dev.tdt.de>, Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: ath12k: correctly handle mcast packets for clients
-Date: Mon,  1 Dec 2025 15:33:16 +0100
-Message-ID: <20251201143316.198269-1-os@dev.tdt.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1764600325; c=relaxed/simple;
+	bh=UVDg1Guy9p2UufxCecABsSiNaOF6TmJ+4fooO+Q3umg=;
+	h=Content-Type:MIME-Version:From:To:CC:Subject:Date:Message-ID:
+	 References:In-Reply-To:MIME-Version; b=E7xlS8hA7e7qpuG+N9JxGtkf1BraVjBYhB2Ad8AoybhGf4iKcno5aaKoyT4klSjZnmhfAMivy0JQPsal5L8n1jk0nh/jQ+l/TTBgFon9HZ/zYoaY0vf3sd9CoTm66pCwUZUvuIJlSWX4P0i+2Tenvju1Rb3qbDb97lzqjU4czAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=WhL8pCv7; arc=none smtp.client-ip=35.158.23.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1764600323; x=1796136323;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to;
+  bh=9HHszQ8uLB9Nvtsv/IwkKoL+lxIQrnvS8+HyJWF9b8g=;
+  b=WhL8pCv7cLFlKLg+FBhrPe6vEJ6UUbJ7amS93DIc4SFxnEYM3Iw43+u3
+   lwPftbn0qYDzPydZ+ZqnDGem9gOkROiSDHg3v3J5hEwAhQr32pmQCZhLB
+   0+OwpJc+zM7F8RDnJjvBoNF/ncHkEO4/WsV9lPbSKvBTDw94UbVgdK7eZ
+   wYATcYa/MaEqeC2uR6PTvR8hRZQCW0brL4xwBeG/fj/UwXr4LkBvADEGq
+   JwVK8MANI69INhg2oDfVYGQrN9fjpeL+iehM8Dty/sCR3D7OgUyqU0QKE
+   Oi6mn24wpVEEFjznGg/zzsJ3D8Qlt4IqLJXh3e5UYFiS70nyz1lMl/FxX
+   Q==;
+X-CSE-ConnectionGUID: 4Eg1OA0cSqaz6jGMyfVPNQ==
+X-CSE-MsgGUID: Kc6OAJ51ROutevJSH+oJ2A==
+X-Amazon-filename: smime.p7s
+X-IronPort-AV: E=Sophos;i="6.20,240,1758585600"; 
+   d="p7s'346?scan'346,208,346";a="6064819"
+Content-Type: multipart/mixed; boundary="===============5292545290439379605=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 14:45:04 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:17436]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.31.35:2525] with esmtp (Farcaster)
+ id a47c10cd-14e2-4fc5-9e7c-0778affee4d5; Mon, 1 Dec 2025 14:45:04 +0000 (UTC)
+X-Farcaster-Flow-ID: a47c10cd-14e2-4fc5-9e7c-0778affee4d5
+Received: from EX19D005EUA004.ant.amazon.com (10.252.50.241) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 1 Dec 2025 14:45:03 +0000
+Received: from EX19D001UEB002.ant.amazon.com (10.252.135.17) by
+ EX19D005EUA004.ant.amazon.com (10.252.50.241) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Mon, 1 Dec 2025 14:45:03 +0000
+Received: from EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292]) by
+ EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292%3]) with mapi id
+ 15.02.2562.029; Mon, 1 Dec 2025 14:45:02 +0000
+From: "Woodhouse, David" <dwmw@amazon.co.uk>
+To: "Sieber, Fernand" <sieberf@amazon.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>
+CC: "Saenz Julienne, Nicolas" <nsaenz@amazon.es>, "Busse, Anselm"
+	<abusse@amazon.de>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	=?utf-8?B?U2Now7ZuaGVyciwgSmFuIEgu?= <jschoenh@amazon.de>, "Borghorst,
+ Hendrik" <hborghor@amazon.de>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "nh-open-source@amazon.com"
+	<nh-open-source@amazon.com>
+Subject: Re: [PATCH] KVM: x86/pmu: Do not accidentally create BTS events
+Thread-Topic: [PATCH] KVM: x86/pmu: Do not accidentally create BTS events
+Thread-Index: AQHcYs40OjRv5LDqzEukxebtznpJ0bUM3IWA
+Date: Mon, 1 Dec 2025 14:45:01 +0000
+Message-ID: <0ce1757e3267df037912b303f60c662c45d0a6e6.camel@amazon.co.uk>
+References: <20251201142359.344741-1-sieberf@amazon.com>
+In-Reply-To: <20251201142359.344741-1-sieberf@amazon.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+MIME-Version: 1.0
+
+--===============5292545290439379605==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=sha-256;
+	protocol="application/pkcs7-signature"; boundary="=-STgedMsGNI3h0h+/AFyg"
+
+--=-STgedMsGNI3h0h+/AFyg
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-purgate: clean
-X-purgate-type: clean
-X-purgate-ID: 151534::1764599628-04C2CCC1-FC92CC53/0/0
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+On Mon, 2025-12-01 at 16:23 +0200, Fernand Sieber wrote
+> Perf considers the combination of PERF_COUNT_HW_BRANCH_INSTRUCTIONS with
+> a sample_period of 1 a special case and handles this as a BTS event (see
+> intel_pmu_has_bts_period()) -- a deviation from the usual semantic,
+> where the sample_period represents the amount of branch instructions to
+> encounter before the overflow handler is invoked.
 
-[ Upstream commit 4541b0c8c3c1b85564971d497224e57cf8076a02 ]
+That's kind of awful, and seems to be the real underlying cause of the KVM
+issue. Can we kill it with fire? Peter?
 
-Currently, RX is_mcbc bit is set for packets sent from client as
-destination address (DA) is multicast/broadcast address, but packets
-are actually unicast as receiver address (RA) is not multicast address.
-Hence, packets are not handled properly due to this is_mcbc bit.
+--=-STgedMsGNI3h0h+/AFyg
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Therefore, reset the is_mcbc bit if interface type is AP.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkYw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhUwggT9oAMCAQICEFQru/eJkU7BxeS7T6sWKmYwDQYJKoZIhvcN
+AQELBQAwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNV
+BAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBS
+U0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EwHhcNMjQxMjE1MDAw
+MDAwWhcNMjYxMjE1MjM1OTU5WjAiMSAwHgYJKoZIhvcNAQkBFhFkd213QGFtYXpvbi5jby51azCC
+AiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANhjs6T4tJ0lcw4+6sawEn2FowmhunUBsnSV
+ccB+aA7s3Zd9PZV46CU6phAlCWpKk1yFVcD1Rnc4ux17o4LbUgFXiKrORS0jiF/5Oa0rXG3FISG1
+Xdjt8oPKIq+9Z1s2e7Ipi5WWj4AG/xlkH/YMMctL9O8CCRHSrhiChbE/gR57x9PAnt5aeZZ2YWza
+GOOeceaZe+u6vHCHITRmknSAnAX/aNoNJNsQCGcfrE83y9iHmP8BFrSRZqajBKlKq8tyJd5FnSwP
+H3kSUcQlHOwiIfCRFXP4rpXSZ7nKOEZr3SXH06ADY9gZtrSpwBbuzKWDPGWMRuRnz8ogj/Y6DeU4
+2zB/ZAIi5b0BzWf4u0rBEQD5xtpOCxYHc2nXQaFSWu36kP1JaNqElE51OQ92EyVKfW3N6qZcKiBr
+VijXY2EtR+/5W9ixRFnEs4nIeb94Sf92UMEeG9ew2yVvcYXXNPaicGnrkESNC19/a8YXxQEZfrmB
+eAPT9viQJhn3O+sD4pP0Ss3SjVZc6EO7vfoP07bt2n9YE08XSPkxcyb1J/4t/+AskkKeYFBGdpjg
+xd+iLFxjSwBytZuh3+7DuHUfg876WA44ieQDrhHSjuvuAZ1Wb8WUsrpzrcLoYjqFmb/bf6/yyoxl
+t31mdgPC+FLc+Yu1BQwXC3JMbrvbFBVTtn5X2EKDAgMBAAGjggHQMIIBzDAfBgNVHSMEGDAWgBQJ
+wPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUWvtA1XsSV8xjgfFQL/DUTNIbJu4wDgYDVR0P
+AQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwEwYDVR0lBAwwCgYIKwYBBQUHAwQwUAYDVR0gBEkwRzA6
+BgwrBgEEAbIxAQIBCgIwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly9zZWN0aWdvLmNvbS9TTUlNRUNQ
+UzAJBgdngQwBBQEDMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2Vj
+dGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUF
+BwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xp
+ZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDov
+L29jc3Auc2VjdGlnby5jb20wHAYDVR0RBBUwE4ERZHdtd0BhbWF6b24uY28udWswDQYJKoZIhvcN
+AQELBQADggEBAED6T+rfP2XPdLfHoCd5n1iGIcYauWfPHRdZN2Tw7a7NEXIkm2yZNizOSpp3NrMi
+WOBN13XgqnYLsqdpxJhbjwKczKX50/qfhhkOHtrQ0GRkucybK447Aaul80cZT8T3WG9U9dhl3Ct/
+MuyKBWQg3MYlbUT6u4kC9Pk8rd+cR14ttYRUWDKTS2BrL7e8jpNmtCoEakDkMY4MrpoMwM1f4ANV
+qZ8cnDntwXq5ormZIksN2DqxsKLmrFyVAONhqSST72ImBfIVWhFRTCF9tTcI5wE/0Skl25FZmSsB
+B2LUgecgK7MZyw9Do/b0sYS+8YmA/ujUCqNb0fPJBE/B9vBomhswggYVMIIE/aADAgECAhBUK7v3
+iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTI0MTIxNTAwMDAwMFoXDTI2MTIxNTIzNTk1OVowIjEgMB4GCSqGSIb3DQEJ
+ARYRZHdtd0BhbWF6b24uY28udWswggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYY7Ok
++LSdJXMOPurGsBJ9haMJobp1AbJ0lXHAfmgO7N2XfT2VeOglOqYQJQlqSpNchVXA9UZ3OLsde6OC
+21IBV4iqzkUtI4hf+TmtK1xtxSEhtV3Y7fKDyiKvvWdbNnuyKYuVlo+ABv8ZZB/2DDHLS/TvAgkR
+0q4YgoWxP4Eee8fTwJ7eWnmWdmFs2hjjnnHmmXvrurxwhyE0ZpJ0gJwF/2jaDSTbEAhnH6xPN8vY
+h5j/ARa0kWamowSpSqvLciXeRZ0sDx95ElHEJRzsIiHwkRVz+K6V0me5yjhGa90lx9OgA2PYGba0
+qcAW7sylgzxljEbkZ8/KII/2Og3lONswf2QCIuW9Ac1n+LtKwREA+cbaTgsWB3Np10GhUlrt+pD9
+SWjahJROdTkPdhMlSn1tzeqmXCoga1Yo12NhLUfv+VvYsURZxLOJyHm/eEn/dlDBHhvXsNslb3GF
+1zT2onBp65BEjQtff2vGF8UBGX65gXgD0/b4kCYZ9zvrA+KT9ErN0o1WXOhDu736D9O27dp/WBNP
+F0j5MXMm9Sf+Lf/gLJJCnmBQRnaY4MXfoixcY0sAcrWbod/uw7h1H4PO+lgOOInkA64R0o7r7gGd
+Vm/FlLK6c63C6GI6hZm/23+v8sqMZbd9ZnYDwvhS3PmLtQUMFwtyTG672xQVU7Z+V9hCgwIDAQAB
+o4IB0DCCAcwwHwYDVR0jBBgwFoAUCcDy/AvalNtf/ivfqJlCz8ngrQAwHQYDVR0OBBYEFFr7QNV7
+ElfMY4HxUC/w1EzSGybuMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoG
+CCsGAQUFBwMEMFAGA1UdIARJMEcwOgYMKwYBBAGyMQECAQoCMCowKAYIKwYBBQUHAgEWHGh0dHBz
+Oi8vc2VjdGlnby5jb20vU01JTUVDUFMwCQYHZ4EMAQUBAzBaBgNVHR8EUzBRME+gTaBLhklodHRw
+Oi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3Vy
+ZUVtYWlsQ0EuY3JsMIGKBggrBgEFBQcBAQR+MHwwVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuc2Vj
+dGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5j
+cnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLnNlY3RpZ28uY29tMBwGA1UdEQQVMBOBEWR3bXdA
+YW1hem9uLmNvLnVrMA0GCSqGSIb3DQEBCwUAA4IBAQBA+k/q3z9lz3S3x6AneZ9YhiHGGrlnzx0X
+WTdk8O2uzRFyJJtsmTYszkqadzazIljgTdd14Kp2C7KnacSYW48CnMyl+dP6n4YZDh7a0NBkZLnM
+myuOOwGrpfNHGU/E91hvVPXYZdwrfzLsigVkINzGJW1E+ruJAvT5PK3fnEdeLbWEVFgyk0tgay+3
+vI6TZrQqBGpA5DGODK6aDMDNX+ADVamfHJw57cF6uaK5mSJLDdg6sbCi5qxclQDjYakkk+9iJgXy
+FVoRUUwhfbU3COcBP9EpJduRWZkrAQdi1IHnICuzGcsPQ6P29LGEvvGJgP7o1AqjW9HzyQRPwfbw
+aJobMYIExDCCBMACAQEwgaswgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNo
+ZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UE
+AxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EC
+EFQru/eJkU7BxeS7T6sWKmYwDQYJYIZIAWUDBAIBBQCgggHpMBgGCSqGSIb3DQEJAzELBgkqhkiG
+9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMTE0NDQ1OVowLwYJKoZIhvcNAQkEMSIEIJrH/AT9
+F70Hd7ffDDnndW5PLOBxF6cJBAv57+v3vFX8MIG8BgkrBgEEAYI3EAQxga4wgaswgZYxCzAJBgNV
+BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAW
+BgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhl
+bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEFQru/eJkU7BxeS7T6sWKmYwgb4GCyqGSIb3
+DQEJEAILMYGuoIGrMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhBUK7v3
+iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBAQUABIICAJ1lQkvA2INWEEGOUXLvGHzSdAQsWc8ySiYC
+/kTlT95Hwws/Wg1UD2kDEoNMELPw+a2zBMbfj9s3fDDjmWEziqKDo7MsNaKWu+CIP0za9NEe7XEF
+HDcYchxEyVrl6JSJHVPdOyMmXk2nmIRJdDtrg8+Um91qYSm0cvFA8ochrLIaMZ5nIOXQMi1lWiRp
+8mt06VFm1ATSsGXS7V8RX3nTNxqmkFgDbvFCBBtaFG0xYmSBcPZMUkCiPsf5xcniEQ2i/rxGQD2i
+iYgguKe7ldIpYiWomNvcrOyu/8m2NXiabLsYQAzYo4u6V+jGxecVPKYTXSZCmwnwoDe7yz+BCKSS
+ENFbzxqH8DvwgT2SsIcKZuky1KHOyJuOODFlbSbs8BZDHGDxmG+y8cU1g4Q0IlafecJ3/2lTHaFT
+Sz2NJvDA+LJKlmLDcRn0VxXAAkEicvg2T8NBTZVmhJGg0UGd4ncha1Besxi6f48Wf7n8l/H+v+KX
+NGe1RiYlU4eL1YtkRD/+kzRTyyZghvtQysBhJN1RTJNuNKnVkKbUcChH1mcDumhjh0QP8oIMIgm7
+dtz7uId8/eHu8O3g1cKmBo7gw4DNCSws0Nfhqgp+oJ6Sj3BkbZwzieM/DFfv3PQjrtziv2Dwwzk3
+z8T4HFnDbzDDi4yMtyq+YFz5a4//l4JqF/81qTa4AAAAAAAA
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qua=
-lcomm.com>
-Link: https://patch.msgid.link/20250411061523.859387-3-quic_sarishar@quic=
-inc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-[ Adjust context ]
-Signed-off-by: Oliver Sedlbauer <os@dev.tdt.de>
----
-Context:
-The issue was introduced in 6.12.y by the backport of commit f66971c608c4
-("wifi: ath12k: using msdu end descriptor to check for rx multicast packe=
-ts"),
-which was part of a patchset:
-https://lore.kernel.org/all/20250411061523.859387-1-quic_sarishar@quicinc=
-.com/
+--=-STgedMsGNI3h0h+/AFyg--
 
-That commit, without this follow-up patch, causes mac80211 to drop encryp=
-ted
-ARP request frames.
-As a result, ARP resolution fails, and connectivity from a station to an =
-AP does
-not work reliably until traffic is initiated by the AP.
+--===============5292545290439379605==
+Content-Type: multipart/alternative; boundary="===============6592948740844980269=="
+MIME-Version: 1.0
+Content-Disposition: inline
 
-This follow-up commit is necessary to restore correct network functionali=
-ty for
-ath12k clients on 6.12.y.
-
-Note:
-The patch has been modified to apply cleanly, including adjustments for
-API changes.
-The copyright header change has been omitted.
+--===============6592948740844980269==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
 
- drivers/net/wireless/ath/ath12k/dp_rx.c | 5 +++++
- drivers/net/wireless/ath/ath12k/peer.c  | 3 +++
- drivers/net/wireless/ath/ath12k/peer.h  | 2 ++
- 3 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wirele=
-ss/ath/ath12k/dp_rx.c
-index eebdcc16e8fc..1c0d796ffc7a 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2214,6 +2214,11 @@ static void ath12k_dp_rx_h_mpdu(struct ath12k *ar,
- 	spin_lock_bh(&ar->ab->base_lock);
- 	peer =3D ath12k_dp_rx_h_find_peer(ar->ab, msdu);
- 	if (peer) {
-+		/* resetting mcbc bit because mcbc packets are unicast
-+		 * packets only for AP as STA sends unicast packets.
-+		 */
-+		rxcb->is_mcbc =3D rxcb->is_mcbc && !peer->ucast_ra_only;
-+
- 		if (rxcb->is_mcbc)
- 			enctype =3D peer->sec_type_grp;
- 		else
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireles=
-s/ath/ath12k/peer.c
-index 19c0626fbff1..461749b0f732 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -331,6 +331,9 @@ int ath12k_peer_create(struct ath12k *ar, struct ath1=
-2k_vif *arvif,
- 		arvif->ast_idx =3D peer->hw_peer_id;
- 	}
 
-+	if (arvif->vif->type =3D=3D NL80211_IFTYPE_AP)
-+		peer->ucast_ra_only =3D true;
-+
- 	peer->sec_type =3D HAL_ENCRYPT_TYPE_OPEN;
- 	peer->sec_type_grp =3D HAL_ENCRYPT_TYPE_OPEN;
+Amazon Development Centre (London) Ltd. Registered in England and Wales wit=
+h registration number 04543232 with its registered office at 1 Principal Pl=
+ace, Worship Street, London EC2A 2FA, United Kingdom.
 
-diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireles=
-s/ath/ath12k/peer.h
-index 7b3500b5c8c2..05d4fdd3f82d 100644
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -47,6 +47,8 @@ struct ath12k_peer {
 
- 	/* protected by ab->data_lock */
- 	bool dp_setup_done;
-+
-+	bool ucast_ra_only;
- };
 
- void ath12k_peer_unmap_event(struct ath12k_base *ab, u16 peer_id);
---
-2.39.5
+--===============6592948740844980269==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+<br><br><br>Amazon Development Centre (London) Ltd.Registered in England an=
+d Wales with registration number 04543232 with its registered office at 1 P=
+rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
+
+--===============6592948740844980269==--
+--===============5292545290439379605==--
 
