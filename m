@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E671C986EC
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1D4C986EF
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 797264E28B7
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:10:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBC854E1CDC
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D973358A3;
-	Mon,  1 Dec 2025 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBF334C06;
+	Mon,  1 Dec 2025 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHuWv9+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWPctfgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA80335093
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAF93191D3
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764609034; cv=none; b=cf8J7JxzxyO9CeFHT6fZKDsGqLazbpRJkEy1etmdiYkbXhh6mn7yP9yMHEbndWBwPPmKwSYRg7jcSGloKGTmZZ9NFemwAvaB+0zSascIo6bjUFiw/DWAp3SWgvA5ef2Vl/QWCh4tkMeFJ+lTq0aJwPi8thvQf/m9TYgTLT9U7Us=
+	t=1764609046; cv=none; b=oOAvc2OtjsynGnuGvdZOEi9YtDHWdpnlkyEX9zxi8BpDYI2iID+1sup6Kz5pgZcwwu0CV9rH7vs5KJjvGVx9EtBo+TO6iqtXqZAKWZTcmYNjpulgF/LpvYiQa+ngjHx43aiN5if6dM0fLpL6Ql6Av6NjGMb5mcG1YYzkLBSkhkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764609034; c=relaxed/simple;
-	bh=DEF3TICerMQzl2D/sQpqCUDitXFDwKFGDdJeshoLwgU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PYtaG8+ffntC3b5khuhRpnWPUnnHXf+RMP2xcoD2bFsPkhWgTedb/uRc4meylpz0IaDdJFt2jJ7k5awQEUC8NiX//q3KIM370T27HYbv3ER8ZnP5OlWggM+Q12SiMoPVQHn0T7s0NhCtm0QH5zOdyUS67lPH6osjywdDKJ3BfQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHuWv9+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8613C4CEF1;
-	Mon,  1 Dec 2025 17:10:33 +0000 (UTC)
+	s=arc-20240116; t=1764609046; c=relaxed/simple;
+	bh=2CVslr4OPwVOOBVoC9vsiBK0aNtWz6XlqyMtlc4X/6U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TcHTnCYcNkuXI2tDt/2mlK48LDvcMpAw0Atx9grwlG327lHFN6C8VeH410SwlE0uxRcd5JwZSgDf0Uf+bVwQRsmoLoAAMYd2vziIMyDfx5jheFR67Avt9z24l34R9q1RFGyKJI1hne9hBKGZJsjU8mUXfYCV0c6WwAK+87GsFEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWPctfgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE8EC4CEF1;
+	Mon,  1 Dec 2025 17:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764609034;
-	bh=DEF3TICerMQzl2D/sQpqCUDitXFDwKFGDdJeshoLwgU=;
+	s=korg; t=1764609044;
+	bh=2CVslr4OPwVOOBVoC9vsiBK0aNtWz6XlqyMtlc4X/6U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tHuWv9+Oi7DtD5vRpWz8m6N4LHhWRqmmuQBMYQxx+G0k/CU/rK0YNosDOt0lTaaS4
-	 ILXqta/OkZDEzykJRlhuSydSPqSySpqWO4cHkd7G3EZD7U5L2OeEGHdJL1niyfZSb4
-	 qg6vzxvZJNs5dSlFoyb+aXXErQ0g0dMbApu+yTtg=
-Subject: FAILED: patch "[PATCH] usb: typec: ucsi: psy: Set max current to zero when" failed to apply to 5.10-stable tree
-To: jthies@google.com,bleung@chromium.org,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,kenny@panix.com,sebastian.reichel@collabora.com
+	b=AWPctfgZimUBO/NtYEBiGMO3aELk48zK7pzzCeByUQZ26bgIq6CgfxlP1ZQnDG1ge
+	 B35bLnT6xeAsmTGQXjykfTngL1jqH4BzBlc7CAU80Jc7d5LPvi1u2T/f6GTEvNlBKh
+	 81ecbPF4lKPL91OB9IB/HGJNnY6MXbabbkMw/BS4=
+Subject: FAILED: patch "[PATCH] usb: uas: fix urb unmapping issue when the uas device is" failed to apply to 5.10-stable tree
+To: guhuinan@xiaomi.com,chenyu45@xiaomi.com,gregkh@linuxfoundation.org,oneukum@suse.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 18:10:17 +0100
-Message-ID: <2025120117-landing-used-752b@gregkh>
+Date: Mon, 01 Dec 2025 18:10:32 +0100
+Message-ID: <2025120132-patio-vocation-ff6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 23379a17334fc24c4a9cbd9967d33dcd9323cc7c
+git cherry-pick -x 26d56a9fcb2014b99e654127960aa0a48a391e3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120117-landing-used-752b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120132-patio-vocation-ff6a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,45 +77,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 23379a17334fc24c4a9cbd9967d33dcd9323cc7c Mon Sep 17 00:00:00 2001
-From: Jameson Thies <jthies@google.com>
-Date: Thu, 6 Nov 2025 01:14:46 +0000
-Subject: [PATCH] usb: typec: ucsi: psy: Set max current to zero when
- disconnected
+From 26d56a9fcb2014b99e654127960aa0a48a391e3c Mon Sep 17 00:00:00 2001
+From: Owen Gu <guhuinan@xiaomi.com>
+Date: Thu, 20 Nov 2025 20:33:36 +0800
+Subject: [PATCH] usb: uas: fix urb unmapping issue when the uas device is
+ remove during ongoing data transfer
 
-The ucsi_psy_get_current_max function defaults to 0.1A when it is not
-clear how much current the partner device can support. But this does
-not check the port is connected, and will report 0.1A max current when
-nothing is connected. Update ucsi_psy_get_current_max to report 0A when
-there is no connection.
+When a UAS device is unplugged during data transfer, there is
+a probability of a system panic occurring. The root cause is
+an access to an invalid memory address during URB callback handling.
+Specifically, this happens when the dma_direct_unmap_sg() function
+is called within the usb_hcd_unmap_urb_for_dma() interface, but the
+sg->dma_address field is 0 and the sg data structure has already been
+freed.
 
-Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Kenneth R. Crudup <kenny@panix.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20251017000051.2094101-1-jthies%40google.com
-Link: https://patch.msgid.link/20251106011446.2052583-1-jthies@google.com
+The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
+in uas.c, using the uas_submit_urbs() function to submit requests to USB.
+Within the uas_submit_urbs() implementation, three URBs (sense_urb,
+data_urb, and cmd_urb) are sequentially submitted. Device removal may
+occur at any point during uas_submit_urbs execution, which may result
+in URB submission failure. However, some URBs might have been successfully
+submitted before the failure, and uas_submit_urbs will return the -ENODEV
+error code in this case. The current error handling directly calls
+scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
+to invoke scsi_end_request() for releasing the sgtable. The successfully
+submitted URBs, when being unlinked to giveback, call
+usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
+unmapping operations since the sg data structure has already been freed.
+
+This patch modifies the error condition check in the uas_submit_urbs()
+function. When a UAS device is removed but one or more URBs have already
+been successfully submitted to USB, it avoids immediately invoking
+scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
+submitted URBs is completed before devinfo->resetting being set, then
+the scsi_done() function will be called within uas_try_complete() after
+all pending URB operations are finalized. Otherwise, the scsi_done()
+function will be called within uas_zap_pending(), which is executed after
+usb_kill_anchored_urbs().
+
+The error handling only takes effect when uas_queuecommand_lck() calls
+uas_submit_urbs() and returns the error value -ENODEV . In this case,
+the device is disconnected, and the flow proceeds to uas_disconnect(),
+where uas_zap_pending() is invoked to call uas_try_complete().
+
+Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
+Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index 62a9d68bb66d..8ae900c8c132 100644
---- a/drivers/usb/typec/ucsi/psy.c
-+++ b/drivers/usb/typec/ucsi/psy.c
-@@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
- {
- 	u32 pdo;
- 
-+	if (!UCSI_CONSTAT(con, CONNECTED)) {
-+		val->intval = 0;
-+		return 0;
-+	}
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 4ed0dc19afe0..45b01df364f7 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
++		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
++				DATA_OUT_URB_INFLIGHT))
++			goto out;
 +
- 	switch (UCSI_CONSTAT(con, PWR_OPMODE)) {
- 	case UCSI_CONSTAT_PWR_OPMODE_PD:
- 		if (con->num_pdos > 0) {
+ 		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
+ 		uas_add_work(cmnd);
+ 	}
+ 
++out:
+ 	devinfo->cmnd[idx] = cmnd;
+ zombie:
+ 	spin_unlock_irqrestore(&devinfo->lock, flags);
 
 
