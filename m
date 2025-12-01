@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-197868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB20C970DB
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A37C9703C
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 547EA347787
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3393A142A
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757932676DE;
-	Mon,  1 Dec 2025 11:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C00F261B77;
+	Mon,  1 Dec 2025 11:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TySYqNZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMEHm/UD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F98264A92;
-	Mon,  1 Dec 2025 11:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD477261B99;
+	Mon,  1 Dec 2025 11:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588755; cv=none; b=U80O8gXuAmD1PdpnDB5IjuzK99l6WVZqC9EeVe/jLUtNFm58CXZE+c15ClF/6LMcHD+v6l1ocA1Hie2NeGvKUjUtv80EEbkQixhHVnh7y154EjxDs/lSpmzDUI8BHORIiuYLB3sVZYUNP+i6j9r2isyOszU+jzvyaa1su9oZnOk=
+	t=1764588655; cv=none; b=i6LADLA4YJS36aFMuUDqAOZpGgS6+0MvX1i0QVSnoDfrOMCV3I+YCwH0RxFwAfE0Jkkw3n8/rjekEIDCQrjX1FpPe4A7MFxMVFdOy9StqNA+dpPWom8WVb6dAhEg3wr43bd+2Ot3yUQ5SR3piOWAM13zmFsmdoe9/h80lHC5PS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588755; c=relaxed/simple;
-	bh=V7q9v3JAlOyLYXKxL077BZkaqlajfyNKumir4zAtG7s=;
+	s=arc-20240116; t=1764588655; c=relaxed/simple;
+	bh=Rc9DI4jmAiO9hhJs7f6sn8cUQtdQ4VkgPrjiEpMs7tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6dqt6LGfWjtm0jV0A8IsxPFtI+xise2wxOQbbdB2CllUOkHC4wMunE/OMo59R04liBLbBTFnFIeJzndla+8OCCBiGfJ22fRKqiFAue3W34b108dtGa7Ina4+rmUkducI5OrjgKfAWim5CW3Vv0quM8xdMVrvUGPSZG0utzxwCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TySYqNZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43BCC4CEF1;
-	Mon,  1 Dec 2025 11:32:34 +0000 (UTC)
+	 MIME-Version; b=KdiumkmUBed1XKyOi36jthx7EOvBM78DEVeaHdzLM5qV0SJCDIqv1qB9Xd7kEywpJk+V4Y/Ds4AwsSvd8es28Js4FK96uO00WnuxBkXSrPtwO/xNFK+dZIwIx8MlsvU7XfOT/BMlLhUZpLz5aYerH5gECHybUUN6HQvO4JawuQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMEHm/UD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39627C113D0;
+	Mon,  1 Dec 2025 11:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588755;
-	bh=V7q9v3JAlOyLYXKxL077BZkaqlajfyNKumir4zAtG7s=;
+	s=korg; t=1764588655;
+	bh=Rc9DI4jmAiO9hhJs7f6sn8cUQtdQ4VkgPrjiEpMs7tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TySYqNZVxSjaS4YDXl++hnz0ChBH1EbCvos23NaMspqV/Lnb+eWw9Fwqk0fEaK/BZ
-	 JrZYMwWgqabDqYnEy4yiR3a0psckdKiHOmZXb2cSV8gx84/mcIUBxdgVDEcGNhLdXR
-	 3l+5WZlYnU+yFfu+NGhpfiEp979hWJ9A2ZuO9GAE=
+	b=rMEHm/UDJv1n5Jqde3vdkcGU455H2YPmpVW7PknwlT0Ss3CsIgoIBW/NQJFePm5C8
+	 XC1cQ2R3KwbWp7gIkJIXbPafQ8MW18UJo1b0figVXazaux7GJ+MkQlwWUdjzOvTKT6
+	 n3aip8gz6sym5rdgDrEwYfASb+GsaA0Aj/sPRFuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jonas Gorski <jonas.gorski@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 116/187] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
-Date: Mon,  1 Dec 2025 12:23:44 +0100
-Message-ID: <20251201112245.421320820@linuxfoundation.org>
+Subject: [PATCH 5.4 117/187] net: dsa: b53: fix resetting speed and pause on forced link
+Date: Mon,  1 Dec 2025 12:23:45 +0100
+Message-ID: <20251201112245.456691158@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -61,91 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+There is no guarantee that the port state override registers have their
+default values, as not all switches support being reset via register or
+have a reset GPIO.
 
+So when forcing port config, we need to make sure to clear all fields,
+which we currently do not do for the speed and flow control
+configuration. This can cause flow control stay enabled, or in the case
+of speed becoming an illegal value, e.g. configured for 1G (0x2), then
+setting 100M (0x1), results in 0x3 which is invalid.
+
+For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
+supported chips, as the bit can have different meanings on other chips,
+e.g. for BCM5389 this controls scanning PHYs for link/speed
+configuration.
+
+Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b6a8a5477fe9 ("net: dsa: b53: fix resetting speed and pause on forced link")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 4de302f20e4f3..dca23e0edb9a8 100644
+index dca23e0edb9a8..234ef7771ceef 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1026,6 +1026,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->cpu_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1050,6 +1052,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->cpu_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1080,10 +1084,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+@@ -1066,6 +1066,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	else
+ 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
+ 
++	reg &= ~(0x3 << GMII_PO_SPEED_S);
++	if (is5301x(dev) || is58xx(dev))
++		reg &= ~PORT_OVERRIDE_SPEED_2000M;
++
+ 	switch (speed) {
+ 	case 2000:
+ 		reg |= PORT_OVERRIDE_SPEED_2000M;
+@@ -1084,6 +1088,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
  		return;
  	}
  
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
-+	}
++	if (is5325(dev))
++		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
++	else
++		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
 +
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
-+	}
- 
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index ea6897c3f6f76..77fb7ae660b8c 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -92,6 +92,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
+ 	if (rx_pause) {
+ 		if (is5325(dev))
+ 			reg |= PORT_OVERRIDE_LP_FLOW_25;
 -- 
 2.51.0
 
