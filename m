@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-197869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E7DC970DE
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69D8C970CF
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 12:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9038C346C89
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7323A69BB
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 11:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD222698AF;
-	Mon,  1 Dec 2025 11:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A5B258EDB;
+	Mon,  1 Dec 2025 11:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8kyUJtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4y6LvF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E68265CA7;
-	Mon,  1 Dec 2025 11:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D7B255F2D;
+	Mon,  1 Dec 2025 11:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764588758; cv=none; b=uvoQiOym3mHD44gqs2XOMIM6xK07pSrCwubMWsuTWSJRGNf4SYdJTq59OX32dJobXOa9JzPiNb3TS0qHbgbaNXt8TyT8HXqK9xcgVeB5Pv+/luuYahiQzUi4Uwu2A2HkhRN/QURqoeby6AzjC4/PwNGPRPgVyhRwpiEpeHY9aLo=
+	t=1764588789; cv=none; b=HnWA66YO7bYP+xBQUmb0I5xTVTfeJ1tlZXSNhw0qyacLCMASz/DMvXlwsjcxQx/Ls0rgr97ebZ4X+biBmAlOg3qi9owMq1w/ZkCbF9rkJqm42ozDxunmDsJq9w3hYvehvo0ObuomMCItNOgra1X8qyb2zKO1Y0USvxyjPlywPlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764588758; c=relaxed/simple;
-	bh=Nc9m71ogURfebR+BnyiSmaFQCDmL8aqKABLxbiAqD7Y=;
+	s=arc-20240116; t=1764588789; c=relaxed/simple;
+	bh=vgsQPrAkAbks5QkTMlegVk166uJzvZjTpYJPARZ+GpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcBUuw0kVj7mOpkzjEudFDUNfk2tSqvRo6lAuGkAQxkAC3dZevtGXCQsQMN1Y+Vcr44Jpt/6zxLwqMdr9CEizNpaHNayFk5hJpa/6qMq3EOmJn+Sy7TlHWIN2NEwgo4dpQShwRCnIpWexqSkIwlGHtOIphu6ms02Bc7Uv//AksU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8kyUJtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993FAC4CEF1;
-	Mon,  1 Dec 2025 11:32:37 +0000 (UTC)
+	 MIME-Version; b=X9jeuZMBBBtDMKLODgDFUY2bux+JPhTzmtWJj4ESxAkDU9HWY3bQjCEQF9DdaZuGK7Yu6TccsLVwDWbPdzbczn/8qSdnRMPQNJ3fYODOUZVVpnJcDoBsWYp6l35q+Z2xFr+sAUdjQKD649FuBQ/Xqd2LPKAPRx5FomJUfvudG8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4y6LvF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFB6C116D0;
+	Mon,  1 Dec 2025 11:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764588758;
-	bh=Nc9m71ogURfebR+BnyiSmaFQCDmL8aqKABLxbiAqD7Y=;
+	s=korg; t=1764588788;
+	bh=vgsQPrAkAbks5QkTMlegVk166uJzvZjTpYJPARZ+GpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8kyUJtHgnU84ZVInNN22V0TX49tLJOmgVwihUkLPuIJ8WASVg6qimAW2zzs/IoLK
-	 x33iBcpLd/2jDpnGt159D3ijqkwRdg/0OocjtoNgzdBpP5cpsjsf8T3OmF+xsOut4D
-	 vCXBVs7IiAhK+z6imUSu65+oqMkBvYPZmdSx9IAs=
+	b=F4y6LvF34DDd8Je7AopqQOJJGObZPbAJnC5XH/YU5kPa697Be4u4uzzzavpxu4+8l
+	 4nx6tawseuqSJMpZ8Zhv2QyMYeefAnzA61kUSs3ZAB7MYtlmWA/GrzjdzPH4kxI2nJ
+	 Nu7kx5C6Y3WMDulgcOK72PCVeII9NrrDmDaeJonU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nate Karstens <nate.karstens@garmin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Chuang Wang <nashuiliang@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 153/187] strparser: Fix signed/unsigned mismatch bug
-Date: Mon,  1 Dec 2025 12:24:21 +0100
-Message-ID: <20251201112246.744654307@linuxfoundation.org>
+Subject: [PATCH 5.4 154/187] ipv4: route: Prevent rt_bind_exception() from rebinding stale fnhe
+Date: Mon,  1 Dec 2025 12:24:22 +0100
+Message-ID: <20251201112246.780497662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
 References: <20251201112241.242614045@linuxfoundation.org>
@@ -67,48 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nate Karstens <nate.karstens@garmin.com>
+From: Chuang Wang <nashuiliang@gmail.com>
 
-commit 4da4e4bde1c453ac5cc2dce5def81d504ae257ee upstream.
+commit ac1499fcd40fe06479e9b933347b837ccabc2a40 upstream.
 
-The `len` member of the sk_buff is an unsigned int. This is cast to
-`ssize_t` (a signed type) for the first sk_buff in the comparison,
-but not the second sk_buff. On 32-bit systems, this can result in
-an integer underflow for certain values because unsigned arithmetic
-is being used.
+The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
+update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
+to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
 
-This appears to be an oversight: if the intention was to use unsigned
-arithmetic, then the first cast would have been omitted. The change
-ensures both len values are cast to `ssize_t`.
+The race window is between fnhe_remove_oldest() selecting fnheX for
+deletion and the subsequent kfree_rcu(). During this time, the
+concurrent path's __mkroute_output() -> find_exception() can fetch the
+soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
+new dst using a dst_hold(). When the original fnheX is freed via RCU,
+the dst reference remains permanently leaked.
 
-The underflow causes an issue with ktls when multiple TLS PDUs are
-included in a single TCP segment. The mainline kernel does not use
-strparser for ktls anymore, but this is still useful for other
-features that still use strparser, and for backporting.
+CPU 0                             CPU 1
+__mkroute_output()
+  find_exception() [fnheX]
+                                  update_or_create_fnhe()
+                                    fnhe_remove_oldest() [fnheX]
+  rt_bind_exception() [bind dst]
+                                  RCU callback [fnheX freed, dst leak]
 
-Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
+This issue manifests as a device reference count leak and a warning in
+dmesg when unregistering the net device:
+
+  unregister_netdevice: waiting for sitX to become free. Usage count = N
+
+Ido Schimmel provided the simple test validation method [1].
+
+The fix clears 'oldest->fnhe_daddr' before calling fnhe_flush_routes().
+Since rt_bind_exception() checks this field, setting it to zero prevents
+the stale fnhe from being reused and bound to a new dst just before it
+is freed.
+
+[1]
+ip netns add ns1
+ip -n ns1 link set dev lo up
+ip -n ns1 address add 192.0.2.1/32 dev lo
+ip -n ns1 link add name dummy1 up type dummy
+ip -n ns1 route add 192.0.2.2/32 dev dummy1
+ip -n ns1 link add name gretap1 up arp off type gretap \
+    local 192.0.2.1 remote 192.0.2.2
+ip -n ns1 route add 198.51.0.0/16 dev gretap1
+taskset -c 0 ip netns exec ns1 mausezahn gretap1 \
+    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+taskset -c 2 ip netns exec ns1 mausezahn gretap1 \
+    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+sleep 10
+ip netns pids ns1 | xargs kill
+ip netns del ns1
+
 Cc: stable@vger.kernel.org
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251106222835.1871628-1-nate.karstens@garmin.com
+Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251111064328.24440-1-nashuiliang@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/strparser/strparser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/route.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t
- 				strp_parser_err(strp, -EMSGSIZE, desc);
- 				break;
- 			} else if (len <= (ssize_t)head->len -
--					  skb->len - stm->strp.offset) {
-+					  (ssize_t)skb->len - stm->strp.offset) {
- 				/* Length must be into new skb (and also
- 				 * greater than zero)
- 				 */
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -637,6 +637,11 @@ static void fnhe_remove_oldest(struct fn
+ 			oldest_p = fnhe_p;
+ 		}
+ 	}
++
++	/* Clear oldest->fnhe_daddr to prevent this fnhe from being
++	 * rebound with new dsts in rt_bind_exception().
++	 */
++	oldest->fnhe_daddr = 0;
+ 	fnhe_flush_routes(oldest);
+ 	*oldest_p = oldest->fnhe_next;
+ 	kfree_rcu(oldest, rcu);
 
 
 
