@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-197928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D527C98254
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 16:59:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E78C9825C
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 17:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3152C3A2956
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 15:59:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 56EA6343E55
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 16:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E50332ED0;
-	Mon,  1 Dec 2025 15:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68CD158545;
+	Mon,  1 Dec 2025 16:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RczhVm9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfNulNmu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DA12FE585
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 15:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762012AE68
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 16:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764604751; cv=none; b=lwoqljcKa0/2yoHyJbr6IsfotrV9tkg/C9S4Lzs3ZUmcSpAwpqRBcspCE5YQqORdO6dCECaUfKuT1OIlHZynT7nxmCx3BWtS5ipz4k6dCef1CjKMRQlLrP6m7eZYNiXlJNXKfOSOP1jNtW4wSN2YIweJ/54NubIr/KM8wCHU6nE=
+	t=1764604891; cv=none; b=VRPmsZWqQIqzEXdtz1E8W+nul2gNezLQDMn6ly++SiPzvtgvKM5EfNfehMQlTsApDvx17Qb1hILFP588kIzJspDhFu/YlV2bpTnUSeMUIfDFEWVrKHPWrMON7dY+jtyNLwEUumZTjIcYqLzKgud1QPO6pqxpR6gRTMr04IK/KAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764604751; c=relaxed/simple;
-	bh=YGDKVzuRNlVTORWjxzdcZ1/Z5lW/wRzDt30YldHkDRg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m2gPguIz+aMKiLManwXDEnr9Y9GLrHsQzMo+kaJwOCAHHjsogsOf3vuhbeNMDhq4YImuguXYiy5S59GCCdsJEWIg6DniIbNiN7iu9mJLFN5NX/23g2IEKU28VupvXtKMgccFXZHYxowllyVm6dzhXO+pwtyvhG0jbP5XeSFe0ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RczhVm9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8651EC4CEF1;
-	Mon,  1 Dec 2025 15:59:10 +0000 (UTC)
+	s=arc-20240116; t=1764604891; c=relaxed/simple;
+	bh=rdWc5Yyd9dBofYPpTGDNggOw8hyGL+IDXwQymVLVMPU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R2fWrI4jMW1/EQJ6decKyyIat5pNdSyCpzkIT0FqWFj/pbY6pyhYR1fkyjuyCpXrIKD9xJvT0r1CW4uQ2lw8jpcWFn6flOhyqnK5iAdsQjDiD1qYlql5D61bb/qaj9V8GC1AALSgV08xmqyxWOB1fJPFuV1ePxMTLN2/2lFwvGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfNulNmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCBFC4CEF1;
+	Mon,  1 Dec 2025 16:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764604751;
-	bh=YGDKVzuRNlVTORWjxzdcZ1/Z5lW/wRzDt30YldHkDRg=;
+	s=korg; t=1764604891;
+	bh=rdWc5Yyd9dBofYPpTGDNggOw8hyGL+IDXwQymVLVMPU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RczhVm9ixJuHwOlQDcLN/DbCwjI2HnW41HikDfkrQYOaV5zdS6bk0h8p8fQ/n3/B1
-	 mO6vLoKXzDSmjsK/kRMSzfGdl2CDebA1ZiuZskbzhgey+VL0Wbdvve/KaxVCREx8HA
-	 KSV/HjgN0WeOcsAEoFPUXABKZ6tap6xEnN24BMPU=
-Subject: FAILED: patch "[PATCH] can: rcar_canfd: Fix CAN-FD mode as default" failed to apply to 6.6-stable tree
-To: biju.das.jz@bp.renesas.com,mkl@pengutronix.de
+	b=KfNulNmuzlGhmRE5PitoUb44cPJ9QvIp3HdHo0c6SPKLepOZ0hSGnjVGv+dNORxuh
+	 /uI+MGGuv8XMP4Qi+eOKbQJgMd8hT1+jFbJI8BaCtFB6JixXN6MLDegLsw5b8MKnAS
+	 mEzcKk2Z+A6XK+ZkcNMxPgNk0DjZLyQ7pQUo3UNw=
+Subject: FAILED: patch "[PATCH] drm, fbcon, vga_switcheroo: Avoid race condition in fbcon" failed to apply to 6.6-stable tree
+To: tzimmermann@suse.de,alexander.deucher@amd.com,javierm@redhat.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Dec 2025 16:58:56 +0100
-Message-ID: <2025120156-taunt-paternity-aa16@gregkh>
+Date: Mon, 01 Dec 2025 17:01:19 +0100
+Message-ID: <2025120119-quake-universal-d896@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6d849ff573722afcf5508d2800017bdd40f27eb9
+git cherry-pick -x eb76d0f5553575599561010f24c277cc5b31d003
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120156-taunt-paternity-aa16@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025120119-quake-universal-d896@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,119 +77,136 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6d849ff573722afcf5508d2800017bdd40f27eb9 Mon Sep 17 00:00:00 2001
-From: Biju Das <biju.das.jz@bp.renesas.com>
-Date: Tue, 18 Nov 2025 12:39:25 +0000
-Subject: [PATCH] can: rcar_canfd: Fix CAN-FD mode as default
+From eb76d0f5553575599561010f24c277cc5b31d003 Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Wed, 5 Nov 2025 17:14:49 +0100
+Subject: [PATCH] drm, fbcon, vga_switcheroo: Avoid race condition in fbcon
+ setup
 
-The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-has aligned with the flow mentioned in the hardware manual for all SoCs
-except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
-the wrong logic in the commit[1] sets the default mode to FD-Only mode
-instead of CAN-FD mode.
+Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
+access in fbcon_remap_all(). Without holding the console lock the call
+races with switching outputs.
 
-This patch sets the CAN-FD mode as the default for all SoCs by dropping
-the rcar_canfd_set_mode() as some SoC requires mode setting in global
-reset mode, and the rest of the SoCs in channel reset mode and update the
-rcar_canfd_reset_controller() to take care of these constraints. Moreover,
-the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
-R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
-simplify the code later to support FD-only mode.
+VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
+function uses struct fb_info.node, which is set by register_framebuffer().
+As the fb-helper code currently sets up VGA switcheroo before registering
+the framebuffer, the value of node is -1 and therefore not a legal value.
+For example, fbcon uses the value within set_con2fb_map() [1] as an index
+into an array.
 
-[1]
-commit 45721c406dcf ("can: rcar_canfd: Add support for r8a779a0 SoC")
+Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
+result in VGA switching that does not switch fbcon correctly.
 
-Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251118123926.193445-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
+which already holds the console lock. Fbdev calls fbcon_fb_registered()
+from within register_framebuffer(). Serializes the helper with VGA
+switcheroo's call to fbcon_remap_all().
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 45d36adb51b7..4c0d7d26df9f 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -709,6 +709,11 @@ static void rcar_canfd_set_bit_reg(void __iomem *addr, u32 val)
- 	rcar_canfd_update(val, val, addr);
- }
+Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
+as parameter, it really only needs the contained fbcon state. Moving the
+call to fbcon initialization is therefore cleaner than before. Only amdgpu,
+i915, nouveau and radeon support vga_switcheroo. For all other drivers,
+this change does nothing.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
+Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
+
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index 11a5b60cb9ce..0b3ee008523d 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -31,9 +31,7 @@
  
-+static void rcar_canfd_clear_bit_reg(void __iomem *addr, u32 val)
-+{
-+	rcar_canfd_update(val, 0, addr);
-+}
-+
- static void rcar_canfd_update_bit_reg(void __iomem *addr, u32 mask, u32 val)
+ #include <linux/console.h>
+ #include <linux/export.h>
+-#include <linux/pci.h>
+ #include <linux/sysrq.h>
+-#include <linux/vga_switcheroo.h>
+ 
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_drv.h>
+@@ -566,11 +564,6 @@ EXPORT_SYMBOL(drm_fb_helper_release_info);
+  */
+ void drm_fb_helper_unregister_info(struct drm_fb_helper *fb_helper)
  {
- 	rcar_canfd_update(mask, val, addr);
-@@ -755,25 +760,6 @@ static void rcar_canfd_set_rnc(struct rcar_canfd_global *gpriv, unsigned int ch,
- 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLCFG(w), rnc);
+-	struct fb_info *info = fb_helper->info;
+-	struct device *dev = info->device;
+-
+-	if (dev_is_pci(dev))
+-		vga_switcheroo_client_fb_set(to_pci_dev(dev), NULL);
+ 	unregister_framebuffer(fb_helper->info);
  }
+ EXPORT_SYMBOL(drm_fb_helper_unregister_info);
+@@ -1632,7 +1625,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ 	struct drm_client_dev *client = &fb_helper->client;
+ 	struct drm_device *dev = fb_helper->dev;
+ 	struct drm_fb_helper_surface_size sizes;
+-	struct fb_info *info;
+ 	int ret;
  
--static void rcar_canfd_set_mode(struct rcar_canfd_global *gpriv)
--{
--	if (gpriv->info->ch_interface_mode) {
--		u32 ch, val = gpriv->fdmode ? RCANFD_GEN4_FDCFG_FDOE
--					    : RCANFD_GEN4_FDCFG_CLOE;
+ 	if (drm_WARN_ON(dev, !dev->driver->fbdev_probe))
+@@ -1653,12 +1645,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ 
+ 	strcpy(fb_helper->fb->comm, "[fbcon]");
+ 
+-	info = fb_helper->info;
 -
--		for_each_set_bit(ch, &gpriv->channels_mask,
--				 gpriv->info->max_channels)
--			rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg, val);
--	} else {
--		if (gpriv->fdmode)
--			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
--					   RCANFD_GRMCFG_RCMC);
--		else
--			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
--					     RCANFD_GRMCFG_RCMC);
--	}
--}
+-	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
+-	if (dev_is_pci(info->device))
+-		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
 -
- static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- {
- 	struct device *dev = &gpriv->pdev->dev;
-@@ -806,6 +792,16 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 	/* Reset Global error flags */
- 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
- 
-+	/* Set the controller into appropriate mode */
-+	if (!gpriv->info->ch_interface_mode) {
-+		if (gpriv->fdmode)
-+			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
-+					   RCANFD_GRMCFG_RCMC);
-+		else
-+			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
-+					     RCANFD_GRMCFG_RCMC);
-+	}
-+
- 	/* Transition all Channels to reset mode */
- 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
- 		rcar_canfd_clear_bit(gpriv->base,
-@@ -823,10 +819,23 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 			dev_dbg(dev, "channel %u reset failed\n", ch);
- 			return err;
- 		}
--	}
- 
--	/* Set the controller into appropriate mode */
--	rcar_canfd_set_mode(gpriv);
-+		/* Set the controller into appropriate mode */
-+		if (gpriv->info->ch_interface_mode) {
-+			/* Do not set CLOE and FDOE simultaneously */
-+			if (!gpriv->fdmode) {
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_FDOE);
-+				rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+						       RCANFD_GEN4_FDCFG_CLOE);
-+			} else {
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_FDOE);
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_CLOE);
-+			}
-+		}
-+	}
- 
  	return 0;
  }
+ 
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 9bd3c3814b5c..e7e07eb2142e 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -66,6 +66,7 @@
+ #include <linux/string.h>
+ #include <linux/kd.h>
+ #include <linux/panic.h>
++#include <linux/pci.h>
+ #include <linux/printk.h>
+ #include <linux/slab.h>
+ #include <linux/fb.h>
+@@ -78,6 +79,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/crc32.h> /* For counting font checksums */
+ #include <linux/uaccess.h>
++#include <linux/vga_switcheroo.h>
+ #include <asm/irq.h>
+ 
+ #include "fbcon.h"
+@@ -2899,6 +2901,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
+ 
+ 	console_lock();
+ 
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
++
+ 	fbcon_registered_fb[info->node] = NULL;
+ 	fbcon_num_registered_fb--;
+ 
+@@ -3032,6 +3037,10 @@ static int do_fb_registered(struct fb_info *info)
+ 		}
+ 	}
+ 
++	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
++
+ 	return ret;
+ }
+ 
 
 
