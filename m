@@ -1,174 +1,117 @@
-Return-Path: <stable+bounces-197700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3698BC96B2E
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 11:45:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A906CC96C0D
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 11:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7B0F3A24C3
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 10:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CDAE3A4E06
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 10:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B8E1EEA31;
-	Mon,  1 Dec 2025 10:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJS8xPmy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC018304BC9;
+	Mon,  1 Dec 2025 10:51:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B904454758;
-	Mon,  1 Dec 2025 10:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAF4304980;
+	Mon,  1 Dec 2025 10:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764585927; cv=none; b=sIclgWQ5GJkSQra8rVGDWTX3fz2U5R2l0fF4mdUIK0PoQyS8zcmmEGgSSc6Wub3bbNJB5PbsPv1NATWKpNU5lnT8IcZjubYuTzrPX2QwL5OGCdIw9CoUTjTeHPrkv4AzJXO5ThcSWCKJcFXFru/M1viG+W80jXNhX6vbO5kN9wc=
+	t=1764586284; cv=none; b=TQZQ1OV/KRJ82mnvOHR+hPUlp+cNgVT/IxSfgu7ml6Oh8AFasx9uOU+ImDsM9juNPPu5LlA3aAWz1OzuW/+4fWPEJuGHDbiMOl2VRa4bNHKjBGu/bcUH9/TICrJQvSs42vrzDaUXfNFLAV/nfQgN2+Shsz+14Zo9cpnzKE+2scc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764585927; c=relaxed/simple;
-	bh=tJyo7gfYI+FgioDj9QKP4ajZM4JWwtGglgEgxzY/1Ss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUOauR8fLcsF0AJAltkRHAGBzmrkVOukaky1AvOYvHD1cTl7DhFxF3cVXJyl0ROGeFhFBrzUecI1hpG5Ks64oO/eqWRfrVW463f295MIxjw15/IBV0Orr+ElOf9QxqJsnMlyaWM/6/vhbdhD6dAOmna6yJZLElLOqQ3nG5EBkvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJS8xPmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C1DC4CEF1;
-	Mon,  1 Dec 2025 10:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764585927;
-	bh=tJyo7gfYI+FgioDj9QKP4ajZM4JWwtGglgEgxzY/1Ss=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJS8xPmyBaL/ciXXBCSt4kbH/Y2zuTvaTGmj0iZAY9EOkNTOPxXIvvbljioJcgC/z
-	 i5EN6NG1yHjrPSzZYxjjEwQW5gutvTdgjAGAlAZjfpmTvCNByfArxSimR5xJ9armHe
-	 Xzk8Arw5OUiZ97OKhcI36vKYzBb3Ay/myAJ7bycxF/3h9vSFHW/zF8GdJvseqZGPTA
-	 ZVVsDCFHMgIeFKvm9mO2P/QSHK9mL77vv6GZQ88w031ikW4klvqfFHOKrYEkQ2ENod
-	 qt8dXAwu8KPKiQcmipdxI6n5oxlTtpKVDsI7NCYRLcC8EMhrRRaHcSeOtRwVdcnvL0
-	 /XAvW0uJ/mXZA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: Fix proto fallback detection with BPF
-Date: Mon,  1 Dec 2025 11:45:00 +0100
-Message-ID: <20251201104459.3440448-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025112444-entangled-winking-ac86@gregkh>
-References: <2025112444-entangled-winking-ac86@gregkh>
+	s=arc-20240116; t=1764586284; c=relaxed/simple;
+	bh=f7D0pJeKDv+deamM19Hgk7bpUNZ9WShvSpC28QYXz1w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MYxnsW/XJYwjHCa1qgrY3XHnM6VJ09VZWj0rd84jGrqGOGfXvnjZFK1s9nl2FSlS8KprZNz8W/PLCukB+lINm08yS/7HpmZl1yUN5jgj6yae6/GrIITOriAlSfIGOAdew5nIYORRswwH4oQqfzejFm620Pwf05IuBraTfuq4evU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 417C4153B;
+	Mon,  1 Dec 2025 02:51:14 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 06B5B3F73B;
+	Mon,  1 Dec 2025 02:51:19 -0800 (PST)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: akpm@linux-foundation.org,
+	pjw@kernel.org,
+	leitao@debian.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	coxu@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] arm64: kernel: initialize missing kexec_buf->random field
+Date: Mon,  1 Dec 2025 10:51:18 +0000
+Message-Id: <20251201105118.2786335-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3965; i=matttbe@kernel.org; h=from:subject; bh=0gQtl2gQHsNhAn3xYU+lLidGr+ccGvclUwetC+YrmTQ=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ1C9dMKGe4oxi57vgPo19WnyZ8Udztt8lA9VecVKytw vqPZ9nFO0pZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACbS483wv+Lz66irZ+dMn3et 5YV8u+2FT3F7Q9cf8FJmrGZwEjz05wEjw2P98LK849F+163+BD8/8F7jw8Lsm9t2eWk9lLNSN39 czAEA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+introduced the kexec_buf->random field to enable random placement of
+kexec_buf.
 
-commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
+However, this field was never properly initialized for kexec images
+that do not need to be placed randomly, leading to the following UBSAN
+warning:
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+[  +0.364528] ------------[ cut here ]------------
+[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
+[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
+[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
+[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
+[  +0.000000] Call trace:
+[  +0.000001]  show_stack+0x24/0x40 (C)
+[  +0.000006]  __dump_stack+0x28/0x48
+[  +0.000002]  dump_stack_lvl+0x7c/0xb0
+[  +0.000002]  dump_stack+0x18/0x34
+[  +0.000001]  ubsan_epilogue+0x10/0x50
+[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
+[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
+[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
+[  +0.000001]  kexec_add_buffer+0xa8/0x178
+[  +0.000002]  image_load+0xf0/0x258
+[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
+[  +0.000002]  invoke_syscall+0x68/0xe8
+[  +0.000001]  el0_svc_common+0xb0/0xf8
+[  +0.000002]  do_el0_svc+0x28/0x48
+[  +0.000001]  el0_svc+0x40/0xe8
+[  +0.000002]  el0t_64_sync_handler+0x84/0x140
+[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+To address this, initialise kexec_buf->random field properly.
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
-
-This fix uses the more generic sk_family for the comparison instead.
-
-Additionally, this also prevents a WARNING from occurring:
-
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Suggested-by: Breno Leitao <leitao@debian.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
-[ Conflicts in protocol.c, because commit 8e2b8a9fa512 ("mptcp: don't
-  overwrite sock_ops in mptcp_is_tcpsk()") is not in this version. It
-  changes the logic on how and where the sock_ops is overridden in case
-  of passive fallback. To fix this, mptcp_is_tcpsk() is modified to use
-  the family, but first, a check of the protocol is required to continue
-  returning 'false' in case of MPTCP socket. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- net/mptcp/protocol.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/kexec_image.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e2908add97d3..10844f08752c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -79,8 +79,13 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
- static bool mptcp_is_tcpsk(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
-+	unsigned short family;
- 
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
-+	if (likely(sk->sk_protocol == IPPROTO_MPTCP))
-+		return false;
-+
-+	family = READ_ONCE(sk->sk_family);
-+	if (unlikely(family == AF_INET)) {
- 		/* we are being invoked after mptcp_accept() has
- 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
- 		 * not an mptcp one.
-@@ -91,7 +96,7 @@ static bool mptcp_is_tcpsk(struct sock *sk)
- 		sock->ops = &inet_stream_ops;
- 		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-+	} else if (unlikely(family == AF_INET6)) {
- 		sock->ops = &inet6_stream_ops;
- 		return true;
- #endif
--- 
-2.51.0
+diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
+index 532d72ea42ee..b70f4df15a1a 100644
+--- a/arch/arm64/kernel/kexec_image.c
++++ b/arch/arm64/kernel/kexec_image.c
+@@ -41,7 +41,7 @@ static void *image_load(struct kimage *image,
+ 	struct arm64_image_header *h;
+ 	u64 flags, value;
+ 	bool be_image, be_kernel;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
+ 	unsigned long text_offset, kernel_segment_number;
+ 	struct kexec_segment *kernel_segment;
+ 	int ret;
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
