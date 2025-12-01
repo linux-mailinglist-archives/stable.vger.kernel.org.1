@@ -1,131 +1,390 @@
-Return-Path: <stable+bounces-197966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-197967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A4FC989F1
-	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BE8C98A0F
+	for <lists+stable@lfdr.de>; Mon, 01 Dec 2025 18:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1FB9A4E1840
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:55:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8AD8F4E1DF7
+	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB41D3358DB;
-	Mon,  1 Dec 2025 17:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CA623A994;
+	Mon,  1 Dec 2025 17:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Big3L5G0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y2EjfuJx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1149B3321CE
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76F337BAA
+	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 17:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764611718; cv=none; b=Df9vU2YFQXdFlFZZpqE1giPAvk4ymwN/xCYURy5h0Hy2/cNFMxS0XeqK9ybcNROJm6tMPlJYqyvpUbXPA40h03Bh+wvxIZGLRBpBAZr2zZUuuOiqbPNsUTCv5M1cdubecEvvJY52TQVFeAEur0GTzmh4J5Hi1qqQMR82AZfusJ0=
+	t=1764611834; cv=none; b=pjVrAOIUqSjrI5P46jyOpD+87BE//KJqR+KLU3SHMWr0eOS287hwSMy8/Del+Te3ZLrp7NEgshrRjifgfHqNFdtUEJ1R25RlqrEaPOylCSTWt0ZK82IDuaTcmsgE+3J3N5PsNAcSC1kg6vmWd7J84/0xAI5fUww9OdmYB+AEDvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764611718; c=relaxed/simple;
-	bh=jjgFSn9FToAfj+GLyLnNwQaq2m7MgQd5i+ucXWDZwIE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C6RKxSMM5J4wRQQI11BcAZswVqKbAT/mRTlkmMschTx+vA9zC3k5rDCjNPcT6HQS+kLkBbqTds5nSy+mapZXdiTYJ6QSxeK2CZBsUf7Oyiu3xPImt7dpA7DW1GnVDDO3dBiF43hXx4dOs4qa7+M0EiOKU2BZfQpn+8Peyz4pMEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Big3L5G0; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7bb2fa942daso529460b3a.1
-        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 09:55:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764611715; x=1765216515; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2jvI+449vLivDGb9kc0M43N4Mw/9LJ82K1JvJh/IiTk=;
-        b=Big3L5G0Rue9CcszT2M597ZRJAF3gAB0KXjqH81MX/rfkVE1zY67DVL/sYQCBCnVB8
-         xlCvP3IMBhb65K0iiSfGWvQ7r9e7PMTFWqQZcD+2kaEHZUtzAFrl5dYmWA6XDZawsl/A
-         vfm22dLhR/thXDVNQ4S6WuG18kWfWpGADo68Cf2EsjdI2yqPXuIOpSuN1tgGPK/Y3+5X
-         VIWzGyQ2V22kfBQqenPiAJSiAkMZ9J+IOST85fM7eHNNj1KLu4ftO5cvRv0BcuQI1Kx2
-         VsIG1ikfFF4ikiWIidYcHuBazSbECwXvj1+PWLXVibC2yweFhu2T0BKsEdRw/dn2Fu5y
-         o/OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764611715; x=1765216515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2jvI+449vLivDGb9kc0M43N4Mw/9LJ82K1JvJh/IiTk=;
-        b=n1KC8Q1dvm27F8EDzU41tPRh2KrGFn8H2VTwQs3jGc0js5iS88QnA9BMW6uhCtAhK+
-         /RP4azxyL5sN8FWURmUgQcwR/7XDB00tVhhf41I7UVeof0/0lnaFwWnigUEj/0YMKQYr
-         ynAwyFJMMm+0qtf9jNVbMD7/ACgtFHO/8Za13o8yzFhemtzTQR7nitQ5ScRUBwfl50o+
-         mbwZuwagF4v3Nw287o6Zpmijn63MsTlJ+TpBo7DFATyA0LMJ+hd2Z/XMjx/W4sm+8gkP
-         0yMAoXpI1whzm5jH6VWlTnTzgZTKbNeyBk3JBOK6ADk4Z2zAV2qnn4TYchsRilMNI6YH
-         N/AA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKwrnRGh1sXyweZeiyq4DwRpO8z4MoS06BwrvRZFA6fGbUB6RD0ICCpT2Ag9Y498vtSFb9oNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT1oNAaN9WvateYpiIjGh/cCkkTMgn2Re6a90texPssLzrN4oD
-	V1zPpxQRrcg1umpypZEL74yx7thSVtAWzhyysvji3y+/rPpZIiWW8MLMpAnsIR3Td45CtFMJUJP
-	l4OEj72xfIK//7jZi1J1Z/X5ZrIWTMkM=
-X-Gm-Gg: ASbGnctmcJEGdyYwEvBPe6J1ygeVniuYFV4AGyWdd7629M9f3MWFwXCXtb4TnkVZ8iv
-	zUJVVnPT192xkMgPHVMan9cNcF2j3MYJsIZuVYLJbttW7Fmny6CMi4S1L6hPYjGbTjJXWLOFUe/
-	edTxB4QZ0YTf7/5CARmLKkB/C9UMWN0e54m4Hylb9Z98rdRsVWhuhNj8uQQTxnWvUDR+fx1OXau
-	gQME9ly57fSiKE/ZwTh8tB4gTTqrT8Hw7LO4gbkOX5bsY3EvJvqccCde642AvsvuohwYRI=
-X-Google-Smtp-Source: AGHT+IGqIo+9c99gGpNbLe6l6ruO8DNr1glo/3jbVKEzxsnzLuqlOMNs0RPfAUPD0FqpaH0RzqDY7iCXYLdGGD6nGKk=
-X-Received: by 2002:a05:7022:6299:b0:11b:1c6d:98ed with SMTP id
- a92af1059eb24-11c9f31a210mr23473013c88.2.1764611715232; Mon, 01 Dec 2025
- 09:55:15 -0800 (PST)
+	s=arc-20240116; t=1764611834; c=relaxed/simple;
+	bh=iof2PbEVugIFCY9OlOoPxygxQxm8wXfTipS55ls9Zio=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mdV161hkiuCCoIqr3vCIMTXmhoQDPvtol+mY0Tb8wfgdDPjWH/8CVzCWcNB61wBGJzmkydzHt5iUC+3K85wtiIFRJPsmFUsMC9yQrH1PDAsh9Xfr31jgxxbh+UhyVEre2c7JeaFkCGAqX3nXIcULR2c482oE+4rq10/SHVbGt7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y2EjfuJx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764611831;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F2paQXFbFxGwpmccgXBJ2jOZ/qHBAktMJ04FeN3x5rs=;
+	b=Y2EjfuJxfhz3vknkW9sjHUtEq8ZXkzV3WJ+uw+545A4tvI7ftgIwsOroN2btaZWa0VVrHn
+	uzXKI6IBl8cWNNCzCn8+XKbDrZojvCeuuqnqG4Erxp1nitWCPD85bM34nxo8xOYz2pNA45
+	/T1u9OHCnUcYGMf85pKwITh6FA+s3VQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-zj45U-_kP8CQJ9QCIKwe3w-1; Mon,
+ 01 Dec 2025 12:57:08 -0500
+X-MC-Unique: zj45U-_kP8CQJ9QCIKwe3w-1
+X-Mimecast-MFC-AGG-ID: zj45U-_kP8CQJ9QCIKwe3w_1764611826
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 490C4195609F;
+	Mon,  1 Dec 2025 17:57:05 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.42])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6EBBC30001A4;
+	Mon,  1 Dec 2025 17:57:01 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Dave Airlie <airlied@redhat.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Mel Henning <mhenning@darkrefraction.com>
+Subject: [PATCH] drm/nouveau/gsp: Prepare fwsec-sb and fwsec-frts at boot
+Date: Mon,  1 Dec 2025 12:56:28 -0500
+Message-ID: <20251201175634.248900-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201140047.12403-1-natalie.vock@gmx.de> <63389a0e-d6ba-4028-9626-c606cf4b95fb@amd.com>
-In-Reply-To: <63389a0e-d6ba-4028-9626-c606cf4b95fb@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 1 Dec 2025 12:55:03 -0500
-X-Gm-Features: AWmQ_bm-Ad7WHAC1sLKfoIMaf_193awrK2kjUFivVvkw4EsLTc6z_MjtYBTHnbQ
-Message-ID: <CADnq5_NKLBfdpC7KnQr9Cyoyb0tsH-=gj4D6X58+vQx=HZrz_Q@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/amdgpu: Forward VMID reservation errors
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Natalie Vock <natalie.vock@gmx.de>, Alex Deucher <alexander.deucher@amd.com>, 
-	amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Applied.  Thanks!
+At the moment - the memory allocations for fwsec-sb and fwsec-frts are
+created as needed and released after being used. This can cause
+runtime suspend/resume to initially work on driver load, but then later
+fail on a machine that has been running for long enough with sufficiently
+high enough memory pressure:
 
-On Mon, Dec 1, 2025 at 9:04=E2=80=AFAM Christian K=C3=B6nig <christian.koen=
-ig@amd.com> wrote:
->
-> On 12/1/25 15:00, Natalie Vock wrote:
-> > Otherwise userspace may be fooled into believing it has a reserved VMID
-> > when in reality it doesn't, ultimately leading to GPU hangs when SPM is
-> > used.
-> >
-> > Fixes: 80e709ee6ecc ("drm/amdgpu: add option params to enforce process =
-isolation between graphics and compute")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
->
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
->
-> > ---
-> >  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/a=
-md/amdgpu/amdgpu_vm.c
-> > index 61820166efbf6..1479742556991 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> > @@ -2921,8 +2921,7 @@ int amdgpu_vm_ioctl(struct drm_device *dev, void =
-*data, struct drm_file *filp)
-> >       switch (args->in.op) {
-> >       case AMDGPU_VM_OP_RESERVE_VMID:
-> >               /* We only have requirement to reserve vmid from gfxhub *=
-/
-> > -             amdgpu_vmid_alloc_reserved(adev, vm, AMDGPU_GFXHUB(0));
-> > -             break;
-> > +             return amdgpu_vmid_alloc_reserved(adev, vm, AMDGPU_GFXHUB=
-(0));
-> >       case AMDGPU_VM_OP_UNRESERVE_VMID:
-> >               amdgpu_vmid_free_reserved(adev, vm, AMDGPU_GFXHUB(0));
-> >               break;
->
+  kworker/7:1: page allocation failure: order:5, mode:0xcc0(GFP_KERNEL),
+  nodemask=(null),cpuset=/,mems_allowed=0
+  CPU: 7 UID: 0 PID: 875159 Comm: kworker/7:1 Not tainted
+  6.17.8-300.fc43.x86_64 #1 PREEMPT(lazy)
+  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
+  Workqueue: pm pm_runtime_work
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   warn_alloc+0x163/0x190
+   ? __alloc_pages_direct_compact+0x1b3/0x220
+   __alloc_pages_slowpath.constprop.0+0x57a/0xb10
+   __alloc_frozen_pages_noprof+0x334/0x350
+   __alloc_pages_noprof+0xe/0x20
+   __dma_direct_alloc_pages.isra.0+0x1eb/0x330
+   dma_direct_alloc_pages+0x3c/0x190
+   dma_alloc_pages+0x29/0x130
+   nvkm_firmware_ctor+0x1ae/0x280 [nouveau]
+   nvkm_falcon_fw_ctor+0x3e/0x60 [nouveau]
+   nvkm_gsp_fwsec+0x10e/0x2c0 [nouveau]
+   ? sysvec_apic_timer_interrupt+0xe/0x90
+   nvkm_gsp_fwsec_sb+0x27/0x70 [nouveau]
+   tu102_gsp_fini+0x65/0x110 [nouveau]
+   ? ktime_get+0x3c/0xf0
+   nvkm_subdev_fini+0x67/0xc0 [nouveau]
+   nvkm_device_fini+0x94/0x140 [nouveau]
+   nvkm_udevice_fini+0x50/0x70 [nouveau]
+   nvkm_object_fini+0xb1/0x140 [nouveau]
+   nvkm_object_fini+0x70/0x140 [nouveau]
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   nouveau_do_suspend+0xe4/0x170 [nouveau]
+   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
+   pci_pm_runtime_suspend+0x67/0x1a0
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   __rpm_callback+0x45/0x1f0
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_callback+0x6d/0x80
+   rpm_suspend+0xe5/0x5e0
+   ? finish_task_switch.isra.0+0x99/0x2c0
+   pm_runtime_work+0x98/0xb0
+   process_one_work+0x18f/0x350
+   worker_thread+0x25a/0x3a0
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xf9/0x240
+   ? __pfx_kthread+0x10/0x10
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0xf1/0x110
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+
+The reason this happens is because the fwsec-sb and fwsec-frts firmware
+images only support being booted from a contiguous coherent sysmem
+allocation. If a system runs into enough memory fragmentation from memory
+pressure, such as what can happen on systems with low amounts of memory,
+this can lead to a situation where it later becomes impossible to find
+space for a large enough contiguous allocation to hold each firmware image.
+As such, we fail to allocate memory for the falcon firmware images - fail
+to boot the GPU, and the driver falls over.
+
+Since this firmware can't use non-contiguous allocations, the best solution
+to avoid this issue is to simply allocate the memory for both fwsec-sb and
+fwsec-frts during initial driver load, and reuse said allocations whenever
+either firmware image needs to be used. We then release the memory
+allocations on driver unload.
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fixes: 594766ca3e53 ("drm/nouveau/gsp: move booter handling to GPU-specific code")
+Cc: <stable@vger.kernel.org> # v6.16+
+---
+ .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  5 ++
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c   | 56 ++++++++++++++-----
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/priv.h    |  8 ++-
+ .../drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c | 11 +++-
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c   |  4 ++
+ 5 files changed, 68 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+index 226c7ec56b8ed..608ef5189eddb 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+@@ -73,6 +73,11 @@ struct nvkm_gsp {
+ 
+ 		const struct firmware *bl;
+ 		const struct firmware *rm;
++
++		struct {
++			struct nvkm_falcon_fw sb;
++			struct nvkm_falcon_fw frts;
++		} falcon;
+ 	} fws;
+ 
+ 	struct nvkm_firmware fw;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+index 5b721bd9d7994..be9a0b103aa1f 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+@@ -259,18 +259,16 @@ nvkm_gsp_fwsec_v3(struct nvkm_gsp *gsp, const char *name,
+ }
+ 
+ static int
+-nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
++nvkm_gsp_fwsec_init(struct nvkm_gsp *gsp, struct nvkm_falcon_fw *fw, const char *name, u32 init_cmd)
+ {
+ 	struct nvkm_subdev *subdev = &gsp->subdev;
+ 	struct nvkm_device *device = subdev->device;
+ 	struct nvkm_bios *bios = device->bios;
+ 	const union nvfw_falcon_ucode_desc *desc;
+ 	struct nvbios_pmuE flcn_ucode;
+-	u8 idx, ver, hdr;
+ 	u32 data;
+ 	u16 size, vers;
+-	struct nvkm_falcon_fw fw = {};
+-	u32 mbox0 = 0;
++	u8 idx, ver, hdr;
+ 	int ret;
+ 
+ 	/* Lookup in VBIOS. */
+@@ -291,8 +289,8 @@ nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
+ 	vers = (desc->v2.Hdr & 0x0000ff00) >> 8;
+ 
+ 	switch (vers) {
+-	case 2: ret = nvkm_gsp_fwsec_v2(gsp, name, &desc->v2, size, init_cmd, &fw); break;
+-	case 3: ret = nvkm_gsp_fwsec_v3(gsp, name, &desc->v3, size, init_cmd, &fw); break;
++	case 2: ret = nvkm_gsp_fwsec_v2(gsp, name, &desc->v2, size, init_cmd, fw); break;
++	case 3: ret = nvkm_gsp_fwsec_v3(gsp, name, &desc->v3, size, init_cmd, fw); break;
+ 	default:
+ 		nvkm_error(subdev, "%s(v%d): version unknown\n", name, vers);
+ 		return -EINVAL;
+@@ -303,15 +301,19 @@ nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
+ 		return ret;
+ 	}
+ 
+-	/* Boot. */
+-	ret = nvkm_falcon_fw_boot(&fw, subdev, true, &mbox0, NULL, 0, 0);
+-	nvkm_falcon_fw_dtor(&fw);
+-	if (ret)
+-		return ret;
+-
+ 	return 0;
+ }
+ 
++static int
++nvkm_gsp_fwsec_boot(struct nvkm_gsp *gsp, struct nvkm_falcon_fw *fw)
++{
++	struct nvkm_subdev *subdev = &gsp->subdev;
++	u32 mbox0 = 0;
++
++	/* Boot */
++	return nvkm_falcon_fw_boot(fw, subdev, true, &mbox0, NULL, 0, 0);
++}
++
+ int
+ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
+ {
+@@ -320,7 +322,7 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
+ 	int ret;
+ 	u32 err;
+ 
+-	ret = nvkm_gsp_fwsec(gsp, "fwsec-sb", NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
++	ret = nvkm_gsp_fwsec_boot(gsp, &gsp->fws.falcon.sb);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -334,6 +336,19 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
+ 	return 0;
+ }
+ 
++int
++nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *gsp)
++{
++	return nvkm_gsp_fwsec_init(gsp, &gsp->fws.falcon.sb, "fwsec-sb",
++				   NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
++}
++
++void
++nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *gsp)
++{
++	nvkm_falcon_fw_dtor(&gsp->fws.falcon.sb);
++}
++
+ int
+ nvkm_gsp_fwsec_frts(struct nvkm_gsp *gsp)
+ {
+@@ -342,7 +357,7 @@ nvkm_gsp_fwsec_frts(struct nvkm_gsp *gsp)
+ 	int ret;
+ 	u32 err, wpr2_lo, wpr2_hi;
+ 
+-	ret = nvkm_gsp_fwsec(gsp, "fwsec-frts", NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS);
++	ret = nvkm_gsp_fwsec_boot(gsp, &gsp->fws.falcon.frts);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -358,3 +373,16 @@ nvkm_gsp_fwsec_frts(struct nvkm_gsp *gsp)
+ 	nvkm_debug(subdev, "fwsec-frts: WPR2 @ %08x - %08x\n", wpr2_lo, wpr2_hi);
+ 	return 0;
+ }
++
++int
++nvkm_gsp_fwsec_frts_ctor(struct nvkm_gsp *gsp)
++{
++	return nvkm_gsp_fwsec_init(gsp, &gsp->fws.falcon.frts, "fwsec-frts",
++				   NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS);
++}
++
++void
++nvkm_gsp_fwsec_frts_dtor(struct nvkm_gsp *gsp)
++{
++	nvkm_falcon_fw_dtor(&gsp->fws.falcon.frts);
++}
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
+index c3494b7ac572b..d0ce34b5806c2 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
+@@ -5,8 +5,14 @@
+ #include <rm/gpu.h>
+ enum nvkm_acr_lsf_id;
+ 
+-int nvkm_gsp_fwsec_frts(struct nvkm_gsp *);
++
++int nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *);
+ int nvkm_gsp_fwsec_sb(struct nvkm_gsp *);
++void nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *);
++
++int nvkm_gsp_fwsec_frts_ctor(struct nvkm_gsp *);
++int nvkm_gsp_fwsec_frts(struct nvkm_gsp *);
++void nvkm_gsp_fwsec_frts_dtor(struct nvkm_gsp *);
+ 
+ struct nvkm_gsp_fwif {
+ 	int version;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+index 32e6a065d6d7a..33db4bad44ef5 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+@@ -1817,12 +1817,16 @@ r535_gsp_rm_boot_ctor(struct nvkm_gsp *gsp)
+ 	RM_RISCV_UCODE_DESC *desc;
+ 	int ret;
+ 
++	ret = nvkm_gsp_fwsec_sb_ctor(gsp);
++	if (ret)
++		return ret;
++
+ 	hdr = nvfw_bin_hdr(&gsp->subdev, fw->data);
+ 	desc = (void *)fw->data + hdr->header_offset;
+ 
+ 	ret = nvkm_gsp_mem_ctor(gsp, hdr->data_size, &gsp->boot.fw);
+ 	if (ret)
+-		return ret;
++		goto dtor_fwsec;
+ 
+ 	memcpy(gsp->boot.fw.data, fw->data + hdr->data_offset, hdr->data_size);
+ 
+@@ -1831,6 +1835,9 @@ r535_gsp_rm_boot_ctor(struct nvkm_gsp *gsp)
+ 	gsp->boot.manifest_offset = desc->manifestOffset;
+ 	gsp->boot.app_version = desc->appVersion;
+ 	return 0;
++dtor_fwsec:
++	nvkm_gsp_fwsec_sb_dtor(gsp);
++	return ret;
+ }
+ 
+ static const struct nvkm_firmware_func
+@@ -2087,6 +2094,7 @@ r535_gsp_dtor(struct nvkm_gsp *gsp)
+ 	nvkm_gsp_radix3_dtor(gsp, &gsp->radix3);
+ 	nvkm_gsp_mem_dtor(&gsp->sig);
+ 	nvkm_firmware_dtor(&gsp->fw);
++	nvkm_gsp_fwsec_sb_dtor(gsp);
+ 
+ 	nvkm_falcon_fw_dtor(&gsp->booter.unload);
+ 	nvkm_falcon_fw_dtor(&gsp->booter.load);
+@@ -2105,6 +2113,7 @@ r535_gsp_dtor(struct nvkm_gsp *gsp)
+ 	nvkm_gsp_mem_dtor(&gsp->rmargs);
+ 	nvkm_gsp_mem_dtor(&gsp->wpr_meta);
+ 	nvkm_gsp_mem_dtor(&gsp->shm.mem);
++	nvkm_gsp_fwsec_frts_dtor(gsp);
+ 
+ 	r535_gsp_libos_debugfs_fini(gsp);
+ 
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c
+index 81e56da0474a1..b9047da609b81 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c
+@@ -331,6 +331,10 @@ tu102_gsp_oneinit(struct nvkm_gsp *gsp)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = nvkm_gsp_fwsec_frts_ctor(gsp);
++	if (WARN_ON(ret))
++		return ret;
++
+ 	ret = nvkm_gsp_fwsec_frts(gsp);
+ 	if (WARN_ON(ret))
+ 		return ret;
+
+base-commit: 62433efe0b06042d8016ba0713d801165a939229
+-- 
+2.52.0
+
 
