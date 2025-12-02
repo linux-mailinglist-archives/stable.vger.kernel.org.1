@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-198018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F289C99A4A
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 01:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2725C99A4D
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 01:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D92323A3BB1
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 00:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 676B43A3A8E
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 00:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74860147C9B;
-	Tue,  2 Dec 2025 00:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588A182899;
+	Tue,  2 Dec 2025 00:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVm3iI5S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9MMrVZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7511862
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 00:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1810636D518
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 00:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764634961; cv=none; b=nKQV7HNl9R/AaQXk4hJKY3a2U+ZsWhBLEJFQs1pZct62zorTj1a+X2RW7pBo5m0FnjOGpGUg6sRWvS4y4Jyz1StCsRHSaNPMuho3LND+HV/yhijJ1mahkbD1oA8luT0m5ZqnuXlTXj4neL3YsETSHCl7RN8LXwzJZUt8y2uvrk0=
+	t=1764634998; cv=none; b=G/NCSVPix6gWdrCYYkv3QJ2C2EtezciB2A6xOZ9dippM+oWBZxezqbKwwvSvyFfR8//Fwwh4Y4rKUZce2hNmWbmyurDk5mogb1N9qGnLBRbRWCTMz1Uzbk0BHiv+3enVz3MFIFYTInQjkkdHQHdbERw+KOCkx/zfPKRHUL16Mh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764634961; c=relaxed/simple;
-	bh=RZyj94ECUBXqvfcL7kZjobnn3JuMpq9nD9MtTD3LFR0=;
+	s=arc-20240116; t=1764634998; c=relaxed/simple;
+	bh=L730SmW/I1sWqXQgoxUmSEjDTaTBRI/5hIw5XqcngjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRl8lDbEoBglipYB9MlaNM/fx43ZX3VbkmUWjbBOHzW/rCP25zBTKmbXuOpWblLHTEXctr2AePXJFEGeoEfhMUnrAVfnVrSn6FZuQV7Wy1fKD8g7QsNuLXQVITP+McUN57YSD41TODImp7Vg5S3qJytocopfhcAvnqgPWO0fw08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVm3iI5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAEDC19421;
-	Tue,  2 Dec 2025 00:22:39 +0000 (UTC)
+	 MIME-Version; b=naOCy6OB622YOK1RRPrLY4P8XbpIUW4+lwbJwqbXftaf2yrtQ0CkJlo/5to6OC8vSSqKBCfHrmZg4kBZKNhAr8iP+Um8Lg9j1ik/haUqKm/Jq8gTRzhSBpBEd20O0gb7pzJYPUSFVbvXZm037Mgl7wfSsV5zShU/ISlRHzRAJJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9MMrVZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA8BC4CEF1;
+	Tue,  2 Dec 2025 00:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764634961;
-	bh=RZyj94ECUBXqvfcL7kZjobnn3JuMpq9nD9MtTD3LFR0=;
+	s=k20201202; t=1764634997;
+	bh=L730SmW/I1sWqXQgoxUmSEjDTaTBRI/5hIw5XqcngjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVm3iI5S51H7XrK8wNoFCn6LvghElPq9fKKFRndwUBB//aOXFkVGk4GK3QY6Ryhqd
-	 658EnjpiJNwa5BsC/fm2PrmVUg7VRq6rQJJ4GC799h9pYavodtv+rTJqvwLq9bopbJ
-	 HV75UjwYbWNTUYJXO8FGtXLRm7sbXYbJoC+aENT+4RHg5nE5SR37yfQP+hMDqvSEBS
-	 5p0+pX6iZuUFKn6HGVU3V+VhEk/azT4hlkWEM0e76OYaZS1o7JgmsLPwBwjDy2t45W
-	 /adzzZlBQ4cLMpLY1uXh+zF/5xfB4r8hJxvDaRcmOBQBObqVIk92iqHP5Ch3ZQ6NDC
-	 u2FS2J6nAaeiA==
+	b=H9MMrVZ7XIHdFAkxFpO9srYel7+0yVAiVdfCIxH/SH1W7h2M0JJoDwTp8rvYg8rG0
+	 bH0S4GBILfCYly5Hk3CpqgX8LFocCzjvzTJZRBKvxjoHUxGaM3fr70GWWT38WUqfb7
+	 8BQd/aRABxC4n8ffj3l7xN0welU8TqDD3J6E6Bzn2xmqAuDNnhIqVIsMhvPsJPpty8
+	 r1QGecXrgwmtb32iwYOjRRXyjR6OVlU6PuGyANHAm0nCpGvluMbagR/nh+BpCcDOaD
+	 s70TkmamHpu7fWY9k7WEwQr5YlWCevmEyFJws01GVFjoSNA6kwDzYY6HoW29/IHist
+	 Yt9zfe6uiPBeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable <stable@kernel.org>,
+Cc: Jameson Thies <jthies@google.com>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	"Kenneth R. Crudup" <kenny@panix.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] usb: renesas_usbhs: Fix synchronous external abort on unbind
-Date: Mon,  1 Dec 2025 19:22:31 -0500
-Message-ID: <20251202002231.1497163-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] usb: typec: ucsi: psy: Set max current to zero when disconnected
+Date: Mon,  1 Dec 2025 19:23:08 -0500
+Message-ID: <20251202002308.1498190-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251202002231.1497163-1-sashal@kernel.org>
-References: <2025120127-recital-default-e35a@gregkh>
- <20251202002231.1497163-1-sashal@kernel.org>
+In-Reply-To: <2025120115-ascension-acre-a1d0@gregkh>
+References: <2025120115-ascension-acre-a1d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,143 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Jameson Thies <jthies@google.com>
 
-[ Upstream commit eb9ac779830b2235847b72cb15cf07c7e3333c5e ]
+[ Upstream commit 23379a17334fc24c4a9cbd9967d33dcd9323cc7c ]
 
-A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
-executed after the configuration sequence described above:
+The ucsi_psy_get_current_max function defaults to 0.1A when it is not
+clear how much current the partner device can support. But this does
+not check the port is connected, and will report 0.1A max current when
+nothing is connected. Update ucsi_psy_get_current_max to report 0A when
+there is no connection.
 
-modprobe usb_f_ecm
-modprobe libcomposite
-modprobe configfs
-cd /sys/kernel/config/usb_gadget
-mkdir -p g1
-cd g1
-echo "0x1d6b" > idVendor
-echo "0x0104" > idProduct
-mkdir -p strings/0x409
-echo "0123456789" > strings/0x409/serialnumber
-echo "Renesas." > strings/0x409/manufacturer
-echo "Ethernet Gadget" > strings/0x409/product
-mkdir -p functions/ecm.usb0
-mkdir -p configs/c.1
-mkdir -p configs/c.1/strings/0x409
-echo "ECM" > configs/c.1/strings/0x409/configuration
-
-if [ ! -L configs/c.1/ecm.usb0 ]; then
-        ln -s functions/ecm.usb0 configs/c.1
-fi
-
-echo 11e20000.usb > UDC
-echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
-
-The displayed trace is as follows:
-
- Internal error: synchronous external abort: 0000000096000010 [#1] SMP
- CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
- Tainted: [M]=MACHINE_CHECK
- Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
- pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
- lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
- sp : ffff8000838b3920
- x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
- x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
- x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
- x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
- x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
- x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
- x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
- x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
- x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
- x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
- Call trace:
- usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
- usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
- usb_gadget_disconnect_locked+0x48/0xd4
- gadget_unbind_driver+0x44/0x114
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_release_driver+0x18/0x24
- bus_remove_device+0xcc/0x10c
- device_del+0x14c/0x404
- usb_del_gadget+0x88/0xc0
- usb_del_gadget_udc+0x18/0x30
- usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
- usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
- usbhs_remove+0x98/0xdc [renesas_usbhs]
- platform_remove+0x20/0x30
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_driver_detach+0x18/0x24
- unbind_store+0xb4/0xb8
- drv_attr_store+0x24/0x38
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x128/0x1b8
- vfs_write+0x2ac/0x350
- ksys_write+0x68/0xfc
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0xf0
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
- Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
- ---[ end trace 0000000000000000 ]---
- note: sh[188] exited with irqs disabled
- note: sh[188] exited with preempt_count 1
-
-The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
-registers, is executed after the USBHS clocks have been disabled. The
-problem is reproducible on the Renesas RZ/G3S SoC starting with the
-addition of module stop in the clock enable/disable APIs. With module stop
-functionality enabled, a bus error is expected if a master accesses a
-module whose clock has been stopped and module stop activated.
-
-Disable the IP clocks at the end of remove.
-
-Cc: stable <stable@kernel.org>
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Kenneth R. Crudup <kenny@panix.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20251017000051.2094101-1-jthies%40google.com
+Link: https://patch.msgid.link/20251106011446.2052583-1-jthies@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted UCSI_CONSTAT() macro to direct flag access ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/common.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/typec/ucsi/psy.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
-index 818c1ad16e5c6..a6e262d4f631d 100644
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -798,18 +798,18 @@ static void usbhs_remove(struct platform_device *pdev)
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index 9447a50716ec1..7f176382b1a0f 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ {
+ 	u32 pdo;
  
- 	flush_delayed_work(&priv->notify_hotplug_work);
- 
--	/* power off */
--	if (!usbhs_get_dparam(priv, runtime_pwctrl))
--		usbhsc_power_ctrl(priv, 0);
--
--	pm_runtime_disable(&pdev->dev);
--
- 	usbhs_platform_call(priv, hardware_exit, pdev);
--	usbhsc_clk_put(priv);
- 	reset_control_assert(priv->rsts);
- 	usbhs_mod_remove(priv);
- 	usbhs_fifo_remove(priv);
- 	usbhs_pipe_remove(priv);
++	if (!(con->status.flags & UCSI_CONSTAT_CONNECTED)) {
++		val->intval = 0;
++		return 0;
++	}
 +
-+	/* power off */
-+	if (!usbhs_get_dparam(priv, runtime_pwctrl))
-+		usbhsc_power_ctrl(priv, 0);
-+
-+	usbhsc_clk_put(priv);
-+	pm_runtime_disable(&pdev->dev);
- }
- 
- static __maybe_unused int usbhsc_suspend(struct device *dev)
+ 	switch (UCSI_CONSTAT_PWR_OPMODE(con->status.flags)) {
+ 	case UCSI_CONSTAT_PWR_OPMODE_PD:
+ 		if (con->num_pdos > 0) {
 -- 
 2.51.0
 
