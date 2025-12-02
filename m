@@ -1,308 +1,175 @@
-Return-Path: <stable+bounces-198051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225FFC9A86A
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 08:44:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DF0C9A876
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 08:44:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E618D34690A
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 07:43:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 236DA4E2C62
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 07:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AEF3019A5;
-	Tue,  2 Dec 2025 07:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C883016F1;
+	Tue,  2 Dec 2025 07:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="v54KINoS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="scoE9VZQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WfUz/mA6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4zmcd5S2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HixWft7Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24C2FF176
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 07:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B11B2F7ABF
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 07:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764661378; cv=none; b=mibiyLskmZsxf5Ug+KuZ1/azT9k6tdkyYlqaKsOOKfqQG51Tr93XnPaieh0pYSUR1BPZdCz7RDK/swV2qB6drRDbZcF+BBguNhNtWC3D681OO/QpoUNx3hhwMWrThUOYYZeSTynhopsVJBCFxKXk/BjtVJBtIvArg4hXeF7R6mM=
+	t=1764661451; cv=none; b=Ijmneu1jCPLM3FE353yQjDEMQ2yR1SPYEHGe2BhrLTU15S26EOg4Ug7yYgIRZWV1dDLawDo+LWHeWZI2PgdhbbuDj+D4YU9m120GerbNJ5y8jPc98hNDfupNRvHS4LQERspnpQvWwxnOdnxCKUGBLWQHozM1h0TrA7h6bU0k/E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764661378; c=relaxed/simple;
-	bh=RPerrCcb/rxIf6JIVbFY9KV6ktAvgD3XzwnrrjGIm8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EECSUeytbScZ5tw37fNUacNsEcIjySZT6smguWgAOWHQ+VKBsjbmgKVjWtNseZ81BDkDK/2AWtjL0U4OBMjWYWkRDDMZxqG8j/6Rw0z+/VE089orIn/YD/NrMcjvLj7KIVFHR0sdy2GXfakFuoaSEckm6BRsuFNX4nw/j9ml7IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=v54KINoS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=scoE9VZQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WfUz/mA6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4zmcd5S2; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5110F5BD0D;
-	Tue,  2 Dec 2025 07:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764661374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
-	b=v54KINoSSeCZEmdVVCh8jGCEvJiWl50LEoHcoT8E9FVvWFCWVZGYukvpvy72HQ6VDWbKiy
-	hBi4kIizteoUVfuDVno4obJU8HciEQwNZqBJm3R3mgcQmiXmeToOAOGMuLCB9Wu40823ZN
-	kLIjtG5Dk7xHgS/hxrXRgj+ZdgyPnqI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764661374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
-	b=scoE9VZQSdTvSPBLtfFceEJMi+J51wTrrNOfa/EdSD/K3381tpEEymEyPrLEcMvtG5n5xX
-	4Zz4v7puJ8j6tkDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764661373; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
-	b=WfUz/mA6uH0scWlh+FIIDCY8mEjy+ZGzNag/CTiDlKT5fE8NJ8O+hH6fPvblv3vD1O5yk+
-	6oC9lXGh116BC1Nk9S0q2XsObBn1UyzRulXI6ew/hOwqVuMyksQfGv9rBcBu0w3HJHIBz5
-	k5n1uIiKdNR/b71l7FMZkPvQEg7TLdI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764661373;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
-	b=4zmcd5S2jYLQWfKNODmfN2vr7chNoLGU8sJSuXZr5cuizCsYJ6cjqW4nHkYdrXTg9dTj4/
-	lxaypuJr+YpKOYAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0213F3EA63;
-	Tue,  2 Dec 2025 07:42:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C5bhOHyYLmnQAQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 02 Dec 2025 07:42:52 +0000
-Message-ID: <250b44b3-e75b-4f8d-af44-d3a985ea554c@suse.de>
-Date: Tue, 2 Dec 2025 08:42:52 +0100
+	s=arc-20240116; t=1764661451; c=relaxed/simple;
+	bh=AS49m0YE7R/aAXE/s2nIFxVf95SUgcHreGJIBCx4Ltk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S18kkHEhh1rw/Wf74OnL2BPQO/r+U7kZusiwQVjRGK4NJy6ONwbWoQkab3qqry9CRgHeiLY3SqgFeeEwMRip+tLdiUD5SnnCOn3J4PxTzZKLptTa4uD1rSrFp04sq99iVJV/YUPqaldv63nXe6rfBvkPy5zoOt05+drdu70bWRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HixWft7Z; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so52188945e9.3
+        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 23:44:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764661448; x=1765266248; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nSXovCUpj4gy/T32A4kPsvembC//OZ7tkk4dj26MmvQ=;
+        b=HixWft7ZiKXlTjBgvj2sKCCdwHVnaeLpxVz5SBbmp9Uc6+QihjAjLGQawJZguaLIKn
+         ItD5Z/HDql5z22GDy50hkBFvNtGwqR8wCd2pmaLkAcCagboFotahuROtkgZmGHc/10B/
+         npWgwc9nprnkccU742Ngzn8PK7j55eCuKSSbmWPeiOxlxQGwXg/QmEG9MazSOCgjd95N
+         NMFp2GkBGswbK4xJeZby56RLAgBh5Ol8qH7V97mnVMjyLdJcvJVbPlA9BAVSV38/7ypU
+         UcJ2mIoynMqAl3yhvjQEQc1zaP1BFnYYcvDvnsoi83E5l/IbwxFrAXC/7dXNqEX5yg6g
+         NFfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764661448; x=1765266248;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nSXovCUpj4gy/T32A4kPsvembC//OZ7tkk4dj26MmvQ=;
+        b=QS3lUkiyElfPAgnuIro1xHhzbYS4nuABfWmYjbIzDgdbVyiJmMFdynHByM6+jGONoN
+         eRSiKiVrCUvl6LSUbkSUAZQnKPOdYYWmsa5Ex2jRA6cruf+AHjq0h74Ccg3GpWiV4tcc
+         UDJm4skqmExHzAw0XrFBjcs/6pL+G6gA2Nr1jD6BP6P7tOV9ws26b2mMiHL7s1+yZBXt
+         f9tMVkAT1jszTkYl1VZ3M2UQEQDDeWplqYvWTZF9GO1Bi2rvJiD/Yi1XtZnzEyyoKtty
+         0Lhap5c/87+tLmCRvx4Hh18iQz0we2jLlVURKGz6WG/mWW28hzOx/ELEGKW6fZb/eGYp
+         dyMw==
+X-Gm-Message-State: AOJu0YzwHVQy+QQ+lEpqvgG92SxkgtMzMEMfZ25gmPoGn+m9YeDp4sBk
+	7neUpJ3yQh0o3rfpPwAoKzWtJ/tmxrrdZKrrVJlBuDrCH8EWhFxinZD4xqN9cPOH
+X-Gm-Gg: ASbGncsUVNuHJL0VVuAdKyL36d1eBkl9ZrNQGO32R6pY3X/bdL3+ByPBGY2ybJwgpii
+	wyvKxG8IdWVZsn1WspECHZ3vfqoRfSGNLW2E8IiG+r0enNBfnzNFBEuj4EW534Fp+xQJBNogF6Y
+	RZywTta29sejId82PuMal8r1ZaAJUUa4zADUgg+YAba277JyHu7mumwgZ6Y0h7jiuaDV8zmQ/U4
+	+TDP8tnwBVHGrXVuIyUsVogMEJiWdVIMgUllG1AMIo0l4vthetbPthXiPdfdNT7cFUuLBBCzxGn
+	OcdukVKesdOCksqYFrPP/lO9rKyAJChaWKRiyz+5XYYmXA5jt8yCKJtgNbPC68an1gFPcubMYzm
+	aJ5rrGZS/I5C0EWRPWzQFcchqQRdfZ9XHyYTcca6Mw2Yf8Z7dFN1AkYg9DS+hmAb82bdPISvdMZ
+	2QIa6kgq5U3Q==
+X-Google-Smtp-Source: AGHT+IHrHXEZqgTMGR9Wlmw0bf5MAUp74lZ8riC3jSj4egp0SLuPIi45Ji4Ie1W9qVG8I0ZXPv4plw==
+X-Received: by 2002:a05:600c:a01:b0:477:55ce:f3c2 with SMTP id 5b1f17b1804b1-477c111d3camr434071055e9.14.1764661447620;
+        Mon, 01 Dec 2025 23:44:07 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790add4b46sm357059465e9.4.2025.12.01.23.44.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 01 Dec 2025 23:44:07 -0800 (PST)
+Date: Tue, 2 Dec 2025 07:44:06 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.12.y] mm/huge_memory: fix NULL pointer deference when
+ splitting folio
+Message-ID: <20251202074406.jponflt3xzvlqtj6@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <2025120102-geranium-elevator-ca86@gregkh>
+ <20251201221818.1285944-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y] drm, fbcon, vga_switcheroo: Avoid race condition in
- fbcon setup
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Javier Martinez Canillas <javierm@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org
-References: <2025120119-quake-universal-d896@gregkh>
- <20251201225123.1298682-1-sashal@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251201225123.1298682-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.27 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.17)[-0.858];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,lists.freedesktop.org:email,suse.de:mid,suse.de:email,msgid.link:url,bootlin.com:url,suse.com:url]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -4.27
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251201221818.1285944-1-sashal@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 
-Hi,
+On Mon, Dec 01, 2025 at 05:18:18PM -0500, Sasha Levin wrote:
+>From: Wei Yang <richard.weiyang@gmail.com>
+>
+>[ Upstream commit cff47b9e39a6abf03dde5f4f156f841b0c54bba0 ]
+>
+>Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
+>introduced an early check on the folio's order via mapping->flags before
+>proceeding with the split work.
+>
+>This check introduced a bug: for shmem folios in the swap cache and
+>truncated folios, the mapping pointer can be NULL.  Accessing
+>mapping->flags in this state leads directly to a NULL pointer dereference.
+>
+>This commit fixes the issue by moving the check for mapping != NULL before
+>any attempt to access mapping->flags.
+>
+>Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+>Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+>Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Cc: <stable@vger.kernel.org>
+>Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>[ applied fix to split_huge_page_to_list_to_order() instead of __folio_split() ]
+>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>---
+> mm/huge_memory.c | 17 ++++++++++-------
+> 1 file changed, 10 insertions(+), 7 deletions(-)
+>
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index d68a22c729fb3..2065374c7e9e6 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -3404,6 +3404,16 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+> 	if (new_order >= folio_order(folio))
+> 		return -EINVAL;
+> 
+>+	/*
+>+	 * Folios that just got truncated cannot get split. Signal to the
+>+	 * caller that there was a race.
+>+	 *
+>+	 * TODO: this will also currently refuse shmem folios that are in the
+>+	 * swapcache.
+>+	 */
+>+	if (!is_anon && !folio->mapping)
+>+		return -EBUSY;
+>+
 
-thanks for backporting.
+Looks good, thanks.
 
-You also have to remove the calls to vga_switcheroo_client_fb_set() from 
-these files
-
-https://elixir.bootlin.com/linux/v6.6/source/drivers/gpu/drm/i915/display/intel_fbdev.c 
-
-https://elixir.bootlin.com/linux/v6.6/source/drivers/gpu/drm/radeon/radeon_fbdev.c 
-
-
-Best regards
-Thomas
-
-Am 01.12.25 um 23:51 schrieb Sasha Levin:
-> From: Thomas Zimmermann <tzimmermann@suse.de>
->
-> [ Upstream commit eb76d0f5553575599561010f24c277cc5b31d003 ]
->
-> Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
-> access in fbcon_remap_all(). Without holding the console lock the call
-> races with switching outputs.
->
-> VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
-> function uses struct fb_info.node, which is set by register_framebuffer().
-> As the fb-helper code currently sets up VGA switcheroo before registering
-> the framebuffer, the value of node is -1 and therefore not a legal value.
-> For example, fbcon uses the value within set_con2fb_map() [1] as an index
-> into an array.
->
-> Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
-> result in VGA switching that does not switch fbcon correctly.
->
-> Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
-> which already holds the console lock. Fbdev calls fbcon_fb_registered()
-> from within register_framebuffer(). Serializes the helper with VGA
-> switcheroo's call to fbcon_remap_all().
->
-> Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
-> as parameter, it really only needs the contained fbcon state. Moving the
-> call to fbcon initialization is therefore cleaner than before. Only amdgpu,
-> i915, nouveau and radeon support vga_switcheroo. For all other drivers,
-> this change does nothing.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
-> Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
-> Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-> Acked-by: Alex Deucher <alexander.deucher@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: nouveau@lists.freedesktop.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v2.6.34+
-> Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
-> [ drm_fb_helper_unregister_info() lacks vga_switcheroo code ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   drivers/gpu/drm/drm_fb_helper.c  | 7 -------
->   drivers/video/fbdev/core/fbcon.c | 9 +++++++++
->   2 files changed, 9 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-> index b507c1c008a3e..3891837a78414 100644
-> --- a/drivers/gpu/drm/drm_fb_helper.c
-> +++ b/drivers/gpu/drm/drm_fb_helper.c
-> @@ -30,9 +30,7 @@
->   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->   
->   #include <linux/console.h>
-> -#include <linux/pci.h>
->   #include <linux/sysrq.h>
-> -#include <linux/vga_switcheroo.h>
->   
->   #include <drm/drm_atomic.h>
->   #include <drm/drm_drv.h>
-> @@ -1668,7 +1666,6 @@ static int drm_fb_helper_find_sizes(struct drm_fb_helper *fb_helper,
->   static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
->   {
->   	struct drm_client_dev *client = &fb_helper->client;
-> -	struct drm_device *dev = fb_helper->dev;
->   	struct drm_fb_helper_surface_size sizes;
->   	int ret;
->   
-> @@ -1687,10 +1684,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
->   
->   	strcpy(fb_helper->fb->comm, "[fbcon]");
->   
-> -	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
-> -	if (dev_is_pci(dev->dev))
-> -		vga_switcheroo_client_fb_set(to_pci_dev(dev->dev), fb_helper->info);
-> -
->   	return 0;
->   }
->   
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index 78a5b22c8d150..8b2c3065c0c26 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -64,6 +64,7 @@
->   #include <linux/console.h>
->   #include <linux/string.h>
->   #include <linux/kd.h>
-> +#include <linux/pci.h>
->   #include <linux/slab.h>
->   #include <linux/fb.h>
->   #include <linux/fbcon.h>
-> @@ -75,6 +76,7 @@
->   #include <linux/interrupt.h>
->   #include <linux/crc32.h> /* For counting font checksums */
->   #include <linux/uaccess.h>
-> +#include <linux/vga_switcheroo.h>
->   #include <asm/irq.h>
->   
->   #include "fbcon.h"
-> @@ -2913,6 +2915,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
->   
->   	console_lock();
->   
-> +	if (info->device && dev_is_pci(info->device))
-> +		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
-> +
->   	fbcon_registered_fb[info->node] = NULL;
->   	fbcon_num_registered_fb--;
->   
-> @@ -3046,6 +3051,10 @@ static int do_fb_registered(struct fb_info *info)
->   		}
->   	}
->   
-> +	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
-> +	if (info->device && dev_is_pci(info->device))
-> +		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
-> +
->   	return ret;
->   }
->   
+> 	if (is_anon) {
+> 		/* order-1 is not supported for anonymous THP. */
+> 		if (new_order == 1) {
+>@@ -3466,13 +3476,6 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+> 		gfp_t gfp;
+> 
+> 		mapping = folio->mapping;
+>-
+>-		/* Truncated ? */
+>-		if (!mapping) {
+>-			ret = -EBUSY;
+>-			goto out;
+>-		}
+>-
+> 		min_order = mapping_min_folio_order(folio->mapping);
+> 		if (new_order < min_order) {
+> 			VM_WARN_ONCE(1, "Cannot split mapped folio below min-order: %u",
+>-- 
+>2.51.0
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+Wei Yang
+Help you, Help me
 
