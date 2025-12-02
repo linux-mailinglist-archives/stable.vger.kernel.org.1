@@ -1,305 +1,137 @@
-Return-Path: <stable+bounces-198153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87ACEC9D395
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:36:26 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFF6C9D4AB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 00:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EFD44E3DD7
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:36:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 01E9B34B2A2
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 23:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCFF2F9DB7;
-	Tue,  2 Dec 2025 22:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9245C2FC030;
+	Tue,  2 Dec 2025 23:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Nk14Nu0I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMbVQzm7"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AFE2FBE00;
-	Tue,  2 Dec 2025 22:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D02F1FFE;
+	Tue,  2 Dec 2025 23:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764714962; cv=none; b=hJLtwoweKxHXomTHFsu/wMbM8CGIuyvXs15erAmAyhO3PcO4yt1Q/oGuatt0MbyoHX4dR5Lkb+3/SgBlOo9sNYWqr7KbJ8WG+Z0R/CDFCUV+MZJhgaKNeuOCZjLPKNEMpRkyPErZRlayX0qzGzpsJy0D1METtl9uDr01nT3bfss=
+	t=1764716713; cv=none; b=JvD3OKnlYBT8zUEXiEyxs6oS9oNOy4CspVhuOSMrcIFbaaixX6T7pAR7+QRQZLTsufkuyxikyUkyDQkgdnVxj0e7mwD3Od2C0N60YsW6HZWTd1VgmK3ZRrZ+XEgvV5XyqgnF8fXIRVS0lVujZk1k44mOtYBy24JWcrjJeNti+w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764714962; c=relaxed/simple;
-	bh=tgiEosNhg61yuctSAmfNUw3etcdXrsHbhVTPxaXDJM0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jAkFLZ4V/iWhICG7Ga68jlka2ywLIUXfe9+auo7QbSKDHBk5u0hcc/vl+rKar2OyEp7pPnsC6hJHMYyPXpb1oEWrUi0qyl+6BvHe1eCoZ+iacl+vN00BZ55Q6JGJcFLDj//Me3sfLXL60PswkpXNnXkcyH/mUb8dHjNtRfzlTvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Nk14Nu0I; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xTzp/0Os5PH1atF/o8AGmVkZQhPihWF/Fu+OnStPh0M=; b=Nk14Nu0IICAMf9kaNoXJ6iLGDu
-	bxt+8sk8V9CS0qGBICY61Zy2zQBlAGfAeYWDbcyN4xFfb4GAuc9Ycst4IHhLnRmrpLQCiwrMJ87KI
-	kQu/6aYxBJ0xjnrG3l3ueqyuhkj7s0vhB7rcUxPYqUwbF0ZysTgo4o3Bm3x+0pw3SqUEUs4M5mhxx
-	Jk0Ash2VOX2rRb+HlC/Eo6VUevkVOwpXfGkfg4UjRUL6nfBe4s4lxvnX/wVjw25gDVtip7tKwvWN6
-	nt6Ved79aSlHGXM3mZ2aOx1ZCCEGRrmc+NQanDMnqiZakR9Ujtz52eaKCnfGTv7T/CKQxL0WU8U7n
-	44YrbWIg==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQY6m-00000001DgX-0tCV;
-	Tue, 02 Dec 2025 21:40:28 +0000
-Message-ID: <dbca1be3e0e7a1a778b211b2b38e85a16d80d9f9.camel@infradead.org>
-Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Khushit Shah <khushit.shah@nutanix.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "kai.huang@intel.com" <kai.huang@intel.com>, 
- "mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,  "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
- Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date: Tue, 02 Dec 2025 22:35:48 +0000
-In-Reply-To: <aS9ng741Osi91O_v@google.com>
-References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
-	 <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
-	 <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com>
-	 <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
-	 <aS8I6T3WtM1pvPNl@google.com>
-	 <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
-	 <aS8Vhb66UViQmY_Q@google.com>
-	 <fac971fe6625456f3c9ad69d859008117e35826a.camel@infradead.org>
-	 <aS9ng741Osi91O_v@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-S7wtozRfTTdISFdvmq6/"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1764716713; c=relaxed/simple;
+	bh=sXGJFPecuGDhj7hiVvBRtRIF2Bg/VeaQrC0i27OaD68=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t1hFJqW/YEMS9zLWFugSqmhirZRfG/ekGFa8mnV4nUmCpDl31T7Kf4rdFJEwVOdEF//2GQxDBQUR47iCkotbeUqD2DknHbDtSSW2bKzzpYXgbq+/ts3v6u0PHi9mnikVzGBg1xrACiEeL8GFusCYWj720P3aSmBCnzXS2qw5xfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMbVQzm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF45C4CEF1;
+	Tue,  2 Dec 2025 23:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764716712;
+	bh=sXGJFPecuGDhj7hiVvBRtRIF2Bg/VeaQrC0i27OaD68=;
+	h=From:Date:Subject:To:Cc:From;
+	b=dMbVQzm7l9kksjqSAJ34pE7HbYodq5ONOFzmyrhBquwDx2xz0ZsVBGuAGcQuJqOio
+	 NaSkVMGRTOZ+K0ajk/9HyUpHsRXk6GUYDUInIbCnIaIVNBu8y+87x2jX1rzoL6VmNp
+	 YuzdJrHJz+F6rpD8EDFj25k49jgq0PGkVV+cYuoDtinFjcqUqaubVjOrVXlIYjuho1
+	 t1aLg9DlAaBdhBM7rzya79HJefpapXCmsXSbiueESrBq8JhNJCOsXuOhgHZEbg6TQq
+	 fJaqzRmrC1wQBxgFiHGPmkfp5f/EBhUiX4UyFaXbNfj5QzreSXgPDZNT2v2Lb8CnBK
+	 VktIE/E01xWXw==
+From: Mark Brown <broonie@kernel.org>
+Date: Tue, 02 Dec 2025 22:53:44 +0000
+Subject: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
+ runtime PM
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPdtL2kC/x3NwQqDMBAE0F+RPXdBRQ34K6WHNY52oYlpoiKI/
+ 97Yy8BjYOakhKhI1BcnReyadPEZ1aMg+xY/g3XMprqs2yoHp6BsZYS34O+NuPlVHTg4VjfIR+6
+ ma41pSjsZCChvhYhJj//P83VdPzbNt4t3AAAA
+X-Change-ID: 20251202-spi-cadence-qspi-runtime-pm-imbalance-657740cf7eae
+To: Francesco Dolcini <francesco@dolcini.it>, 
+ Siddharth Vadapalli <s-vadapalli@ti.com>, Anurag Dutta <a-dutta@ti.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-88d78
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2491; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=sXGJFPecuGDhj7hiVvBRtRIF2Bg/VeaQrC0i27OaD68=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpL3Cm5CJl5jjvUJAHekdzbU2IMj4IyIBN2H6yF
+ sM/y5HaGauJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaS9wpgAKCRAk1otyXVSH
+ 0KpIB/48WNjTLaX30mMnoGCj9QB/FKrv5PsRWt9Isqf9IEM5NKA5C+cL3l4VWc7z1UD12qARfZL
+ Jh0GkP9o+69xpxpEj2HJd41/VF9edA/9xx+uO1ycW4soLkA1gz9aFWDc6AopMCaZyoC4F66dU7X
+ J+AOC2PwTgSAn2SR02n7Bns0PM/PdOVDU9oN+iIt146SeQpOHQkRhdgMeceToMyBuz8y7/9eqyX
+ f5MRNt9zpDfUZiRJSpWvlHMml+YBD2rxU0xiGIgZKYirqD7H1R+WVEZkqruqvuanDr7qaqVqdlT
+ YiTzCgJnFzdJTK7vIMxJ0ZnwqSgaNCUctobstcWo+BRCdn5C
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+The recent refactoring of where runtime PM is enabled done in commit
+f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
+avoid imbalance") made the fact that when we do a pm_runtime_disable()
+in the error paths of probe() we can trigger a runtime disable which in
+turn results in duplicate clock disables. Early on in the probe function
+we do a pm_runtime_get_noresume() since the probe function leaves the
+device in a powered up state but in the error path we can't assume that PM
+is enabled so we also manually disable everything, including clocks. This
+means that when runtime PM is active both it and the probe function release
+the same reference to the main clock for the IP, triggering warnings from
+the clock subsystem:
 
---=-S7wtozRfTTdISFdvmq6/
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[    8.693719] clk:75:7 already disabled
+[    8.693791] WARNING: CPU: 1 PID: 185 at /usr/src/kernel/drivers/clk/clk.c:1188 clk_core_disable+0xa0/0xb
+...
+[    8.694261]  clk_core_disable+0xa0/0xb4 (P)
+[    8.694272]  clk_disable+0x38/0x60
+[    8.694283]  cqspi_probe+0x7c8/0xc5c [spi_cadence_quadspi]
+[    8.694309]  platform_probe+0x5c/0xa4
 
-On Tue, 2025-12-02 at 14:26 -0800, Sean Christopherson wrote:
-> On Tue, Dec 02, 2025, David Woodhouse wrote:
-> > On Tue, 2025-12-02 at 08:36 -0800, Sean Christopherson wrote:
-> > >=20
-> > > Hmm, I suppose that could work for uAPI.=C2=A0 Having both an ENABLE =
-and a DISABLE
-> > > is obviously a bit odd, but slowing down the reader might actually be=
- a good
-> > > thing in this case.=C2=A0 And the documentation should be easy enough=
- to write.
-> > >=20
-> > > I was worried that having ENABLE and DISABLE controls would lead to c=
-onfusing code
-> > > internally, but there's no reason KVM's internal tracking needs to ma=
-tch uAPI.
-> > >=20
-> > > How about this?
-> > >=20
-> > > ---
-> > > =C2=A0arch/x86/include/asm/kvm_host.h |=C2=A0 7 +++++++
-> > > =C2=A0arch/x86/include/uapi/asm/kvm.h |=C2=A0 6 ++++--
-> > > =C2=A0arch/x86/kvm/lapic.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 16 +++++++++++++++-
-> > > =C2=A0arch/x86/kvm/x86.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 15 ++++++++++++---
-> > > =C2=A04 files changed, 38 insertions(+), 6 deletions(-)
-> > >=20
-> > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/k=
-vm_host.h
-> > > index 5a3bfa293e8b..b4c41255f01d 100644
-> > > --- a/arch/x86/include/asm/kvm_host.h
-> > > +++ b/arch/x86/include/asm/kvm_host.h
-> > > @@ -1226,6 +1226,12 @@ enum kvm_irqchip_mode {
-> > > =C2=A0	KVM_IRQCHIP_SPLIT,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /=
-* created with KVM_CAP_SPLIT_IRQCHIP */
-> > > =C2=A0};
-> > > =C2=A0
-> > > +enum kvm_suppress_eoi_broadcast_mode {
-> > > +	KVM_SUPPRESS_EOI_QUIRKED,
-> > > +	KVM_SUPPRESS_EOI_ENABLED,
-> > > +	KVM_SUPPRESS_EOI_DISABLED,
-> > > +};
-> > > +
-> >=20
-> > Looks good. I'd probably call it KVM_SUPPRESS_EOI_LEGACY though?
->=20
-> Why legacy?=C2=A0 "Quirk" has specific meaning in KVM: technically broken=
- behavior
-> that is retained as the default for backwards compatibility.=C2=A0 "Legac=
-y" does not,
-> outside of a few outliers like HPET crud.
+Avoid this confused ownership by moving the pm_runtime_get_noresume() to
+after the last point at which the probe() function can fail.
 
-OK, fair enough.
+Reported-by: Francesco Dolcini <francesco@dolcini.it>
+Closes: https://lore.kernel.org/r/20251201072844.GA6785@francesco-nb
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/spi/spi-cadence-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > And just for clarity I wouldn't embed the explicit checks against e.g
-> > arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_LEGACY. I'd make stat=
-ic
-> > inline functions like
->=20
-> Ya, definitely no objection,
-> =C2=A0
-> > static inline bool kvm_lapic_advertise_directed_eoi(kvm)
->=20
-> s/directed_eoi/suppress_eoi_broadcast.=C2=A0 I want to provide as clear o=
-f split as
-> possible between the local APIC feature and the I/O APIC feature.
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index af6d050da1c8..0833b6f666d0 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1985,7 +1985,6 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		pm_runtime_enable(dev);
+ 		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+ 		pm_runtime_use_autosuspend(dev);
+-		pm_runtime_get_noresume(dev);
+ 	}
+ 
+ 	ret = cqspi_setup_flash(cqspi);
+@@ -2012,6 +2011,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		pm_runtime_get_noresume(dev);
+ 		pm_runtime_mark_last_busy(dev);
+ 		pm_runtime_put_autosuspend(dev);
+ 	}
 
-OK.
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20251202-spi-cadence-qspi-runtime-pm-imbalance-657740cf7eae
 
-And the in-kernel I/O APIC still doesn't have directed EOI, so do we
-want to prevent userspace from enabling the broadcast suppression? Or
-just enable=C2=A0the directed EOI support in the kernel I/O APIC if
-broadcast suppression is enabled?
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
 
-> > {
-> > 	/* Legacy behaviour was to advertise this feature but it didn't=20
-> > 	 * actually work. */
-> > 	return kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_DISABLED=
-;
-> > }
-> >=20
-> > static inline bool kvm_lapic_suppress_directed_eoi(kvm)
->=20
-> Too close to "suppress EOI broadcast", e.g. it would be easy to read this=
- as
-> "suppress EOIs" and invert the polarity.=C2=A0 It's wordy, but I think
-> kvm_lapic_ignore_suppress_eoi_broadcast() is the least awful name.
-
-I think I meant to type 'kvm_lapic_suppress_eoi_broadcast' that time
-anyway, as in *actually* suppress the EOI broadcasting, rather than
-merely falsely advertising it.
-
-But sure, I'm not too hung up on precisely how we name these helpers
-but I think it is helpful for them to exist. FWIW I think your name
-means we have to invert the return value from how I typed it too.
-
-> > {
-> > 	/* Legacy behaviour advertised this feature but didn't actually
-> > 	 * suppress the EOI. */
-> > 	return kvm->arch.suppress_eoi_broadcast =3D=3D KVM_SUPPRESS_EOI_ENABLE=
-D;
-> > }
-> >=20
-> > Because it keeps the batshittery in one place and clearly documented?
-> >=20
-> > I note your version did actually suppress the broadcast even in the
-> > DISABLED case if the guest had managed to set that bit in SPIV, but I
-> > don't think it *can* so that difference doesn't matter anyway, right?
->=20
-> Right.=C2=A0 If we want to be paranoid, we could WARN_ON_ONCE() in whatev=
-er the "ignore
-> broadcast" accessor is called, because it should only be used if the bit =
-is enabled
-> in the local APIC.
-
-I don't think we care; just calling out the finer details so they don't
-get missed accidentally.
-
-
---=-S7wtozRfTTdISFdvmq6/
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMjIyMzU0
-OFowLwYJKoZIhvcNAQkEMSIEIGibkhoSLocrsMlqNwu1gXdD5gAHTrvFbd25XzfcH+KhMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAmAyjxzggA7eQ
-3U8AvSVkQ7e3x4kcNg7NIjSEh9dF5u3urGahN0Blc19sAFA+gasHqgc6h4meiyiRLXsv1IQJ9Oy/
-H27uXGrgdLfR5yvcKTHW66dd8lpqL7WwWI1KH+vXDvieZFps5ANcSOz0LNYwhhiji0Z7iLM+Ao9e
-dyZ1ZRFPXKSsDbvubMa6sAqWYPyoHOqf7IdvrhTKYR6/4y7vtabFwikEf07qrThcExl5EqZLBc5g
-2i0GWsxINm0XJCWnWKSayOQuctRnnAB3SXp6z8pRkHXMyLmAmIAOutgpVUxopy3G6gKT5E6WUl6H
-umqBuFBJFZTjGBYjbt3ll6n6ef1YxUJz2Xeb4QDRNYGFnSleUIwf7U7MthlW4Gh7eggA0ABRasOI
-s7VhR6w/50tAGnydhg5hYZI95wwWiWgWEkDHy+0b/+6D5Y1KHR1JzNaPFJ8YP2akMbni2IROkfpN
-laoAzIar2zAuzuYg3BRJMoAX7OSMjt1a21/UmkzRUDfZDFyUvdd/gk3gwb6TRY7KcIHwIXdoGxH0
-YzcfPdX8QOTr4jKS0Wj6uvQmM1H3gmM0JXWFgud0yiTEN3nlOWU2pS/zRb2GLh3V4qhqheATvnQ+
-sNF7TKYOYf3diiaizfNu3Nr9jeo+smSlFt6dBKLlmep5xuPvoefkwxQdOUW3oj8AAAAAAAA=
-
-
---=-S7wtozRfTTdISFdvmq6/--
 
