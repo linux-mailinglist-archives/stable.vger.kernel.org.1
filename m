@@ -1,442 +1,242 @@
-Return-Path: <stable+bounces-198090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D7FC9B8E5
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 14:11:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D73C9B997
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 14:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79413A6AD4
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 13:11:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B3854E02B5
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 13:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B24311964;
-	Tue,  2 Dec 2025 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321D33128A7;
+	Tue,  2 Dec 2025 13:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="BBEF1PUt";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="JBMxP+Ia"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BZAMwu0s"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824791F936;
-	Tue,  2 Dec 2025 13:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764681088; cv=fail; b=i+HoRsh1V311EXRjk9fs0GQIsD4CzugMLQt+fg6E3kFiFkFqbJlf3TP5LsObjO6MXGTjin/D/jVzQL6YGhWaLmR86i2mWNHoEE9OR9ww2pYoPXxghtpqdAZDuEJ/aNxcCVVEuRZv2RniM3mftr3AoaiSmEXHu3JhoP1Ke+dWDG8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764681088; c=relaxed/simple;
-	bh=z8g9/VMzRYZcI0iURw8NQ1b7lee+/eNESMVC9a1CZVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=q1+pWZZdXLvd26A/KSFtmMeG3ZigBn3bRjtl6uDuq8hGi2ef0/fxFAu5qKJIBvOTkHa/woKf02vkCN4gl/e9U4AyPv0rgm/XVyG6yiKzScFUPvpFhNRiHuelzl7CH7lzOWnkUMTLHv/u2WJQ5j/tGRHW604itUgRwhQT61tE3e8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=BBEF1PUt; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=JBMxP+Ia; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B2BvFps304898;
-	Tue, 2 Dec 2025 13:10:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=pxrtdJu4JwTvN7WuGn
-	iPLIT2l+YXywXZV5q0gPEmOAQ=; b=BBEF1PUtxXMQ6OPmEiYgAawSJgxVI/H8dI
-	Kl0Ru0qJTJe6gNq8vDpd5A7aBRXRBWf9UaKH+dkhebkc6eg6ngJ/oxtZwLjLRgKM
-	E5Lt+m5teTI9oYAdshbIB6bkADG7ObeB0mk9xOL/2PtWHOgAt+Tz6VvMxVYn2pYi
-	b7Nq0nBJuRHmj5ResslIhS+Us2ReXOMKMJgso1+vcrL08W6W44T3FI9Wkd5MttBr
-	5Hp3xL3umvrjxix49zrW0vbRa1oECG1ou0+bAN/A1hfrKQqBgIm3E/GrM8sJvDSa
-	VXpzFKKF01T1OX+NC57ENFYU3eNHWEKt/GuZ0l8ZrpfvyGvRDsxg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aqrvc50qc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Dec 2025 13:10:39 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B2BAsHD012040;
-	Tue, 2 Dec 2025 13:10:39 GMT
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013034.outbound.protection.outlook.com [40.93.196.34])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aqq9kb8e7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Dec 2025 13:10:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cGvGwNyildyZ24I+hycCqItCC/kKfXgICSHSCM95BHctbvPxXqKcA95Xp7hQCWto72X/ToNkgZbbCkNT43ag5BTg+qnvpnPUvuwxGywpWCgrYRHSoQfqKznIGnNzEM1M0DSdXf4IGNWbSDEOoRr5BMcWcqbfdc+VxTq+obk7tdwokf6WRejCT9ZeSzQzElJPmF84qz6vjWol2gjpsqkd59trXishmysPijSczd6GQMQgECW8nRMxWS6U5jjo+XcDpDMR49u5HiVeJbAVnIPKgDJASqm05vMrjcJKhni+ce4EGz/rg/ryswjvGuoA/2JcIKwAFZR3tEHA58sa+cFHhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pxrtdJu4JwTvN7WuGniPLIT2l+YXywXZV5q0gPEmOAQ=;
- b=O1WDnv1At0U1KKBjoTgHMDC324bXmi/14atA1sxPyho8S1g1RA4IwQoCXtNdAE5I0IANs4+JwcNE1eruWhdB+6LKja7EQ4kWwIZDqpF3ShWn7shtMzzk1UhPxchcYa+u7ZWPBFsnX+mcs8eLbw634cFhzzOt45cCJUoEXumJm6wFl1Lr3iRMN68OyLJWc2naSdtyeZxoT3hlOqUCQjzPrOMS4ht8Mb5pNEZLmC8dUZU0DRPTz9joeWzHjr6pXV1efVmUkdKL1cpsnAa26zEm856stYoTXjiX2h/vjvhRDaB+hHbNfpFzs5qlA7g5XiU+7vyQldDOlk9CQzd8GeSvgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pxrtdJu4JwTvN7WuGniPLIT2l+YXywXZV5q0gPEmOAQ=;
- b=JBMxP+Ia9Bzsw+tFtuwIL2hydJ23aSQ5FPVKcquAml63VI5BPqs7gsvCZPELUma4FobokIqlQSL4GmkqquSgWk51ZngqjPW3lm8GLY8UWz51MZq5SIDAIsiL5ouEO8TQHZMpKApSYiIe373JmG6sWo1Um2vVtn5aTPHSdSc++Tg=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH0PR10MB4614.namprd10.prod.outlook.com (2603:10b6:510:42::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 13:10:35 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%6]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 13:10:35 +0000
-Date: Tue, 2 Dec 2025 22:10:21 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-        conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-        achill@achill.org, sr@sladewatkins.com,
-        Ben Copeland <benjamin.copeland@linaro.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Hugh Dickins <hughd@google.com>,
-        Sasha Levin <sashal@kernel.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 5.4 000/184] 5.4.302-rc2 review
-Message-ID: <aS7lPZPYuChOTdXU@hyeyoo>
-References: <20251202095448.089783651@linuxfoundation.org>
- <CA+G9fYvF3cGqi_McG1AtfkMgd5EB_=nmcwiJAGFjZReP8dGKxg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYvF3cGqi_McG1AtfkMgd5EB_=nmcwiJAGFjZReP8dGKxg@mail.gmail.com>
-X-ClientProxiedBy: SL2PR04CA0008.apcprd04.prod.outlook.com
- (2603:1096:100:2d::20) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6503043C7;
+	Tue,  2 Dec 2025 13:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764682287; cv=none; b=cf8kfaHHZWAMdJizGblxnjfHu/F55nGGyO/38x8JZXt4wmPi1gKeEWAI/7OfjMOjYnVFabAdApp3Sl2XGQ0zrz2CgDVjVtFGV0lLQ4F2vaI2nTX0M6cetXyR6Y/mYOkHIiexm6DI69TEUklP47A5j9wEnIms3fbeheSxd/0xmhU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764682287; c=relaxed/simple;
+	bh=qrzLmvakwJ4FFKDJEn3ETecGWtxl/9hhsEead+JRBRw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tMdv4ACk97rmF7oW0Cz/rPcpYs09oPR+1WWhmpZ/BeoUb6DtSvXLr8GwhhuLAH1iGExTdrj9d2K5jStFs43LAl+lgVRwBHysjRpJv9oYZrchtiFrK4eVDopKJdy5dsT/4Kii7rP3lpPRAx5dyR6iqg1oHydSTvulW/HQo4u7vBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BZAMwu0s; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qrzLmvakwJ4FFKDJEn3ETecGWtxl/9hhsEead+JRBRw=; b=BZAMwu0sMrPhxOzf3tIqtKvKYT
+	uwReeV50GTd+LXNbTNzfT3EwkdwYGGYICh85nEOJMtMFonh8/oBqx9m60NV4m96zbFitPCMH+AVeT
+	PqKCb2AJ8UrJ7CqSbF4afaJGSqhk4cysCrzOHAKtbbUEY5YXrkftjEHDBgAKilfeSKmQutanWpofF
+	dMZ+HR3SEkmAPyo/4TvJOu9HkBMP34v2A0vq240uS/1KDIcsKY76M7OV+c2BUcn5tvs0uuTYY9rtf
+	ODVcZwZbWBJ5Xs+dldmHDOCO4sZbjTVRtj+kagViRy/Puc8fjcNcoBfaaj1xXLWz3wnELu6dd2yfm
+	IK5dg5uQ==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vQPbm-00000000OJs-2SNr;
+	Tue, 02 Dec 2025 12:35:54 +0000
+Message-ID: <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
+Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: David Woodhouse <dwmw2@infradead.org>
+To: Khushit Shah <khushit.shah@nutanix.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "kai.huang@intel.com" <kai.huang@intel.com>, 
+ "mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,  "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+ Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Date: Tue, 02 Dec 2025 13:31:14 +0000
+In-Reply-To: <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com>
+References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+	 <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
+	 <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-057aZcPxo3+YNW7kcDIV"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH0PR10MB4614:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9d47ca1-3ce5-4c3d-0074-08de31a42de0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fGbWlXbk6uhhz8Kbyr3ev+8E3id3NO797WQyCkxGYyzyYg5ya+IlxTMDxDPf?=
- =?us-ascii?Q?eHXRCsPz8PQpgBjIvz4REOaUeRp084O3lreAPqnD0SEsFMpk4ev5x0geM+w/?=
- =?us-ascii?Q?7qaRJWoT5Xy1KNEtDazvQZ8VA5kddsEM69oLIPjK0ryUs8GsSIQeqGi75USv?=
- =?us-ascii?Q?MaFLWw134qZaHdUkGvnDnlVWNYFB+QtUq5dNmijnpHv5S5Q6LcnL0vR5b8Il?=
- =?us-ascii?Q?ip0B5uYACv6BVxjUCn1yaTfgpgxNEwM3WcNhiiY5vh/7votp/m+EmuHLfgdk?=
- =?us-ascii?Q?5qkVTRIigyDfDw4iNR+CJtBbjz74hJ2RFL6wiWUrLvvnthLhmoANOsRXbLaG?=
- =?us-ascii?Q?JgQtkU01DrR2qU1YHWVAJRvLM5niw+dtlAXwaLTD4Er+dr7WEdJUu6BIoc9J?=
- =?us-ascii?Q?JvhSnwNGn9hshvAyIM0H3KFYP9l/3XhKn6qUrYGAgAXwG/w/0K68Zl5m/3pE?=
- =?us-ascii?Q?IY+wDhPg4SUtkNs/BpVKStcoCWFne3m7Z8bkvb7eYZkwUzXBeufXZ4lNi0QI?=
- =?us-ascii?Q?W7lgNZLkS78ppKgyxtGSbMTGWyBfocu21IeYzUPgAGv486+nYuBnLZ3la+/4?=
- =?us-ascii?Q?dfRy8ehahJ+gq8dLV/GReP3Vw8k44GGA9UCM1e8Is1Qoozsiy7r3gux6qxMz?=
- =?us-ascii?Q?Q3yyLErxZWR3Zjo+YvU282zF/VIOmxUkOYu7b9KQx2ayKxOIvjK30F2k8dC3?=
- =?us-ascii?Q?T7cj/r9EQkibw3KMS/VrXxutrrKE3/L4P85ByN1fleNTCo+N9GqOmj71DN1I?=
- =?us-ascii?Q?mcTyKXsiPV5KhneqD4upSzp4WtxyL1J9OztlcMWwHqRw0o0VxJgAWFjx+HYW?=
- =?us-ascii?Q?4JBopg8JvM3c9RyMJq1JWHyG1GJMY5H6SdmpzE283AllyETDhs2vMkAl51yu?=
- =?us-ascii?Q?fIInX7IuwmTKgJkpX2GInq0J7RaC1R+kF6QsgR6Oc9mKRoe5NtBBsBw+SdTV?=
- =?us-ascii?Q?s2RvLwN0PIfsPmgUPs3sZkZWEYcPY4FR3rMpl3VlvSHPLV9ndS0xv1MCgnfi?=
- =?us-ascii?Q?8IqdhRioj6wO7qbgqGwNSSW8GU/jcun2SxbShLaqv1DSDdHVDFkcGZiVDvVl?=
- =?us-ascii?Q?KCtN3m+5dzKIRWQFBik00OcwPUoumTpJ7y4pYAwTY2J5p+rkvxRyZwXLd/Vk?=
- =?us-ascii?Q?CD6p3ybdMCYlwjbOON6WqBHKjdX14g130+BizNLP8Exy5fMI57oWyNlaF2W1?=
- =?us-ascii?Q?0R+ZNldol9hEZcLnw615xl5/Bs0AP6sIsZ/zfGA2THTWzvH75ipPAknBwJR9?=
- =?us-ascii?Q?Ug5MEbK9pOLMXcemEXMva2rUh2ErgaVy67HwD93XDZPlDYndrAZvhqOYoxdd?=
- =?us-ascii?Q?vp9fs9TUBscwDB98gnjIWD1LvKC0i+U9Sf8tWijbUEzJQZiuZLL1IUkIdwY8?=
- =?us-ascii?Q?w9r+vVAOEm7/R0xhCv9kO2RhYVya37jAfpFFROcJd1h7n3W3FA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hx9DJGFP9l9xO/8HDtrtv4QJ4tFbkTSCFHGDRC4jTn8YSr0VCYrjkxh9FzNX?=
- =?us-ascii?Q?20nuT76EdBqlKLMKMmvNR0XavNoq/ty4AYVOCj/2e2hdRW5pKAlVD7EfDH59?=
- =?us-ascii?Q?IvVVDW+pICIszlLUTZtc35GHQFD4+yroxaFvh/w65+16RwwVstUlpA6byi6s?=
- =?us-ascii?Q?f7SjF7AXo/o3CBS71aleaD75oXWng7GEx3NEfm/otzH7kTXg21dEh8bbCoIn?=
- =?us-ascii?Q?R8p/6/+NHjl++NmiRqmhzM/D9a7J82SqRgzMAKs1Y0o0FJa7PKHFgkop9nNV?=
- =?us-ascii?Q?/H9BujZllsl9y7UDPfr37vY4es1xdNziSZp9COUc2tzASjEPWNF65VvO8Gsf?=
- =?us-ascii?Q?3+OMdgOCJ4Tykqyj0s8ZtwrwIeq1fApzotPaTsPJqulvqDTBC3Hpkiij/BcY?=
- =?us-ascii?Q?XE6B0z5qqG+M+ri0DgMIi4PL8BS219FKJRnIU217nH3YZ0r2a5uQoQcAbmT1?=
- =?us-ascii?Q?dYLVLRd3Ccp+YtTVZ2XptYVj7EtU8jf0dq9r1V1/bzISPiS8b7uDqquAE/Q1?=
- =?us-ascii?Q?XExyfsleacVBoA6tTVTvEzpxlAfAZIwYeuoSx3drLx8MpS7olqfnKtyl7SYx?=
- =?us-ascii?Q?SzFjggnOJiJQio5J+b8CW1HrVK83GY1MTx3yrehfi6aJgmtM8Lo76It9o3Df?=
- =?us-ascii?Q?fiysKStfu1/dN6ZdClM//ZtUk1d9WKsUNbdR70XVDR4h+Aa7fVs3tkUgXIiX?=
- =?us-ascii?Q?Lo8zKEGCPZwb+aE6QJDEJSPcTdDggSdZg4L2mI6mrBBWWU0Jrln8TTRIqUTC?=
- =?us-ascii?Q?q0iCR7kL/byC4ZBCU16C4I/VBmezFoa0GTQD6jRsdQRb5hVWg0zYzeoQu6Gt?=
- =?us-ascii?Q?dvV0tBnDQj1gbDIuiU4oCDBzM5qfoL0z6Brs3J/HG0wYSIWIe4msDOrGfSvt?=
- =?us-ascii?Q?+hc+gpe1CKLBMXLZ6jgAsEA8bEBJwzuTsJ8igCuCkh2u6Tj9xxApojv/OBWV?=
- =?us-ascii?Q?qefquemALnRrK7aKb442ak7a4KGTZZcIrIJRop1DaKiEzztTlxKY4Oe4bfXn?=
- =?us-ascii?Q?C+uhW0MehcfPnczk8T1skZceCVPqLF3xxfOdWXl1Ag3R9pyckVmX5TUfgafr?=
- =?us-ascii?Q?MybKo7mij4xLNh3VH0HpPnPKG/qs6LoX4vzawHUg57Iqa9tApKqJrrdg9n74?=
- =?us-ascii?Q?OToqQ3dcL+tyZgQTKcnveyYsohdPItbxN63o2zo9Tkebr4xq1hZNbMME1a9l?=
- =?us-ascii?Q?iYFOO3kRaRjzt//TXMzWwqRKPdgKxnWBdXaMccUqWDr/KzTlvBgxMUOi4FGO?=
- =?us-ascii?Q?Ck2UcMfJgEwxG3RszTWwyWALJfbOBoCdQBhpg70wENZrRc/0/gTEQX8PmYjz?=
- =?us-ascii?Q?i6hyDeh3oIVv5dXu1MPyUSpSUNJJZ4+6MV2CFAFMCZiS9vnsLD9Tr/stFHI0?=
- =?us-ascii?Q?F58JqgW7PmD3jbO/LozYJRAJeXmAENPPpKeyBVXUC0zL3k1tDaHFb4OJaZSI?=
- =?us-ascii?Q?FEWh98+AsYQey1PEAlyJnyuPU2rtpaYuW0enxaznEMrWweVzVUhpmuOfoDGJ?=
- =?us-ascii?Q?RvNjK5swIr5xvjiwsN4cpx8rQxwdJBlyKwYEmTlYe64uNedgNV7OM3NWbZgQ?=
- =?us-ascii?Q?Aok0aiCq+eJjaAVf7zLxzw4lsn2G+sno2FLYu+pn?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rZ6Jc1zo2FHFrXIXMfCtZtW45di4QTuAxSUG9tCNWkYGR+xjZxdfCH1Rof+G+n23z8EUFnRh2TsWKP7FpMiDbd4v+jZHlz2Us3GCZsGMIyuEE783mKILc+SDP7RZax277SCHe9vXR70T3ZffOybDP/npNFOMMLC1cWs84P1brRTHmH7i1/laS3VsOYRp39iFFr+VBIFBP5nSeEo98LjUwMBjAV8tC+Yr+YGLFjbQQJYJ9XMmZDIPWgbuJjG0jr+uE8GpeEskhLRZJO6gvk781u4LjAv40n4UHEYBQMU4QpAxqkquTJqxU4PybgI081WAbW7G6xzrLkJTwcwkeU+k5M6hYZXLZ2z06aw3Zl6zC7xzBfLhancN5MtlbuBHdVJ5BAeuIAf6Wcn+qbCkDf134FM5FA6K02KPnWAf42x5JxqLEZPYCO+2TranVVkdjURMBgJafbTZEc18pKHjRBCJ2Q0OjZ+hUP8Bb9WrSdYaJ4Ry75fux5+vc5d1r4KoKsbf6wHkeJz4hKJHdhyaI0HVkp7nK+KpXTm8OyKbljZS6wvIEFOzpqYsV/a7E4X30I3UF8u+YVZgg8+TW1Y7btv7KJJJgN0orjDhSB4vzvt+2eA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9d47ca1-3ce5-4c3d-0074-08de31a42de0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 13:10:35.0333
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ii8S6y/xmCFf3pUtQZeI4x1fIkBu4RSMu/fDhYqz/oRi7fbM0+X0STSEXdihhRIjvtsnq9Wz7YeLR6P7jBykyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4614
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-01_01,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- adultscore=0 suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2512020106
-X-Authority-Analysis: v=2.4 cv=ZeYQ98VA c=1 sm=1 tr=0 ts=692ee550 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=21D8NHQQAAAA:8 a=ag1SF4gXAAAA:8
- a=kZbSFkK53iKZF3mR6t4A:9 a=CjuIK1q_8ugA:10 a=cvBusfyB2V15izCimMoJ:22
- a=aE7_2WBlPvBBVsBbSUWX:22 a=Yupwre4RP9_Eg_Bd0iYG:22 cc=ntf awl=host:12099
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAyMDEwNiBTYWx0ZWRfX6EFZbr/ALPnK
- Xfkad5H0ISH1AgvXhGB2TDXiABmYXgGBGOSiJKX7QPq6b9ZxVCCBYVagi9wJ7ucdLaJBXRl/crK
- eml6MRgBuBiUufy06nxoTEz3TDEuvHhXK62JyIcLMXGgkby8Fj7go68ijyYAKnDfMGaIIUJ5Ba4
- Kgrp0zVSxIxWeq8Enq0mjP2oe/we+3j37ZSYXlTfqYN4IOehxB1qITHN1eOgXX0o2JYAEVdacda
- DXW5x70i//KK9KrqIwEmCKaac0l4Yk1YjM69zdVXctdwg96uPK56em6DpeZQr79l5dknHFjZ8JH
- c/VOG9zgOVsXPN3i/kdTzdi3hfNWdhzRxNqc2sC6OX91Mffj7hnS2xHu7sX6o9hBe0bmwkBgnTE
- X4rwVR1BqVlxAFFV2JglKkg3ourDoXfs04tFC+/F7KLk7GZpetM=
-X-Proofpoint-ORIG-GUID: WvLgDEkZq-iTxuzdpeLXOPqcUTfE6Me7
-X-Proofpoint-GUID: WvLgDEkZq-iTxuzdpeLXOPqcUTfE6Me7
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Dec 02, 2025 at 06:02:33PM +0530, Naresh Kamboju wrote:
-> On Tue, 2 Dec 2025 at 15:41, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.4.302 release.
-> > There are 184 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 04 Dec 2025 09:54:14 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.302-rc2.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> The powerpc builds failed on the stable-rc 5.4.302-rc1 and 5.4.302-rc2.
-> 
-> * powerpc, build
->   - clang-21-cell_defconfig
->   - clang-nightly-cell_defconfig
->   - gcc-12-cell_defconfig
->   - gcc-12-defconfig
->   - gcc-12-ppc64e_defconfig
->   - gcc-12-ppc6xx_defconfig
->   - gcc-8-cell_defconfig
->   - gcc-8-defconfig
->   - gcc-8-ppc64e_defconfig
->   - gcc-8-ppc6xx_defconfig
-> 
-> Build regressions: powerpc: mm/mprotect.c:: pgtable.h:971:38: error:
-> called object 'pmd_val' is not a function or function pointer
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> The bisection is in progress,
-> meanwhile this patch looks to be causing the build failure,
-> 
-> mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()
-> commit 670ddd8cdcbd1d07a4571266ae3517f821728c3a upstream.
-> 
-> The sequence patch.
-> mm/mprotect: use long for page accountings and retval
-> commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
-> 
-> ### Build error
-> In file included from include/linux/bug.h:5,
->                  from include/linux/mmdebug.h:5,
->                  from include/linux/mm.h:9,
->                  from include/linux/pagewalk.h:5,
->                  from mm/mprotect.c:12:
-> mm/mprotect.c: In function 'change_pte_range':
-> arch/powerpc/include/asm/book3s/64/pgtable.h:971:38: error: called
-> object 'pmd_val' is not a function or function pointer
->   971 | #define pmd_page_vaddr(pmd)     __va(pmd_val(pmd) & ~PMD_MASKED_BITS)
->       |                                      ^~~~~~~
-> arch/powerpc/include/asm/bug.h:91:32: note: in definition of macro 'WARN_ON'
->    91 |         int __ret_warn_on = !!(x);                              \
->       |                                ^
-> arch/powerpc/include/asm/page.h:229:9: note: in expansion of macro
-> 'VIRTUAL_WARN_ON'
->   229 |         VIRTUAL_WARN_ON((unsigned long)(x) >= PAGE_OFFSET);
->          \
->       |         ^~~~~~~~~~~~~~~
-> arch/powerpc/include/asm/book3s/64/pgtable.h:971:33: note: in
-> expansion of macro '__va'
->   971 | #define pmd_page_vaddr(pmd)     __va(pmd_val(pmd) & ~PMD_MASKED_BITS)
->       |                                 ^~~~
-> arch/powerpc/include/asm/book3s/64/pgtable.h:1007:21: note: in
-> expansion of macro 'pmd_page_vaddr'
->  1007 |         (((pte_t *) pmd_page_vaddr(*(dir))) + pte_index(addr))
->       |                     ^~~~~~~~~~~~~~
-> arch/powerpc/include/asm/book3s/64/pgtable.h:1009:41: note: in
-> expansion of macro 'pte_offset_kernel'
->  1009 | #define pte_offset_map(dir,addr)        pte_offset_kernel((dir), (addr))
->       |                                         ^~~~~~~~~~~~~~~~~
-> include/linux/mm.h:2010:24: note: in expansion of macro 'pte_offset_map'
->  2010 |         pte_t *__pte = pte_offset_map(pmd, address);    \
->       |                        ^~~~~~~~~~~~~~
-> mm/mprotect.c:48:15: note: in expansion of macro 'pte_offset_map_lock'
->    48 |         pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
->       |               ^~~~~~~~~~~~~~~~~~~
-> mm/mprotect.c:43:15: note: declared here
->    43 |         pmd_t pmd_val;
->       |               ^~~~~~~
-> In file included from arch/powerpc/include/asm/mmu.h:132,
->                  from arch/powerpc/include/asm/lppaca.h:47,
->                  from arch/powerpc/include/asm/paca.h:17,
->                  from arch/powerpc/include/asm/current.h:13,
->                  from include/linux/thread_info.h:22,
->                  from include/asm-generic/preempt.h:5,
->                  from ./arch/powerpc/include/generated/asm/preempt.h:1,
->                  from include/linux/preempt.h:78,
->                  from include/linux/spinlock.h:51,
->                  from include/linux/mmzone.h:8,
->                  from include/linux/gfp.h:6,
->                  from include/linux/mm.h:10:
-> arch/powerpc/include/asm/book3s/64/pgtable.h:971:38: error: called
-> object 'pmd_val' is not a function or function pointer
->   971 | #define pmd_page_vaddr(pmd)     __va(pmd_val(pmd) & ~PMD_MASKED_BITS)
->       |                                      ^~~~~~~
-> arch/powerpc/include/asm/page.h:230:47: note: in definition of macro '__va'
->   230 |         (void *)(unsigned long)((phys_addr_t)(x) |
-> PAGE_OFFSET);        \
->       |                                               ^
-> arch/powerpc/include/asm/book3s/64/pgtable.h:1007:21: note: in
-> expansion of macro 'pmd_page_vaddr'
->  1007 |         (((pte_t *) pmd_page_vaddr(*(dir))) + pte_index(addr))
->       |                     ^~~~~~~~~~~~~~
-> arch/powerpc/include/asm/book3s/64/pgtable.h:1009:41: note: in
-> expansion of macro 'pte_offset_kernel'
->  1009 | #define pte_offset_map(dir,addr)        pte_offset_kernel((dir), (addr))
->       |                                         ^~~~~~~~~~~~~~~~~
-> include/linux/mm.h:2010:24: note: in expansion of macro 'pte_offset_map'
->  2010 |         pte_t *__pte = pte_offset_map(pmd, address);    \
->       |                        ^~~~~~~~~~~~~~
-> mm/mprotect.c:48:15: note: in expansion of macro 'pte_offset_map_lock'
->    48 |         pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
->       |               ^~~~~~~~~~~~~~~~~~~
-> mm/mprotect.c:43:15: note: declared here
->    43 |         pmd_t pmd_val;
->       |               ^~~~~~~
 
-Hi Naresh, thanks for reporting!
+--=-057aZcPxo3+YNW7kcDIV
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Whoa, I really didn't expect this.
+On Tue, 2025-12-02 at 12:58 +0000, Khushit Shah wrote:
+> Thanks for the review!
+>=20
+> > On 2 Dec 2025, at 2:43=E2=80=AFPM, David Woodhouse <dwmw2@infradead.org=
+> wrote:
+> >=20
+> > Firstly, excellent work debugging and diagnosing that!
+> >=20
+> > On Tue, 2025-11-25 at 18:05 +0000, Khushit Shah wrote:
+> > >=20
+> > > --- a/Documentation/virt/kvm/api.rst
+> > > +++ b/Documentation/virt/kvm/api.rst
+> > > @@ -7800,8 +7800,10 @@ Will return -EBUSY if a VCPU has already been =
+created.
+> > > =C2=A0
+> > > =C2=A0Valid feature flags in args[0] are::
+> > > =C2=A0
+> > > -=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 0)
+> > > -=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0 (1ULL <<=
+ 1)
+> > > +=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 (1ULL << 0)
+> > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 1)
+> > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_IGNORE_SUPPRESS_EOI_BROADCAST_=
+QUIRK (1ULL << 2)
+> > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_SUPPRESS_EOI_BROADCAST=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1=
+ULL << 3)
+> > >=20
+> >=20
+> > I kind of hate these names. This part right here is what we leave
+> > behind for future generations, to understand the weird behaviour of
+> > KVM. To have "IGNORE" "SUPPRESS" "QUIRK" all in the same flag, quite
+> > apart from the length of the token, makes my brain hurt.
+>=20
+> Yes, I agree the original name is too wordy. How about renaming it to
+> KVM_X2APIC_API_ACTUALLY_SUPPRESS_EOI_BROADCASTS?
+> That makes the intended KVM behaviour clear.
+>
+> I'm also not very keen on ENABLE_SUPPRESS_EOI_BROADCAST
+> it reads as if KVM is the one enabling the feature, which isn't the case.
+> The guest decides whether to enable suppression; KVM should just
+> advertise the capability correctly and then respect whatever the guest
+> chooses.
 
-I named the variable pmd_val, and during the expansion of
-pte_offset_map_lock(), we call pmd_val(), and the compiler is confused
-because it's calling a variable rather than a function or macro.
 
-And it didn't show up on my testing environment because on x86_64
-implementation of pte_offset_map_lock() implementation we don't call
-pmd_val(). The fix would be simply renaming the variable.
+I think _ENABLE_ for enabling a feature for the guest to optionally use
+is reasonable enough; we'd generally say '_FORCE_' if we were going to
+turn it on unconditionally without the guest's knowledge.
 
-To Greg and Sasha; I guess these patches will be dropped for this cycle
-and I'm supposed to send V2, right? These two patches are queued for
-6.1, 5.15, 5.10 as well.
+Not entirely sure why you're OK with ACTUALLY_SUPPRESS_EOI_BROADCAST
+when you aren't ok with ENABLE_SUPPRESS_EOI_BROADCAST. In both cases
+you'd need to append _BUT_ONLY_IF_THE_GUEST_ASKS_FOR_IT if you want to
+be pedantic. :)
 
-I tried my best to make sure these backports are properly tested, and
-apologies for the inconvenience that I caused.
 
--- 
-Cheers,
-Harry / Hyeonggon
 
-> make[2]: *** [scripts/Makefile.build:262: mm/mprotect.o] Error 1
-> make[2]: Target '__build' not remade because of errors.
-> make[1]: *** [Makefile:1769: mm] Error 2
-> kernel/profile.c: In function 'profile_dead_cpu':
-> kernel/profile.c:347:27: warning: the comparison will always evaluate
-> as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> [-Waddress]
->   347 |         if (prof_cpu_mask != NULL)
->       |                           ^~
-> kernel/profile.c:50:22: note: 'prof_cpu_mask' declared here
->    50 | static cpumask_var_t prof_cpu_mask;
->       |                      ^~~~~~~~~~~~~
-> kernel/profile.c: In function 'profile_online_cpu':
-> kernel/profile.c:384:27: warning: the comparison will always evaluate
-> as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> [-Waddress]
->   384 |         if (prof_cpu_mask != NULL)
->       |                           ^~
-> kernel/profile.c:50:22: note: 'prof_cpu_mask' declared here
->    50 | static cpumask_var_t prof_cpu_mask;
->       |                      ^~~~~~~~~~~~~
-> kernel/profile.c: In function 'profile_tick':
-> kernel/profile.c:414:47: warning: the comparison will always evaluate
-> as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> [-Waddress]
->   414 |         if (!user_mode(regs) && prof_cpu_mask != NULL &&
->       |                                               ^~
-> kernel/profile.c:50:22: note: 'prof_cpu_mask' declared here
->    50 | static cpumask_var_t prof_cpu_mask;
->       |                      ^~~~~~~~~~~~~
-> In file included from include/linux/list.h:9,
->                  from include/net/tcp.h:19,
->                  from net/ipv4/tcp_output.c:40:
-> net/ipv4/tcp_output.c: In function 'tcp_tso_should_defer':
-> include/linux/kernel.h:843:43: warning: comparison of distinct pointer
-> types lacks a cast
->   843 |                 (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
->       |                                           ^~
-> include/linux/kernel.h:857:18: note: in expansion of macro '__typecheck'
->   857 |                 (__typecheck(x, y) && __no_side_effects(x, y))
->       |                  ^~~~~~~~~~~
-> include/linux/kernel.h:867:31: note: in expansion of macro '__safe_cmp'
->   867 |         __builtin_choose_expr(__safe_cmp(x, y), \
->       |                               ^~~~~~~~~~
-> include/linux/kernel.h:876:25: note: in expansion of macro '__careful_cmp'
->   876 | #define min(x, y)       __careful_cmp(x, y, <)
->       |                         ^~~~~~~~~~~~~
-> net/ipv4/tcp_output.c:2028:21: note: in expansion of macro 'min'
->  2028 |         threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
->       |                     ^~~
-> fs/xfs/libxfs/xfs_inode_fork.c: In function 'xfs_ifork_verify_attr':
-> fs/xfs/libxfs/xfs_inode_fork.c:735:13: warning: the comparison will
-> always evaluate as 'true' for the address of 'i_df' will never be NULL
-> [-Waddress]
->   735 |         if (!XFS_IFORK_PTR(ip, XFS_ATTR_FORK))
->       |             ^
-> In file included from fs/xfs/libxfs/xfs_inode_fork.c:14:
-> fs/xfs/xfs_inode.h:38:33: note: 'i_df' declared here
->    38 |         struct xfs_ifork        i_df;           /* data fork */
->       |                                 ^~~~
-> make[1]: Target '_all' not remade because of errors.
-> make: *** [Makefile:186: sub-make] Error 2
-> make: Target '_all' not remade because of errors.
-> 
-> ### Build logs
-> Build details: https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.4.y/v5.4.301-185-ga03757dc1d0b/build/gcc-12-defconfig/
-> Build log: https://storage.tuxsuite.com/public/linaro/lkft/builds/36Hn1iZBZCBAXg2OuUdfdNEUFxK/
-> Build config: https://storage.tuxsuite.com/public/linaro/lkft/builds/36Hn1iZBZCBAXg2OuUdfdNEUFxK/config
-> 
-> ### Steps to reproduce
->  - tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12
-> --kconfig defconfig
-> 
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
+--=-057aZcPxo3+YNW7kcDIV
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMjEzMzEx
+NFowLwYJKoZIhvcNAQkEMSIEIOKWe8JWNgkcg1fvATGUyqbVY8XfQuB13AfB6QgnMUsiMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAjeuaLs9uFIh+
+u7jO1cDw428hjoMDYb+3fDKzE8pmwZJXipPcyHBlaUjoGqwrvX5MV1SZgBt2bk8gYYPXu8OhfVm8
+CPK1J9Q1X5RDAJ26LZFNawfVYxyKrXJv83Krrayt7npAcHwtl15g6ri2YexU5Ezp+ouAkleF9eXY
+zm1HiCQaAS+nn60nj1uECGEdq3+Wwv9f5mgftGfcn6X0XFWuvhHqUqhvc8J10JubG1QHZvIybRsB
+bdCn+WUAPs8+2veb5yx01m3fuqStTx5phUu7hGL+WdnFQBy3ZQ+yunZQi6P6Ayn1GxEvSWawClmD
+wcaf++Tk/0v03Cg8u0k1UD0CDrzw9yEyQ8to2fHZ85zTYF0t8LGQhwtY1E6G26Q17ADjS5uubuH0
+HPCwODWwb8tBT6ESOafMeQUrt4XX8iIn25r6lwlzwDERKAb06+LOBxrXnLNleM7PSUXCdTRekyxq
+fwLebWbyHBM7L/2/ldVZn3Lu8gRr3QSVo28X8o2VfWehZ1OHgjf3mmrTbR0u5mBY2l4lFzDPDBpI
+n5ynuIUr7ApQgBWa6lpV3lTWvqrFs3Fq09g0iUA2V/N/kFKmWOOMmaINkYVvA3GjGpJTIjmGJPVO
+e69uTVqfssC2GPvSZrRZ/pUMl7TrVyiuOZ6vcdTOxfSC0BYfIQwkrY25Pq74HdsAAAAAAAA=
+
+
+--=-057aZcPxo3+YNW7kcDIV--
 
