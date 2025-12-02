@@ -1,203 +1,170 @@
-Return-Path: <stable+bounces-198075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429C3C9B4A5
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 12:19:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F40C9B4E7
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 12:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B7BFC342BA0
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 11:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9BC3A255D
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 11:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28E930FC27;
-	Tue,  2 Dec 2025 11:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AF530FC39;
+	Tue,  2 Dec 2025 11:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ghmkJHiN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g//xRQmr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0C82F693D
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 11:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5528A3FA
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 11:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764674352; cv=none; b=X77jdGAyVOjVyjOGl4MfldRnV5F0L3wn9WIlavjNrCuMTTgCfHr42WniXwW96GTOVInVIRGzd/A1oUvJQsaIfpgTxMoZ591DZ0m4n3BUZQ71ZvNsY3UJTyMh5TgwrvWFJDo5/VKX6VvjBKiCvjpD77nBClDHOVG/HDDTorI1K/U=
+	t=1764674677; cv=none; b=eEGZ2+G29lZEg5qnjtIUulNfUCN/G8lMxD57PJQom96mCvl8DVGS+ga80Ps6GIcCw1OO69C+8O+cCyBKfPaQPqld18vpYmwL8tBsMpNSDIZhlX8GXhIqg/miwG7xutvz+mFjDdo1T5xTjviK6Y+qK0Rdtx/GYE5Ma674PHpDZ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764674352; c=relaxed/simple;
-	bh=YgM4oQM0pItXOtlv7SOBfbImGy87mRYXLgSa4KdBjKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AYP2TDwDBtxEAxFjQNMl0WV2e5ReiZ9GvnnZml4DNYgX4h7xkkqJtaUNCKk6+fi8HR6I85IOaQg1zMYtg4xdBosray5jqSGLUx2PWpD7Ca9d36LG5d07TpJM8szz51geYoW33tzJDEK968XrLmjsZww5h26QuTzW42JJhnZVQY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ghmkJHiN; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7277324054so768988066b.0
-        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 03:19:09 -0800 (PST)
+	s=arc-20240116; t=1764674677; c=relaxed/simple;
+	bh=Qpp77KvX2ntGTeGFE+/vG+eyDI372EHiHsKKWaIxMak=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OhS+DtIw6MNdfkbf0QkTQJNX5mtqfHcY3Swy7h3Y1PEDZsyDh20fiOefVuTY2REqj36dGUcoXkNdODwggEWqMH3+Xe5Q+CQZDkbCKgdIKlJvdRmt8nzTbFm1AZTnQqYD2ti2a181my/gjZmFL7g9HAiW5uTdhMpzt4SJDICtMrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g//xRQmr; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4775f51ce36so41146505e9.1
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 03:24:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764674348; x=1765279148; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AFKm5TgCbXMywR9ztCslk4pzbDCGqU8JaRErdSAZu5w=;
-        b=ghmkJHiNnNmZRzcV6Xhu1tVlXRA6QCJrLSRN0xCvte+91bynoWxNSr0NWx3H9NThLL
-         LzPZ3z15BmRS4zvsQnkQfvQFvwx2QTUTOI6o+9aHTv5YV0Jg9Je6W5di21pQPDvdtFf8
-         gngSLRm9702mk8MjILFYucsSXX91tN3UGYKk9JBwVPivkqyzEfbdXCUkWf83OjZLx95Q
-         lgAu3Kwp5RCiTh0W984blIf/1XgwBKIVaN1dQV0DOtBoCMR37B+MaTQM5g46hlz93Bcf
-         SACun13nf9w0TrlYmE1rlPm2HSmVFIq/hMjr7emgB1ZnFEKTrtojHhcIFE7PLBpkfE55
-         KTxg==
+        d=google.com; s=20230601; t=1764674674; x=1765279474; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yw15L8Ws5Za4ir4TV1kcpHhvEfEabzRhGkOhypMthRI=;
+        b=g//xRQmrtH80duu0wmL1HQ+yDCnrGmOy6VjkgRjB4bm2xGZh/l+3hV1LIoAFxDTsZT
+         ukqyyr+tliBCqHw3xavwV7ZIhgFGLWWOZwD9BK6nb6BVs/82II38rkHKsxAZBav1RZmh
+         o54nBJzdhdfg3Q8QeyG4Lz6tnuP1id8g287Cu8MxbaegsjC91qgLP/XKg33Rl8PdhllL
+         L63FCsyDblXa68bel+g9hmMY+2+OZrlVZjbRmSkkG4iwZ1LWlgExS4oxmW7Z7ws3s+/Y
+         Rut6w5vTA7ytigq52MLt0Rm/Sus4tCxKvpHvBc8QbjVAI5YOb4wIk/R/WqIvHb8aKfr5
+         0CVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764674348; x=1765279148;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AFKm5TgCbXMywR9ztCslk4pzbDCGqU8JaRErdSAZu5w=;
-        b=byCLg/eYNELwWwtvEY0s1mFmcbi+Onz2JK8uV1OX/dmbb0pvXpuoVR2FJLwPYV01N3
-         iU33RdWAwF4M06Lm4ShxIetg9sT4s+jVfSV/rYQhyPamiy5uRJ5rNJtlsFXwlwua+zrt
-         9KAtNNNiyfpJb8mgHDn50aS6zXHclHGFM0DdX2yt90DV2XLXC/mUZyaJR5W3pttj5lMk
-         hQD8eJkYMv89ZANnDlpZmcPiZXO79eYJ17q2E2w6fLOvjoq6xKzlAxLfcBxvdQotpEMN
-         W10fnHjEhS5TAaVmDVjl/JDusVVuhJ1PurDw4SGr5RUW0gPvMTNxxdOMVgdkdXE8UiM4
-         4W8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUCOckr9yQuHv2GBC+0detfszsmkS2avtM7KWA52fhcJfUnud70vCdIWDQM3A8cpZiFzFREzEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNTlf3zkME4ITn8HBF1PAQLEBkKo0dVyUFyiOPYak0TasGt9q/
-	Ij6wYFe8QwfWTLSs45TAfgz1eXqZlJafYN/a3bmuoLJazrTZ+jDGThSJ
-X-Gm-Gg: ASbGnctnWcpuk9dUiNYtqG4MDiL4zUup3htYcjxniVC/yAHmIcuovdSuM4nNXRfCD4/
-	6oUjYMsn+03cBltWyIAqkt1ZDwUHNxZGUEGRHAuQQqhkY3byzhRM9hL4LQ1g3Hq2r8GapySbR6B
-	vbglUl68QJyxXCG/t6qQQvpWVCpAxEPJmQJKK6s1ZK90KvFxZN8XdZYihlnCmP9HNxxZE3A9H6L
-	Nxxur7+CjS+MkcDdQX5vuzxshlLVXHh/ZobAUvOIflO+Ikr2QGWed11WKoGn7F8FGt1jO/4as37
-	qNdQLWYHibQTq0HST+2k58CirepP7ORhX/LPO0S0QFw2hrjdHb4jpgQq97xdO2Sf73clNVTRJXX
-	tDMmV/SehSmEIWURK2HAyXcPBRr4PWSPMbmQPfvkVJOT7QlvzX6JF0CQ1L0rntzse8MAzkjLroc
-	fKE15ontXair/D0VoGM8STBJQDgbV5x1Ggka5EZwE6eMIidpkX3w==
-X-Google-Smtp-Source: AGHT+IHY9Fm4775G9TVCUUeZO3LX6VYmaVn80vEWW1L95jQOyW7g8hXV8wnuSO7FTN6GjpPobn6rDw==
-X-Received: by 2002:a17:907:9289:b0:b73:5a8b:c9af with SMTP id a640c23a62f3a-b767184bcafmr4940716066b.42.1764674347634;
-        Tue, 02 Dec 2025 03:19:07 -0800 (PST)
-Received: from [10.251.131.228] (93-44-9-97.ip94.fastwebnet.it. [93.44.9.97])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59a695esm1464431066b.33.2025.12.02.03.19.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Dec 2025 03:19:07 -0800 (PST)
-Message-ID: <cd607656-90d3-4821-98ea-4dad48288fc9@gmail.com>
-Date: Tue, 2 Dec 2025 12:19:04 +0100
+        d=1e100.net; s=20230601; t=1764674674; x=1765279474;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yw15L8Ws5Za4ir4TV1kcpHhvEfEabzRhGkOhypMthRI=;
+        b=s5ttxwgvnoRq8JaEJ15KWVL+OJfilXkn7JI4CknBy8F7vET3dSi099qkLPyIdJTCUG
+         LhIHb8frRzVAe1Ag5EJz/08UmI69FEZtglaTb6wGwdpSeM/qtXp6TI4Vd3XsTnDuins9
+         IePc9b9RaqzHE6AZc7UU8m1qQ4mI17BgKqJwTnOTeyE4EreIozTdxJHHwLKwWpHOPC//
+         TMPHciasfFziYgkRGPFZbXnexfL3Tpzwn5d5G4S3BYeCB5zCerK6iyaMYTESjbCcXOvS
+         6zGR5OuALGNQKITkNgQkAMoKDEzS3CiCu4C7wAEpOSidWXcyedgjRb0faau1D2KErH49
+         jccQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHxJuWrPTxzKcpk50PZhKuHtA+7//D4EtFJwej8PASsNChmzO5KxYhk7Dk30CFKp0xk4Zdr2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeO2HCFmqpuS/nEEmyBjLbyj/SC1Lf2LvXPn4BI0UAaYbHuDi/
+	w+FAI2QjT/ZNZz7/KdLNLEgpCTecJ8mPxrqIxFt5IVqdpE3/LvmNlZ5dWQuHEwU4OGPnT2gTSkS
+	LSXj3h3lEGii6c+c4uA==
+X-Google-Smtp-Source: AGHT+IHpdnN6oA8rWAxr9avC2fSutMAuLGfVm4Oddyr1NAX+wKpul280w/9NJWaMSOqzUAdPClbkFoDL7J9C8Uc=
+X-Received: from wmbh6.prod.google.com ([2002:a05:600c:a106:b0:471:1414:8fd1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c29:b0:477:639d:bca2 with SMTP id 5b1f17b1804b1-477c10c85e2mr478818625e9.4.1764674674469;
+ Tue, 02 Dec 2025 03:24:34 -0800 (PST)
+Date: Tue, 02 Dec 2025 11:24:24 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/bridge: ti-sn65dsi83: ignore PLL_UNLOCK errors
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, Francesco Dolcini <francesco@dolcini.it>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Philippe Schenker <philippe.schenker@impulsing.ch>,
- Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, =?UTF-8?Q?Herv=C3=A9_Codina?=
- <herve.codina@bootlin.com>
-References: <20251127-drm-ti-sn65dsi83-ignore-pll-unlock-v1-1-8a03fdf562e9@bootlin.com>
-Content-Language: en-US
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-In-Reply-To: <20251127-drm-ti-sn65dsi83-ignore-pll-unlock-v1-1-8a03fdf562e9@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGfMLmkC/x2MwQqDQAwFf0VyNuAuiNpfKT3Y3acGIZUERRD/v
+ YuXgTnMXOQwgdOrushwiMtPi4S6orSMOoMlF6fYxDYU8Fc0w9gXE115V99EOQBD38WUIjKVdDN Mcj7b9+e+/1lu/w5mAAAA
+X-Change-Id: 20251202-binder-shrink-unspin-1ee9872cc2ed
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2269; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Qpp77KvX2ntGTeGFE+/vG+eyDI372EHiHsKKWaIxMak=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpLsxsRsF2Pm0STXgKjlHONC+GhOBhTzDZmPRSM
+ hwpthfO+nCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS7MbAAKCRAEWL7uWMY5
+ Rjh3D/9SweS3JEuEOxc/0TnA7tPi4QbgQGSRoW44kIb9vrVS2o2cNQI16KHakNImCaR8mHQrE/g
+ 4ddJM7fX7hgW23eX+kx7sBMdXLDM/EyX5cR1TT8GCScCkk+yDnf5A35biFO9AOrJr4SUSIpBfI7
+ 9VuzP5SqCemvs/3iM4Kuk3TVsUQU0KwTaZK4ZkgoFMmEMo4ObramV05EecdHLC5qETgrjLDROdc
+ kaSnSoqWfwfWl+ZVM5LB9KGL1ZjfTfaQna9iaJa5HhAhxatFlfvCEllOrKK6Pzq+NXA4At655b9
+ yVCOMeGXzLOueeTbuyXe/qLlU6wp9q8zZZT8i8s6D2aj24c214cfmU3d2eZA2zbREsNzZypQvwN
+ oR/Lqz7jTQdVB++5U2Xs3KSfaZdFvtkEUHHQthARc5IrYOfmfilr8rhZ4xzu4rt3j9+GwGz64Ko
+ ZK0nxNt26sNcScfw8xOg6RNmR39sFQJUNMRRzd0bawL2jtN3z4Hjjt6XDs1zVNZCOo52IPvQJb0
+ eJWYrtEtpn+hvbWoiSk/T+9Gf8q9yrKxMCScwUpJ9/X9f3K5f9vWF/qjj9b53icGTkNlW/wiJVa
+ y1BwuPbmJe2S+CwRGiFJMO68wYE7NGJzdd1LR5xFw8fNGBx3pfJYlO4bRsO7qPdMTX18Qnc/wMY pVj/uU60mnqK6Uw==
+X-Mailer: b4 0.14.2
+Message-ID: <20251202-binder-shrink-unspin-v1-1-263efb9ad625@google.com>
+Subject: [PATCH] rust_binder: remove spin_lock() in rust_shrink_free_page()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+When forward-porting Rust Binder to 6.18, I neglected to take commit
+fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope") into
+account, and apparently I did not end up running the shrinker callback
+when I sanity tested the driver before submission. This leads to crashes
+like the following:
 
+	============================================
+	WARNING: possible recursive locking detected
+	6.18.0-mainline-maybe-dirty #1 Tainted: G          IO
+	--------------------------------------------
+	kswapd0/68 is trying to acquire lock:
+	ffff956000fa18b0 (&l->lock){+.+.}-{2:2}, at: lock_list_lru_of_memcg+0x128/0x230
 
-On 27/11/2025 09:42, Luca Ceresoli wrote:
-> On hardware based on Toradex Verdin AM62 the recovery mechanism added by
-> commit ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery
-> mechanism") has been reported [0] to make the display turn on and off and
-> and the kernel logging "Unexpected link status 0x01".
-> 
-> According to the report, the error recovery mechanism is triggered by the
-> PLL_UNLOCK error going active. Analysis suggested the board is unable to
-> provide the correct DSI clock neede by the SN65DSI84, to which the TI
-> SN65DSI84 reacts by raising the PLL_UNLOCK, while the display still works
-> apparently without issues.
-> 
-> On other hardware, where all the clocks are within the components
-> specifications, the PLL_UNLOCK bit does not trigger while the display is in
-> normal use. It can trigger for e.g. electromagnetic interference, which is
-> a transient event and exactly the reason why the error recovery mechanism
-> has been implemented.
-> 
-> Idelly the PLL_UNLOCK bit could be ignored when working out of
-> specification, but this requires to detect in software whether it triggers
-> because the device is working out of specification but visually correctly
-> for the user or for good reasons (e.g. EMI, or even because working out of
-> specifications but compromising the visual output).
-> 
-> The ongoing analysis as of this writing [1][2] has not yet found a way for
-> the driver to discriminate among the two cases. So as a temporary measure
-> mask the PLL_UNLOCK error bit unconditionally.
-> 
-> [0] https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6ltcwexnrsjsdx@mgkdf6ztow42
-> [1] https://lore.kernel.org/all/b71e941c-fc8a-4ac1-9407-0fe7df73b412@gmail.com/
-> [2] https://lore.kernel.org/all/20251125103900.31750-1-francesco@dolcini.it/
-> 
-> Closes: https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6ltcwexnrsjsdx@mgkdf6ztow42
-> Cc: stable@vger.kernel.org # 6.15+
-> Co-developed-by: Hervé Codina <herve.codina@bootlin.com>
-> Signed-off-by: Hervé Codina <herve.codina@bootlin.com>
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> Francesco, Emanuele, João: can you please apply this patch and report
-> whether the display on the affected boards gets back to working as before?
-> 
-> Cc: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-> Cc: Francesco Dolcini <francesco@dolcini.it>
-> Cc: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-> ---
->  drivers/gpu/drm/bridge/ti-sn65dsi83.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> index 033c44326552..fffb47b62f43 100644
-> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> @@ -429,7 +429,14 @@ static void sn65dsi83_handle_errors(struct sn65dsi83 *ctx)
->  	 */
->  
->  	ret = regmap_read(ctx->regmap, REG_IRQ_STAT, &irq_stat);
-> -	if (ret || irq_stat) {
-> +
-> +	/*
-> +	 * Some hardware (Toradex Verdin AM62) is known to report the
-> +	 * PLL_UNLOCK error interrupt while working without visible
-> +	 * problems. In lack of a reliable way to discriminate such cases
-> +	 * from user-visible PLL_UNLOCK cases, ignore that bit entirely.
-> +	 */
-> +	if (ret || irq_stat & ~REG_IRQ_STAT_CHA_PLL_UNLOCK) {
->  		/*
->  		 * IRQ acknowledged is not always possible (the bridge can be in
->  		 * a state where it doesn't answer anymore). To prevent an
-> @@ -654,7 +661,7 @@ static void sn65dsi83_atomic_enable(struct drm_bridge *bridge,
->  	if (ctx->irq) {
->  		/* Enable irq to detect errors */
->  		regmap_write(ctx->regmap, REG_IRQ_GLOBAL, REG_IRQ_GLOBAL_IRQ_EN);
-> -		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff);
-> +		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff & ~REG_IRQ_EN_CHA_PLL_UNLOCK_EN);
->  	} else {
->  		/* Use the polling task */
->  		sn65dsi83_monitor_start(ctx);
-> 
-> ---
-> base-commit: c884ee70b15a8d63184d7c1e02eba99676a6fcf7
-> change-id: 20251126-drm-ti-sn65dsi83-ignore-pll-unlock-4a28aa29eb5c
-> 
-> Best regards,
+	but task is already holding lock:
+	ffff956000fa18b0 (&l->lock){+.+.}-{2:2}, at: rust_helper_spin_lock+0xd/0x20
 
-Well,
-I would suggest a couple of tags, thanks.
-Emanuele
+	other info that might help us debug this:
+	 Possible unsafe locking scenario:
 
-Fixes: ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery mechanism")
-Reported-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+	       CPU0
+	       ----
+	  lock(&l->lock);
+	  lock(&l->lock);
+
+	 *** DEADLOCK ***
+
+	 May be due to missing lock nesting notation
+
+	3 locks held by kswapd0/68:
+	 #0: ffffffff90d2e260 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0x597/0x1160
+	 #1: ffff956000fa18b0 (&l->lock){+.+.}-{2:2}, at: rust_helper_spin_lock+0xd/0x20
+	 #2: ffffffff90cf3680 (rcu_read_lock){....}-{1:2}, at: lock_list_lru_of_memcg+0x2d/0x230
+
+To fix this, remove the spin_lock() call from rust_shrink_free_page().
+
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/binder/page_range.rs | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 9379038f61f513c51ebed6c7e7b6fde32e5b8d06..fdd97112ef5c8b2341e498dc3567b659f05e3fd7 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -727,8 +727,5 @@ fn drop(self: Pin<&mut Self>) {
+     drop(mm);
+     drop(page);
+ 
+-    // SAFETY: We just unlocked the lru lock, but it should be locked when we return.
+-    unsafe { bindings::spin_lock(&raw mut (*lru).lock) };
+-
+     LRU_REMOVED_ENTRY
+ }
+
+---
+base-commit: 82d12088c297fa1cef670e1718b3d24f414c23f7
+change-id: 20251202-binder-shrink-unspin-1ee9872cc2ed
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
 
