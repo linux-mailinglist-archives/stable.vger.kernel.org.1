@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-198025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4C0C99AF3
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 01:58:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85419C99B36
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 02:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB2E34E1835
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 00:58:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4118A4E18D7
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 01:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F5379CF;
-	Tue,  2 Dec 2025 00:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC764157A5A;
+	Tue,  2 Dec 2025 01:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="swMU+1OS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDovQbx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F287156678
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 00:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C950136672
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 01:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764637125; cv=none; b=k97QewA0p22Oc1dAhzWGP0vBMMZpcQwYehKUZBAtXwO8pE2zrh8rtL5wlP1vBOmJaRfBX83yK5KAClTQeb8fhoF/H5fElIAOVxYUhW7LWT6ivsODnLzFAMp+3iNTNku1nP+0Wo9TzGN05wEldO+w+VEsBvoiqgChroTeOM3VUd4=
+	t=1764637584; cv=none; b=sbT9q9SothMxxwEfyc+eGb0zYpP7FiaD42y5GUlb1Fe0XrV9B5F0Fiw3VGw0K6PF38Q1eDtft31eOKiaSsu6Tp0mTFap5L7Q0XIrjiqzDukdrjj/xWttbkU+myYfioTXLmS3qpk97mFsHvqXfy4RzPjVM5CyVsdSTG6IYmBYJKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764637125; c=relaxed/simple;
-	bh=U3DidM1m4sS4IC9opNfm3Mh4/3TWIfwC72PIq9YXBpg=;
+	s=arc-20240116; t=1764637584; c=relaxed/simple;
+	bh=/VW44yS7a6ncHZFZQk+1TgtqDv/8IAznZEPKJKvoSHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeP1feFJvGIiggqjIT0iI1UnbEKd8Q/bEojqUhaOpVHamAa+dCvxF+zzeiYUOIqxcIfnhFRcR0PdOZyLBdtDmHNXxsnfI6lFi9VVowvjoiEj5ECXf/1TlYg/AfaRwWamHS9AMvXkGmvcYtJntMfldArAkNftcai9eeOP86XNDMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=swMU+1OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC77C4CEF1;
-	Tue,  2 Dec 2025 00:58:43 +0000 (UTC)
+	 MIME-Version; b=bTPvdyrI3xcsKYvpLDcEChrxGiYTjPFtt6gkbPURbevVYkXscOfNR2UQTCucFDu9cULZg59jL0oj4zibCGTTjvRbal777dwYKhmddajGbuzQRPWqArYGiG8C0HFPn+XAboB98R4iifNEbvlLMbm7sqcwc7Qw/jKk+XGmBhiU4BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDovQbx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46447C4CEF1;
+	Tue,  2 Dec 2025 01:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764637124;
-	bh=U3DidM1m4sS4IC9opNfm3Mh4/3TWIfwC72PIq9YXBpg=;
+	s=k20201202; t=1764637584;
+	bh=/VW44yS7a6ncHZFZQk+1TgtqDv/8IAznZEPKJKvoSHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swMU+1OSJH0DkEakFRQTL0MQPanp/VSh/CwD0eo6+yu6putNVvKv6AlNLKjSQJh1l
-	 uYBhpq5O9hamqPY+aavLhebhJUrpWX0Vt/uKC1OwtIYAqzN3qjXUqcQMvzhhNzAjQr
-	 0DSHspQrp+eijfGowPL7Y3GgXBtuIXCssu6ojCWDLnDd+2VzadQldKtc3yhFwYmWH4
-	 AKJsqDRYXTUB5u6dBfDpxzp1UOFaWxnK+dooeHbiVsxsx8r+1B5Pq5qBTBf8QtaBVz
-	 FQszJe8DB8WjIXHxagvgqa/4YaH2JBig+2/IKh0W2+T+M0qAjHXFLPC0hBOAsB6933
-	 MVq5JO5rhosxg==
+	b=WDovQbx44ruFt9PqVM+PffsmtfD+Tan+b747yHVxdFGfw6g6KopWZk5i9ZHjs3kNk
+	 HQ8615T8NFfvRm5H/N1fH0Y2OMvFtM2F8SYTq8R86d6WKpL4ED0bn3+KjJ1ZFDBaW/
+	 28bFxecP3D2APhPd13/JoBI74/Z1jjte0Nq6uaFT3ondeK3bDbtXJ8MTCg4w8MUxwx
+	 W0H89VRDbj8i7d4LzWqZTNEzGX1gUqmuzJpuFvv4xdIEsySspn3getXVRKOHR/XoT8
+	 AZ8xP4iFh+pwgtQ3bFuwrVkl3lUGwrvmFN/N8tKJ0ZOtlYTo9NS+a2oOELEeXBT8ZA
+	 +l2ojJ/jiSYug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jameson Thies <jthies@google.com>,
@@ -50,12 +50,12 @@ Cc: Jameson Thies <jthies@google.com>,
 	"Kenneth R. Crudup" <kenny@panix.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] usb: typec: ucsi: psy: Set max current to zero when disconnected
-Date: Mon,  1 Dec 2025 19:58:41 -0500
-Message-ID: <20251202005841.1542822-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: typec: ucsi: psy: Set max current to zero when disconnected
+Date: Mon,  1 Dec 2025 20:06:19 -0500
+Message-ID: <20251202010619.1551492-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025120117-clasp-fringe-f0f5@gregkh>
-References: <2025120117-clasp-fringe-f0f5@gregkh>
+In-Reply-To: <2025120117-landing-used-752b@gregkh>
+References: <2025120117-landing-used-752b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,7 +92,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index b7d16ad38c44c..5a8b62b69497f 100644
+index ba5f797156dcb..f7305db950127 100644
 --- a/drivers/usb/typec/ucsi/psy.c
 +++ b/drivers/usb/typec/ucsi/psy.c
 @@ -123,6 +123,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
