@@ -1,127 +1,125 @@
-Return-Path: <stable+bounces-198016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6297C99A2A
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 00:58:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DA0C99A47
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 01:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3F4073452AB
-	for <lists+stable@lfdr.de>; Mon,  1 Dec 2025 23:58:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9A8D4E1594
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 00:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BFC27CCF0;
-	Mon,  1 Dec 2025 23:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D544450F2;
+	Tue,  2 Dec 2025 00:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwxKq9xN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQGM2Qyl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6276C1CD2C
-	for <stable@vger.kernel.org>; Mon,  1 Dec 2025 23:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9C31862
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 00:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764633478; cv=none; b=HDwqPJZdZz0LOwqgTmEp8ptxhSpDtVhn9CyI/S+7tFFJIUUgpLh5TxgidkyuDND6u6yxNYKz+WVwjdUgjNI6dj6A5asFCitmBN7cvvqd1lywEZvLnHmTkWg4NruyBhwNlB0HO+efS9pN+P1siRvHUkgenuNAYdhgIXRa/L6JqMg=
+	t=1764634960; cv=none; b=oOGwVoRPE2Tak7XgVehj47rBF0XZOXGWO4wmPXKlVE3fwryh4CHA9UfoMj/JUzjBh6qQXAijMj1fD8u1dW96RXrZwFCjSfYZzfwwf5bT9ppUK5Ouag+E+Rh4x6dxUEmcA1sz8gDOuZTfMTumZM37ba0a7PsFGxY3cbAT/qP5sII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764633478; c=relaxed/simple;
-	bh=3vDmUwcS/u70A09LnxZ0rAkyZOobFeZv3xxWb3IHy7g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wp2mlCCnTkrZWzIdb6yJKrDwxnGY1cFbnolxklsBD7BSb5Ec5ANz8gGUe6MQfCF6tPjedQb0xWGqqz+b90w8cj/lPIkCQH898OKOUUk+ZEncnbHC8Z5amYZrZEXqZd6eZhcFJDewqWC7imDT7VN8ZWiwBkRMiTjt5DwvtWD9a4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwxKq9xN; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c701097a75so2263369a34.3
-        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 15:57:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1764633474; x=1765238274; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=23nJKbEHvBqfOwfZ1RhHlN2bMHavbfGoV65MzPmmeVU=;
-        b=TwxKq9xNbITnt5Jm3YHGmTRokqVtxldHzqj7opr3DY1zMem1tDrc1n/uC4cFFee+tm
-         SBKi/sIlcFdGjMOkSv/qdP+tD0BMZHhy7dZnGaUvo7bHkAO/dWWAm2YsBkXGnATI/KPZ
-         IlpvSlBYKaVjuxkzHMXdJvbtJF4hEmaLuvAig=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764633474; x=1765238274;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=23nJKbEHvBqfOwfZ1RhHlN2bMHavbfGoV65MzPmmeVU=;
-        b=EK03lKxXstjjh15GsxR4H0qx9tFOvjDQmzgnaxhgd1fnwIb5ba7fKB9Pw/Yj5fKR0g
-         zU45UaQTBTFgcngSidlTrd0SQ2pntU0zlVLYFb7xcyXmTDsaCyY+eGIN+kbo+FswljsF
-         pPk6jlLN6Yfoz22RyCCIvHu477PzhqIkufNeWkc6RiSSnUbaZGDebS4Jj+A3VLSS57/y
-         e8QVmVjHDuhfSkpQQ8MWPjHo0KdNhRm/aQsA5xOK1kUZfOVfxmB0POsrB5n2T+A8Gbby
-         hhidFe7X3PViI2+9mlCZdR2ANBykAO5MH+7cOCZgGUa6gqWyGY+X/bsjX+bTPO2LZxVi
-         LyDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8KBqUpWsKl5lgM2yHvt/Bd1sA+cyD9IQmlhTgkTm4IhrdwKGIvG4cOf3TovtUGoGPzuZAMn8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMUqx1a3z/KAyVkrQr6tN76VOi16lJVdVpYQSZhncNKFuu/q0J
-	KX+PLhXRV9BPj1Qo66/q/oRw1jWG7OKVpdh769PSW7Maa1qUyTcUEW2mb2PZpgUKcmY=
-X-Gm-Gg: ASbGnctZAStjpVlGi6dJ/i+9R//v5/5nDqieTqP9oEd1Z+L9c6Lvq7xRAJ+nSV6271G
-	0nKkzxPRRkk0JtFnwXthW7EZgWtq5gCTXgjkrJAWQoF2qoFblTzYvw2v8XS6WZCIrsEMY3ZHau8
-	dRu1AXNt34X3VBdgmYHR199EPI7eAYsKkjv8wcRI7gLRUcaOjeuEVqqc7tQ+3tmwFqEmW/wEX6S
-	/lFkZPxLdnD5L9zjMcvwYnoE4v5UhAyTHVwLnMpd+yXhm6+HhwgoN061GJxYlZY9hSFqvr/5riI
-	ahmj/K0iCgB2/jl74THAstVuPh4ZByhIsngjrUyvqVIDAop/diZzZ3hvJfO2e66hbpq4rX7e+0M
-	8YkVEA3C5K+95dsGtzl3wLkTiO95dai3fo9X4YWdw1zRae6qiK6GHI/M3TjVIUrtkFGX6m5auHi
-	0/fMimQvnSnR6mckUV+rP7dF0=
-X-Google-Smtp-Source: AGHT+IEtS3jcwo4WzU54Sa3K8J8ybpqBEguU1sThRdV9NKjDD7zBUT+pKVXB1PdslMVOEqC+2jguSw==
-X-Received: by 2002:a05:6830:26e0:b0:7c7:18e:914b with SMTP id 46e09a7af769-7c798ccdd68mr16820921a34.17.1764633474482;
-        Mon, 01 Dec 2025 15:57:54 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90f5d7d82sm5532004a34.6.2025.12.01.15.57.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Dec 2025 15:57:54 -0800 (PST)
-Message-ID: <d574146a-3434-4eda-accf-d17bff2cc0ba@linuxfoundation.org>
-Date: Mon, 1 Dec 2025 16:57:52 -0700
+	s=arc-20240116; t=1764634960; c=relaxed/simple;
+	bh=+WNXxCru9nZLKn9N287aSyuLFrM9zcEI4fAjCx2Pkqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pBtM1MTfpYTfzWARDpoSulAxomDPfil+JjcIFNB35boacuoeJcApVrHkvFyzrcBWS1zmfbwt5g3iYL1OzaNLaOlUdazj2MFxE27Cn6qBU8iZs8h/8ylXrP6GBdEg+1+1yDIgdmLbg9GsTk3j0PXAWtejekvCrBZo/iwBmLCo10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQGM2Qyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CD6C4CEF1;
+	Tue,  2 Dec 2025 00:22:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764634959;
+	bh=+WNXxCru9nZLKn9N287aSyuLFrM9zcEI4fAjCx2Pkqw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bQGM2QylnyTxqlKngIZfsgSddzVIO8Mv4mRQVSasbPRfNCKa1ayI4wxExNm4btmuj
+	 9L+boR2Rt6sam5DOOC38ONNfFUNGatqH1ybzi97pBEbuCQnGGPXyKNkIW7UdX63/at
+	 2iOd+Mu5XAgrgSis6px6sopO09sOKfLRfY2EkJ3tN6C7InC6852EZn0BDxoHUngeQX
+	 omzlufYkfJ20XBBPwd1KQPW0iPo2eAIjnoTVO3WjqfTRduItbaCj2i3IBjqdfPHkNb
+	 HxBB/rUoWmw9ZhrbZTZLxTiiSwBy6Gz8FMVhrp/O+Ps/z7lj+/ek5sov9CwTuX1iaF
+	 a/DH5GGlxjOUA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] usb: renesas_usbhs: Convert to platform remove callback returning void
+Date: Mon,  1 Dec 2025 19:22:30 -0500
+Message-ID: <20251202002231.1497163-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120127-recital-default-e35a@gregkh>
+References: <2025120127-recital-default-e35a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/187] 5.4.302-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20251201112241.242614045@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251201112241.242614045@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 12/1/25 04:21, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.302 release.
-> There are 187 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 03 Dec 2025 11:22:11 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.302-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Compiled and booted on my test system. No dmesg regressions.
+[ Upstream commit 456a91ce7de4b9157fd5013c1e4dd8dd3c6daccb ]
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart from
+emitting a warning) and this typically results in resource leaks. To improve
+here there is a quest to make the remove callback return void. In the first
+step of this quest all drivers are converted to .remove_new() which already
+returns void. Eventually after all drivers are converted, .remove_new() is
+renamed to .remove().
 
-thanks,
--- Shuah
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20230517230239.187727-89-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: eb9ac779830b ("usb: renesas_usbhs: Fix synchronous external abort on unbind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/renesas_usbhs/common.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
+index 6343ef4e184b5..818c1ad16e5c6 100644
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -790,7 +790,7 @@ static int usbhs_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int usbhs_remove(struct platform_device *pdev)
++static void usbhs_remove(struct platform_device *pdev)
+ {
+ 	struct usbhs_priv *priv = usbhs_pdev_to_priv(pdev);
+ 
+@@ -810,8 +810,6 @@ static int usbhs_remove(struct platform_device *pdev)
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
+-
+-	return 0;
+ }
+ 
+ static __maybe_unused int usbhsc_suspend(struct device *dev)
+@@ -856,7 +854,7 @@ static struct platform_driver renesas_usbhs_driver = {
+ 		.of_match_table = of_match_ptr(usbhs_of_match),
+ 	},
+ 	.probe		= usbhs_probe,
+-	.remove		= usbhs_remove,
++	.remove_new	= usbhs_remove,
+ };
+ 
+ module_platform_driver(renesas_usbhs_driver);
+-- 
+2.51.0
+
 
