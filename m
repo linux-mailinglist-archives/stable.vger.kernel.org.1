@@ -1,521 +1,320 @@
-Return-Path: <stable+bounces-198112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C36C9C31D
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 17:27:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3E9C9C395
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 17:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9EFA14E44BF
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 16:27:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A634845F
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 16:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525D929BD82;
-	Tue,  2 Dec 2025 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17BD2848AA;
+	Tue,  2 Dec 2025 16:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="iEbJzKZI"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AapMLOC3"
 X-Original-To: stable@vger.kernel.org
-Received: from the.earth.li (the.earth.li [93.93.131.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8EC28314E;
-	Tue,  2 Dec 2025 16:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B5D279903
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 16:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764692806; cv=none; b=kletDtnXDe0NLfL7McsiOY0oz15gjtERWoOObI0hNk9YTYU9qqXGm2sSD3ejzkuYeLHdmGtPOMFLY4qHzz26us2wqyRSLqi+jM9x4Le6uJDCvDe2DMlQp+J3k8xAeCrvmxs+jsJ3Ijv+AGexTCRvf4MfgCfzCTYKiNLu8pNaads=
+	t=1764693385; cv=none; b=ZDFb8TqBhuFCDOXVRIJ7ZNqSFCzY2EBugt+Ta5b1wtgbgPScaziC/cfSFUiM2dJL8exLlK/tfz2n8gVCUeLQP8iIdpQrDfsRkmJtgP0VmpbrUKUb6i9c597e0+iJ+FK4kFtM4nyl6ajLSSznlAQv42I0y7aSCJmFhQg0JBEe6O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764692806; c=relaxed/simple;
-	bh=Pjq2luBFLJQ256s/pu632w5Np4BqHbKrC2ffNq+qcHU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s02YfZ9eQSyv54eKB8YQZ/n1cT+Q/v0z5IF+0PfbAS21hYGwJQr6DeAqjd5AZHsXMeSkTXSA+xrr+09Q4mmVEkFes35gBHnyq9x9wtguz7LveSw1WBF93IcM7MFItsvMqc3ji+GcwfOOuOqtNPcUjW9z+eH/HcX1owg3dcW5M7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=iEbJzKZI; arc=none smtp.client-ip=93.93.131.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
-	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
-	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=jBMTWCuoiw4oxP9HCtXxb7sCevYgLbvNQVB6qMzjqOA=; b=iEbJzKZIgKebsLPpO1X74eobwa
-	mePuBWM1KSbT354vBqMSvZIgumuGLVR2iSPFf78TIvAYscC0c1mdfv8OI/Eas9Ee4rN9zYLgWh8pn
-	24vj9T4zr9ZBg25ISgmZqJT2xe+FvckFCivvgoKW90Iz5WHWVPeoLM7tq2rsvarP7rDHrdraNDp2j
-	8jHOUOzhq7hvqseyKJ9w6BeQ9H+r0dGc13AerfY1w81WT0VJ+Gp1xqWfJ3j5qIu1aXdxjUps5ROj0
-	yI9gtoZ0moLihyubS+O0GaNe0VkILAlq+z79SOhvVygosa0SEH6x7+85sfbcPHlb6DGQYWSMV0a7K
-	q72IXj9A==;
-Received: from noodles by the.earth.li with local (Exim 4.96)
-	(envelope-from <noodles@earth.li>)
-	id 1vQTCb-00E20L-2X;
-	Tue, 02 Dec 2025 16:26:09 +0000
-Date: Tue, 2 Dec 2025 16:26:09 +0000
-From: Jonathan McDowell <noodles@earth.li>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-integrity@vger.kernel.org,
-	Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3] tpm2-sessions: address out-of-range indexing
-Message-ID: <aS8TIeviaippVAha@earth.li>
-References: <20251201193958.896358-1-jarkko@kernel.org>
+	s=arc-20240116; t=1764693385; c=relaxed/simple;
+	bh=J2FY91mBA+7qsoG5Zmdf/X1yNE61LDROrDP1UQKCDsM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CBLlqvyHtF7gCxjicI4HJ6wgSDSNW5YyMuyz5MfNv0OIsVira772NW3Ao0IYC/sreVFc0hL3ivQQYUjcoOhRH1s2u5DLQmNs8juRKbh80/dK7ac+DRv0HHwQXW6hXzCvObNRWIX/HDtBctWqbw9MiQmUOu1CsUvdiUigeLVm0pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AapMLOC3; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b9090d9f2eso9355932b3a.0
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 08:36:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764693383; x=1765298183; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g1PCQjqHUImrfnuMWQSbY1q1fWBmYQzMPADITESwpfg=;
+        b=AapMLOC35Wo5zxnizizAKlCVnt5UUoMZi4dU2xSZEa8WpQK3ZAyJgjyH6fFWLHjWCo
+         hFv/W4HUneMKxjUUjWLj9DAnwJ+uRx1FAmRmAz1+RSIVWxvBwi7R/X9j7U3JWwYNjUXd
+         wqHeAvm8bCRpfhwjPxptfWexoyktWLH2e0HkN8KTPqpRvUQU4ATSvEhpakjnXIL71J80
+         LRW3XakZnAkUKcKdG1se9E5/rd0qdsgcA5pRTG8wVEmx/4e4QRXcwFMqzRPdRObQGMQh
+         3VEddrL+v77IykZJ4jBe4GrXLNrzNBpuDlAtLs/vE/Q8pS8gb6MW2ES2Pe7RVVfh+1jc
+         Tugw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764693383; x=1765298183;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=g1PCQjqHUImrfnuMWQSbY1q1fWBmYQzMPADITESwpfg=;
+        b=O/Im6NEMoSvnpCYS38bD2B2Lc+9OT3VLMaS4R6iPf2HyncnkWQlWv3aVMNvQ6jgko8
+         t2WGclyrvyHh3pBpzGk1ZT4bKlLRZWcds/g0oEo3F58bj6yAt6J66QxJ0x7lhvUrJvDq
+         GTGKUsTLXdp0N+iLvPwLVpChg6qVmkhQqLbZIqbtFHq+SuJ3vKXm6FaOiAX6tg8wS28m
+         irMNDFj6ZCnL+CBEW6UViphkLJEGHCvVGLItlkSWcMfsw4AAxMI/weXOUcCDyBhGRbTg
+         f9Bvh+ONmvsMgnIAj9cFcFX4yxa706EgTgUHW5fc/OfPQ9ooz2ootd+ZgHgQuN08/si0
+         3dtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAVbtKLNfkksext9NDEbjYVArIc4albpUM85k6NK9SrzysOAccNN5YLu/8O1cmq15sUjrPDQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydOcdYxszDUJo23arNeG6LDGlotkASOixh1XoxUN6sLtV/kVzK
+	2kHk7pFXHEISp0sKxKwavjR1RhY+HQzSXchNR0/QyuHqf2ymi4Y4p+5tDCujKNW4Hc2dR629Y0N
+	wXOlo/Q==
+X-Google-Smtp-Source: AGHT+IHbpjzBbXCvAd9URDI1HhG7vj8KOeHDgurtn5SRw54GzVw6VxJbQiZhVN8zm3l6wh3j7PJMUAxrNXU=
+X-Received: from pglg15.prod.google.com ([2002:a63:110f:0:b0:bac:6acd:817f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7d8b:b0:33b:625:36be
+ with SMTP id adf61e73a8af0-3614ed3e82amr49170495637.38.1764693383200; Tue, 02
+ Dec 2025 08:36:23 -0800 (PST)
+Date: Tue, 2 Dec 2025 08:36:21 -0800
+In-Reply-To: <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251201193958.896358-1-jarkko@kernel.org>
+Mime-Version: 1.0
+References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+ <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
+ <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com> <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
+ <aS8I6T3WtM1pvPNl@google.com> <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
+Message-ID: <aS8Vhb66UViQmY_Q@google.com>
+Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Khushit Shah <khushit.shah@nutanix.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kai.huang@intel.com" <kai.huang@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 01, 2025 at 09:39:58PM +0200, Jarkko Sakkinen wrote:
->'name_size' does not have any range checks, and it just directly indexes
->with TPM_ALG_ID, which could lead into memory corruption at worst.
->
->Address the issue by only processing known values and returning -EINVAL for
->unrecognized values.
->
->Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
->that errors are detected before causing any spurious TPM traffic.
->
->End also the authorization session on failure in both of the functions, as
->the session state would be then by definition corrupted.
->
->Cc: stable@vger.kernel.org # v6.10+
->Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
->Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->---
->v3:
->- Add two missing 'tpm2_end_auth_session' calls to the fallback paths of
->  'tpm_buf_fill_hmac_session'.
->- Rewrote the commit message.
->- End authorization session on failure in 'tpm2_buf_append_name' and
->  'tpm_buf_fill_hmac_session'.
->v2:
->There was spurious extra field added to tpm2_hash by mistake.
->---
-> drivers/char/tpm/tpm2-cmd.c               |  23 +++-
-> drivers/char/tpm/tpm2-sessions.c          | 131 +++++++++++++++-------
-> include/linux/tpm.h                       |   6 +-
-> security/keys/trusted-keys/trusted_tpm2.c |  29 ++++-
-> 4 files changed, 136 insertions(+), 53 deletions(-)
->
->diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
->index 5b6ccf901623..4473b81122e8 100644
->--- a/drivers/char/tpm/tpm2-cmd.c
->+++ b/drivers/char/tpm/tpm2-cmd.c
->@@ -187,7 +187,11 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
-> 	}
->
-> 	if (!disable_pcr_integrity) {
->-		tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
->+		rc = tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
->+		if (rc) {
->+			tpm_buf_destroy(&buf);
->+			return rc;
->+		}
-> 		tpm_buf_append_hmac_session(chip, &buf, 0, NULL, 0);
-> 	} else {
-> 		tpm_buf_append_handle(chip, &buf, pcr_idx);
->@@ -202,8 +206,14 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
-> 			       chip->allocated_banks[i].digest_size);
-> 	}
->
->-	if (!disable_pcr_integrity)
->-		tpm_buf_fill_hmac_session(chip, &buf);
->+	if (!disable_pcr_integrity) {
->+		rc = tpm_buf_fill_hmac_session(chip, &buf);
->+		if (rc) {
->+			tpm_buf_destroy(&buf);
->+			return rc;
->+		}
->+	}
->+
-> 	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting extend a PCR value");
-> 	if (!disable_pcr_integrity)
-> 		rc = tpm_buf_check_hmac_response(chip, &buf, rc);
->@@ -261,7 +271,12 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
-> 						| TPM2_SA_CONTINUE_SESSION,
-> 						NULL, 0);
-> 		tpm_buf_append_u16(&buf, num_bytes);
->-		tpm_buf_fill_hmac_session(chip, &buf);
->+		err = tpm_buf_fill_hmac_session(chip, &buf);
->+		if (err) {
->+			tpm_buf_destroy(&buf);
->+			return err;
->+		}
->+
-> 		err = tpm_transmit_cmd(chip, &buf,
-> 				       offsetof(struct tpm2_get_random_out,
-> 						buffer),
->diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
->index 6d03c224e6b2..33ad0d668e1a 100644
->--- a/drivers/char/tpm/tpm2-sessions.c
->+++ b/drivers/char/tpm/tpm2-sessions.c
->@@ -144,16 +144,24 @@ struct tpm2_auth {
-> /*
->  * Name Size based on TPM algorithm (assumes no hash bigger than 255)
->  */
->-static u8 name_size(const u8 *name)
->+static int name_size(const u8 *name)
-> {
->-	static u8 size_map[] = {
->-		[TPM_ALG_SHA1] = SHA1_DIGEST_SIZE,
->-		[TPM_ALG_SHA256] = SHA256_DIGEST_SIZE,
->-		[TPM_ALG_SHA384] = SHA384_DIGEST_SIZE,
->-		[TPM_ALG_SHA512] = SHA512_DIGEST_SIZE,
->-	};
->-	u16 alg = get_unaligned_be16(name);
->-	return size_map[alg] + 2;
->+	u16 hash_alg = get_unaligned_be16(name);
->+
->+	switch (hash_alg) {
->+	case TPM_ALG_SHA1:
->+		return SHA1_DIGEST_SIZE + 2;
->+	case TPM_ALG_SHA256:
->+		return SHA256_DIGEST_SIZE + 2;
->+	case TPM_ALG_SHA384:
->+		return SHA384_DIGEST_SIZE + 2;
->+	case TPM_ALG_SHA512:
->+		return SHA512_DIGEST_SIZE + 2;
->+	case TPM_ALG_SM3_256:
->+		return SM3256_DIGEST_SIZE + 2;
->+	}
->+
+On Tue, Dec 02, 2025, David Woodhouse wrote:
+> On Tue, 2025-12-02 at 07:42 -0800, Sean Christopherson wrote:
+> > On Tue, Dec 02, 2025, David Woodhouse wrote:
+> > > On Tue, 2025-12-02 at 12:58 +0000, Khushit Shah wrote:
+> > > > Thanks for the review!
+> > > >=20
+> > > > > On 2 Dec 2025, at 2:43=E2=80=AFPM, David Woodhouse <dwmw2@infrade=
+ad.org> wrote:
+> > > > >=20
+> > > > > Firstly, excellent work debugging and diagnosing that!
+> > > > >=20
+> > > > > On Tue, 2025-11-25 at 18:05 +0000, Khushit Shah wrote:
+> > > > > >=20
+> > > > > > --- a/Documentation/virt/kvm/api.rst
+> > > > > > +++ b/Documentation/virt/kvm/api.rst
+> > > > > > @@ -7800,8 +7800,10 @@ Will return -EBUSY if a VCPU has already=
+ been created.
+> > > > > > =C2=A0
+> > > > > > =C2=A0Valid feature flags in args[0] are::
+> > > > > > =C2=A0
+> > > > > > -=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 0)
+> > > > > > -=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0 (1=
+ULL << 1)
+> > > > > > +=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 (1ULL << 0)
+> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 1)
+> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_IGNORE_SUPPRESS_EOI_BROA=
+DCAST_QUIRK (1ULL << 2)
+> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_SUPPRESS_EOI_BROADCAST=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 (1ULL << 3)
+> > > > > >=20
+> > > > >=20
+> > > > > I kind of hate these names. This part right here is what we leave
+> > > > > behind for future generations, to understand the weird behaviour =
+of
+> > > > > KVM. To have "IGNORE" "SUPPRESS" "QUIRK" all in the same flag, qu=
+ite
+> > > > > apart from the length of the token, makes my brain hurt.
+> >=20
+> > ...
+> >=20
+> > > > > Could we perhaps call them 'ENABLE_SUPPRESS_EOI_BROADCAST' and
+> > > > > 'DISABLE_SUPPRESS_EOI_BROADCAST', with a note saying that modern =
+VMMs
+> > > > > should always explicitly enable one or the other, because for
+> > > > > historical reasons KVM only *pretends* to support it by default b=
+ut it
+> > > > > doesn't actually work correctly?
+> >=20
+> > I don't disagree on the names being painful, but ENABLE_SUPPRESS_EOI_BR=
+OADCAST
+> > vs. DISABLE_SUPPRESS_EOI_BROADCAST won't work, and is even more confusi=
+ng IMO.
+>=20
+> I dunno, KVM never actually *did* suppress the EOI broadcast anyway,
+> did it? This fix really *does* enable it =E2=80=94 as opposed to just
+> pretending to?
+>=20
+> I was thinking along the lines of ...
+>=20
+>=20
+> Setting KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST causes KVM to
+> advertise and correctly implement the Directed EOI feature in the local
+> APIC, suppressing broadcast EOI when the feature is enabled by the
+> guest.
+>=20
+> Setting KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST causes KVM not to
+> advertise the Directed EOI feature in the local APIC.
+>=20
+> Userspace should explicitly either enable or disable the EOI broadcast
+> using one of the two flags above. For historical compatibility reasons,
+> if neither flag is set then KVM will advertise the feature but will not
+> actually suppress the EOI broadcast, leading to potential IRQ storms in
+> some guest configurations.
 
-Can we/should we perhaps print a warning here if we don't know the 
-algorithm?
+Hmm, I suppose that could work for uAPI.  Having both an ENABLE and a DISAB=
+LE
+is obviously a bit odd, but slowing down the reader might actually be a goo=
+d
+thing in this case.  And the documentation should be easy enough to write.
 
->+	return -EINVAL;
-> }
->
-> static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
->@@ -161,6 +169,7 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> 	struct tpm_header *head = (struct tpm_header *)buf->data;
-> 	off_t offset = TPM_HEADER_SIZE;
-> 	u32 tot_len = be32_to_cpu(head->length);
->+	int ret;
-> 	u32 val;
->
-> 	/* we're starting after the header so adjust the length */
->@@ -172,9 +181,15 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> 		return -EINVAL;
-> 	offset += val;
-> 	/* name */
->+
-> 	val = tpm_buf_read_u16(buf, &offset);
->-	if (val != name_size(&buf->data[offset]))
->+	ret = name_size(&buf->data[offset]);
->+	if (ret < 0)
->+		return ret;
->+
->+	if (val != ret)
-> 		return -EINVAL;
->+
-> 	memcpy(name, &buf->data[offset], val);
-> 	/* forget the rest */
-> 	return 0;
->@@ -221,46 +236,70 @@ static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
->  * As with most tpm_buf operations, success is assumed because failure
->  * will be caused by an incorrect programming model and indicated by a
->  * kernel message.
->+ *
->+ * Ends the authorization session on failure.
->  */
->-void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
->-			 u32 handle, u8 *name)
->+int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
->+			u32 handle, u8 *name)
-> {
-> #ifdef CONFIG_TCG_TPM2_HMAC
-> 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
-> 	struct tpm2_auth *auth;
-> 	int slot;
->+	int ret;
-> #endif
->
-> 	if (!tpm2_chip_auth(chip)) {
-> 		tpm_buf_append_handle(chip, buf, handle);
->-		return;
->+		return 0;
-> 	}
->
-> #ifdef CONFIG_TCG_TPM2_HMAC
-> 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
-> 	if (slot >= AUTH_MAX_NAMES) {
->-		dev_err(&chip->dev, "TPM: too many handles\n");
->-		return;
->+		dev_err(&chip->dev, "too many handles\n");
->+		ret = -EIO;
->+		goto err;
-> 	}
-> 	auth = chip->auth;
->-	WARN(auth->session != tpm_buf_length(buf),
->-	     "name added in wrong place\n");
->+	if (auth->session != tpm_buf_length(buf)) {
->+		dev_err(&chip->dev, "session state malformed");
->+		ret = -EIO;
->+		goto err;
->+	}
-> 	tpm_buf_append_u32(buf, handle);
-> 	auth->session += 4;
->
-> 	if (mso == TPM2_MSO_PERSISTENT ||
-> 	    mso == TPM2_MSO_VOLATILE ||
-> 	    mso == TPM2_MSO_NVRAM) {
->-		if (!name)
->-			tpm2_read_public(chip, handle, auth->name[slot]);
->+		if (!name) {
->+			ret = tpm2_read_public(chip, handle, auth->name[slot]);
->+			if (ret)
->+				goto err;
->+		}
-> 	} else {
->-		if (name)
->-			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
+I was worried that having ENABLE and DISABLE controls would lead to confusi=
+ng code
+internally, but there's no reason KVM's internal tracking needs to match uA=
+PI.
 
-We're dropping the error message here; is there a reason for that?
+How about this?
 
->+		if (name) {
->+			ret = -EIO;
->+			goto err;
->+		}
-> 	}
->
-> 	auth->name_h[slot] = handle;
->-	if (name)
->-		memcpy(auth->name[slot], name, name_size(name));
->+	if (name) {
->+		ret = name_size(name);
->+		if (ret < 0)
->+			goto err;
->+
->+		memcpy(auth->name[slot], name, ret);
->+	}
->+#endif
->+	return 0;
->+
->+#ifdef CONFIG_TCG_TPM2_HMAC
->+err:
->+	tpm2_end_auth_session(chip);
->+	return tpm_ret_to_err(ret);
-> #endif
-> }
-> EXPORT_SYMBOL_GPL(tpm_buf_append_name);
->@@ -533,11 +572,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
->  * encryption key and encrypts the first parameter of the command
->  * buffer with it.
->  *
->- * As with most tpm_buf operations, success is assumed because failure
->- * will be caused by an incorrect programming model and indicated by a
->- * kernel message.
->+ * Ends the authorization session on failure.
->  */
->-void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
->+int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> {
-> 	u32 cc, handles, val;
-> 	struct tpm2_auth *auth = chip->auth;
->@@ -549,9 +586,12 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> 	u8 cphash[SHA256_DIGEST_SIZE];
-> 	struct sha256_ctx sctx;
-> 	struct hmac_sha256_ctx hctx;
->+	int ret;
->
->-	if (!auth)
->-		return;
->+	if (!auth) {
->+		ret = -EINVAL;
->+		goto err;
->+	}
->
-> 	/* save the command code in BE format */
-> 	auth->ordinal = head->ordinal;
->@@ -560,9 +600,10 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
->
-> 	i = tpm2_find_cc(chip, cc);
-> 	if (i < 0) {
->-		dev_err(&chip->dev, "Command 0x%x not found in TPM\n", cc);
+---
+ arch/x86/include/asm/kvm_host.h |  7 +++++++
+ arch/x86/include/uapi/asm/kvm.h |  6 ++++--
+ arch/x86/kvm/lapic.c            | 16 +++++++++++++++-
+ arch/x86/kvm/x86.c              | 15 ++++++++++++---
+ 4 files changed, 38 insertions(+), 6 deletions(-)
 
-Again, I think it's generally helpful to have the error message given 
-that the return (EINVAL) does not help narrow down which value is bad.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_hos=
+t.h
+index 5a3bfa293e8b..b4c41255f01d 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1226,6 +1226,12 @@ enum kvm_irqchip_mode {
+ 	KVM_IRQCHIP_SPLIT,        /* created with KVM_CAP_SPLIT_IRQCHIP */
+ };
+=20
++enum kvm_suppress_eoi_broadcast_mode {
++	KVM_SUPPRESS_EOI_QUIRKED,
++	KVM_SUPPRESS_EOI_ENABLED,
++	KVM_SUPPRESS_EOI_DISABLED,
++};
++
+ struct kvm_x86_msr_filter {
+ 	u8 count;
+ 	bool default_allow:1;
+@@ -1475,6 +1481,7 @@ struct kvm_arch {
+=20
+ 	bool x2apic_format;
+ 	bool x2apic_broadcast_quirk_disabled;
++	enum kvm_suppress_eoi_broadcast_mode suppress_eoi_broadcast;
+=20
+ 	bool has_mapped_host_mmio;
+ 	bool guest_can_read_msr_platform_info;
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kv=
+m.h
+index 7ceff6583652..bd51596001f8 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -914,8 +914,10 @@ struct kvm_sev_snp_launch_finish {
+ 	__u64 pad1[4];
+ };
+=20
+-#define KVM_X2APIC_API_USE_32BIT_IDS            (1ULL << 0)
+-#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK  (1ULL << 1)
++#define KVM_X2APIC_API_USE_32BIT_IDS			(_BITULL(0))
++#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK		(_BITULL(1))
++#define KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(2))
++#define KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(3))
+=20
+ struct kvm_hyperv_eventfd {
+ 	__u32 conn_id;
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 1597dd0b0cc6..3f00c9640785 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -562,7 +562,8 @@ void kvm_apic_set_version(struct kvm_vcpu *vcpu)
+ 	 * IOAPIC.
+ 	 */
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_X2APIC) &&
+-	    !ioapic_in_kernel(vcpu->kvm))
++	    !ioapic_in_kernel(vcpu->kvm) &&
++	    vcpu->kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_DISABLED=
+)
+ 		v |=3D APIC_LVR_DIRECTED_EOI;
+ 	kvm_lapic_set_reg(apic, APIC_LVR, v);
+ }
+@@ -1517,6 +1518,19 @@ static void kvm_ioapic_send_eoi(struct kvm_lapic *ap=
+ic, int vector)
+=20
+ 	/* Request a KVM exit to inform the userspace IOAPIC. */
+ 	if (irqchip_split(apic->vcpu->kvm)) {
++		/*
++		 * Don't exit to userspace if the guest has enabled Directed
++		 * EOI, a.k.a. Suppress EOI Broadcasts, in which case the local
++		 * APIC doesn't broadcast EOIs (the guest must EOI the target
++		 * I/O APIC(s) directly).  Ignore the suppression if userspace
++		 * has not explictly enabled support (KVM's historical quirky
++		 * behavior is to advertise support for Suppress EOI Broadcasts
++		 * without actually suppressing EOIs).
++		 */
++		if ((kvm_lapic_get_reg(apic, APIC_SPIV) & APIC_SPIV_DIRECTED_EOI) &&
++		    apic->vcpu->kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_Q=
+UIRKED)
++			return;
++
+ 		apic->vcpu->arch.pending_ioapic_eoi =3D vector;
+ 		kvm_make_request(KVM_REQ_IOAPIC_EOI_EXIT, apic->vcpu);
+ 		return;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0c6d899d53dd..b36e048c7862 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -121,8 +121,10 @@ static u64 __read_mostly efer_reserved_bits =3D ~((u64=
+)EFER_SCE);
+=20
+ #define KVM_CAP_PMU_VALID_MASK KVM_PMU_CAP_DISABLE
+=20
+-#define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS | \
+-                                    KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=
+)
++#define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS |		\
++				    KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK |	\
++				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST |	\
++				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
+=20
+ static void update_cr8_intercept(struct kvm_vcpu *vcpu);
+ static void process_nmi(struct kvm_vcpu *vcpu);
+@@ -6739,11 +6741,18 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		if (cap->args[0] & ~KVM_X2APIC_API_VALID_FLAGS)
+ 			break;
+=20
++		if (cap->args[0] & KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST &&
++		    cap->args[0] & KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
++			break;
++
+ 		if (cap->args[0] & KVM_X2APIC_API_USE_32BIT_IDS)
+ 			kvm->arch.x2apic_format =3D true;
+ 		if (cap->args[0] & KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK)
+ 			kvm->arch.x2apic_broadcast_quirk_disabled =3D true;
+-
++		if (cap->args[0] & KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST)
++			kvm->arch.suppress_eoi_broadcast =3D KVM_SUPPRESS_EOI_ENABLED;
++		if (cap->args[0] & KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
++			kvm->arch.suppress_eoi_broadcast =3D KVM_SUPPRESS_EOI_DISABLED;
+ 		r =3D 0;
+ 		break;
+ 	case KVM_CAP_X86_DISABLE_EXITS:
 
->-		return;
->+		ret = -EINVAL;
->+		goto err;
-> 	}
->+
-> 	attrs = chip->cc_attrs_tbl[i];
->
-> 	handles = (attrs >> TPM2_CC_ATTR_CHANDLES) & GENMASK(2, 0);
->@@ -576,9 +617,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> 		u32 handle = tpm_buf_read_u32(buf, &offset_s);
->
-> 		if (auth->name_h[i] != handle) {
->-			dev_err(&chip->dev, "TPM: handle %d wrong for name\n",
->-				  i);
->-			return;
->+			dev_err(&chip->dev, "invalid handle 0x%08x\n", handle);
->+			ret = -EINVAL;
->+			goto err;
-> 		}
-> 	}
-> 	/* point offset_s to the start of the sessions */
->@@ -609,12 +650,14 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> 		offset_s += len;
-> 	}
-> 	if (offset_s != offset_p) {
->-		dev_err(&chip->dev, "TPM session length is incorrect\n");
->-		return;
->+		dev_err(&chip->dev, "session length is incorrect\n");
->+		ret = -EINVAL;
->+		goto err;
-> 	}
-> 	if (!hmac) {
->-		dev_err(&chip->dev, "TPM could not find HMAC session\n");
->-		return;
->+		dev_err(&chip->dev, "could not find HMAC session\n");
->+		ret = -EINVAL;
->+		goto err;
-> 	}
->
-> 	/* encrypt before HMAC */
->@@ -646,8 +689,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> 		if (mso == TPM2_MSO_PERSISTENT ||
-> 		    mso == TPM2_MSO_VOLATILE ||
-> 		    mso == TPM2_MSO_NVRAM) {
->-			sha256_update(&sctx, auth->name[i],
->-				      name_size(auth->name[i]));
->+			ret = name_size(auth->name[i]);
->+			if (ret < 0)
->+				goto err;
->+
->+			sha256_update(&sctx, auth->name[i], ret);
-> 		} else {
-> 			__be32 h = cpu_to_be32(auth->name_h[i]);
->
->@@ -668,6 +714,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> 	hmac_sha256_update(&hctx, auth->tpm_nonce, sizeof(auth->tpm_nonce));
-> 	hmac_sha256_update(&hctx, &auth->attrs, 1);
-> 	hmac_sha256_final(&hctx, hmac);
->+	return 0;
->+
->+err:
->+	tpm2_end_auth_session(chip);
->+	return ret;
-> }
-> EXPORT_SYMBOL(tpm_buf_fill_hmac_session);
->
->diff --git a/include/linux/tpm.h b/include/linux/tpm.h
->index 0e9e043f728c..1a59f0190eb3 100644
->--- a/include/linux/tpm.h
->+++ b/include/linux/tpm.h
->@@ -528,8 +528,8 @@ static inline struct tpm2_auth *tpm2_chip_auth(struct tpm_chip *chip)
-> #endif
-> }
->
->-void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
->-			 u32 handle, u8 *name);
->+int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
->+			u32 handle, u8 *name);
-> void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
-> 				 u8 attributes, u8 *passphrase,
-> 				 int passphraselen);
->@@ -562,7 +562,7 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
-> #ifdef CONFIG_TCG_TPM2_HMAC
->
-> int tpm2_start_auth_session(struct tpm_chip *chip);
->-void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
->+int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
-> int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
-> 				int rc);
-> void tpm2_end_auth_session(struct tpm_chip *chip);
->diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
->index e165b117bbca..7672a4376dad 100644
->--- a/security/keys/trusted-keys/trusted_tpm2.c
->+++ b/security/keys/trusted-keys/trusted_tpm2.c
->@@ -283,7 +283,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
-> 		goto out_put;
-> 	}
->
->-	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
->+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
->+	if (rc)
->+		goto out;
->+
-> 	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT,
-> 				    options->keyauth, TPM_DIGEST_SIZE);
->
->@@ -331,7 +334,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
-> 		goto out;
-> 	}
->
->-	tpm_buf_fill_hmac_session(chip, &buf);
->+	rc = tpm_buf_fill_hmac_session(chip, &buf);
->+	if (rc)
->+		goto out;
->+
-> 	rc = tpm_transmit_cmd(chip, &buf, 4, "sealing data");
-> 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> 	if (rc)
->@@ -438,7 +444,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
-> 		return rc;
-> 	}
->
->-	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
->+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
->+	if (rc)
->+		goto out;
->+
-> 	tpm_buf_append_hmac_session(chip, &buf, 0, options->keyauth,
-> 				    TPM_DIGEST_SIZE);
->
->@@ -450,7 +459,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
-> 		goto out;
-> 	}
->
->-	tpm_buf_fill_hmac_session(chip, &buf);
->+	rc = tpm_buf_fill_hmac_session(chip, &buf);
->+	if (rc)
->+		goto out;
->+
-> 	rc = tpm_transmit_cmd(chip, &buf, 4, "loading blob");
-> 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> 	if (!rc)
->@@ -497,7 +509,9 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
-> 		return rc;
-> 	}
->
->-	tpm_buf_append_name(chip, &buf, blob_handle, NULL);
->+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
->+	if (rc)
->+		goto out;
->
-> 	if (!options->policyhandle) {
-> 		tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_ENCRYPT,
->@@ -522,7 +536,10 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
-> 						NULL, 0);
-> 	}
->
->-	tpm_buf_fill_hmac_session(chip, &buf);
->+	rc = tpm_buf_fill_hmac_session(chip, &buf);
->+	if (rc)
->+		goto out;
->+
-> 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
-> 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
->
->-- 
->2.52.0
->
-
-J.
-
--- 
-Be Ye Not Lost Among Precepts of Order
+base-commit: 6c3373b26189853230552bd3932b3edba5883423
+--
 
