@@ -1,141 +1,135 @@
-Return-Path: <stable+bounces-198119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B489C9C721
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 18:45:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28732C9C730
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 18:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B3F584E3F57
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 17:45:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 921954E4BC0
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 17:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CC12C21E6;
-	Tue,  2 Dec 2025 17:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B9A2C327C;
+	Tue,  2 Dec 2025 17:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+o2EcXq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JKMPluaN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A862C21C9
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 17:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4556F2C237F
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 17:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764697501; cv=none; b=sqnCGqf0wu0dSfm5N8lEtSh5re1F5dwub9iTFCUHi/KUHRNr9slWXahNMjZKgVZtNweZunWLfiiRs0HKJ5Z9ft0IftWZziOeSfA63THpoYau8HybGmz8H9444Ks1C15YhNl2spNrkAyXjThFcAd2HDqtF+aeOHIbG6zTs9UVwy0=
+	t=1764697519; cv=none; b=dBpgIh4Maew3Oa1pwVYNEnKthMO/DV1N6CcCZs5ERiwk0AOUvDudJwviSxjkp0ohhnmY3rWran3S8plQKp3lUCWamdOoQ7OApVIzRSlbWaabyiACxPLRBBGj6Ej7OW5sEYUJN14urjiz352haa4pBxgbBXBQTo66oqFNffYlCFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764697501; c=relaxed/simple;
-	bh=VkOP/tUp4yO3N4pXVBifGGjKIp+XwURhcSqAw+kdIJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pKRBlRzOiyvZE7nBpe5MucikCMAici2XK7/IAIU2N6twK7YDqfiIv/ab17nXJZ8b0z/SsW9jXGA+06WLc3TeLzcAXtxTNfvkTcbsLcMArzFY4BtAEmibXD4SZfYuJWSegM23AdSWYBOavN9og+G8zhtBiqnuIe/XjjMJkDHA5PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+o2EcXq; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-343d73d08faso57003a91.0
-        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 09:44:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764697499; x=1765302299; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ED9tSGVJh0x09FYQjOL2o8g73Yk/StYFmkwh8LhI7Qs=;
-        b=R+o2EcXqhE4Ie+g2FL9FFdtDTjogVNSADZuV/dQWUd4sTlMdxQEbuamuUGng0KHT6R
-         x+QXj6hF27UKO0yLI+yJFgZ7LSAPgYlJNHf8tFT5yPKWXxK1maBpxwNLVjLh7MamPepO
-         2ihNVnUOG9nMt5cliw1PE5iEdL9SQZA+2Dny6Am3n/V6fn9RN4J0Hhp9Vo/2Dhnwyrwq
-         Rfl/8AEw3xC5dVQGSfUX12Nlvn1ygUVfXwxQJPfalXwm98eW/mNwvHcHbYOYl4EteBCM
-         tNV5fRmy1DsAx2KUHl4qRsg8h8B1jJU0lnq49rJDBkLBgBpynxqsdqtIck0kU2ShzgX1
-         aaEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764697499; x=1765302299;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ED9tSGVJh0x09FYQjOL2o8g73Yk/StYFmkwh8LhI7Qs=;
-        b=X/VP+AE0SUiucVfnb3vBkO43GDH5OIUcdVGNusenmrMZB4MJwFycKzmkRvC7Fm3mNm
-         niP2zjVIxa5krxHJaWY7J16HRfHoDkW4YRgDEtyZkMhUP3eFF6xtW2du9yM1DDw+e3r6
-         A/iQCN3MbSnjPSq5EX9fRfkp095C5LDl5V/x6HrntQw8pB33tu2UuJce6wVvAyOGLujP
-         Q9o3YRIaSjyid8t0ESHAnRERgegA2/Nrl0h5vzFm9ecPcDtc/WpAJ3pIxdleBrOEqm0f
-         HSUJkcy0CKGLkov0K7a0enZKmfotlO0M8fH+s2TEm0YZi1J+YX/7mNk3fWu/fdkGqH/H
-         bn6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXDsnexE7XCj8yPJtMY+xV8LjVdIsZkT9GhN5lf5E3/M98Pk2VvHcr43iweK/oAkFEUxVtCYCM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0YR5Uiy1Sc96PHtUpwzseDrKQ5lY0YFW2mLzMS5OsDRbV3y0b
-	/aSVIvGgxBPnrj5SHbWGdvtOm1CO4b2n26X0IA3Nfql0r18AJ6AQKXGv
-X-Gm-Gg: ASbGncvHzkWiiqAORf27q+3VMV63s2pV2nnjbLtPATZDbv0d00yI7qKdX1M1OT3V5CM
-	oK9u0mzx1Qdgpx5BzVzftldo9L2acDwC5nXjoAU4LC61Vb8q2paqlv7YfYz+LDruOaOQR3vZ7Cu
-	/V2FldfuuFGYlAzM8O1WCk7n5/uQf8MNNVrW6SbP3ISwn6WgRVhzJSi4kOe80mLb0Iv+vNm4+Ft
-	uzCs4yiVm6nkeGeJLMjnCkdlz6RNJuKO8EAgqTlBJZoLZCYRwnT9ijF6YUaiP9/O6iJCUvI/WX4
-	Ms6/pKtk+t0sAZzbupdXkW63JRx8ZERJGvFHuD1P0tY2NlkbQ7xqk48fpWP5QL5WjdxnhEt4cSY
-	v8D0kfNAJGaJt4thpqJgFiIkFWI0EYU2ADA/5CzOH2noppWt9XLAQYRKQgAzoQ17aox8CmnIJa1
-	VSPaRwzSsJ6zugmx6kJvGsKz/IEyvmYRoAlQcF6/HbJyULR1hFr6RXSoM28c4CCjVMTmznvZlUx
-	Q0ha+sqHWrBsEPO3pjhlcTvEZPohJLThab/H/B4xvSlPVS/OQVVy/ANNBn5
-X-Google-Smtp-Source: AGHT+IEJA6ge4wFCANfbRxKoKiXJwQLoc+/E8FFao7Y7q4CuOUiy2Rbn+7WQlpnH2DFciZOyBF+QWg==
-X-Received: by 2002:a17:90b:4b8f:b0:343:6a63:85d5 with SMTP id 98e67ed59e1d1-34907fa9e16mr3588267a91.16.1764697498834;
-        Tue, 02 Dec 2025 09:44:58 -0800 (PST)
-Received: from 2045D.localdomain (191.sub-75-229-198.myvzw.com. [75.229.198.191])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-349106cf36dsm56865a91.10.2025.12.02.09.44.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 09:44:58 -0800 (PST)
-From: Gui-Dong Han <hanguidong02@gmail.com>
-To: ioana.ciornei@nxp.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] bus: fsl-mc: fix use-after-free in driver_override_show()
-Date: Wed,  3 Dec 2025 01:44:38 +0800
-Message-ID: <20251202174438.12658-1-hanguidong02@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764697519; c=relaxed/simple;
+	bh=tamybLxNrophK48+LjH+nI7WJXO09o5rS7gtzjOP3xc=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=YBweOTdUepVc2fMkJFLGrmNwXHXTtlk1GZmjnDkz8Xne/2TpiLlCBHQU0PP0wQ79a8j96uC5IOecQiY4QHqlAn8g+P3dFAXJRf+ffsa/rShU8rFJiZIKjn3EjgfOUmEjAQqUEm8b3VmBuHcMycBXCBQ4BllW9WaOIkdWbtpN4ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JKMPluaN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764697516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sO3YMt7bwHXHXoImGSFPk/MGZ4Jh8BA+UgosjHsNIMw=;
+	b=JKMPluaNvsoz4LflwNhgmHLTPdUbhp3ZOrJ9r+VPr+zEMAXz+WYzH+zS+gxHBBseTaxu/j
+	KCQEK8X7I2BuNiByfSsO62LctxCiw767aod8Dz+16fkYC8Gjd8eUgtkyZSKY8c1PiLEmst
+	f2But4uw6wpN/MKBwbkQ8Z8RPlFR2ns=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-ww52pWIROKa1BUU12KTOWQ-1; Tue,
+ 02 Dec 2025 12:45:12 -0500
+X-MC-Unique: ww52pWIROKa1BUU12KTOWQ-1
+X-Mimecast-MFC-AGG-ID: ww52pWIROKa1BUU12KTOWQ_1764697510
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D0671801303;
+	Tue,  2 Dec 2025 17:45:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0CCF30001A4;
+	Tue,  2 Dec 2025 17:45:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Shyam Prasad N <sprasad@microsoft.com>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1597478.1764697506.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Dec 2025 17:45:06 +0000
+Message-ID: <1597479.1764697506@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-The driver_override_show() function reads the driver_override string
-without holding the device_lock. However, driver_override_store() uses
-driver_set_override(), which modifies and frees the string while holding
-the device_lock.
+    =
 
-This can result in a concurrent use-after-free if the string is freed
-by the store function while being read by the show function.
+If a DIO read or an unbuffered read request extends beyond the EOF, the
+server will return a short read and a status code indicating that EOF was
+hit, which gets translated to -ENODATA.  Note that the client does not cap
+the request at i_size, but asks for the amount requested in case there's a
+race on the server with a third party.
 
-Fix this by holding the device_lock around the read operation.
+Now, on the client side, the request will get split into multiple
+subrequests if rsize is smaller than the full request size.  A subrequest
+that starts before or at the EOF and returns short data up to the EOF will
+be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
+indicating to netfslib that we can't read more.
 
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
+not be flagged, its error will be set to -ENODATA and it will be abandoned=
+.
+This will cause the request as a whole to fail with -ENODATA.
+
+Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
+the EOF marker.
+
+This can be reproduced by mounting with "cache=3Dnone,sign,vers=3D1.0" and
+doing a read of a file that's significantly bigger than the size of the
+file (e.g. attempting to read 64KiB from a 16KiB file).
+
+Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way=
+ as SMB2/3")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 ---
-I verified this with a stress test that continuously writes/reads the
-attribute. It triggered KASAN and leaked bytes like a0 f4 81 9f a3 ff ff
-(likely kernel pointers). Since driver_override is world-readable (0644),
-this allows unprivileged users to leak kernel pointers and bypass KASLR.
-Similar races were fixed in other buses (e.g., commits 9561475db680 and
-91d44c1afc61). Currently, 9 of 11 buses handle this correctly; this patch
-fixes one of the remaining two.
----
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/cifssmb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 25845c04e562..a97baf2cbcdd 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -202,8 +202,12 @@ static ssize_t driver_override_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
- 
--- 
-2.43.0
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 645831708e1b..1871d2c1a8e0 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1395,7 +1395,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 	} else {
+ 		size_t trans =3D rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+-		    rdata->subreq.start + trans =3D=3D ictx->remote_i_size) {
++		    rdata->subreq.start + trans >=3D ictx->remote_i_size) {
+ 			rdata->result =3D 0;
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 		} else if (rdata->got_bytes > 0) {
 
 
