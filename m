@@ -1,135 +1,100 @@
-Return-Path: <stable+bounces-198120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28732C9C730
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 18:45:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179C5C9C754
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 18:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 921954E4BC0
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 17:45:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09B9F4E0127
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 17:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B9A2C327C;
-	Tue,  2 Dec 2025 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DDB28980F;
+	Tue,  2 Dec 2025 17:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JKMPluaN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bDuARO1P"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4556F2C237F
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 17:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93929257AD1
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 17:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764697519; cv=none; b=dBpgIh4Maew3Oa1pwVYNEnKthMO/DV1N6CcCZs5ERiwk0AOUvDudJwviSxjkp0ohhnmY3rWran3S8plQKp3lUCWamdOoQ7OApVIzRSlbWaabyiACxPLRBBGj6Ej7OW5sEYUJN14urjiz352haa4pBxgbBXBQTo66oqFNffYlCFA=
+	t=1764697667; cv=none; b=a3rfJvpNesD7/iQZ5o11ZyEBE5uuhAA1OX82PMiNOyijdYSlhLSPsDZP91Y+I8C8vRyaczSiNI9XU2/5FlAJWKyEjZueqrVhuXa9aeoMsyIwFtkxsc79BiRC3WPeGwGyHiVEWrhohZpyj8zpdhoZpr5Ibq6s2+vDXjd/IASV41A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764697519; c=relaxed/simple;
-	bh=tamybLxNrophK48+LjH+nI7WJXO09o5rS7gtzjOP3xc=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=YBweOTdUepVc2fMkJFLGrmNwXHXTtlk1GZmjnDkz8Xne/2TpiLlCBHQU0PP0wQ79a8j96uC5IOecQiY4QHqlAn8g+P3dFAXJRf+ffsa/rShU8rFJiZIKjn3EjgfOUmEjAQqUEm8b3VmBuHcMycBXCBQ4BllW9WaOIkdWbtpN4ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JKMPluaN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764697516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sO3YMt7bwHXHXoImGSFPk/MGZ4Jh8BA+UgosjHsNIMw=;
-	b=JKMPluaNvsoz4LflwNhgmHLTPdUbhp3ZOrJ9r+VPr+zEMAXz+WYzH+zS+gxHBBseTaxu/j
-	KCQEK8X7I2BuNiByfSsO62LctxCiw767aod8Dz+16fkYC8Gjd8eUgtkyZSKY8c1PiLEmst
-	f2But4uw6wpN/MKBwbkQ8Z8RPlFR2ns=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-ww52pWIROKa1BUU12KTOWQ-1; Tue,
- 02 Dec 2025 12:45:12 -0500
-X-MC-Unique: ww52pWIROKa1BUU12KTOWQ-1
-X-Mimecast-MFC-AGG-ID: ww52pWIROKa1BUU12KTOWQ_1764697510
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D0671801303;
-	Tue,  2 Dec 2025 17:45:10 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0CCF30001A4;
-	Tue,  2 Dec 2025 17:45:07 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <sfrench@samba.org>
-cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Shyam Prasad N <sprasad@microsoft.com>, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+	s=arc-20240116; t=1764697667; c=relaxed/simple;
+	bh=ab2jY2uWAQszPetion9+fBof8OWjyf5ORiyxOEn2i2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=J41fODA9xvMe5nRolWhPXXvqeAz/uyxg6xAB99AcmiEq8wa1zkeFuPf2sVg0PlEcMdz20u1oLr/TgOBaK9k5z5yQmTvcV2rOTk/O/KswhWLBq9G6Bq7mQjtckvRRKVoG/d9MDY2nc9yPmrhfmdhob1/PuUHUpmyXvoJfdr/D9Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bDuARO1P; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764697665; x=1796233665;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ab2jY2uWAQszPetion9+fBof8OWjyf5ORiyxOEn2i2Q=;
+  b=bDuARO1PZHI8o43MNb9Nvw0Sk58DSyG0fj0ZQEv+a4RgPtqL8WomS4Wk
+   Bf6pzSl91ICLmPOQBgUpBI8Tw9TFZwVXpm0flYUv+G0cJI4zu3DF3ov3Q
+   ZtLjNaq6Xd455YW5qY0RUfwtLv9JD3AAjbvyxsUjO9Es8FVeYZgw7l8kn
+   twGaH3L1o/RzsOLOpJ+XkafAevfftPJl24FQl8qRL1m7373ibAGuHgbHu
+   SlsNgw6Uwsp3CaPOZWimiZt4q1meFI0CrNCwBY6MzDnAuOOv5dOh2My65
+   mswrQqu4UJ6dqnxjzclXQ0ClY7tbMT/nfslziU5JKz79gku1P/i1WGf1f
+   g==;
+X-CSE-ConnectionGUID: 32NzPl5cRhuyL/ubY6ECCw==
+X-CSE-MsgGUID: mecnIF8GTFSaFXHW1/GC7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66618782"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
+   d="scan'208";a="66618782"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 09:47:44 -0800
+X-CSE-ConnectionGUID: /1pOKUTETf+HgfPOM1QGNw==
+X-CSE-MsgGUID: RLf7yxY3Qi6Y4iHST1QxZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
+   d="scan'208";a="198854600"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 02 Dec 2025 09:47:43 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vQUTV-00000000A4f-2qKB;
+	Tue, 02 Dec 2025 17:47:41 +0000
+Date: Wed, 3 Dec 2025 01:47:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] cifs: Fix handling of a beyond-EOF DIO/unbuffered read
+ over SMB1
+Message-ID: <aS8mLD1V0GM1RwzA@656a63d76ae5>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1597478.1764697506.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Dec 2025 17:45:06 +0000
-Message-ID: <1597479.1764697506@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1597479.1764697506@warthog.procyon.org.uk>
 
-    =
+Hi,
 
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
+Thanks for your patch.
 
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned=
-.
-This will cause the request as a whole to fail with -ENODATA.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+Link: https://lore.kernel.org/stable/1597479.1764697506%40warthog.procyon.org.uk
 
-This can be reproduced by mounting with "cache=3Dnone,sign,vers=3D1.0" and
-doing a read of a file that's significantly bigger than the size of the
-file (e.g. attempting to read 64KiB from a 16KiB file).
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way=
- as SMB2/3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/smb/client/cifssmb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 645831708e1b..1871d2c1a8e0 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1395,7 +1395,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 	} else {
- 		size_t trans =3D rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans =3D=3D ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >=3D ictx->remote_i_size) {
- 			rdata->result =3D 0;
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 		} else if (rdata->got_bytes > 0) {
 
 
