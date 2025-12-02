@@ -1,288 +1,545 @@
-Return-Path: <stable+bounces-198149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D26C9D1A2
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 22:35:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEAFC9D259
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B2E6E3482FF
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 21:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452843A7758
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830B87E110;
-	Tue,  2 Dec 2025 21:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9568D2F9D88;
+	Tue,  2 Dec 2025 22:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LvxX8IJE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiFwPnKp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DF52E40E
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 21:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764711321; cv=fail; b=PsRchanCeAv7zIODJggB37ySiLP+I9fNuE07QafIIut9M2DTUBcFCYn+HEeBbocIRxU31bd88U13D5YogicAvspulfLxSTJSJ01XbHcU9Y6gNmXw8LPCdIBv+YEv3QHMbVpavQMDYilyKuEYKPjIUOmR1KTDO7XmuWxmOMDlKeQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764711321; c=relaxed/simple;
-	bh=Wo2y4y+levO41UEmmgSbcfzLMuoWeSbWPQqFRBRLTAs=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=o8jNbgRNgJkQckx7UdqWJMS8uBALuxyXvIu9PsBiwgEgBLgFVc0lj9NNbdNFXm6oZynJ7wiGRwMTTLmEoaYga2ROnbakgO+SLNJqC5VikK+NK7hplE63Bw90xicp6h9TwbAzoT8r8SNrxLi0JiqoGEknLtSJwBEn2ePl6SE3eIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LvxX8IJE; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764711319; x=1796247319;
-  h=date:from:to:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=Wo2y4y+levO41UEmmgSbcfzLMuoWeSbWPQqFRBRLTAs=;
-  b=LvxX8IJErVa6HKe4G+RH32TQThJbhbWuJAIFOCLGKqbFQkC6Q0vuRhMQ
-   sMgME+Qmc2tmSufxoHiBLGSFpN1FFaq7JN2pN+lk/ksGohoAy4wjDk2Gc
-   X0v+4RcPo0zM63aSkjmVh79Nrzvf0Zw0u9tVUOGgRUI9PT6eNbrqEfXbP
-   92Oeisb79H42JoTb1Yw1nEWxS4bP02YEL0ZndEAn4ZlXX/ZcN87GSz51n
-   siZx4j/3EjsxqaJMQk1S6+thQjK+Bri+vgOLZLDjMnDc7JsJVAQUbzkGJ
-   Fnf8ZQp/ewy0x4z+o9U+rzCQ4MhWZaST5hxuaNid8AbWkGo4wM23/5iuS
-   A==;
-X-CSE-ConnectionGUID: GSHshtX/Q3OKuJlg50jj/g==
-X-CSE-MsgGUID: VjuWn1cGS7iWa0n9BDHOZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="70547310"
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="70547310"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 13:35:19 -0800
-X-CSE-ConnectionGUID: pnzsI74zR9ixG7c6X3ecLg==
-X-CSE-MsgGUID: 6m24ZgwQRYG1BqAxuu76IQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="217839097"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 13:35:18 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 13:35:17 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 13:35:17 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.53) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 13:35:17 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=INNeeeoojhLxZA+Tbrz72IIYrzm1YAXsH/w5+GfX8a67Y6luuMF0pgzEhKti6UxSC1cQnT/jQQioc5L/0QoKlOE+BeMtsBupWWKdQVvP2i70HYe3kjFMuTKqBNBryHPX9OZSSNNFMzTBq/OhejlCOfYekRAzxpeyxl7vUKZone55/bAa7+Zqwo6VM/Mf3hOr/nD+0SOa6NN0Aq3QRwvTG3xUPkzjgHBZaiUCwI8BUF9ipwkt9RUX5DZiwK02Fb3wPDSDcKwoHg3qC/z2oUgnvQoKhDmF0Th4APu9fQzVxwKY/kC2yEGr3RrlOx1oiZFWhKD9FXQac9ancW6aOQjxPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o7YzIQvbeG3vxFBH3Apq7k1+0yOqL6+bri9z/CqhPB8=;
- b=RarN4qB7MJU6l0hP3insu0djlGmX1TU6Bx4h04bnO1GB+vjdJI8pOuHcduQ7qptK74Ckj6/0VezTTdFEJHxvoy/xOQ4UKOIfp6p2Z6it6NJz0iJxa5MmI6g3FempKlUdFpMMcmyD0w4CED731LsTUrgEm1sFuKfXTVMqpXwEeLBGY05fMMZTIROfKrqmpRruCLl3pAJ8kmYSg4p29K2BCdN3SE9c3rzbh70otFih8AhqGMl3Rjetp4efcJOFu6J3DONygVUKf/uRt8YS7HMgGxbYltZ2AYOsW5bfgCKszln1oNfe2/Egq47C+SmHkL6tvQ2nTM2TcaZo1eOn4v51Fw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by DS0PR11MB7312.namprd11.prod.outlook.com (2603:10b6:8:11f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 21:35:16 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%3]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 21:35:16 +0000
-Date: Tue, 2 Dec 2025 23:35:11 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>, <intel-gfx@lists.freedesktop.org>,
-	<intel-xe@lists.freedesktop.org>, Mohammed Thasleem
-	<mohammed.thasleem@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
- probe
-Message-ID: <aS9bj8RRYYc01Rzs@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <aS9ZGmXG_n0IXv-N@ideak-desk>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aS9ZGmXG_n0IXv-N@ideak-desk>
-X-ClientProxiedBy: LO4P123CA0075.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:190::8) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD332F99B3;
+	Tue,  2 Dec 2025 22:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764713279; cv=none; b=kfUt3P3J104Z0W3q7HbHgUXDBZ5NDuszz5kvcpgcYEbQU7S/Ua+5xOa0Q6+G1MjMtG6ZFRLJhi0mv8TS8fofE0rO0lMzghMz3pf0qf0OKXzfIzMZ7g3wXQagorTEkRuQHId4NDbWwtvNTnEFEbkGc5oAzyVakL8yQ91ky7kK27w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764713279; c=relaxed/simple;
+	bh=BpW7N/hm2qVgqAcZwW3G3z9bL9yIrEZ3EE2QdIJB4Do=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T6AIEhOrUfYEYUyEsdV2jcWYIHv+6Sr7UT39W+wshSkq0iSv7AwCGNxANqfJsf1z6SLgADr/749oDWqERVvhVKs2yXgIZtIUzPPN5ACtH/ZAkm83L+iRq7dBaPoDuhWdPZ3h6B3K9Nhyi+mgMocl4O+cL+RMf7od3YGgymOi0Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiFwPnKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DA5C4CEF1;
+	Tue,  2 Dec 2025 22:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764713278;
+	bh=BpW7N/hm2qVgqAcZwW3G3z9bL9yIrEZ3EE2QdIJB4Do=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qiFwPnKpnvgnkGPXFJPFVkU7lDKRryDTrtIhdGpezIPM8m3DjW/A/rRVrMPNUV+v+
+	 sXkjozBdKzyj5d4O7mHG51dJ2WSpiq6zKyiZUJz916pEPRELCsyovr/Z4rek8/oanp
+	 RqktPBy2LHNasJUQU2L4F0GV7iiIupBCKMar30rWVbnC8lNo4jWa1lDLZAwJHk+L/r
+	 7jpVUg6KKgh+zob6n41LB4A+dffyU5cFle2pUmLCy2N5nwBDNPz2kqo4f+on512uS0
+	 H4Enuaa9kymnSqFn48P1uSKwARpM5pSfAa34qeKB4P7XgwsZZn1xQ681piOzVRlsTN
+	 uwDLe6rFjPRbQ==
+Date: Wed, 3 Dec 2025 00:07:54 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Jonathan McDowell <noodles@earth.li>
+Cc: linux-integrity@vger.kernel.org,
+	Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v3] tpm2-sessions: address out-of-range indexing
+Message-ID: <aS9jOs0872QL__l3@kernel.org>
+References: <20251201193958.896358-1-jarkko@kernel.org>
+ <aS8TIeviaippVAha@earth.li>
+ <aS9Dv5CKGNOzpsN7@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|DS0PR11MB7312:EE_
-X-MS-Office365-Filtering-Correlation-Id: e385e41f-8c42-4ebb-5e13-08de31eaaefa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?AYrwZM73XWUtskeohf/EeDrhAguOvdhMc9RfnA3HaEzenyZyAwQi0S3PqSEE?=
- =?us-ascii?Q?/9ZqFYLCth9NSfH4X64QcidrEX8k+enc4JZ7hOjKVCNM3JjBigjL4V1q9P9a?=
- =?us-ascii?Q?RJPUOAh2Z1rsQzyfjZ1IlO3sJUp/wheV9CdjCEUhUUndzv3igZ/iTxYppEKm?=
- =?us-ascii?Q?AIKXH28jok2HsYb9i8K/vJBlhIO7Avr/og+BwPlTS/1xC/j3w0bM12SOlbL1?=
- =?us-ascii?Q?+4RxVexzqC9WKWBxy8TQFlVbEqzoLZZjavlDJz34TpezW2nYEsJ5LRyd6OS0?=
- =?us-ascii?Q?/JUnIaQlJC0/ne4TuqjkUhVfe20fOXQCng/zbfSZHudGr6YnN+9ExkDTgGBm?=
- =?us-ascii?Q?gLod4M5RADGPzxvpMxVcoF5IHdSHlYR81yFDttf2Q1w6XC8qmigM9Js6WlLz?=
- =?us-ascii?Q?geJD9MiqEAlAu9Ir+d1NCmoPlFUYKGpv9/PcD/BM1HSVmu36nDpc+RafDqpQ?=
- =?us-ascii?Q?pXLnyHL1XwPcMQavWPKkriGYIWSqQU0Dx14387xvz1kOYeX/CIisuiq0Yjwt?=
- =?us-ascii?Q?GGp40tHwlu+3djf22C8YikjAAbmHvZEhA8KUP7p5zPglIL7nPcTMbuBku25w?=
- =?us-ascii?Q?2n4yIKW5Tt7g3EKpu+k8UyZzy3mUyWrUogPPUnliJNUr5TONFsimHfXFGKsY?=
- =?us-ascii?Q?VYSOV1f2o2kBQ7t8fJROVV1QxZxCvBxEROoXOrH1eT3/xLi6+Mqw66kLaoDC?=
- =?us-ascii?Q?OUVBWd+hTTpUDcquNPgfoKRvqEhrL/mCF0HQol/n8t7XSmdKxJcHvVVXNczH?=
- =?us-ascii?Q?EQRvG4+GZxEPSs55s/CDGfc+HbUHoSmRoJRoFMYwmm4ukm0ifeSyuInS84My?=
- =?us-ascii?Q?ZWGgu/jQ2enQFD+6Yr5Co5QFCFKwyRwptruV5JRiym8Ytt17QaMUSwAFduNf?=
- =?us-ascii?Q?AWSUYq0RJ0EjvrnKAX0XOGYjqExBatCWhMt/1FkX3tJZQJiVuVd/awqmgffz?=
- =?us-ascii?Q?seD89QKd12CuW1o8fQSPVJp/InAAQI/N4/AOSSaaZ8GT7c6cqi3QkagMaA/J?=
- =?us-ascii?Q?ifgkU3xWh0TYaandsoZg3FsqzKvFFUN0tqTwKrdHaF+/0Zg83pay5E6d3x1n?=
- =?us-ascii?Q?2wJWwzsvuzXUzCilcUH2MptqA0RHfDXOpLJu9m7c6PYmj1WUMbBBkfada9Aj?=
- =?us-ascii?Q?sHv6Ef01ddvE4441wxokNlKCmR7mA7zG5p2NLabiELR+HbTKNPB2bklpPipV?=
- =?us-ascii?Q?uy8jqy4fFt0EE08iUiQ8iEqZv5MRD/d+iOMi3smJkgli20ssbwrhMbczZrdo?=
- =?us-ascii?Q?gx1f2ZmGNs+xiLN7aZt/b2N4O3R5nUWAolrewNCVlvaNFGcxVHV1CsOrr1Ax?=
- =?us-ascii?Q?BTY+IbvuamUTwr8Z556P2bMrvCjpyCdTBCgJOsORT4eJXel0/UrCRtGgtQa5?=
- =?us-ascii?Q?J1v2Z+g1LL08T3G2wpFYlSFzum9lj9vnMbCJu0C0/z8Z/yKSdlCmEsaZ3973?=
- =?us-ascii?Q?w+vtVPN0FtAfkUvQtkye/Nhn2xl7GV1m?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jPOrYte6gEm7aOoDysHeFI57Zxoy11EFqruoGhTqBhLVpqXRJmEqIkng6qoD?=
- =?us-ascii?Q?dQAjBaCMgjDvzHoqu1j9Wz4IqTFe9MHw82r2TYFsTQ+InmwF+kZB8cBf4/ou?=
- =?us-ascii?Q?haKRZQAPd7cItfzv0m1EVIzrC3KmMJx4xTHzUvK/5TPim0+nYWiQI7QYLeFX?=
- =?us-ascii?Q?ReTeyoGIZBu0Js/rD+7UFc3/7h4BmpP1UU1sLH1UPrE/Bk8T6hoX6tkmyusS?=
- =?us-ascii?Q?HldJE5R2hTiIoDWhtxgm8wO17qWPpkvt0Tx/+srCur3QFbL+uh/SQIcjUM5k?=
- =?us-ascii?Q?yghW3JMqLlno8UG1f1BeoRCnQTVfcjoVVIwNLgQgOOUyFIHrT3Kf/YunOXc9?=
- =?us-ascii?Q?ffIj8XET5FQSGObmRK34YBF4JN7CwHaV9NiEYr19TxkSDmCFKzRwwyfFqtAN?=
- =?us-ascii?Q?D/pcdWxLJ+nzCO63Zcw9dy7PNnjZlVolyZkIFTSg7NwUXpqOhhCiKHBPNUR6?=
- =?us-ascii?Q?o8ssTs7WxQtu9/qUBncThcn2+1wsipNb5KtetUwaZjctRhOnIw3ygN1b0i0W?=
- =?us-ascii?Q?+ZxOA5LqfGZ1hqQl5i5lEwgBUKV51cU1U6LJYkY0Pq+TNEiI3w6yfHzlnWI0?=
- =?us-ascii?Q?gk0bD1SLS4jd4erR2vs56evr090zqnmSpiqF6zeznMeO9sdQ9tLzanGrczMG?=
- =?us-ascii?Q?/St9nxs/CdWHYr8IYL1Bh11gqdAGkWNGTt/YjMl3+uhzprxLVvwcKI+yPa9d?=
- =?us-ascii?Q?r/aX7LamZ8EfFJnrk7/WWpyTmxigDQ0z+5F59aw3YWqZaRm2tuVrmbZ6SaOH?=
- =?us-ascii?Q?wHem2NUvWK9wLtZc7kQD/+/PCKUjo8FxLzpfDadx8YJVUJRXdRQd+NKq4kXN?=
- =?us-ascii?Q?lH15Cj6od9r4xyKjIIeJjXQs17ZfGQj1fQ4IRRpsg4S9ds6m3pUie9ibboTS?=
- =?us-ascii?Q?q2vu9h5XlComOAKSCnVZRzRfAQzUrxc28QV/4uPI7s8/NUOFzNO8x5uTV1yB?=
- =?us-ascii?Q?zicfsTqqYzi8YUtFC8Dxj5r2ea5NWsBIjiaabw3J+xnwlyCbyh3kMe07OYHM?=
- =?us-ascii?Q?zFN7LmBg0uJ32KZeWEjVO4WXxxSNDeU8sd+vJzZYOMSNrfSmh0Ij5S3UiPF6?=
- =?us-ascii?Q?Fx1Gagz1VuCSjfvkcZthI4LgKthy+qaHM4qo0Eo5gvbscw0llC7ir5ZOJSxm?=
- =?us-ascii?Q?E5MRgIqSgs9Pd9+nfZ0YATY/pi25P3bjW6bmEV5U63ztdg4Ty6NsbIa/J7RC?=
- =?us-ascii?Q?pk9M+r+5tnLALV2vpPKeurTumT3k6NDOT7vPuLeodUNgTYsHQ2CF7jXEnHAS?=
- =?us-ascii?Q?YogRSl/tis90GlDLN+vH4o6GNdwO4ylRuP9q5uaZCY9F4KWvZFNWuVK1Ljxx?=
- =?us-ascii?Q?89rNCbMw6MziJBF/RobsIx2kF198sYvh9nU6Tm9nCflpEno6ToyeThVcn2Cn?=
- =?us-ascii?Q?FYrRpy+bH7ItjfL2g4LXCCahPnLIGK9hD02E1E0RtsB5irMI9KJ9Cr2T0Py2?=
- =?us-ascii?Q?N9tE0NB7IcDJy98Vmox9zDsjX+3FBLC4IiB/FZGWTySfWr1A5DyRCRMBEPiK?=
- =?us-ascii?Q?+9mrXC2A0xCRwwWewAJRsu9ZEX4NUQ3jFSSFptfuAkxRw8imyLTG+myKL0oM?=
- =?us-ascii?Q?HObz5p1sceqtDWIJXK/ppz2Y1tjWJf8c0v9M8EeJR2gZYeKfuGIKaQk/SGUv?=
- =?us-ascii?Q?u5rci32kRsKpaTBPIakJeTF1NvUz8zb+X/cFRqqGTCSN?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e385e41f-8c42-4ebb-5e13-08de31eaaefa
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 21:35:16.1725
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: beGh9YGHqgJD/OPEJxeocUE7bvMK1mI00V8vwtISvqhZIiPXrmfPfnBZ+x9z0IuBjAhwE7iRDnpGujwy82/3pA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7312
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aS9Dv5CKGNOzpsN7@kernel.org>
 
-On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
-> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
-> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-> > initialized, and dmc is thus NULL.
+On Tue, Dec 02, 2025 at 09:53:39PM +0200, Jarkko Sakkinen wrote:
+> On Tue, Dec 02, 2025 at 04:26:09PM +0000, Jonathan McDowell wrote:
+> > On Mon, Dec 01, 2025 at 09:39:58PM +0200, Jarkko Sakkinen wrote:
+> > > 'name_size' does not have any range checks, and it just directly indexes
+> > > with TPM_ALG_ID, which could lead into memory corruption at worst.
+> > > 
+> > > Address the issue by only processing known values and returning -EINVAL for
+> > > unrecognized values.
+> > > 
+> > > Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
+> > > that errors are detected before causing any spurious TPM traffic.
+> > > 
+> > > End also the authorization session on failure in both of the functions, as
+> > > the session state would be then by definition corrupted.
+> > > 
+> > > Cc: stable@vger.kernel.org # v6.10+
+> > > Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
+> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > ---
+> > > v3:
+> > > - Add two missing 'tpm2_end_auth_session' calls to the fallback paths of
+> > >  'tpm_buf_fill_hmac_session'.
+> > > - Rewrote the commit message.
+> > > - End authorization session on failure in 'tpm2_buf_append_name' and
+> > >  'tpm_buf_fill_hmac_session'.
+> > > v2:
+> > > There was spurious extra field added to tpm2_hash by mistake.
+> > > ---
+> > > drivers/char/tpm/tpm2-cmd.c               |  23 +++-
+> > > drivers/char/tpm/tpm2-sessions.c          | 131 +++++++++++++++-------
+> > > include/linux/tpm.h                       |   6 +-
+> > > security/keys/trusted-keys/trusted_tpm2.c |  29 ++++-
+> > > 4 files changed, 136 insertions(+), 53 deletions(-)
+> > > 
+> > > diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+> > > index 5b6ccf901623..4473b81122e8 100644
+> > > --- a/drivers/char/tpm/tpm2-cmd.c
+> > > +++ b/drivers/char/tpm/tpm2-cmd.c
+> > > @@ -187,7 +187,11 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+> > > 	}
+> > > 
+> > > 	if (!disable_pcr_integrity) {
+> > > -		tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
+> > > +		rc = tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
+> > > +		if (rc) {
+> > > +			tpm_buf_destroy(&buf);
+> > > +			return rc;
+> > > +		}
+> > > 		tpm_buf_append_hmac_session(chip, &buf, 0, NULL, 0);
+> > > 	} else {
+> > > 		tpm_buf_append_handle(chip, &buf, pcr_idx);
+> > > @@ -202,8 +206,14 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+> > > 			       chip->allocated_banks[i].digest_size);
+> > > 	}
+> > > 
+> > > -	if (!disable_pcr_integrity)
+> > > -		tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	if (!disable_pcr_integrity) {
+> > > +		rc = tpm_buf_fill_hmac_session(chip, &buf);
+> > > +		if (rc) {
+> > > +			tpm_buf_destroy(&buf);
+> > > +			return rc;
+> > > +		}
+> > > +	}
+> > > +
+> > > 	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting extend a PCR value");
+> > > 	if (!disable_pcr_integrity)
+> > > 		rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+> > > @@ -261,7 +271,12 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
+> > > 						| TPM2_SA_CONTINUE_SESSION,
+> > > 						NULL, 0);
+> > > 		tpm_buf_append_u16(&buf, num_bytes);
+> > > -		tpm_buf_fill_hmac_session(chip, &buf);
+> > > +		err = tpm_buf_fill_hmac_session(chip, &buf);
+> > > +		if (err) {
+> > > +			tpm_buf_destroy(&buf);
+> > > +			return err;
+> > > +		}
+> > > +
+> > > 		err = tpm_transmit_cmd(chip, &buf,
+> > > 				       offsetof(struct tpm2_get_random_out,
+> > > 						buffer),
+> > > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+> > > index 6d03c224e6b2..33ad0d668e1a 100644
+> > > --- a/drivers/char/tpm/tpm2-sessions.c
+> > > +++ b/drivers/char/tpm/tpm2-sessions.c
+> > > @@ -144,16 +144,24 @@ struct tpm2_auth {
+> > > /*
+> > >  * Name Size based on TPM algorithm (assumes no hash bigger than 255)
+> > >  */
+> > > -static u8 name_size(const u8 *name)
+> > > +static int name_size(const u8 *name)
+> > > {
+> > > -	static u8 size_map[] = {
+> > > -		[TPM_ALG_SHA1] = SHA1_DIGEST_SIZE,
+> > > -		[TPM_ALG_SHA256] = SHA256_DIGEST_SIZE,
+> > > -		[TPM_ALG_SHA384] = SHA384_DIGEST_SIZE,
+> > > -		[TPM_ALG_SHA512] = SHA512_DIGEST_SIZE,
+> > > -	};
+> > > -	u16 alg = get_unaligned_be16(name);
+> > > -	return size_map[alg] + 2;
+> > > +	u16 hash_alg = get_unaligned_be16(name);
+> > > +
+> > > +	switch (hash_alg) {
+> > > +	case TPM_ALG_SHA1:
+> > > +		return SHA1_DIGEST_SIZE + 2;
+> > > +	case TPM_ALG_SHA256:
+> > > +		return SHA256_DIGEST_SIZE + 2;
+> > > +	case TPM_ALG_SHA384:
+> > > +		return SHA384_DIGEST_SIZE + 2;
+> > > +	case TPM_ALG_SHA512:
+> > > +		return SHA512_DIGEST_SIZE + 2;
+> > > +	case TPM_ALG_SM3_256:
+> > > +		return SM3256_DIGEST_SIZE + 2;
+> > > +	}
+> > > +
 > > 
-> > That would be the case when the call path is
-> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
+> > Can we/should we perhaps print a warning here if we don't know the
+> > algorithm?
+> 
+> I think it is a good idea to do that right now.
+> 
+> Also, it'd be better to not have SM3 label as SM2/SM3 is not supported
+> at this point. I'm working simulatenously on an improved feature and
+> that slipped from that work:
+> 
+> My big picture roadmap for this feature, and how to make it useful  is:
+> 
+> 1. tpm.integrity_mode=disabled/permissive/enforced. Permissive means
+> here that the feature is conditionally enabled if algorithms that are
+> required to enable the HMAC pipe are available.
+> 2. tpm.integrity_handle=0x00000000/0x81??????.
+> 
 > > 
-> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-> > conditionally, depending on the current and target DC states. At probe,
-> > the target is disabled, but if DC6 is enabled, the function is called,
-> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-> > at probe, as we haven't seen this failure mode before.
+> > > +	return -EINVAL;
+> > > }
+> > > 
+> > > static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+> > > @@ -161,6 +169,7 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+> > > 	struct tpm_header *head = (struct tpm_header *)buf->data;
+> > > 	off_t offset = TPM_HEADER_SIZE;
+> > > 	u32 tot_len = be32_to_cpu(head->length);
+> > > +	int ret;
+> > > 	u32 val;
+> > > 
+> > > 	/* we're starting after the header so adjust the length */
+> > > @@ -172,9 +181,15 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+> > > 		return -EINVAL;
+> > > 	offset += val;
+> > > 	/* name */
+> > > +
+> > > 	val = tpm_buf_read_u16(buf, &offset);
+> > > -	if (val != name_size(&buf->data[offset]))
+> > > +	ret = name_size(&buf->data[offset]);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	if (val != ret)
+> > > 		return -EINVAL;
+> > > +
+> > > 	memcpy(name, &buf->data[offset], val);
+> > > 	/* forget the rest */
+> > > 	return 0;
+> > > @@ -221,46 +236,70 @@ static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
+> > >  * As with most tpm_buf operations, success is assumed because failure
+> > >  * will be caused by an incorrect programming model and indicated by a
+> > >  * kernel message.
+> > > + *
+> > > + * Ends the authorization session on failure.
+> > >  */
+> > > -void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > -			 u32 handle, u8 *name)
+> > > +int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > +			u32 handle, u8 *name)
+> > > {
+> > > #ifdef CONFIG_TCG_TPM2_HMAC
+> > > 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
+> > > 	struct tpm2_auth *auth;
+> > > 	int slot;
+> > > +	int ret;
+> > > #endif
+> > > 
+> > > 	if (!tpm2_chip_auth(chip)) {
+> > > 		tpm_buf_append_handle(chip, buf, handle);
+> > > -		return;
+> > > +		return 0;
+> > > 	}
+> > > 
+> > > #ifdef CONFIG_TCG_TPM2_HMAC
+> > > 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
+> > > 	if (slot >= AUTH_MAX_NAMES) {
+> > > -		dev_err(&chip->dev, "TPM: too many handles\n");
+> > > -		return;
+> > > +		dev_err(&chip->dev, "too many handles\n");
+> > > +		ret = -EIO;
+> > > +		goto err;
+> > > 	}
+> > > 	auth = chip->auth;
+> > > -	WARN(auth->session != tpm_buf_length(buf),
+> > > -	     "name added in wrong place\n");
+> > > +	if (auth->session != tpm_buf_length(buf)) {
+> > > +		dev_err(&chip->dev, "session state malformed");
+> > > +		ret = -EIO;
+> > > +		goto err;
+> > > +	}
+> > > 	tpm_buf_append_u32(buf, handle);
+> > > 	auth->session += 4;
+> > > 
+> > > 	if (mso == TPM2_MSO_PERSISTENT ||
+> > > 	    mso == TPM2_MSO_VOLATILE ||
+> > > 	    mso == TPM2_MSO_NVRAM) {
+> > > -		if (!name)
+> > > -			tpm2_read_public(chip, handle, auth->name[slot]);
+> > > +		if (!name) {
+> > > +			ret = tpm2_read_public(chip, handle, auth->name[slot]);
+> > > +			if (ret)
+> > > +				goto err;
+> > > +		}
+> > > 	} else {
+> > > -		if (name)
+> > > -			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
 > > 
-> > Add NULL checks and switch the dmc->display references to just display.
+> > We're dropping the error message here; is there a reason for that?
+> 
+> Thanks, I'll add it back.
+> 
 > > 
-> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> > Cc: Imre Deak <imre.deak@intel.com>
-> > Cc: <stable@vger.kernel.org> # v6.16+
-> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> > > +		if (name) {
+> > > +			ret = -EIO;
+> > > +			goto err;
+> > > +		}
+> > > 	}
+> > > 
+> > > 	auth->name_h[slot] = handle;
+> > > -	if (name)
+> > > -		memcpy(auth->name[slot], name, name_size(name));
+> > > +	if (name) {
+> > > +		ret = name_size(name);
+> > > +		if (ret < 0)
+> > > +			goto err;
+> > > +
+> > > +		memcpy(auth->name[slot], name, ret);
+> > > +	}
+> > > +#endif
+> > > +	return 0;
+> > > +
+> > > +#ifdef CONFIG_TCG_TPM2_HMAC
+> > > +err:
+> > > +	tpm2_end_auth_session(chip);
+> > > +	return tpm_ret_to_err(ret);
+> > > #endif
+> > > }
+> > > EXPORT_SYMBOL_GPL(tpm_buf_append_name);
+> > > @@ -533,11 +572,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+> > >  * encryption key and encrypts the first parameter of the command
+> > >  * buffer with it.
+> > >  *
+> > > - * As with most tpm_buf operations, success is assumed because failure
+> > > - * will be caused by an incorrect programming model and indicated by a
+> > > - * kernel message.
+> > > + * Ends the authorization session on failure.
+> > >  */
+> > > -void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > +int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > {
+> > > 	u32 cc, handles, val;
+> > > 	struct tpm2_auth *auth = chip->auth;
+> > > @@ -549,9 +586,12 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 	u8 cphash[SHA256_DIGEST_SIZE];
+> > > 	struct sha256_ctx sctx;
+> > > 	struct hmac_sha256_ctx hctx;
+> > > +	int ret;
+> > > 
+> > > -	if (!auth)
+> > > -		return;
+> > > +	if (!auth) {
+> > > +		ret = -EINVAL;
+> > > +		goto err;
+> > > +	}
+> > > 
+> > > 	/* save the command code in BE format */
+> > > 	auth->ordinal = head->ordinal;
+> > > @@ -560,9 +600,10 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 
+> > > 	i = tpm2_find_cc(chip, cc);
+> > > 	if (i < 0) {
+> > > -		dev_err(&chip->dev, "Command 0x%x not found in TPM\n", cc);
 > > 
-> > ---
+> > Again, I think it's generally helpful to have the error message given that
+> > the return (EINVAL) does not help narrow down which value is bad.
+> 
+> Agreed.
+> 
 > > 
-> > Rare case, but this may also throw off the rc6 counting in debugfs when
-> > it does happen.
-> 
-> Yes, I missed the case where the driver is being loaded while DC6 is
-> enabled, this is what happens for the reporter:
-> 
-> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
-> 
-> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
-> loaded by BIOS for instance - will be overwritten by the driver, not a
-> well specified sequence (even though the driver is trying to handle it
-> correctly by disabling any active firmware handler).
-> 
-> But as you pointed out this would also throw off the cooked-up DC6
-> counter tracking,
-
-Actually the patch would keep the counter working, as the counter
-wouldn't be updated in the dmc==NULL case. However I still think the
-correct fix would be to check the correct DC state, which from the POV
-of the counter tracking is the driver's version of the state, not the HW
-state.
-
-> so could instead the counter update depend on the
-> driver's DC state instead of the HW state? I.e. set
-> gen9_set_dc_state()/dc6_was_enabled,
-> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
-> says that DC6 was indeed enabled by the driver (instead of checking the
-> HW state).
-> 
-> That would fix the reporter's oops when calling
-> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
-> it if the driver hasn't actually enabled DC6 and it would also keep the
-> DC6 counter tracking correct.
-> 
-> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
-> guaranteed to be called only once the firmware is loaded, as until that
-> point enabling DC6 is blocked (by holding a reference on the DC_off
-> power well).
-> 
-> > ---
-> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > > -		return;
+> > > +		ret = -EINVAL;
+> > > +		goto err;
+> > > 	}
+> > > +
+> > > 	attrs = chip->cc_attrs_tbl[i];
+> > > 
+> > > 	handles = (attrs >> TPM2_CC_ATTR_CHANDLES) & GENMASK(2, 0);
+> > > @@ -576,9 +617,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 		u32 handle = tpm_buf_read_u32(buf, &offset_s);
+> > > 
+> > > 		if (auth->name_h[i] != handle) {
+> > > -			dev_err(&chip->dev, "TPM: handle %d wrong for name\n",
+> > > -				  i);
+> > > -			return;
+> > > +			dev_err(&chip->dev, "invalid handle 0x%08x\n", handle);
+> > > +			ret = -EINVAL;
+> > > +			goto err;
+> > > 		}
+> > > 	}
+> > > 	/* point offset_s to the start of the sessions */
+> > > @@ -609,12 +650,14 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 		offset_s += len;
+> > > 	}
+> > > 	if (offset_s != offset_p) {
+> > > -		dev_err(&chip->dev, "TPM session length is incorrect\n");
+> > > -		return;
+> > > +		dev_err(&chip->dev, "session length is incorrect\n");
+> > > +		ret = -EINVAL;
+> > > +		goto err;
+> > > 	}
+> > > 	if (!hmac) {
+> > > -		dev_err(&chip->dev, "TPM could not find HMAC session\n");
+> > > -		return;
+> > > +		dev_err(&chip->dev, "could not find HMAC session\n");
+> > > +		ret = -EINVAL;
+> > > +		goto err;
+> > > 	}
+> > > 
+> > > 	/* encrypt before HMAC */
+> > > @@ -646,8 +689,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 		if (mso == TPM2_MSO_PERSISTENT ||
+> > > 		    mso == TPM2_MSO_VOLATILE ||
+> > > 		    mso == TPM2_MSO_NVRAM) {
+> > > -			sha256_update(&sctx, auth->name[i],
+> > > -				      name_size(auth->name[i]));
+> > > +			ret = name_size(auth->name[i]);
+> > > +			if (ret < 0)
+> > > +				goto err;
+> > > +
+> > > +			sha256_update(&sctx, auth->name[i], ret);
+> > > 		} else {
+> > > 			__be32 h = cpu_to_be32(auth->name_h[i]);
+> > > 
+> > > @@ -668,6 +714,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> > > 	hmac_sha256_update(&hctx, auth->tpm_nonce, sizeof(auth->tpm_nonce));
+> > > 	hmac_sha256_update(&hctx, &auth->attrs, 1);
+> > > 	hmac_sha256_final(&hctx, hmac);
+> > > +	return 0;
+> > > +
+> > > +err:
+> > > +	tpm2_end_auth_session(chip);
+> > > +	return ret;
+> > > }
+> > > EXPORT_SYMBOL(tpm_buf_fill_hmac_session);
+> > > 
+> > > diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> > > index 0e9e043f728c..1a59f0190eb3 100644
+> > > --- a/include/linux/tpm.h
+> > > +++ b/include/linux/tpm.h
+> > > @@ -528,8 +528,8 @@ static inline struct tpm2_auth *tpm2_chip_auth(struct tpm_chip *chip)
+> > > #endif
+> > > }
+> > > 
+> > > -void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > -			 u32 handle, u8 *name);
+> > > +int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > +			u32 handle, u8 *name);
+> > > void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > 				 u8 attributes, u8 *passphrase,
+> > > 				 int passphraselen);
+> > > @@ -562,7 +562,7 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
+> > > #ifdef CONFIG_TCG_TPM2_HMAC
+> > > 
+> > > int tpm2_start_auth_session(struct tpm_chip *chip);
+> > > -void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
+> > > +int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
+> > > int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
+> > > 				int rc);
+> > > void tpm2_end_auth_session(struct tpm_chip *chip);
+> > > diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+> > > index e165b117bbca..7672a4376dad 100644
+> > > --- a/security/keys/trusted-keys/trusted_tpm2.c
+> > > +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> > > @@ -283,7 +283,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+> > > 		goto out_put;
+> > > 	}
+> > > 
+> > > -	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> > > +	if (rc)
+> > > +		goto out;
+> > > +
+> > > 	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT,
+> > > 				    options->keyauth, TPM_DIGEST_SIZE);
+> > > 
+> > > @@ -331,7 +334,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+> > > 		goto out;
+> > > 	}
+> > > 
+> > > -	tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	if (rc)
+> > > +		goto out;
+> > > +
+> > > 	rc = tpm_transmit_cmd(chip, &buf, 4, "sealing data");
+> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+> > > 	if (rc)
+> > > @@ -438,7 +444,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+> > > 		return rc;
+> > > 	}
+> > > 
+> > > -	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> > > +	if (rc)
+> > > +		goto out;
+> > > +
+> > > 	tpm_buf_append_hmac_session(chip, &buf, 0, options->keyauth,
+> > > 				    TPM_DIGEST_SIZE);
+> > > 
+> > > @@ -450,7 +459,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+> > > 		goto out;
+> > > 	}
+> > > 
+> > > -	tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	if (rc)
+> > > +		goto out;
+> > > +
+> > > 	rc = tpm_transmit_cmd(chip, &buf, 4, "loading blob");
+> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+> > > 	if (!rc)
+> > > @@ -497,7 +509,9 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+> > > 		return rc;
+> > > 	}
+> > > 
+> > > -	tpm_buf_append_name(chip, &buf, blob_handle, NULL);
+> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> > > +	if (rc)
+> > > +		goto out;
+> > > 
+> > > 	if (!options->policyhandle) {
+> > > 		tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_ENCRYPT,
+> > > @@ -522,7 +536,10 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+> > > 						NULL, 0);
+> > > 	}
+> > > 
+> > > -	tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
+> > > +	if (rc)
+> > > +		goto out;
+> > > +
+> > > 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
+> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+> > > 
+> > > -- 
+> > > 2.52.0
+> > > 
 > > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-> > index 2fb6fec6dc99..169bbbc91f6d 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
-> >  	struct intel_dmc *dmc = display_to_dmc(display);
-> >  	u32 dc5_cur_count;
-> >  
-> > -	if (DISPLAY_VER(dmc->display) < 14)
-> > +	if (!dmc || DISPLAY_VER(display) < 14)
-> >  		return;
-> >  
-> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
-> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
-> >  
-> >  	if (!start_tracking)
-> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
-> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
-> >  	struct intel_dmc *dmc = display_to_dmc(display);
-> >  	bool dc6_enabled;
-> >  
-> > -	if (DISPLAY_VER(display) < 14)
-> > +	if (!dmc || DISPLAY_VER(display) < 14)
-> >  		return false;
-> >  
-> >  	mutex_lock(&power_domains->lock);
+> > J.
+> > 
 > > -- 
-> > 2.47.3
-> > 
+> > Be Ye Not Lost Among Precepts of Order
+> 
+> BR, Jarkko
+
+Addressed in: https://lore.kernel.org/linux-integrity/20251202202643.107108-2-jarkko@kernel.org/
+
+BR, Jarkko
 
