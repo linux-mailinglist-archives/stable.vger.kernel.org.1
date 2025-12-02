@@ -1,232 +1,192 @@
-Return-Path: <stable+bounces-198151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B3C9D314
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:19:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE71C9D34A
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135C83A87A0
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:19:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBF5F4E3E1E
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5E32F7459;
-	Tue,  2 Dec 2025 22:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6022FA0F2;
+	Tue,  2 Dec 2025 22:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU8OuIvR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kAhPPj+H"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0648C2D1F4E;
-	Tue,  2 Dec 2025 22:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95C62F7ABE
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 22:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764713958; cv=none; b=UB5oKqulyJbWlFIzIWCkJtwGirficvkqpNpOidzAFBkP3Pbevn9efWSORK6Y1PlGvuA6zsqOSzvul8EDsagUj3FscLRceLuMVXeUapDRmXTcasd7uX6U0dDoTmzS/6IyDYkP5xDDgC9dosQA/6QBD8nlkBhQ8kseVHNmusysdts=
+	t=1764714400; cv=none; b=NpJECHcl82yTnhXCSluU+Adfx61rq3bDllKQAUtKzfNPHKT4t8Hpu7JtStUhzJIGtbKpeped6anT7PD8avUI8FG7FMPcn7k6Pp1sMtNLi0kNZWbISWlF/s207M6DKC7YzVEDJ5UW5BtOnQIXKGurKMPlgaSwUig6j0FM6zUxUSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764713958; c=relaxed/simple;
-	bh=s67ObscIC5Fdz0gW2PfFJdDD71/iFYepTk0lKClwfAo=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=eA0IHNlTU+EKzsvJnM5r0s4LfEynAOad09cKVE3aDtTXi8MWGwWjo85q/Y2FZfHIJLKNFlLa95eLTmk+0Zpn6dUV2PdCk1X2nqPYONHlZMqewahVe2HfbjIt2+0260xBCFJZsbM+mz2r+82i8x/yEzpbdU7gQsV13Mu/s+sMM9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU8OuIvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78C6C4CEF1;
-	Tue,  2 Dec 2025 22:19:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764713957;
-	bh=s67ObscIC5Fdz0gW2PfFJdDD71/iFYepTk0lKClwfAo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SU8OuIvRkG5HX9GerzrGCwAD0hZrRjnWxVwHryreN9/1b6sx9XJuSfjg3maCMHpSU
-	 GI9c4Z3clmN8OvxPjZdKy61dPS7hc+YkJ9ont2J4xa+Nr2jfoWnOlzOVgnWQxYKJ2F
-	 RMmsEyTMNQk9RvqWvBDaPR1NdMjQlmI/k2o77nQ4iBgZvorYlKr/ZggvdSm+ofos5z
-	 cfTo89wWUP383IeC/Df0G6hDgvQKlXA/WuEaaEcawvDbdNU5Xri0+4COnl/aM+QoUI
-	 xIJpBB5pHoTpyFNxYGd4iLvD8e9maEm89GiBzc0PAO+T5z4Ax8/F7ZR1BwPgMi43tX
-	 whNdULGGAXXbQ==
-Date: Wed, 3 Dec 2025 07:19:13 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Khannanov Lenar <Lenar.Khannanov@infotecs.ru>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>, "patches@lists.linux.dev"
- <patches@lists.linux.dev>, "sashal@kernel.org" <sashal@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, Ilia Gavrilov
- <Ilia.Gavrilov@infotecs.ru>
-Subject: Re: [PATCH 6.12 034/116] tracing: tprobe-events: Fix to clean up
- tprobe correctly when module unload
-Message-Id: <20251203071913.ced4edee107af8154c1e3ccd@kernel.org>
-In-Reply-To: <4e6535a0-1da9-4a74-9bf0-c551b2b183e7@infotecs.ru>
-References: <20250325122150.084780669@linuxfoundation.org>
-	<4e6535a0-1da9-4a74-9bf0-c551b2b183e7@infotecs.ru>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1764714400; c=relaxed/simple;
+	bh=rHwN2/sAdchfHT7Zb5HAP3imgxuZsM9T/sqYZAk/6WU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Py2zJbZaIYCcb8FYfIfPkzhGjlJmmnI1vZm7sWEYdcQz21Qc6bKa3M4Jjh2Ct/i21BprIx/4kX/57B+mCrcuyX/1iBwHy+mZor9CHZhLW3OLkoT4t5lGIWSXsPKGhiNevddm1i11CW0Xwxiu1LH3L0kIdqG3BFqlsh9bTtmuLoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kAhPPj+H; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b9ef46df43so5851382b3a.1
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 14:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764714398; x=1765319198; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z+lZwWACySoeFUTre/rpZS/RF15vQtVnd6re+B4HeIE=;
+        b=kAhPPj+HwejeC1fBp+kmjXHGC5jFMeRWxGDZkKpbqIss8ZM9BPgqu8RC5bn7wAc2hp
+         Rpyh4nPDAtyLnCw7OLBHRpyG7lwZZlXor6zqfZXklszpaOGH5U+40JJBCOJ44GzPSe1u
+         EExawkpvG6P5brkx6XbmrvouOQONL0UcX4mf4XHdT8l5qKk2s5BX3CYNfBMe93pbxsLY
+         DyNGnQoQWkp/SM60kIL67JbBCI/9dhkS4VIbjvf6X5OWf/2zAxZrsUNrbE0kgE2nEd7h
+         mCVcYTu0DC93TAC6+VDSPQVskogB75gzjtvlKrKeruYQhlAaJTcv4KvEiBt9XFs9NsgF
+         FLaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764714398; x=1765319198;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=z+lZwWACySoeFUTre/rpZS/RF15vQtVnd6re+B4HeIE=;
+        b=R7rv8ryxsiN8ssw7jb7qN2fk63g9X1qIHMQxsDJFEaBv4FonIZD27vdnMcPaMGZ/t2
+         AFxkJfeLmIghf+YgUreTf0tBw3pIQDWD3ZBiLFB8ntiM+HF4NBYZGcd/hCuLwqIiCDJl
+         cxOXLkT4E2RSZgCLrlCJ32WZI1ahFMegQDbrIHFYZvZK9OxZICUI2vgSckKhuXafeMew
+         YiGeJjzZWX8poX2ZZ/GPNeK+98Do6kOF6qhkyAepXVsFBQ5MeTZIFOfDfzSPyeLKDsuV
+         9VlcVnsVmOjJ4zvWTrbjNlzi1TPFoWOC8XNkzywAxWioseujnbH06/YvGgZPFkcAxyO8
+         cNHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDNEb+eYeqTkfErXnQ2uR5n7pPtZTbHc0+Sltr7Ir/V8Pm7wAvgUw0w6Hb6lh1k+VUeV2Yyu8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0VmVCGhyBTi0zV+FeXl9VDDq88Qn6xuH4/vsxNv/Ebt65uCQC
+	SXRnOO+/cNHAdnpLy3Qcbvjgz76hU8bzxcRJq6eKiIOn2vvVYdoPxMEQea6dOov6zpalY3ZFkeP
+	zVEekqg==
+X-Google-Smtp-Source: AGHT+IE1BvPtitsWzBS6Ac1tWd884WiXjHWVm75ZLNM3IZD9rkoEJZ62MBJVcyofgFVYw2C6GLmN7Xerad0=
+X-Received: from pgaq5.prod.google.com ([2002:a63:4305:0:b0:bac:6acd:8181])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9148:b0:35d:d477:a7ea
+ with SMTP id adf61e73a8af0-363f5d4b09cmr428731637.19.1764714397963; Tue, 02
+ Dec 2025 14:26:37 -0800 (PST)
+Date: Tue, 2 Dec 2025 14:26:36 -0800
+In-Reply-To: <fac971fe6625456f3c9ad69d859008117e35826a.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+ <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
+ <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com> <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
+ <aS8I6T3WtM1pvPNl@google.com> <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
+ <aS8Vhb66UViQmY_Q@google.com> <fac971fe6625456f3c9ad69d859008117e35826a.camel@infradead.org>
+Message-ID: <aS9ng741Osi91O_v@google.com>
+Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Khushit Shah <khushit.shah@nutanix.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kai.huang@intel.com" <kai.huang@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 24 Nov 2025 11:06:41 +0000
-Khannanov Lenar <Lenar.Khannanov@infotecs.ru> wrote:
+On Tue, Dec 02, 2025, David Woodhouse wrote:
+> On Tue, 2025-12-02 at 08:36 -0800, Sean Christopherson wrote:
+> >=20
+> > Hmm, I suppose that could work for uAPI.=C2=A0 Having both an ENABLE an=
+d a DISABLE
+> > is obviously a bit odd, but slowing down the reader might actually be a=
+ good
+> > thing in this case.=C2=A0 And the documentation should be easy enough t=
+o write.
+> >=20
+> > I was worried that having ENABLE and DISABLE controls would lead to con=
+fusing code
+> > internally, but there's no reason KVM's internal tracking needs to matc=
+h uAPI.
+> >=20
+> > How about this?
+> >=20
+> > ---
+> > =C2=A0arch/x86/include/asm/kvm_host.h |=C2=A0 7 +++++++
+> > =C2=A0arch/x86/include/uapi/asm/kvm.h |=C2=A0 6 ++++--
+> > =C2=A0arch/x86/kvm/lapic.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 16 +++++++++++++++-
+> > =C2=A0arch/x86/kvm/x86.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 15 ++++++++++++---
+> > =C2=A04 files changed, 38 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm=
+_host.h
+> > index 5a3bfa293e8b..b4c41255f01d 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -1226,6 +1226,12 @@ enum kvm_irqchip_mode {
+> > =C2=A0	KVM_IRQCHIP_SPLIT,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* =
+created with KVM_CAP_SPLIT_IRQCHIP */
+> > =C2=A0};
+> > =C2=A0
+> > +enum kvm_suppress_eoi_broadcast_mode {
+> > +	KVM_SUPPRESS_EOI_QUIRKED,
+> > +	KVM_SUPPRESS_EOI_ENABLED,
+> > +	KVM_SUPPRESS_EOI_DISABLED,
+> > +};
+> > +
+>=20
+> Looks good. I'd probably call it KVM_SUPPRESS_EOI_LEGACY though?
 
-> We found the kernel crashed when running kselftest (ftrace:ftracetest-ktap) in kernel 6.12.52 with the next trace:
-> 
-> 
-> [  321.365532] ------------[ cut here ]------------
-> [  321.368124] WARNING: CPU: 0 PID: 1132 at kernel/trace/ftrace.c:378 __unregister_ftrace_function+0x12a/0x1c0
-> [  321.373445] Modules linked in: intel_rapl_msr(E) intel_rapl_common(E) crct10dif_pclmul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) rapl(E) snd_pcm(E) snd_timer(E) vmw_balloon(E) snd(E) vmwgfx(E) soundcore(E) drm_ttm_helper(E) vga16fb(E) ttm(E) vgastate(E) pcspkr(E) drm_kms_helper(E) vmw_vmci(E) ac(E) button(E) joydev(E) serio_raw(E) sg(E) openvswitch(E) nsh(E) nf_conncount(E) drm(E) dm_mod(E) fuse(E) autofs4(E) sd_mod(E) ata_generic(E) hid_generic(E) mptspi(E) ata_piix(E) mptscsih(E) mptbase(E) i2c_piix4(E) scsi_transport_spi(E) crc32_pclmul(E) libata(E) crc32c_intel(E) psmouse(E) ehci_pci(E) uhci_hcd(E) i2c_smbus(E) e1000(E) scsi_mod(E) ehci_hcd(E) scsi_common(E) [last unloaded: trace_events_sample(E)]
-> [  321.404373] CPU: 0 UID: 0 PID: 1132 Comm: ftracetest Tainted: G            E      6.12.52 #4
-> [  321.408625] Tainted: [E]=UNSIGNED_MODULE
-> [  321.410729] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-> [  321.416039] RIP: 0010:__unregister_ftrace_function+0x12a/0x1c0
-> [  321.419046] Code: 00 48 8b 1d 48 7e ac 02 48 81 fb e0 09 df bd 0f 84 90 00 00 00 48 39 dd 0f 85 1d ff ff ff 48 c7 c0 b0 09 df bd e9 36 ff ff ff <0f> 0b b8 f0 ff ff ff e9 8a 03 ea 00 be ff ff ff ff 48 c7 c7 68 23
-> [  321.429097] RSP: 0018:ffffa0ba8106fb90 EFLAGS: 00010246
-> [  321.431997] RAX: 0000000000000000 RBX: ffff92a988808418 RCX: 0000000000000000
-> [  321.435654] RDX: 0000000000000000 RSI: ffffffffbc1be80c RDI: ffff92a988808418
-> [  321.439480] RBP: 00000000ffffffea R08: 0000000000000001 R09: 0000000000000000
-> [  321.443158] R10: ffffa0ba8106fb98 R11: 0000000080000000 R12: ffff92a988808620
-> [  321.446896] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
-> [  321.450646] FS:  00007efce9408740(0000) GS:ffff92a9b9600000(0000) knlGS:0000000000000000
-> [  321.454781] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  321.457970] CR2: 00007fdc3c2d64c0 CR3: 000000010c79a000 CR4: 0000000000752ef0
-> [  321.462499] PKRU: 55555554
-> [  321.464322] Call Trace:
-> [  321.466060]  <TASK>
-> [  321.467592]  unregister_ftrace_function+0x35/0x170
-> [  321.470541]  ? __pfx_dyn_event_open+0x10/0x10
-> [  321.473070]  unregister_fprobe+0x4e/0x90
-> [  321.475486]  trace_fprobe_release+0x118/0x160
-> [  321.478052]  dyn_events_release_all+0xba/0xe0
-> [  321.480961]  dyn_event_open+0x46/0x50
-> [  321.483330]  do_dentry_open+0x160/0x460
-> [  321.485611]  vfs_open+0x30/0xf0
-> [  321.487524]  path_openat+0x66d/0xc60
-> [  321.489674]  do_filp_open+0xac/0x150
-> [  321.491860]  ? rcu_is_watching+0xd/0x50
-> [  321.494179]  ? _raw_spin_unlock+0x29/0x50
-> [  321.496489]  ? trace_preempt_on+0x80/0xc0
-> [  321.498966]  ? preempt_count_sub+0x92/0xd0
-> [  321.501451]  ? _raw_spin_unlock+0x29/0x50
-> [  321.503836]  do_sys_openat2+0x91/0xc0
-> [  321.505932]  __x64_sys_openat+0x6a/0xa0
-> [  321.508307]  do_syscall_64+0x87/0x140
-> [  321.510619]  ? do_syscall_64+0x93/0x140
-> [  321.512889]  ? do_syscall_64+0x93/0x140
-> [  321.515095]  ? trace_hardirqs_on_prepare+0x38/0xd0
-> [  321.517782]  ? syscall_exit_to_user_mode+0x80/0x170
-> [  321.520563]  ? do_syscall_64+0x93/0x140
-> [  321.522916]  ? do_syscall_64+0x93/0x140
-> [  321.525047]  ? clear_bhb_loop+0x60/0xb0
-> [  321.527358]  ? clear_bhb_loop+0x60/0xb0
-> [  321.529568]  ? clear_bhb_loop+0x60/0xb0
-> [  321.531867]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [  321.534549] RIP: 0033:0x7efce9502f01
-> [  321.536647] Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d ea 26 0e 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 93 00 00 00 48 8b 54 24 28 64 48 2b 14 25
-> [  321.545776] RSP: 002b:00007ffee609e920 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-> [  321.549681] RAX: ffffffffffffffda RBX: 0000000000000241 RCX: 00007efce9502f01
-> [  321.553486] RDX: 0000000000000241 RSI: 000056032f3378e8 RDI: 00000000ffffff9c
-> [  321.557137] RBP: 000056032f3378e8 R08: 000000000000000f R09: 0000000000000001
-> [  321.561025] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000000000000000
-> [  321.564879] R13: 0000000000000003 R14: 000056032f337898 R15: 000056032f3378c0
-> [  321.568737]  </TASK>
-> [  321.570407] irq event stamp: 0
-> [  321.572420] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-> [  321.575750] hardirqs last disabled at (0): [<ffffffffbb18ad04>] copy_process+0xad4/0x2bf0
-> [  321.579887] softirqs last  enabled at (0): [<ffffffffbb18ad04>] copy_process+0xad4/0x2bf0
-> [  321.584131] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> [  321.587407] ---[ end trace 0000000000000000 ]---
-> [  321.590005] BUG: kernel NULL pointer dereference, address: 000000000000002e
-> [  321.594462] #PF: supervisor read access in kernel mode
-> [  321.597485] #PF: error_code(0x0000) - not-present page
-> [  321.600377] PGD 0 P4D 0
-> [  321.602138] Oops: Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
-> [  321.605966] CPU: 2 UID: 0 PID: 1132 Comm: ftracetest Tainted: G        W   E      6.12.52 #4
-> [  321.610759] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-> [  321.613608] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-> [  321.625523] RIP: 0010:trace_fprobe_release+0x135/0x160
-> [  321.628287] Code: e9 5a ff ff ff 48 89 ef e8 78 e9 ff ff 31 c0 b9 3e 00 00 00 48 89 ef f3 48 ab 48 8b bb 10 02 00 00 48 85 ff 0f 84 27 ff ff ff <48> 8b 77 30 31 d2 e8 c0 a6 f8 ff 48 c7 83 10 02 00 00 00 00 00 00
-> [  321.638446] RSP: 0018:ffffa0ba8106fbf0 EFLAGS: 00010282
-> [  321.641267] RAX: 0000000000000000 RBX: ffff92a988808400 RCX: 0000000000000000
-> [  321.644913] RDX: 0000000000000000 RSI: ffffffffbcabc8e0 RDI: fffffffffffffffe
-> [  321.648727] RBP: ffff92a988808418 R08: 0000000000000001 R09: 0000000000000000
-> [  321.652390] R10: 0000000000000000 R11: 0000000080000000 R12: ffff92a988808620
-> [  321.656067] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
-> [  321.659841] FS:  00007efce9408740(0000) GS:ffff92a9b9680000(0000) knlGS:0000000000000000
-> [  321.663892] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  321.666927] CR2: 000000000000002e CR3: 000000010c79a000 CR4: 0000000000752ef0
-> [  321.671048] PKRU: 55555554
-> [  321.672617] Call Trace:
-> [  321.674080]  <TASK>
-> [  321.675439]  dyn_events_release_all+0xba/0xe0
-> [  321.677796]  dyn_event_open+0x46/0x50
-> [  321.679875]  do_dentry_open+0x160/0x460
-> [  321.681973]  vfs_open+0x30/0xf0
-> [  321.683816]  path_openat+0x66d/0xc60
-> [  321.685805]  do_filp_open+0xac/0x150
-> [  321.687823]  ? rcu_is_watching+0xd/0x50
-> [  321.689933]  ? _raw_spin_unlock+0x29/0x50
-> [  321.692269]  ? trace_preempt_on+0x80/0xc0
-> [  321.694623]  ? preempt_count_sub+0x92/0xd0
-> [  321.696919]  ? _raw_spin_unlock+0x29/0x50
-> [  321.699104]  do_sys_openat2+0x91/0xc0
-> [  321.701098]  __x64_sys_openat+0x6a/0xa0
-> [  321.703233]  do_syscall_64+0x87/0x140
-> [  321.705229]  ? do_syscall_64+0x93/0x140
-> [  321.707314]  ? do_syscall_64+0x93/0x140
-> [  321.709748]  ? trace_hardirqs_on_prepare+0x38/0xd0
-> [  321.712646]  ? syscall_exit_to_user_mode+0x80/0x170
-> [  321.715242]  ? do_syscall_64+0x93/0x140
-> [  321.717292]  ? do_syscall_64+0x93/0x140
-> [  321.719373]  ? clear_bhb_loop+0x60/0xb0
-> [  321.721412]  ? clear_bhb_loop+0x60/0xb0
-> [  321.723602]  ? clear_bhb_loop+0x60/0xb0
-> [  321.725925]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [  321.728644] RIP: 0033:0x7efce9502f01
-> [  321.730619] Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d ea 26 0e 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 93 00 00 00 48 8b 54 24 28 64 48 2b 14 25
-> [  321.739534] RSP: 002b:00007ffee609e920 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-> [  321.743467] RAX: ffffffffffffffda RBX: 0000000000000241 RCX: 00007efce9502f01
-> [  321.747137] RDX: 0000000000000241 RSI: 000056032f3378e8 RDI: 00000000ffffff9c
-> [  321.750552] RBP: 000056032f3378e8 R08: 000000000000000f R09: 0000000000000001
-> [  321.753932] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000000000000000
-> [  321.757373] R13: 0000000000000003 R14: 000056032f337898 R15: 000056032f3378c0
-> [  321.761149]  </TASK>
-> [  321.762475] Modules linked in: intel_rapl_msr(E) intel_rapl_common(E) crct10dif_pclmul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) rapl(E) snd_pcm(E) snd_timer(E) vmw_balloon(E) snd(E) vmwgfx(E) soundcore(E) drm_ttm_helper(E) vga16fb(E) ttm(E) vgastate(E) pcspkr(E) drm_kms_helper(E) vmw_vmci(E) ac(E) button(E) joydev(E) serio_raw(E) sg(E) openvswitch(E) nsh(E) nf_conncount(E) drm(E) dm_mod(E) fuse(E) autofs4(E) sd_mod(E) ata_generic(E) hid_generic(E) mptspi(E) ata_piix(E) mptscsih(E) mptbase(E) i2c_piix4(E) scsi_transport_spi(E) crc32_pclmul(E) libata(E) crc32c_intel(E) psmouse(E) ehci_pci(E) uhci_hcd(E) i2c_smbus(E) e1000(E) scsi_mod(E) ehci_hcd(E) scsi_common(E) [last unloaded: trace_events_sample(E)]
-> [  321.793650] CR2: 000000000000002e
-> [  321.795444] ---[ end trace 0000000000000000 ]---
-> [  321.797783] RIP: 0010:trace_fprobe_release+0x135/0x160
-> [  321.800487] Code: e9 5a ff ff ff 48 89 ef e8 78 e9 ff ff 31 c0 b9 3e 00 00 00 48 89 ef f3 48 ab 48 8b bb 10 02 00 00 48 85 ff 0f 84 27 ff ff ff <48> 8b 77 30 31 d2 e8 c0 a6 f8 ff 48 c7 83 10 02 00 00 00 00 00 00
-> [  321.809544] RSP: 0018:ffffa0ba8106fbf0 EFLAGS: 00010282
-> [  321.812136] RAX: 0000000000000000 RBX: ffff92a988808400 RCX: 0000000000000000
-> [  321.815574] RDX: 0000000000000000 RSI: ffffffffbcabc8e0 RDI: fffffffffffffffe
-> [  321.819020] RBP: ffff92a988808418 R08: 0000000000000001 R09: 0000000000000000
-> [  321.822463] R10: 0000000000000000 R11: 0000000080000000 R12: ffff92a988808620
-> [  321.825928] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
-> [  321.829385] FS:  00007efce9408740(0000) GS:ffff92a9b9680000(0000) knlGS:0000000000000000
-> [  321.833218] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  321.836153] CR2: 000000000000002e CR3: 000000010c79a000 CR4: 0000000000752ef0
-> [  321.839711] PKRU: 55555554
-> [  321.841241] Kernel panic - not syncing: Fatal exception
-> [  321.844568] Kernel Offset: 0x3a000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-> [  331.783046] ---[ end Kernel panic - not syncing: Fatal exception ]---
-> 
-> 
-> This panic was bisected to this particular commit and can be reproduced by running this specific subtest:
-> 
-> 
-> ./ftracetest test.d/dynevent/add_remove_tprobe_module.tc
+Why legacy?  "Quirk" has specific meaning in KVM: technically broken behavi=
+or
+that is retained as the default for backwards compatibility.  "Legacy" does=
+ not,
+outside of a few outliers like HPET crud.
 
-This might be fixed by the series of:
+> And just for clarity I wouldn't embed the explicit checks against e.g
+> arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_LEGACY. I'd make static
+> inline functions like
 
-https://lore.kernel.org/all/176244792552.155515.3285089581362758469.stgit@devnote2/
+Ya, definitely no objection,
+=20
+> static inline bool kvm_lapic_advertise_directed_eoi(kvm)
 
-Thanks,
+s/directed_eoi/suppress_eoi_broadcast.  I want to provide as clear of split=
+ as
+possible between the local APIC feature and the I/O APIC feature.
 
-> 
-> 
-> Regards,
-> 
-> Lenar Khannanov
+> {
+> 	/* Legacy behaviour was to advertise this feature but it
+> didn't=20
+> 	 * actually work. */
+> 	return kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_DISABLED;
+> }
+>=20
+> static inline bool kvm_lapic_suppress_directed_eoi(kvm)
 
+Too close to "suppress EOI broadcast", e.g. it would be easy to read this a=
+s
+"suppress EOIs" and invert the polarity.  It's wordy, but I think
+kvm_lapic_ignore_suppress_eoi_broadcast() is the least awful name.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> {
+> 	/* Legacy behaviour advertised this feature but didn't
+> actually
+> 	 * suppress the EOI. */
+> 	return kvm->arch.suppress_eoi_broadcast =3D=3D KVM_SUPPRESS_EOI_ENABLED;
+> }
+>=20
+> Because it keeps the batshittery in one place and clearly documented?
+>=20
+> I note your version did actually suppress the broadcast even in the
+> DISABLED case if the guest had managed to set that bit in SPIV, but I
+> don't think it *can* so that difference doesn't matter anyway, right?
+
+Right.  If we want to be paranoid, we could WARN_ON_ONCE() in whatever the =
+"ignore
+broadcast" accessor is called, because it should only be used if the bit is=
+ enabled
+in the local APIC.
 
