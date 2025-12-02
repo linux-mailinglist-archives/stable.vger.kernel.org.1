@@ -1,59 +1,79 @@
-Return-Path: <stable+bounces-198036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C99C99D41
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 03:05:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D16C99E12
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 03:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 695A54E2A08
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 02:05:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCFB44E20A9
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 02:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCD21F37D4;
-	Tue,  2 Dec 2025 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73B268C42;
+	Tue,  2 Dec 2025 02:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aMT5GbMW"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="0tIiaSHw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ADB212B31
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 02:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD6618BC3D
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 02:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764641110; cv=none; b=pGeHLUg77fY3e5StT5VZB1zcwDFGlr4K0NtipTJgCPzt7eitHhmtbfswlvQEpfC/6FZBhN/2Lx8YTG6AAun55Fx7N0geFl/KhR049YYkIioGxegoCG1jxhhOcapteIu4su3O3mFKaLQCRZXB7Y8+M0S7yOBaudWbxNcPPR7y5GA=
+	t=1764642653; cv=none; b=RqXMg8ZkGjPgsxkQTlkwGJXowXPT9y1o93w0J/ZfyA5nbwWD/LJ6qcMyXBqvHeqiV9Ksj+9cMFoes0zgC9kSfxsMokClCQVj7c9QZSr/Qh50yknXKx1GBnS+D/jWU5aaNzdh3ximRFIJukcvII1HzrrBzWx5vJdIeWiVekYUTm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764641110; c=relaxed/simple;
-	bh=BS4pJOrUwK/vSbYSZAzlQjP552wQor7kC/ap+vh7qos=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o62pOVFvJciCHGACqij4udZ4EBi+vcdKnBQEXLkXY2z7Gq9UuxSi0TwCUIlVqyGXHlf3xtNbPtr+fYj8e5bU/d2gH97oLa2GP6By4L9XnW8ua5lZRjdSiGYb6QcE3KyQ5vrgxEZjjfGaRmZQOZU75s40+QcOs6GUiYVYMNjyZ94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMT5GbMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09A8C19421;
-	Tue,  2 Dec 2025 02:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764641109;
-	bh=BS4pJOrUwK/vSbYSZAzlQjP552wQor7kC/ap+vh7qos=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMT5GbMWnbNWo+uMQn6RhB48nFQANtpwMEm8W0Lnth5+y46LN7MS0AexVs1eRpLDW
-	 spQ8L7/x2Z04CIIDEC06ogyNJeZBXNCSJgro2nNwgCLlAB9ZeDjfo9wYrHgVgsVqeV
-	 9obGyN9VjvvAT697xtIXVUetmEt49Qxcjo7+bkn7HptBSoIsQHYbL/VT0jsah7RAZ6
-	 8XjgN+Q/BdvAz7WaWhIgumdd/l6HufX3O1R2VCt7RcPsB0xMCZyZqyHC43dfHQFNYJ
-	 /s0R7He1TLqPA8kSxOJ8CHDEHXUCTEIxEDqrCa6vrB8BvIfhKBv3q6wkF9htOh2+Z8
-	 pkQzi7fr/aYzg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jimmy Hu <hhhuuu@google.com>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
-Date: Mon,  1 Dec 2025 21:05:05 -0500
-Message-ID: <20251202020505.1616609-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251202020505.1616609-1-sashal@kernel.org>
-References: <2025120122-submitter-flame-5478@gregkh>
- <20251202020505.1616609-1-sashal@kernel.org>
+	s=arc-20240116; t=1764642653; c=relaxed/simple;
+	bh=t8wkMNJ67h6APOUnmIgWljJmnbu5Gr/K3rJaloHPvtM=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=J7yzMElwFAs1JmAAVfTEEe1sTF8OfdDPsnvSm/TwR/oj78N+Gu9JJzQs/cnuzCMtBgiua6dy7UtecGlMpWcbB+KZMorce1+oiPn/grx4pQahrk+htnu/L7Unq42KyQqCfQjJb+fQKrPjZUJzws81c8GMeV7KUoOEy1RA0p7lZBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=0tIiaSHw; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-340bb1cb9ddso4212897a91.2
+        for <stable@vger.kernel.org>; Mon, 01 Dec 2025 18:30:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1764642651; x=1765247451; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4wfkbIs5cT1xI/hsSuyRy4Z3+tt12GdZzTRx+CCDKkE=;
+        b=0tIiaSHwoMfklse+AitcDwujTJ2TQZlIZDGUdtpppvRrj4l3KwmoPsaorF09b53sFx
+         ycwI6VGyi9SoXaB5bwGDY8F4nXP4pL4J5F/OIs0qdJKuEkRGR3BZg4okVEqgsJjz7kV7
+         OAZlrv0UbFNVaxE4gBtUvC8/7YBVdikv3zdXjpPXZRLzwk2oE7h8W+mVncewwBAZPUR1
+         rTn59NCfVHSMfqgJyJOBs4Z/LzSJAqJYy3MJg+dUnZRykrfMpFZPb74BHTR/J/GBl6Bc
+         pCYC38EVq88swg+SKqC0Nm19lTAmpac5pckWKmzM29XNfeTOikybDIxhcJdVtW6D4sSJ
+         /BHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764642651; x=1765247451;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4wfkbIs5cT1xI/hsSuyRy4Z3+tt12GdZzTRx+CCDKkE=;
+        b=LbGfmnMjytYPkyYnhX9eOQY+h+7PONO/eXfOclDv0MC45nMX0qC0yk9TpBDFWqeKNJ
+         03uGPptq63X2hX1l1lt8+M+tcbnstU0krHrrza4nOdf9R/TzhfpJmTz/PhoSHNfQd29F
+         oes03SbiDR6uQkiuqPP0kjs983lfNtlbUa8NcWJgYQ4pYVuiq8hEhdpDsabuWAauNKNy
+         NdIDTDIhqkNKY1uQZP/ZLtaQDqFv/qIs4/WxeMMCVUT/VXi2qRS+ncXsrLoMM/djEFLv
+         jFZsFy0pQ3i7dytoez3OkIMvp+ig78/3memvxHm5a8jGAvBBWXmK6FC7PufOxwjR/UVu
+         sMcw==
+X-Gm-Message-State: AOJu0Yx/O0ZWVhHqOzawYO1Vy2xqpWLNar7zxmYpAN0cUknrW4EDlGzh
+	8HI9GqZEbV7a7hJI6U05ILWo2uddnl1SoYjfdOILI6jscsV1T3pFi2+WEv8txX1Yw84BA0MXn+S
+	e/Yri4xw=
+X-Gm-Gg: ASbGncv7uMftr3l6mhkD34vW78eVWnxSUE2rhdxnz0VptyFC8f5ZnYui3azWXO0ncdO
+	fIYdghBscld2vMGd0gqWSPKW3ufgvzKMqVCUtlFXaHelh/eF4xcjeLJYbrfHxeMtC6/fRhkrOcL
+	TByRK3qChUEcZD9unS3mYxffNDZcuzDC0cCYYrXrtDsjVNOcEe6sGeUsF5jI9TczJvtMNGgUQ90
+	sR7CFE310fL3Yvv7TVpFd+rqDKy4CN2C6iUP+WS3ulGQlvPMEJwJntQ8FCSfgwCejEpX/lXzTSp
+	1dwcQ51tOAuFWKOUIH/t9f21pOHIjmyb/jcLGU12RjGwVadQShSqvjY6Cykw0OVKdpvM1cllDlu
+	SjCOOcbzdYpRBT96HgYgnou72K3ew3VivjG2UR5xr2HWbG7VCLSs79PMn607glawG8qsqte06LZ
+	/ogOBW
+X-Google-Smtp-Source: AGHT+IE5/nC0wuYGYu96nK5tLfLjUPB3kmg2GBHU5a85VE5hgoEfusI57J/O+328Yq+62SnjXr/gpg==
+X-Received: by 2002:a05:7022:688:b0:11d:e6ee:47ba with SMTP id a92af1059eb24-11de6ee4bc0mr1685958c88.35.1764642650665;
+        Mon, 01 Dec 2025 18:30:50 -0800 (PST)
+Received: from 1ece3ece63ba ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcb049cdesm68110766c88.8.2025.12.01.18.30.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 18:30:50 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,119 +81,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: [STATUS] stable/linux-6.12.y -
+ 318a47068f7b88de838518897500d7509e3fe205
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 02 Dec 2025 02:30:49 -0000
+Message-ID: <176464264962.3080.13897173542734512796@1ece3ece63ba>
 
-From: Jimmy Hu <hhhuuu@google.com>
 
-[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-A race condition during gadget teardown can lead to a use-after-free
-in usb_gadget_state_work(), as reported by KASAN:
 
-  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
-  Workqueue: events usb_gadget_state_work
 
-The fundamental race occurs because a concurrent event (e.g., an
-interrupt) can call usb_gadget_set_state() and schedule gadget->work
-at any time during the cleanup process in usb_del_gadget().
+Hello,
 
-Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
-device removal") attempted to fix this by moving flush_work() to after
-device_del(). However, this does not fully solve the race, as a new
-work item can still be scheduled *after* flush_work() completes but
-before the gadget's memory is freed, leading to the same use-after-free.
+Status summary for stable/linux-6.12.y
 
-This patch fixes the race condition robustly by introducing a 'teardown'
-flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
-set during cleanup in usb_del_gadget() *before* calling flush_work() to
-prevent any new work from being scheduled once cleanup has commenced.
-The scheduling site, usb_gadget_set_state(), now checks this flag under
-the lock before queueing the work, thus safely closing the race window.
+Dashboard:
+https://d.kernelci.org/c/stable/linux-6.12.y/318a47068f7b88de838518897500d7509e3fe205/
 
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/udc/core.c | 17 ++++++++++++++++-
- include/linux/usb/gadget.h    |  5 +++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+branch: linux-6.12.y
+commit hash: 318a47068f7b88de838518897500d7509e3fe205
+origin: maestro
+test start time: 2025-12-01 11:00:03.719000+00:00
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 37f83606477fc..05163379c9a2a 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1121,8 +1121,13 @@ static void usb_gadget_state_work(struct work_struct *work)
- void usb_gadget_set_state(struct usb_gadget *gadget,
- 		enum usb_device_state state)
- {
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&gadget->state_lock, flags);
- 	gadget->state = state;
--	schedule_work(&gadget->work);
-+	if (!gadget->teardown)
-+		schedule_work(&gadget->work);
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	trace_usb_gadget_set_state(gadget, 0);
- }
- EXPORT_SYMBOL_GPL(usb_gadget_set_state);
-@@ -1356,6 +1361,8 @@ static void usb_udc_nop_release(struct device *dev)
- void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
- 		void (*release)(struct device *dev))
- {
-+	spin_lock_init(&gadget->state_lock);
-+	gadget->teardown = false;
- 	INIT_WORK(&gadget->work, usb_gadget_state_work);
- 	gadget->dev.parent = parent;
- 
-@@ -1530,6 +1537,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
- void usb_del_gadget(struct usb_gadget *gadget)
- {
- 	struct usb_udc *udc = gadget->udc;
-+	unsigned long flags;
- 
- 	if (!udc)
- 		return;
-@@ -1543,6 +1551,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
- 	device_del(&gadget->dev);
-+	/*
-+	 * Set the teardown flag before flushing the work to prevent new work
-+	 * from being scheduled while we are cleaning up.
-+	 */
-+	spin_lock_irqsave(&gadget->state_lock, flags);
-+	gadget->teardown = true;
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 2cae3af9742d3..14090bafe5ac7 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -373,6 +373,9 @@ struct usb_gadget_ops {
-  *	can handle. The UDC must support this and all slower speeds and lower
-  *	number of lanes.
-  * @state: the state we are now (attached, suspended, configured, etc)
-+ * @state_lock: Spinlock protecting the `state` and `teardown` members.
-+ * @teardown: True if the device is undergoing teardown, used to prevent
-+ *	new work from being scheduled during cleanup.
-  * @name: Identifies the controller hardware type.  Used in diagnostics
-  *	and sometimes configuration.
-  * @dev: Driver model state for this abstract device.
-@@ -448,6 +451,8 @@ struct usb_gadget {
- 	enum usb_ssp_rate		max_ssp_rate;
- 
- 	enum usb_device_state		state;
-+	spinlock_t			state_lock;
-+	bool				teardown;
- 	const char			*name;
- 	struct device			dev;
- 	unsigned			isoch_delay;
--- 
-2.51.0
+Builds:	   34 ✅    5 ❌    0 ⚠️
+Boots: 	  189 ✅    0 ❌    0 ⚠️
+Tests: 	11205 ✅  810 ❌ 2936 ⚠️
 
+### POSSIBLE REGRESSIONS
+
+  No possible regressions observed.
+
+
+### FIXED REGRESSIONS
+    
+Hardware: beaglebone-black
+  > Config: multi_v7_defconfig
+    - Architecture/compiler: arm/gcc-14
+      - ltp
+      last run: https://d.kernelci.org/test/maestro:692d842ef5b8743b1f6ef8d2
+      history:  > ❌  > ❌  > ❌  > ✅  > ✅  
+            
+
+
+### UNSTABLE TESTS
+
+  No unstable tests observed.
+
+
+
+This branch has 5 pre-existing build issues. See details in the dashboard.
+
+Sent every day if there were changes in the past 24 hours.
+Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
