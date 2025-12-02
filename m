@@ -1,96 +1,95 @@
-Return-Path: <stable+bounces-198050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF29C9A7EF
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 08:40:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225FFC9A86A
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 08:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3363A62C8
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 07:40:53 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E618D34690A
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 07:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A055E301033;
-	Tue,  2 Dec 2025 07:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AEF3019A5;
+	Tue,  2 Dec 2025 07:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jWf5vHgd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uJOb2u2I";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SWZFgKTR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hwiJTBaU"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="v54KINoS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="scoE9VZQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WfUz/mA6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4zmcd5S2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28762FFFA2
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 07:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24C2FF176
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 07:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764661250; cv=none; b=YHJPNorNy2Ef60AGXKZQr8hvTQl6O7pAuzJoXs/XEKA9p8qCKVs99CzlJj1kFb6KzGfOsHizGFO+/X/xAntsNIgIaEExp4j69qJA6FlFkRvdVEfbPO6+UQDa1dTrqkk68qZ3DXlCrY0mQSObOnV95ig0/Q3JbTQv2zECB2qyAoI=
+	t=1764661378; cv=none; b=mibiyLskmZsxf5Ug+KuZ1/azT9k6tdkyYlqaKsOOKfqQG51Tr93XnPaieh0pYSUR1BPZdCz7RDK/swV2qB6drRDbZcF+BBguNhNtWC3D681OO/QpoUNx3hhwMWrThUOYYZeSTynhopsVJBCFxKXk/BjtVJBtIvArg4hXeF7R6mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764661250; c=relaxed/simple;
-	bh=MhatzRSiQca5u/0BgROOozeC52/9DZIKbP3Fhjn78Qo=;
+	s=arc-20240116; t=1764661378; c=relaxed/simple;
+	bh=RPerrCcb/rxIf6JIVbFY9KV6ktAvgD3XzwnrrjGIm8g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VupLnPcTIKlONfmEvx03TUC+kYUUEzQHeoEE56L8D432kxuNcPjckB8kdy83WS6SdbWlgXTOfdhQHnmUVAXafOwmryEpPoEXAzjBeO11XhTweGN3M2oaihA7Yuz0OfsNAdIKm8JARhAJn4ZwL/udfc4eEuvrl+ZWTpeePXFN/vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jWf5vHgd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uJOb2u2I; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SWZFgKTR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hwiJTBaU; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=EECSUeytbScZ5tw37fNUacNsEcIjySZT6smguWgAOWHQ+VKBsjbmgKVjWtNseZ81BDkDK/2AWtjL0U4OBMjWYWkRDDMZxqG8j/6Rw0z+/VE089orIn/YD/NrMcjvLj7KIVFHR0sdy2GXfakFuoaSEckm6BRsuFNX4nw/j9ml7IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=v54KINoS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=scoE9VZQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WfUz/mA6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4zmcd5S2; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6A47E5BD0D;
-	Tue,  2 Dec 2025 07:40:44 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5110F5BD0D;
+	Tue,  2 Dec 2025 07:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764661245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764661374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O7tmskg9a3J1QQAMefc1jOGIyFExb+c0JNYbjII1D/U=;
-	b=jWf5vHgdPjyPyy+8Fff3aG5Ui751tQE703PfCMOkKi/VDIU78L6CWBTknBrKpEdomacU5H
-	2eg3R9A2ZHrOdBWCmYu7/GwHFnXx9RTV6yRfhkgz6q3GBybqjXYV2fB/z/GScybQ//g+h2
-	6176A5Q/UBT03Y7s3ZEBHrWAR+LPQ1c=
+	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
+	b=v54KINoSSeCZEmdVVCh8jGCEvJiWl50LEoHcoT8E9FVvWFCWVZGYukvpvy72HQ6VDWbKiy
+	hBi4kIizteoUVfuDVno4obJU8HciEQwNZqBJm3R3mgcQmiXmeToOAOGMuLCB9Wu40823ZN
+	kLIjtG5Dk7xHgS/hxrXRgj+ZdgyPnqI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764661245;
+	s=susede2_ed25519; t=1764661374;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O7tmskg9a3J1QQAMefc1jOGIyFExb+c0JNYbjII1D/U=;
-	b=uJOb2u2InLlrcMfO4wQrodoVBqFRyEmS7OIW2To2a9FWFM5fnqCC5P3+rX6Mi/eVjvSZ1c
-	YPHNMNaGZfoA6QBA==
+	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
+	b=scoE9VZQSdTvSPBLtfFceEJMi+J51wTrrNOfa/EdSD/K3381tpEEymEyPrLEcMvtG5n5xX
+	4Zz4v7puJ8j6tkDQ==
 Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SWZFgKTR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hwiJTBaU
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764661244; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1764661373; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O7tmskg9a3J1QQAMefc1jOGIyFExb+c0JNYbjII1D/U=;
-	b=SWZFgKTRXWmQwGEtRmbwD9QI2e5F3HZz9vlEzFrn14HGb6VD9AqADGaEY2aV+Cr9U91LB2
-	MKpBu6FookwPSCOLRMKFZNohal7MBQNWsS2BrjzPKHnKxWCgrfHYEXGqD//TG+E61CO9WQ
-	dXRMjT+BXzj+8K2gYV5r0ciqGUX2w3o=
+	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
+	b=WfUz/mA6uH0scWlh+FIIDCY8mEjy+ZGzNag/CTiDlKT5fE8NJ8O+hH6fPvblv3vD1O5yk+
+	6oC9lXGh116BC1Nk9S0q2XsObBn1UyzRulXI6ew/hOwqVuMyksQfGv9rBcBu0w3HJHIBz5
+	k5n1uIiKdNR/b71l7FMZkPvQEg7TLdI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764661244;
+	s=susede2_ed25519; t=1764661373;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O7tmskg9a3J1QQAMefc1jOGIyFExb+c0JNYbjII1D/U=;
-	b=hwiJTBaUlXFsaa36dcCc8Xv0I/geOrcY5ORxzj4bM1mQfBHl6HsdRSRC9Ej/lcn+fBkRSl
-	iwzwWFmYomm3XVDw==
+	bh=WifntVVqvVe83okeYRsRA2wAUvOIcrEaXyp19dXJ1vI=;
+	b=4zmcd5S2jYLQWfKNODmfN2vr7chNoLGU8sJSuXZr5cuizCsYJ6cjqW4nHkYdrXTg9dTj4/
+	lxaypuJr+YpKOYAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CAE03EA63;
-	Tue,  2 Dec 2025 07:40:44 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0213F3EA63;
+	Tue,  2 Dec 2025 07:42:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DkWzCPyXLmmofgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 02 Dec 2025 07:40:44 +0000
-Message-ID: <4dd8e529-4777-4cfc-a536-dbe0d0a90419@suse.de>
-Date: Tue, 2 Dec 2025 08:40:43 +0100
+	id C5bhOHyYLmnQAQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 02 Dec 2025 07:42:52 +0000
+Message-ID: <250b44b3-e75b-4f8d-af44-d3a985ea554c@suse.de>
+Date: Tue, 2 Dec 2025 08:42:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,15 +97,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12.y] drm, fbcon, vga_switcheroo: Avoid race condition
- in fbcon setup
+Subject: Re: [PATCH 6.6.y] drm, fbcon, vga_switcheroo: Avoid race condition in
+ fbcon setup
 To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
 Cc: Javier Martinez Canillas <javierm@redhat.com>,
  Alex Deucher <alexander.deucher@amd.com>, dri-devel@lists.freedesktop.org,
  nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
  linux-fbdev@vger.kernel.org
-References: <2025120119-edgy-recycled-bcfe@gregkh>
- <20251201221055.1281985-1-sashal@kernel.org>
+References: <2025120119-quake-universal-d896@gregkh>
+ <20251201225123.1298682-1-sashal@kernel.org>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -133,39 +132,31 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251201221055.1281985-1-sashal@kernel.org>
+In-Reply-To: <20251201225123.1298682-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
+X-Spamd-Result: default: False [-4.27 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	NEURAL_HAM_SHORT(-0.17)[-0.858];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_EQ_ENVFROM(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,suse.com:url,bootlin.com:url,suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,lists.freedesktop.org:email,suse.de:mid,suse.de:email,msgid.link:url,bootlin.com:url,suse.com:url]
 X-Spam-Level: 
-X-Rspamd-Queue-Id: 6A47E5BD0D
 X-Spam-Flag: NO
-X-Spam-Score: -4.51
+X-Spam-Score: -4.27
 
 Hi,
 
@@ -174,13 +165,15 @@ thanks for backporting.
 You also have to remove the calls to vga_switcheroo_client_fb_set() from 
 these files
 
-https://elixir.bootlin.com/linux/v6.12/source/drivers/gpu/drm/i915/display/intel_fbdev.c
-https://elixir.bootlin.com/linux/v6.12/source/drivers/gpu/drm/radeon/radeon_fbdev.c
+https://elixir.bootlin.com/linux/v6.6/source/drivers/gpu/drm/i915/display/intel_fbdev.c 
+
+https://elixir.bootlin.com/linux/v6.6/source/drivers/gpu/drm/radeon/radeon_fbdev.c 
+
 
 Best regards
 Thomas
 
-Am 01.12.25 um 23:10 schrieb Sasha Levin:
+Am 01.12.25 um 23:51 schrieb Sasha Levin:
 > From: Thomas Zimmermann <tzimmermann@suse.de>
 >
 > [ Upstream commit eb76d0f5553575599561010f24c277cc5b31d003 ]
@@ -221,15 +214,15 @@ Am 01.12.25 um 23:10 schrieb Sasha Levin:
 > Cc: linux-fbdev@vger.kernel.org
 > Cc: <stable@vger.kernel.org> # v2.6.34+
 > Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
-> [ adapted dev->dev variable access ]
+> [ drm_fb_helper_unregister_info() lacks vga_switcheroo code ]
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->   drivers/gpu/drm/drm_fb_helper.c  | 6 ------
+>   drivers/gpu/drm/drm_fb_helper.c  | 7 -------
 >   drivers/video/fbdev/core/fbcon.c | 9 +++++++++
->   2 files changed, 9 insertions(+), 6 deletions(-)
+>   2 files changed, 9 insertions(+), 7 deletions(-)
 >
 > diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-> index b15ddbd65e7b5..a8971c4eb9f05 100644
+> index b507c1c008a3e..3891837a78414 100644
 > --- a/drivers/gpu/drm/drm_fb_helper.c
 > +++ b/drivers/gpu/drm/drm_fb_helper.c
 > @@ -30,9 +30,7 @@
@@ -242,7 +235,15 @@ Am 01.12.25 um 23:10 schrieb Sasha Levin:
 >   
 >   #include <drm/drm_atomic.h>
 >   #include <drm/drm_drv.h>
-> @@ -1637,10 +1635,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+> @@ -1668,7 +1666,6 @@ static int drm_fb_helper_find_sizes(struct drm_fb_helper *fb_helper,
+>   static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+>   {
+>   	struct drm_client_dev *client = &fb_helper->client;
+> -	struct drm_device *dev = fb_helper->dev;
+>   	struct drm_fb_helper_surface_size sizes;
+>   	int ret;
+>   
+> @@ -1687,10 +1684,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
 >   
 >   	strcpy(fb_helper->fb->comm, "[fbcon]");
 >   
@@ -254,18 +255,18 @@ Am 01.12.25 um 23:10 schrieb Sasha Levin:
 >   }
 >   
 > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index 1fc1e47ae2b49..e681066736dea 100644
+> index 78a5b22c8d150..8b2c3065c0c26 100644
 > --- a/drivers/video/fbdev/core/fbcon.c
 > +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -65,6 +65,7 @@
+> @@ -64,6 +64,7 @@
+>   #include <linux/console.h>
 >   #include <linux/string.h>
 >   #include <linux/kd.h>
->   #include <linux/panic.h>
 > +#include <linux/pci.h>
->   #include <linux/printk.h>
 >   #include <linux/slab.h>
 >   #include <linux/fb.h>
-> @@ -77,6 +78,7 @@
+>   #include <linux/fbcon.h>
+> @@ -75,6 +76,7 @@
 >   #include <linux/interrupt.h>
 >   #include <linux/crc32.h> /* For counting font checksums */
 >   #include <linux/uaccess.h>
@@ -273,7 +274,7 @@ Am 01.12.25 um 23:10 schrieb Sasha Levin:
 >   #include <asm/irq.h>
 >   
 >   #include "fbcon.h"
-> @@ -2894,6 +2896,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
+> @@ -2913,6 +2915,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
 >   
 >   	console_lock();
 >   
@@ -283,7 +284,7 @@ Am 01.12.25 um 23:10 schrieb Sasha Levin:
 >   	fbcon_registered_fb[info->node] = NULL;
 >   	fbcon_num_registered_fb--;
 >   
-> @@ -3027,6 +3032,10 @@ static int do_fb_registered(struct fb_info *info)
+> @@ -3046,6 +3051,10 @@ static int do_fb_registered(struct fb_info *info)
 >   		}
 >   	}
 >   
