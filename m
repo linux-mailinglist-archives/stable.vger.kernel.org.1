@@ -1,195 +1,146 @@
-Return-Path: <stable+bounces-198142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3BEC9CDDC
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 21:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44309C9CE1B
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 21:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21F53347314
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 20:07:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DF064347FA9
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 20:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34932F12CC;
-	Tue,  2 Dec 2025 20:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9FB2F1FCA;
+	Tue,  2 Dec 2025 20:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TWxYWLL+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X69a2Sp+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpNEsP/C"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8342C327A
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 20:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD9F2EBB81
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 20:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764706050; cv=none; b=ZaOz9i6adDc3gO9HUh09rfXYTnbRYYoF/gxOrs4UZ0DvLUBzKriOMHY0EsUyaxxJydYQmDbn4WOPsE243o4l3qfXWH9VgwhEsaA0tF3usX6yowyANqvPRPOpEZ9hHxFA0/qJmg3GFn+LxYdzLSABDXRy0OONaIdw8jr7Doin/cg=
+	t=1764706517; cv=none; b=hd5lHFIX4kFoiA7ewvbKLZvV/Xz6zVuYiNlZ8jPUMSBHq3R+TdmbJpiIjDyu4uMCZQOyz/haCWxMc73MEtGUxyo7+INKs64DVbi6QvTHmNbZm0PjNjP8XyP1sBkGulge6myYzU446Kn4gZ75SHKitv36B7veYR6ee1c5V2pCrGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764706050; c=relaxed/simple;
-	bh=oPYqW5SQfExXpPRUP0ZxO9mJN6N4rIx6CnioC/GrhKE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=knIBpw2AaX6toAiHJ8mMJQQIAYY52GaSpWUZ9nJEsSKVUQrn5KhhWVXCGDX8AKAubgya0iJNGFZI7ICFqgtiCInrRvYzDbQmasxaKSegyn+17ZXXXhltdIlP51UmFA/WVAVIWpcVo6e+bJ63L0LSsWm8oYPyjl3Ohx7jE8kINMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TWxYWLL+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X69a2Sp+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764706047;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=4LOaJkYRfgWql4tAMEDx+EG8hV3Vr+6Q+ye5vso+PWc=;
-	b=TWxYWLL+CLUcNzM/lAwjJpOXYLs7YSJP/B/rR0KWMnvMV1ROpoGmZJh1cVNZhMie4ObUSS
-	eCr/MpplFb+6M/E/Vjjq02rP55xOI1FyInK2kZ6Ek9MJ09Obna6xunJNhjEnBt4UpBgeCM
-	xdDk5w21fzGlHtLstHhjhxe3v2nyZhA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-bjgF7thXNMOQ2tKHiURFSQ-1; Tue, 02 Dec 2025 15:07:26 -0500
-X-MC-Unique: bjgF7thXNMOQ2tKHiURFSQ-1
-X-Mimecast-MFC-AGG-ID: bjgF7thXNMOQ2tKHiURFSQ_1764706046
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4775f51ce36so44959755e9.1
-        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 12:07:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764706045; x=1765310845; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4LOaJkYRfgWql4tAMEDx+EG8hV3Vr+6Q+ye5vso+PWc=;
-        b=X69a2Sp+YZaT9W5G2v72MxhvkoX+kumNUKmGbmL1VqTnA1i80gTWCWptP/mZN0hyD+
-         hvQt2VzJwZ8l3jBlegL/jzJJ9JNkmuDSfop5GLkBe95guxychNITLYR8h2LREnK8rnRz
-         IuUJ/wE4gJg4dYWl5856fT38ZMGy9SdKnpvcZK2z+xPJ7YtHAjM4iDdemzDLZz+kC/4U
-         ctltbKg3jw2d2Qk6WGf28KZsjGp11QfZEIpQ8xouxTEe/XIYT5Ct6ivlkZF4bcR3UrqH
-         WFzqKPvMRtrX2FFammA61qNyKqqM9VVHzYqUHVBGfNpnckHTNv/oS4PVjRpZb8YqtMyJ
-         euAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764706045; x=1765310845;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4LOaJkYRfgWql4tAMEDx+EG8hV3Vr+6Q+ye5vso+PWc=;
-        b=qOAslMCgzt6GkryjKygWN3eEqvv0uLcm4qRbQxzI+mAIZDmcVfnpDZ4n98Y2R6ILV9
-         guxOpabRU6/NvPiD9exj4XiRoGBbJn2NaSJNvRX/+eagiVy2cuT4ybv4Q64ZgA4pP0LB
-         sd3uRwHTq8UEFiRtU0oLs0x6ZOtQADm3XzN4d+4TBO8ol5kcApwnGxYV/WI0ySfPEbuo
-         sgKrwUvQa3NM6yZSnpIbUtESSAklSuE9XR18neOzzkbPnJYhqpImg9XA9zpJbSaS0ICE
-         BWW+h15E68lqAepPXZ8ntH2jN2a6wYpTr/njOnvNde/GE2tAEE9GrdcqoR4ExdSic8wz
-         1Zjw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRpEuWpphMEZZUCS1wptdxYb7jPw5xqf3NDRSG3VoPHgutzSaTXF0/Yar78lEVracwJ8wrmpQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz47bXgLkGAEkjvseWlHm21+T/zsisbaLjjNuG+QwiYmjhhTqNc
-	uqY0dOGYYr4uaOYE5+mZQzewfmB30dQLO6hK7HXMkxzQxaLQpfmmDskyRcZi/kRPPVSb2kCH/Iu
-	tom6G2/GaP+X+uqhlo0IlJincdjW22Y72gTHYOLECE6b2xl+g4cJWqD4uhdMtW8FjsA==
-X-Gm-Gg: ASbGncuCBb7hC6C1yvw3E8t9sncbIfZ3fx7msIx1V6BdiCo1QZOJEbW8K3O7cetxDzy
-	7QLFqBkLasnS+KqfTV++ysLX4s8Qki3EFv8dMTUdn+m0BG7IQBXTGEkBipE9rLKN23TuM5Wvfbi
-	rjKsYpd8FWyYCCYJLDmQg5Wx4hOShDsj4i3SSr5GSG0SUSQqyElEWg4e8wSWQ1actIX4kVn47sI
-	qUSq5gWomohuengqzFb8Wi+dpO6TjubhDmvJ2iYVw7Ncc7w7C7a8BiqULKXMrewqW5NGTK/eEA4
-	zDWAmRI3P2fo5NqSKukV8RRrHlQ+tPguTYKvtTjXTk/gDJAuwhaZxQK9e6ZHKlUW53m58qqJ75p
-	rRSOkY1Wey5D1vZXbYQDEUddUVviSrx5m
-X-Received: by 2002:a05:600c:5249:b0:477:9d54:58d7 with SMTP id 5b1f17b1804b1-4792a4aac08mr9281225e9.29.1764706045299;
-        Tue, 02 Dec 2025 12:07:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE/agkXQ9hhx2CuGFlZ3EgTBLncuqp3bFvjDrGsXOBisReyUeJGrkEIqlYMZDfX1+cLbK1Uhw==
-X-Received: by 2002:a05:600c:5249:b0:477:9d54:58d7 with SMTP id 5b1f17b1804b1-4792a4aac08mr9280895e9.29.1764706044801;
-        Tue, 02 Dec 2025 12:07:24 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-38-228.inter.net.il. [80.230.38.228])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792a8c5fdesm5614095e9.10.2025.12.02.12.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 12:07:24 -0800 (PST)
-Date: Tue, 2 Dec 2025 15:07:21 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alex.williamson@redhat.com, alok.a.tiwari@oracle.com,
-	jasowang@redhat.com, kriish.sharma2006@gmail.com,
-	linmq006@gmail.com, marco.crivellari@suse.com,
-	michael.christie@oracle.com, mst@redhat.com, pabeni@redhat.com,
-	stable@vger.kernel.org, yishaih@nvidia.com
-Subject: [GIT PULL] virtio,vhost: fixes, cleanups
-Message-ID: <20251202150721-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1764706517; c=relaxed/simple;
+	bh=StdqYGJlXyRrM8ljPAhqWY9CQviuXaBXBx3HKjrz4xI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qNbWpRHW8tVuaNJ7JJyKTgi+Dgpl8nraaDQfp5c+JpjMebjH7EFdDq6t4/26HY8mUUH5+0LimoyFayMBeRbQaDaWMyPYwhN5DpoMj5j87grwW8lUKt7irOLhHY0IpcjkyeFD1MA96WQ2wG3qGDwPm1nIznQSS1a5UG4NYA0ZNKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpNEsP/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BCBC4CEF1;
+	Tue,  2 Dec 2025 20:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764706516;
+	bh=StdqYGJlXyRrM8ljPAhqWY9CQviuXaBXBx3HKjrz4xI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LpNEsP/Cu/qb4nNYW5nGTQG4uORYNVw+sSdnrVg0FZy+ZoLC9kBGZqSA3/7STFtqT
+	 GdX1I3oOJ1ejNq1DLo9aVF17dVHWe2tB6QtcLh0ykvxTsN29/99PuV6YkGqp6/dWMh
+	 j2SWs/h7PyP07lXv5KDt5/A7Ub6+6BvghDTnBl3nC9xUxKblxm+4X5uXSV679VKjUw
+	 b/drTlPzISbL4/mp5zRPCj66eGlWqv/bnx2Lt1M3MSbKvqoGz8cVgjobPZ3prsxehG
+	 WCEGoNh54ynjNmMG/wHs+BCT0Fn1d1sPTe7kpOyuxgy2d2y8UDSeSkcI1IaNPAsvqZ
+	 qccKOTqTGHtfA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: dsa: microchip: Free previously initialized ports on init failures
+Date: Tue,  2 Dec 2025 15:15:07 -0500
+Message-ID: <20251202201507.2486461-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120249-dormitory-filtrate-415a@gregkh>
+References: <2025120249-dormitory-filtrate-415a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mutt-Fcc: =sent
+Content-Transfer-Encoding: 8bit
 
-get_user/put_user change didn't spend time in next and
-seems a bit too risky to rush. I'm keeping it in my tree
-and we'll get it in the next cycle.
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
 
+[ Upstream commit 0f80e21bf6229637e193248fbd284c0ec44bc0fd ]
 
-The following changes since commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d:
+If a port interrupt setup fails after at least one port has already been
+successfully initialized, the gotos miss some resource releasing:
+- the already initialized PTP IRQs aren't released
+- the already initialized port IRQs aren't released if the failure
+occurs in ksz_pirq_setup().
 
-  Linux 6.18-rc7 (2025-11-23 14:53:16 -0800)
+Merge 'out_girq' and 'out_ptpirq' into a single 'port_release' label.
+Behind this label, use the reverse loop to release all IRQ resources
+for all initialized ports.
+Jump in the middle of the reverse loop if an error occurs in
+ksz_ptp_irq_setup() to only release the port IRQ of the current
+iteration.
 
-are available in the Git repository at:
+Cc: stable@vger.kernel.org
+Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Link: https://patch.msgid.link/20251120-ksz-fix-v6-4-891f80ae7f8f@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ replaced dsa_switch_for_each_user_port_continue_reverse() macro with dsa_switch_for_each_port_continue_reverse() plus manual dsa_port_is_user() check ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-
-for you to fetch changes up to 205dd7a5d6ad6f4c8e8fcd3c3b95a7c0e7067fee:
-
-  virtio_pci: drop kernel.h (2025-11-30 18:02:43 -0500)
-
-----------------------------------------------------------------
-virtio,vhost: fixes, cleanups
-
-Just a bunch of fixes and cleanups, mostly very simple. Several
-features are merged through net-next this time around.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Alok Tiwari (3):
-      virtio_vdpa: fix misleading return in void function
-      vdpa/mlx5: Fix incorrect error code reporting in query_virtqueues
-      vdpa/pds: use %pe for ERR_PTR() in event handler registration
-
-Kriish Sharma (1):
-      virtio: fix kernel-doc for mapping/free_coherent functions
-
-Marco Crivellari (2):
-      virtio_balloon: add WQ_PERCPU to alloc_workqueue users
-      vduse: add WQ_PERCPU to alloc_workqueue users
-
-Miaoqian Lin (1):
-      virtio: vdpa: Fix reference count leak in octep_sriov_enable()
-
-Michael S. Tsirkin (11):
-      virtio: fix typo in virtio_device_ready() comment
-      virtio: fix whitespace in virtio_config_ops
-      virtio: fix grammar in virtio_queue_info docs
-      virtio: fix grammar in virtio_map_ops docs
-      virtio: standardize Returns documentation style
-      virtio: fix virtqueue_set_affinity() docs
-      virtio: fix map ops comment
-      virtio: clean up features qword/dword terms
-      vhost/test: add test specific macro for features
-      vhost: switch to arrays of feature bits
-      virtio_pci: drop kernel.h
-
-Mike Christie (1):
-      vhost: Fix kthread worker cgroup failure handling
-
- drivers/vdpa/mlx5/net/mlx5_vnet.c        |  2 +-
- drivers/vdpa/octeon_ep/octep_vdpa_main.c |  1 +
- drivers/vdpa/pds/vdpa_dev.c              |  2 +-
- drivers/vdpa/vdpa_user/vduse_dev.c       |  3 ++-
- drivers/vhost/net.c                      | 29 +++++++++++-----------
- drivers/vhost/scsi.c                     |  9 ++++---
- drivers/vhost/test.c                     | 10 ++++++--
- drivers/vhost/vhost.c                    |  4 ++-
- drivers/vhost/vhost.h                    | 42 ++++++++++++++++++++++++++------
- drivers/vhost/vsock.c                    | 10 +++++---
- drivers/virtio/virtio.c                  | 12 ++++-----
- drivers/virtio/virtio_balloon.c          |  3 ++-
- drivers/virtio/virtio_debug.c            | 10 ++++----
- drivers/virtio/virtio_pci_modern_dev.c   |  6 ++---
- drivers/virtio/virtio_ring.c             |  7 +++---
- drivers/virtio/virtio_vdpa.c             |  2 +-
- include/linux/virtio.h                   |  2 +-
- include/linux/virtio_config.h            | 24 +++++++++---------
- include/linux/virtio_features.h          | 29 +++++++++++-----------
- include/linux/virtio_pci_modern.h        |  8 +++---
- include/uapi/linux/virtio_pci.h          |  2 +-
- 21 files changed, 131 insertions(+), 86 deletions(-)
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index cff83a8fb7d28..e01909ec21d7d 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2163,18 +2163,18 @@ static int ksz_setup(struct dsa_switch *ds)
+ 		dsa_switch_for_each_user_port(dp, dev->ds) {
+ 			ret = ksz_pirq_setup(dev, dp->index);
+ 			if (ret)
+-				goto out_girq;
++				goto port_release;
+ 
+ 			ret = ksz_ptp_irq_setup(ds, dp->index);
+ 			if (ret)
+-				goto out_pirq;
++				goto pirq_release;
+ 		}
+ 	}
+ 
+ 	ret = ksz_ptp_clock_register(ds);
+ 	if (ret) {
+ 		dev_err(dev->dev, "Failed to register PTP clock: %d\n", ret);
+-		goto out_ptpirq;
++		goto port_release;
+ 	}
+ 
+ 	ret = ksz_mdio_register(dev);
+@@ -2191,17 +2191,17 @@ static int ksz_setup(struct dsa_switch *ds)
+ 
+ out_ptp_clock_unregister:
+ 	ksz_ptp_clock_unregister(ds);
+-out_ptpirq:
+-	if (dev->irq > 0)
+-		dsa_switch_for_each_user_port(dp, dev->ds)
++port_release:
++	if (dev->irq > 0) {
++		dsa_switch_for_each_port_continue_reverse(dp, dev->ds) {
++			if (!dsa_port_is_user(dp))
++				continue;
+ 			ksz_ptp_irq_free(ds, dp->index);
+-out_pirq:
+-	if (dev->irq > 0)
+-		dsa_switch_for_each_user_port(dp, dev->ds)
++pirq_release:
+ 			ksz_irq_free(&dev->ports[dp->index].pirq);
+-out_girq:
+-	if (dev->irq > 0)
++		}
+ 		ksz_irq_free(&dev->girq);
++	}
+ 
+ 	return ret;
+ }
+-- 
+2.51.0
 
 
