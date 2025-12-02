@@ -1,320 +1,144 @@
-Return-Path: <stable+bounces-198113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3E9C9C395
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 17:36:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F8DC9C440
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 17:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A634845F
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 16:36:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 86E1D4E495F
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 16:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17BD2848AA;
-	Tue,  2 Dec 2025 16:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818202BEFF8;
+	Tue,  2 Dec 2025 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AapMLOC3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HenSbte8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B5D279903
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 16:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3454729AAF8;
+	Tue,  2 Dec 2025 16:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764693385; cv=none; b=ZDFb8TqBhuFCDOXVRIJ7ZNqSFCzY2EBugt+Ta5b1wtgbgPScaziC/cfSFUiM2dJL8exLlK/tfz2n8gVCUeLQP8iIdpQrDfsRkmJtgP0VmpbrUKUb6i9c597e0+iJ+FK4kFtM4nyl6ajLSSznlAQv42I0y7aSCJmFhQg0JBEe6O0=
+	t=1764693703; cv=none; b=Dva0ABkE1Cw0SW4cT3Ba2xpo2F/SdxQXBCFBTsUypfOgEsyIVfCkn6RJ3+3PMg3kppPqb4gYywjWz/97i5yaKfjBFiqG4hND78xcj3lqadzNPSwGXvVndrDwAMUPxd1ugN1UevIVWVYajK8r9mhYoh6GqzU/44wPJ3PcrA44lOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764693385; c=relaxed/simple;
-	bh=J2FY91mBA+7qsoG5Zmdf/X1yNE61LDROrDP1UQKCDsM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CBLlqvyHtF7gCxjicI4HJ6wgSDSNW5YyMuyz5MfNv0OIsVira772NW3Ao0IYC/sreVFc0hL3ivQQYUjcoOhRH1s2u5DLQmNs8juRKbh80/dK7ac+DRv0HHwQXW6hXzCvObNRWIX/HDtBctWqbw9MiQmUOu1CsUvdiUigeLVm0pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AapMLOC3; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b9090d9f2eso9355932b3a.0
-        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 08:36:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764693383; x=1765298183; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g1PCQjqHUImrfnuMWQSbY1q1fWBmYQzMPADITESwpfg=;
-        b=AapMLOC35Wo5zxnizizAKlCVnt5UUoMZi4dU2xSZEa8WpQK3ZAyJgjyH6fFWLHjWCo
-         hFv/W4HUneMKxjUUjWLj9DAnwJ+uRx1FAmRmAz1+RSIVWxvBwi7R/X9j7U3JWwYNjUXd
-         wqHeAvm8bCRpfhwjPxptfWexoyktWLH2e0HkN8KTPqpRvUQU4ATSvEhpakjnXIL71J80
-         LRW3XakZnAkUKcKdG1se9E5/rd0qdsgcA5pRTG8wVEmx/4e4QRXcwFMqzRPdRObQGMQh
-         3VEddrL+v77IykZJ4jBe4GrXLNrzNBpuDlAtLs/vE/Q8pS8gb6MW2ES2Pe7RVVfh+1jc
-         Tugw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764693383; x=1765298183;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g1PCQjqHUImrfnuMWQSbY1q1fWBmYQzMPADITESwpfg=;
-        b=O/Im6NEMoSvnpCYS38bD2B2Lc+9OT3VLMaS4R6iPf2HyncnkWQlWv3aVMNvQ6jgko8
-         t2WGclyrvyHh3pBpzGk1ZT4bKlLRZWcds/g0oEo3F58bj6yAt6J66QxJ0x7lhvUrJvDq
-         GTGKUsTLXdp0N+iLvPwLVpChg6qVmkhQqLbZIqbtFHq+SuJ3vKXm6FaOiAX6tg8wS28m
-         irMNDFj6ZCnL+CBEW6UViphkLJEGHCvVGLItlkSWcMfsw4AAxMI/weXOUcCDyBhGRbTg
-         f9Bvh+ONmvsMgnIAj9cFcFX4yxa706EgTgUHW5fc/OfPQ9ooz2ootd+ZgHgQuN08/si0
-         3dtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAVbtKLNfkksext9NDEbjYVArIc4albpUM85k6NK9SrzysOAccNN5YLu/8O1cmq15sUjrPDQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydOcdYxszDUJo23arNeG6LDGlotkASOixh1XoxUN6sLtV/kVzK
-	2kHk7pFXHEISp0sKxKwavjR1RhY+HQzSXchNR0/QyuHqf2ymi4Y4p+5tDCujKNW4Hc2dR629Y0N
-	wXOlo/Q==
-X-Google-Smtp-Source: AGHT+IHbpjzBbXCvAd9URDI1HhG7vj8KOeHDgurtn5SRw54GzVw6VxJbQiZhVN8zm3l6wh3j7PJMUAxrNXU=
-X-Received: from pglg15.prod.google.com ([2002:a63:110f:0:b0:bac:6acd:817f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7d8b:b0:33b:625:36be
- with SMTP id adf61e73a8af0-3614ed3e82amr49170495637.38.1764693383200; Tue, 02
- Dec 2025 08:36:23 -0800 (PST)
-Date: Tue, 2 Dec 2025 08:36:21 -0800
-In-Reply-To: <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
+	s=arc-20240116; t=1764693703; c=relaxed/simple;
+	bh=/tDn2+TvpCsV/V+XMJL21Ga2wSku8tb8NvipnVFm1uA=;
+	h=Date:To:From:Subject:Message-Id; b=tinHlXpocFl4OAl0qDTJteJp82fTU9vzFS+VzEN8//MCyXU4kC57nXFD8HisFgWTFOBo480jdTbMDE8Un1amDUqVvN0pss8E+6dzddHhu2dsOKgxmwu67wTOT+biDvivkyb2K6wmd0lMGM75mGr0vEGmMWSO+V4TCs6G3Y0NQlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HenSbte8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5463C4CEF1;
+	Tue,  2 Dec 2025 16:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764693702;
+	bh=/tDn2+TvpCsV/V+XMJL21Ga2wSku8tb8NvipnVFm1uA=;
+	h=Date:To:From:Subject:From;
+	b=HenSbte8YN5VpwAEolXgokhW34Tf5uFnJJwCEDKfRc0pObSxIDC5hrY9p22NN/vak
+	 Ru8nN7b52mtRIh5clF4O/B6MHcDBT7/rl4YgOFQhtLXa5cj9B6WxHl+dJ4kZCcsyFv
+	 Q6FxHLSjD51L4zw60vuM93Ez6GfnHQ1DlNqbadNI=
+Date: Tue, 02 Dec 2025 08:41:42 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,activprithvi@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch added to mm-nonmm-unstable branch
+Message-Id: <20251202164142.A5463C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
- <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
- <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com> <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
- <aS8I6T3WtM1pvPNl@google.com> <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
-Message-ID: <aS8Vhb66UViQmY_Q@google.com>
-Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Khushit Shah <khushit.shah@nutanix.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kai.huang@intel.com" <kai.huang@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 02, 2025, David Woodhouse wrote:
-> On Tue, 2025-12-02 at 07:42 -0800, Sean Christopherson wrote:
-> > On Tue, Dec 02, 2025, David Woodhouse wrote:
-> > > On Tue, 2025-12-02 at 12:58 +0000, Khushit Shah wrote:
-> > > > Thanks for the review!
-> > > >=20
-> > > > > On 2 Dec 2025, at 2:43=E2=80=AFPM, David Woodhouse <dwmw2@infrade=
-ad.org> wrote:
-> > > > >=20
-> > > > > Firstly, excellent work debugging and diagnosing that!
-> > > > >=20
-> > > > > On Tue, 2025-11-25 at 18:05 +0000, Khushit Shah wrote:
-> > > > > >=20
-> > > > > > --- a/Documentation/virt/kvm/api.rst
-> > > > > > +++ b/Documentation/virt/kvm/api.rst
-> > > > > > @@ -7800,8 +7800,10 @@ Will return -EBUSY if a VCPU has already=
- been created.
-> > > > > > =C2=A0
-> > > > > > =C2=A0Valid feature flags in args[0] are::
-> > > > > > =C2=A0
-> > > > > > -=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 0)
-> > > > > > -=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0 (1=
-ULL << 1)
-> > > > > > +=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 (1ULL << 0)
-> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 1)
-> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_IGNORE_SUPPRESS_EOI_BROA=
-DCAST_QUIRK (1ULL << 2)
-> > > > > > +=C2=A0 #define KVM_X2APIC_API_DISABLE_SUPPRESS_EOI_BROADCAST=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 (1ULL << 3)
-> > > > > >=20
-> > > > >=20
-> > > > > I kind of hate these names. This part right here is what we leave
-> > > > > behind for future generations, to understand the weird behaviour =
-of
-> > > > > KVM. To have "IGNORE" "SUPPRESS" "QUIRK" all in the same flag, qu=
-ite
-> > > > > apart from the length of the token, makes my brain hurt.
-> >=20
-> > ...
-> >=20
-> > > > > Could we perhaps call them 'ENABLE_SUPPRESS_EOI_BROADCAST' and
-> > > > > 'DISABLE_SUPPRESS_EOI_BROADCAST', with a note saying that modern =
-VMMs
-> > > > > should always explicitly enable one or the other, because for
-> > > > > historical reasons KVM only *pretends* to support it by default b=
-ut it
-> > > > > doesn't actually work correctly?
-> >=20
-> > I don't disagree on the names being painful, but ENABLE_SUPPRESS_EOI_BR=
-OADCAST
-> > vs. DISABLE_SUPPRESS_EOI_BROADCAST won't work, and is even more confusi=
-ng IMO.
->=20
-> I dunno, KVM never actually *did* suppress the EOI broadcast anyway,
-> did it? This fix really *does* enable it =E2=80=94 as opposed to just
-> pretending to?
->=20
-> I was thinking along the lines of ...
->=20
->=20
-> Setting KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST causes KVM to
-> advertise and correctly implement the Directed EOI feature in the local
-> APIC, suppressing broadcast EOI when the feature is enabled by the
-> guest.
->=20
-> Setting KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST causes KVM not to
-> advertise the Directed EOI feature in the local APIC.
->=20
-> Userspace should explicitly either enable or disable the EOI broadcast
-> using one of the two flags above. For historical compatibility reasons,
-> if neither flag is set then KVM will advertise the feature but will not
-> actually suppress the EOI broadcast, leading to potential IRQ storms in
-> some guest configurations.
 
-Hmm, I suppose that could work for uAPI.  Having both an ENABLE and a DISAB=
-LE
-is obviously a bit odd, but slowing down the reader might actually be a goo=
-d
-thing in this case.  And the documentation should be easy enough to write.
+The patch titled
+     Subject: ocfs2: fix kernel BUG in ocfs2_find_victim_chain
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
 
-I was worried that having ENABLE and DISABLE controls would lead to confusi=
-ng code
-internally, but there's no reason KVM's internal tracking needs to match uA=
-PI.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
 
-How about this?
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+Subject: ocfs2: fix kernel BUG in ocfs2_find_victim_chain
+Date: Mon, 1 Dec 2025 18:37:11 +0530
+
+syzbot reported a kernel BUG in ocfs2_find_victim_chain() because the
+`cl_next_free_rec` field of the allocation chain list (next free slot in
+the chain list) is 0, triggring the BUG_ON(!cl->cl_next_free_rec)
+condition in ocfs2_find_victim_chain() and panicking the kernel.
+
+To fix this, an if condition is introduced in ocfs2_claim_suballoc_bits(),
+just before calling ocfs2_find_victim_chain(), the code block in it being
+executed when either of the following conditions is true:
+
+1. `cl_next_free_rec` is equal to 0, indicating that there are no free
+chains in the allocation chain list
+2. `cl_next_free_rec` is greater than `cl_count` (the total number of
+chains in the allocation chain list)
+
+Either of them being true is indicative of the fact that there are no
+chains left for usage.
+
+This is addressed using ocfs2_error(), which prints
+the error log for debugging purposes, rather than panicking the kernel.
+
+Link: https://lkml.kernel.org/r/20251201130711.143900-1-activprithvi@gmail.com
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Reported-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96d38c6e1655c1420a72
+Tested-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |  7 +++++++
- arch/x86/include/uapi/asm/kvm.h |  6 ++++--
- arch/x86/kvm/lapic.c            | 16 +++++++++++++++-
- arch/x86/kvm/x86.c              | 15 ++++++++++++---
- 4 files changed, 38 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_hos=
-t.h
-index 5a3bfa293e8b..b4c41255f01d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1226,6 +1226,12 @@ enum kvm_irqchip_mode {
- 	KVM_IRQCHIP_SPLIT,        /* created with KVM_CAP_SPLIT_IRQCHIP */
- };
-=20
-+enum kvm_suppress_eoi_broadcast_mode {
-+	KVM_SUPPRESS_EOI_QUIRKED,
-+	KVM_SUPPRESS_EOI_ENABLED,
-+	KVM_SUPPRESS_EOI_DISABLED,
-+};
-+
- struct kvm_x86_msr_filter {
- 	u8 count;
- 	bool default_allow:1;
-@@ -1475,6 +1481,7 @@ struct kvm_arch {
-=20
- 	bool x2apic_format;
- 	bool x2apic_broadcast_quirk_disabled;
-+	enum kvm_suppress_eoi_broadcast_mode suppress_eoi_broadcast;
-=20
- 	bool has_mapped_host_mmio;
- 	bool guest_can_read_msr_platform_info;
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kv=
-m.h
-index 7ceff6583652..bd51596001f8 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -914,8 +914,10 @@ struct kvm_sev_snp_launch_finish {
- 	__u64 pad1[4];
- };
-=20
--#define KVM_X2APIC_API_USE_32BIT_IDS            (1ULL << 0)
--#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK  (1ULL << 1)
-+#define KVM_X2APIC_API_USE_32BIT_IDS			(_BITULL(0))
-+#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK		(_BITULL(1))
-+#define KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(2))
-+#define KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(3))
-=20
- struct kvm_hyperv_eventfd {
- 	__u32 conn_id;
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 1597dd0b0cc6..3f00c9640785 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -562,7 +562,8 @@ void kvm_apic_set_version(struct kvm_vcpu *vcpu)
- 	 * IOAPIC.
- 	 */
- 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_X2APIC) &&
--	    !ioapic_in_kernel(vcpu->kvm))
-+	    !ioapic_in_kernel(vcpu->kvm) &&
-+	    vcpu->kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_DISABLED=
-)
- 		v |=3D APIC_LVR_DIRECTED_EOI;
- 	kvm_lapic_set_reg(apic, APIC_LVR, v);
- }
-@@ -1517,6 +1518,19 @@ static void kvm_ioapic_send_eoi(struct kvm_lapic *ap=
-ic, int vector)
-=20
- 	/* Request a KVM exit to inform the userspace IOAPIC. */
- 	if (irqchip_split(apic->vcpu->kvm)) {
-+		/*
-+		 * Don't exit to userspace if the guest has enabled Directed
-+		 * EOI, a.k.a. Suppress EOI Broadcasts, in which case the local
-+		 * APIC doesn't broadcast EOIs (the guest must EOI the target
-+		 * I/O APIC(s) directly).  Ignore the suppression if userspace
-+		 * has not explictly enabled support (KVM's historical quirky
-+		 * behavior is to advertise support for Suppress EOI Broadcasts
-+		 * without actually suppressing EOIs).
-+		 */
-+		if ((kvm_lapic_get_reg(apic, APIC_SPIV) & APIC_SPIV_DIRECTED_EOI) &&
-+		    apic->vcpu->kvm->arch.suppress_eoi_broadcast !=3D KVM_SUPPRESS_EOI_Q=
-UIRKED)
-+			return;
-+
- 		apic->vcpu->arch.pending_ioapic_eoi =3D vector;
- 		kvm_make_request(KVM_REQ_IOAPIC_EOI_EXIT, apic->vcpu);
- 		return;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0c6d899d53dd..b36e048c7862 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -121,8 +121,10 @@ static u64 __read_mostly efer_reserved_bits =3D ~((u64=
-)EFER_SCE);
-=20
- #define KVM_CAP_PMU_VALID_MASK KVM_PMU_CAP_DISABLE
-=20
--#define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS | \
--                                    KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=
-)
-+#define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS |		\
-+				    KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK |	\
-+				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST |	\
-+				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
-=20
- static void update_cr8_intercept(struct kvm_vcpu *vcpu);
- static void process_nmi(struct kvm_vcpu *vcpu);
-@@ -6739,11 +6741,18 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		if (cap->args[0] & ~KVM_X2APIC_API_VALID_FLAGS)
- 			break;
-=20
-+		if (cap->args[0] & KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST &&
-+		    cap->args[0] & KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
-+			break;
-+
- 		if (cap->args[0] & KVM_X2APIC_API_USE_32BIT_IDS)
- 			kvm->arch.x2apic_format =3D true;
- 		if (cap->args[0] & KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK)
- 			kvm->arch.x2apic_broadcast_quirk_disabled =3D true;
--
-+		if (cap->args[0] & KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST)
-+			kvm->arch.suppress_eoi_broadcast =3D KVM_SUPPRESS_EOI_ENABLED;
-+		if (cap->args[0] & KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
-+			kvm->arch.suppress_eoi_broadcast =3D KVM_SUPPRESS_EOI_DISABLED;
- 		r =3D 0;
- 		break;
- 	case KVM_CAP_X86_DISABLE_EXITS:
+ fs/ocfs2/suballoc.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-base-commit: 6c3373b26189853230552bd3932b3edba5883423
---
+--- a/fs/ocfs2/suballoc.c~ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain
++++ a/fs/ocfs2/suballoc.c
+@@ -1993,6 +1993,16 @@ static int ocfs2_claim_suballoc_bits(str
+ 	}
+ 
+ 	cl = (struct ocfs2_chain_list *) &fe->id2.i_chain;
++	if (!le16_to_cpu(cl->cl_next_free_rec) ||
++	    le16_to_cpu(cl->cl_next_free_rec) > le16_to_cpu(cl->cl_count)) {
++		status = ocfs2_error(ac->ac_inode->i_sb,
++				     "Chain allocator dinode %llu has invalid next "
++				     "free chain record %u, but only %u total\n",
++				     (unsigned long long)le64_to_cpu(fe->i_blkno),
++				     le16_to_cpu(cl->cl_next_free_rec),
++				     le16_to_cpu(cl->cl_count));
++		goto bail;
++	}
+ 
+ 	victim = ocfs2_find_victim_chain(cl);
+ 	ac->ac_chain = victim;
+_
+
+Patches currently in -mm which might be from activprithvi@gmail.com are
+
+ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
+
 
