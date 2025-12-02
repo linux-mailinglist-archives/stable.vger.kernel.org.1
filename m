@@ -1,79 +1,89 @@
-Return-Path: <stable+bounces-198123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B49DC9C856
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 19:02:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E92CC9C87A
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 19:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E622934A459
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 18:02:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D79E234A310
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 18:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684F72C234B;
-	Tue,  2 Dec 2025 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0552D0C92;
+	Tue,  2 Dec 2025 18:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OVHkKzQ6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+VJYKqr"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E3429D28B
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 17:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E162C326B
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 18:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764698376; cv=none; b=GFW/qFNBCaNUnfWJUN5AMgXX516BvdNaoTC7xTmDlJtqFgHmKsu9HBV+9gIgVJUja2ZMLJ3yCYLONwPcS+Byd47lOGbHxYRvwUuL/S6NUPl1hQ35u6T23QbbRQ5l9uMfEKpMLRXSkbzq+Kf3hcgUK6hTLArdfm9VI9mDzbNhEts=
+	t=1764698494; cv=none; b=RN5U1/rVfUTktnCelvWe5GG8et7T2LFvoC+rwxtv7qjWCP43w0TbMMv480IuJvngXPwBY/76LUBpuKjYp/cEA4aCFeBt8rSSIk94+9svWgfA6M1P8YSSXBg24Qsj56eD2wno8NYuyVeJu4RJK4+DuaIVM7m+kZQMK3wl9bjAj/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764698376; c=relaxed/simple;
-	bh=aH+8rGTq/Vt2o22QUM8041dHSEGSAos6XGGrQM//gbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qIcLDbbKaPnv6+bHVy18UaY+NjnaSKX5UzSu2wMsbOOS84VEa9feYqMwODPJNm2SEKxbMyjnxf2k13Y9yHVnkso2Wsu1jJHJ2JInXmv1VnHog2wGF8zWDah6xtXqhYnQkkWBfzi65O08azGuWb13cReNGTMSQLXNbo2a5Yzrzfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OVHkKzQ6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764698373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qCRC5oPbO+K3sZBd+lZF16jQIWHCuxoxWcQWwJA6EXc=;
-	b=OVHkKzQ66KjetR/7RZFfyyX8umzfYklYwniovr16PFG3MwXjWuFcemfe3ErO9Hrjd9sMpf
-	mK7loXqy96hvkb/k9VIqJYiG1FHmIvR0Kfza7uVrPDMMP2qIBfBvFxCdwUhfBeo9L8dfTo
-	3ll/GHc+5rQiMPMOzCA+EYkJzo/J3IA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-EBcPpCktMe-y6l_F7M4-qQ-1; Tue,
- 02 Dec 2025 12:59:30 -0500
-X-MC-Unique: EBcPpCktMe-y6l_F7M4-qQ-1
-X-Mimecast-MFC-AGG-ID: EBcPpCktMe-y6l_F7M4-qQ_1764698368
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0B43180047F;
-	Tue,  2 Dec 2025 17:59:27 +0000 (UTC)
-Received: from chopper.lan (unknown [10.22.80.109])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 54B8918004D8;
-	Tue,  2 Dec 2025 17:59:23 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Dave Airlie <airlied@redhat.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	Mel Henning <mhenning@darkrefraction.com>
-Subject: [PATCH v2] drm/nouveau/gsp: Allocate fwsec-sb at boot
-Date: Tue,  2 Dec 2025 12:59:12 -0500
-Message-ID: <20251202175918.63533-1-lyude@redhat.com>
+	s=arc-20240116; t=1764698494; c=relaxed/simple;
+	bh=F1BYdqfeNttcmB+PT/07KtZha4LYAw0W6s2or81VV2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XBy1k6rqzShsamwyIgXLbFCMNHmmoRpoiZmn03hxsuQfny89ubZktAF6F28tcyjGLtjhVyNFCjYBsxH7Jha/9f/SAXcBW3Hl9zyM7oaOB15LdvnCvWOr8UZC5laSWffhQkdkJqDuKs4Yzzr/gQ2genKAaRVoghnAkclSHxkxbSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+VJYKqr; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3437c093ef5so6057216a91.0
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 10:01:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764698492; x=1765303292; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KXMEK6nb6BLzAA8eKfAM1xGhDShdGjdUjCMLODpDUpQ=;
+        b=e+VJYKqr5Czato8snJD6WoQvhuLNk9ZYmnLkH8TJN/iVXByvW1/TlZBPIfV3YV6RdU
+         qFkl9o/gPxNwoVd34vC1GfEc0Fm3VcVyapmie84KZaARtwNsSKOTtweQArOwcdQjy0BA
+         66LniapeeMoKYfBg6WPAhPEWYWW0k7A9/MVjerFpiK7Vwmn0zRWT2ZtyIGXjS7PuwGDm
+         imm+rqBWxI5it1aw6uUo8vRallrzxncMLhYdAymnoqIFunVUXV6zpdDAl6h2TowpNO0Y
+         q3yebNV67XaRlz8EWZ/6Q/aq2HH01pb2pN/vpOIXfne6tSIJGiMSiv7gy1UK6PyQV8Iy
+         oJNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764698492; x=1765303292;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KXMEK6nb6BLzAA8eKfAM1xGhDShdGjdUjCMLODpDUpQ=;
+        b=XF8NiW1OpDavKstXj1D+s1CGSRB03k39EoUFNDYGgNpjDFPV3+1tnU15I/GY7Bj2KN
+         WDcZ3Cft0Khu24EAtnb4M9YEgKdf9YV6OkLv/A/4lGWIDbkXlTPqvDZhRCyB4gAvV+lM
+         FehrxKZQJwVoF4VbJWAB4OFkM/LT3jonAHy6+k4OOMURfo+EOHucDUieNZGq/vMuK5gU
+         DgGYRL8mes/P1m781OfmI2g6UGDFfpOT4qCZS7JbPdfgDAQdYuUCE+UzJ7D5Iq+2jJ/D
+         ZV5UeYLYpJemKtb9E4N/5esSXDEsyxx4cumiNONnfjSBJkbDn8S1h7VTNRcV5qmkJP/r
+         X1hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJqCsCTiIzw6nG47isRXXkqt0FvhEsczUCZbxSOBtH4pKcxOHaK9nAOkLyaPayXHyTHSgf+UM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTnyuzaCkwSoLn90leHmvk5hUH8BQPvZmO//gIuwwZFdXUnuuF
+	Mp/kzZ+5duZD1F5TUMTNr2qXCnwqkR7goWOSKbZLKWphBGbM5OYKJW+N
+X-Gm-Gg: ASbGncvPbd8q3/K0SMENCN5M8PS7oDd1eyE0cJtsavvzkut5ua7YsHleLC1WRQdWpyh
+	oOuG/XQPjAHTO4FxhYGMoe7OcHdcrnyQ3THH5p90WjDveAeHPKmMXK6V0Y5EHyVGJbBz+gPQ+RQ
+	bEfZZ6yzmP81TIcAr9uQP/BeSWjfhpkbAmDaRVDi2iJyF2Em3C+5m+Fp8QqEscAf3WAy7KuhfNb
+	iAL2z1XsX8pDQh98+mhciPO7vNDn9pS8HTQrAHEOpRw/IqnP/G1IeBUzHEOZDSPWJv/kxNAmikt
+	vN8674C3/9O8uR75fBLYtZ9vkp5b6ydHUX4xKNstenbag25ub0or2YqmZ5LDuYMtwe3g9SnBnVy
+	TqoShm7jMEd49sWQlh97KbLBETox3Ilno2y7lRUp0BIiJpafnQKZ3jUDsB/Yu8hDc1hQdGTgvQx
+	lR0RbzPMtcExmK0juQALFYvRhWDE/FecwqvezTscrqi1yU5N+cNEqbPYfjxKjz5XZ7SjiVb4lQf
+	HxtOQaP9KK+6+B6rQCQDwCe8t2ut1YhegD8dcr8B9xR8/3coBXY6274EhHO
+X-Google-Smtp-Source: AGHT+IEnZ9k6iLEMpgmt2GBlILolxEm6kDtzH7Uz0lXhL4SkSaNalSklDUGz9sCCEUsxCh2UqqswOw==
+X-Received: by 2002:a17:90b:1d49:b0:340:ff7d:c2e with SMTP id 98e67ed59e1d1-349108255femr280047a91.29.1764698491596;
+        Tue, 02 Dec 2025 10:01:31 -0800 (PST)
+Received: from 2045D.localdomain (191.sub-75-229-198.myvzw.com. [75.229.198.191])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3491041244dsm126910a91.2.2025.12.02.10.01.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 10:01:31 -0800 (PST)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: m.hulsman@tudelft.nl,
+	linux@roeck-us.net
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] hwmon: (w83791d) Convert macros to functions to avoid TOCTOU
+Date: Wed,  3 Dec 2025 02:01:05 +0800
+Message-ID: <20251202180105.12842-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,295 +91,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-At the moment - the memory allocation for fwsec-sb is created as-needed and
-is released after being used. Typically this is at some point well after
-driver load, which can cause runtime suspend/resume to initially work on
-driver load but then later fail on a machine that has been running for long
-enough with sufficiently high enough memory pressure:
+The macro FAN_FROM_REG evaluates its arguments multiple times. When used
+in lockless contexts involving shared driver data, this leads to
+Time-of-Check to Time-of-Use (TOCTOU) race conditions, potentially
+causing divide-by-zero errors.
 
-  kworker/7:1: page allocation failure: order:5, mode:0xcc0(GFP_KERNEL),
-  nodemask=(null),cpuset=/,mems_allowed=0
-  CPU: 7 UID: 0 PID: 875159 Comm: kworker/7:1 Not tainted
-  6.17.8-300.fc43.x86_64 #1 PREEMPT(lazy)
-  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
-  Workqueue: pm pm_runtime_work
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   warn_alloc+0x163/0x190
-   ? __alloc_pages_direct_compact+0x1b3/0x220
-   __alloc_pages_slowpath.constprop.0+0x57a/0xb10
-   __alloc_frozen_pages_noprof+0x334/0x350
-   __alloc_pages_noprof+0xe/0x20
-   __dma_direct_alloc_pages.isra.0+0x1eb/0x330
-   dma_direct_alloc_pages+0x3c/0x190
-   dma_alloc_pages+0x29/0x130
-   nvkm_firmware_ctor+0x1ae/0x280 [nouveau]
-   nvkm_falcon_fw_ctor+0x3e/0x60 [nouveau]
-   nvkm_gsp_fwsec+0x10e/0x2c0 [nouveau]
-   ? sysvec_apic_timer_interrupt+0xe/0x90
-   nvkm_gsp_fwsec_sb+0x27/0x70 [nouveau]
-   tu102_gsp_fini+0x65/0x110 [nouveau]
-   ? ktime_get+0x3c/0xf0
-   nvkm_subdev_fini+0x67/0xc0 [nouveau]
-   nvkm_device_fini+0x94/0x140 [nouveau]
-   nvkm_udevice_fini+0x50/0x70 [nouveau]
-   nvkm_object_fini+0xb1/0x140 [nouveau]
-   nvkm_object_fini+0x70/0x140 [nouveau]
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   nouveau_do_suspend+0xe4/0x170 [nouveau]
-   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
-   pci_pm_runtime_suspend+0x67/0x1a0
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   __rpm_callback+0x45/0x1f0
-   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
-   rpm_callback+0x6d/0x80
-   rpm_suspend+0xe5/0x5e0
-   ? finish_task_switch.isra.0+0x99/0x2c0
-   pm_runtime_work+0x98/0xb0
-   process_one_work+0x18f/0x350
-   worker_thread+0x25a/0x3a0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0xf9/0x240
-   ? __pfx_kthread+0x10/0x10
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0xf1/0x110
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
+Convert the macro to a static function. This guarantees that arguments
+are evaluated only once (pass-by-value), preventing the race
+conditions.
 
-The reason this happens is because the fwsec-sb firmware image only
-supports being booted from a contiguous coherent sysmem allocation. If a
-system runs into enough memory fragmentation from memory pressure, such as
-what can happen on systems with low amounts of memory, this can lead to a
-situation where it later becomes impossible to find space for a large
-enough contiguous allocation to hold fwsec-sb. This causes us to fail to
-boot the firmware image, causing the GPU to fail booting and causing the
-driver to fail.
+Additionally, in store_fan_div, move the calculation of the minimum
+limit inside the update lock. This ensures that the read-modify-write
+sequence operates on consistent data.
 
-Since this firmware can't use non-contiguous allocations, the best solution
-to avoid this issue is to simply allocate the memory for fwsec-sb during
-initial driver-load, and reuse the memory allocation when fwsec-sb needs to
-be used. We then release the memory allocations on driver unload.
+Adhere to the principle of minimal changes by only converting macros
+that evaluate arguments multiple times and are used in lockless
+contexts.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Fixes: 594766ca3e53 ("drm/nouveau/gsp: move booter handling to GPU-specific code")
-Cc: <stable@vger.kernel.org> # v6.16+
-
+Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+Fixes: 9873964d6eb2 ("[PATCH] HWMON: w83791d: New hardware monitoring driver for the Winbond W83791D") 
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 ---
-V2:
-* I realized we don't need to keep fwsec-frts allocated since we only use
-  it at the start, just fwsec-sb.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Based on the discussion in the link, I will submit a series of patches to
+address TOCTOU issues in the hwmon subsystem by converting macros to
+functions or adjusting locking where appropriate.
 ---
- .../gpu/drm/nouveau/include/nvkm/subdev/gsp.h |  4 ++
- .../gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c   | 61 +++++++++++++------
- .../gpu/drm/nouveau/nvkm/subdev/gsp/priv.h    |  3 +
- .../drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c | 10 ++-
- 4 files changed, 58 insertions(+), 20 deletions(-)
+ drivers/hwmon/w83791d.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-index 226c7ec56b8ed..b8b97e10ae83e 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-@@ -73,6 +73,10 @@ struct nvkm_gsp {
- 
- 		const struct firmware *bl;
- 		const struct firmware *rm;
-+
-+		struct {
-+			struct nvkm_falcon_fw sb;
-+		} falcon;
- 	} fws;
- 
- 	struct nvkm_firmware fw;
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-index 5b721bd9d7994..5037602466604 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-@@ -259,18 +259,16 @@ nvkm_gsp_fwsec_v3(struct nvkm_gsp *gsp, const char *name,
+diff --git a/drivers/hwmon/w83791d.c b/drivers/hwmon/w83791d.c
+index ace854b370a0..996e36951f9d 100644
+--- a/drivers/hwmon/w83791d.c
++++ b/drivers/hwmon/w83791d.c
+@@ -218,9 +218,14 @@ static u8 fan_to_reg(long rpm, int div)
+ 	return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
  }
  
- static int
--nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
-+nvkm_gsp_fwsec_init(struct nvkm_gsp *gsp, struct nvkm_falcon_fw *fw, const char *name, u32 init_cmd)
- {
- 	struct nvkm_subdev *subdev = &gsp->subdev;
- 	struct nvkm_device *device = subdev->device;
- 	struct nvkm_bios *bios = device->bios;
- 	const union nvfw_falcon_ucode_desc *desc;
- 	struct nvbios_pmuE flcn_ucode;
--	u8 idx, ver, hdr;
- 	u32 data;
- 	u16 size, vers;
--	struct nvkm_falcon_fw fw = {};
--	u32 mbox0 = 0;
-+	u8 idx, ver, hdr;
- 	int ret;
- 
- 	/* Lookup in VBIOS. */
-@@ -291,8 +289,8 @@ nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
- 	vers = (desc->v2.Hdr & 0x0000ff00) >> 8;
- 
- 	switch (vers) {
--	case 2: ret = nvkm_gsp_fwsec_v2(gsp, name, &desc->v2, size, init_cmd, &fw); break;
--	case 3: ret = nvkm_gsp_fwsec_v3(gsp, name, &desc->v3, size, init_cmd, &fw); break;
-+	case 2: ret = nvkm_gsp_fwsec_v2(gsp, name, &desc->v2, size, init_cmd, fw); break;
-+	case 3: ret = nvkm_gsp_fwsec_v3(gsp, name, &desc->v3, size, init_cmd, fw); break;
- 	default:
- 		nvkm_error(subdev, "%s(v%d): version unknown\n", name, vers);
- 		return -EINVAL;
-@@ -303,15 +301,19 @@ nvkm_gsp_fwsec(struct nvkm_gsp *gsp, const char *name, u32 init_cmd)
- 		return ret;
- 	}
- 
--	/* Boot. */
--	ret = nvkm_falcon_fw_boot(&fw, subdev, true, &mbox0, NULL, 0, 0);
--	nvkm_falcon_fw_dtor(&fw);
--	if (ret)
--		return ret;
--
- 	return 0;
- }
- 
-+static int
-+nvkm_gsp_fwsec_boot(struct nvkm_gsp *gsp, struct nvkm_falcon_fw *fw)
+-#define FAN_FROM_REG(val, div)	((val) == 0 ? -1 : \
+-				((val) == 255 ? 0 : \
+-					1350000 / ((val) * (div))))
++static int fan_from_reg(int val, int div)
 +{
-+	struct nvkm_subdev *subdev = &gsp->subdev;
-+	u32 mbox0 = 0;
-+
-+	/* Boot */
-+	return nvkm_falcon_fw_boot(fw, subdev, true, &mbox0, NULL, 0, 0);
++	if (val == 0)
++		return -1;
++	if (val == 255)
++		return 0;
++	return 1350000 / (val * div);
 +}
-+
- int
- nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
- {
-@@ -320,7 +322,7 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
- 	int ret;
- 	u32 err;
  
--	ret = nvkm_gsp_fwsec(gsp, "fwsec-sb", NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
-+	ret = nvkm_gsp_fwsec_boot(gsp, &gsp->fws.falcon.sb);
- 	if (ret)
- 		return ret;
- 
-@@ -334,27 +336,48 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
- 	return 0;
+ /* for temp1 which is 8-bit resolution, LSB = 1 degree Celsius */
+ #define TEMP1_FROM_REG(val)	((val) * 1000)
+@@ -521,7 +526,7 @@ static ssize_t show_##reg(struct device *dev, struct device_attribute *attr, \
+ 	struct w83791d_data *data = w83791d_update_device(dev); \
+ 	int nr = sensor_attr->index; \
+ 	return sprintf(buf, "%d\n", \
+-		FAN_FROM_REG(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
++		fan_from_reg(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
  }
  
-+int
-+nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *gsp)
-+{
-+	return nvkm_gsp_fwsec_init(gsp, &gsp->fws.falcon.sb, "fwsec-sb",
-+				   NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
-+}
-+
-+void
-+nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *gsp)
-+{
-+	nvkm_falcon_fw_dtor(&gsp->fws.falcon.sb);
-+}
-+
- int
- nvkm_gsp_fwsec_frts(struct nvkm_gsp *gsp)
- {
- 	struct nvkm_subdev *subdev = &gsp->subdev;
- 	struct nvkm_device *device = subdev->device;
-+	struct nvkm_falcon_fw fw = {};
- 	int ret;
- 	u32 err, wpr2_lo, wpr2_hi;
+ show_fan_reg(fan);
+@@ -585,10 +590,10 @@ static ssize_t store_fan_div(struct device *dev, struct device_attribute *attr,
+ 	if (err)
+ 		return err;
  
--	ret = nvkm_gsp_fwsec(gsp, "fwsec-frts", NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS);
-+	ret = nvkm_gsp_fwsec_init(gsp, &fw, "fwsec-frts", NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS);
- 	if (ret)
- 		return ret;
++	mutex_lock(&data->update_lock);
+ 	/* Save fan_min */
+-	min = FAN_FROM_REG(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
++	min = fan_from_reg(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
  
-+	ret = nvkm_gsp_fwsec_boot(gsp, &fw);
-+	if (ret)
-+		goto fwsec_dtor;
-+
- 	/* Verify. */
- 	err = nvkm_rd32(device, 0x001400 + (0xe * 4)) >> 16;
- 	if (err) {
- 		nvkm_error(subdev, "fwsec-frts: 0x%04x\n", err);
--		return -EIO;
-+		ret = -EIO;
-+	} else {
-+		wpr2_lo = nvkm_rd32(device, 0x1fa824);
-+		wpr2_hi = nvkm_rd32(device, 0x1fa828);
-+		nvkm_debug(subdev, "fwsec-frts: WPR2 @ %08x - %08x\n", wpr2_lo, wpr2_hi);
- 	}
+-	mutex_lock(&data->update_lock);
+ 	data->fan_div[nr] = div_to_reg(nr, val);
  
--	wpr2_lo = nvkm_rd32(device, 0x1fa824);
--	wpr2_hi = nvkm_rd32(device, 0x1fa828);
--	nvkm_debug(subdev, "fwsec-frts: WPR2 @ %08x - %08x\n", wpr2_lo, wpr2_hi);
--	return 0;
-+fwsec_dtor:
-+	nvkm_falcon_fw_dtor(&fw);
-+	return ret;
- }
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
-index c3494b7ac572b..86bdd203bc107 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
-@@ -6,7 +6,10 @@
- enum nvkm_acr_lsf_id;
- 
- int nvkm_gsp_fwsec_frts(struct nvkm_gsp *);
-+
-+int nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *);
- int nvkm_gsp_fwsec_sb(struct nvkm_gsp *);
-+void nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *);
- 
- struct nvkm_gsp_fwif {
- 	int version;
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
-index 32e6a065d6d7a..2a7e80c6d70f3 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
-@@ -1817,12 +1817,16 @@ r535_gsp_rm_boot_ctor(struct nvkm_gsp *gsp)
- 	RM_RISCV_UCODE_DESC *desc;
- 	int ret;
- 
-+	ret = nvkm_gsp_fwsec_sb_ctor(gsp);
-+	if (ret)
-+		return ret;
-+
- 	hdr = nvfw_bin_hdr(&gsp->subdev, fw->data);
- 	desc = (void *)fw->data + hdr->header_offset;
- 
- 	ret = nvkm_gsp_mem_ctor(gsp, hdr->data_size, &gsp->boot.fw);
- 	if (ret)
--		return ret;
-+		goto dtor_fwsec;
- 
- 	memcpy(gsp->boot.fw.data, fw->data + hdr->data_offset, hdr->data_size);
- 
-@@ -1831,6 +1835,9 @@ r535_gsp_rm_boot_ctor(struct nvkm_gsp *gsp)
- 	gsp->boot.manifest_offset = desc->manifestOffset;
- 	gsp->boot.app_version = desc->appVersion;
- 	return 0;
-+dtor_fwsec:
-+	nvkm_gsp_fwsec_sb_dtor(gsp);
-+	return ret;
- }
- 
- static const struct nvkm_firmware_func
-@@ -2101,6 +2108,7 @@ r535_gsp_dtor(struct nvkm_gsp *gsp)
- 	mutex_destroy(&gsp->cmdq.mutex);
- 
- 	nvkm_gsp_dtor_fws(gsp);
-+	nvkm_gsp_fwsec_sb_dtor(gsp);
- 
- 	nvkm_gsp_mem_dtor(&gsp->rmargs);
- 	nvkm_gsp_mem_dtor(&gsp->wpr_meta);
-
-base-commit: 62433efe0b06042d8016ba0713d801165a939229
+ 	switch (nr) {
 -- 
-2.52.0
+2.43.0
 
 
