@@ -1,168 +1,240 @@
-Return-Path: <stable+bounces-198058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C63C9ACB3
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 10:08:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B29C9ACF0
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 10:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1B0223424D8
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 09:08:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 831203A5485
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 09:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4BB30AAB8;
-	Tue,  2 Dec 2025 09:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0ED309EF4;
+	Tue,  2 Dec 2025 09:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GnxYRef0"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="T6uAtbjm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD6E309DC4;
-	Tue,  2 Dec 2025 09:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F273081CA;
+	Tue,  2 Dec 2025 09:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764666499; cv=none; b=UhibhgXg/lknK4hcdehRYIo71QZBDvkdEzH3pZVF4Mapmybo6NaNcSt7FU6x9wVFX2f3WIZsC9BkqP4fcjHaqk/+mGiyR8pgPCXP7/7Hog/KsaCtWN/ZzPE6v5nHH4A6Y7A3MzcEIJg2oMMyFbIU+PZcLQyN+/0AcXZ6mchsDEw=
+	t=1764666829; cv=none; b=lvGK5ibIVpoKVSr4Qnskq23QCj/m4TPtolWoFUHDkd2tXbA0bxVSsuUK8cHyevedhaY0CWDyHLc399FHpavw4i5unHSUPkojQ/WrKgv8Tff1Zv0vDzTRncj0WcPczDCPJrVfCS5HqdAKx1X61GzDkWp6r90P2VwN1Du0uivjTUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764666499; c=relaxed/simple;
-	bh=2ls4wCYGy4uazWXajdhv/xNFKC05rKtCx0he+QJGQS8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MoW5SEKphQHm//HRSq9khGXDZ7AtPuOjfLAJjuEKdZxkm4Vpc7KWrKlVa8EerkTNrCd5q7BDt8bPo9TTC6hU3pqfL47U0e7hq2ArCyEOJt4uSWKqtuaTO1lbelgAur8bAwxuI8J5NovzgdzuUecwSSC24vOj8xYX9+720ADe7gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GnxYRef0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B2672vk2821183;
-	Tue, 2 Dec 2025 09:08:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UL8XiJ0OKD//ZpJy5+AS4tjSqrHNM1d1BOiJm2+auGY=; b=GnxYRef0PxNhWwbG
-	B9UKWHqzkNj8K5Q1vlyaA+zPFSNYMv2icSogoda6xtyVQ0KdKvybZlWf0waNuD+i
-	w9hCgmBjwR7Aogb/6c//SKNwl0Q6/t7ABI2s9sOIfTSzoIhVnTp9+DStfom9Q6lm
-	+rHee1zgx/MrHg+HjE7Sjzvq3ZifO5G9wmruS7VvWIf0JmnY8wMYTZvWyDaKurLQ
-	is53C+ZkyC2vUbbwN8Z7x3zeZOZjyAdY25BWwH1S8ysjV0vl3zJ72aZYhTohzyON
-	06MI0ZWtV4xuv8vSXbqXopaSj6PRL2B8suwJvQPP54icnw7tmb8bEIJ+eaw8GY1B
-	MkhLuw==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4astjgghmp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Dec 2025 09:08:13 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5B298DXK011034
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 2 Dec 2025 09:08:13 GMT
-Received: from [10.253.33.57] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 2 Dec
- 2025 01:08:10 -0800
-Message-ID: <c87533fc-768d-4b70-a1aa-2639e5329058@quicinc.com>
-Date: Tue, 2 Dec 2025 17:08:00 +0800
+	s=arc-20240116; t=1764666829; c=relaxed/simple;
+	bh=ruv5okbm/ics0p1mA7GU3mKhBxgnAGWAh+oqxf9fl4Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o1cKty5yHokyxcmNO0Aabz/GJMJBXB2pS0YIJw/v1yFIXYOZoVFLFeUPCvJmKJQc5ZsCuFBp88glaps+zXRr33vqMu1d9XOapaAI6nntmfneT/zWd8a7esdDLtl6fjD0t4QxngyCPcakUFjIqVxgBwHv9iAKj/oydrU660DlYq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=T6uAtbjm; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ruv5okbm/ics0p1mA7GU3mKhBxgnAGWAh+oqxf9fl4Y=; b=T6uAtbjmrZRTJ5nJxHfxfhDfjU
+	lGzPTgCtq/FxsphqF/NTxU9Otl+qf0eOOB+jBnjTCCGt2ecSKl8sZRwusqlRjsFVlD2fs3DMy/AI3
+	maRnE7pjLOhG/74MUsjYuuHXrGkVilkQILcrXrNxXPJYfZK1E+5YvMGz/DIOxGWf6i4tWLhwOCJXd
+	T1jmmKq8R1WSBRXShGj9ipbynL+O9xMNJ1o/LV/org7J7K77mZ4CsOAJ4w2l4HZQkWWXwcR9N9yoW
+	CjYrbXOm1MQK90IMszHmjsrWrUsWke6ixK5c4+4j5KKqJXnUicIyVmVCpfXyikBMItwVezjjwvrGz
+	nT22+vgQ==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vQLaO-0000000HXx7-1iOo;
+	Tue, 02 Dec 2025 08:18:12 +0000
+Message-ID: <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
+Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: David Woodhouse <dwmw2@infradead.org>
+To: Khushit Shah <khushit.shah@nutanix.com>, seanjc@google.com, 
+	pbonzini@redhat.com, kai.huang@intel.com
+Cc: mingo@redhat.com, x86@kernel.org, bp@alien8.de, hpa@zytor.com, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ dave.hansen@linux.intel.com,  tglx@linutronix.de, jon@nutanix.com,
+ shaju.abraham@nutanix.com,  stable@vger.kernel.org
+Date: Tue, 02 Dec 2025 09:13:32 +0000
+In-Reply-To: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-/aIuwLFgcuamfkXcVb3a"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail
- when BT_EN is pulled up by hw
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-CC: <marcel@holtmann.org>, <luiz.dentz@gmail.com>,
-        <linux-bluetooth@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_chejiang@quicinc.com>
-References: <20250916140259.400285-1-quic_shuaz@quicinc.com>
- <vipw44g3fmaf7yhv5xtaf74zbgbkwhjgyjtguwdxgkkk7pimy6@eauo3cuq3bgi>
-Content-Language: en-US
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-In-Reply-To: <vipw44g3fmaf7yhv5xtaf74zbgbkwhjgyjtguwdxgkkk7pimy6@eauo3cuq3bgi>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-/aIuwLFgcuamfkXcVb3a
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: tZa3bruylkalXlBwIqqB8uBoMBfXC_TU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAyMDA3MiBTYWx0ZWRfX3eeuqVmk0Tq+
- RGP4MlQGoi8/t24pxrRoTjPgRcl9tkFPehKAd8+VPOBHxTXCzU586aYqip30FgPqM8QhAOa4c/c
- acMv0fivZUmqGcxqs9Uh357b9l3l5kHSYC7+5IH6TkuFeDDFiet5p3BzFCZ9mvHl3UOnot79en7
- TjcWMR3nFMQITRSeTVU8IhfmjnYhFlT/1/3bGCWR2TMNq5af8564k/YU2zZmY3g292dfW3vWDzh
- 6LU2RInrBvTzZvjb9hb6ajJZNpm9ZgVc9ZcZYX6RxRv6FvE8NRQS89I8OqFUK5TfgXgKBlo7J9V
- Z2h2eoBHoFlPVPXeitLo4gXbKtdSAtllwynsIhJs6jMjtU/rI6kPiN7WC0oswwHP1i4WpVsozy+
- vFSS4w7P57c6LgzpeM7BGJnASUO16g==
-X-Proofpoint-GUID: tZa3bruylkalXlBwIqqB8uBoMBfXC_TU
-X-Authority-Analysis: v=2.4 cv=EbfFgfmC c=1 sm=1 tr=0 ts=692eac7e cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8
- a=LaSrL2c6wsq51TUUjVQA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-01_01,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- phishscore=0 impostorscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512020072
+Content-Transfer-Encoding: quoted-printable
 
-Hi Luiz
+Firstly, excellent work debugging and diagnosing that!
 
-On 9/16/2025 11:01 PM, Dmitry Baryshkov wrote:
-> On Tue, Sep 16, 2025 at 10:02:59PM +0800, Shuai Zhang wrote:
->> On QCS9075 and QCA8275 platforms, the BT_EN pin is always pulled up by hw
->> and cannot be controlled by the host. As a result, in case of a firmware
->> crash, the host cannot trigger a cold reset. Instead, the BT controller
->> performs a warm restart on its own, without reloading the firmware.
->>
->> This leads to the controller remaining in IBS_WAKE state, while the host
->> expects it to be in sleep mode. The mismatch causes HCI reset commands
->> to time out. Additionally, the driver does not clear internal flags
->> QCA_SSR_TRIGGERED and QCA_IBS_DISABLED, which blocks the reset sequence.
->> If the SSR duration exceeds 2 seconds, the host may enter TX sleep mode
->> due to tx_idle_timeout, further preventing recovery. Also, memcoredump_flag
->> is not cleared, so only the first SSR generates a coredump.
->>
->> Tell driver that BT controller has undergone a proper restart sequence:
->>
->> - Clear QCA_SSR_TRIGGERED and QCA_IBS_DISABLED flags after SSR.
->> - Add a 50ms delay to allow the controller to complete its warm reset.
->> - Reset tx_idle_timer to prevent the host from entering TX sleep mode.
->> - Clear memcoredump_flag to allow multiple coredump captures.
->>
->> Apply these steps only when HCI_QUIRK_NON_PERSISTENT_SETUP is not set,
->> which indicates that BT_EN is defined in DTS and cannot be toggled.
->>
->> Refer to the comment in include/net/bluetooth/hci.h for details on
->> HCI_QUIRK_NON_PERSISTENT_SETUP.
->>
->> Changes in v12:
->> - Rewrote commit to clarify the actual issue and affected platforms.
->> - Used imperative language to describe the fix.
->> - Explained the role of HCI_QUIRK_NON_PERSISTENT_SETUP.
-> 
-> I'll leave having the changelog inside the commit message to the
-> maintainer's discretion.
-> 
-> Otherwise:
-> 
-> 
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> 
-> 
+On Tue, 2025-11-25 at 18:05 +0000, Khushit Shah wrote:
+>=20
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -7800,8 +7800,10 @@ Will return -EBUSY if a VCPU has already been crea=
+ted.
+> =C2=A0
+> =C2=A0Valid feature flags in args[0] are::
+> =C2=A0
+> -=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 0)
+> -=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0 (1ULL << 1)
+> +=C2=A0 #define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 (1ULL << 0)
+> +=C2=A0 #define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 1)
+> +=C2=A0 #define KVM_X2APIC_API_DISABLE_IGNORE_SUPPRESS_EOI_BROADCAST_QUIR=
+K (1ULL << 2)
+> +=C2=A0 #define KVM_X2APIC_API_DISABLE_SUPPRESS_EOI_BROADCAST=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL <<=
+ 3)
+>=20
 
-I noticed that this upstream patch has already been reviewed,
-but it still seems not to have been accepted. Is there anything else I need to do?
+I kind of hate these names. This part right here is what we leave
+behind for future generations, to understand the weird behaviour of
+KVM. To have "IGNORE" "SUPPRESS" "QUIRK" all in the same flag, quite
+apart from the length of the token, makes my brain hurt.
+=C2=A0
+> =C2=A0Enabling KVM_X2APIC_API_USE_32BIT_IDS changes the behavior of
+> =C2=A0KVM_SET_GSI_ROUTING, KVM_SIGNAL_MSI, KVM_SET_LAPIC, and KVM_GET_LAP=
+IC,
+> @@ -7814,6 +7816,14 @@ as a broadcast even in x2APIC mode in order to sup=
+port physical x2APIC
+> =C2=A0without interrupt remapping.=C2=A0 This is undesirable in logical m=
+ode,
+> =C2=A0where 0xff represents CPUs 0-7 in cluster 0.
+> =C2=A0
+> +Setting KVM_X2APIC_API_DISABLE_IGNORE_SUPPRESS_EOI_BROADCAST_QUIRK overr=
+ides
+> +KVM's quirky behavior of not actually suppressing EOI broadcasts for spl=
+it IRQ
+> +chips when support for Suppress EOI Broadcasts is advertised to the gues=
+t.
 
-> 
->>
->> Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
->> ---
->>  drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
->>  1 file changed, 33 insertions(+)
->>
-> 
+This paragraph doesn't actually say what the flag *does*, only the old
+behaviour that it overrides?
 
-Thanks,
-Shuai
+> +Setting KVM_X2APIC_API_DISABLE_SUPPRESS_EOI_BROADCAST disables support f=
+or
+> +Suppress EOI Broadcasts entirely, i.e. instructs KVM to NOT advertise su=
+pport
+> +to the guest and thus disallow enabling EOI broadcast suppression in SPI=
+V.
+
+Could we perhaps call them 'ENABLE_SUPPRESS_EOI_BROADCAST' and
+'DISABLE_SUPPRESS_EOI_BROADCAST', with a note saying that modern VMMs
+should always explicitly enable one or the other, because for
+historical reasons KVM only *pretends* to support it by default but it
+doesn't actually work correctly?
+
+
+--=-/aIuwLFgcuamfkXcVb3a
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMjA5MTMz
+MlowLwYJKoZIhvcNAQkEMSIEIBmLyBHNdr+DbaQSW9JvZqEJI+mmu+fmPuyAdASNUE+GMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAGRi9W9g5Brch
+6+06SpZ09kq9fdF3QauMmzI35a07QZrboBQhc6CqZlgm/KVQpReB+yMKInymNFOpBJy9U6/wL8no
+f98N+fK8kNH/dQsLTFkiggPGD3UX0trcMvtPjHCpsQI32NwQKtQvlcZ86ubd/kQATjleeMzlsRXj
+QoK2URYyzyhY3QnjBURA65NKfMIXmr5sbqA481jjBYf+vjudfrQ9D6/KRGJ+AkBGHxqDzTySaNCO
+XZ8DlHBiABgrylLfyrx3yneln5guP0wjyTBNlGHP0KBPN2zGMWWCozQ8OmAl3Gf4dzuaTtc+1ODH
+zkCugkeU6WPiQFIQ/VkjIdxAiNA2mhRHXVW/NAcGgni6EkTB3LoqW/Mb+GIJ1HbszZtSaT7cgsD6
+C+q3xBJnJv0xu3PnHAei25LAN/FoOVVc5Q7PFnKl0fjlE6cRJUPWqDooDzGKThMg7DW2+vbARkkf
+n4L3D81oOiae/IKqiRGEZIu66jO4uI6jH33MyysMTPChjpbdXzbHRWo6JSWrnsQdJPv6+viKvrCj
+OEI+HHnDehiHTrDN8KU7x2Ssd1yOFL5iAy1jNpz9eGNV2sVUzWcVLodglM8zPcV5UxL6z7oDUmcJ
+SiGkNwyuu/Hlc1gCokWxfGG75SOj4hguWTPHqHJquq7y1Dk9LwdsDLd5SATzyXkAAAAAAAA=
+
+
+--=-/aIuwLFgcuamfkXcVb3a--
 
