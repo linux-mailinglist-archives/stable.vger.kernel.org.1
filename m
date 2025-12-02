@@ -1,139 +1,128 @@
-Return-Path: <stable+bounces-198132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236AAC9CAB8
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 19:40:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11E5C9CAEB
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 19:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B1C704E13B2
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 18:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 560983A73EC
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 18:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830AF2D1F4E;
-	Tue,  2 Dec 2025 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A442D2382;
+	Tue,  2 Dec 2025 18:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c2htYjrn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FK4aE4wc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654D2C0297
-	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 18:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28642C08BF
+	for <stable@vger.kernel.org>; Tue,  2 Dec 2025 18:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764700799; cv=none; b=uGLRoAzphJa7J2HxqvVtQ7H5+fYSnyJvgf2LUPGaYsnqlKf+E+RoaorSDl/uypt51kDwF1iF2clhkUCPrUX+aG0YsyUOAenzj77HN7h1i2GdqUQ06ouOQkkLI0lEDu9SmVutqBSNbZXFR3FV0Qp0hIFTO/76YLmS19LKcL1zN2M=
+	t=1764701297; cv=none; b=uPO5mSfoG1PqsUTDH+h1PgiewfC8YW0TSN5uhbrbvgLiOC0T+gLzHPD+D/pLxH8We4yxK4Viimd7Qsa/hsMbVlOlJXjYWcS+i3ZL/DiINqJgFD+18ds3xmsH+x7xJOJ8bsNz4a/tYMeOOKT1KLf2UhxLtfercnXsX+pK4fSZ2cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764700799; c=relaxed/simple;
-	bh=9Ul08rqPczUY9Bogxe3yXyfTFe2bGnh040pIQDGuCns=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gyJox9zKgZW2PJZh+FbTLf/jIj7r2GBhG5OD6roBZ415NYLhG8NuoSk3DUp9qBUKxUKQPVLuP1Da3lo8l6/fHOmdE7HdbnYJnB8bYDLlrDGmYpXZhBnGmEiTfjj7lGXiehTSJ3/g4CRqrxTC+AjewNRT+OjLLBV762+ttOeeH0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c2htYjrn; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764700797; x=1796236797;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9Ul08rqPczUY9Bogxe3yXyfTFe2bGnh040pIQDGuCns=;
-  b=c2htYjrnSmqyk8tUfJCBWvhK70zimWy1C7fuNqw25/pLsF6XauhloXDO
-   FUyvXR/V1IyQGnoW1scTAT+GnDWYOsNGjPG8CBVRAyCyUUqFZ8fUEZcpv
-   w+ObfqYj7n9bR4LllcRktUikEtVgQyWPo7uc5tenPQQdDqMuUB2M/a1y7
-   D/6h8/hATParJLweyxZrKlENsUERu5jEWo4iyTJYZto/aiLN0j1F/8rO4
-   SSo16Cu/t5pIk2KpQgWvUy+T4+HhMYNudmUBqUNR+hsr4omwz1eySOK05
-   NrhP+OvWr2XsnX6JJliH5mFn25fbrzLY3R9bZGfO4MTx5+S/+gckKEBs9
-   g==;
-X-CSE-ConnectionGUID: fSk0GI2dT86XVFzYK6mTbg==
-X-CSE-MsgGUID: M+ZJACKuQgqMIeswng9qcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66755789"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="66755789"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 10:39:56 -0800
-X-CSE-ConnectionGUID: Qv4WnIqCQ0SprvTAgvTF9Q==
-X-CSE-MsgGUID: S9Y9TNM9RMyT8W8XETV0CA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="231791879"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.182])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 10:39:55 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at probe
-Date: Tue,  2 Dec 2025 20:39:50 +0200
-Message-ID: <20251202183950.2450315-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1764701297; c=relaxed/simple;
+	bh=qmcfhShQh6q6Tg47kHVH1nCSCPnOjgsMPs/kyL1Sick=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MJNcmCfLQ1q+8lc9heBng4ProvyVe9WrpFX7fw1nVrod2Ux/9JK98hw4NPnL6TzoT/qAqTGZmVVWek1bTdE2lLZoHntNnVu8CJ+5FoMaGcL5ZuuqDvSJyClVMdjtde9yXfHpKl3kxtycub82+XG3YxkR51rR8GarpxaGRkR4rvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FK4aE4wc; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b79b9113651so289739266b.3
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 10:48:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764701294; x=1765306094; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YK2nhrM29O2hgg2Ta9uM55oXWMLeg2yr8elEf68PO2E=;
+        b=FK4aE4wc33gtpKoj5VGypbgR8T+2ecMIE0VhF+9S3A7zr7e7wVqR23rke+VLuRmRE3
+         bcbTr4skPBweB3ZLW5fwzUCNvlUznpCHf9ybqnSSblsgZPx/XOGizIOBV/caIOvD9ceF
+         8hVt9ZbHdmNY3FyAp7d94iI0f03btXlWuKT64gTmx/s4Wv437a0NNzneKb1QWoHpOro1
+         X2STTZk6lhQ/+rdsCCOvkG+zFydyKbUW7V10n/KTQG+nJZ8QP2aM+I3ToedhMtJ+R1lm
+         RTf1dKf5VapzdsIfog1TFpF8YRn4JBVgYeJk4bMJPcGBkU8MQtfy6l+uXq2PibmQo/w8
+         Ee9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764701294; x=1765306094;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YK2nhrM29O2hgg2Ta9uM55oXWMLeg2yr8elEf68PO2E=;
+        b=i9bnZv/KQacQyc54kkVDrFeil36nJOn/4QApblY4kO4eOjxpJk9onFx/kNHhYd+fz1
+         8j09nHvQPsZN0nQ+aO0GMB54zcyGVbrM6qY9lHUEbWlKffCXO+lzpp7b28P6EKZ/v8LD
+         gk16j3Vp49Tm3Rg3sTytEVjI3d9b5J2PWeVGAHOKPCVfBNgsU4KQl45SUhNmmOOVZ64I
+         WgR0CjLj5LhXb87scAej8S6nIamw/87H2VAfAoH0iECemquThFwHcnpxjfIqjPkFlIfr
+         thSL5uAplG8jDsz/Xe+3rGrWFjmzSkLkkV41HaLkx3qkKcAsxWZz+rIn9z2COzA4JAG+
+         qQlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvhRxC2zRie6Wb5u+tesOFNJXDZ+cQNdog1mHxbPgTaW4OeETjVNV1cg2c19V7EuOPzOShEgA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUwe4Q7wvaT09Z5o8WnYslCQnO7DFhPXnpvChs34mUjnX08odf
+	55xIGZRhbzdTwHKa3HbRZRKXg9U6iBKzugp5JpXgD+01fiMguv5NCipiZrMq7bnLotFhVUDfdH7
+	obRy50TDFjd2NxpQDS0r27M7+IgokLmE=
+X-Gm-Gg: ASbGnctJJzpBcVq7cl/eOnNzliVfsvHeb3clXamMsLsBj9uoaE3HQ1rzz9BqXGltJr7
+	OCsEL2V4/+zb7hfXuTahcdrDg0S/FEXUsuAX3CwCj3QJdgDxlMcpS20CLeCJWYiDHdNYAZkJ9g3
+	9DlabETsZW5PyNy/qdHTcLIkdCIzu/+mUJnUm4vezQtG9d4npyArwMRnrlOVKb9JcwWQ77vgxsE
+	MFe1Ew66FAGNb5mfWcmfZGrZFfJ/uqYm6J4QjcC4p1J6VsE9ZBdmJ5r+udW7cH+WP67INXi8UbF
+	l3iScF2ij+xAAe93DSgq4WRNH2xIRKKALW6XWqrlSgw7RIg8ivzbN1rWaldaPj3TvlEflypaCVP
+	ANCaixA==
+X-Google-Smtp-Source: AGHT+IEde5Ne2FWmn/NCQ+IRx4n/GD9c9A5QSTODzTd0KanvaOIf2EO3FmVJ55kB63cvLDvHqezaxI6V2mbDnsSWA4o=
+X-Received: by 2002:a17:907:970d:b0:b73:8cea:62b3 with SMTP id
+ a640c23a62f3a-b76c555d4e4mr3503240366b.41.1764701293826; Tue, 02 Dec 2025
+ 10:48:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
+References: <20251202181307.510970-2-thorsten.blum@linux.dev>
+In-Reply-To: <20251202181307.510970-2-thorsten.blum@linux.dev>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 2 Dec 2025 20:47:37 +0200
+X-Gm-Features: AWmQ_blkY4KethoMOw3VYF_HN2LLZpgOJNsEjED8qY3jBtSrhG66YIa0fXVjIf4
+Message-ID: <CAHp75VebjUo2JH49tmuOvgjKUbsUmZg0C461wwvL-bRaDd5C9Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: PAC1934: Fix clamped value in pac1934_reg_snapshot
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Marius Cristea <marius.cristea@microchip.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, stable@vger.kernel.org, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-initialized, and dmc is thus NULL.
+On Tue, Dec 2, 2025 at 8:13=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.d=
+ev> wrote:
+>
+> The local variable 'curr_energy' was never clamped to
+> PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
+> value of clamp() was not used. Fix this by assigning the clamped value
+> back to 'curr_energy'.
 
-That would be the case when the call path is
-intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-intel_power_domains_init_hw() is called *before* intel_dmc_init().
+...
 
-However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-conditionally, depending on the current and target DC states. At probe,
-the target is disabled, but if DC6 is enabled, the function is called,
-and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-at probe, as we haven't seen this failure mode before.
+>                         /* add the power_acc field */
+>                         curr_energy +=3D inc;
+>
+> -                       clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_19=
+3X_MAX_POWER_ACC);
+> +                       curr_energy =3D clamp(curr_energy, PAC_193X_MIN_P=
+OWER_ACC,
+> +                                           PAC_193X_MAX_POWER_ACC);
+>
+>                         reg_data->energy_sec_acc[cnt] =3D curr_energy;
 
-Add NULL checks and switch the dmc->display references to just display.
+Hmm... Maybe
 
-Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+                       reg_data->energy_sec_acc[cnt] =3D clamp(curr_energy,
+                                           PAC_193X_MIN_POWER_ACC,
+                                           PAC_193X_MAX_POWER_ACC);
 
----
+?
 
-Rare case, but this may also throw off the rc6 counting in debugfs when
-it does happen.
----
- drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-index 2fb6fec6dc99..169bbbc91f6d 100644
---- a/drivers/gpu/drm/i915/display/intel_dmc.c
-+++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-@@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
- 	struct intel_dmc *dmc = display_to_dmc(display);
- 	u32 dc5_cur_count;
- 
--	if (DISPLAY_VER(dmc->display) < 14)
-+	if (!dmc || DISPLAY_VER(display) < 14)
- 		return;
- 
--	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
-+	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
- 
- 	if (!start_tracking)
- 		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
-@@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
- 	struct intel_dmc *dmc = display_to_dmc(display);
- 	bool dc6_enabled;
- 
--	if (DISPLAY_VER(display) < 14)
-+	if (!dmc || DISPLAY_VER(display) < 14)
- 		return false;
- 
- 	mutex_lock(&power_domains->lock);
--- 
-2.47.3
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
