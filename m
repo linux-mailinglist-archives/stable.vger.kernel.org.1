@@ -1,144 +1,79 @@
-Return-Path: <stable+bounces-198114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F8DC9C440
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 17:42:54 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6BBC9C546
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 18:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 86E1D4E495F
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 16:42:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 46B63343964
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 17:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818202BEFF8;
-	Tue,  2 Dec 2025 16:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HenSbte8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2837F29E0E7;
+	Tue,  2 Dec 2025 17:05:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3454729AAF8;
-	Tue,  2 Dec 2025 16:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49C5220687;
+	Tue,  2 Dec 2025 17:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764693703; cv=none; b=Dva0ABkE1Cw0SW4cT3Ba2xpo2F/SdxQXBCFBTsUypfOgEsyIVfCkn6RJ3+3PMg3kppPqb4gYywjWz/97i5yaKfjBFiqG4hND78xcj3lqadzNPSwGXvVndrDwAMUPxd1ugN1UevIVWVYajK8r9mhYoh6GqzU/44wPJ3PcrA44lOY=
+	t=1764695122; cv=none; b=ksoH3FQzqMwb/Rwn3q1NSw9b6sbf/qcFxthD/3CVeOIkMnvNXNGdD+Eag6mXWVlvrjl6Gh1F26BD8vpdnEeY7TfKlzRbBtSHHDo5agLlfqWD4Xsl9u9A8TFRsmlG2JqggEtPBNRoNw3MUE6gAQ8LEPvDBa/xMTjw2BbR+NmEysY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764693703; c=relaxed/simple;
-	bh=/tDn2+TvpCsV/V+XMJL21Ga2wSku8tb8NvipnVFm1uA=;
-	h=Date:To:From:Subject:Message-Id; b=tinHlXpocFl4OAl0qDTJteJp82fTU9vzFS+VzEN8//MCyXU4kC57nXFD8HisFgWTFOBo480jdTbMDE8Un1amDUqVvN0pss8E+6dzddHhu2dsOKgxmwu67wTOT+biDvivkyb2K6wmd0lMGM75mGr0vEGmMWSO+V4TCs6G3Y0NQlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HenSbte8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5463C4CEF1;
-	Tue,  2 Dec 2025 16:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764693702;
-	bh=/tDn2+TvpCsV/V+XMJL21Ga2wSku8tb8NvipnVFm1uA=;
-	h=Date:To:From:Subject:From;
-	b=HenSbte8YN5VpwAEolXgokhW34Tf5uFnJJwCEDKfRc0pObSxIDC5hrY9p22NN/vak
-	 Ru8nN7b52mtRIh5clF4O/B6MHcDBT7/rl4YgOFQhtLXa5cj9B6WxHl+dJ4kZCcsyFv
-	 Q6FxHLSjD51L4zw60vuM93Ez6GfnHQ1DlNqbadNI=
-Date: Tue, 02 Dec 2025 08:41:42 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,activprithvi@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch added to mm-nonmm-unstable branch
-Message-Id: <20251202164142.A5463C4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1764695122; c=relaxed/simple;
+	bh=kGAm+DZo4KK8yGTS04ICfPuYo5BjlcZB/qDXOY8MyWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N9VYcVbZkSqeP8dGerIUEPcjwyqLp6q/cnAozx83Kck2AenD9nnGioWNvbIXf9sFgotEFd0maNr/SNxEO5MgCApOdMYpfe0aIzohD6HTlliFFHyhefXKEt49E5BLYqOLtzZtRAIHjNhcS4JMd5CMa/Y0y17mYS8hiNDNojtKdgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 5.4 000/182] 5.4.302-rc3 review
+Date: Tue,  2 Dec 2025 17:04:54 +0000
+Message-ID: <20251202170501.3598-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251202152903.637577865@linuxfoundation.org>
+References: <20251202152903.637577865@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+# Librecast Test Results
 
-The patch titled
-     Subject: ocfs2: fix kernel BUG in ocfs2_find_victim_chain
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
+Build and boots without error. No network tests run.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+CPU/kernel: Linux auntie 5.4.302-rc3-00183-g95d4a5c8c83f #2 SMP Tue Dec 2 17:01:29 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Prithvi Tambewagh <activprithvi@gmail.com>
-Subject: ocfs2: fix kernel BUG in ocfs2_find_victim_chain
-Date: Mon, 1 Dec 2025 18:37:11 +0530
-
-syzbot reported a kernel BUG in ocfs2_find_victim_chain() because the
-`cl_next_free_rec` field of the allocation chain list (next free slot in
-the chain list) is 0, triggring the BUG_ON(!cl->cl_next_free_rec)
-condition in ocfs2_find_victim_chain() and panicking the kernel.
-
-To fix this, an if condition is introduced in ocfs2_claim_suballoc_bits(),
-just before calling ocfs2_find_victim_chain(), the code block in it being
-executed when either of the following conditions is true:
-
-1. `cl_next_free_rec` is equal to 0, indicating that there are no free
-chains in the allocation chain list
-2. `cl_next_free_rec` is greater than `cl_count` (the total number of
-chains in the allocation chain list)
-
-Either of them being true is indicative of the fact that there are no
-chains left for usage.
-
-This is addressed using ocfs2_error(), which prints
-the error log for debugging purposes, rather than panicking the kernel.
-
-Link: https://lkml.kernel.org/r/20251201130711.143900-1-activprithvi@gmail.com
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-Reported-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d38c6e1655c1420a72
-Tested-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/suballoc.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
---- a/fs/ocfs2/suballoc.c~ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain
-+++ a/fs/ocfs2/suballoc.c
-@@ -1993,6 +1993,16 @@ static int ocfs2_claim_suballoc_bits(str
- 	}
- 
- 	cl = (struct ocfs2_chain_list *) &fe->id2.i_chain;
-+	if (!le16_to_cpu(cl->cl_next_free_rec) ||
-+	    le16_to_cpu(cl->cl_next_free_rec) > le16_to_cpu(cl->cl_count)) {
-+		status = ocfs2_error(ac->ac_inode->i_sb,
-+				     "Chain allocator dinode %llu has invalid next "
-+				     "free chain record %u, but only %u total\n",
-+				     (unsigned long long)le64_to_cpu(fe->i_blkno),
-+				     le16_to_cpu(cl->cl_next_free_rec),
-+				     le16_to_cpu(cl->cl_count));
-+		goto bail;
-+	}
- 
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
-_
-
-Patches currently in -mm which might be from activprithvi@gmail.com are
-
-ocfs2-fix-kernel-bug-in-ocfs2_find_victim_chain.patch
-
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
