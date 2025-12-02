@@ -1,545 +1,232 @@
-Return-Path: <stable+bounces-198150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEAFC9D259
-	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:08:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B3C9D314
+	for <lists+stable@lfdr.de>; Tue, 02 Dec 2025 23:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452843A7758
-	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:08:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135C83A87A0
+	for <lists+stable@lfdr.de>; Tue,  2 Dec 2025 22:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9568D2F9D88;
-	Tue,  2 Dec 2025 22:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5E32F7459;
+	Tue,  2 Dec 2025 22:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiFwPnKp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU8OuIvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD332F99B3;
-	Tue,  2 Dec 2025 22:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0648C2D1F4E;
+	Tue,  2 Dec 2025 22:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764713279; cv=none; b=kfUt3P3J104Z0W3q7HbHgUXDBZ5NDuszz5kvcpgcYEbQU7S/Ua+5xOa0Q6+G1MjMtG6ZFRLJhi0mv8TS8fofE0rO0lMzghMz3pf0qf0OKXzfIzMZ7g3wXQagorTEkRuQHId4NDbWwtvNTnEFEbkGc5oAzyVakL8yQ91ky7kK27w=
+	t=1764713958; cv=none; b=UB5oKqulyJbWlFIzIWCkJtwGirficvkqpNpOidzAFBkP3Pbevn9efWSORK6Y1PlGvuA6zsqOSzvul8EDsagUj3FscLRceLuMVXeUapDRmXTcasd7uX6U0dDoTmzS/6IyDYkP5xDDgC9dosQA/6QBD8nlkBhQ8kseVHNmusysdts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764713279; c=relaxed/simple;
-	bh=BpW7N/hm2qVgqAcZwW3G3z9bL9yIrEZ3EE2QdIJB4Do=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6AIEhOrUfYEYUyEsdV2jcWYIHv+6Sr7UT39W+wshSkq0iSv7AwCGNxANqfJsf1z6SLgADr/749oDWqERVvhVKs2yXgIZtIUzPPN5ACtH/ZAkm83L+iRq7dBaPoDuhWdPZ3h6B3K9Nhyi+mgMocl4O+cL+RMf7od3YGgymOi0Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiFwPnKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DA5C4CEF1;
-	Tue,  2 Dec 2025 22:07:58 +0000 (UTC)
+	s=arc-20240116; t=1764713958; c=relaxed/simple;
+	bh=s67ObscIC5Fdz0gW2PfFJdDD71/iFYepTk0lKClwfAo=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=eA0IHNlTU+EKzsvJnM5r0s4LfEynAOad09cKVE3aDtTXi8MWGwWjo85q/Y2FZfHIJLKNFlLa95eLTmk+0Zpn6dUV2PdCk1X2nqPYONHlZMqewahVe2HfbjIt2+0260xBCFJZsbM+mz2r+82i8x/yEzpbdU7gQsV13Mu/s+sMM9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU8OuIvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78C6C4CEF1;
+	Tue,  2 Dec 2025 22:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764713278;
-	bh=BpW7N/hm2qVgqAcZwW3G3z9bL9yIrEZ3EE2QdIJB4Do=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qiFwPnKpnvgnkGPXFJPFVkU7lDKRryDTrtIhdGpezIPM8m3DjW/A/rRVrMPNUV+v+
-	 sXkjozBdKzyj5d4O7mHG51dJ2WSpiq6zKyiZUJz916pEPRELCsyovr/Z4rek8/oanp
-	 RqktPBy2LHNasJUQU2L4F0GV7iiIupBCKMar30rWVbnC8lNo4jWa1lDLZAwJHk+L/r
-	 7jpVUg6KKgh+zob6n41LB4A+dffyU5cFle2pUmLCy2N5nwBDNPz2kqo4f+on512uS0
-	 H4Enuaa9kymnSqFn48P1uSKwARpM5pSfAa34qeKB4P7XgwsZZn1xQ681piOzVRlsTN
-	 uwDLe6rFjPRbQ==
-Date: Wed, 3 Dec 2025 00:07:54 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: linux-integrity@vger.kernel.org,
-	Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3] tpm2-sessions: address out-of-range indexing
-Message-ID: <aS9jOs0872QL__l3@kernel.org>
-References: <20251201193958.896358-1-jarkko@kernel.org>
- <aS8TIeviaippVAha@earth.li>
- <aS9Dv5CKGNOzpsN7@kernel.org>
+	s=k20201202; t=1764713957;
+	bh=s67ObscIC5Fdz0gW2PfFJdDD71/iFYepTk0lKClwfAo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SU8OuIvRkG5HX9GerzrGCwAD0hZrRjnWxVwHryreN9/1b6sx9XJuSfjg3maCMHpSU
+	 GI9c4Z3clmN8OvxPjZdKy61dPS7hc+YkJ9ont2J4xa+Nr2jfoWnOlzOVgnWQxYKJ2F
+	 RMmsEyTMNQk9RvqWvBDaPR1NdMjQlmI/k2o77nQ4iBgZvorYlKr/ZggvdSm+ofos5z
+	 cfTo89wWUP383IeC/Df0G6hDgvQKlXA/WuEaaEcawvDbdNU5Xri0+4COnl/aM+QoUI
+	 xIJpBB5pHoTpyFNxYGd4iLvD8e9maEm89GiBzc0PAO+T5z4Ax8/F7ZR1BwPgMi43tX
+	 whNdULGGAXXbQ==
+Date: Wed, 3 Dec 2025 07:19:13 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Khannanov Lenar <Lenar.Khannanov@infotecs.ru>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "mhiramat@kernel.org" <mhiramat@kernel.org>, "patches@lists.linux.dev"
+ <patches@lists.linux.dev>, "sashal@kernel.org" <sashal@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, Ilia Gavrilov
+ <Ilia.Gavrilov@infotecs.ru>
+Subject: Re: [PATCH 6.12 034/116] tracing: tprobe-events: Fix to clean up
+ tprobe correctly when module unload
+Message-Id: <20251203071913.ced4edee107af8154c1e3ccd@kernel.org>
+In-Reply-To: <4e6535a0-1da9-4a74-9bf0-c551b2b183e7@infotecs.ru>
+References: <20250325122150.084780669@linuxfoundation.org>
+	<4e6535a0-1da9-4a74-9bf0-c551b2b183e7@infotecs.ru>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aS9Dv5CKGNOzpsN7@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 02, 2025 at 09:53:39PM +0200, Jarkko Sakkinen wrote:
-> On Tue, Dec 02, 2025 at 04:26:09PM +0000, Jonathan McDowell wrote:
-> > On Mon, Dec 01, 2025 at 09:39:58PM +0200, Jarkko Sakkinen wrote:
-> > > 'name_size' does not have any range checks, and it just directly indexes
-> > > with TPM_ALG_ID, which could lead into memory corruption at worst.
-> > > 
-> > > Address the issue by only processing known values and returning -EINVAL for
-> > > unrecognized values.
-> > > 
-> > > Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
-> > > that errors are detected before causing any spurious TPM traffic.
-> > > 
-> > > End also the authorization session on failure in both of the functions, as
-> > > the session state would be then by definition corrupted.
-> > > 
-> > > Cc: stable@vger.kernel.org # v6.10+
-> > > Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > ---
-> > > v3:
-> > > - Add two missing 'tpm2_end_auth_session' calls to the fallback paths of
-> > >  'tpm_buf_fill_hmac_session'.
-> > > - Rewrote the commit message.
-> > > - End authorization session on failure in 'tpm2_buf_append_name' and
-> > >  'tpm_buf_fill_hmac_session'.
-> > > v2:
-> > > There was spurious extra field added to tpm2_hash by mistake.
-> > > ---
-> > > drivers/char/tpm/tpm2-cmd.c               |  23 +++-
-> > > drivers/char/tpm/tpm2-sessions.c          | 131 +++++++++++++++-------
-> > > include/linux/tpm.h                       |   6 +-
-> > > security/keys/trusted-keys/trusted_tpm2.c |  29 ++++-
-> > > 4 files changed, 136 insertions(+), 53 deletions(-)
-> > > 
-> > > diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-> > > index 5b6ccf901623..4473b81122e8 100644
-> > > --- a/drivers/char/tpm/tpm2-cmd.c
-> > > +++ b/drivers/char/tpm/tpm2-cmd.c
-> > > @@ -187,7 +187,11 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
-> > > 	}
-> > > 
-> > > 	if (!disable_pcr_integrity) {
-> > > -		tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
-> > > +		rc = tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
-> > > +		if (rc) {
-> > > +			tpm_buf_destroy(&buf);
-> > > +			return rc;
-> > > +		}
-> > > 		tpm_buf_append_hmac_session(chip, &buf, 0, NULL, 0);
-> > > 	} else {
-> > > 		tpm_buf_append_handle(chip, &buf, pcr_idx);
-> > > @@ -202,8 +206,14 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
-> > > 			       chip->allocated_banks[i].digest_size);
-> > > 	}
-> > > 
-> > > -	if (!disable_pcr_integrity)
-> > > -		tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	if (!disable_pcr_integrity) {
-> > > +		rc = tpm_buf_fill_hmac_session(chip, &buf);
-> > > +		if (rc) {
-> > > +			tpm_buf_destroy(&buf);
-> > > +			return rc;
-> > > +		}
-> > > +	}
-> > > +
-> > > 	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting extend a PCR value");
-> > > 	if (!disable_pcr_integrity)
-> > > 		rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> > > @@ -261,7 +271,12 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
-> > > 						| TPM2_SA_CONTINUE_SESSION,
-> > > 						NULL, 0);
-> > > 		tpm_buf_append_u16(&buf, num_bytes);
-> > > -		tpm_buf_fill_hmac_session(chip, &buf);
-> > > +		err = tpm_buf_fill_hmac_session(chip, &buf);
-> > > +		if (err) {
-> > > +			tpm_buf_destroy(&buf);
-> > > +			return err;
-> > > +		}
-> > > +
-> > > 		err = tpm_transmit_cmd(chip, &buf,
-> > > 				       offsetof(struct tpm2_get_random_out,
-> > > 						buffer),
-> > > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> > > index 6d03c224e6b2..33ad0d668e1a 100644
-> > > --- a/drivers/char/tpm/tpm2-sessions.c
-> > > +++ b/drivers/char/tpm/tpm2-sessions.c
-> > > @@ -144,16 +144,24 @@ struct tpm2_auth {
-> > > /*
-> > >  * Name Size based on TPM algorithm (assumes no hash bigger than 255)
-> > >  */
-> > > -static u8 name_size(const u8 *name)
-> > > +static int name_size(const u8 *name)
-> > > {
-> > > -	static u8 size_map[] = {
-> > > -		[TPM_ALG_SHA1] = SHA1_DIGEST_SIZE,
-> > > -		[TPM_ALG_SHA256] = SHA256_DIGEST_SIZE,
-> > > -		[TPM_ALG_SHA384] = SHA384_DIGEST_SIZE,
-> > > -		[TPM_ALG_SHA512] = SHA512_DIGEST_SIZE,
-> > > -	};
-> > > -	u16 alg = get_unaligned_be16(name);
-> > > -	return size_map[alg] + 2;
-> > > +	u16 hash_alg = get_unaligned_be16(name);
-> > > +
-> > > +	switch (hash_alg) {
-> > > +	case TPM_ALG_SHA1:
-> > > +		return SHA1_DIGEST_SIZE + 2;
-> > > +	case TPM_ALG_SHA256:
-> > > +		return SHA256_DIGEST_SIZE + 2;
-> > > +	case TPM_ALG_SHA384:
-> > > +		return SHA384_DIGEST_SIZE + 2;
-> > > +	case TPM_ALG_SHA512:
-> > > +		return SHA512_DIGEST_SIZE + 2;
-> > > +	case TPM_ALG_SM3_256:
-> > > +		return SM3256_DIGEST_SIZE + 2;
-> > > +	}
-> > > +
-> > 
-> > Can we/should we perhaps print a warning here if we don't know the
-> > algorithm?
-> 
-> I think it is a good idea to do that right now.
-> 
-> Also, it'd be better to not have SM3 label as SM2/SM3 is not supported
-> at this point. I'm working simulatenously on an improved feature and
-> that slipped from that work:
-> 
-> My big picture roadmap for this feature, and how to make it useful  is:
-> 
-> 1. tpm.integrity_mode=disabled/permissive/enforced. Permissive means
-> here that the feature is conditionally enabled if algorithms that are
-> required to enable the HMAC pipe are available.
-> 2. tpm.integrity_handle=0x00000000/0x81??????.
-> 
-> > 
-> > > +	return -EINVAL;
-> > > }
-> > > 
-> > > static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> > > @@ -161,6 +169,7 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> > > 	struct tpm_header *head = (struct tpm_header *)buf->data;
-> > > 	off_t offset = TPM_HEADER_SIZE;
-> > > 	u32 tot_len = be32_to_cpu(head->length);
-> > > +	int ret;
-> > > 	u32 val;
-> > > 
-> > > 	/* we're starting after the header so adjust the length */
-> > > @@ -172,9 +181,15 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> > > 		return -EINVAL;
-> > > 	offset += val;
-> > > 	/* name */
-> > > +
-> > > 	val = tpm_buf_read_u16(buf, &offset);
-> > > -	if (val != name_size(&buf->data[offset]))
-> > > +	ret = name_size(&buf->data[offset]);
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > > +
-> > > +	if (val != ret)
-> > > 		return -EINVAL;
-> > > +
-> > > 	memcpy(name, &buf->data[offset], val);
-> > > 	/* forget the rest */
-> > > 	return 0;
-> > > @@ -221,46 +236,70 @@ static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
-> > >  * As with most tpm_buf operations, success is assumed because failure
-> > >  * will be caused by an incorrect programming model and indicated by a
-> > >  * kernel message.
-> > > + *
-> > > + * Ends the authorization session on failure.
-> > >  */
-> > > -void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > -			 u32 handle, u8 *name)
-> > > +int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > +			u32 handle, u8 *name)
-> > > {
-> > > #ifdef CONFIG_TCG_TPM2_HMAC
-> > > 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
-> > > 	struct tpm2_auth *auth;
-> > > 	int slot;
-> > > +	int ret;
-> > > #endif
-> > > 
-> > > 	if (!tpm2_chip_auth(chip)) {
-> > > 		tpm_buf_append_handle(chip, buf, handle);
-> > > -		return;
-> > > +		return 0;
-> > > 	}
-> > > 
-> > > #ifdef CONFIG_TCG_TPM2_HMAC
-> > > 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
-> > > 	if (slot >= AUTH_MAX_NAMES) {
-> > > -		dev_err(&chip->dev, "TPM: too many handles\n");
-> > > -		return;
-> > > +		dev_err(&chip->dev, "too many handles\n");
-> > > +		ret = -EIO;
-> > > +		goto err;
-> > > 	}
-> > > 	auth = chip->auth;
-> > > -	WARN(auth->session != tpm_buf_length(buf),
-> > > -	     "name added in wrong place\n");
-> > > +	if (auth->session != tpm_buf_length(buf)) {
-> > > +		dev_err(&chip->dev, "session state malformed");
-> > > +		ret = -EIO;
-> > > +		goto err;
-> > > +	}
-> > > 	tpm_buf_append_u32(buf, handle);
-> > > 	auth->session += 4;
-> > > 
-> > > 	if (mso == TPM2_MSO_PERSISTENT ||
-> > > 	    mso == TPM2_MSO_VOLATILE ||
-> > > 	    mso == TPM2_MSO_NVRAM) {
-> > > -		if (!name)
-> > > -			tpm2_read_public(chip, handle, auth->name[slot]);
-> > > +		if (!name) {
-> > > +			ret = tpm2_read_public(chip, handle, auth->name[slot]);
-> > > +			if (ret)
-> > > +				goto err;
-> > > +		}
-> > > 	} else {
-> > > -		if (name)
-> > > -			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
-> > 
-> > We're dropping the error message here; is there a reason for that?
-> 
-> Thanks, I'll add it back.
-> 
-> > 
-> > > +		if (name) {
-> > > +			ret = -EIO;
-> > > +			goto err;
-> > > +		}
-> > > 	}
-> > > 
-> > > 	auth->name_h[slot] = handle;
-> > > -	if (name)
-> > > -		memcpy(auth->name[slot], name, name_size(name));
-> > > +	if (name) {
-> > > +		ret = name_size(name);
-> > > +		if (ret < 0)
-> > > +			goto err;
-> > > +
-> > > +		memcpy(auth->name[slot], name, ret);
-> > > +	}
-> > > +#endif
-> > > +	return 0;
-> > > +
-> > > +#ifdef CONFIG_TCG_TPM2_HMAC
-> > > +err:
-> > > +	tpm2_end_auth_session(chip);
-> > > +	return tpm_ret_to_err(ret);
-> > > #endif
-> > > }
-> > > EXPORT_SYMBOL_GPL(tpm_buf_append_name);
-> > > @@ -533,11 +572,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
-> > >  * encryption key and encrypts the first parameter of the command
-> > >  * buffer with it.
-> > >  *
-> > > - * As with most tpm_buf operations, success is assumed because failure
-> > > - * will be caused by an incorrect programming model and indicated by a
-> > > - * kernel message.
-> > > + * Ends the authorization session on failure.
-> > >  */
-> > > -void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > +int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > {
-> > > 	u32 cc, handles, val;
-> > > 	struct tpm2_auth *auth = chip->auth;
-> > > @@ -549,9 +586,12 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 	u8 cphash[SHA256_DIGEST_SIZE];
-> > > 	struct sha256_ctx sctx;
-> > > 	struct hmac_sha256_ctx hctx;
-> > > +	int ret;
-> > > 
-> > > -	if (!auth)
-> > > -		return;
-> > > +	if (!auth) {
-> > > +		ret = -EINVAL;
-> > > +		goto err;
-> > > +	}
-> > > 
-> > > 	/* save the command code in BE format */
-> > > 	auth->ordinal = head->ordinal;
-> > > @@ -560,9 +600,10 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 
-> > > 	i = tpm2_find_cc(chip, cc);
-> > > 	if (i < 0) {
-> > > -		dev_err(&chip->dev, "Command 0x%x not found in TPM\n", cc);
-> > 
-> > Again, I think it's generally helpful to have the error message given that
-> > the return (EINVAL) does not help narrow down which value is bad.
-> 
-> Agreed.
-> 
-> > 
-> > > -		return;
-> > > +		ret = -EINVAL;
-> > > +		goto err;
-> > > 	}
-> > > +
-> > > 	attrs = chip->cc_attrs_tbl[i];
-> > > 
-> > > 	handles = (attrs >> TPM2_CC_ATTR_CHANDLES) & GENMASK(2, 0);
-> > > @@ -576,9 +617,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 		u32 handle = tpm_buf_read_u32(buf, &offset_s);
-> > > 
-> > > 		if (auth->name_h[i] != handle) {
-> > > -			dev_err(&chip->dev, "TPM: handle %d wrong for name\n",
-> > > -				  i);
-> > > -			return;
-> > > +			dev_err(&chip->dev, "invalid handle 0x%08x\n", handle);
-> > > +			ret = -EINVAL;
-> > > +			goto err;
-> > > 		}
-> > > 	}
-> > > 	/* point offset_s to the start of the sessions */
-> > > @@ -609,12 +650,14 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 		offset_s += len;
-> > > 	}
-> > > 	if (offset_s != offset_p) {
-> > > -		dev_err(&chip->dev, "TPM session length is incorrect\n");
-> > > -		return;
-> > > +		dev_err(&chip->dev, "session length is incorrect\n");
-> > > +		ret = -EINVAL;
-> > > +		goto err;
-> > > 	}
-> > > 	if (!hmac) {
-> > > -		dev_err(&chip->dev, "TPM could not find HMAC session\n");
-> > > -		return;
-> > > +		dev_err(&chip->dev, "could not find HMAC session\n");
-> > > +		ret = -EINVAL;
-> > > +		goto err;
-> > > 	}
-> > > 
-> > > 	/* encrypt before HMAC */
-> > > @@ -646,8 +689,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 		if (mso == TPM2_MSO_PERSISTENT ||
-> > > 		    mso == TPM2_MSO_VOLATILE ||
-> > > 		    mso == TPM2_MSO_NVRAM) {
-> > > -			sha256_update(&sctx, auth->name[i],
-> > > -				      name_size(auth->name[i]));
-> > > +			ret = name_size(auth->name[i]);
-> > > +			if (ret < 0)
-> > > +				goto err;
-> > > +
-> > > +			sha256_update(&sctx, auth->name[i], ret);
-> > > 		} else {
-> > > 			__be32 h = cpu_to_be32(auth->name_h[i]);
-> > > 
-> > > @@ -668,6 +714,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-> > > 	hmac_sha256_update(&hctx, auth->tpm_nonce, sizeof(auth->tpm_nonce));
-> > > 	hmac_sha256_update(&hctx, &auth->attrs, 1);
-> > > 	hmac_sha256_final(&hctx, hmac);
-> > > +	return 0;
-> > > +
-> > > +err:
-> > > +	tpm2_end_auth_session(chip);
-> > > +	return ret;
-> > > }
-> > > EXPORT_SYMBOL(tpm_buf_fill_hmac_session);
-> > > 
-> > > diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-> > > index 0e9e043f728c..1a59f0190eb3 100644
-> > > --- a/include/linux/tpm.h
-> > > +++ b/include/linux/tpm.h
-> > > @@ -528,8 +528,8 @@ static inline struct tpm2_auth *tpm2_chip_auth(struct tpm_chip *chip)
-> > > #endif
-> > > }
-> > > 
-> > > -void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > -			 u32 handle, u8 *name);
-> > > +int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > +			u32 handle, u8 *name);
-> > > void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > 				 u8 attributes, u8 *passphrase,
-> > > 				 int passphraselen);
-> > > @@ -562,7 +562,7 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
-> > > #ifdef CONFIG_TCG_TPM2_HMAC
-> > > 
-> > > int tpm2_start_auth_session(struct tpm_chip *chip);
-> > > -void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
-> > > +int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
-> > > int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
-> > > 				int rc);
-> > > void tpm2_end_auth_session(struct tpm_chip *chip);
-> > > diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-> > > index e165b117bbca..7672a4376dad 100644
-> > > --- a/security/keys/trusted-keys/trusted_tpm2.c
-> > > +++ b/security/keys/trusted-keys/trusted_tpm2.c
-> > > @@ -283,7 +283,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
-> > > 		goto out_put;
-> > > 	}
-> > > 
-> > > -	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-> > > +	if (rc)
-> > > +		goto out;
-> > > +
-> > > 	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT,
-> > > 				    options->keyauth, TPM_DIGEST_SIZE);
-> > > 
-> > > @@ -331,7 +334,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
-> > > 		goto out;
-> > > 	}
-> > > 
-> > > -	tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	if (rc)
-> > > +		goto out;
-> > > +
-> > > 	rc = tpm_transmit_cmd(chip, &buf, 4, "sealing data");
-> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> > > 	if (rc)
-> > > @@ -438,7 +444,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
-> > > 		return rc;
-> > > 	}
-> > > 
-> > > -	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-> > > +	if (rc)
-> > > +		goto out;
-> > > +
-> > > 	tpm_buf_append_hmac_session(chip, &buf, 0, options->keyauth,
-> > > 				    TPM_DIGEST_SIZE);
-> > > 
-> > > @@ -450,7 +459,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
-> > > 		goto out;
-> > > 	}
-> > > 
-> > > -	tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	if (rc)
-> > > +		goto out;
-> > > +
-> > > 	rc = tpm_transmit_cmd(chip, &buf, 4, "loading blob");
-> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> > > 	if (!rc)
-> > > @@ -497,7 +509,9 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
-> > > 		return rc;
-> > > 	}
-> > > 
-> > > -	tpm_buf_append_name(chip, &buf, blob_handle, NULL);
-> > > +	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-> > > +	if (rc)
-> > > +		goto out;
-> > > 
-> > > 	if (!options->policyhandle) {
-> > > 		tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_ENCRYPT,
-> > > @@ -522,7 +536,10 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
-> > > 						NULL, 0);
-> > > 	}
-> > > 
-> > > -	tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	rc = tpm_buf_fill_hmac_session(chip, &buf);
-> > > +	if (rc)
-> > > +		goto out;
-> > > +
-> > > 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
-> > > 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-> > > 
-> > > -- 
-> > > 2.52.0
-> > > 
-> > 
-> > J.
-> > 
-> > -- 
-> > Be Ye Not Lost Among Precepts of Order
-> 
-> BR, Jarkko
+On Mon, 24 Nov 2025 11:06:41 +0000
+Khannanov Lenar <Lenar.Khannanov@infotecs.ru> wrote:
 
-Addressed in: https://lore.kernel.org/linux-integrity/20251202202643.107108-2-jarkko@kernel.org/
+> We found the kernel crashed when running kselftest (ftrace:ftracetest-ktap) in kernel 6.12.52 with the next trace:
+> 
+> 
+> [  321.365532] ------------[ cut here ]------------
+> [  321.368124] WARNING: CPU: 0 PID: 1132 at kernel/trace/ftrace.c:378 __unregister_ftrace_function+0x12a/0x1c0
+> [  321.373445] Modules linked in: intel_rapl_msr(E) intel_rapl_common(E) crct10dif_pclmul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) rapl(E) snd_pcm(E) snd_timer(E) vmw_balloon(E) snd(E) vmwgfx(E) soundcore(E) drm_ttm_helper(E) vga16fb(E) ttm(E) vgastate(E) pcspkr(E) drm_kms_helper(E) vmw_vmci(E) ac(E) button(E) joydev(E) serio_raw(E) sg(E) openvswitch(E) nsh(E) nf_conncount(E) drm(E) dm_mod(E) fuse(E) autofs4(E) sd_mod(E) ata_generic(E) hid_generic(E) mptspi(E) ata_piix(E) mptscsih(E) mptbase(E) i2c_piix4(E) scsi_transport_spi(E) crc32_pclmul(E) libata(E) crc32c_intel(E) psmouse(E) ehci_pci(E) uhci_hcd(E) i2c_smbus(E) e1000(E) scsi_mod(E) ehci_hcd(E) scsi_common(E) [last unloaded: trace_events_sample(E)]
+> [  321.404373] CPU: 0 UID: 0 PID: 1132 Comm: ftracetest Tainted: G            E      6.12.52 #4
+> [  321.408625] Tainted: [E]=UNSIGNED_MODULE
+> [  321.410729] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+> [  321.416039] RIP: 0010:__unregister_ftrace_function+0x12a/0x1c0
+> [  321.419046] Code: 00 48 8b 1d 48 7e ac 02 48 81 fb e0 09 df bd 0f 84 90 00 00 00 48 39 dd 0f 85 1d ff ff ff 48 c7 c0 b0 09 df bd e9 36 ff ff ff <0f> 0b b8 f0 ff ff ff e9 8a 03 ea 00 be ff ff ff ff 48 c7 c7 68 23
+> [  321.429097] RSP: 0018:ffffa0ba8106fb90 EFLAGS: 00010246
+> [  321.431997] RAX: 0000000000000000 RBX: ffff92a988808418 RCX: 0000000000000000
+> [  321.435654] RDX: 0000000000000000 RSI: ffffffffbc1be80c RDI: ffff92a988808418
+> [  321.439480] RBP: 00000000ffffffea R08: 0000000000000001 R09: 0000000000000000
+> [  321.443158] R10: ffffa0ba8106fb98 R11: 0000000080000000 R12: ffff92a988808620
+> [  321.446896] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
+> [  321.450646] FS:  00007efce9408740(0000) GS:ffff92a9b9600000(0000) knlGS:0000000000000000
+> [  321.454781] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  321.457970] CR2: 00007fdc3c2d64c0 CR3: 000000010c79a000 CR4: 0000000000752ef0
+> [  321.462499] PKRU: 55555554
+> [  321.464322] Call Trace:
+> [  321.466060]  <TASK>
+> [  321.467592]  unregister_ftrace_function+0x35/0x170
+> [  321.470541]  ? __pfx_dyn_event_open+0x10/0x10
+> [  321.473070]  unregister_fprobe+0x4e/0x90
+> [  321.475486]  trace_fprobe_release+0x118/0x160
+> [  321.478052]  dyn_events_release_all+0xba/0xe0
+> [  321.480961]  dyn_event_open+0x46/0x50
+> [  321.483330]  do_dentry_open+0x160/0x460
+> [  321.485611]  vfs_open+0x30/0xf0
+> [  321.487524]  path_openat+0x66d/0xc60
+> [  321.489674]  do_filp_open+0xac/0x150
+> [  321.491860]  ? rcu_is_watching+0xd/0x50
+> [  321.494179]  ? _raw_spin_unlock+0x29/0x50
+> [  321.496489]  ? trace_preempt_on+0x80/0xc0
+> [  321.498966]  ? preempt_count_sub+0x92/0xd0
+> [  321.501451]  ? _raw_spin_unlock+0x29/0x50
+> [  321.503836]  do_sys_openat2+0x91/0xc0
+> [  321.505932]  __x64_sys_openat+0x6a/0xa0
+> [  321.508307]  do_syscall_64+0x87/0x140
+> [  321.510619]  ? do_syscall_64+0x93/0x140
+> [  321.512889]  ? do_syscall_64+0x93/0x140
+> [  321.515095]  ? trace_hardirqs_on_prepare+0x38/0xd0
+> [  321.517782]  ? syscall_exit_to_user_mode+0x80/0x170
+> [  321.520563]  ? do_syscall_64+0x93/0x140
+> [  321.522916]  ? do_syscall_64+0x93/0x140
+> [  321.525047]  ? clear_bhb_loop+0x60/0xb0
+> [  321.527358]  ? clear_bhb_loop+0x60/0xb0
+> [  321.529568]  ? clear_bhb_loop+0x60/0xb0
+> [  321.531867]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [  321.534549] RIP: 0033:0x7efce9502f01
+> [  321.536647] Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d ea 26 0e 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 93 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+> [  321.545776] RSP: 002b:00007ffee609e920 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
+> [  321.549681] RAX: ffffffffffffffda RBX: 0000000000000241 RCX: 00007efce9502f01
+> [  321.553486] RDX: 0000000000000241 RSI: 000056032f3378e8 RDI: 00000000ffffff9c
+> [  321.557137] RBP: 000056032f3378e8 R08: 000000000000000f R09: 0000000000000001
+> [  321.561025] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000000000000000
+> [  321.564879] R13: 0000000000000003 R14: 000056032f337898 R15: 000056032f3378c0
+> [  321.568737]  </TASK>
+> [  321.570407] irq event stamp: 0
+> [  321.572420] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> [  321.575750] hardirqs last disabled at (0): [<ffffffffbb18ad04>] copy_process+0xad4/0x2bf0
+> [  321.579887] softirqs last  enabled at (0): [<ffffffffbb18ad04>] copy_process+0xad4/0x2bf0
+> [  321.584131] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> [  321.587407] ---[ end trace 0000000000000000 ]---
+> [  321.590005] BUG: kernel NULL pointer dereference, address: 000000000000002e
+> [  321.594462] #PF: supervisor read access in kernel mode
+> [  321.597485] #PF: error_code(0x0000) - not-present page
+> [  321.600377] PGD 0 P4D 0
+> [  321.602138] Oops: Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
+> [  321.605966] CPU: 2 UID: 0 PID: 1132 Comm: ftracetest Tainted: G        W   E      6.12.52 #4
+> [  321.610759] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
+> [  321.613608] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+> [  321.625523] RIP: 0010:trace_fprobe_release+0x135/0x160
+> [  321.628287] Code: e9 5a ff ff ff 48 89 ef e8 78 e9 ff ff 31 c0 b9 3e 00 00 00 48 89 ef f3 48 ab 48 8b bb 10 02 00 00 48 85 ff 0f 84 27 ff ff ff <48> 8b 77 30 31 d2 e8 c0 a6 f8 ff 48 c7 83 10 02 00 00 00 00 00 00
+> [  321.638446] RSP: 0018:ffffa0ba8106fbf0 EFLAGS: 00010282
+> [  321.641267] RAX: 0000000000000000 RBX: ffff92a988808400 RCX: 0000000000000000
+> [  321.644913] RDX: 0000000000000000 RSI: ffffffffbcabc8e0 RDI: fffffffffffffffe
+> [  321.648727] RBP: ffff92a988808418 R08: 0000000000000001 R09: 0000000000000000
+> [  321.652390] R10: 0000000000000000 R11: 0000000080000000 R12: ffff92a988808620
+> [  321.656067] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
+> [  321.659841] FS:  00007efce9408740(0000) GS:ffff92a9b9680000(0000) knlGS:0000000000000000
+> [  321.663892] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  321.666927] CR2: 000000000000002e CR3: 000000010c79a000 CR4: 0000000000752ef0
+> [  321.671048] PKRU: 55555554
+> [  321.672617] Call Trace:
+> [  321.674080]  <TASK>
+> [  321.675439]  dyn_events_release_all+0xba/0xe0
+> [  321.677796]  dyn_event_open+0x46/0x50
+> [  321.679875]  do_dentry_open+0x160/0x460
+> [  321.681973]  vfs_open+0x30/0xf0
+> [  321.683816]  path_openat+0x66d/0xc60
+> [  321.685805]  do_filp_open+0xac/0x150
+> [  321.687823]  ? rcu_is_watching+0xd/0x50
+> [  321.689933]  ? _raw_spin_unlock+0x29/0x50
+> [  321.692269]  ? trace_preempt_on+0x80/0xc0
+> [  321.694623]  ? preempt_count_sub+0x92/0xd0
+> [  321.696919]  ? _raw_spin_unlock+0x29/0x50
+> [  321.699104]  do_sys_openat2+0x91/0xc0
+> [  321.701098]  __x64_sys_openat+0x6a/0xa0
+> [  321.703233]  do_syscall_64+0x87/0x140
+> [  321.705229]  ? do_syscall_64+0x93/0x140
+> [  321.707314]  ? do_syscall_64+0x93/0x140
+> [  321.709748]  ? trace_hardirqs_on_prepare+0x38/0xd0
+> [  321.712646]  ? syscall_exit_to_user_mode+0x80/0x170
+> [  321.715242]  ? do_syscall_64+0x93/0x140
+> [  321.717292]  ? do_syscall_64+0x93/0x140
+> [  321.719373]  ? clear_bhb_loop+0x60/0xb0
+> [  321.721412]  ? clear_bhb_loop+0x60/0xb0
+> [  321.723602]  ? clear_bhb_loop+0x60/0xb0
+> [  321.725925]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [  321.728644] RIP: 0033:0x7efce9502f01
+> [  321.730619] Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d ea 26 0e 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 93 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+> [  321.739534] RSP: 002b:00007ffee609e920 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
+> [  321.743467] RAX: ffffffffffffffda RBX: 0000000000000241 RCX: 00007efce9502f01
+> [  321.747137] RDX: 0000000000000241 RSI: 000056032f3378e8 RDI: 00000000ffffff9c
+> [  321.750552] RBP: 000056032f3378e8 R08: 000000000000000f R09: 0000000000000001
+> [  321.753932] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000000000000000
+> [  321.757373] R13: 0000000000000003 R14: 000056032f337898 R15: 000056032f3378c0
+> [  321.761149]  </TASK>
+> [  321.762475] Modules linked in: intel_rapl_msr(E) intel_rapl_common(E) crct10dif_pclmul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) rapl(E) snd_pcm(E) snd_timer(E) vmw_balloon(E) snd(E) vmwgfx(E) soundcore(E) drm_ttm_helper(E) vga16fb(E) ttm(E) vgastate(E) pcspkr(E) drm_kms_helper(E) vmw_vmci(E) ac(E) button(E) joydev(E) serio_raw(E) sg(E) openvswitch(E) nsh(E) nf_conncount(E) drm(E) dm_mod(E) fuse(E) autofs4(E) sd_mod(E) ata_generic(E) hid_generic(E) mptspi(E) ata_piix(E) mptscsih(E) mptbase(E) i2c_piix4(E) scsi_transport_spi(E) crc32_pclmul(E) libata(E) crc32c_intel(E) psmouse(E) ehci_pci(E) uhci_hcd(E) i2c_smbus(E) e1000(E) scsi_mod(E) ehci_hcd(E) scsi_common(E) [last unloaded: trace_events_sample(E)]
+> [  321.793650] CR2: 000000000000002e
+> [  321.795444] ---[ end trace 0000000000000000 ]---
+> [  321.797783] RIP: 0010:trace_fprobe_release+0x135/0x160
+> [  321.800487] Code: e9 5a ff ff ff 48 89 ef e8 78 e9 ff ff 31 c0 b9 3e 00 00 00 48 89 ef f3 48 ab 48 8b bb 10 02 00 00 48 85 ff 0f 84 27 ff ff ff <48> 8b 77 30 31 d2 e8 c0 a6 f8 ff 48 c7 83 10 02 00 00 00 00 00 00
+> [  321.809544] RSP: 0018:ffffa0ba8106fbf0 EFLAGS: 00010282
+> [  321.812136] RAX: 0000000000000000 RBX: ffff92a988808400 RCX: 0000000000000000
+> [  321.815574] RDX: 0000000000000000 RSI: ffffffffbcabc8e0 RDI: fffffffffffffffe
+> [  321.819020] RBP: ffff92a988808418 R08: 0000000000000001 R09: 0000000000000000
+> [  321.822463] R10: 0000000000000000 R11: 0000000080000000 R12: ffff92a988808620
+> [  321.825928] R13: ffffffffbb3905b0 R14: ffff92a985c012c0 R15: 00000000000041ed
+> [  321.829385] FS:  00007efce9408740(0000) GS:ffff92a9b9680000(0000) knlGS:0000000000000000
+> [  321.833218] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  321.836153] CR2: 000000000000002e CR3: 000000010c79a000 CR4: 0000000000752ef0
+> [  321.839711] PKRU: 55555554
+> [  321.841241] Kernel panic - not syncing: Fatal exception
+> [  321.844568] Kernel Offset: 0x3a000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> [  331.783046] ---[ end Kernel panic - not syncing: Fatal exception ]---
+> 
+> 
+> This panic was bisected to this particular commit and can be reproduced by running this specific subtest:
+> 
+> 
+> ./ftracetest test.d/dynevent/add_remove_tprobe_module.tc
 
-BR, Jarkko
+This might be fixed by the series of:
+
+https://lore.kernel.org/all/176244792552.155515.3285089581362758469.stgit@devnote2/
+
+Thanks,
+
+> 
+> 
+> Regards,
+> 
+> Lenar Khannanov
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
