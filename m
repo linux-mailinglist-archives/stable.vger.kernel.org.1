@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-199244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16806CA0562
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9AECA0664
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A67C3079E96
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30FD43096CE7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488C235CB69;
-	Wed,  3 Dec 2025 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D3335FF45;
+	Wed,  3 Dec 2025 16:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgWJuPMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2rK5cp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0546335CB63;
-	Wed,  3 Dec 2025 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EA335FF77;
+	Wed,  3 Dec 2025 16:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779159; cv=none; b=tDMmHh6zyXUv+q5c1b65GDAUSkFT7lf1zRhK2hdHFhOZGcFq2I4K1XRDMRotSTuP4ADq6CK4gky+dCsbE1upXTLoWjO3xXpWukc/RNJ+/GNA5468fn67NXL9Pb6fIWGgBn9yhe9o6C9JXAao4eTXMwDyWukkoKNxYxIktLKQlF4=
+	t=1764779297; cv=none; b=GOaqfNJT5jpVe3KT6qUdkOSnZn1if5XqODaXBwgmnIIATXvv10ei7p7ZLZvrVBzJ0//XHEyNv6YOkdkjx0dKXe01n4PaOVltHWpHhQ+3GqWIKDOLBuoNtVYkv+3JakW5VKLiMaHeQp6itvzqMCYeqZ++NlR2f3TyBcHW0ygBPVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779159; c=relaxed/simple;
-	bh=vhN8Bhrh3+qZXDturpRfEGpsAy+W7X13l+tZknG1qMg=;
+	s=arc-20240116; t=1764779297; c=relaxed/simple;
+	bh=VNUKTO3Um/pMyvqGrhZeif4DzRbFjZUe7/C97Nyumz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jp/ejVnoHPBkbrsHugNoZnABnDNLY3Cw1SfkzCbK5FhTKcCCsz61XCJVxb6A9ynEEP8gBrg1Cl8SUACwqg7c0XoBNmBlVNt5ohgeN/7CoqXcTkKFuwZeJY9H9gJnWwlHDgdrSkMRjBdGTqgLQ3j2jdySdhSKbRi5SwPybd10acQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgWJuPMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69096C4CEF5;
-	Wed,  3 Dec 2025 16:25:58 +0000 (UTC)
+	 MIME-Version; b=NZbtgQtTIZkuN5WXDo1ulqrWNF+b31iiBjLZOvQN//ZnB1/qcBFy4idms3+BsFOgq/p6qvbM9gJHIPc+CEod9Uwud0IvGTn4GEyK0qaxOrI8ep0pV4XTm5LnkYwtncens49IcBqVKa1l1OfAKDHMADWSh6S5tZVErER0/Yijo4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2rK5cp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAD0C4CEF5;
+	Wed,  3 Dec 2025 16:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779158;
-	bh=vhN8Bhrh3+qZXDturpRfEGpsAy+W7X13l+tZknG1qMg=;
+	s=korg; t=1764779296;
+	bh=VNUKTO3Um/pMyvqGrhZeif4DzRbFjZUe7/C97Nyumz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgWJuPMpZR8NQUUEhjN+5QUHCAoe06vQpCIBx8+ylInB4ymL6SrjztrmJ8bT27S3O
-	 OgluKPSOSBOIdAzAz9ORbdCTmqJKOIFXvARRUFEQiJjp21YUY784uTJHtqLCEAFKil
-	 dKYzfM50J64OD7gI3FyxwFPs/lIjgaXabSQC5LwE=
+	b=t2rK5cp+j0Z43lhADVJDTUOxRyhYhdJMutX6VcCs7nlzRBZzbw2zlp6tUIEvuHkyF
+	 uFfJyBEU6inM2Xw+KMkfgfhEjtmo0sShTSuyaVqW04LWnvSJ9QjRSWnePNdWjN8nGw
+	 y5RS5Y10YhyM9v9RguR44zekBGpUAanpBXf9qZmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/568] net: phy: fixed_phy: let fixed_phy_unregister free the phy_device
-Date: Wed,  3 Dec 2025 16:22:53 +0100
-Message-ID: <20251203152446.987137585@linuxfoundation.org>
+Subject: [PATCH 6.1 172/568] drm/amdkfd: fix vram allocation failure for a special case
+Date: Wed,  3 Dec 2025 16:22:54 +0100
+Message-ID: <20251203152447.032603267@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -65,72 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-[ Upstream commit a0f849c1cc6df0db9083b4c81c05a5456b1ed0fb ]
+[ Upstream commit 93aa919ca05bec544b17ee9a1bfe394ce6c94bd8 ]
 
-fixed_phy_register() creates and registers the phy_device. To be
-symmetric, we should not only unregister, but also free the phy_device
-in fixed_phy_unregister(). This allows to simplify code in users.
+When it only allocates vram without va, which is 0, and a
+SVM range allocated stays in this range, the vram allocation
+returns failure. It should be skipped for this case from
+SVM usage check.
 
-Note wrt of_phy_deregister_fixed_link():
-put_device(&phydev->mdio.dev) and phy_device_free(phydev) are identical.
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/dsa_loop.c  | 9 +++------
- drivers/net/mdio/of_mdio.c  | 1 -
- drivers/net/phy/fixed_phy.c | 1 +
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
-index 5b139f2206b6e..48cf9d300bbf5 100644
---- a/drivers/net/dsa/dsa_loop.c
-+++ b/drivers/net/dsa/dsa_loop.c
-@@ -378,13 +378,10 @@ static struct mdio_driver dsa_loop_drv = {
- 
- static void dsa_loop_phydevs_unregister(void)
- {
--	unsigned int i;
--
--	for (i = 0; i < NUM_FIXED_PHYS; i++)
--		if (!IS_ERR(phydevs[i])) {
-+	for (int i = 0; i < NUM_FIXED_PHYS; i++) {
-+		if (!IS_ERR(phydevs[i]))
- 			fixed_phy_unregister(phydevs[i]);
--			phy_device_free(phydevs[i]);
--		}
-+	}
- }
- 
- static int __init dsa_loop_init(void)
-diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
-index 1e46e39f5f46a..6444f77931708 100644
---- a/drivers/net/mdio/of_mdio.c
-+++ b/drivers/net/mdio/of_mdio.c
-@@ -440,6 +440,5 @@ void of_phy_deregister_fixed_link(struct device_node *np)
- 	fixed_phy_unregister(phydev);
- 
- 	put_device(&phydev->mdio.dev);	/* of_phy_find_device() */
--	phy_device_free(phydev);	/* fixed_phy_register() */
- }
- EXPORT_SYMBOL(of_phy_deregister_fixed_link);
-diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
-index aef739c20ac4d..4694fb3eaa2ff 100644
---- a/drivers/net/phy/fixed_phy.c
-+++ b/drivers/net/phy/fixed_phy.c
-@@ -329,6 +329,7 @@ void fixed_phy_unregister(struct phy_device *phy)
- 	phy_device_remove(phy);
- 	of_node_put(phy->mdio.dev.of_node);
- 	fixed_phy_del(phy->mdio.addr);
-+	phy_device_free(phy);
- }
- EXPORT_SYMBOL_GPL(fixed_phy_unregister);
- 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index c1cb91a79b796..890c2befe7dce 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1067,7 +1067,12 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
+ 	svm_range_list_lock_and_flush_work(&p->svms, current->mm);
+ 	mutex_lock(&p->svms.lock);
+ 	mmap_write_unlock(current->mm);
+-	if (interval_tree_iter_first(&p->svms.objects,
++
++	/* Skip a special case that allocates VRAM without VA,
++	 * VA will be invalid of 0.
++	 */
++	if (!(!args->va_addr && (flags & KFD_IOC_ALLOC_MEM_FLAGS_VRAM)) &&
++	    interval_tree_iter_first(&p->svms.objects,
+ 				     args->va_addr >> PAGE_SHIFT,
+ 				     (args->va_addr + args->size - 1) >> PAGE_SHIFT)) {
+ 		pr_err("Address: 0x%llx already allocated by SVM\n",
 -- 
 2.51.0
 
