@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-198680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F8CCA0A8D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EF5C9FE43
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F48934FCBA7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 659783007D8B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A02D34027B;
-	Wed,  3 Dec 2025 15:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA71350A0D;
+	Wed,  3 Dec 2025 16:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oywQ6X6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1arZ/rXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A33733FE0E;
-	Wed,  3 Dec 2025 15:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2A92FB987;
+	Wed,  3 Dec 2025 16:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777336; cv=none; b=Fi0xxIIeqp8hvPW+/YK/pQUdCQOAUAIb6hoc5pfz8j1FFBWcjVAAB5iTwWk+Hup44oAUy+qH2JK5OcGnwpPxKLUneMBMZyszzUPiCSXqtoEn2p/XDiXckI7sDxIf1qUEMK28gMS6yLuFfH1nrKa3B8dgF3XhhKm0qccmrenoaqc=
+	t=1764778537; cv=none; b=WFC2ocU1qTO1Fb0IdbhAqD+V9JkxcdsAu2HcsMSiWT2TboMnIXr1ZPYJ82PPAMJBkku1xaXGG/13qArf/fRCDGOxWo8VUvQd0kVo+aFhvMre8jwEzeMwDNeEL6FqVePm895OgK0k9yPtb4OOiZw7fSd7OncESvuQhLhCNxkq61I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777336; c=relaxed/simple;
-	bh=+fabW5JY2f1rmnBjkJKeP1cLWQnSbfx8wVRlrMDLdhM=;
+	s=arc-20240116; t=1764778537; c=relaxed/simple;
+	bh=J427z+7zQ2ehVr+FophJEhMiM9xoGd0woEmhttPoB+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhog9M6zBAUj5wBei5QxPiI+eVFnfcUAyo8idcooqpl4WAnF0UON9E+ElHVouW97vl0BnbKZuU6UfaJWKuSrWLUk5HTWEBkkvc4yTt6kqN+142RXjM3TJ7PlhQMVjjcQeAnv+NJ6S3ebnxogj5ih83E6zN5B24g2w3FGG14l4A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oywQ6X6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7CFC4CEF5;
-	Wed,  3 Dec 2025 15:55:35 +0000 (UTC)
+	 MIME-Version; b=OLXKaSK4CdNiFFW8AXRrCuJtF6ddjVyJIXCjQl38SVCjVzpmLe9tsoFXL+Q+xF5UeqQ9SRisIKJnbSmODSEzGZCrF9Vp9ZK1vcNUFeJ+lE5I1YbjHpH6WfC+eXs+EKpt4SPV2Rzd9p0rGBkIZuvJrMGGKV0skRE4MqegF/3BK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1arZ/rXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FF8C116B1;
+	Wed,  3 Dec 2025 16:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777336;
-	bh=+fabW5JY2f1rmnBjkJKeP1cLWQnSbfx8wVRlrMDLdhM=;
+	s=korg; t=1764778536;
+	bh=J427z+7zQ2ehVr+FophJEhMiM9xoGd0woEmhttPoB+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oywQ6X6Se31/GsTb3ZvGxte9uqYqALSFcag1DGaGf7ELdu9wtUWk62t6tpZGS1QMn
-	 5qIfjq1pJ97IFbnLyvlVgOIkzhQD2/P5n+R+yIQBOK3MgqjNTETSB/CaORCZERS45Y
-	 HGSmb/upAZYDXFvrA4/VdKmXQqi85qFRzS3f+JWY=
+	b=1arZ/rXp+SYKDmw80FtPbK5a0LrqBHr753W07HG32XuKvaSIJ37RmICJ0RXWTVcCN
+	 M0DCIlgPGVelgvcbNcm1fACdvR2EGTQCHu7n5v5t+bIhzTDkQM+hlt8Eb2u7k3bnu5
+	 c5COvmVmuNuBjmissNMvgku8OILMx226iCVH1eRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 146/146] spi: cadence-quadspi: Fix cqspi_probe() error handling for runtime pm
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 374/392] USB: serial: option: add support for Rolling RW101R-GL
 Date: Wed,  3 Dec 2025 16:28:44 +0100
-Message-ID: <20251203152351.817577211@linuxfoundation.org>
+Message-ID: <20251203152427.918497250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit 295fe8406a357bc0abb901a21d1a554fd4dd1d05 upstream.
+commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
 
-Commit f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier
-to avoid imbalance") relocated code but missed updating the error handling
-path associated with it.
+- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-Prior to the relocation, runtime pm was enabled after the code-block
-associated with 'cqspi_request_mmap_dma()', due to which, the error
-handling for the same didn't require invoking 'pm_runtime_disable()'.
+  0x0301: mbim, pipe
 
-Post refactoring, runtime pm has been enabled before the code-block and
-when an error is encountered, jumping to 'probe_dma_failed' doesn't
-invoke 'pm_runtime_disable()'. This leads to a race condition wherein
-'cqspi_runtime_suspend()' is invoked while the error handling path executes
-in parallel. The resulting error is the following:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0301 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-  clk:103:0 already disabled
-  WARNING: drivers/clk/clk.c:1188 at clk_core_disable+0x80/0xa0, CPU#1: kworker/u8:0/12
-  [TRIMMED]
-  pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : clk_core_disable+0x80/0xa0
-  lr : clk_core_disable+0x80/0xa0
-  [TRIMMED]
-  Call trace:
-   clk_core_disable+0x80/0xa0 (P)
-   clk_core_disable_lock+0x88/0x10c
-   clk_disable+0x24/0x30
-   cqspi_probe+0xa3c/0xae8
-  [TRIMMED]
+- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-The error is due to the second invocation of 'clk_disable_unprepare()' on
-'cqspi->clk' in the error handling within 'cqspi_probe()', with the first
-invocation being within 'cqspi_runtime_suspend()'.
+  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
 
-Fix this by correcting the error handling.
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a8 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to avoid imbalance")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20251119152545.2591651-1-s-vadapalli@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x0302: mbim, pipe
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0302 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a9 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+[ johan: sort vendor entries, edit commit message slightly ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/option.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2002,7 +2002,7 @@ static int cqspi_probe(struct platform_d
- 	if (cqspi->use_direct_mode) {
- 		ret = cqspi_request_mmap_dma(cqspi);
- 		if (ret == -EPROBE_DEFER)
--			goto probe_dma_failed;
-+			goto probe_setup_failed;
- 	}
- 
- 	ret = spi_register_controller(host);
-@@ -2020,7 +2020,6 @@ static int cqspi_probe(struct platform_d
- probe_setup_failed:
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
- 		pm_runtime_disable(dev);
--probe_dma_failed:
- 	cqspi_controller_enable(cqspi, 0);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2424,12 +2424,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
+ 	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+-	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
 
 
 
