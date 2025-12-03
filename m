@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-199270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E532CA06F7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F148C9FC11
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE72F31B5C01
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B00663008041
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39D735F8AA;
-	Wed,  3 Dec 2025 16:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D690B34405F;
+	Wed,  3 Dec 2025 15:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oH9kLxU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjLzmFVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B33235E55F;
-	Wed,  3 Dec 2025 16:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B5B344057;
+	Wed,  3 Dec 2025 15:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779243; cv=none; b=V1CwGC8T21hu7lI+u7Km/z9P7m3greWgvtthOFpKd//Eg5WCdHOMmj2yGekfMr9jn47ejJ1keK4dIq0NllEagBIZhLvs+BIJsH9ICQ5yRMtIA7snBS6CqyhvKEL2wmR0eaRM/r3Zw0MlV04+FfUr6oOPsH5DQswhihWPhUs9Y/c=
+	t=1764777481; cv=none; b=WcNaDr0ym8gPwWDmp8aBD5jGY0f7N+HPIe+Pv0xqjxh3hnDCbYrvF0UqFUO81U1FFfcj13iM8+3ELe46mACf1RbNoWRlQVPQWF+OvMcfn/xGuvQf8+vGex+WHxwPM7Z8K4CJ5TACM+OhbOQtKppH+ii+f+ZzJ6fWM4SSsSeWKYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779243; c=relaxed/simple;
-	bh=B4yZeH4/8uV239twcDjK+ttRRX4G4dAu7KaIf09/reI=;
+	s=arc-20240116; t=1764777481; c=relaxed/simple;
+	bh=SzlOag40qPB8UH3dzOEGlFHhXv/EJOUl26h5dVH3WCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GK5KhvHu0/pqr5ONnTsmoIMPPqR8UZPQ4Qg9+vfNXxG4n1YumGVSq/o10hXH+sckCY90eZzjipHxcHInq/Ckef9ylzEooegVikfzac9FIlIhFfvp0h2n/9L6n+MyuUadQfUOakg7vwCBY83AJTtqAJBwyhZL9iBDVzL562DFYEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oH9kLxU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61457C4CEF5;
-	Wed,  3 Dec 2025 16:27:22 +0000 (UTC)
+	 MIME-Version; b=mSQW+pZmJ1Yjl5wUOjSUhejC/aTZvyq7GQqaILKARuTIbQ9vY5sa4D8uN/esf4gZgM/gArqPDDasg651y33/zbMDnBpdadsWiYWWDznFWhCTn01Dz3SDIIXWI3X7uhZdBxOGJnbAaX3fZo7Aw/+yduN8FjyxnfRtAt94GEBZRkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjLzmFVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3611C4CEF5;
+	Wed,  3 Dec 2025 15:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779242;
-	bh=B4yZeH4/8uV239twcDjK+ttRRX4G4dAu7KaIf09/reI=;
+	s=korg; t=1764777481;
+	bh=SzlOag40qPB8UH3dzOEGlFHhXv/EJOUl26h5dVH3WCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oH9kLxU5eRstB8WT7Rl1t36VuOvMl32JJYeAcOqSyMdMOQ2/+p3Hm5UKvmSANdcfB
-	 FU6C4Jn3N5DZyXb61QuxfTHj8BXjfDkKMl34ywJ+f7Y2wC5UtaaduZ5t3ByDHR5ilk
-	 GhxeM4DwwVZK5tAkpKS+u5sgz7o2I4uY9oIuz6So=
+	b=KjLzmFVdd0RsLUZmDio3J89MTyi1z3mgTphEexcf0EvcED1V0FbWWt6orU5e/AGef
+	 G7ff/SIP8La6WHd4XFXKp/PhL6z51dqp719w22V8zCA3hkeTdps+SwVR+LcoqoWpdW
+	 Moas3qQlep6XmhA9iKsk5iO+h1N2cerQGAMwIsxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Melissa Wen <melissa.srw@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/568] iommu/amd: Skip enabling command/event buffers for kdump
-Date: Wed,  3 Dec 2025 16:23:20 +0100
-Message-ID: <20251203152447.978016598@linuxfoundation.org>
+Subject: [PATCH 5.15 051/392] drm/sysfb: Do not dereference NULL pointer in plane reset
+Date: Wed,  3 Dec 2025 16:23:21 +0100
+Message-ID: <20251203152415.991485169@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +67,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb ]
+[ Upstream commit 14e02ed3876f4ab0ed6d3f41972175f8b8df3d70 ]
 
-After a panic if SNP is enabled in the previous kernel then the kdump
-kernel boots with IOMMU SNP enforcement still enabled.
+The plane state in __drm_gem_reset_shadow_plane() can be NULL. Do not
+deref that pointer, but forward NULL to the other plane-reset helpers.
+Clears plane->state to NULL.
 
-IOMMU command buffers and event buffer registers remain locked and
-exclusive to the previous kernel. Attempts to enable command and event
-buffers in the kdump kernel will fail, as hardware ignores writes to
-the locked MMIO registers as per AMD IOMMU spec Section 2.12.2.1.
+v2:
+- fix typo in commit description (Javier)
 
-Skip enabling command buffers and event buffers for kdump boot as they
-are already enabled in the previous kernel.
-
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/576445eb4f168b467b0fc789079b650ca7c5b037.1756157913.git.ashish.kalra@amd.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Melissa Wen <melissa.srw@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.15+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patch.msgid.link/20251017091407.58488-1-tzimmermann@suse.de
+[ removed drm_format_conv_state_init() call ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_gem_atomic_helper.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 23804270eda19..12bc854fd177f 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -805,11 +805,16 @@ static void iommu_enable_command_buffer(struct amd_iommu *iommu)
- 
- 	BUG_ON(iommu->cmd_buf == NULL);
- 
--	entry = iommu_virt_to_phys(iommu->cmd_buf);
--	entry |= MMIO_CMD_SIZE_512;
--
--	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
--		    &entry, sizeof(entry));
-+	if (!is_kdump_kernel()) {
-+		/*
-+		 * Command buffer is re-used for kdump kernel and setting
-+		 * of MMIO register is not required.
-+		 */
-+		entry = iommu_virt_to_phys(iommu->cmd_buf);
-+		entry |= MMIO_CMD_SIZE_512;
-+		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
-+			    &entry, sizeof(entry));
+--- a/drivers/gpu/drm/drm_gem_atomic_helper.c
++++ b/drivers/gpu/drm/drm_gem_atomic_helper.c
+@@ -282,7 +282,11 @@ EXPORT_SYMBOL(drm_gem_destroy_shadow_pla
+ void __drm_gem_reset_shadow_plane(struct drm_plane *plane,
+ 				  struct drm_shadow_plane_state *shadow_plane_state)
+ {
+-	__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
++	if (shadow_plane_state) {
++		__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
++	} else {
++		__drm_atomic_helper_plane_reset(plane, NULL);
 +	}
- 
- 	amd_iommu_reset_cmd_buffer(iommu);
  }
-@@ -858,10 +863,15 @@ static void iommu_enable_event_buffer(struct amd_iommu *iommu)
+ EXPORT_SYMBOL(__drm_gem_reset_shadow_plane);
  
- 	BUG_ON(iommu->evt_buf == NULL);
- 
--	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
--
--	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
--		    &entry, sizeof(entry));
-+	if (!is_kdump_kernel()) {
-+		/*
-+		 * Event buffer is re-used for kdump kernel and setting
-+		 * of MMIO register is not required.
-+		 */
-+		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
-+		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
-+			    &entry, sizeof(entry));
-+	}
- 
- 	/* set head and tail to zero manually */
- 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
--- 
-2.51.0
-
 
 
 
