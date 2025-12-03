@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC501C9FD76
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9C6C9FD85
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEE07303E01F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B17653047449
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D37B34F484;
-	Wed,  3 Dec 2025 16:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D5F34F488;
+	Wed,  3 Dec 2025 16:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEvZwKMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz358T9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F0F34F494;
-	Wed,  3 Dec 2025 16:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E521303A28;
+	Wed,  3 Dec 2025 16:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777910; cv=none; b=EpJ1yahzRwziesQPz5qGT9hZV0zeTZ5TLOZZehFOelbmb0kjIkXfWcaeptxMvKTyBnBZaiWbGifFAsgXTrECFK6dEHy6EqUEQJqH4B9twgQ7uRe8AZOPWpt7MeqkNUzqHpU7lmBP7CHIRT2p+py5boABj5ka1idQI0k15iPlMT0=
+	t=1764777949; cv=none; b=Sy8lPDh+ZK4vVzk1WL7b2q8oS3Pgx/JqjCPFzhb1Fho7Ze/qhDz5b5WJsVUGXbSoiGm/Dfq8za7tqai1eTY0X2Qj+yGxRr2GwaLzeLE3tURhPewDqBIlNbPu6TztS0zA1z56k5v+oZucZV04hmbjXUgVrPLXM+YBbVo7eaMUH4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777910; c=relaxed/simple;
-	bh=RD1L+1qjiHajI4J2ehKhB8uJmiwTpEcX9Gzdkqayu+0=;
+	s=arc-20240116; t=1764777949; c=relaxed/simple;
+	bh=CjX3aGpVCDhmAzi8YhGSRskYhNWREVkn8rkZMiOTz/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpoSm3Mr7XxEI7mYox6JTTUjwlrY5toTct0IOsvUbC5+b4GnTd33entF3Yt5IEI5Wf4otcMTjCbYg3EMZOGzB21sl92YYfdDTBsIA4svwhT/sn0P6ATFaz7Y3aNN35SGlngVpFEf65gGNw8XD0QC2twAlyCtiB6gB/aGFfAV4CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEvZwKMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B177C4CEF5;
-	Wed,  3 Dec 2025 16:05:10 +0000 (UTC)
+	 MIME-Version; b=V4V62LNO5Kpv5r44HdfZk3dk5dJGuBt/7m7yJ80t42Lp5cSkx/THjiaw4AuCeAhWnmJ7f5iI67yMLecBEQrkDwE8pndAgzoIzX9SFwPhhMjXGfpwHFnSRdEJbdpxr1bzIYMRAXs0mC6vKZ5EgVKD2l4HAHH45FOSHxZTChJt2qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz358T9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D50FC4CEF5;
+	Wed,  3 Dec 2025 16:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777910;
-	bh=RD1L+1qjiHajI4J2ehKhB8uJmiwTpEcX9Gzdkqayu+0=;
+	s=korg; t=1764777949;
+	bh=CjX3aGpVCDhmAzi8YhGSRskYhNWREVkn8rkZMiOTz/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEvZwKMnQulj20zyU0+lCG8KZbzUkGrhqK0F1TgLWK6UGl/nydr/txXLZfYRDXNwN
-	 gHy7s2HdcT8rAI3PFDYcyC7DgM5D8xRe6VLnBkhCuzpOWmYngA77npsgynqRiHD2j1
-	 lZhkInPaaMTMrOOwUc3SNiBXV6Wx5QCiRgdcSW/E=
+	b=kz358T9nhCFRR9QyLAKreYzRko3isLMxdnyicQSbRsJURdh8Bman0Sc8RxqpCq/gi
+	 /zhsYsSv8GK1NJzk+vzWcLEWMZ9MBtTYoL3u5PZOh3OdYwWunO7W0EDPvQ7By6j2wj
+	 snu1ZanS/00N9G0RTTsFcp9Lem+GeYF6Kf6s0hIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Brahmajit Das <listout@listout.xyz>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/392] wifi: ath10k: Fix connection after GTK rekeying
-Date: Wed,  3 Dec 2025 16:25:18 +0100
-Message-ID: <20251203152420.260160044@linuxfoundation.org>
+Subject: [PATCH 5.15 169/392] net: intel: fm10k: Fix parameter idx set but not used
+Date: Wed,  3 Dec 2025 16:25:19 +0100
+Message-ID: <20251203152420.297457584@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
 References: <20251203152414.082328008@linuxfoundation.org>
@@ -67,64 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
+[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
 
-It appears that not all hardware/firmware implementations support
-group key deletion correctly, which can lead to connection hangs
-and deauthentication following GTK rekeying (delete and install).
+Variable idx is set in the loop, but is never used resulting in dead
+code. Building with GCC 16, which enables
+-Werror=unused-but-set-parameter= by default results in build error.
+This patch removes the idx parameter, since all the callers of the
+fm10k_unbind_hw_stats_q as 0 as idx anyways.
 
-To avoid this issue, instead of attempting to delete the key using
-the special WMI_CIPHER_NONE value, we now replace the key with an
-invalid (random) value.
-
-This behavior has been observed with WCN39xx chipsets.
-
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
+ drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 2b4c694b0fbbe..d90909ffa6780 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -13,6 +13,7 @@
- #include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/bitfield.h>
-+#include <linux/random.h>
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+index f51a63fca513e..1f919a50c7653 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ /**
+  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
+  *  @q: pointer to the ring of hardware statistics queue
+- *  @idx: index pointing to the start of the ring iteration
+  *  @count: number of queues to iterate over
+  *
+  *  Function invalidates the index values for the queues so any updates that
+  *  may have happened are ignored and the base for the queue stats is reset.
+  **/
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
+ {
+ 	u32 i;
  
- #include "hif.h"
- #include "core.h"
-@@ -286,8 +287,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
- 
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
--		arg.key_data = NULL;
-+		if (flags & WMI_KEY_GROUP) {
-+			/* Not all hardware handles group-key deletion operation
-+			 * correctly. Replace the key with a junk value to invalidate it.
-+			 */
-+			get_random_bytes(key->key, key->keylen);
-+		} else {
-+			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
-+			arg.key_data = NULL;
-+		}
+-	for (i = 0; i < count; i++, idx++, q++) {
++	for (i = 0; i < count; i++, q++) {
+ 		q->rx_stats_idx = 0;
+ 		q->tx_stats_idx = 0;
  	}
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+index 4c48fb73b3e78..13fca6a91a01b 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
+ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ 			     u32 idx, u32 count);
+ #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
+ s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
+ #endif /* _FM10K_COMMON_H_ */
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+index af1b0cde36703..8fb99fa7ae600 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+@@ -1509,7 +1509,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
+ 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
  
- 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_pf(hw, stats);
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+index dc8ccd378ec92..6a3aebd56e6c4 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
+ 				     struct fm10k_hw_stats *stats)
+ {
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_vf(hw, stats);
 -- 
 2.51.0
 
