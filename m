@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28A7CA00BF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D59C9FDB5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2056230315C5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16FA930616B5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D582B35C191;
-	Wed,  3 Dec 2025 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B7C34F484;
+	Wed,  3 Dec 2025 16:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsZ7Jp4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVHQoySA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F835C184;
-	Wed,  3 Dec 2025 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88E9313523;
+	Wed,  3 Dec 2025 16:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779871; cv=none; b=qTroRyV7684HzsPjkd+DLl70dU0hxt7ZQAhRlw10vLAvwkEOZyLcfDGrteX09SW8XmLR5CGvsQo2XTibQDBvsn1ODh9lR+nGEyF6Q+xuSsqvwVSDTT+tfpOhPwfxxJxnneYgJU14cehTTnVhvToynJ8iG0G/x3SwDiZlMoapR0g=
+	t=1764778087; cv=none; b=hhGWo1GgbRlSMJc/mzzS104F8uDGpynhqdETPZgimz9Dyvi0pK6Hf5aB8MW+rSkHo58BuKyq0f4M7Lzz9LwJvNMdzVGdy+G34D0nxH93rg/F1SUzgSU9qYD/3wu+ABfC0HEhgie3mpyvzMsCOtMClhki+/F9v8uNjj2p5Jmw2YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779871; c=relaxed/simple;
-	bh=7td0OR+JYKF5J5Gp0XLYPBmZwqOuIYFYoYwq34/agcE=;
+	s=arc-20240116; t=1764778087; c=relaxed/simple;
+	bh=qH3ls4yD/PPit/0P7DtXf8IiovBtsYbPFs16tf/8tKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ulr6ztoF9+kmTROjJtBvgopZxm6b+ffafQanmDu/+4hsUzZx6Nt4Cnx05bnuiUhDSCw3bihjr1TnANyvBkK51x8rKpcuM1mLOi2n3VYnOEd+TNdgOzBVrIU1Ap7uX+rmIKk4AW3xoxe4+n93pdjlmxm00AwdakGfkZLrtPm4NOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsZ7Jp4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98CFC4CEF5;
-	Wed,  3 Dec 2025 16:37:50 +0000 (UTC)
+	 MIME-Version; b=kuAEf7rStZLyMkMxfQs/mKUD1mx3eF4ic6gmuTVgyyOrvN1GJUo4VirMnYjRku6u/1w9QBSaonSBa9A5maahgWgxIPLM8Cz5fYWb2MjrJ2Apy+yYLFh9PaAClX4a7PDUcneDmXDaPxQvx+Bo6RDgb2DAPdHKqA/8AG7CD+a6b9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVHQoySA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483F5C116B1;
+	Wed,  3 Dec 2025 16:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779871;
-	bh=7td0OR+JYKF5J5Gp0XLYPBmZwqOuIYFYoYwq34/agcE=;
+	s=korg; t=1764778087;
+	bh=qH3ls4yD/PPit/0P7DtXf8IiovBtsYbPFs16tf/8tKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UsZ7Jp4NsJekAnfth9MVyZQUYmIM3VGo6Ot4YoqCGWnGBi0Pt1ZM/CVvC9kVmYvo7
-	 biCEvc6g6Spz6mnu6AExLtRaTI5Baip4NPNJnhjSWD4MFeDRJOZrdK/6CsOLLJNiTo
-	 ORtvZQQ3Tn6QNnhohjGsvUaKi6loHXNCMLg/K3ik=
+	b=fVHQoySA1FYMqjkdcSM8ZYRWyPpdBShoO2y9B4GILnhOEUwjzdTC8Ik4ksSibhMSJ
+	 8SyF2/vTh2l406NNgdLzcpb+8CcQfCfWi4616Mpk4642AR0+zg/x8/61dH6lhqwH8e
+	 10Mg3K0fP3HbMMwQUBMpBaFjL6jZ7EYT5MBpiKqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 354/568] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
-Date: Wed,  3 Dec 2025 16:25:56 +0100
-Message-ID: <20251203152453.670617033@linuxfoundation.org>
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.15 207/392] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
+Date: Wed,  3 Dec 2025 16:25:57 +0100
+Message-ID: <20251203152421.689509071@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
+commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
 
-Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
-e.g. debugfs "connect" command takes the former, and "disconnect" and
-"connect" to already connected device take the latter.  This is due to
-using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
-which take different dst_type values.
+This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
 
-Fix address type passed to hci_conn_hash_lookup_le().
+Although this commit benefits QCA6174, it breaks QCA988x and
+QCA9984 [1][2]. Since it is not likely to root cause/fix this
+issue in a short time, revert it to get those chips back.
 
-Retain the debugfs API difference between "connect" and "disconnect"
-commands since it's been like this since 2015 and nobody apparently
-complained.
+Compile tested only.
 
-Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
+Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 003c8ae104f29..57553abde4180 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -956,10 +956,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1762,32 +1762,33 @@ void ath10k_wmi_put_wmi_channel(struct a
+ 
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
+-	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
+ 
+-	/* Sometimes the PCI HIF doesn't receive interrupt
+-	 * for the service ready message even if the buffer
+-	 * was completed. PCIe sniffer shows that it's
+-	 * because the corresponding CE ring doesn't fires
+-	 * it. Workaround here by polling CE rings. Since
+-	 * the message could arrive at any time, continue
+-	 * polling until timeout.
+-	 */
+-	do {
++	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++						WMI_SERVICE_READY_TIMEOUT_HZ);
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
+ 
+-		/* The 100 ms granularity is a tradeoff considering scheduler
+-		 * overhead and response latency
+-		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							msecs_to_jiffies(100));
+-		if (time_left)
+-			return 0;
+-	} while (time_before(jiffies, timeout));
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
+ 
+-	ath10k_warn(ar, "failed to receive service ready completion\n");
+-	return -ETIMEDOUT;
++	return 0;
  }
  
- static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
--			  struct l2cap_conn **conn)
-+			  struct l2cap_conn **conn, bool disconnect)
- {
- 	struct hci_conn *hcon;
- 	struct hci_dev *hdev;
-+	int le_addr_type;
- 	int n;
- 
- 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
-@@ -970,13 +971,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- 	if (n < 7)
- 		return -EINVAL;
- 
-+	if (disconnect) {
-+		/* The "disconnect" debugfs command has used different address
-+		 * type constants than "connect" since 2015. Let's retain that
-+		 * for now even though it's obviously buggy...
-+		 */
-+		*addr_type += 1;
-+	}
-+
-+	switch (*addr_type) {
-+	case BDADDR_LE_PUBLIC:
-+		le_addr_type = ADDR_LE_DEV_PUBLIC;
-+		break;
-+	case BDADDR_LE_RANDOM:
-+		le_addr_type = ADDR_LE_DEV_RANDOM;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
- 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
- 	if (!hdev)
- 		return -ENOENT;
- 
- 	hci_dev_lock(hdev);
--	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
-+	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
- 
-@@ -1103,7 +1123,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	buf[buf_size] = '\0';
- 
- 	if (memcmp(buf, "connect ", 8) == 0) {
--		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
- 		if (ret == -EINVAL)
- 			return ret;
- 
-@@ -1140,7 +1160,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	}
- 
- 	if (memcmp(buf, "disconnect ", 11) == 0) {
--		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
- 		if (ret < 0)
- 			return ret;
- 
--- 
-2.51.0
-
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 
 
 
