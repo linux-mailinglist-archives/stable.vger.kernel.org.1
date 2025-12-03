@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-198476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BEFC9FADF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A48CA01D0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 381F0305F0FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B06203025080
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEEA309EFF;
-	Wed,  3 Dec 2025 15:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D4C35C193;
+	Wed,  3 Dec 2025 16:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iF8dkv5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFmemA7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE903074BA;
-	Wed,  3 Dec 2025 15:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEC835BDDF;
+	Wed,  3 Dec 2025 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776671; cv=none; b=LLL+/5Gc2GxUj8eG6DM9UxFqraSIINaS48bXGL4bailM41ZmHMlX7HXM/6ftYULfAnIfeBuwR/G6KvG/zBIerKfaZOLPzzYWOnVKM09Sb9E4CO5K0TMLwIcK7VejRIWDXRKfU8i7rcfTBIqGNJkzcXBJ5VcLLKf1qeO7YTxN/ug=
+	t=1764780104; cv=none; b=SHpWf/zGJu/hNaz1y1QJT+D5SHYwBoOCCf++u1zsaYQuo25rYvXu2IbS/hKbPfw+IyDvMnYOwqN2Ej7NjuEjaQAQlGTN2t8+Xgoo87r2Vv/H3EBJs+HqHVlKZ2J1CPXdfgAtYPj3hmx0dQcab7bfh/WB79JtbzkkHNQtp2wEMlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776671; c=relaxed/simple;
-	bh=1q21mOeBl/zzrBc07A8/xwjpRuBizfiStdz2jqBlc3A=;
+	s=arc-20240116; t=1764780104; c=relaxed/simple;
+	bh=/xpNFzVZZ3VErcLlki2C4EMDqbWC2sZTZX19Z5QXzjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/AzkRzaSScfVk0tsvNci2ejBN4Y7zw1VDQSfgeZuWUO0Z1WFFCd6JRC/6GxJC2xuxzEEpYHGcT7b79Bp9FeJ/assUhJ9vRO3zZzIvVbtty9Lf2qdEf9LCIGLsqUqDbY+QGtcATaw5R2o99Snho/CSwrzIDdMRyJn7PotRb/Mag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iF8dkv5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72018C4CEF5;
-	Wed,  3 Dec 2025 15:44:30 +0000 (UTC)
+	 MIME-Version; b=soGMbc3rzNPyVmsQ40jgHtbXwaDnsRQ277u17bhEtURvwJcgMUHl6pk66dPwsLmgj4LLhjZvwMxnR8B2KDq54J5Q020NSLDvOAtWdSZDG6wgnSz1CSOGkcPsZDtwsJkMK+FnCPm/O+LD2uWvvtS2UbNnhG0eajgowix//nzu/sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFmemA7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6674DC4CEF5;
+	Wed,  3 Dec 2025 16:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776670;
-	bh=1q21mOeBl/zzrBc07A8/xwjpRuBizfiStdz2jqBlc3A=;
+	s=korg; t=1764780103;
+	bh=/xpNFzVZZ3VErcLlki2C4EMDqbWC2sZTZX19Z5QXzjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iF8dkv5c9EKTBk8hUXm6IOg6s/Csw0MVH7jHKJJ9/uGBy62EvL3J9LtD+U48JWfPQ
-	 j/r4T0JgRgUjZ+iVs4Mgb6eLpC26RZEu80ORSwTagY+F2WpOQeoglVzsvU0+CD3EEp
-	 hIGfiRvC9myM8+PlWbO2w2XoqNA7S0MQyT30eQCg=
+	b=xFmemA7Zvp1GpFuOclRap+44GYXNIurkYZbk6r19IqLLAAD1T7J+3Z3y97pS5YybY
+	 PueCMJeDciF1mR7sJd818fQPrVBAqiACqTtoyL/vVxccN47n2yfJGjPxprjPypNv+D
+	 LLTsYdjqSVXFXTzFC7ArvJNpylJsH+QawNZmnWJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 253/300] usb: deprecate the third argument of usb_maxpacket()
+Subject: [PATCH 6.1 455/568] net: dsa: hellcreek: fix missing error handling in LED registration
 Date: Wed,  3 Dec 2025 16:27:37 +0100
-Message-ID: <20251203152410.010884123@linuxfoundation.org>
+Message-ID: <20251203152457.368897188@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 0f08c2e7458e25c967d844170f8ad1aac3b57a02 ]
+[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
 
-This is a transitional patch with the ultimate goal of changing the
-prototype of usb_maxpacket() from:
-| static inline __u16
-| usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
+The LED setup routine registered both led_sync_good
+and led_is_gm devices without checking the return
+values of led_classdev_register(). If either registration
+failed, the function continued silently, leaving the
+driver in a partially-initialized state and leaking
+a registered LED classdev.
 
-into:
-| static inline u16 usb_maxpacket(struct usb_device *udev, int pipe)
+Add proper error handling
 
-The third argument of usb_maxpacket(): is_out gets removed because it
-can be derived from its second argument: pipe using
-usb_pipeout(pipe). Furthermore, in the current version,
-ubs_pipeout(pipe) is called regardless in order to sanitize the is_out
-parameter.
-
-In order to make a smooth change, we first deprecate the is_out
-parameter by simply ignoring it (using a variadic function) and will
-remove it later, once all the callers get updated.
-
-The body of the function is reworked accordingly and is_out is
-replaced by usb_pipeout(pipe). The WARN_ON() calls become unnecessary
-and get removed.
-
-Finally, the return type is changed from __u16 to u16 because this is
-not a UAPI function.
-
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/r/20220317035514.6378-2-mailhol.vincent@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
+Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
+Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/usb.h |   16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -1980,21 +1980,17 @@ usb_pipe_endpoint(struct usb_device *dev
- 	return eps[usb_pipeendpoint(pipe)];
- }
+diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+index b28baab6d56a1..763666480a8a8 100644
+--- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
++++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
+@@ -367,8 +367,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
+ 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
  
--/*-------------------------------------------------------------------------*/
--
--static inline __u16
--usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
-+static inline u16 usb_maxpacket(struct usb_device *udev, int pipe,
-+				/* int is_out deprecated */ ...)
- {
- 	struct usb_host_endpoint	*ep;
- 	unsigned			epnum = usb_pipeendpoint(pipe);
- 
--	if (is_out) {
--		WARN_ON(usb_pipein(pipe));
-+	if (usb_pipeout(pipe))
- 		ep = udev->ep_out[epnum];
--	} else {
--		WARN_ON(usb_pipeout(pipe));
-+	else
- 		ep = udev->ep_in[epnum];
--	}
+ 	/* Register both leds */
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
+-	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
++		goto out;
++	}
 +
- 	if (!ep)
- 		return 0;
++	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
++	if (ret) {
++		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
++		led_classdev_unregister(&hellcreek->led_sync_good);
++		goto out;
++	}
  
-@@ -2002,8 +1998,6 @@ usb_maxpacket(struct usb_device *udev, i
- 	return usb_endpoint_maxp(&ep->desc);
- }
+ 	ret = 0;
  
--/* ----------------------------------------------------------------------- */
--
- /* translate USB error codes to codes user space understands */
- static inline int usb_translate_errors(int error_code)
- {
+-- 
+2.51.0
+
 
 
 
