@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB86ECA0A57
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526FCC9FE31
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 107D031BC455
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 304F23034BE4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CD1358D24;
-	Wed,  3 Dec 2025 16:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C921352FB0;
+	Wed,  3 Dec 2025 16:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2OZJTwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZ8MHbx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8F5358D14;
-	Wed,  3 Dec 2025 16:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C6C352FA3;
+	Wed,  3 Dec 2025 16:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780293; cv=none; b=kIpw4V0U6Dkr2pvUS8OBG+yfO8aJBeEk6rjHBD/MfuNwfNeRZaWxo5FtMFiqbMJFVLP4E1fC8pW3gtw7JQOZrkS5FGEHucRXFbw3MEmN1KPabN6hxIuDX2vxbn61Y2NFio3AEdo2dpouLvW9lYz8Ob9l8fG6DdzGWDyls2cMLnY=
+	t=1764778507; cv=none; b=jUot2EabsA7sI0zZWCmgjuAqVFgGQmkuoux2gLgefaUvPBp+Oh5WwXBX1NVHsnL7VPph7aECgQyL8ERWm5iioXoD2dGlOy/1cg/BKlC8cUYLyZKa/WOlDju8888tv48syBJ2tUj91HI1/3Q4cUP2d1xr+i15hDDUp9VDMdKqfik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780293; c=relaxed/simple;
-	bh=Ax/Tlx2NcB6dmTDtgPPXgvuTFaR5/YrVTJZxUffwstY=;
+	s=arc-20240116; t=1764778507; c=relaxed/simple;
+	bh=2uMlkvoryuO5IBQMuf2yefeiSFlToduUs58AmEKw+jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHhLDWyux5Jl4Izr0/q3iiDLt/+bOG+mUVeCRg5+b/WtwCgkTidBAARmAFh6PYADRpd+DZBK4ap517aZW1Otdg7d8abjfblHn1pQUD1nugAVX5RROALeb5Yr7Za/xhrFlF1yAIuN8C7ADy9scX9uNY3l+pFuhLPYdRi1tc7H64A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2OZJTwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC23C4CEF5;
-	Wed,  3 Dec 2025 16:44:53 +0000 (UTC)
+	 MIME-Version; b=lTyVHb9g9gHiPEVMjYWgL8OZSXIYUgPudqXNUjExba0KASRI2ENqxmluY1KbtCzuZNG/aZAGU6rnnTNx56nKrThAO/iGF8srjGmdtLBGj5YlsitewoNIan+nKzcHgUbFpO4V9ITxHf/Bw2vumesv7JvZC4OWIoz0UHXZAvT0Ex4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZ8MHbx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C87C4CEF5;
+	Wed,  3 Dec 2025 16:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780293;
-	bh=Ax/Tlx2NcB6dmTDtgPPXgvuTFaR5/YrVTJZxUffwstY=;
+	s=korg; t=1764778507;
+	bh=2uMlkvoryuO5IBQMuf2yefeiSFlToduUs58AmEKw+jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2OZJTwnmjNURnuxEJfyfWlWRjT++UUfpSF/Do/WuVFINNh2GFSxnUjzQKEL2RgQN
-	 pmkPss+IJrO8zQzHAUJTCy8WzL1xQrjRezvVGBDJqqGUsKb5V2AgM3090WWUr4Ek0y
-	 1Uw6N1h/iwQWx1XQhFkkEmTsCCzCAvR9hpWGL20Q=
+	b=TZ8MHbx4xcrMqJw+0mbHtlyOC8pIr8qiRFbjyhC6dU8jvwXOSGihCgE96E+LJAUK4
+	 OIAtH0rOw9QsB5RzwqlnqodYRISRU9/5cNItxNlUNW6MRFF4zn6zRUOMyPBrVbTV6S
+	 ibKXKrRlhRxUU3PL1IPdtT0cAZqnU72omqk5bNiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 513/568] mailbox: pcc: Refactor error handling in irq handler into separate function
-Date: Wed,  3 Dec 2025 16:28:35 +0100
-Message-ID: <20251203152459.502640975@linuxfoundation.org>
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 5.15 366/392] usb: gadget: f_eem: Fix memory leak in eem_unwrap
+Date: Wed,  3 Dec 2025 16:28:36 +0100
+Message-ID: <20251203152427.630918083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 3a675f50415b95f2ae10bfd932e2154ba1a08ee7 ]
+commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
 
-The existing error handling logic in pcc_mbox_irq() is intermixed with the
-main flow of the function. The command complete check and the complete
-complete update/acknowledgment are nicely factored into separate functions.
+The existing code did not handle the failure case of usb_ep_queue in the
+command path, potentially leading to memory leaks.
 
-Moves error detection and clearing logic into a separate function called:
-pcc_mbox_error_check_and_clear() by extracting error-handling logic from
-pcc_mbox_irq().
+Improve error handling to free all allocated resources on usb_ep_queue
+failure. This patch continues to use goto logic for error handling, as the
+existing error handling is complex and not easily adaptable to auto-cleanup
+helpers.
 
-This ensures error checking and clearing are handled separately and it
-improves maintainability by keeping the IRQ handler focused on processing
-events.
+kmemleak results:
+  unreferenced object 0xffffff895a512300 (size 240):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      kmem_cache_alloc+0x1b4/0x358
+      skb_clone+0x90/0xd8
+      eem_unwrap+0x1cc/0x36c
+  unreferenced object 0xffffff8a157f4000 (size 256):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      dwc3_gadget_ep_alloc_request+0x58/0x11c
+      usb_ep_alloc_request+0x40/0xe4
+      eem_unwrap+0x204/0x36c
+  unreferenced object 0xffffff8aadbaac00 (size 128):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      __kmalloc+0x64/0x1a8
+      eem_unwrap+0x218/0x36c
+  unreferenced object 0xffffff89ccef3500 (size 64):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      eem_unwrap+0x238/0x36c
 
-Acked-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/function/f_eem.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 82102a4c5d688..94e99b87496d2 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -269,6 +269,25 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	return !!val;
- }
+--- a/drivers/usb/gadget/function/f_eem.c
++++ b/drivers/usb/gadget/function/f_eem.c
+@@ -479,8 +479,13 @@ static int eem_unwrap(struct gether *por
+ 				req->complete = eem_cmd_complete;
+ 				req->zero = 1;
+ 				req->context = ctx;
+-				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
++				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
+ 					DBG(cdev, "echo response queue fail\n");
++					kfree(ctx);
++					kfree(req->buf);
++					usb_ep_free_request(ep, req);
++					dev_kfree_skb_any(skb2);
++				}
+ 				break;
  
-+static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = pcc_chan_reg_read(&pchan->error, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= pchan->error.status_mask;
-+	if (val) {
-+		val &= ~pchan->error.status_mask;
-+		pcc_chan_reg_write(&pchan->error, val);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
- {
- 	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
-@@ -309,8 +328,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- {
- 	struct pcc_chan_info *pchan;
- 	struct mbox_chan *chan = p;
--	u64 val;
--	int ret;
- 
- 	pchan = chan->con_priv;
- 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
-@@ -320,15 +337,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	if (!pcc_mbox_cmd_complete_check(pchan))
- 		return IRQ_NONE;
- 
--	ret = pcc_chan_reg_read(&pchan->error, &val);
--	if (ret)
-+	if (pcc_mbox_error_check_and_clear(pchan))
- 		return IRQ_NONE;
--	val &= pchan->error.status_mask;
--	if (val) {
--		val &= ~pchan->error.status_mask;
--		pcc_chan_reg_write(&pchan->error, val);
--		return IRQ_NONE;
--	}
- 
- 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
- 		return IRQ_NONE;
--- 
-2.51.0
-
+ 			case 1:  /* echo response */
 
 
 
