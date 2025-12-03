@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5FFCA0122
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E500CA0BB3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B00C300910B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2F653008557
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE60D36C5B4;
-	Wed,  3 Dec 2025 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2FA34D38B;
+	Wed,  3 Dec 2025 16:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs+OjjMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK64p2g3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA136C0B5;
-	Wed,  3 Dec 2025 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D0934D386;
+	Wed,  3 Dec 2025 16:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779520; cv=none; b=Ddrs1P79Bs6Lghz3qYrt2a86vNwySkMhp/pdulvimFkMV3XAKdQ2rpvRW4YFHYrerw3dQG764+SxRxJe2yHmHUKJVzJXVAwDl4sxC0t2mlIcXnmhvuJFOWmZLr5TX8IzWgTE8NVpp97gGfn50eTRHailO1HhAkSxIPSjy+IqCQE=
+	t=1764777745; cv=none; b=QvMruuUvykIS2kc96mjMqdChUdvG2IRyRbHdVN2Uza9+G9q5XO4yLQrCHb4u47BihSucI0FyggcE4/N88VDuVfaXLNs22hnxXKtpX5KaZDJKKbyrXehg3MQbhVcOWATJ/hG8kS4GNxGKpvnEx4hnL23AUPp/3usF+644o9Rnat0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779520; c=relaxed/simple;
-	bh=irpL39SRXca/GnfRK3ozUYLQq3oEcGwZ3bmgkOLRFoU=;
+	s=arc-20240116; t=1764777745; c=relaxed/simple;
+	bh=XIPsndvm7QWIcznKXmMYWBFswn6TGjAJQ6QZRmMutw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1XSW2QTo4kRbTjs18Xh+atWzLbSnx6ZFdh+XuhtS+91M4utTyT2tYYQ0RG808WBdDN1wyyr/0nLFRLRMLLRtA5xU3NqM+rQgmFJSq+U6Nifa9qORk57+ptZLtfdiTDRxgp6zmy1j7+o16dgIbNZaSbki221nUY53DqhV/NuoSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs+OjjMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD1FC4AF0B;
-	Wed,  3 Dec 2025 16:31:59 +0000 (UTC)
+	 MIME-Version; b=W3/OHc1qhk6RviaClARCBpdkI3g7z9KLxDzNNtFxHWS8vFm04IWhlVT/1jKd86p/RZ83UUcKoWjncZN7D5EGVgdQnAg10G6dovW8mMR8xo1kbIU0n+pXW08AMRli0Tzj6s9UVHwsOQ9gCtszdS3Bqr7IZIDnTDVgHMYOhccRLI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK64p2g3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB6FC4CEF5;
+	Wed,  3 Dec 2025 16:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779520;
-	bh=irpL39SRXca/GnfRK3ozUYLQq3oEcGwZ3bmgkOLRFoU=;
+	s=korg; t=1764777744;
+	bh=XIPsndvm7QWIcznKXmMYWBFswn6TGjAJQ6QZRmMutw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xs+OjjMMs0/Jhlid2JSUP8K2DAWuyZeykKoa9OsIR2S47+SEgB1Dp41DJqVfwf/Lx
-	 IZYuXiT4Pwehf4F2N2nHWgjv3bK8GRp6K7F1Dw3D4rCEgcFlqLtSUTnHgnl4Q6ozWn
-	 8rgeWmwsSjF19AFZC0mRjrhf9o14CzxLRbYpXxZY=
+	b=QK64p2g3L1eUjUhMId6/pSCoXpHygYp+SA4ZF+CTkwodc76kb7U53YfGULqHKnt6Y
+	 iaz7vNxoNBbdRqhVjuQqiXExPPZZWDRofu5gnrIAvIIuOL6v/0qX/4j7hqLLvaT5it
+	 UH5sn0A8sVYd9Kwz8/7FHoofJbzwUC/oCzD4NC8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 249/568] sparc64: fix prototypes of reads[bwl]()
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 5.15 101/392] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
 Date: Wed,  3 Dec 2025 16:24:11 +0100
-Message-ID: <20251203152449.840678337@linuxfoundation.org>
+Message-ID: <20251203152417.814959588@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 7205ef77dfe167df1b83aea28cf00fc02d662990 ]
+[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
 
-Conventions for readsl() are the same as for readl() - any __iomem
-pointer is acceptable, both const and volatile ones being OK.  Same
-for readsb() and readsw().
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com> # Making sparc64 subject prefix
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
+
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address to RIP.
+
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
+
+[ dhansen: flesh out code comments ]
+
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/io_64.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
-index 9303270b22f3c..f9d370324729e 100644
---- a/arch/sparc/include/asm/io_64.h
-+++ b/arch/sparc/include/asm/io_64.h
-@@ -250,19 +250,19 @@ void insl(unsigned long, void *, unsigned long);
- #define insw insw
- #define insl insl
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index ba3172d5b3286..99400d72c4e6c 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
  
--static inline void readsb(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsb(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insb((unsigned long __force)port, buf, count);
- }
- #define readsb readsb
+-	if (!(error_code & X86_PF_INSTR)) {
++	/*
++	 * Assume that faults at regs->ip are because of an
++	 * instruction fetch. Return early and avoid
++	 * emulation for faults during data accesses:
++	 */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
+ 	}
  
--static inline void readsw(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsw(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insw((unsigned long __force)port, buf, count);
- }
- #define readsw readsw
++	/*
++	 * X86_PF_INSTR is only set when NX is supported.  When
++	 * available, use it to double-check that the emulation code
++	 * is only being used for instruction fetches:
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
  
--static inline void readsl(void __iomem *port, void *buf, unsigned long count)
-+static inline void readsl(const volatile void __iomem *port, void *buf, unsigned long count)
- {
- 	insl((unsigned long __force)port, buf, count);
- }
+-	WARN_ON_ONCE(address != regs->ip);
+-
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.51.0
 
