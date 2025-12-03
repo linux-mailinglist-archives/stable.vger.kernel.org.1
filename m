@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D914CA0DE9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E794CA0EA9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05ED031C8380
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40E0F3295010
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1286F3451D7;
-	Wed,  3 Dec 2025 16:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1848316189;
+	Wed,  3 Dec 2025 15:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuCPwrIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl634wdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29E23446C6;
-	Wed,  3 Dec 2025 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B5316183;
+	Wed,  3 Dec 2025 15:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780016; cv=none; b=EOlIvWjv3ko0xuJku2jlrfsqbaIlPui8MCrq5ENO46FI0jH6VlYy1ZQeqfDKNGGoJOsGNtGm3ZO85UTqF3KX39m+fkW2SJ2Bbbk56EA6D1Rfc7iK4qC9QwMN41p0jZi0ql+0DwAzW0x08HFk0u67KXSob3BeaDSI67uvsO1/fpM=
+	t=1764776562; cv=none; b=qJyQvnEzMLgvvpAbGkCDatWDVIddmisSxd1UX31wiFHy2F+shTamB7LTXeyUiXFT3vlKzN7CR57DVB9805eO1IczF2LAaoYWxYfv00PCDahIvERey0upHamQa5YSvlB8faU2M/Ub7gr7v5YWH/hef/WFnusBBnZtg+uhjyYtl2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780016; c=relaxed/simple;
-	bh=Xm/qbd9phTeccguV87cvJgReHTkIdWlPrCEwr4Ha66k=;
+	s=arc-20240116; t=1764776562; c=relaxed/simple;
+	bh=vYnkUcNgpn7Pfq6TNhyUU9w1VGjKCsB2OEpv4/lcl8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5Xzq5/IDDj7d6zOcJGrGDnt1Yu5+Cr6EqIasgA9pWoqudhWoqMtkboY/VzM2V6hAyXcF5wKEynVyEd/Nw6Dfhz89Ub/x9vIGL2i11CI9ZgiBvQCU9PfTT6KLLKBn7cONqEa4LmD2wTK+F+VSoAiYrg9iISlSEgzcrL19/0RWG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuCPwrIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C0BC4CEF5;
-	Wed,  3 Dec 2025 16:40:16 +0000 (UTC)
+	 MIME-Version; b=CNyts7bc4SPb8tOHKgRhEPZQKNVpi9RspVo3kEMxOtxGWwkMnZcLodA2UfzzoY7NtEhSqFaIzJ/QhHS/WFEm2uXpEhavUI+OjF8tkrUBX3dbBbU8qboIUrLADHbfjAjWTv4L6B9/iOnPfQIFpK9jK8xlfXaCe/k0qC5HaTTzDWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl634wdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AB5C4CEF5;
+	Wed,  3 Dec 2025 15:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780016;
-	bh=Xm/qbd9phTeccguV87cvJgReHTkIdWlPrCEwr4Ha66k=;
+	s=korg; t=1764776562;
+	bh=vYnkUcNgpn7Pfq6TNhyUU9w1VGjKCsB2OEpv4/lcl8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuCPwrIOpbRMhs/1do52CadEKMQ2H8lJkp4mnweJytvIxvCXe+DjFgBHK2FnfGmD4
-	 fGdBLsGsYdrh0KKr5N/jZOp7qNeiBhGaf3LJIYoVj39nOKaxe6fF+tQhS4y66u+UB5
-	 0bUp3HUTLCso9oI4Aqo+MoZIEa7MyrRhV5riahbw=
+	b=bl634wdV84MgVzSVmREll4WDlIWsDYJy7JT/hh/dKphlFLLHg/K+SEAdws8lnEUfZ
+	 C1AZWv2K9XaBp8osX5Z04xcisB0jQ7uILlWv3SUr7kr4IW/B0nXvJKd4NZ458P8208
+	 rZnJmPYExuHY2kyExdTnHlNsNDnkmL4I6tcu7Lno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 423/568] net/mlx5: Fix memory leak in error flow of port set buffer
+	Marco Patalano <mpatalan@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.10 221/300] nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
 Date: Wed,  3 Dec 2025 16:27:05 +0100
-Message-ID: <20251203152456.190655115@linuxfoundation.org>
+Message-ID: <20251203152408.811051269@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Ewan D. Milne <emilne@redhat.com>
 
-commit e3e01c1c15986f9531b854634eec8381e72cb605 upstream.
+commit 0a2c5495b6d1ecb0fa18ef6631450f391a888256 upstream.
 
-In the cited commit, shared buffer updates were added whenever
-port buffer gets updated.
+nvme_fc_delete_assocation() waits for pending I/O to complete before
+returning, and an error can cause ->ioerr_work to be queued after
+cancel_work_sync() had been called.  Move the call to cancel_work_sync() to
+be after nvme_fc_delete_association() to ensure ->ioerr_work is not running
+when the nvme_fc_ctrl object is freed.  Otherwise the following can occur:
 
-However, in case the shared buffer update fails, exiting early from
-port_set_buffer() is performed without freeing previously-allocated memory.
+[ 1135.911754] list_del corruption, ff2d24c8093f31f8->next is NULL
+[ 1135.917705] ------------[ cut here ]------------
+[ 1135.922336] kernel BUG at lib/list_debug.c:52!
+[ 1135.926784] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[ 1135.931851] CPU: 48 UID: 0 PID: 726 Comm: kworker/u449:23 Kdump: loaded Not tainted 6.12.0 #1 PREEMPT(voluntary)
+[ 1135.943490] Hardware name: Dell Inc. PowerEdge R660/0HGTK9, BIOS 2.5.4 01/16/2025
+[ 1135.950969] Workqueue:  0x0 (nvme-wq)
+[ 1135.954673] RIP: 0010:__list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1135.961041] Code: c7 c7 98 68 72 94 e8 26 45 fe ff 0f 0b 48 c7 c7 70 68 72 94 e8 18 45 fe ff 0f 0b 48 89 fe 48 c7 c7 80 69 72 94 e8 07 45 fe ff <0f> 0b 48 89 d1 48 c7 c7 a0 6a 72 94 48 89 c2 e8 f3 44 fe ff 0f 0b
+[ 1135.979788] RSP: 0018:ff579b19482d3e50 EFLAGS: 00010046
+[ 1135.985015] RAX: 0000000000000033 RBX: ff2d24c8093f31f0 RCX: 0000000000000000
+[ 1135.992148] RDX: 0000000000000000 RSI: ff2d24d6bfa1d0c0 RDI: ff2d24d6bfa1d0c0
+[ 1135.999278] RBP: ff2d24c8093f31f8 R08: 0000000000000000 R09: ffffffff951e2b08
+[ 1136.006413] R10: ffffffff95122ac8 R11: 0000000000000003 R12: ff2d24c78697c100
+[ 1136.013546] R13: fffffffffffffff8 R14: 0000000000000000 R15: ff2d24c78697c0c0
+[ 1136.020677] FS:  0000000000000000(0000) GS:ff2d24d6bfa00000(0000) knlGS:0000000000000000
+[ 1136.028765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1136.034510] CR2: 00007fd207f90b80 CR3: 000000163ea22003 CR4: 0000000000f73ef0
+[ 1136.041641] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 1136.048776] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[ 1136.055910] PKRU: 55555554
+[ 1136.058623] Call Trace:
+[ 1136.061074]  <TASK>
+[ 1136.063179]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.067540]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.071898]  ? move_linked_works+0x4a/0xa0
+[ 1136.075998]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.081744]  ? __die_body.cold+0x8/0x12
+[ 1136.085584]  ? die+0x2e/0x50
+[ 1136.088469]  ? do_trap+0xca/0x110
+[ 1136.091789]  ? do_error_trap+0x65/0x80
+[ 1136.095543]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.101289]  ? exc_invalid_op+0x50/0x70
+[ 1136.105127]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.110874]  ? asm_exc_invalid_op+0x1a/0x20
+[ 1136.115059]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.120806]  move_linked_works+0x4a/0xa0
+[ 1136.124733]  worker_thread+0x216/0x3a0
+[ 1136.128485]  ? __pfx_worker_thread+0x10/0x10
+[ 1136.132758]  kthread+0xfa/0x240
+[ 1136.135904]  ? __pfx_kthread+0x10/0x10
+[ 1136.139657]  ret_from_fork+0x31/0x50
+[ 1136.143236]  ? __pfx_kthread+0x10/0x10
+[ 1136.146988]  ret_from_fork_asm+0x1a/0x30
+[ 1136.150915]  </TASK>
 
-Fix it by jumping to out label where memory is freed before returning
-with error.
-
-Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 19fce0470f05 ("nvme-fc: avoid calling _nvme_fc_abort_outstanding_ios from interrupt context")
+Cc: stable@vger.kernel.org
+Tested-by: Marco Patalano <mpatalan@redhat.com>
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/fc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -325,11 +325,11 @@ static int port_set_buffer(struct mlx5e_
- 	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
- 					new_headroom_size);
- 	if (err)
--		return err;
-+		goto out;
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3257,7 +3257,6 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
+ {
+ 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
  
- 	err = port_update_pool_cfg(priv->mdev, port_buffer);
- 	if (err)
--		return err;
-+		goto out;
+-	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
+ 	/*
+ 	 * kill the association on the link side.  this will block
+@@ -3321,6 +3320,7 @@ nvme_fc_reset_ctrl_work(struct work_stru
  
- 	err = mlx5e_port_set_pbmc(mdev, in);
- out:
+ 	/* will block will waiting for io to terminate */
+ 	nvme_fc_delete_association(ctrl);
++	cancel_work_sync(&ctrl->ioerr_work);
+ 
+ 	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING))
+ 		dev_err(ctrl->ctrl.device,
 
 
 
