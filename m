@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12449CA0D4D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E27C9FD38
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F34C1330953F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A1AA3018D53
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CB435CBC3;
-	Wed,  3 Dec 2025 16:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA583431E7;
+	Wed,  3 Dec 2025 15:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B6Bq9sS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CydvwGOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3145035CBC4;
-	Wed,  3 Dec 2025 16:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D4233B6EF;
+	Wed,  3 Dec 2025 15:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779214; cv=none; b=NBHclvJO7HtOtsfC5rGfbxm+XJ7qbZb2Gva6ry1PO74Wrs6lxApN+B7Z1qkc5CxzMRMxdRASf5BkwEXLf7xBwFBWjXYRMZvlMMhen6whBv0qRwEPgEvraBpvr3Eif3xANunkM9PHXnHjZ/I0sXtvx3OoAnP0c9c7FTMi7PheNBU=
+	t=1764777457; cv=none; b=fF3mNIeEfQdYDmuAcRnqElfeHsMS/58TTeD63wh5HcdBBmCifYu+DNWK+gVpXHV9/nLBal+exZUgpjUflUOIRKOf93LBgtAXy5/rO5ODFWDvfxxSWZkUlKGFKEoshlB3IsYb3ar9mu0x35Ke2lyLCvFg4YCQxavRxcAYQ9hEnNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779214; c=relaxed/simple;
-	bh=EOwPqpFFbVNXs1u7rBBfNgPpEXYNC+LNO6vShXkJWlI=;
+	s=arc-20240116; t=1764777457; c=relaxed/simple;
+	bh=X4YxxkWp4ylpCIsmtmPOzGBluxcCSwpdwqKIPeqY9LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A/IVrItdbEwv8ZDG02YRgYI+RPwgOBWq7nb9jl5PavsxPXQ4iRjayDzXqlECSkT6X3BNiGB2ga2G6uOXO59/2wr95GUaak7mQzA5W6q5+jDFzSqY6H+j3PZX1F9hCOanbC+HUlgiEEAl9BrbfkgrK9DNDKEDuv6NpVP3KNh2u1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B6Bq9sS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2191C16AAE;
-	Wed,  3 Dec 2025 16:26:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VSbRpeDmp8EY+R2vWLZ5QacEvJ6BuP05vLLmDjlN0Cy1A1NLap9KeQ3A4QSo7ExAKw7HJDCfbgowB2+X0kw98REllvVoCx05xws81tUmuIssBYx2O3BkH1mki9yGF6H/kLAPj4Wb4ISBkJBavqOtoTRP3Q8WQZbXJ7eXkc9/3do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CydvwGOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A1AC4CEF5;
+	Wed,  3 Dec 2025 15:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779214;
-	bh=EOwPqpFFbVNXs1u7rBBfNgPpEXYNC+LNO6vShXkJWlI=;
+	s=korg; t=1764777457;
+	bh=X4YxxkWp4ylpCIsmtmPOzGBluxcCSwpdwqKIPeqY9LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0B6Bq9sS9EhOZYPY0Y51aRkR8RQCnLNzbSgJCcsoPX0S/RQKOulkvvfnsAghLYzJA
-	 d7suPZF8l4cNYUEQyED9SYs7uEv5Ae42bzkmagNV2F08Tiyi638YF06kxFTJrXTjDV
-	 0gs6LP33M2v2ZuRwPtAtmrHURozF1kR4J+QRw5i0=
+	b=CydvwGOjtUk3bm85XmQwsgIFyNSaeBuallnn55hlzN5YNJeoDAflW02L09BZlYRdl
+	 TrT/cwrvW9RfjVm5dh0TloeVmR+Bl9Mw78p1vl7LKfJzBSP1yCyQVSSptksCxPTaBF
+	 /yoIGBn6Xa2zDrpcNsQJpWDXQil6Qn40bW1AoiX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juraj=20=C5=A0arinay?= <juraj@sarinay.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/568] net: nfc: nci: Increase NCI_DATA_TIMEOUT to 3000 ms
-Date: Wed,  3 Dec 2025 16:23:12 +0100
-Message-ID: <20251203152447.684906060@linuxfoundation.org>
+Subject: [PATCH 5.15 043/392] xhci: dbc: Improve performance by removing delay in transfer event polling.
+Date: Wed,  3 Dec 2025 16:23:13 +0100
+Message-ID: <20251203152415.695017816@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juraj Šarinay <juraj@sarinay.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 21f82062d0f241e55dd59eb630e8710862cc90b4 ]
+[ Upstream commit 03e3d9c2bd85cda941b3cf78e895c1498ac05c5f ]
 
-An exchange with a NFC target must complete within NCI_DATA_TIMEOUT.
-A delay of 700 ms is not sufficient for cryptographic operations on smart
-cards. CardOS 6.0 may need up to 1.3 seconds to perform 256-bit ECDH
-or 3072-bit RSA. To prevent brute-force attacks, passports and similar
-documents introduce even longer delays into access control protocols
-(BAC/PACE).
+Queue event polling work with 0 delay in case there are pending transfers
+queued up. This is part 2 of a 3 part series that roughly triples dbc
+performace when using adb push and pull over dbc.
 
-The timeout should be higher, but not too much. The expiration allows
-us to detect that a NFC target has disappeared.
+Max/min push rate after patches is 210/118 MB/s, pull rate 171/133 MB/s,
+tested with large files (300MB-9GB) by Łukasz Bartosik
 
-Signed-off-by: Juraj Šarinay <juraj@sarinay.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250902113630.62393-1-juraj@sarinay.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+First performance improvement patch was commit 31128e7492dc
+("xhci: dbc: add dbgtty request to end of list once it completes")
+
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/nfc/nci_core.h | 2 +-
+ drivers/usb/host/xhci-dbgcap.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
-index ea8595651c384..e066bdbc807be 100644
---- a/include/net/nfc/nci_core.h
-+++ b/include/net/nfc/nci_core.h
-@@ -52,7 +52,7 @@ enum nci_state {
- #define NCI_RF_DISC_SELECT_TIMEOUT		5000
- #define NCI_RF_DEACTIVATE_TIMEOUT		30000
- #define NCI_CMD_TIMEOUT				5000
--#define NCI_DATA_TIMEOUT			700
-+#define NCI_DATA_TIMEOUT			3000
- 
- struct nci_dev;
- 
--- 
-2.51.0
-
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -987,7 +987,7 @@ static void xhci_dbc_handle_events(struc
+ 		/* set fast poll rate if there are pending data transfers */
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+ 		    !list_empty(&dbc->eps[BULK_IN].list_pending))
+-			poll_interval = 1;
++			poll_interval = 0;
+ 		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
 
 
 
