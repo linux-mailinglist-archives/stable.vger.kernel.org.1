@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F20CA0E46
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491B3CA0F27
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C00F314249A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADC4B346F6AB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC23530C376;
-	Wed,  3 Dec 2025 16:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F783191B9;
+	Wed,  3 Dec 2025 16:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+PYkX/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d6LjMDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6833B26B756;
-	Wed,  3 Dec 2025 16:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B7931283B;
+	Wed,  3 Dec 2025 16:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778156; cv=none; b=lLYWk1q00pRpgMd9qi667QwIUnU7IZ0B6yiZs2q5kqxDhp9SbJ03TMNmrVpGXT2SalsbNuRt3CXCQj3f6jOif06xe044HS1ZY6f/SBGyYU0G7dLL0tsI6OPa3Lc2BK9tiPsXCNVHOPyT9oiRifOxKSA61Bza9IGFZw8XTk21voI=
+	t=1764779946; cv=none; b=LDlz5XhlzNTZl/+W+oR1vBtikHuezM+cx/WDdH333hKG4t1pzSXNETLqQFVvLaFEEIVGtrW7VIlTWa1BU1oskoNMq/fsGgi9Po7LbTxfpFS/U9eDZUKbkUBpSPiO8xhQFRnCvlcgjuyqapHsSz1FgJ3q6BghtB8cZRkt//se2wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778156; c=relaxed/simple;
-	bh=UjjfYtCQFpVVS7MQ5gDTps54xg5orISmvHbgK5odRCk=;
+	s=arc-20240116; t=1764779946; c=relaxed/simple;
+	bh=+4aGfc45N8eT4gjRM7X05XoSfw8oLWO189gUui9d+TI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmV/3AXd4IYeuAVaRrwH2+Ia6xV8T39rdv9XF5ixABz4GiYt2ttjDlDGB+8xWxwcV5rlXIw0rloETgQge3qA2z1kVKIIUALDemZRw6IF1jrbdaIhYArzm1eKInQMme8YeuoiVisUC+5SqhXi5sf8YYFdSLsXRXLA4BjIV1719Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+PYkX/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785ACC4CEF5;
-	Wed,  3 Dec 2025 16:09:15 +0000 (UTC)
+	 MIME-Version; b=aR+ccttdwkmVensrGPmfgUyUb7UGrqQLxuYT5fWbAPK0XFHsYdKQgneHVD1zBfWBKV4Y8F5yd9aK4Iji9qeGnywyrM2uUgCJsNEwNoUlRiWwVYaKq2LKzBr0Ueh1jW5Ak4reaoMYdw2hmVWccCOeM8GgSPRhaaYfmSEN7tJcw3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2d6LjMDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5534FC4CEF5;
+	Wed,  3 Dec 2025 16:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778156;
-	bh=UjjfYtCQFpVVS7MQ5gDTps54xg5orISmvHbgK5odRCk=;
+	s=korg; t=1764779944;
+	bh=+4aGfc45N8eT4gjRM7X05XoSfw8oLWO189gUui9d+TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+PYkX/nbDfii28LAOqCn8qz7m6L6iJmPBKYQ+Ar62YspP+9adKrjxFmN+5EejFCW
-	 Gc6qHmJW3rvTADsgO3/DNjfmVtHUH4qC6OJhmcvnIGCkQ5ggT3pa1xG276PqjzkBwl
-	 NJ45fQxqf135sfptsnYn4HJfokVIEzadhZD0Nrzk=
+	b=2d6LjMDgsZEn48K1rZIHBETS37F1AsIVM4xCvDiCJh18SW5jXW7OeCd1lnk0F6+oR
+	 Ds8OgXm+gUX1S1+OkKlZATOfdLrRuN9WQ+ImfN59H5tqE3S+Yk+4QjH2wRnV3D2rYQ
+	 E5ZFwT0zJf7wrv9ZV2aupH55PfkVTKcVvhiqepkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 260/392] ASoC: cs4271: Fix regulator leak on probe failure
-Date: Wed,  3 Dec 2025 16:26:50 +0100
-Message-ID: <20251203152423.735520011@linuxfoundation.org>
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 409/568] EDAC/altera: Handle OCRAM ECC enable after warm reset
+Date: Wed,  3 Dec 2025 16:26:51 +0100
+Message-ID: <20251203152455.667143420@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
+commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
 
-The probe function enables regulators at the beginning
-but fails to disable them in its error handling path.
-If any operation after enabling the regulators fails,
-the probe will exit with an error, leaving the regulators
-permanently enabled, which could lead to a resource leak.
+The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
+Manager (SDM) during a power-on reset on SoCFPGA.
 
-Add a proper error handling path to call regulator_bulk_disable()
-before returning an error.
+However, during a warm reset, the OCRAM content is retained to preserve data,
+while the control and status registers are reset to their default values. As
+a result, ECC must be explicitly re-enabled after a warm reset.
 
-Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs4271.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/edac/altera_edac.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 7663f89ac6a24..c3f447a6ff62e 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -594,17 +594,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1194,10 +1194,22 @@ altr_check_ocram_deps_init(struct altr_e
+ 	if (ret)
+ 		return ret;
  
- 	ret = regcache_sync(cs4271->regmap);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
+-	/* Verify OCRAM has been initialized */
++	/*
++	 * Verify that OCRAM has been initialized.
++	 * During a warm reset, OCRAM contents are retained, but the control
++	 * and status registers are reset to their default values. Therefore,
++	 * ECC must be explicitly re-enabled in the control register.
++	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
++	 */
+ 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
+-			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
+-		return -ENODEV;
++			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
++		if (!ecc_test_bits(ALTR_A10_ECC_EN,
++				   (base + ALTR_A10_ECC_CTRL_OFST)))
++			ecc_set_bits(ALTR_A10_ECC_EN,
++				     (base + ALTR_A10_ECC_CTRL_OFST));
++		else
++			return -ENODEV;
++	}
  
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	/* Power-up sequence requires 85 uS */
- 	udelay(85);
- 
-@@ -614,6 +614,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
- 				   CS4271_MODE2_MUTECAEQUB);
- 
- 	return 0;
-+
-+err_disable_regulator:
-+	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
-+	return ret;
- }
- 
- static void cs4271_component_remove(struct snd_soc_component *component)
--- 
-2.51.0
-
+ 	/* Enable IRQ on Single Bit Error */
+ 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
 
 
 
