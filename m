@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-199773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B5FCA0F81
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BE6CA0D7E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BECF634D62BB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4AFC30B71DE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C184F3451A6;
-	Wed,  3 Dec 2025 16:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132EB3396F0;
+	Wed,  3 Dec 2025 16:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIIxXob0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugEh3HLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0713446A2;
-	Wed,  3 Dec 2025 16:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A9932ED39;
+	Wed,  3 Dec 2025 16:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780892; cv=none; b=uR5ZHRm7+Wri66YzzvHvifhIjnrzEZJlvwKLukaQednMGbvHi3zEruhyNB5/2kkzKGCBj2YF589iSXaJllV6t1eqsmcwTbkJF0HPPqdJWxo9VddkIyZY6aRMaBylEc3uTmwkDHOY4AjKlYYacL3LfjIiRN/Nj3rvr/TXGPeNgeU=
+	t=1764781152; cv=none; b=qucbyQFm+TZiby0W4h4i5n3lo53pR1Aub1YV/ASTLsTqp/gnzc2TZJ5vT5PzOs7RI0WE9sP4jdh9JP2DhfIycZWv8kO+N+Cj2mK737ohWUWRl0TBapnOG6muSPUJ2o9mNGi5Pyo+uDloHBydy3UTAOeqFgZs24N0VECsW94pE04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780892; c=relaxed/simple;
-	bh=zqCmK8HdnNshQA8R3eY5Ai680SFVO5m1DJDlhAVyuWA=;
+	s=arc-20240116; t=1764781152; c=relaxed/simple;
+	bh=sQNLXABx1b1T2TdhxnceaDFcfsCoBApJRvghha7b6lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VImgtTSSPO0r+Uw2TlmKgYDv55n6SdMg534HadTH9H/YIyEgsBHvxEVrBvBbMWrey/K4pn6pr+YRfqRUwsUus65m/vhDJzxiYCEFqYTRN7iPXkOF0NOxADmDpsXiVYGXIiHIYAQ4pm9JYbv7ThpJhzJi7832YFk7+U//NOd02yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIIxXob0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E7EC4CEF5;
-	Wed,  3 Dec 2025 16:54:51 +0000 (UTC)
+	 MIME-Version; b=pYrmeBj/U2UQLyMK3hmh+COqw9ri9J9zXKhAuLJDVZKB7CJYuArj/dN/Y/9D5WvqMvUAPkbMb6v4R0oHyYUND+dPrjvQrvkBdihVti4ClneiahHHlyCoCwRv/v4V1yKPRIm/o+Irs0q8Txty+tP8zkJO/NDQdiP2TK8fVcB/tGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugEh3HLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6CFC4CEF5;
+	Wed,  3 Dec 2025 16:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780892;
-	bh=zqCmK8HdnNshQA8R3eY5Ai680SFVO5m1DJDlhAVyuWA=;
+	s=korg; t=1764781151;
+	bh=sQNLXABx1b1T2TdhxnceaDFcfsCoBApJRvghha7b6lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIIxXob0cHkWDflC/7HJ8auvvhyCJnwc652cSVD/DCvVe+6kzwSiw3Wb/uHqlo9Ql
-	 yTM4c/EqyuAltU2G/NIPTT4KOIPqAcKFwidF7H0RyNiPMRVQuCfk1t/9DUZv53hWZL
-	 j6iYmNy4TMCRZvoSc24oR7PqZ1K/BdR1xXnTk+74=
+	b=ugEh3HLF7OPEoT/Rmyy+p34J5g1bbn7CBKmoTIdk7Qmy8Mmndq89aUzhyNjwIZ+J4
+	 0dTasfOwZIqvPH1YBHT6rn/RYNZ9PzZ5j9oV5ZfWgKB/C4QPT2VhLHCQDZ7ogc3dCy
+	 JnskJ/zb7P0ZX0/SrzSbXSTtPr3tluSGFuk5XPZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/132] mm/huge_memory: fix NULL pointer deference when splitting folio
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Manish Nagar <manish.nagar@oss.qualcomm.com>
+Subject: [PATCH 6.6 66/93] usb: dwc3: Fix race condition between concurrent dwc3_remove_requests() call paths
 Date: Wed,  3 Dec 2025 16:29:59 +0100
-Message-ID: <20251203152347.757649744@linuxfoundation.org>
+Message-ID: <20251203152338.965856437@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Manish Nagar <manish.nagar@oss.qualcomm.com>
 
-[ Upstream commit cff47b9e39a6abf03dde5f4f156f841b0c54bba0 ]
+commit e4037689a366743c4233966f0e74bc455820d316 upstream.
 
-Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
-introduced an early check on the folio's order via mapping->flags before
-proceeding with the split work.
+This patch addresses a race condition caused by unsynchronized
+execution of multiple call paths invoking `dwc3_remove_requests()`,
+leading to premature freeing of USB requests and subsequent crashes.
 
-This check introduced a bug: for shmem folios in the swap cache and
-truncated folios, the mapping pointer can be NULL.  Accessing
-mapping->flags in this state leads directly to a NULL pointer dereference.
+Three distinct execution paths interact with `dwc3_remove_requests()`:
+Path 1:
+Triggered via `dwc3_gadget_reset_interrupt()` during USB reset
+handling. The call stack includes:
+- `dwc3_ep0_reset_state()`
+- `dwc3_ep0_stall_and_restart()`
+- `dwc3_ep0_out_start()`
+- `dwc3_remove_requests()`
+- `dwc3_gadget_del_and_unmap_request()`
 
-This commit fixes the issue by moving the check for mapping != NULL before
-any attempt to access mapping->flags.
+Path 2:
+Also initiated from `dwc3_gadget_reset_interrupt()`, but through
+`dwc3_stop_active_transfers()`. The call stack includes:
+- `dwc3_stop_active_transfers()`
+- `dwc3_remove_requests()`
+- `dwc3_gadget_del_and_unmap_request()`
 
-Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ applied fix to split_huge_page_to_list_to_order() instead of __folio_split() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Path 3:
+Occurs independently during `adb root` execution, which triggers
+USB function unbind and bind operations. The sequence includes:
+- `gserial_disconnect()`
+- `usb_ep_disable()`
+- `dwc3_gadget_ep_disable()`
+- `dwc3_remove_requests()` with `-ESHUTDOWN` status
+
+Path 3 operates asynchronously and lacks synchronization with Paths
+1 and 2. When Path 3 completes, it disables endpoints and frees 'out'
+requests. If Paths 1 or 2 are still processing these requests,
+accessing freed memory leads to a crash due to use-after-free conditions.
+
+To fix this added check for request completion and skip processing
+if already completed and added the request status for ep0 while queue.
+
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Manish Nagar <manish.nagar@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251120074435.1983091-1-manish.nagar@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/usb/dwc3/ep0.c    |    1 +
+ drivers/usb/dwc3/gadget.c |    7 +++++++
+ 2 files changed, 8 insertions(+)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3404,6 +3404,16 @@ int split_huge_page_to_list_to_order(str
- 	if (new_order >= folio_order(folio))
- 		return -EINVAL;
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -94,6 +94,7 @@ static int __dwc3_gadget_ep0_queue(struc
+ 	req->request.actual	= 0;
+ 	req->request.status	= -EINPROGRESS;
+ 	req->epnum		= dep->number;
++	req->status		= DWC3_REQUEST_STATUS_QUEUED;
+ 
+ 	list_add_tail(&req->list, &dep->pending_list);
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -229,6 +229,13 @@ void dwc3_gadget_giveback(struct dwc3_ep
+ {
+ 	struct dwc3			*dwc = dep->dwc;
  
 +	/*
-+	 * Folios that just got truncated cannot get split. Signal to the
-+	 * caller that there was a race.
-+	 *
-+	 * TODO: this will also currently refuse shmem folios that are in the
-+	 * swapcache.
++	 * The request might have been processed and completed while the
++	 * spinlock was released. Skip processing if already completed.
 +	 */
-+	if (!is_anon && !folio->mapping)
-+		return -EBUSY;
++	if (req->status == DWC3_REQUEST_STATUS_COMPLETED)
++		return;
 +
- 	if (is_anon) {
- 		/* order-1 is not supported for anonymous THP. */
- 		if (new_order == 1) {
-@@ -3466,13 +3476,6 @@ int split_huge_page_to_list_to_order(str
- 		gfp_t gfp;
+ 	dwc3_gadget_del_and_unmap_request(dep, req, status);
+ 	req->status = DWC3_REQUEST_STATUS_COMPLETED;
  
- 		mapping = folio->mapping;
--
--		/* Truncated ? */
--		if (!mapping) {
--			ret = -EBUSY;
--			goto out;
--		}
--
- 		min_order = mapping_min_folio_order(folio->mapping);
- 		if (new_order < min_order) {
- 			VM_WARN_ONCE(1, "Cannot split mapped folio below min-order: %u",
 
 
 
