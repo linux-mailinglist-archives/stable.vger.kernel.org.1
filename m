@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB844CA0D60
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B8ECA0EF7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6537E3311943
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 059FC32BCCE2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB5935CB85;
-	Wed,  3 Dec 2025 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FC7341649;
+	Wed,  3 Dec 2025 15:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02LkeXaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlLmjYIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621835CB78;
-	Wed,  3 Dec 2025 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D409341079;
+	Wed,  3 Dec 2025 15:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779192; cv=none; b=P3Rul1B5fvVU8fThe27uubWE+a42Ve1t+3HBpXA2XPoQkJmsorxGyorv+e7fiWeBhrA4IQiwqRPMQCoH3hLMoe0WTPNFSXWOaDU177ey19GUJjxDINJM2eAX3F22xuDIBT44CBLOC4XK9lKp2raqjX6gk44EzpKQYxXrC+FeEsU=
+	t=1764777429; cv=none; b=N85gq8Y23ISrChQf/nT+T6fFhnzLcdayPdUL4uC9RlAj1RQsQ6fM555NtWdgv6XYdSq3HXAU7bXR7GW5SJd42zycYbCEGnxntXRQ+bcl8eD8On+UO+vp14qo9ogC5324oWngEk7hTNB3k9FMcG6vaLDulWPj4gHiGFTF4zr9Umw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779192; c=relaxed/simple;
-	bh=nnXUSty5y+Ug+ctRE3PV25OzfQlKYgQhkQunSsIQdoQ=;
+	s=arc-20240116; t=1764777429; c=relaxed/simple;
+	bh=7GwigojykEHuVa85eHpcBqAgIM6TI8XKGtUEklisDmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4wNvhazoC3y6/mxiofMv9nTeFnzAC78t9HlNbltwG0GkLoFETHJAiBhxii+5pmR324Iiw6wPcBkfDQ7XcercNGeFWoft3Ci67ml27SdO4rBKbzkgfIwkPUg7I8MhoyfpxU8vciBsM7AEogJ0CiLt/mSn33WKoIOP7MJXrg5QAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02LkeXaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD527C4CEF5;
-	Wed,  3 Dec 2025 16:26:31 +0000 (UTC)
+	 MIME-Version; b=YPlS/OPc8J57b0aq2zQ6YWxat0Kp6mWDj8LzHpjehXptM0g8wSsTQO+N2YpNL05ElHJ0BATofYYiOpPM2RN0Za9zlJNHGKPpm7zFdrkQXEdsi45kMt6BIsA+r+h4onE02q5FWWbka8ujtaFx7ekmAO3CTC+pSmojhk+cxNce7Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlLmjYIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD07C4CEF5;
+	Wed,  3 Dec 2025 15:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779192;
-	bh=nnXUSty5y+Ug+ctRE3PV25OzfQlKYgQhkQunSsIQdoQ=;
+	s=korg; t=1764777429;
+	bh=7GwigojykEHuVa85eHpcBqAgIM6TI8XKGtUEklisDmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02LkeXaHjKRi6otyjK05RYpGj+jhf0HYl76PlMHKyZhJJ4/FFT9u9xHU+Ray8645U
-	 +OehZ7aMGEJiEA1W5X3EjmbmFLD8ckOsKL+BV2hQzhwhK9sP3jz96Wu4WxJx/yh9KE
-	 BIh2OOH2hfqP0du0xOXj7oXZSpsiZrLOxuXGWDi0=
+	b=SlLmjYIlg8Ko7TEnTed7UumGGTBm2lz+w/olY56rFeWEQk/vIe3JkCur4LgVBMifZ
+	 dYnCREITH4XECzJ6HZF9PVCrxVs8+7oZDwL6G68yYvaW/S3TdWmUjrrk3vl877aX8j
+	 5T8ozf6wtufAGrkAeqOLPYyBzNgsyGuvMmdbnQe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Andreatta <thomas.andreatta2000@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/568] dmaengine: sh: setup_xref error handling
+Subject: [PATCH 5.15 035/392] ravb: Exclude gPTP feature support for RZ/G2L
 Date: Wed,  3 Dec 2025 16:23:05 +0100
-Message-ID: <20251203152447.430258256@linuxfoundation.org>
+Message-ID: <20251203152415.394124573@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +61,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Andreatta <thomasandreatta2000@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit d9a3e9929452780df16f3414f0d59b5f69d058cf ]
+[ Upstream commit 7e09a052dc4e30ce07fd7b3aa58a7d993f73a9d7 ]
 
-This patch modifies the type of setup_xref from void to int and handles
-errors since the function can fail.
+R-Car supports gPTP feature whereas RZ/G2L does not support it.
+This patch excludes gtp feature support for RZ/G2L.
 
-`setup_xref` now returns the (eventual) error from
-`dmae_set_dmars`|`dmae_set_chcr`, while `shdma_tx_submit` handles the
-result, removing the chunks from the queue and marking PM as idle in
-case of an error.
-
-Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
-Link: https://lore.kernel.org/r/20250827152442.90962-1-thomas.andreatta2000@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5370c31e84b0 ("net: ravb: Enforce descriptor type ordering")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/shdma-base.c | 25 +++++++++++++++++++------
- drivers/dma/sh/shdmac.c     | 17 +++++++++++++----
- include/linux/shdma-base.h  |  2 +-
- 3 files changed, 33 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c |   87 +++++++++++++++++--------------
+ 1 file changed, 50 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index 158e5e7defaeb..f309441f847ff 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -129,12 +129,25 @@ static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
- 			const struct shdma_ops *ops = sdev->ops;
- 			dev_dbg(schan->dev, "Bring up channel %d\n",
- 				schan->id);
--			/*
--			 * TODO: .xfer_setup() might fail on some platforms.
--			 * Make it int then, on error remove chunks from the
--			 * queue again
--			 */
--			ops->setup_xfer(schan, schan->slave_id);
-+
-+			ret = ops->setup_xfer(schan, schan->slave_id);
-+			if (ret < 0) {
-+				dev_err(schan->dev, "setup_xfer failed: %d\n", ret);
-+
-+				/* Remove chunks from the queue and mark them as idle */
-+				list_for_each_entry_safe(chunk, c, &schan->ld_queue, node) {
-+					if (chunk->cookie == cookie) {
-+						chunk->mark = DESC_IDLE;
-+						list_move(&chunk->node, &schan->ld_free);
-+					}
-+				}
-+
-+				schan->pm_state = SHDMA_PM_ESTABLISHED;
-+				ret = pm_runtime_put(schan->dev);
-+
-+				spin_unlock_irq(&schan->chan_lock);
-+				return ret;
-+			}
- 
- 			if (schan->pm_state == SHDMA_PM_PENDING)
- 				shdma_chan_xfer_ld_queue(schan);
-diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
-index 5aafe548ca5f3..2b9774ae7fd32 100644
---- a/drivers/dma/sh/shdmac.c
-+++ b/drivers/dma/sh/shdmac.c
-@@ -301,21 +301,30 @@ static bool sh_dmae_channel_busy(struct shdma_chan *schan)
- 	return dmae_is_busy(sh_chan);
- }
- 
--static void sh_dmae_setup_xfer(struct shdma_chan *schan,
--			       int slave_id)
-+static int sh_dmae_setup_xfer(struct shdma_chan *schan, int slave_id)
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1321,6 +1321,7 @@ static int ravb_get_ts_info(struct net_d
+ 			    struct ethtool_ts_info *info)
  {
- 	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
- 						    shdma_chan);
+ 	struct ravb_private *priv = netdev_priv(ndev);
++	const struct ravb_hw_info *hw_info = priv->info;
  
-+	int ret = 0;
- 	if (slave_id >= 0) {
- 		const struct sh_dmae_slave_config *cfg =
- 			sh_chan->config;
+ 	info->so_timestamping =
+ 		SOF_TIMESTAMPING_TX_SOFTWARE |
+@@ -1334,7 +1335,8 @@ static int ravb_get_ts_info(struct net_d
+ 		(1 << HWTSTAMP_FILTER_NONE) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+ 		(1 << HWTSTAMP_FILTER_ALL);
+-	info->phc_index = ptp_clock_index(priv->ptp.clock);
++	if (hw_info->gptp || hw_info->ccc_gac)
++		info->phc_index = ptp_clock_index(priv->ptp.clock);
  
--		dmae_set_dmars(sh_chan, cfg->mid_rid);
--		dmae_set_chcr(sh_chan, cfg->chcr);
-+		ret = dmae_set_dmars(sh_chan, cfg->mid_rid);
-+		if (ret < 0)
-+			goto END;
+ 	return 0;
+ }
+@@ -1565,6 +1567,7 @@ out_unlock:
+ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ {
+ 	struct ravb_private *priv = netdev_priv(ndev);
++	const struct ravb_hw_info *info = priv->info;
+ 	unsigned int num_tx_desc = priv->num_tx_desc;
+ 	u16 q = skb_get_queue_mapping(skb);
+ 	struct ravb_tstamp_skb *ts_skb;
+@@ -1641,28 +1644,30 @@ static netdev_tx_t ravb_start_xmit(struc
+ 	desc->dptr = cpu_to_le32(dma_addr);
+ 
+ 	/* TX timestamp required */
+-	if (q == RAVB_NC) {
+-		ts_skb = kmalloc(sizeof(*ts_skb), GFP_ATOMIC);
+-		if (!ts_skb) {
+-			if (num_tx_desc > 1) {
+-				desc--;
+-				dma_unmap_single(ndev->dev.parent, dma_addr,
+-						 len, DMA_TO_DEVICE);
++	if (info->gptp || info->ccc_gac) {
++		if (q == RAVB_NC) {
++			ts_skb = kmalloc(sizeof(*ts_skb), GFP_ATOMIC);
++			if (!ts_skb) {
++				if (num_tx_desc > 1) {
++					desc--;
++					dma_unmap_single(ndev->dev.parent, dma_addr,
++							 len, DMA_TO_DEVICE);
++				}
++				goto unmap;
+ 			}
+-			goto unmap;
++			ts_skb->skb = skb_get(skb);
++			ts_skb->tag = priv->ts_skb_tag++;
++			priv->ts_skb_tag &= 0x3ff;
++			list_add_tail(&ts_skb->list, &priv->ts_skb_list);
 +
-+		ret = dmae_set_chcr(sh_chan, cfg->chcr);
-+		if (ret < 0)
-+			goto END;
-+
- 	} else {
- 		dmae_init(sh_chan);
++			/* TAG and timestamp required flag */
++			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
++			desc->tagh_tsr = (ts_skb->tag >> 4) | TX_TSR;
++			desc->ds_tagl |= cpu_to_le16(ts_skb->tag << 12);
+ 		}
+-		ts_skb->skb = skb_get(skb);
+-		ts_skb->tag = priv->ts_skb_tag++;
+-		priv->ts_skb_tag &= 0x3ff;
+-		list_add_tail(&ts_skb->list, &priv->ts_skb_list);
+-
+-		/* TAG and timestamp required flag */
+-		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+-		desc->tagh_tsr = (ts_skb->tag >> 4) | TX_TSR;
+-		desc->ds_tagl |= cpu_to_le16(ts_skb->tag << 12);
+-	}
+ 
+-	skb_tx_timestamp(skb);
++		skb_tx_timestamp(skb);
++	}
+ 	/* Descriptor type must be set after all the above writes */
+ 	dma_wmb();
+ 	if (num_tx_desc > 1) {
+@@ -1781,10 +1786,12 @@ static int ravb_close(struct net_device
+ 			   "device will be stopped after h/w processes are done.\n");
+ 
+ 	/* Clear the timestamp list */
+-	list_for_each_entry_safe(ts_skb, ts_skb2, &priv->ts_skb_list, list) {
+-		list_del(&ts_skb->list);
+-		kfree_skb(ts_skb->skb);
+-		kfree(ts_skb);
++	if (info->gptp || info->ccc_gac) {
++		list_for_each_entry_safe(ts_skb, ts_skb2, &priv->ts_skb_list, list) {
++			list_del(&ts_skb->list);
++			kfree_skb(ts_skb->skb);
++			kfree(ts_skb);
++		}
  	}
-+
-+END:
-+	return ret;
+ 
+ 	/* PHY disconnect */
+@@ -2116,9 +2123,11 @@ static void ravb_set_config_mode(struct
+ 		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG);
+ 		/* Set CSEL value */
+ 		ravb_modify(ndev, CCC, CCC_CSEL, CCC_CSEL_HPB);
+-	} else {
++	} else if (info->ccc_gac) {
+ 		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG |
+ 			    CCC_GAC | CCC_CSEL_HPB);
++	} else {
++		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG);
+ 	}
  }
  
- /*
-diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
-index 6dfd05ef5c2d9..03ba4dab2ef73 100644
---- a/include/linux/shdma-base.h
-+++ b/include/linux/shdma-base.h
-@@ -96,7 +96,7 @@ struct shdma_ops {
- 	int (*desc_setup)(struct shdma_chan *, struct shdma_desc *,
- 			  dma_addr_t, dma_addr_t, size_t *);
- 	int (*set_slave)(struct shdma_chan *, int, dma_addr_t, bool);
--	void (*setup_xfer)(struct shdma_chan *, int);
-+	int (*setup_xfer)(struct shdma_chan *, int);
- 	void (*start_xfer)(struct shdma_chan *, struct shdma_desc *);
- 	struct shdma_desc *(*embedded_desc)(void *, int);
- 	bool (*chan_irq)(struct shdma_chan *, int);
--- 
-2.51.0
-
+@@ -2306,13 +2315,15 @@ static int ravb_probe(struct platform_de
+ 	/* Set AVB config mode */
+ 	ravb_set_config_mode(ndev);
+ 
+-	/* Set GTI value */
+-	error = ravb_set_gti(ndev);
+-	if (error)
+-		goto out_disable_refclk;
++	if (info->gptp || info->ccc_gac) {
++		/* Set GTI value */
++		error = ravb_set_gti(ndev);
++		if (error)
++			goto out_disable_refclk;
+ 
+-	/* Request GTI loading */
+-	ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
++		/* Request GTI loading */
++		ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
++	}
+ 
+ 	if (info->internal_delay) {
+ 		ravb_parse_delay_mode(np, ndev);
+@@ -2509,13 +2520,15 @@ static int __maybe_unused ravb_resume(st
+ 	/* Set AVB config mode */
+ 	ravb_set_config_mode(ndev);
+ 
+-	/* Set GTI value */
+-	ret = ravb_set_gti(ndev);
+-	if (ret)
+-		return ret;
++	if (info->gptp || info->ccc_gac) {
++		/* Set GTI value */
++		ret = ravb_set_gti(ndev);
++		if (ret)
++			return ret;
+ 
+-	/* Request GTI loading */
+-	ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
++		/* Request GTI loading */
++		ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
++	}
+ 
+ 	if (info->internal_delay)
+ 		ravb_set_delay_mode(ndev);
 
 
 
