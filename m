@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938E1CA075E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EEACA0EDC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CDD43333A04
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4EE83087D7D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A21B34167B;
-	Wed,  3 Dec 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5DE34A3CB;
+	Wed,  3 Dec 2025 16:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfnjdXuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0I1EpsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC480398FB3;
-	Wed,  3 Dec 2025 16:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACCE349B14;
+	Wed,  3 Dec 2025 16:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781166; cv=none; b=Z3DYHo5nL1rA3BSZu1DkYASNJk2tIzsL5bXpxCIk84Lm6325nzTfUkJsh5t2TRv8lICkZ6n3ygUK/dtjI2GVS+pzQsCgoMftzEViipWpNGXX3d57m4oIvWjwEEROQ2XZfRov76cvXq9cn9kuZatkqMf1pUjo3IGT+yeekZPo56Q=
+	t=1764780905; cv=none; b=HyXlODc3VhamMGhXVmiCVoerDN8qEHRsZceebp56nVrI4I+FPLCIee315kPpUqaOYjVLZjy/3+xrmqBSK1VWuQ3siRfTUMQB46Vq5+HTJa8H/8pHL9ztsOoL2v7OX1Os0QbLsOq3pP/fY2lFqrEiuAlSdptpec7BQ4uY0W9dqGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781166; c=relaxed/simple;
-	bh=RBO2v9751NEeOQ5kW2gjPbVaLjSsotfEobQ7/t0w1LQ=;
+	s=arc-20240116; t=1764780905; c=relaxed/simple;
+	bh=0fmVTcHDptkF2ATrtYkLbXsWbxDxGQR+DydRN1wsUjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdStf1YdxEKoAjbosTAwkQUyE4fkANFsVZjUgsXZHYnokPZtcfaqY5MDyLRl8rytQ++ENFSBY+Uw37j1dr0yidxCr+lzIpRF/XgTdPmf7/n70UZvQFms7yxdqFumJyebE2BjTsSD8ZzSfrgpz2mI4wJQQqwaocQpkToLNa3n3Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfnjdXuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB61CC4CEF5;
-	Wed,  3 Dec 2025 16:59:24 +0000 (UTC)
+	 MIME-Version; b=Ci1npo6N5gqSCY7kg0eZaNdbUI5zLGNDZ/9P9jMEUyYCPEp5rSogdcKONtrZiUkes4eGFFCOU9yaKwM8nuHilwKVA9x9BU0h+dfRVRovFL9FJk9cHmMLBAF+Sj2R6mk7UYXJnBr00defNZGpIaI8Kf/ubqa8ZS4zVW1whZGtyZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0I1EpsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E02C4CEF5;
+	Wed,  3 Dec 2025 16:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781165;
-	bh=RBO2v9751NEeOQ5kW2gjPbVaLjSsotfEobQ7/t0w1LQ=;
+	s=korg; t=1764780905;
+	bh=0fmVTcHDptkF2ATrtYkLbXsWbxDxGQR+DydRN1wsUjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xfnjdXuDeet8/qWdYSB04b5IYW14qmiGqScOMky2x3MyIPPOWBhImFx8Om1Cu/CM/
-	 8H+QHRVSdqQDgZvIHozOO5fmHyB2fwSH7sRc6raIDY8zT/cJvymIqopxX0AYV9STe2
-	 QuEf+JY63gM4h6OprYgtpzFp0pa1r0xUe9JT6gkM=
+	b=k0I1EpsImu8rLUcsW5eP5Q5TcBRAWbdTa+56p1171/f8IH7VDiZHH2TNmGD3oxWL1
+	 LQOhnbaiPrYZoY+pC+4ybC6J+pS8+Xi+lNvaiSjow9gZfqKHBCw9bCUS+lG8dZYEJg
+	 +GlEQ1rc+xzo5gtcsEEC6EdVceKhj7yJCGyaCwn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 70/93] USB: serial: option: add support for Rolling RW101R-GL
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 124/132] KVM: SVM: Fix redundant updates of LBR MSR intercepts
 Date: Wed,  3 Dec 2025 16:30:03 +0100
-Message-ID: <20251203152339.112651622@linuxfoundation.org>
+Message-ID: <20251203152347.907510018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,162 +60,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
+commit 3fa05f96fc08dff5e846c2cc283a249c1bf029a1 upstream.
 
-- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
+Don't update the LBR MSR intercept bitmaps if they're already up-to-date,
+as unconditionally updating the intercepts forces KVM to recalculate the
+MSR bitmaps for vmcb02 on every nested VMRUN.  The redundant updates are
+functionally okay; however, they neuter an optimization in Hyper-V
+nested virtualization enlightenments and this manifests as a self-test
+failure.
 
-  0x0301: mbim, pipe
+In particular, Hyper-V lets L1 mark "nested enlightenments" as clean, i.e.
+tell KVM that no changes were made to the MSR bitmap since the last VMRUN.
+The hyperv_svm_test KVM selftest intentionally changes the MSR bitmap
+"without telling KVM about it" to verify that KVM honors the clean hint,
+correctly fails because KVM notices the changed bitmap anyway:
 
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0301 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+  ==== Test Assertion Failure ====
+  x86/hyperv_svm_test.c:120: vmcb->control.exit_code == 0x081
+  pid=193558 tid=193558 errno=4 - Interrupted system call
+     1	0x0000000000411361: assert_on_unhandled_exception at processor.c:659
+     2	0x0000000000406186: _vcpu_run at kvm_util.c:1699
+     3	 (inlined by) vcpu_run at kvm_util.c:1710
+     4	0x0000000000401f2a: main at hyperv_svm_test.c:175
+     5	0x000000000041d0d3: __libc_start_call_main at libc-start.o:?
+     6	0x000000000041f27c: __libc_start_main_impl at ??:?
+     7	0x00000000004021a0: _start at ??:?
+  vmcb->control.exit_code == SVM_EXIT_VMMCALL
 
-- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
+Do *not* fix this by skipping svm_hv_vmcb_dirty_nested_enlightenments()
+when svm_set_intercept_for_msr() performs a no-op change.  changes to
+the L0 MSR interception bitmap are only triggered by full CPUID updates
+and MSR filter updates, both of which should be rare.  Changing
+svm_set_intercept_for_msr() risks hiding unintended pessimizations
+like this one, and is actually more complex than this change.
 
-  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
-
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a8 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
-
-  0x0302: mbim, pipe
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0302 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
-
-  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a9 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
 Cc: stable@vger.kernel.org
-[ johan: sort vendor entries, edit commit message slightly ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251112013017.1836863-1-yosry.ahmed@linux.dev
+[Rewritten commit message based on mailing list discussion. - Paolo]
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c |    6 ++++++
+ arch/x86/kvm/svm/svm.h |    1 +
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2424,12 +2424,18 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
- 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
- 	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
--	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
--	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1000,6 +1000,9 @@ static void svm_recalc_lbr_msr_intercept
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
+ 
++	if (intercept == svm->lbr_msrs_intercepted)
++		return;
++
+ 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
+ 			     !intercept, !intercept);
+ 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
+@@ -1012,6 +1015,8 @@ static void svm_recalc_lbr_msr_intercept
+ 	if (sev_es_guest(vcpu->kvm))
+ 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
+ 				     !intercept, !intercept);
++
++	svm->lbr_msrs_intercepted = intercept;
+ }
+ 
+ static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+@@ -1450,6 +1455,7 @@ static int svm_vcpu_create(struct kvm_vc
+ 	}
+ 
+ 	svm->x2avic_msrs_intercepted = true;
++	svm->lbr_msrs_intercepted = true;
+ 
+ 	svm->vmcb01.ptr = page_address(vmcb01_page);
+ 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -324,6 +324,7 @@ struct vcpu_svm {
+ 	bool guest_state_loaded;
+ 
+ 	bool x2avic_msrs_intercepted;
++	bool lbr_msrs_intercepted;
+ 
+ 	/* Guest GIF value, used when vGIF is not enabled */
+ 	bool guest_gif;
 
 
 
