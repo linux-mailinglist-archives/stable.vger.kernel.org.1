@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-198298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CE3C9F84C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DBFCA134A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B221C30148C9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33AC7330CD76
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158D730DECE;
-	Wed,  3 Dec 2025 15:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DE936C59A;
+	Wed,  3 Dec 2025 16:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6lO7otF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOReKDbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C47309F01;
-	Wed,  3 Dec 2025 15:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9FA36C595;
+	Wed,  3 Dec 2025 16:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776083; cv=none; b=FV83HKGswGJ/XryS0mgpbIewET6avw6yZMDfdplyxCQ5sc4ouw4v9FaXSYBvn14Pdrot8wqKqtnw5xfVSPh8LRAJaGcvCILSJIBe1gQlpsKM0uPohe0QqhOqd4ZuIhOth2i+ve16d4izoyT0HLl1+BTCZC5XH6k2/VwW2Yb5sbA=
+	t=1764779514; cv=none; b=h+0nC4MukgMpGYfqjwZfLwTnlQCqNDzh8kl4ApUHglVEsGiMuUaAEPLmhRvV+HAfbPIgCESVFY64MbE9TN2oTyBlA0Q+uldj1T3sE4xEH8x3GEuKLa7R/ru7YsSKLl61hYyBKuBw3si+4uFzM/8wqKuI6YqqiCupyIXYtfjUdVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776083; c=relaxed/simple;
-	bh=p1Kj0v48oBlM6xR2mibYaSu9/i1AaEcnb0rmzU48JD4=;
+	s=arc-20240116; t=1764779514; c=relaxed/simple;
+	bh=u8+Nz44Sk8SrNdAZrLbcLcpqcWEhEUMymUzf5G4UtYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RE14dJ4yATrX2am467+N0BSzCaO2MYfWKWdTnayVqpe5cjmGEOQ96PnbU9UlfyWpUIb45HtOuawlov07McEsV/2pXds8nbX0jKSP9t+fhQTbKmobqkdsyprVWrDElqnQeVx29wdN9ifHplEfQQagWHUgHehuIKbInFm2ma2+OPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6lO7otF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33689C4CEF5;
-	Wed,  3 Dec 2025 15:34:43 +0000 (UTC)
+	 MIME-Version; b=tnOl6Sb39QnYrabxvwLFIddApDs0DK7uK6c5RmGbq0cnn/NS7FPptxd8BckhrzuktreNRMtgLeMSZKxPxA2E9GGdh60iNI3KLSZk9hv/jig7DRCq1jiOSnhIm9bTHNxKIKbOawRoJC0QZ0biYSTkXriQraCj2QBY5VH06S5WPqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOReKDbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D12BC16AAE;
+	Wed,  3 Dec 2025 16:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776083;
-	bh=p1Kj0v48oBlM6xR2mibYaSu9/i1AaEcnb0rmzU48JD4=;
+	s=korg; t=1764779514;
+	bh=u8+Nz44Sk8SrNdAZrLbcLcpqcWEhEUMymUzf5G4UtYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6lO7otFXhzsKpBlOsZ5zGyvEEOdVsbU60fAZxlxrUMdrTKSTZzgMLi1Im+0JC3Dt
-	 Rq8gO/Dt+4R9+0nzP8cgUYxs9c+2vN9+qHFYEvPt1jgRNQDfgHeVk7QbJ6qCZBlaPe
-	 gj9LPgHZzYpcnsB5ucb4bjpTsBRY9YCVp6JyrfHY=
+	b=EOReKDbqFo6ww8YhpQ/WrJavPIzEHKZoI9VSMHX9HJyRI9iAbEV0Bk00Z89N83KVe
+	 7CPPlZY95Z3eHzGuERkUTlXtmM1cnuCQ4OHIZtsS2LktT9qocFgJ+s1D2fqLPKrHCF
+	 lQKnJSVMPMaUkr1KPzFcDMcQk+KbyXICf9OVD8t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/300] drm/tidss: Use the crtc_* timings when programming the HW
+Subject: [PATCH 6.1 278/568] RDMA/hns: Fix the modification of max_send_sge
 Date: Wed,  3 Dec 2025 16:24:40 +0100
-Message-ID: <20251203152403.438459971@linuxfoundation.org>
+Message-ID: <20251203152450.891034792@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
+[ Upstream commit f5a7cbea5411668d429eb4ffe96c4063fe8dac9e ]
 
-Use the crtc_* fields from drm_display_mode, instead of the "logical"
-fields. This shouldn't change anything in practice, but afaiu the crtc_*
-fields are the correct ones to use here.
+The actual sge number may exceed the value specified in init_attr->cap
+when HW needs extra sge to enable inline feature. Since these extra
+sges are not expected by ULP, return the user-specified value to ULP
+instead of the expanded sge number.
 
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20251016114051.1963197-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
- drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index 26fd2761e80db..d39c865e126bd 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -226,7 +226,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
- 	tidss_runtime_get(tidss);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 0f0351abe9b46..72787ff924f44 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -661,7 +661,6 @@ static int set_user_sq_size(struct hns_roce_dev *hr_dev,
  
- 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
--				  mode->clock * 1000);
-+				  mode->crtc_clock * 1000);
- 	if (r != 0)
- 		return;
+ 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
+ 	hr_qp->sq.wqe_cnt = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
  
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index b1093dc1b79a2..14bf95d901ada 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -978,13 +978,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 	return 0;
+ }
+@@ -743,7 +742,6 @@ static int set_kernel_sq_size(struct hns_roce_dev *hr_dev,
  
- 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
+ 	/* sync the parameters of kernel QP to user's configuration */
+ 	cap->max_send_wr = cnt;
+-	cap->max_send_sge = hr_qp->sq.max_gs;
  
--	hfp = mode->hsync_start - mode->hdisplay;
--	hsw = mode->hsync_end - mode->hsync_start;
--	hbp = mode->htotal - mode->hsync_end;
-+	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
-+	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
-+	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
- 
--	vfp = mode->vsync_start - mode->vdisplay;
--	vsw = mode->vsync_end - mode->vsync_start;
--	vbp = mode->vtotal - mode->vsync_end;
-+	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
-+	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
-+	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
- 		       FLD_VAL(hsw - 1, 7, 0) |
-@@ -1026,8 +1026,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 		       FLD_VAL(ivs, 12, 12));
- 
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
--		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
--		       FLD_VAL(mode->vdisplay - 1, 27, 16));
-+		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
-+		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
- 
- 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
+ 	return 0;
  }
 -- 
 2.51.0
