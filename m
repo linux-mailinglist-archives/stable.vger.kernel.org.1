@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C8FCA0934
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61408CA0B3E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 179423450C29
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4116C3008D64
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C10B316184;
-	Wed,  3 Dec 2025 15:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9D3341AAE;
+	Wed,  3 Dec 2025 16:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0piUJyIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aTLG90s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC458305067;
-	Wed,  3 Dec 2025 15:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8057340281;
+	Wed,  3 Dec 2025 16:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776892; cv=none; b=axE4wieMp0ymEvjaPkM8fLOwyoBqzeMnFef5myFKcNVQ18cCjRqhHfET5PqbKGrSr5/4f3guapaAVLiBSrSBBoSSJvJC+pLspzD6xKzhMjqwd0JLibWNyo6VabMlb0HjLJUqodgW5cfjltGvA9StkDr0Ec+STW11wUc8HrcxkI8=
+	t=1764780009; cv=none; b=JLElio4jXCUY36DhsFyaSCpajJIh+nDHG1zyJbiuAn2Bk2B2xPBCV7BccFiqRs2IBUeFG+EUzI6k3TNhLoiAzQNA9XwIH9tr/Ux3CWc8Deo8v8zFuTbymbe18OnKihWXmuGn/imAG0UtJpP/4oSezVJR0HYyIEWk81e3GFaZ/94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776892; c=relaxed/simple;
-	bh=Fxa8b6rNORJVHDLLRA7frv1Ew4YnFghOf8RO0qa05VI=;
+	s=arc-20240116; t=1764780009; c=relaxed/simple;
+	bh=0sGo2/6zxVNemXFgw0lrLioWDMM76U320BuO5CaV+ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBG8YD2wLWM6IdUDGhxh+wcUOXujSWMv9k0a7phCgKX+OfKyblaDgenMQamG3j8m21w79A+aJPqg9gmsR7mIk8DpdHAanWIf3vQDc1BoNazK0E4qI/ckR9F+S+MusfMJjHteGZannrAYDm9HteU9deXKfJwn8gdwzZ0+mv5+97E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0piUJyIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABF2C4CEF5;
-	Wed,  3 Dec 2025 15:48:11 +0000 (UTC)
+	 MIME-Version; b=WwcVyy/QONUYiPMJhrjMYYp7CzVTNLSNSxTXWeY9AjN6rNEIU+u6m/aLnN9pkD78kPwMuX0ePBSo5k/Pho89VOyn60NAr713zzlyHr9Fxmin2sgwiBzeHF5ByWMzYaC0WhkXIFj6gjewRk3kq9yzuqqb/zdOidfs8/E0VCrsiLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aTLG90s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1383BC4CEF5;
+	Wed,  3 Dec 2025 16:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776892;
-	bh=Fxa8b6rNORJVHDLLRA7frv1Ew4YnFghOf8RO0qa05VI=;
+	s=korg; t=1764780009;
+	bh=0sGo2/6zxVNemXFgw0lrLioWDMM76U320BuO5CaV+ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0piUJyIEG4rRS4rPRIYM5oiZarDA7/yAMYpS0vUlMIBo7G0MX8l/Fllb6/belnHTY
-	 S5vKycta21eRiMfBuLJTdWCJto8KCSY96WD4Su7lA7rH1t/tzzqYsbeFtK4dkXVl7v
-	 d0RT3Q61wzs2pC5G8K29KxPSTAIEVUgX9Lg+WuSs=
+	b=2aTLG90sE0dNwOyrJ2GWwyBeYugt4TQGzJpkWhguW2cxZXnvBx2PdPW6H/WseNh8u
+	 H25WNT3sn/KnBZONt3Fu9CRfgv30bCMjCxOnykDX1On+FhRDQ/MsFS0VYf37jpHLAb
+	 usfkhksnyc7GogMgw1+2bDsubDd1yton1dT4H/l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masami Ichikawa <masami256@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 019/146] team: Move team device type change at the end of team_port_add
+Subject: [PATCH 6.1 395/568] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
 Date: Wed,  3 Dec 2025 16:26:37 +0100
-Message-ID: <20251203152347.171981200@linuxfoundation.org>
+Message-ID: <20251203152455.158994181@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Masami Ichikawa <masami256@gmail.com>
 
-[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
+[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
 
-Attempting to add a port device that is already up will expectedly fail,
-but not before modifying the team device header_ops.
+Use a scope-based cleanup helper for the buffer allocated with kmalloc()
+in ntrig_report_version() to simplify the cleanup logic and prevent
+memory leaks (specifically the !hid_is_usb()-case one).
 
-In the case of the syzbot reproducer the gre0 device is
-already in state UP when it attempts to add it as a
-port device of team0, this fails but before that
-header_ops->create of team0 is changed from eth_header to ipgre_header
-in the call to team_dev_type_check_change.
-
-Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
-as the private data of the device still holds a struct team.
-
-Example sequence of iproute2 commands to reproduce the hang/BUG():
-ip link add dev team0 type team
-ip link add dev gre0 type gre
-ip link set dev gre0 up
-ip link set dev gre0 master team0
-ip link set dev team0 up
-ping -I team0 1.1.1.1
-
-Move team_dev_type_check_change down where all other checks have passed
-as it changes the dev type with no way to restore it in case
-one of the checks that follow it fail.
-
-Also make sure to preserve the origial mtu assignment:
-  - If port_dev is not the same type as dev, dev takes mtu from port_dev
-  - If port_dev is the same type as dev, port_dev takes mtu from dev
-
-This is done by adding a conditional before the call to dev_set_mtu
-to prevent it from assigning port_dev->mtu = dev->mtu and instead
-letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
-The conditional is needed because the patch moves the call to
-team_dev_type_check_change past dev_set_mtu.
-
-Testing:
-  - team device driver in-tree selftests
-  - Add/remove various devices as slaves of team device
-  - syzbot
-
-Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
-Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[jkosina@suse.com: elaborate on the actual existing leak]
+Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
+Signed-off-by: Masami Ichikawa <masami256@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team_core.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/hid/hid-ntrig.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 17f07eb0ee52a..25562b17debe1 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -1191,10 +1191,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 		return -EPERM;
- 	}
+diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
+index a1128c5315fff..3c41f6841f775 100644
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 	int ret;
+ 	char buf[20];
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+-	unsigned char *data = kmalloc(8, GFP_KERNEL);
++	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
  
--	err = team_dev_type_check_change(dev, port_dev);
--	if (err)
--		return err;
+ 	if (!hid_is_usb(hdev))
+ 		return;
+ 
+ 	if (!data)
+-		goto err_free;
++		return;
+ 
+ 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
+ 			      USB_REQ_CLEAR_FEATURE,
+@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
+ 			 buf, data[2], data[3], data[4], data[5]);
+ 	}
 -
- 	if (port_dev->flags & IFF_UP) {
- 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
- 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
-@@ -1212,10 +1208,16 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 	INIT_LIST_HEAD(&port->qom_list);
+-err_free:
+-	kfree(data);
+ }
  
- 	port->orig.mtu = port_dev->mtu;
--	err = dev_set_mtu(port_dev, dev->mtu);
--	if (err) {
--		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
--		goto err_set_mtu;
-+	/*
-+	 * MTU assignment will be handled in team_dev_type_check_change
-+	 * if dev and port_dev are of different types
-+	 */
-+	if (dev->type == port_dev->type) {
-+		err = dev_set_mtu(port_dev, dev->mtu);
-+		if (err) {
-+			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
-+			goto err_set_mtu;
-+		}
- 	}
- 
- 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
-@@ -1290,6 +1292,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 		}
- 	}
- 
-+	err = team_dev_type_check_change(dev, port_dev);
-+	if (err)
-+		goto err_set_dev_type;
-+
- 	if (dev->flags & IFF_UP) {
- 		netif_addr_lock_bh(dev);
- 		dev_uc_sync_multiple(port_dev, dev);
-@@ -1308,6 +1314,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 
- 	return 0;
- 
-+err_set_dev_type:
- err_set_slave_promisc:
- 	__team_option_inst_del_port(team, port);
- 
+ static ssize_t show_phys_width(struct device *dev,
 -- 
 2.51.0
 
