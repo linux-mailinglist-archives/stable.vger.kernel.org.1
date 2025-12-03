@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-199516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E63CCA0559
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31534CA15AF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A99030056F9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4893029C68
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3BC359FB5;
-	Wed,  3 Dec 2025 16:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F43332E737;
+	Wed,  3 Dec 2025 15:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJnkgvl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMFQLieR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EECC359F9E;
-	Wed,  3 Dec 2025 16:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB9432E692;
+	Wed,  3 Dec 2025 15:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780057; cv=none; b=ScQRa+2KDZ0WUyMlbbbBuR4uXpuzkKpMkCHsJtngJmn2Aac/RoFLYPWZJFy57YGnvH6unlcAEOXPGJ3hJSseuvCq6HogAcwNJ0OJ+0kqWPmLQ+ZLuJ/irb7rEhHKzWOxx7EiOln2ZyXYTAU+wzG34jfs3JGIRVyr0Zdm4naimmM=
+	t=1764777052; cv=none; b=QOsuSLhBE76w0SL0lT3UtJ2lCQ/g1xxzjDRJ0n9fRKcsHtcfQ1X2G8/PgukMGI+K1PuqSv0OKHDZ+swCXGdt0nDfAvfX/dJhTD+S/qlYEfUENM/pLJipJbwECN8p5mYwTFE0+Ee6Q0jItQXRrrJssehCV8V0Roig5K/j4R1W+d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780057; c=relaxed/simple;
-	bh=ZCb2HytYkGqiiq+4tSf/PT5Gasmxf7aLGG+Lwik8aoU=;
+	s=arc-20240116; t=1764777052; c=relaxed/simple;
+	bh=hyGgJ+8kTwEsuHBwCPoUyjZnjvRg8fdxUk3hPSdrYPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXTk5T9Z2h9ES3bQ6TV94jALTxjmH3Jm0+LbkwctzMOY0dn2gtdbA602wkCbQYapGdQw0Sm8JWYlS7lvXmQtjHtet9y9Dv0XXo8980BjT7FT6hgeUoBwke+9UHioMVbEopU4bE+5HdVR5gXABLTZr+OoPnLi3T5jDL/4LsOwjA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJnkgvl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AEEC4CEF5;
-	Wed,  3 Dec 2025 16:40:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pd4yZBa2LivtLAGN3decS4HC0ROipfUPo/T80eePqz77s8SFqMiq0W+ZzC+rDafJJaf2hK5Kt2WT4E6glrHgiyKuN9Mnl7h9Am0B83b7lsVDM57NIZt7IcAcosS9QaT1cZQeDnILgZa8ujBOhtZhk3MkBXdSSR+n3+SPIyD5Y2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMFQLieR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DAAC4CEF5;
+	Wed,  3 Dec 2025 15:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780056;
-	bh=ZCb2HytYkGqiiq+4tSf/PT5Gasmxf7aLGG+Lwik8aoU=;
+	s=korg; t=1764777052;
+	bh=hyGgJ+8kTwEsuHBwCPoUyjZnjvRg8fdxUk3hPSdrYPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJnkgvl+vb1nTp9fO6PIz5VzOqqp438xwYGr1Gk/oCKisY7JQZkYSIrVedcDRf6Hk
-	 jh4WeZ/BGmbdQUvKnx161A97Kkd7uvrkaJW7rHKbRzvehQodSWZg+tbF7S55vdf7Rk
-	 2RuigQ6MzjwbXKLi6dTtjtTqwUeJQct5/4kXQTPs=
+	b=OMFQLieRHqOyTT/Sn0B8T/25Uh589s1Wc5g/XpqQD4RAJYp81Gt1RjQNnINEgH6tE
+	 RRx+m4bx9AHb3HW1TOAU5nXgEMNq8ExFd9LysRbd0FPFr32hinRwD2rc2UoBmV4Akf
+	 KlL1Uo49KnkcKdlO1D8Kwce4mnmy4nH9EDGFuamw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 442/568] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 066/146] iio: adc: ad7124: fix temperature channel
 Date: Wed,  3 Dec 2025 16:27:24 +0100
-Message-ID: <20251203152456.884357085@linuxfoundation.org>
+Message-ID: <20251203152348.882862864@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,107 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: David Lechner <dlechner@baylibre.com>
 
-commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
+commit e2cc390a6629c76924a2740c54b144b9b28fca59 upstream.
 
-Fix a regression that has caused accesses to the PCI MMIO window to
-complete unclaimed in non-EVA configurations with the SOC-it family of
-system controllers, preventing PCI devices from working that use MMIO.
+Fix temperature channel not working due to gain and offset not being
+initialized.  For channels other than the voltage ones calibration is
+skipped (which is OK).  However that results in the calibration register
+values tracked in st->channels[i].cfg all being zero.  These zeros are
+later written to hardware before a measurement is made which caused the
+raw temperature readings to be always 8388608 (0x800000).
 
-In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
-set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
-accordingly).  Consequently all addresses are matched for incoming DMA
-accesses from PCI.  This seems to confuse the system controller's logic
-and outgoing bus cycles targeting the PCI MMIO window seem not to make
-it to the intended devices.
+To fix it, we just make sure the gain and offset values are set to the
+default values and still return early without doing an internal
+calibration.
 
-This happens as well when a wider mask is used with PCI_BAR0, such as
-0x80000000 or 0xe0000000, that makes addresses match that overlap with
-the PCI MMIO window, which starts at 0x10000000 in our configuration.
+While here, add a comment explaining why we don't bother calibrating
+the temperature channel.
 
-Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
-non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
-to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
-PCI_BAR0 as required by the system controller's specification, and match
-PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
-
-Verified with:
-
-Core board type/revision =      0x0d (Core74K) / 0x01
-System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
-Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
-
-for non-EVA and with:
-
-Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
-System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
-Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
-
-for EVA/non-EVA, fixing:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: Could not read adapter factory MAC address!
-
-vs:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
-0000:00:12.0: registered as fddi0
-
-for non-EVA and causing no change for EVA.
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
-Cc: stable@vger.kernel.org # v4.9+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ad7124.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -241,16 +241,22 @@ mips_pci_controller:
- #endif
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -1196,10 +1196,6 @@ static int __ad7124_calibrate_all(struct
+ 	int ret, i;
+ 
+ 	for (i = 0; i < st->num_channels; i++) {
+-
+-		if (indio_dev->channels[i].type != IIO_VOLTAGE)
+-			continue;
+-
+ 		/*
+ 		 * For calibration the OFFSET register should hold its reset default
+ 		 * value. For the GAIN register there is no such requirement but
+@@ -1210,6 +1206,14 @@ static int __ad7124_calibrate_all(struct
+ 		st->channels[i].cfg.calibration_gain = st->gain_default;
  
  		/*
--		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
--		 * in transparent addressing mode.
-+		 * Set up memory mapping in host bridge for PCI DMA masters,
-+		 * in transparent addressing mode.  For EVA use the Malta
-+		 * maximum of 2 GiB memory in the alias space at 0x80000000
-+		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
-+		 * the regular space, avoiding mapping the PCI MMIO window
-+		 * for DMA as it seems to confuse the system controller's
-+		 * logic, causing PCI MMIO to stop working.
- 		 */
--		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
--		MSC_WRITE(MSC01_PCI_BAR0, mask);
--		MSC_WRITE(MSC01_PCI_HEAD4, mask);
-+		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
-+		MSC_WRITE(MSC01_PCI_BAR0,
-+			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
-+		MSC_WRITE(MSC01_PCI_HEAD4,
-+			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
- 
--		mask &= MSC01_PCI_BAR0_SIZE_MSK;
- 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
--		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
- 
- 		/* Don't handle target retries indefinitely.  */
- 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
++		 * Only the main voltage input channels are important enough
++		 * to be automatically calibrated here. For everything else,
++		 * just use the default values set above.
++		 */
++		if (indio_dev->channels[i].type != IIO_VOLTAGE)
++			continue;
++
++		/*
+ 		 * Full-scale calibration isn't supported at gain 1, so skip in
+ 		 * that case. Note that untypically full-scale calibration has
+ 		 * to happen before zero-scale calibration. This only applies to
 
 
 
