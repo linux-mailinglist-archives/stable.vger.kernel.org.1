@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1693ECA1453
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DFBC9FB69
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 928DF32E15EF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 516EE3065E31
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9A734B183;
-	Wed,  3 Dec 2025 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEDE3128B2;
+	Wed,  3 Dec 2025 15:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7yO5GE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK+EZ3o4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0819734AAE3;
-	Wed,  3 Dec 2025 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3A4312813;
+	Wed,  3 Dec 2025 15:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778358; cv=none; b=XvsvZ5RQG3/cA32iEeiuJuKLC6Y+BTj/s62108VHXjx/0na2X9wmgLYBkGKYWcOgdqJ6v3wQ29Zkwqe6xmwUSJdIE31RW0i+FkD81iud4blARMswso+NhNdli3ksaMKTluGb+etAPf0oXIh4vG+xgTfw8nk7g5IJzVPs9lxkel4=
+	t=1764776724; cv=none; b=X90EGI/pW514fo/X0vdjCQMoz36v0XcuLmnTgG6ZwKNvh4uXLeE7hrh45e+ohQ0E1GYy12QZWSRSTxvdWzWTLgjpn9AynwKhSCH6ClGZoEItwBrpUcacbPZctnnlm5CWKvlsS81V7iroQ6p+h8PEbKa1IqQKHjbMRzJS7Q/SsQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778358; c=relaxed/simple;
-	bh=X544rEJL8NDQlWnRJhHeAHi0UJTOBXNVYCs2Tp1qY/E=;
+	s=arc-20240116; t=1764776724; c=relaxed/simple;
+	bh=RKdfLhLBRTL9fCC3wS9Rdc0mpVa7i37TcXjbtegr+7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tzvgx+y1W2uCg8yOA/FiqnoojcOyAh/WOtOI05yFb5ui0MlY3tD/qHyXGQ4SOoSqWRI+kHUmSHMhhnJMX+A24oZQQoUeGpsdF6B7hHaf6Sp8Pq2zLj4OIdm+dsOA/33B8veZaqMjV4+rLCqDa+CR0vPGtakEv40Aip3h6lcdCxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7yO5GE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6DEC4CEF5;
-	Wed,  3 Dec 2025 16:12:37 +0000 (UTC)
+	 MIME-Version; b=UZdAdUMpU9yPVrOA5t3MTVhxe/jwat75hGixI/NVuL0gLpnWetBd6PTwR0PmX0Xt7cCkbajV8mDZmgh7EEr/FwMAxOhFkKpAjlxgLLxQX+pMFbLZkAi0OQVN3k1Nn4z4gWAP+tlFxU94v+k58jwTu9glfo1ApawWsSoCQutn6hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK+EZ3o4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227A4C4CEF5;
+	Wed,  3 Dec 2025 15:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778357;
-	bh=X544rEJL8NDQlWnRJhHeAHi0UJTOBXNVYCs2Tp1qY/E=;
+	s=korg; t=1764776724;
+	bh=RKdfLhLBRTL9fCC3wS9Rdc0mpVa7i37TcXjbtegr+7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7yO5GE1NOrch2WC4nPCMIO0V+oXxrkIoWY0tIxY13A+CN+qYAoLCbtZh0rYjhyaE
-	 /xuo1+O77AKWi+mkKrGA9vRmGl42M6/K+i6QArlvSvYUcG+wReGgiTSRfNV/JbjN3A
-	 66yCRe1e5oPwvRahsS84kI0j8j9U+125n6qgdLCA=
+	b=EK+EZ3o4SSaKaPVcy4u44Kv5okLUMMQ/g5P/dvZjhaJwXiKZ0bsGYO37cq+WqhDvt
+	 AT0FzVTRx75oSCw1H2f+inMkG2MTVVbgwe4V1aLaF6KzvIxcJyDk3sX4W+gs9I9DS9
+	 +snnk+JCCmEDjR5ldYNIlNzdcLqHGjmxzxJywqvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 322/392] selftests: mptcp: connect: fix fallback note due to OoO
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 268/300] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 Date: Wed,  3 Dec 2025 16:27:52 +0100
-Message-ID: <20251203152426.011140401@linuxfoundation.org>
+Message-ID: <20251203152410.563059023@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-[ Upstream commit 63c643aa7b7287fdbb0167063785f89ece3f000f ]
+commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
 
-The "fallback due to TCP OoO" was never printed because the stat_ooo_now
-variable was checked twice: once in the parent if-statement, and one in
-the child one. The second condition was then always true then, and the
-'else' branch was never taken.
+Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
+cores can have more than 64 TLB entries.  Therefore allocate an array
+for uniquification instead of placing too an small array on the stack.
 
-The idea is that when there are more ACK + MP_CAPABLE than expected, the
-test either fails if there was no out of order packets, or a notice is
-printed.
-
-Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Different operators used ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
+Cc: stable@vger.kernel.org # v6.17+
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -535,7 +535,7 @@ do_transfer()
- 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
- 		retc=1
- 	fi
--	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
-+	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
- 		if [ ${stat_ooo_now} -eq 0 ]; then
- 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
- 				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
++#include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -512,17 +513,26 @@ static int r4k_vpn_cmp(const void *a, co
+  * Initialise all TLB entries with unique values that do not clash with
+  * what we have been handed over and what we'll be using ourselves.
+  */
+-static void r4k_tlb_uniquify(void)
++static void __ref r4k_tlb_uniquify(void)
+ {
+-	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
+ 	int tlbsize = current_cpu_data.tlbsize;
++	bool use_slab = slab_is_available();
+ 	int start = num_wired_entries();
++	phys_addr_t tlb_vpn_size;
++	unsigned long *tlb_vpns;
+ 	unsigned long vpn_mask;
+ 	int cnt, ent, idx, i;
+ 
+ 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+ 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
++	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
++	tlb_vpns = (use_slab ?
++		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
++	if (WARN_ON(!tlb_vpns))
++		return; /* Pray local_flush_tlb_all() is good enough. */
++
+ 	htw_stop();
+ 
+ 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+@@ -575,6 +585,10 @@ static void r4k_tlb_uniquify(void)
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
++	if (use_slab)
++		kfree(tlb_vpns);
++	else
++		memblock_free(tlb_vpns, tlb_vpn_size);
+ }
+ 
+ /*
 
 
 
