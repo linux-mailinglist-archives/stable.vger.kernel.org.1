@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28369CA054A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E63CCA0559
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 236DC30065A3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A99030056F9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1D43370F2;
-	Wed,  3 Dec 2025 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3BC359FB5;
+	Wed,  3 Dec 2025 16:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8YDcXC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJnkgvl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4542E336ED5;
-	Wed,  3 Dec 2025 16:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EECC359F9E;
+	Wed,  3 Dec 2025 16:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778269; cv=none; b=N4+F65VMWgmVe14gSLfelCYawmdG5K9mK+LxAOhyf9c1t45i06PG2IPbK0xntkBYpVjJ84rauVoCBl0D3fa8hnTyGA6sBUtKXkQhbkrjGXiBTH1229i3grUeiqva89pxVtv9Cl9w86a4tjrBEgcWsU8b8vR/GH64cFrTMJQXpMw=
+	t=1764780057; cv=none; b=ScQRa+2KDZ0WUyMlbbbBuR4uXpuzkKpMkCHsJtngJmn2Aac/RoFLYPWZJFy57YGnvH6unlcAEOXPGJ3hJSseuvCq6HogAcwNJ0OJ+0kqWPmLQ+ZLuJ/irb7rEhHKzWOxx7EiOln2ZyXYTAU+wzG34jfs3JGIRVyr0Zdm4naimmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778269; c=relaxed/simple;
-	bh=/t3EKKrXamdnKBx0xtAuaTnX3i8viqJPhmwXOxjNPmY=;
+	s=arc-20240116; t=1764780057; c=relaxed/simple;
+	bh=ZCb2HytYkGqiiq+4tSf/PT5Gasmxf7aLGG+Lwik8aoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZz0JePq8Ui/BbQZrEa+WflZOEt4U0IhMphHNq0JUuoHt/CKU1UyLsp4rHQBhPd6dUdX0KFvm1zWwYpsHwKvpRvjIddivGxHMHEJ4JdPZzVMQGpVPBS+YvJ5wdCf7rAODzSv2ngLUBBDtTwvhUV+aJm+bQdtdUuK3fE6SV6Sibs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8YDcXC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CCFC4CEF5;
-	Wed,  3 Dec 2025 16:11:08 +0000 (UTC)
+	 MIME-Version; b=uXTk5T9Z2h9ES3bQ6TV94jALTxjmH3Jm0+LbkwctzMOY0dn2gtdbA602wkCbQYapGdQw0Sm8JWYlS7lvXmQtjHtet9y9Dv0XXo8980BjT7FT6hgeUoBwke+9UHioMVbEopU4bE+5HdVR5gXABLTZr+OoPnLi3T5jDL/4LsOwjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJnkgvl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AEEC4CEF5;
+	Wed,  3 Dec 2025 16:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778268;
-	bh=/t3EKKrXamdnKBx0xtAuaTnX3i8viqJPhmwXOxjNPmY=;
+	s=korg; t=1764780056;
+	bh=ZCb2HytYkGqiiq+4tSf/PT5Gasmxf7aLGG+Lwik8aoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8YDcXC58/WomvIyczNdzwRr6g9N4/2irg9Jveh3vGwINl+YLOU9fnLE4+uzpfLGe
-	 z6XGpNtHpMvDDtMZxsaTfe5mNAU6zNXKuTbkSz6scDZVOfuVWS/pjatJvWPy+qf7KC
-	 ADaS4JmDoY3kvjHK3289nW0fR/PiDbNPiWbuawyg=
+	b=RJnkgvl+vb1nTp9fO6PIz5VzOqqp438xwYGr1Gk/oCKisY7JQZkYSIrVedcDRf6Hk
+	 jh4WeZ/BGmbdQUvKnx161A97Kkd7uvrkaJW7rHKbRzvehQodSWZg+tbF7S55vdf7Rk
+	 2RuigQ6MzjwbXKLi6dTtjtTqwUeJQct5/4kXQTPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 294/392] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 442/568] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
 Date: Wed,  3 Dec 2025 16:27:24 +0100
-Message-ID: <20251203152424.974694285@linuxfoundation.org>
+Message-ID: <20251203152456.884357085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
+commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
 
-The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
-obtain a ruleset reference. If the subsequent call to
-mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
-an error without releasing the ruleset reference, causing a memory leak.
+Fix a regression that has caused accesses to the PCI MMIO window to
+complete unclaimed in non-EVA configurations with the SOC-it family of
+system controllers, preventing PCI devices from working that use MMIO.
 
-Fix this by using a goto to the existing error handling label, which
-calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
+In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
+set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
+accordingly).  Consequently all addresses are matched for incoming DMA
+accesses from PCI.  This seems to confuse the system controller's logic
+and outgoing bus cycles targeting the PCI MMIO window seem not to make
+it to the intended devices.
 
-Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This happens as well when a wider mask is used with PCI_BAR0, such as
+0x80000000 or 0xe0000000, that makes addresses match that overlap with
+the PCI MMIO window, which starts at 0x10000000 in our configuration.
+
+Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
+non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
+to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
+PCI_BAR0 as required by the system controller's specification, and match
+PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
+
+Verified with:
+
+Core board type/revision =      0x0d (Core74K) / 0x01
+System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
+Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
+
+for non-EVA and with:
+
+Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
+System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
+Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
+
+for EVA/non-EVA, fixing:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: Could not read adapter factory MAC address!
+
+vs:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
+0000:00:12.0: registered as fddi0
+
+for non-EVA and causing no change for EVA.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-index be3791ca6069d..c327b11265773 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-@@ -673,8 +673,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
- 		return -EINVAL;
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -241,16 +241,22 @@ mips_pci_controller:
+ #endif
  
- 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
--	if (!rule)
--		return -EINVAL;
-+	if (!rule) {
-+		err = -EINVAL;
-+		goto err_rule_get_stats;
-+	}
+ 		/*
+-		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
+-		 * in transparent addressing mode.
++		 * Set up memory mapping in host bridge for PCI DMA masters,
++		 * in transparent addressing mode.  For EVA use the Malta
++		 * maximum of 2 GiB memory in the alias space at 0x80000000
++		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
++		 * the regular space, avoiding mapping the PCI MMIO window
++		 * for DMA as it seems to confuse the system controller's
++		 * logic, causing PCI MMIO to stop working.
+ 		 */
+-		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
+-		MSC_WRITE(MSC01_PCI_BAR0, mask);
+-		MSC_WRITE(MSC01_PCI_HEAD4, mask);
++		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
++		MSC_WRITE(MSC01_PCI_BAR0,
++			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
++		MSC_WRITE(MSC01_PCI_HEAD4,
++			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
  
- 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
- 					  &drops, &lastuse, &used_hw_stats);
--- 
-2.51.0
-
+-		mask &= MSC01_PCI_BAR0_SIZE_MSK;
+ 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
+-		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
++		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
+ 
+ 		/* Don't handle target retries indefinitely.  */
+ 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
 
 
 
