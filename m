@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-199668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF5FCA0C8E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:09:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36534CA1182
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABDAB3032128
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA4D53007D98
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093BC32D420;
-	Wed,  3 Dec 2025 16:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB7134FF44;
+	Wed,  3 Dec 2025 16:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khlv9s9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3mntrv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96582FD1D7;
-	Wed,  3 Dec 2025 16:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0744B34F49C;
+	Wed,  3 Dec 2025 16:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780550; cv=none; b=ILKiGaa79KMpLhmRT0qLxkk0zWFiON+C5kyL1da/E5Vx6tXY09ZxNX0MPgIRfWUQ92dL9OljKn+8CEX2uyVCGywLHc4KQzFg+n3OtlO38Izun7/QUZTqi9Gih+ovi59b9bHba7JABkoRCwnD1wIH8rWXkczUBx5pO5xiwiZ8rAs=
+	t=1764778392; cv=none; b=iKtd/2wvPP7fjkxVC8YTVlDErFqislwmqUfeezj7iIs0vpv4KGsX5j/yR/qoVuMEODJyV2109Xifswhnrm2AFsQmQxbRu606mahy6CAkN7sJGfdK01OvDj/fWh3bKGuU2oIJt+RvPePpVNO+SHLUT3B3asNJlwymyg79suYqSdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780550; c=relaxed/simple;
-	bh=7I94jGwYRrjsfJG9jt1Qfvq3q96OoNgZ8xGN7asFYLY=;
+	s=arc-20240116; t=1764778392; c=relaxed/simple;
+	bh=cEoLVAAPLkhcNvt1BzJCCTaMS+c1GhD/vOOXHwcfxTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2wnPdxhvJKauwxTsPniBLfxUy9NYJVEQ3UT2laH5R7BkpLTQTNIFTM8ukH5pmbFKBLRxB8kqzQNZVLYHkcv7CzwWBTE9oPpxxQg06g62UUjG6nhKNZzDBua+bvRo4XkJKsPsHG3YNUaSi/h+dAJfQSl95bCwEZTcjsAfuo/tl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khlv9s9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25833C4CEF5;
-	Wed,  3 Dec 2025 16:49:09 +0000 (UTC)
+	 MIME-Version; b=YEgd6N3+kqmy+NqlwTYAP2lX0EbAArmwXQbECPj7bq8FZUuVdk7ZOmEV6V8VsmWi9eaBasKw9MlKn15yo8wI+cWTxu9UiVrBRuC6hbbZE9RU4jtsG8DLt1fHXhnUpcRkBuHnA8JR540Jo6QrYG/q5sognr92dd79YyFNeMAhhYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3mntrv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C6BC4CEF5;
+	Wed,  3 Dec 2025 16:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780550;
-	bh=7I94jGwYRrjsfJG9jt1Qfvq3q96OoNgZ8xGN7asFYLY=;
+	s=korg; t=1764778391;
+	bh=cEoLVAAPLkhcNvt1BzJCCTaMS+c1GhD/vOOXHwcfxTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khlv9s9JHAQ3UXVWdpOFG6tD3DlwKTOr3uxcL8+8/hhGE/f8N5cqL4+K3T1NgCoxr
-	 /4S3gUS7hWZHs8ETZCsnEw+pokgb1kivdvV0K/P4xBz0jtqMFIFoEBZlPeoY0WRyiu
-	 ERyQqkfxrRGj2+qTyVCy2A2V8045r7ZKKGdafiNA=
+	b=b3mntrv+2UTqea0yswvSSJxbAVjpf0/Ur3MogM1+zvCRQ4YjLghOBCHnTY7bE1GpI
+	 Na2Yx7u7v7hTcl3i6swHly7gx2hP4wsw293Gru6ztCND0IbQmcW72e8XtRF8Xj4oHk
+	 K+5PlEBFrSX9+ljiLyMj5OL0XCUlJiiKzr+xSPZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/132] can: gs_usb: gs_usb_xmit_callback(): fix handling of failed transmitted URBs
+Subject: [PATCH 5.15 331/392] mptcp: fix ack generation for fallback msk
 Date: Wed,  3 Dec 2025 16:28:01 +0100
-Message-ID: <20251203152343.381338558@linuxfoundation.org>
+Message-ID: <20251203152426.348293192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 516a0cd1c03fa266bb67dd87940a209fd4e53ce7 ]
+[ Upstream commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b ]
 
-The driver lacks the cleanup of failed transfers of URBs. This reduces the
-number of available URBs per error by 1. This leads to reduced performance
-and ultimately to a complete stop of the transmission.
+mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
+rcv_wnd sent, and such information is tracked into the msk->old_wspace
+field, updated at ack transmission time by mptcp_write_options().
 
-If the sending of a bulk URB fails do proper cleanup:
-- increase netdev stats
-- mark the echo_sbk as free
-- free the driver's context and do accounting
-- wake the send queue
+Fallback socket do not add any mptcp options, such helper is never
+invoked, and msk->old_wspace value remain stale. That in turn makes
+ack generation at recvmsg() time quite random.
 
-Closes: https://github.com/candle-usb/candleLight_fw/issues/187
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-1-a29b42eacada@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Address the issue ensuring mptcp_write_options() is invoked even for
+fallback sockets, and just update the needed info in such a case.
+
+The issue went unnoticed for a long time, as mptcp currently overshots
+the fallback socket receive buffer autotune significantly. It is going
+to change in the near future.
+
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ net/mptcp/options.c |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index fb904dc28b8ee..fd34945d831e9 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -747,8 +747,21 @@ static void gs_usb_xmit_callback(struct urb *urb)
- 	struct gs_can *dev = txc->dev;
- 	struct net_device *netdev = dev->netdev;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -810,8 +810,11 @@ bool mptcp_established_options(struct so
  
--	if (urb->status)
--		netdev_info(netdev, "usb xmit fail %u\n", txc->echo_id);
-+	if (!urb->status)
-+		return;
-+
-+	if (urb->status != -ESHUTDOWN && net_ratelimit())
-+		netdev_info(netdev, "failed to xmit URB %u: %pe\n",
-+			    txc->echo_id, ERR_PTR(urb->status));
-+
-+	netdev->stats.tx_dropped++;
-+	netdev->stats.tx_errors++;
-+
-+	can_free_echo_skb(netdev, txc->echo_id, NULL);
-+	gs_free_tx_context(txc);
-+	atomic_dec(&dev->active_tx_urbs);
-+
-+	netif_wake_queue(netdev);
+ 	opts->suboptions = 0;
+ 
++	/* Force later mptcp_write_options(), but do not use any actual
++	 * option space.
++	 */
+ 	if (unlikely(__mptcp_check_fallback(msk)))
+-		return false;
++		return true;
+ 
+ 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
+ 		if (mptcp_established_options_mp_fail(sk, &opt_size, remaining, opts)) {
+@@ -1222,6 +1225,20 @@ static void mptcp_set_rwin(const struct
+ 		WRITE_ONCE(msk->rcv_wnd_sent, ack_seq);
  }
  
- static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
--- 
-2.51.0
-
++static void mptcp_track_rwin(const struct tcp_sock *tp)
++{
++	const struct sock *ssk = (const struct sock *)tp;
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk;
++
++	if (!ssk)
++		return;
++
++	subflow = mptcp_subflow_ctx(ssk);
++	msk = mptcp_sk(subflow->conn);
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++}
++
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
+ {
+ 	struct csum_pseudo_header header;
+@@ -1283,6 +1300,12 @@ void mptcp_write_options(__be32 *ptr, co
+ 		return;
+ 	}
+ 
++	/* Fallback to TCP */
++	if (unlikely(!opts->suboptions)) {
++		mptcp_track_rwin(tp);
++		return;
++	}
++
+ 	/* DSS, MPC, MPJ and ADD_ADDR are mutually exclusive, see
+ 	 * mptcp_established_options*()
+ 	 */
 
 
 
