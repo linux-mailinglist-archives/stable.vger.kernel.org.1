@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42776CA0DFB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5D8CA0516
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64F7C312C1E9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB80B32443BB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C112039A268;
-	Wed,  3 Dec 2025 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9991C393DC5;
+	Wed,  3 Dec 2025 16:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Few6tLW2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf27lQfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF4839A255;
-	Wed,  3 Dec 2025 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B13376BE4;
+	Wed,  3 Dec 2025 16:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780799; cv=none; b=QR8ElbyyvhG8PKqxwH8OUf9UkTzyUSyr9Xx9A0O7z3hsSH3fJ56OTMo+XV9dqLPpGXpfQ86MCEUpjDH702dlaOq3YIEOSAgz48gvuXTWbZkrpebOGZZ9BqUo0PRFqc7LlEwRGn605CIonrzF3+Mp0nx3y1z/6Os3up/eKZIVs1c=
+	t=1764781069; cv=none; b=T0+hvLnJqRVjnWCdk8rKK4fE6MjfAceQDL3xKSzS7LYJO3+RIM28DVCc0SOyC+PuU/3MOAxGEE+ftXJixWqo/pr6EHZ/WVqJ4u3lB3fd00I1j3bl0bNEhJhevZ24t+wmyXzvGwNWmb1rGsnQbTBqGgz2gJ4drJSOFUpOjDtIa88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780799; c=relaxed/simple;
-	bh=Up9HohnIBhlnFWhH1OVJuRYdmi6UV4bZHx2sLt7Ntaw=;
+	s=arc-20240116; t=1764781069; c=relaxed/simple;
+	bh=EoGQL/YVRlV9NpQGmAJulvkeDseChIOy/tZk5liyCow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qa6xWPrIDinc7Hbks+PUMKB1Nf1jjbMbP+qorWgq7LIUhSMZqzDfenx3+DiLQv3xusNs/oEVSliL9qmmIJX3VaPNnOKBO11fnyEAqUvJuH2uDYE7O30gmNszCB8RybKP28KABSpYZJXXmW/bNVFkgtzDN+WzbX2r7g8N0snc2hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Few6tLW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3A1C4CEF5;
-	Wed,  3 Dec 2025 16:53:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I5ICGvCS1qRPqDiwfr7vms+I+9o8CjZQxKsyb12OdFG/KZbK+EY5M/sSeUbW4Jlw01pJcM8xFPM+ZCeYbuYyuXSlxFRcZ6lviyxS9EC3g7aS64gpS+oo2Aio+nPVQ4YPXkUOA9LfmpbwmCzs9jp8qW6JBCsJcxTGYirqn9u9n70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf27lQfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2998C4CEF5;
+	Wed,  3 Dec 2025 16:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780799;
-	bh=Up9HohnIBhlnFWhH1OVJuRYdmi6UV4bZHx2sLt7Ntaw=;
+	s=korg; t=1764781069;
+	bh=EoGQL/YVRlV9NpQGmAJulvkeDseChIOy/tZk5liyCow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Few6tLW2OS/whb8cMn9lvLsSYKYYFrgom/1UnVr0i8MmjwaoFLUYkOgqnpRmCGqdZ
-	 kKwcyDAqCB+nq46lkKpxQJKfdwAKwbq6TxtJBIAjTylWQ4Ji89IcYNt+9A03141L/k
-	 P5Ap/OIlMZjOPfOz9VssA34FGS06DiptPKEKLYK4=
+	b=rf27lQfo5sNPFP3znOkXouF+Go7IjYqjznvU3LXzS8BP4e6o7N/Xzb0sp1ZF84648
+	 NsSsDqto7C49jk9/D7pBqdfWo3n3+s94BI+OGOJSKo0Wj38eqBt9FFN/3doktPsWUk
+	 q5XfvH/8UApwTbBrNk6NR0OwZ1iq3OdzdX9EJBgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stealth <oleg.smirnov.1988@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 092/132] USB: storage: Remove subclass and protocol overrides from Novatek quirk
-Date: Wed,  3 Dec 2025 16:29:31 +0100
-Message-ID: <20251203152346.699518986@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 39/93] iio: adc: ad7280a: fix ad7280_store_balance_timer()
+Date: Wed,  3 Dec 2025 16:29:32 +0100
+Message-ID: <20251203152337.963750950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,57 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: David Lechner <dlechner@baylibre.com>
 
-commit df5fde297e617041449f603ed5f646861c80000b upstream.
+commit bd886cdcbf9e746f61c74035a3acd42e9108e115 upstream.
 
-A report from Oleg Smirnov indicates that the unusual_devs quirks
-entry for the Novatek camera does not need to override the subclass
-and protocol parameters:
+Use correct argument to iio_str_to_fixpoint() to parse 3 decimal places.
 
-[3266355.209532] usb 1-3: new high-speed USB device number 10 using xhci_hcd
-[3266355.333031] usb 1-3: New USB device found, idVendor=0603, idProduct=8611, bcdDevice= 1.00
-[3266355.333040] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[3266355.333043] usb 1-3: Product: YICARCAM
-[3266355.333045] usb 1-3: Manufacturer: XIAO-YI
-[3266355.333047] usb 1-3: SerialNumber: 966110000000100
-[3266355.338621] usb-storage 1-3:1.0: USB Mass Storage device detected
-[3266355.338817] usb-storage 1-3:1.0: Quirks match for vid 0603 pid 8611: 4000
-[3266355.338821] usb-storage 1-3:1.0: This device (0603,8611,0100 S 06 P 50) has unneeded SubClass and Protocol entries in unusual_devs.h (kernel 6.16.10-arch1-1)
-                    Please send a copy of this message to
-<linux-usb@vger.kernel.org> and <usb-storage@lists.one-eyed-alien.net>
+iio_str_to_fixpoint() has a bit of an unintuitive API where the
+fract_mult parameter is the multiplier of the first decimal place as if
+it was already an integer.  So to get 3 decimal places, fract_mult must
+be 100 rather than 1000.
 
-The overrides are harmless but they do provoke the driver into logging
-this annoying message.  Update the entry to remove the unneeded entries.
-
-Reported-by: stealth <oleg.smirnov.1988@gmail.com>
-Closes: https://lore.kernel.org/CAKxjRRxhC0s19iEWoN=pEMqXJ_z8w_moC0GCXSqSKCcOddnWjQ@mail.gmail.com/
-Fixes: 6ca8af3c8fb5 ("USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera")
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/b440f177-f0b8-4d5a-8f7b-10855d4424ee@rowland.harvard.edu
+Fixes: 96ccdbc07a74 ("staging:iio:adc:ad7280a: Standardize extended ABI naming")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    2 +-
+ drivers/iio/adc/ad7280a.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -938,7 +938,7 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
- 		"Novatek",
- 		"NTK96550-based camera",
--		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_BULK_IGNORE_TAG ),
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -540,7 +540,7 @@ static ssize_t ad7280_store_balance_time
+ 	int val, val2;
+ 	int ret;
  
- /*
+-	ret = iio_str_to_fixpoint(buf, 1000, &val, &val2);
++	ret = iio_str_to_fixpoint(buf, 100, &val, &val2);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
