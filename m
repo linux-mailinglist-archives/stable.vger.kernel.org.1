@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936CDCA03EC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:02:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58919CA0423
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9238F3002D78
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 090BB30719B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4963624B2;
-	Wed,  3 Dec 2025 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52283A1CEF;
+	Wed,  3 Dec 2025 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITXLYCYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReM7lM8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E4D3612DE;
-	Wed,  3 Dec 2025 16:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7261036829B;
+	Wed,  3 Dec 2025 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781023; cv=none; b=BbPvNmDgrBGVMoGbHn7o8sAI5BUcQ8joE+TvdenpSL0GJtO47nmKeLsBpuetiVc/7QXkdq+DdcwL5bCaK0T9axJpXBaIr9AYrSLM4ejCzER2M9ezbT+2gyM3L+kg8Wcp4Hz/OFh4IwbkN5JvXUC3JZH9RLWXs85HHWddOoKCmpg=
+	t=1764780725; cv=none; b=UWwEi3Csh0K4XCSu1+vm3Os1ML2nvBG1tcDDqjYGOCoQhzorJtHuf8vO7/nKODpuNQvCL98TAULUMHCDHkBV1zeHi/vun/pBbtL801fUhorwAlb43Qd+O4nhbiXg0uf5rZ4UTfg+WCkMmuw2nk1U7ysZG/0iDlWg/0Opue/PXTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781023; c=relaxed/simple;
-	bh=dIalSW39EoXkLyMc5pbre8i8ETBvR7eATBZUudacDwE=;
+	s=arc-20240116; t=1764780725; c=relaxed/simple;
+	bh=mTnMKLI8uoWXR/o+KlGTh0z65sbhbuR5BAQhnULa5go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTcspIu8VkifatPH+w6EHEMrLh8Sol6/OUaSdLMLyVQHVkxOZcKbsKuVycUWIASGvfZeVgYTnkY6fnh87hLH+Eb7z4SwVWt4bBpOjoD9h6sXYJQS25WuB/kl9wJt52a0OS2/8USxVoy2tUZsDq6lpOOXzJkSgB1F7Ppv0eQv+WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITXLYCYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E721EC4CEF5;
-	Wed,  3 Dec 2025 16:57:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gfjFvvs2tBxj8nBI+HbTrRUVsxGk9zsXpsgPAT+71A0JdkbwhZLn2/V+Zn3iYhwQ06Kd+4ckHTpwvNdLuUaOo0bCE62M+2wBRePzD7Ocvl/vw15SXQdb75aDr9MVaPKdLLpC8WqzIiOa7D1anDvNxoSILyfOquTGmkUcfzmzMto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReM7lM8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8113C4CEF5;
+	Wed,  3 Dec 2025 16:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781023;
-	bh=dIalSW39EoXkLyMc5pbre8i8ETBvR7eATBZUudacDwE=;
+	s=korg; t=1764780725;
+	bh=mTnMKLI8uoWXR/o+KlGTh0z65sbhbuR5BAQhnULa5go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITXLYCYuJjkhyxbrzV8jz0zXAVvFw2XQbnh+g0i3LDfqAkudXQY7ZynBgzwVeqtKj
-	 cHi0b5LdlJatzQIDsMYC9kVRtRv5CIadlZtPnMQB9yqZkGbs2KuGkVJhTC+Z/Bi5Ic
-	 h5gXkV5fHBcc/u5+bWmZLJNTzeMo1W38Eko5/iG4=
+	b=ReM7lM8Cep2D84y5lJoQSRiMLRHgJ+Xe56BgDtV7yMLV6E+VlxaDHfbBZmytZuFF4
+	 /t7LIlSBcRSL2UfBDAJaB55wlVF3Hk/vVxkrRCVBy5iJEBtDDy1OoY6n5yZfc9TrX5
+	 NcFC5JUIjXFfH2fG6zgPqelEf3s31dYln7d9m99s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/93] net: fec: do not update PEROUT if it is enabled
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 072/132] can: sja1000: fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:29:11 +0100
-Message-ID: <20251203152337.185317072@linuxfoundation.org>
+Message-ID: <20251203152345.961907302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,144 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 
-[ Upstream commit e97faa0c20ea8840f45569ba434e30538fff8fc9 ]
+commit 30db4451c7f6aabcada029b15859a76962ec0cf8 upstream.
 
-If the previously set PEROUT is already active, updating it will cause
-the new PEROUT to start immediately instead of at the specified time.
-This is because fep->reload_period is updated whithout check whether
-the PEROUT is enabled, and the old PEROUT is not disabled. Therefore,
-the pulse period will be updated immediately in the pulse interrupt
-handler fec_pps_interrupt().
+Reading the interrupt register `SJA1000_IR` causes all of its bits to be
+reset. If we ever reach the condition of handling more than
+`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop
+body.
 
-Currently, the driver does not support directly updating PEROUT and it
-will make the logic be more complicated. To fix the current issue, add
-a check before enabling the PEROUT, the driver will return an error if
-PEROUT is enabled. If users wants to update a new PEROUT, they should
-disable the old PEROUT first.
+This may, among other issues, cause us to never `netif_wake_queue()`
+again after a transmission interrupt.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-3-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec.h     |  1 +
- drivers/net/ethernet/freescale/fec_ptp.c | 43 ++++++++++++++++++------
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ drivers/net/can/sja1000/sja1000.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 733af928caffc..d80a8c07c0200 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -683,6 +683,7 @@ struct fec_enet_private {
- 	unsigned int reload_period;
- 	int pps_enable;
- 	unsigned int next_counter;
-+	bool perout_enable;
- 	struct hrtimer perout_timer;
- 	u64 perout_stime;
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, v
+ 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
+ 		goto out;
  
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index cb3f05da3eee6..a3853fccdc7b6 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -244,6 +244,7 @@ static int fec_ptp_pps_perout(struct fec_enet_private *fep)
- 	 * the FEC_TCCR register in time and missed the start time.
- 	 */
- 	if (fep->perout_stime < curr_time + 100 * NSEC_PER_MSEC) {
-+		fep->perout_enable = false;
- 		dev_err(&fep->pdev->dev, "Current time is too close to the start time!\n");
- 		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 		return -1;
-@@ -501,6 +502,7 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
- 	hrtimer_cancel(&fep->perout_timer);
+-	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
+-	       (n < SJA1000_MAX_IRQ)) {
++	while ((n < SJA1000_MAX_IRQ) &&
++	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
  
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+	fep->perout_enable = false;
- 	writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 
-@@ -532,6 +534,8 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 
- 		return ret;
- 	} else if (rq->type == PTP_CLK_REQ_PEROUT) {
-+		u32 reload_period;
-+
- 		/* Reject requests with unsupported flags */
- 		if (rq->perout.flags)
- 			return -EOPNOTSUPP;
-@@ -551,12 +555,14 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 			return -EOPNOTSUPP;
- 		}
- 
--		fep->reload_period = div_u64(period_ns, 2);
--		if (on && fep->reload_period) {
-+		reload_period = div_u64(period_ns, 2);
-+		if (on && reload_period) {
-+			u64 perout_stime;
-+
- 			/* Convert 1588 timestamp to ns*/
- 			start_time.tv_sec = rq->perout.start.sec;
- 			start_time.tv_nsec = rq->perout.start.nsec;
--			fep->perout_stime = timespec64_to_ns(&start_time);
-+			perout_stime = timespec64_to_ns(&start_time);
- 
- 			mutex_lock(&fep->ptp_clk_mutex);
- 			if (!fep->ptp_clk_on) {
-@@ -565,18 +571,35 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 				return -EOPNOTSUPP;
- 			}
- 			spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+			if (fep->perout_enable) {
-+				dev_err(&fep->pdev->dev,
-+					"PEROUT has been enabled\n");
-+				ret = -EBUSY;
-+				goto unlock;
-+			}
-+
- 			/* Read current timestamp */
- 			curr_time = timecounter_read(&fep->tc);
--			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
--			mutex_unlock(&fep->ptp_clk_mutex);
-+			if (perout_stime <= curr_time) {
-+				dev_err(&fep->pdev->dev,
-+					"Start time must be greater than current time\n");
-+				ret = -EINVAL;
-+				goto unlock;
-+			}
- 
- 			/* Calculate time difference */
--			delta = fep->perout_stime - curr_time;
-+			delta = perout_stime - curr_time;
-+			fep->reload_period = reload_period;
-+			fep->perout_stime = perout_stime;
-+			fep->perout_enable = true;
- 
--			if (fep->perout_stime <= curr_time) {
--				dev_err(&fep->pdev->dev, "Start time must larger than current time!\n");
--				return -EINVAL;
--			}
-+unlock:
-+			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+			mutex_unlock(&fep->ptp_clk_mutex);
-+
-+			if (ret)
-+				return ret;
- 
- 			/* Because the timer counter of FEC only has 31-bits, correspondingly,
- 			 * the time comparison register FEC_TCCR also only low 31 bits can be
--- 
-2.51.0
-
+ 		status = priv->read_reg(priv, SJA1000_SR);
+ 		/* check for absent controller due to hw unplug */
 
 
 
