@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E7AC9F7EE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D719CA14AA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 52F37301E106
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD3B328A3D7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ED5309F01;
-	Wed,  3 Dec 2025 15:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A1A36C5B0;
+	Wed,  3 Dec 2025 16:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTKO2HUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwnVC7VO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C786256C9E;
-	Wed,  3 Dec 2025 15:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617BD36C0B5;
+	Wed,  3 Dec 2025 16:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775982; cv=none; b=sQDU7Fuwq3X7jBg/nH9FL/9h4ApTtM6rJztHBeozSUhvjRzMk08kxGYaD28UsirBCGooOvo7k0kQeg2aIHeNXjxK6MYk5pP767tWoX/j/wo9egNVD2SykxU0b5X6aN/mEW+zhqke2yaRNtAFwfB9oGCETWcl/NcG35uQZmOrANQ=
+	t=1764779517; cv=none; b=uI/sSzvAv5ihpDt6QF3lvj9o5Y6A3idAPRqpKmJ0DzvJTbzguDT+/yfWystmUJC2xeR5YrYNSxafr1Lm8PGFcf8aTKRPEw7dLQXtTqIID+aaadI+UTjvqvcE5ceIP8L1fet2sRO+3KJpgDVvk6FOsEFwg/mF/KKdPKC1u9ZKtbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775982; c=relaxed/simple;
-	bh=p8ZB67eIgGx8BpImOtbTXF2NgrOk09cisypMVViM2fc=;
+	s=arc-20240116; t=1764779517; c=relaxed/simple;
+	bh=ZTw6eiIwaS51Aah7S0py8q796ZPy9hY/C7pGHbQxDQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvhCxKwJsEEB5eZea6dAkJIlBmWa4SAbqelsi/BfWepVcJ77nFAUbEcqNyIqSDkgGv7myyVcyYMrMyrQwBCPMfA3cOBa+Obej/RNtOByOUTmhiJf5o1au/Ja4R0bXIYI/9bUYL5Oa3lR76w3xT1GUN5zx3mdYtrhYTeqzz6rlo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTKO2HUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91EDC4CEF5;
-	Wed,  3 Dec 2025 15:33:01 +0000 (UTC)
+	 MIME-Version; b=oUuiR32d1L1PMXYx9/mTrgBtaz6XsA9GZHszD0HT8DyegTjIerPvSK2tdkVZ1R3JA8IcOONrEg8LcTzxG11fDcuu/qUt9YMt7OpMHJVnTxJqOfUz31rSpzGpBPhJq2T3A2HkM66gyhbKhxg3u60NCevGkALL3T+rj56IYGW+vYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwnVC7VO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A8DC116C6;
+	Wed,  3 Dec 2025 16:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775982;
-	bh=p8ZB67eIgGx8BpImOtbTXF2NgrOk09cisypMVViM2fc=;
+	s=korg; t=1764779517;
+	bh=ZTw6eiIwaS51Aah7S0py8q796ZPy9hY/C7pGHbQxDQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTKO2HUTZPFHe8niZKuAK/AulUb4EF0ijRI0o6xJgRBXJz4eMUTH/1TTTzf4zDJaY
-	 NZjaiCGqqqa29UKH5LPHfO9DEo7Qsnb7prKzJLgc+6S/OUqzhLybSkPcD+i55Dm4V4
-	 30aoSWe4D1FY9ayR1qymEpU6Z8T1jBcRuNiwIbcE=
+	b=uwnVC7VOFAaamCwUWHaWR32kYX7e/3a+XX3tmCHldHEKT9iiVpSG78hxkacK3Qoe5
+	 2U7VeJAm6siajkEBzhPAQLHvwXwFgqA0xButsautsixfOMus2gZZbjCfppC8K6/shk
+	 H/FRRSYocL6yhSxGByxblrZ7Hfglw+s2oyZF3VNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Koakuma <koachan@protonmail.com>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/300] ACPI: video: force native for Lenovo 82K8
-Date: Wed,  3 Dec 2025 16:24:09 +0100
-Message-ID: <20251203152402.282828960@linuxfoundation.org>
+Subject: [PATCH 6.1 248/568] sparc/module: Add R_SPARC_UA64 relocation handling
+Date: Wed,  3 Dec 2025 16:24:10 +0100
+Message-ID: <20251203152449.803243566@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Koakuma <koachan@protonmail.com>
 
-[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
+[ Upstream commit 05457d96175d25c976ab6241c332ae2eb5e07833 ]
 
-Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
-Add a quirk to prevent using it.
+This is needed so that the kernel can handle R_SPARC_UA64 relocations,
+which is emitted by LLVM's IAS.
 
-Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
-Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Koakuma <koachan@protonmail.com>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/sparc/include/asm/elf_64.h | 1 +
+ arch/sparc/kernel/module.c      | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 338e1f44906a9..0ecc47e273140 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -635,6 +635,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
- 		},
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
-+	{
-+	 .callback = video_detect_force_native,
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
-+		},
-+	},
- 	{ },
- };
+diff --git a/arch/sparc/include/asm/elf_64.h b/arch/sparc/include/asm/elf_64.h
+index 8fb09eec8c3e7..694ed081cf8d9 100644
+--- a/arch/sparc/include/asm/elf_64.h
++++ b/arch/sparc/include/asm/elf_64.h
+@@ -58,6 +58,7 @@
+ #define R_SPARC_7		43
+ #define R_SPARC_5		44
+ #define R_SPARC_6		45
++#define R_SPARC_UA64		54
  
+ /* Bits present in AT_HWCAP, primarily for Sparc32.  */
+ #define HWCAP_SPARC_FLUSH       0x00000001
+diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
+index 66c45a2764bc8..a7780907fc2f9 100644
+--- a/arch/sparc/kernel/module.c
++++ b/arch/sparc/kernel/module.c
+@@ -117,6 +117,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 			break;
+ #ifdef CONFIG_SPARC64
+ 		case R_SPARC_64:
++		case R_SPARC_UA64:
+ 			location[0] = v >> 56;
+ 			location[1] = v >> 48;
+ 			location[2] = v >> 40;
 -- 
 2.51.0
 
