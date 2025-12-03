@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61939CA0692
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A2DCA10A1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E6623016352
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3267300719E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F13F349AEC;
-	Wed,  3 Dec 2025 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD0ABA3F;
+	Wed,  3 Dec 2025 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PetBWdSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hly8Ycv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5979E349AE6;
-	Wed,  3 Dec 2025 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F189C35BDAA;
+	Wed,  3 Dec 2025 16:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777640; cv=none; b=sKXSx045wOiokERq1pN47ryL7vhIlmaGRZ/FpoU8e88ym8SLQL8CxGRtm1xRoLrJgLMElXjv6aBPB8CNSQ6K2JPiBAmlv/oqjze0btzJlMIb1oTpvu+pme1pX+ptpXga2wN8xiEDNubW+9EAf97JIF8rnSO2mY0xe5n9ZAAb8pM=
+	t=1764779411; cv=none; b=je18XCvQ/TE73x5vnTJX4SnSmWdLNmd+VjQIn6IrX5gk24n2UkZqlYxTaVsSouJSiiU53jcE6uiocQAEw1iOpawpy4LiVpBTQPGwa68AuCu/tqiuo5mmrYN9jlAoxrJuJc4NAeSEhgzIPJWaZ100+4NRDerNM9GrcUAhFYkh4+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777640; c=relaxed/simple;
-	bh=+gJoTt2Hcep1evxbZUIJ0pTrgAguJkiR1PVFVTivDvM=;
+	s=arc-20240116; t=1764779411; c=relaxed/simple;
+	bh=vovtwxIH79kkskFoX68AfBBd6jqILC6/nO8TGQj1XEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkAmJVHHi2LN4ewYlJwSI6PvrVvNmqJu6o0h9scj3ZxN1GSyCNJr+6fEbXUsUMRHZ7o4jdHCjLkbtvMapIUV8+ZXiYKoz0shr32Qcya2WSoyjQhCO4dm4a8qWg+HtlbT3Xho7NRbq8Cyg1D86x+wDVAtFXORl9UPtndPcYJC+Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PetBWdSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02F2C4CEF5;
-	Wed,  3 Dec 2025 16:00:39 +0000 (UTC)
+	 MIME-Version; b=dmaIieWbXqwsYY2ejBRTJzcFmhlbdN9uifYOtpVdZCwn3KkBsm3H4y8o7myTTZZ6l59DfZUXGJkh8IiPb1VZpU0BQ5Swux3wpkcONrdAkW2KBY/fQdLO8U+nYfkn6TpTMXG2FUzsSgKLJZmJvg4IbTjpqUcZHw7KpfUFEl8MTlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hly8Ycv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6671EC4CEF5;
+	Wed,  3 Dec 2025 16:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777640;
-	bh=+gJoTt2Hcep1evxbZUIJ0pTrgAguJkiR1PVFVTivDvM=;
+	s=korg; t=1764779410;
+	bh=vovtwxIH79kkskFoX68AfBBd6jqILC6/nO8TGQj1XEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PetBWdShu3yfWIfngGkC8zJ2uzRox01x0BzYzX0z3agO6n+E6Yi8k7T5PmgjkSU7+
-	 0xgMb+gZueEmyPD1uB2ETFHvFttLfSsQGjBdjSPaXCzITY0OF6mCZ/q/AOERbtnw80
-	 J/wMD8eD10t6uJ7wYYK7Rxq0n2XgMUBk182hMx+s=
+	b=Hly8Ycv/Pje6ivHP3wD+cB6M/W45pg3Iw4u4uMfwzJ7t0IrNQluEFgV5DenaVvgVd
+	 XVxJ6jSosAjIu1G2hbwr0MfI4sJrVR50kvyZZI4yxQfwKvqaXz4aktCr0yH2F+KtYG
+	 gxBTao4QIf41XSkCglFGJc9pLqX7H+CuUatbzUoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/392] ACPI: scan: Add Intel CVS ACPI HIDs to acpi_ignore_dep_ids[]
-Date: Wed,  3 Dec 2025 16:23:37 +0100
-Message-ID: <20251203152416.575716976@linuxfoundation.org>
+Subject: [PATCH 6.1 216/568] netfilter: nf_reject: dont reply to icmp error messages
+Date: Wed,  3 Dec 2025 16:23:38 +0100
+Message-ID: <20251203152448.633970237@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4405a214df146775338a1e6232701a29024b82e1 ]
+[ Upstream commit db99b2f2b3e2cd8227ac9990ca4a8a31a1e95e56 ]
 
-Some x86/ACPI laptops with MIPI cameras have a INTC10DE or INTC10E0 ACPI
-device in the _DEP dependency list of the ACPI devices for the camera-
-sensors (which have flags.honor_deps set).
+tcp reject code won't reply to a tcp reset.
 
-These devices are for an Intel Vision CVS chip for which an out of tree
-driver is available [1].
+But the icmp reject 'netdev' family versions will reply to icmp
+dst-unreach errors, unlike icmp_send() and icmp6_send() which are used
+by the inet family implementation (and internally by the REJECT target).
 
-The camera sensor works fine without a driver being loaded for this
-ACPI device on the 2 laptops this was tested on:
+Check for the icmp(6) type and do not respond if its an unreachable error.
 
-ThinkPad X1 Carbon Gen 12 (Meteor Lake)
-ThinkPad X1 2-in-1 Gen 10 (Arrow Lake)
+Without this, something like 'ip protocol icmp reject', when used
+in a netdev chain attached to 'lo', cause a packet loop.
 
-For now add these HIDs to acpi_ignore_dep_ids[] so that
-acpi_dev_ready_for_enumeration() will return true once the other _DEP
-dependencies are met and an i2c_client for the camera sensor will get
-instantiated.
+Same for two hosts that both use such a rule: each error packet
+will be replied to.
 
-Link: https://github.com/intel/vision-drivers/ [1]
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20250829142748.21089-1-hansg@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Such situation persist until the (bogus) rule is amended to ratelimit or
+checks the icmp type before the reject statement.
+
+As the inet versions don't do this make the netdev ones follow along.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 25 ++++++++++++++++++++++++
+ net/ipv6/netfilter/nf_reject_ipv6.c | 30 +++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 2393cd993b3cb..151c57c7bb3a4 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -789,6 +789,8 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
- static const char * const acpi_ignore_dep_ids[] = {
- 	"PNP0D80", /* Windows-compatible System Power Management Controller */
- 	"INT33BD", /* Intel Baytrail Mailbox Device */
-+	"INTC10DE", /* Intel CVS LNL */
-+	"INTC10E0", /* Intel CVS ARL */
- 	"LATT2021", /* Lattice FW Update Client Driver */
- 	NULL
- };
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 2d663fe50f876..2064b40130412 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -71,6 +71,27 @@ struct sk_buff *nf_reject_skb_v4_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v4_tcp_reset);
+ 
++static bool nf_skb_is_icmp_unreach(const struct sk_buff *skb)
++{
++	const struct iphdr *iph = ip_hdr(skb);
++	u8 *tp, _type;
++	int thoff;
++
++	if (iph->protocol != IPPROTO_ICMP)
++		return false;
++
++	thoff = skb_network_offset(skb) + sizeof(*iph);
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmphdr, type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMP_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -91,6 +112,10 @@ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 	if (ip_hdr(oldskb)->frag_off & htons(IP_OFFSET))
+ 		return NULL;
+ 
++	/* don't reply to ICMP_DEST_UNREACH with ICMP_DEST_UNREACH. */
++	if (nf_skb_is_icmp_unreach(oldskb))
++		return NULL;
++
+ 	/* RFC says return as much as we can without exceeding 576 bytes. */
+ 	len = min_t(unsigned int, 536, oldskb->len);
+ 
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index f3579bccf0a51..a19ca1907de36 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -91,6 +91,32 @@ struct sk_buff *nf_reject_skb_v6_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v6_tcp_reset);
+ 
++static bool nf_skb_is_icmp6_unreach(const struct sk_buff *skb)
++{
++	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
++	u8 proto = ip6h->nexthdr;
++	u8 _type, *tp;
++	int thoff;
++	__be16 fo;
++
++	thoff = ipv6_skip_exthdr(skb, ((u8 *)(ip6h + 1) - skb->data), &proto, &fo);
++
++	if (thoff < 0 || thoff >= skb->len || fo != 0)
++		return false;
++
++	if (proto != IPPROTO_ICMPV6)
++		return false;
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmp6hdr, icmp6_type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMPV6_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -104,6 +130,10 @@ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 	if (!nf_reject_ip6hdr_validate(oldskb))
+ 		return NULL;
+ 
++	/* Don't reply to ICMPV6_DEST_UNREACH with ICMPV6_DEST_UNREACH */
++	if (nf_skb_is_icmp6_unreach(oldskb))
++		return NULL;
++
+ 	/* Include "As much of invoking packet as possible without the ICMPv6
+ 	 * packet exceeding the minimum IPv6 MTU" in the ICMP payload.
+ 	 */
 -- 
 2.51.0
 
