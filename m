@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B857ECA1041
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F65CCA0BA7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77D073002898
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 73A133009851
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D4436C0DB;
-	Wed,  3 Dec 2025 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8699434CFC7;
+	Wed,  3 Dec 2025 16:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4HQdtxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSy+uVG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6674236C0D9;
-	Wed,  3 Dec 2025 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4237234CFC2;
+	Wed,  3 Dec 2025 16:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779510; cv=none; b=SOxzpBOy/BG3AFGSZCs8QkByrufA0FT1TXOHCoR/k+XhILwC9i6mCl9OfH3yTBjpyb37i/r5wvI9+rxVwj+gw1fHV+78CoHwNbMcoFUvEXGlJbp25R+CqQf/BYm+GJsslTFHqKb+UCw4I0r2mY/SrB51kwsmc5oVRHyq0DFHB5Y=
+	t=1764777736; cv=none; b=IlIUkg8byBaGXEqXEgaEBQTxxB1WuvmFVi9X/GWRkF6AwBrusxb5l57cWmDYXn+Q7ap28rR/MPVHLhIg0LyXSbDPouZaCC+rN7bBM07jvLo9+pCa7+PP6gYPzkz4yT9NnWhf6N37un44p190Sb60tW3haxbxCkNr3kHNJF+wj/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779510; c=relaxed/simple;
-	bh=uIR+ZsvJMG9ues0ptz+GKpP8YE38YAseydcxnFZFs2s=;
+	s=arc-20240116; t=1764777736; c=relaxed/simple;
+	bh=IlRN3VchDwJbR71A9xOTJETG3yhQq39peGx/upSBAWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cobkSf1c7UgUNuFQgGLKMq4zhd9qgBDYcHflexwHr9teZ3RSqeN5TwD+KqZ+FHySwBsbDtAs0rIVOqBfM2FhWiCDOrvc1wvfDo++MDQvRSZRKS844vZSEReRp56QRuW7cbSrHDld3jE1tPwblEE/1ywdN1JNQdnzLBq/9VL2En4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4HQdtxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D8CC4CEF5;
-	Wed,  3 Dec 2025 16:31:49 +0000 (UTC)
+	 MIME-Version; b=qEg2tUnQu/1vcmhgmR3NEDP5nzTL6UuDrEMknGLJTkH2dWzZzdfaOsaG00o5U4YUBHX1lveOZuALPk4e/zzWIw6V57k/UU4O4vsikQPHHZAtyGCqilPspYNlQC/x0i0Z/dlFAA22UDuID17XIhdYZ9P1MFZt3/7T8aEmHXA5fPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSy+uVG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6942CC4CEF5;
+	Wed,  3 Dec 2025 16:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779510;
-	bh=uIR+ZsvJMG9ues0ptz+GKpP8YE38YAseydcxnFZFs2s=;
+	s=korg; t=1764777735;
+	bh=IlRN3VchDwJbR71A9xOTJETG3yhQq39peGx/upSBAWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4HQdtxLQXGC953X/mhgGFeJJyG30fbt0SjWhxSvRfrTExX0v4p7OQpnv25FuPciB
-	 AbWgOK60ZuRDBH10UD1oOIzoOgyvbUH5ItUoC+UBVbnwcuYxRdkdoODIsRMRaMOTCV
-	 YT+SjYLYM/MfSRny4FEHwR6OqTEXyzMWJ7e6Sfy8=
+	b=WSy+uVG6dIG+aLfZm99WfWoh0qgqImrcr3G7S8ddeiexUks2yQhJhIIJBPsTPcm9H
+	 FQg5BIehVmrmRuHq2fWiBP4hj+/nuMV4iH3AAYdhs/sTF/4PwBhEG7RmMylpS2f6GX
+	 sxtMEDOUwlimnVOVHzSFlU1gpC6MLVYcUCw0fEko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Devendra K Verma <devverma@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 277/568] RDMA/irdma: Set irdma_cq cq_num field during CQ create
+Subject: [PATCH 5.15 129/392] dmaengine: dw-edma: Set status for callback_result
 Date: Wed,  3 Dec 2025 16:24:39 +0100
-Message-ID: <20251203152450.854959373@linuxfoundation.org>
+Message-ID: <20251203152418.840116172@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Devendra K Verma <devverma@amd.com>
 
-[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
+[ Upstream commit 5e742de97c806a4048418237ef1283e7d71eaf4b ]
 
-The driver maintains a CQ table that is used to ensure that a CQ is
-still valid when processing CQ related AEs. When a CQ is destroyed,
-the table entry is cleared, using irdma_cq.cq_num as the index. This
-field was never being set, so it was just always clearing out entry
-0.
+DMA Engine has support for the callback_result which provides
+the status of the request and the residue. This helps in
+determining the correct status of the request and in
+efficient resource management of the request.
+The 'callback_result' method is preferred over the deprecated
+'callback' method.
 
-Additionally, the cq_num field size was increased to accommodate HW
-supporting more than 64K CQs.
-
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
-Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Devendra K Verma <devverma@amd.com>
+Link: https://lore.kernel.org/r/20250821121505.318179-1-devverma@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- drivers/infiniband/hw/irdma/verbs.h | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/dw-edma/dw-edma-core.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index fb02017a1aa63..6fc622e3eb07a 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2050,6 +2050,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 	spin_lock_init(&iwcq->lock);
- 	INIT_LIST_HEAD(&iwcq->resize_list);
- 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
-+	iwcq->cq_num = cq_num;
- 	info.dev = dev;
- 	ukinfo->cq_size = max(entries, 4);
- 	ukinfo->cq_id = cq_num;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index b55d30df96261..8809465020e13 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -113,7 +113,7 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_num;
-+	u32 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
+diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
+index 799ebbaf35be5..f01b6c4bd315f 100644
+--- a/drivers/dma/dw-edma/dw-edma-core.c
++++ b/drivers/dma/dw-edma/dw-edma-core.c
+@@ -546,6 +546,25 @@ dw_edma_device_prep_interleaved_dma(struct dma_chan *dchan,
+ 	return dw_edma_device_transfer(&xfer);
+ }
+ 
++static void dw_hdma_set_callback_result(struct virt_dma_desc *vd,
++					enum dmaengine_tx_result result)
++{
++	u32 residue = 0;
++	struct dw_edma_desc *desc;
++	struct dmaengine_result *res;
++
++	if (!vd->tx.callback_result)
++		return;
++
++	desc = vd2dw_edma_desc(vd);
++	if (desc)
++		residue = desc->alloc_sz - desc->xfer_sz;
++
++	res = &vd->tx_result;
++	res->result = result;
++	res->residue = residue;
++}
++
+ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
+ {
+ 	struct dw_edma_desc *desc;
+@@ -561,6 +580,8 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
+ 		case EDMA_REQ_NONE:
+ 			desc = vd2dw_edma_desc(vd);
+ 			if (!desc->chunks_alloc) {
++				dw_hdma_set_callback_result(vd,
++							    DMA_TRANS_NOERROR);
+ 				list_del(&vd->node);
+ 				vchan_cookie_complete(vd);
+ 			}
+@@ -599,6 +620,7 @@ static void dw_edma_abort_interrupt(struct dw_edma_chan *chan)
+ 	spin_lock_irqsave(&chan->vc.lock, flags);
+ 	vd = vchan_next_desc(&chan->vc);
+ 	if (vd) {
++		dw_hdma_set_callback_result(vd, DMA_TRANS_ABORTED);
+ 		list_del(&vd->node);
+ 		vchan_cookie_complete(vd);
+ 	}
 -- 
 2.51.0
 
