@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96BECA0E76
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE911CA030A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 838B133B9F43
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A854303EA1E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1274026E6F8;
-	Wed,  3 Dec 2025 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D95B320CC2;
+	Wed,  3 Dec 2025 15:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMqS0HkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFKQMaj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C76725B2FA;
-	Wed,  3 Dec 2025 16:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD24D322557;
+	Wed,  3 Dec 2025 15:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778130; cv=none; b=lWsiIqSwKnM60CDMBAUNeWoM7VFpNnRnRbJ3xG5I3Tg51RbfuUQZUxYN9dIDtV5WyjKQDLcEVToCkma/z9/Dbpvm0UoY9Ki8yoaAToSGooC1LMXseiqVjoqn4KepZjzt/F7kwd+jHzwjpXKNhjmya3Fr0XDZF8M6u334LCJF/R0=
+	t=1764776915; cv=none; b=GFBsptfy+GmKdUnq/VgyZ/nJl2qoriyTTgUlwdtrmn9GvFW7DNHY6w1CIS8a/gyLZvixDSekRX8aPkwBXnHhhKQFvJ2mBEqJ/SMNxm7HxbkvYaPO3XF0qaOvfKMeL+wFOOOVLXcz5kgE9G2Wylam+vQhVGIkrHgYmMd6VSi7zpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778130; c=relaxed/simple;
-	bh=9k1y1nY2v0TEjj/GViovYi7jhA2tpoAZJVeQi+Z8HYE=;
+	s=arc-20240116; t=1764776915; c=relaxed/simple;
+	bh=RSp/CVlYaKANU7KahT3oKYqneBQSayPyzT/XgMhGJNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFShBt9zkQnNpA20woUQVuaqIh2MIjJkQB15RxKVOn4HRCbeP0r4vxyTrDeiMGlKw+WGl4xhODRJj53b1Qp1oHHVXNflCmCklipPclv3HWSGjg56SVb9mkbQkfLX2j1Uvr4G0vo5XYl1+SplvOw+/X95XLMlqfT/tCY39kbkyrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMqS0HkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759ADC4CEF5;
-	Wed,  3 Dec 2025 16:08:49 +0000 (UTC)
+	 MIME-Version; b=ZBhx4JjuVvteG4oEB0YIf4G1GTJxG5PVT67EEKi7co0wyJc7dtn0emSxSCfbbVNUzVLrwqyCOcILcC6o/WjncmEjYJOjypSqfUllb9WOhq4QgQqYmj/MJLuLicmQlRqblw9EGbMq34Ewkzkp9Lj/ZJ+60qODAff7exBY+2KS9/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFKQMaj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054E5C116B1;
+	Wed,  3 Dec 2025 15:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778129;
-	bh=9k1y1nY2v0TEjj/GViovYi7jhA2tpoAZJVeQi+Z8HYE=;
+	s=korg; t=1764776914;
+	bh=RSp/CVlYaKANU7KahT3oKYqneBQSayPyzT/XgMhGJNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMqS0HkOL+Glol0kFVM/qpl9HgmIRVSK5/2UXzcabXXEAfamS+XN6WnmMmDsYrnPF
-	 e1yUDMmDvcy/rpO8qhOuKYumrTVAsQM3Le63rz30K1geiSxWQJIpRYb5cwR0zBpxZK
-	 rHf+paqEQsQ0WBNgwAhI1gNyzJKZKBLsW6nUQkXs=
+	b=zFKQMaj2EnhE/jrjiKriL/0W2fY48kFojt4whra9/CpS9eAm+kwO+4a4YgEmIxLr/
+	 Xpn8DpJyrnvfKncT543ritLh4TEQkxvhObIsDoVdH64gnw5vTgpKRWHgwLXvB+Ck4L
+	 +NPI5JDZdq3Zzx0i1/uVUHePCin7KtF6Ym6M1EkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Slark Xiao <slark_xiao@163.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 253/392] net/mlx5e: Fix maxrate wraparound in threshold between units
+Subject: [PATCH 6.17 025/146] net: wwan: mhi: Keep modem name match with Foxconn T99W640
 Date: Wed,  3 Dec 2025 16:26:43 +0100
-Message-ID: <20251203152423.479430206@linuxfoundation.org>
+Message-ID: <20251203152347.387924624@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
+[ Upstream commit 4fcb8ab4a09b1855dbfd7062605dd13abd64c086 ]
 
-The previous calculation used roundup() which caused an overflow for
-rates between 25.5Gbps and 26Gbps.
-For example, a rate of 25.6Gbps would result in using 100Mbps units with
-value of 256, which would overflow the 8 bits field.
+Correct it since M.2 device T99W640 has updated from T99W515.
+We need to align it with MHI side otherwise this modem can't
+get the network.
 
-Simplify the upper_limit_mbps calculation by removing the
-unnecessary roundup, and adjust the comparison to use <= to correctly
-handle the boundary condition.
-
-Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ae5a34264354 ("bus: mhi: host: pci_generic: Fix the modem name of Foxconn T99W640")
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251125070900.33324-1-slark_xiao@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index f2862100d1a2e..51fadfcda35a5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
- 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
--	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
-+	__u64 upper_limit_mbps;
- 	int i;
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index c814fbd756a1e..f8bc9a39bfa30 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -98,7 +98,7 @@ static struct mhi_mbim_link *mhi_mbim_get_link_rcu(struct mhi_mbim_context *mbim
+ static int mhi_mbim_get_link_mux_id(struct mhi_controller *cntrl)
+ {
+ 	if (strcmp(cntrl->name, "foxconn-dw5934e") == 0 ||
+-	    strcmp(cntrl->name, "foxconn-t99w515") == 0)
++	    strcmp(cntrl->name, "foxconn-t99w640") == 0)
+ 		return WDS_BIND_MUX_DATA_PORT_MUX_ID;
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
-+	upper_limit_mbps = 255 * MLX5E_100MB;
- 
- 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
- 		if (!maxrate->tc_maxrate[i]) {
- 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
- 			continue;
- 		}
--		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
-+		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
+ 	return 0;
 -- 
 2.51.0
 
