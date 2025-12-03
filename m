@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4BACA080C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CE5CA0CDF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEEB83265287
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57F2F318B650
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8459313263;
-	Wed,  3 Dec 2025 16:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FCE3161B7;
+	Wed,  3 Dec 2025 15:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHu71UdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjVLgux8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29443128CD;
-	Wed,  3 Dec 2025 16:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF19D314D1D;
+	Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778192; cv=none; b=X+BavzQwzo6HowMeZcJFYZlmgUrcd8MJMZCV/sXF6u0PMBiISAgheXOLGWao2GJm1QuuMah5lygXtX+DwmoyGA8Zr/thg5vyQuST9w2TBFVn86UlnOzjQA3wEOpKlmhejWHqQkAqLqT4ixCRU2fAiqwFhT2/x6CFfn2O0Gs+XKw=
+	t=1764776546; cv=none; b=DXyNm2FJSSsuGYgTocc6zDRSBBeAp1T88sgqgo99EYjRmzeq8GbqMq8VmidfeJBVkwe/PIVLRBzxzBuAsxh4z3BjV83lfWKkFnezyxoNNDmiSWEtcuDUMledGswbhn42NcGaYSFVyaa81MfPABFhAq1VT2wF/roDWxlR6yezoTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778192; c=relaxed/simple;
-	bh=/y+AoJmZ8OjDO7u42wVf2pS5NBzWVPTVHAszknKU4Fg=;
+	s=arc-20240116; t=1764776546; c=relaxed/simple;
+	bh=Rjw89wuSP60U5nPyeg+RBfyMeWDDLNqzSzcC97ijFIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QN8T6D5j12nHPJfPykvWvV2je+0X6YJM6Jg9BFOLu6cq+1M0XP9+HxtvvGaPm020R0HB4nYGMgOSh9vad/5RJMCHZT88D1frTgX7K7PIXMZDNI/X3OW9amNR6xkE8yjup/UCiwZw1P+mhgPVVFWOn80taWepacn+zgyBHEZC7Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHu71UdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5FCC4CEF5;
-	Wed,  3 Dec 2025 16:09:51 +0000 (UTC)
+	 MIME-Version; b=QdmVvFxCP6mU/ILGBkb1cXH8aWBKYGM3pYG4FKY9eEZp7egkdJgJrowxdP2CmxyVRaW2vy3tlb0zrm9VjolipoSqT300H35SilAPBvvaTSeO+Mpl/Lia4JaNQ10si4jUJFgmFLiltC8Zj4PyaOEnicnMSs6FgLxqfYVuMAA2vzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjVLgux8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1D5C116C6;
+	Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778192;
-	bh=/y+AoJmZ8OjDO7u42wVf2pS5NBzWVPTVHAszknKU4Fg=;
+	s=korg; t=1764776546;
+	bh=Rjw89wuSP60U5nPyeg+RBfyMeWDDLNqzSzcC97ijFIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHu71UdYh3eBLCMYq2hy1yooHYGsypsUjIkbqCWBOs7JTbQTkLfqzsos6AgrIu+re
-	 td5nJPUOZWcg8XmlsvYS7E5SSN97/3rINHsM9zPrLh4znm5QXZDuszPJr4zcDQvWo+
-	 DkMlSxx+tEzO7Y2TcgZI3DOMbuCTRe+6pTfELZU8=
+	b=KjVLgux8+TyvBqOHxtyUr0384TyqgAf7zEQfvRI5g1gnEcfK7JbvwJDeGEO/spUFP
+	 IsUCTnbchlQ/QBR5leS4g3jPVJQjcfuPdu9KniRzir6vvLNsL1ALlnhpJnJ5YbAmEG
+	 M0P46jH49lqDS2QHaM90uaSp5lXRGmWWgQogsYXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 270/392] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 216/300] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
 Date: Wed,  3 Dec 2025 16:27:00 +0100
-Message-ID: <20251203152424.099885032@linuxfoundation.org>
+Message-ID: <20251203152408.625019896@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Ichikawa <masami256@gmail.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
+commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
 
-Use a scope-based cleanup helper for the buffer allocated with kmalloc()
-in ntrig_report_version() to simplify the cleanup logic and prevent
-memory leaks (specifically the !hid_is_usb()-case one).
+The DMA device pointer `dma_dev` was being dereferenced before ensuring
+that `cdns_ctrl->dmac` is properly initialized.
 
-[jkosina@suse.com: elaborate on the actual existing leak]
-Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
-Signed-off-by: Masami Ichikawa <masami256@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the assignment of `dma_dev` after successfully acquiring the DMA
+channel to ensure the pointer is valid before use.
+
+Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ntrig.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
-index a1128c5315fff..3c41f6841f775 100644
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2833,7 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	dma_cap_mask_t mask;
+-	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
++	struct dma_device *dma_dev;
  	int ret;
- 	char buf[20];
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
--	unsigned char *data = kmalloc(8, GFP_KERNEL);
-+	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
  
- 	if (!hid_is_usb(hdev))
- 		return;
- 
- 	if (!data)
--		goto err_free;
-+		return;
- 
- 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
- 			      USB_REQ_CLEAR_FEATURE,
-@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
- 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
- 			 buf, data[2], data[3], data[4], data[5]);
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2877,6 +2877,7 @@ static int cadence_nand_init(struct cdns
+ 		}
  	}
--
--err_free:
--	kfree(data);
- }
  
- static ssize_t show_phys_width(struct device *dev,
--- 
-2.51.0
-
++	dma_dev = cdns_ctrl->dmac->device;
+ 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
+ 						  cdns_ctrl->io.size,
+ 						  DMA_BIDIRECTIONAL, 0);
 
 
 
