@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-199328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFC9CA1029
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:33:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BA0C9F812
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 172D73009754
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1591430049C4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB5B3659FC;
-	Wed,  3 Dec 2025 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD0C30C62A;
+	Wed,  3 Dec 2025 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2CKN//v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvKuTDvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C53659F4;
-	Wed,  3 Dec 2025 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F64A305978;
+	Wed,  3 Dec 2025 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779431; cv=none; b=BCtdNe6NHs+4lC91JblFP3bSADuQuKMZYRdmcZ9k8zlmMiKpP4iDBhaxScEN6KfD1NvoJLdfczqSTOgIMnBHHBxJ6wEGs9vvcxEqH7CIGVTVrVegWSlZBjgG8tXzcIBEe83xwKUfM5U8IbaQJTKYe5KC/yCh4XsRXwOvy5anNz0=
+	t=1764776012; cv=none; b=c7r8S/f0n8DX1Wd1NbVbwSDDH7uwOvazvo5I74d+FOVEtdJQ4o6Ju+z10Go76SlVY/v85tdn5U6+YJQq8yAB5nGsRfYtuOUScdBrAB/W+neZyYzFIFp4JgKQhmIWmi8spixKnQaBPDrgR38/SqpTYcJHZQidZz9uAiN4FYuIBxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779431; c=relaxed/simple;
-	bh=Bg4ny6OxggzfDitpaRisZEQtrNqMwBeREqCwzzS5PVs=;
+	s=arc-20240116; t=1764776012; c=relaxed/simple;
+	bh=DY2G6KiFaAqJ9EVwiUEjQRdDf55yN5SDRu8M0gxmNfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcoXSfRAj0iQssWpyPSzcbAgleiglSzbXzHF/Qg/fxkfjvUCV0mEZAWgdIPQAcGqVhKQIZ0Kv2pbSvHzFUdHMfyDcJd5MfgavLLqNRIBiheOY0eruKQ30mgGv3PX37/JB4vLqqiyYBiv8BP11no2vyqUrfoqFX8nUv/TiBpteWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2CKN//v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BB0C4CEF5;
-	Wed,  3 Dec 2025 16:30:30 +0000 (UTC)
+	 MIME-Version; b=NpxmtC8H/mvutsYl6T2gEWLFbenlwGOWYvEZGp9vI/qkbclx4WCliXCsL6GkrtCY4OVaiUTsO68Lww49WPKWE7Fv5XH38H19MibemaWR2pJfplvkvhjZy66UYS04sgUjQVFnK+AbtKsdkHSXzslxkeLg9F+/liYoaUscE4kWwBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvKuTDvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F542C4CEF5;
+	Wed,  3 Dec 2025 15:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779431;
-	bh=Bg4ny6OxggzfDitpaRisZEQtrNqMwBeREqCwzzS5PVs=;
+	s=korg; t=1764776012;
+	bh=DY2G6KiFaAqJ9EVwiUEjQRdDf55yN5SDRu8M0gxmNfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2CKN//vlls4OAV9sHqUQd7bdcRUGPbb/Wa1puaUJSM2tyzYxjkGs8P9ExPSiy15h
-	 EayYx8ejM0dtztAnGFWzMHwVJbHvyLtmg+4P86unE1TLd7br5mP0LPd7SD8yRv/Okg
-	 RiykCakYOvMJiaLUIX3w4lJcQUbBvPWA7LZwF/H8=
+	b=gvKuTDvhxFCTn1TzG+1awNUd25eAgQq0nChVCM3A6KCC7DJWHhYr6VXB2EecZ/9S5
+	 SdJ4bmpMoXLUmjQLmtZTYI4axy5q9r9ZsQZLCnqbb9ZHNpRa4ow9yW3CPFjYrcHi0V
+	 De+pID+lnHsgtS9ABPBCZM/iZxSpKBkGC9au0MNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 256/568] net: bridge: Install FDB for bridge MAC on VLAN 0
+Subject: [PATCH 5.10 054/300] nvme-fc: use lock accessing port_state and rport state
 Date: Wed,  3 Dec 2025 16:24:18 +0100
-Message-ID: <20251203152450.097151099@linuxfoundation.org>
+Message-ID: <20251203152402.623630753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit cd9a9562b2559973aa1b68c3af63021a2c5fd022 ]
+[ Upstream commit 891cdbb162ccdb079cd5228ae43bdeebce8597ad ]
 
-Currently, after the bridge is created, the FDB does not hold an FDB entry
-for the bridge MAC on VLAN 0:
+nvme_fc_unregister_remote removes the remote port on a lport object at
+any point in time when there is no active association. This races with
+with the reconnect logic, because nvme_fc_create_association is not
+taking a lock to check the port_state and atomically increase the
+active count on the rport.
 
- # ip link add name br up type bridge
- # ip -br link show dev br
- br               UNKNOWN        92:19:8c:4e:01:ed <BROADCAST,MULTICAST,UP,LOWER_UP>
- # bridge fdb show | grep 92:19:8c:4e:01:ed
- 92:19:8c:4e:01:ed dev br vlan 1 master br permanent
-
-Later when the bridge MAC is changed, or in fact when the address is given
-during netdevice creation, the entry appears:
-
- # ip link add name br up address 00:11:22:33:44:55 type bridge
- # bridge fdb show | grep 00:11:22:33:44:55
- 00:11:22:33:44:55 dev br vlan 1 master br permanent
- 00:11:22:33:44:55 dev br master br permanent
-
-However when the bridge address is set by the user to the current bridge
-address before the first port is enslaved, none of the address handlers
-gets invoked, because the address is not actually changed. The address is
-however marked as NET_ADDR_SET. Then when a port is enslaved, the address
-is not changed, because it is NET_ADDR_SET. Thus the VLAN 0 entry is not
-added, and it has not been added previously either:
-
- # ip link add name br up type bridge
- # ip -br link show dev br
- br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
- # ip link set dev br addr 7e:f0:a8:1a:be:c2
- # ip link add name v up type veth
- # ip link set dev v master br
- # ip -br link show dev br
- br               UNKNOWN        7e:f0:a8:1a:be:c2 <BROADCAST,MULTICAST,UP,LOWER_UP>
- # bridge fdb | grep 7e:f0:a8:1a:be:c2
- 7e:f0:a8:1a:be:c2 dev br vlan 1 master br permanent
-
-Then when the bridge MAC is used as DMAC, and br_handle_frame_finish()
-looks up an FDB entry with VLAN=0, it doesn't find any, and floods the
-traffic instead of passing it up.
-
-Fix this by simply adding the VLAN 0 FDB entry for the bridge itself always
-on netdevice creation. This also makes the behavior consistent with how
-ports are treated: ports always have an FDB entry for each member VLAN as
-well as VLAN 0.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/415202b2d1b9b0899479a502bbe2ba188678f192.1758550408.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/all/u4ttvhnn7lark5w3sgrbuy2rxupcvosp4qmvj46nwzgeo5ausc@uyrkdls2muwx
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/fc.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index 96e91d69a9a88..9341b5f51f0dd 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -37,6 +37,11 @@ static int br_device_event(struct notifier_block *unused, unsigned long event, v
- 	int err;
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index f49e98c2e31db..635ec11c9a6fc 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3042,11 +3042,17 @@ nvme_fc_create_association(struct nvme_fc_ctrl *ctrl)
  
- 	if (netif_is_bridge_master(dev)) {
-+		struct net_bridge *br = netdev_priv(dev);
-+
-+		if (event == NETDEV_REGISTER)
-+			br_fdb_change_mac_address(br, dev->dev_addr);
-+
- 		err = br_vlan_bridge_event(dev, event, ptr);
- 		if (err)
- 			return notifier_from_errno(err);
+ 	++ctrl->ctrl.nr_reconnects;
+ 
+-	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE)
++	spin_lock_irqsave(&ctrl->rport->lock, flags);
++	if (ctrl->rport->remoteport.port_state != FC_OBJSTATE_ONLINE) {
++		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
+ 		return -ENODEV;
++	}
+ 
+-	if (nvme_fc_ctlr_active_on_rport(ctrl))
++	if (nvme_fc_ctlr_active_on_rport(ctrl)) {
++		spin_unlock_irqrestore(&ctrl->rport->lock, flags);
+ 		return -ENOTUNIQ;
++	}
++	spin_unlock_irqrestore(&ctrl->rport->lock, flags);
+ 
+ 	dev_info(ctrl->ctrl.device,
+ 		"NVME-FC{%d}: create association : host wwpn 0x%016llx "
 -- 
 2.51.0
 
