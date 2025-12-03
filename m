@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC1ACA057D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A96ACCA1973
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20FF4317EB55
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B555030249DD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB0F35BDAD;
-	Wed,  3 Dec 2025 16:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8350D345CA1;
+	Wed,  3 Dec 2025 16:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cbf7SvJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZXr8I3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F635BDA7;
-	Wed,  3 Dec 2025 16:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2E9345759;
+	Wed,  3 Dec 2025 16:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780070; cv=none; b=eXAtq++IuplLywRbYtI7dHCyZyQf2JWeCBMUKXskOMMl3XwnpvRqV12eZdADhkcC7KdqfI0bcM7He1UnGYj/u8gSVtNXEq6LCMs0vJERSBh6kvl82I/FEo2mR8CNiay8uSO2OeigAAignZKied64ea6TbIMyFiB8Nxel7hLCFKk=
+	t=1764778282; cv=none; b=Qci3R0MNAU6T078EoNF23NpUq35U7KA53X4IDuC0+OGYf7S7q5O4XrSa+Z237PI4ed8kCZ6hdXqXjcpctmplIVDLgxTVHsFMOkeAl3V+9CcdoS/dSzGjSDmo7uXk+rmdmKv5kimoh09KXC0RwXoB7S0UZvs7d2BgfvmqCDt8Dik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780070; c=relaxed/simple;
-	bh=UEeU+rr3w2fjrz1F0cjDrEboZPRw/clA7iPyjuh3TNc=;
+	s=arc-20240116; t=1764778282; c=relaxed/simple;
+	bh=Gyh56lI68DTvI19a3e+a5y1IomYz9mQNoQX43SlauvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFw5x+7sXvnBQ8iHVfw/V+N0NyIYruf6lUPXNmo0lW8osuQcVGSjPuFU6fWNOre2qkqzM4EcN2JCofNiZVNnO8jNZfdQQnGwkIco5vmJZ6cwSPBAnxIxAtLdm5rsQLEy3gHFTt+rVDz/f/Z8yBYRWGVe4oeqThE/Z4TX0xkypGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cbf7SvJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F030C4CEF5;
-	Wed,  3 Dec 2025 16:41:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IV6b4/duJAzCTkMwG3wDw2I+IHOc+MEF/zwlcTDV8YB+g9PVBGzn3SuniFL4lOtfGy+oe6C3lzSEps8N7xUO+tL2+eQ5n+HvsWcACL6gDJfwB46Amf9eMj3Nhn1yw+V9Yx6xcv/kV9CpcJLMzs/CTFomminIqjAkcbha2yqp61I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZXr8I3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CADC4CEF5;
+	Wed,  3 Dec 2025 16:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780070;
-	bh=UEeU+rr3w2fjrz1F0cjDrEboZPRw/clA7iPyjuh3TNc=;
+	s=korg; t=1764778282;
+	bh=Gyh56lI68DTvI19a3e+a5y1IomYz9mQNoQX43SlauvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cbf7SvJWEVFxeMXXb/wiGq5Com9MVrBGN9J/rBLTDcWXAZnSeVYVOzpTe8bv+hyIY
-	 JqVlfiFY6KQXzMiAhYwsAkq7bpsfCQl956FC5SzPsVx9HqGBaVadMURIJwS+nf+n54
-	 1yyluubQ/1DHIDrNzYdEclrJhmJpevg646WNJ86Y=
+	b=XZXr8I3SeTT/X1jjuNc9uaYAFGByi6XqxQzB7CXF3y3GBQN7CKh8mvl9FDl9bhOgL
+	 vkHibvgPVOC1MC5oRZtqwCM2aQIwEZIrROmtcfB9g6hWo6+tGQ+lfjYruRgmfNa2DR
+	 EDrmjtaTY0p2sg/g5T7H7YWFDsnvcM1NmzHIbmpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 446/568] mptcp: fix premature close in case of fallback
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 298/392] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
 Date: Wed,  3 Dec 2025 16:27:28 +0100
-Message-ID: <20251203152457.043466871@linuxfoundation.org>
+Message-ID: <20251203152425.134888358@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,67 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
+[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
 
-I'm observing very frequent self-tests failures in case of fallback when
-running on a CONFIG_PREEMPT kernel.
+isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The return code is returned from the probe function as is but
+probe functions should return normal errnos. A proper implementation
+can be found in drivers/leds/leds-ss4200.c.
 
-The root cause is that subflow_sched_work_if_closed() closes any subflow
-as soon as it is half-closed and has no incoming data pending.
+Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
+normal errno before returning.
 
-That works well for regular subflows - MPTCP needs bi-directional
-connectivity to operate on a given subflow - but for fallback socket is
-race prone.
-
-When TCP peer closes the connection before the MPTCP one,
-subflow_sched_work_if_closed() will schedule the MPTCP worker to
-gracefully close the subflow, and shortly after will do another schedule
-to inject and process a dummy incoming DATA_FIN.
-
-On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
-fallback subflow before subflow_sched_work_if_closed() is able to create
-the dummy DATA_FIN, unexpectedly interrupting the transfer.
-
-Address the issue explicitly avoiding closing fallback subflows on when
-the peer is only half-closed.
-
-Note that, when the subflow is able to create the DATA_FIN before the
-worker invocation, the worker will change the msk state before trying to
-close the subflow and will skip the latter operation as the msk will not
-match anymore the precondition in __mptcp_close_subflow().
-
-Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2598,7 +2598,8 @@ static void __mptcp_close_subflow(struct
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
+index ff49025ec0856..bb38e5f021a80 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
+@@ -106,11 +106,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- 		if (ssk_state != TCP_CLOSE &&
- 		    (ssk_state != TCP_CLOSE_WAIT ||
--		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
-+		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
-+		     __mptcp_check_fallback(msk)))
- 			continue;
+ 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
  
- 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
+ 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	pcu_base &= GENMASK(10, 0);
+ 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
+-- 
+2.51.0
+
 
 
 
