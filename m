@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530A7CA17F5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F17CA0391
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5698C30778CE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E6FEE300644E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930F4346FC3;
-	Wed,  3 Dec 2025 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E950365A1D;
+	Wed,  3 Dec 2025 16:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oG6D6K4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcuZgMyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3EC313538;
-	Wed,  3 Dec 2025 16:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5509935E554;
+	Wed,  3 Dec 2025 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778593; cv=none; b=Q/x6s53cf+esbNtAYLHyaUe1b/8sxGEhrUwe8h3KLqr3MfOJ/tibQC+C6GueSAXy5Zr8uH9yeI7IitbcfTg60mfhvmjRR8712mHmYp64xedwrxx2HNu5G1wFU6oY6Y9bwpVnosCKc5S8pVwoTz9OVz1OKjOwWse1Gzu/Ir+M5DY=
+	t=1764780665; cv=none; b=MaMCuEZdzPSgKBfT1CCqoCVGnikKJTAEdXer5JoZX6QOUu1BuBtQjpZ8O4gvZGvERo9129CEzAv5y8ScoOj/b9hVdclOe35v2ZmzHinKgA2XQrMC+7dYxBbCvGN4PtHYn0MKeBotroK4Aw1pKCVe/tT7TTB4oreKKm8satnqX6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778593; c=relaxed/simple;
-	bh=CVttcWoj34YdqI5FCe4AIp/PMmhJzMVzBmm7z2yQ9/o=;
+	s=arc-20240116; t=1764780665; c=relaxed/simple;
+	bh=toPIEmPNOCXO6T4TXIsQv1jthlqibTG5Ra1Z7D5pt7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9yjmHw8yXzgC438sY29XOb1IazH8nk9IWkfffNSUvgRwFqXh/kUoOVudHH44FfzCXNJ4z1VbI2Pw7DCm64bk3MdtWPz0u8aZlrxFdmCqXVoJBdo2anEvs3krHLQpB9sZwMjK3GzYbs9oxteWIGNhpQ8qVGAPn96a4wLIAkU/hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oG6D6K4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D27C4CEF5;
-	Wed,  3 Dec 2025 16:16:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NskudtyOYeekKITya8JqiNIj+xtF7pP4FMn8i6MTFIFqKY78tadxgWxgCLWKhiSGfzumT2iJh+yKjmPiyH2Vfg+glJX3xnMZImEeydFBXQGdzAeEb/Axnv69LQyUQLnMESjC7NzDvy8exUjUe3Ge6caZZX0wBh7V0nROkgdRAbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcuZgMyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9D8C4CEF5;
+	Wed,  3 Dec 2025 16:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778592;
-	bh=CVttcWoj34YdqI5FCe4AIp/PMmhJzMVzBmm7z2yQ9/o=;
+	s=korg; t=1764780665;
+	bh=toPIEmPNOCXO6T4TXIsQv1jthlqibTG5Ra1Z7D5pt7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oG6D6K4xzckwQlmzFeg1PwnsTMUQz58GqpPGP2EL75ZR5yPnO1zMqOTKNcZ5SoZ/a
-	 mi8KbCmw4NSCXTjpjq4wZXqN9KVRagSnn5tycZNApNm7yOSGVLvTRRAuzQxt0OEsSq
-	 9GtiFD8lUhOrxqzXeKT/xRQhBajI0/+cuaJATU/4=
+	b=PcuZgMyLvot6RgmmIzuJj2sim3KV1D55Bk/fjfQgP08tPq+fApc/1riFqynIWs1Y5
+	 99O1zfrASI3dBG8eye9vc/IRTOY57vNt2TAAyNC0r05P+e63uIduLhE4cUstqNdgLI
+	 n3K1bnNKN5oYihpkkP1F6ZTt3wLeXCOtdsWrFgYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 381/392] mptcp: avoid unneeded subflow-level drops
-Date: Wed,  3 Dec 2025 16:28:51 +0100
-Message-ID: <20251203152428.211012091@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 053/132] iio: buffer: support getting dma channel from the buffer
+Date: Wed,  3 Dec 2025 16:28:52 +0100
+Message-ID: <20251203152345.260799014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,134 +58,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 4f102d747cadd8f595f2b25882eed9bec1675fb1 upstream.
+commit a514bb109eada64f798f1c86c17182229cc20fe7 upstream.
 
-The rcv window is shared among all the subflows. Currently, MPTCP sync
-the TCP-level rcv window with the MPTCP one at tcp_transmit_skb() time.
+Add a new buffer accessor .get_dma_dev() in order to get the
+struct device responsible for actually providing the dma channel. We
+cannot assume that we can use the parent of the IIO device for mapping
+the DMA buffer. This becomes important on systems (like the Xilinx/AMD
+zynqMP Ultrascale) where memory (or part of it) is mapped above the
+32 bit range. On such systems and given that a device by default has
+a dma mask of 32 bits we would then need to rely on bounce buffers (to
+swiotlb) for mapping memory above the dma mask limit.
 
-The above means that incoming data may sporadically observe outdated
-TCP-level rcv window and being wrongly dropped by TCP.
+In the process, add an iio_buffer_get_dma_dev() helper function to get
+the proper DMA device.
 
-Address the issue checking for the edge condition before queuing the
-data at TCP level, and eventually syncing the rcv window as needed.
-
-Note that the issue is actually present from the very first MPTCP
-implementation, but backports older than the blamed commit below will
-range from impossible to useless.
-
-Before:
-
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              14                 0.0
-
-After:
-
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              0                  0.0
-
-Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-2-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in options.c, because the new rwin_update() helper has been
-  added after __mptcp_snd_una_update() which is not in this version --
-  see commit -- and then causing conflicts in the context. There were
-  also some conflicts in mptcp_set_rwin(), because commit f3589be0c420
-  ("mptcp: never shrink offered window") is not in this version. Only
-  the update of subflow->rcv_wnd_sent has been added. Also
-  msk->rcv_wnd_sent is a u64 before this commit: in rwin_update(),
-  READ_ONCE() is used instead of atomic64_read(&). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   32 ++++++++++++++++++++++++++++++--
- net/mptcp/protocol.h |    1 +
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ drivers/iio/industrialio-buffer.c |   21 ++++++++++++++++-----
+ include/linux/iio/buffer_impl.h   |    2 ++
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1001,6 +1001,31 @@ u64 __mptcp_expand_seq(u64 old_seq, u64
- 	return cur_seq;
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1623,19 +1623,28 @@ static int iio_dma_resv_lock(struct dma_
+ 	return 0;
  }
  
-+static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
-+			struct sk_buff *skb)
++static struct device *iio_buffer_get_dma_dev(const struct iio_dev *indio_dev,
++					     struct iio_buffer *buffer)
 +{
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	struct tcp_sock *tp = tcp_sk(ssk);
-+	u64 mptcp_rcv_wnd;
++	if (buffer->access->get_dma_dev)
++		return buffer->access->get_dma_dev(buffer);
 +
-+	/* Avoid touching extra cachelines if TCP is going to accept this
-+	 * skb without filling the TCP-level window even with a possibly
-+	 * outdated mptcp-level rwin.
-+	 */
-+	if (!skb->len || skb->len < tcp_receive_window(tp))
-+		return;
-+
-+	mptcp_rcv_wnd = READ_ONCE(msk->rcv_wnd_sent);
-+	if (!after64(mptcp_rcv_wnd, subflow->rcv_wnd_sent))
-+		return;
-+
-+	/* Some other subflow grew the mptcp-level rwin since rcv_wup,
-+	 * resync.
-+	 */
-+	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
-+	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
++	return indio_dev->dev.parent;
 +}
 +
- static void ack_update_msk(struct mptcp_sock *msk,
- 			   struct sock *ssk,
- 			   struct mptcp_options_received *mp_opt)
-@@ -1160,6 +1185,7 @@ bool mptcp_incoming_options(struct sock
- 	 */
- 	if (mp_opt.use_ack)
- 		ack_update_msk(msk, sk, &mp_opt);
-+	rwin_update(msk, sk, skb);
- 
- 	/* Zero-data-length packets are dropped by the caller and not
- 	 * propagated to the MPTCP layer, so the skb extension does not
-@@ -1212,7 +1238,7 @@ bool mptcp_incoming_options(struct sock
- static void mptcp_set_rwin(const struct tcp_sock *tp)
+ static struct dma_buf_attachment *
+ iio_buffer_find_attachment(struct iio_dev_buffer_pair *ib,
+ 			   struct dma_buf *dmabuf, bool nonblock)
  {
- 	const struct sock *ssk = (const struct sock *)tp;
--	const struct mptcp_subflow_context *subflow;
-+	struct mptcp_subflow_context *subflow;
- 	struct mptcp_sock *msk;
- 	u64 ack_seq;
+-	struct device *dev = ib->indio_dev->dev.parent;
+ 	struct iio_buffer *buffer = ib->buffer;
++	struct device *dma_dev = iio_buffer_get_dma_dev(ib->indio_dev, buffer);
+ 	struct dma_buf_attachment *attach = NULL;
+ 	struct iio_dmabuf_priv *priv;
  
-@@ -1221,8 +1247,10 @@ static void mptcp_set_rwin(const struct
+ 	guard(mutex)(&buffer->dmabufs_mutex);
  
- 	ack_seq = READ_ONCE(msk->ack_seq) + tp->rcv_wnd;
+ 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
+-		if (priv->attach->dev == dev
++		if (priv->attach->dev == dma_dev
+ 		    && priv->attach->dmabuf == dmabuf) {
+ 			attach = priv->attach;
+ 			break;
+@@ -1653,6 +1662,7 @@ static int iio_buffer_attach_dmabuf(stru
+ {
+ 	struct iio_dev *indio_dev = ib->indio_dev;
+ 	struct iio_buffer *buffer = ib->buffer;
++	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
+ 	struct dma_buf_attachment *attach;
+ 	struct iio_dmabuf_priv *priv, *each;
+ 	struct dma_buf *dmabuf;
+@@ -1679,7 +1689,7 @@ static int iio_buffer_attach_dmabuf(stru
+ 		goto err_free_priv;
+ 	}
  
--	if (after64(ack_seq, READ_ONCE(msk->rcv_wnd_sent)))
-+	if (after64(ack_seq, READ_ONCE(msk->rcv_wnd_sent))) {
- 		WRITE_ONCE(msk->rcv_wnd_sent, ack_seq);
-+		subflow->rcv_wnd_sent = ack_seq;
-+	}
- }
+-	attach = dma_buf_attach(dmabuf, indio_dev->dev.parent);
++	attach = dma_buf_attach(dmabuf, dma_dev);
+ 	if (IS_ERR(attach)) {
+ 		err = PTR_ERR(attach);
+ 		goto err_dmabuf_put;
+@@ -1719,7 +1729,7 @@ static int iio_buffer_attach_dmabuf(stru
+ 	 * combo. If we do, refuse to attach.
+ 	 */
+ 	list_for_each_entry(each, &buffer->dmabufs, entry) {
+-		if (each->attach->dev == indio_dev->dev.parent
++		if (each->attach->dev == dma_dev
+ 		    && each->attach->dmabuf == dmabuf) {
+ 			/*
+ 			 * We unlocked the reservation object, so going through
+@@ -1758,6 +1768,7 @@ static int iio_buffer_detach_dmabuf(stru
+ {
+ 	struct iio_buffer *buffer = ib->buffer;
+ 	struct iio_dev *indio_dev = ib->indio_dev;
++	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
+ 	struct iio_dmabuf_priv *priv;
+ 	struct dma_buf *dmabuf;
+ 	int dmabuf_fd, ret = -EPERM;
+@@ -1772,7 +1783,7 @@ static int iio_buffer_detach_dmabuf(stru
+ 	guard(mutex)(&buffer->dmabufs_mutex);
  
- static void mptcp_track_rwin(const struct tcp_sock *tp)
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -417,6 +417,7 @@ struct mptcp_subflow_context {
- 	u64	remote_key;
- 	u64	idsn;
- 	u64	map_seq;
-+	u64	rcv_wnd_sent;
- 	u32	snd_isn;
- 	u32	token;
- 	u32	rel_write_seq;
+ 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
+-		if (priv->attach->dev == indio_dev->dev.parent
++		if (priv->attach->dev == dma_dev
+ 		    && priv->attach->dmabuf == dmabuf) {
+ 			list_del(&priv->entry);
+ 
+--- a/include/linux/iio/buffer_impl.h
++++ b/include/linux/iio/buffer_impl.h
+@@ -50,6 +50,7 @@ struct sg_table;
+  * @enqueue_dmabuf:	called from userspace via ioctl to queue this DMABUF
+  *			object to this buffer. Requires a valid DMABUF fd, that
+  *			was previouly attached to this buffer.
++ * @get_dma_dev:	called to get the DMA channel associated with this buffer.
+  * @lock_queue:		called when the core needs to lock the buffer queue;
+  *                      it is used when enqueueing DMABUF objects.
+  * @unlock_queue:       used to unlock a previously locked buffer queue
+@@ -90,6 +91,7 @@ struct iio_buffer_access_funcs {
+ 			      struct iio_dma_buffer_block *block,
+ 			      struct dma_fence *fence, struct sg_table *sgt,
+ 			      size_t size, bool cyclic);
++	struct device * (*get_dma_dev)(struct iio_buffer *buffer);
+ 	void (*lock_queue)(struct iio_buffer *buffer);
+ 	void (*unlock_queue)(struct iio_buffer *buffer);
+ 
 
 
 
