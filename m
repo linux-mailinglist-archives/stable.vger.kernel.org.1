@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6758ACA06F4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A54CA0B0E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC4383000B3D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FB7330D8D5C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF96431ED7C;
-	Wed,  3 Dec 2025 16:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ACF350283;
+	Wed,  3 Dec 2025 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nascdf6K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqO0r+E2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998573587AE;
-	Wed,  3 Dec 2025 16:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF340349AF4;
+	Wed,  3 Dec 2025 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780300; cv=none; b=Ybh4AtvUNU7l502RxZUgsUqbdmr2tBLKo+DBuZCzHyIuRgRivzaPti1UtrLG0pSYAooICi+qJPCI6aFRjvHhrSOQ7aF/AAJkdOeJ9euGOsv9AW86vzeMTTIfijC23tzhHRxRfryjFsLI6C8uZ8I/VU6NkKRJBZbehhgQzY7fXjk=
+	t=1764780612; cv=none; b=IbUuesl84DOCtBH74hh4MdZ1N9PWSPjTQwhiaj8Z7ibeud4Yk79QVmAU/dNcwby3YF7xDfS35Wjq2FHRhdQkrcfRU/csgi0N6lV89AnTjyT6HNBILMTTLF9n6/W8Qyp8xR4/2KCrzqInmPAECON8xLKjngvf1WceZ5BEU8Ue4pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780300; c=relaxed/simple;
-	bh=XOaQIIx0SdO9qv59eBc7g5M9XJIwjP6t7tq90M11Bnc=;
+	s=arc-20240116; t=1764780612; c=relaxed/simple;
+	bh=LECsBgpNOEeRzBCDIE4vPprxjNuaMfKAZ7yB4rX3dqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3bGU3N53QpMTJzGdFOoD02ynCWWKDbeIaUk0iUzFgL3HvSHCKc1ExaQ3S4qQsT2dunkhtMx0ZXFIfEbEGQJlRMIc8V00MnQOAS/0UBqur36nPxMotfYMDxyoT/5hPW9SL2NKSgtSZuh3BDzjlFaL6wdSk0Qh7rK71m5W68F7C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nascdf6K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8285C4CEF5;
-	Wed,  3 Dec 2025 16:44:59 +0000 (UTC)
+	 MIME-Version; b=ZHvZcL8udkSP83u1O5LmaXZ33Ma4cQbcSMp+UyKCiai2oSNIHbmC2s9gg1ebqryD4IBzlnYohjh8oMo3y6PDP0ihNSZvLr6Y2pk0eNmHtl8v0fYZw2RT9OrTERFWLztyhoBaH6n3QXUBn8ItYXwZL8cTfORvIiyftH8KEDSzAiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqO0r+E2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A14C116C6;
+	Wed,  3 Dec 2025 16:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780300;
-	bh=XOaQIIx0SdO9qv59eBc7g5M9XJIwjP6t7tq90M11Bnc=;
+	s=korg; t=1764780611;
+	bh=LECsBgpNOEeRzBCDIE4vPprxjNuaMfKAZ7yB4rX3dqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nascdf6Ki3QvBszYA40fgEY1p4BAshmiigS/hjWAAcn5dFxYAPI6zx1UeZKssDNd+
-	 XnXeIvm8JX5QIQ619anZmwUBvBJN/WVRPp0D2Sv3xMZWjJclpcCDSp8BcQPtHXSEBH
-	 fv3CA7nM+TL3ImfTdzvxOtXR1REfGvLdOm0U+FnM=
+	b=qqO0r+E2qRlG3mdD86XJ+/SJD/ROTLzwfyqNpTgS1QHgosdMe+RO76L9/SoO3FRvA
+	 rb/Il8dMFVuVQQLJNnSYI2BTVYHG7WBF2xVfWPy9Ff25NGOchQjl5p5OzNH6mP6zgS
+	 XzRG7dAs1i/9G6bZ1TcVgd3rLco3TCrPqX4upK+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hang Zhou <929513338@qq.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andrei Vagin <avagin@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 515/568] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
+Subject: [PATCH 6.12 038/132] fs/namespace: fix reference leak in grab_requested_mnt_ns
 Date: Wed,  3 Dec 2025 16:28:37 +0100
-Message-ID: <20251203152459.577127878@linuxfoundation.org>
+Message-ID: <20251203152344.706936158@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hang Zhou <929513338@qq.com>
+From: Andrei Vagin <avagin@google.com>
 
-[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
+[ Upstream commit 7b6dcd9bfd869eee7693e45b1817dac8c56e5f86 ]
 
-On BCM6358 (and also observed on BCM6368) the controller appears to
-only generate as many SPI clocks as bytes that have been written into
-the TX FIFO. For RX-only transfers the driver programs the transfer
-length in SPI_MSG_CTL but does not write anything into the FIFO, so
-chip select is deasserted early and the RX transfer segment is never
-fully clocked in.
+lookup_mnt_ns() already takes a reference on mnt_ns.
+grab_requested_mnt_ns() doesn't need to take an extra reference.
 
-A concrete failing case is a three-transfer MAC address read from
-SPI-NOR:
-  - TX 0x03 (read command)
-  - TX 3-byte address
-  - RX 6 bytes (MAC)
-
-In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
-because the driver uses prepend_len and writes dummy bytes into the
-TX FIFO for the RX part.
-
-Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
-segments so that the number of bytes written to the FIFO matches the
-total message length seen by the controller.
-
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-
-Signed-off-by: Hang Zhou <929513338@qq.com>
-Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 78f0e33cd6c93 ("fs/namespace: correctly handle errors returned by grab_requested_mnt_ns")
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Link: https://patch.msgid.link/20251122071953.3053755-1-avagin@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/namespace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 2f2a130464651..e57e1f75cd9f9 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -257,6 +257,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 035d6f1f0b6ef..c3702f3303a89 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5345,6 +5345,8 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
  
- 		if (t->rx_buf) {
- 			do_rx = true;
-+
-+			/*
-+			 * In certain hardware implementations, there appears to be a
-+			 * hidden accumulator that tracks the number of bytes written into
-+			 * the hardware FIFO, and this accumulator overrides the length in
-+			 * the SPI_MSG_CTL register.
-+			 *
-+			 * Therefore, for read-only transfers, we need to write some dummy
-+			 * value into the FIFO to keep the accumulator tracking the correct
-+			 * length.
-+			 */
-+			if (!t->tx_buf)
-+				memset_io(bs->tx_io + len, 0xFF, t->len);
-+
- 			/* prepend is half-duplex write only */
- 			if (t == first)
- 				prepend_len = 0;
+ 	if (kreq->mnt_ns_id) {
+ 		mnt_ns = lookup_mnt_ns(kreq->mnt_ns_id);
++		if (!mnt_ns)
++			return ERR_PTR(-ENOENT);
+ 	} else if (kreq->mnt_ns_fd) {
+ 		struct ns_common *ns;
+ 
+@@ -5360,13 +5362,12 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
+ 			return ERR_PTR(-EINVAL);
+ 
+ 		mnt_ns = to_mnt_ns(ns);
++		refcount_inc(&mnt_ns->passive);
+ 	} else {
+ 		mnt_ns = current->nsproxy->mnt_ns;
++		refcount_inc(&mnt_ns->passive);
+ 	}
+-	if (!mnt_ns)
+-		return ERR_PTR(-ENOENT);
+ 
+-	refcount_inc(&mnt_ns->passive);
+ 	return mnt_ns;
+ }
+ 
 -- 
 2.51.0
 
