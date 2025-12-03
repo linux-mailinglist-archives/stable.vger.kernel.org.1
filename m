@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C77CA01A9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7F7C9F7EB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF1E8300EA31
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA1C93000952
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1AE30F7EF;
-	Wed,  3 Dec 2025 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5765C30B525;
+	Wed,  3 Dec 2025 15:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCB2g5U/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9QsKRhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A67234C9BF;
-	Wed,  3 Dec 2025 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AECF2FD678;
+	Wed,  3 Dec 2025 15:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777733; cv=none; b=gXSOYLrdicg9nQ3RYUyjXjd+Gma4gFDmwmLVMgT92K5SqdPzeyAOrq6Plmnw9alZ5eSP4h871cmFUeEW7pmSn6KFvOd1tGZzaym5FXnIj0bBQgFWZbHKvtqZ2Jf+ZKFOeBk5+9mLVx/QH9hLZkg5TQzhkLyjou/YYMHHdPXsqoQ=
+	t=1764776077; cv=none; b=m6wrP87oTZ8k+NKNjKeDRC6svoq3mNa7g5dT0afCbqJPlEsLmH85JeV4EU4x1bv+Di/FSukSEwQkeqHoTTRXUNUTAehLHrW+qYGRJeUIwMFtJKwCA6Kz7ymmU0QXryCBCslvTGqHq9v6gY2TduHrv8bPjIQ2TGktElwTTe2ABxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777733; c=relaxed/simple;
-	bh=aF2kAm4Rj08SdVr3g4CVwx9XCgi9FeYMuQVkDgVG7iE=;
+	s=arc-20240116; t=1764776077; c=relaxed/simple;
+	bh=ks/mU3e/sxn6lGTrXUgOOqYwwt1r9pPNfGl2fMIUdco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ze3VQAfs60QR7/Pf2oq9hRmoVU362VfdvtV3lnvBE2xLnV2RojuKN7WHUj2vjzLQFQDqS+m4CUHUhn+Gx2Gkli98ZPdZQ5QExSCiUqjB4fcPD4IMtysF/dO1bb1kAapnM3LVipUmDGJKH4L11stlOLNOKN+hNBUqXUKnLc/zm4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCB2g5U/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A7AC4CEF5;
-	Wed,  3 Dec 2025 16:02:12 +0000 (UTC)
+	 MIME-Version; b=iQsDfbxwRALHCuY6PvF/6FVAkPACQj6nFscZSL2dUTRpo9K9GaJBFxhAlnqJwYWwWVGQALvdTaETeRLNpQu5f0jU1RoLoJjaSUeS45O6G6P3xUkJ4DWQlX6PYqK2QyqnPaYzJgpFMTeyv1b2G5naqUnxKejRAmrEJ2Cs0TqhPXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9QsKRhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A990C4CEF5;
+	Wed,  3 Dec 2025 15:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777732;
-	bh=aF2kAm4Rj08SdVr3g4CVwx9XCgi9FeYMuQVkDgVG7iE=;
+	s=korg; t=1764776076;
+	bh=ks/mU3e/sxn6lGTrXUgOOqYwwt1r9pPNfGl2fMIUdco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCB2g5U/++MvaONpGdMh4d7iu2LvdKFL0homXxv3H2DFsobulicmjFXIESYClm2Hj
-	 gEI1uiyzmrg36WLOSfywMDRskqvywP4LDYJJpaiXwV+PGLhVztgO1C7wBOjg1hW5OE
-	 3i+AeJjIyADoL0BApcOG3EMduGUJ0eYvWvyHkBfU=
+	b=S9QsKRhCOQiaocf37SCA7ImYG4XStdw8WbUEMmN5iRCCIFlckPUmp304VpF0Q8y1Z
+	 I0oMUj4+53iOMxoQ19+WcQ3VgZMzd88yEuyT9HDNotNW4lHiAkXzQESmuFvAB694WP
+	 b+5nr/tPoJdSDxvY4cRG05sCIYeODleo6EFS2ocM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Geoffrey McRae <geoffrey.mcrae@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/392] dmaengine: mv_xor: match alloc_wc and free_wc
+Subject: [PATCH 5.10 074/300] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
 Date: Wed,  3 Dec 2025 16:24:38 +0100
-Message-ID: <20251203152418.803118180@linuxfoundation.org>
+Message-ID: <20251203152403.364234118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Geoffrey McRae <geoffrey.mcrae@amd.com>
 
-[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
+[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
 
-dma_alloc_wc is used but not dma_free_wc.
+Some kfd ioctls may not be available depending on the kernel version the
+user is running, as such we need to report -ENOTTY so userland can
+determine the cause of the ioctl failure.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index ca0ba1d462832..8b215cbca1186 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 869c8786df5c9..04367ae4b425d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1887,8 +1887,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	unsigned int usize, asize;
+ 	int retcode = -EINVAL;
  
- 	dma_async_device_unregister(&mv_chan->dmadev);
+-	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
++	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
  
--	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
- 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_irq:
- 	free_irq(mv_chan->irq, mv_chan);
- err_free_dma:
--	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- err_unmap_dst:
- 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
+ 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
+ 		u32 amdkfd_size;
+@@ -1901,8 +1903,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 			asize = amdkfd_size;
+ 
+ 		cmd = ioctl->cmd;
+-	} else
++	} else {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
+ 
+ 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
+ 
 -- 
 2.51.0
 
