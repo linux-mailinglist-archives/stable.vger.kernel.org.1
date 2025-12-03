@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E1BCA005A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AF6C9F93B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92A5C300A86B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 546753041A42
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650CC3AA196;
-	Wed,  3 Dec 2025 16:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F4A313E3B;
+	Wed,  3 Dec 2025 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efhW9kpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkYpy7mj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA9735F8AF;
-	Wed,  3 Dec 2025 16:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C76306D3D;
+	Wed,  3 Dec 2025 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779616; cv=none; b=bLYrU6nkPsZ+ubc6dm/akrk72yRY0ahExI4pdOzeJLANmU9mCvsAf3/0ZqYRkbRnYD9/XkQ/t2yb6kiAPKZYE9kHgJ7rrlbqmAHviG2aF0ZJwQIW7hMfR+jDs+uSA4MIEaUftijlhsJSpliQsz3xykBc79g4eIj4V4HRg6mg9Hk=
+	t=1764776189; cv=none; b=I7gK2TVgPIJqKdnK1U6ecwdVq3kLeS97aNoB/tkorUjeMpy8iz6ipFjZ2RKZ1Cc2X0sCclEE8bmxhHjgyOQ/ePT7nGoTUpmZ+qf2TDontP4ijh5aDCp/w6yHV5aykKmVUS1Wy+6e0NSSZGeX8VyOeCOx33+mjUbBi3M+2E5Z6DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779616; c=relaxed/simple;
-	bh=TIuF290OcthXpvt7fBxS3mxjiEekJN57wm4xyKRHiZs=;
+	s=arc-20240116; t=1764776189; c=relaxed/simple;
+	bh=fj/8QwchYFoQCdJR6pN1RSH41Kq+XUNrYbyoBb2pzHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYiIeoHqF7fR1jrNxCGB8AITpofJY5zOqiSH/DhRQkU9Fqy3hVpMfb4bYm+FZXOZFQE/iZU1EGFTYDIX8qIKs/qQhcY2LDfAX3Ij9oSLgM9UobdRMyT4vlc/5KAWerU1KCNlTswi7fpcdoS7jynud5nPM2Cc6+ZeEPhMKfoCpkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efhW9kpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92846C4CEF5;
-	Wed,  3 Dec 2025 16:33:35 +0000 (UTC)
+	 MIME-Version; b=M7Xxr3yrAW6b5QjgpZOrb/ocpFWXZWNuggfPQncHClsOqzw/ArSKC6W7ItUfXLHIYldueU8nCBJ9Z0tsEU/j0BsgFvDmP5KBB7l0j6qBHFGwy0y1B/K4xU8PXAcDE3Zy/DF3orD3WGujPUkNB7GDBim780WiSy38X+g0CmH3rJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkYpy7mj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C12FC4CEF5;
+	Wed,  3 Dec 2025 15:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779616;
-	bh=TIuF290OcthXpvt7fBxS3mxjiEekJN57wm4xyKRHiZs=;
+	s=korg; t=1764776189;
+	bh=fj/8QwchYFoQCdJR6pN1RSH41Kq+XUNrYbyoBb2pzHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efhW9kpHaslQT95nTRTz/n3coo+5O+w3QAHLMRfEj7vbqyKIQ8dDIW6qpby0B98wP
-	 iBXqvYNRcLuYKE6Ep41BoJoau4by0ivyVW6COsznGr+GJjE1gSYpn4Y35w4oF3c4ii
-	 Uupl559QXUVm8N5Ovb1e3z2xwUDgbfbUk4UmOrOg=
+	b=AkYpy7mjhtlUMFf6uORTwpbJ9eJCabWRr38iPJ+bCWRKyaXNexyAKyBJzPbKz1PiU
+	 YM2/WU80NxfK5NL/ZK6Cxw5WRao+C57EgtiEVyuyqxFLD6NUkczc/7BpxbbYpWKz9v
+	 9ph8a8rWUy1Un87srHEDjfxlbr/+3U8WNYNlyodo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	William Wu <william.wu@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 309/568] netdevsim: add Makefile for selftests
-Date: Wed,  3 Dec 2025 16:25:11 +0100
-Message-ID: <20251203152452.033252644@linuxfoundation.org>
+Subject: [PATCH 5.10 108/300] usb: gadget: f_hid: Fix zero length packet transfer
+Date: Wed,  3 Dec 2025 16:25:12 +0100
+Message-ID: <20251203152404.624173532@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: William Wu <william.wu@rock-chips.com>
 
-[ Upstream commit 8ff25dac88f616ebebb30830e3a20f079d7a30c9 ]
+[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
 
-Add a Makefile for netdevsim selftests and add selftests path to
-MAINTAINERS
+Set the hid req->zero flag of ep0/in_ep to true by default,
+then the UDC drivers can transfer a zero length packet at
+the end if the hid transfer with size divisible to EPs max
+packet size according to the USB 2.0 spec.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://lore.kernel.org/r/20240130214620.3722189-5-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d01f8136d46b ("selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh")
+Signed-off-by: William Wu <william.wu@rock-chips.com>
+Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                                     |  1 +
- .../selftests/drivers/net/netdevsim/Makefile    | 17 +++++++++++++++++
- 2 files changed, 18 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/netdevsim/Makefile
+ drivers/usb/gadget/function/f_hid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 428b2259225dd..9ed8ee40a2176 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14221,6 +14221,7 @@ NETDEVSIM
- M:	Jakub Kicinski <kuba@kernel.org>
- S:	Maintained
- F:	drivers/net/netdevsim/*
-+F:	tools/testing/selftests/drivers/net/netdevsim/*
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 2f30699f0426f..c285b23c3707c 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -490,7 +490,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
+ 	}
  
- NETEM NETWORK EMULATOR
- M:	Stephen Hemminger <stephen@networkplumber.org>
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-new file mode 100644
-index 0000000000000..7a29a05bea8bc
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -0,0 +1,17 @@
-+# SPDX-License-Identifier: GPL-2.0+ OR MIT
-+
-+TEST_PROGS = devlink.sh \
-+	devlink_in_netns.sh \
-+	devlink_trap.sh \
-+	ethtool-coalesce.sh \
-+	ethtool-fec.sh \
-+	ethtool-pause.sh \
-+	ethtool-ring.sh \
-+	fib.sh \
-+	hw_stats_l3.sh \
-+	nexthop.sh \
-+	psample.sh \
-+	tc-mq-visibility.sh \
-+	udp_tunnel_nic.sh \
-+
-+include ../../../lib.mk
+ 	req->status   = 0;
+-	req->zero     = 0;
++	req->zero     = 1;
+ 	req->length   = count;
+ 	req->complete = f_hidg_req_complete;
+ 	req->context  = hidg;
+@@ -761,7 +761,7 @@ static int hidg_setup(struct usb_function *f,
+ 	return -EOPNOTSUPP;
+ 
+ respond:
+-	req->zero = 0;
++	req->zero = 1;
+ 	req->length = length;
+ 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
+ 	if (status < 0)
 -- 
 2.51.0
 
