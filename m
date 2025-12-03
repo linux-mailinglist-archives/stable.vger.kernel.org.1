@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE67C9F7BE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:33:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CF7CA111C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C443C300A030
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F36E300BDA2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C8F30F535;
-	Wed,  3 Dec 2025 15:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A9934845C;
+	Wed,  3 Dec 2025 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nixY3Rb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymdfhkY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A607D30DECE;
-	Wed,  3 Dec 2025 15:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8F1346E50;
+	Wed,  3 Dec 2025 16:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775945; cv=none; b=Ke9fgC0yUhaVvxWdOtZ481sXPFgRTXnrC8hn/siBxmZA0V383QsqQn8XM6P6p3s/DTRVyjaMLLT9tPWymXIpKUGYjhjb1KzO1UGvSh32E+a/icUa7mGMunzpTqv1eIIsolMxcnyB7zwdY139Dz8DR1SHDKSQYA2QWL0FmxB2bnk=
+	t=1764779370; cv=none; b=DtS0SA2FgCR/xjKZe+DknUCVp6GrAzyvcwnBAj4Nq2UhXNLliBqQEossgwC6qsZK7RbyktSkyEf7FDpUHegnIstuPZ/xxPUYMun0H87zYBTM+76tXUJTCyd5EI9ECbzl4LFCIy4e/dklXy12+zjeP1XiwzbZOpT3NqojDdEtEY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775945; c=relaxed/simple;
-	bh=ot+zeokK+4kUPY+8JFJF4kZ2q0GcENesYgnWCIQa3qM=;
+	s=arc-20240116; t=1764779370; c=relaxed/simple;
+	bh=q0ATraZIk0BqHNBmERNZHHdL2DOpEbyHXaHMn3OFFsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUwCohbB/NKqvOQq8n1ahZSvGXdkqLP5XSCl911tCT0EWtLpiKQkru2oXd4ZZiisWMrcDQWghEGzIfITXMUcjEYrQBU4PJ34wfEf5uaQDUiV0cpt48vsyytrMrqJ+7aegv4ZOq5aO6EGBGgiVsvD21vZN1NtR4WckS5vIXJF3kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nixY3Rb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6C3C4CEF5;
-	Wed,  3 Dec 2025 15:32:24 +0000 (UTC)
+	 MIME-Version; b=D+DgAFKOnbNpZhS24XAcCGzyoe/EsfbQKEwqWboLCGUzr06a2sF+13nLhJF/Ph23ASo9ZvuaKwXPZs52yrFSZFBWBsTcz91t3k7AlHEr5I+92yuUAjWt5Dh5I5E4O42lV4dKsEx7Hv+BYRCB6e5mahdnANBuhQDrK5ZG2CxykyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymdfhkY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF33C4CEF5;
+	Wed,  3 Dec 2025 16:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775945;
-	bh=ot+zeokK+4kUPY+8JFJF4kZ2q0GcENesYgnWCIQa3qM=;
+	s=korg; t=1764779369;
+	bh=q0ATraZIk0BqHNBmERNZHHdL2DOpEbyHXaHMn3OFFsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nixY3Rb/VOAl1Squ16lY0VjfajcuEAxlacxVrNsWMxTwLvgIwsa5+zdArKkmorInS
-	 bcZK34zBtuDwP/s9LuNHcvHAQ1EPD9UVyKnrNAge4s+jBhtEe95JXYzVX9+EJ6KurO
-	 u/uwZP7wKYBfYGPAdMu2vz6XxyqgyoTwXx+X2qFc=
+	b=ymdfhkY0sIDTMYIpnhI+al26RbP6iCGMK61g0BoageSM03/e5DEKP60ljMwBvQ9kV
+	 F3nsKVz2YSIhesJRwu1VyR1qYXrhnjBZFVOxCtnF2dZBeZ9fzssc0bfmwQ2PZHbAwX
+	 M2iu9fbr1NCrnGkwd5956No8LVJMYmt8/PPfnkrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: [PATCH 5.10 035/300] tracing: fix declaration-after-statement warning
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 237/568] usb: xhci: plat: Facilitate using autosuspend for xhci plat devices
 Date: Wed,  3 Dec 2025 16:23:59 +0100
-Message-ID: <20251203152401.763604981@linuxfoundation.org>
+Message-ID: <20251203152449.402394258@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-When building this kernel version this warning is visible:
+[ Upstream commit 41cf11946b9076383a2222bbf1ef57d64d033f66 ]
 
-  kernel/trace/trace_events_synth.c: In function 'synth_event_reg':
-  kernel/trace/trace_events_synth.c:847:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-    847 |         int ret = trace_event_reg(call, type, data);
-        |         ^~~
+Allow autosuspend to be used by xhci plat device. For Qualcomm SoCs,
+when in host mode, it is intended that the controller goes to suspend
+state to save power and wait for interrupts from connected peripheral
+to wake it up. This is particularly used in cases where a HID or Audio
+device is connected. In such scenarios, the usb controller can enter
+auto suspend and resume action after getting interrupts from the
+connected device.
 
-This can be easily fixed by declaring 'ret' earlier.
-
-This issue is visible in < v5.18, because -std=gnu89 is used by default,
-see commit e8c07082a810 ("Kbuild: move to -std=gnu11").
-
-Please note that in v5.15.y, the 'Fixes' commit has been modified during
-the backport, not to have this warning. See commit 72848b81b3dd
-("tracing: Ensure module defining synth event cannot be unloaded while
-tracing") from v5.15.y.
-
-Fixes: 21581dd4e7ff ("tracing: Ensure module defining synth event cannot be unloaded while tracing")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Douglas Raillard <douglas.raillard@arm.com>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250916120436.3617598-1-krishna.kurapati@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_synth.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-plat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -831,6 +831,7 @@ static int synth_event_reg(struct trace_
- 		    enum trace_reg type, void *data)
- {
- 	struct synth_event *event = container_of(call, struct synth_event, call);
-+	int ret;
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 7ec4c38c3ceec..fe799abf252b3 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -224,6 +224,7 @@ static int xhci_plat_probe(struct platform_device *pdev)
+ 		return ret;
  
- 	switch (type) {
- #ifdef CONFIG_PERF_EVENTS
-@@ -844,7 +845,7 @@ static int synth_event_reg(struct trace_
- 		break;
- 	}
+ 	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
  
--	int ret = trace_event_reg(call, type, data);
-+	ret = trace_event_reg(call, type, data);
- 
- 	switch (type) {
- #ifdef CONFIG_PERF_EVENTS
+-- 
+2.51.0
+
 
 
 
