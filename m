@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1413C9F7A9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E772CA13C6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30C3430021F7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 254D33015E3F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68C630C63C;
-	Wed,  3 Dec 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277226D4DF;
+	Wed,  3 Dec 2025 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWBXQV8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2uUEWx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C241A2C25;
-	Wed,  3 Dec 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F433261B96;
+	Wed,  3 Dec 2025 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775935; cv=none; b=FtgXXDbbNR9gcq4TketseGs/1YpobAGaxFTb/8EFkKtQZ7uhFV4S01hgwRRmyPAmez0+gqP7wvbEFtBKRDW6gXZnP/O4bVqZdkUhMs2z+m/KB9VqdZH21Ez5MVhWxuEedI8nfJyBFhgR8VkQ/xTaLfAN/RPr7izvjqAS/bN7qBM=
+	t=1764777628; cv=none; b=skdW52hN3RhcxZy2fp38XRW1Hzh9EhHnqPLz+IOFRWRqRW+mulp2fN1f2JRIhYRaEDkrd2d9Z30XjjkA/DFx1JAJ37kRUvw/Bv63tgi9v10thXi5gcRcqh9a1oOKeXkJOmcTOEyuwcKhi9x/LZKi8AoE4QvQJLHe52sBYfGbVDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775935; c=relaxed/simple;
-	bh=HzNnBdbsEXxJaoMs0pe2bVlWW4Bjs5NgVU24+P5Er/M=;
+	s=arc-20240116; t=1764777628; c=relaxed/simple;
+	bh=I0OgnjuocvEgVu5z+dxAe5o5kN/BxLNoHLoshgXCWdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcPqPpHU/xwdWfceX0KjtpyCbOa4Mzn1XG9evJDVDH4lZnW2EvL462Gb+CkRXKKaNSLGtnTXzIkyPBetTfV/B4/fad8ueDscpvG1Mz+effeV+kDcGcvjzCUoNRB8t4Mbvg0HJGneqVjPOTro3O8ecjOtxgtIeMF96qoLIBp17tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWBXQV8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3E3C4CEF5;
-	Wed,  3 Dec 2025 15:32:14 +0000 (UTC)
+	 MIME-Version; b=WmrUMFxgrR4WvUPZgw5aivFo9K1E92jyBb8nvEQeppOw5F07NuvK4JHXKa/HPXxjlo6aUhFvE0wZQ6CI50A2/eL/ubmbZ63R8WLyrOo7kjTATXy9hDvsWpq7A4Ky20STYJbQM4fY0bu+iOJrJBlGf+OHcUilAalnVDn1hwNPrrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2uUEWx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03B6C4CEF5;
+	Wed,  3 Dec 2025 16:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775935;
-	bh=HzNnBdbsEXxJaoMs0pe2bVlWW4Bjs5NgVU24+P5Er/M=;
+	s=korg; t=1764777628;
+	bh=I0OgnjuocvEgVu5z+dxAe5o5kN/BxLNoHLoshgXCWdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWBXQV8YPDYTZgAKxFeOJ7OMw3fRxtPZNbheNXmOZUIxcc051DRVqqodG7oblgPQ5
-	 ZTbDPlyblxbthYXsYdbC0S0QbxzZXMC30pnofseJLMjO1a7fXJY7VPX3COk2gJTYTn
-	 kcXYRFvVHOEx3zs+/af1f95AjdYAjm9wxtreZmL4=
+	b=Y2uUEWx155aHFLJq9DxUEKQIJAKLjh3kKNCcavH92dxl+4ZMicmYZVwe12zldYn13
+	 QwJLSedN/dus5b0fM76Xt+v0tmYKU09aB/SQPoaZ6uw+SnOBEGrn5B/nyj2vOWgGTP
+	 Jmn7kOFMrr20oangq2NH32Oy0RZ6dwuwJ57g+WvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com,
-	Junjie Cao <junjie.cao@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 009/300] fbdev: bitblit: bound-check glyph index in bit_putcs*
+	Dennis Beier <nanovim@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 063/392] cpufreq/longhaul: handle NULL policy in longhaul_exit
 Date: Wed,  3 Dec 2025 16:23:33 +0100
-Message-ID: <20251203152400.804269401@linuxfoundation.org>
+Message-ID: <20251203152416.429580465@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Dennis Beier <nanovim@gmail.com>
 
-commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
+[ Upstream commit 592532a77b736b5153e0c2e4c74aa50af0a352ab ]
 
-bit_putcs_aligned()/unaligned() derived the glyph pointer from the
-character value masked by 0xff/0x1ff, which may exceed the actual font's
-glyph count and read past the end of the built-in font array.
-Clamp the index to the actual glyph count before computing the address.
+longhaul_exit() was calling cpufreq_cpu_get(0) without checking
+for a NULL policy pointer. On some systems, this could lead to a
+NULL dereference and a kernel warning or panic.
 
-This fixes a global out-of-bounds read reported by syzbot.
+This patch adds a check using unlikely() and returns early if the
+policy is NULL.
 
-Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
-Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bugzilla: #219962
+
+Signed-off-by: Dennis Beier <nanovim@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/bitblit.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/cpufreq/longhaul.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(str
- 				     struct fb_image *image, u8 *buf, u8 *dst)
- {
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
-+	unsigned int charcnt = vc->vc_font.charcount;
- 	u32 idx = vc->vc_font.width >> 3;
- 	u8 *src;
+diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+index c538a153ee828..f116a1d555490 100644
+--- a/drivers/cpufreq/longhaul.c
++++ b/drivers/cpufreq/longhaul.c
+@@ -953,6 +953,9 @@ static void __exit longhaul_exit(void)
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+ 	int i;
  
- 	while (cnt--) {
--		src = vc->vc_font.data + (scr_readw(s++)&
--					  charmask)*cellsize;
-+		u16 ch = scr_readw(s++) & charmask;
++	if (unlikely(!policy))
++		return;
 +
-+		if (ch >= charcnt)
-+			ch = 0;
-+		src = vc->vc_font.data + (unsigned int)ch * cellsize;
- 
- 		if (attr) {
- 			update_attr(buf, src, attr, vc);
-@@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(s
- 				       u8 *dst)
- {
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
-+	unsigned int charcnt = vc->vc_font.charcount;
- 	u32 shift_low = 0, mod = vc->vc_font.width % 8;
- 	u32 shift_high = 8;
- 	u32 idx = vc->vc_font.width >> 3;
- 	u8 *src;
- 
- 	while (cnt--) {
--		src = vc->vc_font.data + (scr_readw(s++)&
--					  charmask)*cellsize;
-+		u16 ch = scr_readw(s++) & charmask;
-+
-+		if (ch >= charcnt)
-+			ch = 0;
-+		src = vc->vc_font.data + (unsigned int)ch * cellsize;
- 
- 		if (attr) {
- 			update_attr(buf, src, attr, vc);
+ 	for (i = 0; i < numscales; i++) {
+ 		if (mults[i] == maxmult) {
+ 			struct cpufreq_freqs freqs;
+-- 
+2.51.0
+
 
 
 
