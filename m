@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-199020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E35CA0FF9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601E0CA0C5B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C816B333B091
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E72D6315544D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AC4347FD9;
-	Wed,  3 Dec 2025 16:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB7430749E;
+	Wed,  3 Dec 2025 16:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM7USTdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKirUMa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43B2347BDB;
-	Wed,  3 Dec 2025 16:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC332FBDFF;
+	Wed,  3 Dec 2025 16:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778434; cv=none; b=BHnaP84BoxT1sv8jruH/mWJQIXIzd2tbFvXo2q6eqOa2wSBNXdS5VQCECL2sBcajq66pN/oi1SaXQjm/750XQc6hSSoQHNh1403lBZdl+dLDBoKeGoNvv2pXsaSEW5RCncCFLXNF/P+BJkKJzsDGPS969N5ZsYR7L5JZovMx2MA=
+	t=1764780530; cv=none; b=dzNC30ZTvvBDae4+pZKi/0ZtTl93QxDAf48wA1sYJxdMUm6z4cFjJBZywkETCYfAY2M1Z3dhPoMN0xRzf7Y9VoVfciJ+DDsQS6QNk5gvNhJRUa4axfbHYjndHdojspu/FeUwlBUgUPr1olU/LN3EAqVeXNDVikSFdvK1Wo/E+PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778434; c=relaxed/simple;
-	bh=V68IN+jwCFelQuRdygHVO9yemFp+cdTBmsSnMw6nFCw=;
+	s=arc-20240116; t=1764780530; c=relaxed/simple;
+	bh=0p0555iggDIPjiG2dWSOYvIqIW/vp74YYZY04gtsPtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vC8r4oAGPDVPMsr94msrACSD563pV4Zm2aaexcpMjUxZzFRKues/XnYHTLur3p08UpbfobxezlkUT2cWjVcl1SCIyW0f0VBGsnJaKKDSSjFGvfg4hHGfwKzfzZTHUj9nY62Ysm5btpjafJLkEuaZqRlXP0Mwc9qO9fPxdfBQkDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM7USTdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B8EC4CEF5;
-	Wed,  3 Dec 2025 16:13:53 +0000 (UTC)
+	 MIME-Version; b=g7zwbgtXz1dvae8iF6XWzuMV8W0WvddgRdSfapJ4o5V97wgsXZUVoDxIM3GJwCjL0cw72Pb03dBYdNDVMsMsW80JQwl1IsoUJZsL+u1CKwrCK+Bnk673hto3Bt+jn2GN5p1FbxdJtX0IxjcPNamrRqfNBXK5MnDcey5wMe4cI1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKirUMa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38EDC116B1;
+	Wed,  3 Dec 2025 16:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778434;
-	bh=V68IN+jwCFelQuRdygHVO9yemFp+cdTBmsSnMw6nFCw=;
+	s=korg; t=1764780530;
+	bh=0p0555iggDIPjiG2dWSOYvIqIW/vp74YYZY04gtsPtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mM7USTdUc3l+ghcRJfLnXrDJnEb36u0gBwdLoKOUxIIB28JwRC/Cwt0ipg5J0lnWX
-	 xF9I6Ag3hMx1pHshKgiuNG73kI6HiTOebthckA9vZv1tlGI2pbINgy9b4uWTV3EGrR
-	 rZ555r3oL7DLpZPyEqnfgPqzOlv51yKUJLuYzjJU=
+	b=xKirUMa0DWau10vJHkTsc4pL+FNwYANd14Y0E/YcAE40SEONkeUDoN1rVxWsBiEEZ
+	 W5qaIN35ajwKhkqj3ZkHfFHlbV5FBy8qzkfxhOGignOiHrv/XGLo/hTKEWNuGovaMO
+	 guEjOPZxqrfxfR/btIbl/8ANmHJLXW+kasZ2m988=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 343/392] net: dsa: sja1105: Convert to mdiobus_c45_read
+Subject: [PATCH 6.12 014/132] net: phy: mxl-gpy: fix bogus error on USXGMII and integrated PHY
 Date: Wed,  3 Dec 2025 16:28:13 +0100
-Message-ID: <20251203152426.791150045@linuxfoundation.org>
+Message-ID: <20251203152343.824393925@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 639e4b93ab68f5f5fc4734c766124ca96c167f14 ]
+[ Upstream commit ec3803b5917b6ff2f86ea965d0985c95d8a85119 ]
 
-Stop using the helpers to construct a special phy address which
-indicates C45. Instead use the C45 accessors, which will call the
-busses C45 specific read/write API.
+As the interface mode doesn't need to be updated on PHYs connected with
+USXGMII and integrated PHYs, gpy_update_interface() should just return 0
+in these cases rather than -EINVAL which has wrongly been introduced by
+commit 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface()
+function return type"), as this breaks support for those PHYs.
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: da62abaaa268 ("net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic")
+Fixes: 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface() function return type")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/f744f721a1fcc5e2e936428c62ff2c7d94d2a293.1763648168.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/phy/mxl-gpy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index ec1c0ad591184..5c37478a7e822 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2180,14 +2180,13 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 	 * change it through the dynamic interface later.
- 	 */
- 	for (i = 0; i < ds->num_ports; i++) {
--		u32 reg_addr = mdiobus_c45_addr(MDIO_MMD_VEND2, MDIO_CTRL1);
--
- 		speed_mbps[i] = sja1105_port_speed_to_ethtool(priv,
- 							      mac[i].speed);
- 		mac[i].speed = priv->info->port_speed[SJA1105_SPEED_AUTO];
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index e5f8ac4b4604b..17b0654644de5 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -523,7 +523,7 @@ static int gpy_update_interface(struct phy_device *phydev)
+ 	/* Interface mode is fixed for USXGMII and integrated PHY */
+ 	if (phydev->interface == PHY_INTERFACE_MODE_USXGMII ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_INTERNAL)
+-		return -EINVAL;
++		return 0;
  
- 		if (priv->xpcs[i])
--			bmcr[i] = mdiobus_read(priv->mdio_pcs, i, reg_addr);
-+			bmcr[i] = mdiobus_c45_read(priv->mdio_pcs, i,
-+						   MDIO_MMD_VEND2, MDIO_CTRL1);
- 	}
- 
- 	/* No PTP operations can run right now */
+ 	/* Automatically switch SERDES interface between SGMII and 2500-BaseX
+ 	 * according to speed. Disable ANEG in 2500-BaseX mode.
 -- 
 2.51.0
 
