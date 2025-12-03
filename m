@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149A6CA05C5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B584CC9FC29
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3919632A0658
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E545A3008386
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D075352F82;
-	Wed,  3 Dec 2025 16:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D6A3446B8;
+	Wed,  3 Dec 2025 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rM2Dr4/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRXW7lRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6447335FF47;
-	Wed,  3 Dec 2025 16:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB72344044;
+	Wed,  3 Dec 2025 15:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779280; cv=none; b=EVkZ8vQdscbmN3aBlPh4be9jN838BBxzs9BbRoC3LUNq5P2LT4DsQ2XGKaQAq18B4c0nb0KCI2rocB+k7bMrMEmO+8aK4/1NI+GkvvAuwKzVYDN+jW3M5VhEnNFhD77lzw/hlLsmxNL+5nUvk06cgqtFrb6SA8Wllfn3PEtKTRc=
+	t=1764777515; cv=none; b=WAgU0sjccyxaBigtuJ92+kyEDaSD0zqHY9mrgVf+2umnVFerxV+2dCjujiL04cv+4k1EHmJQFNbFb4E2GUvn8vGTAPwI8w3Ykahtq4slp7ZNd2AFhe4m6mX9XtgdOlKDeRWBsy19rXJtxAD2A/QkHKJXrDdz35KEDz2d2mP4WHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779280; c=relaxed/simple;
-	bh=A9roOKi9hZc9zXgk5zO8tW610PCSaJiXOSWwdafdYJI=;
+	s=arc-20240116; t=1764777515; c=relaxed/simple;
+	bh=nrk4o6IAH8QtzC8a35vkXVUASWnzdBB/2tCEiN8WLNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/tQ7OGAhOTX25+LkTK3j+6RFT1zOkwQDSY00GiSZG8ov1sgxsfq+pWAsFdEAEI8/mPvZtqZnUO2kHmwz+UJpwz5eKc3EsZYvBdKYW4WsJ/5JRjnDO+dcg4Zd6YIlkC5dtaaybxVA7NrSKFbZ3q64mJ9NBnNKDTJa4F14xcSQHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rM2Dr4/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4634C4CEF5;
-	Wed,  3 Dec 2025 16:27:59 +0000 (UTC)
+	 MIME-Version; b=oSh3QNvue/inOE1pVcAx9Lp4D8mCmEL6Jqlo27S3wO+F7XpTakTNKUVVH00u4IyrlLnZMEl+ndtnKfqTLriBaX0ikYX9+h6yaBybhqHEGBLILrtG3huvRD/MgszER8PBiuIdzcrHDeykPW/BaPoVtiP8ggFBHDdLvgjSF8zoHlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRXW7lRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5E7C4CEF5;
+	Wed,  3 Dec 2025 15:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779280;
-	bh=A9roOKi9hZc9zXgk5zO8tW610PCSaJiXOSWwdafdYJI=;
+	s=korg; t=1764777514;
+	bh=nrk4o6IAH8QtzC8a35vkXVUASWnzdBB/2tCEiN8WLNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rM2Dr4/bzPgzQpxmYVsqbnyYfI0d2ILfRpP3meQffwf4Vafc/GRSM191HFAcnzRj+
-	 mdWapJer5oykNKYfJjOjusryPsF84A1j4hkgw8paBbKWUgUwlXe6rgk+FQ8cMLTEOO
-	 MAkmLoyYiHXPV5TvFhuQzzaQRNzFV+oJ1ReKE6sg=
+	b=iRXW7lRBNlG/r3noMNd0lU9H7SxrOAvx9NLgJ2mZiptDdjDt1FF0xQZAbj+rfSYzl
+	 l8GyUpGjbVIf+SjLui+aM7MybS9V6LABc8Nbx20US6D5wzONdSME+g0KLM587ppcZw
+	 m7FEHj6EJwDv8k+gVi+iT6r5GAPgYZeUZeqUl6QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	John Smith <itistotalbotnet@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/568] mips: lantiq: danube: add model to EASY50712 dts
+Subject: [PATCH 5.15 029/392] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Iceland
 Date: Wed,  3 Dec 2025 16:22:59 +0100
-Message-ID: <20251203152447.214076668@linuxfoundation.org>
+Message-ID: <20251203152415.172355559@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: John Smith <itistotalbotnet@gmail.com>
 
-[ Upstream commit cb96fd880ef78500b34d10fa76ddd3fa070287d6 ]
+[ Upstream commit 501672e3c1576aa9a8364144213c77b98a31a42c ]
 
-This fixes the following warning:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: / (lantiq,xway): 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+Previously this was initialized with zero which represented PCIe Gen
+1.0 instead of using the
+maximum value from the speed table which is the behaviour of all other
+smumgr implementations.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 18aafc59b106 ("drm/amd/powerplay: implement fw related smu interface for iceland.")
+Signed-off-by: John Smith <itistotalbotnet@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 92b0a6ae6672857ddeabf892223943d2f0e06c97)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube_easy50712.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-index c4d7aa5753b04..ab70028dbefcf 100644
---- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-+++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-@@ -4,6 +4,8 @@
- /include/ "danube.dtsi"
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
+index 03df35dee8ba8..6ddf9ce5471e8 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/iceland_smumgr.c
+@@ -2028,7 +2028,7 @@ static int iceland_init_smc_table(struct pp_hwmgr *hwmgr)
+ 	table->VoltageResponseTime  = 0;
+ 	table->PhaseResponseTime  = 0;
+ 	table->MemoryThermThrottleEnable  = 1;
+-	table->PCIeBootLinkLevel = 0;
++	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
+ 	table->PCIeGenInterval = 1;
  
- / {
-+	model = "Intel EASY50712";
-+
- 	chosen {
- 		bootargs = "console=ttyLTQ0,115200 init=/etc/preinit";
- 	};
+ 	result = iceland_populate_smc_svi2_config(hwmgr, table);
 -- 
 2.51.0
 
