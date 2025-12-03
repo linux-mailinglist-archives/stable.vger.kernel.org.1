@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D85CA01EB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDCCCA08C6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C4D3303463B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CCF8340930C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C11636B058;
-	Wed,  3 Dec 2025 16:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC6B314A80;
+	Wed,  3 Dec 2025 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgaP4nFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgDUHKvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140BB313546;
-	Wed,  3 Dec 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888C339A27A;
+	Wed,  3 Dec 2025 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780374; cv=none; b=Al1249qG8qpwW8lbC1+XrhH4yZLRu4BCN1jNMmJrfedPxcW+Hcq895bHGWaWeKAxZNxMILq/MWpLl6v+Nwknf/wNuFJ4Sv8UFy6bgQfWBd6qFUFkqSGRbBRTgYDKzRGtj+JNr888NJ+vyqFiSGZb55Gnot+nAqdTM747Cl2qNno=
+	t=1764780840; cv=none; b=hAVqD1edrpx5EzyK3EQNCZ00Ja1exdDdHpDa9kvdkfb1uBXPj1ietc1EzW8QQk8dUD+An/13f3XJPuQDym6ExLS/n5jJr/fR9EQaEnV8V9vHPMsOmQzVhmeTq8lqudHqXoq8SwpDLf6axy2UwJgpZDWOLbJdafLpqTXUDfo0l9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780374; c=relaxed/simple;
-	bh=zjZ6WoSyER9ZYOqhxDc+s4qM1WxdpjEV5dY9ThD7aB0=;
+	s=arc-20240116; t=1764780840; c=relaxed/simple;
+	bh=L9ERdOo2BdeaN2bgxerimMHL9FLdvLU7sNMcS8u+bYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9WNSLxd9YM1ZWhJicIfeoX5vRzwfkKcwiMqyylRdSiSu/iotYy61s4X/7BcnovVjEMY5t53cFj0bCEL4vy5/xxXH/nF+ltqNWa+AJ08nTDWCD4oJWg4x4IPJTachm2lzZz+GSYCWuvrl2okb1u+GQiZGMf+CbawzNlGrL3cwRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgaP4nFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A793C4CEF5;
-	Wed,  3 Dec 2025 16:46:12 +0000 (UTC)
+	 MIME-Version; b=px6nw+ATVUfgtlvrKP1uJsH2Ehm1pBCWUrMUr9wLOQ8hiGzZ8XOeUf9+YuXzeHkOhVq732VKWX4SKgzrjfPnTFsYILNrdU6nwEhLI+glJlxrYL/YWs0bllXMfjeEoeULkye3zVhVgOIOgEHghE+6mNoE2uMwQriUEpYRJ8OPDlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgDUHKvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF374C4CEF5;
+	Wed,  3 Dec 2025 16:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780373;
-	bh=zjZ6WoSyER9ZYOqhxDc+s4qM1WxdpjEV5dY9ThD7aB0=;
+	s=korg; t=1764780839;
+	bh=L9ERdOo2BdeaN2bgxerimMHL9FLdvLU7sNMcS8u+bYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgaP4nFa5dkbATPWMVERHSWWt6+oAitXwHKYUOCqBvWn6sUlOsYb6s6AuUdUjX5TJ
-	 fhvU+Zo6reXxbLRLuuKqVSLOJn+aUWeA11zb5lJyJDl34yjzvo3NL3yzFv7HLWBCNk
-	 ZpQqzzEsOSSUL62vtuS5RFACGGCG+U+HvrsW+780=
+	b=SgDUHKvdQXoJV3NXGRcOm5lREIj/sDZLNRBMBRx3DlFdl+GY8FSn4FS9Qa6yqAROK
+	 fsPj84LK4tfsS6j+ltYXfnlgqtF1fee4634v5CSu5c0sjobmDc6CBqlKREBGkQfwGg
+	 4Ngu9W0miJAla44tJSb5c3DAJNO0Y/5clFMoZRnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Desnes Nunes <desnesn@redhat.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 538/568] usb: storage: Fix memory leak in USB bulk transport
-Date: Wed,  3 Dec 2025 16:29:00 +0100
-Message-ID: <20251203152500.417338079@linuxfoundation.org>
+	Andy Hsu <andy_ya_hsu@wiwynn.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 062/132] iio: adc: rtq6056: Correct the sign bit index
+Date: Wed,  3 Dec 2025 16:29:01 +0100
+Message-ID: <20251203152345.593354603@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
+commit 9b45744bf09fc2a3287e05287141d6e123c125a7 upstream.
 
-A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-Test Project (LTP). The following bytes were mainly observed: 0x53425355.
+The vshunt/current reported register is a signed 16bit integer. The
+sign bit index should be '15', not '16'.
 
-When USB storage devices incorrectly skip the data phase with status data,
-the code extracts/validates the CSW from the sg buffer, but fails to clear
-it afterwards. This leaves status protocol data in srb's transfer buffer,
-such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
-lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-interfaces, such as the one seen here when the LTP test requested 512 KiB.
-
-Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-after the validation of devices that skip data phase.
-
-Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-ing pages at allocation time, this leak occurs after allocation, when USB
-protocol data is written to already-allocated sg pages.
-
-Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
+Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
+Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/transport.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/iio/adc/rtq6056.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -1204,7 +1204,23 @@ int usb_stor_Bulk_transport(struct scsi_
- 						US_BULK_CS_WRAP_LEN &&
- 					bcs->Signature ==
- 						cpu_to_le32(US_BULK_CS_SIGN)) {
-+				unsigned char buf[US_BULK_CS_WRAP_LEN];
-+
- 				usb_stor_dbg(us, "Device skipped data phase\n");
-+
-+				/*
-+				 * Devices skipping data phase might leave CSW data in srb's
-+				 * transfer buffer. Zero it to prevent USB protocol leakage.
-+				 */
-+				sg = NULL;
-+				offset = 0;
-+				memset(buf, 0, sizeof(buf));
-+				if (usb_stor_access_xfer_buf(buf,
-+						US_BULK_CS_WRAP_LEN, srb, &sg,
-+						&offset, TO_XFER_BUF) !=
-+							US_BULK_CS_WRAP_LEN)
-+					usb_stor_dbg(us, "Failed to clear CSW data\n");
-+
- 				scsi_set_resid(srb, transfer_length);
- 				goto skipped_data_phase;
- 			}
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -300,7 +300,7 @@ static int rtq6056_adc_read_channel(stru
+ 		return IIO_VAL_INT;
+ 	case RTQ6056_REG_SHUNTVOLT:
+ 	case RTQ6056_REG_CURRENT:
+-		*val = sign_extend32(regval, 16);
++		*val = sign_extend32(regval, 15);
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 
 
 
