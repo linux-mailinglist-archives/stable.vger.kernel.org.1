@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A312CA0604
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBD2CA0ECA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876AC32B3F60
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FB1B341C9A6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32735771F;
-	Wed,  3 Dec 2025 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6050D337B84;
+	Wed,  3 Dec 2025 15:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENYS7+FK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eamezIPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260D83570CC;
-	Wed,  3 Dec 2025 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247F2338F4A;
+	Wed,  3 Dec 2025 15:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779139; cv=none; b=eS9GAgkeC1i6K5HP1UDzGTSiVZVXAnVXCWUs8IykpjVvb0kV1dL99j5fW2hRoJjhQTPBTEaoyEhUat2jHExj1ZpKcnpRg87MBS2Fn51GiisC8lMTQYAKaxwuJDm+gnfBbysUINklWxcPP4sMUIQCkNI07QBYPvM5e4O2s7iVe6A=
+	t=1764777374; cv=none; b=SuqaDi4Tmt6mE38SWUa2MdLI9NECudU5INcSwjzNghdF640ilbnMZBmbddWsxMByec240TDAiG4aLmlsXXN8g6PcMhzNgY4yL93M0fam8vWlcRuARoHy5oKi0EBo9Y/lmwkLWKDDDfVkbbmfhjLr6U2fuNVzEBZVIHtY/VLGVEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779139; c=relaxed/simple;
-	bh=Wf6l3xJbHA4p49zQlbo+LfnY4UnmOHpNp8GWcNjQcGU=;
+	s=arc-20240116; t=1764777374; c=relaxed/simple;
+	bh=ZdnAP1Hhv2KHUYSlRD4WOOBeleBgQOahKu2wlsMRW3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppEbirk5R50LTfqOrkLZPt4CovGnRb9lt1VQxmoiCJrHEcbgOAgeaCitOFLhE+T4u9vTUpNC86JYa2V7inCA3r18A0fIJ2YDVjX6x9FQ5RGh/FlGOm4zwWnTSFv5226n8cZY3arjTfJjLL+TlyGqwyiye5FzC/0JOEhqPWa82NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENYS7+FK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832A4C4CEF5;
-	Wed,  3 Dec 2025 16:25:38 +0000 (UTC)
+	 MIME-Version; b=R0MriN87pzow2qSSy46joy0MF2jWpQRbB1+FXHDv/KJFx5NFC7sXsWcsAa4aEHppAB1dAbxOaFPBMKTlnX56/1zp/hMculS4ae8sHEB4sfZwx7ArskxPthmQ+guDeQezxUaSrXXWsu7i3jg7U3zuZguuf0jz6YqQ8X4HEkJNVCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eamezIPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10832C116B1;
+	Wed,  3 Dec 2025 15:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779139;
-	bh=Wf6l3xJbHA4p49zQlbo+LfnY4UnmOHpNp8GWcNjQcGU=;
+	s=korg; t=1764777373;
+	bh=ZdnAP1Hhv2KHUYSlRD4WOOBeleBgQOahKu2wlsMRW3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENYS7+FKdNpQLiXh8b6KyM7NIIv9Dfirgcw0/YYahKn/yNwDaMOLWw2PF8EPlA4e4
-	 IyLCHcuVUBwzSu9/b6qbSc8UzSJfzdyk1hwPnkcVav3yJpvWiwWvd+UVBT9LoZaJVV
-	 8rhf/gX64hMO5warP484qJuE1uOXdf6uOzg1LByY=
+	b=eamezIPmgW97NVGFIuaB6sx8w7uoAv3/fOe4BktBR1Eae2ByOWk/62U1RSD1/W2OY
+	 6UNps1g2aUgVD0PBjdnmZmdK/3B3wi/OAFFiOSJsn8gd9BcY9rRSpU3N4xQ6zXc0hf
+	 5dques1yvPgoLgzHtqEcT8BhF7QrCeupNptMqVVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/568] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
+Subject: [PATCH 5.15 018/392] ALSA: usb-audio: fix control pipe direction
 Date: Wed,  3 Dec 2025 16:22:48 +0100
-Message-ID: <20251203152446.803714587@linuxfoundation.org>
+Message-ID: <20251203152414.773625169@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
+[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
 
-Just add fixed struct size validations for UAC2 and UAC3 effect
-units.  The descriptor has a variable-length array, so it should be
-validated with a proper function later once when the unit is really
-parsed and used by the driver (currently only referred partially for
-the input terminal parsing).
+Since the requesttype has USB_DIR_OUT the pipe should be
+constructed with usb_sndctrlpipe().
 
-Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
+Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/validate.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/usb/mixer_s1810c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/validate.c b/sound/usb/validate.c
-index a0d55b77c9941..4bb4893f6e74f 100644
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
- 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
- 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
--	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
-+	/* just a stop-gap, it should be a proper function for the array
-+	 * once if the unit is really parsed/used
-+	 */
-+	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
-+	      struct uac2_effect_unit_descriptor),
- 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
- 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
- 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
-@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
- 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
- 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
--	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
-+	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
-+	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
- 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
- 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
- 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index 0255089c9efb1..38e56ad857243 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
+ 
+ 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
+ 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
+-	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
++	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
+ 			      SC1810C_SET_STATE_REQ,
+ 			      SC1810C_SET_STATE_REQTYPE,
+ 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
 -- 
 2.51.0
 
