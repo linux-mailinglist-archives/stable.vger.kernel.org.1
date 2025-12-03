@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-198801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0014CA00F8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B00CC9F7E8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C543E3006F69
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A8A1300095D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551EF34C9B7;
-	Wed,  3 Dec 2025 16:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0403D30ACF2;
+	Wed,  3 Dec 2025 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqxFx1Pz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTJ4pzr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1015734C9AD;
-	Wed,  3 Dec 2025 16:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4371A2C25;
+	Wed,  3 Dec 2025 15:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777727; cv=none; b=qZwEWPlXtbKa54ufiz8w2qOUxryLwkkuW/nB7X3FhxXlusoPH5kfrxTBAkWknksNGO+npz+F5Cqa0jaogm9B1zDDFdmlVc3G3fxMb0bdYcDqyYKQJKI9a2fq8rk9c8tSCvD7QR7de7+2kzqjApLb2ix7mmonPMQWCb/vKtD/SnI=
+	t=1764776070; cv=none; b=GsNsSGLov5bW8JkRcmKDPyTF5UFlm9Rg7hSzqWviF9H+cAoRi55SjM6n7UrpLt5MPpEDxltvogQwJmhCpQ8fxRYAgfcsMvT/4iZtrspwraDQTX8ch1QShwNS6dgbfLF3N2u39IG1P38HSQGZC2UY0DODynV4lUc90mGUYOPZtzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777727; c=relaxed/simple;
-	bh=VCUXz2rFtfqsH/dSea4VZXKhocUCKkPax4n95/L/OZg=;
+	s=arc-20240116; t=1764776070; c=relaxed/simple;
+	bh=7WgmJrE9+ljYQTOdqdg/sCDSQhALmFaXYdIpNRoWzjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYyQATBQ3Kq83HS2RaLthxVyn5UmQvzR2oMchkdinO4IshIi8V4fv05SnFoSScEdJo8dfHTIBgl/IcOQeByc2D5CiQUM1jJFU88LgHhtPEojLOK/q0NH5ZtV2ci0EFBQGLwuxocvgu8kY+NXm4L/Ikb81+Bmjtgi2IvwxGy6dh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqxFx1Pz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68981C16AAE;
-	Wed,  3 Dec 2025 16:02:06 +0000 (UTC)
+	 MIME-Version; b=qagb7nve0GgoHK59NHI0zs+8vHW/2wGbiTPdTW56BmYsFI5PPXfAHeOSFZiwGOpbpdM9/nHSakwP7DDrzR8+B3rBTkJqgHzfFyai5njrtlKAodw9arjnfT//nLxJFiGXDRoQPbGgRQTaD9YOdsB/EtlYaJS/UpUHyRi5vUE21Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTJ4pzr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C025AC4CEF5;
+	Wed,  3 Dec 2025 15:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777726;
-	bh=VCUXz2rFtfqsH/dSea4VZXKhocUCKkPax4n95/L/OZg=;
+	s=korg; t=1764776070;
+	bh=7WgmJrE9+ljYQTOdqdg/sCDSQhALmFaXYdIpNRoWzjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqxFx1Pz2di+JiPG85mdeLpOtYHh+z5V436k0YjesfwsmTJsTX5BX2KZVHGKi+P+j
-	 NGn0IxTNh9gWUUevqvS4CDq+yu6tzsAoXvRDnSaybu50mTnbcS/8WNut3nvdQH9m9f
-	 PR+HjnMcqceCsJJK6ZJpzU68kpp8H2lxTaXmNxwg=
+	b=QTJ4pzr+UilyimjzeRvsk3EYdUgXsYeKp0125YaqZwUYo2Qtq+/MMj0oxxDaZYczh
+	 rIDCQhieGxytYBFTZDG8jhhWS5CMhJ6ZTz9CsFznDCzqmWvTi0UFxg5Q0FUIuAl6Mg
+	 uD5BLeE3xrb0zPjyziaHZ+er/YTBzuttKVmP88DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Wake Liu <wakel@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/392] ptp: Limit time setting of PTP clocks
+Subject: [PATCH 5.10 072/300] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
 Date: Wed,  3 Dec 2025 16:24:36 +0100
-Message-ID: <20251203152418.730036689@linuxfoundation.org>
+Message-ID: <20251203152403.289921317@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miroslav Lichvar <mlichvar@redhat.com>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit 5a8c02a6bf52b1cf9cfb7868a8330f7c3c6aebe9 ]
+[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
 
-Networking drivers implementing PTP clocks and kernel socket code
-handling hardware timestamps use the 64-bit signed ktime_t type counting
-nanoseconds. When a PTP clock reaches the maximum value in year 2262,
-the timestamps returned to applications will overflow into year 1667.
-The same thing happens when injecting a large offset with
-clock_adjtime(ADJ_SETOFFSET).
+The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
+header, is a GNU extension and not universally available with all
+toolchains, such as Clang when used with musl libc.
 
-The commit 7a8e61f84786 ("timekeeping: Force upper bound for setting
-CLOCK_REALTIME") limited the maximum accepted value setting the system
-clock to 30 years before the maximum representable value (i.e. year
-2232) to avoid the overflow, assuming the system will not run for more
-than 30 years.
+This can lead to build failures in environments where this header is
+missing.
 
-Enforce the same limit for PTP clocks. Don't allow negative values and
-values closer than 30 years to the maximum value. Drivers may implement
-an even lower limit if the hardware registers cannot represent the whole
-interval between years 1970 and 2262 in the required resolution.
+The intention of the code is to determine the bit width of a C `long`.
+Replace the non-portable `__WORDSIZE` with the standard and portable
+`sizeof(long) * 8` expression to achieve the same result.
 
-Signed-off-by: Miroslav Lichvar <mlichvar@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: John Stultz <jstultz@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250828103300.1387025-1-mlichvar@redhat.com
+This change also removes the inclusion of the now-unused
+`<bits/wordsize.h>` header.
+
+Signed-off-by: Wake Liu <wakel@google.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_clock.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/psock_tpacket.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 2e4e425288b26..d6dee90bed35f 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -83,6 +83,9 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
- 		return -EBUSY;
- 	}
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 404a2ce759ab6..93092d13b3c59 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -33,7 +33,6 @@
+ #include <ctype.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-#include <bits/wordsize.h>
+ #include <net/ethernet.h>
+ #include <netinet/ip.h>
+ #include <arpa/inet.h>
+@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
  
-+	if (!timespec64_valid_settod(tp))
-+		return -EINVAL;
-+
- 	return  ptp->info->settime64(ptp->info, tp);
+ static int test_user_bit_width(void)
+ {
+-	return __WORDSIZE;
++	return sizeof(long) * 8;
  }
  
-@@ -112,7 +115,7 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 	ops = ptp->info;
- 
- 	if (tx->modes & ADJ_SETOFFSET) {
--		struct timespec64 ts;
-+		struct timespec64 ts, ts2;
- 		ktime_t kt;
- 		s64 delta;
- 
-@@ -125,6 +128,14 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 		if ((unsigned long) ts.tv_nsec >= NSEC_PER_SEC)
- 			return -EINVAL;
- 
-+		/* Make sure the offset is valid */
-+		err = ptp_clock_gettime(pc, &ts2);
-+		if (err)
-+			return err;
-+		ts2 = timespec64_add(ts2, ts);
-+		if (!timespec64_valid_settod(&ts2))
-+			return -EINVAL;
-+
- 		kt = timespec64_to_ktime(ts);
- 		delta = ktime_to_ns(kt);
- 		err = ops->adjtime(ops, delta);
+ static const char *tpacket_str[] = {
 -- 
 2.51.0
 
