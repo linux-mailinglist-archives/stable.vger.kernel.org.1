@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE08CCA0529
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AE9CA08BD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F040312FD0C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3AB34028DF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD071393DF5;
-	Wed,  3 Dec 2025 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2E632F741;
+	Wed,  3 Dec 2025 16:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vj10Bk1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9NjjIrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AB3393DE4;
-	Wed,  3 Dec 2025 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FBF31619D;
+	Wed,  3 Dec 2025 16:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781085; cv=none; b=baJ6J1E4E0DmDIj9qV8REmGLcOg/3kz509fM/jgjyG/Lpjohg+mr18YgYRTd6ovj1ztj4W2tQiLVnZ7niLTwmSV6NQKXmfvsro/y2F6ecgwH7adPQkBcrQLzzAHwIFQbrIgkRuvG0QmmQE6md7axbE4rKXIM+OI84tMpp7na1zQ=
+	t=1764780843; cv=none; b=tD5jXufYawdk6Wdoj8L7MbamB1SyyhCKFd7aqjj3tWTteYkS/JnaQq9kXURjhmbZvdhSntkwl9kdm5vUBWHZT85ev79awjXpHF3714gDI4pQQI+zNotwTyLt0em8lxhH7rMxw+DSdSvN0jY294uKpEeUOzLEgF5vq8KGgsrfpWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781085; c=relaxed/simple;
-	bh=GJW8+UDEr/UnqtoF1amwcfecoKbJkDvZ7xDzTzsws1Q=;
+	s=arc-20240116; t=1764780843; c=relaxed/simple;
+	bh=1U9nTeqC1oBjUe6YhOMCmzYzMKGvsoD60V6fOLCQzQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVbB3P1fbDx0oh2FmfKOmTzDJ9LEajUEJb82JiKitdp6pPDQiNV+7rmWFzzFz/WEbwuxsh2n4eUoCsWegFLp3gt/3YeTt8rRWBZZ/LR5qW49TxfKwDyN69vWAhBG6ea0fLBVs29UA7SddRNoAy70As5R81vGKulsfgbi1UWg2kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vj10Bk1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E94EC4CEF5;
-	Wed,  3 Dec 2025 16:58:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zy5T6G/ENpj5SwS1wYpBhvDEQ9gV4hCpxJms8fyYxkh6QP/hvL8j5hbnexkcM8/nIgLfWp5NnUgOlq2SCyFSMfwa56kd6L+kQQBp3Tf/muMvKHGHuAuxfVuOPtIzXrP4QLp7uan02lrobDOHZLMovSFUQQtt04nUkMYDqBtqAdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9NjjIrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C87C4CEF5;
+	Wed,  3 Dec 2025 16:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781085;
-	bh=GJW8+UDEr/UnqtoF1amwcfecoKbJkDvZ7xDzTzsws1Q=;
+	s=korg; t=1764780842;
+	bh=1U9nTeqC1oBjUe6YhOMCmzYzMKGvsoD60V6fOLCQzQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vj10Bk1bAhhIZRjBXQiz6S9BnMxdS2U3+Eg0YvJj1hcOWtwqBVyXAcSQpDnihUZMG
-	 nJcch2660fPD2hn9mw1nDcm+Z/BayG6/q7iEFWd7yynIJ+HL1vYpidpUcXeylCNENK
-	 h9Jv8guETorwwREdJxPhzL//1nH4ogc7GXpCBH/8=
+	b=m9NjjIrGfdhMonsU07soJk/ytuiURPk06fMUOG5D3hV0kzKnsFpncd96dPxxsGc+P
+	 uYAlUreEI8qZ5QBHghSguER7EAm3KVSXh4gkWgF0PCNmTKjsd5UC5IHxkxMI//YrJl
+	 zyi3tQkEVfqNwkSNlRaoemC/cbx25jyJz8mJAcgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 44/93] atm/fore200e: Fix possible data race in fore200e_open()
-Date: Wed,  3 Dec 2025 16:29:37 +0100
-Message-ID: <20251203152338.150102760@linuxfoundation.org>
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 099/132] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
+Date: Wed,  3 Dec 2025 16:29:38 +0100
+Message-ID: <20251203152346.954643306@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +57,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
+commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
 
-Protect access to fore200e->available_cell_rate with rate_mtx lock in the
-error handling path of fore200e_open() to prevent a data race.
+Data read from a DbC device may be corrupted due to a race between
+ongoing write and write request completion handler both queuing new
+transfer blocks (TRBs) if there are remining data in the kfifo.
 
-The field fore200e->available_cell_rate is a shared resource used to track
-available bandwidth. It is concurrently accessed by fore200e_open(),
-fore200e_close(), and fore200e_change_qos().
+TRBs may be in incorrct order compared to the data in the kfifo.
 
-In fore200e_open(), the lock rate_mtx is correctly held when subtracting
-vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
-However, if the subsequent call to fore200e_activate_vcin() fails, the
-function restores the reserved bandwidth by adding back to
-available_cell_rate without holding the lock.
+Driver fails to keep lock between reading data from kfifo into a
+dbc request buffer, and queuing the request to the transfer ring.
 
-This introduces a race condition because available_cell_rate is a global
-device resource shared across all VCCs. If the error path in
-fore200e_open() executes concurrently with operations like
-fore200e_close() or fore200e_change_qos() on other VCCs, a
-read-modify-write race occurs.
+This allows completed request to re-queue itself in the middle of
+an ongoing transfer loop, forcing itself between a kfifo read and
+request TRB write of another request
 
-Specifically, the error path reads the rate without the lock. If another
-CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
-fore200e_close()) between this read and the subsequent write, the error
-path will overwrite the concurrent update with a stale value. This results
-in incorrect bandwidth accounting.
+cpu0					cpu1 (re-queue completed req2)
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+lock(port_lock)
+dbc_start_tx()
+kfifo_out(fifo, req1->buffer)
+unlock(port_lock)
+					lock(port_lock)
+					dbc_write_complete(req2)
+					dbc_start_tx()
+      					kfifo_out(fifo, req2->buffer)
+					unlock(port_lock)
+					lock(port_lock)
+					req2->trb = ring->enqueue;
+					ring->enqueue++
+					unlock(port_lock)
+lock(port_lock)
+req1->trb = ring->enqueue;
+ring->enqueue++
+unlock(port_lock)
+
+In the above scenario a kfifo containing "12345678" would read "1234" to
+req1 and "5678" to req2, but req2 is queued before req1 leading to
+data being transmitted as "56781234"
+
+Solve this by adding a flag that prevents starting a new tx if we
+are already mid dbc_start_tx() during the unlocked part.
+
+The already running dbc_do_start_tx() will make sure the newly completed
+request gets re-queued as it is added to the request write_pool while
+holding the lock.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/fore200e.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci-dbgcap.h |    1 +
+ drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -1377,7 +1377,9 @@ fore200e_open(struct atm_vcc *vcc)
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -114,6 +114,7 @@ struct dbc_port {
+ 	unsigned int			tx_boundary;
  
- 	vcc->dev_data = NULL;
+ 	bool				registered;
++	bool				tx_running;
+ };
  
-+	mutex_lock(&fore200e->rate_mtx);
- 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
-+	mutex_unlock(&fore200e->rate_mtx);
+ struct dbc_driver {
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -47,7 +47,7 @@ dbc_kfifo_to_req(struct dbc_port *port,
+ 	return len;
+ }
  
- 	kfree(fore200e_vcc);
- 	return -EINVAL;
+-static int dbc_start_tx(struct dbc_port *port)
++static int dbc_do_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
+ {
+@@ -57,6 +57,8 @@ static int dbc_start_tx(struct dbc_port
+ 	bool			do_tty_wake = false;
+ 	struct list_head	*pool = &port->write_pool;
+ 
++	port->tx_running = true;
++
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+ 		len = dbc_kfifo_to_req(port, req->buf);
+@@ -77,12 +79,25 @@ static int dbc_start_tx(struct dbc_port
+ 		}
+ 	}
+ 
++	port->tx_running = false;
++
+ 	if (do_tty_wake && port->port.tty)
+ 		tty_wakeup(port->port.tty);
+ 
+ 	return status;
+ }
+ 
++/* must be called with port->port_lock held */
++static int dbc_start_tx(struct dbc_port *port)
++{
++	lockdep_assert_held(&port->port_lock);
++
++	if (port->tx_running)
++		return -EBUSY;
++
++	return dbc_do_start_tx(port);
++}
++
+ static void dbc_start_rx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
 
 
 
