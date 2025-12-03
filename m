@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643C0CA0F4E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CF0CA0D6C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0870034982BC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73A3933176A7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7E431ED91;
-	Wed,  3 Dec 2025 15:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7779235FF68;
+	Wed,  3 Dec 2025 16:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPiWqsCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3FJiKfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888A9320A05;
-	Wed,  3 Dec 2025 15:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E8135FF45;
+	Wed,  3 Dec 2025 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777524; cv=none; b=jC6CYW30JyGLGROcGyGZczTzZE6aah79fUnn5SFFS/0v6GB2XPNvZNSEvC1qnp9HqXO8qH0vVgwgEYoBsOrxuATFjQbRXDtc/0QELio7sbzS56O35InrN1zQj642tJHKRMdceWOTjwBvohsSJfGa/JMSB8JgacneBVuILBgG91g=
+	t=1764779290; cv=none; b=sx7oQcu4bhjWjpM5xQ2Zr9ZhNS+FVB2kjIYVVSRWxSw9Ht1oX56ll5VrR0dE7Dpk2RXPAWmSYxC1qx9vWeY9M2uxkO5pDcOG0pc27sTeOV+gbsuDegTizm1fgdc6XtQU79iYfgxmDSEL0xjufNGwxSHtYM6Vy7UMAj7NsDzWSQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777524; c=relaxed/simple;
-	bh=kYqujmHnvb3UBS9F5C2FAQW4D3jtem0MwyfAH7vm4J4=;
+	s=arc-20240116; t=1764779290; c=relaxed/simple;
+	bh=Eu7Vc3c1NyAvpUvG9xJ9RDi6AFUIuaECLCLJ6K6YStc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVd+ZfHHLh6DFJBT3Lzf/vEQUSfMhVrS1Xw3cvCtuNlkGYmNgC/5/lE1+Zl6dGlYcWpXk0d8gynkvjEehGMmaz9LieMkk0aztbKNxrCvifCvtmwVdeq+tGWEvyAkn4wPaZKz49WbxKuvOc4fXX35rOqJMEcdds/F+3ga5zN4kXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPiWqsCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806E1C4CEF5;
-	Wed,  3 Dec 2025 15:58:43 +0000 (UTC)
+	 MIME-Version; b=eW3vPar9ChUTk/C4kNXu7zKTT6+g1Ilt2BbEuU/gsbxane4K0jD2RjbD3sg+bWyJ3PF3IC5hBE7LzuG16JICH9OS+yCB9O2gNbj+moYJCJTcbnkxwn0KgYWZ7hwfqkHeWiD/v2DpEoTeSfa1N9sGo/K1a6dyFk9nKQCc1V7vkO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3FJiKfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777BFC4CEF5;
+	Wed,  3 Dec 2025 16:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777523;
-	bh=kYqujmHnvb3UBS9F5C2FAQW4D3jtem0MwyfAH7vm4J4=;
+	s=korg; t=1764779289;
+	bh=Eu7Vc3c1NyAvpUvG9xJ9RDi6AFUIuaECLCLJ6K6YStc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPiWqsCjB9F2xNJ8iy8aQ1oAAGn63VQo9uk3x+zw6wjC5WVtVyUJ4V8G81axembkc
-	 UZfw5kvL55kocrT04FxCqSZoG2drBd0Rz3WqKCTvKqnY80pCX0iNl0R+xeNAkNhLrT
-	 dW5zoD68Vk5oE5iOiuzlzzdrPFXCJ8W/CgoFBcIo=
+	b=S3FJiKfK4iwWQpXfN9Q0/TOqd7dMfNHMisZUd2myazf8hseYklc0S3xF+j263ROkH
+	 961QvAh6h0B5JxzhSh9aYTV38tj9+1I0iIymFM2fTiAzOCnt8xUSmkezQAaQQRWOTa
+	 e6/ytdirD33L5cxXWQq5yhcELf8rj7mZc5+2CcSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/392] serial: 8250_dw: Use devm_add_action_or_reset()
+Subject: [PATCH 6.1 180/568] mips: lantiq: danube: rename stp node on EASY50712 reference board
 Date: Wed,  3 Dec 2025 16:23:02 +0100
-Message-ID: <20251203152415.283998921@linuxfoundation.org>
+Message-ID: <20251203152447.322047368@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,145 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 295b09128d12fb1a7a67f771cc0ae0df869eafaf ]
+[ Upstream commit 2b9706ce84be9cb26be03e1ad2e43ec8bc3986be ]
 
-Slightly simplify ->probe() and drop a few goto labels by using
-devm_add_action_or_reset() for clock and reset cleanup.
+This fixes the following warning:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: stp@e100bb0 (lantiq,gpio-stp-xway): $nodename:0: 'stp@e100bb0' does not match '^gpio@[0-9a-f]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-stp-xway.yaml#
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20220509172129.37770-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: daeb4037adf7 ("serial: 8250_dw: handle reset control deassert error")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |   63 ++++++++++++++++++--------------------
- 1 file changed, 31 insertions(+), 32 deletions(-)
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -438,6 +438,16 @@ static void dw8250_quirks(struct uart_po
- 	}
- }
+diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+index ab70028dbefcf..c9f7886f57b8c 100644
+--- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+@@ -96,7 +96,7 @@
+ 			lantiq,tx-burst-length = <4>;
+ 		};
  
-+static void dw8250_clk_disable_unprepare(void *data)
-+{
-+	clk_disable_unprepare(data);
-+}
-+
-+static void dw8250_reset_control_assert(void *data)
-+{
-+	reset_control_assert(data);
-+}
-+
- static int dw8250_probe(struct platform_device *pdev)
- {
- 	struct uart_8250_port uart = {}, *up = &uart;
-@@ -539,35 +549,43 @@ static int dw8250_probe(struct platform_
- 	if (err)
- 		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
- 
-+	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->clk);
-+	if (err)
-+		return err;
-+
- 	if (data->clk)
- 		p->uartclk = clk_get_rate(data->clk);
- 
- 	/* If no clock rate is defined, fail. */
- 	if (!p->uartclk) {
- 		dev_err(dev, "clock rate not defined\n");
--		err = -EINVAL;
--		goto err_clk;
-+		return -EINVAL;
- 	}
- 
- 	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
--	if (IS_ERR(data->pclk)) {
--		err = PTR_ERR(data->pclk);
--		goto err_clk;
--	}
-+	if (IS_ERR(data->pclk))
-+		return PTR_ERR(data->pclk);
- 
- 	err = clk_prepare_enable(data->pclk);
- 	if (err) {
- 		dev_err(dev, "could not enable apb_pclk\n");
--		goto err_clk;
-+		return err;
- 	}
- 
-+	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->pclk);
-+	if (err)
-+		return err;
-+
- 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
--	if (IS_ERR(data->rst)) {
--		err = PTR_ERR(data->rst);
--		goto err_pclk;
--	}
-+	if (IS_ERR(data->rst))
-+		return PTR_ERR(data->rst);
-+
- 	reset_control_deassert(data->rst);
- 
-+	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
-+	if (err)
-+		return err;
-+
- 	dw8250_quirks(p, data);
- 
- 	/* If the Busy Functionality is not implemented, don't handle it */
-@@ -585,10 +603,8 @@ static int dw8250_probe(struct platform_
- 	}
- 
- 	data->data.line = serial8250_register_8250_port(up);
--	if (data->data.line < 0) {
--		err = data->data.line;
--		goto err_reset;
--	}
-+	if (data->data.line < 0)
-+		return data->data.line;
- 
- 	/*
- 	 * Some platforms may provide a reference clock shared between several
-@@ -609,17 +625,6 @@ static int dw8250_probe(struct platform_
- 	pm_runtime_enable(dev);
- 
- 	return 0;
--
--err_reset:
--	reset_control_assert(data->rst);
--
--err_pclk:
--	clk_disable_unprepare(data->pclk);
--
--err_clk:
--	clk_disable_unprepare(data->clk);
--
--	return err;
- }
- 
- static int dw8250_remove(struct platform_device *pdev)
-@@ -637,12 +642,6 @@ static int dw8250_remove(struct platform
- 
- 	serial8250_unregister_port(data->data.line);
- 
--	reset_control_assert(data->rst);
--
--	clk_disable_unprepare(data->pclk);
--
--	clk_disable_unprepare(data->clk);
--
- 	pm_runtime_disable(dev);
- 	pm_runtime_put_noidle(dev);
- 
+-		stp0: stp@e100bb0 {
++		stp0: gpio@e100bb0 {
+ 			#gpio-cells = <2>;
+ 			compatible = "lantiq,gpio-stp-xway";
+ 			gpio-controller;
+-- 
+2.51.0
+
 
 
 
