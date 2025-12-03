@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281A5CA097C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 721DDCA0C64
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B266032E1161
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBA8D316EED6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1E7346E7B;
-	Wed,  3 Dec 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041F03A1CF1;
+	Wed,  3 Dec 2025 16:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwpvQ8nD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlRmV4ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25998346E51;
-	Wed,  3 Dec 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2102D3A1CEE;
+	Wed,  3 Dec 2025 16:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780882; cv=none; b=VTvN/YBV1WJMelc3b5QLrO1IZP9xSJ9EctD1VYVSmUZrQ3c6LQ66ptV3jvAWUnCTjj/menCXDlb5BkrFdOQsElShj8+21X9Vbwt7isATCf44urTxvgSUdQ6O1W7ekMpmCAC9TnB4cAS8s/w1H8pyuc2iBc0qtBMnilj1lLeLYJE=
+	t=1764781092; cv=none; b=o+L3rVO5h1S3BICwtxQNzW+owXNcc5k14lC8IaMyuRbi2intpmzKQA+qF55ujTUlrWhSJMxgv+1z4h7pLDM5OYsX8HtK3trpfxHQi6/atzH5cYad6kG+32JaI9K4f0BFv577iVY3Q/abjJSRWUi6X+6cZ3VezPCsoI+cRnHlfog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780882; c=relaxed/simple;
-	bh=bYLze0U1e99T6fcAUFRB63+Q+FWHSnBWiMyLo0hbfJ4=;
+	s=arc-20240116; t=1764781092; c=relaxed/simple;
+	bh=EbUegxFOvTcUfX0d+JPl0u8PZjxkwxVFrPij8yBB+gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kS8rfB1DV9eqYnLT8mZeVozNRWlGyZpGEOv4fRjvzniM7IduTmAPptz7bZALfhn/Py4ovGOpRoFTLq3ECvzKfTqCqhZgqfFbzMG7Gxmst/H0jyTz5ZZe1xwTaoH28qfHnUjj95btymc0YtH6rTc3rfbTk92ONdNRDSnRLZVviw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwpvQ8nD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8139EC4CEF5;
-	Wed,  3 Dec 2025 16:54:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tE4rnGE9pB8v4Bj78RhNmtcN9rSwKaAHB8J8ksJNHB37VJdzHDhYgKLkieSVNckhZNpMY45Mx1e1TWfAENeMFVZYKNUKaIbAkLLU8ir01VNd76UaP13fqg0hxMv8TvlymWETxdxbMZcn2UuKoyanBXZ3GW2QM7xUfvt2xwx7DTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlRmV4ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3ACC4CEF5;
+	Wed,  3 Dec 2025 16:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780882;
-	bh=bYLze0U1e99T6fcAUFRB63+Q+FWHSnBWiMyLo0hbfJ4=;
+	s=korg; t=1764781091;
+	bh=EbUegxFOvTcUfX0d+JPl0u8PZjxkwxVFrPij8yBB+gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwpvQ8nD3YbsOLABLoehe26OMe+aOJhl2OSLKD5lWAYXLr7TuZSMrPOTaaCZdQdS/
-	 5mWHBz4L+Ek1/qKjmGeVow4qqvtHjw5tL1O90RFQnr+lEQvF2xzqp6nbQ02/LTURas
-	 7uP5VYzq23jc4m6iUZd9RjL6zdQJph5+ZAVQ2KRA=
+	b=rlRmV4juV4nSlZcPAv3wE1Ds+lmsniwqXNReRfJ5dppp69zpdYehNtHVPtRgOkib4
+	 SJOOHhrzART6sKIsN+YeVQA+FocFsiaWFsdhzkvrarBSM4y1kxOgtMTVMTpf9phd1b
+	 TPcYRALRWIyPNBXJ5uhGcBzZO+dQBI61hrbwJF3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
-Subject: [PATCH 6.12 100/132] xhci: dbgtty: fix device unregister
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 46/93] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:29:39 +0100
-Message-ID: <20251203152346.991007822@linuxfoundation.org>
+Message-ID: <20251203152338.223601186@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
+commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
 
-When DbC is disconnected then xhci_dbc_tty_unregister_device()
-is called. However if there is any user space process blocked
-on write to DbC terminal device then it will never be signalled
-and thus stay blocked indifinitely.
+Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
+to be reset. If we ever reach the condition of handling more than
+`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop body.
 
-This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
-The tty_vhangup() wakes up any blocked writers and causes subsequent
-write attempts to DbC terminal device to fail.
+This may, among other issues, cause us to never `netif_wake_queue()` again
+after a transmission interrupt.
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Cc: stable@vger.kernel.org
+Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/can/sun4i_can.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -518,6 +518,12 @@ static void xhci_dbc_tty_unregister_devi
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(i
+ 	u8 isrc, status;
+ 	int n = 0;
  
- 	if (!port->registered)
- 		return;
-+	/*
-+	 * Hang up the TTY. This wakes up any blocked
-+	 * writers and causes subsequent writes to fail.
-+	 */
-+	tty_vhangup(port->port.tty);
-+
- 	tty_unregister_device(dbc_tty_driver, port->minor);
- 	xhci_dbc_tty_exit_port(port);
- 	port->registered = false;
+-	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
+-	       (n < SUN4I_CAN_MAX_IRQ)) {
++	while ((n < SUN4I_CAN_MAX_IRQ) &&
++	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
+ 		n++;
+ 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
+ 
 
 
 
