@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-198301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823DAC9F875
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB9BC9FED9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 367BC3052C44
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6FB22300B6AA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC4A3112B2;
-	Wed,  3 Dec 2025 15:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED26343D9D;
+	Wed,  3 Dec 2025 16:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOtJP59/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emuKrZ7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFFC30F552;
-	Wed,  3 Dec 2025 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA3C3446AB;
+	Wed,  3 Dec 2025 16:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776094; cv=none; b=Svt+D7P+JKlzfNBiWbm4Z/JU+nRKasU5v0v5pkPW1/iiazBcnlvK7lg8lyLCOwcHzLUkoje5C4tRhPxtsujL+uh5kNOkP2wNn6ggHrSfO6dvyKFESSHxHM04v5Md/eW3OM6r9nBI6hAE0c6zrCgaM3RMCjcMmjEGLSAC8h8jR3I=
+	t=1764777853; cv=none; b=ip7GfHa4DZsTgpLNlVusA41G87TylhDT7j7ECUp7xISm0elwmtJUGDsQJ64+HqiE0wbNzqQwutLdLtM+lW/Rc7NCnFTEHzfmHN34Kqgtgsx8k7mE3ZibUjmDa3LFUU1UJHY/tP0kGQuSt9vBWtPgOmxHf7xx+v8ai9v2T9NerVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776094; c=relaxed/simple;
-	bh=uX2aklqOQcjZVhgadnRO6jvaVpXZL48KeI46mlYnNbQ=;
+	s=arc-20240116; t=1764777853; c=relaxed/simple;
+	bh=fsK8LqSW+Def1DtDXeN+qA4ESwvHWEgn59CYOIvVaqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufh0xlD+c5zjJn5KiVZZ8QcYqBSW/jOaJNz/x/8KOk9Jq0vht7ZXo+WdOgmCd4EEpBVfpbV046JYJk81eJwEP8WcIpTRrpjDPUNGZbs1XaBPlACWRT24itgGM58Dkxy7J/hO5Msxuo34Jz4mAM6cirQ3p7Ht5BiVRkHJmsuPYbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOtJP59/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3952BC116B1;
-	Wed,  3 Dec 2025 15:34:52 +0000 (UTC)
+	 MIME-Version; b=J7aI1/d7eZMV/fADyq7poKmZExr8I/cPnSsyzlktxGPNv7bH3jenP2SW9m4rAOyQk54KFLaqstmjXWhVTMDro9oxXoYDmbr3mp1ePqgz/z3TIVysjKUm72UUJjnoAN3loL8uTCE2vh1Zoc3fhY+o1E4/fuaBXpmdr0mXBi8nciQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emuKrZ7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC299C4CEF5;
+	Wed,  3 Dec 2025 16:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776093;
-	bh=uX2aklqOQcjZVhgadnRO6jvaVpXZL48KeI46mlYnNbQ=;
+	s=korg; t=1764777853;
+	bh=fsK8LqSW+Def1DtDXeN+qA4ESwvHWEgn59CYOIvVaqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOtJP59/mxyrlvhNWU3jkHmjZW5kddheMhYQDsOneFHQDkwUyQWJrUrNDc99CaKq3
-	 Qshpum0QJ9Bvs7M+d4P5ofVVhKhQuui8KNDBAreCS1TVUYq3Z94S5HfqLK3Mqqua2Q
-	 PaEq/852czqHeSDxz1tXbgrPeKVna2P8kDr/5+tk=
+	b=emuKrZ7O85dVKzzR54DmKXLXpBq1ynCFhfCvSD5jOhQAquG7nzcNmn5KLSgbiRwQo
+	 +uM2WMZLBQFeRkBhtAPSz6Ls23fuQVYvyxcOtMN3eqRgUTfIwJ6QrdQ0MruxvxkpP/
+	 C7hg1VnT7ggP0QiwuFuBejkOHXyz0tzoHkpl8Cpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/300] powerpc/eeh: Use result of error_detected() in uevent
-Date: Wed,  3 Dec 2025 16:24:43 +0100
-Message-ID: <20251203152403.551579462@linuxfoundation.org>
+Subject: [PATCH 5.15 134/392] net: call cond_resched() less often in __release_sock()
+Date: Wed,  3 Dec 2025 16:24:44 +0100
+Message-ID: <20251203152419.022432231@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 704e5dd1c02371dfc7d22e1520102b197a3b628b ]
+[ Upstream commit 16c610162d1f1c332209de1c91ffb09b659bb65d ]
 
-Ever since uevent support was added for AER and EEH with commit
-856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume"), it
-reported PCI_ERS_RESULT_NONE as uevent when recovery begins.
+While stress testing TCP I had unexpected retransmits and sack packets
+when a single cpu receives data from multiple high-throughput flows.
 
-Commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for
-udev") subsequently amended AER to report the actual return value of
-error_detected().
+super_netperf 4 -H srv -T,10 -l 3000 &
 
-Make the same change to EEH to align it with AER and s390.
+Tcpdump extract:
 
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Link: https://lore.kernel.org/linux-pci/aIp6LiKJor9KLVpv@wunner.de/
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Link: https://patch.msgid.link/20250807-add_err_uevents-v5-3-adf85b0620b0@linux.ibm.com
+ 00:00:00.000007 IP6 clnt > srv: Flags [.], seq 26062848:26124288, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26124288:26185728, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26185728:26243072, ack 1, win 66, options [nop,nop,TS val 651460834 ecr 3100749131], length 57344
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26243072:26304512, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26304512:26365952, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 61440
+ 00:00:00.000007 IP6 clnt > srv: Flags [P.], seq 26365952:26423296, ack 1, win 66, options [nop,nop,TS val 651460844 ecr 3100749141], length 57344
+ 00:00:00.000006 IP6 clnt > srv: Flags [.], seq 26423296:26484736, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [.], seq 26484736:26546176, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 61440
+ 00:00:00.000005 IP6 clnt > srv: Flags [P.], seq 26546176:26603520, ack 1, win 66, options [nop,nop,TS val 651460853 ecr 3100749150], length 57344
+ 00:00:00.003932 IP6 clnt > srv: Flags [P.], seq 26603520:26619904, ack 1, win 66, options [nop,nop,TS val 651464844 ecr 3100753141], length 16384
+ 00:00:00.006602 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651471419 ecr 3100759716], length 4096
+ 00:00:00.013000 IP6 clnt > srv: Flags [.], seq 24862720:24866816, ack 1, win 66, options [nop,nop,TS val 651484421 ecr 3100772718], length 4096
+ 00:00:00.000416 IP6 srv > clnt: Flags [.], ack 26619904, win 1393, options [nop,nop,TS val 3100773185 ecr 651484421,nop,nop,sack 1 {24862720:24866816}], length 0
+
+After analysis, it appears this is because of the cond_resched()
+call from  __release_sock().
+
+When current thread is yielding, while still holding the TCP socket lock,
+it might regain the cpu after a very long time.
+
+Other peer TLP/RTO is firing (multiple times) and packets are retransmit,
+while the initial copy is waiting in the socket backlog or receive queue.
+
+In this patch, I call cond_resched() only once every 16 packets.
+
+Modern TCP stack now spends less time per packet in the backlog,
+especially because ACK are no longer sent (commit 133c4c0d3717
+"tcp: defer regular ACK while processing socket backlog")
+
+Before:
+
+clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
+TcpOutSegs                      19046186           0.0
+TcpRetransSegs                  1471               0.0
+TcpExtTCPTimeouts               1397               0.0
+TcpExtTCPLossProbes             1356               0.0
+TcpExtTCPDSACKRecv              1352               0.0
+TcpExtTCPSpuriousRTOs           114                0.0
+TcpExtTCPDSACKRecvSegs          1352               0.0
+
+After:
+
+clnt:/# nstat -n;sleep 10;nstat|egrep "TcpOutSegs|TcpRetransSegs|TCPFastRetrans|TCPTimeouts|Probes|TCPSpuriousRTOs|DSACK"
+TcpOutSegs                      19218936           0.0
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250903174811.1930820-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/sock.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index ed5be1bff60ca..2f13d906e1fcb 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -335,7 +335,7 @@ static enum pci_ers_result eeh_report_error(struct eeh_dev *edev,
- 	rc = driver->err_handler->error_detected(pdev, pci_channel_io_frozen);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 645860eace46d..b4e605ac79c9f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2716,23 +2716,27 @@ void __release_sock(struct sock *sk)
+ 	__acquires(&sk->sk_lock.slock)
+ {
+ 	struct sk_buff *skb, *next;
++	int nb = 0;
  
- 	edev->in_error = true;
--	pci_uevent_ers(pdev, PCI_ERS_RESULT_NONE);
-+	pci_uevent_ers(pdev, rc);
- 	return rc;
- }
+ 	while ((skb = sk->sk_backlog.head) != NULL) {
+ 		sk->sk_backlog.head = sk->sk_backlog.tail = NULL;
  
+ 		spin_unlock_bh(&sk->sk_lock.slock);
+ 
+-		do {
++		while (1) {
+ 			next = skb->next;
+ 			prefetch(next);
+ 			WARN_ON_ONCE(skb_dst_is_noref(skb));
+ 			skb_mark_not_on_list(skb);
+ 			sk_backlog_rcv(sk, skb);
+ 
+-			cond_resched();
+-
+ 			skb = next;
+-		} while (skb != NULL);
++			if (!skb)
++				break;
++
++			if (!(++nb & 15))
++				cond_resched();
++		}
+ 
+ 		spin_lock_bh(&sk->sk_lock.slock);
+ 	}
 -- 
 2.51.0
 
