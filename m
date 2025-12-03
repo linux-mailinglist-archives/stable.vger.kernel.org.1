@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4169AC9FAFA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:53:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2840CA11D9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC36D3006F52
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C4AF9300214E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2EF30C61E;
-	Wed,  3 Dec 2025 15:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0B232FA16;
+	Wed,  3 Dec 2025 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q19lMm0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYoNdTWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374B23074A0;
-	Wed,  3 Dec 2025 15:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4823C32FA07;
+	Wed,  3 Dec 2025 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776694; cv=none; b=rUIwF5T9sBjOKS32Zj+TE0UZ2Td64vGGWVCyh0ACsaNEa/6aYPLDXDg5X2GfERV+JXR2IrydYbogklN+F6cl1HyJLYvz7y8kPm4k41ODQDvDPZH5Ovvl0igLSL13O6jboFZI9NXhycqkwOqb8SzWZvVi5Uk4jAXdFf0ZcKjm7hQ=
+	t=1764777108; cv=none; b=Mxwyrgt1WyL4FGJLlGHPyaAMRk8Hgjo1oF7kLalCOaTrRMpWg73w7G59NAqR1hCSZOUW37GUzkmvmeVWr6iol8jhAUlqGD2j7uMlSFz/hW9gnpXw3jvPTA21GQmwpm4EvRCotQRYxwo10AvReoOeDo1mChIriCY0SZzTHvz9Ths=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776694; c=relaxed/simple;
-	bh=n5Z5bBut5ZH8xHZVrb2FxAMH96HSR+Y1HuO3fjlkCV0=;
+	s=arc-20240116; t=1764777108; c=relaxed/simple;
+	bh=Nn67rhH3+VlOiSHlaP6SW5uCvBSF4OpFjQHlmUH+gQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNao2TcfYDhubxZoMPUwyAzrxQgQJElywKxfmzkg/sOcLANQoHpkl5oDR1TeDvprLzoODcFMjrxSwScjQl6x2hQehzfNMdyslv2JxZUKCujYBsakRQUjN1YGyrQhp1lPsIeW7DPaP+zsAlwBQX9GtgCqgWBpUF3lDOi2l4RYQro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q19lMm0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7467AC4CEF5;
-	Wed,  3 Dec 2025 15:44:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OoJ2fOiY5jr7a4jMA9Lqroaj1eZV5yQzQkWA1AQ52J8nvTsXwQXkumgvvIBR03CVnX68ixbjyOJvVNYNBGJaEj3A65DPhcko5ylw4Fyzo0Hbaqhqi38qNoBs8YQc8jVU3mkQ1dlWra5PJFbY1HuHHEPNjCa2Wi/XuHEoOdpU1BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYoNdTWl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA65DC4CEF5;
+	Wed,  3 Dec 2025 15:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776693;
-	bh=n5Z5bBut5ZH8xHZVrb2FxAMH96HSR+Y1HuO3fjlkCV0=;
+	s=korg; t=1764777108;
+	bh=Nn67rhH3+VlOiSHlaP6SW5uCvBSF4OpFjQHlmUH+gQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q19lMm0q3xDxMdfw24bKJFeinpOm/FI/5Fq6SfOYjlYUsq/7DiH+74RCGLWKnuV6j
-	 1n5Rlnm2mXENgfStIuUlL/AcJZbifs+h323OQbZuv9t8ZwC/P/aA/ymeTEdaYakrr8
-	 stJwzrChcjw/DYrjy7d1k8L81wPBbqJHbkMZUK30=
+	b=zYoNdTWlX8aHklo1AbY8euVfrX6ugSwfWMo2wHiri0oCq8CNfa0nWmUhFnSxw0M60
+	 0yBtX9MSihB3Nnk4oqvvbSwQ65iNaEh2Gjp7LxgfKjbRGPwAcLJNpywD5axJfWAaSY
+	 saYTeP080As5diQTXgcbNnERpiDMXQB1j+ua7z00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Costantino <dcostantino@meta.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/300] net/mlx5e: Fix validation logic in rate limiting
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.17 085/146] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:27:43 +0100
-Message-ID: <20251203152410.233568000@linuxfoundation.org>
+Message-ID: <20251203152349.573255217@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Costantino <dcostantino@meta.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
+commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
 
-The rate limiting validation condition currently checks the output
-variable max_bw_value[i] instead of the input value
-maxrate->tc_maxrate[i]. This causes the validation to compare an
-uninitialized or stale value rather than the actual requested rate.
+Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
+to be reset. If we ever reach the condition of handling more than
+`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop body.
 
-The condition should check the input rate to properly validate against
-the upper limit:
+This may, among other issues, cause us to never `netif_wake_queue()` again
+after a transmission interrupt.
 
-    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
-
-This aligns with the pattern used in the first branch, which correctly
-checks maxrate->tc_maxrate[i] against upper_limit_mbps.
-
-The current implementation can lead to unreliable validation behavior:
-
-- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
-  from initialization, the GBPS path may be taken regardless of whether
-  the actual rate is within bounds
-
-- When processing multiple TCs (i > 0), max_bw_value[i] contains the
-  value computed for the previous TC, affecting the validation logic
-
-- The overflow check for rates exceeding 255 Gbps may not trigger
-  consistently depending on previous array values
-
-This patch ensures the validation correctly examines the requested rate
-value for proper bounds checking.
-
-Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
-Signed-off-by: Danielle Costantino <dcostantino@meta.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Cc: stable@vger.kernel.org
+Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/sun4i_can.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 5c48a4872f35d..5d0be9703a48e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -606,7 +606,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else if (max_bw_value[i] <= upper_limit_gbps) {
-+		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
--- 
-2.51.0
-
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(i
+ 	u8 isrc, status;
+ 	int n = 0;
+ 
+-	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
+-	       (n < SUN4I_CAN_MAX_IRQ)) {
++	while ((n < SUN4I_CAN_MAX_IRQ) &&
++	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
+ 		n++;
+ 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
+ 
 
 
 
