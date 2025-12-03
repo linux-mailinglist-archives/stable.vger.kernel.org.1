@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890B1CA17F0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ACFCA1008
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7C833071F9D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A678351D359
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7E134AB19;
-	Wed,  3 Dec 2025 16:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10523557E8;
+	Wed,  3 Dec 2025 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIy5Zqig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uzrQJNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F434AB12;
-	Wed,  3 Dec 2025 16:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA527352F96;
+	Wed,  3 Dec 2025 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778464; cv=none; b=HrAHV4eQZWldDE1X/Qi8FAodSGh/sMvvDTGzeM5ozk0FmyuK07j8KcX64weGujSEg9PuQ62ETtE4PhFkMtqq0Zw26B25QrV9uAUqRIRD5nPvF31CFh6Ys+ryU7jFyRPwLl2JCX33OGjpwnFQ7iR5iprPQBnv6jyeZtxUrNnVREA=
+	t=1764780253; cv=none; b=Agp1ZaFIlkJWPt/IbbMO9nUlWlTfehXfq68OSBErI9hUJ6GCR/E9uw/ljo6tPcAZ/obB3bc1J0RE3vekRkK1WvLFPS6skKzehd1xmFVmAJ/l89TNIgj8KE7xyZWXw4dazuDoaisJR/P7duaLtTSTDgIJtT7GYxFNCzSBaerJvTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778464; c=relaxed/simple;
-	bh=nvYqsDmLns+JWopmqmu9P0QmsFi0FwwB574JNFPEfyM=;
+	s=arc-20240116; t=1764780253; c=relaxed/simple;
+	bh=zJDnNDrx45kehE+yw6oahSAj15O3o/Z/EFc5EOSZ59M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpqRH2DylWHz2nNUotelE1OwgfYYFwressiqGS9/982CG6OWNwibVM+PR4T2sdQEfrqb6tivyv7tqsYJhCpCZChlq5LkbC868HS3+sks7LgfBf55dYvpbOPhGKSLB0mjW4i/h7M4glAab37YOlIHknTa8TzDu6jHgwMmowTH0zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIy5Zqig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AFDC4CEF5;
-	Wed,  3 Dec 2025 16:14:23 +0000 (UTC)
+	 MIME-Version; b=meHxTPufELqrL57p4f76XAdRlQ31BK/Hh9hvXFh3IIZbMieQx+IsEry6BMmnKgRDMf0rQcCM2rzTa0DPhHOVnxFhKFhZ7GfL3BY8H6PpuNrDJk+EceIQBq+TjvxRXXLwAyKycRWTVivGDKlWQOc4HwNqbWeZRmRhz1AbX7Cmtg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uzrQJNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C7C4CEF5;
+	Wed,  3 Dec 2025 16:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778463;
-	bh=nvYqsDmLns+JWopmqmu9P0QmsFi0FwwB574JNFPEfyM=;
+	s=korg; t=1764780253;
+	bh=zJDnNDrx45kehE+yw6oahSAj15O3o/Z/EFc5EOSZ59M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIy5ZqigEExKf1ReEEgRKs7kt5oMEsiJ7a1ctn/mBeyun3y0M4Th9Xnq2ggtkfEuT
-	 40yypHkBbeQiPJdrgwxd+LGHzdORX0t5pxsmZV6qAzW6BKcWugS6Zeaw/WkhIs7N+W
-	 8RyOQTOCTwe1/y1UYInUf1h348M1Q+zXtOaX5EYE=
+	b=2uzrQJNMosUe/l0jR//Hd63XvJOsJ8R3TpflH+axEQLrtPOQNl1D48llYljY7H0eQ
+	 hqBgn2E8b7yJRZwxNWcws5EF+L5NZCCP4INee4IZb1FpRwHVAyH8sDcp5RDZtMpf5c
+	 LQm2O3nom2NH3Uoq2IXbAij8Z1vAflpJpQBPcqdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Klara Modin <klarasmodin@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 354/392] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 502/568] drm/amdgpu: fix cyan_skillfish2 gpu info fw handling
 Date: Wed,  3 Dec 2025 16:28:24 +0100
-Message-ID: <20251203152427.191354076@linuxfoundation.org>
+Message-ID: <20251203152459.100127802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +59,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+[ Upstream commit 7fa666ab07ba9e08f52f357cb8e1aad753e83ac6 ]
 
-Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
-cores can have more than 64 TLB entries.  Therefore allocate an array
-for uniquification instead of placing too an small array on the stack.
+If the board supports IP discovery, we don't need to
+parse the gpu info firmware.
 
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
-Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Cc: stable@vger.kernel.org # v6.17+
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Backport to 6.18.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4721
+Fixes: fa819e3a7c1e ("drm/amdgpu: add support for cyan skillfish gpu_info")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5427e32fa3a0ba9a016db83877851ed277b065fb)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -512,17 +513,26 @@ static int r4k_vpn_cmp(const void *a, co
-  * Initialise all TLB entries with unique values that do not clash with
-  * what we have been handed over and what we'll be using ourselves.
-  */
--static void r4k_tlb_uniquify(void)
-+static void __ref r4k_tlb_uniquify(void)
- {
--	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
- 	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
- 	int start = num_wired_entries();
-+	phys_addr_t tlb_vpn_size;
-+	unsigned long *tlb_vpns;
- 	unsigned long vpn_mask;
- 	int cnt, ent, idx, i;
- 
- 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
- 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
- 
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
-+
- 	htw_stop();
- 
- 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-@@ -575,6 +585,10 @@ static void r4k_tlb_uniquify(void)
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-+	if (use_slab)
-+		kfree(tlb_vpns);
-+	else
-+		memblock_free(tlb_vpns, tlb_vpn_size);
- }
- 
- /*
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index f18f165876043..38b81ae236cb3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2021,6 +2021,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
+ 		chip_name = "navi12";
+ 		break;
+ 	case CHIP_CYAN_SKILLFISH:
++		if (adev->mman.discovery_bin)
++			return 0;
+ 		chip_name = "cyan_skillfish";
+ 		break;
+ 	}
+-- 
+2.51.0
+
 
 
 
