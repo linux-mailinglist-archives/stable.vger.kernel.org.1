@@ -1,149 +1,125 @@
-Return-Path: <stable+bounces-199560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6C7CA016D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C87CA1005
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C3AE30022B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A282930D8950
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FB135CBCB;
-	Wed,  3 Dec 2025 16:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7428034B68A;
+	Wed,  3 Dec 2025 16:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMJmOKBS"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="ChzS+WEs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA2E35FF46;
-	Wed,  3 Dec 2025 16:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785F934B413
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 16:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780201; cv=none; b=CqpeglVf0keKRXA6I+G0M7+pmoO4sl/tV+FIshcu+5f99t2Hulr7nAVj3RLfID+qLHpGxCdxZcGuhQC0qLvY8dwx3F1RuFDwaqhLEJ4j2B0JbpGGoUvaRyUe45a5F7pY+q0PQcvJK3t8Vl7la/YcMftPj+NRrO6rv1Znf+8IauM=
+	t=1764780235; cv=none; b=Ul642VwN1CVaiVgcLhrGzUdN35a5mqo6qr6NWNvEg0FFA8lXkaq8xSoTr5kpLCRSYxOLTO6umOJn3CxCZSJ6bfoM/t5pheMhI7TtuuxNsi4quOK2WYZm92xlr8oEUNY20+wiImW9NMYewzLBv+bhX4cBqXvGljZMvjSx6zhGQSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780201; c=relaxed/simple;
-	bh=1XNQS0lbn9FevDFX+NqC8EFfjK6r037ERyxzwj6yRtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rvWNd1mrXy6u/qJsOIOsTpaCUiJJqFrUaOwkASsG/Pak8hkB8580wTRQngM+8854lq44PR/1GXedcxMeL7cjnavoPGw/01S4cJaLjhzn7VbO0YzpkAlwWuHLyIB5V1Ku6kOnn31pD5QoWnOibCwAiiTzQk7JQh3TGbd84gRj7qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMJmOKBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB3FC4CEF5;
-	Wed,  3 Dec 2025 16:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764780201;
-	bh=1XNQS0lbn9FevDFX+NqC8EFfjK6r037ERyxzwj6yRtA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GMJmOKBSwDtijIjhVAv3lZAEXFA8Yg75apJnBXD7HeB41Pcbx4cEfrGe5PC453Zwb
-	 0KSjymC4CyxhG91V4UP+V+lgmtigbMB6EdZgdlpZ/KdfV/2cg6Gj5pFEN+HxAxhfxm
-	 ekGvhYvlws2XvOGcvo3spTIC88zChQSeKvrDvJdDArfUveZU4ApFeEcnOwFuCIspv0
-	 FiWrutG1OQHIwSSeJ7oCxlukKtE2D5JRw9uli5xeysT7leY1KC9Do3Ll3Q66hrMJbi
-	 ZzCpg59GJ1gatpTK4jrU3K2cyIdj5YmogAU0MVLmc03HISbQEiNI8GVIbiuUpjU2gz
-	 UF8KLZa5msswQ==
-Date: Wed, 3 Dec 2025 13:43:17 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Jon Kohler <jon@nutanix.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Tomas Glozar <tglozar@redhat.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] perf build: build BPF skeletons with fPIC
-Message-ID: <aTBopdY6tmmxbDuu@x1>
-References: <20251203035526.1237602-1-jon@nutanix.com>
+	s=arc-20240116; t=1764780235; c=relaxed/simple;
+	bh=C347GRmJDNHW6eA8F9VxDj4f7e7nJ4BRnT7xWbVUM0M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q/bav1xKhYJjQ9pAVUf/tih3i8VqkXaihBj8bg36DpjHJ+TH+OmkzCFQ+X2TCdGihgUe3+sg8vImjBkJEgnDRh7q9RVxH2LVURCJD1jcRKpBLr2MeNO0JZ7LK7wTnSEDSzkCkkSxos3WpeR97nlkafkBwdkNpjXN9aVbk3OQu4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=ChzS+WEs; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1764780229; x=1765039429;
+	bh=nxrvBXGpA1Q+nnlGY6f0s+0LHNsraSWWBUdSBcXFF08=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ChzS+WEsjeMWAL/FoYDDx8ErAUE1ldyouBZhZrMc58wd/Wb4ajYmXBHagzFO1uJWR
+	 yBsOF7rUr7qHvjP/Cmu7iJyqfrl4VeW1O6XfEIuY92AtHWK4p+apC3NOTLchtUsG9r
+	 IpvoR1lHrM8kKfm10b9mZbwaw6BudNM/yH1N0kpnzwBtdSxMsM8A1CGMU2cceRRDTT
+	 zfs6HhYi3HYFAf29GkWCDS7nDiDWB3LTRBr3n3hQGfGCdI7mET+u1qWgxIbZAiFYGj
+	 arZx81GcvT/9nDR1Z9Nxm9NZ9TyJEo5YFcqptxFOTr6uyzCx1scz7coSnQ3oo9E89J
+	 xDFqpt2Dj2KyQ==
+Date: Wed, 03 Dec 2025 16:43:43 +0000
+To: Andrey Konovalov <andreyknvl@gmail.com>
+From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] kasan: Refactor pcpu kasan vmalloc unpoison
+Message-ID: <bi7dif47rpmdymfu3fkuz432vv5p2tmabk5snpqo27f5fitq5x@xap7rkeqejrj>
+In-Reply-To: <CA+fCnZcNoLERGmjyVV=ykD62hPRkPua4AqKE083BBm6OHmGtPw@mail.gmail.com>
+References: <cover.1764685296.git.m.wieczorretman@pm.me> <3907c330d802e5b86bfe003485220de972aaac18.1764685296.git.m.wieczorretman@pm.me> <CA+fCnZcNoLERGmjyVV=ykD62hPRkPua4AqKE083BBm6OHmGtPw@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 0dd43d3234ed39ac31442c89bad75ed3613a9e3d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203035526.1237602-1-jon@nutanix.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 02, 2025 at 08:55:26PM -0700, Jon Kohler wrote:
-> Fix Makefile.perf to ensure that bpf skeletons are built with fPIC.
-> 
-> When building with BUILD_BPF_SKEL=1, bpf_skel's was not getting built
-> with fPIC, seeing compilation failures like:
-> 
-> /usr/bin/ld: /builddir/.../tools/perf/util/bpf_skel/.tmp/bootstrap/main.o:
->   relocation R_X86_64_32 against `.rodata.str1.8' can not be used when
->   making a PIE object; recompile with -fPIE
-> 
-> Bisected down to 6.18 commit a39516805992 ("tools build: Don't assume
-> libtracefs-devel is always available").
-> 
-> Fixes: a39516805992 ("tools build: Don't assume libtracefs-devel is always available")
+On 2025-12-03 at 16:53:04 +0100, Andrey Konovalov wrote:
+>On Tue, Dec 2, 2025 at 3:29=E2=80=AFPM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>>
+...
+>> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+>> index d4c14359feaf..7884ea7d13f9 100644
+>> --- a/mm/kasan/common.c
+>> +++ b/mm/kasan/common.c
+>> @@ -28,6 +28,7 @@
+>>  #include <linux/string.h>
+>>  #include <linux/types.h>
+>>  #include <linux/bug.h>
+>> +#include <linux/vmalloc.h>
+>>
+>>  #include "kasan.h"
+>>  #include "../slab.h"
+>> @@ -582,3 +583,19 @@ bool __kasan_check_byte(const void *address, unsign=
+ed long ip)
+>>         }
+>>         return true;
+>>  }
+>> +
+>> +#ifdef CONFIG_KASAN_VMALLOC
+>> +void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+>> +                              kasan_vmalloc_flags_t flags)
+>
+>kasan_unpoison_vmap_areas() needs to be defined in
+>inclunde/linux/kasan.h and call __kasan_unpoison_vmap_areas() when
+>kasan_enabled() =3D=3D true, similar to the other wrappers.
+>
+>And check my comment for patch #2: with that, you should not need to
+>add so many new __helpers: just __kasan_unpoison_vmalloc and
+>__kasan_unpoison_vmap_areas should suffice.
 
-How come, this patch is just:
+Okay, I think I see what you mean. I was trying to avoid using
+__kasan_unpoison_vmalloc() here so that it compiled properly, but that
+was before I added the ifdef guard. Now there is not reason not to use
+it here.
 
-diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
-index 9c1a69d26f5121fd..531f8fc4f7df9943 100644
---- a/tools/build/Makefile.feature
-+++ b/tools/build/Makefile.feature
-@@ -83,7 +83,6 @@ FEATURE_TESTS_BASIC :=                  \
-         libpython                       \
-         libslang                        \
-         libtraceevent                   \
--        libtracefs                      \
-         libcpupower                     \
-         pthread-attr-setaffinity-np     \
-         pthread-barrier                \
-diff --git a/tools/build/feature/test-all.c b/tools/build/feature/test-all.c
-index e1847db6f8e63750..2df593593b6ec15e 100644
---- a/tools/build/feature/test-all.c
-+++ b/tools/build/feature/test-all.c
-@@ -150,10 +150,6 @@
- # include "test-libtraceevent.c"
- #undef main
+I'll make the changes you mentioned.
 
--#define main main_test_libtracefs
--# include "test-libtracefs.c"
--#undef main
--
- int main(int argc, char *argv[])
- {
-        main_test_libpython();
-@@ -187,7 +183,6 @@ int main(int argc, char *argv[])
-        main_test_reallocarray();
-        main_test_libzstd();
-        main_test_libtraceevent();
--       main_test_libtracefs();
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
-        return 0;
-}
+>
+>> +{
+>> +       unsigned long size;
+>> +       void *addr;
+>> +       int area;
+>> +
+>> +       for (area =3D 0 ; area < nr_vms ; area++) {
+>> +               size =3D vms[area]->size;
+>> +               addr =3D vms[area]->addr;
+>> +               vms[area]->addr =3D __kasan_unpoison_vmap_areas(addr, si=
+ze, flags);
+>> +       }
+>> +}
+>> +#endif
 
-
-----
-
-And your patch is touching building bpftool? Seems very unrelated :-\
-
-- Arnaldo
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jon Kohler <jon@nutanix.com>
-> ---
->  tools/perf/Makefile.perf | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-> index 02f87c49801f..4557c2e89e88 100644
-> --- a/tools/perf/Makefile.perf
-> +++ b/tools/perf/Makefile.perf
-> @@ -1211,7 +1211,7 @@ endif
->  
->  $(BPFTOOL): | $(SKEL_TMP_OUT)
->  	$(Q)CFLAGS= $(MAKE) -C ../bpf/bpftool \
-> -		OUTPUT=$(SKEL_TMP_OUT)/ bootstrap
-> +		EXTRA_CFLAGS="-fPIC" OUTPUT=$(SKEL_TMP_OUT)/ bootstrap
->  
->  # Paths to search for a kernel to generate vmlinux.h from.
->  VMLINUX_BTF_ELF_PATHS ?= $(if $(O),$(O)/vmlinux)			\
-> -- 
-> 2.43.0
 
