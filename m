@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20546CA0349
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EEFCA090F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4EA43030919
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88D0832AEFA3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C530345CBF;
-	Wed,  3 Dec 2025 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4B30F929;
+	Wed,  3 Dec 2025 15:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLK+RNoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3Ny28vQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EE6345759;
-	Wed,  3 Dec 2025 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784E2313E26;
+	Wed,  3 Dec 2025 15:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778292; cv=none; b=Mb5mtNLYZ5AkOF+FWNb3diaEpsiamjcRELnvCP+H3rpVFIMJc9GC9TJRy/A0R3+W0j9NC+c4sGdR6BR11ZT4mfLQib/CtBJKum5LGhtNBQn/qNCfPFE7hkGJq3ByeMVNRJwHxDANVhwxElMzO9xlk9uhpM/g2RVMspXLJNXC1t8=
+	t=1764776761; cv=none; b=ielv1LDY0zqkX1dIncjeNgd1eZeOGGmNjsCGwgnZwqmgWbhK8nMEfVFcvpbi8PjmFTRsFuPUrB/mktBee2yHAj+8zVp+7DnkErzbITpOIwbN++qANh/AuXPqfI8XSPYl8z1IoAQNTVC6D7RkfN67hvYjoXsUa+uDwx2//6J94Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778292; c=relaxed/simple;
-	bh=KRYhewRz7rigzkdviFkL1IgfVcNX7AXDKHxK120FQnw=;
+	s=arc-20240116; t=1764776761; c=relaxed/simple;
+	bh=D1j7SA6YOrDSl2Nx+1B7pMsCGOvEYZmQrG/RR/NoOvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5zP/w/r4dCz7/5kM84UZzfB1ICFvPmNxHnAqrMP2s04KL4QEHSSPXfaJs1cpqr4fShBfKhdfudASygXy65iah04mW7d2iOlba5o3/yvDs9FZyU+Ziwun0eWrT0NDB04SS/xI4/UdVYjifjTyslGC/ob7mdEV6zxga3xYcdOGvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLK+RNoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF83C4CEF5;
-	Wed,  3 Dec 2025 16:11:31 +0000 (UTC)
+	 MIME-Version; b=Rox9uKoZzVkUcYPF63S69lEo0/kxAR3KsdiSiOEK9N/L+xqxi1zNg8d6RTh4x4/K9j2wxSVruXeAO7ZWgydA7qe5bE1Krs8bDm+2gqYowoExXG/Ud75iHkSrydkDcesdzUyRFQ9i+xb6Pn/j/kBhLpRXFpWw9/Nq8P+hdXdtZUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Ny28vQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2A5C4CEF5;
+	Wed,  3 Dec 2025 15:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778292;
-	bh=KRYhewRz7rigzkdviFkL1IgfVcNX7AXDKHxK120FQnw=;
+	s=korg; t=1764776761;
+	bh=D1j7SA6YOrDSl2Nx+1B7pMsCGOvEYZmQrG/RR/NoOvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLK+RNoLHFmEUyGWfxX1QaCENgR9Q/e2IrBUOBdHZ7S7VJO49yaAbP5QA/vcd/cS3
-	 RPCBBf2TaJzsfOiVi0nJlj+4Llm1BLEc2RzqQDggA0OwcV66ngURzAY4RydwFkTgzu
-	 j+oBzY72TCwI3ZN9dyPw5mMFzyj2NYAlT0A2ghDE=
+	b=q3Ny28vQe9U1NPBXkjauNRFpl/GJ7gVQmjMXddBpm7d5+WHUQs3YeW5bXeAKeNXYF
+	 7vdbYsXcibUBn+o6oQDgugesFM4qTUJsRi44KVbmHIZ5Ei4AF1R68XARfbDpu9Jk+D
+	 4cQacjLV1NMBxc3S1IKLwU6NgNyG9cz2wr/upb+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Stefano Garzarella <sgarzare@redhat.com>,
+	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 301/392] vsock: Ignore signal/timeout on connect() if already established
+Subject: [PATCH 5.10 247/300] mptcp: fix race condition in mptcp_schedule_work()
 Date: Wed,  3 Dec 2025 16:27:31 +0100
-Message-ID: <20251203152425.243603270@linuxfoundation.org>
+Message-ID: <20251203152409.782877883@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 002541ef650b742a198e4be363881439bb9d86b4 ]
+[ Upstream commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea ]
 
-During connect(), acting on a signal/timeout by disconnecting an already
-established socket leads to several issues:
+syzbot reported use-after-free in mptcp_schedule_work() [1]
 
-1. connect() invoking vsock_transport_cancel_pkt() ->
-   virtio_transport_purge_skbs() may race with sendmsg() invoking
-   virtio_transport_get_credit(). This results in a permanently elevated
-   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
+Issue here is that mptcp_schedule_work() schedules a work,
+then gets a refcount on sk->sk_refcnt if the work was scheduled.
+This refcount will be released by mptcp_worker().
 
-2. connect() resetting a connected socket's state may race with socket
-   being placed in a sockmap. A disconnected socket remaining in a sockmap
-   breaks sockmap's assumptions. And gives rise to WARNs.
+[A] if (schedule_work(...)) {
+[B]     sock_hold(sk);
+        return true;
+    }
 
-3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
-   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
-   any simultaneous sendmsg() or connect() and may result in a
-   use-after-free/null-ptr-deref.
+Problem is that mptcp_worker() can run immediately and complete before [B]
 
-Do not disconnect socket on signal/timeout. Keep the logic for unconnected
-sockets: they don't linger, can't be placed in a sockmap, are rejected by
-sendmsg().
+We need instead :
 
-[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
-[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
-[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
+    sock_hold(sk);
+    if (schedule_work(...))
+        return true;
+    sock_put(sk);
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co
+[1]
+refcount_t: addition on 0; use-after-free.
+ WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
+Call Trace:
+ <TASK>
+ __refcount_add include/linux/refcount.h:-1 [inline]
+  __refcount_inc include/linux/refcount.h:366 [inline]
+  refcount_inc include/linux/refcount.h:383 [inline]
+  sock_hold include/net/sock.h:816 [inline]
+  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
+  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
+  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+  expire_timers kernel/time/timer.c:1798 [inline]
+  __run_timers kernel/time/timer.c:2372 [inline]
+  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
+  run_timer_base kernel/time/timer.c:2393 [inline]
+  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Cc: stable@vger.kernel.org
+Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
+Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
+ net/mptcp/protocol.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 033fcdffc9e50..d79a755388318 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1493,18 +1493,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 		timeout = schedule_timeout(timeout);
- 		lock_sock(sk);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -716,14 +716,19 @@ static void mptcp_reset_timer(struct soc
  
--		if (signal_pending(current)) {
--			err = sock_intr_errno(timeout);
--			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
--			sock->state = SS_UNCONNECTED;
--			vsock_transport_cancel_pkt(vsk);
--			vsock_remove_connected(vsk);
--			goto out_wait;
--		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
--			err = -ETIMEDOUT;
-+		/* Connection established. Whatever happens to socket once we
-+		 * release it, that's not connect()'s concern. No need to go
-+		 * into signal and timeout handling. Call it a day.
-+		 *
-+		 * Note that allowing to "reset" an already established socket
-+		 * here is racy and insecure.
-+		 */
-+		if (sk->sk_state == TCP_ESTABLISHED)
-+			break;
+ bool mptcp_schedule_work(struct sock *sk)
+ {
+-	if (inet_sk_state_load(sk) != TCP_CLOSE &&
+-	    schedule_work(&mptcp_sk(sk)->work)) {
+-		/* each subflow already holds a reference to the sk, and the
+-		 * workqueue is invoked by a subflow, so sk can't go away here.
+-		 */
+-		sock_hold(sk);
++	if (inet_sk_state_load(sk) == TCP_CLOSE)
++		return false;
 +
-+		/* If connection was _not_ established and a signal/timeout came
-+		 * to be, we want the socket's state reset. User space may want
-+		 * to retry.
-+		 *
-+		 * sk_state != TCP_ESTABLISHED implies that socket is not on
-+		 * vsock_connected_table. We keep the binding and the transport
-+		 * assigned.
-+		 */
-+		if (signal_pending(current) || timeout == 0) {
-+			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
++	/* Get a reference on this socket, mptcp_worker() will release it.
++	 * As mptcp_worker() might complete before us, we can not avoid
++	 * a sock_hold()/sock_put() if schedule_work() returns false.
++	 */
++	sock_hold(sk);
 +
-+			/* Listener might have already responded with
-+			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
-+			 * sk_state == TCP_SYN_SENT, which hereby we break.
-+			 * In such case VIRTIO_VSOCK_OP_RST will follow.
-+			 */
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
++	if (schedule_work(&mptcp_sk(sk)->work))
+ 		return true;
+-	}
 +
-+			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
-+			 * transport->connect().
-+			 */
- 			vsock_transport_cancel_pkt(vsk);
-+
- 			goto out_wait;
- 		}
++	sock_put(sk);
+ 	return false;
+ }
  
--- 
-2.51.0
-
 
 
 
