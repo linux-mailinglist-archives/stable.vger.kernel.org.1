@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB62C9FFB5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B3BCA0BA4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5DDA302447C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0BEB3011B33
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546923AA186;
-	Wed,  3 Dec 2025 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7334DB63;
+	Wed,  3 Dec 2025 16:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFo+x/R9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B52GSvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F98B3AA194;
-	Wed,  3 Dec 2025 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8B63128B9;
+	Wed,  3 Dec 2025 16:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779571; cv=none; b=FaEB652yJrdwP1SmHuKEtAnMFaIkssyxCJ8uq6DoLne96hiawOr/lmM0iOflr9YC7HhGFe2VZRC5Q/sZCuf7w72o3O+DuAl3rOiW9/i8ODQnZ0MFRpXgto/qRKY3joXUrhEhAFPlFI2CNdK2JJV1ECosqR8KI1q5wazmgUkdku4=
+	t=1764777792; cv=none; b=h+Q47wPIG7gDEBrqLD1LHqzLUx6eIklrIEpqZyMI/YIrHcy1WusNNECGBxGD6Cy3sMUDVfUKNkH1hITrvR7FUWAlARphqkYvYrfb6j/UYATl22Vnx/7KNBH6nH0R6h+XyNUKq91FeJoQr5ZI5t+DMUEndE7+y8mpqqACKy+P9zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779571; c=relaxed/simple;
-	bh=jX5vk4O5FaIkxZSATWdvzOFQJHcIgx3PwYPtdwzaAEY=;
+	s=arc-20240116; t=1764777792; c=relaxed/simple;
+	bh=x09c32tY8egCDKVljZjs8cYS2an2M8sDl8nv3bzHriE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSmeepNHxD4+5GZjdKTgOkwOXhReo3y3g09kVbnfHLCU+a4ftJAN705sTz9DNsiFsihA2iqC00M+7TWOdWLHkhHNX8TUP00Z37Qza/RkM6z/bwt+4AmwZHkQpQYWLEA+BFN7rwDf0yIzgJau2ZDBLNS4ILtIk2/n7l2/odNzH1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFo+x/R9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305C2C4CEF5;
-	Wed,  3 Dec 2025 16:32:48 +0000 (UTC)
+	 MIME-Version; b=e+f4GCxAbdD9CN8IaQ3iB5LlPQJ1s6Flj6VcOeNX60HJwGPuVecfjpNRSprOa4n0sakQnZjDLzFR8He3cLco/LcuEB7Osy+3aJZnJ/scsEqjYsqW8E79tU2+r1ICSR/8r0Qamzp/ANmAQ94ruSSqglYs55vyXrUJuz9GtjItqsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B52GSvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B1C4CEF5;
+	Wed,  3 Dec 2025 16:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779568;
-	bh=jX5vk4O5FaIkxZSATWdvzOFQJHcIgx3PwYPtdwzaAEY=;
+	s=korg; t=1764777792;
+	bh=x09c32tY8egCDKVljZjs8cYS2an2M8sDl8nv3bzHriE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFo+x/R9fxNigosOrEfRpWIioo1X/xDjn3qaVwOvFnJ1u1LRMz1U1QyDiedPpGWqu
-	 emHjAVbJu10WPJqchSm1MfBaylbB/I5o5XkAXMlhJbmSf+YJO3roIBByLEnNcY2mA9
-	 vkAtc0+0iobt1aAx34aWml8FF2NiXggx3u2dKe+k=
+	b=0B52GSvUjeB1T+6KZkWz6BVz9VTa+Fw5CUu1eXID/0UeDgd/srK/RnjsxsoUO099I
+	 NzPlhJi9Ax1269mGTIHRPqbgqitdo66bA5xbbzpuAlMl1a8pj0zuJve5lxFKt11wi7
+	 gem53n2FG51PSaa+RCxyfbwOl1rMZetWLN5iBrfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/568] tools: lib: thermal: use pkg-config to locate libnl3
+Subject: [PATCH 5.15 149/392] selftests: Disable dad for ipv6 in fcnal-test.sh
 Date: Wed,  3 Dec 2025 16:24:59 +0100
-Message-ID: <20251203152451.582146284@linuxfoundation.org>
+Message-ID: <20251203152419.567336912@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit b31f7f725cd932e2c2b41f3e4b66273653953687 ]
+[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
 
-To make libthermal more cross compile friendly use pkg-config to locate
-libnl3. Only if that fails fall back to hardcoded /usr/include/libnl3.
+Constrained test environment; duplicate address detection is not needed
+and causes races so disable it.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/fcnal-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index 1694889847caf..8d21ea1950a31 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -59,8 +59,12 @@ else
-   CFLAGS := -g -Wall
- endif
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index bed85001da735..0e43b9e95f4dd 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -409,6 +409,8 @@ create_ns()
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+ }
  
-+NL3_CFLAGS = $(shell pkg-config --cflags libnl-3.0 2>/dev/null)
-+ifeq ($(NL3_CFLAGS),)
-+NL3_CFLAGS = -I/usr/include/libnl3
-+endif
-+
- INCLUDES = \
---I/usr/include/libnl3 \
- -I$(srctree)/tools/lib/thermal/include \
- -I$(srctree)/tools/lib/ \
- -I$(srctree)/tools/include \
-@@ -72,6 +76,7 @@ INCLUDES = \
- override CFLAGS += $(EXTRA_WARNINGS)
- override CFLAGS += -Werror -Wall
- override CFLAGS += -fPIC
-+override CFLAGS += $(NL3_CFLAGS)
- override CFLAGS += $(INCLUDES)
- override CFLAGS += -fvisibility=hidden
- override CFGLAS += -Wl,-L.
+ # create veth pair to connect namespaces and apply addresses.
 -- 
 2.51.0
 
