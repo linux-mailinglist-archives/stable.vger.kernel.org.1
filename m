@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9227CA07CA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:32:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4BACA080C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C6AE31FB2C0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:14:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BEEB83265287
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17B2331204;
-	Wed,  3 Dec 2025 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8459313263;
+	Wed,  3 Dec 2025 16:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTVFQTLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHu71UdY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D79332ED5D;
-	Wed,  3 Dec 2025 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29443128CD;
+	Wed,  3 Dec 2025 16:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779979; cv=none; b=YGyMHhnP8Suha6njwh9100ZC2wp80IJLjGkQunAHaNTYqQNuYuk2nnZnJd6RJBBoukOml+Alhl2roy6AAsyNWZh5zZnUqTQHibGiH1SCMWib3fBAE2BqvpnsMtyyKH/BOdC78GoWjm+pyuw6+eQhAAUD8cWDd2o3NHkbozmhzKo=
+	t=1764778192; cv=none; b=X+BavzQwzo6HowMeZcJFYZlmgUrcd8MJMZCV/sXF6u0PMBiISAgheXOLGWao2GJm1QuuMah5lygXtX+DwmoyGA8Zr/thg5vyQuST9w2TBFVn86UlnOzjQA3wEOpKlmhejWHqQkAqLqT4ixCRU2fAiqwFhT2/x6CFfn2O0Gs+XKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779979; c=relaxed/simple;
-	bh=IJsp/dCbT9ccWmc1PNXa0BpPE75jxbORwGU2CH076K0=;
+	s=arc-20240116; t=1764778192; c=relaxed/simple;
+	bh=/y+AoJmZ8OjDO7u42wVf2pS5NBzWVPTVHAszknKU4Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwTAXa88g8oYQKNop4enlJB1yO/r92LrfmQbdziLf6GpUksjX+nk+yPmZ2VyXibPsYzYNKLNw1hfZ8+AjmFxbUID8ErNgJLOgUcGL3N4xm0oQJASqtCzkRyZfiek5iK7xpMuwMaF0SGmlTFVF5ENm0UaYPWD2GF3cVnFrVQEkJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTVFQTLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0FFC4CEF5;
-	Wed,  3 Dec 2025 16:39:38 +0000 (UTC)
+	 MIME-Version; b=QN8T6D5j12nHPJfPykvWvV2je+0X6YJM6Jg9BFOLu6cq+1M0XP9+HxtvvGaPm020R0HB4nYGMgOSh9vad/5RJMCHZT88D1frTgX7K7PIXMZDNI/X3OW9amNR6xkE8yjup/UCiwZw1P+mhgPVVFWOn80taWepacn+zgyBHEZC7Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHu71UdY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5FCC4CEF5;
+	Wed,  3 Dec 2025 16:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779979;
-	bh=IJsp/dCbT9ccWmc1PNXa0BpPE75jxbORwGU2CH076K0=;
+	s=korg; t=1764778192;
+	bh=/y+AoJmZ8OjDO7u42wVf2pS5NBzWVPTVHAszknKU4Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTVFQTLns90WK44NL3bloB6QQ8jm6QaZOJqQlBtxXS9PTQSaUbTdoU08DYjmrXX63
-	 6zdJrgOQ60QuO41X1QxD6tRgm2LxfMoofus3r6w7gPx4imBmrG1wv3DWa8eXEQeA/C
-	 I56U2e+LWT3owS98qwOSWJLWLYuC6cGMA1+F0/9c=
+	b=yHu71UdYh3eBLCMYq2hy1yooHYGsypsUjIkbqCWBOs7JTbQTkLfqzsos6AgrIu+re
+	 td5nJPUOZWcg8XmlsvYS7E5SSN97/3rINHsM9zPrLh4znm5QXZDuszPJr4zcDQvWo+
+	 DkMlSxx+tEzO7Y2TcgZI3DOMbuCTRe+6pTfELZU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masami Ichikawa <masami256@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 418/568] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+Subject: [PATCH 5.15 270/392] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
 Date: Wed,  3 Dec 2025 16:27:00 +0100
-Message-ID: <20251203152456.005331729@linuxfoundation.org>
+Message-ID: <20251203152424.099885032@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Masami Ichikawa <masami256@gmail.com>
 
-[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
+[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+Use a scope-based cleanup helper for the buffer allocated with kmalloc()
+in ntrig_report_version() to simplify the cleanup logic and prevent
+memory leaks (specifically the !hid_is_usb()-case one).
 
-Scenario causing lack of proper cleanup:
-
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
-
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
-
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+[jkosina@suse.com: elaborate on the actual existing leak]
+Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
+Signed-off-by: Masami Ichikawa <masami256@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ntrig.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -851,6 +851,10 @@ void __netpoll_cleanup(struct netpoll *n
+diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
+index a1128c5315fff..3c41f6841f775 100644
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 	int ret;
+ 	char buf[20];
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+-	unsigned char *data = kmalloc(8, GFP_KERNEL);
++	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
  
- 	synchronize_srcu(&netpoll_srcu);
+ 	if (!hid_is_usb(hdev))
+ 		return;
  
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
+ 	if (!data)
+-		goto err_free;
++		return;
  
-@@ -860,8 +864,7 @@ void __netpoll_cleanup(struct netpoll *n
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
+ 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
+ 			      USB_REQ_CLEAR_FEATURE,
+@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
+ 			 buf, data[2], data[3], data[4], data[5]);
+ 	}
+-
+-err_free:
+-	kfree(data);
  }
- EXPORT_SYMBOL_GPL(__netpoll_cleanup);
  
+ static ssize_t show_phys_width(struct device *dev,
+-- 
+2.51.0
+
 
 
 
