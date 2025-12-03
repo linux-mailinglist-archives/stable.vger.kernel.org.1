@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338E9CA0183
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFDFCA0670
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4A0D306676E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24CD432E7EEE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED5735FF4C;
-	Wed,  3 Dec 2025 16:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6D8349AF2;
+	Wed,  3 Dec 2025 16:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r++VNwZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFQqO1Co"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2218E309DCC;
-	Wed,  3 Dec 2025 16:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E975534887C;
+	Wed,  3 Dec 2025 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779274; cv=none; b=opzErPsc5gB93ueziPlcmLz+LzIAgQlMAGhJ2CdEDW52lnqQv5hPpPrLhuhQyYoadFv/FlFo2t0hfwc+fRh3zeHr6v3QRp8z5Uo1rzZSLU/JiilEFo8W8RyR50THvb4jiis0KEGGXzRwTgrG5QBSOrisf4c6rthyErKtLlBeEj4=
+	t=1764777647; cv=none; b=tnNA22aGUj4sEO9UkPzQUrZKH4Oqv3zGgqPArUV1Awlktb8VAFG8rR7rkHPz5X1ckXtIvrNz0lPG09VsES9QJoHLCEgGaSiyzTkfuuL44OJM6K6d/Uz4ss984NdNnFPQzXETO3RNGrtBH4uD2OeoLNYIHK+Z+XzwFYObrL9kap0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779274; c=relaxed/simple;
-	bh=XsMw2TWScK3XnOljjzwiEGqHPgEAO6dPh8eCV/IT0H8=;
+	s=arc-20240116; t=1764777647; c=relaxed/simple;
+	bh=SMP98IaZvIpRnhh0FvzX5N50VMAxFUN8RJZfx2Jyx10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyANmM6hyzcwHyBRm14ElRDmMZsPjNFwob8MJT/JcHIpHEIj8r4mW3+O2tksGo+qiQA8EIruY6GjwdlPNp/JNhWlA6G091T5B3aa1xGsGnEjwD7y8cULKr7ZXsOYXg98y+0cVGVFlPshB+eXyt0AnxBEHO6Atfvlj49Rl1DpV+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r++VNwZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF407C4CEF5;
-	Wed,  3 Dec 2025 16:27:52 +0000 (UTC)
+	 MIME-Version; b=Y21t/vN3EAAbjU5z0D4wOWLSOekDxWr1gmtiA3AIHmeFNXJGcPOtbbW2uKf8m88kIt3radr2D0j8NxX4h3Ggcoa0vZKf+Wmv76h5svMMoBpLnl9XnsQ6i/DIbnvPZC9oxYz8QqTvYFW/GcCZt6TyBfITR5z4Uoxl8FMRnzsRA20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFQqO1Co; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B22EC4CEF5;
+	Wed,  3 Dec 2025 16:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779273;
-	bh=XsMw2TWScK3XnOljjzwiEGqHPgEAO6dPh8eCV/IT0H8=;
+	s=korg; t=1764777646;
+	bh=SMP98IaZvIpRnhh0FvzX5N50VMAxFUN8RJZfx2Jyx10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r++VNwZIJSlh/gAjuIxeriEx+cO2lyFA1B179MkwYaUpQ6f4zYx24CftujVz3QO+m
-	 580IYL3mHwYaxBVmCP+LvAW5jre0jpAtdQSB/aKU+qDfpLixHrLQWg6XxyAATvRv13
-	 FR4IkgbfAp2r6rPS1A73S14kfemN0NoSU04m1Jd8=
+	b=jFQqO1Co/ymzMzlunH9rSjuj/WBawJbjL6ELMI7UR6y8tiDcwsyEpr1ak5NMakC7q
+	 29F+H24zOvscOKXyvVJcbveUn4JLH1AZOQcjcT7UtDzYKquiNU1pI+211p849WsdHK
+	 mosd5o8d6OEzm9Ch7C6bHGPJI1xdXhoPaySXrNcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/568] net: phy: marvell: Fix 88e1510 downshift counter errata
+Subject: [PATCH 5.15 059/392] mmc: host: renesas_sdhi: Fix the actual clock
 Date: Wed,  3 Dec 2025 16:23:29 +0100
-Message-ID: <20251203152448.306740648@linuxfoundation.org>
+Message-ID: <20251203152416.285368150@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit deb105f49879dd50d595f7f55207d6e74dec34e6 ]
+[ Upstream commit 9c174e4dacee9fb2014a4ffc953d79a5707b77e4 ]
 
-The 88e1510 PHY has an erratum where the phy downshift counter is not
-cleared after phy being suspended(BMCR_PDOWN set) and then later
-resumed(BMCR_PDOWN cleared). This can cause the gigabit link to
-intermittently downshift to a lower speed.
+Wrong actual clock reported, if the SD clock division ratio is other
+than 1:1(bits DIV[7:0] in SD_CLK_CTRL are set to 11111111).
 
-Disabling and re-enabling the downshift feature clears the counter,
-allowing the PHY to retry gigabit link negotiation up to the programmed
-retry count times before downshifting. This behavior has been observed
-on copper links.
+On high speed mode, cat /sys/kernel/debug/mmc1/ios
+Without the patch:
+clock:          50000000 Hz
+actual clock:   200000000 Hz
 
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250906-marvell_fix-v2-1-f6efb286937f@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After the fix:
+clock:          50000000 Hz
+actual clock:   50000000 Hz
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250629203859.170850-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/marvell.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/mmc/host/renesas_sdhi_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index 0d706ee266afd..339285690dd4c 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -1798,6 +1798,43 @@ static int marvell_resume(struct phy_device *phydev)
- 	return err;
- }
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index 9ea9bc250543f..2b5dc342d30ab 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -193,7 +193,11 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
+ 			clk &= ~0xff;
+ 	}
  
-+/* m88e1510_resume
-+ *
-+ * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
-+ * after phy being suspended(BMCR_PDOWN set) and then later resumed(BMCR_PDOWN
-+ * cleared). This can cause the link to intermittently downshift to a lower speed.
-+ *
-+ * Disabling and re-enabling the downshift feature clears the counter, allowing
-+ * the PHY to retry gigabit link negotiation up to the programmed retry count
-+ * before downshifting. This behavior has been observed on copper links.
-+ */
-+static int m88e1510_resume(struct phy_device *phydev)
-+{
-+	int err;
-+	u8 cnt = 0;
+-	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clk & CLK_CTL_DIV_MASK);
++	clock = clk & CLK_CTL_DIV_MASK;
++	if (clock != 0xff)
++		host->mmc->actual_clock /= (1 << (ffs(clock) + 1));
 +
-+	err = marvell_resume(phydev);
-+	if (err < 0)
-+		return err;
-+
-+	/* read downshift counter value */
-+	err = m88e1011_get_downshift(phydev, &cnt);
-+	if (err < 0)
-+		return err;
-+
-+	if (cnt) {
-+		/* downshift disabled */
-+		err = m88e1011_set_downshift(phydev, 0);
-+		if (err < 0)
-+			return err;
-+
-+		/* downshift enabled, with previous counter value */
-+		err = m88e1011_set_downshift(phydev, cnt);
-+	}
-+
-+	return err;
-+}
-+
- static int marvell_aneg_done(struct phy_device *phydev)
- {
- 	int retval = phy_read(phydev, MII_M1011_PHY_STATUS);
-@@ -3174,7 +3211,7 @@ static struct phy_driver marvell_drivers[] = {
- 		.handle_interrupt = marvell_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
--		.resume = marvell_resume,
-+		.resume = m88e1510_resume,
- 		.suspend = marvell_suspend,
- 		.read_page = marvell_read_page,
- 		.write_page = marvell_write_page,
++	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clock);
+ 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
+ 		usleep_range(10000, 11000);
+ 
 -- 
 2.51.0
 
