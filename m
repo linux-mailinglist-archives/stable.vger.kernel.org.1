@@ -1,350 +1,1610 @@
-Return-Path: <stable+bounces-198211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571C9C9EFBF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 13:26:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9940C9F057
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 13:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2231E4E080A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 12:26:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 84F713481C1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 12:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC91A2D8DB7;
-	Wed,  3 Dec 2025 12:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4517278F2F;
+	Wed,  3 Dec 2025 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VBwqJSga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxSOZIbv"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9478A2DA763;
-	Wed,  3 Dec 2025 12:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BD2AD51;
+	Wed,  3 Dec 2025 12:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764764762; cv=none; b=Q3Fhji/rz1HVp0O0rVtR5TYZ/5JjhvrVc3ZOacEh3Qp/9K/iXg9w3wIAFYpfxVsF3j3xzhPfFDe5FY1pLLrmgELtL15lOdDmyo/+p1U4f22N1/OtxFrb81JXfa6WKBOaDpK88uLwVB3SCd7YZ0ON77cy7t8FwZWparB+MZ48ZlM=
+	t=1764766245; cv=none; b=NJs+jNEYB5+I26u17fmowFY28QzQTtqiavIxP+aIGojQ+LR5DBTer0bsG4Ks7sVMjbtsImBtkttPRj6tTYUo1LywEKKz8iYvcOzahRWOIvJSiSdaE5YkYI9SGhkZ4bBkJGztnW2RM8UTzlo5e+1xlPlzbhlMWd4TwVfWHx7pKaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764764762; c=relaxed/simple;
-	bh=BHMm3O/y7ZL/mWxmvWjKh4NUhUlyYdZRCqI9YZJrKco=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eyzljBAyBNM6lcsCQCXkZRZB9/hrWYtzQwxIzr+Hlv0ukm7RJ4W3IV8MqAoT/+KHQj0xZBZFl0eP1n+UdTTWkRSzC8v614c1OgdrpXqgK3QrA6WSlYMPeMNuCDkgX3fsXUs1nkwioUrKRQnxIBqGXpCtDptWGnTJzJlPapsmU88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VBwqJSga; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0x/Qn34FtKnZxs3PZXel6GfftIuQSJnSXk26lIR4MZA=; b=VBwqJSgalF29e21fmSar75duiu
-	ejDFIBffEqApB4eo+SSdMsf3x1ubyqYhr0CgmmMBhTEadBmA9Ku2SRuG3HBzAkqicjolPR7tevKSR
-	OToB28+ZpkibhTdzwrRPhDe2HIaHWqz1ns7FiDLUFgi11LweL0mI7hUkkpNVIKKvXFsRI9FLb/2yS
-	xgxN/q5WsLWhSz8cULykjbCS6tUUcuh5oATta6QQrV663/v16gXUKE5eEMo7R1NznJrvCbe8sA2jJ
-	r+KOpjW+rtK//1hH5tmaPcf4ur1fKK4ZnQ+lM3+1gvivgGujVpB0ctsz24Gah+wILKzZzeyoScCAo
-	BxYh2cyg==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vQl43-00000002Co5-04HE;
-	Wed, 03 Dec 2025 11:30:31 +0000
-Message-ID: <d3b8fd036f05e9819f654c18853ff79a255c919d.camel@infradead.org>
-Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Huang, Kai" <kai.huang@intel.com>, "seanjc@google.com"
- <seanjc@google.com>
-Cc: "shaju.abraham@nutanix.com" <shaju.abraham@nutanix.com>, 
- "khushit.shah@nutanix.com" <khushit.shah@nutanix.com>, "x86@kernel.org"
- <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>,  "hpa@zytor.com" <hpa@zytor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "mingo@redhat.com" <mingo@redhat.com>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>,  "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "Kohler, Jon" <jon@nutanix.com>, "tglx@linutronix.de" <tglx@linutronix.de>
-Date: Wed, 03 Dec 2025 12:25:50 +0000
-In-Reply-To: <352e189ec40fae044206b48ca6e68d77df7dced1.camel@intel.com>
-References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
-	 <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
-	 <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com>
-	 <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
-	 <aS8I6T3WtM1pvPNl@google.com>
-	 <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
-	 <aS8Vhb66UViQmY_Q@google.com>
-	 <352e189ec40fae044206b48ca6e68d77df7dced1.camel@intel.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-VzDkV0+a/szVwWKRjIXL"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1764766245; c=relaxed/simple;
+	bh=RH66pCx3dglE5LZNXa45ZrpNXKaW4ZiRhohUkyypm/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jad8BQBdliJTFhuATYG2sNRRtK0kCZCOQeoko8XKuX/lZJJxHXAD4IKbtkH5GVcpa5s8yag9n4zfazP9NplfS+9/fYqSTfE2/fTv+kw8NfiESbRNyLlu4+PqInfzGbjwyhdFhZXnmSyNJMTpMvshTY2DdyY4dP8JopvUHeVZTy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxSOZIbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2FDC4CEFB;
+	Wed,  3 Dec 2025 12:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764766244;
+	bh=RH66pCx3dglE5LZNXa45ZrpNXKaW4ZiRhohUkyypm/o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uxSOZIbvXQ/yambcII5zmRMpl31yQ2yLHmN5widp7hVgYPxdD4xg2OApxUWYlNniE
+	 kxiBFe8F5BsETVnLG3RHihfwPJtqbiMJ78Fqc5XVNVIXApNXrraH22P9gGney+o3Fi
+	 3eLmItBWP6w4Zx8xuFZGgzuvJ116PJUwtYRsTq2A=
+Date: Wed, 3 Dec 2025 13:50:40 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc: lwn@lwn.net, jslaby@suse.cz
+Subject: Re: Linux 5.4.302
+Message-ID: <2025120358-skating-outage-7c61@gregkh>
+References: <2025120319-blip-grime-93e8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025120319-blip-grime-93e8@gregkh>
 
+On Wed, Dec 03, 2025 at 01:12:32PM +0100, Greg Kroah-Hartman wrote:
+> I'm announcing the release of the 5.4.302 kernel.
+> 
+> This is the LAST 5.4.y release.  It is now end-of-life and should not be
+> used by anyone, anymore.  As of this point in time, there are 1539
+> documented unfixed CVEs for this kernel branch, and that number will
+> only increase over time as more CVEs get assigned for kernel bugs.
 
---=-VzDkV0+a/szVwWKRjIXL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+And here's that list, if anyone is curious:
 
-On Wed, 2025-12-03 at 00:50 +0000, Huang, Kai wrote:
->=20
-> > -#define KVM_X2APIC_API_USE_32BIT_IDS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1ULL << 0)
-> > -#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK=C2=A0 (1ULL << 1)
-> > +#define KVM_X2APIC_API_USE_32BIT_IDS			(_BITULL(0))
-> > +#define KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK		(_BITULL(1))
-> > +#define KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(2))
-> > +#define KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST	(_BITULL(3))
->=20
-> I hate to say, but wants to ask again:
->=20
-> Since it's uAPI, are we expecting the two flags to have impact on in-kern=
-el
-> ioapic?
->=20
-> I think there should no harm to make the two also apply to in-kernel ioap=
-ic.
->=20
-> E.g., for now we can reject KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST flag=
- for
-> in-kernel ioapic.=C2=A0 In the future, we might add EOI register support =
-to in-kernel
-> ioapic and report supporting suppress EOI broadcast, then we can in-kerne=
-l
-> ioapic to honor these two flags too.
+	5.4.302 is vulnerable to CVE-2020-36776
+	5.4.302 is vulnerable to CVE-2020-36784
+	5.4.302 is vulnerable to CVE-2020-36788
+	5.4.302 is vulnerable to CVE-2021-46925
+	5.4.302 is vulnerable to CVE-2021-46926
+	5.4.302 is vulnerable to CVE-2021-46928
+	5.4.302 is vulnerable to CVE-2021-46941
+	5.4.302 is vulnerable to CVE-2021-46987
+	5.4.302 is vulnerable to CVE-2021-47001
+	5.4.302 is vulnerable to CVE-2021-47004
+	5.4.302 is vulnerable to CVE-2021-47005
+	5.4.302 is vulnerable to CVE-2021-47024
+	5.4.302 is vulnerable to CVE-2021-47049
+	5.4.302 is vulnerable to CVE-2021-47061
+	5.4.302 is vulnerable to CVE-2021-47063
+	5.4.302 is vulnerable to CVE-2021-47070
+	5.4.302 is vulnerable to CVE-2021-47074
+	5.4.302 is vulnerable to CVE-2021-47076
+	5.4.302 is vulnerable to CVE-2021-47077
+	5.4.302 is vulnerable to CVE-2021-47101
+	5.4.302 is vulnerable to CVE-2021-47113
+	5.4.302 is vulnerable to CVE-2021-47116
+	5.4.302 is vulnerable to CVE-2021-47119
+	5.4.302 is vulnerable to CVE-2021-47131
+	5.4.302 is vulnerable to CVE-2021-47143
+	5.4.302 is vulnerable to CVE-2021-47158
+	5.4.302 is vulnerable to CVE-2021-47182
+	5.4.302 is vulnerable to CVE-2021-47183
+	5.4.302 is vulnerable to CVE-2021-47188
+	5.4.302 is vulnerable to CVE-2021-47191
+	5.4.302 is vulnerable to CVE-2021-47193
+	5.4.302 is vulnerable to CVE-2021-47198
+	5.4.302 is vulnerable to CVE-2021-47205
+	5.4.302 is vulnerable to CVE-2021-47211
+	5.4.302 is vulnerable to CVE-2021-47212
+	5.4.302 is vulnerable to CVE-2021-47219
+	5.4.302 is vulnerable to CVE-2021-47226
+	5.4.302 is vulnerable to CVE-2021-47234
+	5.4.302 is vulnerable to CVE-2021-47247
+	5.4.302 is vulnerable to CVE-2021-47253
+	5.4.302 is vulnerable to CVE-2021-47265
+	5.4.302 is vulnerable to CVE-2021-47275
+	5.4.302 is vulnerable to CVE-2021-47281
+	5.4.302 is vulnerable to CVE-2021-47283
+	5.4.302 is vulnerable to CVE-2021-47331
+	5.4.302 is vulnerable to CVE-2021-47335
+	5.4.302 is vulnerable to CVE-2021-47339
+	5.4.302 is vulnerable to CVE-2021-47359
+	5.4.302 is vulnerable to CVE-2021-47362
+	5.4.302 is vulnerable to CVE-2021-47366
+	5.4.302 is vulnerable to CVE-2021-47378
+	5.4.302 is vulnerable to CVE-2021-47381
+	5.4.302 is vulnerable to CVE-2021-47391
+	5.4.302 is vulnerable to CVE-2021-47399
+	5.4.302 is vulnerable to CVE-2021-47407
+	5.4.302 is vulnerable to CVE-2021-47408
+	5.4.302 is vulnerable to CVE-2021-47410
+	5.4.302 is vulnerable to CVE-2021-47412
+	5.4.302 is vulnerable to CVE-2021-47414
+	5.4.302 is vulnerable to CVE-2021-47428
+	5.4.302 is vulnerable to CVE-2021-47432
+	5.4.302 is vulnerable to CVE-2021-47433
+	5.4.302 is vulnerable to CVE-2021-47438
+	5.4.302 is vulnerable to CVE-2021-47452
+	5.4.302 is vulnerable to CVE-2021-47455
+	5.4.302 is vulnerable to CVE-2021-47473
+	5.4.302 is vulnerable to CVE-2021-47479
+	5.4.302 is vulnerable to CVE-2021-47490
+	5.4.302 is vulnerable to CVE-2021-47491
+	5.4.302 is vulnerable to CVE-2021-47492
+	5.4.302 is vulnerable to CVE-2021-47493
+	5.4.302 is vulnerable to CVE-2021-47498
+	5.4.302 is vulnerable to CVE-2021-47501
+	5.4.302 is vulnerable to CVE-2021-47504
+	5.4.302 is vulnerable to CVE-2021-47508
+	5.4.302 is vulnerable to CVE-2021-47523
+	5.4.302 is vulnerable to CVE-2021-47544
+	5.4.302 is vulnerable to CVE-2021-47552
+	5.4.302 is vulnerable to CVE-2021-47559
+	5.4.302 is vulnerable to CVE-2021-47560
+	5.4.302 is vulnerable to CVE-2021-47577
+	5.4.302 is vulnerable to CVE-2021-47578
+	5.4.302 is vulnerable to CVE-2021-47580
+	5.4.302 is vulnerable to CVE-2021-47582
+	5.4.302 is vulnerable to CVE-2021-47599
+	5.4.302 is vulnerable to CVE-2021-47610
+	5.4.302 is vulnerable to CVE-2021-47618
+	5.4.302 is vulnerable to CVE-2021-47622
+	5.4.302 is vulnerable to CVE-2021-47623
+	5.4.302 is vulnerable to CVE-2021-47632
+	5.4.302 is vulnerable to CVE-2021-47635
+	5.4.302 is vulnerable to CVE-2021-47648
+	5.4.302 is vulnerable to CVE-2021-47653
+	5.4.302 is vulnerable to CVE-2022-48628
+	5.4.302 is vulnerable to CVE-2022-48633
+	5.4.302 is vulnerable to CVE-2022-48642
+	5.4.302 is vulnerable to CVE-2022-48664
+	5.4.302 is vulnerable to CVE-2022-48673
+	5.4.302 is vulnerable to CVE-2022-48674
+	5.4.302 is vulnerable to CVE-2022-48706
+	5.4.302 is vulnerable to CVE-2022-48712
+	5.4.302 is vulnerable to CVE-2022-48721
+	5.4.302 is vulnerable to CVE-2022-48733
+	5.4.302 is vulnerable to CVE-2022-48740
+	5.4.302 is vulnerable to CVE-2022-48744
+	5.4.302 is vulnerable to CVE-2022-48751
+	5.4.302 is vulnerable to CVE-2022-48755
+	5.4.302 is vulnerable to CVE-2022-48761
+	5.4.302 is vulnerable to CVE-2022-48763
+	5.4.302 is vulnerable to CVE-2022-48765
+	5.4.302 is vulnerable to CVE-2022-48769
+	5.4.302 is vulnerable to CVE-2022-48791
+	5.4.302 is vulnerable to CVE-2022-48792
+	5.4.302 is vulnerable to CVE-2022-48796
+	5.4.302 is vulnerable to CVE-2022-48802
+	5.4.302 is vulnerable to CVE-2022-48811
+	5.4.302 is vulnerable to CVE-2022-48825
+	5.4.302 is vulnerable to CVE-2022-48826
+	5.4.302 is vulnerable to CVE-2022-48827
+	5.4.302 is vulnerable to CVE-2022-48833
+	5.4.302 is vulnerable to CVE-2022-48844
+	5.4.302 is vulnerable to CVE-2022-48852
+	5.4.302 is vulnerable to CVE-2022-48863
+	5.4.302 is vulnerable to CVE-2022-48865
+	5.4.302 is vulnerable to CVE-2022-48875
+	5.4.302 is vulnerable to CVE-2022-48887
+	5.4.302 is vulnerable to CVE-2022-48893
+	5.4.302 is vulnerable to CVE-2022-48901
+	5.4.302 is vulnerable to CVE-2022-48902
+	5.4.302 is vulnerable to CVE-2022-48909
+	5.4.302 is vulnerable to CVE-2022-48920
+	5.4.302 is vulnerable to CVE-2022-48943
+	5.4.302 is vulnerable to CVE-2022-48950
+	5.4.302 is vulnerable to CVE-2022-48952
+	5.4.302 is vulnerable to CVE-2022-48953
+	5.4.302 is vulnerable to CVE-2022-48961
+	5.4.302 is vulnerable to CVE-2022-48975
+	5.4.302 is vulnerable to CVE-2022-48979
+	5.4.302 is vulnerable to CVE-2022-49000
+	5.4.302 is vulnerable to CVE-2022-49026
+	5.4.302 is vulnerable to CVE-2022-49027
+	5.4.302 is vulnerable to CVE-2022-49028
+	5.4.302 is vulnerable to CVE-2022-49046
+	5.4.302 is vulnerable to CVE-2022-49054
+	5.4.302 is vulnerable to CVE-2022-49065
+	5.4.302 is vulnerable to CVE-2022-49069
+	5.4.302 is vulnerable to CVE-2022-49072
+	5.4.302 is vulnerable to CVE-2022-49097
+	5.4.302 is vulnerable to CVE-2022-49102
+	5.4.302 is vulnerable to CVE-2022-49103
+	5.4.302 is vulnerable to CVE-2022-49104
+	5.4.302 is vulnerable to CVE-2022-49106
+	5.4.302 is vulnerable to CVE-2022-49107
+	5.4.302 is vulnerable to CVE-2022-49109
+	5.4.302 is vulnerable to CVE-2022-49110
+	5.4.302 is vulnerable to CVE-2022-49112
+	5.4.302 is vulnerable to CVE-2022-49118
+	5.4.302 is vulnerable to CVE-2022-49119
+	5.4.302 is vulnerable to CVE-2022-49120
+	5.4.302 is vulnerable to CVE-2022-49121
+	5.4.302 is vulnerable to CVE-2022-49124
+	5.4.302 is vulnerable to CVE-2022-49129
+	5.4.302 is vulnerable to CVE-2022-49134
+	5.4.302 is vulnerable to CVE-2022-49135
+	5.4.302 is vulnerable to CVE-2022-49138
+	5.4.302 is vulnerable to CVE-2022-49142
+	5.4.302 is vulnerable to CVE-2022-49149
+	5.4.302 is vulnerable to CVE-2022-49154
+	5.4.302 is vulnerable to CVE-2022-49156
+	5.4.302 is vulnerable to CVE-2022-49157
+	5.4.302 is vulnerable to CVE-2022-49158
+	5.4.302 is vulnerable to CVE-2022-49161
+	5.4.302 is vulnerable to CVE-2022-49164
+	5.4.302 is vulnerable to CVE-2022-49168
+	5.4.302 is vulnerable to CVE-2022-49169
+	5.4.302 is vulnerable to CVE-2022-49170
+	5.4.302 is vulnerable to CVE-2022-49172
+	5.4.302 is vulnerable to CVE-2022-49174
+	5.4.302 is vulnerable to CVE-2022-49178
+	5.4.302 is vulnerable to CVE-2022-49182
+	5.4.302 is vulnerable to CVE-2022-49188
+	5.4.302 is vulnerable to CVE-2022-49190
+	5.4.302 is vulnerable to CVE-2022-49194
+	5.4.302 is vulnerable to CVE-2022-49196
+	5.4.302 is vulnerable to CVE-2022-49201
+	5.4.302 is vulnerable to CVE-2022-49215
+	5.4.302 is vulnerable to CVE-2022-49219
+	5.4.302 is vulnerable to CVE-2022-49226
+	5.4.302 is vulnerable to CVE-2022-49234
+	5.4.302 is vulnerable to CVE-2022-49241
+	5.4.302 is vulnerable to CVE-2022-49246
+	5.4.302 is vulnerable to CVE-2022-49258
+	5.4.302 is vulnerable to CVE-2022-49267
+	5.4.302 is vulnerable to CVE-2022-49281
+	5.4.302 is vulnerable to CVE-2022-49285
+	5.4.302 is vulnerable to CVE-2022-49289
+	5.4.302 is vulnerable to CVE-2022-49294
+	5.4.302 is vulnerable to CVE-2022-49296
+	5.4.302 is vulnerable to CVE-2022-49303
+	5.4.302 is vulnerable to CVE-2022-49309
+	5.4.302 is vulnerable to CVE-2022-49311
+	5.4.302 is vulnerable to CVE-2022-49312
+	5.4.302 is vulnerable to CVE-2022-49317
+	5.4.302 is vulnerable to CVE-2022-49319
+	5.4.302 is vulnerable to CVE-2022-49323
+	5.4.302 is vulnerable to CVE-2022-49325
+	5.4.302 is vulnerable to CVE-2022-49327
+	5.4.302 is vulnerable to CVE-2022-49328
+	5.4.302 is vulnerable to CVE-2022-49342
+	5.4.302 is vulnerable to CVE-2022-49360
+	5.4.302 is vulnerable to CVE-2022-49361
+	5.4.302 is vulnerable to CVE-2022-49376
+	5.4.302 is vulnerable to CVE-2022-49390
+	5.4.302 is vulnerable to CVE-2022-49398
+	5.4.302 is vulnerable to CVE-2022-49420
+	5.4.302 is vulnerable to CVE-2022-49428
+	5.4.302 is vulnerable to CVE-2022-49430
+	5.4.302 is vulnerable to CVE-2022-49437
+	5.4.302 is vulnerable to CVE-2022-49440
+	5.4.302 is vulnerable to CVE-2022-49443
+	5.4.302 is vulnerable to CVE-2022-49444
+	5.4.302 is vulnerable to CVE-2022-49445
+	5.4.302 is vulnerable to CVE-2022-49449
+	5.4.302 is vulnerable to CVE-2022-49453
+	5.4.302 is vulnerable to CVE-2022-49465
+	5.4.302 is vulnerable to CVE-2022-49468
+	5.4.302 is vulnerable to CVE-2022-49470
+	5.4.302 is vulnerable to CVE-2022-49496
+	5.4.302 is vulnerable to CVE-2022-49497
+	5.4.302 is vulnerable to CVE-2022-49502
+	5.4.302 is vulnerable to CVE-2022-49504
+	5.4.302 is vulnerable to CVE-2022-49512
+	5.4.302 is vulnerable to CVE-2022-49513
+	5.4.302 is vulnerable to CVE-2022-49519
+	5.4.302 is vulnerable to CVE-2022-49521
+	5.4.302 is vulnerable to CVE-2022-49528
+	5.4.302 is vulnerable to CVE-2022-49531
+	5.4.302 is vulnerable to CVE-2022-49534
+	5.4.302 is vulnerable to CVE-2022-49535
+	5.4.302 is vulnerable to CVE-2022-49536
+	5.4.302 is vulnerable to CVE-2022-49540
+	5.4.302 is vulnerable to CVE-2022-49541
+	5.4.302 is vulnerable to CVE-2022-49542
+	5.4.302 is vulnerable to CVE-2022-49545
+	5.4.302 is vulnerable to CVE-2022-49546
+	5.4.302 is vulnerable to CVE-2022-49555
+	5.4.302 is vulnerable to CVE-2022-49562
+	5.4.302 is vulnerable to CVE-2022-49563
+	5.4.302 is vulnerable to CVE-2022-49564
+	5.4.302 is vulnerable to CVE-2022-49566
+	5.4.302 is vulnerable to CVE-2022-49578
+	5.4.302 is vulnerable to CVE-2022-49579
+	5.4.302 is vulnerable to CVE-2022-49585
+	5.4.302 is vulnerable to CVE-2022-49599
+	5.4.302 is vulnerable to CVE-2022-49603
+	5.4.302 is vulnerable to CVE-2022-49610
+	5.4.302 is vulnerable to CVE-2022-49618
+	5.4.302 is vulnerable to CVE-2022-49622
+	5.4.302 is vulnerable to CVE-2022-49623
+	5.4.302 is vulnerable to CVE-2022-49630
+	5.4.302 is vulnerable to CVE-2022-49632
+	5.4.302 is vulnerable to CVE-2022-49635
+	5.4.302 is vulnerable to CVE-2022-49640
+	5.4.302 is vulnerable to CVE-2022-49641
+	5.4.302 is vulnerable to CVE-2022-49650
+	5.4.302 is vulnerable to CVE-2022-49651
+	5.4.302 is vulnerable to CVE-2022-49658
+	5.4.302 is vulnerable to CVE-2022-49664
+	5.4.302 is vulnerable to CVE-2022-49666
+	5.4.302 is vulnerable to CVE-2022-49696
+	5.4.302 is vulnerable to CVE-2022-49698
+	5.4.302 is vulnerable to CVE-2022-49711
+	5.4.302 is vulnerable to CVE-2022-49720
+	5.4.302 is vulnerable to CVE-2022-49723
+	5.4.302 is vulnerable to CVE-2022-49728
+	5.4.302 is vulnerable to CVE-2022-49730
+	5.4.302 is vulnerable to CVE-2022-49742
+	5.4.302 is vulnerable to CVE-2022-49743
+	5.4.302 is vulnerable to CVE-2022-49749
+	5.4.302 is vulnerable to CVE-2022-49758
+	5.4.302 is vulnerable to CVE-2022-49761
+	5.4.302 is vulnerable to CVE-2022-49764
+	5.4.302 is vulnerable to CVE-2022-49765
+	5.4.302 is vulnerable to CVE-2022-49766
+	5.4.302 is vulnerable to CVE-2022-49799
+	5.4.302 is vulnerable to CVE-2022-49812
+	5.4.302 is vulnerable to CVE-2022-49813
+	5.4.302 is vulnerable to CVE-2022-49822
+	5.4.302 is vulnerable to CVE-2022-49823
+	5.4.302 is vulnerable to CVE-2022-49824
+	5.4.302 is vulnerable to CVE-2022-49825
+	5.4.302 is vulnerable to CVE-2022-49828
+	5.4.302 is vulnerable to CVE-2022-49829
+	5.4.302 is vulnerable to CVE-2022-49831
+	5.4.302 is vulnerable to CVE-2022-49837
+	5.4.302 is vulnerable to CVE-2022-49838
+	5.4.302 is vulnerable to CVE-2022-49839
+	5.4.302 is vulnerable to CVE-2022-49851
+	5.4.302 is vulnerable to CVE-2022-49873
+	5.4.302 is vulnerable to CVE-2022-49885
+	5.4.302 is vulnerable to CVE-2022-49892
+	5.4.302 is vulnerable to CVE-2022-49898
+	5.4.302 is vulnerable to CVE-2022-49899
+	5.4.302 is vulnerable to CVE-2022-49900
+	5.4.302 is vulnerable to CVE-2022-49901
+	5.4.302 is vulnerable to CVE-2022-49923
+	5.4.302 is vulnerable to CVE-2022-49924
+	5.4.302 is vulnerable to CVE-2022-49932
+	5.4.302 is vulnerable to CVE-2022-49935
+	5.4.302 is vulnerable to CVE-2022-49937
+	5.4.302 is vulnerable to CVE-2022-49938
+	5.4.302 is vulnerable to CVE-2022-49967
+	5.4.302 is vulnerable to CVE-2022-49979
+	5.4.302 is vulnerable to CVE-2022-49980
+	5.4.302 is vulnerable to CVE-2022-49989
+	5.4.302 is vulnerable to CVE-2022-49997
+	5.4.302 is vulnerable to CVE-2022-49998
+	5.4.302 is vulnerable to CVE-2022-50009
+	5.4.302 is vulnerable to CVE-2022-50011
+	5.4.302 is vulnerable to CVE-2022-50015
+	5.4.302 is vulnerable to CVE-2022-50016
+	5.4.302 is vulnerable to CVE-2022-50021
+	5.4.302 is vulnerable to CVE-2022-50023
+	5.4.302 is vulnerable to CVE-2022-50024
+	5.4.302 is vulnerable to CVE-2022-50036
+	5.4.302 is vulnerable to CVE-2022-50053
+	5.4.302 is vulnerable to CVE-2022-50060
+	5.4.302 is vulnerable to CVE-2022-50065
+	5.4.302 is vulnerable to CVE-2022-50066
+	5.4.302 is vulnerable to CVE-2022-50073
+	5.4.302 is vulnerable to CVE-2022-50082
+	5.4.302 is vulnerable to CVE-2022-50086
+	5.4.302 is vulnerable to CVE-2022-50098
+	5.4.302 is vulnerable to CVE-2022-50103
+	5.4.302 is vulnerable to CVE-2022-50114
+	5.4.302 is vulnerable to CVE-2022-50116
+	5.4.302 is vulnerable to CVE-2022-50120
+	5.4.302 is vulnerable to CVE-2022-50129
+	5.4.302 is vulnerable to CVE-2022-50132
+	5.4.302 is vulnerable to CVE-2022-50138
+	5.4.302 is vulnerable to CVE-2022-50144
+	5.4.302 is vulnerable to CVE-2022-50146
+	5.4.302 is vulnerable to CVE-2022-50151
+	5.4.302 is vulnerable to CVE-2022-50159
+	5.4.302 is vulnerable to CVE-2022-50163
+	5.4.302 is vulnerable to CVE-2022-50166
+	5.4.302 is vulnerable to CVE-2022-50167
+	5.4.302 is vulnerable to CVE-2022-50172
+	5.4.302 is vulnerable to CVE-2022-50174
+	5.4.302 is vulnerable to CVE-2022-50175
+	5.4.302 is vulnerable to CVE-2022-50181
+	5.4.302 is vulnerable to CVE-2022-50204
+	5.4.302 is vulnerable to CVE-2022-50224
+	5.4.302 is vulnerable to CVE-2022-50226
+	5.4.302 is vulnerable to CVE-2022-50233
+	5.4.302 is vulnerable to CVE-2022-50236
+	5.4.302 is vulnerable to CVE-2022-50241
+	5.4.302 is vulnerable to CVE-2022-50256
+	5.4.302 is vulnerable to CVE-2022-50260
+	5.4.302 is vulnerable to CVE-2022-50266
+	5.4.302 is vulnerable to CVE-2022-50267
+	5.4.302 is vulnerable to CVE-2022-50293
+	5.4.302 is vulnerable to CVE-2022-50300
+	5.4.302 is vulnerable to CVE-2022-50303
+	5.4.302 is vulnerable to CVE-2022-50304
+	5.4.302 is vulnerable to CVE-2022-50306
+	5.4.302 is vulnerable to CVE-2022-50316
+	5.4.302 is vulnerable to CVE-2022-50320
+	5.4.302 is vulnerable to CVE-2022-50328
+	5.4.302 is vulnerable to CVE-2022-50335
+	5.4.302 is vulnerable to CVE-2022-50340
+	5.4.302 is vulnerable to CVE-2022-50350
+	5.4.302 is vulnerable to CVE-2022-50356
+	5.4.302 is vulnerable to CVE-2022-50364
+	5.4.302 is vulnerable to CVE-2022-50369
+	5.4.302 is vulnerable to CVE-2022-50373
+	5.4.302 is vulnerable to CVE-2022-50374
+	5.4.302 is vulnerable to CVE-2022-50378
+	5.4.302 is vulnerable to CVE-2022-50385
+	5.4.302 is vulnerable to CVE-2022-50388
+	5.4.302 is vulnerable to CVE-2022-50392
+	5.4.302 is vulnerable to CVE-2022-50393
+	5.4.302 is vulnerable to CVE-2022-50400
+	5.4.302 is vulnerable to CVE-2022-50406
+	5.4.302 is vulnerable to CVE-2022-50407
+	5.4.302 is vulnerable to CVE-2022-50410
+	5.4.302 is vulnerable to CVE-2022-50412
+	5.4.302 is vulnerable to CVE-2022-50417
+	5.4.302 is vulnerable to CVE-2022-50443
+	5.4.302 is vulnerable to CVE-2022-50445
+	5.4.302 is vulnerable to CVE-2022-50453
+	5.4.302 is vulnerable to CVE-2022-50467
+	5.4.302 is vulnerable to CVE-2022-50469
+	5.4.302 is vulnerable to CVE-2022-50471
+	5.4.302 is vulnerable to CVE-2022-50472
+	5.4.302 is vulnerable to CVE-2022-50488
+	5.4.302 is vulnerable to CVE-2022-50492
+	5.4.302 is vulnerable to CVE-2022-50493
+	5.4.302 is vulnerable to CVE-2022-50500
+	5.4.302 is vulnerable to CVE-2022-50512
+	5.4.302 is vulnerable to CVE-2022-50516
+	5.4.302 is vulnerable to CVE-2022-50518
+	5.4.302 is vulnerable to CVE-2022-50527
+	5.4.302 is vulnerable to CVE-2022-50539
+	5.4.302 is vulnerable to CVE-2022-50550
+	5.4.302 is vulnerable to CVE-2022-50552
+	5.4.302 is vulnerable to CVE-2022-50554
+	5.4.302 is vulnerable to CVE-2022-50556
+	5.4.302 is vulnerable to CVE-2022-50560
+	5.4.302 is vulnerable to CVE-2022-50562
+	5.4.302 is vulnerable to CVE-2022-50571
+	5.4.302 is vulnerable to CVE-2022-50580
+	5.4.302 is vulnerable to CVE-2022-50582
+	5.4.302 is vulnerable to CVE-2023-52458
+	5.4.302 is vulnerable to CVE-2023-52474
+	5.4.302 is vulnerable to CVE-2023-52476
+	5.4.302 is vulnerable to CVE-2023-52481
+	5.4.302 is vulnerable to CVE-2023-52482
+	5.4.302 is vulnerable to CVE-2023-52484
+	5.4.302 is vulnerable to CVE-2023-52485
+	5.4.302 is vulnerable to CVE-2023-52488
+	5.4.302 is vulnerable to CVE-2023-52489
+	5.4.302 is vulnerable to CVE-2023-52491
+	5.4.302 is vulnerable to CVE-2023-52498
+	5.4.302 is vulnerable to CVE-2023-52500
+	5.4.302 is vulnerable to CVE-2023-52511
+	5.4.302 is vulnerable to CVE-2023-52515
+	5.4.302 is vulnerable to CVE-2023-52516
+	5.4.302 is vulnerable to CVE-2023-52517
+	5.4.302 is vulnerable to CVE-2023-52531
+	5.4.302 is vulnerable to CVE-2023-52561
+	5.4.302 is vulnerable to CVE-2023-52586
+	5.4.302 is vulnerable to CVE-2023-52588
+	5.4.302 is vulnerable to CVE-2023-52590
+	5.4.302 is vulnerable to CVE-2023-52591
+	5.4.302 is vulnerable to CVE-2023-52596
+	5.4.302 is vulnerable to CVE-2023-52610
+	5.4.302 is vulnerable to CVE-2023-52614
+	5.4.302 is vulnerable to CVE-2023-52621
+	5.4.302 is vulnerable to CVE-2023-52624
+	5.4.302 is vulnerable to CVE-2023-52625
+	5.4.302 is vulnerable to CVE-2023-52629
+	5.4.302 is vulnerable to CVE-2023-52633
+	5.4.302 is vulnerable to CVE-2023-52635
+	5.4.302 is vulnerable to CVE-2023-52638
+	5.4.302 is vulnerable to CVE-2023-52639
+	5.4.302 is vulnerable to CVE-2023-52642
+	5.4.302 is vulnerable to CVE-2023-52652
+	5.4.302 is vulnerable to CVE-2023-52653
+	5.4.302 is vulnerable to CVE-2023-52664
+	5.4.302 is vulnerable to CVE-2023-52669
+	5.4.302 is vulnerable to CVE-2023-52671
+	5.4.302 is vulnerable to CVE-2023-52674
+	5.4.302 is vulnerable to CVE-2023-52680
+	5.4.302 is vulnerable to CVE-2023-52700
+	5.4.302 is vulnerable to CVE-2023-52732
+	5.4.302 is vulnerable to CVE-2023-52736
+	5.4.302 is vulnerable to CVE-2023-52737
+	5.4.302 is vulnerable to CVE-2023-52741
+	5.4.302 is vulnerable to CVE-2023-52750
+	5.4.302 is vulnerable to CVE-2023-52751
+	5.4.302 is vulnerable to CVE-2023-52752
+	5.4.302 is vulnerable to CVE-2023-52754
+	5.4.302 is vulnerable to CVE-2023-52757
+	5.4.302 is vulnerable to CVE-2023-52761
+	5.4.302 is vulnerable to CVE-2023-52762
+	5.4.302 is vulnerable to CVE-2023-52763
+	5.4.302 is vulnerable to CVE-2023-52766
+	5.4.302 is vulnerable to CVE-2023-52781
+	5.4.302 is vulnerable to CVE-2023-52808
+	5.4.302 is vulnerable to CVE-2023-52811
+	5.4.302 is vulnerable to CVE-2023-52812
+	5.4.302 is vulnerable to CVE-2023-52814
+	5.4.302 is vulnerable to CVE-2023-52815
+	5.4.302 is vulnerable to CVE-2023-52821
+	5.4.302 is vulnerable to CVE-2023-52826
+	5.4.302 is vulnerable to CVE-2023-52828
+	5.4.302 is vulnerable to CVE-2023-52831
+	5.4.302 is vulnerable to CVE-2023-52833
+	5.4.302 is vulnerable to CVE-2023-52834
+	5.4.302 is vulnerable to CVE-2023-52854
+	5.4.302 is vulnerable to CVE-2023-52878
+	5.4.302 is vulnerable to CVE-2023-52886
+	5.4.302 is vulnerable to CVE-2023-52888
+	5.4.302 is vulnerable to CVE-2023-52903
+	5.4.302 is vulnerable to CVE-2023-52916
+	5.4.302 is vulnerable to CVE-2023-52920
+	5.4.302 is vulnerable to CVE-2023-52925
+	5.4.302 is vulnerable to CVE-2023-52926
+	5.4.302 is vulnerable to CVE-2023-52939
+	5.4.302 is vulnerable to CVE-2023-52975
+	5.4.302 is vulnerable to CVE-2023-53008
+	5.4.302 is vulnerable to CVE-2023-53010
+	5.4.302 is vulnerable to CVE-2023-53020
+	5.4.302 is vulnerable to CVE-2023-53038
+	5.4.302 is vulnerable to CVE-2023-53039
+	5.4.302 is vulnerable to CVE-2023-53042
+	5.4.302 is vulnerable to CVE-2023-53054
+	5.4.302 is vulnerable to CVE-2023-53068
+	5.4.302 is vulnerable to CVE-2023-53074
+	5.4.302 is vulnerable to CVE-2023-53079
+	5.4.302 is vulnerable to CVE-2023-53080
+	5.4.302 is vulnerable to CVE-2023-53091
+	5.4.302 is vulnerable to CVE-2023-53093
+	5.4.302 is vulnerable to CVE-2023-53094
+	5.4.302 is vulnerable to CVE-2023-53097
+	5.4.302 is vulnerable to CVE-2023-53098
+	5.4.302 is vulnerable to CVE-2023-53103
+	5.4.302 is vulnerable to CVE-2023-53105
+	5.4.302 is vulnerable to CVE-2023-53111
+	5.4.302 is vulnerable to CVE-2023-53131
+	5.4.302 is vulnerable to CVE-2023-53133
+	5.4.302 is vulnerable to CVE-2023-53149
+	5.4.302 is vulnerable to CVE-2023-53152
+	5.4.302 is vulnerable to CVE-2023-53171
+	5.4.302 is vulnerable to CVE-2023-53173
+	5.4.302 is vulnerable to CVE-2023-53178
+	5.4.302 is vulnerable to CVE-2023-53183
+	5.4.302 is vulnerable to CVE-2023-53197
+	5.4.302 is vulnerable to CVE-2023-53200
+	5.4.302 is vulnerable to CVE-2023-53201
+	5.4.302 is vulnerable to CVE-2023-53209
+	5.4.302 is vulnerable to CVE-2023-53217
+	5.4.302 is vulnerable to CVE-2023-53218
+	5.4.302 is vulnerable to CVE-2023-53225
+	5.4.302 is vulnerable to CVE-2023-53230
+	5.4.302 is vulnerable to CVE-2023-53231
+	5.4.302 is vulnerable to CVE-2023-53241
+	5.4.302 is vulnerable to CVE-2023-53244
+	5.4.302 is vulnerable to CVE-2023-53247
+	5.4.302 is vulnerable to CVE-2023-53248
+	5.4.302 is vulnerable to CVE-2023-53249
+	5.4.302 is vulnerable to CVE-2023-53250
+	5.4.302 is vulnerable to CVE-2023-53254
+	5.4.302 is vulnerable to CVE-2023-53257
+	5.4.302 is vulnerable to CVE-2023-53261
+	5.4.302 is vulnerable to CVE-2023-53270
+	5.4.302 is vulnerable to CVE-2023-53279
+	5.4.302 is vulnerable to CVE-2023-53282
+	5.4.302 is vulnerable to CVE-2023-53286
+	5.4.302 is vulnerable to CVE-2023-53287
+	5.4.302 is vulnerable to CVE-2023-53292
+	5.4.302 is vulnerable to CVE-2023-53326
+	5.4.302 is vulnerable to CVE-2023-53332
+	5.4.302 is vulnerable to CVE-2023-53334
+	5.4.302 is vulnerable to CVE-2023-53335
+	5.4.302 is vulnerable to CVE-2023-53347
+	5.4.302 is vulnerable to CVE-2023-53348
+	5.4.302 is vulnerable to CVE-2023-53353
+	5.4.302 is vulnerable to CVE-2023-53355
+	5.4.302 is vulnerable to CVE-2023-53359
+	5.4.302 is vulnerable to CVE-2023-53367
+	5.4.302 is vulnerable to CVE-2023-53370
+	5.4.302 is vulnerable to CVE-2023-53383
+	5.4.302 is vulnerable to CVE-2023-53387
+	5.4.302 is vulnerable to CVE-2023-53390
+	5.4.302 is vulnerable to CVE-2023-53391
+	5.4.302 is vulnerable to CVE-2023-53393
+	5.4.302 is vulnerable to CVE-2023-53402
+	5.4.302 is vulnerable to CVE-2023-53403
+	5.4.302 is vulnerable to CVE-2023-53404
+	5.4.302 is vulnerable to CVE-2023-53405
+	5.4.302 is vulnerable to CVE-2023-53406
+	5.4.302 is vulnerable to CVE-2023-53407
+	5.4.302 is vulnerable to CVE-2023-53408
+	5.4.302 is vulnerable to CVE-2023-53409
+	5.4.302 is vulnerable to CVE-2023-53410
+	5.4.302 is vulnerable to CVE-2023-53411
+	5.4.302 is vulnerable to CVE-2023-53412
+	5.4.302 is vulnerable to CVE-2023-53413
+	5.4.302 is vulnerable to CVE-2023-53414
+	5.4.302 is vulnerable to CVE-2023-53415
+	5.4.302 is vulnerable to CVE-2023-53416
+	5.4.302 is vulnerable to CVE-2023-53417
+	5.4.302 is vulnerable to CVE-2023-53418
+	5.4.302 is vulnerable to CVE-2023-53419
+	5.4.302 is vulnerable to CVE-2023-53429
+	5.4.302 is vulnerable to CVE-2023-53432
+	5.4.302 is vulnerable to CVE-2023-53438
+	5.4.302 is vulnerable to CVE-2023-53441
+	5.4.302 is vulnerable to CVE-2023-53447
+	5.4.302 is vulnerable to CVE-2023-53458
+	5.4.302 is vulnerable to CVE-2023-53460
+	5.4.302 is vulnerable to CVE-2023-53461
+	5.4.302 is vulnerable to CVE-2023-53469
+	5.4.302 is vulnerable to CVE-2023-53470
+	5.4.302 is vulnerable to CVE-2023-53473
+	5.4.302 is vulnerable to CVE-2023-53476
+	5.4.302 is vulnerable to CVE-2023-53482
+	5.4.302 is vulnerable to CVE-2023-53483
+	5.4.302 is vulnerable to CVE-2023-53491
+	5.4.302 is vulnerable to CVE-2023-53494
+	5.4.302 is vulnerable to CVE-2023-53499
+	5.4.302 is vulnerable to CVE-2023-53503
+	5.4.302 is vulnerable to CVE-2023-53509
+	5.4.302 is vulnerable to CVE-2023-53510
+	5.4.302 is vulnerable to CVE-2023-53512
+	5.4.302 is vulnerable to CVE-2023-53513
+	5.4.302 is vulnerable to CVE-2023-53517
+	5.4.302 is vulnerable to CVE-2023-53520
+	5.4.302 is vulnerable to CVE-2023-53529
+	5.4.302 is vulnerable to CVE-2023-53530
+	5.4.302 is vulnerable to CVE-2023-53538
+	5.4.302 is vulnerable to CVE-2023-53539
+	5.4.302 is vulnerable to CVE-2023-53540
+	5.4.302 is vulnerable to CVE-2023-53544
+	5.4.302 is vulnerable to CVE-2023-53545
+	5.4.302 is vulnerable to CVE-2023-53562
+	5.4.302 is vulnerable to CVE-2023-53574
+	5.4.302 is vulnerable to CVE-2023-53576
+	5.4.302 is vulnerable to CVE-2023-53577
+	5.4.302 is vulnerable to CVE-2023-53579
+	5.4.302 is vulnerable to CVE-2023-53581
+	5.4.302 is vulnerable to CVE-2023-53584
+	5.4.302 is vulnerable to CVE-2023-53586
+	5.4.302 is vulnerable to CVE-2023-53588
+	5.4.302 is vulnerable to CVE-2023-53594
+	5.4.302 is vulnerable to CVE-2023-53596
+	5.4.302 is vulnerable to CVE-2023-53605
+	5.4.302 is vulnerable to CVE-2023-53606
+	5.4.302 is vulnerable to CVE-2023-53607
+	5.4.302 is vulnerable to CVE-2023-53618
+	5.4.302 is vulnerable to CVE-2023-53620
+	5.4.302 is vulnerable to CVE-2023-53624
+	5.4.302 is vulnerable to CVE-2023-53625
+	5.4.302 is vulnerable to CVE-2023-53627
+	5.4.302 is vulnerable to CVE-2023-53635
+	5.4.302 is vulnerable to CVE-2023-53647
+	5.4.302 is vulnerable to CVE-2023-53651
+	5.4.302 is vulnerable to CVE-2023-53661
+	5.4.302 is vulnerable to CVE-2023-53671
+	5.4.302 is vulnerable to CVE-2023-53680
+	5.4.302 is vulnerable to CVE-2023-53682
+	5.4.302 is vulnerable to CVE-2023-53684
+	5.4.302 is vulnerable to CVE-2023-53685
+	5.4.302 is vulnerable to CVE-2023-53696
+	5.4.302 is vulnerable to CVE-2023-53699
+	5.4.302 is vulnerable to CVE-2023-53707
+	5.4.302 is vulnerable to CVE-2023-53708
+	5.4.302 is vulnerable to CVE-2023-53712
+	5.4.302 is vulnerable to CVE-2023-53714
+	5.4.302 is vulnerable to CVE-2023-53718
+	5.4.302 is vulnerable to CVE-2023-53733
+	5.4.302 is vulnerable to CVE-2024-26583
+	5.4.302 is vulnerable to CVE-2024-26584
+	5.4.302 is vulnerable to CVE-2024-26585
+	5.4.302 is vulnerable to CVE-2024-26586
+	5.4.302 is vulnerable to CVE-2024-26589
+	5.4.302 is vulnerable to CVE-2024-26595
+	5.4.302 is vulnerable to CVE-2024-26607
+	5.4.302 is vulnerable to CVE-2024-26614
+	5.4.302 is vulnerable to CVE-2024-26622
+	5.4.302 is vulnerable to CVE-2024-26629
+	5.4.302 is vulnerable to CVE-2024-26640
+	5.4.302 is vulnerable to CVE-2024-26641
+	5.4.302 is vulnerable to CVE-2024-26656
+	5.4.302 is vulnerable to CVE-2024-26659
+	5.4.302 is vulnerable to CVE-2024-26668
+	5.4.302 is vulnerable to CVE-2024-26669
+	5.4.302 is vulnerable to CVE-2024-26672
+	5.4.302 is vulnerable to CVE-2024-26677
+	5.4.302 is vulnerable to CVE-2024-26686
+	5.4.302 is vulnerable to CVE-2024-26689
+	5.4.302 is vulnerable to CVE-2024-26691
+	5.4.302 is vulnerable to CVE-2024-26700
+	5.4.302 is vulnerable to CVE-2024-26706
+	5.4.302 is vulnerable to CVE-2024-26712
+	5.4.302 is vulnerable to CVE-2024-26715
+	5.4.302 is vulnerable to CVE-2024-26719
+	5.4.302 is vulnerable to CVE-2024-26726
+	5.4.302 is vulnerable to CVE-2024-26733
+	5.4.302 is vulnerable to CVE-2024-26739
+	5.4.302 is vulnerable to CVE-2024-26740
+	5.4.302 is vulnerable to CVE-2024-26743
+	5.4.302 is vulnerable to CVE-2024-26747
+	5.4.302 is vulnerable to CVE-2024-26756
+	5.4.302 is vulnerable to CVE-2024-26757
+	5.4.302 is vulnerable to CVE-2024-26758
+	5.4.302 is vulnerable to CVE-2024-26759
+	5.4.302 is vulnerable to CVE-2024-26769
+	5.4.302 is vulnerable to CVE-2024-26771
+	5.4.302 is vulnerable to CVE-2024-26775
+	5.4.302 is vulnerable to CVE-2024-26787
+	5.4.302 is vulnerable to CVE-2024-26795
+	5.4.302 is vulnerable to CVE-2024-26807
+	5.4.302 is vulnerable to CVE-2024-26828
+	5.4.302 is vulnerable to CVE-2024-26830
+	5.4.302 is vulnerable to CVE-2024-26842
+	5.4.302 is vulnerable to CVE-2024-26844
+	5.4.302 is vulnerable to CVE-2024-26846
+	5.4.302 is vulnerable to CVE-2024-26865
+	5.4.302 is vulnerable to CVE-2024-26866
+	5.4.302 is vulnerable to CVE-2024-26869
+	5.4.302 is vulnerable to CVE-2024-26872
+	5.4.302 is vulnerable to CVE-2024-26876
+	5.4.302 is vulnerable to CVE-2024-26891
+	5.4.302 is vulnerable to CVE-2024-26900
+	5.4.302 is vulnerable to CVE-2024-26906
+	5.4.302 is vulnerable to CVE-2024-26907
+	5.4.302 is vulnerable to CVE-2024-26913
+	5.4.302 is vulnerable to CVE-2024-26914
+	5.4.302 is vulnerable to CVE-2024-26915
+	5.4.302 is vulnerable to CVE-2024-26920
+	5.4.302 is vulnerable to CVE-2024-26928
+	5.4.302 is vulnerable to CVE-2024-26930
+	5.4.302 is vulnerable to CVE-2024-26938
+	5.4.302 is vulnerable to CVE-2024-26947
+	5.4.302 is vulnerable to CVE-2024-26948
+	5.4.302 is vulnerable to CVE-2024-26960
+	5.4.302 is vulnerable to CVE-2024-26961
+	5.4.302 is vulnerable to CVE-2024-26962
+	5.4.302 is vulnerable to CVE-2024-26988
+	5.4.302 is vulnerable to CVE-2024-26996
+	5.4.302 is vulnerable to CVE-2024-27002
+	5.4.302 is vulnerable to CVE-2024-27010
+	5.4.302 is vulnerable to CVE-2024-27011
+	5.4.302 is vulnerable to CVE-2024-27012
+	5.4.302 is vulnerable to CVE-2024-27014
+	5.4.302 is vulnerable to CVE-2024-27019
+	5.4.302 is vulnerable to CVE-2024-27032
+	5.4.302 is vulnerable to CVE-2024-27037
+	5.4.302 is vulnerable to CVE-2024-27051
+	5.4.302 is vulnerable to CVE-2024-27054
+	5.4.302 is vulnerable to CVE-2024-27056
+	5.4.302 is vulnerable to CVE-2024-27062
+	5.4.302 is vulnerable to CVE-2024-27072
+	5.4.302 is vulnerable to CVE-2024-27402
+	5.4.302 is vulnerable to CVE-2024-27403
+	5.4.302 is vulnerable to CVE-2024-27408
+	5.4.302 is vulnerable to CVE-2024-27415
+	5.4.302 is vulnerable to CVE-2024-35247
+	5.4.302 is vulnerable to CVE-2024-35784
+	5.4.302 is vulnerable to CVE-2024-35790
+	5.4.302 is vulnerable to CVE-2024-35791
+	5.4.302 is vulnerable to CVE-2024-35794
+	5.4.302 is vulnerable to CVE-2024-35799
+	5.4.302 is vulnerable to CVE-2024-35803
+	5.4.302 is vulnerable to CVE-2024-35808
+	5.4.302 is vulnerable to CVE-2024-35826
+	5.4.302 is vulnerable to CVE-2024-35837
+	5.4.302 is vulnerable to CVE-2024-35839
+	5.4.302 is vulnerable to CVE-2024-35843
+	5.4.302 is vulnerable to CVE-2024-35848
+	5.4.302 is vulnerable to CVE-2024-35861
+	5.4.302 is vulnerable to CVE-2024-35862
+	5.4.302 is vulnerable to CVE-2024-35863
+	5.4.302 is vulnerable to CVE-2024-35864
+	5.4.302 is vulnerable to CVE-2024-35865
+	5.4.302 is vulnerable to CVE-2024-35866
+	5.4.302 is vulnerable to CVE-2024-35867
+	5.4.302 is vulnerable to CVE-2024-35868
+	5.4.302 is vulnerable to CVE-2024-35869
+	5.4.302 is vulnerable to CVE-2024-35870
+	5.4.302 is vulnerable to CVE-2024-35871
+	5.4.302 is vulnerable to CVE-2024-35875
+	5.4.302 is vulnerable to CVE-2024-35878
+	5.4.302 is vulnerable to CVE-2024-35887
+	5.4.302 is vulnerable to CVE-2024-35896
+	5.4.302 is vulnerable to CVE-2024-35904
+	5.4.302 is vulnerable to CVE-2024-35929
+	5.4.302 is vulnerable to CVE-2024-35931
+	5.4.302 is vulnerable to CVE-2024-35932
+	5.4.302 is vulnerable to CVE-2024-35934
+	5.4.302 is vulnerable to CVE-2024-35939
+	5.4.302 is vulnerable to CVE-2024-35940
+	5.4.302 is vulnerable to CVE-2024-35943
+	5.4.302 is vulnerable to CVE-2024-35945
+	5.4.302 is vulnerable to CVE-2024-35949
+	5.4.302 is vulnerable to CVE-2024-35951
+	5.4.302 is vulnerable to CVE-2024-35965
+	5.4.302 is vulnerable to CVE-2024-35966
+	5.4.302 is vulnerable to CVE-2024-35967
+	5.4.302 is vulnerable to CVE-2024-35995
+	5.4.302 is vulnerable to CVE-2024-35998
+	5.4.302 is vulnerable to CVE-2024-35999
+	5.4.302 is vulnerable to CVE-2024-36009
+	5.4.302 is vulnerable to CVE-2024-36013
+	5.4.302 is vulnerable to CVE-2024-36023
+	5.4.302 is vulnerable to CVE-2024-36024
+	5.4.302 is vulnerable to CVE-2024-36029
+	5.4.302 is vulnerable to CVE-2024-36244
+	5.4.302 is vulnerable to CVE-2024-36479
+	5.4.302 is vulnerable to CVE-2024-36880
+	5.4.302 is vulnerable to CVE-2024-36897
+	5.4.302 is vulnerable to CVE-2024-36901
+	5.4.302 is vulnerable to CVE-2024-36903
+	5.4.302 is vulnerable to CVE-2024-36908
+	5.4.302 is vulnerable to CVE-2024-36909
+	5.4.302 is vulnerable to CVE-2024-36910
+	5.4.302 is vulnerable to CVE-2024-36911
+	5.4.302 is vulnerable to CVE-2024-36914
+	5.4.302 is vulnerable to CVE-2024-36915
+	5.4.302 is vulnerable to CVE-2024-36917
+	5.4.302 is vulnerable to CVE-2024-36922
+	5.4.302 is vulnerable to CVE-2024-36923
+	5.4.302 is vulnerable to CVE-2024-36924
+	5.4.302 is vulnerable to CVE-2024-36927
+	5.4.302 is vulnerable to CVE-2024-36938
+	5.4.302 is vulnerable to CVE-2024-36949
+	5.4.302 is vulnerable to CVE-2024-36951
+	5.4.302 is vulnerable to CVE-2024-36952
+	5.4.302 is vulnerable to CVE-2024-36953
+	5.4.302 is vulnerable to CVE-2024-36968
+	5.4.302 is vulnerable to CVE-2024-36969
+	5.4.302 is vulnerable to CVE-2024-37021
+	5.4.302 is vulnerable to CVE-2024-37354
+	5.4.302 is vulnerable to CVE-2024-38545
+	5.4.302 is vulnerable to CVE-2024-38546
+	5.4.302 is vulnerable to CVE-2024-38553
+	5.4.302 is vulnerable to CVE-2024-38554
+	5.4.302 is vulnerable to CVE-2024-38556
+	5.4.302 is vulnerable to CVE-2024-38570
+	5.4.302 is vulnerable to CVE-2024-38580
+	5.4.302 is vulnerable to CVE-2024-38581
+	5.4.302 is vulnerable to CVE-2024-38591
+	5.4.302 is vulnerable to CVE-2024-38597
+	5.4.302 is vulnerable to CVE-2024-38602
+	5.4.302 is vulnerable to CVE-2024-38608
+	5.4.302 is vulnerable to CVE-2024-38611
+	5.4.302 is vulnerable to CVE-2024-38620
+	5.4.302 is vulnerable to CVE-2024-38630
+	5.4.302 is vulnerable to CVE-2024-38632
+	5.4.302 is vulnerable to CVE-2024-38662
+	5.4.302 is vulnerable to CVE-2024-39479
+	5.4.302 is vulnerable to CVE-2024-39482
+	5.4.302 is vulnerable to CVE-2024-39484
+	5.4.302 is vulnerable to CVE-2024-39490
+	5.4.302 is vulnerable to CVE-2024-39497
+	5.4.302 is vulnerable to CVE-2024-39507
+	5.4.302 is vulnerable to CVE-2024-39508
+	5.4.302 is vulnerable to CVE-2024-40910
+	5.4.302 is vulnerable to CVE-2024-40911
+	5.4.302 is vulnerable to CVE-2024-40918
+	5.4.302 is vulnerable to CVE-2024-40927
+	5.4.302 is vulnerable to CVE-2024-40929
+	5.4.302 is vulnerable to CVE-2024-40947
+	5.4.302 is vulnerable to CVE-2024-40965
+	5.4.302 is vulnerable to CVE-2024-40966
+	5.4.302 is vulnerable to CVE-2024-40967
+	5.4.302 is vulnerable to CVE-2024-40969
+	5.4.302 is vulnerable to CVE-2024-40970
+	5.4.302 is vulnerable to CVE-2024-40971
+	5.4.302 is vulnerable to CVE-2024-40972
+	5.4.302 is vulnerable to CVE-2024-40973
+	5.4.302 is vulnerable to CVE-2024-40976
+	5.4.302 is vulnerable to CVE-2024-40977
+	5.4.302 is vulnerable to CVE-2024-40990
+	5.4.302 is vulnerable to CVE-2024-40998
+	5.4.302 is vulnerable to CVE-2024-40999
+	5.4.302 is vulnerable to CVE-2024-41000
+	5.4.302 is vulnerable to CVE-2024-41001
+	5.4.302 is vulnerable to CVE-2024-41005
+	5.4.302 is vulnerable to CVE-2024-41008
+	5.4.302 is vulnerable to CVE-2024-41013
+	5.4.302 is vulnerable to CVE-2024-41014
+	5.4.302 is vulnerable to CVE-2024-41023
+	5.4.302 is vulnerable to CVE-2024-41048
+	5.4.302 is vulnerable to CVE-2024-41060
+	5.4.302 is vulnerable to CVE-2024-41062
+	5.4.302 is vulnerable to CVE-2024-41066
+	5.4.302 is vulnerable to CVE-2024-41067
+	5.4.302 is vulnerable to CVE-2024-41069
+	5.4.302 is vulnerable to CVE-2024-41073
+	5.4.302 is vulnerable to CVE-2024-41076
+	5.4.302 is vulnerable to CVE-2024-41077
+	5.4.302 is vulnerable to CVE-2024-41078
+	5.4.302 is vulnerable to CVE-2024-41079
+	5.4.302 is vulnerable to CVE-2024-41080
+	5.4.302 is vulnerable to CVE-2024-41082
+	5.4.302 is vulnerable to CVE-2024-41093
+	5.4.302 is vulnerable to CVE-2024-41935
+	5.4.302 is vulnerable to CVE-2024-42063
+	5.4.302 is vulnerable to CVE-2024-42067
+	5.4.302 is vulnerable to CVE-2024-42068
+	5.4.302 is vulnerable to CVE-2024-42077
+	5.4.302 is vulnerable to CVE-2024-42079
+	5.4.302 is vulnerable to CVE-2024-42080
+	5.4.302 is vulnerable to CVE-2024-42082
+	5.4.302 is vulnerable to CVE-2024-42098
+	5.4.302 is vulnerable to CVE-2024-42110
+	5.4.302 is vulnerable to CVE-2024-42114
+	5.4.302 is vulnerable to CVE-2024-42118
+	5.4.302 is vulnerable to CVE-2024-42120
+	5.4.302 is vulnerable to CVE-2024-42121
+	5.4.302 is vulnerable to CVE-2024-42122
+	5.4.302 is vulnerable to CVE-2024-42123
+	5.4.302 is vulnerable to CVE-2024-42128
+	5.4.302 is vulnerable to CVE-2024-42129
+	5.4.302 is vulnerable to CVE-2024-42130
+	5.4.302 is vulnerable to CVE-2024-42135
+	5.4.302 is vulnerable to CVE-2024-42147
+	5.4.302 is vulnerable to CVE-2024-42155
+	5.4.302 is vulnerable to CVE-2024-42156
+	5.4.302 is vulnerable to CVE-2024-42158
+	5.4.302 is vulnerable to CVE-2024-42160
+	5.4.302 is vulnerable to CVE-2024-42225
+	5.4.302 is vulnerable to CVE-2024-42244
+	5.4.302 is vulnerable to CVE-2024-42252
+	5.4.302 is vulnerable to CVE-2024-42253
+	5.4.302 is vulnerable to CVE-2024-42267
+	5.4.302 is vulnerable to CVE-2024-42296
+	5.4.302 is vulnerable to CVE-2024-42312
+	5.4.302 is vulnerable to CVE-2024-42319
+	5.4.302 is vulnerable to CVE-2024-42321
+	5.4.302 is vulnerable to CVE-2024-42322
+	5.4.302 is vulnerable to CVE-2024-43817
+	5.4.302 is vulnerable to CVE-2024-43819
+	5.4.302 is vulnerable to CVE-2024-43831
+	5.4.302 is vulnerable to CVE-2024-43834
+	5.4.302 is vulnerable to CVE-2024-43863
+	5.4.302 is vulnerable to CVE-2024-43866
+	5.4.302 is vulnerable to CVE-2024-43872
+	5.4.302 is vulnerable to CVE-2024-43877
+	5.4.302 is vulnerable to CVE-2024-43892
+	5.4.302 is vulnerable to CVE-2024-43899
+	5.4.302 is vulnerable to CVE-2024-43900
+	5.4.302 is vulnerable to CVE-2024-43901
+	5.4.302 is vulnerable to CVE-2024-43902
+	5.4.302 is vulnerable to CVE-2024-43904
+	5.4.302 is vulnerable to CVE-2024-43905
+	5.4.302 is vulnerable to CVE-2024-43907
+	5.4.302 is vulnerable to CVE-2024-43909
+	5.4.302 is vulnerable to CVE-2024-43912
+	5.4.302 is vulnerable to CVE-2024-44938
+	5.4.302 is vulnerable to CVE-2024-44939
+	5.4.302 is vulnerable to CVE-2024-44940
+	5.4.302 is vulnerable to CVE-2024-44941
+	5.4.302 is vulnerable to CVE-2024-44942
+	5.4.302 is vulnerable to CVE-2024-44949
+	5.4.302 is vulnerable to CVE-2024-44950
+	5.4.302 is vulnerable to CVE-2024-44957
+	5.4.302 is vulnerable to CVE-2024-44958
+	5.4.302 is vulnerable to CVE-2024-44963
+	5.4.302 is vulnerable to CVE-2024-44972
+	5.4.302 is vulnerable to CVE-2024-44982
+	5.4.302 is vulnerable to CVE-2024-44986
+	5.4.302 is vulnerable to CVE-2024-45015
+	5.4.302 is vulnerable to CVE-2024-45828
+	5.4.302 is vulnerable to CVE-2024-46681
+	5.4.302 is vulnerable to CVE-2024-46695
+	5.4.302 is vulnerable to CVE-2024-46702
+	5.4.302 is vulnerable to CVE-2024-46707
+	5.4.302 is vulnerable to CVE-2024-46713
+	5.4.302 is vulnerable to CVE-2024-46715
+	5.4.302 is vulnerable to CVE-2024-46716
+	5.4.302 is vulnerable to CVE-2024-46717
+	5.4.302 is vulnerable to CVE-2024-46720
+	5.4.302 is vulnerable to CVE-2024-46724
+	5.4.302 is vulnerable to CVE-2024-46725
+	5.4.302 is vulnerable to CVE-2024-46726
+	5.4.302 is vulnerable to CVE-2024-46727
+	5.4.302 is vulnerable to CVE-2024-46728
+	5.4.302 is vulnerable to CVE-2024-46729
+	5.4.302 is vulnerable to CVE-2024-46730
+	5.4.302 is vulnerable to CVE-2024-46731
+	5.4.302 is vulnerable to CVE-2024-46732
+	5.4.302 is vulnerable to CVE-2024-46733
+	5.4.302 is vulnerable to CVE-2024-46751
+	5.4.302 is vulnerable to CVE-2024-46752
+	5.4.302 is vulnerable to CVE-2024-46753
+	5.4.302 is vulnerable to CVE-2024-46754
+	5.4.302 is vulnerable to CVE-2024-46760
+	5.4.302 is vulnerable to CVE-2024-46762
+	5.4.302 is vulnerable to CVE-2024-46763
+	5.4.302 is vulnerable to CVE-2024-46770
+	5.4.302 is vulnerable to CVE-2024-46772
+	5.4.302 is vulnerable to CVE-2024-46773
+	5.4.302 is vulnerable to CVE-2024-46774
+	5.4.302 is vulnerable to CVE-2024-46775
+	5.4.302 is vulnerable to CVE-2024-46776
+	5.4.302 is vulnerable to CVE-2024-46787
+	5.4.302 is vulnerable to CVE-2024-46802
+	5.4.302 is vulnerable to CVE-2024-46806
+	5.4.302 is vulnerable to CVE-2024-46807
+	5.4.302 is vulnerable to CVE-2024-46808
+	5.4.302 is vulnerable to CVE-2024-46809
+	5.4.302 is vulnerable to CVE-2024-46810
+	5.4.302 is vulnerable to CVE-2024-46811
+	5.4.302 is vulnerable to CVE-2024-46812
+	5.4.302 is vulnerable to CVE-2024-46813
+	5.4.302 is vulnerable to CVE-2024-46816
+	5.4.302 is vulnerable to CVE-2024-46819
+	5.4.302 is vulnerable to CVE-2024-46821
+	5.4.302 is vulnerable to CVE-2024-46823
+	5.4.302 is vulnerable to CVE-2024-46825
+	5.4.302 is vulnerable to CVE-2024-46826
+	5.4.302 is vulnerable to CVE-2024-46832
+	5.4.302 is vulnerable to CVE-2024-46834
+	5.4.302 is vulnerable to CVE-2024-46841
+	5.4.302 is vulnerable to CVE-2024-46842
+	5.4.302 is vulnerable to CVE-2024-46848
+	5.4.302 is vulnerable to CVE-2024-46857
+	5.4.302 is vulnerable to CVE-2024-46859
+	5.4.302 is vulnerable to CVE-2024-46860
+	5.4.302 is vulnerable to CVE-2024-46870
+	5.4.302 is vulnerable to CVE-2024-46871
+	5.4.302 is vulnerable to CVE-2024-47141
+	5.4.302 is vulnerable to CVE-2024-47143
+	5.4.302 is vulnerable to CVE-2024-47658
+	5.4.302 is vulnerable to CVE-2024-47660
+	5.4.302 is vulnerable to CVE-2024-47661
+	5.4.302 is vulnerable to CVE-2024-47665
+	5.4.302 is vulnerable to CVE-2024-47666
+	5.4.302 is vulnerable to CVE-2024-47673
+	5.4.302 is vulnerable to CVE-2024-47678
+	5.4.302 is vulnerable to CVE-2024-47683
+	5.4.302 is vulnerable to CVE-2024-47690
+	5.4.302 is vulnerable to CVE-2024-47691
+	5.4.302 is vulnerable to CVE-2024-47693
+	5.4.302 is vulnerable to CVE-2024-47704
+	5.4.302 is vulnerable to CVE-2024-47726
+	5.4.302 is vulnerable to CVE-2024-47728
+	5.4.302 is vulnerable to CVE-2024-47735
+	5.4.302 is vulnerable to CVE-2024-47739
+	5.4.302 is vulnerable to CVE-2024-47745
+	5.4.302 is vulnerable to CVE-2024-47809
+	5.4.302 is vulnerable to CVE-2024-48875
+	5.4.302 is vulnerable to CVE-2024-49569
+	5.4.302 is vulnerable to CVE-2024-49571
+	5.4.302 is vulnerable to CVE-2024-49854
+	5.4.302 is vulnerable to CVE-2024-49858
+	5.4.302 is vulnerable to CVE-2024-49859
+	5.4.302 is vulnerable to CVE-2024-49861
+	5.4.302 is vulnerable to CVE-2024-49863
+	5.4.302 is vulnerable to CVE-2024-49875
+	5.4.302 is vulnerable to CVE-2024-49881
+	5.4.302 is vulnerable to CVE-2024-49889
+	5.4.302 is vulnerable to CVE-2024-49890
+	5.4.302 is vulnerable to CVE-2024-49891
+	5.4.302 is vulnerable to CVE-2024-49893
+	5.4.302 is vulnerable to CVE-2024-49895
+	5.4.302 is vulnerable to CVE-2024-49897
+	5.4.302 is vulnerable to CVE-2024-49898
+	5.4.302 is vulnerable to CVE-2024-49899
+	5.4.302 is vulnerable to CVE-2024-49901
+	5.4.302 is vulnerable to CVE-2024-49905
+	5.4.302 is vulnerable to CVE-2024-49906
+	5.4.302 is vulnerable to CVE-2024-49907
+	5.4.302 is vulnerable to CVE-2024-49908
+	5.4.302 is vulnerable to CVE-2024-49910
+	5.4.302 is vulnerable to CVE-2024-49911
+	5.4.302 is vulnerable to CVE-2024-49912
+	5.4.302 is vulnerable to CVE-2024-49913
+	5.4.302 is vulnerable to CVE-2024-49914
+	5.4.302 is vulnerable to CVE-2024-49915
+	5.4.302 is vulnerable to CVE-2024-49916
+	5.4.302 is vulnerable to CVE-2024-49917
+	5.4.302 is vulnerable to CVE-2024-49918
+	5.4.302 is vulnerable to CVE-2024-49919
+	5.4.302 is vulnerable to CVE-2024-49920
+	5.4.302 is vulnerable to CVE-2024-49921
+	5.4.302 is vulnerable to CVE-2024-49922
+	5.4.302 is vulnerable to CVE-2024-49923
+	5.4.302 is vulnerable to CVE-2024-49925
+	5.4.302 is vulnerable to CVE-2024-49926
+	5.4.302 is vulnerable to CVE-2024-49927
+	5.4.302 is vulnerable to CVE-2024-49929
+	5.4.302 is vulnerable to CVE-2024-49932
+	5.4.302 is vulnerable to CVE-2024-49934
+	5.4.302 is vulnerable to CVE-2024-49937
+	5.4.302 is vulnerable to CVE-2024-49940
+	5.4.302 is vulnerable to CVE-2024-49945
+	5.4.302 is vulnerable to CVE-2024-49950
+	5.4.302 is vulnerable to CVE-2024-49968
+	5.4.302 is vulnerable to CVE-2024-49970
+	5.4.302 is vulnerable to CVE-2024-49974
+	5.4.302 is vulnerable to CVE-2024-49989
+	5.4.302 is vulnerable to CVE-2024-49991
+	5.4.302 is vulnerable to CVE-2024-49992
+	5.4.302 is vulnerable to CVE-2024-50003
+	5.4.302 is vulnerable to CVE-2024-50010
+	5.4.302 is vulnerable to CVE-2024-50014
+	5.4.302 is vulnerable to CVE-2024-50015
+	5.4.302 is vulnerable to CVE-2024-50017
+	5.4.302 is vulnerable to CVE-2024-50036
+	5.4.302 is vulnerable to CVE-2024-50038
+	5.4.302 is vulnerable to CVE-2024-50047
+	5.4.302 is vulnerable to CVE-2024-50056
+	5.4.302 is vulnerable to CVE-2024-50057
+	5.4.302 is vulnerable to CVE-2024-50058
+	5.4.302 is vulnerable to CVE-2024-50060
+	5.4.302 is vulnerable to CVE-2024-50061
+	5.4.302 is vulnerable to CVE-2024-50062
+	5.4.302 is vulnerable to CVE-2024-50067
+	5.4.302 is vulnerable to CVE-2024-50073
+	5.4.302 is vulnerable to CVE-2024-50095
+	5.4.302 is vulnerable to CVE-2024-50112
+	5.4.302 is vulnerable to CVE-2024-50115
+	5.4.302 is vulnerable to CVE-2024-50125
+	5.4.302 is vulnerable to CVE-2024-50135
+	5.4.302 is vulnerable to CVE-2024-50166
+	5.4.302 is vulnerable to CVE-2024-50183
+	5.4.302 is vulnerable to CVE-2024-50187
+	5.4.302 is vulnerable to CVE-2024-50191
+	5.4.302 is vulnerable to CVE-2024-50196
+	5.4.302 is vulnerable to CVE-2024-50211
+	5.4.302 is vulnerable to CVE-2024-50217
+	5.4.302 is vulnerable to CVE-2024-50256
+	5.4.302 is vulnerable to CVE-2024-50258
+	5.4.302 is vulnerable to CVE-2024-50272
+	5.4.302 is vulnerable to CVE-2024-50277
+	5.4.302 is vulnerable to CVE-2024-50280
+	5.4.302 is vulnerable to CVE-2024-50282
+	5.4.302 is vulnerable to CVE-2024-50289
+	5.4.302 is vulnerable to CVE-2024-50298
+	5.4.302 is vulnerable to CVE-2024-50304
+	5.4.302 is vulnerable to CVE-2024-52559
+	5.4.302 is vulnerable to CVE-2024-53050
+	5.4.302 is vulnerable to CVE-2024-53051
+	5.4.302 is vulnerable to CVE-2024-53052
+	5.4.302 is vulnerable to CVE-2024-53058
+	5.4.302 is vulnerable to CVE-2024-53079
+	5.4.302 is vulnerable to CVE-2024-53088
+	5.4.302 is vulnerable to CVE-2024-53090
+	5.4.302 is vulnerable to CVE-2024-53093
+	5.4.302 is vulnerable to CVE-2024-53094
+	5.4.302 is vulnerable to CVE-2024-53095
+	5.4.302 is vulnerable to CVE-2024-53100
+	5.4.302 is vulnerable to CVE-2024-53114
+	5.4.302 is vulnerable to CVE-2024-53128
+	5.4.302 is vulnerable to CVE-2024-53144
+	5.4.302 is vulnerable to CVE-2024-53168
+	5.4.302 is vulnerable to CVE-2024-53177
+	5.4.302 is vulnerable to CVE-2024-53179
+	5.4.302 is vulnerable to CVE-2024-53180
+	5.4.302 is vulnerable to CVE-2024-53187
+	5.4.302 is vulnerable to CVE-2024-53190
+	5.4.302 is vulnerable to CVE-2024-53195
+	5.4.302 is vulnerable to CVE-2024-53206
+	5.4.302 is vulnerable to CVE-2024-53210
+	5.4.302 is vulnerable to CVE-2024-53216
+	5.4.302 is vulnerable to CVE-2024-53218
+	5.4.302 is vulnerable to CVE-2024-53219
+	5.4.302 is vulnerable to CVE-2024-53220
+	5.4.302 is vulnerable to CVE-2024-53224
+	5.4.302 is vulnerable to CVE-2024-53234
+	5.4.302 is vulnerable to CVE-2024-53241
+	5.4.302 is vulnerable to CVE-2024-53685
+	5.4.302 is vulnerable to CVE-2024-54458
+	5.4.302 is vulnerable to CVE-2024-54683
+	5.4.302 is vulnerable to CVE-2024-56369
+	5.4.302 is vulnerable to CVE-2024-56533
+	5.4.302 is vulnerable to CVE-2024-56544
+	5.4.302 is vulnerable to CVE-2024-56551
+	5.4.302 is vulnerable to CVE-2024-56565
+	5.4.302 is vulnerable to CVE-2024-56566
+	5.4.302 is vulnerable to CVE-2024-56568
+	5.4.302 is vulnerable to CVE-2024-56583
+	5.4.302 is vulnerable to CVE-2024-56584
+	5.4.302 is vulnerable to CVE-2024-56588
+	5.4.302 is vulnerable to CVE-2024-56589
+	5.4.302 is vulnerable to CVE-2024-56590
+	5.4.302 is vulnerable to CVE-2024-56591
+	5.4.302 is vulnerable to CVE-2024-56592
+	5.4.302 is vulnerable to CVE-2024-56599
+	5.4.302 is vulnerable to CVE-2024-56604
+	5.4.302 is vulnerable to CVE-2024-56608
+	5.4.302 is vulnerable to CVE-2024-56609
+	5.4.302 is vulnerable to CVE-2024-56611
+	5.4.302 is vulnerable to CVE-2024-56614
+	5.4.302 is vulnerable to CVE-2024-56616
+	5.4.302 is vulnerable to CVE-2024-56623
+	5.4.302 is vulnerable to CVE-2024-56636
+	5.4.302 is vulnerable to CVE-2024-56640
+	5.4.302 is vulnerable to CVE-2024-56641
+	5.4.302 is vulnerable to CVE-2024-56647
+	5.4.302 is vulnerable to CVE-2024-56651
+	5.4.302 is vulnerable to CVE-2024-56658
+	5.4.302 is vulnerable to CVE-2024-56662
+	5.4.302 is vulnerable to CVE-2024-56664
+	5.4.302 is vulnerable to CVE-2024-56692
+	5.4.302 is vulnerable to CVE-2024-56698
+	5.4.302 is vulnerable to CVE-2024-56701
+	5.4.302 is vulnerable to CVE-2024-56703
+	5.4.302 is vulnerable to CVE-2024-56712
+	5.4.302 is vulnerable to CVE-2024-56722
+	5.4.302 is vulnerable to CVE-2024-56751
+	5.4.302 is vulnerable to CVE-2024-56759
+	5.4.302 is vulnerable to CVE-2024-56763
+	5.4.302 is vulnerable to CVE-2024-56775
+	5.4.302 is vulnerable to CVE-2024-56776
+	5.4.302 is vulnerable to CVE-2024-56777
+	5.4.302 is vulnerable to CVE-2024-56778
+	5.4.302 is vulnerable to CVE-2024-56782
+	5.4.302 is vulnerable to CVE-2024-56785
+	5.4.302 is vulnerable to CVE-2024-56787
+	5.4.302 is vulnerable to CVE-2024-57795
+	5.4.302 is vulnerable to CVE-2024-57809
+	5.4.302 is vulnerable to CVE-2024-57838
+	5.4.302 is vulnerable to CVE-2024-57843
+	5.4.302 is vulnerable to CVE-2024-57857
+	5.4.302 is vulnerable to CVE-2024-57872
+	5.4.302 is vulnerable to CVE-2024-57875
+	5.4.302 is vulnerable to CVE-2024-57883
+	5.4.302 is vulnerable to CVE-2024-57887
+	5.4.302 is vulnerable to CVE-2024-57888
+	5.4.302 is vulnerable to CVE-2024-57893
+	5.4.302 is vulnerable to CVE-2024-57896
+	5.4.302 is vulnerable to CVE-2024-57897
+	5.4.302 is vulnerable to CVE-2024-57898
+	5.4.302 is vulnerable to CVE-2024-57899
+	5.4.302 is vulnerable to CVE-2024-57903
+	5.4.302 is vulnerable to CVE-2024-57924
+	5.4.302 is vulnerable to CVE-2024-57939
+	5.4.302 is vulnerable to CVE-2024-57974
+	5.4.302 is vulnerable to CVE-2024-57975
+	5.4.302 is vulnerable to CVE-2024-57976
+	5.4.302 is vulnerable to CVE-2024-57982
+	5.4.302 is vulnerable to CVE-2024-57984
+	5.4.302 is vulnerable to CVE-2024-58005
+	5.4.302 is vulnerable to CVE-2024-58016
+	5.4.302 is vulnerable to CVE-2024-58034
+	5.4.302 is vulnerable to CVE-2024-58053
+	5.4.302 is vulnerable to CVE-2024-58089
+	5.4.302 is vulnerable to CVE-2024-58093
+	5.4.302 is vulnerable to CVE-2024-58094
+	5.4.302 is vulnerable to CVE-2024-58095
+	5.4.302 is vulnerable to CVE-2024-58240
+	5.4.302 is vulnerable to CVE-2024-58241
+	5.4.302 is vulnerable to CVE-2025-21629
+	5.4.302 is vulnerable to CVE-2025-21634
+	5.4.302 is vulnerable to CVE-2025-21635
+	5.4.302 is vulnerable to CVE-2025-21648
+	5.4.302 is vulnerable to CVE-2025-21651
+	5.4.302 is vulnerable to CVE-2025-21682
+	5.4.302 is vulnerable to CVE-2025-21690
+	5.4.302 is vulnerable to CVE-2025-21711
+	5.4.302 is vulnerable to CVE-2025-21712
+	5.4.302 is vulnerable to CVE-2025-21726
+	5.4.302 is vulnerable to CVE-2025-21727
+	5.4.302 is vulnerable to CVE-2025-21734
+	5.4.302 is vulnerable to CVE-2025-21738
+	5.4.302 is vulnerable to CVE-2025-21750
+	5.4.302 is vulnerable to CVE-2025-21758
+	5.4.302 is vulnerable to CVE-2025-21759
+	5.4.302 is vulnerable to CVE-2025-21766
+	5.4.302 is vulnerable to CVE-2025-21768
+	5.4.302 is vulnerable to CVE-2025-21779
+	5.4.302 is vulnerable to CVE-2025-21780
+	5.4.302 is vulnerable to CVE-2025-21792
+	5.4.302 is vulnerable to CVE-2025-21796
+	5.4.302 is vulnerable to CVE-2025-21801
+	5.4.302 is vulnerable to CVE-2025-21802
+	5.4.302 is vulnerable to CVE-2025-21812
+	5.4.302 is vulnerable to CVE-2025-21816
+	5.4.302 is vulnerable to CVE-2025-21820
+	5.4.302 is vulnerable to CVE-2025-21821
+	5.4.302 is vulnerable to CVE-2025-21831
+	5.4.302 is vulnerable to CVE-2025-21838
+	5.4.302 is vulnerable to CVE-2025-21855
+	5.4.302 is vulnerable to CVE-2025-21881
+	5.4.302 is vulnerable to CVE-2025-21891
+	5.4.302 is vulnerable to CVE-2025-21894
+	5.4.302 is vulnerable to CVE-2025-21899
+	5.4.302 is vulnerable to CVE-2025-21912
+	5.4.302 is vulnerable to CVE-2025-21927
+	5.4.302 is vulnerable to CVE-2025-21931
+	5.4.302 is vulnerable to CVE-2025-21941
+	5.4.302 is vulnerable to CVE-2025-21969
+	5.4.302 is vulnerable to CVE-2025-21976
+	5.4.302 is vulnerable to CVE-2025-21985
+	5.4.302 is vulnerable to CVE-2025-22008
+	5.4.302 is vulnerable to CVE-2025-22010
+	5.4.302 is vulnerable to CVE-2025-22022
+	5.4.302 is vulnerable to CVE-2025-22025
+	5.4.302 is vulnerable to CVE-2025-22026
+	5.4.302 is vulnerable to CVE-2025-22027
+	5.4.302 is vulnerable to CVE-2025-22028
+	5.4.302 is vulnerable to CVE-2025-22053
+	5.4.302 is vulnerable to CVE-2025-22055
+	5.4.302 is vulnerable to CVE-2025-22057
+	5.4.302 is vulnerable to CVE-2025-22060
+	5.4.302 is vulnerable to CVE-2025-22072
+	5.4.302 is vulnerable to CVE-2025-22083
+	5.4.302 is vulnerable to CVE-2025-22090
+	5.4.302 is vulnerable to CVE-2025-22103
+	5.4.302 is vulnerable to CVE-2025-22104
+	5.4.302 is vulnerable to CVE-2025-22107
+	5.4.302 is vulnerable to CVE-2025-22109
+	5.4.302 is vulnerable to CVE-2025-22121
+	5.4.302 is vulnerable to CVE-2025-22125
+	5.4.302 is vulnerable to CVE-2025-23131
+	5.4.302 is vulnerable to CVE-2025-23132
+	5.4.302 is vulnerable to CVE-2025-23141
+	5.4.302 is vulnerable to CVE-2025-23148
+	5.4.302 is vulnerable to CVE-2025-23156
+	5.4.302 is vulnerable to CVE-2025-23161
+	5.4.302 is vulnerable to CVE-2025-37739
+	5.4.302 is vulnerable to CVE-2025-37742
+	5.4.302 is vulnerable to CVE-2025-37745
+	5.4.302 is vulnerable to CVE-2025-37756
+	5.4.302 is vulnerable to CVE-2025-37768
+	5.4.302 is vulnerable to CVE-2025-37770
+	5.4.302 is vulnerable to CVE-2025-37800
+	5.4.302 is vulnerable to CVE-2025-37801
+	5.4.302 is vulnerable to CVE-2025-37807
+	5.4.302 is vulnerable to CVE-2025-37830
+	5.4.302 is vulnerable to CVE-2025-37833
+	5.4.302 is vulnerable to CVE-2025-37834
+	5.4.302 is vulnerable to CVE-2025-37836
+	5.4.302 is vulnerable to CVE-2025-37842
+	5.4.302 is vulnerable to CVE-2025-37849
+	5.4.302 is vulnerable to CVE-2025-37852
+	5.4.302 is vulnerable to CVE-2025-37853
+	5.4.302 is vulnerable to CVE-2025-37856
+	5.4.302 is vulnerable to CVE-2025-37867
+	5.4.302 is vulnerable to CVE-2025-37877
+	5.4.302 is vulnerable to CVE-2025-37878
+	5.4.302 is vulnerable to CVE-2025-37879
+	5.4.302 is vulnerable to CVE-2025-37880
+	5.4.302 is vulnerable to CVE-2025-37882
+	5.4.302 is vulnerable to CVE-2025-37883
+	5.4.302 is vulnerable to CVE-2025-37884
+	5.4.302 is vulnerable to CVE-2025-37885
+	5.4.302 is vulnerable to CVE-2025-37911
+	5.4.302 is vulnerable to CVE-2025-37920
+	5.4.302 is vulnerable to CVE-2025-37925
+	5.4.302 is vulnerable to CVE-2025-37928
+	5.4.302 is vulnerable to CVE-2025-37942
+	5.4.302 is vulnerable to CVE-2025-37948
+	5.4.302 is vulnerable to CVE-2025-37951
+	5.4.302 is vulnerable to CVE-2025-37954
+	5.4.302 is vulnerable to CVE-2025-37961
+	5.4.302 is vulnerable to CVE-2025-37963
+	5.4.302 is vulnerable to CVE-2025-37967
+	5.4.302 is vulnerable to CVE-2025-37980
+	5.4.302 is vulnerable to CVE-2025-37992
+	5.4.302 is vulnerable to CVE-2025-38009
+	5.4.302 is vulnerable to CVE-2025-38022
+	5.4.302 is vulnerable to CVE-2025-38039
+	5.4.302 is vulnerable to CVE-2025-38040
+	5.4.302 is vulnerable to CVE-2025-38041
+	5.4.302 is vulnerable to CVE-2025-38045
+	5.4.302 is vulnerable to CVE-2025-38048
+	5.4.302 is vulnerable to CVE-2025-38062
+	5.4.302 is vulnerable to CVE-2025-38063
+	5.4.302 is vulnerable to CVE-2025-38064
+	5.4.302 is vulnerable to CVE-2025-38067
+	5.4.302 is vulnerable to CVE-2025-38068
+	5.4.302 is vulnerable to CVE-2025-38069
+	5.4.302 is vulnerable to CVE-2025-38071
+	5.4.302 is vulnerable to CVE-2025-38073
+	5.4.302 is vulnerable to CVE-2025-38074
+	5.4.302 is vulnerable to CVE-2025-38080
+	5.4.302 is vulnerable to CVE-2025-38084
+	5.4.302 is vulnerable to CVE-2025-38085
+	5.4.302 is vulnerable to CVE-2025-38094
+	5.4.302 is vulnerable to CVE-2025-38095
+	5.4.302 is vulnerable to CVE-2025-38096
+	5.4.302 is vulnerable to CVE-2025-38099
+	5.4.302 is vulnerable to CVE-2025-38105
+	5.4.302 is vulnerable to CVE-2025-38107
+	5.4.302 is vulnerable to CVE-2025-38112
+	5.4.302 is vulnerable to CVE-2025-38117
+	5.4.302 is vulnerable to CVE-2025-38119
+	5.4.302 is vulnerable to CVE-2025-38126
+	5.4.302 is vulnerable to CVE-2025-38129
+	5.4.302 is vulnerable to CVE-2025-38143
+	5.4.302 is vulnerable to CVE-2025-38159
+	5.4.302 is vulnerable to CVE-2025-38161
+	5.4.302 is vulnerable to CVE-2025-38166
+	5.4.302 is vulnerable to CVE-2025-38189
+	5.4.302 is vulnerable to CVE-2025-38192
+	5.4.302 is vulnerable to CVE-2025-38198
+	5.4.302 is vulnerable to CVE-2025-38207
+	5.4.302 is vulnerable to CVE-2025-38208
+	5.4.302 is vulnerable to CVE-2025-38215
+	5.4.302 is vulnerable to CVE-2025-38218
+	5.4.302 is vulnerable to CVE-2025-38232
+	5.4.302 is vulnerable to CVE-2025-38234
+	5.4.302 is vulnerable to CVE-2025-38250
+	5.4.302 is vulnerable to CVE-2025-38257
+	5.4.302 is vulnerable to CVE-2025-38259
+	5.4.302 is vulnerable to CVE-2025-38261
+	5.4.302 is vulnerable to CVE-2025-38263
+	5.4.302 is vulnerable to CVE-2025-38264
+	5.4.302 is vulnerable to CVE-2025-38269
+	5.4.302 is vulnerable to CVE-2025-38272
+	5.4.302 is vulnerable to CVE-2025-38280
+	5.4.302 is vulnerable to CVE-2025-38310
+	5.4.302 is vulnerable to CVE-2025-38319
+	5.4.302 is vulnerable to CVE-2025-38321
+	5.4.302 is vulnerable to CVE-2025-38331
+	5.4.302 is vulnerable to CVE-2025-38333
+	5.4.302 is vulnerable to CVE-2025-38342
+	5.4.302 is vulnerable to CVE-2025-38359
+	5.4.302 is vulnerable to CVE-2025-38361
+	5.4.302 is vulnerable to CVE-2025-38363
+	5.4.302 is vulnerable to CVE-2025-38384
+	5.4.302 is vulnerable to CVE-2025-38409
+	5.4.302 is vulnerable to CVE-2025-38410
+	5.4.302 is vulnerable to CVE-2025-38422
+	5.4.302 is vulnerable to CVE-2025-38425
+	5.4.302 is vulnerable to CVE-2025-38426
+	5.4.302 is vulnerable to CVE-2025-38436
+	5.4.302 is vulnerable to CVE-2025-38438
+	5.4.302 is vulnerable to CVE-2025-38449
+	5.4.302 is vulnerable to CVE-2025-38499
+	5.4.302 is vulnerable to CVE-2025-38503
+	5.4.302 is vulnerable to CVE-2025-38512
+	5.4.302 is vulnerable to CVE-2025-38524
+	5.4.302 is vulnerable to CVE-2025-38527
+	5.4.302 is vulnerable to CVE-2025-38531
+	5.4.302 is vulnerable to CVE-2025-38544
+	5.4.302 is vulnerable to CVE-2025-38556
+	5.4.302 is vulnerable to CVE-2025-38560
+	5.4.302 is vulnerable to CVE-2025-38576
+	5.4.302 is vulnerable to CVE-2025-38584
+	5.4.302 is vulnerable to CVE-2025-38591
+	5.4.302 is vulnerable to CVE-2025-38595
+	5.4.302 is vulnerable to CVE-2025-38614
+	5.4.302 is vulnerable to CVE-2025-38623
+	5.4.302 is vulnerable to CVE-2025-38624
+	5.4.302 is vulnerable to CVE-2025-38626
+	5.4.302 is vulnerable to CVE-2025-38643
+	5.4.302 is vulnerable to CVE-2025-38644
+	5.4.302 is vulnerable to CVE-2025-38645
+	5.4.302 is vulnerable to CVE-2025-38656
+	5.4.302 is vulnerable to CVE-2025-38665
+	5.4.302 is vulnerable to CVE-2025-38676
+	5.4.302 is vulnerable to CVE-2025-38679
+	5.4.302 is vulnerable to CVE-2025-38683
+	5.4.302 is vulnerable to CVE-2025-38684
+	5.4.302 is vulnerable to CVE-2025-38685
+	5.4.302 is vulnerable to CVE-2025-38702
+	5.4.302 is vulnerable to CVE-2025-38704
+	5.4.302 is vulnerable to CVE-2025-38705
+	5.4.302 is vulnerable to CVE-2025-38706
+	5.4.302 is vulnerable to CVE-2025-38709
+	5.4.302 is vulnerable to CVE-2025-38710
+	5.4.302 is vulnerable to CVE-2025-38716
+	5.4.302 is vulnerable to CVE-2025-38717
+	5.4.302 is vulnerable to CVE-2025-38728
+	5.4.302 is vulnerable to CVE-2025-38734
+	5.4.302 is vulnerable to CVE-2025-39677
+	5.4.302 is vulnerable to CVE-2025-39683
+	5.4.302 is vulnerable to CVE-2025-39684
+	5.4.302 is vulnerable to CVE-2025-39685
+	5.4.302 is vulnerable to CVE-2025-39686
+	5.4.302 is vulnerable to CVE-2025-39693
+	5.4.302 is vulnerable to CVE-2025-39697
+	5.4.302 is vulnerable to CVE-2025-39702
+	5.4.302 is vulnerable to CVE-2025-39705
+	5.4.302 is vulnerable to CVE-2025-39706
+	5.4.302 is vulnerable to CVE-2025-39707
+	5.4.302 is vulnerable to CVE-2025-39715
+	5.4.302 is vulnerable to CVE-2025-39716
+	5.4.302 is vulnerable to CVE-2025-39726
+	5.4.302 is vulnerable to CVE-2025-39738
+	5.4.302 is vulnerable to CVE-2025-39744
+	5.4.302 is vulnerable to CVE-2025-39745
+	5.4.302 is vulnerable to CVE-2025-39746
+	5.4.302 is vulnerable to CVE-2025-39747
+	5.4.302 is vulnerable to CVE-2025-39748
+	5.4.302 is vulnerable to CVE-2025-39753
+	5.4.302 is vulnerable to CVE-2025-39754
+	5.4.302 is vulnerable to CVE-2025-39759
+	5.4.302 is vulnerable to CVE-2025-39760
+	5.4.302 is vulnerable to CVE-2025-39762
+	5.4.302 is vulnerable to CVE-2025-39763
+	5.4.302 is vulnerable to CVE-2025-39764
+	5.4.302 is vulnerable to CVE-2025-39770
+	5.4.302 is vulnerable to CVE-2025-39772
+	5.4.302 is vulnerable to CVE-2025-39773
+	5.4.302 is vulnerable to CVE-2025-39781
+	5.4.302 is vulnerable to CVE-2025-39789
+	5.4.302 is vulnerable to CVE-2025-39795
+	5.4.302 is vulnerable to CVE-2025-39797
+	5.4.302 is vulnerable to CVE-2025-39800
+	5.4.302 is vulnerable to CVE-2025-39801
+	5.4.302 is vulnerable to CVE-2025-39810
+	5.4.302 is vulnerable to CVE-2025-39819
+	5.4.302 is vulnerable to CVE-2025-39825
+	5.4.302 is vulnerable to CVE-2025-39826
+	5.4.302 is vulnerable to CVE-2025-39827
+	5.4.302 is vulnerable to CVE-2025-39829
+	5.4.302 is vulnerable to CVE-2025-39833
+	5.4.302 is vulnerable to CVE-2025-39838
+	5.4.302 is vulnerable to CVE-2025-39863
+	5.4.302 is vulnerable to CVE-2025-39865
+	5.4.302 is vulnerable to CVE-2025-39866
+	5.4.302 is vulnerable to CVE-2025-39873
+	5.4.302 is vulnerable to CVE-2025-39901
+	5.4.302 is vulnerable to CVE-2025-39905
+	5.4.302 is vulnerable to CVE-2025-39925
+	5.4.302 is vulnerable to CVE-2025-39927
+	5.4.302 is vulnerable to CVE-2025-39929
+	5.4.302 is vulnerable to CVE-2025-39931
+	5.4.302 is vulnerable to CVE-2025-39932
+	5.4.302 is vulnerable to CVE-2025-39933
+	5.4.302 is vulnerable to CVE-2025-39940
+	5.4.302 is vulnerable to CVE-2025-39949
+	5.4.302 is vulnerable to CVE-2025-39952
+	5.4.302 is vulnerable to CVE-2025-39957
+	5.4.302 is vulnerable to CVE-2025-39958
+	5.4.302 is vulnerable to CVE-2025-39961
+	5.4.302 is vulnerable to CVE-2025-39964
+	5.4.302 is vulnerable to CVE-2025-39990
+	5.4.302 is vulnerable to CVE-2025-40003
+	5.4.302 is vulnerable to CVE-2025-40005
+	5.4.302 is vulnerable to CVE-2025-40021
+	5.4.302 is vulnerable to CVE-2025-40025
+	5.4.302 is vulnerable to CVE-2025-40036
+	5.4.302 is vulnerable to CVE-2025-40043
+	5.4.302 is vulnerable to CVE-2025-40053
+	5.4.302 is vulnerable to CVE-2025-40064
+	5.4.302 is vulnerable to CVE-2025-40074
+	5.4.302 is vulnerable to CVE-2025-40075
+	5.4.302 is vulnerable to CVE-2025-40080
+	5.4.302 is vulnerable to CVE-2025-40082
+	5.4.302 is vulnerable to CVE-2025-40092
+	5.4.302 is vulnerable to CVE-2025-40093
+	5.4.302 is vulnerable to CVE-2025-40094
+	5.4.302 is vulnerable to CVE-2025-40095
+	5.4.302 is vulnerable to CVE-2025-40099
+	5.4.302 is vulnerable to CVE-2025-40100
+	5.4.302 is vulnerable to CVE-2025-40102
+	5.4.302 is vulnerable to CVE-2025-40103
+	5.4.302 is vulnerable to CVE-2025-40104
+	5.4.302 is vulnerable to CVE-2025-40107
+	5.4.302 is vulnerable to CVE-2025-40110
+	5.4.302 is vulnerable to CVE-2025-40123
+	5.4.302 is vulnerable to CVE-2025-40135
+	5.4.302 is vulnerable to CVE-2025-40137
+	5.4.302 is vulnerable to CVE-2025-40139
+	5.4.302 is vulnerable to CVE-2025-40146
+	5.4.302 is vulnerable to CVE-2025-40149
+	5.4.302 is vulnerable to CVE-2025-40158
+	5.4.302 is vulnerable to CVE-2025-40160
+	5.4.302 is vulnerable to CVE-2025-40164
+	5.4.302 is vulnerable to CVE-2025-40168
+	5.4.302 is vulnerable to CVE-2025-40170
+	5.4.302 is vulnerable to CVE-2025-40180
+	5.4.302 is vulnerable to CVE-2025-40193
+	5.4.302 is vulnerable to CVE-2025-40195
+	5.4.302 is vulnerable to CVE-2025-40196
+	5.4.302 is vulnerable to CVE-2025-40206
+	5.4.302 is vulnerable to CVE-2025-40210
+	5.4.302 is vulnerable to CVE-2025-40300
 
-I don't think we should leave that to the unspecified 'future'. Let's
-fix the kernel I/O APIC to support the directed EOI at the same time,
-rather than having an interim version of KVM which supports the
-broadcast suppression but *not* the explicit EOI that replaces it.
-
-Since I happened to have the I/O APIC PDFs in my recent history for
-other reasons, and implemented these extra registers for version 0x20
-in another userspace VMM within living memory, I figured I could try to
-help with the actual implementation (untested, below).
-
-There is some bikeshedding to be done on precisely *how* ->version_id
-should be set. Maybe we shouldn't have the ->version_id field, and
-should just check kvm->arch.suppress_eoi_broadcast to see which version
-to report?=20
-
-
-While I'm at looking at it, I see there's an
-ASSERT(ent->fields.trig_mode =3D=3D IOAPIC_LEVEL_TRIG) in the middle of
-kvm_ioapic_update_eoi_one(), a few lines after it drops ioapic->lock
-and then relocks it again. If it dropped the lock, doesn't that mean
-the guest could have *changed* the mode in the interim, making that
-ASSERT() guest-triggerable?
-
-=3D=3D=3D=3D=3D
-From: David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH] KVM: x86/ioapic: Implement support for I/O APIC version 0x=
-20 with EOIR
-
-As the weirdness with EOI broadcast suppression is being fixed in KVM,
-also update the in-kernel I/O APIC to handle the directed EOI which
-guests will need to use instead.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/ioapic.c | 22 +++++++++++++++++++++-
- arch/x86/kvm/ioapic.h | 18 +++++++++++-------
- 2 files changed, 32 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 2c2783296aed..e82f74a8e57e 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -49,7 +49,7 @@ static unsigned long ioapic_read_indirect(struct kvm_ioap=
-ic *ioapic)
- 	switch (ioapic->ioregsel) {
- 	case IOAPIC_REG_VERSION:
- 		result =3D ((((IOAPIC_NUM_PINS - 1) & 0xff) << 16)
--			  | (IOAPIC_VERSION_ID & 0xff));
-+			  | ioapic->version_id);
- 		break;
-=20
- 	case IOAPIC_REG_APIC_ID:
-@@ -57,6 +57,10 @@ static unsigned long ioapic_read_indirect(struct kvm_ioa=
-pic *ioapic)
- 		result =3D ((ioapic->id & 0xf) << 24);
- 		break;
-=20
-+	case IOAPIC_REG_BOOT_CONFIG:
-+		result =3D 0x01; /* Processor bus */
-+		break;
-+
- 	default:
- 		{
- 			u32 redir_index =3D (ioapic->ioregsel - 0x10) >> 1;
-@@ -695,6 +699,21 @@ static int ioapic_mmio_write(struct kvm_vcpu *vcpu, st=
-ruct kvm_io_device *this,
- 		ioapic_write_indirect(ioapic, data);
- 		break;
-=20
-+	case IOAPIC_REG_EOIR:
-+		if (ioapic->version_id >=3D 0x20) {
-+			u8 vector =3D data & 0xff;
-+			int i;
-+
-+			rtc_irq_eoi(ioapic, vcpu, vector);
-+			for (i =3D 0; i < IOAPIC_NUM_PINS; i++) {
-+				union kvm_ioapic_redirect_entry *ent =3D &ioapic->redirtbl[i];
-+
-+				if (ent->fields.vector !=3D vector)
-+					continue;
-+				kvm_ioapic_update_eoi_one(vcpu, ioapic, ent->fields.trig_mode, i);
-+			}
-+		}
-+		break;
- 	default:
- 		break;
- 	}
-@@ -734,6 +753,7 @@ int kvm_ioapic_init(struct kvm *kvm)
- 	spin_lock_init(&ioapic->lock);
- 	INIT_DELAYED_WORK(&ioapic->eoi_inject, kvm_ioapic_eoi_inject_work);
- 	INIT_HLIST_HEAD(&ioapic->mask_notifier_list);
-+	ioapic->version_id =3D IOAPIC_VERSION_ID;
- 	kvm->arch.vioapic =3D ioapic;
- 	kvm_ioapic_reset(ioapic);
- 	kvm_iodevice_init(&ioapic->dev, &ioapic_mmio_ops);
-diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
-index bf28dbc11ff6..c8e44d726fbe 100644
---- a/arch/x86/kvm/ioapic.h
-+++ b/arch/x86/kvm/ioapic.h
-@@ -19,13 +19,16 @@ struct kvm_vcpu;
- #define IOAPIC_MEM_LENGTH            0x100
-=20
- /* Direct registers. */
--#define IOAPIC_REG_SELECT  0x00
--#define IOAPIC_REG_WINDOW  0x10
-+#define IOAPIC_REG_SELECT	0x00
-+#define IOAPIC_REG_WINDOW	0x10
-+#define IOAPIC_REG_IRQPA	0x20
-+#define IOAPIC_REG_EOIR		0x40
-=20
--/* Indirect registers. */
--#define IOAPIC_REG_APIC_ID 0x00	/* x86 IOAPIC only */
--#define IOAPIC_REG_VERSION 0x01
--#define IOAPIC_REG_ARB_ID  0x02	/* x86 IOAPIC only */
-+/* INDIRECT registers. */
-+#define IOAPIC_REG_APIC_ID	0x00	/* x86 IOAPIC only */
-+#define IOAPIC_REG_VERSION	0x01
-+#define IOAPIC_REG_ARB_ID	0x02	/* x86 IOAPIC only */
-+#define IOAPIC_REG_BOOT_CONFIG	0x03	/* x86 IOAPIC only */
-=20
- /*ioapic delivery mode*/
- #define	IOAPIC_FIXED			0x0
-@@ -76,7 +79,8 @@ struct kvm_ioapic {
- 	u32 ioregsel;
- 	u32 id;
- 	u32 irr;
--	u32 pad;
-+	u8 version_id;
-+	u8 pad[3];
- 	union kvm_ioapic_redirect_entry redirtbl[IOAPIC_NUM_PINS];
- 	unsigned long irq_states[IOAPIC_NUM_PINS];
- 	struct kvm_io_device dev;
---=20
-2.43.0
-
-
-
---=-VzDkV0+a/szVwWKRjIXL
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMzEyMjU1
-MFowLwYJKoZIhvcNAQkEMSIEIDrO7jcRiA+v37/zgF/zzxsfREDwAERs8rzEpmK9whCgMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAF7sEGmNNrOug
-agRXHxXV8F/myrUePNIMAK24G7AfmJQ0bPR3qEqUm/SELyfnRzJs4WmflvQXbfjWlfSqMiWIQ0H+
-ZxUle0x42kG48hn9c+wIuiwRoY9rr0ZyLdTq47rYpUV2HxcH+4QP284SneeqMuLcpqTqJPi/scSO
-4YQapJrlUk67dLh8+O3IdSCTpalKd6/nXwDm3OpTTHlo6CYJsEySJDtWVsTZMttJhVt4xwrLsGSw
-NwRn1LB50P3YhoUQ7fbC3iWePIZE8dHhR1EfvtZJZiNCPsR1j/JpllpPT4Bsi3sT9CLgfGbD/+L0
-kQ6POvIHjS+yzslAi93SzMIXBcKBprC8gpFElk4AvqPyNddEUHZgCI+Mee23I8ha6KrMamKW7MKX
-JIxYpbrQRg5E82bD2tbzs3BHhFoXwwwG1ncsYhI46RsknTVdmGWZt+1vlFTFDLL2iOtQKr3Yu3i2
-ZfmQd3AZvNU8139h1zGjx+HwrHXwRHun1TCG4VpBYGDwvO0QTUfmZFOXS06vTDyx4EI7Xvi7JjxS
-QRMk9M9pdE70hfFOJmzW+EprfgqL1JUq8WAD26mQyUsZD9g8Vf0gimCl6d8tThz6NREofrUnnP/d
-zFsdeglEIlpl5+lsfLltM8e80jrb+vjcEBhTT1+3Juodc28hT1ClpBBVSzgHN1cAAAAAAAA=
-
-
---=-VzDkV0+a/szVwWKRjIXL--
+	Total Vulnerable CVE's in 5.4.302 : 1539
 
