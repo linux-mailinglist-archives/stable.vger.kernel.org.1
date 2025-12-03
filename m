@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74B6CA0F45
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FE4CA1429
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84324319F94D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F13D931C1BAF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8002831A55E;
-	Wed,  3 Dec 2025 15:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894E3321B3;
+	Wed,  3 Dec 2025 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpEdkOgc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UayClvui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34955313E30;
-	Wed,  3 Dec 2025 15:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C90331A75;
+	Wed,  3 Dec 2025 15:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776807; cv=none; b=XfHVAufBSnD0nj+r4Wh30H2VuIVjFrKUNJ1wyUfl4NdR7RVIJmn35BaSS7njR6RzYFuGUDvIwvPfRtby/qzQwQdfN8OjMwGN8y2UCtfmNoUOfcKnniIEg2NYI1n7B26KHiaXn7psWSw6yZBQfLqASJALeB4wqQZBGuY9QMuOsZk=
+	t=1764777169; cv=none; b=L66/Wo8X0CEZuhNXenuQXLq2rfGKOW6GHn4cQ/nBzxv4d8BAb3DxFlhLsVejDlVqrYJHdV98yjx3Rvua7B9f+3lXuxg8eOQWqQk6DjkJEZb/yn/6ZC8+HCns4W+tRs/YaWcT9mDAuHpDhUWnXRdcVxfPETgIDCH+3r65BXOCACQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776807; c=relaxed/simple;
-	bh=vnQDg0V9Fq8zPN3RZ67ecxXP9NnWQEfc2xuqfF2nqNo=;
+	s=arc-20240116; t=1764777169; c=relaxed/simple;
+	bh=Ju8E948+/9IMus4le2ww/Bvjy61OqHSK9/Ahh/Gty/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXWtQEBrwCoEeYTXP+k9HbZfSsufWxjt+SBv34xWYMCi1EqQkdCx8TKG1Erq98u98Q17cAzUSiuhxzxihT8SIgLVRLrlvN4BZIjuf8cjRUgzCvtzpvarQyl8xhEu5QwCXXyIA5vWIh2sm18NnVU0y93XL6OQFeN+tSCSe/DGrLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpEdkOgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A01C4CEF5;
-	Wed,  3 Dec 2025 15:46:46 +0000 (UTC)
+	 MIME-Version; b=e8mR8RphvIVWxbKN9Swvtzq5X8bPCbJAEXKWoMdcq09UPVcSWpkiip+lKY970zAFyuY7tn+CtqSMsdnnpUdaEiNd7pB9aovSvqsn6QQcZxDhQvmXMH8ng9i7rgLMAchP4JdE2sMhmsve5mE7a1/crj7Vgg56clb11DhNkeEA1iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UayClvui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7514EC116B1;
+	Wed,  3 Dec 2025 15:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776807;
-	bh=vnQDg0V9Fq8zPN3RZ67ecxXP9NnWQEfc2xuqfF2nqNo=;
+	s=korg; t=1764777168;
+	bh=Ju8E948+/9IMus4le2ww/Bvjy61OqHSK9/Ahh/Gty/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpEdkOgcGn2gRhQCd20cJ0O9j14ur4KJ0wC5CdIcg1TdL6wzbFRuAeoTIVS36f8rP
-	 Q3pYLaaPtkblwhHYoL1hTVzo1mQFBAhrqsyf75IumC/trMVOjFihFNWEEXpLJ2RboH
-	 n2Jz2lO0iEf3UzgV0KNCbuDGMCAWgWIfntt/fO94=
+	b=UayClvuilpowZISRnAUrxwDwmZ5Z6ffw6xeKZqq/dPC7o/yNxXVso/eWm+4cooZOt
+	 C5omgpIjwu8dit50PF0R6Yo2FtCxiLO+h4DHMRLF1URCDRSzUG/DCO6iF+I+Jf+YYS
+	 jRak5AUVFKNpJANRy1LodYVZuUqB/aP6SZMoLaXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 5.10 276/300] serial: amba-pl011: prefer dma_mapping_error() over explicit address checking
+	Wei Yang <richard.weiyang@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 102/146] mm/huge_memory: fix NULL pointer deference when splitting folio
 Date: Wed,  3 Dec 2025 16:28:00 +0100
-Message-ID: <20251203152410.854797540@linuxfoundation.org>
+Message-ID: <20251203152350.192985024@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-commit eb4917f557d43c7a1c805dd73ffcdfddb2aba39a upstream.
+commit cff47b9e39a6abf03dde5f4f156f841b0c54bba0 upstream.
 
-Check for returned DMA addresses using specialized dma_mapping_error()
-helper which is generally recommended for this purpose by
-Documentation/core-api/dma-api.rst:
+Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
+introduced an early check on the folio's order via mapping->flags before
+proceeding with the split work.
 
-  "In some circumstances dma_map_single(), ...
-will fail to create a mapping. A driver can check for these errors
-by testing the returned DMA address with dma_mapping_error()."
+This check introduced a bug: for shmem folios in the swap cache and
+truncated folios, the mapping pointer can be NULL.  Accessing
+mapping->flags in this state leads directly to a NULL pointer dereference.
 
-Found via static analysis and this is similar to commit fa0308134d26
-("ALSA: memalloc: prefer dma_mapping_error() over explicit address checking")
+This commit fixes the issue by moving the check for mapping != NULL before
+any attempt to access mapping->flags.
 
-Fixes: 58ac1b379979 ("ARM: PL011: Fix DMA support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://patch.msgid.link/20251027092053.87937-1-linmq006@gmail.com
+Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/amba-pl011.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c |   22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -636,7 +636,7 @@ static int pl011_dma_tx_refill(struct ua
- 	dmatx->len = count;
- 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
- 				    DMA_TO_DEVICE);
--	if (dmatx->dma == DMA_MAPPING_ERROR) {
-+	if (dma_mapping_error(dma_dev->dev, dmatx->dma)) {
- 		uap->dmatx.queued = false;
- 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
- 		return -EBUSY;
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3626,6 +3626,16 @@ static int __folio_split(struct folio *f
+ 	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
+ 		return -EINVAL;
+ 
++	/*
++	 * Folios that just got truncated cannot get split. Signal to the
++	 * caller that there was a race.
++	 *
++	 * TODO: this will also currently refuse shmem folios that are in the
++	 * swapcache.
++	 */
++	if (!is_anon && !folio->mapping)
++		return -EBUSY;
++
+ 	if (new_order >= folio_order(folio))
+ 		return -EINVAL;
+ 
+@@ -3666,18 +3676,6 @@ static int __folio_split(struct folio *f
+ 		gfp_t gfp;
+ 
+ 		mapping = folio->mapping;
+-
+-		/* Truncated ? */
+-		/*
+-		 * TODO: add support for large shmem folio in swap cache.
+-		 * When shmem is in swap cache, mapping is NULL and
+-		 * folio_test_swapcache() is true.
+-		 */
+-		if (!mapping) {
+-			ret = -EBUSY;
+-			goto out;
+-		}
+-
+ 		min_order = mapping_min_folio_order(folio->mapping);
+ 		if (new_order < min_order) {
+ 			ret = -EINVAL;
 
 
 
