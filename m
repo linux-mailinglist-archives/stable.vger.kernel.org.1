@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDDECA1432
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CA7CA0209
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4E8E32EF4B4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 212CB302F115
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D2C330B0E;
-	Wed,  3 Dec 2025 15:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E1735CBAB;
+	Wed,  3 Dec 2025 16:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqPKTQL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMe2RKYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C0330B06;
-	Wed,  3 Dec 2025 15:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ACD35C1B7;
+	Wed,  3 Dec 2025 16:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777131; cv=none; b=bzGRtxaOTElZ3QrLDIOM3vGcwaLDcD3D7XLxTj8TPQgT2ZXubjJ0NgoEFGdy2Bn2/Tw52uHtJoDDMiWeVd1HFcBAzN8Th1tujGtBegLl7hX9cFEOVxRYf+HNL9fhrWCvDx+8WZmcAUFEmQuYo4rRtKY5QG9TCqZ7CU3BC9KU5HQ=
+	t=1764780139; cv=none; b=lSQCTpZkV6MqlPOP1ayvWR1AllB7np4RY8oTXmMTEkv/CGONjKAVwYKei9M1DiDZ2eqTEuWI0iEwq5r06EZ7cL6pOEOsCdYQ97rn+f4LOOsFDCMM+m9EOBOBY3kYzj+0yiox1JdxGmc5Uj9Ym+akGfjXtunkqeE4FScPFTNfPuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777131; c=relaxed/simple;
-	bh=Y5gCbpbOO1NVJZjVnlDdO+I1RMSVjrmG08ReE3F3c6A=;
+	s=arc-20240116; t=1764780139; c=relaxed/simple;
+	bh=4AJNGZMS5AKQaevPdZT/sgR+kMK8Y8YtaWUrTXbbvpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TubC52mc6gsS1Zrk6QACC7H04tSs8BpI3Zf91bQCJFBkw/q6a/60zP/v2h6pMdcENY8CadViW3yfEZeQMCiW5hoUXQrVPsN0eg3FCIO6NCb6FfrybLeBVP2OE+FE7BJiduq6jlRsTqIkPs6huZcGWInOqqdc+jA/jrEFz5tirbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqPKTQL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093CC116B1;
-	Wed,  3 Dec 2025 15:52:10 +0000 (UTC)
+	 MIME-Version; b=RkffyU8MKLDu+XTAO2sy7xWXvGB3zkbitGJqVw9456kYvke5Bes1oZ9G5b3In9LksJorIUseIfmqwJh63a/4U5GDpGgiQndT8lVJ/6fvIcnBe3hPiyyvE3QmRSZZrALz4iVEVIIDR/HL8bE6LVGsKQtQf6Dz2Vj06mHhcN2zdj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMe2RKYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD786C4CEF5;
+	Wed,  3 Dec 2025 16:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777131;
-	bh=Y5gCbpbOO1NVJZjVnlDdO+I1RMSVjrmG08ReE3F3c6A=;
+	s=korg; t=1764780139;
+	bh=4AJNGZMS5AKQaevPdZT/sgR+kMK8Y8YtaWUrTXbbvpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqPKTQL1xqPmrruWynba7BVEjeV+TfA07c8yc7qLXGsDoecmkr6yqIu/6hbHqzyiJ
-	 8HiQI/ZozWgQN5p5YgFZYa61XWEmF7h50bZwR6QcEGZzIWUg5ysvMJtanvzUVNeDRW
-	 R/TmIR3539c2zbNEU6KqqQCXTeo+aK1DwKk8eEm0=
+	b=kMe2RKYNNqOtQw/lfczy1D/TplUWceEi0HYpu3Bq/LQL5tvC0uKAv2hmPWSt4GH2L
+	 JfrAOhJsFq4kxTl4EH+vL1KKsdcRTa4IfsDrnmA7s3588eMa7OmHoX9gllVX8PtzdB
+	 fObonFJesqG2tdxgWKuDOQUs4avPHyDFBRWALWmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.17 091/146] smb: client: fix memory leak in cifs_construct_tcon()
-Date: Wed,  3 Dec 2025 16:27:49 +0100
-Message-ID: <20251203152349.790977408@linuxfoundation.org>
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 468/568] net: tls: Cancel RX async resync request on rcd_delta overflow
+Date: Wed,  3 Dec 2025 16:27:50 +0100
+Message-ID: <20251203152457.842821485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit 3184b6a5a24ec9ee74087b2a550476f386df7dc2 upstream.
+[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
 
-When having a multiuser mount with domain= specified and using
-cifscreds, cifs_set_cifscreds() will end up setting @ctx->domainname,
-so it needs to be freed before leaving cifs_construct_tcon().
+When a netdev issues a RX async resync request for a TLS connection,
+the TLS module handles it by logging record headers and attempting to
+match them to the tcp_sn provided by the device. If a match is found,
+the TLS module approves the tcp_sn for resynchronization.
 
-This fixes the following memory leak reported by kmemleak:
+While waiting for a device response, the TLS module also increments
+rcd_delta each time a new TLS record is received, tracking the distance
+from the original resync request.
 
-  mount.cifs //srv/share /mnt -o domain=ZELDA,multiuser,...
-  su - testuser
-  cifscreds add -d ZELDA -u testuser
-  ...
-  ls /mnt/1
-  ...
-  umount /mnt
-  echo scan > /sys/kernel/debug/kmemleak
-  cat /sys/kernel/debug/kmemleak
-  unreferenced object 0xffff8881203c3f08 (size 8):
-    comm "ls", pid 5060, jiffies 4307222943
-    hex dump (first 8 bytes):
-      5a 45 4c 44 41 00 cc cc                          ZELDA...
-    backtrace (crc d109a8cf):
-      __kmalloc_node_track_caller_noprof+0x572/0x710
-      kstrdup+0x3a/0x70
-      cifs_sb_tlink+0x1209/0x1770 [cifs]
-      cifs_get_fattr+0xe1/0xf50 [cifs]
-      cifs_get_inode_info+0xb5/0x240 [cifs]
-      cifs_revalidate_dentry_attr+0x2d1/0x470 [cifs]
-      cifs_getattr+0x28e/0x450 [cifs]
-      vfs_getattr_nosec+0x126/0x180
-      vfs_statx+0xf6/0x220
-      do_statx+0xab/0x110
-      __x64_sys_statx+0xd5/0x130
-      do_syscall_64+0xbb/0x380
-      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+However, if the device response is delayed or fails (e.g due to
+unstable connection and device getting out of tracking, hardware
+errors, resource exhaustion etc.), the TLS module keeps logging and
+incrementing, which can lead to a WARN() when rcd_delta exceeds the
+threshold.
 
-Fixes: f2aee329a68f ("cifs: set domainName when a domain-key is used in multiuser")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To address this, introduce tls_offload_rx_resync_async_request_cancel()
+to explicitly cancel resync requests when a device response failure is
+detected. Call this helper also as a final safeguard when rcd_delta
+crosses its threshold, as reaching this point implies that earlier
+cancellation did not occur.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/tls.h    | 6 ++++++
+ net/tls/tls_device.c | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4455,6 +4455,7 @@ cifs_construct_tcon(struct cifs_sb_info
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 899c863aba02c..037049def8a7f 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -475,6 +475,12 @@ tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
+ 		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ }
  
- out:
- 	kfree(ctx->username);
-+	kfree(ctx->domainname);
- 	kfree_sensitive(ctx->password);
- 	kfree(origin_fullpath);
- 	kfree(ctx);
++static inline void
++tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
++{
++	atomic64_set(&resync_async->req, 0);
++}
++
+ static inline void
+ tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
+ {
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 1849827884735..c51377a159bec 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -739,8 +739,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
+ 		/* shouldn't get to wraparound:
+ 		 * too long in async stage, something bad happened
+ 		 */
+-		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
++		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
++			tls_offload_rx_resync_async_request_cancel(resync_async);
+ 			return false;
++		}
+ 
+ 		/* asynchronous stage: log all headers seq such that
+ 		 * req_seq <= seq <= end_seq, and wait for real resync request
+-- 
+2.51.0
+
 
 
 
