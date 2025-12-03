@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858D7C9F93E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DFAC9FFD3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31880303A8D2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBAE33037AE3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76F5314A7D;
-	Wed,  3 Dec 2025 15:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319683AA198;
+	Wed,  3 Dec 2025 16:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFj7MZpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQMXVOiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B903148C1;
-	Wed,  3 Dec 2025 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F7B35F8AF;
+	Wed,  3 Dec 2025 16:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776288; cv=none; b=k6fkzCgAlCBpmBwzQtH0yrmDkDNdmbw2Avqd/tcBqNF3in+cWNAy76erOoovc4VzzrObh8rSEMK/QzzZVaTV+BzU0JUZZowcbmYKbnRdBlcsOhQ7p2qUi7HQYuxXvlkTUbVS2ab/iAPgMKVqUQdVRy3ji+aMILdJeEwL3tTm6Fg=
+	t=1764779603; cv=none; b=E6zsc0zPz6XWkX01cF6ZbLnObFhOlhX9zK/36ETauazbvMRKxRLwB8uqn7CPcmDPghIY7XklK5Ks8DFN1k/8G/0SMR7fIYmS4iFsBKynYy9HWFvVnIblbFg5ygLbWz9PS/xQQr3hM66pMpwmZaGgTS+8hVfhjz1sVJKACTRh9vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776288; c=relaxed/simple;
-	bh=+q1v+R412vGRE1KAj2amxzHRJPGwiAUYiKJNa4UtZ8c=;
+	s=arc-20240116; t=1764779603; c=relaxed/simple;
+	bh=WE9FdAkWfUHbjz+jcA9UG10k9xXj+sCvh5xVGFUzD3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kw22X5oSlXn8oUkasdiyUxXZEasSQMH+OfUh91m7WUnsUcO8jfckEXUEYojDP5ZMFUE8kPEF26Bw0W1W7+5vHPqZdQ9ZMlMUqQZ7spj2QgJZ86cBf0L4cWcvRbMbb32GUiZoQT+O4dG+TJ85xAQXtEF3I0r35oNZNGtYJyR51Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFj7MZpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8323EC4CEF5;
-	Wed,  3 Dec 2025 15:38:05 +0000 (UTC)
+	 MIME-Version; b=ReOQbJsSJgQ7sLasDbnWjvfe9Nx8LkGABuCgyYkbVpbNa+SNGe6li6jPWQb4FvlS1gTv9XzTJvvE73wqRdu2JE1sxfaWVJ05rsECAOZ1XLuMCTpwt3VhwbwsEWCS2je1O5022Lssdsum2JU8jNtmLdXRFwjb1gM3MP624sRR494=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQMXVOiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B01C4CEF5;
+	Wed,  3 Dec 2025 16:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776286;
-	bh=+q1v+R412vGRE1KAj2amxzHRJPGwiAUYiKJNa4UtZ8c=;
+	s=korg; t=1764779602;
+	bh=WE9FdAkWfUHbjz+jcA9UG10k9xXj+sCvh5xVGFUzD3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFj7MZpS/nIjyyB6PmKV3DlYDY+Ig3oyIPy9GF0+p1ROfZCcRWjuvVeIH0PP2qcuD
-	 7lOzGAPALYItSuJbUBVzwh+2wmekdXDPuDzWdngbtxYJX5Ek/SlKdeuV12EOmyIjXy
-	 rdYonRj4kIugOBhH99oDcLd46T9IYe7CwJmF0AN4=
+	b=LQMXVOiCY5dPstK8RzuYKsu/esPha+piwSkBhJbsRbw+eZK8GMsjgYtthhUv1dr9o
+	 gzrKaZWprZ0nz+Hunwho0VECg1NjpsNoIdN//0LF8+hePN6YoadWoDOQb7axrPvseS
+	 /RZoeDqGg8mZ+W+kZkMB6aqBHt9nkx8bzJPLlkNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juraj=20=C5=A0arinay?= <juraj@sarinay.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/300] net: nfc: nci: Increase NCI_DATA_TIMEOUT to 3000 ms
+Subject: [PATCH 6.1 306/568] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
 Date: Wed,  3 Dec 2025 16:25:08 +0100
-Message-ID: <20251203152404.477229627@linuxfoundation.org>
+Message-ID: <20251203152451.916884206@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juraj Šarinay <juraj@sarinay.com>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit 21f82062d0f241e55dd59eb630e8710862cc90b4 ]
+[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
 
-An exchange with a NFC target must complete within NCI_DATA_TIMEOUT.
-A delay of 700 ms is not sufficient for cryptographic operations on smart
-cards. CardOS 6.0 may need up to 1.3 seconds to perform 256-bit ECDH
-or 3072-bit RSA. To prevent brute-force attacks, passports and similar
-documents introduce even longer delays into access control protocols
-(BAC/PACE).
+Due to the gro_sender sending data packets and FIN packets
+in very quick succession, these are received almost simultaneously
+by the gro_receiver. FIN packets are sometimes processed before the
+data packets leading to intermittent (~1/100) test failures.
 
-The timeout should be higher, but not too much. The expiration allows
-us to detect that a NFC target has disappeared.
+This change adds a delay of 100ms before sending FIN packets
+in gro:tcp test to avoid the out-of-order delivery. The same
+mitigation already exists for the gro:ip test.
 
-Signed-off-by: Juraj Šarinay <juraj@sarinay.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250902113630.62393-1-juraj@sarinay.com
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/nfc/nci_core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/gro.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
-index 004e49f748419..beea7e014b157 100644
---- a/include/net/nfc/nci_core.h
-+++ b/include/net/nfc/nci_core.h
-@@ -52,7 +52,7 @@ enum nci_state {
- #define NCI_RF_DISC_SELECT_TIMEOUT		5000
- #define NCI_RF_DEACTIVATE_TIMEOUT		30000
- #define NCI_CMD_TIMEOUT				5000
--#define NCI_DATA_TIMEOUT			700
-+#define NCI_DATA_TIMEOUT			3000
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 30024d0ed3739..ad7b07084ca24 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -802,6 +802,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
  
- struct nci_dev;
+ static void gro_sender(void)
+ {
++	const int fin_delay_us = 100 * 1000;
+ 	static char fin_pkt[MAX_HDR_LEN];
+ 	struct sockaddr_ll daddr = {};
+ 	int txfd = -1;
+@@ -845,15 +846,22 @@ static void gro_sender(void)
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "tcp") == 0) {
+ 		send_changed_checksum(txfd, &daddr);
++		/* Adding sleep before sending FIN so that it is not
++		 * received prior to other packets.
++		 */
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
  
+ 		send_changed_seq(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_changed_ts(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_diff_opt(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "ip") == 0) {
+ 		send_changed_ECN(txfd, &daddr);
 -- 
 2.51.0
 
