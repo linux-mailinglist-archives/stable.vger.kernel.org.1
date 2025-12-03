@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-199679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAF1CA0373
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9615FCA1192
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA92B30062CE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E9163007C99
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0D349AF4;
-	Wed,  3 Dec 2025 16:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC148350280;
+	Wed,  3 Dec 2025 16:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBAwqP5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoqXRk+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CB349AE7;
-	Wed,  3 Dec 2025 16:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A742B350285;
+	Wed,  3 Dec 2025 16:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780587; cv=none; b=NEPwLK+Y3HXLdWSKQV94ldAo8a8Xggy+0DG4SRTUnoWPdC2U72D5Oqv4lGvvOirkV1wp9o3kyIUzPb0LzZEvZKdNsrzsqjU0knaza4dgEsHaS3iia/QoOkJg+0QaOokp+yMUZenURwAnWzDILbT6iJyV+IpIAzqYmMhq+IOPlwo=
+	t=1764778404; cv=none; b=db+ce7huzfYsUCqc/O/t42PtImNtwYRfetBvSsdzPC4UjGZJCZNsptO81CaJ7ZenIy2iBxOG6d9wrpjLRHj0J8PaYkF6nuJkP61WijnjqIyZXYFUYt6vU8MNPZtNY6zpGfzHftHl4cEk0yKBNxLqliXdkE7W8DVP6f5pSFQDNyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780587; c=relaxed/simple;
-	bh=dYyWVk/RZKpst02gcylyPSv++9NI2vUXZj40+f21oQs=;
+	s=arc-20240116; t=1764778404; c=relaxed/simple;
+	bh=JY9DHwvrsVk6Q+KfHvjmc2ago19h1QChcYIudLfB4/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORcm0LWc+N9tNl0Xa5+vZzSyZmtEFi7+V7qqe0x656h0pMwFjmTo6h0GWBN/SIh8yR/ivEC9AejS5o3OOGxJ1+zJrNiYjWuzYvh2qfgcxNeZ8HiS5LFQJNc1XPjJ+WViWrk06Vkd+IxwNfL1shWR5LODdINHM4yDtxKho8YNfZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBAwqP5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036B8C4CEF5;
-	Wed,  3 Dec 2025 16:49:46 +0000 (UTC)
+	 MIME-Version; b=ZRBqtarvz5ZPHvsOKO7VS3Ql3/Mo/epL60lsDKZ4YdbeMUSqCw3DD1fexDHG+BqFmFRgE5yEpIhjwUGYND5vrlG/tgXdfzjrkanywVzboUPFgVfxUuE5aWL/asZtDsAxOOh5Vu8VivdpTGZnqpLs4v2pdL4TEPHovz9bxAISSQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoqXRk+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0519BC4CEF5;
+	Wed,  3 Dec 2025 16:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780587;
-	bh=dYyWVk/RZKpst02gcylyPSv++9NI2vUXZj40+f21oQs=;
+	s=korg; t=1764778404;
+	bh=JY9DHwvrsVk6Q+KfHvjmc2ago19h1QChcYIudLfB4/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBAwqP5jOmfr3ETTpNe3KH3c4TOrhQGQsCGD1GIyz110tzeOBhBWHGH8CsKsgDIzn
-	 b8f9q+PNl2zjqO7E+wcEAeklufifx7HMtCfcfCworPOUVUyxZcgbzDZQWrm/dMNnEh
-	 g1NGjEaCvZnSvPnsqjiDlpy++bwSWOkKnrI2QT70=
+	b=JoqXRk+onSBEEqiIQjjGPNI6nye9Y0VQxlzb0LhW7p0ea5eOp6CfXnInbHnP2v2VN
+	 1RVkoEqyAyR969A0DhkRvV6zv/IFHEU4z5r1t4RWMsjYzd9ErRSLHI7yWVLmXe96Ft
+	 QQMLYjQibwS9WJqtDgA9cXO5MTLG7Yt6jzuOnWxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/132] Bluetooth: hci_core: Fix triggering cmd_timer for HCI_OP_NOP
+	Gulam Mohamed <gulam.mohamed@oracle.com>
+Subject: [PATCH 5.15 335/392] Revert "block: Move checking GENHD_FL_NO_PART to bdev_add_partition()"
 Date: Wed,  3 Dec 2025 16:28:05 +0100
-Message-ID: <20251203152343.527912624@linuxfoundation.org>
+Message-ID: <20251203152426.498533675@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,90 +58,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Gulam Mohamed <gulam.mohamed@oracle.com>
 
-[ Upstream commit 275ddfeb3fdc274050c2173ffd985b1e80a9aa37 ]
+This reverts commit 7777f47f2ea64efd1016262e7b59fab34adfb869.
 
-HCI_OP_NOP means no command was actually sent so there is no point in
-triggering cmd_timer which may cause a hdev->reset in the process since
-it is assumed that the controller is stuck processing a command.
+The commit 1a721de8489f ("block: don't add or resize partition on the disk
+with GENHD_FL_NO_PART") and the commit 7777f47f2ea6 ("block: Move checking
+GENHD_FL_NO_PART to bdev_add_partition()") used the flag GENHD_FL_NO_PART
+to prevent the add or resize of partitions in 5.15 stable kernels.But in
+these 5.15 kernels, this is giving an issue with the following error
+where the loop driver wants to create a partition when the partscan is
+disabled on the loop device:
 
-Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+dd if=/dev/zero of=loopDisk.dsk bs=1M count=1 seek=10240;
+losetup -f loopDisk.dsk;parted -s /dev/loop0 -- mklabel gpt mkpart primary
+           2048s 4096s
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0016293 s, 644 MB/s
+""
+Error: Partition(s) 1 on /dev/loop0 have been written, but we have been
+unable to inform the kernel of the change, probably because it/they are
+in use.  As a result, the old partition(s) will remain in use.  You should
+reboot now before making further changes.
+""
+If the partition scan is not enabled on the loop device, this flag
+GENHD_FL_NO_PART is getting set and when partition creation is tried,
+it returns an error EINVAL thereby preventing the creation of partitions.
+So, there is no such distinction between disabling of partition scan and
+partition creation.
+
+Later in 6.xxx kernels, the commit b9684a71fca7 ("block, loop: support
+partitions without scanning") a new flag GD_SUPPRESS_PART_SCAN was
+introduced that just disables the partition scan and uses GENHD_FL_NO_PART
+only to prevent creating partition scan. So, the partition creationg can
+proceed with even if partition scan is disabled.
+
+As the commit b9684a71fca7 ("block, loop: support partitions without
+scanning") is not available in 5.15 stable kernel, and since there is no
+distinction between disabling of "partition scan" and "partition
+creation", we need to revert the commits 1a721de8489f and 7777f47f2ea6
+from 5.15 stable kernel to allow partition creation when partscan is
+disabled.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gulam Mohamed <gulam.mohamed@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ block/ioctl.c           |    2 ++
+ block/partitions/core.c |    5 -----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index b74ada8092378..ba01d0fa07193 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4076,7 +4076,7 @@ static void hci_rx_work(struct work_struct *work)
- 	}
- }
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_d
+ 	struct blkpg_partition p;
+ 	sector_t start, length;
  
--static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
-+static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- {
- 	int err;
- 
-@@ -4088,16 +4088,19 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 	if (!hdev->sent_cmd) {
- 		skb_queue_head(&hdev->cmd_q, skb);
- 		queue_work(hdev->workqueue, &hdev->cmd_work);
--		return;
++	if (disk->flags & GENHD_FL_NO_PART)
 +		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -463,11 +463,6 @@ int bdev_add_partition(struct gendisk *d
+ 		goto out;
  	}
  
- 	if (hci_skb_opcode(skb) != HCI_OP_NOP) {
- 		err = hci_send_frame(hdev, skb);
- 		if (err < 0) {
- 			hci_cmd_sync_cancel_sync(hdev, -err);
--			return;
-+			return err;
- 		}
- 		atomic_dec(&hdev->cmd_cnt);
-+	} else {
-+		err = -ENODATA;
-+		kfree_skb(skb);
- 	}
- 
- 	if (hdev->req_status == HCI_REQ_PEND &&
-@@ -4105,12 +4108,15 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 		kfree_skb(hdev->req_skb);
- 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
- 	}
-+
-+	return err;
- }
- 
- static void hci_cmd_work(struct work_struct *work)
- {
- 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_work);
- 	struct sk_buff *skb;
-+	int err;
- 
- 	BT_DBG("%s cmd_cnt %d cmd queued %d", hdev->name,
- 	       atomic_read(&hdev->cmd_cnt), skb_queue_len(&hdev->cmd_q));
-@@ -4121,7 +4127,9 @@ static void hci_cmd_work(struct work_struct *work)
- 		if (!skb)
- 			return;
- 
--		hci_send_cmd_sync(hdev, skb);
-+		err = hci_send_cmd_sync(hdev, skb);
-+		if (err)
-+			return;
- 
- 		rcu_read_lock();
- 		if (test_bit(HCI_RESET, &hdev->flags) ||
--- 
-2.51.0
-
+-	if (disk->flags & GENHD_FL_NO_PART) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (partition_overlaps(disk, start, length, -1)) {
+ 		ret = -EBUSY;
+ 		goto out;
 
 
 
