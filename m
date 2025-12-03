@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-198498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4693AC9FB7E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA29CA08FE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3DF63013559
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C97F032A558E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F1B31352C;
-	Wed,  3 Dec 2025 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAF5331A68;
+	Wed,  3 Dec 2025 15:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHn+YC+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acFJ/D2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DC30E0C2;
-	Wed,  3 Dec 2025 15:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099C6331A63;
+	Wed,  3 Dec 2025 15:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776744; cv=none; b=fVar66EjwfK4/sQEr7cGAVZUSFRrL7/NMPR3Jjjwm70qScZfhbDNNDJmrrfgyVdezSanEHCb5zxNuce73Yo5+DiLE+Wf2oMpKvCyKE1VM4UXUU0IvnfDo/w7VXfsa9JtkKlyRcJ7tgvDwFjIXROVFvXgieBNH4Pl189bjbJjgnc=
+	t=1764777157; cv=none; b=UEPw5Ah8BRPk+skziNaYn4hO1oYH3GgM7bSNGQY+XO3dw1gsy8WDXssdQqlgmk8bOH+ePgPTda8ilB7B7g1pkVBQVtB4+CET4+BFkp9j4Fdav17yFMLTTs1syRYjVt8nq/WPEFzk0qJmv5Wj5HYmHzhRRV2LkgdalJ5ol20v+qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776744; c=relaxed/simple;
-	bh=VU5P1vO90POWQ2+c2ki+yNGGj46hgmkJ08mI2eyFy8M=;
+	s=arc-20240116; t=1764777157; c=relaxed/simple;
+	bh=LJBRUIvwVWxexZ0tJkQUTRq37fRoZLPfdXdMzNKiLQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hpv/JGUpFyhZeqJtrWm5befUtLEuW/NwyOVSYbtjaH8RgDbuXAffhWecoJUY37ux0zm4uyctt21RbjHe0v6ldiQ4njijrxdzVpM0y1iIVGlP8MvDGdRz30KkP0gGk8eZq0UKwrWzEg+GlbcjN+kBg/ioZo/9DSqJsp7F/VxTZW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHn+YC+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3043CC4CEF5;
-	Wed,  3 Dec 2025 15:45:43 +0000 (UTC)
+	 MIME-Version; b=OnJMF2Otu2ioGUSGQD0VS31+T7JuitoOFVYsbI6rt5WcbRkup+8RKEfHo8K9o4wyXqninAqcTsaHe0MRZoDJ/MQoNDu18Nq0PpEAlOiRd/ECKEcaSwr8LYZDa440AOlRzzCZwaliBFpjeko+p7pPZlagwtgD9xjh+lkIW/kSH6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acFJ/D2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B63C4CEF5;
+	Wed,  3 Dec 2025 15:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776744;
-	bh=VU5P1vO90POWQ2+c2ki+yNGGj46hgmkJ08mI2eyFy8M=;
+	s=korg; t=1764777156;
+	bh=LJBRUIvwVWxexZ0tJkQUTRq37fRoZLPfdXdMzNKiLQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHn+YC+SAoqYa6nfue+3sABlR5rTzM4hlcbYjVs1xldTxVwPdzqwBOoWPu3+GwgDc
-	 KpqrlvaiPjlVQr/fs1K0tvxOnHimjWEseyCCBnRVfMhhdzPliE/SJb8QSr9EkyQJvB
-	 e/pzXygwKdzAfeBCGJUIofHEJ35SSsa8HZUg3zc4=
+	b=acFJ/D2uzt6cHEExdfAaMIjgNPobgy0y1K4RsnH9oiVBPDspvDrA16QuaK1Z7Ie2o
+	 lZoLBbC1eiC1WKGtUcwT+2TeUP24TgImnfGaFwspkbtENGu+59NO3HlcX5vv53VJm2
+	 qhjZpv4kuYLYhB5JVP9CF4WIDH8Zd227M3n0VRKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 273/300] thunderbolt: Add support for Intel Wildcat Lake
+	Google Big Sleep <big-sleep-vuln-reports+bigsleep-463332873@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.17 099/146] io_uring/net: ensure vectored buffer node import is tied to notification
 Date: Wed,  3 Dec 2025 16:27:57 +0100
-Message-ID: <20251203152410.745156514@linuxfoundation.org>
+Message-ID: <20251203152350.083573787@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +59,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 3575254546a27210a4b661ea37fbbfb836c0815d upstream.
+commit f6041803a831266a2a5a5b5af66f7de0845bcbf3 upstream.
 
-Intel Wildcat Lake derives its Thunderbolt/USB4 controller from Lunar
-Lake platform. Add Wildcat Lake PCI ID to the driver list of supported
-devices.
+When support for vectored registered buffers was added, the import
+itself is using 'req' rather than the notification io_kiocb, sr->notif.
+For non-vectored imports, sr->notif is correctly used. This is important
+as the lifetime of the two may be different. Use the correct io_kiocb
+for the vectored buffer import.
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 23371eac7d9a ("io_uring/net: implement vectored reg bufs for zctx")
+Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-463332873@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c |    2 ++
- drivers/thunderbolt/nhi.h |    1 +
- 2 files changed, 3 insertions(+)
+ io_uring/net.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1375,6 +1375,8 @@ static struct pci_device_id nhi_ids[] =
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_WCL_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1542,8 +1542,10 @@ int io_sendmsg_zc(struct io_kiocb *req,
+ 		unsigned uvec_segs = kmsg->msg.msg_iter.nr_segs;
+ 		int ret;
  
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -75,6 +75,7 @@ extern const struct tb_nhi_ops icl_nhi_o
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
- #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
-+#define PCI_DEVICE_ID_INTEL_WCL_NHI0			0x4d33
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
- #define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
+-		ret = io_import_reg_vec(ITER_SOURCE, &kmsg->msg.msg_iter, req,
+-					&kmsg->vec, uvec_segs, issue_flags);
++		sr->notif->buf_index = req->buf_index;
++		ret = io_import_reg_vec(ITER_SOURCE, &kmsg->msg.msg_iter,
++					sr->notif, &kmsg->vec, uvec_segs,
++					issue_flags);
+ 		if (unlikely(ret))
+ 			return ret;
+ 		req->flags &= ~REQ_F_IMPORT_BUFFER;
 
 
 
