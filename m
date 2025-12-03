@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50413CA0D1E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A40DCA0A7B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 660FF310BAA9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A28223324D03
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BF435F8BE;
-	Wed,  3 Dec 2025 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC75344040;
+	Wed,  3 Dec 2025 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhW2wTXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12KiV0cH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793BE35F8B6;
-	Wed,  3 Dec 2025 16:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7093446C8;
+	Wed,  3 Dec 2025 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779258; cv=none; b=l4ibyc849NyEh/D5Riku19+5UYeJR5KwCM0WIR4UOiFykgw6PkT4+sxyYuNDtpNyK9RmU93cd3Surz75dW25yUMpCx8HQSLzyMV+AYevENK7jSP1cpUfUW/45Ego5vFprAtf0J3YtlmfooHKquh2Md9GL1lf9nizrJwYc+N4Wxc=
+	t=1764777493; cv=none; b=ChBiNl9CvdUvBiRKqaU/HMWx0GQlxjtnw8HGM4wecCuA6RatXyLcujWRq3963HZct4I45i0FqnExZL80Jguu6r6WnRZWBopBZeLsdAqE5MDxnJxU0hkmEF/KG8S1HQROTfelWC0iN+A5V5qX3J5/vB78UNE6PjXRfo0GSpPVssI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779258; c=relaxed/simple;
-	bh=P0iKRXJHJZ3uFn5Sg2Y71+9dL8OdoICPYmVJMPvjy9E=;
+	s=arc-20240116; t=1764777493; c=relaxed/simple;
+	bh=tfu2kGEFWeKa0WrFtwPIJkzdQlYzJ7z+oC8o+kcXGKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+XvW+/U5Xwg6K3hiBlMPylSBH/R6gm+NOY7CdX0sV0KOuXNG1b9mH8QNHsAbVoBqlJ8yUHG/8iGoMqPLJ3sBxwkzoOjV3hE/9MJgaL6r92LOfZdAszUxejKDNiug86+3kSSn5bUgkozNNb7SzPNk6l7rein9cnc3y/rf+VjJHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhW2wTXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E588C4CEF5;
-	Wed,  3 Dec 2025 16:27:37 +0000 (UTC)
+	 MIME-Version; b=StrE1P+WT2cHPs0Kl2pZ+NsByWly0dbx7oxwGYkQy6Vhh15l9PlvMJJZ8l3UJ0KsQ8hq1u96JDQmLj58wKgE2RhtTaDG7o4emhcJ+tJM+djUzOrGsi2CugDwIKJvTX9KnTlQzZfQrkHZQbAxBCxzHYIh9jss8DN7x3wsEupJLFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12KiV0cH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB336C116B1;
+	Wed,  3 Dec 2025 15:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779258;
-	bh=P0iKRXJHJZ3uFn5Sg2Y71+9dL8OdoICPYmVJMPvjy9E=;
+	s=korg; t=1764777493;
+	bh=tfu2kGEFWeKa0WrFtwPIJkzdQlYzJ7z+oC8o+kcXGKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhW2wTXe7iqLxCsZwp2wpJCiPPnSu40yEQz8R09enk5bmI6D4K/qd0wcHgX733euj
-	 RKQ7UMYL7QIe05i7ok6ErO25ec5meFTxJ2rgzcZFx/nMg44RSYHw9ztFkZBDS+Slmx
-	 /lLPoF8yUqJaa+Qe0/x870wY2Q3xETbYSdinEXB8=
+	b=12KiV0cHadB0oUUoxz/b7KyUEzMbpiTX90O/x5ujMJDUQWDFs2keYhqPm3rXLbx2G
+	 27Oq7wzVHX8fodgqpg9qiomFLWVyj6LYz5qLxBdsMsCmgzkqCOZ2igcRAf4Wb52lC/
+	 b0W9v4QOhauhE+7o0FZDRXFW1AHbsopCkl7FT5XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
+	Jens Reidel <adrian@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/568] usb: gadget: f_hid: Fix zero length packet transfer
+Subject: [PATCH 5.15 054/392] soc: qcom: smem: Fix endian-unaware access of num_entries
 Date: Wed,  3 Dec 2025 16:23:24 +0100
-Message-ID: <20251203152448.124415932@linuxfoundation.org>
+Message-ID: <20251203152416.102021368@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Jens Reidel <adrian@mainlining.org>
 
-[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
+[ Upstream commit 19e7aa0e9e46d0ad111a4af55b3d681b6ad945e0 ]
 
-Set the hid req->zero flag of ep0/in_ep to true by default,
-then the UDC drivers can transfer a zero length packet at
-the end if the hid transfer with size divisible to EPs max
-packet size according to the USB 2.0 spec.
+Add a missing le32_to_cpu when accessing num_entries, which is always a
+little endian integer.
 
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes booting on Xiaomi Mi 9T (xiaomi-davinci) in big endian.
+
+Signed-off-by: Jens Reidel <adrian@mainlining.org>
+Link: https://lore.kernel.org/r/20250726235646.254730-1-adrian@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/smem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 4cc8750e2a6fd..c20d3426571ec 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -490,7 +490,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
- 	}
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index 4fb5aeeb08439..ec01cae7ffc8a 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -710,7 +710,7 @@ static u32 qcom_smem_get_item_count(struct qcom_smem *smem)
+ 	if (IS_ERR_OR_NULL(ptable))
+ 		return SMEM_ITEM_COUNT;
  
- 	req->status   = 0;
--	req->zero     = 0;
-+	req->zero     = 1;
- 	req->length   = count;
- 	req->complete = f_hidg_req_complete;
- 	req->context  = hidg;
-@@ -761,7 +761,7 @@ static int hidg_setup(struct usb_function *f,
- 	return -EOPNOTSUPP;
+-	info = (struct smem_info *)&ptable->entry[ptable->num_entries];
++	info = (struct smem_info *)&ptable->entry[le32_to_cpu(ptable->num_entries)];
+ 	if (memcmp(info->magic, SMEM_INFO_MAGIC, sizeof(info->magic)))
+ 		return SMEM_ITEM_COUNT;
  
- respond:
--	req->zero = 0;
-+	req->zero = 1;
- 	req->length = length;
- 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
- 	if (status < 0)
 -- 
 2.51.0
 
