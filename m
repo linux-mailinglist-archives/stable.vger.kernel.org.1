@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D6ECA00E9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 257AAC9FCCE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 34C5D303A69E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2186E30024F4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E706135BDDB;
-	Wed,  3 Dec 2025 16:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6244313558;
+	Wed,  3 Dec 2025 16:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu3jjwvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHCoAc3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A432133E36A;
-	Wed,  3 Dec 2025 16:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BA82F0699;
+	Wed,  3 Dec 2025 16:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779890; cv=none; b=ogXg6Apws1a/VO5anIIihbhvC9MSIBpgVPWSSyST2eVyooTGuo70r0hr3MHVi1tFkn6vgQGWhRdcOzIX/Y6CoRNkfKYovZRIuMRsROwmtj+UxI5agnyUmUR/IdvNVRRI2iSzHCEabnJGIKK7+medNeADlElGxOtf347yfUnWHaQ=
+	t=1764777994; cv=none; b=qWhgbAGMJGbg0ZINjY2kyV1MTMnEpkO9NmJaS05IwKG+Ft4XFl1FeOSgyKmvkCw0Oq38vb2T4Yh99MagG9dwuEwBSgEint9iNWtn44dzUNGEHjsm0ptBBcvT4qwM833x6MwBzw0xeGuU1VHwDahb331e4rAxm9ofuzuwL8gexqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779890; c=relaxed/simple;
-	bh=50cD7qf9JBW4982RXJ1A96YPfJLeNuC6eJ9Cd/CVz38=;
+	s=arc-20240116; t=1764777994; c=relaxed/simple;
+	bh=/aP8qpbULmqma0ttyoH14cZ6KuVKogizyu8O/bR/S7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDhNSbL6Xc1vRDYmRNXyCAzItLyB2LWCvkcaS4uVjmJ6T2yzOl1KhobZKZUknnJyuyuPGo5b75EuMHS1p4KJKlUv2JqvSt3bt93+M9ik4vuZkV2WM3eXWZ4NznN9RhyZ616iGycmRlyWzl7uCuWDeIjcMmIrCXYMLqZsLLw83oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu3jjwvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0ECC4CEF5;
-	Wed,  3 Dec 2025 16:38:09 +0000 (UTC)
+	 MIME-Version; b=BturMCcCFRn18u8oHVqDrk1E51YINGTy9eDXL8LtkGA5HzLE6i0e2Ptatl77l5MME0WiQ5hfG1vjI2GaL0Syr6RSRec4T3qS3p9Ofgw/9QnuOMBjSjvmgoa5YETtMEiBvgA/yuTr/MfXEZ0vARIPzNa0QYuMfJ2/IC80FSu9p5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHCoAc3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1689C116B1;
+	Wed,  3 Dec 2025 16:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779890;
-	bh=50cD7qf9JBW4982RXJ1A96YPfJLeNuC6eJ9Cd/CVz38=;
+	s=korg; t=1764777994;
+	bh=/aP8qpbULmqma0ttyoH14cZ6KuVKogizyu8O/bR/S7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nu3jjwvEjYCJPZmWKnbYy/tQNIwUhoCGF/0ZDzsXcRvc2g9EoLeKielNRjrUWLSam
-	 2ES02usONKbok3cNy9464sMRijTnuEuP46UG0H8+6+M4PqfM68nKo7BB9yjTXtv45K
-	 KLFVrlem49Mao3GLIv0Rzvafxj1U9YjjYC+HQVBg=
+	b=sHCoAc3Kg3J3uAQ4s9zykczj2SyvAcNZPEyzrDKWMtKuSALnl17C+Iej/JtMCfMGX
+	 89wC7ebP6GG3l1OxFlrlvl5sucaVgOH5e3YHLwL7qZ0oQK+deGjUMLMYaEp4htk06R
+	 YCuYJTCIPD3uhjxfes/O4tYdbpm5n+rxDLJoC2oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
+	Helge Deller <deller@gmx.de>,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 350/568] net: fec: correct rx_bytes statistic for the case SHIFT16 is set
-Date: Wed,  3 Dec 2025 16:25:52 +0100
-Message-ID: <20251203152453.524421768@linuxfoundation.org>
+Subject: [PATCH 5.15 203/392] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
+Date: Wed,  3 Dec 2025 16:25:53 +0100
+Message-ID: <20251203152421.544582662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
 
-[ Upstream commit ad17e7e92a7c52ce70bb764813fcf99464f96903 ]
+[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
 
-Two additional bytes in front of each frame received into the RX FIFO if
-SHIFT16 is set, so we need to subtract the extra two bytes from pkt_len
-to correct the statistic of rx_bytes.
+Add bounds checking to prevent writes past framebuffer boundaries when
+rendering text near screen edges. Return early if the Y position is off-screen
+and clip image height to screen boundary. Break from the rendering loop if the
+X position is off-screen. When clipping image width to fit the screen, update
+the character count to match the clipped width to prevent buffer size
+mismatches.
 
-Fixes: 3ac72b7b63d5 ("net: fec: align IP header in hardware")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251106021421.2096585-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
+receive mismatched parameters where the buffer is allocated for the clipped
+width but cnt reflects the original larger count, causing out-of-bounds writes.
+
+Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
+Suggested-by: Helge Deller <deller@gmx.de>
+Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index ca271d7a388b4..c8f897afb30a6 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1681,6 +1681,8 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
- 		ndev->stats.rx_packets++;
- 		pkt_len = fec16_to_cpu(bdp->cbd_datlen);
- 		ndev->stats.rx_bytes += pkt_len;
-+		if (fep->quirks & FEC_QUIRK_HAS_RACC)
-+			ndev->stats.rx_bytes -= 2;
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index a4b4e1ec702e5..8563264d11fac 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 	image.height = vc->vc_font.height;
+ 	image.depth = 1;
  
- 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
- 		page = rxq->rx_skb_info[index].page;
++	if (image.dy >= info->var.yres)
++		return;
++
++	image.height = min(image.height, info->var.yres - image.dy);
++
+ 	if (attribute) {
+ 		buf = kmalloc(cellsize, GFP_ATOMIC);
+ 		if (!buf)
+@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 			cnt = count;
+ 
+ 		image.width = vc->vc_font.width * cnt;
++
++		if (image.dx >= info->var.xres)
++			break;
++
++		if (image.dx + image.width > info->var.xres) {
++			image.width = info->var.xres - image.dx;
++			cnt = image.width / vc->vc_font.width;
++			if (cnt == 0)
++				break;
++			image.width = cnt * vc->vc_font.width;
++		}
++
+ 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
+ 		pitch &= ~scan_align;
+ 		size = pitch * image.height + buf_align;
 -- 
 2.51.0
 
