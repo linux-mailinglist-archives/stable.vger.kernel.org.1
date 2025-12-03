@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0EACA0F9C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1359CC9FDD9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C086A331EAB3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 831C83000943
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF8B362136;
-	Wed,  3 Dec 2025 16:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C1C354AD2;
+	Wed,  3 Dec 2025 16:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJX6vlk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNF7wnnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD3362121;
-	Wed,  3 Dec 2025 16:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B02A354AD9;
+	Wed,  3 Dec 2025 16:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780306; cv=none; b=aPzzR0Rm7Jdk63GSBuxcCTV9hD+iOk+e2/8eMsfExA0RaqHqU4t7qKXLNf+k0PIitB3p7Dv0b5OViejxt4v9h7tYiLs7p9P2R/C95dK4+glMbL98ZfeIW7mGcqpa20S6tYfpC+9hfbhJobJvDnz2KI1gWl99GLqSAMQDOCJo6NM=
+	t=1764778517; cv=none; b=a1qch8vtm58vvDPAx2vdzHAAibnwpxBT93psXlcHNNLrQjK9eKd7O6c7IHMHBx5L1FyPUs9N3SehvtH1AinNv9zMNMFF3lLV7NQB7v1GId2Ez4skglorKiFVEpBjZZMlgis2EdyCYAVPXfGy3SZ9E3/5ln2wlW7/FZH7rSAYHb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780306; c=relaxed/simple;
-	bh=xOXsogycBy+7XI6HoZFR/hniF4s7ftA8WJnR3ymMTJE=;
+	s=arc-20240116; t=1764778517; c=relaxed/simple;
+	bh=OwRulNxA4Fa9/WWB3NOZU5KvpW8ltkxcQIhuiBq34hA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6EE9gXaq3j6vUpLmPs6juIRy68xMh0PSdHUG5R6chHCcvk+WfMVmO/x6CniHJmEp8IPw+45uspIuMU1Cf3i7+vSqfs/GEAYvDxSCr/Ed1UV8eHH0U4+8cBA2msFWhWR4pukKN7lKnfodfctAEL5wFJuELoEU9EFuFnhqruugJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJX6vlk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC85C4CEF5;
-	Wed,  3 Dec 2025 16:45:05 +0000 (UTC)
+	 MIME-Version; b=U0gg+amVxdr5yTRnxliBlmwJyMSY1eKdtEfRwkL8Eiu3ZyPdrHQCUrleYLT/rN3GfSixFkNbSmM8iolc8GbIkp5mSdNRmR6vv2Bjd7ws0kSeXE8tSnQJfFdh8nNAz8Pp4uNIbJfU7bqVRbU9+M0va6LgrFYSuy6C1kinaiAyRvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNF7wnnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2A4C4CEF5;
+	Wed,  3 Dec 2025 16:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780306;
-	bh=xOXsogycBy+7XI6HoZFR/hniF4s7ftA8WJnR3ymMTJE=;
+	s=korg; t=1764778517;
+	bh=OwRulNxA4Fa9/WWB3NOZU5KvpW8ltkxcQIhuiBq34hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJX6vlk8utaU5NdDyr1Z2bRy7DLhtdOciA/fVW9HxfVaHtCxXK4Z5vJbMgkJzzRRV
-	 Gqi9/FcYc6kViSzFt6PY7uhZjgguvVgaMkRxe6WV1+Nc2NuKuJ5vciMynkITkCdvjy
-	 VY5L6olfuGvlDAXrW+Myc7up0V3BiwZftXA+xpOM=
+	b=RNF7wnnlNejIZT2185Q3L0kL5elWEGSi76hIGIic9Gpp422PnssVsaDTwvqGOghPb
+	 EOYnkhhf+Yhg1vLUGkXGqP5At72KJEuotzFaaYh5y0fGu0FQze3MgxPyr8ddKNv1+3
+	 4RqnQIuQBpYcf+UEmbZP7F4ZcCouI4QPnuaAN75c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 517/568] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
+	Tianchu Chen <flynnnchen@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 369/392] usb: storage: sddr55: Reject out-of-bound new_pba
 Date: Wed,  3 Dec 2025 16:28:39 +0100
-Message-ID: <20251203152459.650457599@linuxfoundation.org>
+Message-ID: <20251203152427.738740402@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
+commit b59d4fda7e7d0aff1043a7f742487cb829f5aac1 upstream.
 
-The `decimator` and `batch` fields of struct st_lsm6dsx_settings
-are arrays indexed by sensor type, not by sensor hardware
-identifier; moreover, the `batch` field is only used for the
-accelerometer and gyroscope.
-Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
-ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
-ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
-definition so that the ST_LSM6DSX_ID_MAX value is usable within
-the struct st_lsm6dsx_settings definition.
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+new_pba comes from the status packet returned after each write.
+A bogus device could report values beyond the block count derived
+from info->capacity, letting the driver walk off the end of
+pba_to_lba[] and corrupt heap memory.
+
+Reject PBAs that exceed the computed block count and fail the
+transfer so we avoid touching out-of-range mapping entries.
+
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/B2DC73A3EE1E3A1D+202511161322001664687@tencent.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/usb/storage/sddr55.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -232,6 +232,15 @@ struct st_lsm6dsx_event_settings {
- 	u8 wakeup_src_x_mask;
- };
+--- a/drivers/usb/storage/sddr55.c
++++ b/drivers/usb/storage/sddr55.c
+@@ -469,6 +469,12 @@ static int sddr55_write_data(struct us_d
+ 		new_pba = (status[3] + (status[4] << 8) + (status[5] << 16))
+ 						  >> info->blockshift;
  
-+enum st_lsm6dsx_sensor_id {
-+	ST_LSM6DSX_ID_GYRO,
-+	ST_LSM6DSX_ID_ACC,
-+	ST_LSM6DSX_ID_EXT0,
-+	ST_LSM6DSX_ID_EXT1,
-+	ST_LSM6DSX_ID_EXT2,
-+	ST_LSM6DSX_ID_MAX
-+};
++		/* check if device-reported new_pba is out of range */
++		if (new_pba >= (info->capacity >> (info->blockshift + info->pageshift))) {
++			result = USB_STOR_TRANSPORT_FAILED;
++			goto leave;
++		}
 +
- enum st_lsm6dsx_ext_sensor_id {
- 	ST_LSM6DSX_ID_MAGN,
- };
-@@ -315,23 +324,14 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_reg drdy_mask;
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
--	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
--	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-+	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
-+	struct st_lsm6dsx_reg batch[2];
- 	struct st_lsm6dsx_fifo_ops fifo_ops;
- 	struct st_lsm6dsx_hw_ts_settings ts_settings;
- 	struct st_lsm6dsx_shub_settings shub_settings;
- 	struct st_lsm6dsx_event_settings event_settings;
- };
- 
--enum st_lsm6dsx_sensor_id {
--	ST_LSM6DSX_ID_GYRO,
--	ST_LSM6DSX_ID_ACC,
--	ST_LSM6DSX_ID_EXT0,
--	ST_LSM6DSX_ID_EXT1,
--	ST_LSM6DSX_ID_EXT2,
--	ST_LSM6DSX_ID_MAX,
--};
--
- enum st_lsm6dsx_fifo_mode {
- 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
- 	ST_LSM6DSX_FIFO_CONT = 0x6,
+ 		/* check status for error */
+ 		if (status[0] == 0xff && status[1] == 0x4) {
+ 			info->pba_to_lba[new_pba] = BAD_BLOCK;
 
 
 
