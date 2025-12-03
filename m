@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8BBAC9FCF5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBDBC9FA88
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 491A9300214C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F5853063F40
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31634F48B;
-	Wed,  3 Dec 2025 16:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8C6314A9E;
+	Wed,  3 Dec 2025 15:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezWFtJnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhOOCIuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965682FB0B4;
-	Wed,  3 Dec 2025 16:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4438F314A9D;
+	Wed,  3 Dec 2025 15:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778045; cv=none; b=Ucxn5xqCF1GdMbyD/EQQRFY57ju7n9905HTmdeXDgNqSsHgX30wmtfev84eqnOmdlSSQdsTMrgej0YottK+pwl2JCUZkFNVJY3Y4+Dn/6SbQUEy1xx+9h7hgAbXrpPcdm32oNPW5kD98LwZ81KtSl/H66KoHLFLDQPlsRu8qItE=
+	t=1764776511; cv=none; b=lOI+AKKJ3Cr1eVGPOuT/1V3Pu/QMDBxQtn4X8S0SuXAz9tDDLGVxuxRCzo2tP9QRQNFHEJlaq4F1IrGwaWpshNffIZ9ZSxvnU/frA17iIBuhMN5jFTPGyeddYY2thCnLxNjYus6EzHQfGkWBQmU2b/Wrl2KzKdpwcaMHx+BgA6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778045; c=relaxed/simple;
-	bh=6xQZERcSWnzJDyn5IQqBUOvLTdmdBJgz6+Stylh5zEg=;
+	s=arc-20240116; t=1764776511; c=relaxed/simple;
+	bh=1dVussKkDWVT1Mno4T8YRCWQyTkHcuJuGwiZnzNXzd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfqJ0L8mKuCfT84Se4hUn5J0DHhFvayCYBrzdroVpQerlsVHar1MyE9IVHu/N/lp7of2s6OQeqwDEI58906PQ+byzab8VXlrQsytPvuO91k82HwmSQAvAUi+SQ91ZS3MrR6sgDRnE89Aziy5OgO+L2T5uGjSnpCsgqhtJXooxFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezWFtJnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05310C4CEF5;
-	Wed,  3 Dec 2025 16:07:24 +0000 (UTC)
+	 MIME-Version; b=oPzIDTmnKXg/ArCJdrRUaTj/zrdkylzSHb/Ap9ymL3JjznFwDofz6Ol+qvW1DVQKOBDF1J691e6v39L465xdgUIGon3KvhzFkZaHOHZUoD1oOKs+UdvHxEFkwq61uQxiPUct6th7fuCsFy0KOsEV5ArRJGhMAzshyCrCzeJ7ZQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhOOCIuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37BEC4CEF5;
+	Wed,  3 Dec 2025 15:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778045;
-	bh=6xQZERcSWnzJDyn5IQqBUOvLTdmdBJgz6+Stylh5zEg=;
+	s=korg; t=1764776511;
+	bh=1dVussKkDWVT1Mno4T8YRCWQyTkHcuJuGwiZnzNXzd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezWFtJnr14vWsVhV5J7ACcKKhc/egMahcO49lz8Rq5OOQfvQWH4acQLm/65VSaNQh
-	 8KsjUfbNYyWIP7wbiaexjI7MiTOEHxaW3PcLEkE1tt/pm3qxxNDidNQXqcvZMHC87Z
-	 BCoO8AmtpgUGG2BlE8m3LoE+lLpeuST+7Jq+9AZk=
+	b=EhOOCIuSk/dvqyAG4w/TCip8xs0NvNgtOKvP9ZERahJ+hCIbMXkFIHeilUhSCWSks
+	 yJyLk7+GyjHGKHbKs/MIT17fhuXUCoKaskbaHI6KsRfOJG6BRU7LuKqdymw7i3adIG
+	 0cOT9bzNPdEACtW0cXrf4vcI9O4dpa4ExR7MC4qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuta Hayama <hayama@lineo.co.jp>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 226/392] rtc: rx8025: fix incorrect register reference
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>
+Subject: [PATCH 5.10 172/300] extcon: adc-jack: Cleanup wakeup source only if it was enabled
 Date: Wed,  3 Dec 2025 16:26:16 +0100
-Message-ID: <20251203152422.500240321@linuxfoundation.org>
+Message-ID: <20251203152406.992619057@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuta Hayama <hayama@lineo.co.jp>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 162f24cbb0f6ec596e7e9f3e91610d79dc805229 upstream.
+commit 92bac7d4de9c07933f6b76d8f1c7f8240f911f4f upstream.
 
-This code is intended to operate on the CTRL1 register, but ctrl[1] is
-actually CTRL2. Correctly, ctrl[0] is CTRL1.
+Driver in the probe enables wakeup source conditionally, so the cleanup
+path should do the same - do not release the wakeup source memory if it
+was not allocated.
 
-Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
-Fixes: 71af91565052 ("rtc: rx8025: fix 12/24 hour mode detection on RX-8035")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/eae5f479-5d28-4a37-859d-d54794e7628c@lineo.co.jp
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/lkml/20250509071703.39442-2-krzysztof.kozlowski@linaro.org/
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Closes: https://lore.kernel.org/r/22aaebb7-553b-4571-8a43-58a523241082@wanadoo.fr/
+Fixes: 78b6a991eb6c ("extcon: adc-jack: Fix wakeup source leaks on device unbind")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-rx8025.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/extcon/extcon-adc-jack.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-rx8025.c
-+++ b/drivers/rtc/rtc-rx8025.c
-@@ -318,7 +318,7 @@ static int rx8025_init_client(struct i2c
- 			return hour_reg;
- 		rx8025->is_24 = (hour_reg & RX8035_BIT_HOUR_1224);
- 	} else {
--		rx8025->is_24 = (ctrl[1] & RX8025_BIT_CTRL1_1224);
-+		rx8025->is_24 = (ctrl[0] & RX8025_BIT_CTRL1_1224);
- 	}
- out:
- 	return err;
+--- a/drivers/extcon/extcon-adc-jack.c
++++ b/drivers/extcon/extcon-adc-jack.c
+@@ -162,7 +162,8 @@ static int adc_jack_remove(struct platfo
+ {
+ 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+ 
+-	device_init_wakeup(&pdev->dev, false);
++	if (data->wakeup_source)
++		device_init_wakeup(&pdev->dev, false);
+ 	free_irq(data->irq, data);
+ 	cancel_work_sync(&data->handler.work);
+ 
 
 
 
