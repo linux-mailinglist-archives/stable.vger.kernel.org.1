@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D7DC9FD4C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:09:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011ABCA10AD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 259A530022AE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5075B30080E5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82203328F6;
-	Wed,  3 Dec 2025 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB121348465;
+	Wed,  3 Dec 2025 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgM0wpm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWbmD95u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2C333290B;
-	Wed,  3 Dec 2025 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D3C346E50;
+	Wed,  3 Dec 2025 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777604; cv=none; b=QLIsJjNHN4NsTScRUKmDGmVg9H8YrHCy3T5Hbiyco9eUBBHS5ow5UPenlsU4JezfZ4wgngI5Imga4UxaD6SgJA6HObBhEXEkLmrbWopbbzAb8PrSMcN5K5Xz4DZlGaWfTIGNYFGdj9xu06GwZ6O3JabMl0XQrwyU2aJmj6Evfsk=
+	t=1764779372; cv=none; b=OMu7wEuEn6e0cyADIzpoFNSpm7Tem1BFI+laxhvS/HM05bK4uI+1ZIAb5huPSkDFC56q9XspiTazuwG/9yikyTVnAVK9Qft6vI5e/KfOIRIZtbLtSTaYPbfg6Jd70Eyh6P9tCEAzX8reP9Q1D1cS2sKgOVhPIXt0c0yx3xb7Sps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777604; c=relaxed/simple;
-	bh=bVtIn84pceT1PG1uXCndLgM1Isu824vh8/yTS0dQyyE=;
+	s=arc-20240116; t=1764779372; c=relaxed/simple;
+	bh=0UR2sq0I0Yf9vR+Gcwu2QZc3R4l9e9AW4sG9mrJeqJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I8PWs1ARLdOMWpKjNk2MQgZ9oxClGXqy4wVqISNJj5dggoMdRSEfu/1ekyvFfe/qVDFkyB21WpE5B8ITdVR09sodnjJ+vfF5O8Gge2mL36mbpQsCmYJSjvleeEHuxgx+ePMBLq2JOHU5fy0/CmI0XsAS7nAE7r6KgDJoJUPlQ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgM0wpm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE71C116B1;
-	Wed,  3 Dec 2025 16:00:03 +0000 (UTC)
+	 MIME-Version; b=shoZ9J3NWf4AQvLSH23TWiQOvdgWO1OeKw9WSGWWsihFqgtGH+o1GK7SV1NdQ/K9x3Bo6Wh0JtQ8hPsxwy9Lgq959Do2b6dJVumZvkZf2EluS2OMT2t1YCk0vVn6gfqHb61UDz6YSRNw8TtCu5DLeFZQoac9MFZ31webo7fWIQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWbmD95u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11709C4CEF5;
+	Wed,  3 Dec 2025 16:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777604;
-	bh=bVtIn84pceT1PG1uXCndLgM1Isu824vh8/yTS0dQyyE=;
+	s=korg; t=1764779372;
+	bh=0UR2sq0I0Yf9vR+Gcwu2QZc3R4l9e9AW4sG9mrJeqJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgM0wpm+ycmuCTBe9tbEaL6E+x3K9wt7U3gRqPsoVUkHy7WMD1juqwoPyADABbXVx
-	 JlzRnGG3Ub4WRBBhtVpi3dQc0FG4TxAEizxcd17sDloyc+dddOyvudirNUkSN65XiL
-	 nSoF615nNu3ausO9lGa0/w7BG5UcvQcp4S7W+2j0=
+	b=UWbmD95umsj9oex5xIUeyKQ81Xy7yReJJN/KBndT5tb7nTpkgNR7iu71/doCLwZ/k
+	 XBwHDAm9vTjWBXTzePAh0/y0Njkf7rr5SdOX11xK4r5FjErninIUQUF9Kx/5l/tMcM
+	 Ghip/t0wjZeRjaBBit0JSiNRDr7odGnJhcs+u+4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/392] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
-Date: Wed,  3 Dec 2025 16:23:32 +0100
-Message-ID: <20251203152416.393893264@linuxfoundation.org>
+Subject: [PATCH 6.1 211/568] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+Date: Wed,  3 Dec 2025 16:23:33 +0100
+Message-ID: <20251203152448.450941406@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
+[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
 
-Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
-APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
-the usage in test_lirc_mode2_user.c.
+The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
+value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
+this offset is perfectly fine (in fact, register 0 is the only one in
+this register file).
+Introduce a boolean variable to indicate valid registers and allow writes
+to register 0.
 
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-index fb5fd6841ef39..d63878bc2d5f9 100644
---- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-+++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-@@ -73,7 +73,7 @@ int main(int argc, char **argv)
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+index 75f948bdea6a1..20737a0400f5c 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+@@ -87,10 +87,11 @@ struct dphy_reg {
+ 	u32 offset;
+ 	u32 mask;
+ 	u32 shift;
++	u8 valid;
+ };
  
- 	/* Let's try detach it before it was ever attached */
- 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
--	if (ret != -1 || errno != ENOENT) {
-+	if (ret != -ENOENT) {
- 		printf("bpf_prog_detach2 not attached should fail: %m\n");
- 		return 1;
- 	}
+ #define PHY_REG(_offset, _width, _shift) \
+-	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
++	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ 
+ static const struct dphy_reg rk1808_grf_dphy_regs[] = {
+ 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
+@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
+ 	const struct dphy_drv_data *drv_data = priv->drv_data;
+ 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 
+-	if (reg->offset)
++	if (reg->valid)
+ 		regmap_write(priv->grf, reg->offset,
+ 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
+ }
 -- 
 2.51.0
 
