@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CB7C9FF0D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CBACA0F2A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1C3F3015E0E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4B2F32DB4AF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556D831A077;
-	Wed,  3 Dec 2025 15:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A251232E12D;
+	Wed,  3 Dec 2025 16:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VaH8Dhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9FDDa+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9731987E;
-	Wed,  3 Dec 2025 15:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560633164D0;
+	Wed,  3 Dec 2025 16:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776870; cv=none; b=EFh4BhZuFn1wr6pCn890MRN5fT3FR4yPfnJPrWI3iSsNbvf5wA0qpkSMPiUkbWH3OQ1WF9hUDTg1RNMmv9bLlakwfJd7EOLERM1WF0rFn50GxlxieGboC6+NW79xfvC82HVdBNa4pGPq8LX+2CzGQShr5BeZLdmYrbZRvmiSbFA=
+	t=1764779969; cv=none; b=bFRNbiPdP41FwEazEEVTww8PXPQbKU4LamZBTh6wzqtzJKpYHHgp7iTJG/7hokdU2wxnsZ3bGLER7urim4d6d/GS/vIGpw+67OdbPX1lGUU2Bx7uSUXCKdmh1JiZK7x6ixhrpNOy/tpN4sEx+WS6J5wK0G/KR0mQPOamhxh34fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776870; c=relaxed/simple;
-	bh=F2MU4lkaZeHH4sO1Lq5lJJhFERxwJrNt9HR2Lm6PRfc=;
+	s=arc-20240116; t=1764779969; c=relaxed/simple;
+	bh=C97hBH7TlrEKtuVa7/wL6Q3shENKEFceBur0fjs1gE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGdUH+D2BQlqi5e1T9JQyP+RkAv4j2e/YHZgTLnJpyM+5yWsj/qzEiUxAcek8d6isKBG1bP0PYpqObHheTFkSXLpcm1r0JQjIvxkSfIkDABPHY6RGaCnmlWMsxZVjIJ+KIzW9BfQAuLbD5LQHKad+tmfSavl6yFm1ztdVILIVaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VaH8Dhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83643C4CEF5;
-	Wed,  3 Dec 2025 15:47:49 +0000 (UTC)
+	 MIME-Version; b=OZMmgquCpNCn65BGwroC1mpsa8QRSxCrnvivu+M+kifsn6egbhxGnJdCMQ8cHXicxUW9uaICHMyPjORx4CCCvVo7619g4RTp6oePL8BAY3knbUTcFtfbEGL7cpICnqbX1T5msudo8aKXvUsM7VJi4TP+vp+zxJ1K2sXKasf0KEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9FDDa+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E9FC4CEF5;
+	Wed,  3 Dec 2025 16:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776869;
-	bh=F2MU4lkaZeHH4sO1Lq5lJJhFERxwJrNt9HR2Lm6PRfc=;
+	s=korg; t=1764779969;
+	bh=C97hBH7TlrEKtuVa7/wL6Q3shENKEFceBur0fjs1gE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VaH8DhwTstsKP/mhNxYLQyrzxV9ADQu3rU7jHpj+yDHYIrZPMn7ZGdqIMXC6C1i6
-	 lbyyCxGNy/TDW+We3n4/sULchM54cPzJnNdNfXMPToyVRo9gFbVwh6jcQY8AwB/Lah
-	 MDtoXdZktjHfXR1rQfIwrMYNZuOm9bOIbXQGWi9c=
+	b=D9FDDa+hN9KHql3hf0uiAF0S0gj0y4St57pSVZV+pJartaTK7YsVH/VAgSPfqbIMd
+	 ldX/iTBQXmsGxb+pUp+zsGKSE+vSlMBnt11/damDE5kEyFZfZFs21N8X+WygDIVv+M
+	 KPy6aNDXzYXyk4FhLq6NPzTZUPkunAF7RXU6RCOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 012/146] net: phy: mxl-gpy: fix bogus error on USXGMII and integrated PHY
-Date: Wed,  3 Dec 2025 16:26:30 +0100
-Message-ID: <20251203152346.915621618@linuxfoundation.org>
+Subject: [PATCH 6.1 389/568] Bluetooth: hci_sync: fix double free in hci_discovery_filter_clear()
+Date: Wed,  3 Dec 2025 16:26:31 +0100
+Message-ID: <20251203152454.939647665@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit ec3803b5917b6ff2f86ea965d0985c95d8a85119 ]
+[ Upstream commit 2935e556850e9c94d7a00adf14d3cd7fe406ac03 ]
 
-As the interface mode doesn't need to be updated on PHYs connected with
-USXGMII and integrated PHYs, gpy_update_interface() should just return 0
-in these cases rather than -EINVAL which has wrongly been introduced by
-commit 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface()
-function return type"), as this breaks support for those PHYs.
+Function 'hci_discovery_filter_clear()' frees 'uuids' array and then
+sets it to NULL. There is a tiny chance of the following race:
 
-Fixes: 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface() function return type")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/f744f721a1fcc5e2e936428c62ff2c7d94d2a293.1763648168.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+'hci_cmd_sync_work()'
+
+ 'update_passive_scan_sync()'
+
+   'hci_update_passive_scan_sync()'
+
+     'hci_discovery_filter_clear()'
+       kfree(uuids);
+
+       <-------------------------preempted-------------------------------->
+                                           'start_service_discovery()'
+
+                                             'hci_discovery_filter_clear()'
+                                               kfree(uuids); // DOUBLE FREE
+
+       <-------------------------preempted-------------------------------->
+
+      uuids = NULL;
+
+To fix it let's add locking around 'kfree()' call and NULL pointer
+assignment. Otherwise the following backtrace fires:
+
+[ ] ------------[ cut here ]------------
+[ ] kernel BUG at mm/slub.c:547!
+[ ] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+[ ] CPU: 3 UID: 0 PID: 246 Comm: bluetoothd Tainted: G O 6.12.19-kernel #1
+[ ] Tainted: [O]=OOT_MODULE
+[ ] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ ] pc : __slab_free+0xf8/0x348
+[ ] lr : __slab_free+0x48/0x348
+...
+[ ] Call trace:
+[ ]  __slab_free+0xf8/0x348
+[ ]  kfree+0x164/0x27c
+[ ]  start_service_discovery+0x1d0/0x2c0
+[ ]  hci_sock_sendmsg+0x518/0x924
+[ ]  __sock_sendmsg+0x54/0x60
+[ ]  sock_write_iter+0x98/0xf8
+[ ]  do_iter_readv_writev+0xe4/0x1c8
+[ ]  vfs_writev+0x128/0x2b0
+[ ]  do_writev+0xfc/0x118
+[ ]  __arm64_sys_writev+0x20/0x2c
+[ ]  invoke_syscall+0x68/0xf0
+[ ]  el0_svc_common.constprop.0+0x40/0xe0
+[ ]  do_el0_svc+0x1c/0x28
+[ ]  el0_svc+0x30/0xd0
+[ ]  el0t_64_sync_handler+0x100/0x12c
+[ ]  el0t_64_sync+0x194/0x198
+[ ] Code: 8b0002e6 eb17031f 54fffbe1 d503201f (d4210000)
+[ ] ---[ end trace 0000000000000000 ]---
+
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Minor context change fixed. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mxl-gpy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 0c8dc16ee7bde..221b315203d06 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -540,7 +540,7 @@ static int gpy_update_interface(struct phy_device *phydev)
- 	/* Interface mode is fixed for USXGMII and integrated PHY */
- 	if (phydev->interface == PHY_INTERFACE_MODE_USXGMII ||
- 	    phydev->interface == PHY_INTERFACE_MODE_INTERNAL)
--		return -EINVAL;
-+		return 0;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 4a1faf11785f4..b0a7ceb99eec0 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -28,7 +28,7 @@
+ #include <linux/idr.h>
+ #include <linux/leds.h>
+ #include <linux/rculist.h>
+-
++#include <linux/spinlock.h>
+ #include <net/bluetooth/hci.h>
+ #include <net/bluetooth/hci_sync.h>
+ #include <net/bluetooth/hci_sock.h>
+@@ -92,6 +92,7 @@ struct discovery_state {
+ 	unsigned long		scan_start;
+ 	unsigned long		scan_duration;
+ 	unsigned long		name_resolve_timeout;
++	spinlock_t		lock;
+ };
  
- 	/* Automatically switch SERDES interface between SGMII and 2500-BaseX
- 	 * according to speed. Disable ANEG in 2500-BaseX mode.
+ #define SUSPEND_NOTIFIER_TIMEOUT	msecs_to_jiffies(2000) /* 2 seconds */
+@@ -881,6 +882,7 @@ static inline void iso_recv(struct hci_conn *hcon, struct sk_buff *skb,
+ 
+ static inline void discovery_init(struct hci_dev *hdev)
+ {
++	spin_lock_init(&hdev->discovery.lock);
+ 	hdev->discovery.state = DISCOVERY_STOPPED;
+ 	INIT_LIST_HEAD(&hdev->discovery.all);
+ 	INIT_LIST_HEAD(&hdev->discovery.unknown);
+@@ -895,8 +897,12 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
+ 	hdev->discovery.report_invalid_rssi = true;
+ 	hdev->discovery.rssi = HCI_RSSI_INVALID;
+ 	hdev->discovery.uuid_count = 0;
++
++	spin_lock(&hdev->discovery.lock);
+ 	kfree(hdev->discovery.uuids);
+ 	hdev->discovery.uuids = NULL;
++	spin_unlock(&hdev->discovery.lock);
++
+ 	hdev->discovery.scan_start = 0;
+ 	hdev->discovery.scan_duration = 0;
+ }
 -- 
 2.51.0
 
