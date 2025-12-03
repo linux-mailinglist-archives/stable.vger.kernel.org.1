@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6054CA057A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:19:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48805C9FFDF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 195883276326
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 454B2300EA38
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBA634251C;
-	Wed,  3 Dec 2025 16:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11513AA19A;
+	Wed,  3 Dec 2025 16:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPzAji+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE8mmghB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF734250B;
-	Wed,  3 Dec 2025 16:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49003AA1A2;
+	Wed,  3 Dec 2025 16:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777834; cv=none; b=JBWpfps0ibHeLLIiHTwJzspiN3GD86dhd0tnuFOlIBAClfWs2e65Tg+vP16PdZIC08qXVOgTBs+TzKUcHfm5Syzi7xGpqmUjNyojGz+uIq7swIAE4fcp1xEqmyRXnyx09lejiVNERPjriBs/5YdNrjDqeqMxfljTlZvtIG55FjU=
+	t=1764779609; cv=none; b=tMKxoN4d2qK+ZYcNQhIbY+ebXMxv5XVafycgKQ4L//MT+KYxqgmlY39KS7cp3n1q+9qRBP9f6eBAxY2k/v+uHypygzFdgwPFvHtQHXnNyGbX+gTjiXFIFuU9bwDzkFMlZNsfOaf0oiRZSlR8Gp7oHFVEyiPj+Kc+Ey8cN93fTug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777834; c=relaxed/simple;
-	bh=BszxpdBd89WtAOl1L3Ds5lszGOxr7bYoJJu+FLk3RIE=;
+	s=arc-20240116; t=1764779609; c=relaxed/simple;
+	bh=l6SA8PUyt8fqmvQAnUMWirduszOk0komf1R4RHKgMK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prHJLiMFwrm4hemFXKCBL3SfN0ldjOAfVsdO27pWpwpIhabIFMo8LxmL8Jl5+RWxOrRwB2JkSFGAGf80fGIT52Gc8vaWMIYIY89BKRpu/CgRXy16qYQVhWaFmvdn9uY67chO7vbjUiID8xj1jfE+PwipCEL1O6DIfXeX+AvQcH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPzAji+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0F4C4CEF5;
-	Wed,  3 Dec 2025 16:03:53 +0000 (UTC)
+	 MIME-Version; b=t1Ta3n/O7hSt53PUg5DrHHE9n/wYZ66DikY0lbBya/r2sjEa9F4klUbZ4K15LHERhb3zJVHmXaZ7ZGVUUuiUZMMYqeAB/GYHORHMzmStJDXmMrh2gkd4XsK1atxjaKMF8vxAitavUp3N3Zv7nuq4A67AWScQOGLTt1xb0AqAn34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE8mmghB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F005AC4CEF5;
+	Wed,  3 Dec 2025 16:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777834;
-	bh=BszxpdBd89WtAOl1L3Ds5lszGOxr7bYoJJu+FLk3RIE=;
+	s=korg; t=1764779609;
+	bh=l6SA8PUyt8fqmvQAnUMWirduszOk0komf1R4RHKgMK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPzAji+KCBovmF4GHGl8a2HYBK5AmZEWC4jK41iea/jIRKt+U/OoVNWR8Yl65fzLx
-	 xpANSpu1atgMKrZSHC9k8xaoTTe+PWQ5ig7VjJkoKGeukv4R1qyGbXsWCbbjfCpSNz
-	 N+NNPOQilqwyEa4nnaj0/mzxtEbIIIewxHcE6o9k=
+	b=AE8mmghBXILu7EBNKsHtxrbQwjwqlr2vzLl5/Mj6rTnhVcvRg7nSh3Juzc0lY9Eo3
+	 8oaN6zl1tAsvqa9DYuxyImbs2q2SB6aCqsqBvaQxHAQ7mi8/YLaC1KTC2qH3o46x6w
+	 Sf4aF4FNKDvvPqit/GXOK9JwDsud7jsHE/WieC8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/392] allow finish_no_open(file, ERR_PTR(-E...))
+Subject: [PATCH 6.1 308/568] selftests/net: use destination options instead of hop-by-hop
 Date: Wed,  3 Dec 2025 16:25:10 +0100
-Message-ID: <20251203152419.967040967@linuxfoundation.org>
+Message-ID: <20251203152451.989268153@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit fe91e078b60d1beabf5cef4a37c848457a6d2dfb ]
+[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
 
-... allowing any ->lookup() return value to be passed to it.
+The GRO self-test, gro.c, currently constructs IPv6 packets containing a
+Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
+correctly handles IPv6 extension headers.
 
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+However, network elements may be configured to drop packets with the
+Hop-by-Hop Options header (HBH). This causes the self-test to fail
+in environments where such network elements are present.
+
+To improve the robustness and reliability of this test in diverse
+network environments, switch from using IPPROTO_HOPOPTS to
+IPPROTO_DSTOPTS (Destination Options).
+
+The Destination Options header is less likely to be dropped by
+intermediate routers and still serves the core purpose of the test:
+validating GRO's handling of an IPv6 extension header. This change
+ensures the test can execute successfully without being incorrectly
+failed by network policies outside the kernel's control.
+
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/open.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/gro.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/open.c b/fs/open.c
-index 84e5dcc31c0e4..bdfe88fab1f1c 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -921,18 +921,20 @@ EXPORT_SYMBOL(finish_open);
-  * finish_no_open - finish ->atomic_open() without opening the file
-  *
-  * @file: file pointer
-- * @dentry: dentry or NULL (as returned from ->lookup())
-+ * @dentry: dentry, ERR_PTR(-E...) or NULL (as returned from ->lookup())
-  *
-- * This can be used to set the result of a successful lookup in ->atomic_open().
-+ * This can be used to set the result of a lookup in ->atomic_open().
-  *
-  * NB: unlike finish_open() this function does consume the dentry reference and
-  * the caller need not dput() it.
-  *
-- * Returns "0" which must be the return value of ->atomic_open() after having
-- * called this function.
-+ * Returns 0 or -E..., which must be the return value of ->atomic_open() after
-+ * having called this function.
-  */
- int finish_no_open(struct file *file, struct dentry *dentry)
- {
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
- 	file->f_path.dentry = dentry;
- 	return 0;
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 9c6f5b4033c37..8dd6857e52cb5 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -623,11 +623,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
+ 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
+ 
+ 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
+ 
+ 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
  }
+ 
 -- 
 2.51.0
 
