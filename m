@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76670C9FCE6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA6CA0084
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D6E23002283
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 92DB030161F1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6DA313546;
-	Wed,  3 Dec 2025 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901D35C185;
+	Wed,  3 Dec 2025 16:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjD2HmkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2v72yuyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDA3313558;
-	Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78FD35BDDF;
+	Wed,  3 Dec 2025 16:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778020; cv=none; b=JandbcJhLJimw+h3lxsrczaG25isLPmjqQ8YBhDEt7/6S4bhQ1065UX1eRSaCO1f3GqU9Vp++tXCPm3ONNCGd0QVuN8odnuXD7ppeyJM6Epbpq2KtL7teXgKxsSaHe0gu/ME56qxND7u2VcMO8DAHVHHnZs/daRmWsbFCOKZOf0=
+	t=1764779808; cv=none; b=jJbDxcH8C5ILT5aL/RiODQzmxjcIAsaeDSFG85H6Zl04x2GpV1sYZuRLNsJ4mcJUifkGrzcjrkaq7O9FlwCpFHXm0aP6Fl08k2psmeYFD7fp2BvjBkXpZkyYnDfkugMrEn98wfrkqz/8DPGqAGnNnn/0Vgju8NbOiQ7Gm7CS6uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778020; c=relaxed/simple;
-	bh=qREnZIAWDczKQNWFYnEYzHhWy7gwbnVHXrU6sCZFQ5g=;
+	s=arc-20240116; t=1764779808; c=relaxed/simple;
+	bh=GnlLKyYjmXqfy5bU83N3LHa9JrxyRlxPm/CmfRCsfCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNektLxa+1RvGr0NqFsRPuy0igHj5Zng5fuIGEbflDdztONOssKuE0FAjIRSaDzMX6mPRRsxg8dzuzYodMS0/+HojZMXD3CZZBAQeyiuuxh0P56GxvVO50MQHCIu6jxErvR4cK6GfWLv4+o28hoeMRsBLnMDwOzT+TAv87A6jOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjD2HmkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580C9C4CEF5;
-	Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
+	 MIME-Version; b=qeIXVdBdsIHvC32W4/pDqw84qbIdpq2a3SyTvEJQA/AyHV3fxjuapmxrzrFgC3CZo+tpbLZ0VSN8jOmFbXIG8iSEbYSSl9KAHCuXXDFa6uRLtAy0/zdvbBUHmZURsJmayE9lVJklzv/PSi9LGTQMs1xny6tSttKaJf4Ykglmk/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2v72yuyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6A8C4CEF5;
+	Wed,  3 Dec 2025 16:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778019;
-	bh=qREnZIAWDczKQNWFYnEYzHhWy7gwbnVHXrU6sCZFQ5g=;
+	s=korg; t=1764779808;
+	bh=GnlLKyYjmXqfy5bU83N3LHa9JrxyRlxPm/CmfRCsfCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjD2HmkA3N8gqyfDKNeRS9jInj1lGyQs9zjomGCMQx0SNkq+tXNG8a6QkFe4I8hYq
-	 8k/iJU0Qygh9VrQ9Fw0CEnnBVeXckaYzKn7IWmZUghJa8whys4NlwmIF+PVnkdI3gN
-	 V8Viyhu6/MnvC/yfKO4lFHnf8HZB07h26wNkVsc4=
+	b=2v72yuyxi4kvtiECTT80LPmIx07ZlkhfMFy/ZR1esCPjreqq48tCdfX+bn7zO0FSD
+	 DyUkb16TZnaFPOoMzQEXo2FWPPcH/mBeJWUhPorFOtrqbTH6sp1XCbwL2pXtc0lg3a
+	 P1NAbJwVGGIxuxO2tBOJzCR1kxotKm4vcE1X9VyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/392] sctp: Hold RCU read lock while iterating over address list
-Date: Wed,  3 Dec 2025 16:26:09 +0100
-Message-ID: <20251203152422.241998651@linuxfoundation.org>
+Subject: [PATCH 6.1 368/568] net/mlx5: Expose shared buffer registers bits and structs
+Date: Wed,  3 Dec 2025 16:26:10 +0100
+Message-ID: <20251203152454.176795625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
+[ Upstream commit 8d231dbc3b10155727bcfa9e543d397ad357f14f ]
 
-With CONFIG_PROVE_RCU_LIST=y and by executing
+Add the shared receive buffer management and configuration registers:
+1. SBPR - Shared Buffer Pools Register
+2. SBCM - Shared Buffer Class Management Register
 
-  $ netcat -l --sctp &
-  $ netcat --sctp localhost &
-  $ ss --sctp
-
-one can trigger the following Lockdep-RCU splat(s):
-
-  WARNING: suspicious RCU usage
-  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
-  -----------------------------
-  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
-
-  other info that might help us debug this:
-
-  rcu_scheduler_active = 2, debug_locks = 1
-  2 locks held by ss/215:
-   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
-   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x90
-   lockdep_rcu_suspicious.cold+0x4e/0xa3
-   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
-   sctp_sock_dump+0x131/0x200
-   sctp_transport_traverse_process+0x170/0x1b0
-   ? __pfx_sctp_sock_filter+0x10/0x10
-   ? __pfx_sctp_sock_dump+0x10/0x10
-   sctp_diag_dump+0x103/0x140
-   __inet_diag_dump+0x70/0xb0
-   netlink_dump+0x148/0x490
-   __netlink_dump_start+0x1f3/0x2b0
-   inet_diag_handler_cmd+0xcd/0x100
-   ? __pfx_inet_diag_dump_start+0x10/0x10
-   ? __pfx_inet_diag_dump+0x10/0x10
-   ? __pfx_inet_diag_dump_done+0x10/0x10
-   sock_diag_rcv_msg+0x18e/0x320
-   ? __pfx_sock_diag_rcv_msg+0x10/0x10
-   netlink_rcv_skb+0x4d/0x100
-   netlink_unicast+0x1d7/0x2b0
-   netlink_sendmsg+0x203/0x450
-   ____sys_sendmsg+0x30c/0x340
-   ___sys_sendmsg+0x94/0xf0
-   __sys_sendmsg+0x83/0xf0
-   do_syscall_64+0xbb/0x390
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   ...
-   </TASK>
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 9fcc2b6c1052 ("net/mlx5e: Fix potentially misleading debug message")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/mlx5/driver.h   |  2 ++
+ include/linux/mlx5/mlx5_ifc.h | 61 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index b0ce1080842d4..31cf52026202b 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 	struct nlattr *attr;
- 	void *info = NULL;
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index b05f69a8306c9..9af7180eac9e3 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -100,6 +100,8 @@ enum {
+ };
  
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list)
- 		addrcnt++;
-+	rcu_read_unlock();
+ enum {
++	MLX5_REG_SBPR            = 0xb001,
++	MLX5_REG_SBCM            = 0xb002,
+ 	MLX5_REG_QPTS            = 0x4002,
+ 	MLX5_REG_QETCR		 = 0x4005,
+ 	MLX5_REG_QTCT		 = 0x400a,
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 271c5a87751fe..4df7b3d358607 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -10930,6 +10930,67 @@ struct mlx5_ifc_pbmc_reg_bits {
+ 	u8         reserved_at_2e0[0x80];
+ };
  
- 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
- 	if (!attr)
- 		return -EMSGSIZE;
- 
- 	info = nla_data(attr);
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list) {
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
- 	}
-+	rcu_read_unlock();
- 
- 	return 0;
- }
++struct mlx5_ifc_sbpr_reg_bits {
++	u8         desc[0x1];
++	u8         snap[0x1];
++	u8         reserved_at_2[0x4];
++	u8         dir[0x2];
++	u8         reserved_at_8[0x14];
++	u8         pool[0x4];
++
++	u8         infi_size[0x1];
++	u8         reserved_at_21[0x7];
++	u8         size[0x18];
++
++	u8         reserved_at_40[0x1c];
++	u8         mode[0x4];
++
++	u8         reserved_at_60[0x8];
++	u8         buff_occupancy[0x18];
++
++	u8         clr[0x1];
++	u8         reserved_at_81[0x7];
++	u8         max_buff_occupancy[0x18];
++
++	u8         reserved_at_a0[0x8];
++	u8         ext_buff_occupancy[0x18];
++};
++
++struct mlx5_ifc_sbcm_reg_bits {
++	u8         desc[0x1];
++	u8         snap[0x1];
++	u8         reserved_at_2[0x6];
++	u8         local_port[0x8];
++	u8         pnat[0x2];
++	u8         pg_buff[0x6];
++	u8         reserved_at_18[0x6];
++	u8         dir[0x2];
++
++	u8         reserved_at_20[0x1f];
++	u8         exc[0x1];
++
++	u8         reserved_at_40[0x40];
++
++	u8         reserved_at_80[0x8];
++	u8         buff_occupancy[0x18];
++
++	u8         clr[0x1];
++	u8         reserved_at_a1[0x7];
++	u8         max_buff_occupancy[0x18];
++
++	u8         reserved_at_c0[0x8];
++	u8         min_buff[0x18];
++
++	u8         infi_max[0x1];
++	u8         reserved_at_e1[0x7];
++	u8         max_buff[0x18];
++
++	u8         reserved_at_100[0x20];
++
++	u8         reserved_at_120[0x1c];
++	u8         pool[0x4];
++};
++
+ struct mlx5_ifc_qtct_reg_bits {
+ 	u8         reserved_at_0[0x8];
+ 	u8         port_number[0x8];
 -- 
 2.51.0
 
