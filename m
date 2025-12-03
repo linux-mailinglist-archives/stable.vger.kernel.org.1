@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6C7CA0C2E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA92CA0DAE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9015C30DCC9A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04D23304E57C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44678350D68;
-	Wed,  3 Dec 2025 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7835534B678;
+	Wed,  3 Dec 2025 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km1kByiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNfQj3Kk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7162C354AC3;
-	Wed,  3 Dec 2025 16:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96F934846D;
+	Wed,  3 Dec 2025 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780955; cv=none; b=Y8K3VnCENZ2Z8OUh84/XHad2zqa+a8NK3wlG5G0v5Q3AMGA/TInCCp1mgia1HzxQs8+1z+H65+6S+5YNzLoHA/QPCo3sqDWlDJ+1zKAG5JSp9HclMDeV1D+VzpBNZqNOTHbniajizyuS95uGyeL3G1NNPi3tVIiyonUoo4Wom5I=
+	t=1764781191; cv=none; b=kCrThTnrXwt4YIaMjDxF4hnRWEyGImzX1nQIzyCyKNjzHD9lWd4hFUjPa6lX09WNf69URkJNdZQZbjrGYs7MVGfI7OsUBEUfzlIuWr/ruXMFcyndEaMAjXDJLURad+gYoByOWqYN/YX4IK/JNlsLQAY/atyoaZzvwTgteKF3GCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780955; c=relaxed/simple;
-	bh=hmnbKLfT1xxZqhZAUbId0puwdiI8+Tx5Hh0LZRJqSoo=;
+	s=arc-20240116; t=1764781191; c=relaxed/simple;
+	bh=A2KoEidZRxPpCiUKt3CGzjB6U/gcD8/+AEMdSMbyCzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qmRLx4lRjnv+1aC2QDbfLjtpuCuT1dpf/TbLQiAZ6E4fD8xD+UdG7uESiD7X/4MCnmosk9ktmfDtHZ892oGTumNyC05iMNmhSzzYaeU+JiygZqAOgmvMRJb5twW4exiz0INwnyn6GDil2jQnrK0b09lSWL9YfvtAe8optCzWNXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km1kByiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69096C4CEF5;
-	Wed,  3 Dec 2025 16:55:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PmaYYLq8R1znyvI23CgoUabFEVI/kOVJPz6iVIRTsFL9LYihyjdHQFf8IEdsSDA0RuJsSE7c0P6aAsK0UhJc5wmNmopUE96tvm9krKC2vTRjFKxwTWJL8+NNsRzPp5mFXo1ms7pEwd6YUsA33XISD06yNIwWItAYeVAvBAyxb7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNfQj3Kk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB632C116C6;
+	Wed,  3 Dec 2025 16:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780954;
-	bh=hmnbKLfT1xxZqhZAUbId0puwdiI8+Tx5Hh0LZRJqSoo=;
+	s=korg; t=1764781191;
+	bh=A2KoEidZRxPpCiUKt3CGzjB6U/gcD8/+AEMdSMbyCzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=km1kByiScOIN92OJBxZ5RZ6wbp50y17MHaxNyHuModXGSMZaJkefEw7e/mvg/MBqc
-	 6SR5ckblZp78kzKniFr2DKrP03/nuYzV1gFMyFZPf5mShWzuSwtUhLpfbKtPXz7wRV
-	 665KaVYvIruFE1GXgm2N6v1Fbo3ckuM4m8gfdwZA=
+	b=JNfQj3KklF7kgpWCZQ+z2H6Fgz3FQdH51oPAqkYcTAXj+CrT/8JM06BLQfQqpxh+C
+	 WjUBPTfLSDTVK+lfOeJfvGLrrGj7jDisVFMNZTCIRCMI7PfJpfKkp7SKiuEReryCtR
+	 5bL4cKqnzfAbPbEx5rcgIgRvRej5i+nKyPTTl07U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mark Brown <broonie@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 6.12 132/132] spi: spi-nxp-fspi: Check return value of devm_mutex_init()
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 78/93] bonding: return detailed error when loading native XDP fails
 Date: Wed,  3 Dec 2025 16:30:11 +0100
-Message-ID: <20251203152348.203827402@linuxfoundation.org>
+Message-ID: <20251203152339.403805431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit d24a54e032021cf381af3c3cf119cc5cf6b3c1be upstream.
+[ Upstream commit 22ccb684c1cae37411450e6e86a379cd3c29cb8f ]
 
-devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will
-be marked as unusable and trigger errors on usage.
+Bonding only supports native XDP for specific modes, which can lead to
+confusion for users regarding why XDP loads successfully at times and
+fails at others. This patch enhances error handling by returning detailed
+error messages, providing users with clearer insights into the specific
+reasons for the failure when loading native XDP.
 
-Add the missed check.
-
-Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241021031211.814-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1249,7 +1249,9 @@ static int nxp_fspi_probe(struct platfor
- 		return dev_err_probe(dev, ret, "Failed to request irq\n");
- 	}
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -5622,8 +5622,11 @@ static int bond_xdp_set(struct net_devic
  
--	devm_mutex_init(dev, &f->lock);
-+	ret = devm_mutex_init(dev, &f->lock);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
+ 	ASSERT_RTNL();
  
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+-	if (!bond_xdp_check(bond))
++	if (!bond_xdp_check(bond)) {
++		BOND_NL_ERR(dev, extack,
++			    "No native XDP support for the current bonding mode");
+ 		return -EOPNOTSUPP;
++	}
+ 
+ 	old_prog = bond->xdp_prog;
+ 	bond->xdp_prog = prog;
 
 
 
