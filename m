@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA56CA092E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:42:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF05C9FAE2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A3DD31983D0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C635A30046E8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245CE34A78E;
-	Wed,  3 Dec 2025 16:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCB63074A0;
+	Wed,  3 Dec 2025 15:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq+MUb7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Khm806ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BFC34A78B;
-	Wed,  3 Dec 2025 16:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9FE3074BA;
+	Wed,  3 Dec 2025 15:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778457; cv=none; b=SJWLCQ42MxxV124WJ582sj/WZ5cfGfUofJJXvxjAEsQfplzJzmExozWzYe/aIEIdHpbuyDxmFKfsC3/eNQGhonP4vglT0DTw68dvcIgD1Vy76mWv9fT80GLl+nZCnHdMKdXSfi2Z8zh8XG3Xv61VdaNUGJP6lh+p/DetLAaapXE=
+	t=1764776681; cv=none; b=NQQAmBxsEuGpDLXgwLLZPb/X/q3AmkF/S10Sq6C6SW8NG5WdCamwQdDmwBMZk7YaFNlTYliMFTqLmIzLuxXKvChIoqxvJUNdJ9/O40XQi04uxZby4mOvgcgvrBpY3NwWi2Pyiuwk6OlMiogHdFHIbCMqOkIEqsNpnlyM246HeJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778457; c=relaxed/simple;
-	bh=BzhczLFkRinO5G6TAb1yCAJSE7U2Y64GgDunUkrofY4=;
+	s=arc-20240116; t=1764776681; c=relaxed/simple;
+	bh=l2XLaSRyVVuZGjuNfyYU+YGUn0Gx+u5b/gHHWxaKhQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WJx76mVUI+C03PjRfVHxokThrpgCPAP3+I/M+4x3qvIM/RQK6+iXsjD8Ag3lYkprwmSF9Z8qysAoey3cGTAQW1RxSdcHre0IvLWjMwBLxkymUG6ziYEeH6Gp/wUAMbq/Ew5VVrNDm78e4pAMf1pXQ7TC5/obgFcumtOr798vJ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq+MUb7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BC4C4CEF5;
-	Wed,  3 Dec 2025 16:14:17 +0000 (UTC)
+	 MIME-Version; b=aUjU7XdRYOEmK6hp+yuKi6BqN0T0epBIASbY5eOIULnEHuX6gZDtcYZZvChCK1qZYD9xrNUGlCdpwZqdDDxOcBliAXr3DIHv4zL5obi9D7rS8MNAzn9EwvYMI487C5HqJ1AxQoAgZjKwTR/pWF1+Y9/FIce4Tx2mooZlj79Lt2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Khm806ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441A7C4CEF5;
+	Wed,  3 Dec 2025 15:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778457;
-	bh=BzhczLFkRinO5G6TAb1yCAJSE7U2Y64GgDunUkrofY4=;
+	s=korg; t=1764776680;
+	bh=l2XLaSRyVVuZGjuNfyYU+YGUn0Gx+u5b/gHHWxaKhQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yq+MUb7YWqvbjczguU8G7glSZqZYAzBN/LBfGde2MUDQnUr1XAB0CR0HBpqjBBAxc
-	 rj2waVJNGz2MAW1UCcdRqcMwccZ2xJhNQzJtNnFLIHKIfR+gWLp7lfLGdRan5bJfWz
-	 Ch2mQU2MN5+1y1nRaqR1p/7gtFc5XPN5lWqp9okA=
+	b=Khm806kuYlL1fdXLDC9okTa709kLTUNZRfsO/u6ezMP2V1+Vd9UsYIAOjYIUl05Y0
+	 qsUXCvD0jnEEdE3VYhnaz8nopHFJWVDIEa0I+syv60tUf/Ak+7pJJ90XY5RZq99CV8
+	 ciCRd5Wx5zxGGAmoNTgkHt6vTelhPV2fxXGGQU1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 309/392] ALSA: usb-audio: fix uac2 clock source at terminal parser
-Date: Wed,  3 Dec 2025 16:27:39 +0100
-Message-ID: <20251203152425.532593247@linuxfoundation.org>
+Subject: [PATCH 5.10 256/300] can: kvaser_usb: leaf: Fix potential infinite loop in command parsers
+Date: Wed,  3 Dec 2025 16:27:40 +0100
+Message-ID: <20251203152410.122306806@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
+[ Upstream commit 0c73772cd2b8cc108d5f5334de89ad648d89b9ec ]
 
-Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
-UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
-bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
-Clean up check_input_term()") into parse_term_uac2_clock_source().
+The `kvaser_usb_leaf_wait_cmd()` and `kvaser_usb_leaf_read_bulk_callback`
+functions contain logic to zero-length commands. These commands are used
+to align data to the USB endpoint's wMaxPacketSize boundary.
 
-This breaks the clock source selection for at least my
-1397:0003 BEHRINGER International GmbH FCA610 Pro.
+The driver attempts to skip these placeholders by aligning the buffer
+position `pos` to the next packet boundary using `round_up()` function.
 
-Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
+However, if zero-length command is found exactly on a packet boundary
+(i.e., `pos` is a multiple of wMaxPacketSize, including 0), `round_up`
+function will return the unchanged value of `pos`. This prevents `pos`
+to be increased, causing an infinite loop in the parsing logic.
 
-Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
-Signed-off-by: René Rebe <rene@exactco.de>
-Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This patch fixes this in the function by using `pos + 1` instead.
+This ensures that even if `pos` is on a boundary, the calculation is
+based on `pos + 1`, forcing `round_up()` to always return the next
+aligned boundary.
+
+Fixes: 7259124eac7d ("can: kvaser_usb: Split driver into kvaser_usb_core.c and kvaser_usb_leaf.c")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20251023162709.348240-1-eeodqql09@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index de80240d9ed58..5cc97982ab82e 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -931,7 +931,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
- {
- 	struct uac_clock_source_descriptor *d = p1;
- 
--	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
-+	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
- 	term->id = id;
- 	term->name = d->iClockSource;
- 	return 0;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index f06d63db9077b..df0460e3633c5 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -609,7 +609,7 @@ static int kvaser_usb_leaf_wait_cmd(const struct kvaser_usb *dev, u8 id,
+ 			 * for further details.
+ 			 */
+ 			if (tmp->len == 0) {
+-				pos = round_up(pos,
++				pos = round_up(pos + 1,
+ 					       le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 				continue;
+@@ -1571,7 +1571,7 @@ static void kvaser_usb_leaf_read_bulk_callback(struct kvaser_usb *dev,
+ 		 * number of events in case of a heavy rx load on the bus.
+ 		 */
+ 		if (cmd->len == 0) {
+-			pos = round_up(pos, le16_to_cpu
++			pos = round_up(pos + 1, le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 			continue;
+ 		}
 -- 
 2.51.0
 
