@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12712CA093D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32282CA0767
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61903319A278
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29BB331C901C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9415F39A27A;
-	Wed,  3 Dec 2025 16:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5935A341AC7;
+	Wed,  3 Dec 2025 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5T9Zsw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsNIT7Mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9B831619D;
-	Wed,  3 Dec 2025 16:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D234398FB3;
+	Wed,  3 Dec 2025 16:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780846; cv=none; b=ARBtK9+vDBoEf1d9PjII2JVfAIDgF9Ry+oTHb+PS97TAfpDlCXbTKC9ex76+sUabfj28dep7WUvxsm1H0QXhu6V99EAhV2f3E4wS4u0/6qus11W/54GdQ1MgAAdJGFoKmpDzdjkkMGlHAlD8jK2hJoxM1b2fUN7DiY1o7eL1QG0=
+	t=1764781171; cv=none; b=Vjf/f6wPtVigfzf1tp0QKdfBMLcIVQjvw/MVaIfJkSaQT1sTcLEVtewdqZ+E92oohRjt+UsV4gj6QvT9WScV+k9eEOBQyLBPLuaOlVc1J/eL+JzujLJM+CXvZ/7DWBqr2kegQ7R+s+Ao7CwDGmPFMu4d9fS0XgJVQLZ1bfHygtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780846; c=relaxed/simple;
-	bh=w2cSLhq/bkaDXkBc4HUyYYl+zJVuMEDSNGc6wGfOjns=;
+	s=arc-20240116; t=1764781171; c=relaxed/simple;
+	bh=lc67ClD/XqohOZtH+uZh+mq3ZQB+HO7aeFrp+qJMQ1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoNVmlX5h/HKHEdfs9CTDfctEVdSQcl5kYD1oBoOL1qMi1VayeSxOcVe5ivCtnPOr8pZx/oCxo7qBmeADS1dxV96W02GwAacnsznc8IegjXPbXFNNHdMnD8n8naD+o8pf5m5y7RuwDCJuzs0SbkhJvz6e9WnboiNqhjS6Cqxm0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5T9Zsw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6705C4CEF5;
-	Wed,  3 Dec 2025 16:54:05 +0000 (UTC)
+	 MIME-Version; b=okNl1RYH7AYVU/42uLWXKfp5Urw8PqVbK1xjnhrcGK2nkvNjfor/WsykjHxgsPXHyYtZZO+RrKoInb67Kpg2EyeMBzo7bC5SvOPsRnyMHibnLtXjb+91fvxvE0M7hjXJuzR8fNkMmAar01krd+aPk3HCt7Lr2H45jIgc/CZom/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsNIT7Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF03C4CEF5;
+	Wed,  3 Dec 2025 16:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780846;
-	bh=w2cSLhq/bkaDXkBc4HUyYYl+zJVuMEDSNGc6wGfOjns=;
+	s=korg; t=1764781171;
+	bh=lc67ClD/XqohOZtH+uZh+mq3ZQB+HO7aeFrp+qJMQ1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5T9Zsw4R9lziXUwd26wzeiXqTE5+YGNLd/bGY0uhoVcIlB+l+cCd/WwvHJe6olXy
-	 w6aYPhTLMKvWhSJjNvQlUQiEY97X+qzgdROFz8J13JREYNvJLTXHAahcQFayNXPvEP
-	 84Rodl5sYCa6Y9Pf6yTlDHqV9XdHJNfW37MIkBso=
+	b=dsNIT7MzkCjPhMJCr2WC50VeGn9Vozv/4AtWuUUOSJYk2BjbF8D53XFwXgGPJweRv
+	 zFmzQc5QmS0HJEgVihbqOC6JovR1G9NxZs3GVDsj+U8/E05+Nf6nxCVhXBYsJdXqeh
+	 iIDeisPAEQnwn89K40LoDfZQWhBl9bjKl2L5w4Hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 108/132] net: dsa: microchip: common: Fix checks on irq_find_mapping()
+	Filip Pokryvka <fpokryvk@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 54/93] mptcp: clear scheduled subflows on retransmit
 Date: Wed,  3 Dec 2025 16:29:47 +0100
-Message-ID: <20251203152347.286633740@linuxfoundation.org>
+Message-ID: <20251203152338.521695157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 7b3c09e1667977edee11de94a85e2593a7c15e87 upstream.
+commit 27fd02860164bfa78cec2640dfad630d832e302c upstream.
 
-irq_find_mapping() returns a positive IRQ number or 0 if no IRQ is found
-but it never returns a negative value. However, on each
-irq_find_mapping() call, we verify that the returned value isn't
-negative.
+When __mptcp_retrans() kicks-in, it schedules one or more subflows for
+retransmission, but such subflows could be actually left alone if there
+is no more data to retransmit and/or in case of concurrent fallback.
 
-Fix the irq_find_mapping() checks to enter error paths when 0 is
-returned. Return -EINVAL in such cases.
+Scheduled subflows could be processed much later in time, i.e. when new
+data will be transmitted, leading to bad subflow selection.
 
-CC: stable@vger.kernel.org
-Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20251120-ksz-fix-v6-1-891f80ae7f8f@bootlin.com
+Explicitly clear all scheduled subflows before leaving the
+retransmission function.
+
+Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
+Cc: stable@vger.kernel.org
+Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2254,8 +2254,8 @@ static int ksz_irq_phy_setup(struct ksz_
- 		if (BIT(phy) & ds->phys_mii_mask) {
- 			irq = irq_find_mapping(dev->ports[phy].pirq.domain,
- 					       PORT_SRC_PHY_INT);
--			if (irq < 0) {
--				ret = irq;
-+			if (!irq) {
-+				ret = -EINVAL;
- 				goto out;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2691,7 +2691,7 @@ static void __mptcp_retrans(struct sock
+ 		}
+ 
+ 		if (!mptcp_send_head(sk))
+-			return;
++			goto clear_scheduled;
+ 
+ 		goto reset_timer;
+ 	}
+@@ -2722,7 +2722,7 @@ static void __mptcp_retrans(struct sock
+ 			if (__mptcp_check_fallback(msk)) {
+ 				spin_unlock_bh(&msk->fallback_lock);
+ 				release_sock(ssk);
+-				return;
++				goto clear_scheduled;
  			}
- 			ds->user_mii_bus->irq[phy] = irq;
-@@ -2479,8 +2479,8 @@ static int ksz_pirq_setup(struct ksz_dev
- 	snprintf(pirq->name, sizeof(pirq->name), "port_irq-%d", p);
  
- 	pirq->irq_num = irq_find_mapping(dev->girq.domain, p);
--	if (pirq->irq_num < 0)
--		return pirq->irq_num;
-+	if (!pirq->irq_num)
-+		return -EINVAL;
+ 			while (info.sent < info.limit) {
+@@ -2754,6 +2754,15 @@ reset_timer:
  
- 	return ksz_irq_common_setup(dev, pirq);
+ 	if (!mptcp_rtx_timer_pending(sk))
+ 		mptcp_reset_rtx_timer(sk);
++
++clear_scheduled:
++	/* If no rtx data was available or in case of fallback, there
++	 * could be left-over scheduled subflows; clear them all
++	 * or later xmit could use bad ones
++	 */
++	mptcp_for_each_subflow(msk, subflow)
++		if (READ_ONCE(subflow->scheduled))
++			mptcp_subflow_set_scheduled(subflow, false);
  }
+ 
+ /* schedule the timeout timer for the relevant event: either close timeout
 
 
 
