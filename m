@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD1BCA0424
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:05:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDF9CA03D4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63A133002924
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 520C23000180
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF214393DD7;
-	Wed,  3 Dec 2025 16:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B5634C990;
+	Wed,  3 Dec 2025 16:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSF1iyB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8mt7W51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC973AA181;
-	Wed,  3 Dec 2025 16:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43694350285;
+	Wed,  3 Dec 2025 16:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781102; cv=none; b=t+Gcj4V8KmWIayRm9bu7Gh2+AybQP5g6VE57aWXuzMOXA8GBxsBs7Mk0dZeaFH2wmyjps7amF7oHnMHLhy4JoXq8sRzgkfkDJ1W7e1wdzAMKf+3RgoualEmiR0jX9j7GrsbgZJrAOjd1ABsLbwfhSEpAyNB/HfZe2HmwnIVnf/I=
+	t=1764780934; cv=none; b=t7Kkp94dtcG3iRqCLUaPu0TbQLRzM9y/85dlahH0ZznqR7KpWWBUYbS6QpFR4y11Bwt6JJtmthNsjHaBVe6lc44/gyxJ03nsQwEj55LrmV2vgiEjedcWZDxif4CsPcwyN43scGJcOs4V6bQ3CsLJvD3foAEy1VxuHHIMONubeFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781102; c=relaxed/simple;
-	bh=bPTi/kcJCaN+P/s2btBa+vTgN5Y9FdXl9D2MwcN9Piw=;
+	s=arc-20240116; t=1764780934; c=relaxed/simple;
+	bh=HLezyOzIGrSMNcPHEVQCk462ZsPd/+pDo3xMU7fMJ68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0wPsv7V2sOmpdOMrxoDQgsG2bDJ1vJ9PP7oM5mgLFfrBYr3E/7SW7NwHfyRhxE8K2gsdL6IuCfViB3XS6g45MLre+2pMknrN4uxXrL/JZkqy4NtABV12btUKSnsGOgpkR0P+vzukezsxCiOcVgE15ESMmcLFPhPfI0ZN0cdCjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSF1iyB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B67C4CEF5;
-	Wed,  3 Dec 2025 16:58:21 +0000 (UTC)
+	 MIME-Version; b=dlII9R27YlI9LLbDkAH/oYtKmY/o0vkezFbDPkxdlxzlwyhMG65ujPDWDljn7aGx1ba5sP9rpya5XDAuZ7zIM1itOB9oRitms38oqKW/GdGuswFuMFbOuPwEraqWid5chhvyb1q6vbtQ/cLbIcfwDuao6ttE0MP8eNJwowelwd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8mt7W51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60383C4CEF5;
+	Wed,  3 Dec 2025 16:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781102;
-	bh=bPTi/kcJCaN+P/s2btBa+vTgN5Y9FdXl9D2MwcN9Piw=;
+	s=korg; t=1764780931;
+	bh=HLezyOzIGrSMNcPHEVQCk462ZsPd/+pDo3xMU7fMJ68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSF1iyB+lFzlpSBrLRpQIvWs8v7VNEm5xUs9H61US3Ssjx35+gl82vubNLvhpKJQE
-	 2ZfsyuWsGEYtkxE/0uc42Pn4jJBg5QtjH0TC1krl3Q0+yMCBTjyxJy/2VI6jSxefQ5
-	 fgV6s97gVyJhjqCPbLDHvRmz5viIWhquXLORt2bM=
+	b=N8mt7W51gYz6kp5XBXapHA9x1KVZLJpay8iDS/oVasQX3oE1fzVle9i54vu7I0UBh
+	 kP54Bzn07+0cjpFCUt4uxpKXVnabGedcZf9MjuDnjFAnyXPkr/A3RZyimAJgqvB6kJ
+	 n5tOVTKaF36E06KH7dmWi0gqXk/K61X+wnctgKNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.6 48/93] dm-verity: fix unreliable memory allocation
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 102/132] USB: serial: option: add support for Rolling RW101R-GL
 Date: Wed,  3 Dec 2025 16:29:41 +0100
-Message-ID: <20251203152338.297994317@linuxfoundation.org>
+Message-ID: <20251203152347.065803130@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +59,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit fe680d8c747f4e676ac835c8c7fb0f287cd98758 upstream.
+commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
 
-GFP_NOWAIT allocation may fail anytime. It needs to be changed to
-GFP_NOIO. There's no need to handle an error because mempool_alloc with
-GFP_NOIO can't fail.
+- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+  0x0301: mbim, pipe
+
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0301 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a8 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x0302: mbim, pipe
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0302 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a9 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+[ johan: sort vendor entries, edit commit message slightly ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-fec.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/serial/option.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -330,11 +330,7 @@ static int fec_alloc_bufs(struct dm_veri
- 		if (fio->bufs[n])
- 			continue;
- 
--		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOWAIT);
--		if (unlikely(!fio->bufs[n])) {
--			DMERR("failed to allocate FEC buffer");
--			return -ENOMEM;
--		}
-+		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOIO);
- 	}
- 
- 	/* try to allocate the maximum number of buffers */
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2424,12 +2424,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
+ 	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+-	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
 
 
 
