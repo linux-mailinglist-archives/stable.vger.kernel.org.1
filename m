@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B7ACA0DF8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B8CA0A24
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFFD6310E88E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11D723004CDA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4275E319864;
-	Wed,  3 Dec 2025 15:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E0F328B62;
+	Wed,  3 Dec 2025 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDGeOF+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAMswoIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29AA313E3D;
-	Wed,  3 Dec 2025 15:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B1932827D;
+	Wed,  3 Dec 2025 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776873; cv=none; b=LwYjx6VJ90+bf5O+9InkvRVCHECt2nfwwYACMlqc/ciwdhXrRwegynAFDxWOLZ5t5XH0iSnBRk5MCevU/IsE6KwztkuRwCtpE1iPC0xxCx6hyduOYwxRft58YT5qvEXUxEr8NZHH3FbM+hUbLDQPWzYEK3eBTwClmMc/9sN8PkE=
+	t=1764778202; cv=none; b=JcKWrSXQM8MR7SOim8c5v0DmtjJN/rKokP7WSIN+Sg8F/u/Mdm1Bj8EU60jSUjQ/S0B+xVetqhHI/Riy3kgjkiKTHQVb+Pz0/RGixGt2uDtLssREczLbGIZTACSNJNspvVFn+gj1eYkica7c9mi5NiG6QgA6Nb3cuCPOcze0dco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776873; c=relaxed/simple;
-	bh=vNAEegTBAQCzm9NNPvjhjnr4OpBHIlkIWV872rOqHzo=;
+	s=arc-20240116; t=1764778202; c=relaxed/simple;
+	bh=VAkVCtu9MgK2F3+JAiUyHbHf5OpnpQw6qcYy84EyrQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GV6XIudTn9ynjAN5wOOLaNawoTkWSiZzWfg3b+SSdu6BcFvlrMNYgnmEoS/5O0eSB4dhnwFRRcV4dlwAEJjCZp44HyfBw88l9bCS1MTj1lJyt8detfsbhvIfyIuHOQeMomfpHrjSCPlj8paS7ejt53r7COAwQQJH/lvSLJXySLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDGeOF+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE3FC4CEF5;
-	Wed,  3 Dec 2025 15:47:52 +0000 (UTC)
+	 MIME-Version; b=TvXXMXwwlc5TXTjq+IIVqkvzijitwG9I5BlrWCRBUznONL/yjVadMDwn3z8fTT0VGVCr++S1kgzueCV3Db98/jq6AdlTStKgzJ2hWmJWg60HP4ctO+7HUvyJ3kqs0mTgvY8v24EJN/QB04sLg5iRrBKICWkf2vbjKGfu2TuZc9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAMswoIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ABCC116B1;
+	Wed,  3 Dec 2025 16:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776872;
-	bh=vNAEegTBAQCzm9NNPvjhjnr4OpBHIlkIWV872rOqHzo=;
+	s=korg; t=1764778202;
+	bh=VAkVCtu9MgK2F3+JAiUyHbHf5OpnpQw6qcYy84EyrQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDGeOF+MVhFgPnVP/m4DmftYBSIPg9AQtZKCDMf4w7FCa/jG5pciy9C0YNpRFW8Rj
-	 mAj9s88FEQPo+CcZweLx0mC6gph4/qJ9pX1aS34y3GjciXOpjZvPg/gzrJEkC0V/6W
-	 m6n5N+KU0u3dtEn7o94W6BNtkiPC5u1iwS7mYBxw=
+	b=NAMswoIu4HBqV6EeVpHM+sRNjXWsFPn3YI0bRc2FZE1J33l1EvDHsqptOBmU/dfst
+	 YdOs+wIOEOtcSoK0h7ZzWuv85GTqoIKjHKhFU8Zc6wVuOr+JeaOFH4v77jP/T7FWKO
+	 eDU8ETlqeVHL6Ttk0AbCSNfCwbJ70ZlKs28Y37V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 013/146] platform/x86: intel: punit_ipc: fix memory corruption
+Subject: [PATCH 5.15 241/392] Bluetooth: 6lowpan: Dont hold spin lock over sleeping functions
 Date: Wed,  3 Dec 2025 16:26:31 +0100
-Message-ID: <20251203152346.952499091@linuxfoundation.org>
+Message-ID: <20251203152423.045144073@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,48 +58,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 9b9c0adbc3f8a524d291baccc9d0c04097fb4869 ]
+[ Upstream commit 98454bc812f3611551e4b1f81732da4aa7b9597e ]
 
-This passes the address of the pointer "&punit_ipcdev" when the intent
-was to pass the pointer itself "punit_ipcdev" (without the ampersand).
-This means that the:
+disconnect_all_peers() calls sleeping function (l2cap_chan_close) under
+spinlock.  Holding the lock doesn't actually do any good -- we work on a
+local copy of the list, and the lock doesn't protect against peer->chan
+having already been freed.
 
-	complete(&ipcdev->cmd_complete);
+Fix by taking refcounts of peer->chan instead.  Clean up the code and
+old comments a bit.
 
-in intel_punit_ioc() will write to a wrong memory address corrupting it.
+Take devices_lock instead of RCU, because the kfree_rcu();
+l2cap_chan_put(); construct in chan_close_cb() does not guarantee
+peer->chan is necessarily valid in RCU.
 
-Fixes: fdca4f16f57d ("platform:x86: add Intel P-Unit mailbox IPC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aSCmoBipSQ_tlD-D@stanley.mountain
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Also take l2cap_chan_lock() which is required for l2cap_chan_close().
+
+Log: (bluez 6lowpan-tester Client Connect - Disable)
+------
+BUG: sleeping function called from invalid context at kernel/locking/mutex.c:575
+...
+<TASK>
+...
+l2cap_send_disconn_req (net/bluetooth/l2cap_core.c:938 net/bluetooth/l2cap_core.c:1495)
+...
+? __pfx_l2cap_chan_close (net/bluetooth/l2cap_core.c:809)
+do_enable_set (net/bluetooth/6lowpan.c:1048 net/bluetooth/6lowpan.c:1068)
+------
+
+Fixes: 90305829635d ("Bluetooth: 6lowpan: Converting rwlocks to use RCU")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/punit_ipc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/6lowpan.c | 68 ++++++++++++++++++++++++++---------------
+ 1 file changed, 43 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/punit_ipc.c b/drivers/platform/x86/intel/punit_ipc.c
-index bafac8aa2baf6..14513010daadf 100644
---- a/drivers/platform/x86/intel/punit_ipc.c
-+++ b/drivers/platform/x86/intel/punit_ipc.c
-@@ -250,7 +250,7 @@ static int intel_punit_ipc_probe(struct platform_device *pdev)
- 	} else {
- 		ret = devm_request_irq(&pdev->dev, irq, intel_punit_ioc,
- 				       IRQF_NO_SUSPEND, "intel_punit_ipc",
--				       &punit_ipcdev);
-+				       punit_ipcdev);
- 		if (ret) {
- 			dev_err(&pdev->dev, "Failed to request irq: %d\n", irq);
- 			return ret;
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index db3e2d5290966..b70d3a38fdedc 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -52,6 +52,11 @@ static bool enable_6lowpan;
+ static struct l2cap_chan *listen_chan;
+ static DEFINE_MUTEX(set_lock);
+ 
++enum {
++	LOWPAN_PEER_CLOSING,
++	LOWPAN_PEER_MAXBITS
++};
++
+ struct lowpan_peer {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+@@ -60,6 +65,8 @@ struct lowpan_peer {
+ 	/* peer addresses in various formats */
+ 	unsigned char lladdr[ETH_ALEN];
+ 	struct in6_addr peer_addr;
++
++	DECLARE_BITMAP(flags, LOWPAN_PEER_MAXBITS);
+ };
+ 
+ struct lowpan_btle_dev {
+@@ -1012,41 +1019,52 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+ static void disconnect_all_peers(void)
+ {
+ 	struct lowpan_btle_dev *entry;
+-	struct lowpan_peer *peer, *tmp_peer, *new_peer;
+-	struct list_head peers;
+-
+-	INIT_LIST_HEAD(&peers);
++	struct lowpan_peer *peer;
++	int nchans;
+ 
+-	/* We make a separate list of peers as the close_cb() will
+-	 * modify the device peers list so it is better not to mess
+-	 * with the same list at the same time.
++	/* l2cap_chan_close() cannot be called from RCU, and lock ordering
++	 * chan->lock > devices_lock prevents taking write side lock, so copy
++	 * then close.
+ 	 */
+ 
+ 	rcu_read_lock();
++	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list)
++		list_for_each_entry_rcu(peer, &entry->peers, list)
++			clear_bit(LOWPAN_PEER_CLOSING, peer->flags);
++	rcu_read_unlock();
+ 
+-	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
+-		list_for_each_entry_rcu(peer, &entry->peers, list) {
+-			new_peer = kmalloc(sizeof(*new_peer), GFP_ATOMIC);
+-			if (!new_peer)
+-				break;
++	do {
++		struct l2cap_chan *chans[32];
++		int i;
+ 
+-			new_peer->chan = peer->chan;
+-			INIT_LIST_HEAD(&new_peer->list);
++		nchans = 0;
+ 
+-			list_add(&new_peer->list, &peers);
+-		}
+-	}
++		spin_lock(&devices_lock);
+ 
+-	rcu_read_unlock();
++		list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
++			list_for_each_entry_rcu(peer, &entry->peers, list) {
++				if (test_and_set_bit(LOWPAN_PEER_CLOSING,
++						     peer->flags))
++					continue;
+ 
+-	spin_lock(&devices_lock);
+-	list_for_each_entry_safe(peer, tmp_peer, &peers, list) {
+-		l2cap_chan_close(peer->chan, ENOENT);
++				l2cap_chan_hold(peer->chan);
++				chans[nchans++] = peer->chan;
+ 
+-		list_del_rcu(&peer->list);
+-		kfree_rcu(peer, rcu);
+-	}
+-	spin_unlock(&devices_lock);
++				if (nchans >= ARRAY_SIZE(chans))
++					goto done;
++			}
++		}
++
++done:
++		spin_unlock(&devices_lock);
++
++		for (i = 0; i < nchans; ++i) {
++			l2cap_chan_lock(chans[i]);
++			l2cap_chan_close(chans[i], ENOENT);
++			l2cap_chan_unlock(chans[i]);
++			l2cap_chan_put(chans[i]);
++		}
++	} while (nchans);
+ }
+ 
+ struct set_enable {
 -- 
 2.51.0
 
