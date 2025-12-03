@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49206C9FCF2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E4CCA0096
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06BA73001E19
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C250A301EFCB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B83A340D82;
-	Wed,  3 Dec 2025 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16ED935C184;
+	Wed,  3 Dec 2025 16:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fU1PYHMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKvg5IKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5893B313546;
-	Wed,  3 Dec 2025 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF135C185;
+	Wed,  3 Dec 2025 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778042; cv=none; b=BjhZgyhXALcf/Q1kd6X6KSjn+sVBSH2wWqH8NQeqhp3cY5aaN3ijRROZXaZDoSkSCsodD5+IRbSMn99fMeUyvDCT8tYWBRbBD5Fc1YXnyJZutlzlkN6Y8xvWOEx/FTlAKQgU/xAs8WVG4AQW2jDTt5snuFfAB+Wuk0oYON5Ru0I=
+	t=1764779827; cv=none; b=tj2PGfiFJSoT1S10I4VOsCXY9HBqpGoo4D84gA5UMecdeoKhkaKa1pG3q0C3O4VNK/FMEv9imgfrtZBtyh3Wyt9LP6ricYKFSfShfvblxilAruMMuTXO7AjWCO23xh2cw7NtSRZqQJU8lfZMvlJEQo63yURob6XxflL68gy/3uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778042; c=relaxed/simple;
-	bh=M556w7GiREA2SfvuQKhHu99pvVl7kpEgydm0dSOUpDw=;
+	s=arc-20240116; t=1764779827; c=relaxed/simple;
+	bh=thvuptWvUX3gWb3ZnoeXMGYeEIH2g+BROnm4F9ghNgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLYMiWD3M1hGOzPLDlWuuJxYNOU3RhMSv6XCfLM8RERCHcXej+5M6Kj1URKqjAFq2Sg1Cd6JdEhBqtAmHCSYHpaH199Z2f1SiG/Iyi0cHsRS4CTIKU3scxVUenNKWqTl5mAUU54zCJtklM15NErAkodGJdon+ke7UTgP/OT7BSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fU1PYHMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCE5C4CEF5;
-	Wed,  3 Dec 2025 16:07:21 +0000 (UTC)
+	 MIME-Version; b=WCdMtiHUjg9sSyM6jpdhY/K4k2jwHtpBu4sS/fhrFvf5zejY/ET52zp8W72qBfgGL6Y5QbOYwFd49QkS1MiL5duPFfpek5ojLeHiP1gH8oqAKuZJ+t26r245z8UhwdxiY2a9Cbx77M8bkdsUsgKXjSjl1kLTC30etnSl+zu0CrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKvg5IKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF65C4CEF5;
+	Wed,  3 Dec 2025 16:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778042;
-	bh=M556w7GiREA2SfvuQKhHu99pvVl7kpEgydm0dSOUpDw=;
+	s=korg; t=1764779827;
+	bh=thvuptWvUX3gWb3ZnoeXMGYeEIH2g+BROnm4F9ghNgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fU1PYHMIm9niCE7HFXO6CT9bzo34cMc+hZJk0H7PwmNYPA3uNEdUq9eqooN38dOnI
-	 Z0QCd4XI33WJxjQYL4iksvCkSOjfXxnyCSi+tmlgfEGbCjH1hoQZIY0G2HRNUHBW6E
-	 Ly5jmeRl9yYoyrEjx1Tapr+OUoXyGnvVF/aq14KU=
+	b=xKvg5IKMuPoibPaUPSxo6Z6Ll4Cka2Go71f7mM5gKzmllO9WZtBjFbQJKSpGc5UMT
+	 LbBSKglLurlKFTGP8w6xukK/bGYaC2QD4hpJdQAvMhw6L9a7CKiBwlyStUwfV278G/
+	 c2Vg9O7tzCJDsjq787r43ZvmK59kWY4HB2VgC7y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 225/392] tracing: Fix memory leaks in create_field_var()
+Subject: [PATCH 6.1 373/568] net/mlx5e: Fix potentially misleading debug message
 Date: Wed,  3 Dec 2025 16:26:15 +0100
-Message-ID: <20251203152422.464323212@linuxfoundation.org>
+Message-ID: <20251203152454.359373337@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
+[ Upstream commit 9fcc2b6c10523f7e75db6387946c86fcf19dc97e ]
 
-The function create_field_var() allocates memory for 'val' through
-create_hist_field() inside parse_atom(), and for 'var' through
-create_var(), which in turn allocates var->type and var->var.name
-internally. Simply calling kfree() to release these structures will
-result in memory leaks.
+Change the debug message to print the correct units instead of always
+assuming Gbps, as the value can be in either 100 Mbps or 1 Gbps units.
 
-Use destroy_hist_field() to properly free 'val', and explicitly release
-the memory of var->type and var->var.name before freeing 'var' itself.
-
-Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
-Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 5da8bc3effb6 ("net/mlx5e: DCBNL, Add debug messages log")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index e7799814a3c8a..8795913425416 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -2798,14 +2798,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
- 	var = create_var(hist_data, file, field_name, val->size, val->type);
- 	if (IS_ERR(var)) {
- 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
--		kfree(val);
-+		destroy_hist_field(val, 0);
- 		ret = PTR_ERR(var);
- 		goto err;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index ca096d8bcca60..29e633e6dd3f0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -590,6 +590,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	__u64 upper_limit_mbps;
+ 	__u64 upper_limit_gbps;
+ 	int i;
++	struct {
++		int scale;
++		const char *units_str;
++	} units[] = {
++		[MLX5_100_MBPS_UNIT] = {
++			.scale = 100,
++			.units_str = "Mbps",
++		},
++		[MLX5_GBPS_UNIT] = {
++			.scale = 1,
++			.units_str = "Gbps",
++		},
++	};
+ 
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
+@@ -620,8 +633,9 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
  	}
  
- 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
- 	if (!field_var) {
--		kfree(val);
-+		destroy_hist_field(val, 0);
-+		kfree_const(var->type);
-+		kfree(var->var.name);
- 		kfree(var);
- 		ret =  -ENOMEM;
- 		goto err;
+ 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
+-		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %d Gbps\n",
+-			   __func__, i, max_bw_value[i]);
++		netdev_dbg(netdev, "%s: tc_%d <=> max_bw %u %s\n", __func__, i,
++			   max_bw_value[i] * units[max_bw_unit[i]].scale,
++			   units[max_bw_unit[i]].units_str);
+ 	}
+ 
+ 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
 -- 
 2.51.0
 
