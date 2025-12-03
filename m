@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFDFCA0670
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D88C9F7A0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24CD432E7EEE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E3DE5300503D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6D8349AF2;
-	Wed,  3 Dec 2025 16:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0585530E836;
+	Wed,  3 Dec 2025 15:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFQqO1Co"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fe8m7Tnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E975534887C;
-	Wed,  3 Dec 2025 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DAA30C358;
+	Wed,  3 Dec 2025 15:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777647; cv=none; b=tnNA22aGUj4sEO9UkPzQUrZKH4Oqv3zGgqPArUV1Awlktb8VAFG8rR7rkHPz5X1ckXtIvrNz0lPG09VsES9QJoHLCEgGaSiyzTkfuuL44OJM6K6d/Uz4ss984NdNnFPQzXETO3RNGrtBH4uD2OeoLNYIHK+Z+XzwFYObrL9kap0=
+	t=1764775921; cv=none; b=qCX4L4wT9J7oD9Y+C8gZ/cv0tMmmt0bxVSPz1yaVnrzVmDmoHVrYJ4yshvOJVkYo0nkhlrNL2CuDkYo6mJhepEHrTMk+h6FkPIW9rTf0y9giQmi81OoFUnF1RbnW7+hg1Ah9wFv10cow/6XHJJ665jLV6RHdvpiZ5uha45sf/Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777647; c=relaxed/simple;
-	bh=SMP98IaZvIpRnhh0FvzX5N50VMAxFUN8RJZfx2Jyx10=;
+	s=arc-20240116; t=1764775921; c=relaxed/simple;
+	bh=QsSPnD3dw5KHWzTJZXyoqBTIzxLZNHMjCV1M1vEiXrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y21t/vN3EAAbjU5z0D4wOWLSOekDxWr1gmtiA3AIHmeFNXJGcPOtbbW2uKf8m88kIt3radr2D0j8NxX4h3Ggcoa0vZKf+Wmv76h5svMMoBpLnl9XnsQ6i/DIbnvPZC9oxYz8QqTvYFW/GcCZt6TyBfITR5z4Uoxl8FMRnzsRA20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFQqO1Co; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B22EC4CEF5;
-	Wed,  3 Dec 2025 16:00:46 +0000 (UTC)
+	 MIME-Version; b=XKpf5c0Bppp98uXKsJ1HueLPH6QsOYnQVygsL5djUAWPbYU7XoX7AdiVdWzG1hSYSmnOSMY2JcDFKnKTXEcWEvnoEpoxjD3AztVEnTAzuICMCZrWEGQ+EoT3Ff/BeJxjcOxx5FhFi/7ZCox07oVSTndPUfeaPpBMsIi+j+e+VS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fe8m7Tnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBC8C116B1;
+	Wed,  3 Dec 2025 15:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777646;
-	bh=SMP98IaZvIpRnhh0FvzX5N50VMAxFUN8RJZfx2Jyx10=;
+	s=korg; t=1764775921;
+	bh=QsSPnD3dw5KHWzTJZXyoqBTIzxLZNHMjCV1M1vEiXrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFQqO1Co/ymzMzlunH9rSjuj/WBawJbjL6ELMI7UR6y8tiDcwsyEpr1ak5NMakC7q
-	 29F+H24zOvscOKXyvVJcbveUn4JLH1AZOQcjcT7UtDzYKquiNU1pI+211p849WsdHK
-	 mosd5o8d6OEzm9Ch7C6bHGPJI1xdXhoPaySXrNcs=
+	b=Fe8m7TnfGh9eVtAWIt5kkzzZeEduYzkA8FtHwLe73arhdVP/Mbfh+opy3P0tniD7t
+	 TDT30HtnorahIktk3AAHSM6WJNF7Bi6UwU9QexnlVnKPmFHJlqmvjjejGQaUz1MNvR
+	 w18Zm9v3BW6/Tx9O/I43C/GGgZs4EWr4V5PCaX40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/392] mmc: host: renesas_sdhi: Fix the actual clock
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 005/300] NFSD: Fix crash in nfsd4_read_release()
 Date: Wed,  3 Dec 2025 16:23:29 +0100
-Message-ID: <20251203152416.285368150@linuxfoundation.org>
+Message-ID: <20251203152400.658146520@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 9c174e4dacee9fb2014a4ffc953d79a5707b77e4 ]
+commit abb1f08a2121dd270193746e43b2a9373db9ad84 upstream.
 
-Wrong actual clock reported, if the SD clock division ratio is other
-than 1:1(bits DIV[7:0] in SD_CLK_CTRL are set to 11111111).
+When tracing is enabled, the trace_nfsd_read_done trace point
+crashes during the pynfs read.testNoFh test.
 
-On high speed mode, cat /sys/kernel/debug/mmc1/ios
-Without the patch:
-clock:          50000000 Hz
-actual clock:   200000000 Hz
-
-After the fix:
-clock:          50000000 Hz
-actual clock:   50000000 Hz
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250629203859.170850-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 15a8b55dbb1b ("nfsd: call op_release, even when op_func returns an error")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 9ea9bc250543f..2b5dc342d30ab 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -193,7 +193,11 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
- 			clk &= ~0xff;
- 	}
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -945,10 +945,11 @@ nfsd4_read(struct svc_rqst *rqstp, struc
+ static void
+ nfsd4_read_release(union nfsd4_op_u *u)
+ {
+-	if (u->read.rd_nf)
++	if (u->read.rd_nf) {
++		trace_nfsd_read_done(u->read.rd_rqstp, u->read.rd_fhp,
++				     u->read.rd_offset, u->read.rd_length);
+ 		nfsd_file_put(u->read.rd_nf);
+-	trace_nfsd_read_done(u->read.rd_rqstp, u->read.rd_fhp,
+-			     u->read.rd_offset, u->read.rd_length);
++	}
+ }
  
--	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clk & CLK_CTL_DIV_MASK);
-+	clock = clk & CLK_CTL_DIV_MASK;
-+	if (clock != 0xff)
-+		host->mmc->actual_clock /= (1 << (ffs(clock) + 1));
-+
-+	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clock);
- 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
- 		usleep_range(10000, 11000);
- 
--- 
-2.51.0
-
+ static __be32
 
 
 
