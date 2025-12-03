@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873BBCA1522
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:17:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DEEC9F809
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5CB3058639
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DCA83007243
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2360C3612F2;
-	Wed,  3 Dec 2025 16:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCAF30C62A;
+	Wed,  3 Dec 2025 15:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GE3QSJxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+ZadINM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AF331B812;
-	Wed,  3 Dec 2025 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B7430DD1A;
+	Wed,  3 Dec 2025 15:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779313; cv=none; b=EBXoWCoCWUoiPn5zQWIOJGUpwXxMhIiOn4RDcxSll6hAC+mHiymLDmedQLjmAEL5tKQxuqgwi8BC1r7+ybDzXgJyHQeZrrJfCeXv8vELf+H80OmDsdizaBhuzndSKWCmNKfXXbpQgenDo5TOZF1PSkhvWgL+/NUiVNZoI6ETXqk=
+	t=1764775892; cv=none; b=cWyEUfkhz2dKrwEqt0W8i74CeniBqrQY3RVnOjTj3080JY/dbD1O3a3u/VsDJ9ZVU6j9Je9aeHW9r3eesaCbR8cUw/gokn1RU6Mdu9lSHC2wR7XR7/K6uLc6er2VIQLldCVCO2Tyy6yiKdHDsItGXwRx1rE8C6EV8j6UTIsvae0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779313; c=relaxed/simple;
-	bh=caTy8JJG9m3EX3WgoLvtgjVD4FRl5wNCd96m9HvUutg=;
+	s=arc-20240116; t=1764775892; c=relaxed/simple;
+	bh=kpYJKbOGDw/3fZBJWvWtlwUaCmiKzNURU/Dm21o7P14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c++DA66/M6Qvcpy8RVHfaQ/b/HrKLmMdeF/7IEg/NQWwSUo53pil41JQ29jdKC4MhXDHXjVrBSiJqWvi/KnNCNWZBqe7A2HGrdlxnRsprPkI9QjkAgTVNwCdZ5yN6q2G3yZ/iT4Fcdv/CbChV7hEjK7kDuoL88rH/1P8x+F4aMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GE3QSJxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC632C4CEF5;
-	Wed,  3 Dec 2025 16:28:32 +0000 (UTC)
+	 MIME-Version; b=GP8pReyugdtCDKxAC5HFCtIb12CH9NAzdD4TyffX3vSYUtD0loVarUHpiHgh28/bR7Q/PEN9RJaQTnh0nNtAMxZp27T8XJhS6l6YTxmRQIozs+3XdZP3Y68nK8LJWTM66aI98tTebmGilihHfmSGpMF09PnyId2ofEt2j02tNDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+ZadINM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AE2C4CEF5;
+	Wed,  3 Dec 2025 15:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779313;
-	bh=caTy8JJG9m3EX3WgoLvtgjVD4FRl5wNCd96m9HvUutg=;
+	s=korg; t=1764775892;
+	bh=kpYJKbOGDw/3fZBJWvWtlwUaCmiKzNURU/Dm21o7P14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GE3QSJxYPY12n5HO515EAmVlZcYasBP0+jTrgbY8k9BPmhqAFheZGbSoBqqIujdvE
-	 HBYhFDlnn2xCmssKEocMFjUF6M1r2FO8q+Jv1Hw21G/4shqvPOvOVr0tSYmTqWH/Nm
-	 3dwSw3Q0uWLkmL4X3BESw/4mHFZBPuT0dnlfshSA=
+	b=c+ZadINMErJI+qWz+7jQPFpUH1QibbXufgqJv5DHFoOeZciwwxgSszLw6Oql2zoyR
+	 2yzOhtsTu6QJNhx04GpZL3cPTdH4IEMLsKU1iskPw32jIbp8Kxow+55lVTxLSntO2D
+	 m09i+q69z+TRBQIyUy4FhZcMQSzz6Gz1u65799YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 221/568] udp_tunnel: use netdev_warn() instead of netdev_WARN()
+Subject: [PATCH 5.10 019/300] drm/etnaviv: fix flush sequence logic
 Date: Wed,  3 Dec 2025 16:23:43 +0100
-Message-ID: <20251203152448.816637230@linuxfoundation.org>
+Message-ID: <20251203152401.169744933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
+[ Upstream commit a042beac6e6f8ac1e923784cfff98b47cbabb185 ]
 
-netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
-file and line information. In this case, udp_tunnel_nic_register()
-returning an error is just a failed operation, not a kernel bug.
+The current logic uses the flush sequence from the current address
+space. This is harmless when deducing the flush requirements for the
+current submit, as either the incoming address space is the same one
+as the currently active one or we switch context, in which case the
+flush is unconditional.
 
-udp_tunnel_nic_register() can fail due to a memory allocation
-failure (kzalloc() or udp_tunnel_nic_alloc()).
-This is a normal runtime error and not a kernel bug.
+However, this sequence is also stored as the current flush sequence
+of the GPU. If we switch context the stored flush sequence will no
+longer belong to the currently active address space. This incoherency
+can then cause missed flushes, resulting in translation errors.
 
-Replace netdev_WARN() with netdev_warn() accordingly.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20251021093723.3887980-1-l.stach@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_tunnel_nic.c | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_buffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index bc3a043a5d5c7..72b0210cdead7 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -897,7 +897,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
- 
- 		err = udp_tunnel_nic_register(dev);
- 		if (err)
--			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-+			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
- 		return notifier_from_errno(err);
- 	}
- 	/* All other events will need the udp_tunnel_nic state */
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+index 982174af74b1e..7d897aafb2a6a 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+@@ -346,7 +346,7 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
+ 	u32 link_target, link_dwords;
+ 	bool switch_context = gpu->exec_state != exec_state;
+ 	bool switch_mmu_context = gpu->mmu_context != mmu_context;
+-	unsigned int new_flush_seq = READ_ONCE(gpu->mmu_context->flush_seq);
++	unsigned int new_flush_seq = READ_ONCE(mmu_context->flush_seq);
+ 	bool need_flush = switch_mmu_context || gpu->flush_seq != new_flush_seq;
+ 	bool has_blt = !!(gpu->identity.minor_features5 &
+ 			  chipMinorFeatures5_BLT_ENGINE);
 -- 
 2.51.0
 
