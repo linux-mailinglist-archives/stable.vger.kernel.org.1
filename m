@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A430FCA109E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915C9C9FFA3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D6CC302C8E5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1ED2330164D9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F80734D4FB;
-	Wed,  3 Dec 2025 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBAB3A1CF7;
+	Wed,  3 Dec 2025 16:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlLmAWCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgOp/rY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB7834D4F6;
-	Wed,  3 Dec 2025 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048DE3A1CF6;
+	Wed,  3 Dec 2025 16:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777767; cv=none; b=sP+qDqsF13uArKEEyEW7/WmN3oN1jv0+/a925sjrWBTG6/KUJB5Nkj0932wlBeoLGv9TKJP/uVUQwBxjWQZyOlgjPNPUkDVWqqul8l8OB6XKeSWfanV5kQHnatsNWJwmbQFMys2XIq13BoIfrOUC9JB49xNbjm5AyQYjn4/UpRs=
+	t=1764779543; cv=none; b=goJIdidRiQu8YOxAnMKAP6jjBXvNc1h8jNNR/sXqmFR7S6TWIkIy8J0lD1LFBv6yZPYb+KwoQP8DZr7PvDgWb36Y+C0iichFluoZxKdqcSAnPQwuBKWn+PUctpUTqvJExHEivtma3DB6dZV9Z1bOF4EQQWq/rURvjXbrMYPef3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777767; c=relaxed/simple;
-	bh=4XU8k8w7sXR8PkNUdNUh/KigMnWc5pekInK4IR9aKTQ=;
+	s=arc-20240116; t=1764779543; c=relaxed/simple;
+	bh=XIODMjP1vFV8UTqjULJLtwfwM+VLhAMAhSNT5l08QR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piZCxIvAYUnMapJGTgC17guKcHD5NFH73Iqx6Du1kEIgS2n7FK7S+Jl2f4GPio+LxAVM4w13S11tK830PmZUwr76IlV+m5CeSf3XEp1bapZwjFhAp58FgMrUTItV7gNZqXvqPeN1nSKLXJtOF35ZoAJGLBC61xNURQnouYbX8r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlLmAWCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DC3C4CEF5;
-	Wed,  3 Dec 2025 16:02:46 +0000 (UTC)
+	 MIME-Version; b=gdpDW+dstbpd4B7Ygr9OrKFhNFWeq75ZkZkrt8pXf/AZDoHX6nnI64rOkDo5WADmyA82XFA7w6y1tgrtoaxPJ9kzns1R7G6J00k9q1Ojpk9JDBrEQMIL24iId4YYyC2gsAKgNUaZXg/R38HVN9KNnK1wPQr1z+4tRilCXvbF72Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgOp/rY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6814FC4CEF5;
+	Wed,  3 Dec 2025 16:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777767;
-	bh=4XU8k8w7sXR8PkNUdNUh/KigMnWc5pekInK4IR9aKTQ=;
+	s=korg; t=1764779542;
+	bh=XIODMjP1vFV8UTqjULJLtwfwM+VLhAMAhSNT5l08QR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlLmAWCsdBL3CmuYgSuQdxtZnijqtNuixAK/7C2WBc4YvCMcswZ9I7w3yXt07jJut
-	 Tt/gsBBVy1+3WHGlgRPS/osXd/OSkBSRXIkc1en+zbknNO3ROZpR5GWF097KG6HC9C
-	 cMiBm8BSThTzm+JbbZhtucAEBgm7/otw4hKjUO5c=
+	b=lgOp/rY7wLkbKjntZaGJMB7cnoqrU+KVB0SNypKe8ytUQQDdepQ6ligACJKAFYuDr
+	 dSrqR+OQEX5NmDYPCJcIHvLcMONzA2vYBKEWSRbSEwK0zyENGHl8UAmv4sJJb5w64p
+	 ugzpGyb5YqNowoUjvcFrVMFVXD6UfkbkyS7Xzx2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/392] ntfs3: pretend $Extend records as regular files
+Subject: [PATCH 6.1 289/568] NTB: epf: Allow arbitrary BAR mapping
 Date: Wed,  3 Dec 2025 16:24:51 +0100
-Message-ID: <20251203152419.276001394@linuxfoundation.org>
+Message-ID: <20251203152451.289406855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 4e8011ffec79717e5fdac43a7e79faf811a384b7 ]
+[ Upstream commit 5ad865862a0fd349163243e1834ed98ba9b81905 ]
 
-Since commit af153bb63a33 ("vfs: catch invalid modes in may_open()")
-requires any inode be one of S_IFDIR/S_IFLNK/S_IFREG/S_IFCHR/S_IFBLK/
-S_IFIFO/S_IFSOCK type, use S_IFREG for $Extend records.
+The NTB epf host driver assumes the BAR number associated with a memory
+window is just incremented from the BAR number associated with MW1. This
+seems to have been enough so far but this is not really how the endpoint
+side work and the two could easily become mis-aligned.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+ntb_epf_mw_to_bar() even assumes that the BAR number is the memory window
+index + 2, which means the function only returns a proper result if BAR_2
+is associated with MW1.
+
+Instead, fully describe and allow arbitrary NTB BAR mapping.
+
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ntb/hw/epf/ntb_hw_epf.c | 103 ++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 50 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index edd7c89ba1a11..019a98e300dcf 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -456,6 +456,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		   fname->home.seq == cpu_to_le16(MFT_REC_EXTEND)) {
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
-+		mode = S_IFREG;
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/drivers/ntb/hw/epf/ntb_hw_epf.c b/drivers/ntb/hw/epf/ntb_hw_epf.c
+index 3ece49cb18ffa..9a0745664dcc7 100644
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -49,6 +49,7 @@
+ #define NTB_EPF_COMMAND_TIMEOUT	1000 /* 1 Sec */
+ 
+ enum pci_barno {
++	NO_BAR = -1,
+ 	BAR_0,
+ 	BAR_1,
+ 	BAR_2,
+@@ -57,16 +58,26 @@ enum pci_barno {
+ 	BAR_5,
+ };
+ 
++enum epf_ntb_bar {
++	BAR_CONFIG,
++	BAR_PEER_SPAD,
++	BAR_DB,
++	BAR_MW1,
++	BAR_MW2,
++	BAR_MW3,
++	BAR_MW4,
++	NTB_BAR_NUM,
++};
++
++#define NTB_EPF_MAX_MW_COUNT	(NTB_BAR_NUM - BAR_MW1)
++
+ struct ntb_epf_dev {
+ 	struct ntb_dev ntb;
+ 	struct device *dev;
+ 	/* Mutex to protect providing commands to NTB EPF */
+ 	struct mutex cmd_lock;
+ 
+-	enum pci_barno ctrl_reg_bar;
+-	enum pci_barno peer_spad_reg_bar;
+-	enum pci_barno db_reg_bar;
+-	enum pci_barno mw_bar;
++	const enum pci_barno *barno_map;
+ 
+ 	unsigned int mw_count;
+ 	unsigned int spad_count;
+@@ -85,17 +96,6 @@ struct ntb_epf_dev {
+ 
+ #define ntb_ndev(__ntb) container_of(__ntb, struct ntb_epf_dev, ntb)
+ 
+-struct ntb_epf_data {
+-	/* BAR that contains both control region and self spad region */
+-	enum pci_barno ctrl_reg_bar;
+-	/* BAR that contains peer spad region */
+-	enum pci_barno peer_spad_reg_bar;
+-	/* BAR that contains Doorbell region and Memory window '1' */
+-	enum pci_barno db_reg_bar;
+-	/* BAR that contains memory windows*/
+-	enum pci_barno mw_bar;
+-};
+-
+ static int ntb_epf_send_command(struct ntb_epf_dev *ndev, u32 command,
+ 				u32 argument)
+ {
+@@ -144,7 +144,7 @@ static int ntb_epf_mw_to_bar(struct ntb_epf_dev *ndev, int idx)
+ 		return -EINVAL;
+ 	}
+ 
+-	return idx + 2;
++	return ndev->barno_map[BAR_MW1 + idx];
+ }
+ 
+ static int ntb_epf_mw_count(struct ntb_dev *ntb, int pidx)
+@@ -413,7 +413,9 @@ static int ntb_epf_mw_set_trans(struct ntb_dev *ntb, int pidx, int idx,
+ 		return -EINVAL;
+ 	}
+ 
+-	bar = idx + ndev->mw_bar;
++	bar = ntb_epf_mw_to_bar(ndev, idx);
++	if (bar < 0)
++		return bar;
+ 
+ 	mw_size = pci_resource_len(ntb->pdev, bar);
+ 
+@@ -455,7 +457,9 @@ static int ntb_epf_peer_mw_get_addr(struct ntb_dev *ntb, int idx,
+ 	if (idx == 0)
+ 		offset = readl(ndev->ctrl_reg + NTB_EPF_MW1_OFFSET);
+ 
+-	bar = idx + ndev->mw_bar;
++	bar = ntb_epf_mw_to_bar(ndev, idx);
++	if (bar < 0)
++		return bar;
+ 
+ 	if (base)
+ 		*base = pci_resource_start(ndev->ntb.pdev, bar) + offset;
+@@ -560,6 +564,11 @@ static int ntb_epf_init_dev(struct ntb_epf_dev *ndev)
+ 	ndev->mw_count = readl(ndev->ctrl_reg + NTB_EPF_MW_COUNT);
+ 	ndev->spad_count = readl(ndev->ctrl_reg + NTB_EPF_SPAD_COUNT);
+ 
++	if (ndev->mw_count > NTB_EPF_MAX_MW_COUNT) {
++		dev_err(dev, "Unsupported MW count: %u\n", ndev->mw_count);
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -596,14 +605,15 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
+ 		dev_warn(&pdev->dev, "Cannot DMA highmem\n");
+ 	}
+ 
+-	ndev->ctrl_reg = pci_iomap(pdev, ndev->ctrl_reg_bar, 0);
++	ndev->ctrl_reg = pci_iomap(pdev, ndev->barno_map[BAR_CONFIG], 0);
+ 	if (!ndev->ctrl_reg) {
+ 		ret = -EIO;
+ 		goto err_dma_mask;
+ 	}
+ 
+-	if (ndev->peer_spad_reg_bar) {
+-		ndev->peer_spad_reg = pci_iomap(pdev, ndev->peer_spad_reg_bar, 0);
++	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG]) {
++		ndev->peer_spad_reg = pci_iomap(pdev,
++						ndev->barno_map[BAR_PEER_SPAD], 0);
+ 		if (!ndev->peer_spad_reg) {
+ 			ret = -EIO;
+ 			goto err_dma_mask;
+@@ -614,7 +624,7 @@ static int ntb_epf_init_pci(struct ntb_epf_dev *ndev,
+ 		ndev->peer_spad_reg = ndev->ctrl_reg + spad_off  + spad_sz;
+ 	}
+ 
+-	ndev->db_reg = pci_iomap(pdev, ndev->db_reg_bar, 0);
++	ndev->db_reg = pci_iomap(pdev, ndev->barno_map[BAR_DB], 0);
+ 	if (!ndev->db_reg) {
+ 		ret = -EIO;
+ 		goto err_dma_mask;
+@@ -663,12 +673,7 @@ static void ntb_epf_cleanup_isr(struct ntb_epf_dev *ndev)
+ static int ntb_epf_pci_probe(struct pci_dev *pdev,
+ 			     const struct pci_device_id *id)
+ {
+-	enum pci_barno peer_spad_reg_bar = BAR_1;
+-	enum pci_barno ctrl_reg_bar = BAR_0;
+-	enum pci_barno db_reg_bar = BAR_2;
+-	enum pci_barno mw_bar = BAR_2;
+ 	struct device *dev = &pdev->dev;
+-	struct ntb_epf_data *data;
+ 	struct ntb_epf_dev *ndev;
+ 	int ret;
+ 
+@@ -679,18 +684,10 @@ static int ntb_epf_pci_probe(struct pci_dev *pdev,
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
+-	data = (struct ntb_epf_data *)id->driver_data;
+-	if (data) {
+-		peer_spad_reg_bar = data->peer_spad_reg_bar;
+-		ctrl_reg_bar = data->ctrl_reg_bar;
+-		db_reg_bar = data->db_reg_bar;
+-		mw_bar = data->mw_bar;
+-	}
++	ndev->barno_map = (const enum pci_barno *)id->driver_data;
++	if (!ndev->barno_map)
++		return -EINVAL;
+ 
+-	ndev->peer_spad_reg_bar = peer_spad_reg_bar;
+-	ndev->ctrl_reg_bar = ctrl_reg_bar;
+-	ndev->db_reg_bar = db_reg_bar;
+-	ndev->mw_bar = mw_bar;
+ 	ndev->dev = dev;
+ 
+ 	ntb_epf_init_struct(ndev, pdev);
+@@ -734,30 +731,36 @@ static void ntb_epf_pci_remove(struct pci_dev *pdev)
+ 	ntb_epf_deinit_pci(ndev);
+ }
+ 
+-static const struct ntb_epf_data j721e_data = {
+-	.ctrl_reg_bar = BAR_0,
+-	.peer_spad_reg_bar = BAR_1,
+-	.db_reg_bar = BAR_2,
+-	.mw_bar = BAR_2,
++static const enum pci_barno j721e_map[NTB_BAR_NUM] = {
++	[BAR_CONFIG]	= BAR_0,
++	[BAR_PEER_SPAD]	= BAR_1,
++	[BAR_DB]	= BAR_2,
++	[BAR_MW1]	= BAR_2,
++	[BAR_MW2]	= BAR_3,
++	[BAR_MW3]	= BAR_4,
++	[BAR_MW4]	= BAR_5
+ };
+ 
+-static const struct ntb_epf_data mx8_data = {
+-	.ctrl_reg_bar = BAR_0,
+-	.peer_spad_reg_bar = BAR_0,
+-	.db_reg_bar = BAR_2,
+-	.mw_bar = BAR_4,
++static const enum pci_barno mx8_map[NTB_BAR_NUM] = {
++	[BAR_CONFIG]	= BAR_0,
++	[BAR_PEER_SPAD]	= BAR_0,
++	[BAR_DB]	= BAR_2,
++	[BAR_MW1]	= BAR_4,
++	[BAR_MW2]	= BAR_5,
++	[BAR_MW3]	= NO_BAR,
++	[BAR_MW4]	= NO_BAR
+ };
+ 
+ static const struct pci_device_id ntb_epf_pci_tbl[] = {
+ 	{
+ 		PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
+-		.driver_data = (kernel_ulong_t)&j721e_data,
++		.driver_data = (kernel_ulong_t)j721e_map,
+ 	},
+ 	{
+ 		PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x0809),
+ 		.class = PCI_CLASS_MEMORY_RAM << 8, .class_mask = 0xffff00,
+-		.driver_data = (kernel_ulong_t)&mx8_data,
++		.driver_data = (kernel_ulong_t)mx8_map,
+ 	},
+ 	{ },
+ };
 -- 
 2.51.0
 
