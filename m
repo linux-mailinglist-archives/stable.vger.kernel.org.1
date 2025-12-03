@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA31C9F9B3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737A4C9FFE2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C356330057F0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E4C30300093A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2E230AACE;
-	Wed,  3 Dec 2025 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF07D35C185;
+	Wed,  3 Dec 2025 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umOxh4TM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvfrbTOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4998B30B520;
-	Wed,  3 Dec 2025 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD0835BDDB;
+	Wed,  3 Dec 2025 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776363; cv=none; b=YqOTEG1Z0S7DEXX5fgKnWxtzm6DH7572kNnIvhVBr5G4E9J94sk/QHu8i1kAiMpuWX/1XKxsC+GY0BDGaIqHte70ZqWhiFaHYijz7lQr9dPKkirZ+YrSg/aryDwse1lsbyvKPFnxXDSu9DpD/LuR1d263CIhccjQHDzG1n+/sUk=
+	t=1764779789; cv=none; b=oVlivN2Ab13zJ3ZEEzrk0R7AC9Ufk0c28agQldrNeM2EL95cyt8xsbS/jYqMSXC3Ptr5fQE2ofv6QEWTZD+eS81QS5qbTqOwbZtj7zpvIPjHFE8Pzj5kSM9c4tJzx7cu7felEsSU602bepBidWWY7kkV3bhnBvl6Q20f/GzUQdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776363; c=relaxed/simple;
-	bh=iqAG+2nCmBF5sjEVqfCwrm8iKzc7G84M3DP217tDqAI=;
+	s=arc-20240116; t=1764779789; c=relaxed/simple;
+	bh=fdXrAGYXAL102LShEElXWEg2mUnxiOp4cyDBmxFlEL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPy1G9G9pQUNHfS46O1jOBymt08efWzK47lf5tV6D24RsnslCuNh4VAZdKlbUsAtyQyL9RqM0zem/yglIoXXklvFlSvBHf6BFSixB/f+5q2tMb49H+ScACY6jAAnC8eKEs80xKoYTxpbwzV7aCpEdgkg1QYNym2XeTvpN2D24pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umOxh4TM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23D6C116B1;
-	Wed,  3 Dec 2025 15:39:22 +0000 (UTC)
+	 MIME-Version; b=Nga30fO6HqOKgMt8xKuy6lZtg5yI7+VcG4VDBXwy6zNAiuFICZJFZR28MB+CvYDW+0AqOd+xBT0KkI1znepJi7L8bJRGqIbjhvMzXcpfbEJBOfNz2q9GLN3swYVVjdXfAASgiLXYz82R2+bth50lDnKl6CiActujl1r+jsyPcdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvfrbTOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD765C4CEF5;
+	Wed,  3 Dec 2025 16:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776363;
-	bh=iqAG+2nCmBF5sjEVqfCwrm8iKzc7G84M3DP217tDqAI=;
+	s=korg; t=1764779789;
+	bh=fdXrAGYXAL102LShEElXWEg2mUnxiOp4cyDBmxFlEL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umOxh4TMRAtXl9keZmi8REmOE91vXTkY3E0teaBAvbuM9BKOug24nwlcRSFJzxi0H
-	 kMlyWYhqstVk3Xg3zpwgfRU6mJ9iEkY2dncgEG7j0tGuV1ycIo9EI9Jbkq86yPw66a
-	 kklu52+JvJXe71wg3UoC/FLJFqMsE7udfd1safUo=
+	b=SvfrbTOGlGQ48VjuX8o82Tri0bQyN8zYspNF7ZVtVMfRbCzurE/XHwc/o00yGYdF7
+	 Xc9PSGUxqmmvlkMbm4qLQDRyxABv7uYClmH7FjUYZ6Ogoon+4Y/P+TkhqJJg+BGEv0
+	 ddoo9FE+Nx+rthGHzZTmcV/D0gYwSE2GlFKlFYIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/300] net: dsa: b53: fix resetting speed and pause on forced link
+Subject: [PATCH 6.1 362/568] net/sched: act_connmark: transition to percpu stats and rcu
 Date: Wed,  3 Dec 2025 16:26:04 +0100
-Message-ID: <20251203152406.545234218@linuxfoundation.org>
+Message-ID: <20251203152453.959720194@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,279 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
+[ Upstream commit 288864effe33885988d53faf7830b35cb9a84c7a ]
 
-There is no guarantee that the port state override registers have their
-default values, as not all switches support being reset via register or
-have a reset GPIO.
+The tc action act_connmark was using shared stats and taking the per
+action lock in the datapath. Improve it by using percpu stats and rcu.
 
-So when forcing port config, we need to make sure to clear all fields,
-which we currently do not do for the speed and flow control
-configuration. This can cause flow control stay enabled, or in the case
-of speed becoming an illegal value, e.g. configured for 1G (0x2), then
-setting 100M (0x1), results in 0x3 which is invalid.
+perf before:
+- 13.55% tcf_connmark_act
+   - 81.18% _raw_spin_lock
+       80.46% native_queued_spin_lock_slowpath
 
-For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
-supported chips, as the bit can have different meanings on other chips,
-e.g. for BCM5389 this controls scanning PHYs for link/speed
-configuration.
+perf after:
+- 2.85% tcf_connmark_act
 
-Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+tdc results:
+1..15
+ok 1 2002 - Add valid connmark action with defaults
+ok 2 56a5 - Add valid connmark action with control pass
+ok 3 7c66 - Add valid connmark action with control drop
+ok 4 a913 - Add valid connmark action with control pipe
+ok 5 bdd8 - Add valid connmark action with control reclassify
+ok 6 b8be - Add valid connmark action with control continue
+ok 7 d8a6 - Add valid connmark action with control jump
+ok 8 aae8 - Add valid connmark action with zone argument
+ok 9 2f0b - Add valid connmark action with invalid zone argument
+ok 10 9305 - Add connmark action with unsupported argument
+ok 11 71ca - Add valid connmark action and replace it
+ok 12 5f8f - Add valid connmark action with cookie
+ok 13 c506 - Replace connmark with invalid goto chain control
+ok 14 6571 - Delete connmark action with valid index
+ok 15 3426 - Delete connmark action with invalid index
+
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/net/tc_act/tc_connmark.h |   9 ++-
+ net/sched/act_connmark.c         | 107 ++++++++++++++++++++-----------
+ 2 files changed, 75 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 361f9be65386e..704ec51a1500e 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1151,6 +1151,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	else
- 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
+diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
+index 1f4cb477bb5d6..e8dd77a967480 100644
+--- a/include/net/tc_act/tc_connmark.h
++++ b/include/net/tc_act/tc_connmark.h
+@@ -4,10 +4,15 @@
  
-+	reg &= ~(0x3 << GMII_PO_SPEED_S);
-+	if (is5301x(dev) || is58xx(dev))
-+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
+ #include <net/act_api.h>
+ 
+-struct tcf_connmark_info {
+-	struct tc_action common;
++struct tcf_connmark_parms {
+ 	struct net *net;
+ 	u16 zone;
++	struct rcu_head rcu;
++};
 +
- 	switch (speed) {
- 	case 2000:
- 		reg |= PORT_OVERRIDE_SPEED_2000M;
-@@ -1169,6 +1173,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
++struct tcf_connmark_info {
++	struct tc_action common;
++	struct tcf_connmark_parms __rcu *parms;
+ };
+ 
+ #define to_connmark(a) ((struct tcf_connmark_info *)a)
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index d41002e4613ff..418d60435b9d4 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -34,13 +34,15 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
+ 	struct nf_conntrack_tuple tuple;
+ 	enum ip_conntrack_info ctinfo;
+ 	struct tcf_connmark_info *ca = to_connmark(a);
++	struct tcf_connmark_parms *parms;
+ 	struct nf_conntrack_zone zone;
+ 	struct nf_conn *c;
+ 	int proto;
+ 
+-	spin_lock(&ca->tcf_lock);
+ 	tcf_lastuse_update(&ca->tcf_tm);
+-	bstats_update(&ca->tcf_bstats, skb);
++	tcf_action_update_bstats(&ca->common, skb);
++
++	parms = rcu_dereference_bh(ca->parms);
+ 
+ 	switch (skb_protocol(skb, true)) {
+ 	case htons(ETH_P_IP):
+@@ -62,31 +64,29 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
+ 	c = nf_ct_get(skb, &ctinfo);
+ 	if (c) {
+ 		skb->mark = READ_ONCE(c->mark);
+-		/* using overlimits stats to count how many packets marked */
+-		ca->tcf_qstats.overlimits++;
+-		goto out;
++		goto count;
  	}
  
-+	if (is5325(dev))
-+		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
-+	else
-+		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
+-	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb),
+-			       proto, ca->net, &tuple))
++	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb), proto, parms->net,
++			       &tuple))
+ 		goto out;
+ 
+-	zone.id = ca->zone;
++	zone.id = parms->zone;
+ 	zone.dir = NF_CT_DEFAULT_ZONE_DIR;
+ 
+-	thash = nf_conntrack_find_get(ca->net, &zone, &tuple);
++	thash = nf_conntrack_find_get(parms->net, &zone, &tuple);
+ 	if (!thash)
+ 		goto out;
+ 
+ 	c = nf_ct_tuplehash_to_ctrack(thash);
+-	/* using overlimits stats to count how many packets marked */
+-	ca->tcf_qstats.overlimits++;
+ 	skb->mark = READ_ONCE(c->mark);
+ 	nf_ct_put(c);
+ 
++count:
++	/* using overlimits stats to count how many packets marked */
++	tcf_action_inc_overlimit_qstats(&ca->common);
+ out:
+-	spin_unlock(&ca->tcf_lock);
+-	return ca->tcf_action;
++	return READ_ONCE(ca->tcf_action);
+ }
+ 
+ static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
+@@ -99,6 +99,7 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 			     struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_net *tn = net_generic(net, act_connmark_ops.net_id);
++	struct tcf_connmark_parms *nparms, *oparms;
+ 	struct nlattr *tb[TCA_CONNMARK_MAX + 1];
+ 	bool bind = flags & TCA_ACT_FLAGS_BIND;
+ 	struct tcf_chain *goto_ch = NULL;
+@@ -118,52 +119,66 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 	if (!tb[TCA_CONNMARK_PARMS])
+ 		return -EINVAL;
+ 
++	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
++	if (!nparms)
++		return -ENOMEM;
 +
- 	if (rx_pause) {
- 		if (is5325(dev))
- 			reg |= PORT_OVERRIDE_LP_FLOW_25;
+ 	parm = nla_data(tb[TCA_CONNMARK_PARMS]);
+ 	index = parm->index;
+ 	ret = tcf_idr_check_alloc(tn, &index, a, bind);
+ 	if (!ret) {
+-		ret = tcf_idr_create(tn, index, est, a,
+-				     &act_connmark_ops, bind, false, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_connmark_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+-			return ret;
++			err = ret;
++			goto out_free;
+ 		}
+ 
+ 		ci = to_connmark(*a);
+-		err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch,
+-					       extack);
+-		if (err < 0)
+-			goto release_idr;
+-		tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+-		ci->net = net;
+-		ci->zone = parm->zone;
++
++		nparms->net = net;
++		nparms->zone = parm->zone;
+ 
+ 		ret = ACT_P_CREATED;
+ 	} else if (ret > 0) {
+ 		ci = to_connmark(*a);
+-		if (bind)
+-			return 0;
+-		if (!(flags & TCA_ACT_FLAGS_REPLACE)) {
+-			tcf_idr_release(*a, bind);
+-			return -EEXIST;
++		if (bind) {
++			err = 0;
++			goto out_free;
+ 		}
+-		err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch,
+-					       extack);
+-		if (err < 0)
++		if (!(flags & TCA_ACT_FLAGS_REPLACE)) {
++			err = -EEXIST;
+ 			goto release_idr;
+-		/* replacing action and zone */
+-		spin_lock_bh(&ci->tcf_lock);
+-		goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+-		ci->zone = parm->zone;
+-		spin_unlock_bh(&ci->tcf_lock);
+-		if (goto_ch)
+-			tcf_chain_put_by_act(goto_ch);
++		}
++
++		nparms->net = rtnl_dereference(ci->parms)->net;
++		nparms->zone = parm->zone;
++
+ 		ret = 0;
+ 	}
+ 
++	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
++	if (err < 0)
++		goto release_idr;
++
++	spin_lock_bh(&ci->tcf_lock);
++	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
++	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
++	spin_unlock_bh(&ci->tcf_lock);
++
++	if (goto_ch)
++		tcf_chain_put_by_act(goto_ch);
++
++	if (oparms)
++		kfree_rcu(oparms, rcu);
++
+ 	return ret;
++
+ release_idr:
+ 	tcf_idr_release(*a, bind);
++out_free:
++	kfree(nparms);
+ 	return err;
+ }
+ 
+@@ -177,11 +192,14 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+ 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+ 	};
++	struct tcf_connmark_parms *parms;
+ 	struct tcf_t t;
+ 
+ 	spin_lock_bh(&ci->tcf_lock);
++	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
++
+ 	opt.action = ci->tcf_action;
+-	opt.zone = ci->zone;
++	opt.zone = parms->zone;
+ 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+ 
+@@ -199,6 +217,16 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	return -1;
+ }
+ 
++static void tcf_connmark_cleanup(struct tc_action *a)
++{
++	struct tcf_connmark_info *ci = to_connmark(a);
++	struct tcf_connmark_parms *parms;
++
++	parms = rcu_dereference_protected(ci->parms, 1);
++	if (parms)
++		kfree_rcu(parms, rcu);
++}
++
+ static struct tc_action_ops act_connmark_ops = {
+ 	.kind		=	"connmark",
+ 	.id		=	TCA_ID_CONNMARK,
+@@ -206,6 +234,7 @@ static struct tc_action_ops act_connmark_ops = {
+ 	.act		=	tcf_connmark_act,
+ 	.dump		=	tcf_connmark_dump,
+ 	.init		=	tcf_connmark_init,
++	.cleanup	=	tcf_connmark_cleanup,
+ 	.size		=	sizeof(struct tcf_connmark_info),
+ };
+ 
 -- 
 2.51.0
 
