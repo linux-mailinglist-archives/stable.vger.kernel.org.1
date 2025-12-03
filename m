@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E513CCA0446
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:07:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51457C9F89F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6160300090D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A04AA300A024
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D3F318131;
-	Wed,  3 Dec 2025 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF0F311964;
+	Wed,  3 Dec 2025 15:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2g4JpW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFRch/eI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FF231A7FD;
-	Wed,  3 Dec 2025 16:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8F731196C;
+	Wed,  3 Dec 2025 15:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779650; cv=none; b=uuB6JHf8r3gKl2Z7saGYMKJOWTwP4VzteHxHUk2/SB1jmkP8AIDJQKbybras5aNHnY+wm8RuTfbxjbSphVMpq+/0sbAwt8F3nQkCpd9weMeI4ENAFLi7fL8cHFagvL2xP8aL4W1YIHb2j7tVBFxlfBzen0G0RwSvyZAFJgZ1iRE=
+	t=1764776116; cv=none; b=SiZrpzBXDa/f0DS8MCuzuLdfyLkPv7NTnsuJYe+CwfIejFJD9/tYOSAHpq7a+5cH3LkYvObZE2uTOQFBsKHcp8NB3v4fajs8pD2ZnZkfrMbe/wiUdQstk7owDcWDILaUEf1W+eSBdLdC9CZxWi/T7Ih+XcvOcEE5ZVRk3y5sDCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779650; c=relaxed/simple;
-	bh=offzKclgq+jdkd9OLzlDBYNJbIpY0k95CSkIV55eGj4=;
+	s=arc-20240116; t=1764776116; c=relaxed/simple;
+	bh=ADKCDZyyHJwmGjkqFpX4soDkc9uPAYZgnTpX1WPbXZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCkA8ujww7udvNAsGQ7TC19Bs+/J5IlvEXzYr8/Cu+9mk3qAbAeptGAh1gjngbzlM7gchdpsHzf1QBurf7YAJ2bSTEJ/SYMYiNZ9UjT+EbdNhzMDWXD2v0bUJRL8YZdh2bE64VlSqdAA9SD0+qb+ekR46BhDpSumXKyvQYWqWB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2g4JpW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A51C4CEF5;
-	Wed,  3 Dec 2025 16:34:09 +0000 (UTC)
+	 MIME-Version; b=hpQZfZOnL9wTxym2oCKRWqLToWhTRNtQ2XMgPFxg3sr+P2eafZ/tyoew1j44d6hG8jBRVd3QShiUubgKOF4xIYiFzWkn5QUaQNIjKYbxsATtYU6DNkzGdCtCsvf4Be87R5jMTNvfypteQy9Hx1461jSFi1Di2aQgHqgDI/5aNzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFRch/eI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D35C4CEF5;
+	Wed,  3 Dec 2025 15:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779650;
-	bh=offzKclgq+jdkd9OLzlDBYNJbIpY0k95CSkIV55eGj4=;
+	s=korg; t=1764776116;
+	bh=ADKCDZyyHJwmGjkqFpX4soDkc9uPAYZgnTpX1WPbXZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2g4JpW38qLkK5mO7fb7kTzoJJxbBpWBUphj/dOi9UWEWJcR0nX8LhztJSJ2KzPgn
-	 6JaoGmJVxItjGf1vgmj7vTKvF0P98suGvPj340Ln9voiubVH1GbF9uhK0bsDz90hKe
-	 I92yadYxFVrISvM7I6uPJXjsxjzpX1+bexx/PIgY=
+	b=yFRch/eIeBDfCwJsuLOUzwQV0GvsuTJTyriLA9J9yvNM/glIAyttaIvTFvjKAzbNy
+	 KWVsqrDvydgsq+dq++5eBTo4jhvpppfjlr4XqFTgU59Ql7lPCJQ7Z0bommQeO3u/QT
+	 mmZAWaFBWgTKcUBhpdEy0R/jV6xIwdEwlaT46myk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>,
-	Ryan Wanner <ryan.wanner@microchip.com>
-Subject: [PATCH 6.1 287/568] clk: at91: clk-sam9x60-pll: force write to PLL_UPDT register
+	raub camaioni <raubcameo@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 085/300] usb: gadget: f_ncm: Fix MAC assignment NCM ethernet
 Date: Wed,  3 Dec 2025 16:24:49 +0100
-Message-ID: <20251203152451.215817226@linuxfoundation.org>
+Message-ID: <20251203152403.772758260@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,216 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: raub camaioni <raubcameo@gmail.com>
 
-[ Upstream commit af98caeaa7b6ad11eb7b7c8bfaddc769df2889f3 ]
+[ Upstream commit 956606bafb5fc6e5968aadcda86fc0037e1d7548 ]
 
-This register is important for sequencing the commands to PLLs, so
-actually write the update bits with regmap_write_bits() instead of
-relying on a read/modify/write regmap command that could skip the actual
-hardware write if the value is identical to the one read.
+This fix is already present in f_ecm.c and was never
+propagated to f_ncm.c
 
-It's changed when modification is needed to the PLL, when
-read-only operation is done, we could keep the call to
-regmap_update_bits().
+When creating multiple NCM ethernet devices
+on a composite usb gadget device
+each MAC address on the HOST side will be identical.
+Having the same MAC on different network interfaces is bad.
 
-Add a comment to the sam9x60_div_pll_set_div() function that uses this
-PLL_UPDT register so that it's used consistently, according to the
-product's datasheet.
+This fix updates the MAC address inside the
+ncm_strings_defs global during the ncm_bind call.
+This ensures each device has a unique MAC.
+In f_ecm.c ecm_string_defs is updated in the same way.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Tested-by: Ryan Wanner <ryan.wanner@microchip.com> # on sama7d65 and sam9x75
-Link: https://lore.kernel.org/r/20250827150811.82496-1-nicolas.ferre@microchip.com
-[claudiu.beznea: fix "Alignment should match open parenthesis"
- checkpatch.pl check]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+The defunct MAC assignment in ncm_alloc has been removed.
+
+Signed-off-by: raub camaioni <raubcameo@gmail.com>
+Link: https://lore.kernel.org/r/20250815131358.1047525-1-raubcameo@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-sam9x60-pll.c | 75 ++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 36 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/clk-sam9x60-pll.c b/drivers/clk/at91/clk-sam9x60-pll.c
-index 0882ed01d5c27..a010a8fce58b2 100644
---- a/drivers/clk/at91/clk-sam9x60-pll.c
-+++ b/drivers/clk/at91/clk-sam9x60-pll.c
-@@ -90,8 +90,8 @@ static int sam9x60_frac_pll_set(struct sam9x60_pll_core *core)
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index 752951b56ad3f..ea5f2cf330206 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1472,6 +1472,8 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
  
- 	spin_lock_irqsave(core->lock, flags);
+ 	ncm_opts->bound = true;
  
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
- 	regmap_read(regmap, AT91_PMC_PLL_CTRL1, &val);
- 	cmul = (val & core->layout->mul_mask) >> core->layout->mul_shift;
- 	cfrac = (val & core->layout->frac_mask) >> core->layout->frac_shift;
-@@ -125,17 +125,17 @@ static int sam9x60_frac_pll_set(struct sam9x60_pll_core *core)
- 		udelay(10);
++	ncm_string_defs[1].s = ncm->ethaddr;
++
+ 	us = usb_gstrings_attach(cdev, ncm_strings,
+ 				 ARRAY_SIZE(ncm_string_defs));
+ 	if (IS_ERR(us)) {
+@@ -1735,7 +1737,6 @@ static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
+ 		mutex_unlock(&opts->lock);
+ 		return ERR_PTR(-EINVAL);
  	}
+-	ncm_string_defs[STRING_MAC_IDX].s = ncm->ethaddr;
  
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
- 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL,
- 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	while (!sam9x60_pll_ready(regmap, core->id))
- 		cpu_relax();
-@@ -161,8 +161,8 @@ static void sam9x60_frac_pll_unprepare(struct clk_hw *hw)
- 
- 	spin_lock_irqsave(core->lock, flags);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
- 
- 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0, AT91_PMC_PLL_CTRL0_ENPLL, 0);
- 
-@@ -170,9 +170,9 @@ static void sam9x60_frac_pll_unprepare(struct clk_hw *hw)
- 		regmap_update_bits(regmap, AT91_PMC_PLL_ACR,
- 				   AT91_PMC_PLL_ACR_UTMIBG | AT91_PMC_PLL_ACR_UTMIVR, 0);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	spin_unlock_irqrestore(core->lock, flags);
- }
-@@ -257,8 +257,8 @@ static int sam9x60_frac_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
- 
- 	spin_lock_irqsave(core->lock, irqflags);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
--			   core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
-+			  core->id);
- 	regmap_read(regmap, AT91_PMC_PLL_CTRL1, &val);
- 	cmul = (val & core->layout->mul_mask) >> core->layout->mul_shift;
- 	cfrac = (val & core->layout->frac_mask) >> core->layout->frac_shift;
-@@ -270,18 +270,18 @@ static int sam9x60_frac_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
- 		     (frac->mul << core->layout->mul_shift) |
- 		     (frac->frac << core->layout->frac_shift));
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
- 			   AT91_PMC_PLL_CTRL0_ENLOCK | AT91_PMC_PLL_CTRL0_ENPLL,
- 			   AT91_PMC_PLL_CTRL0_ENLOCK |
- 			   AT91_PMC_PLL_CTRL0_ENPLL);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	while (!sam9x60_pll_ready(regmap, core->id))
- 		cpu_relax();
-@@ -333,7 +333,10 @@ static const struct clk_ops sam9x60_frac_pll_ops_chg = {
- 	.restore_context = sam9x60_frac_pll_restore_context,
- };
- 
--/* This function should be called with spinlock acquired. */
-+/* This function should be called with spinlock acquired.
-+ * Warning: this function must be called only if the same PLL ID was set in
-+ *          PLL_UPDT register previously.
-+ */
- static void sam9x60_div_pll_set_div(struct sam9x60_pll_core *core, u32 div,
- 				    bool enable)
- {
-@@ -345,9 +348,9 @@ static void sam9x60_div_pll_set_div(struct sam9x60_pll_core *core, u32 div,
- 			   core->layout->div_mask | ena_msk,
- 			   (div << core->layout->div_shift) | ena_val);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	while (!sam9x60_pll_ready(regmap, core->id))
- 		cpu_relax();
-@@ -361,8 +364,8 @@ static int sam9x60_div_pll_set(struct sam9x60_pll_core *core)
- 	unsigned int val, cdiv;
- 
- 	spin_lock_irqsave(core->lock, flags);
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
- 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
- 	cdiv = (val & core->layout->div_mask) >> core->layout->div_shift;
- 
-@@ -393,15 +396,15 @@ static void sam9x60_div_pll_unprepare(struct clk_hw *hw)
- 
- 	spin_lock_irqsave(core->lock, flags);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_ID_MSK, core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_ID_MSK, core->id);
- 
- 	regmap_update_bits(regmap, AT91_PMC_PLL_CTRL0,
- 			   core->layout->endiv_mask, 0);
- 
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT,
--			   AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
--			   AT91_PMC_PLL_UPDT_UPDATE | core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT,
-+			  AT91_PMC_PLL_UPDT_UPDATE | AT91_PMC_PLL_UPDT_ID_MSK,
-+			  AT91_PMC_PLL_UPDT_UPDATE | core->id);
- 
- 	spin_unlock_irqrestore(core->lock, flags);
- }
-@@ -507,8 +510,8 @@ static int sam9x60_div_pll_set_rate_chg(struct clk_hw *hw, unsigned long rate,
- 	div->div = DIV_ROUND_CLOSEST(parent_rate, rate) - 1;
- 
- 	spin_lock_irqsave(core->lock, irqflags);
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
--			   core->id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
-+			  core->id);
- 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
- 	cdiv = (val & core->layout->div_mask) >> core->layout->div_shift;
- 
-@@ -563,8 +566,8 @@ static int sam9x60_div_pll_notifier_fn(struct notifier_block *notifier,
- 	div->div = div->safe_div;
- 
- 	spin_lock_irqsave(core.lock, irqflags);
--	regmap_update_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
--			   core.id);
-+	regmap_write_bits(regmap, AT91_PMC_PLL_UPDT, AT91_PMC_PLL_UPDT_ID_MSK,
-+			  core.id);
- 	regmap_read(regmap, AT91_PMC_PLL_CTRL0, &val);
- 	cdiv = (val & core.layout->div_mask) >> core.layout->div_shift;
- 
+ 	spin_lock_init(&ncm->lock);
+ 	ncm_reset_values(ncm);
 -- 
 2.51.0
 
