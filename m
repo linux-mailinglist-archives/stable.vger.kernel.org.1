@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C998CA0B26
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B31CA01E5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A1FF309DF06
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33A67300768D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0E035F8CD;
-	Wed,  3 Dec 2025 16:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FF036CE0F;
+	Wed,  3 Dec 2025 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVs3yT8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV8148/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2836C35E546;
-	Wed,  3 Dec 2025 16:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9403536C0C1;
+	Wed,  3 Dec 2025 16:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780662; cv=none; b=NiEEO2y9Y9liiygo6OAg+thrNoG0xOXhdIQmwrhQxcLUE9cnPtUFO6UItWXjCAzNnq6Nt7H9KKnSrs22dZ9qW/u/HduVIegNvxR8YUJ307NyNvzE00eoMWoscT7LZhtOGNQG2XeDJfFBL1qt71LgJ534HoacHRDTSwmA6r6+y7Q=
+	t=1764780370; cv=none; b=IXDYJv5DnZ+8ZCuk/maBcIicRWf39X3+lynu0XHyOgLnI306QB7A4aph8E0vTQ1q1iZ+q6ylT95I60FQhHSR6Bi927PxZLGndpbZMmZPtU0Brp8uR43p596krXTXGq2WFjU4GVY2rWNleQH3rtrHQAX2HNHhEJq9+tHTx3ACsvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780662; c=relaxed/simple;
-	bh=jWT9Cw9GXyqDrrWOt/fD0ijpyFbbdYhCroT3VsKdObQ=;
+	s=arc-20240116; t=1764780370; c=relaxed/simple;
+	bh=RPSKY+KASsd2AWnGBQJkHr35dzLAs5thiHEeGd+p0Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=meKJBdEZdF7Fsao6s6x+lKRkq+Pk1lO66lNzQ+ZL+trUGHHYz9E9hYPMjsYcxerJnDnE3YWwsTjbO0MVaPrcZqyCyKABO3Kzi0tua0EwZr6sc2g3LQ4ODGInOB9x5BvSayz+ETHCJ8gdBqWiXFaUQgBHN0X5ndF5lTjKuhMjNuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVs3yT8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CA5C4CEF5;
-	Wed,  3 Dec 2025 16:51:01 +0000 (UTC)
+	 MIME-Version; b=W3ojktPrGsdap6rtn4FeG1d37OhYh2+bl2vS/DjnJU2PKc2kpjQEluCEMcEKubCa7FBz+RLsQx/Lsy/VteFV5ix313evuqiQ5ZkXlGf5y6e3Hz9VdGx9DBetPg9emxGnpCrxdeIDOTC9FZSPoPESUZq2IkqwGbn6ccC5Ann/s34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV8148/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8241C4CEF5;
+	Wed,  3 Dec 2025 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780662;
-	bh=jWT9Cw9GXyqDrrWOt/fD0ijpyFbbdYhCroT3VsKdObQ=;
+	s=korg; t=1764780370;
+	bh=RPSKY+KASsd2AWnGBQJkHr35dzLAs5thiHEeGd+p0Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVs3yT8tBG0NwnZF72Ey+q4imJ1JaOJdKYR+KqqbFUYDG4zyYMOhE6jox44CVSo7c
-	 IAwr8LURsej5r5SRQyD1yvbwKOLaI6aWO9V5mu+1A05ctWmndPmNzoNRYbCVTlM9S4
-	 Pn8kn+8+bnvEIRTv8BBQWXofr7G+Y6OMpUWyySBA=
+	b=EV8148/71s5r6POtY7idC682dHref2LB6lP8Aw8KRxYkZBgbMGG8yp2cbtqkxYMmy
+	 hxiesbevbTG/zB1sT0g8et6TPGE3osyP1uMZ/8FYHF73npGZ6LQNkAWOhqPn+hzNZf
+	 3STG3xyh8xG0h9Cr+w2WFc34bP9fR+EZjCVqLS7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 052/132] iio: buffer-dmaengine: enable .get_dma_dev()
+	stable <stable@kernel.org>,
+	Jamie Iles <jamie.iles@oss.qualcomm.com>,
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 529/568] drivers/usb/dwc3: fix PCI parent check
 Date: Wed,  3 Dec 2025 16:28:51 +0100
-Message-ID: <20251203152345.223890551@linuxfoundation.org>
+Message-ID: <20251203152500.090201704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Jamie Iles <jamie.iles@oss.qualcomm.com>
 
-commit 3db847df994d475db7812dde90376f2848bcd30a upstream.
+commit 40f8d17eed7533ed2bbb5e3cc680049b19411b2e upstream.
 
-Wire up the .get_dma_dev() callback to use the DMA buffer infrastructure's
-implementation. This ensures that DMABUF operations use the correct DMA
-device for mapping, which is essential for proper operation on systems
-where memory is mapped above the 32-bit range.
+The sysdev_is_parent check was being used to infer PCI devices that have
+the DMA mask set from the PCI capabilities, but sysdev_is_parent is also
+used for non-PCI ACPI devices in which case the DMA mask would be the
+bus default or as set by the _DMA method.
 
-Without this callback, the core would fall back to using the IIO device's
-parent, which may not have the appropriate DMA mask configuration for
-high memory access.
+Without this fix the DMA mask would default to 32-bits and so allocation
+would fail if there was no DRAM below 4GB.
 
-Fixes: 7a86d469983a ("iio: buffer-dmaengine: Support new DMABUF based userspace API")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 47ce45906ca9 ("usb: dwc3: leave default DMA for PCI devices")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251107104437.1602509-1-punit.agrawal@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -177,6 +177,8 @@ static const struct iio_buffer_access_fu
- 	.lock_queue = iio_dma_buffer_lock_queue,
- 	.unlock_queue = iio_dma_buffer_unlock_queue,
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -25,6 +25,7 @@
+ #include <linux/of.h>
+ #include <linux/of_graph.h>
+ #include <linux/acpi.h>
++#include <linux/pci.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/reset.h>
+ #include <linux/bitfield.h>
+@@ -1996,7 +1997,7 @@ static int dwc3_probe(struct platform_de
+ 	platform_set_drvdata(pdev, dwc);
+ 	dwc3_cache_hwparams(dwc);
  
-+	.get_dma_dev = iio_dma_buffer_get_dma_dev,
-+
- 	.modes = INDIO_BUFFER_HARDWARE,
- 	.flags = INDIO_BUFFER_FLAG_FIXED_WATERMARK,
- };
+-	if (!dwc->sysdev_is_parent &&
++	if (!dev_is_pci(dwc->sysdev) &&
+ 	    DWC3_GHWPARAMS0_AWIDTH(dwc->hwparams.hwparams0) == 64) {
+ 		ret = dma_set_mask_and_coherent(dwc->sysdev, DMA_BIT_MASK(64));
+ 		if (ret)
 
 
 
