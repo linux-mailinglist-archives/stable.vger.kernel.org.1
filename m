@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573C4CA03D7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:02:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A125CA0282
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FE49305579E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29483300F9FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D622F36C593;
-	Wed,  3 Dec 2025 16:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C3C36BCDB;
+	Wed,  3 Dec 2025 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7YyTFoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGNWieuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE90376BEA;
-	Wed,  3 Dec 2025 16:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5373F313546;
+	Wed,  3 Dec 2025 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780675; cv=none; b=HgVZGqQivStH7rJLiQdfSKpN3mMq89uQFKNH8xNZwT7UJkFr/ZUy1hhUNV69wbbr6xTlIN3VSQVMJvYQrcO+j0uP/k8tLaBsN1TRy3D/qXKuPxNy8B0EWwqOsTl9FlUS90KcwdarTojWxwN0/QNFiqvZFcVGsJ77e+1hRcenZmM=
+	t=1764780469; cv=none; b=gVTjN5IiVaTJc3ynV6p9bCvO0a0Q1mpNuCO364XJiv8eBQvwBSQHO0tDKg2196VD0y2cH6kHUO6i1MSHqAp5SVZ7W0Bzt2G2uGwXXwMk5qjQzbijr1k24QwOLbCddu6F8KcwfxNgXNY4MuMIMw13hZ6jeQHcPDg6t+kI+dcVloM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780675; c=relaxed/simple;
-	bh=DLukDX9DBU7sIEl7TaryLfe17jmZA6kqNae7KM4UCKc=;
+	s=arc-20240116; t=1764780469; c=relaxed/simple;
+	bh=qSmbpj04eBVGCKu56ibAquSUSYN6TTQrETnphBqTRn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VG+NRgLs22AeiXWvZ5XYT4LVv7KdyPa0vkDQ4XiNng+pc22jTUW4d1bIFzouxm9AGbQMKCR7SOqPsM8H5htBoWSrZpFC5gCGEr1wBG9lR626C6zi7UQXQo43d4cdFkGTyScx2WB3tDc+mXKU2i1DXCYuLHK6XjwZd0ZRC4gglkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7YyTFoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF959C4CEF5;
-	Wed,  3 Dec 2025 16:51:14 +0000 (UTC)
+	 MIME-Version; b=ghnQeB+X2lXyCgYxKNnox9aGD28wF68Nu+chY2ClTLkSKC7xlnkIyibckdNBMBZUl3MCriUzvtlBpYgCGNAD5NMvKMhbv6XeJ+hR9rGC27nw7YPCbQqBFtKN6X4FRPvFRHDbzCne0zvR1sQ+hzvUU39sASxmjcaJy80NHAz1bxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGNWieuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA80C4CEF5;
+	Wed,  3 Dec 2025 16:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780675;
-	bh=DLukDX9DBU7sIEl7TaryLfe17jmZA6kqNae7KM4UCKc=;
+	s=korg; t=1764780469;
+	bh=qSmbpj04eBVGCKu56ibAquSUSYN6TTQrETnphBqTRn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7YyTFoo/BcWOzhJ/JFdZtMWgJa2hm1o3r1/HJQrexzw3qi6f67NwnpH1Zcard/ye
-	 nt721fdE0UzSHnFWazxJsE8a7J+rr5d/5mCEEzfvsussyCkMqGGJ7NqCkroQbVvqvd
-	 mPPotRSu2S/29HrEldoSluZ3N1+iS4xXVp5FxzAU=
+	b=gGNWieuTP6xEzzfpRYNV9uxzttbZzw5/o6CVrn72BUCbUf+0OeZyr8yP6Kra0mH6M
+	 PVr3UbybZzWayJLhKLm61vtP4SgKuDwOg3QE8OOPPLUbTTCgdz2SmVKCpp/g0x8Dut
+	 eZCUy6rMxRgsqUJQHVanJTPU58SVOgtU3c1bP02M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 056/132] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
+	Ang Tien Sung <tiensung.ang@altera.com>,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 533/568] firmware: stratix10-svc: fix bug in saving controller data
 Date: Wed,  3 Dec 2025 16:28:55 +0100
-Message-ID: <20251203152345.372790472@linuxfoundation.org>
+Message-ID: <20251203152500.234821207@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
+commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
 
-The `decimator` and `batch` fields of struct st_lsm6dsx_settings
-are arrays indexed by sensor type, not by sensor hardware
-identifier; moreover, the `batch` field is only used for the
-accelerometer and gyroscope.
-Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
-ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
-ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
-definition so that the ST_LSM6DSX_ID_MAX value is usable within
-the struct st_lsm6dsx_settings definition.
+Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
+both are of the same data and overrides each other. This resulted in the
+rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
+and fifo free.
 
-Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/firmware/stratix10-svc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -270,6 +270,15 @@ struct st_lsm6dsx_event_settings {
- 	u8 wakeup_src_x_mask;
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -133,6 +133,7 @@ struct stratix10_svc_data {
+  * @complete_status: state for completion
+  * @svc_fifo_lock: protect access to service message data queue
+  * @invoke_fn: function to issue secure monitor call or hypervisor call
++ * @svc: manages the list of client svc drivers
+  *
+  * This struct is used to create communication channels for service clients, to
+  * handle secure monitor or hypervisor call.
+@@ -149,6 +150,7 @@ struct stratix10_svc_controller {
+ 	struct completion complete_status;
+ 	spinlock_t svc_fifo_lock;
+ 	svc_invoke_fn *invoke_fn;
++	struct stratix10_svc *svc;
  };
  
-+enum st_lsm6dsx_sensor_id {
-+	ST_LSM6DSX_ID_GYRO,
-+	ST_LSM6DSX_ID_ACC,
-+	ST_LSM6DSX_ID_EXT0,
-+	ST_LSM6DSX_ID_EXT1,
-+	ST_LSM6DSX_ID_EXT2,
-+	ST_LSM6DSX_ID_MAX
-+};
-+
- enum st_lsm6dsx_ext_sensor_id {
- 	ST_LSM6DSX_ID_MAGN,
- };
-@@ -355,23 +364,14 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
- 	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
--	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
--	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-+	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
-+	struct st_lsm6dsx_reg batch[2];
- 	struct st_lsm6dsx_fifo_ops fifo_ops;
- 	struct st_lsm6dsx_hw_ts_settings ts_settings;
- 	struct st_lsm6dsx_shub_settings shub_settings;
- 	struct st_lsm6dsx_event_settings event_settings;
- };
+ /**
+@@ -1191,6 +1193,7 @@ static int stratix10_svc_drv_probe(struc
+ 		ret = -ENOMEM;
+ 		goto err_free_kfifo;
+ 	}
++	controller->svc = svc;
  
--enum st_lsm6dsx_sensor_id {
--	ST_LSM6DSX_ID_GYRO,
--	ST_LSM6DSX_ID_ACC,
--	ST_LSM6DSX_ID_EXT0,
--	ST_LSM6DSX_ID_EXT1,
--	ST_LSM6DSX_ID_EXT2,
--	ST_LSM6DSX_ID_MAX,
--};
+ 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+ 	if (!svc->stratix10_svc_rsu) {
+@@ -1218,8 +1221,6 @@ static int stratix10_svc_drv_probe(struc
+ 		goto err_unregister_dev;
+ 	}
+ 
+-	dev_set_drvdata(dev, svc);
 -
- enum st_lsm6dsx_fifo_mode {
- 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
- 	ST_LSM6DSX_FIFO_CONT = 0x6,
+ 	pr_info("Intel Service Layer Driver Initialized\n");
+ 
+ 	return 0;
+@@ -1235,8 +1236,8 @@ err_destroy_pool:
+ 
+ static int stratix10_svc_drv_remove(struct platform_device *pdev)
+ {
+-	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
+ 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
++	struct stratix10_svc *svc = ctrl->svc;
+ 
+ 	platform_device_unregister(svc->intel_svc_fcs);
+ 	platform_device_unregister(svc->stratix10_svc_rsu);
 
 
 
