@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AB0CA11B8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02561C9FB96
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A103A3002FE6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9344B302AE2C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7C93502A0;
-	Wed,  3 Dec 2025 16:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C34313E26;
+	Wed,  3 Dec 2025 15:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dApJ0S99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBl3vRVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E9635028D;
-	Wed,  3 Dec 2025 16:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C1F31329E;
+	Wed,  3 Dec 2025 15:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778414; cv=none; b=k2IQ2A81LEbC70UrLJIIy83SdZxhWu0+e0TjdE4e3npWc7jBT1iDmNzTnAdaUfkDiQFwJ+PqUMZEpsJYpjBmTUpKaG+xHdlqzbKHKp29VeCcUQ9D+I7MJcV76EBIBG8uPICDYzqyU78IXmHQc8myMW8DdpuSPrfgR12jAMfuonA=
+	t=1764776777; cv=none; b=gphz6k8J0lyh41KV0sDh1/TifKB0GrxJ9uz/msnINbcoSPxk+nEgZnNJWTaxdqG6i76wFs5DUdasmXK8aLJLuh24ZrR0yBnawDDXtwsqvHAYn/xs3PGJEsaINsvM+T1CxCRdJCP3Y2uQO8dQl6hvY3gSm8snMIUHfhBu/JlWesM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778414; c=relaxed/simple;
-	bh=Ya3sabE6I1yvo++zgVEJ/UeZlyN0bRfq5OAQza5KnCw=;
+	s=arc-20240116; t=1764776777; c=relaxed/simple;
+	bh=eaSBPabqkwAP0rsXMPSjesfHfMGLmsS7zK48VeD20p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lN1fp0KRAeChyPlLc5Az9HVNLiXNVHhdN/lBqZhrOFo65HbEbCJqBzfFIce/0fjjVkhdRksd45cnIroaSOtLked4fTb4uy200VnCE/SZ3oRDQ0Uy9yhP++WLtxQJe1RtHy4y0Y+AZSL5BjWOks2FbSvD8kb4pEIyCrQUfWpNzp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dApJ0S99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B4FC4CEF5;
-	Wed,  3 Dec 2025 16:13:33 +0000 (UTC)
+	 MIME-Version; b=BMcW3NI4O7+8tdbEg8W4M+bRVfZ0u4f1nUguXPFHp6d9cpkGFdDyPaZNjeCl/0ueRa+Bb7vDg2QW1t5vU+xBKg7PrsiaXIdz33+sk8A7CTYEG4esYtDDfoKllQcHr4RQUSRzYj3fY1UhE3SPdyrL5vOeUbuG6PVDync04xE1vfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBl3vRVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294DBC4CEF5;
+	Wed,  3 Dec 2025 15:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778414;
-	bh=Ya3sabE6I1yvo++zgVEJ/UeZlyN0bRfq5OAQza5KnCw=;
+	s=korg; t=1764776777;
+	bh=eaSBPabqkwAP0rsXMPSjesfHfMGLmsS7zK48VeD20p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dApJ0S99B0ElY180lRmetCEJ/7VBoOAwTZ3xiAe2r9rdhDyy4bh9q0GuyeMKVwDVP
-	 4+Ym2RgcyJLOU3zLkfkBj9yK0IoZFylgeqtG/D2aMrOGxrvKE45LVZgNr3ZOsifnRe
-	 YBoB1iqpqEsfCo6cMhSa86WlhbFEtz/DtEa25u0s=
+	b=jBl3vRVxo7sILSbrkaW63vCqOtkDz0gzBOlLV7p0f6GEnCKMrRQNHldUPohx1eMHA
+	 gsKUba++8910A29A9uWJQLwKjnFAh4e9WqHgVctxEEuZLcVvl/USLIZcGuXj0hbETn
+	 wzBKzWHHPO5OSrqrutZhMUQynoO7N0nUppx9aoSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 338/392] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
-Date: Wed,  3 Dec 2025 16:28:08 +0100
-Message-ID: <20251203152426.609576451@linuxfoundation.org>
+	Oleksandr Suvorov <cryosay@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 285/300] USB: serial: ftdi_sio: add support for u-blox EVK-M101
+Date: Wed,  3 Dec 2025 16:28:09 +0100
+Message-ID: <20251203152411.182569514@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,92 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
+commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
 
-The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
-introduced a goto that bypasses the creation of temporary mackey and ltk
-which are later used by the likes of DHKey Check step.
+The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
+- EVK-M101 current sensors
+- EVK-M101 I2C
+- EVK-M101 UART
+- EVK-M101 port D
 
-Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
-Just Works (LE SC)") which means confirm_hint is always set in case
-JUST_WORKS so the branch checking for an existing LTK becomes pointless
-as confirm_hint will always be set, so this just merge both cases of
-malicious or legitimate devices to be confirmed before continuing with the
-pairing procedure.
+Only the third USB interface is a UART. This change lets ftdi_sio probe
+the VID/PID and registers only interface #3 as a TTY, leaving the rest
+available for other drivers.
 
-Link: https://github.com/bluez/bluez/issues/1622
-Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
+usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
+usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 5-1.3: Product: EVK-M101
+usb 5-1.3: Manufacturer: u-blox AG
+
+Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
+
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c | 31 +++++++------------------------
- 1 file changed, 7 insertions(+), 24 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    1 +
+ drivers/usb/serial/ftdi_sio_ids.h |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 697ec98b07982..d1ba41153b66a 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2130,7 +2130,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_chan *smp = chan->data;
- 	struct hci_conn *hcon = conn->hcon;
- 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
--	u32 passkey;
-+	u32 passkey = 0;
- 	int err;
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1052,6 +1052,7 @@ static const struct usb_device_id id_tab
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1607,6 +1607,7 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++#define UBLOX_EVK_M101_PID		0x0506
  
- 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
-@@ -2182,24 +2182,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
- 			     smp->prnd);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
--
--		/* Only Just-Works pairing requires extra checks */
--		if (smp->method != JUST_WORKS)
--			goto mackey_and_ltk;
--
--		/* If there already exists long term key in local host, leave
--		 * the decision to user space since the remote device could
--		 * be legitimate or malicious.
--		 */
--		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
--				 hcon->role)) {
--			/* Set passkey to 0. The value can be any number since
--			 * it'll be ignored anyway.
--			 */
--			passkey = 0;
--			confirm_hint = 1;
--			goto confirm;
--		}
- 	}
- 
- mackey_and_ltk:
-@@ -2220,11 +2202,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (err)
- 		return SMP_UNSPECIFIED;
- 
--	confirm_hint = 0;
--
--confirm:
--	if (smp->method == JUST_WORKS)
--		confirm_hint = 1;
-+	/* Always require user confirmation for Just-Works pairing to prevent
-+	 * impersonation attacks, or in case of a legitimate device that is
-+	 * repairing use the confirmation as acknowledgment to proceed with the
-+	 * creation of new keys.
-+	 */
-+	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
- 
- 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
- 					hcon->dst_type, passkey, confirm_hint);
--- 
-2.51.0
-
+ /*
+  * GMC devices
 
 
 
