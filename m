@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CA5CA0F7B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8631BCA0DBA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:16:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E901D34D4F77
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 807C931D990A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5202337119;
-	Wed,  3 Dec 2025 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2507355022;
+	Wed,  3 Dec 2025 17:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFdu0XsV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoQ/KmPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B051342526;
-	Wed,  3 Dec 2025 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF1A352949;
+	Wed,  3 Dec 2025 17:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780853; cv=none; b=fnMWiEd0L0FiBLK3M90YYkT0CtfKjkjQBAj33T0tXNxIgzjBhGacy+w/I9pcuAX8E/azjzIrnwhDFTbsphdmO4Pt+8dAp9/OWcXJQ6ESi/FhUnStsYQ1WdJAg2ukE3QhFoRSD8Xsgtsn2DMITj6RsIQJKQmbPk6aw9skKvYX4Zs=
+	t=1764781223; cv=none; b=gBrkb6h6fiW43K9kcUT9Vkrgz4S8UlSTFfb/XAGCSLv9d5E8zFYctRt7MXr59zqzlMd7oklnwFzgaBGQ8NcXu1yBZ/MJPVnIp27uJWDPm0li6zeK4I/i7yDmT1fQ6/b1u0hc4t2dJKwXeSZ2YCMhXnWIBQAcAhUJuFz2zy60AkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780853; c=relaxed/simple;
-	bh=lGXKgEkgGxKzES6Ml9fp5joYnKuB3nh4HUCiZFZf4KM=;
+	s=arc-20240116; t=1764781223; c=relaxed/simple;
+	bh=bPOrODEfWt4gTvS9j6WTsEg/zouEaU6G4L8Y1F1ejeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utdfBoadLcmfQGvlP6bbc6Cunq4XF9gIYfTKzOXeCQBV6h2i8dsDJt9ZJ54tH2QEWFMDrbaQM0RppNX1rEdLQxLWRp2Ss4pWBMI/qJhAnGOhxSNtZrqf5u7xpepUUVhbLhkK3f/IDjj4ZpuqgykWi4BJSf6cbd1XmeU4rRNbcSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFdu0XsV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B33DC4CEF5;
-	Wed,  3 Dec 2025 16:54:12 +0000 (UTC)
+	 MIME-Version; b=LiNIPSGaBsC3OWlzT2BgPtfnku7JZvBFWzFihWc46RxivLOpVle9/uj3+MnwQnL18mOLiAXnE2LJmIq8PcckifncC5fClwXzRfhIgFX1urad3fxIFv6KfV9TSHne/GzrCgQ5GuH4XULSurPVHwp6AsTPcJFPpsUoOZe8akAEnto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoQ/KmPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A66C4CEF5;
+	Wed,  3 Dec 2025 17:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780852;
-	bh=lGXKgEkgGxKzES6Ml9fp5joYnKuB3nh4HUCiZFZf4KM=;
+	s=korg; t=1764781223;
+	bh=bPOrODEfWt4gTvS9j6WTsEg/zouEaU6G4L8Y1F1ejeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFdu0XsVtzZrNkhalOrRni9aciICw8JkT8HfpTyq0O7wsDtQ2EivQ2+MV2dM8e1bJ
-	 W7Y62zpCCk4l0TE2BWE3WIEM+43efA6YEdK4ECUJJUQVas09EOszt+6BXeLH1d42F1
-	 Vrs1ueOgDZzXnG0Cwejj67FRgnFG3yFRbknknJB4=
+	b=QoQ/KmPWpR9CqyjperXPeqTe2KCV/awHxEGRrztiwJZb3PEhLFswCGmTTzhPAKgLQ
+	 YEYcy/FvfAwU6t3q4nvZe3pJtNBW6bhdh8t8lllxIWwA9GdKfR5ykZgeJT0yxHzqX5
+	 NcCrD03mtOhuk2Wc56Q+6pd7MhXUeb4ucqYh3oQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 110/132] net: dsa: microchip: Dont free uninitialized ksz_irq
-Date: Wed,  3 Dec 2025 16:29:49 +0100
-Message-ID: <20251203152347.358995105@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 57/93] usb: cdns3: Fix double resource release in cdns3_pci_probe
+Date: Wed,  3 Dec 2025 16:29:50 +0100
+Message-ID: <20251203152338.631274542@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 25b62cc5b22c45face094ae3e8717258e46d1d19 upstream.
+commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
 
-If something goes wrong at setup, ksz_irq_free() can be called on
-uninitialized ksz_irq (for example when ksz_ptp_irq_setup() fails). It
-leads to freeing uninitialized IRQ numbers and/or domains.
+The driver uses pcim_enable_device() to enable the PCI device,
+the device will be automatically disabled on driver detach through
+the managed device framework. The manual pci_disable_device() calls
+in the error paths are therefore redundant and should be removed.
 
-Use dsa_switch_for_each_user_port_continue_reverse() in the error path
-to iterate only over the fully initialized ports.
+Found via static anlaysis and this is similar to commit 99ca0b57e49f
+("thermal: intel: int340x: processor: Fix warning during module unload").
 
-Cc: stable@vger.kernel.org
-Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20251120-ksz-fix-v6-3-891f80ae7f8f@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2592,7 +2592,7 @@ out_ptpirq:
- 			ksz_ptp_irq_free(ds, dp->index);
- out_pirq:
- 	if (dev->irq > 0)
--		dsa_switch_for_each_user_port(dp, dev->ds)
-+		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds)
- 			ksz_irq_free(&dev->ports[dp->index].pirq);
- out_girq:
- 	if (dev->irq > 0)
+--- a/drivers/usb/cdns3/cdns3-pci-wrap.c
++++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
+@@ -101,10 +101,8 @@ static int cdns3_pci_probe(struct pci_de
+ 		wrap = pci_get_drvdata(func);
+ 	} else {
+ 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
+-		if (!wrap) {
+-			pci_disable_device(pdev);
++		if (!wrap)
+ 			return -ENOMEM;
+-		}
+ 	}
+ 
+ 	res = wrap->dev_res;
+@@ -163,7 +161,6 @@ static int cdns3_pci_probe(struct pci_de
+ 		/* register platform device */
+ 		wrap->plat_dev = platform_device_register_full(&plat_info);
+ 		if (IS_ERR(wrap->plat_dev)) {
+-			pci_disable_device(pdev);
+ 			err = PTR_ERR(wrap->plat_dev);
+ 			kfree(wrap);
+ 			return err;
 
 
 
