@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-198264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE49C9F833
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587C2CA000C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BD133028F6B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB303042198
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3A1309F01;
-	Wed,  3 Dec 2025 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133363A1CE0;
+	Wed,  3 Dec 2025 16:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEnzQA8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ7oqxsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC90F15ADB4;
-	Wed,  3 Dec 2025 15:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0102393DFD;
+	Wed,  3 Dec 2025 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775969; cv=none; b=tgPdbrnZb0I5NErEm6CxTuyXfEt5NXeV08v0UdOl0aoI2iWBjGjHrHtpObl+HzyVlPjx2n4hb2J8s2HixOQ1+0HrXzaRIAkVCPBAidH7+o8MMRfFmamLyrn4XUA2B7dz8q5GeEA1YmCBoAi5rueknlNZsxQdJsfA7UiBm2RZMds=
+	t=1764779536; cv=none; b=rTSzoQMHhldu9Mc3D6/By/3oAhiMFYaJP9wAOwOJOBZV0Q+bPWCpSG1Djkp9EQih1VMyJVnCwTYMu+IPQz2e2FMD4mA5FWM2zhIV7YhN5zUmwq/GgLvDguBWmlTGRXrYu7QSf4JbTZkpfjXl2z6YklcFNmVNnOXElvM571Kg7tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775969; c=relaxed/simple;
-	bh=8yrLxUipeICx4ofQkiWhICISu8NtYbTCzNOThM3VdZ8=;
+	s=arc-20240116; t=1764779536; c=relaxed/simple;
+	bh=JMpPyGLHjURfT44ZFMZW+DbUoy6OXSHDCfs7XeD+ov0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2zEv/beMdPFRkb8WBG+3FC71KBs2x9U9haUJQIli8H5B9kdPkyw+qPTquYa/akREY8kPe1fp45egUpmP6t/2HdjMusFXmgLfaH2torVbYjVltiqgKjbT9QsQ7Sxn6oIKCyuwtPHMOnbyjFW27gjg29jMepQl2SiA59DO5Vj1Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEnzQA8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C592EC4CEF5;
-	Wed,  3 Dec 2025 15:32:48 +0000 (UTC)
+	 MIME-Version; b=WbDX1zQNL+N1797IXBf4gXcJzLTt17UOCMn/Bo81+OjtgJuFMNt6gwXk99vxNAxxF3uzXFxR9qhpCkaHzsgd5fWaa54ZsLo6SZw1CLpVIcvZbVmJAdSGkt204MPmnVt8RvG6vw6ExOqLBf0ZFzYFcm6LnboRq6nsM5LHYatFppk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ7oqxsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEF8C4CEF5;
+	Wed,  3 Dec 2025 16:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775969;
-	bh=8yrLxUipeICx4ofQkiWhICISu8NtYbTCzNOThM3VdZ8=;
+	s=korg; t=1764779536;
+	bh=JMpPyGLHjURfT44ZFMZW+DbUoy6OXSHDCfs7XeD+ov0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEnzQA8CkV5xG4qgOI1hT9acOq9UPTyqD1E19y+XI3ghdfXlnTpVRiYyDpqZzKy8+
-	 mimffJCk0p4cx0vAZyucKrgfZ1rl83t4N577py/c6L/xOqybqxrbnUdvv6e9sFsGpT
-	 RssePj4aV9yYlR1VvdW7mUdOimcokcSyDR/bnTu4=
+	b=PJ7oqxslJTmnLffjZQ6rNclWiVtu3UIDSq+L1eMzIhjn6uFdbMkLX4vB/doSYfxQJ
+	 M5f2Ib5Bs++qUihHco7kmpHlDWbyYikOFJuLbQxGelUCoPxVKljmE6OgKD0N+cRlxM
+	 JDoMmSrCahbygjwPuTmN89N2WJ2G6hFgfCmZeIRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhang <chizhang@asrmicro.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/300] pinctrl: single: fix bias pull up/down handling in pin_config_set
+Subject: [PATCH 6.1 244/568] wifi: ath10k: Fix connection after GTK rekeying
 Date: Wed,  3 Dec 2025 16:24:06 +0100
-Message-ID: <20251203152402.171444507@linuxfoundation.org>
+Message-ID: <20251203152449.655084933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhang <chizhang@asrmicro.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 236152dd9b1675a35eee912e79e6c57ca6b6732f ]
+[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
 
-In the pin_config_set function, when handling PIN_CONFIG_BIAS_PULL_DOWN or
-PIN_CONFIG_BIAS_PULL_UP, the function calls pcs_pinconf_clear_bias()
-which writes the register. However, the subsequent operations continue
-using the stale 'data' value from before the register write, effectively
-causing the bias clear operation to be overwritten and not take effect.
+It appears that not all hardware/firmware implementations support
+group key deletion correctly, which can lead to connection hangs
+and deauthentication following GTK rekeying (delete and install).
 
-Fix this by reading the 'data' value from the register after calling
-pcs_pinconf_clear_bias().
+To avoid this issue, instead of attempting to delete the key using
+the special WMI_CIPHER_NONE value, we now replace the key with an
+invalid (random) value.
 
-This bug seems to have existed when this code was first merged in commit
-9dddb4df90d1 ("pinctrl: single: support generic pinconf").
+This behavior has been observed with WCN39xx chipsets.
 
-Signed-off-by: Chi Zhang <chizhang@asrmicro.com>
-Link: https://lore.kernel.org/20250807062038.13610-1-chizhang@asrmicro.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
+Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 22fd7ebd5cf3f..9485737638b3c 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -586,8 +586,10 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- 				break;
- 			case PIN_CONFIG_BIAS_PULL_DOWN:
- 			case PIN_CONFIG_BIAS_PULL_UP:
--				if (arg)
-+				if (arg) {
- 					pcs_pinconf_clear_bias(pctldev, pin);
-+					data = pcs->read(pcs->base + offset);
-+				}
- 				fallthrough;
- 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 				data &= ~func->conf[i].mask;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 184c722255c65..0c37b18e2ecfc 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -13,6 +13,7 @@
+ #include <linux/acpi.h>
+ #include <linux/of.h>
+ #include <linux/bitfield.h>
++#include <linux/random.h>
+ 
+ #include "hif.h"
+ #include "core.h"
+@@ -286,8 +287,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ 
+ 	if (cmd == DISABLE_KEY) {
+-		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
+-		arg.key_data = NULL;
++		if (flags & WMI_KEY_GROUP) {
++			/* Not all hardware handles group-key deletion operation
++			 * correctly. Replace the key with a junk value to invalidate it.
++			 */
++			get_random_bytes(key->key, key->keylen);
++		} else {
++			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
++			arg.key_data = NULL;
++		}
+ 	}
+ 
+ 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
 -- 
 2.51.0
 
