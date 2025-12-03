@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EF4CA086C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:37:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A442ECA115B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02A2133C63BC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E0C633D56D6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FE230ACEE;
-	Wed,  3 Dec 2025 16:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E71257431;
+	Wed,  3 Dec 2025 15:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7F6btpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEtNelE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D8F260566;
-	Wed,  3 Dec 2025 16:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77FD31ED96;
+	Wed,  3 Dec 2025 15:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778133; cv=none; b=c6tZGZidYtGkVZ4Iqjp8V/hEDdW/pInksD/YZvppkbPgRj4iJdDKE3vjeolEsO0eeDdqOtWf624v6+lt4aCZD1koXTG2uYgwVYo0KouikLMckjmdU3U282HWdmbz25gfAXx0rAFcqjY3XFXl0i80cTjqHXViyBYdfhY3uEqvqlo=
+	t=1764776917; cv=none; b=dbg3QJ7emcg1gwvqyz9ZsT/5uGLe0qojkWdQQPxgMGXmMdcqHJs7kTrpeINDHBTyCJcBya1xI1usOPK6pJlM5VPeQREvNhxgZNBNTcEPRtVzsI8zqXDAE8+h9QyiI0gz5ZD6au8WtOZvsWCotO2qL0F111EgDbFD7Y+LWRkojkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778133; c=relaxed/simple;
-	bh=xY584R6dDQVJKISmvTndxs6XdReQZPB+tSko8cYPDyE=;
+	s=arc-20240116; t=1764776917; c=relaxed/simple;
+	bh=wLm5Y7PMTCDsY5DvXPFDkut8AwpuqiknOdSg27Cd1ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORgnKkRlC5CqzL/MjQrHpxaoZdjk2p/J/LLWtTEFE4YEb6CKEi+Eqm+q4pCkYzOPn2lu81rcs5yixGavwEF1AAs9Ns0hRkhIxlnGxugSoEiIQvfUv3G9+3hKqLmSpV4oX0l+ZsOhgBxykoaZjYrExfDzmVTKH0u9atkHtug5p58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7F6btpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB17C4CEF5;
-	Wed,  3 Dec 2025 16:08:52 +0000 (UTC)
+	 MIME-Version; b=C+EDHvH8OuK2zEZc3pC0xNhjlNvZ3+HxdyZQaNVsmD6LSkxPQ9Vq7O2ptJgk2+euctnmyCO2aIzeZBOLe+ard9+pnFywjfG5Vdhna/y7yS3Es+bAMsEedQFFc2ohu2mGcdibSDmplPTgjAcDn3zioVRleo9Um3HhV+ir6pxJi2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEtNelE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF7EC4CEF5;
+	Wed,  3 Dec 2025 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778133;
-	bh=xY584R6dDQVJKISmvTndxs6XdReQZPB+tSko8cYPDyE=;
+	s=korg; t=1764776917;
+	bh=wLm5Y7PMTCDsY5DvXPFDkut8AwpuqiknOdSg27Cd1ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7F6btpfZ1s54066cZSeiA+AFm7zXSLBh1X/3RcMYh3P2miXSR9Vd0r7bi56QwWdE
-	 vMj1TITsqeKojaLP2dlwI+xNTXkAYyJ7u6VzVVgM2vdOXKm+EGkOBp6HsaWlPZ1YHL
-	 MOjPiMFfAoz/757UmevHwZA4/MjR31HLUVN1ONHw=
+	b=OEtNelE/5ooXZd6nxNT3EcZeilotUQ4RAX15fMYkoRZhpN/tlzyr4xO1Zfo8e6iZ6
+	 pyG61vX3apsaomYWMqVY6BRtnchUcpbHdnsrHJt4ZK23z4kjhIqfDC5sG8rAWcSIdq
+	 gJVdnw2eXZNZVf4ORe6HFpqbLyS5CrV4xhZ9G8Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 254/392] net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps
+Subject: [PATCH 6.17 026/146] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
 Date: Wed,  3 Dec 2025 16:26:44 +0100
-Message-ID: <20251203152423.516935994@linuxfoundation.org>
+Message-ID: <20251203152347.425436322@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 43b27d1bd88a4bce34ec2437d103acfae9655f9e ]
+[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
 
-Add validation to reject rates exceeding 255 Gbps that would overflow
-the 8 bits max bandwidth field.
+When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
+easy to miss the fact that traffic passes only at 1G, since that's what
+any normal such connection would use.
 
-Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-5-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+When using the SGMII PCS connected towards an on-board PHY or an SFP
+module, it is immediately noticeable that when the link resolves to a
+speed other than 1G, traffic from the MAC fails to pass: TX counters
+increase, but nothing gets decoded by the other end, and no local RX
+counters increase either.
+
+Artificially lowering a fixed-link rate to speed = <100> makes us able
+to see the same issue as in the case of having an SGMII PHY.
+
+Some debugging shows that the XPCS configuration is A-OK, but that the
+MAC Configuration Table entry for the port has the SPEED bits still set
+to 1000Mbps, due to a special condition in the driver. Deleting that
+condition, and letting the resolved link speed be programmed directly
+into the MAC speed field, results in a functional link at all 3 speeds.
+
+This piece of evidence, based on testing on both generations with SGMII
+support (SJA1105S and SJA1110A) directly contradicts the statement from
+the blamed commit that "the MAC is fixed at 1 Gbps and we need to
+configure the PCS only (if even that)". Worse, that statement is not
+backed by any documentation, and no one from NXP knows what it might
+refer to.
+
+I am unable to recall sufficient context regarding my testing from March
+2020 to understand what led me to draw such a braindead and factually
+incorrect conclusion. Yet, there is nothing of value regarding forcing
+the MAC speed, either for SGMII or 2500Base-X (introduced at a later
+stage), so remove all such logic.
+
+Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 51fadfcda35a5..86545554abb4e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -588,11 +588,13 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
- 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
- 	__u64 upper_limit_mbps;
-+	__u64 upper_limit_gbps;
- 	int i;
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index f674c400f05b2..aa2145cf29a67 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1302,14 +1302,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
+ 	 * table, since this will be used for the clocking setup, and we no
+ 	 * longer need to store it in the static config (already told hardware
+ 	 * we want auto during upload phase).
+-	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
+-	 * we need to configure the PCS only (if even that).
+ 	 */
+-	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
+-		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
+-	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
+-		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
+-
+ 	mac[port].speed = speed;
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
- 	upper_limit_mbps = 255 * MLX5E_100MB;
-+	upper_limit_gbps = 255 * MLX5E_1GB;
- 
- 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
- 		if (!maxrate->tc_maxrate[i]) {
-@@ -604,10 +606,16 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else {
-+		} else if (max_bw_value[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
-+		} else {
-+			netdev_err(netdev,
-+				   "tc_%d maxrate %llu Kbps exceeds limit %llu\n",
-+				   i, maxrate->tc_maxrate[i],
-+				   upper_limit_gbps);
-+			return -EINVAL;
- 		}
- 	}
- 
+ 	return 0;
 -- 
 2.51.0
 
