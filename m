@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C95CCA0DA5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD05FCA04A4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A7C631CC798
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EA8632317B1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBA034165B;
-	Wed,  3 Dec 2025 16:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C525834F481;
+	Wed,  3 Dec 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmFGUByw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUk7MDRi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BCE346E71;
-	Wed,  3 Dec 2025 16:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EA34E771;
+	Wed,  3 Dec 2025 16:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781185; cv=none; b=kqXI4HwJ7ddSeM8BHhBjdZYQvrSe6xhxk2GfY0OqREILB6Iy65RxRRFWO9rM7R/X+OqDTFn7jvDkWkHKiU1pMyoWemqZ8iEzOydIHI1NxkjARxZfUdyUkxLWqSy8hTEFCmdWa8GTl8Au6aqHzOjApQEi8zm8XYcyaYJ/QLuykXE=
+	t=1764780928; cv=none; b=qxJHiaL0un8XyS4ZnGDudFZkmbKzI+wGCoi1F3we1RSSqMBGcxmHmDMhzYPDFjcIhN1Zd1q3CNt9Zzd2UubF4FudApGtcNR9hKzs/+ULpTlAB00hZJpjaqlwODElgTJtbAz82I9aF6rkPLrGa6ZRMjk7smtor4TZn/Dedk/Sb+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781185; c=relaxed/simple;
-	bh=rgTq7u5ttDEB2pTvQbx5CvOwHJiHHutapdqevGxUm60=;
+	s=arc-20240116; t=1764780928; c=relaxed/simple;
+	bh=sgOwnE/kUxo/M+P7p+4t2hzBQM5sfXn9RVsgY/wcXbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYj957/UmKwi7FFIZlomd9iQpncMFiwnkRgFvZyeeJ5/b0LHlaqyudbDWKFuZut2TjDypSpOKO8rireYWxeY7MchKk+Kw3YX4i0nlyjnRmqQojtqpxdVYXiA9gK5wUqJQkvWsklh3nNCycK754X8sIzl9TQDOiv4s/IxXkGoo4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmFGUByw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C20C116B1;
-	Wed,  3 Dec 2025 16:59:44 +0000 (UTC)
+	 MIME-Version; b=Tn5VadOId791q17SNrQf1Nw3U3/J3X7rRHGVZ1kAFR4yG4/xwiGS82NKme/zhCLGmor4TWU+37pNT0LBbd5cxWdhGOVrTp4XPbiboMiQNgzakxVj7yVf6jkPmsYrNqMh3a97alZdGzL7sVuCHCctWPJOxLw0XEaEIV11az0W+O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUk7MDRi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03756C4CEF5;
+	Wed,  3 Dec 2025 16:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781185;
-	bh=rgTq7u5ttDEB2pTvQbx5CvOwHJiHHutapdqevGxUm60=;
+	s=korg; t=1764780928;
+	bh=sgOwnE/kUxo/M+P7p+4t2hzBQM5sfXn9RVsgY/wcXbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmFGUBywfEtwgQpaJhY+9b+fsm9Y6F02BSQy6lhMGjRtBKTwEW8PLH5A74ftYDxbN
-	 2BOtkG6is+HCav/A+4TBEwvVTFaxO2VsN/nRcrMxzElEL/3nz4diHtw58x59K/3zIy
-	 cKcAqqDKBxTbGXiT733XSYIDY9aduzUUhEpOkUAQ=
+	b=QUk7MDRiZxoy2hkebeOnhNyDwCRA7+e+iIklU9tXcNQg2dcEGZCxWYC37Z3qLNGsl
+	 StJqbPLko+sD1s7TOZbPS8yYalsigehQV0oRzHX2vCjqIJEHma8kbLJZQVqlgSfZvJ
+	 KvZmS+WAHGrJoS7HedyJ9mTKK9JVpMuJohA87HM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 76/93] libceph: prevent potential out-of-bounds writes in handle_auth_session_key()
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 130/132] Revert "ACPI: Suppress misleading SPCR console message when SPCR table is absent"
 Date: Wed,  3 Dec 2025 16:30:09 +0100
-Message-ID: <20251203152339.331631564@linuxfoundation.org>
+Message-ID: <20251203152348.131829533@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ziming zhang <ezrakiez@gmail.com>
+From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
 
-commit 7fce830ecd0a0256590ee37eb65a39cbad3d64fc upstream.
+commit eeb8c19896952e18fb538ec76e603884070a6c6a upstream.
 
-The len field originates from untrusted network packets. Boundary
-checks have been added to prevent potential out-of-bounds writes when
-decrypting the connection secret or processing service tickets.
+This reverts commit bad3fa2fb9206f4dcec6ddef094ec2fbf6e8dcb2.
 
-[ idryomov: changelog ]
+Commit bad3fa2fb920 ("ACPI: Suppress misleading SPCR console message
+when SPCR table is absent") mistakenly assumes acpi_parse_spcr()
+returning 0 to indicate a failure to parse SPCR. While addressing the
+resultant incorrect logging it was deemed that dropping the message is
+a better approach as it is not particularly useful.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: ziming zhang <ezrakiez@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Roll back the commit introducing the bug as a step towards dropping
+the log message.
+
+Link: https://lore.kernel.org/all/aQN0YWUYaPYWpgJM@willie-the-truck/
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth_x.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/acpi.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/net/ceph/auth_x.c
-+++ b/net/ceph/auth_x.c
-@@ -631,6 +631,7 @@ static int handle_auth_session_key(struc
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -197,8 +197,6 @@ out:
+  */
+ void __init acpi_boot_table_init(void)
+ {
+-	int ret;
+-
+ 	/*
+ 	 * Enable ACPI instead of device tree unless
+ 	 * - ACPI has been disabled explicitly (acpi=off), or
+@@ -252,12 +250,10 @@ done:
+ 		 * behaviour, use acpi=nospcr to disable console in ACPI SPCR
+ 		 * table as default serial console.
+ 		 */
+-		ret = acpi_parse_spcr(earlycon_acpi_spcr_enable,
++		acpi_parse_spcr(earlycon_acpi_spcr_enable,
+ 			!param_acpi_nospcr);
+-		if (!ret || param_acpi_nospcr || !IS_ENABLED(CONFIG_ACPI_SPCR_TABLE))
+-			pr_info("Use ACPI SPCR as default console: No\n");
+-		else
+-			pr_info("Use ACPI SPCR as default console: Yes\n");
++		pr_info("Use ACPI SPCR as default console: %s\n",
++				param_acpi_nospcr ? "No" : "Yes");
  
- 	/* connection secret */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s connection secret blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		dp = *p + ceph_x_encrypt_offset();
-@@ -648,6 +649,7 @@ static int handle_auth_session_key(struc
- 
- 	/* service tickets */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s service tickets blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		ret = ceph_x_proc_ticket_reply(ac, &th->session_key,
+ 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
+ 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
 
 
 
