@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-199384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99B9CA025A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D774ACA05BF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0285B30407A1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6ACF31936D0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D94217F27;
-	Wed,  3 Dec 2025 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099C8343D7A;
+	Wed,  3 Dec 2025 16:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAoSd+Hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVFATipz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4F11F181F;
-	Wed,  3 Dec 2025 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9561343D6A;
+	Wed,  3 Dec 2025 16:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779619; cv=none; b=meCk26vgXOxzAof9lgbYy+ElAN9xS9sHtd8AA0wnzSKW1Fnd6BMV7gFrD7AzWERSVQqsrGRwDXBoOsesxvAZJ2WDkOC2/hjaaIW98DqfCCZpDCdbtxcVtlk5atu4eSRn3564EXrZqGdVXNs8k9rONnHTc1Fer5TdGGJYBAEIhMg=
+	t=1764777843; cv=none; b=Lt+T8tBFyUFEl3xSM3RsF57Nblte1fwHlNGGgrONXxjx5sX03IBUI+V3QFaXhIgZ+EPWv+k7ZVWrn0CZWNPcauypH+LkYA6jRJCutmOHZPJ1wb8siHVFAU8h1PY3jm8dtAa5LsV9JrhG+0fnWceHlWvyyh6s+UEwMkdzkBXvNok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779619; c=relaxed/simple;
-	bh=prOWeDRR4HfvK5WVcY3bKmpgtQTMFMxBuJDwEur/Zjs=;
+	s=arc-20240116; t=1764777843; c=relaxed/simple;
+	bh=sPwBB2fuWFqCR09Tl6XaJXE3teQe5Su+faOaQreoG/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R210muWwo9vlKRaYTFflXUsJd/llnvgBsQ0o0+7RFxQbpjZJoWaG0vXugEF5Q0PDvtCaZVv/FyJ1rfEImWmCh97rOZIOs0Y+F0FtByAPMEc2JcDjZmcEyYCobPJ9r7tZ8OM9f/CLie2hVGT//S7H8BhyX0oL8QfFzWkELkBGwE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAoSd+Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F0AC4CEF5;
-	Wed,  3 Dec 2025 16:33:38 +0000 (UTC)
+	 MIME-Version; b=EgCvN16dpdq8YNS9qFP24EpuxCf965pgtaD2eLSCI5/cOA7yottS00wUtaq0j0arHXKRKPj+yh3DgWIzr9weX5w5HhoKqrLY0uexOUf2LX1jR8akgJMYfbh6Bg7wF/3G9KUrgNOMfZpP6tHYB3hCryLCeoQ0FzbHRvvmtEaRWk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVFATipz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4299FC4CEF5;
+	Wed,  3 Dec 2025 16:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779619;
-	bh=prOWeDRR4HfvK5WVcY3bKmpgtQTMFMxBuJDwEur/Zjs=;
+	s=korg; t=1764777843;
+	bh=sPwBB2fuWFqCR09Tl6XaJXE3teQe5Su+faOaQreoG/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAoSd+HvWvzB5R0jBAbON8ED3LatTr5GHsCcm6rIsW22/ZYxhSHd2LRp/ph5SnhfK
-	 tCTK9PWaeKby4Hr8KZ4j96GSZg7/Wb/Vt/CNEHIsQfUtEWMjRFrSWpUr+XqycXRuUs
-	 cJYT+a1ulPF5rpQn6oOhVWXjBmTHr0Yqy9YoVJ5M=
+	b=LVFATipzysLlWzcq6lP9lG7iV343I1qVxGcbqd3F+nMUHwWPXToZR+KpOVDjcEp/7
+	 DG+3xJ1DWsyMf433vdlarmySZH5+jXGQCwJlWWn63+6+diBNDTmcLxh5/S69ZBLoh5
+	 7KoW+eIsQxmjHpQjwHWVE8uhwLdYU7vohnnRzvNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 310/568] selftests: netdevsim: Fix ethtool-coalesce.sh fail by installing ethtool-common.sh
-Date: Wed,  3 Dec 2025 16:25:12 +0100
-Message-ID: <20251203152452.069324793@linuxfoundation.org>
+Subject: [PATCH 5.15 163/392] ipv6: np->rxpmtu race annotation
+Date: Wed,  3 Dec 2025 16:25:13 +0100
+Message-ID: <20251203152420.077057400@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d01f8136d46b925798abcf86b35a4021e4cfb8bb ]
+[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
 
-The script "ethtool-common.sh" is not installed in INSTALL_PATH, and
-triggers some errors when I try to run the test
-'drivers/net/netdevsim/ethtool-coalesce.sh':
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # ./ethtool-coalesce.sh: line 4: ethtool-common.sh: No such file or directory
-  # ./ethtool-coalesce.sh: line 25: make_netdev: command not found
-  # ethtool: bad command line argument(s)
-  # ./ethtool-coalesce.sh: line 124: check: command not found
-  # ./ethtool-coalesce.sh: line 126: [: -eq: unary operator expected
-  # FAILED /0 checks
-  not ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh # exit=1
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
 
-Install this file to avoid this error. After this patch:
-
-  TAP version 13
-  1..1
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-  # PASSED all 22 checks
-  ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh
-
-Fixes: fbb8531e58bd ("selftests: extract common functions in ethtool-common.sh")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251030040340.3258110-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/netdevsim/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-index 7a29a05bea8bc..50932e13cb5a8 100644
---- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
-+++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
-@@ -14,4 +14,8 @@ TEST_PROGS = devlink.sh \
- 	tc-mq-visibility.sh \
- 	udp_tunnel_nic.sh \
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 6ff25c3e9d5a4..586e972cbcd53 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -474,7 +474,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
-+TEST_FILES := \
-+	ethtool-common.sh
-+# end of TEST_FILES
-+
- include ../../../lib.mk
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ 	skb = skb_recv_datagram(sk, flags, noblock, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index f05c09f7165a4..21f34a3a4e8ec 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -361,7 +361,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
+ 
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ try_again:
 -- 
 2.51.0
 
