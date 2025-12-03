@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-198439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CE5CA0CDF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:10:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD86C9FFF7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57F2F318B650
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7530E3019865
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FCE3161B7;
-	Wed,  3 Dec 2025 15:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCA332ED4D;
+	Wed,  3 Dec 2025 15:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjVLgux8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2j48DCak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF19D314D1D;
-	Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80F32ED3D;
+	Wed,  3 Dec 2025 15:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776546; cv=none; b=DXyNm2FJSSsuGYgTocc6zDRSBBeAp1T88sgqgo99EYjRmzeq8GbqMq8VmidfeJBVkwe/PIVLRBzxzBuAsxh4z3BjV83lfWKkFnezyxoNNDmiSWEtcuDUMledGswbhn42NcGaYSFVyaa81MfPABFhAq1VT2wF/roDWxlR6yezoTY=
+	t=1764777079; cv=none; b=oJ1LJBv1rX6qL8DlMHLKc1BzXHLAEfcxE0aEabJegMMChym2FN+/y56ioHnjx9/+z1l5UDwlmM1QMM6MJ9JiHH6HycuiyyMMMk/9cz0Xggg+X75rXddez7RW/Gx2N2yEpVrXjfxCdZ7HG6l6kyCeRaaLZgJbJsHug400Q9Z8kcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776546; c=relaxed/simple;
-	bh=Rjw89wuSP60U5nPyeg+RBfyMeWDDLNqzSzcC97ijFIo=;
+	s=arc-20240116; t=1764777079; c=relaxed/simple;
+	bh=Yl5XeYdV3eN7Y2DQLTchrMk4rI1ml5pt28GEPcHEoY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdmVvFxCP6mU/ILGBkb1cXH8aWBKYGM3pYG4FKY9eEZp7egkdJgJrowxdP2CmxyVRaW2vy3tlb0zrm9VjolipoSqT300H35SilAPBvvaTSeO+Mpl/Lia4JaNQ10si4jUJFgmFLiltC8Zj4PyaOEnicnMSs6FgLxqfYVuMAA2vzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjVLgux8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1D5C116C6;
-	Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
+	 MIME-Version; b=mg6o8A43K2yAOH0V2t+pVxv5j/5XbJOgDr8QuFAkQsQOZf7oHebcx9ue2HFDVasOrZ2KzsLCd58AXdT9vOg37N+AEnqrQhxYr3jD5caeMV8KdzKZyRbKxO2VMh2OVU7MiFIHEM6f1/8Tc+hWL1jQT3oeQSrpBA5JpJDGqcdMoXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2j48DCak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C7BC4CEF5;
+	Wed,  3 Dec 2025 15:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776546;
-	bh=Rjw89wuSP60U5nPyeg+RBfyMeWDDLNqzSzcC97ijFIo=;
+	s=korg; t=1764777079;
+	bh=Yl5XeYdV3eN7Y2DQLTchrMk4rI1ml5pt28GEPcHEoY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjVLgux8+TyvBqOHxtyUr0384TyqgAf7zEQfvRI5g1gnEcfK7JbvwJDeGEO/spUFP
-	 IsUCTnbchlQ/QBR5leS4g3jPVJQjcfuPdu9KniRzir6vvLNsL1ALlnhpJnJ5YbAmEG
-	 M0P46jH49lqDS2QHaM90uaSp5lXRGmWWgQogsYXQ=
+	b=2j48DCak8AcJRi8P9T5yvCARXwr1t8N14zu2Qc4ex8ApRE6ZNl6lXugYm0Hpyj1jF
+	 M/EjYdgux7Jjha+NPCGxHZkLc6jB9B7KnULbgrLSKGE+qlPCldeeuXrLaZGKfQ2tcI
+	 35LZfnU4FDbfknIrMxT2PIwiGqAtlDv4B4lEKvSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 216/300] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
+	syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 042/146] afs: Fix delayed allocation of a cells anonymous key
 Date: Wed,  3 Dec 2025 16:27:00 +0100
-Message-ID: <20251203152408.625019896@linuxfoundation.org>
+Message-ID: <20251203152348.014826110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +64,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
+[ Upstream commit d27c71257825dced46104eefe42e4d9964bd032e ]
 
-The DMA device pointer `dma_dev` was being dereferenced before ensuring
-that `cdns_ctrl->dmac` is properly initialized.
+The allocation of a cell's anonymous key is done in a background thread
+along with other cell setup such as doing a DNS upcall.  In the reported
+bug, this is triggered by afs_parse_source() parsing the device name given
+to mount() and calling afs_lookup_cell() with the name of the cell.
 
-Move the assignment of `dma_dev` after successfully acquiring the DMA
-channel to ensure the pointer is valid before use.
+The normal key lookup then tries to use the key description on the
+anonymous authentication key as the reference for request_key() - but it
+may not yet be set and so an oops can happen.
 
-Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This has been made more likely to happen by the fix for dynamic lookup
+failure.
+
+Fix this by firstly allocating a reference name and attaching it to the
+afs_cell record when the record is created.  It can share the memory
+allocation with the cell name (unfortunately it can't just overlap the cell
+name by prepending it with "afs@" as the cell name already has a '.'
+prepended for other purposes).  This reference name is then passed to
+request_key().
+
+Secondly, the anon key is now allocated on demand at the point a key is
+requested in afs_request_key() if it is not already allocated.  A mutex is
+used to prevent multiple allocation for a cell.
+
+Thirdly, make afs_request_key_rcu() return NULL if the anonymous key isn't
+yet allocated (if we need it) and then the caller can return -ECHILD to
+drop out of RCU-mode and afs_request_key() can be called.
+
+Note that the anonymous key is kind of necessary to make the key lookup
+cache work as that doesn't currently cache a negative lookup, but it's
+probably worth some investigation to see if NULL can be used instead.
+
+Fixes: 330e2c514823 ("afs: Fix dynamic lookup to fail on cell lookup failure")
+Reported-by: syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/800328.1764325145@warthog.procyon.org.uk
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/cell.c     | 43 ++++++++----------------------------------
+ fs/afs/internal.h |  1 +
+ fs/afs/security.c | 48 +++++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 49 insertions(+), 43 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2833,7 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
--	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
-+	struct dma_device *dma_dev;
- 	int ret;
- 
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2877,6 +2877,7 @@ static int cadence_nand_init(struct cdns
- 		}
+diff --git a/fs/afs/cell.c b/fs/afs/cell.c
+index d9b6fa1088b7b..71c10a05cebe5 100644
+--- a/fs/afs/cell.c
++++ b/fs/afs/cell.c
+@@ -140,7 +140,9 @@ static struct afs_cell *afs_alloc_cell(struct afs_net *net,
+ 		return ERR_PTR(-ENOMEM);
  	}
  
-+	dma_dev = cdns_ctrl->dmac->device;
- 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
- 						  cdns_ctrl->io.size,
- 						  DMA_BIDIRECTIONAL, 0);
+-	cell->name = kmalloc(1 + namelen + 1, GFP_KERNEL);
++	/* Allocate the cell name and the key name in one go. */
++	cell->name = kmalloc(1 + namelen + 1 +
++			     4 + namelen + 1, GFP_KERNEL);
+ 	if (!cell->name) {
+ 		kfree(cell);
+ 		return ERR_PTR(-ENOMEM);
+@@ -151,7 +153,11 @@ static struct afs_cell *afs_alloc_cell(struct afs_net *net,
+ 	cell->name_len = namelen;
+ 	for (i = 0; i < namelen; i++)
+ 		cell->name[i] = tolower(name[i]);
+-	cell->name[i] = 0;
++	cell->name[i++] = 0;
++
++	cell->key_desc = cell->name + i;
++	memcpy(cell->key_desc, "afs@", 4);
++	memcpy(cell->key_desc + 4, cell->name, cell->name_len + 1);
+ 
+ 	cell->net = net;
+ 	refcount_set(&cell->ref, 1);
+@@ -710,33 +716,6 @@ void afs_set_cell_timer(struct afs_cell *cell, unsigned int delay_secs)
+ 	timer_reduce(&cell->management_timer, jiffies + delay_secs * HZ);
+ }
+ 
+-/*
+- * Allocate a key to use as a placeholder for anonymous user security.
+- */
+-static int afs_alloc_anon_key(struct afs_cell *cell)
+-{
+-	struct key *key;
+-	char keyname[4 + AFS_MAXCELLNAME + 1], *cp, *dp;
+-
+-	/* Create a key to represent an anonymous user. */
+-	memcpy(keyname, "afs@", 4);
+-	dp = keyname + 4;
+-	cp = cell->name;
+-	do {
+-		*dp++ = tolower(*cp);
+-	} while (*cp++);
+-
+-	key = rxrpc_get_null_key(keyname);
+-	if (IS_ERR(key))
+-		return PTR_ERR(key);
+-
+-	cell->anonymous_key = key;
+-
+-	_debug("anon key %p{%x}",
+-	       cell->anonymous_key, key_serial(cell->anonymous_key));
+-	return 0;
+-}
+-
+ /*
+  * Activate a cell.
+  */
+@@ -746,12 +725,6 @@ static int afs_activate_cell(struct afs_net *net, struct afs_cell *cell)
+ 	struct afs_cell *pcell;
+ 	int ret;
+ 
+-	if (!cell->anonymous_key) {
+-		ret = afs_alloc_anon_key(cell);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+ 	ret = afs_proc_cell_setup(cell);
+ 	if (ret < 0)
+ 		return ret;
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index 87828d685293f..470e6eef8bd49 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -413,6 +413,7 @@ struct afs_cell {
+ 
+ 	u8			name_len;	/* Length of name */
+ 	char			*name;		/* Cell name, case-flattened and NUL-padded */
++	char			*key_desc;	/* Authentication key description */
+ };
+ 
+ /*
+diff --git a/fs/afs/security.c b/fs/afs/security.c
+index 6a7744c9e2a2d..ff8830e6982fb 100644
+--- a/fs/afs/security.c
++++ b/fs/afs/security.c
+@@ -16,6 +16,30 @@
+ 
+ static DEFINE_HASHTABLE(afs_permits_cache, 10);
+ static DEFINE_SPINLOCK(afs_permits_lock);
++static DEFINE_MUTEX(afs_key_lock);
++
++/*
++ * Allocate a key to use as a placeholder for anonymous user security.
++ */
++static int afs_alloc_anon_key(struct afs_cell *cell)
++{
++	struct key *key;
++
++	mutex_lock(&afs_key_lock);
++	if (!cell->anonymous_key) {
++		key = rxrpc_get_null_key(cell->key_desc);
++		if (!IS_ERR(key))
++			cell->anonymous_key = key;
++	}
++	mutex_unlock(&afs_key_lock);
++
++	if (IS_ERR(key))
++		return PTR_ERR(key);
++
++	_debug("anon key %p{%x}",
++	       cell->anonymous_key, key_serial(cell->anonymous_key));
++	return 0;
++}
+ 
+ /*
+  * get a key
+@@ -23,11 +47,12 @@ static DEFINE_SPINLOCK(afs_permits_lock);
+ struct key *afs_request_key(struct afs_cell *cell)
+ {
+ 	struct key *key;
++	int ret;
+ 
+-	_enter("{%x}", key_serial(cell->anonymous_key));
++	_enter("{%s}", cell->key_desc);
+ 
+-	_debug("key %s", cell->anonymous_key->description);
+-	key = request_key_net(&key_type_rxrpc, cell->anonymous_key->description,
++	_debug("key %s", cell->key_desc);
++	key = request_key_net(&key_type_rxrpc, cell->key_desc,
+ 			      cell->net->net, NULL);
+ 	if (IS_ERR(key)) {
+ 		if (PTR_ERR(key) != -ENOKEY) {
+@@ -35,6 +60,12 @@ struct key *afs_request_key(struct afs_cell *cell)
+ 			return key;
+ 		}
+ 
++		if (!cell->anonymous_key) {
++			ret = afs_alloc_anon_key(cell);
++			if (ret < 0)
++				return ERR_PTR(ret);
++		}
++
+ 		/* act as anonymous user */
+ 		_leave(" = {%x} [anon]", key_serial(cell->anonymous_key));
+ 		return key_get(cell->anonymous_key);
+@@ -52,11 +83,10 @@ struct key *afs_request_key_rcu(struct afs_cell *cell)
+ {
+ 	struct key *key;
+ 
+-	_enter("{%x}", key_serial(cell->anonymous_key));
++	_enter("{%s}", cell->key_desc);
+ 
+-	_debug("key %s", cell->anonymous_key->description);
+-	key = request_key_net_rcu(&key_type_rxrpc,
+-				  cell->anonymous_key->description,
++	_debug("key %s", cell->key_desc);
++	key = request_key_net_rcu(&key_type_rxrpc, cell->key_desc,
+ 				  cell->net->net);
+ 	if (IS_ERR(key)) {
+ 		if (PTR_ERR(key) != -ENOKEY) {
+@@ -65,6 +95,8 @@ struct key *afs_request_key_rcu(struct afs_cell *cell)
+ 		}
+ 
+ 		/* act as anonymous user */
++		if (!cell->anonymous_key)
++			return NULL; /* Need to allocate */
+ 		_leave(" = {%x} [anon]", key_serial(cell->anonymous_key));
+ 		return key_get(cell->anonymous_key);
+ 	} else {
+@@ -408,7 +440,7 @@ int afs_permission(struct mnt_idmap *idmap, struct inode *inode,
+ 
+ 	if (mask & MAY_NOT_BLOCK) {
+ 		key = afs_request_key_rcu(vnode->volume->cell);
+-		if (IS_ERR(key))
++		if (IS_ERR_OR_NULL(key))
+ 			return -ECHILD;
+ 
+ 		ret = -ECHILD;
+-- 
+2.51.0
+
 
 
 
