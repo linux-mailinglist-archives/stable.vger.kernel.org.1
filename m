@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9677CA14DA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E7AC9F7EE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78ADB327FA25
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 52F37301E106
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FA736BCC4;
-	Wed,  3 Dec 2025 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ED5309F01;
+	Wed,  3 Dec 2025 15:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTdqZz7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTKO2HUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77A736BCEB;
-	Wed,  3 Dec 2025 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C786256C9E;
+	Wed,  3 Dec 2025 15:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779497; cv=none; b=De1rJq/uKADVFgxmCnPD1czh6OqLeCxYM4e6IgncWBjfzjMsn3TUqerNX7doBJZKRQBq5aPugo+rwT5PlHrXDupaFsZtFTsilqul8bXx1ZL71Eedcv/2vbLyIVAv6zTd5CMIu413Dn4hEQ0V6N1sd2grj101fxuLQpXhworHM9k=
+	t=1764775982; cv=none; b=sQDU7Fuwq3X7jBg/nH9FL/9h4ApTtM6rJztHBeozSUhvjRzMk08kxGYaD28UsirBCGooOvo7k0kQeg2aIHeNXjxK6MYk5pP767tWoX/j/wo9egNVD2SykxU0b5X6aN/mEW+zhqke2yaRNtAFwfB9oGCETWcl/NcG35uQZmOrANQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779497; c=relaxed/simple;
-	bh=TnGajzmdmi4DdxKF77LGYKkT+GpRU+MNJhP2r3RprWM=;
+	s=arc-20240116; t=1764775982; c=relaxed/simple;
+	bh=p8ZB67eIgGx8BpImOtbTXF2NgrOk09cisypMVViM2fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1bVxFW/F/TP0+gqmDUtN1iwiDJirp3CYFizSt51g3E6eamdD4/0/ayi30oQ7Z8RDX/Dqjdcr+39i5fBksP8GFF1MbReRcrRTp3kl8nMWUV/MtINE8o6kYhDfJ7OeXmHqsVbCsUm4osSLWpjgu4spH7GzLaP3THZMm4C8JBL5cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTdqZz7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A482C16AAE;
-	Wed,  3 Dec 2025 16:31:36 +0000 (UTC)
+	 MIME-Version; b=CvhCxKwJsEEB5eZea6dAkJIlBmWa4SAbqelsi/BfWepVcJ77nFAUbEcqNyIqSDkgGv7myyVcyYMrMyrQwBCPMfA3cOBa+Obej/RNtOByOUTmhiJf5o1au/Ja4R0bXIYI/9bUYL5Oa3lR76w3xT1GUN5zx3mdYtrhYTeqzz6rlo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTKO2HUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91EDC4CEF5;
+	Wed,  3 Dec 2025 15:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779496;
-	bh=TnGajzmdmi4DdxKF77LGYKkT+GpRU+MNJhP2r3RprWM=;
+	s=korg; t=1764775982;
+	bh=p8ZB67eIgGx8BpImOtbTXF2NgrOk09cisypMVViM2fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTdqZz7b5AC0UnzZBdN2VEwHMpYiGZYNM7Co8to0Yf6nur0XkG0PSYPVZLhMdseCc
-	 kFkiXDXeyP1RJ8tW1KanremxH5CKKWhRGT/6P51+wya7jgZNbEA8v9w3Q1mhZm6N4Q
-	 HA62Ow3kPd8jji2b7iSlj/urtEhdeJmP2jMiKOd4=
+	b=vTKO2HUTZPFHe8niZKuAK/AulUb4EF0ijRI0o6xJgRBXJz4eMUTH/1TTTzf4zDJaY
+	 NZjaiCGqqqa29UKH5LPHfO9DEo7Qsnb7prKzJLgc+6S/OUqzhLybSkPcD+i55Dm4V4
+	 30aoSWe4D1FY9ayR1qymEpU6Z8T1jBcRuNiwIbcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 247/568] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
+Subject: [PATCH 5.10 045/300] ACPI: video: force native for Lenovo 82K8
 Date: Wed,  3 Dec 2025 16:24:09 +0100
-Message-ID: <20251203152449.765953485@linuxfoundation.org>
+Message-ID: <20251203152402.282828960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Wang <unicorn_wang@outlook.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
+[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
 
-cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
-is going to be true for the upcoming Sophgo platform which doesn't set the
-ops.
+Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
+Add a quirk to prevent using it.
 
-Hence, add a check to prevent NULL pointer dereference.
-
-Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
-[mani: reworded subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
+Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
+Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
- drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
- drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 0a1b11d41a38a..d2c8d5e0882a5 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -452,7 +452,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 338e1f44906a9..0ecc47e273140 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -635,6 +635,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
+ 		},
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
++	{
++	 .callback = video_detect_force_native,
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
++		},
++	},
+ 	{ },
+ };
  
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
-index 13c4032ca379a..ddf893fb8e164 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence.c
-@@ -89,7 +89,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
- 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
-@@ -119,7 +119,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
- 	}
- 
- 	/* Set the CPU address */
--	if (pcie->ops->cpu_addr_fixup)
-+	if (pcie->ops && pcie->ops->cpu_addr_fixup)
- 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
- 
- 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 2891e8c16a592..ff5ee5c787fbc 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -494,7 +494,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
- 
- static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->start_link)
-+	if (pcie->ops && pcie->ops->start_link)
- 		return pcie->ops->start_link(pcie);
- 
- 	return 0;
-@@ -502,13 +502,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
- 
- static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->stop_link)
-+	if (pcie->ops && pcie->ops->stop_link)
- 		pcie->ops->stop_link(pcie);
- }
- 
- static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
- {
--	if (pcie->ops->link_up)
-+	if (pcie->ops && pcie->ops->link_up)
- 		return pcie->ops->link_up(pcie);
- 
- 	return true;
 -- 
 2.51.0
 
