@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C2FCA00CB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BD3CA1338
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2982C3000B3B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 025A43310091
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E967935E54B;
-	Wed,  3 Dec 2025 16:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A425533123D;
+	Wed,  3 Dec 2025 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfEIpuUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVceDS3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A535F8CF;
-	Wed,  3 Dec 2025 16:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E45330B3E;
+	Wed,  3 Dec 2025 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780152; cv=none; b=spIknFU+v2J+hOLEE1Mj3FAD0KV6lJMM52nEIkDP3M2hxGVom6iNRHYNYsbhew4K64JXSGGAPaxcCaCOMoJxbCmRlSfBhkX/DYcPRMl145D73fKZRIj3wX5UhAMoOJOhgKDicB1RJG/EV78fS0bYtMJEDZp/nKhrIx3ll/pnYQs=
+	t=1764777147; cv=none; b=gY54E5i/OH9lK2PkzlupClq/TrTE6UP6wAL0IiEjNEafCq8Ww3pD5ZsX8SrlLthgp7aPXzbDEAhBdAYAxPl56JuoriON9Z8kdK36R9hL0yUUGEyiPM4Q1nVsyTiQQ59tx4izO4X1idSiFbKHacz2+1HW/p8pfGyrL8eXF0ACbLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780152; c=relaxed/simple;
-	bh=QkadBt5dhCGOomIvbpvyUhL4e8WjKoX7H9Q+9Pd+Ark=;
+	s=arc-20240116; t=1764777147; c=relaxed/simple;
+	bh=TbzA0ruhYb9VMERzG/iTko1QfygU8FiA4aLImsSagDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQ2jl0bnhGlXDo+5+dIahejCuK7JYoyhRfBHPCWlLdWqLl4hK/cNC6ZIKPN2qasoh5g3OTUIU90UTjuw726veodSotl4Z33WuDGxPppLHq0acUzFgr3WiqsYqthwacZlcIso3mVqmXMSe3LINLRbnHlys7US4evaJah1JSn9jS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfEIpuUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00314C4CEF5;
-	Wed,  3 Dec 2025 16:42:31 +0000 (UTC)
+	 MIME-Version; b=EgdyyixbFnbKMn3dyBz+G2wLhMjmYsr/UgT3y+rMZq5LdRpDZPCW3A8io1iIbp7wScMovgHOvkZZ6bkPVjpoADGERdRWWF3qGkwSw8nEk6rpbu/xPHikSDSIbLW9SYKZPBLielOozobwIxC4yzu2ysHaAJdblTly6Q6nrTQ75jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVceDS3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEE0C4CEF5;
+	Wed,  3 Dec 2025 15:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780152;
-	bh=QkadBt5dhCGOomIvbpvyUhL4e8WjKoX7H9Q+9Pd+Ark=;
+	s=korg; t=1764777147;
+	bh=TbzA0ruhYb9VMERzG/iTko1QfygU8FiA4aLImsSagDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yfEIpuUW9VEw9LCCxdcOzTEhNK/3eOt6fsZ9FNPAwU4GGZp/apRiImy3lT1Hu8wGH
-	 TL1KP2ViQadhNJcM8SF/xVU/EpC6jzp7X4qoSo1z5aMmVxLWbO3bPc26ubJLuw0pW0
-	 rxGXDUHpXt2qSFelQsREwZcsXION9vI/PXyy2aCM=
+	b=HVceDS3wh5LhXSgWGMC3TLsjvqQFVodwfN4cPOCDQy8wnGrXjO4nrho1VlGvCmD7q
+	 I7q1arF8iIYuAEzXjq0SuP5J+BOjdvF1bTtETjpErUf3R1EQ9BsgHp9FNtmoC6MMYP
+	 lxa2W5l9BMIbAxevv6DBzpPXGToGcS0z/iMZZcy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 472/568] mm/mm_init: fix hash table order logging in alloc_large_system_hash()
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 096/146] r8169: fix RTL8127 hang on suspend/shutdown
 Date: Wed,  3 Dec 2025 16:27:54 +0100
-Message-ID: <20251203152457.987473219@linuxfoundation.org>
+Message-ID: <20251203152349.973679195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 0d6c356dd6547adac2b06b461528e3573f52d953 ]
+commit ae1737e7339b513f8c2fc21b500a0fc215d155c3 upstream.
 
-When emitting the order of the allocation for a hash table,
-alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from log
-base 2 of the allocation size.  This is not correct if the allocation size
-is smaller than a page, and yields a negative value for the order as seen
-below:
+There have been reports that RTL8127 hangs on suspend and shutdown,
+partially disappearing from lspci until power-cycling.
+According to Realtek disabling PLL's when switching to D3 should be
+avoided on that chip version. Fix this by aligning disabling PLL's
+with the vendor drivers, what in addition results in PLL's not being
+disabled when switching to D3hot on other chip versions.
 
-TCP established hash table entries: 32 (order: -4, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-
-Use get_order() to compute the order when emitting the hash table
-information to correctly handle cases where the allocation size is smaller
-than a page:
-
-TCP established hash table entries: 32 (order: 0, 256 bytes, linear) TCP
-bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-
-Link: https://lkml.kernel.org/r/20251028191020.413002-1-isaacmanjarres@google.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0d6c356dd6547adac2b06b461528e3573f52d953)
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f24f7b2f3af9 ("r8169: add support for RTL8127A")
+Tested-by: Fabio Baltieri <fabio.baltieri@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/d7faae7e-66bc-404a-a432-3a496600575f@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 86066a2cf258a..d760b96604eca 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -9225,7 +9225,7 @@ void *__init alloc_large_system_hash(const char *tablename,
- 		panic("Failed to allocate %s hash table\n", tablename);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index d18734fe12e4..853aabedb128 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -1514,11 +1514,20 @@ static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
  
- 	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
--		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-+		tablename, 1UL << log2qty, get_order(size), size,
- 		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
+ static void rtl_set_d3_pll_down(struct rtl8169_private *tp, bool enable)
+ {
+-	if (tp->mac_version >= RTL_GIGA_MAC_VER_25 &&
+-	    tp->mac_version != RTL_GIGA_MAC_VER_28 &&
+-	    tp->mac_version != RTL_GIGA_MAC_VER_31 &&
+-	    tp->mac_version != RTL_GIGA_MAC_VER_38)
+-		r8169_mod_reg8_cond(tp, PMCH, D3_NO_PLL_DOWN, !enable);
++	switch (tp->mac_version) {
++	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_24:
++	case RTL_GIGA_MAC_VER_28:
++	case RTL_GIGA_MAC_VER_31:
++	case RTL_GIGA_MAC_VER_38:
++		break;
++	case RTL_GIGA_MAC_VER_80:
++		r8169_mod_reg8_cond(tp, PMCH, D3_NO_PLL_DOWN, true);
++		break;
++	default:
++		r8169_mod_reg8_cond(tp, PMCH, D3HOT_NO_PLL_DOWN, true);
++		r8169_mod_reg8_cond(tp, PMCH, D3COLD_NO_PLL_DOWN, !enable);
++		break;
++	}
+ }
  
- 	if (_hash_shift)
+ static void rtl_reset_packet_filter(struct rtl8169_private *tp)
 -- 
-2.51.0
+2.52.0
 
 
 
