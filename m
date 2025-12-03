@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5326FCA05B0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B58CC9FE8C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1E6213006442
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E0D93025581
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573332777FD;
-	Wed,  3 Dec 2025 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4777E354AF7;
+	Wed,  3 Dec 2025 16:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYXEvy4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnY4KLIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F123659F5;
-	Wed,  3 Dec 2025 16:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74F9354AEF;
+	Wed,  3 Dec 2025 16:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780317; cv=none; b=RMzw1sswSoGPOEe7SyFCFr+9maIViv1TdBnVLxTryMzQSwdK9BZBY/6VkHSPkoaowPKP4r0ctDzOBMygaI/07AVKjK8BmANCAGXZfGiZe2+sTCUD8eecoGZlz8FMMuCFAM5pYvqVUQFzM1axGPN8P3SdXExxtmKc7BSeXia8ImU=
+	t=1764778527; cv=none; b=EA8yAo/6dQiVzE5AHbtS6Cx7fXBjA0m9HwG75fFpJBuBff/ZdDWIat6ZIIX1ltybnWMCE/ucPaJoj9sh7apOBdKdwBAmkM7c1WrHJh8T3omu/VV3WK1I3On5+xCO5l9cp680CTKmTYH4LXHCF3Bb39/mK8ugqhfojAXjk86/1XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780317; c=relaxed/simple;
-	bh=0hE67D3Ccrs05VykXXxxi/X2UnK6sskbCo1EgoJzZBA=;
+	s=arc-20240116; t=1764778527; c=relaxed/simple;
+	bh=es237Gk+93k8FEDy+4QIUxw46I7EMLshaRqkfpFmYAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBpAmDLXMqipeLQdzag8i6ZD/xZNXhLZFXWp1R0ITvsVyzQVTVdNbJLCmYPweWJjGx1EGBAYKJHt1F8N+OH5/8RaZ+HwPqc19h1Rxl92NhCQbHfUMmmzOOGUZL+QajFBK6t4aZ0fTYBn12shsAcrpzSwtpMTgi9hdzPIT0uL1RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYXEvy4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744F4C4CEF5;
-	Wed,  3 Dec 2025 16:45:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=El0YEzJBCS4V/ryTu8wal1SpIl9aGNgGbH/zfrhFFz+XgMZAQt30LgCGwSJ3W77HaabqVkFJkDzDzXmMyB+RJLzopEnyE9HSImH2AQFnZL+aAaHzIEyMv8AKd6jVst06+FdqnRfXsioHqo9NAUztY8Ek+RqQimC98yy+jn0qDj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnY4KLIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F493C4CEF5;
+	Wed,  3 Dec 2025 16:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780316;
-	bh=0hE67D3Ccrs05VykXXxxi/X2UnK6sskbCo1EgoJzZBA=;
+	s=korg; t=1764778526;
+	bh=es237Gk+93k8FEDy+4QIUxw46I7EMLshaRqkfpFmYAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYXEvy4+zdPX3kE4BLnvlOFyodIpKYShGgVi7XY5vfgEV+vSWSNGWfJq7PVGfvuh3
-	 47b2t2lZxpgs0ccSTByEgRGs25GfTRwXvoJBbCtn1RIwMU7sViUVwDX9MM92F43ElN
-	 z6FQ5ASbi01OUX1yA3s6qRrFPZ2oRCOIRadI5SfU=
+	b=xnY4KLISkXL/7qPxjn1ka0Gpf/yBQxssadUrGsGUzUpnRGRCQ3p2kjp+l0pBGfbWy
+	 1ybhPCwI3gSt4EN27wjyeMopIgi9jjorDOOoz2dAN8su1RwmkExc3S4bZqLaSRE2yf
+	 UHbZOQdwJsxsWo1vHQunAauAKSEuC6S1bcoN8gAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valek Andrej <andrej.v@skyrain.eu>,
-	Kessler Markus <markus.kessler@hilti.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 520/568] iio: accel: fix ADXL355 startup race condition
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 372/392] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
 Date: Wed,  3 Dec 2025 16:28:42 +0100
-Message-ID: <20251203152459.758173219@linuxfoundation.org>
+Message-ID: <20251203152427.846451302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,102 +57,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valek Andrej <andrej.v@skyrain.eu>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
+commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
 
-There is an race-condition where device is not full working after SW reset.
-Therefore it's necessary to wait some time after reset and verify shadow
-registers values by reading and comparing the values before/after reset.
-This mechanism is described in datasheet at least from revision D.
+Data read from a DbC device may be corrupted due to a race between
+ongoing write and write request completion handler both queuing new
+transfer blocks (TRBs) if there are remining data in the kfifo.
 
-Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
-Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+TRBs may be in incorrct order compared to the data in the kfifo.
+
+Driver fails to keep lock between reading data from kfifo into a
+dbc request buffer, and queuing the request to the transfer ring.
+
+This allows completed request to re-queue itself in the middle of
+an ongoing transfer loop, forcing itself between a kfifo read and
+request TRB write of another request
+
+cpu0					cpu1 (re-queue completed req2)
+
+lock(port_lock)
+dbc_start_tx()
+kfifo_out(fifo, req1->buffer)
+unlock(port_lock)
+					lock(port_lock)
+					dbc_write_complete(req2)
+					dbc_start_tx()
+      					kfifo_out(fifo, req2->buffer)
+					unlock(port_lock)
+					lock(port_lock)
+					req2->trb = ring->enqueue;
+					ring->enqueue++
+					unlock(port_lock)
+lock(port_lock)
+req1->trb = ring->enqueue;
+ring->enqueue++
+unlock(port_lock)
+
+In the above scenario a kfifo containing "12345678" would read "1234" to
+req1 and "5678" to req2, but req2 is queued before req1 leading to
+data being transmitted as "56781234"
+
+Solve this by adding a flag that prevents starting a new tx if we
+are already mid dbc_start_tx() during the unlocked part.
+
+The already running dbc_do_start_tx() will make sure the newly completed
+request gets re-queued as it is added to the request write_pool while
+holding the lock.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-dbgcap.h |    1 +
+ drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -56,6 +56,8 @@
- #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
- #define ADXL355_SELF_TEST_REG		0x2E
- #define ADXL355_RESET_REG		0x2F
-+#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
-+#define ADXL355_SHADOW_REG_COUNT	5
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -112,6 +112,7 @@ struct dbc_port {
+ 	struct kfifo			write_fifo;
  
- #define ADXL355_DEVID_AD_VAL		0xAD
- #define ADXL355_DEVID_MST_VAL		0x1D
-@@ -238,7 +240,12 @@ static void adxl355_fill_3db_frequency_t
- static int adxl355_setup(struct adxl355_data *data)
+ 	bool				registered;
++	bool				tx_running;
+ };
+ 
+ struct dbc_driver {
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -37,7 +37,7 @@ dbc_send_packet(struct dbc_port *port, c
+ 	return size;
+ }
+ 
+-static int dbc_start_tx(struct dbc_port *port)
++static int dbc_do_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
  {
- 	unsigned int regval;
-+	int retries = 5; /* the number is chosen based on empirical reasons */
- 	int ret;
-+	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
-+
-+	if (!shadow_regs)
-+		return -ENOMEM;
+@@ -47,6 +47,8 @@ static int dbc_start_tx(struct dbc_port
+ 	bool			do_tty_wake = false;
+ 	struct list_head	*pool = &port->write_pool;
  
- 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
- 	if (ret)
-@@ -267,14 +274,41 @@ static int adxl355_setup(struct adxl355_
- 		return -ENODEV;
++	port->tx_running = true;
++
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+ 		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
+@@ -67,12 +69,25 @@ static int dbc_start_tx(struct dbc_port
+ 		}
  	}
  
--	/*
--	 * Perform a software reset to make sure the device is in a consistent
--	 * state after start-up.
--	 */
--	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
-+	/* Read shadow registers to be compared after reset */
-+	ret = regmap_bulk_read(data->regmap,
-+			       ADXL355_BASE_ADDR_SHADOW_REG,
-+			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
- 	if (ret)
- 		return ret;
++	port->tx_running = false;
++
+ 	if (do_tty_wake && port->port.tty)
+ 		tty_wakeup(port->port.tty);
  
-+	do {
-+		if (--retries == 0) {
-+			dev_err(data->dev, "Shadow registers mismatch\n");
-+			return -EIO;
-+		}
+ 	return status;
+ }
+ 
++/* must be called with port->port_lock held */
++static int dbc_start_tx(struct dbc_port *port)
++{
++	lockdep_assert_held(&port->port_lock);
 +
-+		/*
-+		 * Perform a software reset to make sure the device is in a consistent
-+		 * state after start-up.
-+		 */
-+		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
-+				   ADXL355_RESET_CODE);
-+		if (ret)
-+			return ret;
++	if (port->tx_running)
++		return -EBUSY;
 +
-+		/* Wait at least 5ms after software reset */
-+		usleep_range(5000, 10000);
++	return dbc_do_start_tx(port);
++}
 +
-+		/* Read shadow registers for comparison */
-+		ret = regmap_bulk_read(data->regmap,
-+				       ADXL355_BASE_ADDR_SHADOW_REG,
-+				       data->buffer.buf,
-+				       ADXL355_SHADOW_REG_COUNT);
-+		if (ret)
-+			return ret;
-+	} while (memcmp(shadow_regs, data->buffer.buf,
-+			ADXL355_SHADOW_REG_COUNT));
-+
- 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
- 				 ADXL355_POWER_CTL_DRDY_MSK,
- 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
+ static void dbc_start_rx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
 
 
 
