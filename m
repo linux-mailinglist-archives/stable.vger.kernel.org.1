@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5631CA009C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCCBC9F9FE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EB5630007B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28CB830007AB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD335BDAE;
-	Wed,  3 Dec 2025 16:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20747313E14;
+	Wed,  3 Dec 2025 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx6+v+FM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPU8CjKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D79C340279;
-	Wed,  3 Dec 2025 16:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1E31355A;
+	Wed,  3 Dec 2025 15:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780084; cv=none; b=SVUYCwB2fOmFZdEt4y+Telm7rZGcwnGqoq+YZ0FwSRcaEBhB/NAYIW/lOX1QdzcVOeszc0H24GkQPiwsTIwYouPod34faGAXL3VejdqwsXV+qR3s0FyICbpOkXIuxJnOs+n58qJbEAe1LNlFcQ80ya+kbNOhlN8lqf8aKD5m8oc=
+	t=1764776764; cv=none; b=Xg/04CSohqn/7LbjKT8w/qqMczuAd2Xuu/rpr/Vf0SWxIwo7kFXzs5Tx1FfDqgazuGiZQuropkWBZBYGHlBjl+LeBPVLTCqnyTazFCsRj+ORgv+UZmWj3pWWhuHqWaIxQZa0s+pFOWt6rsFLwaEvq4X+arZUMXeGw67CpKhNXuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780084; c=relaxed/simple;
-	bh=p1L1q2gXVuMlxHT02lST4BcJniVoCj5Roe2KfniQ07M=;
+	s=arc-20240116; t=1764776764; c=relaxed/simple;
+	bh=lpNf41n2VRHRO+DUlQiokvbwxSKshQgemOZSXdIU+Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/MNmrWGqQQO0CCMrxIluYe6FJpAnxTnyzRWLzLH3cHjv98glxVWt187zIblZIJKqkMI4fXiLPPcPTNez/GsgBGAR1tmXohfixzr6KCF0umFpq4IuUL+CwspqbYtFw/8XJS+N7WTwBTodnpInd9563TLY+XT1xw71bihGzpP31U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx6+v+FM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC8DC116C6;
-	Wed,  3 Dec 2025 16:41:23 +0000 (UTC)
+	 MIME-Version; b=PHp9Mlj5n+sSnwSRULHfPrOqop8A6S9pmYnnv4z5+AMLVgUNiz9zwKf1q5SzpQJHXu+coSA7bFZUyUfj3RZ9U6F5fRX3Pm7G/z6F04NRqD7u15a5rsCjVhprM0bTNR5qY4Mjz04QFA6mz6WictPUvTNpFVDa7gVojrFNlJyCxEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPU8CjKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E2EC4CEF5;
+	Wed,  3 Dec 2025 15:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780084;
-	bh=p1L1q2gXVuMlxHT02lST4BcJniVoCj5Roe2KfniQ07M=;
+	s=korg; t=1764776764;
+	bh=lpNf41n2VRHRO+DUlQiokvbwxSKshQgemOZSXdIU+Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lx6+v+FMJM3SqNIlhfuKA+XatZRWdOPyTId5JCJtK/vRcHcU1VcpiocQDArGCzXH/
-	 32rcuCv2ire2OnirD2xpENRexdt0HfE1nEnX+zXrm7+uxGYQEeZL3wWZyN//upF9fm
-	 EeTxPyvOZ+SoYrTvzGCq9Ipp55lVrS1Drs8/uEow=
+	b=xPU8CjKCTATeW31/hdTNF5tuxDDJFOnwRaNeaNWzK9pCuUTG7DskF+D0G6G4+p+IM
+	 tOz8Dl8/0GqBPLef2XD9UGyM7Ab6Jr0/NaloicTsIFz/SmgQBWSViWTuDQLGpIJd65
+	 DCgEIlmHtQzZaH/JazwbE2JhDTFu63dNfkLRqYEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zha <Yifan.Zha@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 450/568] drm/amdgpu: Skip emit de meta data on gfx11 with rs64 enabled
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 248/300] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
 Date: Wed,  3 Dec 2025 16:27:32 +0100
-Message-ID: <20251203152457.188609462@linuxfoundation.org>
+Message-ID: <20251203152409.820310772@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zha <Yifan.Zha@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 80d8a9ad1587b64c545d515ab6cb7ecb9908e1b3 upstream.
+[ Upstream commit 316e361b5d2cdeb8d778983794a1c6eadcb26814 ]
 
-[Why]
-Accoreding to CP updated to RS64 on gfx11,
-WRITE_DATA with PREEMPTION_META_MEMORY(dst_sel=8) is illegal for CP FW.
-That packet is used for MCBP on F32 based system.
-So it would lead to incorrect GRBM write and FW is not handling that
-extra case correctly.
+The "groups" property can hold multiple entries (e.g.
+toshiba/tmpv7708-rm-mbrc.dts file), so allow that by dropping incorrect
+type (pinmux-node.yaml schema already defines that as string-array) and
+adding constraints for items.  This fixes dtbs_check warnings like:
 
-[How]
-With gfx11 rs64 enabled, skip emit de meta data.
+  toshiba/tmpv7708-rm-mbrc.dtb: pinctrl@24190000 (toshiba,tmpv7708-pinctrl):
+    pwm-pins:groups: ['pwm0_gpio16_grp', 'pwm1_gpio17_grp', 'pwm2_gpio18_grp', 'pwm3_gpio19_grp'] is too long
 
-Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8366cd442d226463e673bed5d199df916f4ecbcf)
+Fixes: 1825c1fe0057 ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC")
 Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[ adjusted $ref context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml |   26 +++++-----
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -5392,9 +5392,9 @@ static void gfx_v11_0_ring_emit_ib_gfx(s
- 		if (flags & AMDGPU_IB_PREEMPTED)
- 			control |= INDIRECT_BUFFER_PRE_RESUME(1);
+--- a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
+@@ -46,18 +46,20 @@ patternProperties:
+       groups:
+         description:
+           Name of the pin group to use for the functions.
+-        $ref: "/schemas/types.yaml#/definitions/string"
+-        enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
+-               i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
+-               spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
+-               spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
+-               uart0_grp, uart1_grp, uart2_grp, uart3_grp,
+-               pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
+-               pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
+-               pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
+-               pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
+-               pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
+-               pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
++        items:
++          enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
++                 i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
++                 spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
++                 spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
++                 uart0_grp, uart1_grp, uart2_grp, uart3_grp,
++                 pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
++                 pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
++                 pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
++                 pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
++                 pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
++                 pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
++        minItems: 1
++        maxItems: 8
  
--		if (vmid)
-+		if (vmid && !ring->adev->gfx.rs64_enable)
- 			gfx_v11_0_ring_emit_de_meta(ring,
--				    (!amdgpu_sriov_vf(ring->adev) && flags & AMDGPU_IB_PREEMPTED) ? true : false);
-+				!amdgpu_sriov_vf(ring->adev) && (flags & AMDGPU_IB_PREEMPTED));
- 	}
- 
- 	if (ring->is_mes_queue)
+       drive-strength:
+         enum: [2, 4, 6, 8, 16, 24, 32]
 
 
 
