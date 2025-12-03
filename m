@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7825ECA06BB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F0ACA14E0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39A1431AD949
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F3C63281CA3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89F134C121;
-	Wed,  3 Dec 2025 16:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985EB36A03D;
+	Wed,  3 Dec 2025 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDnvPFgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ny95TE+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B4134BA22;
-	Wed,  3 Dec 2025 16:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513B836A038;
+	Wed,  3 Dec 2025 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777708; cv=none; b=VRurSN7Ylcna133/aqO+cw5yQjJB3H5g1tMZgz7A8GoZeobrnW5ALKw9nqTfWV59xSe1v5KiJ0uoKq776R0WzaOUZBImzDtQQPeAjGJ0dZ1lfiZfLv05kti7VtgFje+R7HH0tOfI3Ess0Wnde7/6/Z085Xp0iHL3RPbRUhLhqaw=
+	t=1764779483; cv=none; b=RCrQ5RzU3a2/K8MSuZ/HqmZ98PBkl1kDh5EMky0wcjNa8XUzJSAHpmFwLwtLxejUuj/Wr9ZAmKXz9F3VyTSGYVd2c1TVYg1RdKvpVZ0jf4RQLzwJb+3zoFXZrtLDjPgmrElv9ac8yzgjvQsxtXS9fcRAMWfdM5QuwkUqGAnPUG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777708; c=relaxed/simple;
-	bh=HTICPbVBwm6xs1AWLwerXfN7yVX1iQDjHl+k0NfAE2I=;
+	s=arc-20240116; t=1764779483; c=relaxed/simple;
+	bh=eTfRkl6qKUh/rZcwuccFe7PtYuaMReUrdtWai3KeOxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJAQyaqIQn6ZUjyRG9nCScHidNjOJaFELhpEpsRnCHSoH84JUQqTkCUpkN/Ww7HgvXjTijHMsRAL77+DwdZTxaMjjsr2tGtxYHZXAFACR4ORrel0qbFqjhdMZMuf8iGGBD61LlItlNBPSixGEWXgzkErFq3xbHitNvgO6qLAoyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDnvPFgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC031C4CEF5;
-	Wed,  3 Dec 2025 16:01:47 +0000 (UTC)
+	 MIME-Version; b=Ttu/DHVrXrzfUBBZIlRsIaE+A3qegcQo5h33XCUDboEGPBcyp96Ja7M4C1rL1Y5pZaHuW1uCjDa+7jEJQBTFxNjqpEKxmOv7nXA5B2wrpKn83KY387Txur25KHRyjV6iDuaxoRaUv5ULzAfuTt44Jv5YiKFxeMqN9bHMpJnzZXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ny95TE+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2963C4CEF5;
+	Wed,  3 Dec 2025 16:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777708;
-	bh=HTICPbVBwm6xs1AWLwerXfN7yVX1iQDjHl+k0NfAE2I=;
+	s=korg; t=1764779483;
+	bh=eTfRkl6qKUh/rZcwuccFe7PtYuaMReUrdtWai3KeOxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDnvPFguNc8PZnPH7fpRRpnIQ800pHzDkDRtAenSj3BWMalb7abqmbVZEUOTunjF+
-	 Rqqi2vOnmEkuBpZugOLR2od2vNMaRyguzO1Ncimtpx1M+Z+49/lLPw7OktLvjy5Cd/
-	 O/Hwt22Fup0aD+BFU+jpXD+O8TrHN04riwO2zsw8=
+	b=Ny95TE+J0LpjcZHUq33QNKoaE/U4N7wv+IpNZtP+bpzW7K0mJgA+xtbO/UvdvNm7l
+	 fVFLiG8BzOkKtqBeqbjA3+fz6StikycQjizMDfwk6UXEqfNy4ZA3B7ZBdjOLwxIfOv
+	 kyVC1ZnEqQEDOOHgmoZEM0xGEUTr8QEPjToC4Qd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/392] media: fix uninitialized symbol warnings
-Date: Wed,  3 Dec 2025 16:24:31 +0100
-Message-ID: <20251203152418.546299050@linuxfoundation.org>
+Subject: [PATCH 6.1 270/568] orangefs: fix xattr related buffer overflow...
+Date: Wed,  3 Dec 2025 16:24:32 +0100
+Message-ID: <20251203152450.602500847@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,115 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
+[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
 
-Initialize variables to fix these smatch warnings
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'protocol'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'scancode'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'toggle'.
-drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
-symbol 'snr'.
-drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
-symbol 'totalgain'.
+Willy Tarreau <w@1wt.eu> forwarded me a message from
+Disclosure <disclosure@aisle.com> with the following
+warning:
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
+> The helper `xattr_key()` uses the pointer variable in the loop condition
+> rather than dereferencing it. As `key` is incremented, it remains non-NULL
+> (until it runs into unmapped memory), so the loop does not terminate on
+> valid C strings and will walk memory indefinitely, consuming CPU or hanging
+> the thread.
+
+I easily reproduced this with setfattr and getfattr, causing a kernel
+oops, hung user processes and corrupted orangefs files. Disclosure
+sent along a diff (not a patch) with a suggested fix, which I based
+this patch on.
+
+After xattr_key started working right, xfstest generic/069 exposed an
+xattr related memory leak that lead to OOM. xattr_key returns
+a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
+used hash_add, a kernel hashing macro. hash_add also hashes the key using
+hash_log which resulted in additions to the xattr cache going to the wrong
+hash bucket. generic/069 tortures a single file and orangefs does a
+getattr for the xattr "security.capability" every time. Orangefs
+negative caches on xattrs which includes a kmalloc. Since adds to the
+xattr cache were going to the wrong bucket, every getattr for
+"security.capability" resulted in another kmalloc, none of which were
+ever freed.
+
+I changed the two uses of hash_add to hlist_add_head instead
+and the memory leak ceased and generic/069 quit throwing furniture.
+
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
- drivers/media/tuners/xc4000.c  |  8 ++++----
- drivers/media/tuners/xc5000.c  | 12 ++++++------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ fs/orangefs/xattr.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
-index 56674173524fd..0c1c54b5a6f5e 100644
---- a/drivers/media/i2c/ir-kbd-i2c.c
-+++ b/drivers/media/i2c/ir-kbd-i2c.c
-@@ -284,9 +284,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
- 
- static int ir_key_poll(struct IR_i2c *ir)
+diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
+index 9a5b757fbd2f6..2d2d16caf9190 100644
+--- a/fs/orangefs/xattr.c
++++ b/fs/orangefs/xattr.c
+@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
+ static unsigned int xattr_key(const char *key)
  {
--	enum rc_proto protocol;
--	u32 scancode;
--	u8 toggle;
-+	enum rc_proto protocol = 0;
-+	u32 scancode = 0;
-+	u8 toggle = 0;
- 	int rc;
+ 	unsigned int i = 0;
+-	while (key)
++	if (!key)
++		return 0;
++	while (*key)
+ 		i += *key++;
+ 	return i % 16;
+ }
+@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 				cx->length = -1;
+ 				cx->timeout = jiffies +
+ 				    orangefs_getattr_timeout_msecs*HZ/1000;
+-				hash_add(orangefs_inode->xattr_cache, &cx->node,
+-				    xattr_key(cx->key));
++				hlist_add_head( &cx->node,
++                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 			}
+ 		}
+ 		goto out_release_op;
+@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 			memcpy(cx->val, buffer, length);
+ 			cx->length = length;
+ 			cx->timeout = jiffies + HZ;
+-			hash_add(orangefs_inode->xattr_cache, &cx->node,
+-			    xattr_key(cx->key));
++			hlist_add_head(&cx->node,
++				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 		}
+ 	}
  
- 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 849df4d1c573c..c8aa193e04e71 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1089,12 +1089,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
- 
- static void xc_debug_dump(struct xc4000_priv *priv)
- {
--	u16	adc_envelope;
-+	u16	adc_envelope = 0;
- 	u32	freq_error_hz = 0;
--	u16	lock_status;
-+	u16	lock_status = 0;
- 	u32	hsync_freq_hz = 0;
--	u16	frame_lines;
--	u16	quality;
-+	u16	frame_lines = 0;
-+	u16	quality = 0;
- 	u16	signal = 0;
- 	u16	noise = 0;
- 	u8	hw_majorversion = 0, hw_minorversion = 0;
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index ec9a3cd4784e1..a28481edd22ed 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
- 
- static void xc_debug_dump(struct xc5000_priv *priv)
- {
--	u16 adc_envelope;
-+	u16 adc_envelope = 0;
- 	u32 freq_error_hz = 0;
--	u16 lock_status;
-+	u16 lock_status = 0;
- 	u32 hsync_freq_hz = 0;
--	u16 frame_lines;
--	u16 quality;
--	u16 snr;
--	u16 totalgain;
-+	u16 frame_lines = 0;
-+	u16 quality = 0;
-+	u16 snr = 0;
-+	u16 totalgain = 0;
- 	u8 hw_majorversion = 0, hw_minorversion = 0;
- 	u8 fw_majorversion = 0, fw_minorversion = 0;
- 	u16 fw_buildversion = 0;
 -- 
 2.51.0
 
