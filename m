@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F147ACA0F12
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873BBCA1522
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35A8E319BC96
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5CB3058639
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F06D30FF2F;
-	Wed,  3 Dec 2025 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2360C3612F2;
+	Wed,  3 Dec 2025 16:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzHDAVhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GE3QSJxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC8443ABC;
-	Wed,  3 Dec 2025 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AF331B812;
+	Wed,  3 Dec 2025 16:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777546; cv=none; b=DU1M3BxGQqZXgGui/7y6WutyFXdd2Z1OL/6kNnEoOlbukCmkGHvs1IvJRF1eKylpqYqRyk0BMTjqlY/Zq2riQm36IHppeY4Agoh4SX0LFsvEL8m+8DYeJA/m2qB6I8xQJ3zmy3CEcFICf/QOChSZXwuVHIohH39ozoT7MWW5iRg=
+	t=1764779313; cv=none; b=EBXoWCoCWUoiPn5zQWIOJGUpwXxMhIiOn4RDcxSll6hAC+mHiymLDmedQLjmAEL5tKQxuqgwi8BC1r7+ybDzXgJyHQeZrrJfCeXv8vELf+H80OmDsdizaBhuzndSKWCmNKfXXbpQgenDo5TOZF1PSkhvWgL+/NUiVNZoI6ETXqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777546; c=relaxed/simple;
-	bh=6O11lu/h68tyjzLmKKrQ5/QY3K2vGYaw0MvHANbi4rU=;
+	s=arc-20240116; t=1764779313; c=relaxed/simple;
+	bh=caTy8JJG9m3EX3WgoLvtgjVD4FRl5wNCd96m9HvUutg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEhf2PwAea0XCsnD5DeTVOpmq/hcCdkdqwE+yGF2ZgP4a30FgKFHIbfBrY5sjZwcLcibwqAaNSCp45QsWKCF1SRcjeG7SE3Z241huN1gBQDvvnkBvtBEVk25Sc3lYmX8m+zVZelW4Dyhh262tA/DmDnVkkDs22f9kM2jMNnwTBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzHDAVhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78244C4CEF5;
-	Wed,  3 Dec 2025 15:59:05 +0000 (UTC)
+	 MIME-Version; b=c++DA66/M6Qvcpy8RVHfaQ/b/HrKLmMdeF/7IEg/NQWwSUo53pil41JQ29jdKC4MhXDHXjVrBSiJqWvi/KnNCNWZBqe7A2HGrdlxnRsprPkI9QjkAgTVNwCdZ5yN6q2G3yZ/iT4Fcdv/CbChV7hEjK7kDuoL88rH/1P8x+F4aMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GE3QSJxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC632C4CEF5;
+	Wed,  3 Dec 2025 16:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777545;
-	bh=6O11lu/h68tyjzLmKKrQ5/QY3K2vGYaw0MvHANbi4rU=;
+	s=korg; t=1764779313;
+	bh=caTy8JJG9m3EX3WgoLvtgjVD4FRl5wNCd96m9HvUutg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzHDAVhGB4jPKUC7rfL0QtvC62Z2V5Rwm2AC6FGax4ZvF9T6O9UaqKtauo5yC5PN2
-	 87au0OJrW485RS6pB/pJJEjv0V/hAE3llwQ8D9KnPYEM7yRVh8Ay4QVoYjx5j3OmDd
-	 Aml9w1eDQ5tR2GDqDa2x9iUoZoxVnt6ecSkk5ExQ=
+	b=GE3QSJxYPY12n5HO515EAmVlZcYasBP0+jTrgbY8k9BPmhqAFheZGbSoBqqIujdvE
+	 HBYhFDlnn2xCmssKEocMFjUF6M1r2FO8q+Jv1Hw21G/4shqvPOvOVr0tSYmTqWH/Nm
+	 3dwSw3Q0uWLkmL4X3BESw/4mHFZBPuT0dnlfshSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/392] tee: allow a driver to allocate a tee_device without a pool
+Subject: [PATCH 6.1 221/568] udp_tunnel: use netdev_warn() instead of netdev_WARN()
 Date: Wed,  3 Dec 2025 16:23:43 +0100
-Message-ID: <20251203152416.792545005@linuxfoundation.org>
+Message-ID: <20251203152448.816637230@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 6dbcd5a9ab6cb6644e7d728521da1c9035ec7235 ]
+[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
 
-A TEE driver doesn't always need to provide a pool if it doesn't
-support memory sharing ioctls and can allocate memory for TEE
-messages in another way. Although this is mentioned in the
-documentation for tee_device_alloc(), it is not handled correctly.
+netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
+file and line information. In this case, udp_tunnel_nic_register()
+returning an error is just a failed operation, not a kernel bug.
 
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+udp_tunnel_nic_register() can fail due to a memory allocation
+failure (kzalloc() or udp_tunnel_nic_alloc()).
+This is a normal runtime error and not a kernel bug.
+
+Replace netdev_WARN() with netdev_warn() accordingly.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_core.c | 2 +-
+ net/ipv4/udp_tunnel_nic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index a7e89c229fc51..f10089fadaf07 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -895,7 +895,7 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
+diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
+index bc3a043a5d5c7..72b0210cdead7 100644
+--- a/net/ipv4/udp_tunnel_nic.c
++++ b/net/ipv4/udp_tunnel_nic.c
+@@ -897,7 +897,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
  
- 	if (!teedesc || !teedesc->name || !teedesc->ops ||
- 	    !teedesc->ops->get_version || !teedesc->ops->open ||
--	    !teedesc->ops->release || !pool)
-+	    !teedesc->ops->release)
- 		return ERR_PTR(-EINVAL);
- 
- 	teedev = kzalloc(sizeof(*teedev), GFP_KERNEL);
+ 		err = udp_tunnel_nic_register(dev);
+ 		if (err)
+-			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
++			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
+ 		return notifier_from_errno(err);
+ 	}
+ 	/* All other events will need the udp_tunnel_nic state */
 -- 
 2.51.0
 
