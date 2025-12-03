@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-198528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E51C9FBE7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2853CA08EE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC5EC3025337
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9FDD3193D2A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C123101A2;
-	Wed,  3 Dec 2025 15:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1B7335BB4;
+	Wed,  3 Dec 2025 15:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PV5oEBJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJHvBLWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2CF313E00;
-	Wed,  3 Dec 2025 15:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1169335BA0;
+	Wed,  3 Dec 2025 15:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776844; cv=none; b=hTeQq5QYlP1m3BdRa5h6LVo34vV1OZjICwEihfPgLeXtYXaAkAhvjDuHXQqWZf4F8tD/kEQzgFiDS2dgau1RxY3iwXMMQSlRCQjUyfEEy1FE0Ev+6TF/ZW3iPXY2jN1by90bzlvZltglFlMG/VX+WEX0OFYqC1aC0NkfV9FMlek=
+	t=1764777205; cv=none; b=B4viC9+2LJ7FQAKsMXGARmx/yroFew8bhNN8LyOEjd0C1+anf39s+SkS6uLDEAFbLKw+P9mO1T2jCDJwWc/TnvewX9usVaSLqMdmRK7t9cuNySpv4Brj4tLDpJUr4GRdqz2k+ivHwR3R/VVnqdHUd7X8o2cSsSkKVpzNqbRgQEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776844; c=relaxed/simple;
-	bh=pIGnLcqnpfeS/QhhBM5IGGeYmEgvN/qV3cThkwqQrXo=;
+	s=arc-20240116; t=1764777205; c=relaxed/simple;
+	bh=oDeqMQ9hfvXn5JqimyL+BqqZ5rgijyOsK16dDk32+44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlwnNvc4CUlEFde/XsJYtd0MXYL6itYiUCvqqi5sKPj59RB7Zwx8//8stFhNGVk/LkHPdJa4fjcqrNIlcqWhP0S1j4NMT1g+P9PZqxuaFPuNlYB7Rabd9Z49OAfNzCSZLylDTOuPzTaX+nXIhDL/+qdoAo5MWglvI2kKhASuWaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PV5oEBJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC56C4CEF5;
-	Wed,  3 Dec 2025 15:47:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bNrBJVBffApmWXRKrga5O+uSO8ALmO6MjQ/eUDO8SgPDJjMZFhBvth/n4SWvVFaz8VxRHTu/fp0zQhXuzyu3zT2ptCazkoxOrxVxgLiMp1TwnUMVqtNYeHHOXkipRNbXx/3+lm5/e6hL2Wv3qTOwqIf5IyeEYdGQUvaxw271XjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJHvBLWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A978C116B1;
+	Wed,  3 Dec 2025 15:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776844;
-	bh=pIGnLcqnpfeS/QhhBM5IGGeYmEgvN/qV3cThkwqQrXo=;
+	s=korg; t=1764777204;
+	bh=oDeqMQ9hfvXn5JqimyL+BqqZ5rgijyOsK16dDk32+44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PV5oEBJlCYjFrCVULAvwtqJFRT226yqWQeAGlkvnLO+H4g9NRE0bwW39JxvNm7CLu
-	 2TfVUJvovs51A/RZhTUmb5XES8FNpXhUpAquShMdYSZnAI2+3ZzG5mvnUBra6F2Ez3
-	 J9jLbHpKvhHgS1vsH0LZDNr7q/CGQDNCrCYjTQ6g=
+	b=bJHvBLWn0INQHS4XaMAnJdPbXJXbI817MqfQ1AJxGNdjVVRQjVNT3W6JwDhKDaQLn
+	 JI5b88SM+3pRUFmuIOYZIIt6QEk85z32Ce2LjBcti1nl8XL590Z3OeorXDyWCSJig2
+	 ETbothsGzkx/jwHPlCKoicjXcnJ+IiSdkv/zNt/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Alex Davis <alex47794@gmail.com>,
 	stable <stable@kernel.org>,
-	Desnes Nunes <desnesn@redhat.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 280/300] usb: storage: Fix memory leak in USB bulk transport
-Date: Wed,  3 Dec 2025 16:28:04 +0100
-Message-ID: <20251203152411.000545433@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.17 107/146] serial: 8250: Fix 8250_rsa symbol loop
+Date: Wed,  3 Dec 2025 16:28:05 +0100
+Message-ID: <20251203152350.382374233@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,69 +61,198 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
+commit 2bf95a9bcb50002ca9d47403d60aedaeb2e19abe upstream.
 
-A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-Test Project (LTP). The following bytes were mainly observed: 0x53425355.
+Depmod fails for a kernel made with:
+  make allnoconfig
+  echo -e "CONFIG_MODULES=y\nCONFIG_SERIAL_8250=m\nCONFIG_SERIAL_8250_EXTENDED=y\nCONFIG_SERIAL_8250_RSA=y" >> .config
+  make olddefconfig
 
-When USB storage devices incorrectly skip the data phase with status data,
-the code extracts/validates the CSW from the sg buffer, but fails to clear
-it afterwards. This leaves status protocol data in srb's transfer buffer,
-such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
-lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-interfaces, such as the one seen here when the LTP test requested 512 KiB.
+...due to a dependency loop:
 
-Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-after the validation of devices that skip data phase.
+  depmod: ERROR: Cycle detected: 8250 -> 8250_base -> 8250
+  depmod: ERROR: Found 2 modules in dependency cycles!
 
-Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-ing pages at allocation time, this leak occurs after allocation, when USB
-protocol data is written to already-allocated sg pages.
+This is caused by the move of 8250 RSA code from 8250_port.c (in
+8250_base.ko) into 8250_rsa.c (in 8250.ko) by the commit 5a128fb475fb
+("serial: 8250: move RSA functions to 8250_rsa.c"). The commit
+b20d6576cdb3 ("serial: 8250: export RSA functions") tried to fix a
+missing symbol issue with EXPORTs but those then cause this dependency
+cycle.
 
-Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
+Break dependency loop by moving 8250_rsa.o from 8250.ko to 8250_base.ko
+and by passing univ8250_port_base_ops to univ8250_rsa_support() that
+can make a local copy of it.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Reported-by: Alex Davis <alex47794@gmail.com>
+Fixes: 5a128fb475fb ("serial: 8250: move RSA functions to 8250_rsa.c")
+Fixes: b20d6576cdb3 ("serial: 8250: export RSA functions")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
+Link: https://lore.kernel.org/all/87frc3sd8d.fsf@posteo.net/
+Link: https://lore.kernel.org/all/CADiockCvM6v+d+UoFZpJSMoLAdpy99_h-hJdzUsdfaWGn3W7-g@mail.gmail.com/
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20251110105043.4062-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/transport.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/tty/serial/8250/8250.h          |    4 ++--
+ drivers/tty/serial/8250/8250_platform.c |    2 +-
+ drivers/tty/serial/8250/8250_rsa.c      |   26 +++++++++++++++++---------
+ drivers/tty/serial/8250/Makefile        |    2 +-
+ 4 files changed, 21 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -1199,7 +1199,23 @@ int usb_stor_Bulk_transport(struct scsi_
- 						US_BULK_CS_WRAP_LEN &&
- 					bcs->Signature ==
- 						cpu_to_le32(US_BULK_CS_SIGN)) {
-+				unsigned char buf[US_BULK_CS_WRAP_LEN];
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -317,13 +317,13 @@ static inline void serial8250_pnp_exit(v
+ #endif
+ 
+ #ifdef CONFIG_SERIAL_8250_RSA
+-void univ8250_rsa_support(struct uart_ops *ops);
++void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops);
+ void rsa_enable(struct uart_8250_port *up);
+ void rsa_disable(struct uart_8250_port *up);
+ void rsa_autoconfig(struct uart_8250_port *up);
+ void rsa_reset(struct uart_8250_port *up);
+ #else
+-static inline void univ8250_rsa_support(struct uart_ops *ops) { }
++static inline void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops) { }
+ static inline void rsa_enable(struct uart_8250_port *up) {}
+ static inline void rsa_disable(struct uart_8250_port *up) {}
+ static inline void rsa_autoconfig(struct uart_8250_port *up) {}
+--- a/drivers/tty/serial/8250/8250_platform.c
++++ b/drivers/tty/serial/8250/8250_platform.c
+@@ -74,7 +74,7 @@ static void __init __serial8250_isa_init
+ 
+ 	/* chain base port ops to support Remote Supervisor Adapter */
+ 	univ8250_port_ops = *univ8250_port_base_ops;
+-	univ8250_rsa_support(&univ8250_port_ops);
++	univ8250_rsa_support(&univ8250_port_ops, univ8250_port_base_ops);
+ 
+ 	if (share_irqs)
+ 		irqflag = IRQF_SHARED;
+--- a/drivers/tty/serial/8250/8250_rsa.c
++++ b/drivers/tty/serial/8250/8250_rsa.c
+@@ -14,6 +14,8 @@
+ static unsigned long probe_rsa[PORT_RSA_MAX];
+ static unsigned int probe_rsa_count;
+ 
++static const struct uart_ops *core_port_base_ops;
 +
- 				usb_stor_dbg(us, "Device skipped data phase\n");
-+
-+				/*
-+				 * Devices skipping data phase might leave CSW data in srb's
-+				 * transfer buffer. Zero it to prevent USB protocol leakage.
-+				 */
-+				sg = NULL;
-+				offset = 0;
-+				memset(buf, 0, sizeof(buf));
-+				if (usb_stor_access_xfer_buf(buf,
-+						US_BULK_CS_WRAP_LEN, srb, &sg,
-+						&offset, TO_XFER_BUF) !=
-+							US_BULK_CS_WRAP_LEN)
-+					usb_stor_dbg(us, "Failed to clear CSW data\n");
-+
- 				scsi_set_resid(srb, transfer_length);
- 				goto skipped_data_phase;
- 			}
+ static int rsa8250_request_resource(struct uart_8250_port *up)
+ {
+ 	struct uart_port *port = &up->port;
+@@ -67,7 +69,7 @@ static void univ8250_config_port(struct
+ 		}
+ 	}
+ 
+-	univ8250_port_base_ops->config_port(port, flags);
++	core_port_base_ops->config_port(port, flags);
+ 
+ 	if (port->type != PORT_RSA && up->probe & UART_PROBE_RSA)
+ 		rsa8250_release_resource(up);
+@@ -78,11 +80,11 @@ static int univ8250_request_port(struct
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	int ret;
+ 
+-	ret = univ8250_port_base_ops->request_port(port);
++	ret = core_port_base_ops->request_port(port);
+ 	if (ret == 0 && port->type == PORT_RSA) {
+ 		ret = rsa8250_request_resource(up);
+ 		if (ret < 0)
+-			univ8250_port_base_ops->release_port(port);
++			core_port_base_ops->release_port(port);
+ 	}
+ 
+ 	return ret;
+@@ -94,15 +96,25 @@ static void univ8250_release_port(struct
+ 
+ 	if (port->type == PORT_RSA)
+ 		rsa8250_release_resource(up);
+-	univ8250_port_base_ops->release_port(port);
++	core_port_base_ops->release_port(port);
+ }
+ 
+-void univ8250_rsa_support(struct uart_ops *ops)
++/*
++ * It is not allowed to directly reference any symbols from 8250.ko here as
++ * that would result in a dependency loop between the 8250.ko and
++ * 8250_base.ko modules. This function is called from 8250.ko and is used to
++ * break the symbolic dependency cycle. Anything that is needed from 8250.ko
++ * has to be passed as pointers to this function which then can adjust those
++ * variables on 8250.ko side or store them locally as needed.
++ */
++void univ8250_rsa_support(struct uart_ops *ops, const struct uart_ops *core_ops)
+ {
++	core_port_base_ops = core_ops;
+ 	ops->config_port  = univ8250_config_port;
+ 	ops->request_port = univ8250_request_port;
+ 	ops->release_port = univ8250_release_port;
+ }
++EXPORT_SYMBOL_FOR_MODULES(univ8250_rsa_support, "8250");
+ 
+ module_param_hw_array(probe_rsa, ulong, ioport, &probe_rsa_count, 0444);
+ MODULE_PARM_DESC(probe_rsa, "Probe I/O ports for RSA");
+@@ -147,7 +159,6 @@ void rsa_enable(struct uart_8250_port *u
+ 	if (up->port.uartclk == SERIAL_RSA_BAUD_BASE * 16)
+ 		serial_out(up, UART_RSA_FRR, 0);
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_enable, "8250_base");
+ 
+ /*
+  * Attempts to turn off the RSA FIFO and resets the RSA board back to 115kbps compat mode. It is
+@@ -179,7 +190,6 @@ void rsa_disable(struct uart_8250_port *
+ 		up->port.uartclk = SERIAL_RSA_BAUD_BASE_LO * 16;
+ 	uart_port_unlock_irq(&up->port);
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_disable, "8250_base");
+ 
+ void rsa_autoconfig(struct uart_8250_port *up)
+ {
+@@ -192,7 +202,6 @@ void rsa_autoconfig(struct uart_8250_por
+ 	if (__rsa_enable(up))
+ 		up->port.type = PORT_RSA;
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_autoconfig, "8250_base");
+ 
+ void rsa_reset(struct uart_8250_port *up)
+ {
+@@ -201,7 +210,6 @@ void rsa_reset(struct uart_8250_port *up
+ 
+ 	serial_out(up, UART_RSA_FRR, 0);
+ }
+-EXPORT_SYMBOL_FOR_MODULES(rsa_reset, "8250_base");
+ 
+ #ifdef CONFIG_SERIAL_8250_DEPRECATED_OPTIONS
+ #ifndef MODULE
+--- a/drivers/tty/serial/8250/Makefile
++++ b/drivers/tty/serial/8250/Makefile
+@@ -7,7 +7,6 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250.o
+ 8250-y					:= 8250_core.o
+ 8250-y					+= 8250_platform.o
+ 8250-$(CONFIG_SERIAL_8250_PNP)		+= 8250_pnp.o
+-8250-$(CONFIG_SERIAL_8250_RSA)		+= 8250_rsa.o
+ 
+ obj-$(CONFIG_SERIAL_8250)		+= 8250_base.o
+ 8250_base-y				:= 8250_port.o
+@@ -15,6 +14,7 @@ obj-$(CONFIG_SERIAL_8250)		+= 8250_base.
+ 8250_base-$(CONFIG_SERIAL_8250_DWLIB)	+= 8250_dwlib.o
+ 8250_base-$(CONFIG_SERIAL_8250_FINTEK)	+= 8250_fintek.o
+ 8250_base-$(CONFIG_SERIAL_8250_PCILIB)	+= 8250_pcilib.o
++8250_base-$(CONFIG_SERIAL_8250_RSA)	+= 8250_rsa.o
+ 
+ obj-$(CONFIG_SERIAL_8250_CONSOLE)	+= 8250_early.o
+ 
 
 
 
