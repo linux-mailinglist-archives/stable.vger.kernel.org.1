@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF89C9F92F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1009C9FFC1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F6C3303E8A4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B23E2302B310
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B1F31280D;
-	Wed,  3 Dec 2025 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7F63AA194;
+	Wed,  3 Dec 2025 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18X3pGju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGLFakWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5771313E27;
-	Wed,  3 Dec 2025 15:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2123AA186;
+	Wed,  3 Dec 2025 16:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776179; cv=none; b=GtuHZzJzmblqcBbe37NM2l6XHX/csKggWU/Fsr/xsne/pGvmFN8C3U6NmHbCARRg5PHlv2gAwsXDeaLtKdlFF9BuFdaa2CeMg1Q+hj9DG5IByAtzdb70pX0mfde2kvjUOnHrYDGs+jEohFL9cJjG1/2spKYUPrxT2BZ321WKb3k=
+	t=1764779579; cv=none; b=VNi9Xg5gK3AXFV5or0ajlsPHWZxLDfGlyg8ET+zrv1/XCLCkb5TAc1rTt4uxRsvD+KeeYRYV+NQtdS4ar/kjplHqsnQlVQJYPPf0D3NCAtN3JS0zrrI7TVKw8W97QUNWSRtttT31g3PakLcIjFRLV08aFLEuO3ZHUpJ0CTrkqzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776179; c=relaxed/simple;
-	bh=iAI3SD3TJfgIdDLancSUxQa5pPoEc8+moahMVNepOZE=;
+	s=arc-20240116; t=1764779579; c=relaxed/simple;
+	bh=yNo7Xmec+uuGKiunxB6k8yGRQqynx0js1vnh3sTRkZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghWrPqddZodm0MEtg1QwiyNESW9vIPKeT+FWSBKwlJp4T4VMojH1wA9dOqmTjn0C4Kq1XmNBftN5/n1uLvYpObu9XUSWYtY+Mic3uHQ09yc6WuNRpTGS8HjL50YU3LKb0Mdn+K9sOLqm4x5lDheDnxE0NJ0DTBMaHmciYR/6U08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18X3pGju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3507EC116C6;
-	Wed,  3 Dec 2025 15:36:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZafuMerGsC8jIFK68qF/5DpPbI2qAnPLs+lFTbo2vo2kLrX1/1Jt3maric4iaPrU+xXW4MrOHghsXM48QaBBxb5Z3TdZRoHABoHJiT3Npvx4M4qzSwqQcXfNvq7yjJGNAvHdBdWQVpjC5lxQ6rJr4xtfURKUoS7kLfI+ruNeKGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGLFakWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B489C4CEF5;
+	Wed,  3 Dec 2025 16:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776179;
-	bh=iAI3SD3TJfgIdDLancSUxQa5pPoEc8+moahMVNepOZE=;
+	s=korg; t=1764779578;
+	bh=yNo7Xmec+uuGKiunxB6k8yGRQqynx0js1vnh3sTRkZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18X3pGjuxe3akLgWM1vYrAkKCGMc9IT6Le7XrI5ipScxd5z2ASE28BqIrEmO9SWsN
-	 HQyyjt+qMLUrTlphwHgOLF9omgB0PCpoN+Ew5tkn83PHfPRJY7VRVu1a1gLkmY2ojy
-	 teXtUL/7+iSyfBwaVOD8hd+LlAmjTHS6M/273PpE=
+	b=hGLFakWB7iCT4gN2NbbtOuSbQX4gM8pnWdspbps+VjmaR4gtLlZ4vNKEl3OiYTXPS
+	 3efufZqqJCe0hxhtwfqyaL84Hg3AdFmaisQUieugW3RJjS3BtMg3heIWHhpP6DRWOE
+	 T1znGCRl9NCmge3BGblNxqcUnXJPM2u5Dg0GVnbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/300] mips: lantiq: danube: add missing device_type in pci node
+Subject: [PATCH 6.1 299/568] kbuild: uapi: Strip comments before size type check
 Date: Wed,  3 Dec 2025 16:25:01 +0100
-Message-ID: <20251203152404.217018422@linuxfoundation.org>
+Message-ID: <20251203152451.658306978@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit d66949a1875352d2ddd52b144333288952a9e36f ]
+[ Upstream commit 66128f4287b04aef4d4db9bf5035985ab51487d5 ]
 
-This fixes the following warning:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: pci@e105400 (lantiq,pci-xway): 'device_type' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
+On m68k, check_sizetypes in headers_check reports:
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+    ./usr/include/asm/bootinfo-amiga.h:17: found __[us]{8,16,32,64} type without #include <linux/types.h>
+
+This header file does not use any of the Linux-specific integer types,
+but merely refers to them from comments, so this is a false positive.
+As of commit c3a9d74ee413bdb3 ("kbuild: uapi: upgrade check_sizetypes()
+warning to error"), this check was promoted to an error, breaking m68k
+all{mod,yes}config builds.
+
+Fix this by stripping simple comments before looking for Linux-specific
+integer types.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://patch.msgid.link/949f096337e28d50510e970ae3ba3ec9c1342ec0.1759753998.git.geert@linux-m68k.org
+[nathan: Adjust comment and remove unnecessary escaping from slashes in
+         regex]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube.dtsi | 2 ++
+ usr/include/headers_check.pl | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
-index ff6ff9568e1bc..1a5f4faa0831f 100644
---- a/arch/mips/boot/dts/lantiq/danube.dtsi
-+++ b/arch/mips/boot/dts/lantiq/danube.dtsi
-@@ -105,6 +105,8 @@
- 				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
- 			reg = <0x7000000 0x8000		/* config space */
- 				0xe105400 0x400>;	/* pci bridge */
-+
-+			device_type = "pci";
- 		};
- 	};
- };
+diff --git a/usr/include/headers_check.pl b/usr/include/headers_check.pl
+index b6aec5e4365f9..682980781eb37 100755
+--- a/usr/include/headers_check.pl
++++ b/usr/include/headers_check.pl
+@@ -160,6 +160,8 @@ sub check_sizetypes
+ 	if (my $included = ($line =~ /^\s*#\s*include\s+[<"](\S+)[>"]/)[0]) {
+ 		check_include_typesh($included);
+ 	}
++	# strip single-line comments, as types may be referenced within them
++	$line =~ s@/\*.*?\*/@@;
+ 	if ($line =~ m/__[us](8|16|32|64)\b/) {
+ 		printf STDERR "$filename:$lineno: " .
+ 		              "found __[us]{8,16,32,64} type " .
 -- 
 2.51.0
 
