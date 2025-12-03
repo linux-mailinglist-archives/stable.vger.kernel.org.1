@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34EA6CA10E7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE832C9FB27
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CBB4C3000B79
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A08BB3056C44
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364FE335BCC;
-	Wed,  3 Dec 2025 15:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC377316184;
+	Wed,  3 Dec 2025 15:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OddW2T8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeL3XI/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66BF30C61A;
-	Wed,  3 Dec 2025 15:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADE0314A99;
+	Wed,  3 Dec 2025 15:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777211; cv=none; b=kgjYi4TaI3QkP3BJ9aUyqsQBswpSHz6rX9PrtyAMj0SzZt4H79if+tSVfeUfkJUxKXTF540GXUWta3YmtwNrq76ZDACE/lZoHPM78aoscQg/JgsbPo2EfWtSJOCqKDo9K0l5bSsLci5q59kccUrTEEtF8Ss3WpgE2IAkjFvUn10=
+	t=1764776797; cv=none; b=rupozPkxH58NFR/XpAzOczT6K8VyxbNUZW9uCTJPeHHEEVFgkAzIdzVUJUu4h//c6qRv5Gu6YgyqEGJRuiiSyEbr93NxYrQPWuW4h2nClbXRAJfdszG17OxmvfxIzTwHe/3nHRalfigXu5n+iSWZWSPb/NCFS/l16Emy41za9NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777211; c=relaxed/simple;
-	bh=+xbR/qckgbJjh+kzkLdwEVjipOvCvsSOIP3Qb7UHgco=;
+	s=arc-20240116; t=1764776797; c=relaxed/simple;
+	bh=thZ4wmJ8UTDMhjY0LtUXl6eM4D3VjZ7IBIXzwSFHtXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ielHC6Mby+HguZpBy6JEok9NpkGqLzlXD3cnCLHq/BIvE8ARmgBrd8pYFHgfac8RZdmmWRq7VM6RemT8yZVBSnJs/AIzLL2Yfs0ZLh2xZTTBCBRa5isx4Sen2DJOzMl8xCp6DXW5cWubb7QwAn5K83O6K89wYssfxPX2nJMx97k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OddW2T8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F86BC4CEF5;
-	Wed,  3 Dec 2025 15:53:30 +0000 (UTC)
+	 MIME-Version; b=kSJU4MwJ/pelKVmo3L0ReoV2hcV+ANmD3p8n7gEP2482dCovP3cITydz3nxibOrUyO5TLHK5ykSZuG4sLt0p5bDLGY9ZKjSsj0eGmuaW9jdiGTX+8csCj0u7uR2at2ph4RVEC5DfcAWPGRERaO2gDsXepJqdg2/vymEHEhXEzcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeL3XI/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08558C4CEF5;
+	Wed,  3 Dec 2025 15:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777210;
-	bh=+xbR/qckgbJjh+kzkLdwEVjipOvCvsSOIP3Qb7UHgco=;
+	s=korg; t=1764776797;
+	bh=thZ4wmJ8UTDMhjY0LtUXl6eM4D3VjZ7IBIXzwSFHtXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OddW2T8fbPpEwpJIDy9lPQNBhK/XI9r3QBI07YqV6hJzfNxEeGAlofRu6uT8CGPs
-	 IbHOzMtro9U7/ygR9Gs//J5Ry6QyrD3JfgxNq4jBjSP4ooBUS0mVOgsw7VQUFTcS8x
-	 oG6lJ0vsRFIKWAZEhODjVQkXtFgJxdayjShd6mGY=
+	b=oeL3XI/ldsvhUaJyg0JGtR6JsVf3/si8wotV1rU4KIvPHqbbmVvVljqIHF2+j8GTl
+	 CcYPeR/60nD2AOk0vf1QFMBb8zq0qNJkjM7kQgtk/2DRYMg6oCpBP0tM4Y4hJAYbqa
+	 7dHoGM7FMuhO3FenF/6fE2ZaM1pWw+7znBtzSpa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yu Chen <chenyu45@xiaomi.com>,
-	Owen Gu <guhuinan@xiaomi.com>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.17 117/146] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
+	Alex Lu <alex_lu@realsil.com.cn>,
+	Max Chou <max.chou@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nazar Kalashnikov <sivartiwe@gmail.com>
+Subject: [PATCH 5.10 291/300] Bluetooth: Add more enc key size check
 Date: Wed,  3 Dec 2025 16:28:15 +0100
-Message-ID: <20251203152350.745543059@linuxfoundation.org>
+Message-ID: <20251203152411.402480641@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Alex Lu <alex_lu@realsil.com.cn>
 
-commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
+[ Upstream commit 04a342cc49a8522e99c9b3346371c329d841dcd2 ]
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+When we are slave role and receives l2cap conn req when encryption has
+started, we should check the enc key size to avoid KNOB attack or BLUFFS
+attack.
+>From SIG recommendation, implementations are advised to reject
+service-level connections on an encrypted baseband link with key
+strengths below 7 octets.
+A simple and clear way to achieve this is to place the enc key size
+check in hci_cc_read_enc_key_size()
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
+The btmon log below shows the case that lacks enc key size check.
 
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
+> HCI Event: Connect Request (0x04) plen 10
+        Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Class: 0x480104
+          Major class: Computer (desktop, notebook, PDA, organizers)
+          Minor class: Desktop workstation
+          Capturing (Scanner, Microphone)
+          Telephony (Cordless telephony, Modem, Headset)
+        Link type: ACL (0x01)
+< HCI Command: Accept Connection Request (0x01|0x0009) plen 7
+        Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Role: Peripheral (0x01)
+> HCI Event: Command Status (0x0f) plen 4
+      Accept Connection Request (0x01|0x0009) ncmd 2
+        Status: Success (0x00)
+> HCI Event: Connect Complete (0x03) plen 11
+        Status: Success (0x00)
+        Handle: 1
+        Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Link type: ACL (0x01)
+        Encryption: Disabled (0x00)
+...
 
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
+> HCI Event: Encryption Change (0x08) plen 4
+        Status: Success (0x00)
+        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Encryption: Enabled with E0 (0x01)
+< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
+        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 2
+        Status: Success (0x00)
+        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Key size: 6
+// We should check the enc key size
+...
 
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
+> ACL Data RX: Handle 1 flags 0x02 dlen 12
+      L2CAP: Connection Request (0x02) ident 3 len 4
+        PSM: 25 (0x0019)
+        Source CID: 64
+< ACL Data TX: Handle 1 flags 0x00 dlen 16
+      L2CAP: Connection Response (0x03) ident 3 len 8
+        Destination CID: 64
+        Source CID: 64
+        Result: Connection pending (0x0001)
+        Status: Authorization pending (0x0002)
+> HCI Event: Number of Completed Packets (0x13) plen 5
+        Num handles: 1
+        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
+        Count: 1
+        #35: len 16 (25 Kb/s)
+        Latency: 5 msec (2-7 msec ~4 msec)
+< ACL Data TX: Handle 1 flags 0x00 dlen 16
+      L2CAP: Connection Response (0x03) ident 3 len 8
+        Destination CID: 64
+        Source CID: 64
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Lu <alex_lu@realsil.com.cn>
+Signed-off-by: Max Chou <max.chou@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Nazar Kalashnikov: change status to 
+rp_status due to function parameter conflict ]
+Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/uas.c |    5 +++++
- 1 file changed, 5 insertions(+)
+Backport fix for CVE-2023-24023
+ net/bluetooth/hci_event.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
-+
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct s
- 		uas_add_work(cmnd);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3043,6 +3043,7 @@ static void read_enc_key_size_complete(s
+ 	const struct hci_rp_read_enc_key_size *rp;
+ 	struct hci_conn *conn;
+ 	u16 handle;
++	u8 rp_status;
+ 
+ 	BT_DBG("%s status 0x%02x", hdev->name, status);
+ 
+@@ -3052,6 +3053,7 @@ static void read_enc_key_size_complete(s
  	}
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
+ 	rp = (void *)skb->data;
++	rp_status = rp->status;
+ 	handle = le16_to_cpu(rp->handle);
+ 
+ 	hci_dev_lock(hdev);
+@@ -3064,15 +3066,30 @@ static void read_enc_key_size_complete(s
+ 	 * secure approach is to then assume the key size is 0 to force a
+ 	 * disconnection.
+ 	 */
+-	if (rp->status) {
++	if (rp_status) {
+ 		bt_dev_err(hdev, "failed to read key size for handle %u",
+ 			   handle);
+ 		conn->enc_key_size = 0;
+ 	} else {
+ 		conn->enc_key_size = rp->key_size;
++		rp_status = 0;
++
++		if (conn->enc_key_size < hdev->min_enc_key_size) {
++			/* As slave role, the conn->state has been set to
++			 * BT_CONNECTED and l2cap conn req might not be received
++			 * yet, at this moment the l2cap layer almost does
++			 * nothing with the non-zero status.
++			 * So we also clear encrypt related bits, and then the
++			 * handler of l2cap conn req will get the right secure
++			 * state at a later time.
++			 */
++			rp_status = HCI_ERROR_AUTH_FAILURE;
++			clear_bit(HCI_CONN_ENCRYPT, &conn->flags);
++			clear_bit(HCI_CONN_AES_CCM, &conn->flags);
++		}
+ 	}
+ 
+-	hci_encrypt_cfm(conn, 0);
++	hci_encrypt_cfm(conn, rp_status);
+ 
+ unlock:
+ 	hci_dev_unlock(hdev);
 
 
 
