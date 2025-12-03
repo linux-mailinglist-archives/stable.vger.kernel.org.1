@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3265CA14CB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F53C9F75C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 913DF30C7887
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 332C43001505
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F95350281;
-	Wed,  3 Dec 2025 16:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EF630C606;
+	Wed,  3 Dec 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivjTgm8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dan0PAYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B77734FF75;
-	Wed,  3 Dec 2025 16:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B883B3081D4;
+	Wed,  3 Dec 2025 15:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779396; cv=none; b=nPGgcJLgQ4F6P/mRs9GMJ+1a8/birshDQ9GhZHgzorSwJxKC8PYfZJNkEm6sAWL7EA78ohwjZa1SIqVpyxUZNg0o3KIcS/nMkGIi+mzayKi9Rpcoh7mGQ3VYmTRXZVMJpnl/gm6Hk7imnyVG5NDcpMOgusZ7xPfZ4Hslpb+yR3A=
+	t=1764775865; cv=none; b=eOIPnE8cI+C87VcoL+l0XBgvas6t4O8AhIzM8mD/EqRcMjxRxC5qmKQlOeDpemHAbWwlXcELBcBgQTj3DLdvWbpbHKHhVY6latlPNTJe0XkbAcWS4EMR/j0e0U+kaZtjw/Lp7YrkUvKvQDVgc1j7GSK5I1c3iqTHNF0GO/RqS2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779396; c=relaxed/simple;
-	bh=RRsy6j1kgWPQ32zwb08xSemi4Kx5TqE89luS+wLW4qE=;
+	s=arc-20240116; t=1764775865; c=relaxed/simple;
+	bh=f+T0wWBQ0F0u6PM4urc7GT9P4s3HtUONVu1wNjYjgFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nFWwwtz+Xxh/Eayr7EQ0sSeIkYWe8B1LGgBhQGHVzeJL4k1skZwfNyQThjoZl36wiqlX5uox3zBkhJ+JZMWFQCOm0laGHN5gTfPxBO/GK+dkwUV0TK4L5S0ge28vtCg4JJq7Ed8oAZAf/goB1pIrnks4QPgbBXLWmuylnn1xl/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivjTgm8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6AAC4CEF5;
-	Wed,  3 Dec 2025 16:29:55 +0000 (UTC)
+	 MIME-Version; b=TfnPBHpgOpFIwSpafIn/E47vMgkEuLZR3g97MUcNz5nP45RHdbWpO5pf83Hv0Hs0yKuUA/EYnvurUtoU4OMhlj5sxGb+ny9G9tPc5lfkhhBFKZj3D5j1eyTxZMT86smnJwC3FI8YxFuSBjOlMUAaQEoFjK2hkDLqEPZ92mIZ76I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dan0PAYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BB2C4CEF5;
+	Wed,  3 Dec 2025 15:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779396;
-	bh=RRsy6j1kgWPQ32zwb08xSemi4Kx5TqE89luS+wLW4qE=;
+	s=korg; t=1764775864;
+	bh=f+T0wWBQ0F0u6PM4urc7GT9P4s3HtUONVu1wNjYjgFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivjTgm8cMkme0/azDvdsnXbNNaFa6a7Pef/r4tzKQkBUn43xxtAfAAKVqz5unbekv
-	 DbrxRtL5lANW6aSGSihJGKwjM/6nNd3psaw5kdylQpD66XQvyrWTQf8hTj60KOBQ7s
-	 djzwO/oNp44BvM0JRsRYJ2I5dOIv2CfuK8S7Ubks=
+	b=Dan0PAYYeTc39NY8fHdgpBaryw7+SnZKQ5UBn5PUv47Kmh9GQDUXezPwBODrRwfTB
+	 GgiffTllAnYdwlgycQhLgf5dbtmGQXPPDlFvSEQw3LkalL3IFaMj5/JI8TEbfMdB0w
+	 brOWa2I2UMZ5OWwjYtuqDd/fHCXwk798Fn9ZO3S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/568] net: sh_eth: Disable WoL if system can not suspend
-Date: Wed,  3 Dec 2025 16:23:34 +0100
-Message-ID: <20251203152448.487609223@linuxfoundation.org>
+	Florian Fuchs <fuchsfl@gmail.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 011/300] fbdev: pvr2fb: Fix leftover reference to ONCHIP_NR_DMA_CHANNELS
+Date: Wed,  3 Dec 2025 16:23:35 +0100
+Message-ID: <20251203152400.877418621@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +58,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Florian Fuchs <fuchsfl@gmail.com>
 
-[ Upstream commit 9c02ea544ac35a9def5827d30594406947ccd81a ]
+commit 5f566c0ac51cd2474e47da68dbe719d3acf7d999 upstream.
 
-The MAC can't facilitate WoL if the system can't go to sleep. Gate the
-WoL support callbacks in ethtool at compile time using CONFIG_PM_SLEEP.
+Commit e24cca19babe ("sh: Kill off MAX_DMA_ADDRESS leftovers.") removed
+the define ONCHIP_NR_DMA_CHANNELS. So that the leftover reference needs
+to be replaced by CONFIG_NR_ONCHIP_DMA_CHANNELS to compile successfully
+with CONFIG_PVR2_DMA enabled.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250909085849.3808169-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/video/fbdev/pvr2fb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 5f4297e83aafe..6d66ce207fb44 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -2362,6 +2362,7 @@ static int sh_eth_set_ringparam(struct net_device *ndev,
- 	return 0;
- }
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -191,7 +191,7 @@ static unsigned long pvr2fb_map;
  
-+#ifdef CONFIG_PM_SLEEP
- static void sh_eth_get_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
- {
- 	struct sh_eth_private *mdp = netdev_priv(ndev);
-@@ -2388,6 +2389,7 @@ static int sh_eth_set_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
+ #ifdef CONFIG_PVR2_DMA
+ static unsigned int shdma = PVR2_CASCADE_CHAN;
+-static unsigned int pvr2dma = ONCHIP_NR_DMA_CHANNELS;
++static unsigned int pvr2dma = CONFIG_NR_ONCHIP_DMA_CHANNELS;
+ #endif
  
- 	return 0;
- }
-+#endif
- 
- static const struct ethtool_ops sh_eth_ethtool_ops = {
- 	.get_regs_len	= sh_eth_get_regs_len,
-@@ -2403,8 +2405,10 @@ static const struct ethtool_ops sh_eth_ethtool_ops = {
- 	.set_ringparam	= sh_eth_set_ringparam,
- 	.get_link_ksettings = phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings = phy_ethtool_set_link_ksettings,
-+#ifdef CONFIG_PM_SLEEP
- 	.get_wol	= sh_eth_get_wol,
- 	.set_wol	= sh_eth_set_wol,
-+#endif
- };
- 
- /* network device open function */
--- 
-2.51.0
-
+ static struct fb_videomode pvr2_modedb[] = {
 
 
 
