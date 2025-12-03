@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BC0CA0678
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAB2C9F95F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A1FF32EC6B1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59AFF3043F43
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8C731D723;
-	Wed,  3 Dec 2025 16:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A32F3093DF;
+	Wed,  3 Dec 2025 15:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zyh8ZMmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJvNiHbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF47931B832;
-	Wed,  3 Dec 2025 16:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4BA312810;
+	Wed,  3 Dec 2025 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779661; cv=none; b=aPVTWA0PzCioFHeNzRQzCBxjbQ2rdJb00AtjnuJkYGOjr5CL2iHzO4lmsF6LvDn99P9Hn/HXIlsBz4Px7FdKhu3VsrE2zbDnH8wYSsQtXAcSJsgSgyg8ZLzROOJsLgkbRG4Fvp1C83F0VYzwJWkGYpfHCGXCACr2PXjTs6S4Q/Y=
+	t=1764776210; cv=none; b=trdtIpSQNxhdTk03lIQmVeOCUhRiL1nkrmMX8elL7l48DQQQZHW39YgDxKIJezOwj0qaA+UXHm+LkjIMhv4QwpKAStLv3mjGel7L3oyvai1Iqjf9FoJxr3MKQR5eAk5t12bdP6EQOzIZoKeSbfXtIx4VcLRDhBctgYsCjuTNKbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779661; c=relaxed/simple;
-	bh=IAJwZ76QgfRTg8TlkrtBxtK6VjFDUsRGAuL+T+h03Mw=;
+	s=arc-20240116; t=1764776210; c=relaxed/simple;
+	bh=CGbuOZaVa/D2I78xTLje7HoM+gAlZWcnIlYREnfm2ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lW57GETR0AEA7H8Iu43nPfA8uY/gMU90tLcANIx63PxGshZK+fge9Hqc8yMNXoaHkl37BY1+l1iK1uqqfRnPLMeNw2xk+4wKUlGay4cJT9JEKzngonNDivcc3s2sU2qa9sEVPpPky9h3KxSZFGgcCb1efJbcDMtSSJzepfvzn6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zyh8ZMmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604C3C4CEF5;
-	Wed,  3 Dec 2025 16:34:20 +0000 (UTC)
+	 MIME-Version; b=I73+/iB3YxFYJa6bG1SaxOqXXnHvsNrk53k5g8kKXtu2YVDcSU97GN2TobBrYimFLZBOstXLVURuNOTwSYgX4kR7sj9r94NutN+doxQDOE9sUPoBqqFou18I6/LYC4OCi9r+lSC83IpbP5D3fiHW4FrGKRr+0X5HDfn9xmfncVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJvNiHbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DFCC4CEF5;
+	Wed,  3 Dec 2025 15:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779660;
-	bh=IAJwZ76QgfRTg8TlkrtBxtK6VjFDUsRGAuL+T+h03Mw=;
+	s=korg; t=1764776209;
+	bh=CGbuOZaVa/D2I78xTLje7HoM+gAlZWcnIlYREnfm2ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zyh8ZMmIHd7q/bTHJM6P3T6J6xjtELXhPDy55YFRSjJPHFqW72brtuGYPehu6wC2C
-	 sVt9oK2P8LxXkLyUpyi/RR7XS/CX0+cgzRj0VkaJqaUxpG65FIW/NmHhdYZ07OwGO/
-	 3ZwZwJpoyJagLwK5Fn/J8cmoxSCz7qfSVbdV7Wmo=
+	b=GJvNiHbxro65XSuViRn0JUXeiSalDbKgxh7PUSHoUI5KqhhEi0Az3rRY+nhUeFSRz
+	 d4wc9xTq/pFr0YYY+XTEt25HqeUaN6DyK8rf1Tak407v5oIkGl4cHUDwUdLmHupVWb
+	 KtiYIRumIqkLlfYuNQOkuj2kcqCyCmDin+pYntWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Wangyang Guo <wangyang.guo@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 316/568] sctp: Prevent TOCTOU out-of-bounds write
+Subject: [PATCH 5.10 114/300] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
 Date: Wed,  3 Dec 2025 16:25:18 +0100
-Message-ID: <20251203152452.287322489@linuxfoundation.org>
+Message-ID: <20251203152404.843911850@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
+[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
 
-For the following path not holding the sock lock,
+The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
+physical CPUs are available") states that when PV_DEDICATED=1
+(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
+PV_UNHALT.  However, the current implementation doesn't reflect this: when
+PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
 
-  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
+This is suboptimal because:
+1. Native qspinlocks should outperform virt_spin_lock() for dedicated
+   vCPUs irrespective of HALT exiting
+2. virt_spin_lock() should only be preferred when vCPUs may be preempted
+   (non-dedicated case)
 
-make sure not to exceed bounds in case the address list has grown
-between buffer allocation (time-of-check) and write (time-of-use).
+So reorder the PV spinlock checks to:
+1. First handle dedicated pCPU case (disable virt_spin_lock_key)
+2. Second check single CPU, and nopvspin configuration
+3. Only then check PV_UNHALT support
 
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This ensures we always use native qspinlock for dedicated vCPUs, delivering
+pretty performance gains at high contention levels.
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Wangyang Guo <wangyang.guo@intel.com>
+Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/kvm.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 31cf52026202b..3631a32d96b07 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
-+
-+		if (!--addrcnt)
-+			break;
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index fe9babe94861f..d7d2eb79120d6 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -964,16 +964,6 @@ ASM_RET
+  */
+ void __init kvm_spinlock_init(void)
+ {
+-	/*
+-	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
+-	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
+-	 * preferred over native qspinlock when vCPU is preempted.
+-	 */
+-	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
+-		pr_info("PV spinlocks disabled, no host support\n");
+-		return;
+-	}
+-
+ 	/*
+ 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
+ 	 * are available.
+@@ -993,6 +983,16 @@ void __init kvm_spinlock_init(void)
+ 		goto out;
  	}
- 	rcu_read_unlock();
  
++	/*
++	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
++	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
++	 * preferred over native qspinlock when vCPU is preempted.
++	 */
++	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
++		pr_info("PV spinlocks disabled, no host support\n");
++		return;
++	}
++
+ 	pr_info("PV spinlocks enabled\n");
+ 
+ 	__pv_init_lock_hash();
 -- 
 2.51.0
 
