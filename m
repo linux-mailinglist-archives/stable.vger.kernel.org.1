@@ -1,341 +1,231 @@
-Return-Path: <stable+bounces-198185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5FBC9EBE4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 11:39:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE76C9EC08
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 11:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EFEF83477C7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 10:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367C83A86FC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 10:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CF52EF652;
-	Wed,  3 Dec 2025 10:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655132EF65A;
+	Wed,  3 Dec 2025 10:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X9rQEjrM"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IKEx7/ME"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011071.outbound.protection.outlook.com [52.101.52.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DE32ED860
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 10:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5794D2DCC17;
+	Wed,  3 Dec 2025 10:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764758335; cv=fail; b=imNvfS/SI7t5q3Sb3b2unv9BDtHvVh64dDIkbod5HaSUwCLno6LJBZzZAwF3X4QGxrhLVutD/sobbZ1JZhWeXdG6d4gDp8Y2KjAXo1hFT3w1eO4ZlE1MgJWPRqole9mYJiVksR+uwcXDaRnccGp3G7e7mWhFTcxAGkDIqlACJ/4=
+	t=1764758494; cv=fail; b=I3FsFC/9io6rvnfLIoqW2Qd4lvw6EJD8jT5Qirw4c63+OacaNucvgX3J0/6KN5zbegSvug/fSC2WJbeJczZkvW2gslaeWCEcVwbNAaQoBFCh2H04QV3vF51SyfI58StT9Gc9NbEHkS64ZjG2VaSyT/VspEDQ9G+eVGK+aK3ow28=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764758335; c=relaxed/simple;
-	bh=Huc3dfeB+3PDMT4ycrUakSv1qbm9gibwkp/9n5XqJuU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gm4Bg7rfgHR1arNYbYkVbRgplgPFUmGzx/ZdCUhl8J0Z9Cd9Q4vu/aMbYm2zXjRS5jVqLWRyCYiL2Hp4QlaJJj540CaSGKlcwnVX3XZYe3CU9B9kYNGlCFGc2pUGXjWeGzfm1mDTRpBPKk7vUbeQ17/S+BBMIgms/2SGzKYcz0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X9rQEjrM; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764758333; x=1796294333;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=Huc3dfeB+3PDMT4ycrUakSv1qbm9gibwkp/9n5XqJuU=;
-  b=X9rQEjrMZyEPyxQ7opQ/yeq0Fg4+827a9TN/iCaG49NgKX2d3NmUOaOE
-   GDzzhEBAz1crct/C5VXgSxNe+Beu9Q1FQM716iAZNMs4EY31bl20oeaUs
-   aIvKYQab7vxnPEowXKBz28PcWNa1YrRGTLdp77LPbXHiAD9EOf8henKLV
-   kE2SizoNyghmFs6uxgEV078q+hA6D2oKoEnLUPLmJj6Eno2YRUP/eKSxP
-   QU+MJPmKCe/zVhKDrmRDyxmolGnzRXtLqesq1RP1FmcLiIjepEIkNU+XH
-   c8NId39gn+MuD9Gte/6a+lB5E0gHHbVnaFRhx1W9idPJ36GR5hJh9bHxb
-   w==;
-X-CSE-ConnectionGUID: Z0VVq98FSXalP5EiGJO3+Q==
-X-CSE-MsgGUID: nzkFolEXQtGElWzidtGN6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="54296246"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="54296246"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 02:38:52 -0800
-X-CSE-ConnectionGUID: K2RQ1of2Qwadizzn/Tcyeg==
-X-CSE-MsgGUID: IyC5OqZTTQ+N2qdagVPwgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="195060164"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 02:38:52 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 3 Dec 2025 02:38:51 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 3 Dec 2025 02:38:51 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.14) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 3 Dec 2025 02:38:51 -0800
+	s=arc-20240116; t=1764758494; c=relaxed/simple;
+	bh=UKN7E1p2tYGGUa4AS9kU6ta+ls8HuFb3BVSJOK4cJj0=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bEv018lsDq5iKflFD1/ONa2uGjrcZd3UxNN+S34uEBgNNhkDXUjJkIpGBvuWYEm64cS4ZndclZRd4ga7NiB3nLFw6pslgJbBhNzF84gcqnODEbQNgZhXbesmh4Ox/1otnHycaZ/K/d5GXHkrOC1bftCk6x8fjPEGo/sbAQ1EyJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IKEx7/ME; arc=fail smtp.client-ip=52.101.52.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WIM2KKcxmt7QX/2PREzJ6uwTN4UnFxudi4Gqsx7uz00xlVkVEzXAZnI0a2QyuqYglL2+3W/lQXZjf27WN+5/mH7f+xA5dUKjZYiWGx+rMDiykdosxtA+q10fh+6IVjsnmjRhlRq8pVj6LQEX6cpUYMPjuyv8zB57y992/NXKum8ijRob7bDDvnE/u+val35Z4FHjyHLigBvcHdq+Mf5lpgBg8SfwlLgwachhqk0N9rEkVGFiKSab/xyZgVUoI3ubYVgAjivJKAmXk5pPexgfLN6cTX+ptCLjHqy90ELzVHcu/3U6JwEUUcDXKjFMs0xTThAQMeGsbESjXUXwf/UFhQ==
+ b=GS8aK7KGQcWliM+Khq2eeoTOUvUurmcY+iS8VgQ1E7IBBTpesJ76WD0FQfidk+tjyGtpoTfiMIP91Nhk+qZezoHQEpGR/v9NmoVDT1qtYvK6gbI3V3fP8RqtBu+8OCjAZW+ubW24XJnLHXFP+WtGh1HBmoD0Agw4Mf44LxY68PyqB8ebtrd5EccuCtePQ9kvd3Fl5tIOdRSqqWiJtjFMFjjd2y27/ghDBPaQNqbnbWVZz3sGnvNi+YM5UdSYFqG6SuFdY08PGL0wdAhyOJSCPFV1UEbno9n1upghsdZFCEXOxxxrppFeWsZ78sVlmLICMRyE9dQaCe4BCoH8rDjsrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLO4zVROfawQ/BYTOhVLwkrAYSSZubLpE4/lP4TLqBk=;
- b=v8Ggr6e66H3ev+xHIJPGJCn9aXKKCodhuJjaVhk/Lq2dSD2zZIYS4WmfvAbpiREBhzJPfFJYKpDfpZprpVyGsEq5HuzEVmkyoU48paCppCP4WXWZlbQSBY6RzYh54j7EHHVjSyAZuLz7NZbOQcSj/G4jbD6Aii/cEbbg10ogv/xs+aVz4NzHyTI4inttCWy2VSiFh1vHwlWJI/ybmP2ieyJjsZYQ3/kULK8mKC6nHvpB2uzSUyLnPGmxEK5pJLKLB4JwbERFVUD0EdXVlTONi8dq/Vo1WmYl3BzVRanIdamFr0S6jn6HYaE0xe+4WYUs4qei4Aqd0bjl++LQMNhRZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by CH3PR11MB8341.namprd11.prod.outlook.com (2603:10b6:610:178::12) with
+ bh=DolDGMCJlVEtCTFvBEg46ElUKKIeB/pBMOKlL7Arl64=;
+ b=jLWp9mMrbHZs6BD95kyiWcVvzrc32WHfrQ9dhV7+6oaOEK83jttX7wb4dbWAIcnyQALUwrR2vOj3hD1FGoGrta541pJP7iFH4aOwX+noyJw0bb41OKG1vNuXeU9U3AgKD5+2V+tRmCmdmk9wH1fuozvDaUsgmXvzgXPq5RPzpURPbIaK94MVznIDJ6sv1FEceuZv2dKaq8XiD+7vKTaP0KN8QJK7Xl50Iod07AA54dIQEhT7w6sDfBxHBT5NWSRaR+srhP5vPo4Y+W8bKrC6m76x+R42OFxG04ims/osyeQlubA8n9hkYLfnK1A89e3vL6Kndk7dms2Zg8c42VLDzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DolDGMCJlVEtCTFvBEg46ElUKKIeB/pBMOKlL7Arl64=;
+ b=IKEx7/MEN4Y8dMZVKAq351jASroMjWWIYIJ9LwzwxKth5hS0IHtVbxs+e3ZjOlnW7DZs2rhmFGVGT9Bk+6BqDdHPX/qB7vgf6y+c2faw6vGeum59x11cfq3NNxunpWW5H9aWR/5uc7BvKyyWQViNMpZ/LWaA9aSoWyFVfHXTNRg=
+Received: from BN9PR03CA0251.namprd03.prod.outlook.com (2603:10b6:408:ff::16)
+ by CO1PR10MB4515.namprd10.prod.outlook.com (2603:10b6:303:9b::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Wed, 3 Dec
- 2025 10:38:49 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%3]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
- 10:38:49 +0000
-Date: Wed, 3 Dec 2025 12:38:42 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
- probe
-Message-ID: <aTATMrp6oysYUecR@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <aS9ZGmXG_n0IXv-N@ideak-desk>
- <aS9bj8RRYYc01Rzs@ideak-desk>
- <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
-X-ClientProxiedBy: LO4P123CA0211.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::18) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 10:41:28 +0000
+Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
+ (2603:10b6:408:ff:cafe::80) by BN9PR03CA0251.outlook.office365.com
+ (2603:10b6:408:ff::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.9 via Frontend Transport; Wed, 3
+ Dec 2025 10:41:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 10:41:26 +0000
+Received: from DFLE213.ent.ti.com (10.64.6.71) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Dec
+ 2025 04:41:23 -0600
+Received: from DFLE212.ent.ti.com (10.64.6.70) by DFLE213.ent.ti.com
+ (10.64.6.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Dec
+ 2025 04:41:23 -0600
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE212.ent.ti.com
+ (10.64.6.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 3 Dec 2025 04:41:23 -0600
+Received: from [10.24.73.74] (uda0492258.dhcp.ti.com [10.24.73.74])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5B3AfK6q3886452;
+	Wed, 3 Dec 2025 04:41:21 -0600
+Message-ID: <b2c0f5b38ed01836c025f2672a883484765d91f5.camel@ti.com>
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due
+ to runtime PM
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Mark Brown <broonie@kernel.org>, Francesco Dolcini <francesco@dolcini.it>,
+	Anurag Dutta <a-dutta@ti.com>
+CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, <s-vadapalli@ti.com>
+Date: Wed, 3 Dec 2025 16:12:04 +0530
+In-Reply-To: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|CH3PR11MB8341:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1890f75-1ea7-4025-52b4-08de325824ab
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|CO1PR10MB4515:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80bf7593-8eb0-4092-4021-08de325882fe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5pWe9EtcNk3m9dxl/IdHzLQYyOSkXyhfv5w4laLORi3CBjPLKDRYWinXvKNL?=
- =?us-ascii?Q?5Rv31JJs+MAML7A5vD38/mYnCYYBxkvZRCTQxEpb81CsshMfQlmaSP5avOd4?=
- =?us-ascii?Q?mDva0PWKcz4pIThYaN3YwxByIQolIU9Jpfwlzq9YPdHNdIb1c0NRsNA1wa40?=
- =?us-ascii?Q?UOY5jWmOm9kcnWgdwea0bdBkZamGyHIEwapmCryWv+1Mriewwq362AGJJBvw?=
- =?us-ascii?Q?e6087MnSUrxrUcItuWHk7hzhDaFaxsLCrdQoUYwN0JPmlikGWywP3IyEsx6A?=
- =?us-ascii?Q?HyfkXgJDAc6N2ict5FVhGj+TmSMBOkEqRArAnWao4LSMcHiAEKbhIeTpf5x0?=
- =?us-ascii?Q?BgrSQe1R3aIk7gFhAtTxtpJoW4+FXstX0MQTnszkdbkGWDhIt826dMS5j/HV?=
- =?us-ascii?Q?vrTwQjmim36y9neaqDKR2Ytus/d1M2R9l9tga3vQtrNRGU/uU5qd2hkTYzvY?=
- =?us-ascii?Q?BD23BWM5udG6MShcg9cWVbJAhmGd2bttHgdt7EPK+rsJ/DTOo/xNkiKZYH5U?=
- =?us-ascii?Q?WSvXiLIy9tRCWw/VEA739ZXS8OkhYDwu+xnI68VCvRXZ515+v6H/lj/83Q9v?=
- =?us-ascii?Q?a+rPMR5xvxzFeQJ+GlNrczX5ywZMNvTY0GDzA/KLbrEBHHj7TCwyLCUR6J2n?=
- =?us-ascii?Q?poSqnhSzya+F39woEWpzGOu3Oy+kSxA8ELsKFqcR1GNIrMwK6xEnaE4ZUH8P?=
- =?us-ascii?Q?S0V5tzgXAOHesYWxNhCEdRC8l9YQG1UQZuPxTTaHDQ5imT++/2AGiQnfkO+K?=
- =?us-ascii?Q?czeJ6uS2UiybYQLSwHIl+xDyE6plvvIu7d9BYOIicSYmVyn9jNMYTSyHOY7f?=
- =?us-ascii?Q?xEryefKUqkR825MFj1BPYPf8G8PvzaOzOC2jBFVwiUm/hzgPM8nqrMLJ4p3u?=
- =?us-ascii?Q?l9IlMcUz3vb8H20PGoKfgBCrMVeF+liFsyqB6EKI1sgZqHWzj+Nzx7VXIvZi?=
- =?us-ascii?Q?LT/XmKjrJvLqO5P8P0R4DzhyMmKHvW7uzXvLzNDwaz4KteCVBHlk9zwysssM?=
- =?us-ascii?Q?8LOOjglvHvr24UYVbdSZFnZSFdMk9Eq6iuelfXOYCYSV4ErdRqQjr8KLMKyd?=
- =?us-ascii?Q?BvdebxlGomdKVe2/l77/LgWDrd6IJhpJ6HHyIemxtz4fnR9OB4M3/lT2HNat?=
- =?us-ascii?Q?jAJ7ZpzO8PxJEk90nb4jGrrUphfL+eBrwIiCJOqAxYhBT0tE6rakZQ7Chr3r?=
- =?us-ascii?Q?Jupo2SzxvqXpEV6A979mcyQzVp9eTqcOTv8Q0wgH89qCzsE8mpFtzKPIw3rs?=
- =?us-ascii?Q?Uso+X5V3zyOHvc5xq/WraoYc773YGNBcO3XVrFtz/nbbXVZcbFEpQZxYZsGz?=
- =?us-ascii?Q?FDabSl9ytChHDDTRdJllyPziFUVPIe4e336gznrXiVU3xSSX1Qw995Oq//7a?=
- =?us-ascii?Q?tzEYTwMRYfWP9Y8n75ldJ7uqNdKszpzS6dFdb9rzlITbq9g14+SlzCzNMgc4?=
- =?us-ascii?Q?Goe4YAOCQbzEA5R5zr6WZCOY7j/kX3jQ?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uzoHzTpqbuHz/8mNF3Gwz0YDG/eLc/NurpVAAXQrNWrSzDC9QH7H8YEJSN/a?=
- =?us-ascii?Q?SdSLAmUBT7xx1tuLuCZCY4/3+Xa38lksWaZyTIfMHQO/gogf0txRWO63N7EN?=
- =?us-ascii?Q?armMFWrZu4EQ8PloKHUYEsZRjRIk054XCQ00Zio2LcCVUGC/lcdzRcPvepdT?=
- =?us-ascii?Q?tymzfb80JwIod8Cvk1vCL/H0GP9Ec7omjqo4SKBKjwxbFu8sJAwRj3Yiz7Ni?=
- =?us-ascii?Q?zzaiAQuCPn3kMA5Ft/JXgwUpc1SSQYSBPtKaAi8PpMkG7KEzOCOwz0vcOdlj?=
- =?us-ascii?Q?awXdi9e3MbiuHTeHSi/14+bEurc0rlmjYEoUHiFef+muRSgHLdvBi4x9CB6b?=
- =?us-ascii?Q?S9xFoQ2Nl9ZUJFhWWNYqBp4phelL9+j53HEEM4Mcqa8cdc4hKIdKRpPiCjJb?=
- =?us-ascii?Q?KilKjaiEM6UkXXXqJ9xn1wYxNpVtFdrOnnbvtt6O9yRLYcqnrLqt9HxW41zu?=
- =?us-ascii?Q?aJYe5+qMBxQXSdnw2RHczguzV7mbS4DJJu0krnihG5DnXCjXHpQtTTnAKUo/?=
- =?us-ascii?Q?LJ78fnjjSvRVOL0842t2Ch5aynCwerGdkQtr9ckb7zAtKFgnbcKuQiLn5xcO?=
- =?us-ascii?Q?9HJKm+ETGXiSC2CNBxtV/DkU5m6LbNDa+XDaIJb2i/vcST2DimZywv2yod+l?=
- =?us-ascii?Q?Gz9ZkhVcMAgf7CSa94ppBHFZLeI5LWihrxbpmFCKiObuazksUsGOwONBGDEx?=
- =?us-ascii?Q?tSqkAbGyZ2rHxQmC71n2OIq1B8Uj6KCrhHBEjtd6BvyNYBelBgzIRsejWwc5?=
- =?us-ascii?Q?TK7Zvz5OiBfr5ZG7w5E9XDLMmx32UxeAk3oM+jualCw9YCYnzSOPBQS8FxRj?=
- =?us-ascii?Q?AINyX5ym4mZDkDqBzTkOVZ7TkcXMDM5BuLGeU8weBiwg2PfClHprBgjT9KUb?=
- =?us-ascii?Q?cuJ4TilENRP6F61vgp/3g1ycHR7ZIcS16zxj9MxVkHzywKMzYFn37Fov7nHn?=
- =?us-ascii?Q?lt7ubHEQcwUwCBbAiOZIsxTmrQqk7+tIW5KjBQPPUtwP1eeOCWEThtqg4izs?=
- =?us-ascii?Q?KmErVe/NJ5Ns0C3p+vI7tCJrEau6dpPyG3Po+cec3PXX4klhPnFhVyTk+2AX?=
- =?us-ascii?Q?FieyGtWJJ1tm1kG9KZP6NTxdw7WvLAksO71hQvM9iI/ejtmxWIoERWX+MTE8?=
- =?us-ascii?Q?S4kLdpBLa/xyED5rHXtVHgg8Dgg6t0cx5kVM0WqTYtoOGubI/+AkkSiOaAcG?=
- =?us-ascii?Q?efR+01LdQjc4c7NY1IqK7SRqFZltoXmuh1K0IaJLD1TtXz4txv2IlQB919XH?=
- =?us-ascii?Q?v+wN/ftVuNjPNYjXRhnngP9naqPoGrTsPaAQpsrfbQACMn9fLvc5MjHIfpdp?=
- =?us-ascii?Q?dZk2wbdinccoEkx9358hpD/t+ySmkF5HG7bTAZaM+PeeAs+fkRqb32fsjvIM?=
- =?us-ascii?Q?vwz1JJnbBFP2l51F3KEixKzhIkrZvI8HpHHO9AsaAUYLoP2ojEkALY8ar3nT?=
- =?us-ascii?Q?aOLmIWug2MAC8OV2qZTs4bTFj5P2IJTJmxF/0DPdweINTBbUypouBpRGJVKw?=
- =?us-ascii?Q?0bgV5Tqf/YX3tq09sdu1J8bwU4hzfWR54vVkXwAhlIcMRH0vV54qv4dBvXpC?=
- =?us-ascii?Q?hRpKkeEQ63XHf/UXL8E6xqxKx5sL+V3rTATcguph5lcogsQi5N0jZMXbxVE7?=
- =?us-ascii?Q?tEsDxx1J5huSFS9oIOFJsEPOchKMqHHm2W7gj88bH0bg?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1890f75-1ea7-4025-52b4-08de325824ab
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 10:38:48.9183
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZkZsVmV4RmZrSWNTQytXa1JCK25mdmRxVGhJaXowUUNZdDMxSThsYStGM04z?=
+ =?utf-8?B?bndzNGNXWk9xWXRiSFNuVXNlM3llR1BJRm92Z1RBSGw2U0RXRXF3YzNrQjNR?=
+ =?utf-8?B?TUlhZ2E5QkZmNFhNMmJYWEdqUGM5eGRqZVRtMG4xYlNtTVRUaXhJaWhnRmVC?=
+ =?utf-8?B?TTUyKzZodkd2aVNUY1MyMldRcUtnbVg1Lzhtb0lWSjBmeU5JU0ZIU21mS3Vz?=
+ =?utf-8?B?ejVrenFWeTVwa25rWmpzdTVhbm9XbVdKNG9tSXhjMkZ3NDNOVjh4bG5od2dU?=
+ =?utf-8?B?d1NtWHNEa0N6QXJZUVhQMFRPK3hCSVdMQXdWanR0UEw0TmpNSXlkOWk5Yjgw?=
+ =?utf-8?B?eEtheXk1WHhGbkwvWVJtTXA2Q24raUtXakp1MGJKRE5UU0REUisxOW15ZUw2?=
+ =?utf-8?B?VWxiTytZRlU4TEZ1ZTZFdnk1N2JYK1FEWWN2Z05hdHl3SFpuUi9yS2pBODFx?=
+ =?utf-8?B?MVJhd3drdmJ2UlhNNkRQakdQYW1ieXFlTG55MDZLMmxPQjVxZGxnNnpiUEdI?=
+ =?utf-8?B?Y1VoU0puTERmUjQwc0ZDNWNrL0wyVkdhSVc1L2M1WDNhQnFlNzJwU3hYWnM5?=
+ =?utf-8?B?dW9mejhyMmt4Zm41N0hSUmMrTDJhOUFrcVEzVlRHQnN5cE1GNEh0dnE4bytU?=
+ =?utf-8?B?emQvSVd3azBXaUhtV2twSWtPZG01WS9Xa3g4M1NOVWhnQTFNZTZ0MjRkUU5U?=
+ =?utf-8?B?OGh3TWlQZkxDcGpzcm9vd2lYNVcxelpiTGNwY2xYTjNYdm1WTjFNQ09adlhz?=
+ =?utf-8?B?d3R5U1djaUZOdnZMSHlZNjB3UlUrZUI2SndzZUJyR1l4WXh1dFc1d3YzZjlr?=
+ =?utf-8?B?cmljQmxEejAwN0IvZ3ZWaWo0czRmZmtBeCs2NTF2dmJSTXhXMWkzUzZaWFN6?=
+ =?utf-8?B?eVZ0YlVIbGdYWGxNRXBTN1R3VjI1cGxSQ3YxWGdGMzVGaGh4YVZYYTVlMUl1?=
+ =?utf-8?B?T2tENllsNlp0bzM1VmZGM1dLSE9WeTJjOFRpRnRHL1lnWWpScEpoaXh6UGN0?=
+ =?utf-8?B?VktDSHRqUm0vUVBwbjh1RktmWXJqM3MwRkNBSG9VK2MrOEh3MkZ2MUFyc3pN?=
+ =?utf-8?B?WUlxSXVHRGRjYzN6OStxWHRjbnlNVXFlOHpoTDcwdk5SeG5kakZKZ25BYTBx?=
+ =?utf-8?B?ZFhicU5aOFZkUXBkVXhjTVFnaFM0cUQ3R2c5Q1VWNnpSRWZySjJaK3RiU1p0?=
+ =?utf-8?B?NlpZU0JKdElzb2Z5NkhPS2tEQ1hRcC9Eb2c3cXRRYnhWbmNNZ3F2dUJhZnJx?=
+ =?utf-8?B?QnZGL0FjWVFaNTNuWWQzTm4yblg0bTNGckREeG9NYzhxMi9MTFRreE5XT0Vj?=
+ =?utf-8?B?K0xxSkRSNXFROXk4c1ZTNGhwekp5UzNtbEVQV1NjSlFsdFJISzJDeEV6QnRN?=
+ =?utf-8?B?cUd4VElnZFZuZXR1YXVzbHA3UCtidFJmK21BY2lodEgyMzV1V3g4UkVCNVBa?=
+ =?utf-8?B?L1BHUmVZQUFrV0QrNkhLV0EwT2h6STdrWE5zTjlpbCtTZlorMitaYXJDZDVt?=
+ =?utf-8?B?QnBSaldwNVdsQ2tRQmhXVFBjVElWTWdXMUFVTUpRTnFORXV6TElBYzM3RXBL?=
+ =?utf-8?B?c1huTFMzTnZEUmdsdEFZNVdtTEhoMlI3YUQvMzB5ZHhxOGhzOGZ1YlBmdVMx?=
+ =?utf-8?B?N1VjQ1JkQWJXV2pncXlZREtEaStUamlGQStjMmprbmU1ZzZSZlVXenJuL0JT?=
+ =?utf-8?B?bDBOczAwQ3UvTEw2U0dIajBOVG9VUHJvTE9uMGpaQThScUtsWjc5UTlIMXo4?=
+ =?utf-8?B?eE4yaWh3V1hjcDhXUUI0TVBtMVdNOWQwTzRCYUE4L2tPZWFsNWNSUDBpa0Nj?=
+ =?utf-8?B?N0ZUSjVCVmlZTk44cDB4ckY1NCtNV1RVSGt5QkIyNC81cDdLRzFKTHBScllP?=
+ =?utf-8?B?TUw0NjQ0aEpGSWpYbWFGakdNYk03UmtBQVM3bWc2QjArdEZtSzdqeTdDaVZZ?=
+ =?utf-8?B?Ti90VlZHOVVvcUVtZEMzdWJZcWdacy9aaDZNdjRRamlkLzdLKzJYZEk3cU5L?=
+ =?utf-8?B?YzlGcE9zZXZ2U3hUTFAyRi9uMk9EUmpuWlYwdUV4azBkK3FPSnVTRzBZQWtL?=
+ =?utf-8?B?S2VCbGw2TWRoU0hKRU9sbEREVFAzei9ad2Q1eGQ5Qk1mNmZOM0V2Vlk5K2Fk?=
+ =?utf-8?Q?fuVU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 10:41:26.8173
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DOA3E7mAAmlVW5OZ+iG5wUIqj92EasJNfkE1JtbhJc0pmvmuGW3l+bdc/yWJsIrwuVjhToBWGYTlvHDF1IREtg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8341
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80bf7593-8eb0-4092-4021-08de325882fe
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A3.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4515
 
-On Wed, Dec 03, 2025 at 10:13:44AM +0200, Jani Nikula wrote:
-> On Tue, 02 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
-> > On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
-> >> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
-> >> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-> >> > initialized, and dmc is thus NULL.
-> >> > 
-> >> > That would be the case when the call path is
-> >> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-> >> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-> >> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
-> >> > 
-> >> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-> >> > conditionally, depending on the current and target DC states. At probe,
-> >> > the target is disabled, but if DC6 is enabled, the function is called,
-> >> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-> >> > at probe, as we haven't seen this failure mode before.
-> >> > 
-> >> > Add NULL checks and switch the dmc->display references to just display.
-> >> > 
-> >> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-> >> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> >> > Cc: Imre Deak <imre.deak@intel.com>
-> >> > Cc: <stable@vger.kernel.org> # v6.16+
-> >> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> >> > 
-> >> > ---
-> >> > 
-> >> > Rare case, but this may also throw off the rc6 counting in debugfs when
-> >> > it does happen.
-> >> 
-> >> Yes, I missed the case where the driver is being loaded while DC6 is
-> >> enabled, this is what happens for the reporter:
-> >> 
-> >> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
-> >> 
-> >> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
-> >> loaded by BIOS for instance - will be overwritten by the driver, not a
-> >> well specified sequence (even though the driver is trying to handle it
-> >> correctly by disabling any active firmware handler).
-> >> 
-> >> But as you pointed out this would also throw off the cooked-up DC6
-> >> counter tracking,
-> >
-> > Actually the patch would keep the counter working, as the counter
-> > wouldn't be updated in the dmc==NULL case. However I still think the
-> > correct fix would be to check the correct DC state, which from the POV
-> > of the counter tracking is the driver's version of the state, not the HW
-> > state.
-> 
-> One thing I failed to mention is that this happens in a KASAN run in
-> QEMU. So I'm kind of not surprised we haven't hit this before. And it
-> impacts the deductions about the DC state.
+On Tue, 2025-12-02 at 22:53 +0000, Mark Brown wrote:
+> The recent refactoring of where runtime PM is enabled done in commit
+> f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
+> avoid imbalance") made the fact that when we do a pm_runtime_disable()
+> in the error paths of probe() we can trigger a runtime disable which in
+> turn results in duplicate clock disables. Early on in the probe function
+> we do a pm_runtime_get_noresume() since the probe function leaves the
+> device in a powered up state but in the error path we can't assume that P=
+M
+> is enabled so we also manually disable everything, including clocks. This
+> means that when runtime PM is active both it and the probe function relea=
+se
+> the same reference to the main clock for the IP, triggering warnings from
+> the clock subsystem:
+>=20
+> [    8.693719] clk:75:7 already disabled
+> [    8.693791] WARNING: CPU: 1 PID: 185 at /usr/src/kernel/drivers/clk/cl=
+k.c:1188 clk_core_disable+0xa0/0xb
+> ...
+> [    8.694261]  clk_core_disable+0xa0/0xb4 (P)
+> [    8.694272]  clk_disable+0x38/0x60
+> [    8.694283]  cqspi_probe+0x7c8/0xc5c [spi_cadence_quadspi]
+> [    8.694309]  platform_probe+0x5c/0xa4
+>=20
+> Avoid this confused ownership by moving the pm_runtime_get_noresume() to
+> after the last point at which the probe() function can fail.
+>=20
+> Reported-by: Francesco Dolcini <francesco@dolcini.it>
+> Closes: https://lore.kernel.org/r/20251201072844.GA6785@francesco-nb
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
 
-Ok, it's strange why QEMU decides to initialize the DC_STATE_EN register
-to a non-zero value then. But in any case the driver should handle it.
+Thank you for the patch. The 'clock already disabled' issue persists on
+J721E SoC with the patch applied:
+https://gist.github.com/Siddharth-Vadapalli-at-TI/a664f59366ad681856b862d62=
+1487b7f
 
-> I'm not quite sure what exactly you're suggesting, maybe a draft patch
-> would communicate the idea better than plain English? ;)
+>  drivers/spi/spi-cadence-quadspi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-=
+quadspi.c
+> index af6d050da1c8..0833b6f666d0 100644
+> --- a/drivers/spi/spi-cadence-quadspi.c
+> +++ b/drivers/spi/spi-cadence-quadspi.c
+> @@ -1985,7 +1985,6 @@ static int cqspi_probe(struct platform_device *pdev=
+)
+>  		pm_runtime_enable(dev);
+>  		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+>  		pm_runtime_use_autosuspend(dev);
+> -		pm_runtime_get_noresume(dev);
+>  	}
+> =20
+>  	ret =3D cqspi_setup_flash(cqspi);
+> @@ -2012,6 +2011,7 @@ static int cqspi_probe(struct platform_device *pdev=
+)
+>  	}
+> =20
+>  	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+> +		pm_runtime_get_noresume(dev);
+>  		pm_runtime_mark_last_busy(dev);
+>  		pm_runtime_put_autosuspend(dev);
+>  	}
 
-intel_dmc_get_dc6_allowed_count() still needs to check for dmc==NULL, as
-the debugfs entry can be read at any point. With that, what I meant is:
-
-in gen9_set_dc_state():
-...
--       dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-+       dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
-...
-
-in intel_dmc_get_dc6_allowed_count():
-...
-        if (DISPLAY_VER(display) < 14)
-                return false;
- 
-+       if (!dmc) {
-+               *count = 0;
-+               return true;
-+       }
-+
-        mutex_lock(&power_domains->lock);
--       dc6_enabled = intel_de_read(display, DC_STATE_EN) &
--                     DC_STATE_EN_UPTO_DC6;
-+       dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
-...
-
-> Anyway, I think "not oopsing" is a lot better than "inaccurate DC
-> counters in debugfs".
-
-Agreed, the above would ensure both.
-
-> 
-> BR,
-> Jani.
-> 
-> 
-> >
-> >> so could instead the counter update depend on the
-> >> driver's DC state instead of the HW state? I.e. set
-> >> gen9_set_dc_state()/dc6_was_enabled,
-> >> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
-> >> says that DC6 was indeed enabled by the driver (instead of checking the
-> >> HW state).
-> >> 
-> >> That would fix the reporter's oops when calling
-> >> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
-> >> it if the driver hasn't actually enabled DC6 and it would also keep the
-> >> DC6 counter tracking correct.
-> >> 
-> >> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
-> >> guaranteed to be called only once the firmware is loaded, as until that
-> >> point enabling DC6 is blocked (by holding a reference on the DC_off
-> >> power well).
-> >> 
-> >> > ---
-> >> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
-> >> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >> > 
-> >> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-> >> > index 2fb6fec6dc99..169bbbc91f6d 100644
-> >> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
-> >> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-> >> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
-> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
-> >> >  	u32 dc5_cur_count;
-> >> >  
-> >> > -	if (DISPLAY_VER(dmc->display) < 14)
-> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
-> >> >  		return;
-> >> >  
-> >> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
-> >> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
-> >> >  
-> >> >  	if (!start_tracking)
-> >> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
-> >> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
-> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
-> >> >  	bool dc6_enabled;
-> >> >  
-> >> > -	if (DISPLAY_VER(display) < 14)
-> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
-> >> >  		return false;
-> >> >  
-> >> >  	mutex_lock(&power_domains->lock);
-> >> > -- 
-> >> > 2.47.3
-> >> > 
-> 
-> -- 
-> Jani Nikula, Intel
+Regards,
+Siddharth.
 
