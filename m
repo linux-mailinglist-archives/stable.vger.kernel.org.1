@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B03C9FE0A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:17:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70551CA03F5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:03:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD18C300A371
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:15:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B80D3114328
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2A635293F;
-	Wed,  3 Dec 2025 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEE63A1CE7;
+	Wed,  3 Dec 2025 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS8EUwGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhyXI8Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9DB352937;
-	Wed,  3 Dec 2025 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48722393DF3;
+	Wed,  3 Dec 2025 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778493; cv=none; b=koJZRDcYhEpPEaZCrBAUZuc12W0cSKHusGcwWyce0ro7s5nhGvsa7R5VFzuwSHdSWMcpkZwA7ID1B2+oCe+40oL1wqFE8jQO3T0L7/2f/UXRkjskxwyJAUFk9yaR1G8s2yLMZSpzolYMzUz5VwvkGFIdZBk5IrPPFwv5VR5TYkY=
+	t=1764780709; cv=none; b=ZZqg6N26l77W407SxX6+W+qyiDkqJY6Fd0USenhBWv/xOcaAqZ1wLyuclhpvzV0zi84W3uZFitfR86IqeN44QkYAPNY4gHb0oP8svT3cflx/GiUZxIfCFkx3ZMnLxuANzh0TEv6EahpHU9EWGOq0J+SJaq6woT5DO2c/ObINKnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778493; c=relaxed/simple;
-	bh=Ba/nJO61IAF3vBgEcye/g/oS+PtwKOzn6vPMpizAkWI=;
+	s=arc-20240116; t=1764780709; c=relaxed/simple;
+	bh=8scz4mH918d3q539Jm8a78LzLjmSoC44lJJtE9MOSJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBV70Ld6tH6+AsC/4ojuV89a8/ooln/TovtxPapkpKEC57KYFMn2GUXLj7NoqZzjywp1aDuRm9tyP9cnBWS0Ut2Lt2eL6lGPSSoQY0Qj4CJi54Bhp2Qy2Pu3kCnM8Fq9DZS6MpaKEF3WEMP8OWqHxHdi1LssrpetMcSqW+5nPxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS8EUwGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCDAC4CEF5;
-	Wed,  3 Dec 2025 16:14:52 +0000 (UTC)
+	 MIME-Version; b=IMTGpzUOefU7NnELW9PIKQVloCC66mWztAfPg1Twe0JfpTlx2wJ/Dk3Pd+d92dv+TGISEob+GAPmPhXQkV6k5Du0BiBlfWOPAqOYyDrvu7pBAvKLvhMbGNJ88V8x50Jp4yASTKvKUUMXbwXo/JKnzXdOnLj0wBXWKPWc6Z0m35k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhyXI8Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38D6C4CEF5;
+	Wed,  3 Dec 2025 16:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778493;
-	bh=Ba/nJO61IAF3vBgEcye/g/oS+PtwKOzn6vPMpizAkWI=;
+	s=korg; t=1764780709;
+	bh=8scz4mH918d3q539Jm8a78LzLjmSoC44lJJtE9MOSJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS8EUwGyVEiVHk4LpK2TYLodZnuR4LQFfrsqKFvVHL4E5+U6oGy/ZHx2Z0LXb97nH
-	 HZO9PExll2ds7HJmfSumjxEhgwZ58Db1RwW9NnX6SsimQy5zV5ZSKP5xTlGbXYP2WJ
-	 mlAXcW9y8NwRYe3RjDXeO7TjtDVpNZsbmDeyh0vU=
+	b=VhyXI8Z1tIjQn/iHy9vEQACf5poclLxc+ZEYbMP1tj4o0zGpF+UFGVP4aEMizkPhS
+	 NTm1EQfNxnj2Mf7ivV5hhrsZeTZz0uIrFBw05Q7amnJSgIHHjoy1jBQDjputgcMTPp
+	 WG1yz7FBaFbb0JxoVbio/WTkG8Pcm7riTdqrUlJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 5.15 363/392] serial: amba-pl011: prefer dma_mapping_error() over explicit address checking
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 034/132] mailbox: mailbox-test: Fix debugfs_create_dir error checking
 Date: Wed,  3 Dec 2025 16:28:33 +0100
-Message-ID: <20251203152427.522865507@linuxfoundation.org>
+Message-ID: <20251203152344.561478193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit eb4917f557d43c7a1c805dd73ffcdfddb2aba39a upstream.
+[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
 
-Check for returned DMA addresses using specialized dma_mapping_error()
-helper which is generally recommended for this purpose by
-Documentation/core-api/dma-api.rst:
+The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
+The current null-check fails to catch errors.
 
-  "In some circumstances dma_map_single(), ...
-will fail to create a mapping. A driver can check for these errors
-by testing the returned DMA address with dma_mapping_error()."
+Use IS_ERR() to correctly check for errors.
 
-Found via static analysis and this is similar to commit fa0308134d26
-("ALSA: memalloc: prefer dma_mapping_error() over explicit address checking")
-
-Fixes: 58ac1b379979 ("ARM: PL011: Fix DMA support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://patch.msgid.link/20251027092053.87937-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |    2 +-
+ drivers/mailbox/mailbox-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -640,7 +640,7 @@ static int pl011_dma_tx_refill(struct ua
- 	dmatx->len = count;
- 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
- 				    DMA_TO_DEVICE);
--	if (dmatx->dma == DMA_MAPPING_ERROR) {
-+	if (dma_mapping_error(dma_dev->dev, dmatx->dma)) {
- 		uap->dmatx.queued = false;
- 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
- 		return -EBUSY;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 3386b4e72551c..e416ce9e2d674 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -268,7 +268,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
+ 		return 0;
+ 
+ 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
+-	if (!tdev->root_debugfs_dir) {
++	if (IS_ERR(tdev->root_debugfs_dir)) {
+ 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
+ 		return -EINVAL;
+ 	}
+-- 
+2.51.0
+
 
 
 
