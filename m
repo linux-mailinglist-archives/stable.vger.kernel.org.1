@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D783CC9FDF2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:17:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 447B6CA0B1B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A03A43001DF4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8900308DAE3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DEA352922;
-	Wed,  3 Dec 2025 16:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908D334B18B;
+	Wed,  3 Dec 2025 16:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCHWdEyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFamBm90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F78350A29;
-	Wed,  3 Dec 2025 16:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492A634A3BF;
+	Wed,  3 Dec 2025 16:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778543; cv=none; b=XbgVGLirp2i5jcrY4N0dN7yERtBPD3G5wd4/FkqdQ6BLDqqIE6e3hyxhQsdGMbeBfqJHnyIEdJxjGtXMjwbMrZCZHjNkBgV4AuypUqjyzaWVDIyTqgAlW5UwJwagUrvcKhhfSa7LM/JdgnyGeGxAijl8RKVnCrrbNOjiuB7kR2w=
+	t=1764780646; cv=none; b=di9biY6caUqf5MQh+isSGyJF/O95yyXsg/dsj9WHZecfkawf8Xdo+cZT3uaBNIjghoXrKjjZ1D5TGtfZLAHHpbt6i5qBAHyVou19/Fq126L4jjbCsZIXVhrJlGLsYw8nmkBULe/HzEcOWTS/Pg8UPXmSJCVgpySYGJy4dxKKlSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778543; c=relaxed/simple;
-	bh=wMsCtLZhvPWvnRuEKBm8DgYDJ5gXEauIpTM5bOTdC9Y=;
+	s=arc-20240116; t=1764780646; c=relaxed/simple;
+	bh=ASwtOBF/fQu2SQ1DLCoCzPs7qHCk4hpmz07Mls0Svt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkBGF3/iU135Hbf3Agl1bmkpCHb+DhohuhyHoCuipScRowNNeE0WVg/Xto+zOVkEmMTqX1RhawB5y4Kbo8va2nmEMncpYXXzZgdhkdSoNLViozL1yMQ1SK3BTQSrPOEHHLXkegJngHwQs9wW/hBqh0Ao21l/yN2ohqCexPPu6tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCHWdEyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5639C4CEF5;
-	Wed,  3 Dec 2025 16:15:42 +0000 (UTC)
+	 MIME-Version; b=bnM7HAYXd5RGR3rXnpZDD+Q+ZPQYTaAnTb/UzdJr8EvDZcXbLtGXWZlaPaKbuQslon6bbx5LaM9h7wXILm+DI2Q7+Axdlv60fodiMCy0a3yDMbjYwrBISEsSCg7pUFVuyHI3lwaZ4WnysEr3oHGMkzPNutXFyIwZdU8btD25GiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFamBm90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95019C116C6;
+	Wed,  3 Dec 2025 16:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778543;
-	bh=wMsCtLZhvPWvnRuEKBm8DgYDJ5gXEauIpTM5bOTdC9Y=;
+	s=korg; t=1764780646;
+	bh=ASwtOBF/fQu2SQ1DLCoCzPs7qHCk4hpmz07Mls0Svt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCHWdEygHlY29lIuETS/4floCI16imhJKb9jz5zz+6m3X/lrkaLaQblN99sRj+nou
-	 nuj+8drdm9nMkEvOnvsXjeWjUP1Ad1p/53hMROfnhD1vJ4Qhl79TCrB3XI/G7L3gF4
-	 FZ+6lTbklVBElJfX8wZm8c6WbL4Ngcvc9vmdGAAk=
+	b=VFamBm90gdHvvurt/al0Ihjl6WWX6Xo4/lXgfEQnP1wG3xfB/DFPHTkE/zcFKF82O
+	 INwkWQKDb0pX0065z09sEALmbAuR/uRvurHgayHr7MBxTt3x6m4FlI9BQsfwZjapAr
+	 3ycJzx8hyAym/F/iw/oX2SrRjjas7gPb5ogg+NpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.15 376/392] drm/amd/display: Check NULL before accessing
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 047/132] spi: nxp-fspi: Propagate fwnode in ACPI case as well
 Date: Wed,  3 Dec 2025 16:28:46 +0100
-Message-ID: <20251203152427.991648320@linuxfoundation.org>
+Message-ID: <20251203152345.037790579@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
+[ Upstream commit 40ad64ac25bb736740f895d99a4aebbda9b80991 ]
 
-[WHAT]
-IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
-fails with NULL pointer dereference. This can be reproduced with
-both an eDP panel and a DP monitors connected.
+Propagate fwnode of the ACPI device to the SPI controller Linux device.
+Currently only OF case propagates fwnode to the controller.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
-6.16.0-99-custom #8 PREEMPT(voluntary)
- Hardware name: AMD ........
- RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
- Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
- 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
- c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
- RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
- RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
- RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
- R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
- R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
- FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
- <TASK>
- dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
- amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
- ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
- amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
- drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
- drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
- drm_crtc_get_last_vbltimestamp+0x55/0x90
- drm_crtc_next_vblank_start+0x45/0xa0
- drm_atomic_helper_wait_for_fences+0x81/0x1f0
- ...
+While at it, replace several calls to dev_fwnode() with a single one
+cached in a local variable, and unify checks for fwnode type by using
+is_*_node() APIs.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20251126202501.2319679-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -614,9 +614,14 @@ bool dc_stream_get_scanoutpos(const stru
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 6cdeee9c581bd..5100b189c9050 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1173,7 +1173,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
  {
- 	uint8_t i;
- 	bool ret = false;
--	struct dc  *dc = stream->ctx->dc;
--	struct resource_context *res_ctx =
--		&dc->current_state->res_ctx;
-+	struct dc  *dc;
-+	struct resource_context *res_ctx;
-+
-+	if (!stream->ctx)
-+		return false;
-+
-+	dc = stream->ctx->dc;
-+	res_ctx = &dc->current_state->res_ctx;
+ 	struct spi_controller *ctlr;
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np = dev->of_node;
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct resource *res;
+ 	struct nxp_fspi *f;
+ 	int ret, irq;
+@@ -1195,7 +1195,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, f);
  
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
+ 	/* find the resources - configuration register address space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	else
+ 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
+@@ -1203,7 +1203,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(f->iobase);
+ 
+ 	/* find the resources - controller memory mapped space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	else
+ 		res = platform_get_resource_byname(pdev,
+@@ -1216,7 +1216,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	f->memmap_phy_size = resource_size(res);
+ 
+ 	/* find the clocks */
+-	if (dev_of_node(&pdev->dev)) {
++	if (is_of_node(fwnode)) {
+ 		f->clk_en = devm_clk_get(dev, "fspi_en");
+ 		if (IS_ERR(f->clk_en))
+ 			return PTR_ERR(f->clk_en);
+@@ -1260,7 +1260,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	else
+ 		ctlr->mem_caps = &nxp_fspi_mem_caps;
+ 
+-	ctlr->dev.of_node = np;
++	device_set_node(&ctlr->dev, fwnode);
+ 
+ 	return devm_spi_register_controller(&pdev->dev, ctlr);
+ }
+-- 
+2.51.0
+
 
 
 
