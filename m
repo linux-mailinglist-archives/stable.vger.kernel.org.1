@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B930DCA06AF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E51C9FBE7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC4631A81B7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC5EC3025337
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A8734FF72;
-	Wed,  3 Dec 2025 16:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C123101A2;
+	Wed,  3 Dec 2025 15:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjzSKIuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PV5oEBJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DCA34FF78;
-	Wed,  3 Dec 2025 16:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2CF313E00;
+	Wed,  3 Dec 2025 15:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778401; cv=none; b=SKahjAn/pxRQgWoBiUcIz80vDywu5o0+jzg4l5MI4rcGcM8OFf3JPFgW+SLHcsmlecFjrJMh8Zues1I2YXPEbMbGOazilJhFckTZiaS+Awh/w8fqAkjcWZB9P4eXPAfgpKCLDU+5YvGZrmZMT6IVo0MeCH7cbr1R5Z4EV7Db3Rs=
+	t=1764776844; cv=none; b=hTeQq5QYlP1m3BdRa5h6LVo34vV1OZjICwEihfPgLeXtYXaAkAhvjDuHXQqWZf4F8tD/kEQzgFiDS2dgau1RxY3iwXMMQSlRCQjUyfEEy1FE0Ev+6TF/ZW3iPXY2jN1by90bzlvZltglFlMG/VX+WEX0OFYqC1aC0NkfV9FMlek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778401; c=relaxed/simple;
-	bh=oz+tYdN8rQBBJKEArczBmEft8AYakY6u+9f9lvOHi2I=;
+	s=arc-20240116; t=1764776844; c=relaxed/simple;
+	bh=pIGnLcqnpfeS/QhhBM5IGGeYmEgvN/qV3cThkwqQrXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNxc5lCd9wd8GG3eP2XDF8ejnicyOm+jGcQ0eEsXZpDGOgOZXuK7bnJlz7wTtwy1W0ag9OONLoEEUPrj2rvUHQjVX3X1z7ResHRdTyhfTyZ6vtZQ8DjhAlS2QmMZmIGspbcJqFuhU6TtvmrT7pkrJuNgkC/C/W5zzbqoqqPvbk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjzSKIuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B31C4CEF5;
-	Wed,  3 Dec 2025 16:13:20 +0000 (UTC)
+	 MIME-Version; b=OlwnNvc4CUlEFde/XsJYtd0MXYL6itYiUCvqqi5sKPj59RB7Zwx8//8stFhNGVk/LkHPdJa4fjcqrNIlcqWhP0S1j4NMT1g+P9PZqxuaFPuNlYB7Rabd9Z49OAfNzCSZLylDTOuPzTaX+nXIhDL/+qdoAo5MWglvI2kKhASuWaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PV5oEBJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC56C4CEF5;
+	Wed,  3 Dec 2025 15:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778401;
-	bh=oz+tYdN8rQBBJKEArczBmEft8AYakY6u+9f9lvOHi2I=;
+	s=korg; t=1764776844;
+	bh=pIGnLcqnpfeS/QhhBM5IGGeYmEgvN/qV3cThkwqQrXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjzSKIuC3KoRINc0bPAXrYb71HlDuJf87x2R+nmtTXtknEQuBhJ39k5JNGNGznEdX
-	 12x4XHDhO5Yon+iourP7E0TkMKjk9BXCctnQA1zfa99Y6WnZs/yrL1ruGX0XYwslEL
-	 drdbtj8oXrosSnvDCBM3mlIK7jASaGJFinuJi9ec=
+	b=PV5oEBJlCYjFrCVULAvwtqJFRT226yqWQeAGlkvnLO+H4g9NRE0bwW39JxvNm7CLu
+	 2TfVUJvovs51A/RZhTUmb5XES8FNpXhUpAquShMdYSZnAI2+3ZzG5mvnUBra6F2Ez3
+	 J9jLbHpKvhHgS1vsH0LZDNr7q/CGQDNCrCYjTQ6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/392] mptcp: do not fallback when OoO is present
+	stable <stable@kernel.org>,
+	Desnes Nunes <desnesn@redhat.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 280/300] usb: storage: Fix memory leak in USB bulk transport
 Date: Wed,  3 Dec 2025 16:28:04 +0100
-Message-ID: <20251203152426.461230465@linuxfoundation.org>
+Message-ID: <20251203152411.000545433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Desnes Nunes <desnesn@redhat.com>
 
-[ Upstream commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 ]
+commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
 
-In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
-reset if fallback is possible. Such corruptions happen in the receive
-path; to ensure fallback is possible the stack additionally needs to
-check for OoO data, otherwise the fallback will break the data stream.
+A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
+Test Project (LTP). The following bytes were mainly observed: 0x53425355.
 
-Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ patch mptcp_dss_corruption() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When USB storage devices incorrectly skip the data phase with status data,
+the code extracts/validates the CSW from the sg buffer, but fails to clear
+it afterwards. This leaves status protocol data in srb's transfer buffer,
+such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
+lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
+interfaces, such as the one seen here when the LTP test requested 512 KiB.
+
+Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
+after the validation of devices that skip data phase.
+
+Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
+ing pages at allocation time, this leak occurs after allocation, when USB
+protocol data is written to already-allocated sg pages.
+
+Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/storage/transport.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -573,6 +573,15 @@ static bool mptcp_check_data_fin(struct
- static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
- {
- 	if (READ_ONCE(msk->allow_infinite_fallback)) {
-+		/* The caller possibly is not holding the msk socket lock, but
-+		 * in the fallback case only the current subflow is touching
-+		 * the OoO queue.
-+		 */
-+		if (!RB_EMPTY_ROOT(&msk->out_of_order_queue)) {
-+			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
-+			mptcp_subflow_reset(ssk);
-+			return;
-+		}
- 		MPTCP_INC_STATS(sock_net(ssk),
- 				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
- 		mptcp_do_fallback(ssk);
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -1199,7 +1199,23 @@ int usb_stor_Bulk_transport(struct scsi_
+ 						US_BULK_CS_WRAP_LEN &&
+ 					bcs->Signature ==
+ 						cpu_to_le32(US_BULK_CS_SIGN)) {
++				unsigned char buf[US_BULK_CS_WRAP_LEN];
++
+ 				usb_stor_dbg(us, "Device skipped data phase\n");
++
++				/*
++				 * Devices skipping data phase might leave CSW data in srb's
++				 * transfer buffer. Zero it to prevent USB protocol leakage.
++				 */
++				sg = NULL;
++				offset = 0;
++				memset(buf, 0, sizeof(buf));
++				if (usb_stor_access_xfer_buf(buf,
++						US_BULK_CS_WRAP_LEN, srb, &sg,
++						&offset, TO_XFER_BUF) !=
++							US_BULK_CS_WRAP_LEN)
++					usb_stor_dbg(us, "Failed to clear CSW data\n");
++
+ 				scsi_set_resid(srb, transfer_length);
+ 				goto skipped_data_phase;
+ 			}
 
 
 
