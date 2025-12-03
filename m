@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80E1CA0ED6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E67CA0FCC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB67832A9073
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B8E4332E95B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118552750E6;
-	Wed,  3 Dec 2025 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B13355814;
+	Wed,  3 Dec 2025 16:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxvQEskh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNe4s6RQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD3226B942;
-	Wed,  3 Dec 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31831354AC3;
+	Wed,  3 Dec 2025 16:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780832; cv=none; b=XOtNpF3tSsughGTSpMygwaOAO8FEEK0voUcoGFOSWN3hsZNNrtugCLSf09mTSv0wbplOqJBOhCm75Gt+ssJL0OJMVY/Iod2IKbUSwXbeo8PXIxVV1DAKgLnZ1sYr6ChTVnQ2b0djZDCklp3+g01djI8cPadyn26xwSv8shZl5ws=
+	t=1764780986; cv=none; b=XOGkuWsTH7Q4+u05vWLDkhMKvKUTTJAaeMFFsvmrSyyJ9H97tJTfocUDC2BuTU1nsfMWdmSkaU+yjKNG1AnoJdwYI6lvAb1dhU6pZRkBh8+AMs02etOsd+b6jVwnUp51D+pwSyGBitYAo6nIEantn/6UFSw4RNq4mQenUyGr2vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780832; c=relaxed/simple;
-	bh=KxmfM3sdh4suLHrxqMghEuikVAfXiFLT0ZpzMmMdSLA=;
+	s=arc-20240116; t=1764780986; c=relaxed/simple;
+	bh=/+ns2P+Zm6By5z3ZkbA9ya1ULTp4dL0N5QGQgdkndMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ficexh/+Hd8rTGGlASJV7xlv6boMI3wcZiHD92+MlvU74OIYBEancx9T8bqE5A32DstXO3M8xRn30epGyhFPXlPiCXrGVlTAXD6gWXXUFrsLZ+rztCNj5gPbmJaBW9xHE+xVnYqakFznxifbE9hqYqL938eUdcwvDBmSnQIOyRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxvQEskh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC8EC4CEF5;
-	Wed,  3 Dec 2025 16:53:51 +0000 (UTC)
+	 MIME-Version; b=qYzwtJS2DU3LxwYOFTUVAnFKVCD9cd695Kmj8MDH26CPphPL2tRLKl+ecNVUwOhnA1BnAvRgPZf7J3rkCb6qOFcIIOlxTSkKzcN85Kh87TRGhf/bm9fDV4A08SofZ/bMPcvBNdAq8zTraXrZLzMiTUy9gvSqrexgfkd15MOB934=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNe4s6RQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29115C4CEF5;
+	Wed,  3 Dec 2025 16:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780832;
-	bh=KxmfM3sdh4suLHrxqMghEuikVAfXiFLT0ZpzMmMdSLA=;
+	s=korg; t=1764780985;
+	bh=/+ns2P+Zm6By5z3ZkbA9ya1ULTp4dL0N5QGQgdkndMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxvQEskhhcv534ldl+zguXYSAN1K1qFhaV3o8wq3QKDNQJRa8IPykVw0JDp9V7m+z
-	 hUb/f2qb6jQ9TyPSRWSimYudFhjNx/+ptfFoeILfGSleS51pdOW6H1IbIJpN+Y7pvj
-	 KWXnmfxGu0/cFJvk3c+TpNQb9ujvbg9FHnXbKnlg=
+	b=JNe4s6RQWUkGms+3LDMm264cN/td2oIephslmT+HGNq9SuHRMOzqZbqgjqKxuS2Ci
+	 FI9DqdHJe59MrvFu2RN0TmpkmpbdhuUbmqhG8qO1ayQgVT09kRlbCzfMIF4DDHgHoX
+	 zBUT9+EF78qkxnOnCWkzG640SbckrdLnEA+UOzxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 070/132] atm/fore200e: Fix possible data race in fore200e_open()
+	Jiefeng Zhang <jiefeng.z.zhang@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 16/93] net: atlantic: fix fragment overflow handling in RX path
 Date: Wed,  3 Dec 2025 16:29:09 +0100
-Message-ID: <20251203152345.889362248@linuxfoundation.org>
+Message-ID: <20251203152337.112334571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
 
-commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
+[ Upstream commit 5ffcb7b890f61541201461580bb6622ace405aec ]
 
-Protect access to fore200e->available_cell_rate with rate_mtx lock in the
-error handling path of fore200e_open() to prevent a data race.
+The atlantic driver can receive packets with more than MAX_SKB_FRAGS (17)
+fragments when handling large multi-descriptor packets. This causes an
+out-of-bounds write in skb_add_rx_frag_netmem() leading to kernel panic.
 
-The field fore200e->available_cell_rate is a shared resource used to track
-available bandwidth. It is concurrently accessed by fore200e_open(),
-fore200e_close(), and fore200e_change_qos().
+The issue occurs because the driver doesn't check the total number of
+fragments before calling skb_add_rx_frag(). When a packet requires more
+than MAX_SKB_FRAGS fragments, the fragment index exceeds the array bounds.
 
-In fore200e_open(), the lock rate_mtx is correctly held when subtracting
-vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
-However, if the subsequent call to fore200e_activate_vcin() fails, the
-function restores the reserved bandwidth by adding back to
-available_cell_rate without holding the lock.
+Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+then all fragments are accounted for. And reusing the existing check to
+prevent the overflow earlier in the code path.
 
-This introduces a race condition because available_cell_rate is a global
-device resource shared across all VCCs. If the error path in
-fore200e_open() executes concurrently with operations like
-fore200e_close() or fore200e_change_qos() on other VCCs, a
-read-modify-write race occurs.
+This crash occurred in production with an Aquantia AQC113 10G NIC.
 
-Specifically, the error path reads the rate without the lock. If another
-CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
-fore200e_close()) between this read and the subsequent write, the error
-path will overwrite the concurrent update with a stale value. This results
-in incorrect bandwidth accounting.
+Stack trace from production environment:
+```
+RIP: 0010:skb_add_rx_frag_netmem+0x29/0xd0
+Code: 90 f3 0f 1e fa 0f 1f 44 00 00 48 89 f8 41 89
+ca 48 89 d7 48 63 ce 8b 90 c0 00 00 00 48 c1 e1 04 48 01 ca 48 03 90
+c8 00 00 00 <48> 89 7a 30 44 89 52 3c 44 89 42 38 40 f6 c7 01 75 74 48
+89 fa 83
+RSP: 0018:ffffa9bec02a8d50 EFLAGS: 00010287
+RAX: ffff925b22e80a00 RBX: ffff925ad38d2700 RCX:
+fffffffe0a0c8000
+RDX: ffff9258ea95bac0 RSI: ffff925ae0a0c800 RDI:
+0000000000037a40
+RBP: 0000000000000024 R08: 0000000000000000 R09:
+0000000000000021
+R10: 0000000000000848 R11: 0000000000000000 R12:
+ffffa9bec02a8e24
+R13: ffff925ad8615570 R14: 0000000000000000 R15:
+ffff925b22e80a00
+FS: 0000000000000000(0000)
+GS:ffff925e47880000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff9258ea95baf0 CR3: 0000000166022004 CR4:
+0000000000f72ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+aq_ring_rx_clean+0x175/0xe60 [atlantic]
+? aq_ring_rx_clean+0x14d/0xe60 [atlantic]
+? aq_ring_tx_clean+0xdf/0x190 [atlantic]
+? kmem_cache_free+0x348/0x450
+? aq_vec_poll+0x81/0x1d0 [atlantic]
+? __napi_poll+0x28/0x1c0
+? net_rx_action+0x337/0x420
+```
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6aecbba12b5c ("net: atlantic: add check for MAX_SKB_FRAGS")
+Changes in v4:
+- Add Fixes: tag to satisfy patch validation requirements.
+
+Changes in v3:
+- Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+  then all fragments are accounted for.
+
+Signed-off-by: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
+Link: https://patch.msgid.link/20251126032249.69358-1-jiefeng.z.zhang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/fore200e.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -1374,7 +1374,9 @@ fore200e_open(struct atm_vcc *vcc)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index f7433abd65915..3f004d08307fb 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -547,6 +547,11 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
  
- 	vcc->dev_data = NULL;
- 
-+	mutex_lock(&fore200e->rate_mtx);
- 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
-+	mutex_unlock(&fore200e->rate_mtx);
- 
- 	kfree(fore200e_vcc);
- 	return -EINVAL;
+ 		if (!buff->is_eop) {
+ 			unsigned int frag_cnt = 0U;
++
++			/* There will be an extra fragment */
++			if (buff->len > AQ_CFG_RX_HDR_SIZE)
++				frag_cnt++;
++
+ 			buff_ = buff;
+ 			do {
+ 				bool is_rsc_completed = true;
+-- 
+2.51.0
+
 
 
 
