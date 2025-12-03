@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52597CA118B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E37CA087B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 405C132E9ED4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBEFE33CFCA5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C12832D42F;
-	Wed,  3 Dec 2025 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDA832B9A2;
+	Wed,  3 Dec 2025 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDsfWavm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrNHMwD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3ED32C92E;
-	Wed,  3 Dec 2025 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D228032AAB7;
+	Wed,  3 Dec 2025 16:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777012; cv=none; b=pCW48PkKiorylxe8iNZr1hQW1EpkD4mXHT1tQMqhFa6uCPZ3HKokuF32UQ19czbs8vt1Hdyp/UfuV45AdTqYevJY9ijAUNbLq7bFEV03zd0CoDMstdgmbNY6EUX1Yldy05maubSi+M2gjLObUxvXgp7sJKlQzBu5+HyxZ+C6JvU=
+	t=1764778228; cv=none; b=smjvImaWiGEWKb+Y39197HSAsPL/9P0EFYh7Xcla7f/RBfPgZVOX4zf7xcS2Q5JKS1r3S8Xarhjciknl1AYuj9yEm4l8hRlCxSXogIQPaZtrZzTwWwHgthfY23Prh4IHTGFWDd2VXT5b5gnaPLJP0PI32EtafEUZSl7L853JKGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777012; c=relaxed/simple;
-	bh=FA4Sg9ELA1A2W+2UhtsKQQOZaDE5TZ4QmnnKmvY/+CU=;
+	s=arc-20240116; t=1764778228; c=relaxed/simple;
+	bh=aj2mGbvBSmaWNO29pElpBfJ0dgA0hOcj3Rnt22OuU+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KoW6kifPOBv6Vq0WHmZHMnLcaZY++Rw2A8IDQ6PHnAEmPWrJfZZH3zxXYXWur4x6mQ7EaLUMXmVtMsvT4SsOAzUFKfU8Bia2w/B4lm6NTYaYE5E601WJvi7yLMmVJAJVXm6/qG9tRd02kpFUCoDX+fp36JsAd5tpKjtoOKFxE9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDsfWavm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FD3C116B1;
-	Wed,  3 Dec 2025 15:50:11 +0000 (UTC)
+	 MIME-Version; b=V94ozAHCuaqpaQ2ieugPtxSxFsncK9B4wwAupIKo2Hf7PmP1o3IWTwYZ33D7c3uiY59QEoUiaagaIgx/OIhwSwFtBDLXwQruy9uDsEcdyTMkcwGI/fvNXu8Y8EzZ7yt1BgnCdUq9x5q+V4H1ezpPe4v8kmKuneXLGjBFQ878gj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrNHMwD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27394C4CEF5;
+	Wed,  3 Dec 2025 16:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777012;
-	bh=FA4Sg9ELA1A2W+2UhtsKQQOZaDE5TZ4QmnnKmvY/+CU=;
+	s=korg; t=1764778228;
+	bh=aj2mGbvBSmaWNO29pElpBfJ0dgA0hOcj3Rnt22OuU+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oDsfWavmRiVLffr41EHS+6rsWikzA8i80Aeo3yCIKWpCLG03xU6+hYOF/4EVNBnxG
-	 bI2g6sec2tJLbu7+iMXDeeYC72uLqU+Dp0hdqML0zwNewAXkXUs8RSFSp9TUiX6VV3
-	 +XO4v4++SdDulyRhI1etOiqHSgz2SgqG41/QGiqc=
+	b=jrNHMwD42Z9qoUu6a29PXtr1KySyV5Vj0q4IgvkQmAVzYRQVASW55DZQUl1D/2JEM
+	 hgYHn+E47+k4r1fyz5mkwHPnuFfc26JIpbJ0h1YvJ+7L0jjZIQoP//+AMbJu/jqtnG
+	 hB5LfyW4X722rcQAjVggBruaWOoUIvQHCbqzl4SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 055/146] iio: buffer-dmaengine: enable .get_dma_dev()
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 283/392] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
 Date: Wed,  3 Dec 2025 16:27:13 +0100
-Message-ID: <20251203152348.485467317@linuxfoundation.org>
+Message-ID: <20251203152424.572651627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +57,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit 3db847df994d475db7812dde90376f2848bcd30a upstream.
+commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
 
-Wire up the .get_dma_dev() callback to use the DMA buffer infrastructure's
-implementation. This ensures that DMABUF operations use the correct DMA
-device for mapping, which is essential for proper operation on systems
-where memory is mapped above the 32-bit range.
+The DMA device pointer `dma_dev` was being dereferenced before ensuring
+that `cdns_ctrl->dmac` is properly initialized.
 
-Without this callback, the core would fall back to using the IIO device's
-parent, which may not have the appropriate DMA mask configuration for
-high memory access.
+Move the assignment of `dma_dev` after successfully acquiring the DMA
+channel to ensure the pointer is valid before use.
 
-Fixes: 7a86d469983a ("iio: buffer-dmaengine: Support new DMABUF based userspace API")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -177,6 +177,8 @@ static const struct iio_buffer_access_fu
- 	.lock_queue = iio_dma_buffer_lock_queue,
- 	.unlock_queue = iio_dma_buffer_unlock_queue,
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2833,7 +2833,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
+ {
+ 	dma_cap_mask_t mask;
+-	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
++	struct dma_device *dma_dev;
+ 	int ret;
  
-+	.get_dma_dev = iio_dma_buffer_get_dma_dev,
-+
- 	.modes = INDIO_BUFFER_HARDWARE,
- 	.flags = INDIO_BUFFER_FLAG_FIXED_WATERMARK,
- };
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2877,6 +2877,7 @@ static int cadence_nand_init(struct cdns
+ 		}
+ 	}
+ 
++	dma_dev = cdns_ctrl->dmac->device;
+ 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
+ 						  cdns_ctrl->io.size,
+ 						  DMA_BIDIRECTIONAL, 0);
 
 
 
