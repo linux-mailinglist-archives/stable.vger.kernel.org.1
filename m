@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-199087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4E0CA003B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271D1CA0AAB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC59230542D4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:34:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3B13350D659
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DDF3559DB;
-	Wed,  3 Dec 2025 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7967A3559FA;
+	Wed,  3 Dec 2025 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xenGHTTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYulQv63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CBB355814;
-	Wed,  3 Dec 2025 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354DD3559F7;
+	Wed,  3 Dec 2025 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778654; cv=none; b=UrHNvoS3a9+jUnfGx+WeOkEvc79kvkL3y6YY5wyFQ390L+bvRAhEZmjeELwUvA723J/WxQMkEGr2SiT4xKajtWXOyjAjx+qgFqYx94mhtExH61XLzYo2Kboi3q7PqB7BRmuLA7eK17d5vNaD15+4mjYkBaG7FEFFZ9pG4m0kuq4=
+	t=1764778659; cv=none; b=WUYxEYUdCgodoDtmdr6PiYj3ZSoHxvbEvvNPrkY+nIQg/38kAYIXxHhUxpEoWHrg26IHSH1McRgleUhzUmzZ+0qqe5grPKqC9CpuxUA5V/Qs288mWuuub9iB4DltIJUzSgfziHHRW9EbVpe98qoTO1taCoiKbLX/IaADU6eipMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778654; c=relaxed/simple;
-	bh=h6/L6eSiL+K/o+DXPswMuBZepHoRkU9ZqSyOoCSY17M=;
+	s=arc-20240116; t=1764778659; c=relaxed/simple;
+	bh=uSPUkCH4i7jDzYY0Qwo0hoUUbQSvX8iPyZX16YVb+G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5xSXnvzbfAEbhLycfg2Xuao1zo4LjdlQ+GvsaIZdDvy9vaMeVyspP6QVfHbJfQg0GwGMLIymLvBl3YPPhAafSe00TNtMRaCTfkszV/C053m1SUdia0+Gfb/s1LwEsyVr4BuoJ4z/X1slyQreldPhAeG1b8r+zMQ/C0p7bTeqpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xenGHTTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235F2C4CEF5;
-	Wed,  3 Dec 2025 16:17:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=phE2j5kQcUm+8g+nlx98MdB3W1+x7oo1HDaxM/pAl7lss2VCDPEaRcEgvRQOZkNyz4iBj2xkdULb7wtBa9v+X63SdqZSs25GHXwc+yjRCg1NZIAkaTgdWpIb5XXHCLuiY17eJw9EUPiEa8Zp1uSUOOExyZM8oeUgPZeZzweoxXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYulQv63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93361C4CEF5;
+	Wed,  3 Dec 2025 16:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778652;
-	bh=h6/L6eSiL+K/o+DXPswMuBZepHoRkU9ZqSyOoCSY17M=;
+	s=korg; t=1764778659;
+	bh=uSPUkCH4i7jDzYY0Qwo0hoUUbQSvX8iPyZX16YVb+G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xenGHTTywXLnpaLjTm9BJ4aM+4QAfx8oSeggmoO83LkV3wLGXytU+LSViWLH8Df4s
-	 YkdVRaqaGijwu9rGV0Y2Wjc2CaGrkwtiyxuSaeEuN9PJ6xT+ieMMtFH1sFVNAMuNvi
-	 a+OuIS5fhxIrkrcQ5gWdIhYa4hXBcjWylWqiB39g=
+	b=IYulQv63QF4x2av81aWsaKK5ZMgi+vIn6qn1l29rnxC2Znc8Grbg+dNwCTj0dd2qu
+	 6GwLCul4xNJDGcLf3HZskji7sGL7u4w75dX2F3nxMdh8MTP3/Q3IDsSnCDOO6E0JW3
+	 U5cx1hNivebfY6SpmZ3JR0KLhbIFYeABMPtCBXcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/568] xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event
-Date: Wed,  3 Dec 2025 16:20:21 +0100
-Message-ID: <20251203152441.365779057@linuxfoundation.org>
+Subject: [PATCH 6.1 020/568] serial: sc16is7xx: remove unused to_sc16is7xx_port macro
+Date: Wed,  3 Dec 2025 16:20:22 +0100
+Message-ID: <20251203152441.403317308@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -66,72 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit f3d12ec847b945d5d65846c85f062d07d5e73164 ]
+[ Upstream commit 22a048b0749346b6e3291892d06b95278d5ba84a ]
 
-DbC may add 1024 bogus bytes to the beginneing of the receiving endpoint
-if DbC hw triggers a STALL event before any Transfer Blocks (TRBs) for
-incoming data are queued, but driver handles the event after it queued
-the TRBs.
+This macro is not used anywhere.
 
-This is possible as xHCI DbC hardware may trigger spurious STALL transfer
-events even if endpoint is empty. The STALL event contains a pointer
-to the stalled TRB, and "remaining" untransferred data length.
-
-As there are no TRBs queued yet the STALL event will just point to first
-TRB position of the empty ring, with '0' bytes remaining untransferred.
-
-DbC driver is polling for events, and may not handle the STALL event
-before /dev/ttyDBC0 is opened and incoming data TRBs are queued.
-
-The DbC event handler will now assume the first queued TRB (length 1024)
-has stalled with '0' bytes remaining untransferred, and copies the data
-
-This race situation can be practically mitigated by making sure the event
-handler handles all pending transfer events when DbC reaches configured
-state, and only then create dev/ttyDbC0, and start queueing transfers.
-The event handler can this way detect the STALL events on empty rings
-and discard them before any transfers are queued.
-
-This does in practice solve the issue, but still leaves a small possible
-gap for the race to trigger.
-We still need a way to distinguish spurious STALLs on empty rings with '0'
-bytes remaing, from actual STALL events with all bytes transmitted.
-
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230905181649.134720-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1c05bf6c0262 ("serial: sc16is7xx: remove useless enable of enhanced features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -880,7 +880,8 @@ static enum evtreturn xhci_dbc_do_handle
- 			dev_info(dbc->dev, "DbC configured\n");
- 			portsc = readl(&dbc->regs->portsc);
- 			writel(portsc, &dbc->regs->portsc);
--			return EVT_GSER;
-+			ret = EVT_GSER;
-+			break;
- 		}
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -358,7 +358,6 @@ static struct uart_driver sc16is7xx_uart
+ static void sc16is7xx_ier_set(struct uart_port *port, u8 bit);
+ static void sc16is7xx_stop_tx(struct uart_port *port);
  
- 		return EVT_DONE;
-@@ -940,7 +941,8 @@ static enum evtreturn xhci_dbc_do_handle
- 			break;
- 		case TRB_TYPE(TRB_TRANSFER):
- 			dbc_handle_xfer_event(dbc, evt);
--			ret = EVT_XFER_DONE;
-+			if (ret != EVT_GSER)
-+				ret = EVT_XFER_DONE;
- 			break;
- 		default:
- 			break;
+-#define to_sc16is7xx_port(p,e)	((container_of((p), struct sc16is7xx_port, e)))
+ #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
+ 
+ static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
 
 
 
