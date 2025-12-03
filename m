@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C003CA08D5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22344C9FB90
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876023415786
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFB733082D4A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A1B342500;
-	Wed,  3 Dec 2025 16:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9FC313E09;
+	Wed,  3 Dec 2025 15:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgvz8hg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCKp9buE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AAF341ADD;
-	Wed,  3 Dec 2025 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCB2312810;
+	Wed,  3 Dec 2025 15:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778424; cv=none; b=aTDoExdR+ux7/XrX4+Ff2ePAIZFZDOMJ4CwyQ6KU3ow2CGVvZB+YU0sIsfdrKsblDTIBqC7PIci49g0gc4zRB9v0l2jfH/lACbKb5Cw2GsR0CeNxB0c/KTPjyor3xgr751rUpHDaTUfmBN7/Vk8O6kclJS4I+WpwPTwfeku7nTg=
+	t=1764776781; cv=none; b=aBDp9rNp03gLcrkMp/e43au6BudHmuvBulMNTWIlBPB5wIk75wMw70M31315z3gf/8Uh1G6u9VsN0DtQRlRBtZxRaCFePSthO/zmwpHs64qkHnvLesYfOK/6Hjd8kUS8Pc1rXNoMAQo0P8U2ma26fGycmBOBcs14OfzTZiyuVcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778424; c=relaxed/simple;
-	bh=EQhuFae3xRnDJ2eXzdrx4Iec5+1wgZZobsxQKrY9akE=;
+	s=arc-20240116; t=1764776781; c=relaxed/simple;
+	bh=2zFozs8evote2UG7f5R7SW6PF+EDSmwtUBVzfT/l6oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOF4mNG+y43O8nFcgyriGrpmrM2UkRecWXgj08NJ9ZPHQQ9uUmcnR7w+rlcJ/6evScs1P2ZqGhk4xfSrQbm8PYpOTcpyZyNGAKRqRIJFGcODPEH6ThkFA85f/pRjGGPF23rhqw0dc1e8/dJXIukGKjfAHF/h781Ur+YiAHBzKBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgvz8hg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31481C4CEF5;
-	Wed,  3 Dec 2025 16:13:43 +0000 (UTC)
+	 MIME-Version; b=UKqBmH7i2xHnQtWhNeVdjjqoYU8/iDmQ+zhKgAfVeUBO/kyuHOXcBk6qGyJaP4uIaw51a3/SoFeAkvM6eOHa9w7ikhvMNgs3e9N6UeRBAm6i9oJ639RPNBamAfxNapz1Sa1uHNQH/JM6Ol2BRkA+x47fVwDT3Aq/9NF4t3joSHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCKp9buE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551FEC4CEF5;
+	Wed,  3 Dec 2025 15:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778424;
-	bh=EQhuFae3xRnDJ2eXzdrx4Iec5+1wgZZobsxQKrY9akE=;
+	s=korg; t=1764776780;
+	bh=2zFozs8evote2UG7f5R7SW6PF+EDSmwtUBVzfT/l6oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgvz8hg2lc/tPwS3CDuwDUQXLIynDLUDJXv/+AgLTQ4LnovHecMTS3kY+tFHQPZRv
-	 aKpbdiDOo2uzn7B0n4Gvs02jSh8xb4bdBdGzsMC6dzFHfWGsA578vS5VgaGoQJLNPS
-	 Q4tajLrqSXImEfA+WgukHYHtyxu8vNmeXEpnEW3E=
+	b=lCKp9buEk+1c/MWtewhdt2eq06AG+/3Z3S0qsf/C49TMsk9ytQoDIDYMvx/6Kn02/
+	 qGu/z4sngWJWDVjBZja/Txmu/cOHzEOYrciheEnJFusBS0HzDP7x5S/AFslTt4vmBX
+	 Pv5JdVU2D5sLp80afce3tgMXiLUxljfjysmX/040=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carol Soto <csoto@nvidia.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 340/392] net: aquantia: Add missing descriptor cache invalidation on ATL2
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 286/300] USB: serial: option: add support for Rolling RW101R-GL
 Date: Wed,  3 Dec 2025 16:28:10 +0100
-Message-ID: <20251203152426.682126136@linuxfoundation.org>
+Message-ID: <20251203152411.219412997@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +59,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-[ Upstream commit 7526183cfdbe352c51c285762f0e15b7c428ea06 ]
+commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
 
-ATL2 hardware was missing descriptor cache invalidation in hw_stop(),
-causing SMMU translation faults during device shutdown and module removal:
-[   70.355743] arm-smmu-v3 arm-smmu-v3.5.auto: event 0x10 received:
-[   70.361893] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0002060000000010
-[   70.367948] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0000020000000000
-[   70.374002] arm-smmu-v3 arm-smmu-v3.5.auto:  0x00000000ff9bc000
-[   70.380055] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0000000000000000
-[   70.386109] arm-smmu-v3 arm-smmu-v3.5.auto: event: F_TRANSLATION client: 0001:06:00.0 sid: 0x20600 ssid: 0x0 iova: 0xff9bc000 ipa: 0x0
-[   70.398531] arm-smmu-v3 arm-smmu-v3.5.auto: unpriv data write s1 "Input address caused fault" stag: 0x0
+- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-Commit 7a1bb49461b1 ("net: aquantia: fix potential IOMMU fault after
-driver unbind") and commit ed4d81c4b3f2 ("net: aquantia: when cleaning
-hw cache it should be toggled") fixed cache invalidation for ATL B0, but
-ATL2 was left with only interrupt disabling. This allowed hardware to
-write to cached descriptors after DMA memory was unmapped, triggering
-SMMU faults. Once cache invalidation is applied to ATL2, the translation
-fault can't be observed anymore.
+  0x0301: mbim, pipe
 
-Add shared aq_hw_invalidate_descriptor_cache() helper and use it in both
-ATL B0 and ATL2 hw_stop() implementations for consistent behavior.
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0301 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: e54dcf4bba3e ("net: atlantic: basic A2 init/deinit hw_ops")
-Tested-by: Carol Soto <csoto@nvidia.com>
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251120041537.62184-1-kaihengf@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a8 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x0302: mbim, pipe
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0302 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a9 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+[ johan: sort vendor entries, edit commit message slightly ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/aquantia/atlantic/aq_hw_utils.c  | 22 +++++++++++++++++++
- .../ethernet/aquantia/atlantic/aq_hw_utils.h  |  1 +
- .../aquantia/atlantic/hw_atl/hw_atl_b0.c      | 19 +---------------
- .../aquantia/atlantic/hw_atl2/hw_atl2.c       |  2 +-
- 4 files changed, 25 insertions(+), 19 deletions(-)
+ drivers/usb/serial/option.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-index 1921741f7311d..18b08277d2e1a 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-@@ -15,6 +15,7 @@
- 
- #include "aq_hw.h"
- #include "aq_nic.h"
-+#include "hw_atl/hw_atl_llh.h"
- 
- void aq_hw_write_reg_bit(struct aq_hw_s *aq_hw, u32 addr, u32 msk,
- 			 u32 shift, u32 val)
-@@ -81,6 +82,27 @@ void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value)
- 		lo_hi_writeq(value, hw->mmio + reg);
- }
- 
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw)
-+{
-+	int err;
-+	u32 val;
-+
-+	/* Invalidate Descriptor Cache to prevent writing to the cached
-+	 * descriptors and to the data pointer of those descriptors
-+	 */
-+	hw_atl_rdm_rx_dma_desc_cache_init_tgl(hw);
-+
-+	err = aq_hw_err_from_flags(hw);
-+	if (err)
-+		goto err_exit;
-+
-+	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
-+				  hw, val, val == 1, 1000U, 10000U);
-+
-+err_exit:
-+	return err;
-+}
-+
- int aq_hw_err_from_flags(struct aq_hw_s *hw)
- {
- 	int err = 0;
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-index ffa6e4067c211..d89c63d88e4a4 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-@@ -35,6 +35,7 @@ u32 aq_hw_read_reg(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg(struct aq_hw_s *hw, u32 reg, u32 value);
- u64 aq_hw_read_reg64(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value);
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw);
- int aq_hw_err_from_flags(struct aq_hw_s *hw);
- int aq_hw_num_tcs(struct aq_hw_s *hw);
- int aq_hw_q_per_tc(struct aq_hw_s *hw);
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-index 15ede7285fb5d..b50c9b6dfb5bf 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-@@ -1198,26 +1198,9 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
- 
- static int hw_atl_b0_hw_stop(struct aq_hw_s *self)
- {
--	int err;
--	u32 val;
--
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL_B0_INT_MASK);
- 
--	/* Invalidate Descriptor Cache to prevent writing to the cached
--	 * descriptors and to the data pointer of those descriptors
--	 */
--	hw_atl_rdm_rx_dma_desc_cache_init_tgl(self);
--
--	err = aq_hw_err_from_flags(self);
--
--	if (err)
--		goto err_exit;
--
--	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
--				  self, val, val == 1, 1000U, 10000U);
--
--err_exit:
--	return err;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- int hw_atl_b0_hw_ring_tx_stop(struct aq_hw_s *self, struct aq_ring_s *ring)
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-index 5dfc751572edc..bc4e1b6035e08 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-@@ -759,7 +759,7 @@ static int hw_atl2_hw_stop(struct aq_hw_s *self)
- {
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL2_INT_MASK);
- 
--	return 0;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- static struct aq_stats_s *hw_atl2_utils_get_hw_stats(struct aq_hw_s *self)
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index 5de856f65f0d..e9400727ad36 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2424,12 +2424,18 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
+ 	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+-	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
 -- 
-2.51.0
+2.52.0
 
 
 
