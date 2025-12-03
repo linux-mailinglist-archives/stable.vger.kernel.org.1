@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-199554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D6FCA02E0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9321FCA050F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6E163080F4E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 303C932448BA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA9835F8BD;
-	Wed,  3 Dec 2025 16:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C53347BC6;
+	Wed,  3 Dec 2025 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC4WzFry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBG3/WEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886EE35C1BE;
-	Wed,  3 Dec 2025 16:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B43B346FCF;
+	Wed,  3 Dec 2025 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780182; cv=none; b=Ygn4mkcpHDep8FX4tUXFNrHjFpAMYEAcyvxg02ro36awHPt/OWkPIfh59e+pW+jiG04+amQzVbGIJy4Gd25gaSLHGvnTZxvF5Ac0rYqpIb7Qftz2U5OMKA3AaiNfVE++dOVaayicNaG2jfEbmVNAi0BOPqVtK25nIm+t0PNlja0=
+	t=1764780577; cv=none; b=tmeR9JJnuFZU9p1fZU1oWXR5BpFSELVipEW5zHjSB+rY9BN2nx8rFvZEYYw50fGvucI2f1Qod2QfRWJhUU54rYe+sJ+B8vaBvbffhfLvZGXVXjM5WtLFmVC4KPvpmkgoocQ2UJ4KDQfV3DipvrpvUkhZ+cJ0ywXXkVbXOFlZ67k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780182; c=relaxed/simple;
-	bh=7wZs206JV+z2O5JUsF6q3qUxakhl7M3fNkPRTxEHsQw=;
+	s=arc-20240116; t=1764780577; c=relaxed/simple;
+	bh=5+7IyrZHEq/z8jKs0PITyETANeHQtwC9q4YhP/F/dks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUVX69XdIn8fTZKcf22owidEI49D+oVvE8f2ZQVUoEGmTd2YFv+JkCYgojgknGXm3kHAmWgWlBkDey5N6F/ncHtTg2c60pmUsY6PW5o1YKrDpZDaJ1mNF5sBlt7xCTHtxAkDJ28BTiYqOPange85bvrkmBhkY79ALhVBfk5msJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC4WzFry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3CBC116C6;
-	Wed,  3 Dec 2025 16:43:01 +0000 (UTC)
+	 MIME-Version; b=MnysjStGdW6pxOezHqVfj6po3w9c0GFNVoG8tNv99zDwNa8zAtiVf9HHcN32ENparW4B70wdrqLvk3An6TI+HVTGroZ4tjqy4Myaz7/OAtr50LKIeKx57LLfhKop00irgIwx14VeqWgKoU5y+EMi+Xlp1zRFx1tExbFCn3XjQoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBG3/WEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5259C4CEF5;
+	Wed,  3 Dec 2025 16:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780182;
-	bh=7wZs206JV+z2O5JUsF6q3qUxakhl7M3fNkPRTxEHsQw=;
+	s=korg; t=1764780577;
+	bh=5+7IyrZHEq/z8jKs0PITyETANeHQtwC9q4YhP/F/dks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RC4WzFryJseXKqBw8Njvst/wCJ7vfkhM63TP6BY0ytJ+pM1qRqXUMXLjotk6CdA1r
-	 oNyBVcPUtJTv2pqTwEKj/hCvdzXIwF8ZlZUmtGcL81PYsD5BHENASjnsvY5BD/jVp8
-	 AJGErprklIevlfawSKIeHnDvrCuMnqNg7oFXkZhQ=
+	b=mBG3/WEAD60uZTiC4WvmG4guNQIwQkLgmJ6uFou8JApFzlnL5i6fjbWHb+HqJ9vsj
+	 hcW4/7+rPunVnRSLgqgKYUcrgIVFBLYl/syb7cghITFr721TeaM6gcv8p1NM+gvh/e
+	 AoH79xQBaPNU/l4nbk/apDGDr448MemylJG8VhpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 480/568] mptcp: fix a race in mptcp_pm_del_add_timer()
+Subject: [PATCH 6.12 003/132] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header
 Date: Wed,  3 Dec 2025 16:28:02 +0100
-Message-ID: <20251203152458.278914153@linuxfoundation.org>
+Message-ID: <20251203152343.418632096@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,201 +59,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
+[ Upstream commit 6fe9f3279f7d2518439a7962c5870c6e9ecbadcf ]
 
-mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
-while another might have free entry already, as reported by syzbot.
+The driver expects to receive a struct gs_host_frame in
+gs_usb_receive_bulk_callback().
 
-Add RCU protection to fix this issue.
+Use struct_group to describe the header of the struct gs_host_frame and
+check that we have at least received the header before accessing any
+members of it.
 
-Also change confusing add_timer variable with stop_timer boolean.
+To resubmit the URB, do not dereference the pointer chain
+"dev->parent->hf_size_rx" but use "parent->hf_size_rx" instead. Since
+"urb->context" contains "parent", it is always defined, while "dev" is not
+defined if the URB it too short.
 
-syzbot report:
-
-BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
-
-CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: events mptcp_worker
-Call Trace:
- <TASK>
-  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
-  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
-  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
-  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
-  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
-  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
-  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
-  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
-  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
-  process_backlog+0x31e/0x900 net/core/dev.c:6544
-  __napi_poll+0xb6/0x540 net/core/dev.c:7594
-  napi_poll net/core/dev.c:7657 [inline]
-  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
-  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
- mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
-  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 44:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
-  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
-  kasan_kmalloc include/linux/kasan.h:262 [inline]
-  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
-  kmalloc_noprof include/linux/slab.h:957 [inline]
-  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
-  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
-  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
-  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
-  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 6630:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
-  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
-  poison_slab_object mm/kasan/common.c:252 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
-  kasan_slab_free include/linux/kasan.h:234 [inline]
-  slab_free_hook mm/slub.c:2523 [inline]
-  slab_free mm/slub.c:6611 [inline]
-  kfree+0x197/0x950 mm/slub.c:6818
-  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
-  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
-  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
-  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
-  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
-  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
-  __sys_sendmsg net/socket.c:2716 [inline]
-  __do_sys_sendmsg net/socket.c:2721 [inline]
-  __se_sys_sendmsg net/socket.c:2719 [inline]
-  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Cc: stable@vger.kernel.org
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied changes to pm_netlink.c instead of pm.c ]
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-2-a29b42eacada@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/can/usb/gs_usb.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -28,6 +28,7 @@ struct mptcp_pm_add_entry {
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
- 	u8			retrans_times;
-+	struct rcu_head		rcu;
- };
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index fd34945d831e9..b2cfdc3558a5a 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -259,13 +259,15 @@ struct canfd_quirk {
+ } __packed;
  
- struct pm_nl_pernet {
-@@ -354,22 +355,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
--	struct timer_list *add_timer = NULL;
-+	bool stop_timer = false;
+ struct gs_host_frame {
+-	u32 echo_id;
+-	__le32 can_id;
++	struct_group(header,
++		u32 echo_id;
++		__le32 can_id;
+ 
+-	u8 can_dlc;
+-	u8 channel;
+-	u8 flags;
+-	u8 reserved;
++		u8 can_dlc;
++		u8 channel;
++		u8 flags;
++		u8 reserved;
++	);
+ 
+ 	union {
+ 		DECLARE_FLEX_ARRAY(struct classic_can, classic_can);
+@@ -573,6 +575,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	int rc;
+ 	struct net_device_stats *stats;
+ 	struct gs_host_frame *hf = urb->transfer_buffer;
++	unsigned int minimum_length;
+ 	struct gs_tx_context *txc;
+ 	struct can_frame *cf;
+ 	struct canfd_frame *cfd;
+@@ -591,6 +594,15 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		return;
+ 	}
+ 
++	minimum_length = sizeof(hf->header);
++	if (urb->actual_length < minimum_length) {
++		dev_err_ratelimited(&parent->udev->dev,
++				    "short read (actual_length=%u, minimum_length=%u)\n",
++				    urb->actual_length, minimum_length);
 +
-+	rcu_read_lock();
++		goto resubmit_urb;
++	}
++
+ 	/* device reports out of range channel id */
+ 	if (hf->channel >= parent->channel_cnt)
+ 		goto device_detach;
+@@ -684,7 +696,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ resubmit_urb:
+ 	usb_fill_bulk_urb(urb, parent->udev,
+ 			  parent->pipe_in,
+-			  hf, dev->parent->hf_size_rx,
++			  hf, parent->hf_size_rx,
+ 			  gs_usb_receive_bulk_callback, parent);
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
- 	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
--		add_timer = &entry->add_timer;
-+		stop_timer = true;
- 	}
- 	if (!check_id && entry)
- 		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
- 
--	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
--	if (add_timer)
--		sk_stop_timer_sync(sk, add_timer);
-+	/* Note: entry might have been removed by another thread.
-+	 * We hold rcu_read_lock() to ensure it is not freed under us.
-+	 */
-+	if (stop_timer)
-+		sk_stop_timer_sync(sk, &entry->add_timer);
- 
-+	rcu_read_unlock();
- 	return entry;
- }
- 
-@@ -425,7 +431,7 @@ void mptcp_pm_free_anno_list(struct mptc
- 
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
- 		sk_stop_timer_sync(sk, &entry->add_timer);
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 	}
- }
- 
-@@ -1569,7 +1575,7 @@ static bool remove_anno_list_by_saddr(st
- 
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 		return true;
- 	}
- 
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
+-- 
+2.51.0
+
 
 
 
